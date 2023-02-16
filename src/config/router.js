@@ -1,7 +1,7 @@
-import Vue from "vue";
 import { createRouter, createWebHistory } from 'vue-router';
 import Login from "../main/auth/Login.vue";
 import Register from "../main/auth/Register.vue";
+import HelloWorld from "../components/HelloWorld.vue";
 
 const routes = [
     {
@@ -13,6 +13,11 @@ const routes = [
         path: '/register',
         name: 'register',
         component: Register,
+    },
+    {
+        path: '/test',
+        name: 'test',
+        component: HelloWorld,
     },
 ];
 

@@ -1,10 +1,10 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <HelloWorld msg="Vite + Vue" />
+<!--  <HelloWorld msg="Vite + Vue" />-->
+  <router-view :key="$route.fullPath"></router-view>
 </template>
+<script setup>
+// import HelloWorld from './components/HelloWorld.vue'
+</script>
 
 <style scoped>
 .logo {
