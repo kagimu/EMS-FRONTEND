@@ -1,6 +1,6 @@
 import axios from "axios"
-import { useAuthStore } from "@/stores/auth"
-import { useCommonsStore } from "@/stores/commons"
+// import { useAuthStore } from "@/stores/auth"
+// import { useCommonsStore } from "@/stores/commons"
 // import router from "@/router"
 
 const api = axios.create({
@@ -8,7 +8,7 @@ const api = axios.create({
     withCredentials: true,
 })
 
-api.interceptors.request.use((config) => {
+/*api.interceptors.request.use((config) => {
     const auth = useAuthStore()
 
     if (auth.token !== null) {
@@ -16,7 +16,7 @@ api.interceptors.request.use((config) => {
     }
 
     return config
-})
+})*/
 
 api.interceptors.response.use(
     (response) => response,

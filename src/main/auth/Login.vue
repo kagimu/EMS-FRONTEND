@@ -28,18 +28,21 @@
 </template>
 
 <script setup>
-import {loginStore} from "../store/login_store.js";
+// import {useLoginStoreoginStore} from "../store/login.js";
+// import {useLoginStore} from "../store"
 import { ref } from 'vue'
+import {useLoginStore} from "../store/login.js";
 
 const form = ref({
   email:null,
   password:null
 })
 
-let authStore = loginStore()
+let authStore = useLoginStore() // loginStore()
+
 
 function doLogin(){
-  authStore.login(form.value)
+  authStore.userLogin(form.value)
 }
 
 
