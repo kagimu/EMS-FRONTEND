@@ -1,6 +1,8 @@
 <template>
 <!--  <HelloWorld msg="Vite + Vue" />-->
-  <router-view :key="$route.fullPath"></router-view>
+  <div>
+    <router-view :key="$route.fullPath"></router-view>
+  </div>
 </template>
 <script setup>
 // import HelloWorld from './components/HelloWorld.vue'
@@ -19,4 +21,8 @@
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
 }
+
+
+
+
 </style>

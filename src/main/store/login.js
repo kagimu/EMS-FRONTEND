@@ -1,6 +1,7 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
-import api from "../../config/api.js";
+import api from "@/config/api.js";
+import alert from "bootstrap/js/src/alert.js";
 
 export const useLoginStore = defineStore("login", () => {
     let loginResponse = ref({})
@@ -8,12 +9,14 @@ export const useLoginStore = defineStore("login", () => {
 
     async function userLogin(data) {
         return await api
-            .get("api/auth/login" + data)
+            .post("auth/login", data)
             .then((response) => {
                 loginResponse.value = response.data
             })
             .catch((response) => {
-                loginError.value = response.response.data
+                if(response){
+                    loginError.value = response.response.data
+                }
             })
     }
     return {
