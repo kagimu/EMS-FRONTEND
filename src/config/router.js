@@ -26,7 +26,7 @@ const router = createRouter({
     routes,
 });
 
-const DEFAULT_TITLE = "Dashboard | Base ";
+const DEFAULT_TITLE = "Wholesome Education";
 router.afterEach(to => {
     Vue.nextTick(() => {
         document.title = to.meta.title || DEFAULT_TITLE;
