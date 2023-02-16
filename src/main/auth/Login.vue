@@ -64,7 +64,7 @@ let authStore = useLoginStore()  // useLoginStore() // loginStore()
 
 
 function doLogin(){
-  alert(JSON.stringify(form))
+  //alert(JSON.stringify(form))
   authStore.userLogin(form)
 }
 
