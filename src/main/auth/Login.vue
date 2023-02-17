@@ -64,10 +64,8 @@ let authStore = useAuthStore()
 
 
 function doLogin(){
-  //alert(JSON.stringify(form))
   authStore.userLogin(form)
 }
-
 
 watch(
     () => authStore.loginResponse,
@@ -80,6 +78,7 @@ watch(
       deep:true
     }
 )
+
 
 watch(
     () => authStore.loginError,
