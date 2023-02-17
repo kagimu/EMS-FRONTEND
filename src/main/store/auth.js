@@ -1,12 +1,14 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
 import api from "@/config/api.js";
+import alert from "bootstrap/js/src/alert.js";
 // import alert from "bootstrap/js/src/alert.js";
 
 
 export const useAuthStore = defineStore("auth", () => {
     let loginResponse = ref({})
-    const loginError = ref(null)
+    const loginError = ref({})
+    const token = ref(null)
 
 
     async function userLogin(data) {
@@ -37,5 +39,6 @@ export const useAuthStore = defineStore("auth", () => {
         loginError,
         userLogin,
         userRegistration,
+        token,
     }
 })
