@@ -51,8 +51,8 @@
 </template>
 
 <script setup>
-import {reactive} from 'vue'
-import {useLoginStore} from "@/main/store/login.js";
+import {reactive, watch} from 'vue'
+import {useAuthStore} from "@/main/store/auth.js";
 
 const form = reactive({
   email:null,
@@ -60,7 +60,7 @@ const form = reactive({
   rememberMe: true
 })
 
-let authStore = useLoginStore()  // useLoginStore() // loginStore()
+let authStore = useAuthStore()
 
 
 function doLogin(){
@@ -69,6 +69,11 @@ function doLogin(){
 }
 
 
+watch(authStore.loginError, async (data) => {
+  if(data){
+    alert(JSON.stringify(data))
+  }
+})
 
 </script>
 

@@ -6,7 +6,11 @@ import router from "@/config/router.js";
 
 const api = axios.create({
     baseURL: `${import.meta.env.VITE_APP_BASE_URL}`,
-    withCredentials: true,
+    withCredentials: false,
+    headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+    }
 })
 
 /*api.interceptors.request.use((config) => {
@@ -28,6 +32,7 @@ api.interceptors.response.use(
             router.push({ name: "Login" })
             // commons.toggleLoading(false)
             sessionStorage.clear()
+            localStorage.clear();
         }
 
         return Promise.reject(error)
