@@ -15,11 +15,12 @@ const api = axios.create({
     }
 })
 
+
 api.interceptors.request.use((config) => {
     const auth = useAuthStore()
 
     if (auth.token !== null) {
-        config.withCredentials = true
+        config.withCredentials = false
         config.headers.Authorization = `Bearer ${auth.token}`
     }
 
@@ -31,8 +32,7 @@ api.interceptors.response.use(
     (error) => {
         if (error.response.status === 401) {
             // const commons = useCommonsStore()
-            // router.push({ name: "Login" })
-            router.push({ name: "Login" })
+            router.push({ name: "login" })
             // commons.toggleLoading(false)
             sessionStorage.clear()
             localStorage.clear();

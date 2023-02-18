@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
 import Notifications from '@kyvg/vue3-notification'
 
-
+localStorage.clear();
 
 const app = createApp(App);
 app.use(router);

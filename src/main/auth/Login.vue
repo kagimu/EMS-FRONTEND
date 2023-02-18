@@ -54,7 +54,9 @@
 import {reactive, watch} from 'vue'
 import {useAuthStore} from "@/store/auth.js";
 import useNotificationStore from "@/composables/useNotification.js";
-
+import router from "@/config/router.js";
+const  notificationStore  = useNotificationStore()
+const authStore = useAuthStore()
 
 const form = reactive({
   email:null,
@@ -62,35 +64,50 @@ const form = reactive({
   rememberMe: true
 })
 
-let authStore = useAuthStore()
-const { successToast, errorToast }  = useNotificationStore()
+
+
 
 function doLogin(){
   authStore.userLogin(form)
 }
 
+
+
 watch(
     () => authStore.loginResponse,
     async (data) => {
       if(data){
-        successToast("Success","Login successfully")
+        authStore.userProfile()
       }
     },
-    {
-      deep:true
-    }
+    {deep:true}
+)
+
+watch(
+    () => authStore.profile,
+    async (data) => {
+      if(data){
+       router.push({ name: "home" })
+
+     /*   let r = this.$router.resolve({
+          name: "home"
+        });
+        window.location.assign(r.href);*/
+
+        notificationStore.successToast("Success","Login successfully")
+      }
+    },
+    {deep:true}
 )
 
 watch(
     () => authStore.loginError,
     async (data) => {
       if(data){
-        errorToast("Error","Error login!")
+        notificationStore.errorToast("Error",data.message)
       }
     },
-    {
-      deep:true
-    }
+    {deep:true}
 )
 
 </script>

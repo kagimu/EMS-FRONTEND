@@ -1,6 +1,7 @@
 <template>
-
-
+{{token}}
+  -------------
+{{userProfile}}
   <!-- Block level -->
   <div class="row">
     <div class="col-2 text-truncate">
@@ -133,6 +134,14 @@
 
 <script setup>
 import { ref } from 'vue'
+import {useAuthStore} from "@/store/auth.js";
+
+const authStore = useAuthStore()
+
+const userProfile = ref({})
+const token = ref(null)
+userProfile.value = authStore.profile
+token.value = authStore.token
 
 
 defineProps({
