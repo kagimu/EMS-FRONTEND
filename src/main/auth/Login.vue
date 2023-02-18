@@ -53,6 +53,8 @@
 <script setup>
 import {reactive, watch} from 'vue'
 import {useAuthStore} from "@/store/auth.js";
+import useNotificationStore from "@/composables/useNotification.js";
+
 
 const form = reactive({
   email:null,
@@ -61,7 +63,7 @@ const form = reactive({
 })
 
 let authStore = useAuthStore()
-
+const { successToast, errorToast }  = useNotificationStore()
 
 function doLogin(){
   authStore.userLogin(form)
@@ -71,7 +73,7 @@ watch(
     () => authStore.loginResponse,
     async (data) => {
       if(data){
-        alert(JSON.stringify(data))
+        successToast("Success","Login successfully")
       }
     },
     {
@@ -79,12 +81,11 @@ watch(
     }
 )
 
-
 watch(
     () => authStore.loginError,
     async (data) => {
       if(data){
-        alert(JSON.stringify(data))
+        errorToast("Error","Error login!")
       }
     },
     {

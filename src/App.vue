@@ -1,11 +1,12 @@
 <template>
-<!--  <HelloWorld msg="Vite + Vue" />-->
   <div>
+    <notifications position="bottom right" />
     <router-view :key="$route.fullPath"></router-view>
   </div>
 </template>
+
 <script setup>
-// import HelloWorld from './components/HelloWorld.vue'
+
 </script>
 
 <style scoped>
