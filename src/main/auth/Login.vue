@@ -52,7 +52,7 @@
 
 <script setup>
 import {reactive, watch} from 'vue'
-import {useAuthStore} from "@/main/store/auth.js";
+import {useAuthStore} from "@/store/auth.js";
 
 const form = reactive({
   email:null,
