@@ -55,6 +55,7 @@ import {reactive, watch} from 'vue'
 import {useAuthStore} from "@/store/auth.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import router from "@/config/router.js";
+// import router from "@/config/router.js";
 const  notificationStore  = useNotificationStore()
 const authStore = useAuthStore()
 
@@ -87,7 +88,10 @@ watch(
     () => authStore.profile,
     async (data) => {
       if(data){
-       router.push({ name: "home" })
+       // router.push({ name: "home" })
+       // this.$router.push({ name: 'home' }, () => {}, { force: true });
+
+        router.push({name:"home"})
 
      /*   let r = this.$router.resolve({
           name: "home"

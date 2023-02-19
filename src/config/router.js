@@ -4,7 +4,7 @@ import Register from "../main/auth/Register.vue";
 import Home from "../main/dashboard/Home.vue";
 import AuthMain from "@/main/auth/AuthMain.vue";
 import Dashboard from "@/main/dashboard/Dashboard.vue";
-// import {useAuthStore} from "@/store/auth.js";
+import {useAuthStore} from "@/store/auth.js";
 
 
 const router = createRouter({
@@ -37,31 +37,34 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     let profile = localStorage.getItem("userProfile")
-   // let token = localStorage.getItem("token")
+    let token = localStorage.getItem("token")
 
 
-   // const authStore = useAuthStore()
+  const authStore = useAuthStore()
 
-   // authStore.profile.value = (profile && Object.keys(JSON.parse(profile)).length > 0) ?  JSON.parse(profile) : {}
-     // authStore.token = token ? token : null
-
+   /* if(profile && token){
+        authStore.updateProfile(JSON.parse(profile))
+        authStore.updateToken(token)
+    }*/
 
 
     if (to.matched.some((record) => record.meta.requiresAuth)) {
-        if (profile == null) {
-
-            next({
-                name: "login"
-            });
-        } else {
+        if (profile && token) {
             let user = JSON.parse(profile);
             if (user !== null) {
+                authStore.updateToken(token)
+                authStore.updateProfile(profile)
                 next();
             } else {
                 next({ name: "dashboard" });
             }
+        }else {
+            next({
+                name: "login"
+            });
         }
     } else {
+
         if (profile === null) {
             next();
         } else {
@@ -71,11 +74,11 @@ router.beforeEach((to, from, next) => {
 });
 
 
-const DEFAULT_TITLE = "Wholesome Education";
+/*const DEFAULT_TITLE = "Wholesome Education";
 router.afterEach(to => {
-    Vue.nextTick(() => {
+  Vue.nextTick(() => {
         document.title = to.meta.title || DEFAULT_TITLE;
     });
-});
+});*/
 
 export default router;

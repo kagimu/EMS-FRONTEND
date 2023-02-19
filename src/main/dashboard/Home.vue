@@ -138,7 +138,7 @@ import {useAuthStore} from "@/store/auth.js";
 
 const authStore = useAuthStore()
 
-const userProfile = ref({})
+const userProfile = ref(null)
 const token = ref(null)
 userProfile.value = authStore.profile
 token.value = authStore.token

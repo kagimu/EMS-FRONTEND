@@ -3,10 +3,10 @@ import { ref } from "vue"
 import api from "@/config/api.js";
 
 export const useAuthStore = defineStore("auth", () => {
-    let loginResponse = ref({})
-    const loginError = ref({})
+    let loginResponse = ref(null)
+    const loginError = ref(null)
     const token = ref(null)
-    const profile = ref({})
+    const profile = ref(null)
 
 
     async function userLogin(data) {
@@ -53,6 +53,19 @@ export const useAuthStore = defineStore("auth", () => {
                 }
             })
     }
+
+    function updateToken(data){
+        if(data){
+           token.value = data
+        }
+    }
+
+    function updateProfile(data){
+        if(data){
+            profile.value = data
+        }
+    }
+
     return {
         loginResponse,
         loginError,
@@ -61,5 +74,7 @@ export const useAuthStore = defineStore("auth", () => {
         userLogin,
         userRegistration,
         userProfile,
+        updateToken,
+        updateProfile,
     }
 })
