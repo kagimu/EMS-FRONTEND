@@ -39,14 +39,7 @@ router.beforeEach((to, from, next) => {
     let profile = localStorage.getItem("userProfile")
     let token = localStorage.getItem("token")
 
-
-  const authStore = useAuthStore()
-
-   /* if(profile && token){
-        authStore.updateProfile(JSON.parse(profile))
-        authStore.updateToken(token)
-    }*/
-
+    const authStore = useAuthStore()
 
     if (to.matched.some((record) => record.meta.requiresAuth)) {
         if (profile && token) {
