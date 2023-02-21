@@ -2,7 +2,7 @@
   <div>
 
     <div class="row">
-      <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: chocolate;">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #702ef6; color: #ffffff;">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
           <div class="container-fluid">
             <div style="width: 10%; margin-right: 6%;">
