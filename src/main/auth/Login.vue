@@ -8,15 +8,17 @@
           <div class="card-body">
 
 
-            <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-              {{errorMessage}}
-            </div>
+
 
 
 
             <div class="text-center textColor"><b>Login</b></div>
             <!--          <div class="text-center">Wholesome Education</div>-->
             <div class="text-center mb-3 textColor"><small>---- Please login to your account.----</small></div>
+
+            <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+              {{errorMessage}}
+            </div>
 
             <form @submit.prevent="doLogin">
 
@@ -34,8 +36,8 @@
                     v-model="form.password" required
                     class="form-control" aria-label="Username"
                     aria-describedby="basic-addon1">
-                <div  @click="show = !show" class="input-group-text" id="basic-addon1">
-                  @
+                <div style="cursor: pointer;"  @click="show = !show" class="input-group-text" id="basic-addon1">
+                  <i :class="show ? 'bi-eye-slash' : 'bi-eye'"></i>
                 </div>
               </div>
 
@@ -81,6 +83,7 @@ import router from "@/config/router.js";
 // import router from "@/config/router.js";
 const  notificationStore  = useNotificationStore()
 const authStore = useAuthStore()
+
 let errorMessage = ref(null)
 let buttonLoader = ref(false)
 let show = ref(false)
@@ -133,7 +136,7 @@ watch(
 )
 
 watch(
-    () => authStore.loginError,
+    () => authStore.errorMessage,
     async (data) => {
       if(data){
         errorMessage.value = data.message

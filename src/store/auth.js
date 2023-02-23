@@ -4,7 +4,8 @@ import api from "@/config/api.js";
 
 export const useAuthStore = defineStore("auth", () => {
     let loginResponse = ref(null)
-    const loginError = ref(null)
+    let registrationResponse = ref(null)
+    const errorMessage = ref(null)
     const token = ref(null)
     const profile = ref(null)
 
@@ -21,7 +22,7 @@ export const useAuthStore = defineStore("auth", () => {
             .catch((response) => {
                 if(response){
                     localStorage.removeItem("token")
-                    loginError.value = response.response.data
+                    errorMessage.value = response.response.data
                 }
             })
     }
@@ -36,7 +37,7 @@ export const useAuthStore = defineStore("auth", () => {
             })
             .catch((response) => {
                 if(response){
-                    loginError.value = response.response.data
+                    errorMessage.value = response.response.data
                 }
             })
     }
@@ -45,11 +46,11 @@ export const useAuthStore = defineStore("auth", () => {
     async function userRegistration(data) {
         return await api.post("api/auth/register", data)
             .then((response) => {
-                loginResponse.value = response.data
+                registrationResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
-                    loginError.value = response.response.data
+                    errorMessage.value = response.response.data
                 }
             })
     }
@@ -68,7 +69,8 @@ export const useAuthStore = defineStore("auth", () => {
 
     return {
         loginResponse,
-        loginError,
+        registrationResponse,
+        errorMessage,
         token,
         profile,
         userLogin,
