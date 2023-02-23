@@ -2,22 +2,22 @@
   <div>
 
     <div class="row">
-      <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #702ef6; color: #ffffff;">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #3c8dbc;">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
           <div class="container-fluid">
             <div style="width: 10%; margin-right: 6%;">
-              <a class="navbar-brand" href="#">Navbar scroll</a>
+              <a class="navbar-brand" href="#" style="color: #ffffff;">Wholesome</a>
             </div>
             <div class="navbar-collapse">
               <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">Home</a>
+                  <a class="nav-link active" aria-current="page" href="#" style="color: #ffffff;">Home</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Link</a>
+                  <a class="nav-link" href="#" style="color: #ffffff;">Link</a>
                 </li>
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a style="color: #ffffff;" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Link
                   </a>
                   <ul class="dropdown-menu">
@@ -35,15 +35,16 @@
     </div>
 
       <div class="row">
-        <div class="col-12 col-sm-1 col-md-2 col-lg-2" style="background-color: darkcyan;">
+        <div class="col-12 col-sm-1 col-md-2 col-lg-2" style="background-color: #ecf0f5; border-right: 1px solid #dedede;">
           menu
         </div>
-        <div class="col-12 col-sm-11 col-md-10 col-lg-10">
+        <div class="col-12 col-sm-11 col-md-10 col-lg-10" style="background-color: #ffffff;">
 
-          <div class="card">
-            <div class="card-body">
+          <div class="mx-auto mt-3" style="width: 99%;">
+<!--          <div class="card mx-auto" style="width: 99%;">-->
+<!--            <div class="card-body">-->
               <router-view></router-view>
-            </div>
+<!--            </div>-->
           </div>
 
 

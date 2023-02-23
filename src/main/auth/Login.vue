@@ -7,6 +7,13 @@
         <div class="card">
           <div class="card-body">
 
+
+            <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+              {{errorMessage}}
+            </div>
+
+
+
             <div class="text-center textColor"><b>Login</b></div>
             <!--          <div class="text-center">Wholesome Education</div>-->
             <div class="text-center mb-3 textColor"><small>---- Please login to your account.----</small></div>
@@ -19,13 +26,29 @@
                 <input type="email" v-model="form.email" required class="form-control">
               </div>
 
-              <div class="mb-3">
-                <label class="textColor"><small>Password</small></label>
-                <input type="password" v-model="form.password" required class="form-control">
+
+              <label class="textColor"><small>Password</small></label>
+              <div class="input-group mb-3">
+                <input
+                    :type="show ? 'text' : 'password'"
+                    v-model="form.password" required
+                    class="form-control" aria-label="Username"
+                    aria-describedby="basic-addon1">
+                <div  @click="show = !show" class="input-group-text" id="basic-addon1">
+                  @
+                </div>
               </div>
 
+
+
               <div class="text-right">
-                <button type="submit" class="btn btn-primary mb-2">Login</button>
+                <button type="submit" class="btn btn-primary mb-2">
+                  Login
+
+                  <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </button>
               </div>
 
               <div class="text-center">
@@ -51,13 +74,16 @@
 </template>
 
 <script setup>
-import {reactive, watch} from 'vue'
+import {reactive, ref, watch} from 'vue'
 import {useAuthStore} from "@/store/auth.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import router from "@/config/router.js";
 // import router from "@/config/router.js";
 const  notificationStore  = useNotificationStore()
 const authStore = useAuthStore()
+let errorMessage = ref(null)
+let buttonLoader = ref(false)
+let show = ref(false)
 
 const form = reactive({
   email:null,
@@ -69,6 +95,8 @@ const form = reactive({
 
 
 function doLogin(){
+  buttonLoader.value = true
+  errorMessage.value = ""
   authStore.userLogin(form)
 }
 
@@ -108,6 +136,8 @@ watch(
     () => authStore.loginError,
     async (data) => {
       if(data){
+        errorMessage.value = data.message
+        buttonLoader.value = false
         notificationStore.errorToast("Error",data.message)
       }
     },

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app">
     <notifications position="bottom right" />
     <router-view :key="$route.fullPath"></router-view>
   </div>
@@ -10,18 +10,32 @@
 </script>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+.app{
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 100vh;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+
+*{
+  scrollbar-width: thin;
+  scrollbar-color: #cdcdcd #f0f0f0;
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 8px;
 }
+
+*::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #cdcdcd;
+  /*background: linear-gradient(to top, #33ccff 0%, #cc00ff 100%)*/
+}
+
 
 
 
