@@ -21,13 +21,13 @@
                 <div class="col-lg-6">
                   <div class="mb-2">
                     <label class="textColor"><small>First name</small></label>
-                    <input type="text" v-model="form.firstName" required class="form-control">
+                    <input type="text" v-model="form.first_name" required class="form-control">
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="mb-2">
                     <label class="textColor"><small>Second name</small></label>
-                    <input type="text" v-model="form.secondName" required class="form-control">
+                    <input type="text" v-model="form.second_name" required class="form-control">
                   </div>
                 </div>
               </div>
@@ -73,7 +73,7 @@
                   <div class="input-group mb-3">
                     <input
                         :type="show ? 'text' : 'password'"
-                        v-model="form.confirmPassword" required
+                        v-model="form.confirm_password" required
                         class="form-control" aria-label="Username"
                         aria-describedby="basic-addon1">
                     <div style="cursor: pointer;"  @click="show = !show" class="input-group-text" id="basic-addon1">
@@ -86,10 +86,12 @@
 
 
               <div class="text-right">
-                <button type="submit" class="btn btn-primary mb-2">Register</button>
-                <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
+                <button type="submit" class="btn btn-primary mb-2">
+                  Register
+                  <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </button>
               </div>
 
 
@@ -113,22 +115,26 @@
 <script setup>
 import {reactive, ref, watch} from 'vue'
 import {useAuthStore} from "@/store/auth.js";
-
-const form = reactive({
-  firstName:null,
-  secondName:null,
-  gender:"",
-  phone:null,
-  email:null,
-  password:null,
-  confirmPassword:null,
-})
+import useNotificationStore from "@/composables/useNotification.js";
 
 let errorMessage = ref(null)
 let buttonLoader = ref(false)
 let show = ref(false)
 
 let authStore = useAuthStore()
+const  notificationStore  = useNotificationStore()
+
+
+const form = reactive({
+  first_name: null,
+  second_name: null,
+  gender: null,
+  email: null,
+  phone: null,
+  password: null,
+  confirm_password: null
+})
+
 
 
 function doRegister(){
