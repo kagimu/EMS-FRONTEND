@@ -119,15 +119,10 @@ watch(
     () => authStore.profile,
     async (data) => {
       if(data){
-       // router.push({ name: "home" })
-       // this.$router.push({ name: 'home' }, () => {}, { force: true });
-
-        router.push({name:"home"})
-
-     /*   let r = this.$router.resolve({
+        let r = router.resolve({
           name: "home"
         });
-        window.location.assign(r.href);*/
+        window.location.assign(r.href);
 
         notificationStore.successToast("Success","Login successfully")
       }

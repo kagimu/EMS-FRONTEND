@@ -6,15 +6,12 @@
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
           <div class="container-fluid">
             <div style="width: 10%; margin-right: 6%;">
-              <a class="navbar-brand" href="#" style="color: #ffffff;">Wholesome</a>
+              <a class="navbar-brand" href="#" style="color: #ffffff;">Wholesome ED</a>
             </div>
             <div class="navbar-collapse">
-              <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+              <ul class="navbar-nav me-auto my-lg-0 navbar-nav-scroll" style="font-size: 13px;">
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="#" style="color: #ffffff;">Home</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#" style="color: #ffffff;">Link</a>
                 </li>
                 <li class="nav-item dropdown">
                   <a style="color: #ffffff;" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -28,23 +25,56 @@
                   </ul>
                 </li>
               </ul>
+              <div class="d-flex">
+                <ul class="navbar-nav me-auto mb-lg-0" style="font-size: 13px;">
+                  <li class="nav-item dropdown">
+                    <a style="color: #ffffff;" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                     <span>
+                       <i class="bi-person-circle"></i>
+                       {{name}}
+                     </span>
+                    </a>
+                    <ul class="dropdown-menu" style="font-size: 13px;">
+                      <li><a class="dropdown-item" style="cursor: pointer;">Profile</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" style="cursor: pointer;" @click="userLogout">Logout</a></li>
+                    </ul>
+                  </li>
+                </ul>
+
+              </div>
+
             </div>
           </div>
         </nav>
       </div>
     </div>
 
-      <div class="row">
-        <div class="col-12 col-sm-1 col-md-2 col-lg-2" style="background-color: #ecf0f5; border-right: 1px solid #dedede;">
-          menu
-        </div>
-        <div class="col-12 col-sm-11 col-md-10 col-lg-10" style="background-color: #ffffff;">
 
-          <div class="mx-auto mt-3" style="width: 99%;">
-<!--          <div class="card mx-auto" style="width: 99%;">-->
-<!--            <div class="card-body">-->
+      <div class="row">
+        <div class="col-12 col-sm-1 col-md-2 col-lg-2" style="background-color: #ffffff; border-right: 1px solid #dedede; padding: 0; height: 90vh;">
+
+          <div class="list-group list-group-flush" style="font-size: 13px;">
+            <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+              Home
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">Manage campus</a>
+            <a href="#" class="list-group-item list-group-item-action">Reports</a>
+            <a href="#" class="list-group-item list-group-item-action">Student Admission</a>
+            <a href="#" class="list-group-item list-group-item-action">Manage User</a>
+            <a href="#" class="list-group-item list-group-item-action">Accounting</a>
+          </div>
+
+
+        </div>
+        <div class="col-12 col-sm-11 col-md-10 col-lg-10 mx-auto mb-3" style="background-color: #ecf0f5;">
+
+          <div class="mx-auto mt-3" style="width: 100%;">
+          <div class="card mx-auto" style="width: 100%;">
+            <div class="card-body">
               <router-view></router-view>
-<!--            </div>-->
+            </div>
+          </div>
           </div>
 
 
@@ -52,13 +82,18 @@
       </div>
 
 
-    <div class="row">
-      <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: chocolate;">
+    <div class="row mx-auto" style="position: fixed; width: 100%; bottom: 0; left: 0; right: 0;">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #ffffff; border-top: 1px solid #dfe1e3;">
         <!-- Footer -->
-        <footer>
-          <div>
-            <small class="float-end mr-5">Wholesome Education</small>
+        <footer style="padding: 10px;">
+
+          <div class="row" style="font-size: 13px;">
+            <div class="col-10 text-center">
+              Copyright © 2017 Wholesome ED . All rights reserved.
+            </div>
+            <div class="col-2 text-end">Powered by Hamsoft</div>
           </div>
+
         </footer>
       </div>
     </div>
@@ -70,10 +105,32 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "Dashboard"
+<script setup>
+
+import router from "@/config/router.js";
+
+import {onMounted, ref} from 'vue'
+import {useAuthStore} from "@/store/auth.js";
+
+const authStore = useAuthStore()
+
+const userProfile = ref(null)
+const name = ref(null)
+let p = authStore.profile
+name.value = p.first_name+" "+p.second_name
+
+
+function userLogout(){
+
+  localStorage.clear();
+
+  let r = router.resolve({
+    name: "login"
+  });
+  window.location.assign(r.href);
+
 }
+
 </script>
 
 <style scoped>

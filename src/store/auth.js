@@ -63,7 +63,7 @@ export const useAuthStore = defineStore("auth", () => {
 
     function updateProfile(data){
         if(data){
-            profile.value = data
+            profile.value = JSON.parse(data)
         }
     }
 
