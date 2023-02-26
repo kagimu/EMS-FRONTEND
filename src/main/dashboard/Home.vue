@@ -27,14 +27,10 @@
 
 
 
-
-
-
-
    <div class="mx-auto mt-3" style="width: 100%;">
      <div class="card mx-auto" style="width: 100%;">
        <div class="card-body">
-         My Home
+        <bar-graph></bar-graph>
        </div>
      </div>
    </div>
@@ -47,6 +43,7 @@
 <script setup>
 import { ref } from 'vue'
 import {useAuthStore} from "@/store/auth.js";
+import BarGraph from "@/main/graphs/BarGraph.vue";
 
 const authStore = useAuthStore()
 
