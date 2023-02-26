@@ -55,28 +55,14 @@
         <div class="col-12 col-sm-1 col-md-2 col-lg-2" style="background-color: #ffffff; border-right: 1px solid #dedede; padding: 0; height: 90vh;">
 
           <div class="list-group list-group-flush" style="font-size: 13px;">
-            <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-              Home
-            </a>
-            <a href="#" class="list-group-item list-group-item-action">Manage campus</a>
-            <a href="#" class="list-group-item list-group-item-action">Reports</a>
-            <a href="#" class="list-group-item list-group-item-action">Student Admission</a>
-            <a href="#" class="list-group-item list-group-item-action">Manage User</a>
-            <a href="#" class="list-group-item list-group-item-action">Accounting</a>
+             <router-link v-for="(lst,idx) in menuList" :key="idx" :class="lst.active"  class="list-group-item list-group-item-action" :to="{name:lst.name}">{{lst.title}}</router-link>
           </div>
 
 
         </div>
         <div class="col-12 col-sm-11 col-md-10 col-lg-10 mx-auto mb-3" style="background-color: #ecf0f5;">
 
-          <div class="mx-auto mt-3" style="width: 100%;">
-          <div class="card mx-auto" style="width: 100%;">
-            <div class="card-body">
               <router-view></router-view>
-            </div>
-          </div>
-          </div>
-
 
         </div>
       </div>
@@ -109,15 +95,33 @@
 
 import router from "@/config/router.js";
 
-import {onMounted, ref} from 'vue'
+import { ref} from 'vue'
 import {useAuthStore} from "@/store/auth.js";
 
 const authStore = useAuthStore()
 
-const userProfile = ref(null)
+const menuList = ref([
+  {title:"Home", name:"home", active:"active"},
+  {title:"Manage campus", name:"home", active:""},
+  {title:"Reports", name:"home", active:""},
+  {title:"Student Admission", name:"home", active:""},
+  {title:"Manage UserManage User", name:"home", active:""},
+  {title:"Accounting", name:"home", active:""},
+])
+
+
+
+
+
+
+
+
+
+
 const name = ref(null)
 let p = authStore.profile
 name.value = p.first_name+" "+p.second_name
+
 
 
 function userLogout(){
