@@ -48,7 +48,7 @@ ChartJS.register(
    ],
    datasets: [
      {
-       label: "Income",
+       label: "primary",
        data: [
          700,
          4150,
@@ -69,7 +69,7 @@ ChartJS.register(
        borderWidth: 1
      },
      {
-       label: "Expense",
+       label: "Secondary",
        data: [
          100,
          910,

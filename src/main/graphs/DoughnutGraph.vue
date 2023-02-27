@@ -13,7 +13,7 @@ import {ref} from "vue";
 ChartJS.register(ArcElement, Tooltip, Legend)
 
  const data = ref({
-   labels: ["Income", "Expenditure", "Retained Earnings"],
+   labels: ["Primary", "Secondary", "Tertiary"],
    datasets: [
      {
        borderWidth: 1,

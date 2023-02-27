@@ -39,7 +39,7 @@ const chartData = ref({
   ],
   datasets: [
     {
-      label: "Daily Income",
+      label: "Primary",
       borderWidth: 1,
       backgroundColor: [
         "#0276b1",
@@ -65,7 +65,7 @@ const chartData = ref({
       data: [12, 19, 3, 5, 2, 60, 20, 30, 5, 6, 2, 10, 30, 23, 12, 8, 90]
     },
     {
-      label: "Daily Expense",
+      label: "Secondary",
       borderWidth: 1,
       backgroundColor: [
         "green",
