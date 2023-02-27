@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="position: fixed; width: 100%; left: 0; right: 0; top: 0; bottom: 0;">
 
     <div class="row">
       <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #3c8dbc;">
@@ -48,10 +48,11 @@
           </div>
         </nav>
       </div>
+
     </div>
 
 
-      <div class="row">
+      <div class="row mx-auto">
         <div class="col-12 col-sm-1 col-md-2 col-lg-2" style="background-color: #ffffff; border-right: 1px solid #dedede; padding: 0; height: 90vh;">
 
           <div class="list-group list-group-flush" style="font-size: 13px;">
@@ -60,9 +61,9 @@
 
 
         </div>
-        <div class="col-12 col-sm-11 col-md-10 col-lg-10 mx-auto mb-3" style="background-color: #ecf0f5;">
+        <div class="col-12 col-sm-11 col-md-10 col-lg-10 mx-auto pb-10" style="background-color: #ecf0f5; height: 90vh; overflow-y: scroll; scrollbar-width: thin;">
 
-              <router-view></router-view>
+            <router-view></router-view>
 
         </div>
       </div>

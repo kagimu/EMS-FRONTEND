@@ -36,7 +36,6 @@
 
 
    <div class="row mb-8">
-
      <div class="col-6">
        <div class="mx-auto mt-3" style="width: 100%;">
          <div class="card mx-auto" style="width: 100%;">
@@ -61,6 +60,14 @@
 
 
 
+
+   <div class="mx-auto mt-3" style="width: 100%;">
+     <div class="card mx-auto" style="width: 100%;">
+       <div class="card-body">
+         <bar-graph></bar-graph>
+       </div>
+     </div>
+   </div>
 
 
 
