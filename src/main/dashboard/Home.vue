@@ -24,16 +24,47 @@
 
      </div>
 
-
-
-
    <div class="mx-auto mt-3" style="width: 100%;">
      <div class="card mx-auto" style="width: 100%;">
        <div class="card-body">
-        <bar-graph></bar-graph>
+         <line-graph></line-graph>
        </div>
      </div>
    </div>
+
+
+
+
+   <div class="row mb-8">
+
+     <div class="col-6">
+       <div class="mx-auto mt-3" style="width: 100%;">
+         <div class="card mx-auto" style="width: 100%;">
+           <div class="card-body">
+             <bar-graph></bar-graph>
+           </div>
+         </div>
+       </div>
+     </div>
+
+     <div class="col-6">
+       <div class="mx-auto mt-3" style="width: 100%;">
+         <div class="card mx-auto" style="width: 100%;">
+           <div class="card-body">
+             <doughnut-graph></doughnut-graph>
+           </div>
+         </div>
+       </div>
+     </div>
+
+   </div>
+
+
+
+
+
+
+
 
 
  </div>
@@ -44,6 +75,8 @@
 import { ref } from 'vue'
 import {useAuthStore} from "@/store/auth.js";
 import BarGraph from "@/main/graphs/BarGraph.vue";
+import LineGraph from "@/main/graphs/LineGraph.vue";
+import DoughnutGraph from "@/main/graphs/DoughnutGraph.vue";
 
 const authStore = useAuthStore()
 
