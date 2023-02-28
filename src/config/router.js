@@ -5,6 +5,7 @@ import Home from "../main/dashboard/Home.vue";
 import AuthMain from "@/main/auth/AuthMain.vue";
 import Dashboard from "@/main/dashboard/Dashboard.vue";
 import {useAuthStore} from "@/store/auth.js";
+import ManageCampus from "@/main/dashboard/ManageCampus.vue";
 
 
 const router = createRouter({
@@ -29,6 +30,11 @@ const router = createRouter({
             },
             children:[
                 {path: 'home', component: Home, name: "home"},
+                {path: 'manage-campus', component: ManageCampus, name: "manage-campus"},
+                {path: 'reports', component: ManageCampus, name: "reports"},
+                {path: 'student-admission', component: ManageCampus, name: "student-admission"},
+                {path: 'accounting', component: ManageCampus, name: "accounting"},
+                {path: 'settings', component: ManageCampus, name: "settings"},
             ]
         },
     ],
