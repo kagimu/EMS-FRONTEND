@@ -39,7 +39,19 @@
               </div>
 
 
-              <div class="text-right">
+              <div class="mb-2">
+                <label class="textColor"><small>Class Levels</small></label>
+                <select style="box-shadow: none;" class="form-select" v-model="form.level" aria-label="Default select example">
+                  <option value="">Select Level</option>
+                  <option value="kindergarten">Kindergarten</option>
+                  <option value="primary">Primary </option>
+                  <option value="secondary">Secondary</option>
+                  <option value="tertiary">Tertiary</option>
+                </select>
+              </div>
+
+
+              <div class="text-right mt-4">
                 <button type="submit" class="btn btn-primary mb-2">
                   save
 
@@ -92,7 +104,8 @@ const form = reactive({
   name:null,
   email:null,
   phone:null,
-  location:null
+  location:null,
+  level:""
 })
 
 function addCampus(){
