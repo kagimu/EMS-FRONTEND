@@ -55,6 +55,9 @@
 
       <div class="row mx-auto">
         <div :class="defaultMenuSize ? 'col-12 col-sm-1 col-md-0.5 col-lg-0.5' : 'col-12 col-sm-1 col-md-2 col-lg-2'" style="background-color: #ffffff; border-right: 1px solid #dedede; padding: 0; height: 90vh;">
+
+
+
           <div
               class="list-group list-group-flush"
               :class="defaultMenuSize ? 'text-center' : ''"
@@ -65,7 +68,7 @@
                  class="list-group-item list-group-item-action"
                  :to="{name:lst.name}">
                    <div
-                       :title="lst.name"
+                       v-tooltip="lst.name"
                    >
                         <i :class="lst.icon" :style="defaultMenuSize ? 'font-size:17px;' : 'font-size:13px;'" class="mr-2"></i>
                         <small v-if="!defaultMenuSize">{{lst.title}}</small>
