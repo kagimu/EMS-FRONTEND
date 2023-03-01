@@ -68,7 +68,7 @@
                  class="list-group-item list-group-item-action"
                  :to="{name:lst.name}">
                    <div
-                       v-tooltip="lst.name"
+                       v-tooltip.right="lst.name"
                    >
                         <i :class="lst.icon" :style="defaultMenuSize ? 'font-size:17px;' : 'font-size:13px;'" class="mr-2"></i>
                         <small v-if="!defaultMenuSize">{{lst.title}}</small>
@@ -154,5 +154,7 @@ function toggleMenu(){
 </script>
 
 <style scoped>
-
+.tooltipStyle{
+  font-size: 800px;
+}
 </style>
