@@ -121,6 +121,7 @@ const defaultMenuSize = ref(false)
 const menuList = ref([
   {title:"Home", name:"home", icon:"bi-house"},
   {title:"Manage campus", name:"manage-campus", icon:"bi-house-add"},
+  {title:"Manage Level", name:"level", icon:"bi-sign-intersection"},
   {title:"Reports", name:"reports", icon:"bi-graph-up-arrow"},
   {title:"Student Admission", name:"student-admission", icon:"bi-person-plus"},
   {title:"Accounting", name:"accounting", icon:"bi-receipt"},
