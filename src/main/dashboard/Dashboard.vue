@@ -57,7 +57,6 @@
         <div :class="defaultMenuSize ? 'col-12 col-sm-1 col-md-0.5 col-lg-0.5' : 'col-12 col-sm-1 col-md-2 col-lg-2'" style="background-color: #ffffff; border-right: 1px solid #dedede; padding: 0; height: 90vh;">
 
 
-
           <div
               class="list-group list-group-flush"
               :class="defaultMenuSize ? 'text-center' : ''"
@@ -155,7 +154,5 @@ function toggleMenu(){
 </script>
 
 <style scoped>
-.tooltipStyle{
-  font-size: 800px;
-}
+
 </style>
