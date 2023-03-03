@@ -1,6 +1,54 @@
 <template>
   <div>
 
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card mt-3">
+          <div class="card-body" style="padding: 0;">
+            <div class="mb-2 ml-4 mt-2" style="font-size: 20px;">Bunamwaaya campus</div>
+
+            <div style="width: 95%; font-size: 13px;" class="mx-auto mt-4">
+
+              <div class="row">
+                <div class="col-4">
+                    <div class="mb-4">
+                      Contacts<br />
+                      Email:   mwesigwa.noregrets@gmail.com Phone:   +256752698545
+                    </div>
+                </div>
+
+
+
+                <div class="col-4">
+              <div class="mb-4">
+                Address <br />
+                Location: Bunamwaya, P.O.BOX 21671 Kampala
+              </div>
+                </div>
+
+
+
+                    <div class="col-4">
+              <div class="mb-4">
+                Class Levels <br />
+                kindergarten
+                primary
+              </div>
+                    </div>
+                  </div>
+
+            </div>
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="row mt-3">
       <div class="col-12">
 
@@ -48,6 +96,10 @@
 
 
 
+
+
+
+
     <div class="row">
       <div class="col-3">
         <div class="card mt-3">
@@ -72,28 +124,25 @@
       <div class="col-9">
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
-            <div class="mb-2 ml-4 mt-2" style="font-size: 20px;">Bunamwaaya campus</div>
 
+            <div class="mt-4 ml-3">
+              <nav>
+              <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true"><small>Home</small></button>
+                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false"><small>Profile</small></button>
+                <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false"><small>Contact</small></button>
+                <button class="nav-link" id="nav-disabled-tab" data-bs-toggle="tab" data-bs-target="#nav-disabled" type="button" role="tab" aria-controls="nav-disabled" aria-selected="false"><small>Disabled</small></button>
+              </div>
+            </nav>
+              <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">kasendaa 1</div>
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">kasendaa 2</div>
+                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">kasendaa 3</div>
+                <div class="tab-pane fade" id="nav-disabled" role="tabpanel" aria-labelledby="nav-disabled-tab" tabindex="0">kasendaa 4</div>
+              </div>
 
-<div style="width: 90%; font-size: 13px;" class="mx-auto mt-4">
+            </div>
 
-
-<div class="mb-4">
-            Contacts<br />
-            Email:   mwesigwa.noregrets@gmail.com Phone:   +256752698545
-</div>
-
-  <div class="mb-4">
-            Address <br />
-            Location: Bunamwaya, P.O.BOX 21671 Kampala
-  </div>
-    <div class="mb-4">
-            Class Levels <br />
-            kindergarten
-            primary
-    </div>
-
-</div>
 
 
 
