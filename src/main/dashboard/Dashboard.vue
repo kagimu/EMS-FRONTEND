@@ -123,6 +123,7 @@ const menuList = ref([
   {title:"Manage Level", name:"level", icon:"bi-sign-intersection"},
   {title:"Reports", name:"reports", icon:"bi-graph-up-arrow"},
   {title:"Student Admission", name:"student-admission", icon:"bi-person-plus"},
+  {title:"Profiles", name:"profiles", icon:"bi-people"},
   {title:"Accounting", name:"accounting", icon:"bi-receipt"},
   {title:"Settings", name:"settings", icon:"bi-gear"},
 ])
