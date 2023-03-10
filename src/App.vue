@@ -38,6 +38,15 @@
 
 
 
+.noFocus:focus {
+  outline: none 0 !important;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
 
+.noFocus {
+  box-shadow: none !important
+}
 
 </style>

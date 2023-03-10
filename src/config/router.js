@@ -6,8 +6,9 @@ import AuthMain from "@/main/auth/AuthMain.vue";
 import Dashboard from "@/main/dashboard/Dashboard.vue";
 import {useAuthStore} from "@/store/auth.js";
 import ManageCampus from "@/main/dashboard/manageCampus/ManageCampus.vue";
-import ManageLevel from "@/main/dashboard/manageCampus/ManageLevel.vue";
+import ManageLevel from "@/main/dashboard/manageLevel/ManageLevel.vue";
 import userProfiles from "@/main/dashboard/profiles/userProfiles.vue";
+import settings from "@/main/settings/Settings.vue";
 
 
 const router = createRouter({
@@ -38,7 +39,9 @@ const router = createRouter({
                 {path: 'student-admission', component: ManageCampus, name: "student-admission"},
                 {path: 'profiles', component: userProfiles, name: "profiles"},
                 {path: 'accounting', component: ManageCampus, name: "accounting"},
-                {path: 'settings', component: ManageCampus, name: "settings"},
+                {path: 'time-table', component: ManageCampus, name: "time-table"},
+                {path: 'report-center', component: ManageCampus, name: "report-center"},
+                {path: 'settings', component: settings, name: "settings"},
             ]
         },
     ],

@@ -123,9 +123,9 @@
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
 
-            <div class="mt-4 ml-3">
+            <div class="mt-4">
 
-              <div class="mt-4 ml-3">
+              <div class="mt-4">
                 <nav>
                   <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     <button class="nav-link navColor active" id="subjects-tab" data-bs-toggle="tab" data-bs-target="#subjects" type="button" role="tab" aria-controls="subjects" aria-selected="false"><small>Subjects</small></button>
@@ -137,12 +137,14 @@
                   </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
-                  <div class="tab-pane fade show active" id="subjects" role="tabpanel" aria-labelledby="subjects-tab" tabindex="0">kasendaa 1</div>
-                  <div class="tab-pane fade" id="grading-scale" role="tabpanel" aria-labelledby="grading-scale-tab" tabindex="0">kasendaa 2</div>
-                  <div class="tab-pane fade" id="study-period" role="tabpanel" aria-labelledby="study-period-tab" tabindex="0">kasendaa 3</div>
-                  <div class="tab-pane fade" id="assessment-manager" role="tabpanel" aria-labelledby="assessment-manager-tab" tabindex="0">kasendaa 4</div>
-                  <div class="tab-pane fade" id="mode-of-assessment" role="tabpanel" aria-labelledby="mode-of-assessment-tab" tabindex="0">kasendaa 5</div>
-                  <div class="tab-pane fade" id="grading-term" role="tabpanel" aria-labelledby="grading-term-tab" tabindex="0">kasendaa 6</div>
+                  <div class="tab-pane fade show active" id="subjects" role="tabpanel" aria-labelledby="subjects-tab" tabindex="0">
+                    <subject></subject>
+                  </div>
+                  <div class="tab-pane fade" id="grading-scale" role="tabpanel" aria-labelledby="grading-scale-tab" tabindex="0">Grading Scale</div>
+                  <div class="tab-pane fade" id="study-period" role="tabpanel" aria-labelledby="study-period-tab" tabindex="0">Study Period</div>
+                  <div class="tab-pane fade" id="assessment-manager" role="tabpanel" aria-labelledby="assessment-manager-tab" tabindex="0">Assessment Manger</div>
+                  <div class="tab-pane fade" id="mode-of-assessment" role="tabpanel" aria-labelledby="mode-of-assessment-tab" tabindex="0">Mode of Assessment</div>
+                  <div class="tab-pane fade" id="grading-term" role="tabpanel" aria-labelledby="grading-term-tab" tabindex="0">Grading Term</div>
                 </div>
 
               </div>
@@ -167,6 +169,7 @@
 <script setup>
 
 import {reactive, ref} from "vue";
+import Subject from "@/main/dashboard/manageLevel/Subject.vue";
 
 const buttonLoader = ref(false)
 
