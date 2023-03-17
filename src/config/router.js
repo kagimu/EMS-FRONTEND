@@ -70,7 +70,6 @@ router.beforeEach((to, from, next) => {
             });
         }
     } else {
-
         if (profile === null) {
             next();
         } else {

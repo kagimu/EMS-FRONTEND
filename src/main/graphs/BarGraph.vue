@@ -1,15 +1,40 @@
 <template>
 <div style="height: 400px;">
-    <Bar
-        id="my-chart-id"
-        :options="chartOptions"
-        :data="chartData"
-    />
+  <canvas ref="chartCanvas"></canvas>
 </div>
 </template>
 
 <script setup>
+import Chart from 'chart.js/auto';
+import {onMounted, reactive, ref} from "vue";
 
+const chartCanvas = ref(null);
+const chartData = reactive({
+  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  datasets: [{
+    label: 'Sales',
+    data: [12, 19, 3, 5, 2, 3, 10],
+    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+    borderColor: 'rgba(255, 99, 132, 1)',
+    borderWidth: 1
+  }]
+});
+const chartOptions = reactive({
+  scales: {
+    y: {
+      beginAtZero: true
+    }
+  }
+});
+
+onMounted(() => {
+  const chart = new Chart(chartCanvas.value, {
+    type: 'bar',
+    data: chartData,
+    options: chartOptions
+  });
+});
+/*
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 import {ref} from "vue";
@@ -119,6 +144,7 @@ const chartOptions = ref({
   responsive: true,
   maintainAspectRatio: false
 })
+*/
 
 
 </script>

@@ -1,10 +1,45 @@
 <template>
   <div style="height: 400px;">
-  <Line :data="data" :options="options" />
+
+    <canvas ref="chartCanvas"></canvas>
+
   </div>
 </template>
 
 <script setup>
+import Chart from 'chart.js/auto';
+import {onMounted, reactive, ref} from "vue";
+
+const chartCanvas = ref(null);
+const chartData = reactive({
+  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  datasets: [{
+    label: 'Sales',
+    data: [12, 19, 3, 5, 2, 3, 10],
+    fill: false,
+    borderColor: 'rgba(255, 99, 132, 1)',
+    borderWidth: 1
+  }]
+});
+const chartOptions = reactive({
+  scales: {
+    y: {
+      beginAtZero: true
+    }
+  }
+});
+
+onMounted(() => {
+  const chart = new Chart(chartCanvas.value, {
+    type: 'line',
+    data: chartData,
+    options: chartOptions
+  });
+});
+
+
+/*
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -123,6 +158,7 @@ ChartJS.register(
        maintainAspectRatio: false
      })
 
+*/
 
 
 </script>
