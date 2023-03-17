@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 400px;">
+  <div style="height: 450px;display: flex; justify-content: center;">
     <canvas ref="chartCanvas"></canvas>
   </div>
 </template>
@@ -11,16 +11,12 @@ import {onMounted, reactive, ref} from "vue";
 
 const chartCanvas = ref(null);
 const chartData = reactive({
-  labels: ['Red', 'Blue', 'Yellow'],
+  labels: ["Primary", "Secondary", "Tertiary"],
   datasets: [{
-    label: 'My First Dataset',
-    data: [300, 50, 100],
-    backgroundColor: [
-      'rgb(255, 99, 132)',
-      'rgb(54, 162, 235)',
-      'rgb(255, 205, 86)'
-    ],
-    hoverOffset: 4
+    // label: 'My First Dataset',
+    data: [1000, 500, 150],
+    backgroundColor: ["#04a3f5", "green", "#98d1ee"],
+    hoverOffset: 10
   }]
 });
 const chartOptions = reactive({
@@ -31,7 +27,7 @@ const chartOptions = reactive({
     },
     title: {
       display: true,
-      text: 'My Doughnut Chart'
+      // text: 'My Doughnut Chart'
     }
   }
 });

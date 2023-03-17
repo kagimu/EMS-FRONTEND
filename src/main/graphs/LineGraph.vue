@@ -1,7 +1,7 @@
 <template>
-  <div style="height: 400px;">
+  <div style="height: 400px; width: 100%; display: flex; justify-content: center;">
 
-    <canvas ref="chartCanvas"></canvas>
+    <canvas style="padding: 0; width: auto;" ref="chartCanvas"></canvas>
 
   </div>
 </template>
@@ -12,12 +12,43 @@ import {onMounted, reactive, ref} from "vue";
 
 const chartCanvas = ref(null);
 const chartData = reactive({
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  labels: [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+    "December",
+    "December"
+  ],
   datasets: [{
     label: 'Sales',
-    data: [12, 19, 3, 5, 2, 3, 10],
+    data: [
+      700,
+      410,
+      3342,
+      6050,
+      2522,
+      131,
+      3157,
+      795,
+      481,
+      1500,
+      2900,
+      3400,
+      340,
+      3700,
+    ],
     fill: false,
-    borderColor: 'rgba(255, 99, 132, 1)',
+    borderColor: "#2554FF",
+    backgroundColor: "#2554FF",
     borderWidth: 1
   }]
 });
