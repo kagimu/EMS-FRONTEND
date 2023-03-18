@@ -1,7 +1,7 @@
 <template>
-  <div style="height: 400px;display: flex; justify-content: center;">
+<!--  <div style="height: 400px;display: flex; justify-content: center;">-->
   <canvas ref="chartCanvas"></canvas>
-</div>
+<!--</div>-->
 </template>
 
 <script setup>

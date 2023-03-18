@@ -1,9 +1,11 @@
 <template>
-  <div style="height: 400px; width: 100%; display: flex; justify-content: center;">
+<!--  <div>-->
+<!--    <div style="height: 400px; width: 100%; display: flex; justify-content: center;">-->
 
-    <canvas style="padding: 0; width: auto;" ref="chartCanvas"></canvas>
+      <canvas  ref="chartCanvas"></canvas>
 
-  </div>
+<!--    </div>-->
+<!--  </div>-->
 </template>
 
 <script setup>
@@ -64,7 +66,7 @@ onMounted(() => {
   const chart = new Chart(chartCanvas.value, {
     type: 'line',
     data: chartData,
-    options: chartOptions
+    options: chartOptions,
   });
 });
 
