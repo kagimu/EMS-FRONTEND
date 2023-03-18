@@ -86,16 +86,33 @@ const chartData = reactive(
       ]
 }
 );
+
 const chartOptions = reactive({
+  responsive: true,
   scales: {
+    x: {
+      display: true,
+      title: {
+        display: true,
+      }
+    },
     y: {
-      beginAtZero: true
+      display: true,
+      beginAtZero: true,
+      title: {
+        display: true,
+      }
     }
   }
 });
 
 onMounted(() => {
-  const chart = new Chart(chartCanvas.value, {
+  const canvas = chartCanvas.value;
+  const context = canvas.getContext('2d');
+  const container = canvas.parentNode;
+
+  canvas.width = container.clientWidth;
+  const chart = new Chart(context, {
     type: 'bar',
     data: chartData,
     options: chartOptions
@@ -105,5 +122,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
+
 
 </style>

@@ -51,19 +51,63 @@ const chartData = reactive({
     fill: false,
     borderColor: "#2554FF",
     backgroundColor: "#2554FF",
-    borderWidth: 1
-  }]
+    borderWidth: 1,
+    tension: 0.3 // Set the tension option to 0.4 for smoother lines
+  },
+    {
+      label: 'Sales',
+      data: [
+        70,
+        40,
+        334,
+        50,
+        22,
+        9031,
+        357,
+        7905,
+        481,
+        150,
+        900,
+        400,
+        340,
+        9700,
+      ],
+      fill: false,
+      borderColor: "#008000",
+      backgroundColor: "#008000",
+      borderWidth: 1,
+      tension: 0.3 // Set the tension option to 0.4 for smoother lines
+    }]
 });
 const chartOptions = reactive({
+  responsive: true,
   scales: {
+    x: {
+      display: true,
+      title: {
+        display: true,
+      }
+    },
     y: {
-      beginAtZero: true
+      display: true,
+      beginAtZero: true,
+      title: {
+        display: true,
+      }
     }
   }
 });
 
 onMounted(() => {
-  const chart = new Chart(chartCanvas.value, {
+  const canvas = chartCanvas.value;
+  const context = canvas.getContext('2d');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  const canvasWidth = canvas.clientWidth;
+  const canvasHeight = canvas.clientHeight;
+
+  canvas.width = canvasWidth * devicePixelRatio;
+  canvas.height = canvasHeight * devicePixelRatio;
+  const chart = new Chart(context, {
     type: 'line',
     data: chartData,
     options: chartOptions,
