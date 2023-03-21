@@ -2,7 +2,7 @@
 <!--  <div>-->
 <!--    <div style="height: 400px; width: 100%; display: flex; justify-content: center;">-->
 
-      <canvas  ref="chartCanvas"></canvas>
+      <canvas style="width: 100%;" ref="chartCanvas"></canvas>
 
 <!--    </div>-->
 <!--  </div>-->
