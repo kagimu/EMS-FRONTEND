@@ -9,6 +9,7 @@ import ManageCampus from "@/main/dashboard/manageCampus/ManageCampus.vue";
 import ManageLevel from "@/main/dashboard/manageLevel/ManageLevel.vue";
 import userProfiles from "@/main/dashboard/profiles/userProfiles.vue";
 import settings from "@/main/settings/Settings.vue";
+import ReportCenter from "@/main/dashboard/ReportCenter/ReportCenter.vue";
 
 
 const router = createRouter({
@@ -40,7 +41,7 @@ const router = createRouter({
                 {path: 'profiles', component: userProfiles, name: "profiles"},
                 {path: 'accounting', component: ManageCampus, name: "accounting"},
                 {path: 'time-table', component: ManageCampus, name: "time-table"},
-                {path: 'report-center', component: ManageCampus, name: "report-center"},
+                {path: 'report-center', component: ReportCenter, name: "report-center"},
                 {path: 'settings', component: settings, name: "settings"},
             ]
         },

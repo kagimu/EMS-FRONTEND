@@ -53,7 +53,7 @@
        <div class="mx-auto mt-3" style="width: 100%;">
          <div class="card mx-auto" style="width: 100%;">
            <div class="card-body">
-               <div style="height: 37px; width: 100%; display: flex; justify-content: center;">
+               <div style="height: 370px; width: 100%; display: flex; justify-content: center;">
                <doughnut-graph></doughnut-graph>
              </div>
            </div>
