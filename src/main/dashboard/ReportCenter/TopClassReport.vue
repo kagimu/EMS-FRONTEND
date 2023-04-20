@@ -2,21 +2,21 @@
   <div>
     <div class="mx-auto mt-10" style="width: 98%">
 
-      <table style="width: 100%;">
+      <table style="width: 100%; border: 1px solid #f4f4f4; margin-bottom: 20px;">
         <tr>
           <td>
 
-            <table style="width: 100%; border: 1px solid #f4f4f4">
+            <table style="width: 100%;">
               <tr>
                 <td style="width: 20%; text-align: center;">
                   <img alt="logo" style="width: 150px; margin: 0 auto" src="../../../../public/img/badge.png"/>
                 </td>
                 <td style="width: 60%;" class="text-center">
-                  <div style="font-size: 35px;"><b>NOREGRETS LIFE SCHOOL</b></div>
+                  <div style="font-size: 30px;"><b>NOREGRETS LIFE SCHOOL</b></div>
 
-                  <div style="font-size: 25px;">BUNAMWAYA CAMPUS</div>
+                  <div style="font-size: 20px; margin-top: 5px;">BUNAMWAYA CAMPUS</div>
 
-                  <div>Bunamwaya, P.O.BOX 21671 Kampala | +256752698545 | mwesigwa.noregrets@gmail.com</div>
+                  <div style="margin-top: 6px; margin-bottom: 10px;"><small>Bunamwaya, P.O.BOX 21671 Kampala | +256752698545 | mwesigwa.noregrets@gmail.com</small></div>
 
                   <div style="background-color: green; color: #ffffff;">PROGRESS REPORT FOR KINDERGARTEN</div>
                 </td>
@@ -272,19 +272,19 @@
         <tr>
           <td>
 
-            <table style="width: 100%; border: 1px solid #f4f4f4">
+            <table style="width: 100%; font-size: 13px; margin-top: 20px; margin-bottom: 30px;">
               <tr>
                 <td style="width: 25%;">
-                  <div>CLASS TEACHER'S SIGNATURE:</div>
-                  <div>HEAD TEACHER'S SIGNATURE:</div>
-                  <div>NEXT TERM BEGINS:</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">CLASS TEACHER'S SIGNATURE:</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">HEAD TEACHER'S SIGNATURE:</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">NEXT TERM BEGINS:</div>
                 </td>
 
                 <td>
 
-                  <div> ______________________________________</div>
-                  <div> ______________________________________</div>
-                  <div> 18th/May/2020</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;"> ________________________________________________________________</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;"> ________________________________________________________________</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;"> 18th/May/2020</div>
 
                 </td>
               </tr>
@@ -295,7 +295,7 @@
 
         <tr>
           <td>
-            <div style="text-align: center;">
+            <div style="text-align: center; margin-bottom: 15px;">
               <small><i>This report is valid if it bears the Head Teacher's Signature and school seal.</i></small>
             </div>
           </td>
