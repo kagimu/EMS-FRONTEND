@@ -34,34 +34,36 @@
         <tr>
           <td>
 
-            <table style="width: 100%; border: 1px solid #f4f4f4">
+
+            <table style="width: 100%; font-size: 13px; margin-top: 30px; margin-bottom: 30px;">
               <tr>
                 <td style="width: 15%;">
-                  <div>Name:</div>
-                  <div>Class:</div>
-                  <div> Days Present:</div>
-                  <div>Term:</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">Name:</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">Class:</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;"> Days Present:</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">Term:</div>
                 </td>
-                <td style="width: 35%;">
-                  <div> NZANZU Titus Garnette</div>
-                  <div>Baby Class</div>
-                  <div>310</div>
-                  <div>Term 1</div>
+                <td style="width: 40%;">
+                  <div style="padding-left: 5px; padding-bottom: 10px;"> NZANZU Titus Garnette</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">Primary 2</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">310</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">Term 1</div>
                 </td>
                 <td style="width: 15%;">
-                  <div>  Age:</div>
-                  <div>School Team:</div>
-                  <div>Days Absent:</div>
-                  <div>Date:</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">  Age:</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">School Team:</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">Days Absent:</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">Date:</div>
                 </td>
-                <td style="width: 35%;">
-                  <div> 6yrs , 8mth</div>
-                  <div>&nbsp;</div>
-                  <div>2</div>
-                  <div>30th/Nov/-0001</div>
+                <td style="width: 30%;">
+                  <div style="padding-left: 5px; padding-bottom: 10px;"> 6yrs , 8mth</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">&nbsp;</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">2</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">30th/Nov/-0001</div>
                 </td>
               </tr>
             </table>
+
 
           </td>
         </tr>
@@ -74,226 +76,225 @@
           <td>
 
 
-            <table style="width: 100%; border: 1px solid #f4f4f4">
+            <table style="width: 100%; border: 1px solid #f4f4f4; font-size: 13px;">
 
-              <tr>
-                <td style="width: 10%;">&nbsp;</td>
-                <td style="width: 20%;">SUBJECT UNIT</td>
-                <td style="width: 10%;">ROC</td>
-                <td style="width: 10%;">End of Term</td>
-                <td style="width: 10%;">Quarter Term</td>
-                <td style="width: 10%;">Average</td>
-                <td style="width: 10%;">Aggr</td>
-                <td style="width: 10%;">Remark</td>
-                <td style="width: 10%;">Initial</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 10%; padding: 5px;">&nbsp;</td>
+                <td style="width: 20%; padding: 5px;">SUBJECT UNIT</td>
+                <td style="width: 10%; padding: 5px;">ROC</td>
+                <td style="width: 10%; padding: 5px;">End of Term</td>
+                <td style="width: 10%; padding: 5px;">Quarter Term</td>
+                <td style="width: 10%; padding: 5px;">Average</td>
+                <td style="width: 10%; padding: 5px;">Aggr</td>
+                <td style="width: 10%; padding: 5px;">Remark</td>
+                <td style="width: 10%; padding: 5px;">Initial</td>
               </tr>
 
-              <tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
                 <td rowspan="4" style="transform: rotate(270deg); white-space: nowrap;"> <small>MENTAL STUDIES </small></td>
-                <td>
+                <td style="padding: 5px;">
                   Mathematics
                 </td>
-                <td>50</td>
-                <td>50</td>
-                <td>89</td>
-                <td>80</td>
-                <td>D1</td>
-                <td>Good</td>
-                <td>M.O</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">89</td>
+                <td style="padding: 5px;">80</td>
+                <td style="padding: 5px;">D1</td>
+                <td style="padding: 5px;">Good</td>
+                <td style="padding: 5px;">M.O</td>
               </tr>
 
-              <tr>
-                <td>Language</td>
-                <td>50</td>
-                <td>50</td>
-                <td>89</td>
-                <td>80</td>
-                <td>D1</td>
-                <td>Good</td>
-                <td>M.O</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="padding: 5px;">Language</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">89</td>
+                <td style="padding: 5px;">80</td>
+                <td style="padding: 5px;">D1</td>
+                <td style="padding: 5px;">Good</td>
+                <td style="padding: 5px;">M.O</td>
               </tr>
-              <tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
 
-                <td>History</td>
-                <td>50</td>
-                <td>50</td>
-                <td>89</td>
-                <td>80</td>
-                <td>D1</td>
-                <td>Good</td>
-                <td>M.O</td>
+                <td style="padding: 5px;">History</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">89</td>
+                <td style="padding: 5px;">80</td>
+                <td style="padding: 5px;">D1</td>
+                <td style="padding: 5px;">Good</td>
+                <td style="padding: 5px;">M.O</td>
               </tr>
-              <tr>
-                <td>Geography</td>
-                <td>50</td>
-                <td>50</td>
-                <td>89</td>
-                <td>80</td>
-                <td>D1</td>
-                <td>Good</td>
-                <td>M.O</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="padding: 5px;">Geography</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">89</td>
+                <td style="padding: 5px;">80</td>
+                <td style="padding: 5px;">D1</td>
+                <td style="padding: 5px;">Good</td>
+                <td style="padding: 5px;">M.O</td>
               </tr>
 
 
-              <tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
                 <td rowspan="5" style="transform: rotate(270deg); white-space: nowrap;"> <small> PHYSICAL STUDIES</small></td>
-                <td>Science</td>
-                <td>50</td>
-                <td>50</td>
-                <td>89</td>
-                <td>80</td>
-                <td>D1</td>
-                <td>Good</td>
-                <td>M.O</td>
+                <td style="padding: 5px;">Science</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">89</td>
+                <td style="padding: 5px;">80</td>
+                <td style="padding: 5px;">D1</td>
+                <td style="padding: 5px;">Good</td>
+                <td style="padding: 5px;">M.O</td>
               </tr>
 
 
-              <tr>
-                <td>Games and Athletics</td>
-                <td>50</td>
-                <td>50</td>
-                <td>89</td>
-                <td>80</td>
-                <td>D1</td>
-                <td>Good</td>
-                <td>M.O</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="padding: 5px;">Games and Athletics</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">89</td>
+                <td style="padding: 5px;">80</td>
+                <td style="padding: 5px;">D1</td>
+                <td style="padding: 5px;">Good</td>
+                <td style="padding: 5px;">M.O</td>
               </tr>
-              <tr>
-                <td>Celebrate: Performing Arts</td>
-                <td>50</td>
-                <td>50</td>
-                <td>89</td>
-                <td>80</td>
-                <td>D1</td>
-                <td>Good</td>
-                <td>M.O</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="padding: 5px;">Celebrate: Performing Arts</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">89</td>
+                <td style="padding: 5px;">80</td>
+                <td style="padding: 5px;">D1</td>
+                <td style="padding: 5px;">Good</td>
+                <td style="padding: 5px;">M.O</td>
               </tr>
-              <tr>
-                <td>Art and Design</td>
-                <td>50</td>
-                <td>50</td>
-                <td>89</td>
-                <td>80</td>
-                <td>D1</td>
-                <td>Good</td>
-                <td>M.O</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="padding: 5px;">Art and Design</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">89</td>
+                <td style="padding: 5px;">80</td>
+                <td style="padding: 5px;">D1</td>
+                <td style="padding: 5px;">Good</td>
+                <td style="padding: 5px;">M.O</td>
               </tr>
-              <tr>
-                <td>Creative Work and Resources</td>
-                <td>50</td>
-                <td>50</td>
-                <td>89</td>
-                <td>80</td>
-                <td>D1</td>
-                <td>Good</td>
-                <td>M.O</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="padding: 5px;">Creative Work and Resources</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">89</td>
+                <td style="padding: 5px;">80</td>
+                <td style="padding: 5px;">D1</td>
+                <td style="padding: 5px;">Good</td>
+                <td style="padding: 5px;">M.O</td>
               </tr>
 
 
-              <tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
                 <td rowspan="5" style="transform: rotate(270deg); white-space: nowrap;"> <small> RELIGIOUS STUDIES </small></td>
-                <td>Praise and Worship</td>
-                <td>50</td>
-                <td>50</td>
-                <td>89</td>
-                <td>80</td>
-                <td>D1</td>
-                <td>Good</td>
-                <td>M.O</td>
+                <td style="padding: 5px;">Praise and Worship</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">89</td>
+                <td style="padding: 5px;">80</td>
+                <td style="padding: 5px;">D1</td>
+                <td style="padding: 5px;">Good</td>
+                <td style="padding: 5px;">M.O</td>
               </tr>
 
-              <tr>
-                <td>Prayer</td>
-                <td>50</td>
-                <td>50</td>
-                <td>89</td>
-                <td>80</td>
-                <td>D1</td>
-                <td>Good</td>
-                <td>M.O</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="padding: 5px;">Prayer</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">89</td>
+                <td style="padding: 5px;">80</td>
+                <td style="padding: 5px;">D1</td>
+                <td style="padding: 5px;">Good</td>
+                <td style="padding: 5px;">M.O</td>
               </tr>
-              <tr>
-                <td>God's Purpose and Plan</td>
-                <td>50</td>
-                <td>50</td>
-                <td>89</td>
-                <td>80</td>
-                <td>D1</td>
-                <td>Good</td>
-                <td>M.O</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="padding: 5px;">God's Purpose and Plan</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">89</td>
+                <td style="padding: 5px;">80</td>
+                <td style="padding: 5px;">D1</td>
+                <td style="padding: 5px;">Good</td>
+                <td style="padding: 5px;">M.O</td>
               </tr>
-              <tr>
-                <td>Divinity and Religion</td>
-                <td>50</td>
-                <td>50</td>
-                <td>89</td>
-                <td>80</td>
-                <td>D1</td>
-                <td>Good</td>
-                <td>M.O</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="padding: 5px;">Divinity and Religion</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">89</td>
+                <td style="padding: 5px;">80</td>
+                <td style="padding: 5px;">D1</td>
+                <td style="padding: 5px;">Good</td>
+                <td style="padding: 5px;">M.O</td>
               </tr>
-              <tr>
-                <td>Bible Study and Reasoning</td>
-                <td>50</td>
-                <td>50</td>
-                <td>89</td>
-                <td>80</td>
-                <td>D1</td>
-                <td>Good</td>
-                <td>M.O</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="padding: 5px;">Bible Study and Reasoning</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">89</td>
+                <td style="padding: 5px;">80</td>
+                <td style="padding: 5px;">D1</td>
+                <td style="padding: 5px;">Good</td>
+                <td style="padding: 5px;">M.O</td>
               </tr>
 
-              <tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
                 <td rowspan="5" style="transform: rotate(270deg); white-space: nowrap;"> <small>SOCIAL STUDIES</small></td>
-                <td>Personal Discipline</td>
-                <td>50</td>
-                <td>50</td>
-                <td>89</td>
-                <td>80</td>
-                <td>D1</td>
-                <td>Good</td>
-                <td>M.O</td>
+                <td style="padding: 5px;">Personal Discipline</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">89</td>
+                <td style="padding: 5px;">80</td>
+                <td style="padding: 5px;">D1</td>
+                <td style="padding: 5px;">Good</td>
+                <td style="padding: 5px;">M.O</td>
               </tr>
 
-              <tr>
-                <td>Character Formation</td>
-                <td>50</td>
-                <td>50</td>
-                <td>89</td>
-                <td>80</td>
-                <td>D1</td>
-                <td>Good</td>
-                <td>M.O</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="padding: 5px;">Character Formation</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">89</td>
+                <td style="padding: 5px;">80</td>
+                <td style="padding: 5px;">D1</td>
+                <td style="padding: 5px;">Good</td>
+                <td style="padding: 5px;">M.O</td>
               </tr>
-              <tr>
-                <td>Law and Government</td>
-                <td>50</td>
-                <td>50</td>
-                <td>89</td>
-                <td>80</td>
-                <td>D1</td>
-                <td>Good</td>
-                <td>M.O</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="padding: 5px;">Law and Government</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">89</td>
+                <td style="padding: 5px;">80</td>
+                <td style="padding: 5px;">D1</td>
+                <td style="padding: 5px;">Good</td>
+                <td style="padding: 5px;">M.O</td>
               </tr>
-              <tr>
-                <td>Service and Enterprise</td>
-                <td>50</td>
-                <td>50</td>
-                <td>89</td>
-                <td>80</td>
-                <td>D1</td>
-                <td>Good</td>
-                <td>M.O</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="padding: 5px;">Service and Enterprise</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">89</td>
+                <td style="padding: 5px;">80</td>
+                <td style="padding: 5px;">D1</td>
+                <td style="padding: 5px;">Good</td>
+                <td style="padding: 5px;">M.O</td>
               </tr>
-              <tr>
-                <td>Family and Community</td>
-                <td>50</td>
-                <td>50</td>
-                <td>89</td>
-                <td>80</td>
-                <td>D1</td>
-                <td>Good</td>
-                <td>M.O</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="padding: 5px;">Family and Community</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">50</td>
+                <td style="padding: 5px;">89</td>
+                <td style="padding: 5px;">80</td>
+                <td style="padding: 5px;">D1</td>
+                <td style="padding: 5px;">Good</td>
+                <td style="padding: 5px;">M.O</td>
               </tr>
 
             </table>

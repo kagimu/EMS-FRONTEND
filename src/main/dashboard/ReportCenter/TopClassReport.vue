@@ -33,59 +33,63 @@
         <tr>
           <td>
 
-            <table style="width: 100%; border: 1px solid #f4f4f4">
+
+            <table style="width: 100%; font-size: 13px; margin-top: 30px; margin-bottom: 30px;">
               <tr>
                 <td style="width: 15%;">
-                  <div>Name:</div>
-                  <div>Class:</div>
-                  <div> Days Present:</div>
-                  <div>Term:</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">Name:</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">Class:</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;"> Days Present:</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">Term:</div>
                 </td>
-                <td style="width: 35%;">
-                  <div> NZANZU Titus Garnette</div>
-                  <div>Top Class</div>
-                  <div>310</div>
-                  <div>Term 2</div>
+                <td style="width: 40%;">
+                  <div style="padding-left: 5px; padding-bottom: 10px;"> NZANZU Titus Garnette</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">Top Class</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">310</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">Term 1</div>
                 </td>
                 <td style="width: 15%;">
-                  <div>  Age:</div>
-                  <div>School Team:</div>
-                  <div>Days Absent:</div>
-                  <div>Date:</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">  Age:</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">School Team:</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">Days Absent:</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">Date:</div>
                 </td>
-                <td style="width: 35%;">
-                  <div> 6yrs , 8mth</div>
-                  <div>&nbsp;</div>
-                  <div>2</div>
-                  <div>30th/Nov/-0001</div>
+                <td style="width: 30%;">
+                  <div style="padding-left: 5px; padding-bottom: 10px;"> 6yrs , 8mth</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">&nbsp;</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">2</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">30th/Nov/-0001</div>
                 </td>
               </tr>
             </table>
 
-          </td>
-        </tr>
 
-        <tr>
-          <td>
-            <table style="width: 100%; border: 1px solid #f4f4f4">
-              <tr>
-                <td style="width: 20%;">KEY TO SCORES:</td>
-                <td style="width: 20%;">EXCELLENT</td>
-                <td style="width: 20%;">GOOD</td>
-                <td style="width: 20%;">FAIR</td>
-                <td style="width: 20%;">NEED IMPROVEMENT</td>
-              </tr>
-            </table>
+
           </td>
         </tr>
 
         <tr>
           <td>
 
-            <table style="width: 100%; border: 1px solid #f4f4f4">
+            <table style="width: 100%; border: 1px solid #f4f4f4; margin-bottom: 20px; font-size: 13px;">
               <tr>
-                <td style="width: 40%;">SCORE:</td>
-                <td style="width: 60%;">SPECIFIC REMARKS:</td>
+                <td style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;">KEY TO SCORES:</td>
+                <td style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;">EXCELLENT</td>
+                <td style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;">GOOD</td>
+                <td style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;">FAIR</td>
+                <td style="width: 20%; padding: 7px;"><div>NEED IMPROVEMENT</div></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+
+            <table style="width: 100%; border: 1px solid #f4f4f4; font-size: 13px;">
+              <tr>
+                <td style="width: 40%; padding: 5px;">SCORE:</td>
+                <td style="width: 60%; padding: 5px;">SPECIFIC REMARKS:</td>
               </tr>
             </table>
 
@@ -97,167 +101,167 @@
           <td>
 
 
-            <table style="width: 100%; border: 1px solid #f4f4f4">
-              <tr>
-                <td colspan="3" style="text-align: center;">MENTAL STUDIES</td>
+            <table style="width: 100%; border: 1px solid #f4f4f4; font-size: 13px;">
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td colspan="3" style="text-align: center; padding: 5px;">MENTAL STUDIES</td>
               </tr>
-              <tr>
-                <td style="width: 30%;">Looking Carefully</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;">He has learnt to settle down during class room time</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Looking Carefully</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;">He has learnt to settle down during class room time</td>
               </tr>
-              <tr>
-                <td style="width: 30%;">Story</td>
-                <td style="width: 10%;">Flower</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Story</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Listening Closely</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Paying Attention</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Reading & Vocabulary</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
                 <td style="width: 60%;"></td>
               </tr>
-              <tr>
-                <td style="width: 30%;">Listening Closely</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;"></td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Writing</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
               </tr>
-              <tr>
-                <td style="width: 30%;">Paying Attention</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;"></td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Numeracy</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;">He can write numbers from 0 to 200</td>
               </tr>
-              <tr>
-                <td style="width: 30%;">Reading & Vocabulary</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;"></td>
-              </tr>
-              <tr>
-                <td style="width: 30%;">Writing</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;"></td>
-              </tr>
-              <tr>
-                <td style="width: 30%;">Numeracy</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;">He can write numbers from 0 to 200</td>
-              </tr>
-              <tr>
-                <td>Overall Remark</td>
-                <td colspan="2">great work on this</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="padding: 5px;">Overall Remark</td>
+                <td colspan="2" style="padding: 5px;">great work on this</td>
               </tr>
 
             </table>
 
-            <table style="width: 100%; border: 1px solid #f4f4f4">
-              <tr>
-                <td colspan="3" style="text-align: center;">PHYSICAL STUDIES</td>
+            <table style="width: 100%; border: 1px solid #f4f4f4; font-size: 13px;">
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td colspan="3" style="text-align: center; padding: 5px;">PHYSICAL STUDIES</td>
               </tr>
-              <tr>
-                <td style="width: 30%;">Feeding Pattern</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;">He has learnt to settle down during class room time</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Feeding Pattern</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;">He has learnt to settle down during class room time</td>
               </tr>
-              <tr>
-                <td style="width: 30%;">Personal Hygiene</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;"></td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Personal Hygiene</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
               </tr>
-              <tr>
-                <td style="width: 30%;">Communal Hygiene</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;"></td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Communal Hygiene</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
               </tr>
-              <tr>
-                <td style="width: 30%;">Play</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;"></td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Play</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
               </tr>
-              <tr>
-                <td style="width: 30%;">Performing Arts</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;"></td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Performing Arts</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
               </tr>
-              <tr>
-                <td style="width: 30%;">Creative Work and Take Care</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;"></td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Creative Work and Take Care</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
               </tr>
-              <tr>
-                <td>Overall Remark</td>
-                <td colspan="2">great work on this</td>
-              </tr>
-
-            </table>
-
-
-            <table style="width: 100%; border: 1px solid #f4f4f4">
-              <tr>
-                <td colspan="3" style="text-align: center;">RELIGIOUS STUDIES</td>
-              </tr>
-              <tr>
-                <td style="width: 30%;">Praise and Worship</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;">He has learnt to settle down during class room time</td>
-              </tr>
-              <tr>
-                <td style="width: 30%;">Prayer</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;"></td>
-              </tr>
-              <tr>
-                <td style="width: 30%;">Rules and Obedience</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;"></td>
-              </tr>
-              <tr>
-                <td style="width: 30%;">Bible Reading</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;"></td>
-              </tr>
-              <tr>
-                <td style="width: 30%;">Problem Solving</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;"></td>
-              </tr>
-              <tr>
-                <td>Overall Remark</td>
-                <td colspan="2">great work on this</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="padding: 5px;">Overall Remark</td>
+                <td colspan="2" style="padding: 5px;">great work on this</td>
               </tr>
 
             </table>
 
-            <table style="width: 100%; border: 1px solid #f4f4f4">
-              <tr>
-                <td colspan="3" style="text-align: center;">SOCIAL STUDIES</td>
+
+            <table style="width: 100%; border: 1px solid #f4f4f4; font-size: 13px;">
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td colspan="3" style="text-align: center; padding: 5px;">RELIGIOUS STUDIES</td>
               </tr>
-              <tr>
-                <td style="width: 30%;">Handling Acceptance</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;">He has learnt to settle down during class room time</td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Praise and Worship</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;">He has learnt to settle down during class room time</td>
               </tr>
-              <tr>
-                <td style="width: 30%;">Handling Rejection</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;"></td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Prayer</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
               </tr>
-              <tr>
-                <td style="width: 30%;">Respect for People</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;"></td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Rules and Obedience</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%;padding: 5px;"></td>
               </tr>
-              <tr>
-                <td style="width: 30%;">Serving People</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;"></td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Bible Reading</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
               </tr>
-              <tr>
-                <td style="width: 30%;">Sharing and Compassion</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;"></td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Problem Solving</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
               </tr>
-              <tr>
-                <td style="width: 30%;">Family and Community</td>
-                <td style="width: 10%;">Flower</td>
-                <td style="width: 60%;"></td>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="padding: 5px;">Overall Remark</td>
+                <td colspan="2" style="padding: 5px;">great work on this</td>
               </tr>
-              <tr>
-                <td>Overall Remark</td>
-                <td colspan="2">great work on this</td>
+
+            </table>
+
+            <table style="width: 100%; border: 1px solid #f4f4f4; font-size: 13px;">
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td colspan="3" style="text-align: center; padding: 5px;">SOCIAL STUDIES</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Handling Acceptance</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;">He has learnt to settle down during class room time</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Handling Rejection</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Respect for People</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Serving People</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Sharing and Compassion</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Family and Community</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="padding: 5px;">Overall Remark</td>
+                <td colspan="2" style="padding: 5px;">great work on this</td>
               </tr>
 
             </table>
