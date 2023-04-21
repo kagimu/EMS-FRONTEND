@@ -2,7 +2,16 @@
 <div>
   <div class="mx-auto mt-10" style="width: 98%">
 
-    <table style="width: 100%; border: 1px solid #f4f4f4; margin-bottom: 20px;">
+    <div class="mt-4 mb-2 flex justify-content-between">
+      &nbsp;
+      <button type="button" @click="printReport" class="btn btn-primary btn-sm mr-3" style="border-radius: 0;">
+        <i class="bi-printer"></i>
+        Print Report
+      </button>
+    </div>
+
+
+    <table ref="reportContent" style="width: 100%; border: 1px solid #f4f4f4; margin-bottom: 20px;">
       <tr>
         <td>
 
@@ -223,6 +232,16 @@
 </template>
 
 <script setup>
+
+
+const printReport = () => {
+ alert("Print pdf now man")
+}
+
+
+
+
+
 
 
 </script>
