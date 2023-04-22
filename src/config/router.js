@@ -47,7 +47,7 @@ const router = createRouter({
         },
         {
             path: '/:pathMatch(.*)*',
-            redirect: { name: "tv-home" }
+            redirect: { name: "login" }
         }
     ],
 });
