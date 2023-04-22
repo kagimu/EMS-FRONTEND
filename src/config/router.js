@@ -45,6 +45,10 @@ const router = createRouter({
                 {path: 'settings', component: settings, name: "settings"},
             ]
         },
+        {
+            path: '/:pathMatch(.*)*',
+            redirect: { name: "tv-home" }
+        }
     ],
 });
 
