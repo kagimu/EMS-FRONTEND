@@ -7,8 +7,34 @@
         <div class="card">
           <div class="card-body">
 
+
+
+            <div v-if="showSuccessPage" class="text-center mt-8" style="font-size: 16px; color: #757575;">
+              <p style="color: green; font-size: 38px; font-weight: bold;" class="mb-9">Success</p>
+              <p>You have successfully created an account with WHolesomeEd,<br />
+                We have sent an emil on : <span class="text-decoration-none" style="color: green; font-weight: bold;">{{form.email}}</span> with instructions on how to activate your account. </p>
+              <p>Please login to your email, find the activation link, click on it and set password </p>
+              <br />
+              <hr />
+              <div style="padding-bottom: 20px;" class="mb-3">
+
+                <router-link  :to="{ name: 'login' }">
+                  <button
+                      style="background-color: #1d2b36;"
+                      type="submit"
+                      class="btn btn-primary float-end">
+                    Login
+                  </button>
+                </router-link>
+
+              </div>
+
+            </div>
+
+            <div v-else>
+
+
             <div class="text-center textColor"><b>Create Account</b></div>
-            <!--          <div class="text-center">Wholesome Education</div>-->
             <div class="text-center mb-3 textColor"><small>---- Create a New Account - It's Free----</small></div>
 
             <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
@@ -32,13 +58,18 @@
                 </div>
               </div>
 
+              <div class="mb-2">
+                <label class="textColor"><small>Last name</small></label>
+                <input type="text" v-model="form.last_name" class="form-control">
+              </div>
+
 
               <div class="mb-2">
                 <label class="textColor"><small>Gender</small></label>
               <select class="form-select" v-model="form.gender" aria-label="Default select example">
-                <option value="">Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
+                <option disabled value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
               </select>
               </div>
 
@@ -53,40 +84,10 @@
                 <input type="email" v-model="form.email" required class="form-control">
               </div>
 
-              <div class="row">
-                <div class="col-lg-6">
-                  <label class="textColor"><small>Password</small></label>
-                  <div class="input-group mb-3">
-                    <input
-                        :type="show ? 'text' : 'password'"
-                        v-model="form.password" required
-                        class="form-control" aria-label="Username"
-                        aria-describedby="basic-addon1">
-                    <div style="cursor: pointer;"  @click="show = !show" class="input-group-text" id="basic-addon1">
-                      <i :class="show ? 'bi-eye-slash' : 'bi-eye'"></i>
-                    </div>
-                  </div>
-
-                </div>
-                <div class="col-lg-6">
-                  <label class="textColor"><small>Confirm Password</small></label>
-                  <div class="input-group mb-3">
-                    <input
-                        :type="show ? 'text' : 'password'"
-                        v-model="form.confirm_password" required
-                        class="form-control" aria-label="Username"
-                        aria-describedby="basic-addon1">
-                    <div style="cursor: pointer;"  @click="show = !show" class="input-group-text" id="basic-addon1">
-                      <i :class="show ? 'bi-eye-slash' : 'bi-eye'"></i>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
 
 
               <div class="text-right">
-                <button type="submit" class="btn btn-primary mb-2">
+                <button type="submit" class="btn btn-primary mb-2 mt-3">
                   Register
                   <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
                     <span class="visually-hidden">Loading...</span>
@@ -103,6 +104,9 @@
               </div>
 
             </form>
+
+            </div>
+
           </div>
         </div>
 
@@ -120,6 +124,8 @@ import useNotificationStore from "@/composables/useNotification.js";
 let errorMessage = ref(null)
 let buttonLoader = ref(false)
 let show = ref(false)
+const showSuccessPage = ref(false)
+
 
 let authStore = useAuthStore()
 const  notificationStore  = useNotificationStore()
@@ -128,11 +134,10 @@ const  notificationStore  = useNotificationStore()
 const form = reactive({
   first_name: null,
   second_name: null,
+  last_name: null,
   gender: null,
   email: null,
   phone: null,
-  password: null,
-  confirm_password: null
 })
 
 
@@ -150,6 +155,16 @@ watch(
     async (data) => {
       if(data){
         buttonLoader.value = false
+
+        // form.first_name = null
+        // form.second_name = null
+        // form.last_name = null
+        // form.gender = null
+        // form.email = null
+        // form.phone = null
+
+        showSuccessPage.value = true
+
         notificationStore.successToast("Error",data.message)
       }
     },

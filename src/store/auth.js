@@ -11,7 +11,7 @@ export const useAuthStore = defineStore("auth", () => {
 
 
     async function userLogin(data) {
-        return await api.post("api/auth/login", data)
+        return await api.post("auth/login", data)
             .then((response) => {
                 let dataInfo = response.data
                 localStorage.setItem("token", dataInfo.access_token)
@@ -44,7 +44,7 @@ export const useAuthStore = defineStore("auth", () => {
 
 
     async function userRegistration(data) {
-        return await api.post("api/auth/register", data)
+        return await api.post("auth/register", data)
             .then((response) => {
                 registrationResponse.value = response.data
             })

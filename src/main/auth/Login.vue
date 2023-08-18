@@ -90,7 +90,7 @@ let show = ref(false)
 const form = reactive({
   email:null,
   password:null,
-  rememberMe: true
+  // rememberMe: true
 })
 
 
