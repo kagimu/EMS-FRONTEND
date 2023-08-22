@@ -108,6 +108,7 @@ watch(
     () => authStore.loginResponse,
     async (data) => {
       if(data){
+
         authStore.userProfile()
       }
     },

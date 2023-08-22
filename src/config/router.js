@@ -55,15 +55,16 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     let profile = localStorage.getItem("userProfile")
-    let token = localStorage.getItem("token")
+    // let token = localStorage.getItem("token")
 
     const authStore = useAuthStore()
 
     if (to.matched.some((record) => record.meta.requiresAuth)) {
-        if (profile && token) {
+        // if (profile && token) {
+        if (profile) {
             let user = JSON.parse(profile);
             if (user !== null) {
-                authStore.updateToken(token)
+                // authStore.updateToken(token)
                 authStore.updateProfile(profile)
                 next();
             } else {

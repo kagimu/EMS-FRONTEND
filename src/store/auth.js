@@ -7,6 +7,7 @@ export const useAuthStore = defineStore("auth", () => {
     let registrationResponse = ref(null)
     const errorMessage = ref(null)
     const token = ref(null)
+    const userNumber = ref(null)
     const profile = ref(null)
 
 
@@ -14,10 +15,11 @@ export const useAuthStore = defineStore("auth", () => {
         return await api.post("auth/login", data)
             .then((response) => {
                 let dataInfo = response.data
-                localStorage.setItem("token", dataInfo.access_token)
-                localStorage.setItem("expires_in", dataInfo.expires_in)
+                // localStorage.setItem("token", dataInfo.access_token)
+                // localStorage.setItem("expires_in", dataInfo.expires_in)
                 loginResponse.value = dataInfo
-                token.value = dataInfo.access_token
+                userNumber.value = dataInfo.data.number
+                // token.value = dataInfo.access_token
             })
             .catch((response) => {
                 if(response){
@@ -29,11 +31,11 @@ export const useAuthStore = defineStore("auth", () => {
 
 
     async function userProfile() {
-        return await api.get("api/auth/profile")
+        return await api.get("main/profile")
             .then((response) => {
                 let user = response.data
-                localStorage.setItem("userProfile", JSON.stringify(user))
-                profile.value = user
+                localStorage.setItem("userProfile", JSON.stringify(user.data))
+                profile.value = user.data
             })
             .catch((response) => {
                 if(response){
@@ -41,7 +43,6 @@ export const useAuthStore = defineStore("auth", () => {
                 }
             })
     }
-
 
     async function userRegistration(data) {
         return await api.post("auth/register", data)
@@ -63,7 +64,9 @@ export const useAuthStore = defineStore("auth", () => {
 
     function updateProfile(data){
         if(data){
-            profile.value = JSON.parse(data)
+            let profileData = JSON.parse(data)
+            profile.value = profileData
+            userNumber.value = profileData.number
         }
     }
 
@@ -73,6 +76,7 @@ export const useAuthStore = defineStore("auth", () => {
         errorMessage,
         token,
         profile,
+        userNumber,
         userLogin,
         userRegistration,
         userProfile,

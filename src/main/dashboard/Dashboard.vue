@@ -135,7 +135,8 @@ const menuList = ref([
 
 const name = ref(null)
 let p = authStore.profile
-name.value = p.first_name+" "+p.second_name
+
+name.value = p.first_name+" "+p.second_name+" "+p.last_name
 
 
 
