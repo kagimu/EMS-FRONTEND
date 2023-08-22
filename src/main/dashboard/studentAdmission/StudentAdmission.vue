@@ -11,54 +11,27 @@
             <div class="mb-3 ml-5 mt-3" style="font-size: 18px;">Students Admission</div>
 
 
+            <div class="mt-4">
+              <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                  <button class="nav-link navColor active" id="babyClass-tab" data-bs-toggle="tab" data-bs-target="#babyClass" type="button" role="tab" aria-controls="babyClass" aria-selected="false"><small>Admissions</small></button>
+                  <button class="nav-link navColor" id="grading-scale-tab" data-bs-toggle="tab" data-bs-target="#grading-scale" type="button" role="tab" aria-controls="grading-scale" aria-selected="true"><small>New Admission</small></button>
+                </div>
+              </nav>
+              <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="babyClass" role="tabpanel" aria-labelledby="babyClass-tab" tabindex="0">
+                 <admission-list></admission-list>
+                </div>
+                <div class="tab-pane fade" id="grading-scale" role="tabpanel" aria-labelledby="grading-scale-tab" tabindex="0">
+                  <new-admission></new-admission>
+                </div>
+              </div>
+
+            </div>
 
 
-            <table class="table table-hover caption-top" style="font-size: 14px;">
-              <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">First name</th>
-                <th scope="col">Second name</th>
-                <th scope="col">Gender</th>
-                <th scope="col">Email</th>
-                <th scope="col">Phone</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>Male</td>
-                <td>otto@gmail.com</td>
-                <td>0789878765</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>Male</td>
-                <td>thornton@gmail.com</td>
-                <td>078675654</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry the Bird</td>
-                <td>twitter</td>
-                <td>Female</td>
-                <td>twitter@gmail.com</td>
-                <td>0709897656</td>
-              </tr>
-              <tr>
-                <th scope="row">4</th>
-                <td>Larry the Bird</td>
-                <td>twitter</td>
-                <td>Male</td>
-                <td>twitter@gmail.com</td>
-                <td>0709897656</td>
-              </tr>
-              </tbody>
-            </table>
+
+
 
           </div>
         </div>
@@ -73,6 +46,8 @@
 <script setup>
 
 import {reactive, ref} from "vue";
+import AdmissionList from "@/main/dashboard/studentAdmission/AdmissionList.vue";
+import NewAdmission from "@/main/dashboard/studentAdmission/NewAdmission.vue";
 
 const buttonLoader = ref(false)
 let show = ref(false)
