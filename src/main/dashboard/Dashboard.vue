@@ -111,7 +111,7 @@
 import router from "@/config/router.js";
 
 import { ref} from 'vue'
-import {useAuthStore} from "@/store/auth.js";
+import {useAuthStore} from "@/main/auth/store/auth.js";
 import {useRouter} from "vue-router";
 const routerName = useRouter().currentRoute.value.name;
 const authStore = useAuthStore()

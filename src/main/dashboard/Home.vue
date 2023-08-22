@@ -87,7 +87,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import {useAuthStore} from "@/store/auth.js";
+import {useAuthStore} from "@/main/auth/store/auth.js";
 import BarGraph from "@/main/graphs/BarGraph.vue";
 import LineGraph from "@/main/graphs/LineGraph.vue";
 import DoughnutGraph from "@/main/graphs/DoughnutGraph.vue";

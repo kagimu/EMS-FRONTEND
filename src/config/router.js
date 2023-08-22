@@ -4,12 +4,13 @@ import Register from "../main/auth/Register.vue";
 import Home from "../main/dashboard/Home.vue";
 import AuthMain from "@/main/auth/AuthMain.vue";
 import Dashboard from "@/main/dashboard/Dashboard.vue";
-import {useAuthStore} from "@/store/auth.js";
+import {useAuthStore} from "@/main/auth/store/auth.js";
 import ManageCampus from "@/main/dashboard/manageCampus/ManageCampus.vue";
 import ManageLevel from "@/main/dashboard/manageLevel/ManageLevel.vue";
 import userProfiles from "@/main/dashboard/profiles/userProfiles.vue";
 import settings from "@/main/settings/Settings.vue";
 import ReportCenter from "@/main/dashboard/ReportCenter/ReportCenter.vue";
+import StudentAdmission from "@/main/dashboard/studentAdmission/StudentAdmission.vue";
 
 
 const router = createRouter({
@@ -37,7 +38,7 @@ const router = createRouter({
                 {path: 'manage-campus', component: ManageCampus, name: "manage-campus"},
                 {path: 'level', component: ManageLevel, name: "level"},
                 {path: 'reports', component: ManageCampus, name: "reports"},
-                {path: 'student-admission', component: ManageCampus, name: "student-admission"},
+                {path: 'student-admission', component: StudentAdmission, name: "student-admission"},
                 {path: 'profiles', component: userProfiles, name: "profiles"},
                 {path: 'accounting', component: ManageCampus, name: "accounting"},
                 {path: 'time-table', component: ManageCampus, name: "time-table"},

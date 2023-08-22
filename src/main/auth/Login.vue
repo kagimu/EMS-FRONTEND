@@ -77,7 +77,7 @@
 
 <script setup>
 import {reactive, ref, watch} from 'vue'
-import {useAuthStore} from "@/store/auth.js";
+import {useAuthStore} from "@/main/auth/store/auth.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import router from "@/config/router.js";
 const  notificationStore  = useNotificationStore()

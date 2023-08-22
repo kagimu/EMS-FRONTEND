@@ -1,6 +1,6 @@
 import axios from "axios"
 import router from "@/config/router.js";
-import {useAuthStore} from "@/store/auth.js";
+import {useAuthStore} from "@/main/auth/store/auth.js";
 // import { useAuthStore } from "@/stores/auth"
 
 // import { useCommonsStore } from "@/stores/commons"
