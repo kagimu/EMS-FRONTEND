@@ -10,13 +10,13 @@
 
         <div>
           <div class="mb-2">
-            <label class="textColor">Height:</label>
-            <input type="text" v-model="form.height" required class="form-control">
+            <label class="textColor text-sm">Height:</label>
+            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.height" required class="form-control form-control-sm">
           </div>
 
           <div class="mb-2">
-            <label class="textColor">Feet:</label>
-            <input type="text" v-model="form.feet" required class="form-control">
+            <label class="textColor text-sm">Feet:</label>
+            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.feet" required class="form-control form-control-sm">
           </div>
 
         </div>
@@ -27,13 +27,13 @@
 
         <div>
           <div class="mb-2">
-            <label class="textColor">Weight:</label>
-            <input type="text" v-model="form.weight" required class="form-control">
+            <label class="textColor text-sm">Weight:</label>
+            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.weight" required class="form-control form-control-sm">
           </div>
 
           <div class="mb-2">
-            <label class="textColor">Complextion:</label>
-            <input type="text" v-model="form.complextion" required class="form-control">
+            <label class="textColor text-sm">Complextion:</label>
+            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.complextion" required class="form-control form-control-sm">
           </div>
 
         </div>

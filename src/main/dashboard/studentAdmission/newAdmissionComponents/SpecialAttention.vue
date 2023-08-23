@@ -1,16 +1,16 @@
 <template>
   <div>
 
-    <p class="ml-4 mt-4 mb-10"> EMERGENCY INFORMATION </p>
+    <p class="ml-4 mt-4 mb-10"> SPECIAL ATTENTION </p>
 
     <form @submit.prevent="addMedicalRecords">
       <div class="row mx-auto">
-        <div class="col-6">
+        <div class="col-7">
 
 
           <div class="mb-2">
-            <label class="textColor">Mention any special matter about the student that you would like to alert our attention to  *</label>
-            <textarea class="form-control noFocus" v-model="form.special_matter" id="floatingTextarea2" style="height: 100px"></textarea>
+            <label class="textColor text-sm">Mention any special matter about the student that you would like to alert our attention to  *</label>
+            <textarea style="outline: none 0 !important; box-shadow: none; height: 60px" class="form-control noFocus form-control-sm" v-model="form.special_matter" id="floatingTextarea2"></textarea>
           </div>
 
 

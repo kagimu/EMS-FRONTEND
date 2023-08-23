@@ -13,28 +13,28 @@
           <div class="col-6">
 
             <div class="mb-2">
-              <label class="textColor">Family Name of Father *</label>
-              <input type="text" v-model="form.family_name_of_father" required class="form-control">
+              <label class="textColor text-sm">Family Name of Father *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.family_name_of_father" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor">Father's Place of Employment *</label>
-              <input type="text" v-model="form.fathers_place_of_employment" required class="form-control">
+              <label class="textColor text-sm">Father's Place of Employment *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_place_of_employment" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor">Father's Phone 1  *</label>
-              <input type="text" v-model="form.fathers_phone1" required class="form-control">
+              <label class="textColor text-sm">Father's Phone 1  *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_phone1" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor">Father's Email 1</label>
-              <input type="text" v-model="form.fathers_email1" required class="form-control">
+              <label class="textColor text-sm">Father's Email 1</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_email1" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor"><small>Is Father Living *</small></label>
-              <select style="box-shadow: none;" class="form-select" v-model="form.father_living" aria-label="Default select example">
+              <label class="textColor">Is Father Living *</label>
+              <select style="font-size: 13px; outline: none 0 !important; box-shadow: none;" class="form-select form-control-sm" v-model="form.father_living" aria-label="Default select example">
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
               </select>
@@ -44,23 +44,23 @@
           <div class="col-6">
 
             <div class="mb-2">
-              <label class="textColor">Fathers Other names  *</label>
-              <input type="text" v-model="form.fathers_other_names" required class="form-control">
+              <label class="textColor text-sm">Fathers Other names  *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_other_names" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor">Father's Physical Contact Address  *</label>
-              <input type="text" v-model="form.fathers_physical_contact_address" required class="form-control">
+              <label class="textColor text-sm">Father's Physical Contact Address  *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_physical_contact_address" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor">Father's Phone 2</label>
-              <input type="text" v-model="form.fathers_phone2" required class="form-control">
+              <label class="textColor text-sm">Father's Phone 2</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_phone2" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor">Fathers Email 2</label>
-              <input type="text" v-model="form.fathers_email2" required class="form-control">
+              <label class="textColor text-sm">Fathers Email 2</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_email2" required class="form-control form-control-sm">
             </div>
 
           </div>
@@ -74,29 +74,29 @@
           <div class="col-6">
 
             <div class="mb-2">
-              <label class="textColor">Family Name of Mother *</label>
-              <input type="text" v-model="form.family_name_of_mother" required class="form-control">
+              <label class="textColor text-sm">Family Name of Mother *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.family_name_of_mother" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor">Mother's Place of Employment  *</label>
-              <input type="text" v-model="form.mothers_place_of_employment" required class="form-control">
+              <label class="textColor text-sm">Mother's Place of Employment  *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_place_of_employment" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor">Mothers Phone 1  *</label>
-              <input type="text" v-model="form.mothers_phone1" required class="form-control">
+              <label class="textColor text-sm">Mothers Phone 1  *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_phone1" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor">Mother's Email 1</label>
-              <input type="text" v-model="form.mothers_email1" required class="form-control">
+              <label class="textColor text-sm">Mother's Email 1</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_email1" required class="form-control form-control-sm">
             </div>
 
 
             <div class="mb-2">
-              <label class="textColor"><small>Is Mother Living *</small></label>
-              <select style="box-shadow: none;" class="form-select" v-model="form.mother_living" aria-label="Default select example">
+              <label class="textColor text-sm">Is Mother Living *</label>
+              <select style="font-size: 13px; outline: none 0 !important; box-shadow: none;" class="form-select form-control-sm" v-model="form.mother_living" aria-label="Default select example">
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
               </select>
@@ -107,23 +107,23 @@
           <div class="col-6">
 
             <div class="mb-2">
-              <label class="textColor">Mothers Other names *</label>
-              <input type="text" v-model="form.mothers_other_names" required class="form-control">
+              <label class="textColor text-sm">Mothers Other names *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_other_names" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor">Mother's Physical Contact Address  *</label>
-              <input type="text" v-model="form.mothers_other_names" required class="form-control">
+              <label class="textColor text-sm">Mother's Physical Contact Address  *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_other_names" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor">Mother's Phone 2</label>
-              <input type="text" v-model="form.mothers_phone2" required class="form-control">
+              <label class="textColor text-sm">Mother's Phone 2</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_phone2" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor">Mother's Email 2</label>
-              <input type="text" v-model="form.mothers_email2" required class="form-control">
+              <label class="textColor text-sm">Mother's Email 2</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_email2" required class="form-control form-control-sm">
             </div>
 
           </div>
@@ -139,23 +139,23 @@
               <div class="col-6">
 
                 <div class="mb-2">
-                  <label class="textColor">Family Name of Guardian</label>
-                  <input type="text" v-model="form.family_name_of_guardian" required class="form-control">
+                  <label class="textColor text-sm">Family Name of Guardian</label>
+                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.family_name_of_guardian" required class="form-control form-control-sm">
                 </div>
 
                 <div class="mb-2">
-                  <label class="textColor">Guardian's Place of Employment</label>
-                  <input type="text" v-model="form.guardians_place_of_employment" required class="form-control">
+                  <label class="textColor text-sm">Guardian's Place of Employment</label>
+                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_place_of_employment" required class="form-control form-control-sm">
                 </div>
 
                 <div class="mb-2">
-                  <label class="textColor">Guardian's Phone 1</label>
-                  <input type="text" v-model="form.guardians_phone1" required class="form-control">
+                  <label class="textColor text-sm">Guardian's Phone 1</label>
+                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_phone1" required class="form-control form-control-sm">
                 </div>
 
                 <div class="mb-2">
-                  <label class="textColor">Guardian's Email 1</label>
-                  <input type="text" v-model="form.guardians_email1" required class="form-control">
+                  <label class="textColor text-sm">Guardian's Email 1</label>
+                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_email1" required class="form-control form-control-sm">
                 </div>
 
 
@@ -163,23 +163,23 @@
               <div class="col-6">
 
                 <div class="mb-2">
-                  <label class="textColor">Guardian's Other names</label>
-                  <input type="text" v-model="form.guardians_other_names" required class="form-control">
+                  <label class="textColor text-sm">Guardian's Other names</label>
+                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_other_names" required class="form-control form-control-sm">
                 </div>
 
                 <div class="mb-2">
-                  <label class="textColor">Guardian's Physical Contact Address</label>
-                  <input type="text" v-model="form.guardians_physical_contact_address" required class="form-control">
+                  <label class="textColor text-sm">Guardian's Physical Contact Address</label>
+                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_physical_contact_address" required class="form-control form-control-sm">
                 </div>
 
                 <div class="mb-2">
-                  <label class="textColor">Guardian's Phone 2</label>
-                  <input type="text" v-model="form.guardians_phone2" required class="form-control">
+                  <label class="textColor text-sm">Guardian's Phone 2</label>
+                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_phone2" required class="form-control form-control-sm">
                 </div>
 
                 <div class="mb-2">
-                  <label class="textColor">Guardian's Email 2</label>
-                  <input type="text" v-model="form.guardians_email2" required class="form-control">
+                  <label class="textColor text-sm">Guardian's Email 2</label>
+                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_email2" required class="form-control form-control-sm">
                 </div>
 
               </div>
@@ -193,23 +193,23 @@
           <hr />
           <div>
           <div class="mb-2">
-            <label class="textColor">1st Language at Home  *</label>
-            <input type="text" v-model="form.languages" required class="form-control">
+            <label class="textColor text-sm">1st Language at Home  *</label>
+            <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.languages" required class="form-control form-control-sm">
           </div>
 
           <div class="mb-2">
-            <label class="textColor">2nd Language at Home</label>
-            <input type="text" v-model="form.languages" required class="form-control">
+            <label class="textColor text-sm">2nd Language at Home</label>
+            <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.languages" required class="form-control form-control-sm">
           </div>
 
           <div class="mb-2">
-            <label class="textColor">3rd Language at Home</label>
-            <input type="text" v-model="form.languages" required class="form-control">
+            <label class="textColor text-sm">3rd Language at Home</label>
+            <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.languages" required class="form-control form-control-sm">
           </div>
 
           <div class="mb-2">
-            <label class="textColor">4th Language at Home</label>
-            <input type="text" v-model="form.languages" required class="form-control">
+            <label class="textColor text-sm">4th Language at Home</label>
+            <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.languages" required class="form-control form-control-sm">
           </div>
 
       </div>

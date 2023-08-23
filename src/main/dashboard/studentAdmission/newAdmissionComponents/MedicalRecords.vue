@@ -10,18 +10,18 @@
 
           <div>
             <div class="mb-2">
-              <label class="textColor">Blood Type/Group</label>
-              <input type="text" v-model="form.blood_type_group" required class="form-control">
+              <label class="textColor text-sm">Blood Type/Group</label>
+              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.blood_type_group" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor">Allergies</label>
-              <input type="text" v-model="form.allergies" required class="form-control">
+              <label class="textColor text-sm">Allergies</label>
+              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.allergies" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor">Existing Conditions</label>
-              <input type="text" v-model="form.existing_conditions" required class="form-control">
+              <label class="textColor text-sm">Existing Conditions</label>
+              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.existing_conditions" required class="form-control form-control-sm">
             </div>
 
           </div>
@@ -32,18 +32,18 @@
 
           <div>
             <div class="mb-2">
-              <label class="textColor">Regular Medication</label>
-              <input type="text" v-model="form.regular_medication" required class="form-control">
+              <label class="textColor text-sm">Regular Medication</label>
+              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.regular_medication" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor">Doctor's Name</label>
-              <input type="text" v-model="form.doctors_name" required class="form-control">
+              <label class="textColor text-sm">Doctor's Name</label>
+              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.doctors_name" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor">Doctor's Phone</label>
-              <input type="text" v-model="form.doctors_phone" required class="form-control">
+              <label class="textColor text-sm">Doctor's Phone</label>
+              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.doctors_phone" required class="form-control form-control-sm">
             </div>
 
           </div>
