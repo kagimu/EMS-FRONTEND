@@ -156,6 +156,8 @@ import {reactive, ref} from "vue";
 
 const buttonLoader = ref(false)
 
+const emit = defineEmits(['inFocus', 'submit'])
+
 const form = reactive({
   surname:null,
   second_name:null,
@@ -178,9 +180,11 @@ const form = reactive({
   home_email2:null,
 })
 
-function addStudentEducationDetails(){
-
+const addStudentEducationDetails = () => {
+  emit("next", 1 )
 }
+
+
 
 </script>
 

@@ -1,14 +1,35 @@
 <template>
 <div>
 
+  <div v-if="step === 1">
+    <personal-details-of-student
+        v-on:next="nextPage"
+    ></personal-details-of-student>
+  </div>
 
-  <personal-details-of-student></personal-details-of-student>
-  <physical-marks></physical-marks>
-  <family-structure></family-structure>
-  <medical-records></medical-records>
-  <emergency-information></emergency-information>
-  <special-attention></special-attention>
-  <student-education></student-education>
+  <div v-if="step === 2">
+    <physical-marks></physical-marks>
+  </div>
+
+  <div v-if="step === 3">
+    <family-structure></family-structure>
+  </div>
+
+  <div v-if="step === 4">
+    <medical-records></medical-records>
+  </div>
+
+  <div v-if="step === 5">
+    <emergency-information></emergency-information>
+  </div>
+
+  <div v-if="step === 6">
+    <special-attention></special-attention>
+  </div>
+
+  <div v-if="step === 7">
+    <student-education></student-education>
+  </div>
 
 </div>
 </template>
@@ -23,6 +44,15 @@ import MedicalRecords from "@/main/dashboard/studentAdmission/newAdmissionCompon
 import EmergencyInformation from "@/main/dashboard/studentAdmission/newAdmissionComponents/EmergencyInformation.vue";
 import SpecialAttention from "@/main/dashboard/studentAdmission/newAdmissionComponents/SpecialAttention.vue";
 import StudentEducation from "@/main/dashboard/studentAdmission/newAdmissionComponents/StudentEducation.vue";
+import {ref} from "vue";
+
+const step = ref(1)
+
+function nextPage(data){
+  // alert(data)
+  step.value = 2
+}
+
 </script>
 
 <style scoped>
