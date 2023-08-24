@@ -10,7 +10,6 @@
 
             <div class="mb-3 ml-5 mt-3" style="font-size: 18px;">Students Admission</div>
 
-
             <div class="mt-4">
               <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">

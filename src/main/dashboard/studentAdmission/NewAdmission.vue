@@ -1,6 +1,37 @@
 <template>
 <div>
 
+
+
+
+  <ul class="nav nav-tabs text-xs" style="margin-top: 50px;">
+    <li class="nav-item cursor-pointer">
+      <a style="color: black;" class="nav-link" @click="nextPage(1)" :class="step === 1 ? 'active activeTab' : ''">PERSONAL DETAILS OF STUDENT</a>
+    </li>
+    <li class="nav-item cursor-pointer">
+      <a style="color: black;" class="nav-link" @click="nextPage(2)" :class="step === 2 ? 'active activeTab' : ''">PHYSICAL MARKS</a>
+    </li>
+    <li class="nav-item cursor-pointer">
+      <a style="color: black;" class="nav-link" @click="nextPage(3)" :class="step === 3 ? 'active activeTab' : ''">FAMILY STRUCTURE</a>
+    </li>
+    <li class="nav-item cursor-pointer">
+      <a style="color: black;" class="nav-link" @click="nextPage(4)" :class="step === 4 ? 'active activeTab' : ''">MEDICAL RECORDS</a>
+    </li>
+    <li class="nav-item cursor-pointer">
+      <a style="color: black;" class="nav-link" @click="nextPage(5)" :class="step === 5 ? 'active activeTab' : ''">EMERGENCY INFORMATION</a>
+    </li>
+    <li class="nav-item cursor-pointer">
+      <a style="color: black;" class="nav-link" @click="nextPage(6)" :class="step === 6 ? 'active activeTab' : ''">SPECIAL ATTENTION</a>
+    </li>
+
+    <li class="nav-item cursor-pointer">
+      <a style="color: black;" class="nav-link" @click="nextPage(7)" :class="step === 7 ? 'active activeTab' : ''">EDUCATION DETAILS</a>
+    </li>
+  </ul>
+
+
+
+
   <div v-show="step === 1">
     <personal-details-of-student
         v-on:next="nextPage"
@@ -67,5 +98,7 @@ function nextPage(data){
 </script>
 
 <style scoped>
-
+.activeTab{
+  font-weight: bold;
+}
 </style>
