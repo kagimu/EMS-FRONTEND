@@ -1,44 +1,46 @@
 <template>
 <div>
 
-  <div v-if="step === 1">
+  <div v-show="step === 1">
     <personal-details-of-student
         v-on:next="nextPage"
     ></personal-details-of-student>
   </div>
 
-  <div v-if="step === 2">
+  <div v-show="step === 2">
     <physical-marks
         v-on:next="nextPage"
     ></physical-marks>
   </div>
 
-  <div v-if="step === 3">
+  <div v-show="step === 3">
     <family-structure
         v-on:next="nextPage"
     ></family-structure>
   </div>
 
-  <div v-if="step === 4">
+  <div v-show="step === 4">
     <medical-records
         v-on:next="nextPage"
     ></medical-records>
   </div>
 
-  <div v-if="step === 5">
+  <div v-show="step === 5">
     <emergency-information
         v-on:next="nextPage"
     ></emergency-information>
   </div>
 
-  <div v-if="step === 6">
+  <div v-show="step === 6">
     <special-attention
         v-on:next="nextPage"
     ></special-attention>
   </div>
 
-  <div v-if="step === 7">
-    <student-education></student-education>
+  <div v-show="step === 7">
+    <student-education
+        v-on:next="nextPage"
+    ></student-education>
   </div>
 
 </div>

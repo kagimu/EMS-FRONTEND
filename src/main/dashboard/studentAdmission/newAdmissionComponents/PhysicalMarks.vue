@@ -44,13 +44,19 @@
 
     <hr />
 
-    <div class="text-right mt-4">
+    <div class="flex justify-content-between mt-4">
+
+      <button type="button" @click="backPage" class="btn btn-outline-secondary mb-2 ml-4">
+        Back
+      </button>
+
       <button type="submit" class="btn btn-primary mb-2 mr-4">
         Next
-        <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
+        <span class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
           <span class="visually-hidden">Loading...</span>
-        </div>
+        </span>
       </button>
+
     </div>
 
   </form>
@@ -73,10 +79,14 @@ const form = reactive({
 })
 
 
+
 const addStudentPhysicalMarks = () => {
   emit("next", 3 )
 }
 
+const backPage = () => {
+  emit("next", 1 )
+}
 
 
 
