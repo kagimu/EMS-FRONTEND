@@ -39,14 +39,17 @@
 import {reactive, ref} from "vue";
 
 const buttonLoader = ref(false)
+const emit = defineEmits()
 
 const form = reactive({
   special_matter:null,
 })
 
-function addMedicalRecords(){
-
+const addMedicalRecords = () => {
+  emit("next", 7)
 }
+
+
 
 </script>
 

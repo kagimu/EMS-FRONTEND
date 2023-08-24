@@ -238,6 +238,7 @@
 
 import {reactive, ref} from "vue";
 const buttonLoader = ref(false)
+const emit = defineEmits()
 const form = reactive({
   family_name_of_father:null,
   fathers_place_of_employment:null,
@@ -267,9 +268,11 @@ const form = reactive({
   languages:null,
 })
 
-function addFamilyStructure(){
-
+const addFamilyStructure = () => {
+  emit("next", 4)
 }
+
+
 
 </script>
 

@@ -73,6 +73,7 @@
 import {reactive, ref} from "vue";
 
 const buttonLoader = ref(false)
+const emit = defineEmits()
 
 const form = reactive({
   full_name_of_person_to_be_contacted_first_in_case_of_emergency:null,
@@ -83,9 +84,10 @@ const form = reactive({
   telephone_contact_of_doctor:null,
 })
 
-function addMedicalRecords(){
-
+const addMedicalRecords = () => {
+  emit("next", 6)
 }
+
 
 </script>
 

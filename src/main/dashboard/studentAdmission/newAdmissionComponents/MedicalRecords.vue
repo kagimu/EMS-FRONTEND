@@ -73,6 +73,7 @@
 import {reactive, ref} from "vue";
 
 const buttonLoader = ref(false)
+const emit = defineEmits()
 
 const form = reactive({
   blood_type_group:null,
@@ -83,9 +84,10 @@ const form = reactive({
   doctors_phone:null,
 })
 
-function addMedicalRecords(){
-
+const addMedicalRecords = () => {
+  emit("next", 5)
 }
+
 
 </script>
 

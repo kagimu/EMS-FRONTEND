@@ -63,6 +63,7 @@
 import {reactive, ref} from "vue";
 
 const buttonLoader = ref(false)
+const emit = defineEmits()
 
 const form = reactive({
   height:null,
@@ -72,9 +73,13 @@ const form = reactive({
 })
 
 
-function addStudentPhysicalMarks(){
-
+const addStudentPhysicalMarks = () => {
+  emit("next", 3 )
 }
+
+
+
+
 
 </script>
 

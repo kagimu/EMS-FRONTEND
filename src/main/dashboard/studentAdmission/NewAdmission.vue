@@ -8,23 +8,33 @@
   </div>
 
   <div v-if="step === 2">
-    <physical-marks></physical-marks>
+    <physical-marks
+        v-on:next="nextPage"
+    ></physical-marks>
   </div>
 
   <div v-if="step === 3">
-    <family-structure></family-structure>
+    <family-structure
+        v-on:next="nextPage"
+    ></family-structure>
   </div>
 
   <div v-if="step === 4">
-    <medical-records></medical-records>
+    <medical-records
+        v-on:next="nextPage"
+    ></medical-records>
   </div>
 
   <div v-if="step === 5">
-    <emergency-information></emergency-information>
+    <emergency-information
+        v-on:next="nextPage"
+    ></emergency-information>
   </div>
 
   <div v-if="step === 6">
-    <special-attention></special-attention>
+    <special-attention
+        v-on:next="nextPage"
+    ></special-attention>
   </div>
 
   <div v-if="step === 7">
@@ -49,8 +59,7 @@ import {ref} from "vue";
 const step = ref(1)
 
 function nextPage(data){
-  // alert(data)
-  step.value = 2
+  step.value = data
 }
 
 </script>
