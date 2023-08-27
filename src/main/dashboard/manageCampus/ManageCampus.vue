@@ -4,69 +4,28 @@
     <div class="row mt-3">
       <div class="col-12">
 
+        <button
+            class="btn btn-primary btn-sm"
+            @click="addCampus"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasRight"
+            aria-controls="offcanvasRight">Add Campus</button>
 
-        <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">New Campus</button>
 
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+
+        <div class="offcanvas offcanvas-end" :class="{ show: campusDialog }"    tabindex="-1" id="newClass" aria-labelledby="offcanvasRightLabel">
           <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasRightLabel">Add New Campus</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <button type="button" class="btn-close noFocus" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
-
-
-            <form @submit.prevent="addCampus">
-
-
-              <div class="mb-2">
-                <label class="textColor"><small>Campus Name</small></label>
-                <input type="email" v-model="form.name" required class="form-control">
-              </div>
-
-              <div class="mb-2">
-                <label class="textColor"><small>Phone</small></label>
-                <input type="email" v-model="form.phone" required class="form-control">
-              </div>
-
-              <div class="mb-2">
-                <label class="textColor"><small>Email</small></label>
-                <input type="email" v-model="form.email" required class="form-control">
-              </div>
-
-              <div class="mb-2">
-                <label class="textColor"><small>Location</small></label>
-                <input type="email" v-model="form.location" required class="form-control">
-              </div>
-
-
-              <div class="mb-2">
-                <label class="textColor"><small>Class Levels</small></label>
-                <select style="box-shadow: none;" class="form-select" v-model="form.level" aria-label="Default select example">
-                  <option value="">Select Level</option>
-                  <option value="kindergarten">Kindergarten</option>
-                  <option value="primary">Primary </option>
-                  <option value="secondary">Secondary</option>
-                  <option value="tertiary">Tertiary</option>
-                </select>
-              </div>
-
-
-              <div class="text-right mt-4">
-                <button type="submit" class="btn btn-primary mb-2">
-                  save
-
-                  <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
-                    <span class="visually-hidden">Loading...</span>
-                  </div>
-                </button>
-              </div>
-
-
-            </form>
-
-
+            <new-campus></new-campus>
           </div>
         </div>
+
+
+
 
 
       </div>
@@ -96,21 +55,31 @@
 
 <script setup>
 
-import {reactive, ref} from "vue";
+import {ref, watch} from "vue";
+import NewCampus from "@/main/dashboard/manageCampus/NewCampus.vue";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import useNotificationStore from "@/composables/useNotification.js";
 
-const buttonLoader = ref(false)
+const campusStore = useCampusStore()
+const  notificationStore  = useNotificationStore()
 
-const form = reactive({
-  name:null,
-  email:null,
-  phone:null,
-  location:null,
-  level:""
-})
+const campusDialog = ref( false)
 
-function addCampus(){
-alert(JSON.stringify(form))
+const addCampus = () => {
+  campusDialog.value = true
 }
+
+watch(
+    () => campusStore.newCampusResponse,
+    async (data) => {
+      if(data){
+        campusDialog.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
 
 </script>
 
