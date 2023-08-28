@@ -34,7 +34,6 @@
 <script setup>
 
 import {onMounted, reactive, ref} from "vue";
-import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
 const classError = ref(null)

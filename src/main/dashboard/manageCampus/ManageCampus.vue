@@ -35,7 +35,12 @@
     <div class="row">
       <div class="col-4" v-for="(campus, index) in campusList" :key="index">
         <div class="card mt-3">
-              <div class="card-body">
+
+          <router-link
+              class="linkStyle"
+              :to="{name:'level', query:{id:campus.number}}"
+          >
+              <div class="card-body linkStyle">
                 <div class="mb-3" style="font-size: 20px;">{{campus.name}}</div>
                 <small>
                   {{campus.email}}<br />
@@ -43,6 +48,7 @@
                   {{campus.location}}
                 </small>
               </div>
+          </router-link>
         </div>
       </div>
 
@@ -111,6 +117,18 @@ input:focus {
 
 .textColor{
   color: #717375;
+}
+
+.linkStyle {
+  text-decoration: none;
+  color: #1867c0;
+  font-size: 16px;
+}
+
+.linkStyle:hover {
+  font-size: 16px;
+  color: green;
+  text-decoration: underline;
 }
 
 </style>

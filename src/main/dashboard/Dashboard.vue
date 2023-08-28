@@ -122,7 +122,7 @@ const menuList = ref([
   {title:"Reports", name:"reports", icon:"bi-graph-up-arrow"},
   {title:"School", name:"school", icon:"bi-house-add"},
   // {title:"Campus", name:"campus", icon:"bi-house-add"},
-  {title:"Manage Level", name:"level", icon:"bi-sign-intersection"},
+  // {title:"Manage Level", name:"level", icon:"bi-sign-intersection"},
   {title:"Student Admission", name:"student-admission", icon:"bi-person-plus"},
   {title:"Profiles", name:"profiles", icon:"bi-people"},
   {title:"Accounting", name:"accounting", icon:"bi-receipt"},

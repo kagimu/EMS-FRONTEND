@@ -32,8 +32,12 @@
 
       <div class="mb-2">
         <label class="textColor"><small>Class Levels</small></label>
-        <select style="box-shadow: none;" class="form-select" v-model="form.level" aria-label="Default select example">
-          <option value="">Select Level</option>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            multiple
+            v-model="form.level">
+          <option disabled value="">Select Level</option>
           <option value="kindergarten">Kindergarten</option>
           <option value="primary">Primary </option>
           <option value="secondary">Secondary</option>
@@ -78,7 +82,7 @@ const form = reactive({
   email:null,
   phone:null,
   location:null,
-  level:""
+  level:[]
 })
 
 
