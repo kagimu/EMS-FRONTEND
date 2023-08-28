@@ -43,9 +43,9 @@
               <div class="card-body linkStyle">
                 <div class="mb-3" style="font-size: 20px;">{{campus.name}}</div>
                 <small>
-                  {{campus.email}}<br />
-                  {{campus.phone}}<br />
-                  {{campus.location}}
+                  Email: {{campus.email}}<br />
+                  Phone: {{campus.phone}}<br />
+                  Location: {{campus.location}}
                 </small>
               </div>
           </router-link>
@@ -121,7 +121,7 @@ input:focus {
 
 .linkStyle {
   text-decoration: none;
-  color: #1867c0;
+  color: #212529;
   font-size: 16px;
 }
 

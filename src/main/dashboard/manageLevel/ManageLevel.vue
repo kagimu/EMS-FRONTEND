@@ -2,54 +2,11 @@
   <div>
 
 
-    <div class="row">
-      <div class="col-12">
-        <div class="card mt-3">
-          <div class="card-body" style="padding: 0;">
-            <div class="mb-2 ml-4 mt-2" style="font-size: 20px;">Bunamwaaya campus</div>
-
-            <div style="width: 95%; font-size: 13px;" class="mx-auto mt-4">
-
-              <div class="row">
-                <div class="col-4">
-                    <div class="mb-4">
-                      Contacts<br />
-                      Email:   mwesigwa.noregrets@gmail.com Phone:   +256752698545
-                    </div>
-                </div>
+    <level-info></level-info>
 
 
 
-                <div class="col-4">
-              <div class="mb-4">
-                Address <br />
-                Location: Bunamwaya, P.O.BOX 21671 Kampala
-              </div>
-                </div>
-
-
-
-                    <div class="col-4">
-              <div class="mb-4">
-                Class Levels <br />
-                kindergarten
-                primary
-              </div>
-                    </div>
-                  </div>
-
-            </div>
-
-
-
-
-
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row mt-3">
+<!--    <div class="row mt-3">
       <div class="col-12">
 
 
@@ -92,7 +49,7 @@
 
 
       </div>
-    </div>
+    </div>-->
 
 
 
@@ -170,6 +127,7 @@
 
 import {reactive, ref} from "vue";
 import Subject from "@/main/dashboard/manageLevel/Subject.vue";
+import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
 
 const buttonLoader = ref(false)
 
