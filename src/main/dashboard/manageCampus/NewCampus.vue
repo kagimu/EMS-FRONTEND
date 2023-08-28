@@ -41,6 +41,7 @@
           <option value="kindergarten">Kindergarten</option>
           <option value="primary">Primary </option>
           <option value="secondary">Secondary</option>
+          <option value="vocational">Vocational</option>
           <option value="tertiary">Tertiary</option>
         </select>
       </div>
