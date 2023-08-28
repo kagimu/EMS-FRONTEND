@@ -11,6 +11,7 @@ import userProfiles from "@/main/dashboard/profiles/userProfiles.vue";
 import settings from "@/main/settings/Settings.vue";
 import ReportCenter from "@/main/dashboard/ReportCenter/ReportCenter.vue";
 import StudentAdmission from "@/main/dashboard/studentAdmission/StudentAdmission.vue";
+import ManageSchool from "@/main/dashboard/manageSchool/ManageSchool.vue";
 
 
 const router = createRouter({
@@ -35,7 +36,8 @@ const router = createRouter({
             },
             children:[
                 {path: 'home', component: Home, name: "home"},
-                {path: 'manage-campus', component: ManageCampus, name: "manage-campus"},
+                {path: 'school', component: ManageSchool, name: "school"},
+                {path: 'campus', component: ManageCampus, name: "campus"},
                 {path: 'level', component: ManageLevel, name: "level"},
                 {path: 'reports', component: ManageCampus, name: "reports"},
                 {path: 'student-admission', component: StudentAdmission, name: "student-admission"},

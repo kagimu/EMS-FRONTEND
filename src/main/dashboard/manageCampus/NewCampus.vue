@@ -3,8 +3,8 @@
 
     <form @submit.prevent="addCampus">
 
-      <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
-        {{ classError }}
+      <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
+        {{ errorMessage }}
       </div>
 
       <div class="mb-2">
@@ -64,7 +64,7 @@
 import {onMounted, reactive, ref} from "vue";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 
-const classError = ref(null)
+const errorMessage = ref(null)
 const name = ref(null)
 const loader = ref(false)
 
