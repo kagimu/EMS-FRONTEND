@@ -4,6 +4,7 @@ import api from "@/config/api.js";
 
 export const useCampusStore = defineStore("campus", () => {
     let newCampusResponse = ref(null)
+    let campusListResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -39,12 +40,26 @@ export const useCampusStore = defineStore("campus", () => {
             })
     }
 
+    async function fetchCampuses(data) {
+        return await api.get("main/campuses?school_number="+data)
+            .then((response) => {
+                campusListResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
 
 
     return {
         newCampusResponse,
+        campusListResponse,
         errorMessage,
-        newCampusData
+        newCampusData,
+        fetchCampuses
     }
 })

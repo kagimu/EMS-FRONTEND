@@ -11,10 +11,10 @@
             </div>
             <div class="navbar-collapse">
               <ul class="navbar-nav me-auto my-lg-0 navbar-nav-scroll" style="font-size: 13px;">
-                <li class="nav-item">
+<!--                <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="#" style="color: #ffffff;">Home</a>
-                </li>
-                <li class="nav-item dropdown">
+                </li>-->
+<!--                <li class="nav-item dropdown">
                   <a style="color: #ffffff;" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Link
                   </a>
@@ -24,7 +24,7 @@
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="#">Something else here</a></li>
                   </ul>
-                </li>
+                </li>-->
               </ul>
               <div class="d-flex">
                 <ul class="navbar-nav me-auto mb-lg-0" style="font-size: 13px;">
@@ -121,7 +121,7 @@ const menuList = ref([
   {title:"Home", name:"home", icon:"bi-house"},
   {title:"Reports", name:"reports", icon:"bi-graph-up-arrow"},
   {title:"School", name:"school", icon:"bi-house-add"},
-  {title:"Campus", name:"campus", icon:"bi-house-add"},
+  // {title:"Campus", name:"campus", icon:"bi-house-add"},
   {title:"Manage Level", name:"level", icon:"bi-sign-intersection"},
   {title:"Student Admission", name:"student-admission", icon:"bi-person-plus"},
   {title:"Profiles", name:"profiles", icon:"bi-people"},

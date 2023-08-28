@@ -63,7 +63,9 @@
 
 import {onMounted, reactive, ref} from "vue";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import {useRouter} from "vue-router";
 
+const routerData = useRouter()
 const errorMessage = ref(null)
 const name = ref(null)
 const loader = ref(false)
@@ -82,6 +84,7 @@ const form = reactive({
 
 const addCampus = () =>{
   loader.value = true
+  form.school_number = routerData.currentRoute.value.query.id
   campusStore.newCampusData(form)
 }
 
