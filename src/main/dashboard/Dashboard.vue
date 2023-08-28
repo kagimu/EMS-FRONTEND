@@ -119,14 +119,14 @@ const defaultMenuSize = ref(false)
 
 const menuList = ref([
   {title:"Home", name:"home", icon:"bi-house"},
-  {title:"Reports", name:"reports", icon:"bi-graph-up-arrow"},
+  // {title:"Reports", name:"reports", icon:"bi-graph-up-arrow"},
   {title:"School", name:"school", icon:"bi-house-add"},
   // {title:"Campus", name:"campus", icon:"bi-house-add"},
   // {title:"Manage Level", name:"level", icon:"bi-sign-intersection"},
   {title:"Student Admission", name:"student-admission", icon:"bi-person-plus"},
   {title:"Profiles", name:"profiles", icon:"bi-people"},
-  {title:"Accounting", name:"accounting", icon:"bi-receipt"},
-  {title:"Time table", name:"time-table", icon:"bi-card-text"},
+  // {title:"Accounting", name:"accounting", icon:"bi-receipt"},
+  // {title:"Time table", name:"time-table", icon:"bi-card-text"},
   {title:"Report Center", name:"report-center", icon:"bi-card-heading"},
   {title:"Settings", name:"settings", icon:"bi-gear"},
 ])

@@ -58,16 +58,16 @@
     <div class="row">
       <div class="col-3">
         <div class="card mt-3">
-          <div class="card-body" style="padding: 0;">
+          <div class="card-body" style="padding: 0;" v-if="levelDataInfo">
             <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Level</div>
 
-
             <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-              <router-link class="list-group-item list-group-item-action active" :to="{name:''}"><small style="font-size:12px;">Kindergarten</small></router-link>
-              <router-link class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Primary</small></router-link>
-              <router-link class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Secondary</small></router-link>
-              <router-link class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Tertiary</small></router-link>
-              <router-link class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Vocational</small></router-link>
+              <router-link v-for="(item, idx) in  levelDataInfo.levels" :key="idx" class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">{{item.name}}</small></router-link>
+<!--              <router-link class="list-group-item list-group-item-action active" :to="{name:''}"><small style="font-size:12px;">Kindergarten</small></router-link>-->
+<!--              <router-link class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Primary</small></router-link>-->
+<!--              <router-link class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Secondary</small></router-link>-->
+<!--              <router-link class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Tertiary</small></router-link>-->
+<!--              <router-link class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Vocational</small></router-link>-->
             </div>
 
 
@@ -125,19 +125,22 @@
 
 <script setup>
 
-import {reactive, ref} from "vue";
-import Subject from "@/main/dashboard/manageLevel/Subject.vue";
+import {ref, watch} from "vue";
 import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
+import {useLevelStore} from "@/main/dashboard/manageLevel/store/level.js";
+const levelStore = useLevelStore()
+const levelDataInfo = ref(null)
 
-const buttonLoader = ref(false)
+watch(
+    () => levelStore.levelResponse,
+    async (data) => {
+      if(data){
+        levelDataInfo.value = data.data
+      }
+    },
+    {deep:true}
+)
 
-const form = reactive({
-  name:null
-})
-
-function addCampus(){
-  alert(JSON.stringify(form))
-}
 
 </script>
 
