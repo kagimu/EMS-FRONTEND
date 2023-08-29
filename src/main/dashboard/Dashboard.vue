@@ -2,7 +2,7 @@
   <div style="position: fixed; width: 100%; left: 0; right: 0; top: 0; bottom: 0;">
 
     <div class="row">
-      <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #3c8dbc;">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #1062da;">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
           <div class="container-fluid">
             <div class="flex" style="width: 12%; margin-right: 4%; color: #ffffff;">

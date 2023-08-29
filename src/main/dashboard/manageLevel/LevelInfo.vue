@@ -4,8 +4,8 @@
 
     <div class="row">
       <div class="col-12">
-        <div class="card mt-3" v-if="levelDataInfo">
-          <div class="card-body" style="padding: 0;">
+        <div class="mt-3" v-if="levelDataInfo">
+          <div style="padding: 0;">
             <div class="mb-2 ml-4 mt-2" style="font-size: 20px;">{{levelDataInfo.name}}</div>
 
             <div style="width: 95%; font-size: 13px;" class="mx-auto mt-4">
@@ -13,7 +13,7 @@
               <div class="row">
                 <div class="col-4">
                     <div class="mb-4">
-                      Contacts<br />
+                      <b>Contacts</b><br />
                       Email:  <span>{{levelDataInfo.email}}</span> <br />
                       Phone:   <span>{{levelDataInfo.phone}}</span>
                     </div>
@@ -23,7 +23,7 @@
 
                 <div class="col-4">
               <div class="mb-4">
-                Address <br />
+                <b>Address</b> <br />
                 Location: <span>{{levelDataInfo.location}}</span>
               </div>
                 </div>
@@ -65,11 +65,7 @@ import {onMounted, ref, watch} from "vue";
 
 const levelDataInfo = ref(null)
 
- onMounted(
-     () => {
-       levelStore.fetchLevelInfo(routerData.currentRoute.value.query.id)
-     }
- )
+
 
 
 watch(

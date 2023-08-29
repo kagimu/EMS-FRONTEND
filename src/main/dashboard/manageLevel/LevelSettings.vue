@@ -1,0 +1,38 @@
+<template>
+  <div>
+    <div class="mt-4">
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <button class="nav-link navColor active" id="subjects-tab" data-bs-toggle="tab" data-bs-target="#subjects" type="button" role="tab" aria-controls="subjects" aria-selected="false"><small>Subjects</small></button>
+          <button class="nav-link navColor" id="grading-scale-tab" data-bs-toggle="tab" data-bs-target="#grading-scale" type="button" role="tab" aria-controls="grading-scale" aria-selected="true"><small>Grading Scale</small></button>
+          <button class="nav-link navColor" id="study-period-tab" data-bs-toggle="tab" data-bs-target="#study-period" type="button" role="tab" aria-controls="study-period" aria-selected="false"><small>Study Period</small></button>
+          <button class="nav-link navColor" id="assessment-manager-tab" data-bs-toggle="tab" data-bs-target="#assessment-manager" type="button" role="tab" aria-controls="assessment-manager" aria-selected="false"><small>Assessment Manager</small></button>
+          <button class="nav-link navColor" id="mode-of-assessment-tab" data-bs-toggle="tab" data-bs-target="#mode-of-assessment" type="button" role="tab" aria-controls="mode-of-assessment" aria-selected="false"><small>Mode of Assessment</small></button>
+          <button class="nav-link navColor" id="grading-term-tab" data-bs-toggle="tab" data-bs-target="#grading-term" type="button" role="tab" aria-controls="grading-term" aria-selected="false"><small>Grading Term</small></button>
+        </div>
+      </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="subjects" role="tabpanel" aria-labelledby="subjects-tab" tabindex="0">
+          <!--        <subject></subject>-->
+          subject
+        </div>
+        <div class="tab-pane fade" id="grading-scale" role="tabpanel" aria-labelledby="grading-scale-tab" tabindex="0">Grading Scale</div>
+        <div class="tab-pane fade" id="study-period" role="tabpanel" aria-labelledby="study-period-tab" tabindex="0">Study Period</div>
+        <div class="tab-pane fade" id="assessment-manager" role="tabpanel" aria-labelledby="assessment-manager-tab" tabindex="0">Assessment Manger</div>
+        <div class="tab-pane fade" id="mode-of-assessment" role="tabpanel" aria-labelledby="mode-of-assessment-tab" tabindex="0">Mode of Assessment</div>
+        <div class="tab-pane fade" id="grading-term" role="tabpanel" aria-labelledby="grading-term-tab" tabindex="0">Grading Term</div>
+      </div>
+
+    </div>
+  </div>
+
+</template>
+
+<script setup>
+
+
+</script>
+
+<style scoped>
+
+</style>
