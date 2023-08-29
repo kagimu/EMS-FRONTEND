@@ -17,8 +17,6 @@
               <router-link v-for="(item, idx) in  levelDataInfo.levels" :key="idx" class="list-group-item list-group-item-action" :class="item.number === campusLevel ? 'active' : ''" :to="{name:'level', query:{id:campusId, l:item.number}}"><small style="font-size:12px;">{{item.name}}</small></router-link>
             </div>
 
-
-
           </div>
         </div>
       </div>
@@ -30,8 +28,6 @@
 
             <div class="mt-4">
 
-
-
               <div v-if="showHomeLevel && showHomeLevel === 'home'">
                 <level-info></level-info>
               </div>
@@ -39,8 +35,6 @@
               <div v-if="showHomeLevel && showHomeLevel === 'level'">
                 <level-settings></level-settings>
               </div>
-
-
 
 
             </div>
