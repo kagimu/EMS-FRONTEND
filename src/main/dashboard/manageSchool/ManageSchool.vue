@@ -34,18 +34,19 @@
 
     <div class="row">
       <div class="col-4" v-for="(school, index) in schoolsList" :key="index">
-        <div class="card mt-3">
+        <router-link
+            class="linkStyle"
+            :to="{name:'campus', query:{id:school.number}}"
+        >
+          <div class="card mt-3">
           <div class="card-body">
             <div class="mb-3" style="font-size: 20px;">
-              <router-link
-                  class="linkStyle"
-                  :to="{name:'campus', query:{id:school.number}}"
-              >
+
               {{school.name}}
-              </router-link>
             </div>
           </div>
         </div>
+        </router-link>
       </div>
 
 
