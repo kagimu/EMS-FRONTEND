@@ -34,19 +34,32 @@
 
     <div class="row">
       <div class="col-4" v-for="(school, index) in schoolsList" :key="index">
-        <router-link
-            class="linkStyle"
-            :to="{name:'campus', query:{id:school.number}}"
-        >
+
           <div class="card mt-3">
           <div class="card-body">
             <div class="mb-3" style="font-size: 20px;">
-
               {{school.name}}
             </div>
+
+            <div class="flex justify-content-between">
+              &nbsp;
+              <router-link
+                  class="text-decoration-none"
+                  :to="{name:'campus', query:{id:school.number}}"
+              >
+                <button
+                    type="button"
+                    class="btn-primary border-0 d-none d-lg-block viewButtonStyle">
+                      <span class="mx-9 text-sm">
+                        View
+                      </span>
+                </button>
+              </router-link>
+            </div>
+
           </div>
         </div>
-        </router-link>
+
       </div>
 
 
@@ -116,6 +129,17 @@ watch(
   font-size: 16px;
   color: green;
   text-decoration: underline;
+}
+
+.viewButtonStyle{
+  background-color: #2c6fb9;
+  color: #ffffff;
+  border-radius: 0;
+}
+
+.viewButtonStyle:hover {
+  background-color: #0557b4;
+  color: #ffffff;
 }
 
 </style>

@@ -36,19 +36,33 @@
       <div class="col-4" v-for="(campus, index) in campusList" :key="index">
         <div class="card mt-3">
 
-          <router-link
-              class="linkStyle"
-              :to="{name:'level', query:{id:campus.number}}"
-          >
-              <div class="card-body linkStyle">
+
+              <div class="card-body">
                 <div class="mb-3" style="font-size: 20px;">{{campus.name}}</div>
                 <small>
                   Email: {{campus.email}}<br />
                   Phone: {{campus.phone}}<br />
                   Location: {{campus.location}}
                 </small>
+
+                <div class="flex justify-content-between">
+                  &nbsp;
+                  <router-link
+                      class="text-decoration-none"
+                      :to="{name:'level', query:{id:campus.number}}"
+                  >
+                  <button
+                      type="button"
+                      class="btn-primary border-0 d-none d-lg-block viewButtonStyle">
+                      <span class="mx-9 text-sm">
+                        View
+                      </span>
+                  </button>
+                  </router-link>
+                </div>
+
               </div>
-          </router-link>
+
         </div>
       </div>
 
@@ -119,16 +133,16 @@ input:focus {
   color: #717375;
 }
 
-.linkStyle {
-  text-decoration: none;
-  color: #212529;
-  font-size: 16px;
+
+.viewButtonStyle{
+  background-color: #2c6fb9;
+  color: #ffffff;
+  border-radius: 0;
 }
 
-.linkStyle:hover {
-  font-size: 16px;
-  color: green;
-  text-decoration: underline;
+.viewButtonStyle:hover {
+  background-color: #0557b4;
+  color: #ffffff;
 }
 
 </style>

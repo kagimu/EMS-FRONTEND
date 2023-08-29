@@ -62,7 +62,7 @@
             <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Level</div>
 
             <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-              <router-link v-for="(item, idx) in  levelDataInfo.levels" :key="idx" class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">{{item.name}}</small></router-link>
+              <router-link v-for="(item, idx) in  levelDataInfo.levels" :key="idx" class="list-group-item list-group-item-action" :class="item.number === campusLevel ? 'active' : ''" :to="{name:'level', query:{id:campusId, l:item.number}}"><small style="font-size:12px;">{{item.name}}</small></router-link>
 <!--              <router-link class="list-group-item list-group-item-action active" :to="{name:''}"><small style="font-size:12px;">Kindergarten</small></router-link>-->
 <!--              <router-link class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Primary</small></router-link>-->
 <!--              <router-link class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Secondary</small></router-link>-->
@@ -128,8 +128,13 @@
 import {ref, watch} from "vue";
 import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
 import {useLevelStore} from "@/main/dashboard/manageLevel/store/level.js";
+import {useRouter} from "vue-router";
 const levelStore = useLevelStore()
 const levelDataInfo = ref(null)
+const routerData = useRouter()
+
+const campusId = routerData.currentRoute.value.query.id
+const campusLevel = routerData.currentRoute.value.query.l
 
 watch(
     () => levelStore.levelResponse,
