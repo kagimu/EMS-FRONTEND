@@ -14,12 +14,10 @@
       </nav>
       <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="classes" role="tabpanel" aria-labelledby="classes-tab" tabindex="0">
-          <!--        <subject></subject>-->
           <class-list></class-list>
         </div>
         <div class="tab-pane fade" id="subjects" role="tabpanel" aria-labelledby="subjects-tab" tabindex="0">
-          <!--        <subject></subject>-->
-          subject
+          <subject-list></subject-list>
         </div>
         <div class="tab-pane fade" id="grading-scale" role="tabpanel" aria-labelledby="grading-scale-tab" tabindex="0">Grading Scale</div>
         <div class="tab-pane fade" id="study-period" role="tabpanel" aria-labelledby="study-period-tab" tabindex="0">Study Period</div>
@@ -37,6 +35,7 @@
 
 
 import ClassList from "@/main/dashboard/manageLevel/class/ClassList.vue";
+import SubjectList from "@/main/dashboard/manageLevel/subject/SubjectList.vue";
 </script>
 
 <style scoped>

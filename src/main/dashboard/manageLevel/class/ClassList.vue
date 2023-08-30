@@ -5,15 +5,18 @@
       <div class="col-12">
 
 
+<div class="flex justify-content-between mt-2 mr-3">
+  &nbsp;
+  <button
+      data-bs-toggle="offcanvas" data-bs-target="#newClass" aria-controls="offcanvasRight"
+      @click="addCampus"
+      type="button"
+      class="btn btn-sm buttonStyle btn-primary mr-2">
+    <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+    Add Class
+  </button>
+</div>
 
-        <button
-            data-bs-toggle="offcanvas" data-bs-target="#newClass" aria-controls="offcanvasRight"
-            @click="addCampus"
-            type="button"
-            class="btn btn-sm buttonStyle btn-primary mr-2">
-          <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-          Add Class
-        </button>
 
         <div class="offcanvas offcanvas-end" :class="{ show: classDialog }"    tabindex="-1" id="newClass" aria-labelledby="offcanvasRightLabel">
           <div class="offcanvas-header">
@@ -32,38 +35,35 @@
 
 
 
-    <div class="row">
-      <div class="col-6" v-for="(school, index) in classList" :key="index">
 
-        <div class="card mt-3">
-          <div class="card-body">
-            <div class="mb-3" style="font-size: 20px;">
-              {{school.name}}
-            </div>
-
-            <div class="flex justify-content-between">
-              &nbsp;
-              <router-link
-                  class="text-decoration-none"
-                  :to="{name:'campus', query:{id:school.number}}"
-              >
-                <button
-                    type="button"
-                    class="btn-primary border-0 d-none d-lg-block viewButtonStyle">
-                      <span class="mx-9 text-sm">
-                        View
-                      </span>
-                </button>
-              </router-link>
-            </div>
-
+    <table class="table table-hover caption-top" style="font-size: 14px;">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="(classes, index) in classList" :key="index">
+        <td>{{index+1}}</td>
+        <td> {{classes.name}}</td>
+        <td>
+          <div>
+            <i
+                style="font-size: 13px;"
+                data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
+                class="bi-pencil mr-2 cursor-pointer" @click="editClass(classes)"></i>
+            <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(classes)"></i>
           </div>
-        </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
 
-      </div>
 
 
-    </div>
+
 
   </div>
 </template>
@@ -88,6 +88,13 @@ const campusLevel = routerData.currentRoute.value.query.l
 
 const addCampus = () => {
   classDialog.value = true
+}
+
+const editClass = (data) => {
+alert(JSON.stringify(data))
+}
+const deleteClass = (data) => {
+  alert(JSON.stringify(data))
 }
 
 onMounted(
