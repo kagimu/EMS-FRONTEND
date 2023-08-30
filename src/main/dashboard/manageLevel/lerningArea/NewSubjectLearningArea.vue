@@ -6,14 +6,40 @@
         {{ classError }}
       </div>
 
+
+
       <div class="mb-2">
         <label class="textColor"><small>Learning Area</small></label>
-        <input type="text" v-model="form.name" required class="form-control">
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.learning_area_number">
+          <option disabled value="">Select Level</option>
+          <option value="kindergarten">Kindergarten</option>
+          <option value="primary">Primary </option>
+          <option value="secondary">Secondary</option>
+          <option value="vocational">Vocational</option>
+          <option value="tertiary">Tertiary</option>
+        </select>
       </div>
+
+
+
 
       <div class="mb-2">
         <label class="textColor"><small>Subject</small></label>
-        <input type="text" v-model="form.name" required class="form-control">
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            multiple
+            v-model="form.subject_number">
+          <option disabled value="">Select Level</option>
+          <option value="kindergarten">Kindergarten</option>
+          <option value="primary">Primary </option>
+          <option value="secondary">Secondary</option>
+          <option value="vocational">Vocational</option>
+          <option value="tertiary">Tertiary</option>
+        </select>
       </div>
 
 
@@ -53,7 +79,8 @@ const learningAreaNo = ref(null)
 
 
 const form = reactive({
-  name:null,
+  learning_area_number:"",
+  subject_number:null,
 })
 
 
@@ -66,7 +93,6 @@ const props = defineProps({
 
 const addSubjectLearningArea = () =>{
   loader.value = true
-  form.learning_area_number = learningAreaNo
   learningAreaStore.newLearningAreaData(form)
 }
 
@@ -83,7 +109,7 @@ watch(
     () => props.learningAreaNumber,
     async (data) => {
       if(data){
-        learningAreaNo.value = data
+        form.learning_area_number = data
       }
     },
     {deep:true}
