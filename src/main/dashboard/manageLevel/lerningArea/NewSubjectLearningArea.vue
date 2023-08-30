@@ -47,7 +47,7 @@ const loader = ref(false)
 const routerData = useRouter()
 
 const learningAreaStore = useLearningAreaStore()
-const campusNumber = routerData.currentRoute.value.query.id
+// const campusNumber = routerData.currentRoute.value.query.id
 
 const learningAreaNo = ref(null)
 
@@ -66,7 +66,7 @@ const props = defineProps({
 
 const addSubjectLearningArea = () =>{
   loader.value = true
-  form.campus_number = campusNumber
+  form.learning_area_number = learningAreaNo
   learningAreaStore.newLearningAreaData(form)
 }
 
