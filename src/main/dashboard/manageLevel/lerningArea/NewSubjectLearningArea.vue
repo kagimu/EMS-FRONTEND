@@ -12,6 +12,7 @@
       <div class="mb-2">
         <label class="textColor"><small>Learning Area</small></label>
         <select
+            disabled
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="form.learning_area_number">
@@ -68,7 +69,8 @@ const routerData = useRouter()
 
 const learningAreaStore = useLearningAreaStore()
 const subjectStore = useSubjectStore()
-// const campusNumber = routerData.currentRoute.value.query.id
+const campusNumber = routerData.currentRoute.value.query.id
+const campusLevel = routerData.currentRoute.value.query.l
 
 const learningAreaList = ref([])
 const subjectList = ref([])
@@ -89,6 +91,8 @@ const props = defineProps({
 
 const addSubjectLearningArea = () =>{
   loader.value = true
+  form.campus_number = campusNumber
+  form.level_number = campusLevel
   learningAreaStore.addSubjectToLearningAreaData(form)
 }
 

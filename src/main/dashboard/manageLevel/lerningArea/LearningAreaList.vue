@@ -47,7 +47,7 @@
 
 
 
-    <div class="row mx-auto">
+    <div class="row mx-auto mb-4">
       <div class="col-6" v-for="(item, index) in learningAreaList" :key="index">
 
         <div class="card mt-3">
@@ -72,16 +72,16 @@
 
             <table class="table table-hover caption-top" style="font-size: 12px; width: 100%; border-top: 1px solid #e8e8e8;">
               <tbody>
-              <tr>
-                <td>1</td>
-                <td>place</td>
+              <tr v-for="(sbj, idx) in item.subjects" :key="idx">
+                <td>{{idx+1}}</td>
+                <td>{{sbj.name}}</td>
                 <td>
                   <div class="float-end mr-2">
                     <i
                         style="font-size: 13px;"
                         data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                        class="bi-pencil mr-2 cursor-pointer" @click="editClass(classes)"></i>
-                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(classes)"></i>
+                        class="bi-pencil mr-2 cursor-pointer" @click="editClass(sbj)"></i>
+                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(sbj)"></i>
                   </div>
                 </td>
               </tr>
@@ -129,6 +129,7 @@ const learningAreaDialog = ref( false)
 const learningAreaSubjectDialog = ref( false)
 const learningAreaList = ref( [])
 const campusNumber = routerData.currentRoute.value.query.id
+const campusLevel = routerData.currentRoute.value.query.l
 
 const learningAreaNumber = ref("")
 
@@ -150,7 +151,7 @@ const addSubject = (item) => {
 
 onMounted(
     () => {
-      learningAreaStore.fetchLearningArea(campusNumber)
+      learningAreaStore.fetchLearningArea({campus:campusNumber, level:campusLevel})
     }
 )
 
@@ -159,7 +160,7 @@ watch(
     async (data) => {
       if(data){
         learningAreaDialog.value = false
-        learningAreaStore.fetchLearningArea(campusNumber)
+        learningAreaStore.fetchLearningArea({campus:campusNumber, level:campusLevel})
         notificationStore.successToast("Success", data.message)
       }
     },
@@ -180,8 +181,9 @@ watch(
     () => learningAreaStore.subjectToLearningAreaResponse,
     async (data) => {
       if(data){
-        alert(JSON.stringify(data))
-        // learningAreaList.value = data.data
+        learningAreaSubjectDialog.value = false
+        learningAreaStore.fetchLearningArea({campus:campusNumber, level:campusLevel})
+        notificationStore.successToast("Success", data.message)
       }
     },
     {deep:true}
