@@ -176,6 +176,17 @@ watch(
     {deep:true}
 )
 
+watch(
+    () => learningAreaStore.subjectToLearningAreaResponse,
+    async (data) => {
+      if(data){
+        alert(JSON.stringify(data))
+        // learningAreaList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
 
 </script>
 

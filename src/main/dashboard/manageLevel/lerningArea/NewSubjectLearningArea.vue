@@ -8,18 +8,15 @@
 
 
 
+
       <div class="mb-2">
         <label class="textColor"><small>Learning Area</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="form.learning_area_number">
-          <option disabled value="">Select Level</option>
-          <option value="kindergarten">Kindergarten</option>
-          <option value="primary">Primary </option>
-          <option value="secondary">Secondary</option>
-          <option value="vocational">Vocational</option>
-          <option value="tertiary">Tertiary</option>
+          <option disabled value="">Select Learning Area</option>
+          <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.name}}</option>
         </select>
       </div>
 
@@ -33,12 +30,8 @@
             class="form-select form-select-sm"
             multiple
             v-model="form.subject_number">
-          <option disabled value="">Select Level</option>
-          <option value="kindergarten">Kindergarten</option>
-          <option value="primary">Primary </option>
-          <option value="secondary">Secondary</option>
-          <option value="vocational">Vocational</option>
-          <option value="tertiary">Tertiary</option>
+          <option disabled value="">Select Subject</option>
+          <option v-for="(list,idx) in subjectList" :key="idx" :value="list.number">{{list.name}}</option>
         </select>
       </div>
 
@@ -66,6 +59,7 @@
 import {onMounted, reactive, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import {useLearningAreaStore} from "@/main/dashboard/manageLevel/lerningArea/store/learningArea.js";
+import {useSubjectStore} from "@/main/dashboard/manageLevel/subject/store/subject.js";
 
 const classError = ref(null)
 const name = ref(null)
@@ -73,14 +67,16 @@ const loader = ref(false)
 const routerData = useRouter()
 
 const learningAreaStore = useLearningAreaStore()
+const subjectStore = useSubjectStore()
 // const campusNumber = routerData.currentRoute.value.query.id
 
-const learningAreaNo = ref(null)
+const learningAreaList = ref([])
+const subjectList = ref([])
 
 
 const form = reactive({
   learning_area_number:"",
-  subject_number:null,
+  subject_number:[],
 })
 
 
@@ -93,7 +89,7 @@ const props = defineProps({
 
 const addSubjectLearningArea = () =>{
   loader.value = true
-  learningAreaStore.newLearningAreaData(form)
+  learningAreaStore.addSubjectToLearningAreaData(form)
 }
 
 
@@ -115,34 +111,26 @@ watch(
     {deep:true}
 )
 
-
-/*
-function saveCLass(){
-  loader.value = true
-  classError.value = ""
-  let formData = {name: name.value, class_level_number:routerData.currentRoute.value.query.id}
-  if(class_number.value) {
-    formData.class_number = class_number.value
-    classesStore.editClassData(formData)
-  }else {
-    classesStore.saveNewClass(formData)
-  }
-}
-
-
-
 watch(
-    () => classesStore.newCampusResponse,
+    () => learningAreaStore.learningAreaInfResponse,
     async (data) => {
       if(data){
-        name.value = data.data.name
-        class_number.value = data.data.number
+         learningAreaList.value = data.data
       }
     },
     {deep:true}
 )
-*/
 
+
+watch(
+    () => subjectStore.subjectInfoResponse,
+    async (data) => {
+      if(data){
+        subjectList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 
 
