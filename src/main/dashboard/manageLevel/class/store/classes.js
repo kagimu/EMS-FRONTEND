@@ -5,6 +5,7 @@ import api from "@/config/api.js";
 export const useClassesStore = defineStore("classes", () => {
     let classResponse = ref(null)
     let classInfoResponse = ref(null)
+    let classSubjectsInfoResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -46,14 +47,28 @@ export const useClassesStore = defineStore("classes", () => {
             })
     }
 
+    async function fetchClassSubjects(data) {
+        return await api.get("main/class-subjects?level_number="+data)
+            .then((response) => {
+                classSubjectsInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
 
 
     return {
         classResponse,
         classInfoResponse,
+        classSubjectsInfoResponse,
         errorMessage,
         newClassData,
-        fetchClasses
+        fetchClasses,
+        fetchClassSubjects
     }
 })
