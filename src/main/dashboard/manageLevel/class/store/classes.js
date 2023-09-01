@@ -6,6 +6,7 @@ export const useClassesStore = defineStore("classes", () => {
     let classResponse = ref(null)
     let classInfoResponse = ref(null)
     let classSubjectsInfoResponse = ref(null)
+    let classSubjectResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -27,6 +28,21 @@ export const useClassesStore = defineStore("classes", () => {
         return await api.post("main/new-class", data)
             .then((response) => {
                 classResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
+
+
+    async function addClassSubjectData(data) {
+        return await api.post("main/subject-to-class", data)
+            .then((response) => {
+                classSubjectResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -66,9 +82,11 @@ export const useClassesStore = defineStore("classes", () => {
         classResponse,
         classInfoResponse,
         classSubjectsInfoResponse,
+        classSubjectResponse,
         errorMessage,
         newClassData,
         fetchClasses,
-        fetchClassSubjects
+        fetchClassSubjects,
+        addClassSubjectData
     }
 })

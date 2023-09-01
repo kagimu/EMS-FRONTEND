@@ -47,7 +47,7 @@
             </div>
 
 
-<!--            <table class="table table-hover caption-top" style="font-size: 12px; width: 100%; border-top: 1px solid #e8e8e8;">
+            <table class="table table-hover caption-top" style="font-size: 12px; width: 100%; border-top: 1px solid #e8e8e8;">
               <tbody>
               <tr v-for="(sbj, idx) in item.subjects" :key="idx">
                 <td>{{idx+1}}</td>
@@ -63,7 +63,7 @@
                 </td>
               </tr>
               </tbody>
-            </table>-->
+            </table>
 
 
 
@@ -94,9 +94,11 @@ import {onMounted, ref, watch} from "vue";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useRouter} from "vue-router";
 import NewSubjectClass from "@/main/dashboard/manageLevel/subjectClasses/NewSubjectClass.vue";
+import useNotificationStore from "@/composables/useNotification.js";
 const routerData = useRouter()
 const classStore = useClassesStore()
 const campusLevel = routerData.currentRoute.value.query.l
+const  notificationStore  = useNotificationStore()
 
 const classSubjectDialog = ref( false)
 const classList = ref( [])
@@ -123,6 +125,18 @@ watch(
     async (data) => {
       if(data){
         classList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => classStore.classSubjectResponse,
+    async (data) => {
+      if(data){
+        classSubjectDialog.value = false
+        classStore.fetchClassSubjects(campusLevel)
+        notificationStore.successToast("Success", data.message)
       }
     },
     {deep:true}

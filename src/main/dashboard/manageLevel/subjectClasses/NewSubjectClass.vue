@@ -95,7 +95,7 @@ const addClassSubjects = () =>{
   loader.value = true
   form.campus_number = campusNumber
   form.level_number = campusLevel
-  learningAreaStore.addSubjectToLearningAreaData(form)
+  classStore.addClassSubjectData(form)
 }
 
 
