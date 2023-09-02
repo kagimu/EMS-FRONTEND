@@ -91,11 +91,13 @@ import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import NewSubjectCluster from "@/main/dashboard/curriculum/subjectCluster/NewSubjectCluster.vue";
 import {useSubjectClusterStore} from "@/main/dashboard/curriculum/subjectCluster/store/subjectCluster.js";
-
+import {useRouter} from "vue-router";
+const routerData = useRouter()
 const curriculumDialog = ref( false)
 const subjectClusterList = ref( [])
 const subjectClusterStore = useSubjectClusterStore()
 const  notificationStore  = useNotificationStore()
+const learningAreaNo = routerData.currentRoute.value.query.id
 
 const addCurriculum = () => {
   curriculumDialog.value = true
@@ -104,7 +106,7 @@ const addCurriculum = () => {
 
 onMounted(
     () => {
-      subjectClusterStore.fetchSubjectCluster()
+      subjectClusterStore.fetchSubjectCluster(learningAreaNo)
     }
 )
 
@@ -114,7 +116,7 @@ watch(
     async (data) => {
       if(data){
         curriculumDialog.value = false
-        subjectClusterStore.fetchSubjectCluster()
+        subjectClusterStore.fetchSubjectCluster(learningAreaNo)
         notificationStore.successToast("Success", data.message)
       }
     },
