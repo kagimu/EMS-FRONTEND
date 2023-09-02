@@ -5,10 +5,10 @@
     <div class="row mt-3">
       <div class="col-12">
 
-        <div class="offcanvas offcanvas-end" :class="{ show: curriculumDialog }"    tabindex="-1" id="newClass" aria-labelledby="offcanvasRightLabel">
+        <div id="newClass" :class="{ show: curriculumDialog }"    aria-labelledby="offcanvasRightLabel" class="offcanvas offcanvas-end" tabindex="-1">
           <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasRightLabel">Add Subject Cluster</h5>
-            <button type="button" class="btn-close noFocus" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <h5 id="offcanvasRightLabel" class="offcanvas-title">Add Subject Cluster</h5>
+            <button aria-label="Close" class="btn-close noFocus" data-bs-dismiss="offcanvas" type="button"></button>
           </div>
           <div class="offcanvas-body">
             <new-subject-cluster></new-subject-cluster>
@@ -24,11 +24,11 @@
     <div class="flex justify-content-between mt-3">
       <div class="ml-4">Subject Cluster</div>
       <button
-          data-bs-toggle="offcanvas" data-bs-target="#newClass" aria-controls="offcanvasRight"
-          @click="addCurriculum"
+          aria-controls="offcanvasRight" class="btn btn-sm buttonStyle btn-primary mr-2" data-bs-target="#newClass"
+          data-bs-toggle="offcanvas"
           type="button"
-          class="btn btn-sm buttonStyle btn-primary mr-2">
-        <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+          @click="addCurriculum">
+        <i class="bi-plus mr-2"  style="font-size: 15px;"></i>
         Add Subject Cluster
       </button>
     </div>
@@ -46,7 +46,7 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
-                <th scope="col" class="text-end">Action</th>
+                <th class="text-end" scope="col">Action</th>
               </tr>
               </thead>
               <tbody>
@@ -55,8 +55,8 @@
                 <td>
 
                   <router-link
+                      :to="{name:'subject', query:{id:lst.number}}"
                       class="text-decoration-none"
-                      :to="{name:'subject-cluster', query:{id:lst.number}}"
                   >
                     {{lst.name}}
                   </router-link>
@@ -65,10 +65,10 @@
                 <td>
                   <div class="float-end mr-2">
                     <i
-                        style="font-size: 13px;"
-                        data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                        class="bi-pencil mr-2 cursor-pointer" @click="editClass(sbj)"></i>
-                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(sbj)"></i>
+                        aria-controls="offcanvasRight"
+                        class="bi-pencil mr-2 cursor-pointer" data-bs-target="#editClass" data-bs-toggle="offcanvas"
+                        style="font-size: 13px;" @click="editClass(sbj)"></i>
+                    <i class="bi-trash cursor-pointer" style="font-size: 13px;"  @click="deleteClass(sbj)"></i>
                   </div>
                 </td>
               </tr>

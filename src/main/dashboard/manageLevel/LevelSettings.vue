@@ -43,7 +43,7 @@
 
 
 import ClassList from "@/main/dashboard/manageLevel/class/ClassList.vue";
-import SubjectList from "@/main/dashboard/manageLevel/subject/SubjectList.vue";
+import SubjectList from "@/main/dashboard/curriculum/subject/SubjectList.vue";
 import SubjectClassList from "@/main/dashboard/manageLevel/subjectClasses/subjectClassList.vue";
 </script>
 

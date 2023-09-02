@@ -4,64 +4,70 @@
     <div class="row mt-3">
       <div class="col-12">
 
-
-        <div class="flex justify-content-between mt-2 mr-3">
-          &nbsp;
-          <button
-              data-bs-toggle="offcanvas" data-bs-target="#newSubject" aria-controls="offcanvasRight"
-              @click="addSubject"
-              type="button"
-              class="btn btn-sm buttonStyle btn-primary mr-2">
-            <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-            Add Subject
-          </button>
-        </div>
-
-
         <div class="offcanvas offcanvas-end" :class="{ show: subjectDialog }"    tabindex="-1" id="newSubject" aria-labelledby="offcanvasRightLabel">
           <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasRightLabel">Add Subject</h5>
             <button type="button" class="btn-close noFocus" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
-           <new-subject></new-subject>
+            <new-subject></new-subject>
           </div>
         </div>
-
-
 
       </div>
     </div>
 
 
+    <div class="flex justify-content-between mt-3">
+      <div class="ml-4">Subjects</div>
+      <button
+          data-bs-toggle="offcanvas" data-bs-target="#newClass" aria-controls="offcanvasRight"
+          @click="addSubject"
+          type="button"
+          class="btn btn-sm buttonStyle btn-primary mr-2">
+        <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+        Add Subject
+      </button>
+    </div>
 
 
-    <table class="table table-hover caption-top" style="font-size: 14px;">
-      <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Action</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="(classes, index) in subjectList" :key="index">
-        <td>{{index+1}}</td>
-        <td> {{classes.name}}</td>
-        <td>
-          <div>
-            <i
-                style="font-size: 13px;"
-                data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                class="bi-pencil mr-2 cursor-pointer" @click="editClass(classes)"></i>
-            <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(classes)"></i>
+    <div class="row">
+      <div class="col-12">
+        <div class="card mt-3">
+          <div class="card-body" style="padding: 0;">
+
+            <div class="mb-3 ml-5 mt-3" style="font-size: 18px;">Subject</div>
+
+
+            <table class="table table-hover caption-top" style="font-size: 14px;">
+              <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(classes, index) in subjectList" :key="index">
+                <td>{{index+1}}</td>
+                <td> {{classes.name}}</td>
+                <td>
+                  <div>
+                    <i
+                        style="font-size: 13px;"
+                        data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
+                        class="bi-pencil mr-2 cursor-pointer" @click="editClass(classes)"></i>
+                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(classes)"></i>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
           </div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-
-
+        </div>
+      </div>
+    </div>
 
 
 
@@ -73,8 +79,8 @@
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useRouter} from "vue-router";
-import NewSubject from "@/main/dashboard/manageLevel/subject/NewSubject.vue";
-import {useSubjectStore} from "@/main/dashboard/manageLevel/subject/store/subject.js";
+import NewSubject from "@/main/dashboard/curriculum/subject/NewSubject.vue";
+import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
 const routerData = useRouter()
 
 

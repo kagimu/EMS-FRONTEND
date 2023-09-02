@@ -35,7 +35,7 @@
 
 import {onMounted, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
-import {useSubjectStore} from "@/main/dashboard/manageLevel/subject/store/subject.js";
+import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
 
 const classError = ref(null)
 const name = ref(null)
