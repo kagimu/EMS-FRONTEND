@@ -116,9 +116,9 @@
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useRouter} from "vue-router";
-import NewLearningArea from "@/main/dashboard/manageLevel/lerningArea/NewLearningArea.vue";
-import {useLearningAreaStore} from "@/main/dashboard/manageLevel/lerningArea/store/learningArea.js";
-import NewSubjectLearningArea from "@/main/dashboard/manageLevel/lerningArea/NewSubjectLearningArea.vue";
+import NewLearningArea from "@/main/dashboard/curriculum/lerningArea/NewLearningArea.vue";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
+import NewSubjectLearningArea from "@/main/dashboard/curriculum/lerningArea/NewSubjectLearningArea.vue";
 const routerData = useRouter()
 
 

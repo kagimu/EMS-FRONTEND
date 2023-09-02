@@ -44,7 +44,7 @@
 
 import ClassList from "@/main/dashboard/manageLevel/class/ClassList.vue";
 import SubjectList from "@/main/dashboard/manageLevel/subject/SubjectList.vue";
-import LearningAreaList from "@/main/dashboard/manageLevel/lerningArea/LearningAreaList.vue";
+import LearningAreaList from "@/main/dashboard/curriculum/lerningArea/LearningAreaList.vue";
 import SubjectClassList from "@/main/dashboard/manageLevel/subjectClasses/subjectClassList.vue";
 </script>
 

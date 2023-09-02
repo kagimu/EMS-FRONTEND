@@ -5,7 +5,6 @@ import api from "@/config/api.js";
 export const useLearningAreaStore = defineStore("learningArea", () => {
     let learningAreaResponse = ref(null)
     let learningAreaInfResponse = ref(null)
-    let subjectToLearningAreaResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -21,21 +20,10 @@ export const useLearningAreaStore = defineStore("learningArea", () => {
             })
     }
 
-    async function addSubjectToLearningAreaData(data) {
-        return await api.post("main/subject-to-learning-area", data)
-            .then((response) => {
-                subjectToLearningAreaResponse.value = response.data
-            })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
-                }
-            })
-    }
 
 
     async function fetchLearningArea(data) {
-        return await api.get("main/learning-areas?campus_number="+data.campus+"&level_number="+data.level)
+        return await api.get("main/learning-areas")
             .then((response) => {
                 learningAreaInfResponse.value = response.data
             })
@@ -50,12 +38,10 @@ export const useLearningAreaStore = defineStore("learningArea", () => {
 
 
     return {
-        subjectToLearningAreaResponse,
         learningAreaResponse,
         learningAreaInfResponse,
         errorMessage,
         newLearningAreaData,
         fetchLearningArea,
-        addSubjectToLearningAreaData
     }
 })

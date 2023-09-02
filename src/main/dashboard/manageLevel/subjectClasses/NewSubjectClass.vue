@@ -59,7 +59,7 @@
 
 import {onMounted, reactive, ref, watch} from "vue";
 import {useRouter} from "vue-router";
-import {useLearningAreaStore} from "@/main/dashboard/manageLevel/lerningArea/store/learningArea.js";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
 import {useSubjectStore} from "@/main/dashboard/manageLevel/subject/store/subject.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 

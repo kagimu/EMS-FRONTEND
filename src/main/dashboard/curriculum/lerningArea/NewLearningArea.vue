@@ -35,7 +35,7 @@
 
 import {onMounted, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
-import {useLearningAreaStore} from "@/main/dashboard/manageLevel/lerningArea/store/learningArea.js";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
 
 const classError = ref(null)
 const name = ref(null)
@@ -43,7 +43,6 @@ const loader = ref(false)
 const routerData = useRouter()
 
 const learningAreaStore = useLearningAreaStore()
-const campusNumber = routerData.currentRoute.value.query.id
 
 
 const form = reactive({
@@ -53,7 +52,7 @@ const form = reactive({
 
 const addLearningArea = () =>{
   loader.value = true
-  form.campus_number = campusNumber
+
   learningAreaStore.newLearningAreaData(form)
 }
 
