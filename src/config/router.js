@@ -13,6 +13,7 @@ import ReportCenter from "@/main/dashboard/ReportCenter/ReportCenter.vue";
 import StudentAdmission from "@/main/dashboard/studentAdmission/StudentAdmission.vue";
 import ManageSchool from "@/main/dashboard/manageSchool/ManageSchool.vue";
 import Curriculum from "@/main/dashboard/curriculum/Curriculum.vue";
+import SubjectCluster from "@/main/dashboard/curriculum/subjectCluster/SubjectCluster.vue";
 
 
 const router = createRouter({
@@ -48,6 +49,7 @@ const router = createRouter({
                 {path: 'report-center', component: ReportCenter, name: "report-center"},
                 {path: 'settings', component: settings, name: "settings"},
                 {path: 'curriculum', component: Curriculum, name: "curriculum"},
+                {path: 'subject-cluster', component: SubjectCluster, name: "subject-cluster"},
             ]
         },
         {

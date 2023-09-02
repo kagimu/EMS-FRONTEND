@@ -52,7 +52,16 @@
               <tbody>
               <tr v-for="(lst,index) in learningAreaList" :key="index" >
                 <th scope="row">{{index+1}}</th>
-                <td>{{lst.name}}</td>
+                <td>
+
+                  <router-link
+                      class="text-decoration-none"
+                      :to="{name:'subject-cluster', query:{id:lst.number}}"
+                  >
+                  {{lst.name}}
+                  </router-link>
+
+                </td>
                 <td>
                   <div class="float-end mr-2">
                     <i

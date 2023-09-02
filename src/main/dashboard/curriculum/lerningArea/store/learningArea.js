@@ -22,7 +22,7 @@ export const useLearningAreaStore = defineStore("learningArea", () => {
 
 
 
-    async function fetchLearningArea(data) {
+    async function fetchLearningArea() {
         return await api.get("main/learning-areas")
             .then((response) => {
                 learningAreaInfResponse.value = response.data

@@ -22,7 +22,7 @@
           <subject-list></subject-list>
         </div>
         <div class="tab-pane fade" id="learning_area" role="tabpanel" aria-labelledby="learning_area_tab" tabindex="0">
-        <learning-area-list></learning-area-list>
+        learning-area-list
         </div>
         <div class="tab-pane fade" id="class-subjects" role="tabpanel" aria-labelledby="class-subjects-tab" tabindex="0">
          <subject-class-list></subject-class-list>
@@ -44,7 +44,6 @@
 
 import ClassList from "@/main/dashboard/manageLevel/class/ClassList.vue";
 import SubjectList from "@/main/dashboard/manageLevel/subject/SubjectList.vue";
-import LearningAreaList from "@/main/dashboard/curriculum/lerningArea/LearningAreaList.vue";
 import SubjectClassList from "@/main/dashboard/manageLevel/subjectClasses/subjectClassList.vue";
 </script>
 
