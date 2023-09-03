@@ -52,6 +52,7 @@ const router = createRouter({
                 {path: 'curriculum', component: Curriculum, name: "curriculum"},
                 {path: 'subject-cluster', component: SubjectCluster, name: "subject-cluster"},
                 {path: 'subject', component: SubjectList, name: "subject"},
+                {path: 'strands', component: SubjectList, name: "strands"},
             ]
         },
         {

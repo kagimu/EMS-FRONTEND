@@ -43,7 +43,7 @@ const loader = ref(false)
 const routerData = useRouter()
 
 const subjectStore = useSubjectStore()
-const campusLevel = routerData.currentRoute.value.query.l
+const subjectClusterNo = routerData.currentRoute.value.query.id
 
 
 const form = reactive({
@@ -53,7 +53,8 @@ const form = reactive({
 
 const addSubject = () =>{
   loader.value = true
-  form.level_number = campusLevel
+  form.subject_cluster_number = subjectClusterNo
+  alert(JSON.stringify(form))
   subjectStore.newSubjectData(form)
 }
 

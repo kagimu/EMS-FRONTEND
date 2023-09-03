@@ -44,20 +44,29 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
-                <th scope="col">Action</th>
+                <th class="text-end" scope="col">Action</th>
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(classes, index) in subjectList" :key="index">
+              <tr v-for="(lst, index) in subjectList" :key="index">
                 <td>{{index+1}}</td>
-                <td> {{classes.name}}</td>
                 <td>
-                  <div>
+
+                  <router-link
+                      :to="{name:'strands', query:{id:lst.number}}"
+                      class="text-decoration-none"
+                  >
+                  {{lst.name}}
+                  </router-link>
+
+                </td>
+                <td>
+                  <div class="float-end mr-2">
                     <i
                         style="font-size: 13px;"
                         data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                        class="bi-pencil mr-2 cursor-pointer" @click="editClass(classes)"></i>
-                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(classes)"></i>
+                        class="bi-pencil mr-2 cursor-pointer" @click="editClass(lst)"></i>
+                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(lst)"></i>
                   </div>
                 </td>
               </tr>
@@ -89,7 +98,7 @@ const  notificationStore  = useNotificationStore()
 
 const subjectDialog = ref( false)
 const subjectList = ref( [])
-const campusLevel = routerData.currentRoute.value.query.l
+const subjectClusterNo = routerData.currentRoute.value.query.id
 
 
 const addSubject = () => {
@@ -105,7 +114,7 @@ const deleteClass = (data) => {
 
 onMounted(
     () => {
-      subjectStore.fetchSubjects(campusLevel)
+      subjectStore.fetchSubjects(subjectClusterNo)
     }
 )
 
@@ -114,7 +123,7 @@ watch(
     async (data) => {
       if(data){
         subjectDialog.value = false
-        subjectStore.fetchSubjects(campusLevel)
+        subjectStore.fetchSubjects(subjectClusterNo)
         notificationStore.successToast("Success", data.message)
       }
     },
