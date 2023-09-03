@@ -53,7 +53,7 @@
                 <td>
 
                   <router-link
-                      :to="{name:'strands', query:{id:lst.number}}"
+                      :to="{name:'topic', query:{id:lst.number}}"
                       class="text-decoration-none"
                   >
                   {{lst.name}}
