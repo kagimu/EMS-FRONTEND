@@ -15,6 +15,7 @@ import ManageSchool from "@/main/dashboard/manageSchool/ManageSchool.vue";
 import Curriculum from "@/main/dashboard/curriculum/Curriculum.vue";
 import SubjectCluster from "@/main/dashboard/curriculum/subjectCluster/SubjectCluster.vue";
 import SubjectList from "@/main/dashboard/curriculum/subject/SubjectList.vue";
+import StrandList from "@/main/dashboard/curriculum/strands/StrandList.vue";
 
 
 const router = createRouter({
@@ -52,7 +53,7 @@ const router = createRouter({
                 {path: 'curriculum', component: Curriculum, name: "curriculum"},
                 {path: 'subject-cluster', component: SubjectCluster, name: "subject-cluster"},
                 {path: 'subject', component: SubjectList, name: "subject"},
-                {path: 'strands', component: SubjectList, name: "strands"},
+                {path: 'strands', component: StrandList, name: "strands"},
             ]
         },
         {

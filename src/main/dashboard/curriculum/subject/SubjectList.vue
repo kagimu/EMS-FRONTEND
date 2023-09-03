@@ -21,7 +21,7 @@
     <div class="flex justify-content-between mt-3">
       <div class="ml-4">Subjects</div>
       <button
-          data-bs-toggle="offcanvas" data-bs-target="#newClass" aria-controls="offcanvasRight"
+          data-bs-toggle="offcanvas" data-bs-target="#newSubject" aria-controls="offcanvasRight"
           @click="addSubject"
           type="button"
           class="btn btn-sm buttonStyle btn-primary mr-2">

@@ -54,7 +54,6 @@ const form = reactive({
 const addSubject = () =>{
   loader.value = true
   form.subject_cluster_number = subjectClusterNo
-  alert(JSON.stringify(form))
   subjectStore.newSubjectData(form)
 }
 
