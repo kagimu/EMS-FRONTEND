@@ -18,6 +18,7 @@ import SubjectList from "@/main/dashboard/curriculum/subject/SubjectList.vue";
 import StrandList from "@/main/dashboard/curriculum/strands/StrandList.vue";
 import TopicList from "@/main/dashboard/curriculum/topic/TopicList.vue";
 import SubTopicList from "@/main/dashboard/curriculum/subTopic/SubTopicList.vue";
+import ConceptList from "@/main/dashboard/curriculum/concept/ConceptList.vue";
 
 
 const router = createRouter({
@@ -58,6 +59,7 @@ const router = createRouter({
                 {path: 'strands', component: StrandList, name: "strands"},
                 {path: 'topic', component: TopicList, name: "topic"},
                 {path: 'sub-topic', component: SubTopicList, name: "sub-topic"},
+                {path: 'concept', component: ConceptList, name: "concept"},
             ]
         },
         {
