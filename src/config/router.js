@@ -17,6 +17,7 @@ import SubjectCluster from "@/main/dashboard/curriculum/subjectCluster/SubjectCl
 import SubjectList from "@/main/dashboard/curriculum/subject/SubjectList.vue";
 import StrandList from "@/main/dashboard/curriculum/strands/StrandList.vue";
 import TopicList from "@/main/dashboard/curriculum/topic/TopicList.vue";
+import SubTopicList from "@/main/dashboard/curriculum/subTopic/SubTopicList.vue";
 
 
 const router = createRouter({
@@ -56,6 +57,7 @@ const router = createRouter({
                 {path: 'subject', component: SubjectList, name: "subject"},
                 {path: 'strands', component: StrandList, name: "strands"},
                 {path: 'topic', component: TopicList, name: "topic"},
+                {path: 'sub-topic', component: SubTopicList, name: "sub-topic"},
             ]
         },
         {
