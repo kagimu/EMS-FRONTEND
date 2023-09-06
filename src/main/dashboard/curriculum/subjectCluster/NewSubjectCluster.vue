@@ -7,11 +7,23 @@
         {{ classError }}
       </div>
 
+
       <div class="mb-2">
-        <label class="textColor"><small>Subject Cluster Name</small></label>
-        <input type="text" v-model="form.name" required class="form-control">
+        <label class="textColor"><small>Learning Area</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.learning_area_number">
+          <option disabled value="">Select Class</option>
+          <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.name}}</option>
+        </select>
       </div>
 
+
+      <div class="mb-2">
+        <label class="textColor"><small>Subject Cluster Name</small></label>
+        <input type="text" v-model="form.name" required class="form-control form-select-sm">
+      </div>
 
 
       <div class="flex justify-content-end" style="width: 100%;">
@@ -33,9 +45,10 @@
 
 <script setup>
 
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, reactive, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import {useSubjectClusterStore} from "@/main/dashboard/curriculum/subjectCluster/store/subjectCluster.js";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
 
 const classError = ref(null)
 const name = ref(null)
@@ -43,29 +56,40 @@ const loader = ref(false)
 const routerData = useRouter()
 
 const subjectClusterStore = useSubjectClusterStore()
-const learningAreaNo = routerData.currentRoute.value.query.id
-
+// const learningAreaNo = routerData.currentRoute.value.query.id
+const learningAreaList = ref([])
+const learningAreaStore = useLearningAreaStore()
 
 const form = reactive({
   name:null,
+  learning_area_number:"",
 })
 
 
 const addSubjectCluster = () =>{
   loader.value = true
-  form.learning_area_number = learningAreaNo
   subjectClusterStore.newSubjectClusterData(form)
 }
 
 
-
 onMounted(
-    () =>{
-      /* if(props.classNumber){
-         classesStore.classDetails(props.classNumber)
-       }*/
+    () => {
+      learningAreaStore.fetchLearningArea()
     }
 )
+
+
+
+watch(
+    () => learningAreaStore.learningAreaInfResponse,
+    async (data) => {
+      if(data){
+        learningAreaList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
 
 
 /*
