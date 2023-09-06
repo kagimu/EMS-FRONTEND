@@ -98,8 +98,8 @@ const notificationStore  = useNotificationStore()
 
 const strandDialog = ref( false)
 const strandList = ref( [])
-const subjectNo = routerData.currentRoute.value.query.id
-
+let subjectNo = routerData.currentRoute.value.query.id
+    subjectNo = subjectNo ? subjectNo : ""
 
 const addSubject = () => {
   strandDialog.value = true

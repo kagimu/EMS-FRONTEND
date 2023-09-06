@@ -98,7 +98,8 @@ const notificationStore  = useNotificationStore()
 
 const subtopicDialog = ref( false)
 const subtopicList = ref( [])
-const topicNo = routerData.currentRoute.value.query.id
+let  topicNo = routerData.currentRoute.value.query.id
+      topicNo = topicNo ? topicNo : ""
 
 
 const addSubtopic = () => {

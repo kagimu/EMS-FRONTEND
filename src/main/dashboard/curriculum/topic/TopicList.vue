@@ -98,7 +98,8 @@ const notificationStore  = useNotificationStore()
 
 const strandDialog = ref( false)
 const topicList = ref( [])
-const strandNo = routerData.currentRoute.value.query.id
+let strandNo = routerData.currentRoute.value.query.id
+    strandNo = strandNo ? strandNo : ""
 
 
 const addSubject = () => {

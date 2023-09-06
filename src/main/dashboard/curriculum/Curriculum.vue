@@ -34,7 +34,13 @@
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
 
-            <learning-area-list></learning-area-list>
+            <learning-area-list v-if="menuSelected==='learning-area'"></learning-area-list>
+            <subject-cluster v-if="menuSelected==='subject-cluster'"></subject-cluster>
+            <subject-list  v-if="menuSelected==='subject'"></subject-list>
+            <strand-list v-if="menuSelected==='strand'"></strand-list>
+            <topic-list v-if="menuSelected==='topic'"></topic-list>
+            <sub-topic-list v-if="menuSelected==='subtopic'"></sub-topic-list>
+            <concept-list v-if="menuSelected==='concept'"></concept-list>
 
           </div>
         </div>
@@ -50,6 +56,12 @@
 
 import {ref} from "vue";
 import LearningAreaList from "@/main/dashboard/curriculum/lerningArea/LearningAreaList.vue";
+import SubjectCluster from "@/main/dashboard/curriculum/subjectCluster/SubjectCluster.vue";
+import SubjectList from "@/main/dashboard/curriculum/subject/SubjectList.vue";
+import StrandList from "@/main/dashboard/curriculum/strands/StrandList.vue";
+import TopicList from "@/main/dashboard/curriculum/topic/TopicList.vue";
+import SubTopicList from "@/main/dashboard/curriculum/subTopic/SubTopicList.vue";
+import ConceptList from "@/main/dashboard/curriculum/concept/ConceptList.vue";
 
 const menuSelected = ref( "learning-area")
 const curriculumMenu = ref( [

@@ -98,8 +98,8 @@ const  notificationStore  = useNotificationStore()
 
 const subjectDialog = ref( false)
 const subjectList = ref( [])
-const subjectClusterNo = routerData.currentRoute.value.query.id
-
+let subjectClusterNo = routerData.currentRoute.value.query.id
+    subjectClusterNo = subjectClusterNo ? subjectClusterNo : ""
 
 const addSubject = () => {
   subjectDialog.value = true

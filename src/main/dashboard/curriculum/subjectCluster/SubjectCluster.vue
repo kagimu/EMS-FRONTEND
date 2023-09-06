@@ -97,7 +97,9 @@ const curriculumDialog = ref( false)
 const subjectClusterList = ref( [])
 const subjectClusterStore = useSubjectClusterStore()
 const  notificationStore  = useNotificationStore()
-const learningAreaNo = routerData.currentRoute.value.query.id
+let learningAreaNo = routerData.currentRoute.value.query.id
+
+        learningAreaNo = learningAreaNo ? learningAreaNo : ""
 
 const addCurriculum = () => {
   curriculumDialog.value = true

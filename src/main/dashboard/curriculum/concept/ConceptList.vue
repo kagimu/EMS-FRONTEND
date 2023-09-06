@@ -93,7 +93,8 @@ const notificationStore  = useNotificationStore()
 
 const conceptDialog = ref( false)
 const conceptList = ref( [])
-const subtopicNo = routerData.currentRoute.value.query.id
+let subtopicNo = routerData.currentRoute.value.query.id
+     subtopicNo = subtopicNo ? subtopicNo : ""
 
 
 const addConcept = () => {
