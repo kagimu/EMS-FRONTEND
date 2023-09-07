@@ -73,7 +73,7 @@
             v-model="strand_number"
             @click="selectTopic(strand_number)"
         >
-          <option disabled value="">Select Subject</option>
+          <option disabled value="">Select Strand</option>
           <option v-for="(list, index) in strandList" :key="index" :value="list.number">{{list.name}}</option>
         </select>
       </div>
@@ -85,7 +85,7 @@
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="form.topic_number">
-          <option disabled value="">Select Subject</option>
+          <option disabled value="">Select Topic</option>
           <option v-for="(list, index) in topicList" :key="index" :value="list.number">{{list.name}}</option>
         </select>
       </div>

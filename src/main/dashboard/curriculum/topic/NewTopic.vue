@@ -70,7 +70,7 @@
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="form.strand_number">
-          <option disabled value="">Select Subject</option>
+          <option disabled value="">Select Strand</option>
           <option v-for="(list, index) in strandList" :key="index" :value="list.number">{{list.name}}</option>
         </select>
       </div>
