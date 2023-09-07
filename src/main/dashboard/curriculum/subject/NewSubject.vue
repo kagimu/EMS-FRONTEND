@@ -7,9 +7,35 @@
         {{ classError }}
       </div>
 
+
+      <div class="mb-2">
+        <label class="textColor"><small>Learning Area</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="learning_area_number"
+            @click="selectSubjectCluster(learning_area_number)"
+        >
+          <option disabled value="">Select Learning Area</option>
+          <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.name}}</option>
+        </select>
+      </div>
+
+      <div class="mb-2">
+        <label class="textColor"><small>Subject Cluster</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.subject_cluster_number">
+          <option disabled value="">Select Subject Cluster</option>
+          <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.name}}</option>
+        </select>
+      </div>
+
+
       <div class="mb-2">
         <label class="textColor"><small>Subject Name</small></label>
-        <input type="text" v-model="form.name" required class="form-control">
+        <input type="text" v-model="form.name" required class="form-control form-select-sm">
       </div>
 
 
@@ -33,69 +59,69 @@
 
 <script setup>
 
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, reactive, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
+import {useSubjectClusterStore} from "@/main/dashboard/curriculum/subjectCluster/store/subjectCluster.js";
 
 const classError = ref(null)
 const name = ref(null)
 const loader = ref(false)
 const routerData = useRouter()
+const learning_area_number = ref("")
+const learningAreaList = ref([])
+const subjectClusterList = ref([])
 
 const subjectStore = useSubjectStore()
-const subjectClusterNo = routerData.currentRoute.value.query.id
+const learningAreaStore = useLearningAreaStore()
+const subjectClusterStore = useSubjectClusterStore()
 
 
 const form = reactive({
   name:null,
+  subject_cluster_number:""
 })
 
 
 const addSubject = () =>{
   loader.value = true
-  form.subject_cluster_number = subjectClusterNo
   subjectStore.newSubjectData(form)
 }
 
+const selectSubjectCluster = (learning_area_number) => {
+  subjectClusterStore.fetchSubjectCluster(learning_area_number)
+}
 
 
 onMounted(
-    () =>{
-      /* if(props.classNumber){
-         classesStore.classDetails(props.classNumber)
-       }*/
+    () => {
+      learningAreaStore.fetchLearningArea()
     }
 )
 
 
-/*
-function saveCLass(){
-  loader.value = true
-  classError.value = ""
-  let formData = {name: name.value, class_level_number:routerData.currentRoute.value.query.id}
-  if(class_number.value) {
-    formData.class_number = class_number.value
-    classesStore.editClassData(formData)
-  }else {
-    classesStore.saveNewClass(formData)
-  }
-}
-
-
-
 watch(
-    () => classesStore.newCampusResponse,
+    () => learningAreaStore.learningAreaInfResponse,
     async (data) => {
       if(data){
-        name.value = data.data.name
-        class_number.value = data.data.number
+        learningAreaList.value = data.data
       }
     },
     {deep:true}
 )
-*/
 
 
+
+watch(
+    () => subjectClusterStore.subjectClusterInfoResponse,
+    async (data) => {
+      if(data){
+        subjectClusterList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 
 </script>

@@ -14,7 +14,7 @@
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="form.learning_area_number">
-          <option disabled value="">Select Class</option>
+          <option disabled value="">Select Learning Area</option>
           <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.name}}</option>
         </select>
       </div>
