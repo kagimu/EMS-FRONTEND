@@ -76,6 +76,18 @@
       </div>
 
 
+      <div class="mb-2">
+        <label class="textColor"><small>Class</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.class_number">
+          <option disabled value="">Select Class</option>
+          <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.name}}</option>
+        </select>
+      </div>
+
+
 
       <div class="mb-2">
         <label class="textColor"><small>Topic Name</small></label>
@@ -110,6 +122,7 @@ import {useSubjectClusterStore} from "@/main/dashboard/curriculum/subjectCluster
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
 import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
 import {useStrandStore} from "@/main/dashboard/curriculum/strands/store/strand.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 
 const classError = ref(null)
 const name = ref(null)
@@ -122,11 +135,13 @@ const subjectClusterStore = useSubjectClusterStore()
 const learningAreaStore = useLearningAreaStore()
 const subjectStore = useSubjectStore()
 const strandStore = useStrandStore()
+const classStore = useClassesStore()
 
 const learningAreaList = ref([])
 const subjectClusterList = ref([])
 const subjectList = ref([])
 const strandList = ref([])
+const classList = ref([])
 const learning_area_number = ref("")
 const subject_cluster_number = ref("")
 const subject_number = ref("")
@@ -134,6 +149,7 @@ const subject_number = ref("")
 
 const form = reactive({
   name:null,
+  class_number:"",
   strand_number:"",
 })
 
@@ -155,6 +171,7 @@ const selectSubject = (subject_cluster_number) => {
 
 const selectStrand = (subject_number) => {
   strandStore.fetchStrands(subject_number)
+  classStore.fetchClasses()
 }
 
 
@@ -202,6 +219,16 @@ watch(
     async (data) => {
       if(data){
         strandList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => classStore.classInfoResponse,
+    async (data) => {
+      if(data){
+        classList.value = data.data
       }
     },
     {deep:true}
