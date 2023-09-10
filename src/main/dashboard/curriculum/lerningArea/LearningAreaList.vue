@@ -1,7 +1,33 @@
 <template>
 <div>
 
-  <div class="row mt-3">
+
+  <!-- Button trigger modal -->
+<!--  <button type="button" class="btn btn-primary"  @click="addCurriculum" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+  </button>-->
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" :class="{ show: curriculumDialog }" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header text-sm p-0">
+          <h6 class="modal-title ml-3 mt-2 mb-2">Add School</h6>
+          <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mt-2 mb-2">
+            <new-learning-area></new-learning-area>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+<!--  <div class="row mt-3">
     <div class="col-12">
 
       <div class="offcanvas offcanvas-end" :class="{ show: curriculumDialog }"    tabindex="-1" id="newClass" aria-labelledby="offcanvasRightLabel">
@@ -14,19 +40,22 @@
         </div>
       </div>
 
-
-
     </div>
-  </div>
+  </div>-->
 
 
   <div class="flex justify-content-between mt-3">
     &nbsp;
-    <button
+<!--    <button
         data-bs-toggle="offcanvas" data-bs-target="#newClass" aria-controls="offcanvasRight"
         @click="addCurriculum"
         type="button"
         class="btn btn-sm buttonStyle btn-primary mr-2">
+      <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+      Add Learning Area
+    </button>-->
+
+    <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCurriculum" data-bs-toggle="modal" data-bs-target="#exampleModal">
       <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
       Add Learning Area
     </button>

@@ -1,6 +1,5 @@
 <template>
-  <div style="position: fixed; width: 100%; left: 0; right: 0; top: 0; bottom: 0;">
-
+<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
     <div class="row">
       <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #1062da;">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
