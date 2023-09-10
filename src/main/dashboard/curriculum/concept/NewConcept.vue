@@ -36,20 +36,6 @@
       </div>
 
 
-      <div class="mb-2">
-        <label class="textColor"><small>Subject Cluster</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="subject_cluster_number"
-            @click="selectSubject(subject_cluster_number)"
-        >
-          <option disabled value="">Select Subject Cluster</option>
-          <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.name}}</option>
-        </select>
-      </div>
-
-
 
       <div class="mb-2">
         <label class="textColor"><small>Subject</small></label>

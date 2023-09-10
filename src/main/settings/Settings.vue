@@ -44,7 +44,6 @@
 <script setup>
 
 import {reactive, ref} from "vue";
-import Subject from "@/main/dashboard/manageLevel/Subject.vue";
 import Roles from "@/main/settings/roles/Roles.vue";
 
 const buttonLoader = ref(false)
