@@ -1,30 +1,28 @@
 <template>
   <div>
 
-    <div class="row mt-3">
-      <div class="col-12">
 
-        <div class="offcanvas offcanvas-end" :class="{ show: conceptDialog }"    tabindex="-1" id="newConcept" aria-labelledby="offcanvasRightLabel">
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasRightLabel">Add Concept</h5>
-            <button type="button" class="btn-close noFocus" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <div class="modal fade" id="subjectModal" tabindex="-1" :class="{ show: conceptDialog }" aria-labelledby="" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header text-sm p-0">
+            <h6 class="modal-title ml-3 mt-2 mb-2">Add Concept</h6>
+            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="offcanvas-body">
-           <new-concept></new-concept>
+          <div class="modal-body">
+            <div class="mt-2 mb-2">
+              <new-concept></new-concept>
+            </div>
           </div>
+
         </div>
-
       </div>
     </div>
 
 
     <div class="flex justify-content-between mt-3">
       <div class="ml-4">Concept</div>
-      <button
-          data-bs-toggle="offcanvas" data-bs-target="#newConcept" aria-controls="offcanvasRight"
-          @click="addConcept"
-          type="button"
-          class="btn btn-sm buttonStyle btn-primary mr-2">
+      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addConcept" data-bs-toggle="modal" data-bs-target="#subjectModal">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
         Add Concept
       </button>
@@ -36,7 +34,7 @@
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
 
-            <div class="mb-3 ml-5 mt-3" style="font-size: 18px;">Cencept</div>
+            <div class="mb-3 ml-5 mt-3" style="font-size: 18px;">Concept</div>
 
 
             <table class="table table-hover caption-top" style="font-size: 14px;">
