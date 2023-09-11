@@ -1,9 +1,7 @@
 <template>
 <div>
 
-
-  <!-- Modal -->
-  <div class="modal fade" id="curriculumModal" tabindex="-1" :class="{ show: curriculumDialog }" aria-labelledby="" aria-hidden="true">
+  <div class="modal fade" id="learningAreaModal" tabindex="-1" :class="{ show: curriculumDialog }" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header text-sm p-0">
@@ -26,7 +24,7 @@
 
   <div class="flex justify-content-between mt-3">
     &nbsp;
-    <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCurriculum" data-bs-toggle="modal" data-bs-target="#curriculumModal">
+    <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCurriculum" data-bs-toggle="modal" data-bs-target="#learningAreaModal">
       <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
       Add Learning Area
     </button>

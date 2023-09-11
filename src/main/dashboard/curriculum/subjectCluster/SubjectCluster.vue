@@ -1,34 +1,28 @@
 <template>
   <div>
 
-
-    <div class="row mt-3">
-      <div class="col-12">
-
-        <div id="newClass" :class="{ show: curriculumDialog }"    aria-labelledby="offcanvasRightLabel" class="offcanvas offcanvas-end" tabindex="-1">
-          <div class="offcanvas-header">
-            <h5 id="offcanvasRightLabel" class="offcanvas-title">Add Subject Cluster</h5>
-            <button aria-label="Close" class="btn-close noFocus" data-bs-dismiss="offcanvas" type="button"></button>
+    <div class="modal fade" id="subjectClusterModal" tabindex="-1" :class="{ show: curriculumDialog }" aria-labelledby="" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header text-sm p-0">
+            <h6 class="modal-title ml-3 mt-2 mb-2">Add Subject Cluster</h6>
+            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="offcanvas-body">
-            <new-subject-cluster></new-subject-cluster>
+          <div class="modal-body">
+            <div class="mt-2 mb-2">
+              <new-subject-cluster></new-subject-cluster>
+            </div>
           </div>
+
         </div>
-
-
-
       </div>
     </div>
 
 
     <div class="flex justify-content-between mt-3">
       <div class="ml-4">Subject Cluster</div>
-      <button
-          aria-controls="offcanvasRight" class="btn btn-sm buttonStyle btn-primary mr-2" data-bs-target="#newClass"
-          data-bs-toggle="offcanvas"
-          type="button"
-          @click="addCurriculum">
-        <i class="bi-plus mr-2"  style="font-size: 15px;"></i>
+      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCurriculum" data-bs-toggle="modal" data-bs-target="#subjectClusterModal">
+        <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
         Add Subject Cluster
       </button>
     </div>
