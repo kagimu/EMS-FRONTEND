@@ -23,7 +23,7 @@
 
 
   <div class="flex justify-content-between mt-3">
-    &nbsp;
+    <div class="ml-4">Learning Area</div>
     <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCurriculum" data-bs-toggle="modal" data-bs-target="#learningAreaModal">
       <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
       Add Learning Area
@@ -32,7 +32,7 @@
 
 
 
-  <div class="mb-3 ml-5 mt-3" style="font-size: 18px;">Learning Area</div>
+<!--  <div class="mb-3 ml-5 mt-3" style="font-size: 18px;">Learning Area</div>-->
 
   <table class="table table-hover caption-top" style="font-size: 14px;">
     <thead>

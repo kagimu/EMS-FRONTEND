@@ -30,10 +30,10 @@
 
     <div class="row">
       <div class="col-12">
-        <div class="card mt-3">
-          <div class="card-body" style="padding: 0;">
+        <div class="mt-3">
+<!--          <div class="card-body" style="padding: 0;">-->
 
-            <div class="mb-3 ml-5 mt-3" style="font-size: 18px;">Subject Cluster</div>
+<!--            <div class="mb-3 ml-5 mt-3" style="font-size: 18px;">Subject Cluster</div>-->
 
             <table class="table table-hover caption-top" style="font-size: 14px;">
               <thead>
@@ -69,7 +69,7 @@
               </tbody>
             </table>
 
-          </div>
+<!--          </div>-->
         </div>
       </div>
 
