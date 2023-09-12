@@ -264,6 +264,17 @@ watch(
     {deep:true}
 )
 
+watch(
+    () => conceptStore.conceptResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+        form.name = null
+      }
+    },
+    {deep:true}
+)
+
 </script>
 
 <style scoped>

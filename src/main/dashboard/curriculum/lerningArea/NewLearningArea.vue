@@ -39,7 +39,7 @@
 
 <script setup>
 
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, reactive, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
 
@@ -72,9 +72,21 @@ const  autoInputFocusInfo =  () => {
 
 onMounted(
     () =>{
-      autoInputFocusInfo()
+
     }
 )
+
+watch(
+    () => learningAreaStore.learningAreaInfResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+        form.name = null
+      }
+    },
+    {deep:true}
+)
+
 
 </script>
 

@@ -91,6 +91,16 @@ watch(
 )
 
 
+watch(
+    () => subjectClusterStore.subjectClusterResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+        form.name = null
+      }
+    },
+    {deep:true}
+)
 
 
 </script>

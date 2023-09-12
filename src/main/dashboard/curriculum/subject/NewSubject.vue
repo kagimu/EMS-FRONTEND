@@ -124,6 +124,17 @@ watch(
 )
 
 
+watch(
+    () => subjectStore.subjectResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+        form.name = null
+      }
+    },
+    {deep:true}
+)
+
 </script>
 
 <style scoped>

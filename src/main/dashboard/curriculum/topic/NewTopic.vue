@@ -221,6 +221,17 @@ watch(
     {deep:true}
 )
 
+watch(
+    () => topicStore.topicResponse,
+    async (data) => {
+      if(data){
+       loader.value = false
+        form.name = null
+      }
+    },
+    {deep:true}
+)
+
 </script>
 
 <style scoped>

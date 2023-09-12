@@ -227,6 +227,17 @@ watch(
     {deep:true}
 )
 
+watch(
+    () => subtopicStore.subtopicResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+        form.name = null
+      }
+    },
+    {deep:true}
+)
+
 </script>
 
 <style scoped>
