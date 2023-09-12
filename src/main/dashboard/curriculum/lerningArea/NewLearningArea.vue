@@ -9,7 +9,13 @@
 
       <div class="mb-2">
         <label class="textColor"><small>Learning Area Name</small></label>
-        <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.name" required class="form-control form-select-sm">
+        <input
+            ref="nameRef"
+            type="text"
+            style="outline: none 0 !important; box-shadow: none;"
+            v-model="form.name"
+            required
+            class="form-control form-select-sm">
       </div>
 
 
@@ -40,6 +46,7 @@ import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/stor
 const classError = ref(null)
 const name = ref(null)
 const loader = ref(false)
+const nameRef = ref(null)
 const routerData = useRouter()
 
 const learningAreaStore = useLearningAreaStore()
@@ -52,50 +59,22 @@ const form = reactive({
 
 const addLearningArea = () =>{
   loader.value = true
-
   learningAreaStore.newLearningAreaData(form)
 }
 
+const  autoInputFocusInfo =  () => {
+  nameRef.value.focus()
+}
 
+ defineExpose({
+  autoInputFocusInfo
+});
 
 onMounted(
     () =>{
-      /* if(props.classNumber){
-         classesStore.classDetails(props.classNumber)
-       }*/
+      autoInputFocusInfo()
     }
 )
-
-
-/*
-function saveCLass(){
-  loader.value = true
-  classError.value = ""
-  let formData = {name: name.value, class_level_number:routerData.currentRoute.value.query.id}
-  if(class_number.value) {
-    formData.class_number = class_number.value
-    classesStore.editClassData(formData)
-  }else {
-    classesStore.saveNewClass(formData)
-  }
-}
-
-
-
-watch(
-    () => classesStore.newCampusResponse,
-    async (data) => {
-      if(data){
-        name.value = data.data.name
-        class_number.value = data.data.number
-      }
-    },
-    {deep:true}
-)
-*/
-
-
-
 
 </script>
 

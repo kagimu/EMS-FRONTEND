@@ -10,7 +10,7 @@
         </div>
         <div class="modal-body">
           <div class="mt-2 mb-2">
-            <new-learning-area></new-learning-area>
+            <new-learning-area ref="learningAreaRef"></new-learning-area>
           </div>
         </div>
 
@@ -89,10 +89,11 @@ const learningAreaList = ref( [])
 const learningAreaStore = useLearningAreaStore()
 const  notificationStore  = useNotificationStore()
 
-
+const learningAreaRef = ref(null)
 
 
 const addCurriculum = () => {
+  learningAreaRef.value.autoInputFocusInfo()
   curriculumDialog.value = true
 }
 
