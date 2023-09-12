@@ -35,9 +35,69 @@
     <div class="row">
       <div class="col-12">
         <div class="mt-3">
-<!--          <div class="card-body" style="padding: 0;">-->
 
-<!--            <div class="mb-3 ml-5 mt-3" style="font-size: 18px;">Topic</div>-->
+          <div class="row mx-auto mb-5 mt-5">
+
+            <div class="col-4 mb-2">
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  @click="selectSubjectCluster(learning_area_number)"
+                  v-model="learning_area_number">
+                <option disabled value="">Filter by Learning Area</option>
+                <option value="">All</option>
+                <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.name}}</option>
+              </select>
+            </div>
+
+            <div class="col-4 mb-2">
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  @click="selectSubject(subject_cluster_number)"
+                  v-model="subject_cluster_number">
+                <option disabled value="">Filter by Subject Cluster</option>
+                <option value="">All</option>
+                <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.name}}</option>
+              </select>
+            </div>
+
+            <div class="col-4 mb-2">
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  @click="selectStrand(subject_number)"
+                  v-model="subject_number">
+                <option disabled value="">Filter by Subject</option>
+                <option value="">All</option>
+                <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.name}}</option>
+              </select>
+            </div>
+
+            <div class="col-4 mb-2">
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  @click="selectTopic(strand_number)"
+                  v-model="strand_number"
+              >
+                <option disabled value="">Filter by Strand</option>
+                <option v-for="(list, index) in strandList" :key="index" :value="list.number">{{list.name}}</option>
+              </select>
+            </div>
+
+            <div class="col-4 mb-2">
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="class_number">
+                <option disabled value="">Select Class</option>
+                <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.name}}</option>
+              </select>
+            </div>
+
+          </div>
+
 
             <table class="table table-hover caption-top" style="font-size: 14px;">
               <thead>
@@ -73,7 +133,7 @@
               </tbody>
             </table>
 
-<!--          </div>-->
+
         </div>
       </div>
     </div>
@@ -90,16 +150,37 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {useRouter} from "vue-router";
 import NewTopic from "@/main/dashboard/curriculum/topic/NewTopic.vue";
 import {useTopicStore} from "@/main/dashboard/curriculum/topic/store/topic.js";
+import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
+import {useStrandStore} from "@/main/dashboard/curriculum/strands/store/strand.js";
+import {useSubjectClusterStore} from "@/main/dashboard/curriculum/subjectCluster/store/subjectCluster.js";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 const routerData = useRouter()
 
 
+const subjectStore = useSubjectStore()
+const subjectClusterStore = useSubjectClusterStore()
 const topicStore = useTopicStore()
+const learningAreaStore = useLearningAreaStore()
+const strandStore = useStrandStore()
+const classStore = useClassesStore()
 const notificationStore  = useNotificationStore()
 
 const strandDialog = ref( false)
 const topicList = ref( [])
 let strandNo = routerData.currentRoute.value.query.id
     strandNo = strandNo ? strandNo : ""
+
+const learningAreaList = ref([])
+const subjectClusterList = ref([])
+const subjectList = ref([])
+const strandList = ref([])
+const classList = ref([])
+const subject_cluster_number = ref("")
+const subject_number = ref("")
+const strand_number = ref("")
+const learning_area_number = ref("")
+const class_number = ref("")
 
 
 const addSubject = () => {
@@ -113,9 +194,28 @@ const deleteClass = (data) => {
   alert(JSON.stringify(data))
 }
 
+const selectSubject = (subject_cluster_number) => {
+  subjectStore.fetchSubjects(subject_cluster_number)
+}
+
+
+
+const selectSubjectCluster = (learning_area_number) => {
+  subjectClusterStore.fetchSubjectCluster(learning_area_number)
+}
+
+const selectStrand = (subject_number) => {
+  strandStore.fetchStrands(subject_number)
+  classStore.fetchClasses()
+}
+const selectTopic = (strand_number) => {
+  topicStore.fetchTopics(strand_number)
+}
+
 onMounted(
     () => {
       topicStore.fetchTopics(strandNo)
+      learningAreaStore.fetchLearningArea()
     }
 )
 
@@ -136,6 +236,57 @@ watch(
     async (data) => {
       if(data){
         topicList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => learningAreaStore.learningAreaInfResponse,
+    async (data) => {
+      if(data){
+        learningAreaList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectClusterStore.subjectClusterInfoResponse,
+    async (data) => {
+      if(data){
+        subjectClusterList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectStore.subjectInfoResponse,
+    async (data) => {
+      if(data){
+        subjectList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => strandStore.strandInfoResponse,
+    async (data) => {
+      if(data){
+        strandList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => classStore.classInfoResponse,
+    async (data) => {
+      if(data){
+        classList.value = data.data
       }
     },
     {deep:true}
