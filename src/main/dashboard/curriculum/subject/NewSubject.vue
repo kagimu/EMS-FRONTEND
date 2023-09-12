@@ -35,7 +35,7 @@
 
       <div class="mb-2">
         <label class="textColor"><small>Subject Name</small></label>
-        <input type="text" v-model="form.name" required class="form-control form-select-sm">
+        <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.name" required class="form-control form-select-sm">
       </div>
 
 
