@@ -216,7 +216,6 @@ const selectSubjectCluster = (learning_area_number) => {
 
 const selectStrand = (subject_number) => {
   strandStore.fetchStrands(subject_number)
-  classStore.fetchClasses()
 }
 const selectTopic = (strand_number) => {
   topicStore.fetchTopics(strand_number)
