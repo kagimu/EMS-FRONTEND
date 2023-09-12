@@ -47,12 +47,12 @@
       <th scope="row">{{index+1}}</th>
       <td>
 
-        <router-link
+<!--        <router-link
             class="text-decoration-none"
             :to="{name:'subject-cluster', query:{id:lst.number}}"
-        >
+        >-->
           {{lst.name}}
-        </router-link>
+<!--        </router-link>-->
 
       </td>
       <td>
