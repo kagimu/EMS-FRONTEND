@@ -92,35 +92,6 @@ watch(
 
 
 
-/*
-function saveCLass(){
-  loader.value = true
-  classError.value = ""
-  let formData = {name: name.value, class_level_number:routerData.currentRoute.value.query.id}
-  if(class_number.value) {
-    formData.class_number = class_number.value
-    classesStore.editClassData(formData)
-  }else {
-    classesStore.saveNewClass(formData)
-  }
-}
-
-
-
-watch(
-    () => classesStore.newCampusResponse,
-    async (data) => {
-      if(data){
-        name.value = data.data.name
-        class_number.value = data.data.number
-      }
-    },
-    {deep:true}
-)
-*/
-
-
-
 
 </script>
 
