@@ -11,18 +11,6 @@ export const useClassesStore = defineStore("classes", () => {
 
 
 
-/*
-    async function newSchoolData(data) {
-        return await api.post("main/new-school", data)
-            .then((response) => {
-                newSchoolResponse.value = response.data
-            })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
-                }
-            })
-    }*/
 
     async function newClassData(data) {
         return await api.post("main/new-class", data)

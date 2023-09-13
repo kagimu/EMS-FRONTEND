@@ -27,7 +27,23 @@
               </div>
             </div>
           </div>
+
+        <div class="card mt-3">
+          <div class="card-body" style="padding: 0;">
+            <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Class Setup</div>
+            <hr />
+            <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+              <div
+                  class="list-group-item list-group-item-action cursor-pointer"
+                  :class="menuSelected === 'class' ? 'active' : ''"
+                  @click="changeMenu('class')"
+              >
+                <small style="font-size:12px;">Class</small>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
 
 
       <div class="col-9">
@@ -41,7 +57,7 @@
             <topic-list v-if="menuSelected==='topic'"></topic-list>
             <sub-topic-list v-if="menuSelected==='subtopic'"></sub-topic-list>
             <concept-list v-if="menuSelected==='concept'"></concept-list>
-
+            <class-setup-list v-if="menuSelected==='class'"></class-setup-list>
           </div>
         </div>
       </div>
@@ -62,6 +78,7 @@ import StrandList from "@/main/dashboard/curriculum/strands/StrandList.vue";
 import TopicList from "@/main/dashboard/curriculum/topic/TopicList.vue";
 import SubTopicList from "@/main/dashboard/curriculum/subTopic/SubTopicList.vue";
 import ConceptList from "@/main/dashboard/curriculum/concept/ConceptList.vue";
+import ClassSetupList from "@/main/dashboard/manageLevel/class/ClassSetupList.vue";
 
 const menuSelected = ref( "learning-area")
 const curriculumMenu = ref( [
