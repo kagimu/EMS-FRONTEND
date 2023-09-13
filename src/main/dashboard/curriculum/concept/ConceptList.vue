@@ -121,8 +121,8 @@
                   v-model="sub_topic_number"
                   @click="filterConcept(sub_topic_number)"
               >
-                <option value="">All</option>
                 <option disabled value="">Select Sub Topic</option>
+                <option value="">All</option>
                 <option v-for="(list, index) in subtopicList" :key="index" :value="list.number">{{list.name}}</option>
               </select>
             </div>

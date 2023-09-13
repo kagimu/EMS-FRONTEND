@@ -12,7 +12,7 @@
         <div class="col-3">
           <div class="card mt-3">
             <div class="card-body" style="padding: 0;">
-              <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Level</div>
+              <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Curriculum</div>
               <hr />
               <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
                 <div
