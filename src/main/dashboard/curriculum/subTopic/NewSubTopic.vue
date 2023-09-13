@@ -83,6 +83,19 @@
         <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.name" required class="form-control form-select-sm">
       </div>
 
+      <div class="mb-2">
+        <label class="textColor"><small>Estimated time Required</small></label>
+        <input
+            maxlength="15"
+            @keypress="onlyNumberValidator($event)"
+            type="text"
+            style="outline: none 0 !important;
+            box-shadow: none;"
+            v-model="form.estimated_time"
+            required
+            class="form-control form-select-sm">
+      </div>
+
 
 
       <div class="flex justify-content-end" style="width: 100%;">
@@ -142,6 +155,7 @@ const strand_number = ref("")
 const form = reactive({
   name:null,
   topic_number:"",
+  estimated_time:"",
 })
 
 
@@ -174,6 +188,10 @@ onMounted(
     }
 )
 
+function onlyNumberValidator(event) {
+  const validChars = /^[0-9+\-*/.\s]+$/;
+  if (!validChars.test(event.key)) return event.preventDefault();
+}
 
 watch(
     () => learningAreaStore.learningAreaInfResponse,

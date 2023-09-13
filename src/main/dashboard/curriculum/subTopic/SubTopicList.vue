@@ -110,6 +110,7 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
+                <th scope="col">Estimated Time (Minutes)</th>
                 <th class="text-end" scope="col">Action</th>
               </tr>
               </thead>
@@ -117,14 +118,10 @@
               <tr v-for="(lst, index) in subtopicList" :key="index">
                 <td>{{index+1}}</td>
                 <td>
-
-<!--                  <router-link
-                      :to="{name:'concept', query:{id:lst.number}}"
-                      class="text-decoration-none"
-                  >-->
                   {{lst.name}}
-<!--                  </router-link>-->
-
+                </td>
+                <td>
+                  {{lst.estimated_time}}
                 </td>
                 <td>
                   <div class="float-end mr-2">
