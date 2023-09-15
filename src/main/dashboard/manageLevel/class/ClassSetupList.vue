@@ -8,7 +8,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Add School</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">Add Class</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -16,17 +16,14 @@
               <new-class-set-up></new-class-set-up>
             </div>
           </div>
-
         </div>
       </div>
     </div>
 
 
 
-
-
     <div class="flex justify-content-between mt-3">
-      <div class="ml-4">Learning Area</div>
+      <div class="ml-4">Classes</div>
       <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#learningAreaModal">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
         Add Class
