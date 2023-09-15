@@ -51,6 +51,9 @@ const addClass = (classNumber) =>{
   classStore.newClassLevelData({class_number:classNumber, campus_number:campusNumber, level_number:campusLevel})
 }
 
+const props = defineProps({
+  classListInfo: {},
+})
 
 
 onMounted(
@@ -65,6 +68,20 @@ watch(
     async (data) => {
       if(data){
         classList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => props.classListInfo,
+    async (data) => {
+      if(data){
+      let arr = []
+        data.forEach(lst => {
+          arr.push(lst.number)
+        })
+        classId.value = arr
       }
     },
     {deep:true}

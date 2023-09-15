@@ -10,7 +10,7 @@
           </div>
           <div class="modal-body">
             <div class="mt-2 mb-2">
-              <new-class></new-class>
+              <new-class :classListInfo="classList"></new-class>
             </div>
           </div>
         </div>
@@ -94,7 +94,7 @@ const deleteClass = (data) => {
 
 onMounted(
     () => {
-      classStore.fetchClasses(campusLevel)
+      classStore.fetchClassLevel(campusLevel)
     }
 )
 
@@ -103,7 +103,7 @@ watch(
     async (data) => {
       if(data){
         classDialog.value = false
-        classStore.fetchClasses(campusLevel)
+        classStore.fetchClassLevel(campusLevel)
         notificationStore.successToast("Success", data.message)
       }
     },
@@ -111,7 +111,7 @@ watch(
 )
 
 watch(
-    () => classStore.classInfoResponse,
+    () => classStore.classLevelInfoResponse,
     async (data) => {
       if(data){
         classList.value = data.data

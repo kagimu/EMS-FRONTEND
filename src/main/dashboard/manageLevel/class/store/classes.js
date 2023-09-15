@@ -6,6 +6,7 @@ export const useClassesStore = defineStore("classes", () => {
     let classResponse = ref(null)
     let classLevelResponse = ref(null)
     let classInfoResponse = ref(null)
+    let classLevelInfoResponse = ref(null)
     let classSubjectsInfoResponse = ref(null)
     let classSubjectResponse = ref(null)
     const errorMessage = ref(null)
@@ -65,6 +66,19 @@ export const useClassesStore = defineStore("classes", () => {
             })
     }
 
+    async function fetchClassLevel(data) {
+        data = data ? data : ""
+        return await api.get("main/class-level?level_number="+data)
+            .then((response) => {
+                classLevelInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     async function fetchClassSubjects(data) {
         return await api.get("main/class-subjects?level_number="+data)
             .then((response) => {
@@ -86,11 +100,13 @@ export const useClassesStore = defineStore("classes", () => {
         classSubjectsInfoResponse,
         classSubjectResponse,
         classLevelResponse,
+        classLevelInfoResponse,
         errorMessage,
         newClassData,
         fetchClasses,
         fetchClassSubjects,
         addClassSubjectData,
-        newClassLevelData
+        newClassLevelData,
+        fetchClassLevel
     }
 })
