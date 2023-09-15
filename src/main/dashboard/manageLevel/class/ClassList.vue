@@ -2,7 +2,7 @@
   <div>
 
     <div class="modal fade" id="learningAreaModal" tabindex="-1" :class="{ show: classDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
             <h6 class="modal-title ml-3 mt-2 mb-2">Add Class</h6>

@@ -1,7 +1,27 @@
 <template>
   <div>
 
-    <form @submit.prevent="addClass">
+
+
+
+    <div class="mx-auto" style="width: 95%;">
+      <label class="textColor mt-3 mb-2"><small>Add Classes to Levels</small></label>
+      <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+
+        <li class="list-group-item" v-for="(cls,idx) in classList">
+          <input
+              v-model="form.classes"
+              style="outline: none 0 !important; box-shadow: none;"
+              class="form-check-input me-1" type="checkbox" :value="cls" :id="idx">
+          <label class="form-check-label cursor-pointer" :for="idx">{{cls.name}}</label>
+        </li>
+
+      </ul>
+    </div>
+
+<!--    <form @submit.prevent="addClass">
+
+
 
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
         {{ classError }}
@@ -25,7 +45,7 @@
         </button>
       </div>
 
-    </form>
+    </form>-->
 
 
   </div>
@@ -33,13 +53,14 @@
 
 <script setup>
 
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, reactive, ref, watch} from "vue";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useRouter} from "vue-router";
 
 const classError = ref(null)
 const name = ref(null)
 const loader = ref(false)
+const classList = ref([])
 const routerData = useRouter()
 
 const classStore = useClassesStore()
@@ -47,7 +68,7 @@ const campusLevel = routerData.currentRoute.value.query.l
 
 
 const form = reactive({
-  name:null,
+  classes:[],
 })
 
 
@@ -61,41 +82,20 @@ const addClass = () =>{
 
 onMounted(
     () =>{
-      /* if(props.classNumber){
-         classesStore.classDetails(props.classNumber)
-       }*/
+      classStore.fetchClasses(campusLevel)
     }
 )
 
 
-/*
-function saveCLass(){
-  loader.value = true
-  classError.value = ""
-  let formData = {name: name.value, class_level_number:routerData.currentRoute.value.query.id}
-  if(class_number.value) {
-    formData.class_number = class_number.value
-    classesStore.editClassData(formData)
-  }else {
-    classesStore.saveNewClass(formData)
-  }
-}
-
-
-
 watch(
-    () => classesStore.newCampusResponse,
+    () => classStore.classInfoResponse,
     async (data) => {
       if(data){
-        name.value = data.data.name
-        class_number.value = data.data.number
+        classList.value = data.data
       }
     },
     {deep:true}
 )
-*/
-
-
 
 
 </script>
