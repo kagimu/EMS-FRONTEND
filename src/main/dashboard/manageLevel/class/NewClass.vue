@@ -40,14 +40,15 @@ const routerData = useRouter()
 
 const classStore = useClassesStore()
 const campusLevel = routerData.currentRoute.value.query.l
+const campusNumber = routerData.currentRoute.value.query.id
 
 
 const classId = ref([])
 
 
-const addClass = (classId) =>{
+const addClass = (classNumber) =>{
   loader.value = true
-  classStore.newClassData({class_id:classId, level_number:campusLevel})
+  classStore.newClassLevelData({class_number:classNumber, campus_number:campusNumber, level_number:campusLevel})
 }
 
 

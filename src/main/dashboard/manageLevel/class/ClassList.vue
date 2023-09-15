@@ -99,7 +99,7 @@ onMounted(
 )
 
 watch(
-    () => classStore.classResponse,
+    () => classStore.classLevelResponse,
     async (data) => {
       if(data){
         classDialog.value = false

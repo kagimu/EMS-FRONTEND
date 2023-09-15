@@ -4,6 +4,7 @@ import api from "@/config/api.js";
 
 export const useClassesStore = defineStore("classes", () => {
     let classResponse = ref(null)
+    let classLevelResponse = ref(null)
     let classInfoResponse = ref(null)
     let classSubjectsInfoResponse = ref(null)
     let classSubjectResponse = ref(null)
@@ -16,6 +17,18 @@ export const useClassesStore = defineStore("classes", () => {
         return await api.post("main/new-class", data)
             .then((response) => {
                 classResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function newClassLevelData(data) {
+        return await api.post("main/new-class-level", data)
+            .then((response) => {
+                classLevelResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -72,10 +85,12 @@ export const useClassesStore = defineStore("classes", () => {
         classInfoResponse,
         classSubjectsInfoResponse,
         classSubjectResponse,
+        classLevelResponse,
         errorMessage,
         newClassData,
         fetchClasses,
         fetchClassSubjects,
-        addClassSubjectData
+        addClassSubjectData,
+        newClassLevelData
     }
 })
