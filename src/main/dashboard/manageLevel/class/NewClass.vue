@@ -14,7 +14,7 @@
               @click="addClass(cls.number)"
               style="outline: none 0 !important; box-shadow: none;"
               class="form-check-input me-1" type="checkbox" :value="cls.number" :id="cls.number">
-          <label class="form-check-label cursor-pointer" :for="cls.number">{{cls.name}}</label>
+          <label class="form-check-label cursor-pointer ml-2" :for="cls.number">{{cls.name+" &nbsp;&nbsp;&nbsp; ["+cls.abbreviation+"]"}}</label>
         </li>
 
       </ul>

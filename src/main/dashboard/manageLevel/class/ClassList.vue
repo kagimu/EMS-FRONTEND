@@ -19,7 +19,7 @@
 
 
 
-    <div class="flex justify-content-between mt-2 mr-3">
+    <div class="flex justify-content-between mt-4 mb-4 mr-3">
       &nbsp;
       <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#learningAreaModal">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
@@ -36,14 +36,16 @@
       <tr>
         <th scope="col">#</th>
         <th scope="col">Name</th>
-        <th scope="col">Action</th>
+        <th scope="col">Abbreviation</th>
+<!--        <th scope="col">Action</th>-->
       </tr>
       </thead>
       <tbody>
       <tr v-for="(classes, index) in classList" :key="index">
         <td>{{index+1}}</td>
         <td> {{classes.name}}</td>
-        <td>
+        <td> {{classes.abbreviation}}</td>
+<!--        <td>
           <div>
             <i
                 style="font-size: 13px;"
@@ -51,7 +53,7 @@
                 class="bi-pencil mr-2 cursor-pointer" @click="editClass(classes)"></i>
             <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(classes)"></i>
           </div>
-        </td>
+        </td>-->
       </tr>
       </tbody>
     </table>
