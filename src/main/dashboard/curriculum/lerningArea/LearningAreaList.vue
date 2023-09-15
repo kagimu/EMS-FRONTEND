@@ -38,6 +38,7 @@
     <thead>
     <tr>
       <th scope="col">#</th>
+      <th scope="col">Code</th>
       <th scope="col">Name</th>
       <th scope="col" class="text-end">Action</th>
     </tr>
@@ -46,14 +47,10 @@
     <tr v-for="(lst,index) in learningAreaList" :key="index" >
       <th scope="row">{{index+1}}</th>
       <td>
-
-<!--        <router-link
-            class="text-decoration-none"
-            :to="{name:'subject-cluster', query:{id:lst.number}}"
-        >-->
+        {{lst.code}}
+      </td>
+      <td>
           {{lst.name}}
-<!--        </router-link>-->
-
       </td>
       <td>
         <div class="float-end mr-2">
