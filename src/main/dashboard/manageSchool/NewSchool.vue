@@ -8,8 +8,13 @@
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>School Name</small></label>
-        <input type="text" v-model="form.name" required class="form-control">
+        <label class="textColor text-sm">School Name</label>
+        <input
+            style="outline: none 0 !important; box-shadow: none;"
+            type="text"
+            v-model="form.name"
+            required
+            class="form-control form-control-sm">
       </div>
 
 

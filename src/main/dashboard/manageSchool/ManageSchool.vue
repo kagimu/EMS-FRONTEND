@@ -1,34 +1,35 @@
 <template>
   <div>
 
-    <div class="row mt-3">
-      <div class="col-12">
-
-
-
-        <button
-            data-bs-toggle="offcanvas" data-bs-target="#newClass" aria-controls="offcanvasRight"
-            @click="addCampus"
-            type="button"
-            class="btn buttonStyle btn-primary mr-2">
-          <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-          Add School
-        </button>
-
-        <div class="offcanvas offcanvas-end" :class="{ show: schoolDialog }"    tabindex="-1" id="newClass" aria-labelledby="offcanvasRightLabel">
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasRightLabel">Add School</h5>
-            <button type="button" class="btn-close noFocus" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <div class="modal fade" id="infoModal" tabindex="-1" :class="{ show: schoolDialog }" aria-labelledby="" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header text-sm p-0">
+            <h6 class="modal-title ml-3 mt-2 mb-2">New School</h6>
+            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="offcanvas-body">
-           <new-school></new-school>
+          <div class="modal-body">
+            <div class="mt-2 mb-2">
+              <new-school></new-school>
+            </div>
           </div>
+
         </div>
-
-
-
       </div>
     </div>
+
+
+
+
+
+    <div class="mt-3">
+      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#infoModal">
+        <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+        Add School
+      </button>
+    </div>
+
+
 
 
 
@@ -74,6 +75,7 @@ import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import NewSchool from "@/main/dashboard/manageSchool/NewSchool.vue";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import NewCampus from "@/main/dashboard/manageCampus/NewCampus.vue";
 
 const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
