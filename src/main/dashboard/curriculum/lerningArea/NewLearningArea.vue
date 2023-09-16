@@ -18,6 +18,7 @@
             class="form-control form-select-sm">
       </div>
 
+
       <div class="mb-2">
         <label class="textColor"><small>Learning Area Name</small></label>
         <input
