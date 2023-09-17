@@ -56,6 +56,7 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
+                <th scope="col">Learning Area</th>
                 <th class="text-end" scope="col">Action</th>
               </tr>
               </thead>
@@ -63,14 +64,10 @@
               <tr v-for="(lst,index) in subjectClusterList" :key="index" >
                 <th scope="row">{{index+1}}</th>
                 <td>
-
-<!--                  <router-link
-                      :to="{name:'subject', query:{id:lst.number}}"
-                      class="text-decoration-none"
-                  >-->
                     {{lst.name}}
-<!--                  </router-link>-->
-
+                </td>
+                <td>
+                    {{lst.learning_area_name}}
                 </td>
                 <td>
                   <div class="float-end mr-2">
