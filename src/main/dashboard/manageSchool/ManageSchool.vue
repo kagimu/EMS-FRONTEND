@@ -54,6 +54,8 @@
                   style="font-size: 17px;"
                   @click="editSchool(school)"></i>
 
+              <i style="font-size: 17px;" class="bi-trash cursor-pointer ml-1"  @click="deleteSchool(school)"></i>
+
             </div>
 
             <div class="flex justify-content-between">
@@ -110,6 +112,19 @@ const editSchool = (school) => {
   }
 }
 
+
+const deleteSchool = (school) => {
+
+  if(!confirm("Are you sure, you want to delete: "+school.name)){
+    return
+  }
+  let data = {
+    school_number:school.number
+  }
+  schoolStore.deleteSchool(data)
+
+}
+
 onMounted(
     () => {
       schoolStore.fetchSchools()
@@ -146,6 +161,27 @@ watch (
         schoolDialog.value = false
         await schoolStore.fetchSchools()
         notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => schoolStore.deleteSchoolResponse,
+    async (data) => {
+      if(data){
+        await schoolStore.fetchSchools()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => schoolStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}
