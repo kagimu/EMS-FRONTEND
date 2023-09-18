@@ -32,8 +32,6 @@
 
 
 
-<!--  <div class="mb-3 ml-5 mt-3" style="font-size: 18px;">Learning Area</div>-->
-
   <table class="table table-hover caption-top" style="font-size: 14px;">
     <thead>
     <tr>

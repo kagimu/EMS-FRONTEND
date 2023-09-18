@@ -49,7 +49,6 @@
       <div class="col-9">
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
-
             <learning-area-list v-if="menuSelected==='learning-area'"></learning-area-list>
             <subject-cluster v-if="menuSelected==='subject-cluster'"></subject-cluster>
             <subject-list  v-if="menuSelected==='subject'"></subject-list>

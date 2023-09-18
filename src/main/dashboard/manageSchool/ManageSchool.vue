@@ -40,6 +40,12 @@
           <div class="card-body">
             <div class="mb-3" style="font-size: 20px;">
               {{school.name}}
+
+              <i
+                  aria-controls="offcanvasRight"
+                  class="bi-pencil ml-2 cursor-pointer" data-bs-target="#editClass" data-bs-toggle="offcanvas"
+                  style="font-size: 17px;" @click="editClass(sbj)"></i>
+
             </div>
 
             <div class="flex justify-content-between">
