@@ -40,7 +40,21 @@
 
 
               <div class="card-body">
-                <div class="mb-3" style="font-size: 20px;">{{campus.name}}</div>
+                <div class="mb-3 flex justify-between" style="font-size: 20px;">
+
+                    {{campus.name}}
+
+                  <div>
+                  <i
+                      class="bi-pencil ml-2 cursor-pointer"
+                      data-bs-target="#infoModal"
+                      data-bs-toggle="modal"
+                      style="font-size: 14px;"
+                      @click="editCampus(campus)"></i>
+                  <i style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  @click="deleteCampus(campus)"></i>
+                  </div>
+
+                </div>
                 <small>
                   Email: {{campus.email}}<br />
                   Phone: {{campus.phone}}<br />
@@ -94,6 +108,18 @@ const addCampus = () => {
   campusDialog.value = true
 }
 
+
+const editCampus = (campus) => {
+  if(campus) {
+    campusDialog.value = true
+    campusStore.fetchCampusData(campus.number)
+  }
+}
+const deleteCampus = (campus) => {
+
+}
+
+
 onMounted(
     () => {
       campusStore.fetchCampuses(routerData.currentRoute.value.query.id)
@@ -106,7 +132,7 @@ watch(
       if(data){
         campusDialog.value = false
         notificationStore.successToast("Success", data.message)
-        campusStore.fetchCampuses(routerData.currentRoute.value.query.id)
+        await campusStore.fetchCampuses(routerData.currentRoute.value.query.id)
       }
     },
     {deep:true}
@@ -121,6 +147,20 @@ watch(
     },
     {deep:true}
 )
+
+watch(
+    () => campusStore.editCampusResponse,
+    async (data) => {
+      if(data){
+        campusDialog.value = false
+        notificationStore.successToast("Success", data.message)
+        await campusStore.fetchCampuses(routerData.currentRoute.value.query.id)
+      }
+    },
+    {deep:true}
+)
+
+
 
 
 </script>

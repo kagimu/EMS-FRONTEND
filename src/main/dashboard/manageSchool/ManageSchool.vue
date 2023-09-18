@@ -43,19 +43,20 @@
 
           <div class="card mt-3">
           <div class="card-body">
-            <div class="mb-3" style="font-size: 20px;">
+            <div class="mb-3 flex justify-between" style="font-size: 20px;">
               {{school.name}}
 
+              <div>
               <i
                   aria-controls="offcanvasRight"
                   class="bi-pencil ml-2 cursor-pointer"
                   data-bs-target="#infoModal"
                   data-bs-toggle="modal"
-                  style="font-size: 17px;"
+                  style="font-size: 14px;"
                   @click="editSchool(school)"></i>
 
-              <i style="font-size: 17px;" class="bi-trash cursor-pointer ml-1"  @click="deleteSchool(school)"></i>
-
+              <i style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  @click="deleteSchool(school)"></i>
+              </div>
             </div>
 
             <div class="flex justify-content-between">

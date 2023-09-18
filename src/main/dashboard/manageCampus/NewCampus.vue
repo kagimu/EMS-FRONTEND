@@ -55,7 +55,6 @@
           <div class="mx-auto" style="width: 95%;">
           <label class="textColor mt-3 mb-2"><small>Select Class Levels</small></label>
           <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-
             <li class="list-group-item" v-for="(lvl,idx) in levelList">
               <input
                   v-model="form.level"
@@ -71,16 +70,11 @@
 
 
 
-
-
-
-
-
       <div class="flex justify-content-end" style="width: 100%;">
         <button
             type="submit"
             class="btn btn-primary border-0">
-            Save
+          {{campus_number ? "Edit":"Save"}}
           <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>
@@ -95,7 +89,7 @@
 
 <script setup>
 
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, reactive, ref, watch} from "vue";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useRouter} from "vue-router";
 
@@ -103,6 +97,7 @@ const routerData = useRouter()
 const errorMessage = ref(null)
 const name = ref(null)
 const loader = ref(false)
+
 
 const campusStore = useCampusStore()
 
@@ -116,6 +111,8 @@ const levelList = ref(
         ]
 )
 
+const campus_number = ref(null)
+
 const form = reactive({
   name:null,
   email:null,
@@ -128,7 +125,13 @@ const form = reactive({
 const addCampus = () =>{
   loader.value = true
   form.school_number = routerData.currentRoute.value.query.id
-  campusStore.newCampusData(form)
+  if(campus_number.value){
+    form.campus_number = campus_number.value
+    campusStore.editCampusData(form)
+  }else {
+    campusStore.newCampusData(form)
+  }
+
 }
 
 
@@ -142,33 +145,27 @@ onMounted(
 )
 
 
-/*
-function saveCLass(){
-  loader.value = true
-  classError.value = ""
-  let formData = {name: name.value, class_level_number:routerData.currentRoute.value.query.id}
-  if(class_number.value) {
-    formData.class_number = class_number.value
-    classesStore.editClassData(formData)
-  }else {
-    classesStore.saveNewClass(formData)
-  }
-}
-
-
-
 watch(
-    () => classesStore.newCampusResponse,
+    () => campusStore.campusInfoResponse,
     async (data) => {
       if(data){
-        name.value = data.data.name
-        class_number.value = data.data.number
+        form.name = data.data.name
+        form.phone = data.data.phone
+        form.email = data.data.email
+        form.location = data.data.location
+        campus_number.value = data.data.number
+
+        let arr = []
+        data.data.levels.forEach(lst => {
+          arr.push(lst.name)
+        })
+
+        form.level = arr
+
       }
     },
     {deep:true}
 )
-*/
-
 
 
 
