@@ -2,7 +2,6 @@
   <div>
 
     <form @submit.prevent="addSchool">
-
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
         {{ classError }}
       </div>
@@ -38,11 +37,12 @@
 
 <script setup>
 
-import {onMounted, reactive, ref} from "vue";
+import {watch, onMounted, reactive, ref} from "vue";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
 const classError = ref(null)
 const name = ref(null)
+const school_number = ref(null)
 const loader = ref(false)
 
 const schoolStore = useSchoolStore()
@@ -55,7 +55,13 @@ const form = reactive({
 
 const addSchool = () =>{
   loader.value = true
-  schoolStore.newSchoolData(form)
+  if(school_number.value){
+    form.school_number = school_number.value
+    schoolStore.editSchoolData(form)
+  }else {
+    schoolStore.newSchoolData(form)
+  }
+
 }
 
 
@@ -69,32 +75,40 @@ onMounted(
 )
 
 
-/*
-function saveCLass(){
-  loader.value = true
-  classError.value = ""
-  let formData = {name: name.value, class_level_number:routerData.currentRoute.value.query.id}
-  if(class_number.value) {
-    formData.class_number = class_number.value
-    classesStore.editClassData(formData)
-  }else {
-    classesStore.saveNewClass(formData)
-  }
-}
 
 
 
-watch(
-    () => classesStore.newCampusResponse,
+watch (
+    () => schoolStore.schoolInfoResponse,
     async (data) => {
       if(data){
-        name.value = data.data.name
-        class_number.value = data.data.number
+        form.name = data.data.name
+        school_number.value = data.data.number
       }
     },
     {deep:true}
 )
-*/
+
+watch (
+    () => schoolStore.newSchoolResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
+
+
+watch (
+    () => schoolStore.editSchoolResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
 
 
 

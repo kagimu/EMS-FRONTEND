@@ -23,7 +23,12 @@
 
 
     <div class="mt-3">
-      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#infoModal">
+      <button
+          type="button"
+          class="btn btn-sm buttonStyle btn-primary mr-2"
+          @click="addSchool"
+          data-bs-toggle="modal"
+          data-bs-target="#infoModal">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
         Add School
       </button>
@@ -43,8 +48,11 @@
 
               <i
                   aria-controls="offcanvasRight"
-                  class="bi-pencil ml-2 cursor-pointer" data-bs-target="#editClass" data-bs-toggle="offcanvas"
-                  style="font-size: 17px;" @click="editClass(sbj)"></i>
+                  class="bi-pencil ml-2 cursor-pointer"
+                  data-bs-target="#infoModal"
+                  data-bs-toggle="modal"
+                  style="font-size: 17px;"
+                  @click="editSchool(school)"></i>
 
             </div>
 
@@ -86,12 +94,20 @@ import NewCampus from "@/main/dashboard/manageCampus/NewCampus.vue";
 const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
 
+
 const schoolDialog = ref( false)
 const schoolsList = ref( [])
 
 
-const addCampus = () => {
+const addSchool = () => {
   schoolDialog.value = true
+}
+
+const editSchool = (school) => {
+  if(school) {
+    schoolDialog.value = true
+    schoolStore.fetchSchoolData(school.number)
+  }
 }
 
 onMounted(
@@ -105,7 +121,7 @@ watch(
     async (data) => {
       if(data){
         schoolDialog.value = false
-        schoolStore.fetchSchools()
+        await schoolStore.fetchSchools()
         notificationStore.successToast("Success", data.message)
       }
     },
@@ -117,6 +133,19 @@ watch(
     async (data) => {
       if(data){
        schoolsList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch (
+    () => schoolStore.editSchoolResponse,
+    async (data) => {
+      if(data){
+        schoolDialog.value = false
+        await schoolStore.fetchSchools()
+        notificationStore.successToast("Success", data.message)
       }
     },
     {deep:true}

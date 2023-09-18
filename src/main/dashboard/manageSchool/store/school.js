@@ -5,7 +5,9 @@ import api from "@/config/api.js";
 export const useSchoolStore = defineStore("school", () => {
     let newSchoolResponse = ref(null)
     const errorMessage = ref(null)
+    const schoolInfoResponse = ref(null)
     const schoolsResponse = ref(null)
+    const editSchoolResponse = ref(null)
 
 
 /*    async function userLogin(data) {
@@ -40,10 +42,35 @@ export const useSchoolStore = defineStore("school", () => {
             })
     }
 
-    async function fetchSchools(data) {
-        return await api.get("main/schools", data)
+    async function editSchoolData(data) {
+        return await api.post("main/edit-school", data)
+            .then((response) => {
+                editSchoolResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchSchools() {
+        return await api.get("main/schools")
             .then((response) => {
                 schoolsResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
+    async function fetchSchoolData(data) {
+        return await api.get("main/school-info?school_number="+data)
+            .then((response) => {
+                schoolInfoResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -57,9 +84,13 @@ export const useSchoolStore = defineStore("school", () => {
 
     return {
         newSchoolResponse,
+        schoolInfoResponse,
+        editSchoolResponse,
         schoolsResponse,
         errorMessage,
         newSchoolData,
-        fetchSchools
+        fetchSchools,
+        fetchSchoolData,
+        editSchoolData,
     }
 })
