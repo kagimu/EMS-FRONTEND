@@ -223,7 +223,7 @@ watch(
     () => topicStore.topicResponse,
     async (data) => {
       if(data){
-        strandDialog.value = false
+        // strandDialog.value = false
         topicStore.fetchTopics(strandNo)
         notificationStore.successToast("Success", data.message)
       }

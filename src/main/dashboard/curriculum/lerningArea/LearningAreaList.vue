@@ -105,7 +105,7 @@ watch(
     () => learningAreaStore.learningAreaResponse,
     async (data) => {
       if(data){
-        curriculumDialog.value = false
+        // curriculumDialog.value = false
         learningAreaStore.fetchLearningArea()
         notificationStore.successToast("Success", data.message)
       }

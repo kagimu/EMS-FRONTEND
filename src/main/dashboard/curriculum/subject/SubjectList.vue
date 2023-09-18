@@ -160,7 +160,7 @@ watch(
     () => subjectStore.subjectResponse,
     async (data) => {
       if(data){
-        subjectDialog.value = false
+        // subjectDialog.value = false
         subjectStore.fetchSubjects(subjectClusterNo)
         notificationStore.successToast("Success", data.message)
       }

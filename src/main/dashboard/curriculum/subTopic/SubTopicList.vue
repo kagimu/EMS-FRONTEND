@@ -233,7 +233,7 @@ watch(
     () => subtopicStore.subtopicResponse,
     async (data) => {
       if(data){
-        subtopicDialog.value = false
+        // subtopicDialog.value = false
         subtopicStore.fetchSubTopics(topicNo)
         notificationStore.successToast("Success", data.message)
       }

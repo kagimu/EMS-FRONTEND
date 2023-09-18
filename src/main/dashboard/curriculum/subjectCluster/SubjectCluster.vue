@@ -132,7 +132,7 @@ watch(
     () => subjectClusterStore.subjectClusterResponse,
     async (data) => {
       if(data){
-        curriculumDialog.value = false
+        // curriculumDialog.value = false
         subjectClusterStore.fetchSubjectCluster(learningAreaNo)
         notificationStore.successToast("Success", data.message)
       }

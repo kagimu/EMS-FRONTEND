@@ -278,7 +278,7 @@ watch(
     () => conceptStore.conceptResponse,
     async (data) => {
       if(data){
-        conceptDialog.value = false
+        // conceptDialog.value = false
         conceptStore.fetchConcepts(subtopicNo)
         notificationStore.successToast("Success", data.message)
       }

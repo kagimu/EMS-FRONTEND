@@ -180,7 +180,7 @@ watch(
     () => strandStore.strandResponse,
     async (data) => {
       if(data){
-        strandDialog.value = false
+        // strandDialog.value = false
         strandStore.fetchStrands(subjectNo)
         notificationStore.successToast("Success", data.message)
       }

@@ -106,7 +106,7 @@ watch(
     () => classStore.classResponse,
     async (data) => {
       if(data){
-        classDialog.value = false
+        // classDialog.value = false
         classStore.fetchClasses(campusLevel)
         notificationStore.successToast("Success", data.message)
       }
