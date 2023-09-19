@@ -26,6 +26,19 @@
       </div>
 
 
+      <div class="mb-2">
+        <label class="textColor"><small>Class Level</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.level">
+          <option disabled value="">Select Level</option>
+          <option v-for="(lvl, index) in commons.classLevelList()" :key="index" :value="lvl">{{lvl}}</option>
+        </select>
+      </div>
+
+
+
 
       <div class="flex justify-content-end" style="width: 100%;">
         <button
@@ -49,6 +62,7 @@
 import {onMounted, reactive, ref, watch} from "vue";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useRouter} from "vue-router";
+import useCommonsStore from "@/composables/useCommons.js";
 
 const classError = ref(null)
 const name = ref(null)
@@ -56,11 +70,14 @@ const loader = ref(false)
 const routerData = useRouter()
 
 const classStore = useClassesStore()
+const commons = useCommonsStore()
+
 
 
 const form = reactive({
   name:null,
   abbreviation:null,
+  level:"",
 })
 
 

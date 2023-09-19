@@ -1,3 +1,4 @@
+import {ref} from "vue";
 
 export default function useCommonsStore() {
 
@@ -22,6 +23,17 @@ export default function useCommonsStore() {
             newValue = shortValue+suffixes[suffixNum];
         }
         return newValue;
+    }
+
+    const classLevelList = () => {
+         return   [
+                'Kindergarten',
+                'Primary',
+                'Secondary',
+                'Vocational',
+                'Tertiary'
+            ]
+
     }
 
    function timeAgo(date){
@@ -158,6 +170,7 @@ export default function useCommonsStore() {
         capitalizeString,
         tutorViewMetaTags,
         loadGoogleAdsScript,
+        classLevelList,
         base64ToBinary,
         onlyNumberValidator,
         stripTags,

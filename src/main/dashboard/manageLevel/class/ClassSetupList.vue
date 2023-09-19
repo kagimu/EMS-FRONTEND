@@ -22,45 +22,82 @@
 
 
 
-    <div class="flex justify-content-between mt-3">
-      <div class="ml-4">Classes</div>
-      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#learningAreaModal">
-        <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-        Add Class
-      </button>
-    </div>
+
+
+    <div class="row">
+
+
+      <div class="col-12">
 
 
 
+        <div class="card mt-3">
+          <div class="card-body" style="padding: 0;">
 
-    <table class="table table-hover caption-top" style="font-size: 14px;">
-      <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Abbreviation</th>
-        <th scope="col">Action</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="(classes, index) in classList" :key="index">
-        <td>{{index+1}}</td>
-        <td> {{classes.name}}</td>
-        <td> {{classes.abbreviation}}</td>
-        <td>
-          <div>
-            <i
-                style="font-size: 13px;"
-                data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                class="bi-pencil mr-2 cursor-pointer" @click="editClass(classes)"></i>
-            <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(classes)"></i>
+
+            <div class="flex justify-content-between mt-3">
+              <div class="ml-4">Classes</div>
+              <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#learningAreaModal">
+                <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+                Add Class
+              </button>
+            </div>
+
+
+
+            <div class="row mx-auto mti-3">
+              <div class="col-3">
+                <div class="mb-2">
+                  <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm"
+                      v-model="level"
+                      @click="filterClasses(level)"
+                  >
+                    <option disabled value="">Filter by Level</option>
+                    <option value="">All</option>
+                    <option v-for="(lvl, index) in commons.classLevelList()" :key="index" :value="lvl">{{lvl}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+
+
+            <table class="table table-hover caption-top" style="font-size: 14px;">
+              <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Abbreviation</th>
+                <th scope="col">Level</th>
+                <th scope="col">Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(classes, index) in classList" :key="index">
+                <td>{{index+1}}</td>
+                <td> {{classes.name}}</td>
+                <td> {{classes.abbreviation}}</td>
+                <td> {{classes.level}}</td>
+                <td>
+                  <div>
+                    <i
+                        style="font-size: 13px;"
+                        data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
+                        class="bi-pencil mr-2 cursor-pointer" @click="editClass(classes)"></i>
+                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(classes)"></i>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
           </div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+        </div>
 
-
+      </div>
+    </div>
 
 
 
@@ -74,15 +111,17 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes";
 import {useRouter} from "vue-router";
 import NewClassSetUp from "@/main/dashboard/manageLevel/class/NewClassSetUp.vue";
+import useCommonsStore from "@/composables/useCommons.js";
 const routerData = useRouter()
 
 
 const classStore = useClassesStore()
+const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
 
+const level = ref( "")
 const classDialog = ref( false)
 const classList = ref( [])
-const campusLevel = routerData.currentRoute.value.query.l
 
 
 const addCampus = () => {
@@ -90,15 +129,19 @@ const addCampus = () => {
 }
 
 const editClass = (data) => {
-alert(JSON.stringify(data))
+  alert(JSON.stringify(data))
 }
 const deleteClass = (data) => {
   alert(JSON.stringify(data))
 }
 
+const filterClasses = (level) => {
+  classStore.fetchClasses(level)
+}
+
 onMounted(
     () => {
-      classStore.fetchClasses(campusLevel)
+      classStore.fetchClasses(level.value)
     }
 )
 
@@ -107,7 +150,7 @@ watch(
     async (data) => {
       if(data){
         // classDialog.value = false
-        classStore.fetchClasses(campusLevel)
+        await classStore.fetchClasses(level.value)
         notificationStore.successToast("Success", data.message)
       }
     },
