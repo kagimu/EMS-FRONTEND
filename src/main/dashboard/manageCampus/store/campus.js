@@ -4,6 +4,7 @@ import api from "@/config/api.js";
 
 export const useCampusStore = defineStore("campus", () => {
     let newCampusResponse = ref(null)
+    let deleteCampusResponse = ref(null)
     let campusListResponse = ref(null)
     let editCampusResponse = ref(null)
     let campusInfoResponse = ref(null)
@@ -15,6 +16,18 @@ export const useCampusStore = defineStore("campus", () => {
         return await api.post("main/new-campus", data)
             .then((response) => {
                 newCampusResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function deleteCampus(data) {
+        return await api.post("main/delete-campus", data)
+            .then((response) => {
+                deleteCampusResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -67,10 +80,12 @@ export const useCampusStore = defineStore("campus", () => {
         campusListResponse,
         campusInfoResponse,
         editCampusResponse,
+        deleteCampusResponse,
         errorMessage,
         newCampusData,
         fetchCampuses,
         fetchCampusData,
-        editCampusData
+        editCampusData,
+        deleteCampus
     }
 })

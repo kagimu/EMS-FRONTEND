@@ -93,6 +93,7 @@ watch (
     () => schoolStore.newSchoolResponse,
     async (data) => {
       if(data){
+        form.name = null
         loader.value = false
       }
     },
@@ -105,6 +106,16 @@ watch (
     async (data) => {
       if(data){
         loader.value = false
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => schoolStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}

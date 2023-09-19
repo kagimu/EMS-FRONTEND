@@ -7,7 +7,7 @@
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">New Campus</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">{{campusEditMode ? "Edit Campus" : "New Campus"}} </h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -101,22 +101,31 @@ const campusStore = useCampusStore()
 const  notificationStore  = useNotificationStore()
 
 const campusDialog = ref( false)
+const campusEditMode = ref( false)
 const campusList = ref( [])
 
 
 const addCampus = () => {
+  campusEditMode.value = false
   campusDialog.value = true
 }
 
 
 const editCampus = (campus) => {
   if(campus) {
+    campusEditMode.value = true
     campusDialog.value = true
     campusStore.fetchCampusData(campus.number)
   }
 }
 const deleteCampus = (campus) => {
-
+  if(!confirm("Are you sure, you want to delete: "+campus.name)){
+    return
+  }
+  let data = {
+    campus_number:campus.number
+  }
+  campusStore.deleteCampus(data)
 }
 
 
@@ -160,6 +169,27 @@ watch(
     {deep:true}
 )
 
+watch(
+    () => campusStore.deleteCampusResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+        await campusStore.fetchCampuses(routerData.currentRoute.value.query.id)
+      }
+    },
+    {deep:true}
+)
+
+
+watch (
+    () => campusStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
 
 
 

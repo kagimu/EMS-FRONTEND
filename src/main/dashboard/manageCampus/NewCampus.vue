@@ -8,7 +8,7 @@
       </div>
 
       <div class="row">
-        <div class="col-6">
+        <div :class="campus_number ? 'col-12' : 'col-6'">
           <div class="mx-auto" style="width: 95%;">
           <div class="mb-2">
             <label class="textColor"><small>Campus Name</small></label>
@@ -51,7 +51,7 @@
           </div>
           </div>
         </div>
-        <div  class="col-6">
+        <div v-if="!campus_number"  class="col-6">
           <div class="mx-auto" style="width: 95%;">
           <label class="textColor mt-3 mb-2"><small>Select Class Levels</small></label>
           <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
@@ -167,6 +167,16 @@ watch(
     {deep:true}
 )
 
+
+watch(
+    () => campusStore.editCampusResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
 
 
 </script>
