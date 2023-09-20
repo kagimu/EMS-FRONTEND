@@ -24,7 +24,8 @@
 
 
 
-    <div class="mt-3">
+    <div class="mt-3 flex justify-between">
+      &nbsp;
       <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#infoModal">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
         Add Campus
@@ -33,6 +34,22 @@
 
 
 
+
+    <div class="row mx-auto mt-5">
+      <div class="col-3">
+        <div class="mb-2">
+          <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm"
+              v-model="school"
+              @click="filterSchool(school)"
+          >
+            <option disabled value="">Filter by Level</option>
+            <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
 
     <div class="row">
       <div class="col-4" v-for="(campus, index) in campusList" :key="index">
@@ -95,14 +112,18 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import NewCampus from "@/main/dashboard/manageCampus/NewCampus.vue";
 import {useRouter} from "vue-router";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 const routerData = useRouter()
 
 const campusStore = useCampusStore()
+const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
 
 const campusDialog = ref( false)
 const campusEditMode = ref( false)
 const campusList = ref( [])
+const schoolsList = ref( [])
+const school = ref( "")
 
 
 const addCampus = () => {
@@ -128,10 +149,14 @@ const deleteCampus = (campus) => {
   campusStore.deleteCampus(data)
 }
 
+const filterSchool = (school) => {
+  campusStore.fetchCampuses(school)
+}
 
 onMounted(
     () => {
       campusStore.fetchCampuses(routerData.currentRoute.value.query.id)
+      schoolStore.fetchSchools()
     }
 )
 
@@ -186,6 +211,19 @@ watch (
     async (data) => {
       if(data){
         notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if(data){
+        let schoolNumber = data.data[0].number
+        school.value = schoolNumber
+        await campusStore.fetchCampuses(schoolNumber)
+        schoolsList.value = data.data
       }
     },
     {deep:true}
