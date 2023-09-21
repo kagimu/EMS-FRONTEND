@@ -1,6 +1,39 @@
 <template>
   <div>
 
+    <div class="row mx-auto mt-5">
+
+      <div class="col-3">
+        <div class="mb-2">
+          <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm"
+              v-model="school"
+              @click="filterSchool(school)"
+          >
+            <option disabled value="">Filter by Level</option>
+            <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="mb-2">
+          <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm"
+              v-model="campus"
+              @click="filterCampus(campus)"
+          >
+            <option disabled value="">Filter by Campus</option>
+            <option v-for="(lvl, index) in campusList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+          </select>
+        </div>
+      </div>
+
+
+    </div>
+
     <div style="font-size: 25px; color: #262626;" class="mt-3 ml-2" v-if="levelDataInfo">
       {{levelDataInfo.name}}
     </div>
@@ -67,23 +100,45 @@ import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
 import {useLevelStore} from "@/main/dashboard/manageLevel/store/level.js";
 import {useRouter} from "vue-router";
 import LevelSettings from "@/main/dashboard/manageLevel/LevelSettings.vue";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 const levelStore = useLevelStore()
+const campusStore = useCampusStore()
+const schoolStore = useSchoolStore()
 const levelDataInfo = ref(null)
 const routerData = useRouter()
 const showHomeLevel = ref("home")
+const school = ref( "")
+const campus = ref( "")
+
 
 const campusId = routerData.currentRoute.value.query.id
 const campusLevel = routerData.currentRoute.value.query.l
+const schoolsList = ref( [])
+const campusList = ref( [])
+campus.value = campusId
 
 showHomeLevel.value = campusLevel ? "level" : "home"
+
+
+
+const filterSchool = (school) => {
+  campusStore.fetchCampuses(school)
+}
+
+const filterCampus = (campus) => {
+  routerData.push({name: 'level', query: {id: campus}})
+  levelStore.fetchLevelInfo(campus)
+}
+
 
 
 onMounted(
     () => {
       levelStore.fetchLevelInfo(routerData.currentRoute.value.query.id)
+      schoolStore.fetchSchools()
     }
 )
-
 
 
 
@@ -97,6 +152,36 @@ watch(
     {deep:true}
 )
 
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if(data){
+        let schoolNumber = data.data[0].number
+        school.value = schoolNumber
+        await campusStore.fetchCampuses(schoolNumber)
+        schoolsList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => campusStore.campusListResponse,
+    async (data) => {
+      if(data){
+        let campusNumber = data.data[0].number
+
+        if(!campusId) {
+          await routerData.push({name: 'level', query: {id: campusNumber}})
+        }
+
+        await levelStore.fetchLevelInfo(campusNumber)
+        campusList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 </script>
 

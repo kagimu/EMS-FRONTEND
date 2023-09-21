@@ -80,7 +80,8 @@ const  notificationStore  = useNotificationStore()
 
 const classDialog = ref( false)
 const classList = ref( [])
-const campusLevel = routerData.currentRoute.value.query.l
+const campusNumber = routerData.currentRoute.value.query.id
+const levelNumber = routerData.currentRoute.value.query.l
 
 
 const addCampus = () => {
@@ -96,7 +97,7 @@ const deleteClass = (data) => {
 
 onMounted(
     () => {
-      classStore.fetchClassLevel(campusLevel)
+      classStore.fetchClassLevel({campusNumber:campusNumber,  levelNumber:levelNumber} )
     }
 )
 
