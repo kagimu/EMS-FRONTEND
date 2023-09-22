@@ -11,7 +11,7 @@
               v-model="school"
               @click="filterSchool(school)"
           >
-            <option disabled value="">Filter by Level</option>
+            <option disabled value="">Filter by School</option>
             <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
           </select>
         </div>
@@ -56,7 +56,7 @@
             <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Level</div>
             <hr />
             <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-              <router-link v-for="(item, idx) in  levelDataInfo.levels" :key="idx" class="list-group-item list-group-item-action" :class="item.number === campusLevel ? 'active' : ''" :to="{name:'level', query:{id:campusId, l:item.number}}"><small style="font-size:12px;">{{item.name}}</small></router-link>
+              <router-link v-for="(item, idx) in  levelDataInfo.levels" :key="idx" class="list-group-item list-group-item-action" :class="item.number === campusLevel ? 'active' : ''" :to="{name:'level', query:{s:schoolId, c:campusId, l:item.number}}"><small style="font-size:12px;">{{item.name}}</small></router-link>
             </div>
 
           </div>
@@ -112,30 +112,38 @@ const school = ref( "")
 const campus = ref( "")
 
 
-const campusId = routerData.currentRoute.value.query.id
+const campusId = routerData.currentRoute.value.query.c
+const schoolId = routerData.currentRoute.value.query.s
 const campusLevel = routerData.currentRoute.value.query.l
 const schoolsList = ref( [])
 const campusList = ref( [])
-campus.value = campusId
+
 
 showHomeLevel.value = campusLevel ? "level" : "home"
 
 
 
 const filterSchool = (school) => {
-  campusStore.fetchCampuses(school)
+  if(school) {
+    routerData.push({name: 'level', query: {s: school}})
+    campusStore.fetchCampuses(school)
+  }
 }
 
 const filterCampus = (campus) => {
-  routerData.push({name: 'level', query: {id: campus}})
-  levelStore.fetchLevelInfo(campus)
+  if(schoolId && campus) {
+    routerData.push({name: 'level', query: {s: schoolId, c: campus}})
+    levelStore.fetchLevelInfo(campus)
+  }
 }
 
 
 
 onMounted(
     () => {
-      levelStore.fetchLevelInfo(routerData.currentRoute.value.query.id)
+      campus.value = campusId
+      school.value = schoolId
+      // levelStore.fetchLevelInfo(routerData.currentRoute.value.query.id)
       schoolStore.fetchSchools()
     }
 )
@@ -155,11 +163,15 @@ watch(
 watch(
     () => schoolStore.schoolsResponse,
     async (data) => {
-      if(data){
+      if(data && (data.data.length > 0)){
         let schoolNumber = data.data[0].number
-        school.value = schoolNumber
-        await campusStore.fetchCampuses(schoolNumber)
-        schoolsList.value = data.data
+        if(!schoolId) {
+          await routerData.push({name: 'level', query: {s:schoolNumber}})
+        }
+        if(schoolNumber) {
+          await campusStore.fetchCampuses(schoolNumber)
+          schoolsList.value = data.data
+        }
       }
     },
     {deep:true}
@@ -169,15 +181,16 @@ watch(
 watch(
     () => campusStore.campusListResponse,
     async (data) => {
-      if(data){
+      if(data && (data.data.length > 0)){
         let campusNumber = data.data[0].number
-
         if(!campusId) {
-          await routerData.push({name: 'level', query: {id: campusNumber}})
+          await routerData.push({name: 'level', query: {s:schoolId,c: campusNumber}})
+        }
+        if(campusNumber){
+          campusList.value = data.data
+          await levelStore.fetchLevelInfo(campusNumber)
         }
 
-        await levelStore.fetchLevelInfo(campusNumber)
-        campusList.value = data.data
       }
     },
     {deep:true}
