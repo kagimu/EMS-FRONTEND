@@ -128,6 +128,7 @@ showHomeLevel.value = campusLevel ? "level" : "home"
 const filterSchool = (school) => {
   if(school) {
     campusList.value = []
+    campus.value = ""
     localStorage.setItem('school_number', school);
     // routerData.push({name: 'level', query: {s: school}})
     campusStore.fetchCampuses(school)
@@ -187,14 +188,19 @@ watch(
     async (data) => {
       if(data && (data.data.length > 0)){
         let campusNumber = data.data[0].number
-        if(!campusId) {
+
+        if(!campus.value){
+           campus.value = campusNumber
           localStorage.setItem('campus_number', campusNumber);
-          // await routerData.push({name: 'level', query: {s:schoolId,c: campusNumber}})
         }
+
+
         if(campusNumber){
           campusList.value = data.data
           await levelStore.fetchLevelInfo(campusId ? campusId : campusNumber)
         }
+
+
 
       }
     },
