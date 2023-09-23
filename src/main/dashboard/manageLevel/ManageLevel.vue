@@ -129,6 +129,7 @@ const filterSchool = (school) => {
   if(school) {
     campusList.value = []
     campus.value = ""
+    levelDataInfo.value = null
     localStorage.setItem('school_number', school);
     // routerData.push({name: 'level', query: {s: school}})
     campusStore.fetchCampuses(school)
@@ -197,7 +198,7 @@ watch(
 
         if(campusNumber){
           campusList.value = data.data
-          await levelStore.fetchLevelInfo(campusId ? campusId : campusNumber)
+          await levelStore.fetchLevelInfo(campusNumber)
         }
 
 

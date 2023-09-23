@@ -40,7 +40,8 @@ const routerData = useRouter()
 
 const classStore = useClassesStore()
 const campusLevel = routerData.currentRoute.value.query.l
-const campusNumber = routerData.currentRoute.value.query.id
+// const campusNumber = routerData.currentRoute.value.query.id
+const campusNumber = localStorage.getItem('campus_number');
 
 
 const classId = ref([])

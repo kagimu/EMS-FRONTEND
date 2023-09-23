@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div class="modal fade" id="learningAreaModal" tabindex="-1" :class="{ show: classDialog }" aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -80,7 +79,8 @@ const  notificationStore  = useNotificationStore()
 
 const classDialog = ref( false)
 const classList = ref( [])
-const campusNumber = routerData.currentRoute.value.query.id
+// const campusNumber = routerData.currentRoute.value.query.id
+const campusNumber = localStorage.getItem('campus_number');
 const levelNumber = routerData.currentRoute.value.query.l
 
 
@@ -97,16 +97,20 @@ const deleteClass = (data) => {
 
 onMounted(
     () => {
-      classStore.fetchClassLevel({campusNumber:campusNumber,  levelNumber:levelNumber} )
+      filterClassInfo()
     }
 )
+
+const filterClassInfo = () => {
+  classStore.fetchClassLevel({campusNumber:campusNumber,  levelNumber:levelNumber} )
+}
 
 watch(
     () => classStore.classLevelResponse,
     async (data) => {
       if(data){
-        classDialog.value = false
-        classStore.fetchClassLevel(campusLevel)
+        // classDialog.value = false
+        filterClassInfo()
         notificationStore.successToast("Success", data.message)
       }
     },

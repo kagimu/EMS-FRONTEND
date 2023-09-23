@@ -63,6 +63,7 @@ import {onMounted, reactive, ref, watch} from "vue";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useRouter} from "vue-router";
 import useCommonsStore from "@/composables/useCommons.js";
+import useNotificationStore from "@/composables/useNotification.js";
 
 const classError = ref(null)
 const name = ref(null)
@@ -71,6 +72,7 @@ const routerData = useRouter()
 
 const classStore = useClassesStore()
 const commons = useCommonsStore()
+const  notificationStore  = useNotificationStore()
 
 
 
@@ -103,7 +105,20 @@ watch(
       if(data){
          form.name = null
          form.abbreviation = null
+         form.level = ""
          loader.value = false
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => classStore.errorMessage,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}
