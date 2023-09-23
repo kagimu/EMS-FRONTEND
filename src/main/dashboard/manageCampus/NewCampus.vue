@@ -10,6 +10,23 @@
       <div class="row">
         <div :class="campus_number ? 'col-12' : 'col-6'">
           <div class="mx-auto" style="width: 95%;">
+
+
+            <div class="mb-2">
+              <label class="textColor"><small>School</small></label>
+            <select
+                disabled
+                style="box-shadow: none;"
+                class="form-select form-select-sm"
+                v-model="school"
+            >
+              <option disabled value="">Select School</option>
+              <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+            </select>
+            </div>
+
+
+
           <div class="mb-2">
             <label class="textColor"><small>Campus Name</small></label>
             <input
@@ -92,14 +109,18 @@
 import {onMounted, reactive, ref, watch} from "vue";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useRouter} from "vue-router";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
 const routerData = useRouter()
 const errorMessage = ref(null)
 const name = ref(null)
 const loader = ref(false)
+const schoolsList = ref( [])
+const school = ref( null)
 
 
 const campusStore = useCampusStore()
+const schoolStore = useSchoolStore()
 
 const levelList = ref(
     [
@@ -124,7 +145,8 @@ const form = reactive({
 
 const addCampus = () =>{
   loader.value = true
-  form.school_number = routerData.currentRoute.value.query.id
+  // form.school_number = routerData.currentRoute.value.query.id
+  form.school_number = school.value
   if(campus_number.value){
     form.campus_number = campus_number.value
     campusStore.editCampusData(form)
@@ -134,6 +156,10 @@ const addCampus = () =>{
 
 }
 
+const props = defineProps({
+  school: {},
+})
+
 
 
 onMounted(
@@ -142,6 +168,17 @@ onMounted(
          classesStore.classDetails(props.classNumber)
        }*/
     }
+)
+
+
+watch(
+    () => props.school,
+    async (data) => {
+      if(data){
+        school.value = data
+      }
+    },
+    {deep:true}
 )
 
 
@@ -173,6 +210,16 @@ watch(
     async (data) => {
       if(data){
         loader.value = false
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if(data){
+        schoolsList.value = data.data
       }
     },
     {deep:true}

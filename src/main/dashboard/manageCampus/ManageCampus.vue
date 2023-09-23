@@ -12,7 +12,7 @@
           </div>
           <div class="modal-body">
             <div class="mt-2 mb-2">
-              <new-campus></new-campus>
+              <new-campus :school="school"></new-campus>
             </div>
           </div>
 
@@ -44,7 +44,7 @@
               v-model="school"
               @click="filterSchool(school)"
           >
-            <option disabled value="">Filter by Level</option>
+            <option disabled value="">Filter by School</option>
             <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
           </select>
         </div>
@@ -155,10 +155,16 @@ const filterSchool = (school) => {
 
 onMounted(
     () => {
-      campusStore.fetchCampuses(routerData.currentRoute.value.query.id)
+      // campusStore.fetchCampuses(routerData.currentRoute.value.query.id)
       schoolStore.fetchSchools()
     }
 )
+
+const fetchCampusInfo = (schoolNumber) => {
+  if(schoolNumber) {
+    campusStore.fetchCampuses(schoolNumber)
+  }
+}
 
 watch(
     () => campusStore.newCampusResponse,
@@ -166,7 +172,8 @@ watch(
       if(data){
         campusDialog.value = false
         notificationStore.successToast("Success", data.message)
-        await campusStore.fetchCampuses(routerData.currentRoute.value.query.id)
+        // await campusStore.fetchCampuses(routerData.currentRoute.value.query.id)
+        await fetchCampusInfo(school.value)
       }
     },
     {deep:true}
@@ -188,7 +195,8 @@ watch(
       if(data){
         campusDialog.value = false
         notificationStore.successToast("Success", data.message)
-        await campusStore.fetchCampuses(routerData.currentRoute.value.query.id)
+        // await campusStore.fetchCampuses(school.value)
+        await fetchCampusInfo(school.value)
       }
     },
     {deep:true}
@@ -199,7 +207,8 @@ watch(
     async (data) => {
       if(data){
         notificationStore.successToast("Success", data.message)
-        await campusStore.fetchCampuses(routerData.currentRoute.value.query.id)
+        // await campusStore.fetchCampuses(routerData.currentRoute.value.query.id)
+        await fetchCampusInfo(school.value)
       }
     },
     {deep:true}
@@ -222,7 +231,8 @@ watch(
       if(data){
         let schoolNumber = data.data[0].number
         school.value = schoolNumber
-        await campusStore.fetchCampuses(schoolNumber)
+        // await campusStore.fetchCampuses(schoolNumber)
+        await fetchCampusInfo(schoolNumber)
         schoolsList.value = data.data
       }
     },
