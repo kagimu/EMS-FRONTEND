@@ -20,6 +20,7 @@ import TopicList from "@/main/dashboard/curriculum/topic/TopicList.vue";
 import SubTopicList from "@/main/dashboard/curriculum/subTopic/SubTopicList.vue";
 import ConceptList from "@/main/dashboard/curriculum/concept/ConceptList.vue";
 import ClassSetupList from "@/main/dashboard/manageLevel/class/ClassSetupList.vue";
+import Timetable from "@/main/dashboard/curriculum/timetable/Timetable.vue";
 
 
 const router = createRouter({
@@ -62,6 +63,7 @@ const router = createRouter({
                 {path: 'sub-topic', component: SubTopicList, name: "sub-topic"},
                 {path: 'concept', component: ConceptList, name: "concept"},
                 {path: 'class', component: ClassSetupList, name: "class"},
+                {path: 'time-table', component: Timetable, name: "timetable"},
             ]
         },
         {

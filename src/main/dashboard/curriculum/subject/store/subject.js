@@ -46,6 +46,18 @@ export const useSubjectStore = defineStore("subject", () => {
             })
     }
 
+    async function fetchSubjectsByClass(data) {
+        return await api.get("main/subjects?subject_cluster_number="+data)
+            .then((response) => {
+                subjectInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
 
 
@@ -54,6 +66,7 @@ export const useSubjectStore = defineStore("subject", () => {
         subjectInfoResponse,
         errorMessage,
         newSubjectData,
-        fetchSubjects
+        fetchSubjects,
+        fetchSubjectsByClass
     }
 })
