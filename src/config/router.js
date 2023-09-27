@@ -21,6 +21,7 @@ import SubTopicList from "@/main/dashboard/curriculum/subTopic/SubTopicList.vue"
 import ConceptList from "@/main/dashboard/curriculum/concept/ConceptList.vue";
 import ClassSetupList from "@/main/dashboard/manageLevel/class/ClassSetupList.vue";
 import Timetable from "@/main/dashboard/curriculum/timetable/Timetable.vue";
+import axios from "axios";
 
 
 const router = createRouter({
@@ -76,6 +77,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     let profile = localStorage.getItem("userProfile")
+    let token = localStorage.getItem("token");
+
     // let token = localStorage.getItem("token")
 
     const authStore = useAuthStore()
@@ -85,8 +88,8 @@ router.beforeEach((to, from, next) => {
         if (profile) {
             let user = JSON.parse(profile);
             if (user !== null) {
-                // authStore.updateToken(token)
                 authStore.updateProfile(profile)
+                authStore.updateToken(token)
                 next();
             } else {
                 next({ name: "dashboard" });

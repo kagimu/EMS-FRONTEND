@@ -19,9 +19,10 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
     const auth = useAuthStore()
 
+
     if (auth.userNumber) {
         config.withCredentials = false
-        // config.headers.Authorization = `Bearer ${auth.token}`
+        config.headers.Authorization = `Bearer ${auth.token}`
         config.headers["user-number"] =  auth.userNumber;
     }
 

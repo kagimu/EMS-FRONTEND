@@ -17,11 +17,11 @@ export const useAuthStore = defineStore("auth", () => {
                 let dataInfo = response.data
                 // localStorage.setItem("token", dataInfo.access_token)
                 localStorage.clear()
-                alert(JSON.stringify(dataInfo.token))
                 localStorage.setItem("token", dataInfo.token)
                 // localStorage.setItem("expires_in", dataInfo.expires_in)
                 loginResponse.value = dataInfo
                 userNumber.value = dataInfo.data.number
+                token.value = dataInfo.token
                 // token.value = dataInfo.access_token
             })
             .catch((response) => {

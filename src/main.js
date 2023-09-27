@@ -12,11 +12,7 @@ import 'floating-vue/dist/style.css'
 
 
 // localStorage.clear();
-const user = localStorage.getItem("userProfile");
-if (user != null) {
-    let token = localStorage.getItem("token");
-    axios.defaults.headers.common = {Authorization: `Bearer ${token}`};
-}
+
 const app = createApp(App);
 app.use(router);
 app.config.globalProperties.$http = axios;
