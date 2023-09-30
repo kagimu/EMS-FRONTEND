@@ -47,7 +47,7 @@ export const useSubjectStore = defineStore("subject", () => {
     }
 
     async function fetchSubjectsByClass(data) {
-        return await api.get("main/subjects?subject_cluster_number="+data)
+        return await api.get("main/subjects?class_number="+data)
             .then((response) => {
                 subjectInfoResponse.value = response.data
             })

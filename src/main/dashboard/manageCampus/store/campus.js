@@ -48,8 +48,8 @@ export const useCampusStore = defineStore("campus", () => {
             })
     }
 
-    async function fetchCampuses(data) {
-        return await api.get("main/campuses?school_number="+data)
+    async function fetchCampuses(school_number) {
+        return await api.get("main/campuses?school_number="+school_number)
             .then((response) => {
                 campusListResponse.value = response.data
             })
