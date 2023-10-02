@@ -10,6 +10,7 @@ export const useClassesStore = defineStore("classes", () => {
     let classSubjectsInfoResponse = ref(null)
     let classSubjectResponse = ref(null)
     let classStreams = ref(null)
+    let newStreamSuccess = ref(null)
     const errorMessage = ref(null)
 
 
@@ -105,10 +106,34 @@ export const useClassesStore = defineStore("classes", () => {
             })
     }
 
+    async function fetchClassesByLevelAndCampus(data) {
+        return await api.get("main/timetable/get-classes-by-campus-number-and-level-number?level_number="+data.level_number+"&campus_number="+data.campus_number)
+            .then((response) => {
+                classInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     async function fetchClassStreams(data) {
         return await api.get("main/class-streams?class_number="+data)
             .then((response) => {
                 classStreams.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function addStream(data) {
+        return await api.post("main/stream/new",data)
+            .then((response) => {
+                newStreamSuccess.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -135,6 +160,8 @@ export const useClassesStore = defineStore("classes", () => {
         newClassLevelData,
         fetchClassLevel,
         fetchClassLevelToAdd,
-        fetchClassStreams
+        fetchClassStreams,
+        addStream,
+        fetchClassesByLevelAndCampus
     }
 })
