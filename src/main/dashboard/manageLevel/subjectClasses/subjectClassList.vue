@@ -1,91 +1,68 @@
 <template>
   <div>
-
-    <div class="row mt-3">
-      <div class="col-12">
-
-
-
-        <div class="offcanvas offcanvas-end" :class="{ show: classSubjectDialog }"    tabindex="-1" id="newClassSubject" aria-labelledby="offcanvasRightLabel">
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasRightLabel">Add Subject to Class</h5>
-            <button type="button" class="btn-close noFocus" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <div class="modal fade" id="subjClassModal" tabindex="-1" :class="{ show: classSubjectDialog }" aria-labelledby="" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header text-sm p-0">
+            <h6 class="modal-title ml-3 mt-2 mb-2">Add Subject to Class</h6>
+            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="offcanvas-body">
-           <new-subject-class :classNumber="classNumber"></new-subject-class>
+          <div class="modal-body">
+            <div class="mt-2 mb-2">
+              <new-subject-class :classNumber="classNumber"></new-subject-class>
+            </div>
           </div>
         </div>
-
-
-
       </div>
     </div>
 
 
 
-
-    <div class="row mx-auto mb-4 mt-3">
-      <div class="col-6" v-for="(item, index) in classList" :key="index">
-
-        <div class="card mt-3">
-          <div class="card-body p-0">
-            <div class="p-0 py-2 flex justify-content-between" style="font-size: 12px;">
-              <span class="ml-3 mt-2">
-                 {{item.name}}
-              </span>
+    <div class="flex justify-content-between mt-4 mb-4 mr-3">
+      &nbsp;
+      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#subjClassModal">
+        <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+        Add Subject
+      </button>
+    </div>
 
 
-              <button
-                  data-bs-toggle="offcanvas" data-bs-target="#newClassSubject" aria-controls="offcanvasRight"
-                  @click="addSubject(item)"
-                  type="button"
-                  class="btn btn-sm text-sm buttonStyle btn-primary mr-2">
-                <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-                Add Subject
-              </button>
-
-            </div>
 
 
-            <table class="table table-hover caption-top" style="font-size: 12px; width: 100%; border-top: 1px solid #e8e8e8;">
-              <tbody>
-              <tr v-for="(sbj, idx) in item.subjects" :key="idx">
-                <td>{{idx+1}}</td>
-                <td>{{sbj.name}}</td>
-                <td>
-                  <div class="float-end mr-2">
+
+    <table class="table table-hover caption-top" style="font-size: 14px;">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Abbreviation</th>
+        <!--        <th scope="col">Action</th>-->
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="(classes, index) in classList" :key="index">
+        <td>{{index+1}}</td>
+        <td> {{classes.name}}</td>
+        <td> {{classes.abbreviation}}</td>
+        <!--        <td>
+                  <div>
                     <i
                         style="font-size: 13px;"
                         data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                        class="bi-pencil mr-2 cursor-pointer" @click="editClass(sbj)"></i>
-                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(sbj)"></i>
+                        class="bi-pencil mr-2 cursor-pointer" @click="editClass(classes)"></i>
+                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(classes)"></i>
                   </div>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-
-
-
-
-
-          </div>
-        </div>
-
-      </div>
-
-
-    </div>
-
-
-
-
+                </td>-->
+      </tr>
+      </tbody>
+    </table>
 
 
 
 
 
   </div>
+
 </template>
 
 <script setup>
@@ -104,6 +81,14 @@ const classSubjectDialog = ref( false)
 const classList = ref( [])
 const classNumber = ref( "")
 
+
+const editClass = () => {
+
+}
+
+const deleteClass = () => {
+
+}
 
 onMounted(
     () => {
@@ -135,7 +120,7 @@ watch(
     async (data) => {
       if(data){
         classSubjectDialog.value = false
-        classStore.fetchClassSubjects(campusLevel)
+        await classStore.fetchClassSubjects(campusLevel)
         notificationStore.successToast("Success", data.message)
       }
     },

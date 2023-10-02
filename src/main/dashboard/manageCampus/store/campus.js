@@ -8,6 +8,7 @@ export const useCampusStore = defineStore("campus", () => {
     let campusListResponse = ref(null)
     let editCampusResponse = ref(null)
     let campusInfoResponse = ref(null)
+    let campusLevelListResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -60,6 +61,18 @@ export const useCampusStore = defineStore("campus", () => {
             })
     }
 
+    async function fetchCampusLevel(campus_number) {
+        return await api.get("main/campus-level?campus_number="+campus_number)
+            .then((response) => {
+                campusLevelListResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     async function fetchCampusData(data) {
         return await api.get("main/campus-info?campus_number="+data)
             .then((response) => {
@@ -82,10 +95,12 @@ export const useCampusStore = defineStore("campus", () => {
         editCampusResponse,
         deleteCampusResponse,
         errorMessage,
+        campusLevelListResponse,
         newCampusData,
         fetchCampuses,
         fetchCampusData,
         editCampusData,
-        deleteCampus
+        deleteCampus,
+        fetchCampusLevel,
     }
 })

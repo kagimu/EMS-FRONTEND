@@ -6,7 +6,17 @@
         {{ classError }}
       </div>
 
-
+      <div class="mb-2">
+        <label class="textColor"><small>Level</small></label>
+        <select
+            disabled
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.level_number">
+          <option disabled value="">Select Class</option>
+          <option v-for="(list, index) in campusLevelInfo" :key="index" :value="list.number">{{list.name}}</option>
+        </select>
+      </div>
 
 
       <div class="mb-2">
@@ -62,7 +72,8 @@ import {useRouter} from "vue-router";
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
 import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
-
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+const campusStore = useCampusStore()
 const classError = ref(null)
 const name = ref(null)
 const loader = ref(false)
@@ -71,18 +82,23 @@ const classStore = useClassesStore()
 
 const learningAreaStore = useLearningAreaStore()
 const subjectStore = useSubjectStore()
-const campusNumber = routerData.currentRoute.value.query.id
 const campusLevel = routerData.currentRoute.value.query.l
+const campusNumber = localStorage.getItem('campus_number');
+
 
 const classList = ref([])
 const subjectList = ref([])
+const campusLevelInfo = ref([])
 
 
 const form = reactive({
+  level_number:"",
   class_number:"",
   subject_number:[],
 })
 
+
+form.level_number = campusLevel
 
 const props = defineProps({
   classNumber: String,
@@ -94,7 +110,6 @@ const props = defineProps({
 const addClassSubjects = () =>{
   loader.value = true
   form.campus_number = campusNumber
-  form.level_number = campusLevel
   classStore.addClassSubjectData(form)
 }
 
@@ -102,7 +117,7 @@ const addClassSubjects = () =>{
 
 onMounted(
     () =>{
-
+      campusStore.fetchCampusLevel(campusNumber)
     }
 )
 
@@ -132,6 +147,16 @@ watch(
     async (data) => {
       if(data){
         subjectList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => campusStore.campusLevelListResponse,
+    async (data) => {
+      if(data){
+        campusLevelInfo.value = data.data
       }
     },
     {deep:true}
