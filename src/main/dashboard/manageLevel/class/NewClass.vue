@@ -59,7 +59,7 @@ const props = defineProps({
 
 onMounted(
     () =>{
-      classStore.fetchClasses(campusLevel)
+      classStore.fetchClassLevelToAdd(campusLevel)
     }
 )
 

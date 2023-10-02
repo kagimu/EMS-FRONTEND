@@ -53,7 +53,6 @@ const router = createRouter({
                 {path: 'student-admission', component: StudentAdmission, name: "student-admission"},
                 {path: 'profiles', component: userProfiles, name: "profiles"},
                 {path: 'accounting', component: ManageCampus, name: "accounting"},
-                {path: 'time-table', component: ManageCampus, name: "time-table"},
                 {path: 'report-center', component: ReportCenter, name: "report-center"},
                 {path: 'settings', component: settings, name: "settings"},
                 {path: 'curriculum', component: Curriculum, name: "curriculum"},
