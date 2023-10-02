@@ -47,8 +47,8 @@ export const useSchoolStore = defineStore("school", () => {
             })
     }
 
-    async function fetchSchools() {
-        return await api.get("main/schools")
+    async function fetchSchools(userId=null) {
+        return await api.get("main/schools?by="+userId)
             .then((response) => {
                 schoolsResponse.value = response.data
             })
@@ -58,6 +58,8 @@ export const useSchoolStore = defineStore("school", () => {
                 }
             })
     }
+
+
 
 
     async function fetchSchoolData(data) {

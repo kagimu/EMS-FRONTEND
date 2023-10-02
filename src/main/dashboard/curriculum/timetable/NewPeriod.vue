@@ -17,10 +17,11 @@
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
-            v-model="subject_number"
+            v-model="school_number"
+            @change="fetchCampuses(school_number)"
         >
           <option disabled value="">Select School</option>
-          <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.name}}</option>
+          <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{list.name}}</option>
         </select>
       </div>
 
@@ -30,10 +31,10 @@
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
-                    v-model="subject_number"
+                    v-model="form.campus_number"
             >
                 <option disabled value="">Select campus</option>
-                <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.name}}</option>
+                <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{list.name}}</option>
             </select>
         </div>
 
@@ -45,7 +46,7 @@
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
-            v-model="form.class_number">
+            v-model="class_number">
           <option disabled value="">Select Class</option>
           <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.name}}</option>
         </select>
@@ -56,9 +57,9 @@
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
-                    v-model="form.class_number">
-                <option disabled value="">Select Class</option>
-                <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.name}}</option>
+                    v-model="form.stream_number">
+                <option disabled value="">Select stream</option>
+                <option v-for="(stream, index) in streamList" :key="index" :value="stream.number">{{stream.name}}</option>
             </select>
         </div>
 
@@ -68,9 +69,9 @@
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
-                    v-model="form.class_number">
+                    v-model="form.subject_number">
                 <option disabled value="">Select subject</option>
-                <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.name}}</option>
+                <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.name}}</option>
             </select>
         </div>
 
@@ -80,7 +81,7 @@
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
-                    v-model="form.class_number">
+                    v-model="form.day">
                 <option disabled value="">Select day of the week</option>
                 <option v-for="(list, index) in daysOfWeek" :key="index" :value="list.number" >{{list.name}}</option>
             </select>
@@ -90,12 +91,12 @@
 
       <div class="mb-2">
         <label class="textColor"><small>Start Time</small></label>
-        <input type="date" style="outline: none 0 !important; box-shadow: none;" v-model="form.name" required class="form-control form-select-sm">
+        <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.start_time" placeholder="09:00" required class="form-control form-select-sm">
       </div>
 
         <div class="mb-2">
             <label class="textColor"><small>End Time</small></label>
-            <input type="date" style="outline: none 0 !important; box-shadow: none;" v-model="form.name" required class="form-control form-select-sm">
+            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.end_time" placeholder="15:45" required class="form-control form-select-sm">
         </div>
 
 
@@ -124,6 +125,10 @@ import {useRouter} from "vue-router";
 
 import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import {useAuthStore} from "@/main/auth/store/auth.js";
+import {useTimetableStore} from "@/main/dashboard/curriculum/timetable/store/timetable.js";
 
 const classError = ref(null)
 const name = ref(null)
@@ -135,22 +140,31 @@ const routerData = useRouter()
 const subjectStore = useSubjectStore()
 
 const classStore = useClassesStore()
+const schoolStore = useSchoolStore()
+const campusStore = useCampusStore()
+const authStore = useAuthStore()
+const timetableStore = useTimetableStore()
 
-const learningAreaList = ref([])
-const subjectClusterList = ref([])
+const schoolList = ref([])
+const campusList = ref([])
 const subjectList = ref([])
-const strandList = ref([])
 const classList = ref([])
-const learning_area_number = ref("")
-const subject_cluster_number = ref("")
-const subject_number = ref("")
+const streamList = ref([])
+const school_number = ref(null)
+const class_number = ref(null)
+
 
 
 const form = reactive({
-  name:null,
-  class_number:"",
-  strand_number:"",
+  stream_number:"",
+  subject_number:"",
+  campus_number:"",
+  day:"",
+  start_time:"",
+  end_time:"",
 })
+
+
 
 const daysOfWeek = ref([
     {name:"Monday", number:1},
@@ -167,16 +181,29 @@ const selectSubjectCluster = (learning_area_number) => {
   subjectClusterStore.fetchSubjectCluster(learning_area_number)
 }
 
-const selectSubject = (subject_cluster_number) => {
-  subjectStore.fetchSubjectsByClass(subject_cluster_number)
+const selectSubject = (class_number) => {
+  subjectStore.fetchSubjectsByClass(class_number)
 }
 
+const fetchCampuses = (school_number) => {
+  campusStore.fetchCampuses(school_number)
+}
 
+const fetchStreams = (class_number) => {
+  classStore.fetchClassStreams(class_number)
+}
 
+const addPeriod = () =>{
+  loader.value = true
+  form.class_number = class_number.value
+  timetableStore.newPeriodData(form)
+}
 
 
 onMounted(
     () => {
+
+       schoolStore.fetchSchools( authStore.profile.number)
       classStore.fetchClasses()
     }
 )
@@ -185,11 +212,31 @@ onMounted(
 
 
 watch(
-    () => subjectStore.subjectInfoResponse,
+    () => schoolStore.schoolsResponse,
     async (data) => {
       if(data){
-        subjectList.value = data.data
+        schoolList.value = data.data
       }
+    },
+    {deep:true}
+)
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+        if(data){
+            schoolList.value = data.data
+        }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectStore.subjectInfoResponse,
+    async (data) => {
+        if(data){
+            subjectList.value = data.data
+        }
     },
     {deep:true}
 )
@@ -206,6 +253,16 @@ watch(
     {deep:true}
 )
 
+
+watch(
+    () => campusStore.campusListResponse,
+    async (data) => {
+        if(data){
+            campusList.value = data.data
+        }
+    },
+    {deep:true}
+)
 
 
 </script>
