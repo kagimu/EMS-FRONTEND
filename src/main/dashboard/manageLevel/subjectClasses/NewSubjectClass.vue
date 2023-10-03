@@ -12,7 +12,7 @@
             disabled
             style="box-shadow: none;"
             class="form-select form-select-sm"
-            v-model="form.level_number">
+            v-model="level_number">
           <option disabled value="">Select Class</option>
           <option v-for="(list, index) in campusLevelInfo" :key="index" :value="list.number">{{list.name}}</option>
         </select>
@@ -22,7 +22,6 @@
       <div class="mb-2">
         <label class="textColor"><small>Class</small></label>
         <select
-            disabled
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="form.class_number">
@@ -39,7 +38,6 @@
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
-            multiple
             v-model="form.subject_number">
           <option disabled value="">Select Subject</option>
           <option v-for="(list,idx) in subjectList" :key="idx" :value="list.number">{{list.name}}</option>
@@ -74,6 +72,8 @@ import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 const campusStore = useCampusStore()
+
+
 const classError = ref(null)
 const name = ref(null)
 const loader = ref(false)
@@ -89,16 +89,16 @@ const campusNumber = localStorage.getItem('campus_number');
 const classList = ref([])
 const subjectList = ref([])
 const campusLevelInfo = ref([])
+const level_number = ref(null)
 
 
 const form = reactive({
-  level_number:"",
   class_number:"",
-  subject_number:[],
+  subject_number:"",
 })
 
 
-form.level_number = campusLevel
+level_number.value = campusLevel
 
 const props = defineProps({
   classNumber: String,
@@ -109,7 +109,6 @@ const props = defineProps({
 
 const addClassSubjects = () =>{
   loader.value = true
-  form.campus_number = campusNumber
   classStore.addClassSubjectData(form)
 }
 
@@ -118,6 +117,8 @@ const addClassSubjects = () =>{
 onMounted(
     () =>{
       campusStore.fetchCampusLevel(campusNumber)
+      classStore.fetchClassLevel({campusNumber: campusNumber, levelNumber: campusLevel})
+      subjectStore.fetchSubjects("")
     }
 )
 
@@ -160,6 +161,16 @@ watch(
       }
     },
     {deep:true}
+)
+
+watch(
+    () => classStore.classLevelInfoResponse,
+    async (data) => {
+      if (data) {
+       classList.value = data.data
+      }
+    },
+    {deep: true}
 )
 
 
