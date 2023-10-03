@@ -119,7 +119,7 @@ export const useClassesStore = defineStore("classes", () => {
     }
 
     async function fetchClassStreams(data) {
-        return await api.get("main/class-streams?class_number="+data)
+        return await api.get("main/stream/fetch?class_level_number="+data)
             .then((response) => {
                 classStreams.value = response.data
             })
@@ -147,6 +147,7 @@ export const useClassesStore = defineStore("classes", () => {
 
     return {
         classResponse,
+        classStreams,
         classInfoResponse,
         classSubjectsInfoResponse,
         classSubjectResponse,
