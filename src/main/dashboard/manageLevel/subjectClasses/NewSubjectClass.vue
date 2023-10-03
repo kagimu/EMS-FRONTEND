@@ -100,9 +100,11 @@ const form = reactive({
 
 level_number.value = campusLevel
 
+/*
 const props = defineProps({
   classNumber: String,
 })
+*/
 
 
 
@@ -123,15 +125,7 @@ onMounted(
 )
 
 
-watch(
-    () => props.classNumber,
-    async (data) => {
-      if(data){
-        form.class_number = data
-      }
-    },
-    {deep:true}
-)
+
 
 watch(
     () => classStore.classInfoResponse,

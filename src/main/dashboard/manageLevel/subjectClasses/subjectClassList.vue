@@ -9,7 +9,7 @@
           </div>
           <div class="modal-body">
             <div class="mt-2 mb-2">
-              <new-subject-class :classNumber="classNumber"></new-subject-class>
+              <new-subject-class></new-subject-class>
             </div>
           </div>
         </div>
@@ -28,6 +28,23 @@
 
 
 
+    <div class="row mx-auto mb-4">
+      <div class="col-3">
+    <div class="mb-2">
+      <label class="textColor"><small>Class</small></label>
+      <select
+          style="box-shadow: none;"
+          class="form-select form-select-sm"
+          v-model="classNumber"
+          @change="filterClassSubject(classNumber)"
+      >
+        <option disabled value="">Select Class</option>
+        <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.name}}</option>
+      </select>
+    </div>
+      </div>
+    </div>
+
 
 
     <table class="table table-hover caption-top" style="font-size: 14px;">
@@ -35,15 +52,15 @@
       <tr>
         <th scope="col">#</th>
         <th scope="col">Name</th>
-        <th scope="col">Abbreviation</th>
+        <th scope="col">Class</th>
         <!--        <th scope="col">Action</th>-->
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(classes, index) in classList" :key="index">
+      <tr v-for="(classes, index) in subjectList" :key="index">
         <td>{{index+1}}</td>
         <td> {{classes.name}}</td>
-        <td> {{classes.abbreviation}}</td>
+        <td> {{classes.class+" ("+classes.abbreviation+")"}}</td>
         <!--        <td>
                   <div>
                     <i
@@ -78,6 +95,7 @@ const campusLevel = routerData.currentRoute.value.query.l
 const  notificationStore  = useNotificationStore()
 
 const classSubjectDialog = ref( false)
+const subjectList = ref( [])
 const classList = ref( [])
 const classNumber = ref( "")
 
@@ -90,17 +108,23 @@ const deleteClass = () => {
 
 }
 
+const filterClassSubject = (data) => {
+  classStore.fetchClassSubjects({level:campusLevel, class:data})
+}
+
 onMounted(
     () => {
-      classStore.fetchClassSubjects(campusLevel)
+      classStore.fetchClassSubjects({level:campusLevel, class:classNumber.value})
     }
 )
 
 
+/*
 const addSubject = (item) => {
   classNumber.value = item.number
   classSubjectDialog.value = true
 }
+*/
 
 
 
@@ -109,7 +133,7 @@ watch(
     () => classStore.classSubjectsInfoResponse,
     async (data) => {
       if(data){
-        classList.value = data.data
+        subjectList.value = data.data
       }
     },
     {deep:true}
@@ -125,6 +149,17 @@ watch(
       }
     },
     {deep:true}
+)
+
+
+watch(
+    () => classStore.classLevelInfoResponse,
+    async (data) => {
+      if (data) {
+        classList.value = data.data
+      }
+    },
+    {deep: true}
 )
 
 
