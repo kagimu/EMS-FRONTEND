@@ -199,6 +199,18 @@ watch(
     {deep: true}
 )
 
+watch(
+    () => classStore.newStreamSuccess,
+    async (data) => {
+        if (data) {
+          streamForm.name = ""
+          filterClassInfo()
+          notificationStore.successToast("Success", data.message)
+        }
+    },
+    {deep: true}
+)
+
 
 </script>
 

@@ -155,6 +155,7 @@ export const useClassesStore = defineStore("classes", () => {
         classLevelResponse,
         classLevelInfoResponse,
         classesToAddResponse,
+        newStreamSuccess,
         errorMessage,
         newClassData,
         fetchClasses,
