@@ -108,13 +108,13 @@
 
             <div class="mb-2">
                 <label class="textColor"><small>Start Time</small></label>
-                <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.start_time"
+                <input type="time" style="outline: none 0 !important; box-shadow: none;" v-model="form.start_time"
                        placeholder="09:00" required class="form-control form-select-sm">
             </div>
 
             <div class="mb-2">
                 <label class="textColor"><small>End Time</small></label>
-                <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.end_time"
+                <input type="time" style="outline: none 0 !important; box-shadow: none;" v-model="form.end_time"
                        placeholder="15:45" required class="form-control form-select-sm">
             </div>
 
