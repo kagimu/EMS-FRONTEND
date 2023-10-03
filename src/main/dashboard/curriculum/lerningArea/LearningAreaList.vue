@@ -106,7 +106,7 @@ watch(
     async (data) => {
       if(data){
         // curriculumDialog.value = false
-        learningAreaStore.fetchLearningArea()
+        await learningAreaStore.fetchLearningArea()
         notificationStore.successToast("Success", data.message)
       }
     },

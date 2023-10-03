@@ -21,7 +21,7 @@
 
         <div class="modal fade" id="streamModal" tabindex="-1" :class="{ show: streamDialog }" aria-labelledby=""
              aria-hidden="true">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header text-sm p-0">
                         <h6 class="modal-title ml-3 mt-2 mb-2">Add Streams on </h6>
@@ -30,10 +30,24 @@
                     </div>
                     <div class="modal-body">
                         <div class="mt-2 mb-2">
-                            <input type="text" placeholder="East,West,North" v-model="streamForm.name">
+
+                          <div class="mb-6">
+                            <label class="textColor"><small>Stream</small></label>
+                            <input
+                                placeholder="East,West,North"
+                                ref="nameRef"
+                                type="text"
+                                style="outline: none 0 !important; box-shadow: none;"
+                                v-model="streamForm.name"
+                                required
+                                class="form-control form-select-sm">
+                          </div>
+
+
                         </div>
 
-                        <div>
+                        <div class="flex justify-content-between mb-3">
+                          &nbsp;
                             <button
                                     type="button"
                                     class="btn btn-sm buttonStyle btn-primary mr-2"
@@ -68,17 +82,23 @@
                 <th scope="col">Name</th>
                 <th scope="col">Abbreviation</th>
                 <th scope="col">Streams</th>
-                <th scope="col">Action</th>
+                <th scope="col" class="text-right">
+                  <div style="margin-right: 60px;">Action</div>
+                </th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(classes, index) in classList" :key="index">
                 <td>{{ index + 1 }}</td>
-                <td> {{ classes.name }}</td>
-                <td> {{ classes.abbreviation }}</td>
-                <td><label v-for="(idx,stream) in classes.streams" :key="idx">{{ stream.name }}</label></td>
+                <td>{{ classes.name }}</td>
+                <td>{{ classes.abbreviation }}</td>
                 <td>
-                    <div>
+                  <label v-for="(idx,stream) in classes.streams" :key="idx">
+                    {{ stream.name }}
+                  </label>
+                </td>
+                <td class="text-right">
+                    <div style="margin-right: 10px;">
                         <button
                                 type="button"
                                 class="btn btn-sm buttonStyle btn-primary mr-2"
