@@ -93,7 +93,7 @@
             </div>
 
 
-            <div class="mb-2">
+            <div class="mb-3">
                 <label class="textColor"><small>Day of the week</small></label>
                 <select
                         style="box-shadow: none;"
@@ -105,21 +105,32 @@
                 </select>
             </div>
 
+          <div class="row">
 
-            <div class="mb-2">
+            <div class="col-lg-6">
+              <div class="mb-2">
                 <label class="textColor"><small>Start Time</small></label>
                 <input type="time" style="outline: none 0 !important; box-shadow: none;" v-model="form.start_time"
                        placeholder="09:00" required class="form-control form-select-sm">
+              </div>
             </div>
 
-            <div class="mb-2">
+            <div class="col-lg-6">
+              <div class="mb-2">
                 <label class="textColor"><small>End Time</small></label>
                 <input type="time" style="outline: none 0 !important; box-shadow: none;" v-model="form.end_time"
                        placeholder="15:45" required class="form-control form-select-sm">
+              </div>
             </div>
 
+          </div>
 
-            <div class="flex justify-content-end" style="width: 100%;">
+
+
+
+
+
+            <div class="flex justify-content-end mt-3" style="width: 100%;">
                 <button
                         type="submit"
                         class="btn btn-primary border-0">
