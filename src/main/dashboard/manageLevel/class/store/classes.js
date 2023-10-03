@@ -11,6 +11,7 @@ export const useClassesStore = defineStore("classes", () => {
     let classSubjectResponse = ref(null)
     let classStreams = ref(null)
     let newStreamSuccess = ref(null)
+    let classesToAddResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -70,9 +71,9 @@ export const useClassesStore = defineStore("classes", () => {
     }
     async function fetchClassLevelToAdd(data) {
         data = data ? data : ""
-        return await api.get("main/classed-to-add?level="+data)
+        return await api.get("main/classes-to-add?level="+data)
             .then((response) => {
-                classInfoResponse.value = response.data
+                classesToAddResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -153,6 +154,7 @@ export const useClassesStore = defineStore("classes", () => {
         classSubjectResponse,
         classLevelResponse,
         classLevelInfoResponse,
+        classesToAddResponse,
         errorMessage,
         newClassData,
         fetchClasses,

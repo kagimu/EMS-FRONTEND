@@ -168,6 +168,16 @@ watch(
 )
 
 
+watch(
+    () => classStore.classSubjectResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
+
 
 </script>
 

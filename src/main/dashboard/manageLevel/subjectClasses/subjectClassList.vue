@@ -39,6 +39,7 @@
           @change="filterClassSubject(classNumber)"
       >
         <option disabled value="">Select Class</option>
+        <option value="">All</option>
         <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.name}}</option>
       </select>
     </div>
@@ -144,7 +145,7 @@ watch(
     async (data) => {
       if(data){
         classSubjectDialog.value = false
-        await classStore.fetchClassSubjects(campusLevel)
+        await classStore.fetchClassSubjects({level:campusLevel, class:classNumber.value})
         notificationStore.successToast("Success", data.message)
       }
     },
