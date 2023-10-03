@@ -40,7 +40,7 @@
                                 style="outline: none 0 !important; box-shadow: none;"
                                 v-model="streamForm.name"
                                 required
-                                class="form-control form-select-sm">
+                                class="form-control">
                           </div>
 
 

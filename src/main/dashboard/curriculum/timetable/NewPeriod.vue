@@ -38,7 +38,7 @@
             </div>
 
             <div class="mb-2">
-                {{level_number}}
+
                 <label class="textColor"><small>Level</small></label>
                 <select
                         @change="fetchClasses"
@@ -149,6 +149,7 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useAuthStore} from "@/main/auth/store/auth.js";
 import {useTimetableStore} from "@/main/dashboard/curriculum/timetable/store/timetable.js";
 import {useLevelStore} from "@/main/dashboard/manageLevel/store/level.js";
+import useNotificationStore from "@/composables/useNotification.js";
 
 const classError = ref(null)
 const name = ref(null)
@@ -164,6 +165,7 @@ const campusStore = useCampusStore()
 const authStore = useAuthStore()
 const timetableStore = useTimetableStore()
 const levelStore = useLevelStore()
+const  notificationStore  = useNotificationStore()
 
 const schoolList = ref([])
 const campusList = ref([])
@@ -217,8 +219,7 @@ const fetchClasses = () => {
 const fetchStreamsAndSubjects = (class_level_number) => {
     fetchStreams(class_level_number)
     subjectStore.fetchSubjectsByClass(class_level_number)
-    // classStore.fetchClassesByLevelAndCampus({campus_number:form.campus_number,level_number:level_number.value})
-    // classStore.Fetch
+
 }
 
 const fetchLevelsByCampus = (campus_number) =>{
@@ -251,6 +252,18 @@ watch(
     async (data) => {
         if (data) {
             schoolList.value = data.data
+        }
+    },
+    {deep: true}
+)
+
+watch(
+    () => timetableStore.newPeriodResponse,
+    async (data) => {
+        if (data) {
+            notificationStore.successToast("Success",data.message)
+            await timetableStore.fetchPeriods(campus_number.value)
+            await timetableStore.fetchDistinctDays(campus_number.value)
         }
     },
     {deep: true}
