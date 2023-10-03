@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="modal fade" id="subjClassModal" tabindex="-1" :class="{ show: classSubjectDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
+      <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
             <h6 class="modal-title ml-3 mt-2 mb-2">Add Subject to Class</h6>
