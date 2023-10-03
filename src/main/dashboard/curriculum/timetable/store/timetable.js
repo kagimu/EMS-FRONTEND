@@ -13,7 +13,7 @@ export const useTimetableStore = defineStore("timetable", () => {
 
 
     async function newPeriodData(data) {
-        return await api.post("main/new-Period", data)
+        return await api.post("main/timetable/add-timetable-period", data)
             .then((response) => {
                 newPeriodResponse.value = response.data
             })

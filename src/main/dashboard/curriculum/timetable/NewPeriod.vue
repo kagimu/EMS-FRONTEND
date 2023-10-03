@@ -38,6 +38,7 @@
             </div>
 
             <div class="mb-2">
+                {{level_number}}
                 <label class="textColor"><small>Level</small></label>
                 <select
                         @change="fetchClasses"
@@ -55,11 +56,12 @@
             <div class="mb-2">
                 <label class="textColor"><small>Class</small></label>
                 <select
+                        @change="fetchStreamsAndSubjects(class_number)"
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
                         v-model="class_number">
                     <option disabled value="">Select Class</option>
-                    <option v-for="(list, index) in classList" :key="index" :value="list.number">{{ list.name }}
+                    <option v-for="(list, index) in classList" :key="index" :value="list.number">{{ list.Class ? list.Class.name : "" }}
                     </option>
                 </select>
             </div>
@@ -98,7 +100,7 @@
                         class="form-select form-select-sm"
                         v-model="form.day">
                     <option disabled value="">Select day of the week</option>
-                    <option v-for="(list, index) in daysOfWeek" :key="index" :value="list.number">{{ list.name }}
+                    <option v-for="(list, index) in daysOfWeek" :key="index" :value="list.name">{{ list.name }}
                     </option>
                 </select>
             </div>
@@ -209,11 +211,18 @@ const fetchCampuses = (school_number) => {
 }
 
 const fetchClasses = () => {
-    classStore.fetchClassesByLevelAndCampus({campus_number:form.campus_number,level_number})
+    classStore.fetchClassesByLevelAndCampus({campus_number:form.campus_number,level_number:level_number.value})
+}
+
+const fetchStreamsAndSubjects = (class_level_number) => {
+    fetchStreams(class_level_number)
+    subjectStore.fetchSubjectsByClass(class_level_number)
+    // classStore.fetchClassesByLevelAndCampus({campus_number:form.campus_number,level_number:level_number.value})
+    // classStore.Fetch
 }
 
 const fetchLevelsByCampus = (campus_number) =>{
-    levelStore.fetchLevelInfo(campus_number)
+    levelStore.fetchLevelsByCampusNumber(campus_number)
 }
 
 
@@ -223,7 +232,7 @@ const fetchStreams = (class_number) => {
 
 const addPeriod = () => {
     loader.value = true
-    form.class_number = class_number.value
+    form.class_level_number = class_number.value
     timetableStore.newPeriodData(form)
 }
 
@@ -232,7 +241,7 @@ onMounted(
     () => {
 
         schoolStore.fetchSchools(authStore.profile.number)
-        classStore.fetchClasses()
+       // classStore.fetchClasses()
     }
 )
 
@@ -242,6 +251,15 @@ watch(
     async (data) => {
         if (data) {
             schoolList.value = data.data
+        }
+    },
+    {deep: true}
+)
+watch(
+    () => classStore.classStreams,
+    async (data) => {
+        if (data) {
+            streamList.value = data.data
         }
     },
     {deep: true}

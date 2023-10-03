@@ -34,11 +34,26 @@ export const useLevelStore = defineStore("level", () => {
     }
 
 
+    async function fetchLevelsByCampusNumber(campusNumber) {
+        return await api.get("main/timetable/fetch-levels-by-campus-number/"+campusNumber)
+            .then((response) => {
+                levelResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
+
 
 
     return {
         levelResponse,
         errorMessage,
-        fetchLevelInfo
+        fetchLevelInfo,
+        fetchLevelsByCampusNumber
     }
 })
