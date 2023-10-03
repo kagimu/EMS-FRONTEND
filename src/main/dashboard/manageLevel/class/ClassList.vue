@@ -24,7 +24,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header text-sm p-0">
-                        <h6 class="modal-title ml-3 mt-2 mb-2">Add Streams on </h6>
+                        <h6 class="modal-title ml-3 mt-2 mb-2">Add Streams on {{streamClass}}</h6>
                         <button style="margin-right: 5px;" type="button" class="btn-close btn-sm"
                                 data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -136,6 +136,7 @@ const notificationStore = useNotificationStore()
 const classDialog = ref(false)
 const streamDialog = ref(false)
 const classList = ref([])
+const streamClass = ref(null)
 // const campusNumber = routerData.currentRoute.value.query.id
 const campusNumber = localStorage.getItem('campus_number');
 const levelNumber = routerData.currentRoute.value.query.l
@@ -156,6 +157,7 @@ const editClass = (data) => {
 const addStream = (data) => {
     streamDialog.value = true
     streamForm.class_level_number = data.number
+    streamClass.value = data.name
 }
 
 const saveStream = () => {
