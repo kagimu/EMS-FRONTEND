@@ -6,6 +6,7 @@ export const useTimetableStore = defineStore("timetable", () => {
     let newPeriodResponse = ref(null)
     let deletePeriodResponse = ref(null)
     let PeriodListResponse = ref(null)
+    let DistinctDays = ref(null)
     let editPeriodResponse = ref(null)
     let PeriodInfoResponse = ref(null)
     const errorMessage = ref(null)
@@ -48,8 +49,8 @@ export const useTimetableStore = defineStore("timetable", () => {
             })
     }
 
-    async function fetchPeriods(school_number) {
-        return await api.get("main/Periodes?school_number="+school_number)
+    async function fetchPeriods(campus_number) {
+        return await api.get("main/timetable/get-timetable-periods?campus_number"+campus_number)
             .then((response) => {
                 PeriodListResponse.value = response.data
             })
@@ -59,6 +60,19 @@ export const useTimetableStore = defineStore("timetable", () => {
                 }
             })
     }
+
+    async function fetchDistinctDays(campus_number) {
+        return await api.get("main/timetable/get-distinct-days?campus_number"+campus_number)
+            .then((response) => {
+                DistinctDays.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
     async function fetchPeriodData(data) {
         return await api.get("main/Period-info?Period_number="+data)
@@ -78,12 +92,14 @@ export const useTimetableStore = defineStore("timetable", () => {
     return {
         newPeriodResponse,
         PeriodListResponse,
+        DistinctDays,
         PeriodInfoResponse,
         editPeriodResponse,
         deletePeriodResponse,
         errorMessage,
         newPeriodData,
         fetchPeriods,
+        fetchDistinctDays,
         fetchPeriodData,
         editPeriodData,
         deletePeriod
