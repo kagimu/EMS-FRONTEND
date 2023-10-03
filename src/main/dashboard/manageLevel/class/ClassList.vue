@@ -93,9 +93,9 @@
                 <td>{{ classes.name }}</td>
                 <td>{{ classes.abbreviation }}</td>
                 <td>
-                  <label v-for="(idx,stream) in classes.streams" :key="idx">
-                    {{ stream.name }}
-                  </label>
+                  <p v-for="(lst,idx) in classes.streams" :key="idx">
+                    {{lst.name}}
+                  </p>
                 </td>
                 <td class="text-right">
                     <div style="margin-right: 10px;">
@@ -193,7 +193,7 @@ watch(
     () => classStore.classLevelInfoResponse,
     async (data) => {
         if (data) {
-            classList.value = data.data
+          classList.value = data.data
         }
     },
     {deep: true}

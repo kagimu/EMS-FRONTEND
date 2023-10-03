@@ -79,9 +79,7 @@
                 <level-settings></level-settings>
               </div>
 
-
             </div>
-
 
           </div>
         </div>
