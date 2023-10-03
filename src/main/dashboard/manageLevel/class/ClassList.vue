@@ -93,9 +93,12 @@
                 <td>{{ classes.name }}</td>
                 <td>{{ classes.abbreviation }}</td>
                 <td>
-                  <p v-for="(lst,idx) in classes.streams" :key="idx">
-                    {{lst.name}}
-                  </p>
+                  <div v-for="(lst,idx) in classes.streams" :key="idx">
+                    <small>
+                      {{lst.name}}
+                      <i class="bi bi-x-circle cursor-pointer" style="font-size: 13px;" @click="deleteStream(lst)"></i>
+                    </small>
+                  </div>
                 </td>
                 <td class="text-right">
                     <div style="margin-right: 10px;">
@@ -165,6 +168,14 @@ classStore.addStream(streamForm)
 }
 const deleteClass = (data) => {
     alert(JSON.stringify(data))
+}
+
+const deleteStream = (lst) => {
+  if(!confirm("Are you sure, you want to delete: "+lst.name)){
+    return
+  }
+
+  alert(JSON.stringify(lst))
 }
 
 onMounted(
