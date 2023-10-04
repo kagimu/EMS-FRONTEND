@@ -21,7 +21,7 @@ import SubTopicList from "@/main/dashboard/curriculum/subTopic/SubTopicList.vue"
 import ConceptList from "@/main/dashboard/curriculum/concept/ConceptList.vue";
 import ClassSetupList from "@/main/dashboard/manageLevel/class/ClassSetupList.vue";
 import Timetable from "@/main/dashboard/curriculum/timetable/Timetable.vue";
-import axios from "axios";
+
 
 
 const router = createRouter({
