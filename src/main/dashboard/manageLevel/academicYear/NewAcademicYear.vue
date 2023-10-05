@@ -33,6 +33,22 @@
       </div>
 
 
+      <div class="row mt-3">
+        <div class="col-lg-6 content">
+
+      <div class="mb-2">
+        <label class="textColor text-sm">Start Date</label>
+        <input type="date" style="outline: none 0 !important; box-shadow: none;" v-model="form.start_date" required class="form-control form-control-sm">
+      </div>
+        </div>
+
+        <div class="col-lg-6 content">
+      <div class="mb-2">
+        <label class="textColor text-sm">End Date</label>
+        <input type="date" style="outline: none 0 !important; box-shadow: none;" v-model="form.end_date" required class="form-control form-control-sm">
+      </div>
+        </div>
+      </div>
 
 
       <div class="flex justify-content-end mt-4" style="width: 100%;">
@@ -71,6 +87,8 @@ level_number.value = campusLevel
 
 const form = reactive({
   study_period:"",
+  start_date:"",
+  end_date:"",
 })
 
 onMounted(
