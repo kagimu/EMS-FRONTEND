@@ -20,7 +20,7 @@
 
     <div class="flex justify-content-between mt-4 mb-4 mr-3">
       &nbsp;
-      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#subjClassModal">
+      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSubject" data-bs-toggle="modal" data-bs-target="#subjClassModal">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
         Add Subject
       </button>
@@ -120,12 +120,10 @@ onMounted(
 )
 
 
-/*
 const addSubject = (item) => {
   classNumber.value = item.number
   classSubjectDialog.value = true
 }
-*/
 
 
 

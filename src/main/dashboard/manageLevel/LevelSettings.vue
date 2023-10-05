@@ -4,7 +4,6 @@
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <button class="nav-link navColor active" id="classes-tab" data-bs-toggle="tab" data-bs-target="#classes" type="button" role="tab" aria-controls="classes" aria-selected="false"><small>Class</small></button>
-<!--          <button class="nav-link navColor" id="subjects-tab" data-bs-toggle="tab" data-bs-target="#subjects" type="button" role="tab" aria-controls="subjects" aria-selected="false"><small>Subjects</small></button>-->
           <button class="nav-link navColor" id="class-subjects-tab" data-bs-toggle="tab" data-bs-target="#class-subjects" type="button" role="tab" aria-controls="grading-scale" aria-selected="true"><small>Class Subjects</small></button>
           <button class="nav-link navColor" id="study-period-tab" data-bs-toggle="tab" data-bs-target="#study-period" type="button" role="tab" aria-controls="study-period" aria-selected="false"><small>Study Period</small></button>
           <button class="nav-link navColor" id="grading-scale-tab" data-bs-toggle="tab" data-bs-target="#grading-scale" type="button" role="tab" aria-controls="grading-scale" aria-selected="true"><small>Grading Scale</small></button>
@@ -20,8 +19,10 @@
         <div class="tab-pane fade" id="class-subjects" role="tabpanel" aria-labelledby="class-subjects-tab" tabindex="0">
          <subject-class-list></subject-class-list>
         </div>
+        <div class="tab-pane fade" id="study-period" role="tabpanel" aria-labelledby="study-period-tab" tabindex="0">
+         <study-period></study-period>
+        </div>
         <div class="tab-pane fade" id="grading-scale" role="tabpanel" aria-labelledby="grading-scale-tab" tabindex="0">Grading Scale</div>
-        <div class="tab-pane fade" id="study-period" role="tabpanel" aria-labelledby="study-period-tab" tabindex="0">Study Period</div>
         <div class="tab-pane fade" id="assessment-manager" role="tabpanel" aria-labelledby="assessment-manager-tab" tabindex="0">Assessment Manger</div>
         <div class="tab-pane fade" id="mode-of-assessment" role="tabpanel" aria-labelledby="mode-of-assessment-tab" tabindex="0">Mode of Assessment</div>
         <div class="tab-pane fade" id="grading-term" role="tabpanel" aria-labelledby="grading-term-tab" tabindex="0">Grading Term</div>
@@ -36,8 +37,8 @@
 
 
 import ClassList from "@/main/dashboard/manageLevel/class/ClassList.vue";
-import SubjectList from "@/main/dashboard/curriculum/subject/SubjectList.vue";
 import SubjectClassList from "@/main/dashboard/manageLevel/subjectClasses/subjectClassList.vue";
+import StudyPeriod from "@/main/dashboard/manageLevel/academicYear/StudyPeriod.vue";
 </script>
 
 <style scoped>
