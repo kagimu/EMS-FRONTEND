@@ -73,15 +73,19 @@ import {onMounted, reactive, ref, watch} from "vue";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useRouter} from "vue-router";
 import useCommonsStore from "@/composables/useCommons.js";
+import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 const commons = useCommonsStore()
 const routerData = useRouter()
 const campusStore = useCampusStore()
+const academicYearStore = useAcademicYearStore()
 const campusLevel = routerData.currentRoute.value.query.l
 const campusNumber = localStorage.getItem('campus_number');
 const errorMessage = ref(null)
 const campusLevelInfo = ref([])
 const loader = ref(false)
 const level_number = ref(null)
+
+
 
 level_number.value = campusLevel
 
@@ -98,7 +102,8 @@ onMounted(
 )
 
 const addAcademicYear = () => {
-
+  loader.value = true
+  academicYearStore.newAcademicYear(form)
 }
 
 watch(
@@ -106,6 +111,17 @@ watch(
     async (data) => {
       if(data){
         campusLevelInfo.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => academicYearStore.newAcademicYearResponse,
+    async (data) => {
+      if(data){
+        alert(JSON.stringify(data))
+        // campusLevelInfo.value = data.data
       }
     },
     {deep:true}
