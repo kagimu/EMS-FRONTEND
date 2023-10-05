@@ -33,22 +33,18 @@
       </div>
 
 
-      <div class="row mt-3">
-        <div class="col-lg-6 content">
-
-      <div class="mb-2">
-        <label class="textColor text-sm">Start Date</label>
-        <input type="date" style="outline: none 0 !important; box-shadow: none;" v-model="form.start_date" required class="form-control form-control-sm">
-      </div>
+        <div class="mb-2">
+          <label class="textColor"><small>Academic Year Range</small></label>
+          <VueDatePicker
+              style="font-size: 7px;"
+              v-model="form.calender_date"
+              range
+              :preview-format="format"
+              :multi-calendars="{ solo: true }"></VueDatePicker>
         </div>
 
-        <div class="col-lg-6 content">
-      <div class="mb-2">
-        <label class="textColor text-sm">End Date</label>
-        <input type="date" style="outline: none 0 !important; box-shadow: none;" v-model="form.end_date" required class="form-control form-control-sm">
-      </div>
-        </div>
-      </div>
+
+
 
 
       <div class="flex justify-content-end mt-4" style="width: 100%;">
@@ -85,15 +81,27 @@ const campusLevelInfo = ref([])
 const loader = ref(false)
 const level_number = ref(null)
 
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+
+const date = ref();
 
 
 level_number.value = campusLevel
 
 const form = reactive({
   study_period:"",
-  start_date:"",
-  end_date:"",
+  calender_date:"",
 })
+
+
+const format = (date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  return `Selected date is ${day}/${month}/${year}`;
+}
 
 onMounted(
     () =>{
