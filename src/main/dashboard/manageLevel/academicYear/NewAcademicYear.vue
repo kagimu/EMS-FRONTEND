@@ -13,7 +13,7 @@
             disabled
             style="box-shadow: none;"
             class="form-select form-select-sm"
-            v-model="level_number">
+            v-model="form.level_number">
           <option disabled value="">Select Class</option>
           <option v-for="(list, index) in campusLevelInfo" :key="index" :value="list.number">{{list.name}}</option>
         </select>
@@ -79,7 +79,7 @@ const campusNumber = localStorage.getItem('campus_number');
 const errorMessage = ref(null)
 const campusLevelInfo = ref([])
 const loader = ref(false)
-const level_number = ref(null)
+
 
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
@@ -87,11 +87,12 @@ import '@vuepic/vue-datepicker/dist/main.css'
 const date = ref();
 
 
-level_number.value = campusLevel
+
 
 const form = reactive({
   study_period:"",
   calender_date:"",
+  level_number:campusLevel,
 })
 
 
