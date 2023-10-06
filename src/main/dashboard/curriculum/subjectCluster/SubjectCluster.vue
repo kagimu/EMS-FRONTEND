@@ -55,6 +55,7 @@
               <thead>
               <tr>
                 <th scope="col">#</th>
+                <th scope="col">Code</th>
                 <th scope="col">Name</th>
                 <th scope="col">Learning Area</th>
                 <th class="text-end" scope="col">Action</th>
@@ -63,6 +64,9 @@
               <tbody>
               <tr v-for="(lst,index) in subjectClusterList" :key="index" >
                 <th scope="row">{{index+1}}</th>
+                <td>
+                    {{lst.code}}
+                </td>
                 <td>
                     {{lst.name}}
                 </td>
@@ -74,8 +78,8 @@
                     <i
                         aria-controls="offcanvasRight"
                         class="bi-pencil mr-2 cursor-pointer" data-bs-target="#editClass" data-bs-toggle="offcanvas"
-                        style="font-size: 13px;" @click="editClass(sbj)"></i>
-                    <i class="bi-trash cursor-pointer" style="font-size: 13px;"  @click="deleteClass(sbj)"></i>
+                        style="font-size: 13px;" @click="editSubjectCluster(sbj)"></i>
+                    <i class="bi-trash cursor-pointer" style="font-size: 13px;"  @click="deleteSubjectCluster(sbj)"></i>
                   </div>
                 </td>
               </tr>
@@ -118,6 +122,14 @@ const addCurriculum = () => {
 
 const filterSubjectCluster = (learning_area_number) => {
   subjectClusterStore.fetchSubjectCluster(learning_area_number)
+}
+
+
+const editSubjectCluster = (sbj) => {
+
+}
+const deleteSubjectCluster = (sbj) => {
+
 }
 
 

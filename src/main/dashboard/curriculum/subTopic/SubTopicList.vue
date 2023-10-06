@@ -109,6 +109,7 @@
               <thead>
               <tr>
                 <th scope="col">#</th>
+                <th scope="col">Code</th>
                 <th scope="col">Name</th>
                 <th scope="col">Estimated Time (Minutes)</th>
                 <th class="text-end" scope="col">Action</th>
@@ -117,6 +118,9 @@
               <tbody>
               <tr v-for="(lst, index) in subtopicList" :key="index">
                 <td>{{index+1}}</td>
+                <td>
+                  {{lst.code}}
+                </td>
                 <td>
                   {{lst.name}}
                 </td>

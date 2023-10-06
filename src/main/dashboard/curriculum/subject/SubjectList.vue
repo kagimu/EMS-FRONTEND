@@ -65,6 +65,7 @@
               <thead>
               <tr>
                 <th scope="col">#</th>
+                <th scope="col">Code</th>
                 <th scope="col">Name</th>
                 <th class="text-end" scope="col">Action</th>
               </tr>
@@ -72,6 +73,7 @@
               <tbody>
               <tr v-for="(lst, index) in subjectList" :key="index">
                 <td>{{index+1}}</td>
+                <td>{{lst.code}}</td>
                 <td>
 
 <!--                  <router-link
@@ -87,8 +89,8 @@
                     <i
                         style="font-size: 13px;"
                         data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                        class="bi-pencil mr-2 cursor-pointer" @click="editClass(lst)"></i>
-                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(lst)"></i>
+                        class="bi-pencil mr-2 cursor-pointer" @click="editSubject(lst)"></i>
+                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteSubject(lst)"></i>
                   </div>
                 </td>
               </tr>
@@ -134,10 +136,10 @@ const addSubject = () => {
   subjectDialog.value = true
 }
 
-const editClass = (data) => {
+const editSubject = (data) => {
   alert(JSON.stringify(data))
 }
-const deleteClass = (data) => {
+const deleteSubject = (data) => {
   alert(JSON.stringify(data))
 }
 

@@ -103,6 +103,7 @@
               <thead>
               <tr>
                 <th scope="col">#</th>
+                <th scope="col">Code</th>
                 <th scope="col">Name</th>
                 <th class="text-end" scope="col">Action</th>
               </tr>
@@ -110,6 +111,7 @@
               <tbody>
               <tr v-for="(lst, index) in topicList" :key="index">
                 <td>{{index+1}}</td>
+                <td>{{lst.code}}</td>
                 <td>
 
 <!--                  <router-link
