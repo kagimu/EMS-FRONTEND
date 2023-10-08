@@ -42,7 +42,7 @@
 
 import ClassList from "@/main/dashboard/manageLevel/class/ClassList.vue";
 import SubjectClassList from "@/main/dashboard/manageLevel/subjectClasses/subjectClassList.vue";
-import StudyPeriod from "@/main/dashboard/manageLevel/academicYear/StudyPeriod.vue";
+import StudyPeriod from "@/main/dashboard/manageLevel/studyPeriod/StudyPeriod.vue";
 import AcademicYear from "@/main/dashboard/manageLevel/academicYear/AcademicYear.vue";
 </script>
 

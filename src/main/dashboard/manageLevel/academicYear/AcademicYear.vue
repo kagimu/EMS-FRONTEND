@@ -20,7 +20,7 @@
 
     <div class="flex justify-content-between mt-10 mb-4 mr-3">
       &nbsp;
-      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSubject" data-bs-toggle="modal" data-bs-target="#newAcademicYearModal">
+      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addAcademicYear" data-bs-toggle="modal" data-bs-target="#newAcademicYearModal">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
         Add Academic Year
       </button>
@@ -79,7 +79,7 @@ const newAcademicYearDialog = ref( false)
 const campusLevel = routerData.currentRoute.value.query.l
 const academicYearList = ref( [])
 
-const addSubject = (item) => {
+const addAcademicYear = (item) => {
   // classNumber.value = item.number
   newAcademicYearDialog.value = true
 }
