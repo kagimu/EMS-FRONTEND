@@ -27,32 +27,36 @@
     </div>
 
 
-
     <table class="table table-hover caption-top" style="font-size: 14px;">
       <thead>
       <tr>
         <th scope="col">#</th>
+        <th scope="col">Code</th>
         <th scope="col">Academic Year</th>
-        <th scope="col">Study Periods</th>
+        <th scope="col">Number of Study Periods</th>
         <th scope="col">Date Period</th>
-        <!--        <th scope="col">Action</th>-->
+                <th scope="col">Action</th>
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(classes, index) in subjectList" :key="index">
+      <tr v-for="(academicYre, index) in academicYearList" :key="index">
         <td>{{index+1}}</td>
-        <td> {{classes.name}}</td>
-        <td> {{classes.class+" ("+classes.abbreviation+")"}}</td>
-        <td> {{classes.class+" ("+classes.abbreviation+")"}}</td>
-        <!--        <td>
+        <td> {{academicYre.code}}</td>
+        <td> {{academicYre.academic_year_name}}</td>
+        <td> {{academicYre.no_of_study_period}}</td>
+        <td class="text-sm">
+         Start Date:   {{academicYre.academic_year_start_date}}  <br />
+         End Date:  {{academicYre.academic_year_end_date}}
+        </td>
+                <td>
                   <div>
                     <i
                         style="font-size: 13px;"
                         data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                        class="bi-pencil mr-2 cursor-pointer" @click="editClass(classes)"></i>
-                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(classes)"></i>
+                        class="bi-pencil mr-2 cursor-pointer" @click="editAcademicYear(academicYre)"></i>
+                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteAcademicYear(academicYre)"></i>
                   </div>
-                </td>-->
+                </td>
       </tr>
       </tbody>
     </table>
@@ -65,16 +69,56 @@
 </template>
 
 <script setup>
-import NewSubjectClass from "@/main/dashboard/manageLevel/subjectClasses/NewSubjectClass.vue";
-import {ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import NewAcademicYear from "@/main/dashboard/manageLevel/academicYear/NewAcademicYear.vue";
+import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import {useRouter} from "vue-router";
+const routerData = useRouter()
+const academicYearStore = useAcademicYearStore()
 const newAcademicYearDialog = ref( false)
+const campusLevel = routerData.currentRoute.value.query.l
+const academicYearList = ref( [])
 
 const addSubject = (item) => {
   // classNumber.value = item.number
   newAcademicYearDialog.value = true
 }
 
+
+const editAcademicYear = (academicYre)  => {
+
+}
+
+const deleteAcademicYear = (academicYre) => {
+
+}
+
+onMounted(
+    () => {
+      academicYearStore.fetchAcademicYear(campusLevel)
+    }
+)
+
+
+watch(
+    () => academicYearStore.newAcademicYearResponse,
+    async (data) => {
+      if(data){
+        await academicYearStore.fetchAcademicYear(campusLevel)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => academicYearStore.academicYearResponse,
+    async (data) => {
+      if(data){
+        academicYearList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 </script>
 

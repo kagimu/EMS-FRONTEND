@@ -7,6 +7,33 @@
         {{ errorMessage }}
       </div>
 
+
+      <div class="mb-2">
+        <label class="textColor"><small>Code</small></label>
+        <input
+            maxlength="20"
+            type="text"
+            style="outline: none 0 !important;
+               box-shadow: none;"
+            v-model="form.code"
+            required
+            class="form-control form-select-sm">
+      </div>
+
+      <div class="mb-2">
+        <label class="textColor"><small>Academic year name</small></label>
+        <input
+            :placeholder="'Year '+currentYear"
+            maxlength="20"
+            type="text"
+            style="outline: none 0 !important;
+               box-shadow: none;"
+            v-model="form.academic_year_name"
+            required
+            class="form-control form-select-sm">
+      </div>
+
+
       <div class="mb-2">
         <label class="textColor"><small>Level</small></label>
         <select
@@ -20,15 +47,14 @@
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Study Period</small></label>
+        <label class="textColor"><small>Number of study period</small></label>
         <input
             @keypress="commons.onlyNumberValidator($event)"
             maxlength="1"
             type="text"
-               style="outline: none 0 !important;
-               box-shadow: none;"
-              v-model="form.study_period"
-              required
+            style="outline: none 0 !important; box-shadow: none;"
+            v-model="form.no_of_study_period"
+            required
             class="form-control form-select-sm">
       </div>
 
@@ -37,7 +63,7 @@
           <label class="textColor"><small>Academic Year Range</small></label>
           <VueDatePicker
               style="font-size: 7px;"
-              v-model="form.calender_date"
+              v-model="form.academic_year"
               range
               :preview-format="format"
               :multi-calendars="{ solo: true }"></VueDatePicker>
@@ -80,6 +106,9 @@ const errorMessage = ref(null)
 const campusLevelInfo = ref([])
 const loader = ref(false)
 
+const currentYear = ref((new Date()).getFullYear());
+
+
 
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
@@ -90,8 +119,10 @@ const date = ref();
 
 
 const form = reactive({
-  study_period:"",
-  calender_date:"",
+  code:"",
+  academic_year_name:"",
+  no_of_study_period:"",
+  academic_year:"",
   level_number:campusLevel,
 })
 
@@ -129,8 +160,11 @@ watch(
     () => academicYearStore.newAcademicYearResponse,
     async (data) => {
       if(data){
-        alert(JSON.stringify(data))
-        // campusLevelInfo.value = data.data
+        loader.value = false
+        form.code = ""
+        form.academic_year_name = ""
+        form.no_of_study_period = ""
+        form.academic_year = ""
       }
     },
     {deep:true}

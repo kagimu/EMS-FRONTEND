@@ -5,6 +5,7 @@ import api from "@/config/api.js";
 export const useAcademicYearStore = defineStore("academicYear", () => {
     let newAcademicYearResponse = ref(null)
     const errorMessage = ref(null)
+    const academicYearResponse = ref(null)
 
 
 
@@ -22,17 +23,17 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
 
 
 
-/*    async function fetchLevelsByCampusNumber(campusNumber) {
-        return await api.get("main/timetable/fetch-levels-by-campus-number/"+campusNumber)
+    async function fetchAcademicYear(level) {
+        return await api.get("main/fetch-academic-year?level="+level)
             .then((response) => {
-                levelResponse.value = response.data
+                academicYearResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
                     errorMessage.value = response.response.data
                 }
             })
-    }*/
+    }
 
 
 
@@ -40,7 +41,9 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
 
     return {
         newAcademicYearResponse,
+        academicYearResponse,
         errorMessage,
-        newAcademicYear
+        newAcademicYear,
+        fetchAcademicYear
     }
 })
