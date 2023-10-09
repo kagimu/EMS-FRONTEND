@@ -40,7 +40,7 @@
             class="form-select form-select-sm"
             v-model="form.academic_year_number">
           <option disabled value="">Select Class</option>
-          <option v-for="(list, index) in campusLevelInfo" :key="index" :value="list.number">{{list.name}}</option>
+          <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">{{list.academic_year_name}}</option>
         </select>
       </div>
 
@@ -87,18 +87,18 @@ const commons = useCommonsStore()
 const routerData = useRouter()
 const campusStore = useCampusStore()
 const academicYearStore = useAcademicYearStore()
+const studyPeriodStore = useStudyPeriodStore()
 const campusLevel = routerData.currentRoute.value.query.l
 const campusNumber = localStorage.getItem('campus_number');
 const errorMessage = ref(null)
 const campusLevelInfo = ref([])
+const academicYearList = ref([])
 const loader = ref(false)
-
-const currentYear = ref((new Date()).getFullYear());
-
 
 
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 
 const date = ref();
 
@@ -125,12 +125,13 @@ const format = (date) => {
 onMounted(
     () =>{
       campusStore.fetchCampusLevel(campusNumber)
+      academicYearStore.fetchAcademicYear(campusLevel)
     }
 )
 
 const addStudyPeriod = () => {
   loader.value = true
-  academicYearStore.newAcademicYear(form)
+  studyPeriodStore.newStudyPeriod(form)
 }
 
 watch(
@@ -144,14 +145,26 @@ watch(
 )
 
 watch(
-    () => academicYearStore.newAcademicYearResponse,
+    () => studyPeriodStore.newStudyPeriodResponse,
     async (data) => {
       if(data){
         loader.value = false
         form.code = ""
-        form.academic_year_name = ""
-        form.no_of_study_period = ""
-        form.academic_year = ""
+        form.study_period_name = ""
+        form.academic_year_number = ""
+        form.study_period_date_range = ""
+        form.level_number = ""
+
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => academicYearStore.academicYearResponse,
+    async (data) => {
+      if(data){
+        academicYearList.value = data.data
       }
     },
     {deep:true}

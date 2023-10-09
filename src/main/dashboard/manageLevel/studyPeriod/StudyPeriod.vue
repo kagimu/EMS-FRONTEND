@@ -32,29 +32,29 @@
       <tr>
         <th scope="col">#</th>
         <th scope="col">Code</th>
+        <th scope="col">Period name</th>
         <th scope="col">Academic Year</th>
-        <th scope="col">Number of Study Periods</th>
         <th scope="col">Date Period</th>
         <th scope="col">Action</th>
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(academicYre, index) in academicYearList" :key="index">
+      <tr v-for="(styPeriod, index) in studyPeriodList" :key="index">
         <td>{{index+1}}</td>
-        <td> {{academicYre.code}}</td>
-        <td> {{academicYre.academic_year_name}}</td>
-        <td> {{academicYre.no_of_study_period}}</td>
+        <td> {{styPeriod.code}}</td>
+        <td> {{styPeriod.study_period_name}}</td>
+        <td> {{styPeriod.academic_year_name}}</td>
         <td class="text-sm">
-          Start Date:   {{academicYre.academic_year_start_date}}  <br />
-          End Date:  {{academicYre.academic_year_end_date}}
+          Start Date:   {{styPeriod.study_period_start_date}}  <br />
+          End Date:  {{styPeriod.study_period_end_date}}
         </td>
         <td>
           <div>
             <i
                 style="font-size: 13px;"
                 data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                class="bi-pencil mr-2 cursor-pointer" @click="editAcademicYear(academicYre)"></i>
-            <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteAcademicYear(academicYre)"></i>
+                class="bi-pencil mr-2 cursor-pointer" @click="editStudyPeriod(styPeriod)"></i>
+            <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteStudyPeriod(styPeriod)"></i>
           </div>
         </td>
       </tr>
@@ -73,11 +73,14 @@ import {onMounted, ref, watch} from "vue";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useRouter} from "vue-router";
 import NewStudyPeriod from "@/main/dashboard/manageLevel/studyPeriod/NewStudyPeriod.vue";
+import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
+import useNotificationStore from "@/composables/useNotification.js";
 const routerData = useRouter()
-const academicYearStore = useAcademicYearStore()
 const newAcademicYearDialog = ref( false)
 const campusLevel = routerData.currentRoute.value.query.l
-const academicYearList = ref( [])
+const studyPeriodList = ref( [])
+const studyPeriodStore = useStudyPeriodStore()
+const  notificationStore  = useNotificationStore()
 
 const addStudyPeriod = (item) => {
   // classNumber.value = item.number
@@ -85,22 +88,22 @@ const addStudyPeriod = (item) => {
 }
 
 
-const editAcademicYear = (academicYre)  => {
+const editStudyPeriod = (styPeriod)  => {
 
 }
 
-const deleteAcademicYear = (academicYre) => {
+const deleteStudyPeriod = (styPeriod) => {
 
 }
 
 onMounted(
     () => {
-      academicYearStore.fetchAcademicYear(campusLevel)
+      studyPeriodStore.fetchStudyPeriod(campusLevel)
     }
 )
 
 
-watch(
+/*watch(
     () => academicYearStore.newAcademicYearResponse,
     async (data) => {
       if(data){
@@ -108,13 +111,24 @@ watch(
       }
     },
     {deep:true}
+)*/
+
+watch(
+    () => studyPeriodStore.studyPeriodResponse,
+    async (data) => {
+      if(data){
+        studyPeriodList.value = data.data
+      }
+    },
+    {deep:true}
 )
 
 watch(
-    () => academicYearStore.academicYearResponse,
+    () => studyPeriodStore.newStudyPeriodResponse,
     async (data) => {
       if(data){
-        academicYearList.value = data.data
+        await studyPeriodStore.fetchStudyPeriod(campusLevel)
+        notificationStore.successToast("Success","Study Period added successfully")
       }
     },
     {deep:true}
