@@ -125,7 +125,6 @@ const format = (date) => {
 onMounted(
     () =>{
       campusStore.fetchCampusLevel(campusNumber)
-      academicYearStore.fetchAcademicYear(campusLevel)
     }
 )
 

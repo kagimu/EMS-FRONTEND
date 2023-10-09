@@ -24,8 +24,8 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
 
 
 
-    async function fetchStudyPeriod(level) {
-        return await api.get("main/fetch-study-period?level="+level)
+    async function fetchStudyPeriod(data) {
+        return await api.get("main/fetch-study-period?level="+data.level+"&academic_year_number="+data.academic_year_number)
             .then((response) => {
                 studyPeriodResponse.value = response.data
             })

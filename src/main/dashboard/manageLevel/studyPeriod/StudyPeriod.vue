@@ -27,6 +27,26 @@
     </div>
 
 
+
+    <div class="row mx-auto mb-4">
+      <div class="col-3">
+        <div class="mb-2">
+          <label class="textColor"><small>Academic Year</small></label>
+          <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm"
+              v-model="academicYearNumber"
+              @change="filterStudyPeriod(academicYearNumber)"
+          >
+            <option disabled value="">Select Class</option>
+            <option value="">All</option>
+            <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">{{list.academic_year_name}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+
     <table class="table table-hover caption-top" style="font-size: 14px;">
       <thead>
       <tr>
@@ -70,17 +90,21 @@
 
 <script setup>
 import {onMounted, ref, watch} from "vue";
-import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useRouter} from "vue-router";
 import NewStudyPeriod from "@/main/dashboard/manageLevel/studyPeriod/NewStudyPeriod.vue";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import useNotificationStore from "@/composables/useNotification.js";
+import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+const studyPeriodStore = useStudyPeriodStore()
+const academicYearStore = useAcademicYearStore()
+
 const routerData = useRouter()
 const newAcademicYearDialog = ref( false)
 const campusLevel = routerData.currentRoute.value.query.l
 const studyPeriodList = ref( [])
-const studyPeriodStore = useStudyPeriodStore()
 const  notificationStore  = useNotificationStore()
+const academicYearNumber = ref( "")
+const academicYearList = ref( [])
 
 const addStudyPeriod = (item) => {
   // classNumber.value = item.number
@@ -96,22 +120,19 @@ const deleteStudyPeriod = (styPeriod) => {
 
 }
 
+const filterStudyPeriod = (academicYearNumber) => {
+  studyPeriodStore.fetchStudyPeriod({level:campusLevel, academic_year_number:academicYearNumber})
+}
+
 onMounted(
     () => {
-      studyPeriodStore.fetchStudyPeriod(campusLevel)
+      studyPeriodStore.fetchStudyPeriod({level:campusLevel, academic_year_number:academicYearNumber.value})
+      academicYearStore.fetchAcademicYear(campusLevel)
     }
 )
 
 
-/*watch(
-    () => academicYearStore.newAcademicYearResponse,
-    async (data) => {
-      if(data){
-        await academicYearStore.fetchAcademicYear(campusLevel)
-      }
-    },
-    {deep:true}
-)*/
+
 
 watch(
     () => studyPeriodStore.studyPeriodResponse,
@@ -129,6 +150,16 @@ watch(
       if(data){
         await studyPeriodStore.fetchStudyPeriod(campusLevel)
         notificationStore.successToast("Success","Study Period added successfully")
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => academicYearStore.academicYearResponse,
+    async (data) => {
+      if(data){
+        academicYearList.value = data.data
       }
     },
     {deep:true}
