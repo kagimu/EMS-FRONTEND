@@ -7,38 +7,62 @@
         {{ errorMessage }}
       </div>
 
-      <div class="mb-2">
-        <label class="textColor"><small>Code</small></label>
-        <input
-            ref="nameRef"
-            type="text"
-            style="outline: none 0 !important; box-shadow: none;"
-            v-model="form.code"
-            required
-            class="form-control form-select-sm">
-      </div>
 
 
+      <div class="row">
+        <div class="col-lg-4 content">
       <div class="mb-2">
-        <label class="textColor"><small>Sub Topic</small></label>
+        <label class="textColor"><small>Sort by Class</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
-            v-model="form.sub_topic_number">
-          <option disabled value="">Select Sub Topic</option>
-          <option v-for="(list, index) in subtopicList" :key="index" :value="list.number">{{list.name}}</option>
+            v-model="form.class">
+          <option disabled value="">Select Class</option>
+          <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.name}}</option>
         </select>
       </div>
-
-
-      <div class="mb-2">
-        <label class="textColor text-sm">description</label>
-        <textarea
-            style="outline: none 0 !important; box-shadow: none; height: 60px"
-            class="form-control noFocus form-control-sm"
-            v-model="form.description"
-            id="floatingTextarea2"></textarea>
+        </div>
       </div>
+
+
+
+
+      <table class="table table-hover caption-top" style="font-size: 14px;">
+        <thead>
+        <tr>
+          <th scope="col" style="width: 5%;">#</th>
+          <th scope="col" style="width: 60%;">Name</th>
+          <th scope="col" style="width: 20%;">Sorting Code</th>
+<!--          <th scope="col" class="text-end">Action</th>-->
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(lst,index) in subtopicList" :key="index" >
+          <th scope="row">{{index+1}}</th>
+          <td>
+            {{lst.name}}
+          </td>
+          <td>
+            <input
+                type="text"
+                style="outline: none 0 !important; box-shadow: none;"
+                v-model="lst.code"
+                required
+                class="form-control form-select-sm" />
+          </td>
+<!--          <td>
+            <div class="float-end mr-2">
+              <i
+                  style="font-size: 13px;"
+                  data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
+                  class="bi-pencil mr-2 cursor-pointer" @click="editClass(sbj)"></i>
+              <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(sbj)"></i>
+            </div>
+          </td>-->
+        </tr>
+        </tbody>
+      </table>
+
 
 
       <div class="flex justify-content-end" style="width: 100%;">
@@ -64,21 +88,24 @@ import {onMounted, reactive, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
 import {useSubtopicStore} from "@/main/dashboard/curriculum/subTopic/store/subTopic.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 const subtopicStore = useSubtopicStore()
 const errorMessage = ref(null)
 const name = ref(null)
 const loader = ref(false)
+const classList = ref([])
 const subtopicList = ref([])
-const nameRef = ref(null)
+// const nameRef = ref(null)
 const routerData = useRouter()
+const classStore = useClassesStore()
 
 const learningAreaStore = useLearningAreaStore()
 
 
 const form = reactive({
   code:null,
+  class:"",
   sub_topic_number:"",
-  description:"",
 })
 
 
@@ -87,13 +114,11 @@ const addSchemeOfWork = () =>{
   learningAreaStore.newLearningAreaData(form)
 }
 
-const  autoInputFocusInfo =  () => {
+/*const  autoInputFocusInfo =  () => {
   nameRef.value.focus()
-}
+}*/
 
- defineExpose({
-  autoInputFocusInfo
-});
+
 
 onMounted(
     () =>{
@@ -118,11 +143,31 @@ watch(
     () => subtopicStore.subtopicInfoResponse,
     async (data) => {
       if(data){
-        subtopicList.value = data.data
+        let subTopic = [...data.data]
+        subTopic.forEach((lst, idx) => {
+          lst.code = (idx+1)
+        })
+        subtopicList.value = [...subTopic]
       }
     },
     {deep:true}
 )
+
+
+watch(
+    () => classStore.classInfoResponse,
+    async (data) => {
+      if(data){
+        let classInfo = data.data
+        classList.value = classInfo
+        if(classInfo && (classInfo.length > 0)){
+          form.class = classInfo[0].number
+        }
+      }
+    },
+    {deep:true}
+)
+
 
 </script>
 

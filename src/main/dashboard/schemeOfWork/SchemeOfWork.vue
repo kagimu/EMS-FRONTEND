@@ -2,7 +2,7 @@
   <div>
 
     <div class="modal fade" id="schemeOfWorkModal" tabindex="-1" :class="{ show: curriculumDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-xl">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
             <h6 class="modal-title ml-3 mt-2 mb-2">Add Scheme of work</h6>
@@ -141,6 +141,7 @@ import useNotificationStore from "@/composables/useNotification.js";
 import NewSchemeOfWork from "@/main/dashboard/schemeOfWork/NewSchemeOfWork.vue";
 import useCommonsStore from "@/composables/useCommons.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import router from "@/config/router.js";
 
 const level = ref( "")
 const curriculumDialog = ref( false)
@@ -158,12 +159,13 @@ const commons = useCommonsStore()
 
 
 const addCurriculum = () => {
-  learningAreaRef.value.autoInputFocusInfo()
+ // learningAreaRef.value.autoInputFocusInfo()
   curriculumDialog.value = true
 }
 
 const changeMenu = (value) => {
   menuSelected.value = value
+  router.push({ name: "scheme-of-work", query:{c:value} })
 }
 
 const filterClasses = (level) => {
@@ -207,7 +209,11 @@ watch(
     () => classStore.classInfoResponse,
     async (data) => {
       if(data){
-       classList.value = data.data
+        let classInfo = data.data
+       classList.value = classInfo
+        if(classInfo && (classInfo.length > 0)){
+          menuSelected.value = classInfo[0].number
+        }
       }
     },
     {deep:true}
