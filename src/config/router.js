@@ -21,6 +21,7 @@ import SubTopicList from "@/main/dashboard/curriculum/subTopic/SubTopicList.vue"
 import ConceptList from "@/main/dashboard/curriculum/concept/ConceptList.vue";
 import ClassSetupList from "@/main/dashboard/manageLevel/class/ClassSetupList.vue";
 import Timetable from "@/main/dashboard/curriculum/timetable/Timetable.vue";
+import SchemeOfWork from "@/main/dashboard/schemeOfWork/SchemeOfWork.vue";
 
 
 
@@ -64,6 +65,7 @@ const router = createRouter({
                 {path: 'concept', component: ConceptList, name: "concept"},
                 {path: 'class', component: ClassSetupList, name: "class"},
                 {path: 'time-table', component: Timetable, name: "timetable"},
+                {path: 'scheme-of-work', component: SchemeOfWork, name: "scheme-of-work"},
             ]
         },
         {
