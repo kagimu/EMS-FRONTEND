@@ -25,8 +25,6 @@
       </div>
 
 
-
-
       <table class="table table-hover caption-top" style="font-size: 14px;">
         <thead>
         <tr>
@@ -46,7 +44,7 @@
             <input
                 type="text"
                 style="outline: none 0 !important; box-shadow: none;"
-                v-model="lst.code"
+                v-model="lst.sort_code"
                 required
                 class="form-control form-select-sm" />
           </td>
@@ -103,7 +101,7 @@ const learningAreaStore = useLearningAreaStore()
 
 
 const form = reactive({
-  code:null,
+  code:[],
   class:"",
   sub_topic_number:"",
 })
@@ -144,9 +142,6 @@ watch(
     async (data) => {
       if(data){
         let subTopic = [...data.data]
-        subTopic.forEach((lst, idx) => {
-          lst.code = (idx+1)
-        })
         subtopicList.value = [...subTopic]
       }
     },
