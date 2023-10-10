@@ -31,6 +31,14 @@
       </div>
 
 
+      <div class="mb-2">
+        <label class="textColor text-sm">description</label>
+        <textarea
+            style="outline: none 0 !important; box-shadow: none; height: 60px"
+            class="form-control noFocus form-control-sm"
+            v-model="form.description"
+            id="floatingTextarea2"></textarea>
+      </div>
 
 
       <div class="flex justify-content-end" style="width: 100%;">
@@ -70,6 +78,7 @@ const learningAreaStore = useLearningAreaStore()
 const form = reactive({
   code:null,
   sub_topic_number:"",
+  description:"",
 })
 
 
