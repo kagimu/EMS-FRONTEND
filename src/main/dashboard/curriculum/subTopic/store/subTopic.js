@@ -5,6 +5,7 @@ import api from "@/config/api.js";
 export const useSubtopicStore = defineStore("subtopic", () => {
     let subtopicResponse = ref(null)
     let subtopicInfoResponse = ref(null)
+    let subtopicByClassInfoResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -33,14 +34,28 @@ export const useSubtopicStore = defineStore("subtopic", () => {
             })
     }
 
+    async function fetchSubTopicsByClass(data) {
+        return await api.get("main/sub-topics?topic_number="+data)
+            .then((response) => {
+                subtopicByClassInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
 
 
     return {
         subtopicResponse,
         subtopicInfoResponse,
+        subtopicByClassInfoResponse,
         errorMessage,
         newSubtopicData,
-        fetchSubTopics
+        fetchSubTopics,
+        fetchSubTopicsByClass
     }
 })

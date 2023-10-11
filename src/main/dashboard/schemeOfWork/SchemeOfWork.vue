@@ -175,13 +175,13 @@ const filterClasses = (level) => {
 
 onMounted(
     () => {
-      learningAreaStore.fetchLearningArea()
       classStore.fetchClasses("")
+      // learningAreaStore.fetchLearningArea()
     }
 )
 
 
-watch(
+/*watch(
     () => learningAreaStore.learningAreaResponse,
     async (data) => {
       if(data){
@@ -191,10 +191,10 @@ watch(
       }
     },
     {deep:true}
-)
+)*/
 
 
-watch(
+/*watch(
     () => learningAreaStore.learningAreaInfResponse,
     async (data) => {
       if(data){
@@ -202,7 +202,7 @@ watch(
       }
     },
     {deep:true}
-)
+)*/
 
 
 watch(

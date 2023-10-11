@@ -11,8 +11,20 @@
 
       <div class="row">
         <div class="col-lg-4 content">
-      <div class="mb-2">
-        <label class="textColor"><small>Sort by Class</small></label>
+
+          <div class="mb-2">
+            <label class="textColor text-sm">Scheme name Name</label>
+            <input
+                style="outline: none 0 !important; box-shadow: none;"
+                type="text"
+                v-model="form.name"
+                required
+                class="form-control form-control-sm">
+          </div>
+
+
+      <div class="mb-5">
+        <label class="textColor"><small>Class</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -101,9 +113,8 @@ const learningAreaStore = useLearningAreaStore()
 
 
 const form = reactive({
-  code:[],
+  name:null,
   class:"",
-  sub_topic_number:"",
 })
 
 
@@ -117,10 +128,10 @@ const addSchemeOfWork = () =>{
 }*/
 
 
-
 onMounted(
     () =>{
       subtopicStore.fetchSubTopics("")
+      subtopicStore.fetchSubTopicsByClass(form.class)
     }
 )
 
@@ -138,7 +149,7 @@ watch(
 
 
 watch(
-    () => subtopicStore.subtopicInfoResponse,
+    () => subtopicStore.subtopicByClassInfoResponse,
     async (data) => {
       if(data){
         let subTopic = [...data.data]
