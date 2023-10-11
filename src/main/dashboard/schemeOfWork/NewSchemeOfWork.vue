@@ -28,8 +28,11 @@
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
-            v-model="form.class">
+            v-model="form.class"
+            @change="filterClasses(form.class)"
+        >
           <option disabled value="">Select Class</option>
+          <option value="">All</option>
           <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.name}}</option>
         </select>
       </div>
@@ -127,11 +130,15 @@ const addSchemeOfWork = () =>{
   nameRef.value.focus()
 }*/
 
+const filterClasses = (classData) => {
+  subtopicList.value = []
+  subtopicStore.fetchSubTopicsByClass(classData)
+}
 
 onMounted(
     () =>{
       subtopicStore.fetchSubTopics("")
-      subtopicStore.fetchSubTopicsByClass(form.class)
+      // subtopicStore.fetchSubTopicsByClass(form.class)
     }
 )
 
@@ -167,7 +174,9 @@ watch(
         let classInfo = data.data
         classList.value = classInfo
         if(classInfo && (classInfo.length > 0)){
-          form.class = classInfo[0].number
+          let classNo = classInfo[0].number
+              form.class = classNo
+          await subtopicStore.fetchSubTopicsByClass(classNo)
         }
       }
     },

@@ -142,6 +142,7 @@ import NewSchemeOfWork from "@/main/dashboard/schemeOfWork/NewSchemeOfWork.vue";
 import useCommonsStore from "@/composables/useCommons.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import router from "@/config/router.js";
+import {useRouter} from "vue-router";
 
 const level = ref( "")
 const curriculumDialog = ref( false)
@@ -149,6 +150,7 @@ const learningAreaList = ref( [])
 const classList = ref( [])
 const classStore = useClassesStore()
 const menuSelected = ref( null)
+const routerData = useRouter()
 
 
 const learningAreaStore = useLearningAreaStore()
@@ -156,6 +158,12 @@ const  notificationStore  = useNotificationStore()
 
 const learningAreaRef = ref(null)
 const commons = useCommonsStore()
+
+let subjectNo = routerData.currentRoute.value.query.c
+if(subjectNo){
+  menuSelected.value =  subjectNo
+}
+
 
 
 const addCurriculum = () => {
@@ -212,7 +220,9 @@ watch(
         let classInfo = data.data
        classList.value = classInfo
         if(classInfo && (classInfo.length > 0)){
-          menuSelected.value = classInfo[0].number
+          if(!subjectNo){
+            menuSelected.value = classInfo[0].number
+          }
         }
       }
     },
