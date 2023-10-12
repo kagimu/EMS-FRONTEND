@@ -165,7 +165,6 @@ if(subjectNo){
 }
 
 
-
 const addCurriculum = () => {
  // learningAreaRef.value.autoInputFocusInfo()
   curriculumDialog.value = true

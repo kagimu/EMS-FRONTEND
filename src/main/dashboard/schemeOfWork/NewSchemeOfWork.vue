@@ -102,6 +102,7 @@ import {useRouter} from "vue-router";
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
 import {useSubtopicStore} from "@/main/dashboard/curriculum/subTopic/store/subTopic.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+
 const subtopicStore = useSubtopicStore()
 const errorMessage = ref(null)
 const name = ref(null)
@@ -115,15 +116,25 @@ const classStore = useClassesStore()
 const learningAreaStore = useLearningAreaStore()
 
 
+
+
 const form = reactive({
   name:null,
   class:"",
 })
 
 
+let classNumber = routerData.currentRoute.value.query.c
+if(classNumber){
+  form.class =  classNumber
+}
+
+
 const addSchemeOfWork = () =>{
   loader.value = true
-  learningAreaStore.newLearningAreaData(form)
+  form.subtopicList = subtopicList.value
+  alert(JSON.stringify(form))
+  // learningAreaStore.newLearningAreaData(form)
 }
 
 /*const  autoInputFocusInfo =  () => {
@@ -137,8 +148,7 @@ const filterClasses = (classData) => {
 
 onMounted(
     () =>{
-      subtopicStore.fetchSubTopics("")
-      // subtopicStore.fetchSubTopicsByClass(form.class)
+      // subtopicStore.fetchSubTopics(classNumber ? classNumber : "")
     }
 )
 
@@ -159,8 +169,7 @@ watch(
     () => subtopicStore.subtopicByClassInfoResponse,
     async (data) => {
       if(data){
-        let subTopic = [...data.data]
-        subtopicList.value = [...subTopic]
+        subtopicList.value = data.data
       }
     },
     {deep:true}
@@ -175,8 +184,14 @@ watch(
         classList.value = classInfo
         if(classInfo && (classInfo.length > 0)){
           let classNo = classInfo[0].number
-              form.class = classNo
-          await subtopicStore.fetchSubTopicsByClass(classNo)
+          let number = null
+          if(!classNumber){
+            number = classNo
+          }else {
+            number = classNumber
+          }
+          form.class = number
+          await subtopicStore.fetchSubTopicsByClass(number)
         }
       }
     },
