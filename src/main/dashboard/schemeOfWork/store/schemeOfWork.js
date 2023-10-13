@@ -1,0 +1,45 @@
+import { defineStore } from "pinia"
+import { ref } from "vue"
+import api from "@/config/api.js";
+
+export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
+    let newSchemeOfWorkResponse = ref(null)
+    const errorMessage = ref(null)
+
+
+    async function newSchemeOfWorkData(data) {
+        return await api.post("main/new-scheme-of-work", data)
+            .then((response) => {
+                newSchemeOfWorkResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
+/*
+    async function fetchSchoolData(data) {
+        return await api.get("main/school-info?school_number="+data)
+            .then((response) => {
+                schoolInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+*/
+
+
+
+    return {
+        newSchemeOfWorkResponse,
+        errorMessage,
+        newSchemeOfWorkData,
+    }
+})

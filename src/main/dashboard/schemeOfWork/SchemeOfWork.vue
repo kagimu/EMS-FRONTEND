@@ -143,6 +143,7 @@ import useCommonsStore from "@/composables/useCommons.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import router from "@/config/router.js";
 import {useRouter} from "vue-router";
+import {useSchemeOfWorkStore} from "@/main/dashboard/schemeOfWork/store/schemeOfWork.js";
 
 const level = ref( "")
 const curriculumDialog = ref( false)
@@ -158,6 +159,7 @@ const  notificationStore  = useNotificationStore()
 
 const learningAreaRef = ref(null)
 const commons = useCommonsStore()
+const schemeOfWorkStore = useSchemeOfWorkStore()
 
 let subjectNo = routerData.currentRoute.value.query.c
 if(subjectNo){
@@ -166,7 +168,6 @@ if(subjectNo){
 
 
 const addCurriculum = () => {
- // learningAreaRef.value.autoInputFocusInfo()
   curriculumDialog.value = true
 }
 
@@ -183,33 +184,9 @@ const filterClasses = (level) => {
 onMounted(
     () => {
       classStore.fetchClasses("")
-      // learningAreaStore.fetchLearningArea()
     }
 )
 
-
-/*watch(
-    () => learningAreaStore.learningAreaResponse,
-    async (data) => {
-      if(data){
-        // curriculumDialog.value = false
-        await learningAreaStore.fetchLearningArea()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)*/
-
-
-/*watch(
-    () => learningAreaStore.learningAreaInfResponse,
-    async (data) => {
-      if(data){
-        learningAreaList.value = data.data
-      }
-    },
-    {deep:true}
-)*/
 
 
 watch(
@@ -223,6 +200,17 @@ watch(
             menuSelected.value = classInfo[0].number
           }
         }
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => schemeOfWorkStore.newSchemeOfWorkResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success",data.message)
       }
     },
     {deep:true}

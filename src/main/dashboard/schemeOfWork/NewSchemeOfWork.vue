@@ -28,8 +28,8 @@
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
-            v-model="form.class"
-            @change="filterClasses(form.class)"
+            v-model="form.class_number"
+            @change="filterClasses(form.class_number)"
         >
           <option disabled value="">Select Class</option>
           <option value="">All</option>
@@ -102,6 +102,7 @@ import {useRouter} from "vue-router";
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
 import {useSubtopicStore} from "@/main/dashboard/curriculum/subTopic/store/subTopic.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import {useSchemeOfWorkStore} from "@/main/dashboard/schemeOfWork/store/schemeOfWork.js";
 
 const subtopicStore = useSubtopicStore()
 const errorMessage = ref(null)
@@ -114,32 +115,30 @@ const routerData = useRouter()
 const classStore = useClassesStore()
 
 const learningAreaStore = useLearningAreaStore()
+const schemeOfWorkStore = useSchemeOfWorkStore()
 
 
 
 
 const form = reactive({
   name:null,
-  class:"",
+  class_number:"",
 })
 
 
 let classNumber = routerData.currentRoute.value.query.c
 if(classNumber){
-  form.class =  classNumber
+  form.class_number =  classNumber
 }
 
 
 const addSchemeOfWork = () =>{
   loader.value = true
   form.subtopicList = subtopicList.value
-  alert(JSON.stringify(form))
-  // learningAreaStore.newLearningAreaData(form)
+  schemeOfWorkStore.newSchemeOfWorkData(form)
 }
 
-/*const  autoInputFocusInfo =  () => {
-  nameRef.value.focus()
-}*/
+
 
 const filterClasses = (classData) => {
   subtopicList.value = []
@@ -175,6 +174,16 @@ watch(
     {deep:true}
 )
 
+watch(
+    () => schemeOfWorkStore.newSchemeOfWorkResponse,
+    async (data) => {
+      if(data){
+       loader.value = false
+      }
+    },
+    {deep:true}
+)
+
 
 watch(
     () => classStore.classInfoResponse,
@@ -190,7 +199,7 @@ watch(
           }else {
             number = classNumber
           }
-          form.class = number
+          form.class_number = number
           await subtopicStore.fetchSubTopicsByClass(number)
         }
       }
