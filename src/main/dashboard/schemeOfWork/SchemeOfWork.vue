@@ -55,7 +55,7 @@
                   v-for="(item, idx) in  classList"
                   :key="idx"
                   class="list-group-item list-group-item-action cursor-pointer"
-                  :class="item.number === menuSelected ? 'active' : ''"
+                  :class="item.number === selectedClass ? 'active' : ''"
                   @click="changeMenu(item.number)"
               >
                 <small style="font-size:12px;">{{item.name}}</small>
@@ -73,11 +73,20 @@
 
 
             <div class="flex justify-content-between mt-3">
-              <div class="ml-4">Scheme of work</div>
-              <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCurriculum" data-bs-toggle="modal" data-bs-target="#schemeOfWorkModal">
-                <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-                Add Scheme
-              </button>
+
+              <div>
+                <div class="ml-4">Scheme of work</div>
+                <div class="ml-7"><small>name: {{schemeOfWorkList.name}}</small></div>
+                <div class="ml-7"><small>Status: {{schemeOfWorkList.status}}</small></div>
+              </div>
+
+                <div>
+                  <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCurriculum" data-bs-toggle="modal" data-bs-target="#schemeOfWorkModal">
+                    <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+                    Add Scheme
+                  </button>
+                </div>
+
             </div>
 
 
@@ -91,18 +100,22 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Code</th>
-                <th scope="col">Name</th>
+                <th scope="col" style="width: 50%;">Name</th>
+                <th scope="col">Estimated Time</th>
                 <th scope="col" class="text-end">Action</th>
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(lst,index) in learningAreaList" :key="index" >
+              <tr v-for="(lst,index) in schemeOfWorkList.subtopic" :key="index" >
                 <th scope="row">{{index+1}}</th>
                 <td>
                   {{lst.code}}
                 </td>
                 <td>
                   {{lst.name}}
+                </td>
+                <td>
+                  {{lst.estimated_time}}
                 </td>
                 <td>
                   <div class="float-end mr-2">
@@ -150,7 +163,7 @@ const curriculumDialog = ref( false)
 const learningAreaList = ref( [])
 const classList = ref( [])
 const classStore = useClassesStore()
-const menuSelected = ref( null)
+const selectedClass = ref( null)
 const routerData = useRouter()
 
 
@@ -158,12 +171,13 @@ const learningAreaStore = useLearningAreaStore()
 const  notificationStore  = useNotificationStore()
 
 const learningAreaRef = ref(null)
+const schemeOfWorkList = ref([])
 const commons = useCommonsStore()
 const schemeOfWorkStore = useSchemeOfWorkStore()
 
 let subjectNo = routerData.currentRoute.value.query.c
 if(subjectNo){
-  menuSelected.value =  subjectNo
+  selectedClass.value =  subjectNo
 }
 
 
@@ -172,7 +186,7 @@ const addCurriculum = () => {
 }
 
 const changeMenu = (value) => {
-  menuSelected.value = value
+  selectedClass.value = value
   router.push({ name: "scheme-of-work", query:{c:value} })
 }
 
@@ -184,6 +198,7 @@ const filterClasses = (level) => {
 onMounted(
     () => {
       classStore.fetchClasses("")
+      schemeOfWorkStore.fetchSchemeOfWorkByClass(selectedClass.value)
     }
 )
 
@@ -197,7 +212,7 @@ watch(
        classList.value = classInfo
         if(classInfo && (classInfo.length > 0)){
           if(!subjectNo){
-            menuSelected.value = classInfo[0].number
+            selectedClass.value = classInfo[0].number
           }
         }
       }
@@ -211,6 +226,16 @@ watch(
     async (data) => {
       if(data){
         notificationStore.successToast("Success",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => schemeOfWorkStore.schemeOfWorkByClassResponse,
+    async (data) => {
+      if(data){
+        schemeOfWorkList.value = data.data
       }
     },
     {deep:true}

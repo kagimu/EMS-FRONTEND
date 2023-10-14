@@ -4,6 +4,7 @@ import api from "@/config/api.js";
 
 export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     let newSchemeOfWorkResponse = ref(null)
+    let schemeOfWorkByClassResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -20,11 +21,10 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     }
 
 
-/*
-    async function fetchSchoolData(data) {
-        return await api.get("main/school-info?school_number="+data)
+    async function fetchSchemeOfWorkByClass(data) {
+        return await api.get("main/fetch-scheme-of-work-by-class?class_number="+data)
             .then((response) => {
-                schoolInfoResponse.value = response.data
+                schemeOfWorkByClassResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -33,13 +33,14 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
             })
     }
 
-*/
 
 
 
     return {
         newSchemeOfWorkResponse,
+        schemeOfWorkByClassResponse,
         errorMessage,
         newSchemeOfWorkData,
+        fetchSchemeOfWorkByClass
     }
 })
