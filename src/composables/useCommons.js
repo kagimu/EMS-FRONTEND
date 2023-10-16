@@ -164,16 +164,9 @@ export default function useCommonsStore() {
 
 
     return {
-        removeSpecialCharacters,
-        abbreviateNumber,
-        timeAgo,
-        capitalizeString,
-        tutorViewMetaTags,
         loadGoogleAdsScript,
         classLevelList,
-        base64ToBinary,
         onlyNumberValidator,
-        stripTags,
-        // generateUniqueKey
+// generateUniqueKey
     }
 }

@@ -22,6 +22,7 @@ import ConceptList from "@/main/dashboard/curriculum/concept/ConceptList.vue";
 import ClassSetupList from "@/main/dashboard/manageLevel/class/ClassSetupList.vue";
 import Timetable from "@/main/dashboard/curriculum/timetable/Timetable.vue";
 import SchemeOfWork from "@/main/dashboard/schemeOfWork/SchemeOfWork.vue";
+import GeneralCalendar from "@/main/dashboard/eos/GeneralCalendar.vue";
 
 
 
@@ -66,6 +67,7 @@ const router = createRouter({
                 {path: 'class', component: ClassSetupList, name: "class"},
                 {path: 'time-table', component: Timetable, name: "timetable"},
                 {path: 'scheme-of-work', component: SchemeOfWork, name: "scheme-of-work"},
+                {path:'calendar', component: GeneralCalendar, name: "general-calendar"},
             ]
         },
         {

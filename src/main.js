@@ -10,6 +10,10 @@ import Notifications from '@kyvg/vue3-notification'
 import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css'
 
+// main.js
+import  SetupCalendar  from 'v-calendar';
+
+// Use calendar defaults (optional)
 
 // localStorage.clear();
 
@@ -19,5 +23,6 @@ app.config.globalProperties.$http = axios;
 app.use(createPinia());
 app.use(FloatingVue)
 app.use(Notifications)
+app.use(SetupCalendar, {})
 app.mount('#app');
 

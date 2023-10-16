@@ -242,7 +242,7 @@
                             <!-- Rowspan the first column and apply vertical text styling -->
                             <td style="border: 1px solid" v-for="(period,idx) in periodList" :key="idx">
 
-                             {{period.Stream.name}} : {{period.Subject.name}} <br/> {{period.start_time}} - {{period.end_time}}
+                                {{period.Stream.class_name}}    {{period.Stream.name}} : {{period.Subject.name}} <br/> {{period.start_time}} - {{period.end_time}}
 
                             </td>
                         </tr>
