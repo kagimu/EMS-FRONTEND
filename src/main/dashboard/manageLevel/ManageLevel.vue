@@ -129,6 +129,7 @@ const filterSchool = (school) => {
     campus.value = ""
     levelDataInfo.value = null
     localStorage.setItem('school_number', school);
+    localStorage.removeItem("campus_number")
     // routerData.push({name: 'level', query: {s: school}})
     campusStore.fetchCampuses(school)
   }
