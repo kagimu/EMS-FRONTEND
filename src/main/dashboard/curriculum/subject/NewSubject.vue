@@ -7,6 +7,19 @@
         {{ classError }}
       </div>
 
+      <div class="mb-2">
+        <label class="textColor"><small>Sorting code</small></label>
+        <input
+            @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10"
+            ref="nameRef"
+            type="text"
+            style="outline: none 0 !important; box-shadow: none;"
+            v-model="form.code"
+            required
+            class="form-control form-select-sm">
+      </div>
+
 
       <div class="mb-2">
         <label class="textColor"><small>Learning Area</small></label>
@@ -64,7 +77,8 @@ import {useRouter} from "vue-router";
 import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
 import {useSubjectClusterStore} from "@/main/dashboard/curriculum/subjectCluster/store/subjectCluster.js";
-
+import useCommonsStore from "@/composables/useCommons.js";
+const commons = useCommonsStore()
 const classError = ref(null)
 const name = ref(null)
 const loader = ref(false)
@@ -79,6 +93,7 @@ const subjectClusterStore = useSubjectClusterStore()
 
 
 const form = reactive({
+  code:null,
   name:null,
   subject_cluster_number:""
 })
