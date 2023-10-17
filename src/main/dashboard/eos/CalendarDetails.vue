@@ -2,50 +2,12 @@
 <template>
 <div>
 
-    <div class="row">
-        <div class="col">
-            <div class="modal fade" id="newCalendar" tabindex="-1" :class="{ show: calendarDialog }" aria-labelledby="" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header text-sm p-0">
-                            <h6 class="modal-title ml-3 mt-2 mb-2">Add Calendar</h6>
-
-                        </div>
-                        <div class="modal-body">
-                            <div class="mt-2 mb-2">
-                                <new-calendar></new-calendar>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-
-        <div class="col">
-            <div class="modal fade" id="newCalendarEvent" tabindex="-1" :class="{ show: calendarDialog }" aria-labelledby="" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header text-sm p-0">
-                            <h6 class="modal-title ml-3 mt-2 mb-2">Add  Calendar Event</h6>
-
-                        </div>
-                        <div class="modal-body">
-                            <div class="mt-2 mb-2">
-                                <new-calendar-event></new-calendar-event>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
 
     <div class="row mt-2 mb-2">
         <div class="col col-8">
+            <label>
+               There are  {{calendarObject.CalendarEvents.length}} events in this calendar
+            </label>
         </div>
 
 
@@ -91,7 +53,9 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {useRoute} from "vue-router";
 
 
-const calendarObject = ref({});
+const calendarObject = ref({
+    CalendarEvents:[]
+});
 const calendarDialog = ref(false);
 const calendarEventDialog = ref(false);
 

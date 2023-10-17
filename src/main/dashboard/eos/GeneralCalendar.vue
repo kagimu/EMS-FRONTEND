@@ -81,19 +81,23 @@
 
         <div class="row">
             <div v-for="(calendar,idx) in calendars" :key="idx" class="col " >
-                <div class="card" style="width: 18rem;">
+                <div class="card border-primary mb-3" style="max-width: 18rem;">
 <!--                    <img class="card-img-top" src="..." alt="Card image cap">-->
-                    <div class="card-body">
+                    <div class="card-body ">
                         <h5 class="card-title">{{calendar.name}}</h5>
                         <p class="card-text">{{calendar.description}}</p>
                         <p class="card-text">From : {{dateFormat(calendar.start_date)}}</p>
                         <p class="card-text">To : {{dateFormat(calendar.end_date)}}}</p>
-                        <a href="#" @click="goToCalendar(calendar.number)" class="btn btn-primary"> View</a>
+
+                        <div class="card-footer bg-transparent border-success">
+                            <a href="#" @click="goToCalendar(calendar.number)" class="btn btn-primary"> View</a>
+                        </div>
                     </div>
-                </div>
+                    </div>
+
             </div>
         </div>
-        <div class="row mx-auto">
+        <div class="row">
             <div class="col col-11 mx-auto" >
                 <Calendar :rows="3" :columns="4" ></Calendar>
             </div>
