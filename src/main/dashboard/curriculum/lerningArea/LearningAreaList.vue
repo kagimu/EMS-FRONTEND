@@ -36,8 +36,8 @@
     <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Code</th>
       <th scope="col">Name</th>
+      <th scope="col">Sorting Code</th>
       <th scope="col" class="text-end">Action</th>
     </tr>
     </thead>
@@ -45,10 +45,10 @@
     <tr v-for="(lst,index) in learningAreaList" :key="index" >
       <th scope="row">{{index+1}}</th>
       <td>
-        {{lst.code}}
+          {{lst.name}}
       </td>
       <td>
-          {{lst.name}}
+        {{lst.code}}
       </td>
       <td>
         <div class="float-end mr-2">

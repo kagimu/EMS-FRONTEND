@@ -109,23 +109,23 @@
               <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Code</th>
                 <th scope="col">Name</th>
                 <th scope="col">Estimated Time (Minutes)</th>
+                <th scope="col">Sorting Code</th>
                 <th class="text-end" scope="col">Action</th>
               </tr>
               </thead>
               <tbody>
               <tr v-for="(lst, index) in subtopicList" :key="index">
                 <td>{{index+1}}</td>
-                <td>
-                  {{lst.code}}
-                </td>
-                <td>
+                <td style="width: 50%;">
                   {{lst.name}}
                 </td>
                 <td>
                   {{lst.estimated_time}}
+                </td>
+                <td>
+                  {{lst.code}}
                 </td>
                 <td>
                   <div class="float-end mr-2">

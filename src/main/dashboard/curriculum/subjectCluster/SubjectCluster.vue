@@ -55,9 +55,9 @@
               <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Code</th>
                 <th scope="col">Name</th>
                 <th scope="col">Learning Area</th>
+                <th scope="col">Sorting Code</th>
                 <th class="text-end" scope="col">Action</th>
               </tr>
               </thead>
@@ -65,13 +65,13 @@
               <tr v-for="(lst,index) in subjectClusterList" :key="index" >
                 <th scope="row">{{index+1}}</th>
                 <td>
-                    {{lst.code}}
-                </td>
-                <td>
                     {{lst.name}}
                 </td>
                 <td>
                     {{lst.learning_area_name}}
+                </td>
+                <td>
+                  {{lst.code}}
                 </td>
                 <td>
                   <div class="float-end mr-2">

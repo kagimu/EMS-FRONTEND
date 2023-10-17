@@ -9,6 +9,20 @@
 
 
       <div class="mb-2">
+        <label class="textColor"><small>Sorting code</small></label>
+        <input
+            @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10"
+            ref="nameRef"
+            type="text"
+            style="outline: none 0 !important; box-shadow: none;"
+            v-model="form.code"
+            required
+            class="form-control form-select-sm">
+      </div>
+
+
+      <div class="mb-2">
         <label class="textColor"><small>Learning Area</small></label>
         <select
             style="box-shadow: none;"
@@ -78,6 +92,7 @@ import {useStrandStore} from "@/main/dashboard/curriculum/strands/store/strand.j
 import {useSubjectClusterStore} from "@/main/dashboard/curriculum/subjectCluster/store/subjectCluster.js";
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
 import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
+import useCommonsStore from "@/composables/useCommons.js";
 
 const classError = ref(null)
 const name = ref(null)
@@ -86,6 +101,7 @@ const routerData = useRouter()
 const subjectClusterStore = useSubjectClusterStore()
 const learningAreaStore = useLearningAreaStore()
 const subjectStore = useSubjectStore()
+const commons = useCommonsStore()
 
 const strandStore = useStrandStore()
 const learningAreaList = ref([])
@@ -96,6 +112,7 @@ const subject_cluster_number = ref("")
 
 
 const form = reactive({
+  code:null,
   name:null,
   subject_number:"",
 })

@@ -7,6 +7,18 @@
         {{ classError }}
       </div>
 
+      <div class="mb-2">
+        <label class="textColor"><small>Sorting code</small></label>
+        <input
+            @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10"
+            ref="nameRef"
+            type="text"
+            style="outline: none 0 !important; box-shadow: none;"
+            v-model="form.code"
+            required
+            class="form-control form-select-sm">
+      </div>
 
       <div class="mb-2">
         <label class="textColor"><small>Learning Area</small></label>
@@ -110,6 +122,7 @@ import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/stor
 import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
 import {useStrandStore} from "@/main/dashboard/curriculum/strands/store/strand.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import useCommonsStore from "@/composables/useCommons.js";
 
 const classError = ref(null)
 const name = ref(null)
@@ -123,6 +136,7 @@ const learningAreaStore = useLearningAreaStore()
 const subjectStore = useSubjectStore()
 const strandStore = useStrandStore()
 const classStore = useClassesStore()
+const commons = useCommonsStore()
 
 const learningAreaList = ref([])
 const subjectClusterList = ref([])
@@ -135,6 +149,7 @@ const subject_number = ref("")
 
 
 const form = reactive({
+  code:null,
   name:null,
   class_number:"",
   strand_number:"",

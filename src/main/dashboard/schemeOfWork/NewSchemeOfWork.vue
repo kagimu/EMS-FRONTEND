@@ -32,7 +32,6 @@
             @change="filterClasses(form.class_number)"
         >
           <option disabled value="">Select Class</option>
-          <option value="">All</option>
           <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.name}}</option>
         </select>
       </div>
