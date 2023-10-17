@@ -123,14 +123,16 @@ showHomeLevel.value = campusLevel ? "level" : "home"
 
 
 
-const filterSchool = (school) => {
+const filterSchool = async (school) => {
   if(school) {
     campusList.value = []
+    levelDataInfo.value = null
     campus.value = ""
     levelDataInfo.value = null
     localStorage.setItem('school_number', school);
-    // routerData.push({name: 'level', query: {s: school}})
-    campusStore.fetchCampuses(school)
+    localStorage.removeItem('campus_number')
+    await campusStore.fetchCampuses(school)
+    // await routerData.push({name: 'level'})
   }
 }
 
@@ -148,8 +150,11 @@ onMounted(
     () => {
       campus.value = campusId
       school.value = schoolId
-      // levelStore.fetchLevelInfo(routerData.currentRoute.value.query.id)
       schoolStore.fetchSchools()
+     /* if(campusId) {
+        levelStore.fetchLevelInfo(campusId)
+      }*/
+
     }
 )
 
@@ -187,16 +192,17 @@ watch(
     async (data) => {
       if(data && (data.data.length > 0)){
         let campusNumber = data.data[0].number
-
         if(!campus.value){
            campus.value = campusNumber
           localStorage.setItem('campus_number', campusNumber);
         }
 
-
         if(campusNumber){
           campusList.value = data.data
-          await levelStore.fetchLevelInfo(campusNumber)
+          // if(!campusId) {
+            await levelStore.fetchLevelInfo(campusId ? campusId : campusNumber)
+            // await levelStore.fetchLevelInfo(campusNumber)
+          // }
         }
 
 
