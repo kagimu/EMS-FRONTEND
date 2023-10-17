@@ -5,7 +5,8 @@ import {ref} from "vue";
 export  const CalendarStore = defineStore("calendar", () => {
 
     const calendarCreate = ref(null)
-    const companyCreate = ref(null)
+    const calendarEventCreate = ref(null)
+    const companyCreateSuccess = ref(null)
     const calendarError = ref(null)
     const calendarCreateSuccess = ref(null)
     const calendarFetch = ref(null)
@@ -28,10 +29,24 @@ export  const CalendarStore = defineStore("calendar", () => {
 
     }
 
+    async function createCalendarEvent(data) {
+        return await api.post("main/eos/calendars/add-event", data)
+            .then((response) => {
+                calendarEventCreate.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    calendarError.value = response.response.data
+                }
+            })
+
+    }
+
+
     async function createCompany(data) {
         return await api.post("main/eos/entity/add", data)
             .then((response) => {
-                companyCreate.value = response.data
+                companyCreateSuccess.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -76,6 +91,9 @@ export  const CalendarStore = defineStore("calendar", () => {
         createCalendar,
         createCompany,
         calendarCreate,
+        companyCreateSuccess,
+        createCalendarEvent,
+        calendarEventCreate,
         calendarError,
         calendarCreateSuccess,
         calendarFetch,

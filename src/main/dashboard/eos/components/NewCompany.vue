@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <form @submit.prevent="addCalendar">
+        <form @submit.prevent="addCompany">
 
             <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="error">
                 {{ error }}
@@ -27,10 +27,13 @@
 
             <div class="row">
                 <div class="col">
-                    <input class="form-control" type="date" v-model="form.start_date" placeholder="Phone">
+                    <label class="textColor"><small>Phone</small></label>
+
+                    <input class="form-control" type="text" v-model="form.phone" placeholder="Phone">
                 </div>
                 <div class="col">
-                    <input class="form-control" type="date" v-model="form.end_date" placeholder="Email">
+                    <label class="textColor"><small>Email</small></label>
+                    <input class="form-control" type="text" v-model="form.email" placeholder="Email">
                 </div>
             </div>
 
@@ -79,7 +82,7 @@ const form = reactive({
 })
 
 
-const addCalendar = () => {
+const addCompany = () => {
     loader.value = true
     calendarStore.createCompany(form)
 }
@@ -93,18 +96,16 @@ onMounted(
     }
 )
 
-
 watch(
-    () => calendarStore.classResponse,
+    () => calendarStore.companyCreateSuccess,
     async (data) => {
-        if (data) {
-            form.name = null
-            form.abbreviation = null
-            form.level = ""
+        if(data){
             loader.value = false
+            notificationStore.successToast("Success",data.message)
         }
+
     },
-    {deep: true}
+    {deep:true}
 )
 
 
