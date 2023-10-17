@@ -91,10 +91,6 @@
 
 
 
-
-
-
-
             <table class="table table-hover caption-top" style="font-size: 14px;">
               <thead>
               <tr>
@@ -225,6 +221,7 @@ watch(
     () => schemeOfWorkStore.newSchemeOfWorkResponse,
     async (data) => {
       if(data){
+        await schemeOfWorkStore.fetchSchemeOfWorkByClass(selectedClass.value)
         notificationStore.successToast("Success",data.message)
       }
     },

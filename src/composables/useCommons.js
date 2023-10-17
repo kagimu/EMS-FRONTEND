@@ -122,6 +122,11 @@ export default function useCommonsStore() {
         if (!/[+-/*()\d]/.test(event.key)) return event.preventDefault();
     }
 
+    function numbersOnlyValidator(event) {
+        const validChars = /^[0-9+\-*/.\s]+$/;
+        if (!validChars.test(event.key)) return event.preventDefault();
+    }
+
     function stripTags(value) {
 
         //this escapes all the html tags such that they can be displayed
@@ -167,6 +172,7 @@ export default function useCommonsStore() {
         loadGoogleAdsScript,
         classLevelList,
         onlyNumberValidator,
+        numbersOnlyValidator,
 // generateUniqueKey
     }
 }
