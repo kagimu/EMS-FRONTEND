@@ -117,7 +117,6 @@ watch(
 watch(
     () => calendarStore.calendarError,
     async (data) => {
-    alert(JSON.stringify(data))
         notificationStore.errorToast("Error",data.message)
 
     },
