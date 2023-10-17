@@ -1,125 +1,143 @@
 <template>
-  <div>
+    <div>
 
-    <form @submit.prevent="addClass">
+        <form @submit.prevent="addCalendar">
 
-      <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
-        {{ classError }}
-      </div>
+            <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="error">
+                {{ error }}
+            </div>
 
-      <div class="mb-2">
-        <label class="textColor"><small>Class Name</small></label>
-        <input
-            style="outline: none 0 !important; box-shadow: none;"
-            type="text" v-model="form.name"
-            required
-            class="form-control form-select-sm">
-      </div>
+            <div class="mb-2">
+                <label class="textColor"><small>Event Name</small></label>
+                <input
+                        style="outline: none 0 !important; box-shadow: none;"
+                        type="text" v-model="form.name"
+                        required
+                        class="form-control form-select-sm">
+            </div>
 
-      <div class="mb-2">
-        <label class="textColor"><small>Abbreviation</small></label>
-        <input
-            style="outline: none 0 !important; box-shadow: none;"
-            type="text" v-model="form.abbreviation"
-            required
-            class="form-control form-select-sm">
-      </div>
+            <div class="mb-2">
+                <label class="textColor"><small>Description</small></label>
+                <textarea
+                        style="outline: none 0 !important; box-shadow: none;"
+                        type="text" v-model="form.description"
+                        required
+                        class="form-control form-select-sm"></textarea>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <input class="form-control" type="date" v-model="form.start_date" placeholder="Start date">
+                </div>
+                <div class="col">
+                    <input class="form-control" type="date" v-model="form.end_date" placeholder="End date">
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-lg-6">
+                    <div class="mb-2">
+                        <label class="textColor"><small>Start Time</small></label>
+                        <input type="time" style="outline: none 0 !important; box-shadow: none;" v-model="form.start_time"
+                               placeholder="09:00" required class="form-control form-select-sm">
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="mb-2">
+                        <label class="textColor"><small>End Time</small></label>
+                        <input type="time" style="outline: none 0 !important; box-shadow: none;" v-model="form.end_time"
+                               placeholder="15:45" required class="form-control form-select-sm">
+                    </div>
+                </div>
+
+            </div>
 
 
-      <div class="mb-2">
-        <label class="textColor"><small>Class Level</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="form.level">
-          <option disabled value="">Select Level</option>
-          <option v-for="(lvl, index) in commons.classLevelList()" :key="index" :value="lvl">{{lvl}}</option>
-        </select>
-      </div>
 
 
 
 
-      <div class="flex justify-content-end" style="width: 100%;">
-        <button
-            type="submit"
-            class="btn btn-primary border-0">
-          Save
-          <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
+
+            <div class="flex justify-content-end mt-2" style="width: 100%;">
+                <button
+                        type="submit"
+                        class="btn btn-primary border-0">
+                    Save
+                    <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>
-        </button>
-      </div>
+                </button>
+            </div>
 
-    </form>
+        </form>
 
 
-  </div>
+    </div>
 </template>
 
 <script setup>
 
 import {onMounted, reactive, ref, watch} from "vue";
-import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import {CalendarStore} from "@/main/dashboard/eos/store/EosStore.js";
 import {useRouter} from "vue-router";
 import useCommonsStore from "@/composables/useCommons.js";
 import useNotificationStore from "@/composables/useNotification.js";
 
-const classError = ref(null)
+const error = ref(null)
 const name = ref(null)
 const loader = ref(false)
 const routerData = useRouter()
 
-const classStore = useClassesStore()
+const calendarStore = CalendarStore()
 const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
 
 
 
 const form = reactive({
-  name:null,
-  abbreviation:null,
-  level:"",
+    name:null,
+    description:null,
+    start_date:null,
+    end_date:null
 })
 
 
-const addClass = () =>{
-  loader.value = true
-  classStore.newClassData(form)
+const addCalendar = () =>{
+    loader.value = true
+    calendarStore.createCalendar(form)
 }
 
 
 
 onMounted(
     () =>{
-      /* if(props.classNumber){
-         classesStore.classDetails(props.classNumber)
-       }*/
+        /* if(props.classNumber){
+           classesStore.classDetails(props.classNumber)
+         }*/
     }
 )
 
 
 watch(
-    () => classStore.classResponse,
+    () => calendarStore.classResponse,
     async (data) => {
-      if(data){
-         form.name = null
-         form.abbreviation = null
-         form.level = ""
-         loader.value = false
-      }
+        if(data){
+            form.name = null
+            form.abbreviation = null
+            form.level = ""
+            loader.value = false
+        }
     },
     {deep:true}
 )
 
 
 watch(
-    () => classStore.errorMessage,
+    () => calendarStore.calendarError,
     async (data) => {
-      if(data){
-        loader.value = false
         notificationStore.errorToast("Error",data.message)
-      }
+
     },
     {deep:true}
 )
@@ -129,9 +147,9 @@ watch(
 
 <style scoped>
 .noFocus:focus {
-  outline: none 0 !important;
-  box-shadow: none;
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
+    outline: none 0 !important;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
 }
 </style>
