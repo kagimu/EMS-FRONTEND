@@ -148,8 +148,11 @@ onMounted(
     () => {
       campus.value = campusId
       school.value = schoolId
-      // levelStore.fetchLevelInfo(routerData.currentRoute.value.query.id)
       schoolStore.fetchSchools()
+      if(campusId) {
+        levelStore.fetchLevelInfo(campusId)
+      }
+
     }
 )
 
@@ -196,7 +199,9 @@ watch(
 
         if(campusNumber){
           campusList.value = data.data
-          await levelStore.fetchLevelInfo(campusNumber)
+          if(!campusId) {
+            await levelStore.fetchLevelInfo(campusNumber)
+          }
         }
 
 
