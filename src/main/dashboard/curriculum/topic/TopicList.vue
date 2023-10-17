@@ -82,6 +82,7 @@
                   v-model="strand_number"
               >
                 <option disabled value="">Filter by Strand</option>
+                <option value="">All</option>
                 <option v-for="(list, index) in strandList" :key="index" :value="list.number">{{list.name}}</option>
               </select>
             </div>
