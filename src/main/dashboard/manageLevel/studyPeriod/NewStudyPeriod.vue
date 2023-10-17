@@ -11,7 +11,8 @@
       <div class="mb-2">
         <label class="textColor"><small>Code</small></label>
         <input
-            maxlength="20"
+            @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10"
             type="text"
             style="outline: none 0 !important;
                box-shadow: none;"
@@ -85,6 +86,7 @@ import useCommonsStore from "@/composables/useCommons.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 const commons = useCommonsStore()
 const routerData = useRouter()
+const  notificationStore  = useNotificationStore()
 const campusStore = useCampusStore()
 const academicYearStore = useAcademicYearStore()
 const studyPeriodStore = useStudyPeriodStore()
@@ -99,6 +101,7 @@ const loader = ref(false)
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
+import useNotificationStore from "@/composables/useNotification.js";
 
 const date = ref();
 
@@ -130,6 +133,7 @@ onMounted(
 
 const addStudyPeriod = () => {
   loader.value = true
+  errorMessage.value = ""
   studyPeriodStore.newStudyPeriod(form)
 }
 
@@ -152,8 +156,6 @@ watch(
         form.study_period_name = ""
         form.academic_year_number = ""
         form.study_period_date_range = ""
-        form.level_number = ""
-
       }
     },
     {deep:true}
@@ -168,6 +170,20 @@ watch(
     },
     {deep:true}
 )
+
+
+watch(
+    () => studyPeriodStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        loader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
 
 </script>
 
