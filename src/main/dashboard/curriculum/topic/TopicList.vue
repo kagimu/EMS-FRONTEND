@@ -6,7 +6,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Add Strand</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">Add Topic</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -103,25 +103,18 @@
               <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Code</th>
                 <th scope="col">Name</th>
+                <th scope="col">Sorting Code</th>
                 <th class="text-end" scope="col">Action</th>
               </tr>
               </thead>
               <tbody>
               <tr v-for="(lst, index) in topicList" :key="index">
                 <td>{{index+1}}</td>
-                <td>{{lst.code}}</td>
                 <td>
-
-<!--                  <router-link
-                      :to="{name:'sub-topic', query:{id:lst.number}}"
-                      class="text-decoration-none"
-                  >-->
                   {{lst.name}}
-<!--                  </router-link>-->
-
                 </td>
+                <td>{{lst.code}}</td>
                 <td>
                   <div class="float-end mr-2">
                     <i
