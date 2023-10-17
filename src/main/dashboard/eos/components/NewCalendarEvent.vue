@@ -1,11 +1,25 @@
 <template>
     <div>
 
-        <form @submit.prevent="addCalendar">
+        <form @submit.prevent="addCalendarEvent">
 
             <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="error">
                 {{ error }}
             </div>
+
+            <div class="mb-2">
+                <label class="textColor"><small>Calendar</small></label>
+                <select
+                        style="box-shadow: none;"
+                        class="form-select form-select-sm"
+                        v-model="form.calendar_number">
+                    <option disabled value="">Select calendar</option>
+                    <option v-for="(calendar, index) in generalCalendars" :key="index" :value="calendar.number">
+                        {{ calendar.name }}
+                    </option>
+                </select>
+            </div>
+
 
             <div class="mb-2">
                 <label class="textColor"><small>Event Name</small></label>
@@ -27,9 +41,11 @@
 
             <div class="row">
                 <div class="col">
+                    <label class="textColor"><small>Start date</small></label>
                     <input class="form-control" type="date" v-model="form.start_date" placeholder="Start date">
                 </div>
                 <div class="col">
+                    <label class="textColor"><small>End date</small></label>
                     <input class="form-control" type="date" v-model="form.end_date" placeholder="End date">
                 </div>
             </div>
@@ -38,7 +54,8 @@
                 <div class="col-lg-6">
                     <div class="mb-2">
                         <label class="textColor"><small>Start Time</small></label>
-                        <input type="time" style="outline: none 0 !important; box-shadow: none;" v-model="form.start_time"
+                        <input type="time" style="outline: none 0 !important; box-shadow: none;"
+                               v-model="form.start_time"
                                placeholder="09:00" required class="form-control form-select-sm">
                     </div>
                 </div>
@@ -54,17 +71,13 @@
             </div>
 
 
-
-
-
-
-
             <div class="flex justify-content-end mt-2" style="width: 100%;">
                 <button
                         type="submit"
                         class="btn btn-primary border-0">
                     Save
-                    <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
+                    <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
+                          role="status">
               <span class="visually-hidden">Loading...</span>
             </span>
                 </button>
@@ -86,32 +99,39 @@ import useNotificationStore from "@/composables/useNotification.js";
 
 const error = ref(null)
 const name = ref(null)
+const generalCalendars = ref([])
 const loader = ref(false)
 const routerData = useRouter()
 
 const calendarStore = CalendarStore()
 const commons = useCommonsStore()
-const  notificationStore  = useNotificationStore()
-
+const notificationStore = useNotificationStore()
 
 
 const form = reactive({
-    name:null,
-    description:null,
-    start_date:null,
-    end_date:null
+    name: null,
+    calendar_number: null,
+    description: null,
+    start_date: null,
+    end_date: null,
+    start_time: null,
+    end_time: null
 })
 
 
-const addCalendar = () =>{
+const addCalendarEvent = () => {
     loader.value = true
-    calendarStore.createCalendar(form)
+    calendarStore.createCalendarEvent(form)
 }
 
 
+const props = defineProps({
+    calendars: [],
+})
+
 
 onMounted(
-    () =>{
+    () => {
         /* if(props.classNumber){
            classesStore.classDetails(props.classNumber)
          }*/
@@ -120,26 +140,37 @@ onMounted(
 
 
 watch(
-    () => calendarStore.classResponse,
+    () => calendarStore.calendarEventCreate,
     async (data) => {
-        if(data){
-            form.name = null
-            form.abbreviation = null
-            form.level = ""
+        if (data) {
             loader.value = false
+            notificationStore.successToast("Success", data.message)
+
         }
+
     },
-    {deep:true}
+    {deep: true}
 )
 
 
 watch(
     () => calendarStore.calendarError,
     async (data) => {
-        notificationStore.errorToast("Error",data.message)
+        notificationStore.errorToast("Error", data.message)
 
     },
-    {deep:true}
+    {deep: true}
+)
+
+watch(
+    () => props.calendars,
+    async (data) => {
+        if (data) {
+            generalCalendars.value = data
+
+        }
+    },
+    {deep: true}
 )
 
 

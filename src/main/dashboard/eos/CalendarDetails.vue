@@ -1,76 +1,3 @@
-<script setup>
-import { Calendar } from 'v-calendar';
-import 'v-calendar/style.css';
-import {onMounted, ref, watch} from 'vue';
-import NewCalendar from "@/main/dashboard/eos/components/NewCalendar.vue";
-import NewCalendarEvent from "@/main/dashboard/eos/components/NewCalendarEvent.vue";
-import {CalendarStore} from "@/main/dashboard/eos/store/EosStore.js";
-import useNotificationStore from "@/composables/useNotification.js";
-import {useRoute} from "vue-router";
-
-
-const calendar = ref(null);
-const calendarDialog = ref(false);
-const calendarEventDialog = ref(false);
-const attributes = ref(null);
-
-const  calendarStore  = CalendarStore()
-const  notificationStore  = useNotificationStore()
-
-onMounted(() =>{
-    const route = useRoute()
-    let number = route.params.calendar_id
-    calendarStore.fetchCalendarByNumber(number)
-})
-function moveToday() {
-    calendar.value.move(new Date());
-    attributes.value =
-        // This is a single attribute
-       [ {
-
-            // Attribute type definitions
-            content: 'red',   // Boolean, String, Object
-            highlight: true,  // Boolean, String, Object
-            dot: true,        // Boolean, String, Object
-            bar: true,        // Boolean, String, Object
-           // popover: { ... }, // Only objects allowed
-            // Your custom data object for later access, if needed
-            customData: { "steve": "rocks" },
-            // We also need some dates to know where to display the attribute
-            // We use a single date here, but it could also be an array of dates,
-            //  a date range or a complex date pattern.
-            dates: new Date(),
-            // Think of `order` like `z-index`
-            order: 0
-        }];
-
-
-
-}
-
-
-
-function showAddCalendarEventDialog(){
-    calendarEventDialog.value = true
-}
-
-
-
-
-
-watch(
-    () => calendarStore.calendarFetchDetails,
-    async (data) => {
-
-        if(data){
-            calendar.value = data
-        }
-
-    },
-    {deep:true}
-)
-
-</script>
 
 <template>
 <div>
@@ -121,9 +48,7 @@ watch(
         <div class="col col-8">
         </div>
 
-        <div class="col col-2">
-            <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#newCalendarEvent" @click="showAddCalendarEventDialog" >Add Events</button>
-        </div>
+
     </div>
 
 
@@ -131,34 +56,163 @@ watch(
     <div class="row">
         <div>
             <label>
-                {{ calendar}}
+                {{ calendarObject.name}}
 
             </label>
         </div>
 
         <div>
             <label>
-                {{ calendar}}
+                {{ calendarObject.description}}
 
             </label>
         </div>
     </div>
 
-    <Calendar expanded ref="calendar" :attributes="attributes">
-        <template #footer>
-            <div class="w-full px-4 pb-3">
-                <button
-                        class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold w-full px-3 py-1 rounded-md"
-                        @click="moveToday"
-                >
-                    Today
-                </button>
-            </div>
-        </template>
+    <Calendar expanded
+              ref="calendar"
+              :attributes="attributes"
+    >
+
     </Calendar>
 
 </div>
 </template>
+
+
+<script setup>
+import { Calendar } from 'v-calendar';
+import 'v-calendar/style.css';
+import {onMounted, ref, watch} from 'vue';
+import NewCalendar from "@/main/dashboard/eos/components/NewCalendar.vue";
+import NewCalendarEvent from "@/main/dashboard/eos/components/NewCalendarEvent.vue";
+import {CalendarStore} from "@/main/dashboard/eos/store/EosStore.js";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useRoute} from "vue-router";
+
+
+const calendarObject = ref({});
+const calendarDialog = ref(false);
+const calendarEventDialog = ref(false);
+
+// const attributes = ref([
+//     {
+//         highlight: 'blue',
+//         dates: [
+//             new Date(2022, 10, 4),
+//             [new Date(2022, 10, 7), new Date(2022, 10, 9)],
+//         ],
+//     },
+//     {
+//         highlight: 'red',
+//         // Wrap lone date range in separate array to avoid rendering as multiple dates
+//         dates: [[new Date(2022, 10, 17), new Date(2022, 10, 19)]],
+//     },
+//     {
+//         highlight: 'green',
+//         dates: [[new Date(2022, 10, 20), new Date(2022, 10, 24)]],
+//     },
+// ]);
+const attributes = ref([
+    {
+        highlight: true,
+        dates: [
+            {
+                start: new Date(2023, 10, 7),
+                end: new Date(2024, 10, 9),
+                repeat: {
+                    every: 'month',
+                    ordinalWeekdays: [
+                        [1, 2], // First Monday of the month
+                        [-1, 2], // Last Monday of the month
+                    ],
+                },
+            },
+        ],
+    },
+    {
+        highlight: 'red',
+        // Wrap lone date range in separate array to avoid rendering as multiple dates
+        dates: [[new Date(2022, 10, 17), new Date(2022, 10, 19)]],
+    },
+]);
+
+const  calendarStore  = CalendarStore()
+const  notificationStore  = useNotificationStore()
+
+onMounted(() =>{
+    const route = useRoute()
+    let number = route.params.calendar_id
+    calendarStore.fetchCalendarByNumber(number)
+
+
+    /*attributes.value = [
+        {
+            highlight: 'blue',
+            dates: [
+                new Date(2023, 10, 4),
+                [new Date(2023, 10, 7), new Date(2022, 10, 9)],
+            ],
+        },
+        {
+            highlight: 'red',
+            // Wrap lone date range in separate array to avoid rendering as multiple dates
+            dates: [[new Date(2023, 10, 17), new Date(2022, 10, 19)]],
+        },
+        {
+            highlight: 'green',
+            dates: [[new Date(2024, 10, 20), new Date(2022, 10, 24)]],
+        },
+    ];*/
+})
+
+
+
+
+function showAddCalendarEventDialog(){
+    calendarEventDialog.value = true
+}
+
+
+
+
+
+watch(
+    () => calendarStore.calendarFetchDetails,
+    async (data) => {
+
+        if(data){
+            calendarObject.value = data
+
+            attributes.value = []
+
+            attributes.value = [
+                {
+                    highlight: true,
+                    dates: [
+                        {
+                            start: new Date(calendarObject.start_date),
+                            end: new Date(calendarObject.end_date),
+                            repeat: {
+                                every: 'month',
+                                ordinalWeekdays: [
+                                    [1, 2], // First Monday of the month
+                                    [-1, 2], // Last Monday of the month
+                                ],
+                            },
+                        },
+                    ],
+                },
+            ]
+
+        }
+
+    },
+    {deep:true}
+)
+
+</script>
+
 
 <style scoped>
 

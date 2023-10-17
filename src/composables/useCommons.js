@@ -1,4 +1,4 @@
-import {ref} from "vue";
+import moment from "moment"
 
 export default function useCommonsStore() {
 
@@ -144,6 +144,15 @@ export default function useCommonsStore() {
         return value
     }
 
+    function getOrdinalDate(date = null, split = true) {
+        if (date == null) {
+            date = new Date();
+        } else {
+            date = new Date(date);
+        }
+        //Returns 1st January 2020
+        return  moment(date).format("Do MMMM YYYY");
+    }
 
 
 
@@ -173,6 +182,7 @@ export default function useCommonsStore() {
         classLevelList,
         onlyNumberValidator,
         numbersOnlyValidator,
+        getOrdinalDate
 // generateUniqueKey
     }
 }
