@@ -71,6 +71,7 @@
                 <th scope="col">Name</th>
                 <th scope="col">Abbreviation</th>
                 <th scope="col">Level</th>
+                <th scope="col">Sorting Code</th>
                 <th scope="col">Action</th>
               </tr>
               </thead>
@@ -80,6 +81,7 @@
                 <td> {{classes.name}}</td>
                 <td> {{classes.abbreviation}}</td>
                 <td> {{classes.level}}</td>
+                <td> {{classes.code}}</td>
                 <td>
                   <div>
                     <i

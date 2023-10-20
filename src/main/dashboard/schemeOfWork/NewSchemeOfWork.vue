@@ -8,7 +8,6 @@
       </div>
 
 
-
       <div class="row">
         <div class="col-lg-4 content">
 
@@ -81,7 +80,7 @@
         <button
             type="submit"
             class="btn btn-primary border-0">
-          Save
+           {{(schemeOfWorkList && (schemeOfWorkList.status === "Pending")) ? "Update":"Save"}}
           <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>
@@ -116,11 +115,11 @@ const classStore = useClassesStore()
 const learningAreaStore = useLearningAreaStore()
 const schemeOfWorkStore = useSchemeOfWorkStore()
 
-
+const scheme_number = ref(null)
 
 
 const form = reactive({
-  name:null,
+  name:"",
   class_number:"",
 })
 
@@ -130,12 +129,6 @@ if(classNumber){
   form.class_number =  classNumber
 }
 
-
-const addSchemeOfWork = () =>{
-  loader.value = true
-  form.subtopicList = subtopicList.value
-  schemeOfWorkStore.newSchemeOfWorkData(form)
-}
 
 
 
@@ -149,6 +142,51 @@ onMounted(
       // subtopicStore.fetchSubTopics(classNumber ? classNumber : "")
     }
 )
+
+
+const props = defineProps({
+  schemeOfWorkList: String,
+})
+
+
+
+const addSchemeOfWork = () =>{
+  loader.value = true
+  form.subtopicList = subtopicList.value
+
+  if(props.schemeOfWorkList && (props.schemeOfWorkList.status === "Pending")){
+    form.scheme_number = scheme_number.value
+    schemeOfWorkStore.updateSchemeOfWorkData(form)
+  }else {
+    schemeOfWorkStore.newSchemeOfWorkData(form)
+  }
+
+
+}
+
+
+
+watch(
+    () => props.schemeOfWorkList,
+    async (data) => {
+      if(data && (data.status === "Pending")){
+        let info  = data
+        scheme_number.value = info.number
+        form.name = info.name
+        form.class_number = info.class_number
+
+        if(info.subtopic.length > 0){
+          info.subtopic.forEach(lst => {
+            lst.sort_code = lst.code
+          })
+        }
+
+        subtopicList.value = info.subtopic
+      }
+    },
+    {deep:true}
+)
+
 
 watch(
     () => learningAreaStore.learningAreaInfResponse,
@@ -167,7 +205,9 @@ watch(
     () => subtopicStore.subtopicByClassInfoResponse,
     async (data) => {
       if(data){
-        subtopicList.value = data.data
+        if(!props.schemeOfWorkList.number) {
+          subtopicList.value = data.data
+        }
       }
     },
     {deep:true}
@@ -182,6 +222,18 @@ watch(
     },
     {deep:true}
 )
+
+
+watch(
+    () => schemeOfWorkStore.updateSchemeOfWorkResponse,
+    async (data) => {
+      if(data){
+       loader.value = false
+      }
+    },
+    {deep:true}
+)
+
 
 
 watch(
@@ -205,6 +257,8 @@ watch(
     },
     {deep:true}
 )
+
+
 
 
 </script>

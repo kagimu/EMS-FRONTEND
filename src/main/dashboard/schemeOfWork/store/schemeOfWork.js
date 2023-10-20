@@ -4,6 +4,7 @@ import api from "@/config/api.js";
 
 export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     let newSchemeOfWorkResponse = ref(null)
+    let updateSchemeOfWorkResponse = ref(null)
     let schemeOfWorkByClassResponse = ref(null)
     const errorMessage = ref(null)
 
@@ -12,6 +13,18 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         return await api.post("main/new-scheme-of-work", data)
             .then((response) => {
                 newSchemeOfWorkResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function updateSchemeOfWorkData(data) {
+        return await api.post("main/update-scheme-of-work", data)
+            .then((response) => {
+                updateSchemeOfWorkResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -38,9 +51,11 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
 
     return {
         newSchemeOfWorkResponse,
+        updateSchemeOfWorkResponse,
         schemeOfWorkByClassResponse,
         errorMessage,
         newSchemeOfWorkData,
-        fetchSchemeOfWorkByClass
+        fetchSchemeOfWorkByClass,
+        updateSchemeOfWorkData
     }
 })
