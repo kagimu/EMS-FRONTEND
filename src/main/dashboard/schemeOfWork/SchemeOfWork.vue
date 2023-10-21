@@ -97,23 +97,23 @@
               <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Code</th>
                 <th scope="col" style="width: 50%;">Name</th>
                 <th scope="col">Estimated Time</th>
+                <th scope="col">Sorting Code</th>
                 <th scope="col" class="text-end">Action</th>
               </tr>
               </thead>
               <tbody>
               <tr v-for="(lst,index) in schemeOfWorkList.subtopic" :key="index" >
-                <th scope="row">{{index+1}}</th>
-                <td>
-                  {{lst.code}}
-                </td>
+                <td scope="row">{{index+1}}</td>
                 <td>
                   {{lst.name}}
                 </td>
                 <td>
                   {{lst.estimated_time}}
+                </td>
+                <td>
+                  {{lst.code}}
                 </td>
                 <td>
                   <div class="float-end mr-2">
@@ -235,6 +235,18 @@ watch(
     async (data) => {
       if(data){
         schemeOfWorkList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => schemeOfWorkStore.updateSchemeOfWorkResponse,
+    async (data) => {
+      if(data){
+        await schemeOfWorkStore.fetchSchemeOfWorkByClass(selectedClass.value)
+        notificationStore.successToast("Success",data.message)
       }
     },
     {deep:true}

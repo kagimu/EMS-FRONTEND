@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <form @submit.prevent="addSchemeOfWork">
 
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
@@ -25,6 +24,7 @@
       <div class="mb-5">
         <label class="textColor"><small>Class</small></label>
         <select
+            :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'Pending'))"
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="form.class_number"
@@ -57,7 +57,7 @@
             <input
                 type="text"
                 style="outline: none 0 !important; box-shadow: none;"
-                v-model="lst.sort_code"
+                v-model="lst.code"
                 required
                 class="form-control form-select-sm" />
           </td>
@@ -152,7 +152,11 @@ const props = defineProps({
 
 const addSchemeOfWork = () =>{
   loader.value = true
-  form.subtopicList = subtopicList.value
+  let topic = [...subtopicList.value]
+  topic.forEach(lst => {
+    lst.code = parseInt(lst.code)
+  })
+  form.subtopicList = topic
 
   if(props.schemeOfWorkList && (props.schemeOfWorkList.status === "Pending")){
     form.scheme_number = scheme_number.value
@@ -174,12 +178,6 @@ watch(
         scheme_number.value = info.number
         form.name = info.name
         form.class_number = info.class_number
-
-        if(info.subtopic.length > 0){
-          info.subtopic.forEach(lst => {
-            lst.sort_code = lst.code
-          })
-        }
 
         subtopicList.value = info.subtopic
       }
