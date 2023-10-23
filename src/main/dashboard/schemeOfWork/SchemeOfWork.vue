@@ -196,7 +196,9 @@ const filterClasses = (level) => {
 onMounted(
     () => {
       classStore.fetchClasses("")
-      schemeOfWorkStore.fetchSchemeOfWorkByClass(selectedClass.value)
+      if(selectedClass.value) {
+        schemeOfWorkStore.fetchSchemeOfWorkByClass(selectedClass.value)
+      }
     }
 )
 
@@ -209,8 +211,9 @@ watch(
         let classInfo = data.data
        classList.value = classInfo
         if(classInfo && (classInfo.length > 0)){
-          if(!subjectNo){
+          if(!selectedClass.value){
             selectedClass.value = classInfo[0].number
+            await schemeOfWorkStore.fetchSchemeOfWorkByClass(classInfo[0].number)
           }
         }
       }
@@ -223,7 +226,9 @@ watch(
     () => schemeOfWorkStore.newSchemeOfWorkResponse,
     async (data) => {
       if(data){
-        await schemeOfWorkStore.fetchSchemeOfWorkByClass(selectedClass.value)
+        if(selectedClass.value) {
+          await schemeOfWorkStore.fetchSchemeOfWorkByClass(selectedClass.value)
+        }
         notificationStore.successToast("Success",data.message)
       }
     },
@@ -245,7 +250,9 @@ watch(
     () => schemeOfWorkStore.updateSchemeOfWorkResponse,
     async (data) => {
       if(data){
-        await schemeOfWorkStore.fetchSchemeOfWorkByClass(selectedClass.value)
+        if(selectedClass.value) {
+          await schemeOfWorkStore.fetchSchemeOfWorkByClass(selectedClass.value)
+        }
         notificationStore.successToast("Success",data.message)
       }
     },
