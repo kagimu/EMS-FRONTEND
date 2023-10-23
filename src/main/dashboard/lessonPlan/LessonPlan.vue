@@ -100,7 +100,7 @@
                 <th scope="col" style="width: 50%;">Name</th>
                 <th scope="col">Estimated Time</th>
                 <th scope="col">Sorting Code</th>
-                <th scope="col" class="text-end">Action</th>
+                <!--                <th scope="col" class="text-end">Action</th>-->
               </tr>
               </thead>
               <tbody>
@@ -115,15 +115,15 @@
                 <td>
                   {{lst.code}}
                 </td>
-                <td>
-                  <div class="float-end mr-2">
-                    <i
-                        style="font-size: 13px;"
-                        data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                        class="bi-pencil mr-2 cursor-pointer" @click="editClass(sbj)"></i>
-                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(sbj)"></i>
-                  </div>
-                </td>
+                <!--                <td>
+                                  <div class="float-end mr-2">
+                                    <i
+                                        style="font-size: 13px;"
+                                        data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
+                                        class="bi-pencil mr-2 cursor-pointer" @click="editClass(sbj)"></i>
+                                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(sbj)"></i>
+                                  </div>
+                                </td>-->
               </tr>
               </tbody>
             </table>
