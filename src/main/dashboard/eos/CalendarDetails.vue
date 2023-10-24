@@ -31,6 +31,19 @@
         </div>
     </div>
 
+  <Calendar  ref="calendar" expanded>
+    <template v-slot:day-content="{ day, attributes }">
+      <div class="custom-day-content" style="border-right: 1px solid #2c3034;border-left: 1px solid #2c3034;border-top: 1px solid #2c3034;border-bottom: 1px solid #2c3034;">
+        <span class="day-label">{{ day.day }}</span>
+        <ul class="events-list">
+          <li v-for="event in attributes.events" :key="event.id">
+            {{ event.title }}
+          </li>
+        </ul>
+      </div>
+    </template>
+  </Calendar>
+
     <Calendar expanded
               ref="calendar"
               :attributes="attributes"
@@ -52,6 +65,11 @@ import {CalendarStore} from "@/main/dashboard/eos/store/EosStore.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useRoute} from "vue-router";
 
+/*const events = ref([
+  { id: 1, title: 'Meeting with client', date: new Date() },
+  { id: 2, title: 'Lunch with friends', date: new Date() },
+  { id: 3, title: 'Soccer practice', date: new Date() }
+])*/
 
 const calendarObject = ref({
     CalendarEvents:[]
@@ -78,7 +96,12 @@ const calendarEventDialog = ref(false);
 //     },
 // ]);
 const attributes = ref([
-    {
+  {
+    key: 'today',
+    highlight: true,
+    dates: new Date(),
+  },
+/*    {
         highlight: true,
         dates: [
             {
@@ -98,7 +121,7 @@ const attributes = ref([
         highlight: 'red',
         // Wrap lone date range in separate array to avoid rendering as multiple dates
         dates: [[new Date(2022, 10, 17), new Date(2022, 10, 19)]],
-    },
+    },*/
 ]);
 
 const  calendarStore  = CalendarStore()
@@ -148,7 +171,7 @@ watch(
         if(data){
             calendarObject.value = data
 
-            attributes.value = []
+           /* attributes.value = []
 
             attributes.value = [
                 {
@@ -160,14 +183,14 @@ watch(
                             repeat: {
                                 every: 'month',
                                 ordinalWeekdays: [
-                                    [1, 2], // First Monday of the month
-                                    [-1, 2], // Last Monday of the month
+                                    [1, 3], // First Monday of the month
+                                    [-1, 3], // Last Monday of the month
                                 ],
                             },
                         },
                     ],
                 },
-            ]
+            ]*/
 
         }
 
