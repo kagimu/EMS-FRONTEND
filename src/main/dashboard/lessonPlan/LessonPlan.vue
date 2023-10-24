@@ -5,12 +5,13 @@
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2"> {{(schemeOfWorkList.number && (schemeOfWorkList.status === "Pending")) ? "Edit Scheme of work" : "Add Scheme of work"}}  </h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">
+              {{(schemeOfWorkList.number && (schemeOfWorkList.status === "Pending")) ? "Edit Lesson Plan" : "New Lesson Plan"}}  </h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <div class="mt-2 mb-2">
-              <new-scheme-of-work :schemeOfWorkList="schemeOfWorkList" ref="schemeOfWorkRef"></new-scheme-of-work>
+              <new-lesson-plan :schemeOfWorkList="schemeOfWorkList" ref="lessonPlanRef"></new-lesson-plan>
             </div>
           </div>
 
@@ -75,7 +76,7 @@
             <div class="flex justify-content-between mt-3">
 
               <div>
-                <div class="ml-4"><b>Scheme of work</b></div>
+                <div class="ml-4"><b>Lesson Plan</b></div>
                 <div class="ml-7"><small><b>name:</b> {{schemeOfWorkList.name}}</small></div>
                 <div class="ml-7"><small><b>Status:</b> {{schemeOfWorkList.status}}</small></div>
               </div>
@@ -83,7 +84,7 @@
               <div>
                 <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCurriculum" data-bs-toggle="modal" data-bs-target="#schemeOfWorkModal">
                   <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-                  {{(schemeOfWorkList.number && (schemeOfWorkList.status === "Pending")) ? " Edit Scheme" : " Add Scheme"}}
+                  {{(schemeOfWorkList.number && (schemeOfWorkList.status === "Pending")) ? " Edit Lesson Plan" : " New Lesson Plan"}}
                 </button>
               </div>
 
@@ -155,6 +156,7 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.
 import router from "@/config/router.js";
 import {useRouter} from "vue-router";
 import {useSchemeOfWorkStore} from "@/main/dashboard/schemeOfWork/store/schemeOfWork.js";
+import NewLessonPlan from "@/main/dashboard/lessonPlan/NewLessonPlan.vue";
 
 const level = ref( "")
 const curriculumDialog = ref( false)
@@ -185,7 +187,7 @@ const addCurriculum = () => {
 
 const changeMenu = (value) => {
   selectedClass.value = value
-  router.push({ name: "scheme-of-work", query:{c:value} })
+  router.push({ name: "lesson-plan", query:{c:value} })
 }
 
 const filterClasses = (level) => {

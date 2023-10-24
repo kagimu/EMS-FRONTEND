@@ -145,7 +145,7 @@ onMounted(
 
 
 const props = defineProps({
-  schemeOfWorkList: String,
+  schemeOfWorkList: [],
 })
 
 
