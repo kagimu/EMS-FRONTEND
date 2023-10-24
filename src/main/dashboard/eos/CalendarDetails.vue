@@ -31,7 +31,7 @@
         </div>
     </div>
 
-  <Calendar  ref="calendar" expanded>
+<!--  <Calendar  ref="calendar" expanded>
     <template v-slot:day-content="{ day, attributes }">
       <div class="custom-day-content" style="border-right: 1px solid #2c3034;border-left: 1px solid #2c3034;border-top: 1px solid #2c3034;border-bottom: 1px solid #2c3034;">
         <span class="day-label">{{ day.day }}</span>
@@ -42,7 +42,7 @@
         </ul>
       </div>
     </template>
-  </Calendar>
+  </Calendar>-->
 
     <Calendar expanded
               ref="calendar"
