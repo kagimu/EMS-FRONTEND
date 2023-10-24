@@ -92,8 +92,6 @@
 
             <hr />
 
-
-
             <table class="table table-hover caption-top" style="font-size: 14px;">
               <thead>
               <tr>
