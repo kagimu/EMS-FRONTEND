@@ -65,29 +65,28 @@
             </div>
         </div>
 
-        <div class="row mt-2 mb-2">
-            <div class="col col-6">
-            </div>
-            <div class="col col-2">
+        <div class="my-2" style="display: flex; flex-direction: row; justify-content: flex-end" >
+
+            <div >
                 <button class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#newCompany" @click="showAddCompanyDialog" >Add Company</button>
             </div>
-                <div class="col col-2">
-                <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#newCalendar" @click="showAddCalendarDialog" >Add new Calendar</button>
+                <div >
+                <button class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#newCalendar" @click="showAddCalendarDialog" >Add new Calendar</button>
             </div>
-            <div class="col col-2">
-                <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#newCalendarEvent" @click="showAddCalendarEventDialog" >Add Events</button>
+            <div >
+                <button class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#newCalendarEvent" @click="showAddCalendarEventDialog" >Add Events</button>
             </div>
         </div>
 
         <div class="row">
             <div v-for="(calendar,idx) in calendars" :key="idx" class="col " >
-                <div class="card border-primary mb-3" style="max-width: 18rem;">
+                <div class="card border-primary mb-3" style="max-width: 18rem; max-height: 18rem">
 <!--                    <img class="card-img-top" src="..." alt="Card image cap">-->
                     <div class="card-body ">
                         <h5 class="card-title">{{calendar.name}}</h5>
                         <p class="card-text">{{calendar.description}}</p>
                         <p class="card-text">From : {{dateFormat(calendar.start_date)}}</p>
-                        <p class="card-text">To : {{dateFormat(calendar.end_date)}}}</p>
+                        <p class="card-text">To : {{dateFormat(calendar.end_date)}}</p>
 
                         <div class="card-footer bg-transparent border-success">
                             <a href="#" @click="goToCalendar(calendar.number)" class="btn btn-primary"> View</a>
