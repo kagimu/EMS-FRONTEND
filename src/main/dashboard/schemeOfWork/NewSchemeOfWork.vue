@@ -21,7 +21,7 @@
           </div>
 
 
-      <div class="mb-5">
+      <div class="mb-2">
         <label class="textColor"><small>Class</small></label>
         <select
             :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'Pending'))"
@@ -34,6 +34,21 @@
           <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.name}}</option>
         </select>
       </div>
+
+          <div class="mb-5">
+            <label class="textColor"><small>Subject</small></label>
+            <select
+                style="box-shadow: none;"
+                class="form-select form-select-sm"
+                v-model="form.subject_number"
+                @change="filterSubject(form.subject_number)"
+            >
+              <option disabled value="">Select Class</option>
+              <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.name}}</option>
+            </select>
+          </div>
+
+
         </div>
       </div>
 
@@ -101,6 +116,7 @@ import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/stor
 import {useSubtopicStore} from "@/main/dashboard/curriculum/subTopic/store/subTopic.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useSchemeOfWorkStore} from "@/main/dashboard/schemeOfWork/store/schemeOfWork.js";
+import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
 
 const subtopicStore = useSubtopicStore()
 const errorMessage = ref(null)
@@ -114,6 +130,7 @@ const classStore = useClassesStore()
 
 const learningAreaStore = useLearningAreaStore()
 const schemeOfWorkStore = useSchemeOfWorkStore()
+const subjectStore = useSubjectStore()
 
 const scheme_number = ref(null)
 
@@ -134,7 +151,14 @@ if(classNumber){
 
 const filterClasses = (classData) => {
   subtopicList.value = []
-  subtopicStore.fetchSubTopicsByClass(classData)
+  // subtopicStore.fetchSubTopicsByClass(classData)
+  subjectStore.fetchSubjectByClass(classData)
+
+}
+
+const filterSubject = (subjectData) => {
+  subtopicList.value = []
+  // subtopicStore.fetchSubTopicsByClass(subjectData)
 }
 
 onMounted(
@@ -227,6 +251,16 @@ watch(
     async (data) => {
       if(data){
        loader.value = false
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectStore.subjectByClassResponse,
+    async (data) => {
+      if(data){
+      alert(JSON.stringify(data.data))
       }
     },
     {deep:true}

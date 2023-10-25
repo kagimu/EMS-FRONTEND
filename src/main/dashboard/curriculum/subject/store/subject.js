@@ -5,6 +5,7 @@ import api from "@/config/api.js";
 export const useSubjectStore = defineStore("subject", () => {
     let subjectResponse = ref(null)
     let subjectInfoResponse = ref(null)
+    let subjectByClassResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -46,6 +47,18 @@ export const useSubjectStore = defineStore("subject", () => {
             })
     }
 
+    async function fetchSubjectByClass(data) {
+        return await api.get("main/subjects-by-class?class_number="+data)
+            .then((response) => {
+                subjectByClassResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     async function fetchSubjectsByClass(data) {
         return await api.get("main/subjects?class_level_number="+data)
             .then((response) => {
@@ -62,11 +75,13 @@ export const useSubjectStore = defineStore("subject", () => {
 
 
     return {
+        subjectByClassResponse,
         subjectResponse,
         subjectInfoResponse,
         errorMessage,
         newSubjectData,
         fetchSubjects,
-        fetchSubjectsByClass
+        fetchSubjectsByClass,
+        fetchSubjectByClass
     }
 })
