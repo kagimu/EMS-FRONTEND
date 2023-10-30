@@ -44,7 +44,7 @@
                 @change="filterSubject(form.subject_number)"
             >
               <option disabled value="">Select Class</option>
-              <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.name}}</option>
+              <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.name}}</option>
             </select>
           </div>
 
@@ -123,6 +123,7 @@ const errorMessage = ref(null)
 const name = ref(null)
 const loader = ref(false)
 const classList = ref([])
+const subjectList = ref([])
 const subtopicList = ref([])
 // const nameRef = ref(null)
 const routerData = useRouter()
@@ -138,6 +139,7 @@ const scheme_number = ref(null)
 const form = reactive({
   name:"",
   class_number:"",
+  subject_number:"",
 })
 
 
@@ -260,7 +262,7 @@ watch(
     () => subjectStore.subjectByClassResponse,
     async (data) => {
       if(data){
-      alert(JSON.stringify(data.data))
+      subjectList.value = data.data
       }
     },
     {deep:true}
