@@ -76,7 +76,9 @@
 
               <div>
                 <div class="ml-4"><b>Scheme of work</b></div>
-                <div class="ml-7"><small><b>name:</b> {{schemeOfWorkList.name}}</small></div>
+                <div class="ml-7"><small><b>Title:</b> {{schemeOfWorkList.name}}</small></div>
+                <div class="ml-7"><small><b>Class:</b> {{schemeOfWorkList.class_name}}</small></div>
+                <div class="ml-7"><small><b>Subject:</b> {{schemeOfWorkList.subject_name}}</small></div>
                 <div class="ml-7"><small><b>Status:</b> {{schemeOfWorkList.status}}</small></div>
               </div>
 
@@ -119,11 +121,10 @@
                 <th scope="col">#</th>
                 <th scope="col">Strand</th>
                 <th scope="col">Topic</th>
-                <th scope="col">Name</th>
                 <th scope="col">Sequence</th>
                 <th scope="col">Subtopic</th>
                 <th scope="col">Estimated Time (Min)</th>
-                <th scope="col">Code</th>
+                <th scope="col">Lesson Plan</th>
 <!--                <th scope="col" class="text-end">Action</th>-->
               </tr>
               </thead>
@@ -131,14 +132,24 @@
               <tr v-for="(lst,index) in schemeOfWorkList.subtopic" :key="index" >
                 <td scope="row">{{index+1}}</td>
                 <td>
+                  {{lst.strand_name}}
+                </td>
+                <td>
+                  {{lst.topic_name}}
+                </td>
+                <td>
+                  {{lst.code}}
+                </td>
+                <td>
                   {{lst.name}}
                 </td>
                 <td>
                   {{lst.estimated_time}}
                 </td>
                 <td>
-                  {{lst.code}}
+
                 </td>
+
 <!--                <td>
                   <div class="float-end mr-2">
                     <i
@@ -248,7 +259,9 @@ watch(
        classList.value = classInfo
         if(classInfo && (classInfo.length > 0)){
           if(!selectedClass.value){
-            selectedClass.value = classInfo[0].number
+            let classNo = classInfo[0].number
+            selectedClass.value = classNo
+            await subjectStore.fetchSchemeSubjectByClass(classNo)
             await schemeOfWorkStore.fetchSchemeOfWorkByClass(classInfo[0].number)
           }
         }
@@ -263,7 +276,11 @@ watch(
     async (data) => {
       if(data){
         if(selectedClass.value) {
-          await schemeOfWorkStore.fetchSchemeOfWorkByClass(selectedClass.value)
+          let data = {
+            subject_number:scheme_subject_number.value,
+            class_number:selectedClass.value
+          }
+          await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
         }
         notificationStore.successToast("Success",data.message)
       }
@@ -287,7 +304,11 @@ watch(
     async (data) => {
       if(data){
         if(selectedClass.value) {
-          await schemeOfWorkStore.fetchSchemeOfWorkByClass(selectedClass.value)
+          let data = {
+            subject_number:scheme_subject_number.value,
+            class_number:selectedClass.value
+          }
+          await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
         }
         notificationStore.successToast("Success",data.message)
       }
@@ -303,7 +324,16 @@ watch(
         let subjectInfo = data.data
         schemeSubjectList.value = subjectInfo
         if(!scheme_subject_number.value){
-          scheme_subject_number.value = subjectInfo[0].number
+          let subjectNo = subjectInfo[0].number
+          scheme_subject_number.value = subjectNo
+
+
+          let data = {
+            subject_number:subjectNo,
+            class_number:selectedClass.value
+          }
+          await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
+
         }
       }
     },

@@ -11,7 +11,7 @@
         <div class="col-lg-4 content">
 
           <div class="mb-2">
-            <label class="textColor text-sm">Scheme name Name</label>
+            <label class="textColor text-sm">Scheme Title</label>
             <input
                 style="outline: none 0 !important; box-shadow: none;"
                 type="text"
@@ -38,6 +38,7 @@
           <div class="mb-5">
             <label class="textColor"><small>Subject</small></label>
             <select
+                :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'Pending'))"
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
                 v-model="form.subject_number"
@@ -207,6 +208,7 @@ watch(
         scheme_number.value = info.number
         form.name = info.name
         form.class_number = info.class_number
+        form.subject_number = info.subject_number
 
         subtopicList.value = info.subtopic
       }
