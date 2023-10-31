@@ -76,10 +76,10 @@
 
               <div>
                 <div class="ml-4"><b>Scheme of work</b></div>
-                <div class="ml-7"><small><b>Title:</b> {{schemeOfWorkList.name}}</small></div>
-                <div class="ml-7"><small><b>Class:</b> {{schemeOfWorkList.class_name}}</small></div>
-                <div class="ml-7"><small><b>Subject:</b> {{schemeOfWorkList.subject_name}}</small></div>
-                <div class="ml-7"><small><b>Status:</b> {{schemeOfWorkList.status}}</small></div>
+                <div class="ml-7" v-if="schemeOfWorkList.name"><small><b>Title:</b> {{schemeOfWorkList.name}}</small></div>
+                <div class="ml-7" v-if="schemeOfWorkList.class_name"><small><b>Class:</b> {{schemeOfWorkList.class_name}}</small></div>
+                <div class="ml-7" v-if="schemeOfWorkList.subject_name"><small><b>Subject:</b> {{schemeOfWorkList.subject_name}}</small></div>
+                <div class="ml-7" v-if="schemeOfWorkList.status"><small><b>Status:</b> {{schemeOfWorkList.status}}</small></div>
               </div>
 
                 <div>
