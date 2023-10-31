@@ -41,7 +41,7 @@
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
                 v-model="form.subject_number"
-                @change="filterSubject(form.subject_number)"
+                @click="filterSubject(form.subject_number)"
             >
               <option disabled value="">Select Class</option>
               <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.name}}</option>
@@ -72,7 +72,7 @@
             <input
                 type="text"
                 style="outline: none 0 !important; box-shadow: none;"
-                v-model="lst.code"
+                v-model="lst.sort_code"
                 required
                 class="form-control form-select-sm" />
           </td>
@@ -153,14 +153,15 @@ if(classNumber){
 
 const filterClasses = (classData) => {
   subtopicList.value = []
+  subjectList.value = []
   // subtopicStore.fetchSubTopicsByClass(classData)
   subjectStore.fetchSubjectByClass(classData)
 
 }
 
-const filterSubject = (subjectData) => {
+const filterSubject = (subjectNumber) => {
   subtopicList.value = []
-  // subtopicStore.fetchSubTopicsByClass(subjectData)
+  subtopicStore.fetchSubTopicsByClass({class_number:form.class_number, subject_number:subjectNumber})
 }
 
 onMounted(
@@ -179,8 +180,10 @@ const props = defineProps({
 const addSchemeOfWork = () =>{
   loader.value = true
   let topic = [...subtopicList.value]
+
   topic.forEach(lst => {
     lst.code = parseInt(lst.code)
+    lst.sort_code = parseInt(lst.sort_code)
   })
   form.subtopicList = topic
 
@@ -285,7 +288,8 @@ watch(
             number = classNumber
           }
           form.class_number = number
-          await subtopicStore.fetchSubTopicsByClass(number)
+          await subjectStore.fetchSubjectByClass(number)
+          // await subtopicStore.fetchSubTopicsByClass(number)
         }
       }
     },

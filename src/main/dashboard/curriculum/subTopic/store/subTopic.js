@@ -35,7 +35,7 @@ export const useSubtopicStore = defineStore("subtopic", () => {
     }
 
     async function fetchSubTopicsByClass(data) {
-        return await api.get("main/sub-topics-by-class?class_number="+data)
+        return await api.get("main/sub-topics-by-class?class_number="+data.class_number+"&subject_number="+data.subject_number)
             .then((response) => {
                 subtopicByClassInfoResponse.value = response.data
             })
