@@ -43,7 +43,7 @@
                 v-model="form.subject_number"
                 @click="filterSubject(form.subject_number)"
             >
-              <option disabled value="">Select Class</option>
+              <option disabled value="">Select Subject</option>
               <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.name}}</option>
             </select>
           </div>
@@ -58,7 +58,7 @@
         <tr>
           <th scope="col" style="width: 5%;">#</th>
           <th scope="col" style="width: 60%;">Name</th>
-          <th scope="col" style="width: 20%;">Sorting Code</th>
+          <th scope="col" style="width: 20%;">Code</th>
 <!--          <th scope="col" class="text-end">Action</th>-->
         </tr>
         </thead>

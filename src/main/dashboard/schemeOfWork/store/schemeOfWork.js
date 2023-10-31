@@ -35,7 +35,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
 
 
     async function fetchSchemeOfWorkByClass(data) {
-        return await api.get("main/fetch-scheme-of-work-by-class?class_number="+data)
+        return await api.get("main/fetch-scheme-of-work-by-class-and-subject?class_number="+data.class_number+"&subject_number="+data.subject_number)
             .then((response) => {
                 schemeOfWorkByClassResponse.value = response.data
             })

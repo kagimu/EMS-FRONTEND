@@ -92,6 +92,26 @@
             <hr />
 
 
+            <div class="row mx-auto">
+              <div class="col-3">
+            <div class="mb-3">
+              <label class="textColor"><small>Sort by Subject</small></label>
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="scheme_subject_number"
+                  @click="filterSchemeSubject(scheme_subject_number)"
+              >
+                <option disabled value="">filter Subject</option>
+                <option v-for="(list, index) in schemeSubjectList" :key="index" :value="list.number">{{list.name}}</option>
+              </select>
+            </div>
+              </div>
+            </div>
+
+
+            <hr />
+
 
             <table class="table table-hover caption-top" style="font-size: 14px;">
               <thead>
@@ -103,7 +123,7 @@
                 <th scope="col">Sequence</th>
                 <th scope="col">Subtopic</th>
                 <th scope="col">Estimated Time (Min)</th>
-                <th scope="col">Sorting Code</th>
+                <th scope="col">Code</th>
 <!--                <th scope="col" class="text-end">Action</th>-->
               </tr>
               </thead>
@@ -159,6 +179,7 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.
 import router from "@/config/router.js";
 import {useRouter} from "vue-router";
 import {useSchemeOfWorkStore} from "@/main/dashboard/schemeOfWork/store/schemeOfWork.js";
+import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
 
 const level = ref( "")
 const curriculumDialog = ref( false)
@@ -172,10 +193,13 @@ const routerData = useRouter()
 const learningAreaStore = useLearningAreaStore()
 const  notificationStore  = useNotificationStore()
 
+const scheme_subject_number = ref(null)
 const learningAreaRef = ref(null)
 const schemeOfWorkList = ref([])
+const schemeSubjectList = ref([])
 const commons = useCommonsStore()
 const schemeOfWorkStore = useSchemeOfWorkStore()
+const subjectStore = useSubjectStore()
 
 let subjectNo = routerData.currentRoute.value.query.c
 if(subjectNo){
@@ -196,12 +220,20 @@ const filterClasses = (level) => {
   classStore.fetchClasses(level)
 }
 
+const filterSchemeSubject = (scheme_subject_number) => {
+  let data = {
+    subject_number:scheme_subject_number,
+    class_number:selectedClass.value
+  }
+  schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
+}
 
 onMounted(
     () => {
       classStore.fetchClasses("")
       if(selectedClass.value) {
-        schemeOfWorkStore.fetchSchemeOfWorkByClass(selectedClass.value)
+        subjectStore.fetchSchemeSubjectByClass(selectedClass.value)
+        // schemeOfWorkStore.fetchSchemeOfWorkByClass(selectedClass.value)
       }
     }
 )
@@ -258,6 +290,21 @@ watch(
           await schemeOfWorkStore.fetchSchemeOfWorkByClass(selectedClass.value)
         }
         notificationStore.successToast("Success",data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => subjectStore.schemeSubjectByClassResponse,
+    async (data) => {
+      if(data){
+        let subjectInfo = data.data
+        schemeSubjectList.value = subjectInfo
+        if(!scheme_subject_number.value){
+          scheme_subject_number.value = subjectInfo[0].number
+        }
       }
     },
     {deep:true}

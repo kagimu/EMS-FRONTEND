@@ -58,7 +58,7 @@
         <tr>
           <th scope="col" style="width: 5%;">#</th>
           <th scope="col" style="width: 60%;">Name</th>
-          <th scope="col" style="width: 20%;">Sorting Code</th>
+          <th scope="col" style="width: 20%;">Code</th>
           <!--          <th scope="col" class="text-end">Action</th>-->
         </tr>
         </thead>

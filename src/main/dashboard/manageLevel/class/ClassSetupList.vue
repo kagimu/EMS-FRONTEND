@@ -71,7 +71,7 @@
                 <th scope="col">Name</th>
                 <th scope="col">Abbreviation</th>
                 <th scope="col">Level</th>
-                <th scope="col">Sorting Code</th>
+                <th scope="col">Code</th>
                 <th scope="col">Action</th>
               </tr>
               </thead>

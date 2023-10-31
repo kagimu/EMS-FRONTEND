@@ -9,7 +9,7 @@
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Sorting code</small></label>
+        <label class="textColor"><small>Code</small></label>
         <input
             @keypress="commons.numbersOnlyValidator($event)"
             maxlength="10"
