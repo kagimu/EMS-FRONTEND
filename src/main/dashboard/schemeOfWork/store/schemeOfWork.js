@@ -6,6 +6,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     let newSchemeOfWorkResponse = ref(null)
     let updateSchemeOfWorkResponse = ref(null)
     let schemeOfWorkByClassResponse = ref(null)
+    let conceptsBySubtopicResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -46,6 +47,18 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
             })
     }
 
+    async function fetchConceptsBySubTopic(data) {
+        return await api.get("main/fetch-concepts-by-subtopic?sub_topic_number="+data)
+            .then((response) => {
+                conceptsBySubtopicResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
 
 
@@ -53,9 +66,11 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         newSchemeOfWorkResponse,
         updateSchemeOfWorkResponse,
         schemeOfWorkByClassResponse,
+        conceptsBySubtopicResponse,
         errorMessage,
         newSchemeOfWorkData,
         fetchSchemeOfWorkByClass,
-        updateSchemeOfWorkData
+        updateSchemeOfWorkData,
+        fetchConceptsBySubTopic
     }
 })

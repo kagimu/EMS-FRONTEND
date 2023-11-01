@@ -18,6 +18,23 @@
       </div>
     </div>
 
+    <div class="modal fade" id="lessonPlanModal" tabindex="-1" :class="{ show: lessonPlanDialog }" aria-labelledby="" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header text-sm p-0">
+            <h6 class="modal-title ml-3 mt-2 mb-2">New Lesson Plan</h6>
+            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mt-2 mb-2">
+              <new-lesson-plan :schemeDataInfo="schemeDataInfo" ref="lessonPlanRef"></new-lesson-plan>
+            </div>
+          </div>
+
+        </div>`
+      </div>
+    </div>
+
 
 
 
@@ -115,7 +132,8 @@
             <hr />
 
 
-            <table class="table table-hover caption-top" style="font-size: 14px;">
+            <div style="width: 100%;">
+              <table class="table table-hover caption-top" style="font-size: 14px; width: 100%;">
               <thead>
               <tr>
                 <th scope="col">#</th>
@@ -148,21 +166,15 @@
                 </td>
                 <td>
 
-                </td>
+                  <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addLessonPlan(lst)" data-bs-toggle="modal" data-bs-target="#lessonPlanModal">
+                   <small>Add lesson plan</small>
+                  </button>
 
-<!--                <td>
-                  <div class="float-end mr-2">
-                    <i
-                        style="font-size: 13px;"
-                        data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                        class="bi-pencil mr-2 cursor-pointer" @click="editClass(sbj)"></i>
-                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(sbj)"></i>
-                  </div>
-                </td>-->
+                </td>
               </tr>
               </tbody>
             </table>
-
+            </div>
 
           </div>
         </div>
@@ -191,9 +203,12 @@ import router from "@/config/router.js";
 import {useRouter} from "vue-router";
 import {useSchemeOfWorkStore} from "@/main/dashboard/schemeOfWork/store/schemeOfWork.js";
 import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
+import NewLessonPlan from "@/main/dashboard/schemeOfWork/NewLessonPlan.vue";
 
 const level = ref( "")
+const schemeDataInfo = ref( {})
 const curriculumDialog = ref( false)
+const lessonPlanDialog = ref( false)
 const learningAreaList = ref( [])
 const classList = ref( [])
 const classStore = useClassesStore()
@@ -217,6 +232,10 @@ if(subjectNo){
   selectedClass.value =  subjectNo
 }
 
+const addLessonPlan = (schemeData) => {
+  schemeDataInfo.value = {...{class_number:selectedClass.value},...{subject_number:scheme_subject_number.value},...schemeData}
+  lessonPlanDialog.value = true
+}
 
 const addCurriculum = () => {
   curriculumDialog.value = true
@@ -244,7 +263,6 @@ onMounted(
       classStore.fetchClasses("")
       if(selectedClass.value) {
         subjectStore.fetchSchemeSubjectByClass(selectedClass.value)
-        // schemeOfWorkStore.fetchSchemeOfWorkByClass(selectedClass.value)
       }
     }
 )
