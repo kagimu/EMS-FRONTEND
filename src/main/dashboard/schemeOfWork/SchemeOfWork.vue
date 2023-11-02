@@ -22,7 +22,7 @@
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">New Lesson Plan</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">New Lesson Plan: <b>{{schemeDataInfo.name}}</b> </h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">

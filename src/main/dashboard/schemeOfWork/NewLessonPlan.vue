@@ -12,6 +12,8 @@
           <div class="mb-2">
             <label class="textColor text-sm">Code</label>
             <input
+                @keypress="commons.numbersOnlyValidator($event)"
+                maxlength="10"
                 style="outline: none 0 !important; box-shadow: none;"
                 type="text"
                 v-model="form.code"
@@ -57,6 +59,8 @@
               <div class="row">
                 <div class="col-lg-3 content">
                   <input
+                      @keypress="commons.numbersOnlyValidator($event)"
+                      maxlength="10"
                       style="outline: none 0 !important; box-shadow: none;"
                       type="text"
                       v-model="lst.code"
@@ -118,9 +122,11 @@
 
 import {reactive, ref, watch} from "vue";
 import {useSchemeOfWorkStore} from "@/main/dashboard/schemeOfWork/store/schemeOfWork.js";
+import useCommonsStore from "@/composables/useCommons.js";
 
 const schemeOfWorkStore = useSchemeOfWorkStore()
 const conceptListData = ref([])
+const commons = useCommonsStore()
 
 const loader = ref(false)
 
@@ -132,6 +138,7 @@ const steps = ref([
 ])
 
 const form = reactive({
+  sub_topic_scheme_number: "",
   code: "",
   lesson_concept_number: "",
 })
@@ -150,16 +157,18 @@ const addStep = () => {
 }
 
 const removeStep = (idx) => {
-
+steps.value.splice(idx, 1)
 }
 const addLessonPlan = () => {
-
+    form.steps = steps.value
+    alert(JSON.stringify(form))
 }
 
 watch(
     () => props.schemeDataInfo,
     async (data) => {
       if (data) {
+        form.sub_topic_scheme_number = props.schemeDataInfo.number
         await schemeOfWorkStore.fetchConceptsBySubTopic(props.schemeDataInfo.sub_topic_number)
       }
     },
