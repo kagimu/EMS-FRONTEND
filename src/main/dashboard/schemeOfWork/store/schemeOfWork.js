@@ -6,6 +6,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     let newSchemeOfWorkResponse = ref(null)
     let updateSchemeOfWorkResponse = ref(null)
     let schemeOfWorkByClassResponse = ref(null)
+    let newLessonPlanResponse = ref(null)
     let conceptsBySubtopicResponse = ref(null)
     const errorMessage = ref(null)
 
@@ -26,6 +27,18 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         return await api.post("main/update-scheme-of-work", data)
             .then((response) => {
                 updateSchemeOfWorkResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function saveLessonPlan(data) {
+        return await api.post("main/new-lesson-Plan", data)
+            .then((response) => {
+                newLessonPlanResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -67,10 +80,12 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         updateSchemeOfWorkResponse,
         schemeOfWorkByClassResponse,
         conceptsBySubtopicResponse,
+        newLessonPlanResponse,
         errorMessage,
         newSchemeOfWorkData,
         fetchSchemeOfWorkByClass,
         updateSchemeOfWorkData,
-        fetchConceptsBySubTopic
+        fetchConceptsBySubTopic,
+        saveLessonPlan,
     }
 })

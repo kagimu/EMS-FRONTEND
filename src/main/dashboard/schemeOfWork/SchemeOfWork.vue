@@ -132,8 +132,8 @@
             <hr />
 
 
-            <div style="width: 100%;">
-              <table class="table table-hover caption-top" style="font-size: 14px; width: 100%;">
+            <div style="width: 100%; overflow-x: auto; white-space: nowrap; scrollbar-width: thin;">
+              <table class="table table-hover caption-top" style="font-size: 13px;">
               <thead>
               <tr>
                 <th scope="col">#</th>
@@ -159,12 +159,30 @@
                   {{lst.code}}
                 </td>
                 <td>
-                  {{lst.name}}
+                  <div style="width: 200px; white-space: break-spaces">
+                    {{lst.name}}
+                  </div>
                 </td>
                 <td>
                   {{lst.estimated_time}}
                 </td>
                 <td>
+
+                <p>Concept(s)</p>
+
+                  <div v-for="(lsn, idx) in lst.lesson_plan" :key="idx">
+                      {{lsn.code+". "+lsn.concept_name}}
+                    <div class="ml-10 mt-1">
+                      <b>Steps</b>
+                    </div>
+                    <div class="mb-4">
+                    <div class="ml-10" v-for="(stp, idx) in lsn.steps" :key="idx">
+                      {{stp.code+". "+stp.step}}
+                    </div>
+                    </div>
+
+                  </div>
+
 
                   <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addLessonPlan(lst)" data-bs-toggle="modal" data-bs-target="#lessonPlanModal">
                    <small>Add lesson plan</small>
@@ -251,6 +269,7 @@ const filterClasses = (level) => {
 }
 
 const filterSchemeSubject = (scheme_subject_number) => {
+  schemeOfWorkList.value = []
   let data = {
     subject_number:scheme_subject_number,
     class_number:selectedClass.value
@@ -358,6 +377,21 @@ watch(
     {deep:true}
 )
 
+
+watch(
+    () => schemeOfWorkStore.newLessonPlanResponse,
+    async (data) => {
+      if (data) {
+        let data = {
+          subject_number:scheme_subject_number.value,
+          class_number:selectedClass.value
+        }
+        await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
+        notificationStore.successToast("Success",data.message)
+      }
+    },
+    {deep: true}
+)
 
 </script>
 

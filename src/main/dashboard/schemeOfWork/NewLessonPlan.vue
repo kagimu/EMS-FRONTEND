@@ -27,7 +27,7 @@
             <select
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
-                v-model="form.lesson_concept_number"
+                v-model="form.lesson_plan_concept_number"
             >
               <option disabled value="">Select Concept</option>
               <option v-for="(list, index) in conceptListData" :key="index" :value="list.number">{{ list.name }}
@@ -138,9 +138,9 @@ const steps = ref([
 ])
 
 const form = reactive({
-  sub_topic_scheme_number: "",
+  scheme_sub_topic_number: "",
   code: "",
-  lesson_concept_number: "",
+  lesson_plan_concept_number: "",
 })
 
 const props = defineProps({
@@ -160,15 +160,22 @@ const removeStep = (idx) => {
 steps.value.splice(idx, 1)
 }
 const addLessonPlan = () => {
-    form.steps = steps.value
-    alert(JSON.stringify(form))
+    loader.value = true
+    let stepInfo = steps.value
+
+  stepInfo.forEach(lst => {
+    lst.code = parseInt(lst.code)
+  })
+
+    form.steps = stepInfo
+  schemeOfWorkStore.saveLessonPlan(form)
 }
 
 watch(
     () => props.schemeDataInfo,
     async (data) => {
       if (data) {
-        form.sub_topic_scheme_number = props.schemeDataInfo.number
+        form.scheme_sub_topic_number = props.schemeDataInfo.number
         await schemeOfWorkStore.fetchConceptsBySubTopic(props.schemeDataInfo.sub_topic_number)
       }
     },
@@ -180,6 +187,16 @@ watch(
     async (data) => {
       if (data) {
         conceptListData.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+watch(
+    () => schemeOfWorkStore.newLessonPlanResponse,
+    async (data) => {
+      if (data) {
+        loader.value = false
       }
     },
     {deep: true}
