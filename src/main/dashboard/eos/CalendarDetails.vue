@@ -15,41 +15,76 @@
 
 
 
-    <div class="row">
-        <div>
-            <label>
+    <div style="display: flex; flex-direction: row ;background-color: white; border-radius: 2%; margin-left: 20px">
+        <div class="mx-2">
+            <label style="color: #1062da; font-size: 27px; font-weight: bold">
                 {{ calendarObject.name}}
 
             </label>
-        </div>
-
-        <div>
-            <label>
+            <small class="mx-2">
                 {{ calendarObject.description}}
 
-            </label>
+            </small>
+
         </div>
+
+
     </div>
 
-<!--  <Calendar  ref="calendar" expanded>
+ <Calendar  ref="calendar" expanded>
     <template v-slot:day-content="{ day, attributes }">
       <div class="custom-day-content" style="border-right: 1px solid #2c3034;border-left: 1px solid #2c3034;border-top: 1px solid #2c3034;border-bottom: 1px solid #2c3034;">
-        <span class="day-label">{{ day.day }}</span>
+        <span class="day-label">{{ day.day }} {{}}</span>
         <ul class="events-list">
-          <li v-for="event in attributes.events" :key="event.id">
-            {{ event.title }}
-          </li>
+
+            <li v-for="event in calendarObject.CalendarEvents" :key="event.id">
+                {{ event.name }}
+            </li>
         </ul>
       </div>
     </template>
-  </Calendar>-->
-
-    <Calendar expanded
+  </Calendar><!--
+    <div class="row mt-2 mx-auto" >
+        <div class="col-11">
+&lt;!&ndash;    <Calendar expanded
               ref="calendar"
               :attributes="attributes"
     >
 
-    </Calendar>
+    </Calendar>&ndash;&gt;
+
+        </div>
+    </div>-->
+
+    <div class="row mt-2 mx-auto p-2" >
+        <div class="col-11 bg-white border-1">
+           <table class="table table-striped">
+               <thead>
+               <tr>
+                   <th>Name</th>
+                   <th>Start Date</th>
+                   <th>End Date</th>
+                   <th>Start Time </th>
+                   <th>End time</th>
+               </tr>
+               </thead>
+
+               <tbody>
+               <tr v-for="(event,idx) in calendarObject.CalendarEvents" :key="idx">
+                   <td>{{event.name}}</td>
+                   <td>
+                       {{dateFormat(event.start_date)}}
+                   </td>
+                   <td>
+                       {{dateFormat(event.end_date)}}
+                   </td>
+                   <td>{{event.start_time}}</td>
+                   <td>{{event.end_time}}</td>
+               </tr>
+               </tbody>
+           </table>
+        </div>
+    </div>
 
 </div>
 </template>
@@ -64,6 +99,7 @@ import NewCalendarEvent from "@/main/dashboard/eos/components/NewCalendarEvent.v
 import {CalendarStore} from "@/main/dashboard/eos/store/EosStore.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useRoute} from "vue-router";
+import useCommonsStore from "@/composables/useCommons.js";
 
 /*const events = ref([
   { id: 1, title: 'Meeting with client', date: new Date() },
@@ -71,6 +107,7 @@ import {useRoute} from "vue-router";
   { id: 3, title: 'Soccer practice', date: new Date() }
 ])*/
 
+const commonsStore = useCommonsStore()
 const calendarObject = ref({
     CalendarEvents:[]
 });
@@ -160,6 +197,10 @@ function showAddCalendarEventDialog(){
     calendarEventDialog.value = true
 }
 
+
+function dateFormat(date){
+    return commonsStore.getOrdinalDate(date)
+}
 
 
 

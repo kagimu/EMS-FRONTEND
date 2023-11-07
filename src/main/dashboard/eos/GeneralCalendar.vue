@@ -136,7 +136,6 @@ onMounted(() =>{
 
 
 function dateFormat(date){
-
     return commonsStore.getOrdinalDate(date)
 }
 function goToCalendar(number){
