@@ -148,7 +148,7 @@ watch(
     () => studyPeriodStore.newStudyPeriodResponse,
     async (data) => {
       if(data){
-        await studyPeriodStore.fetchStudyPeriod(campusLevel)
+        await studyPeriodStore.fetchStudyPeriod({level:campusLevel, academic_year_number:academicYearNumber.value})
         notificationStore.successToast("Success","Study Period added successfully")
       }
     },

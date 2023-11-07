@@ -27,7 +27,7 @@
     </div>
 
 
-    <table class="table table-hover caption-top" style="font-size: 14px;">
+    <table class="table table-hover caption-top" style="font-size: 13px;">
       <thead>
       <tr>
         <th scope="col">#</th>
@@ -44,9 +44,9 @@
         <td> {{academicYre.code}}</td>
         <td> {{academicYre.academic_year_name}}</td>
         <td> {{academicYre.no_of_study_period}}</td>
-        <td class="text-sm">
-         Start Date:   {{academicYre.academic_year_start_date}}  <br />
-         End Date:  {{academicYre.academic_year_end_date}}
+        <td>
+          <b>Start Date:</b>   {{academicYre.academic_year_start_date}}  <br />
+           <b>End Date:</b>  {{academicYre.academic_year_end_date}}
         </td>
                 <td>
                   <div>
