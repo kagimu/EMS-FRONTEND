@@ -7,6 +7,7 @@ export const useSubjectStore = defineStore("subject", () => {
     let subjectInfoResponse = ref(null)
     let subjectByClassResponse = ref(null)
     let schemeSubjectByClassResponse = ref(null)
+    let academicYearByClassResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -60,6 +61,18 @@ export const useSubjectStore = defineStore("subject", () => {
             })
     }
 
+    async function fetchAcademicYearByClass(data) {
+        return await api.get("main/academic-by-class?class_number="+data)
+            .then((response) => {
+                academicYearByClassResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     async function fetchSchemeSubjectByClass(data) {
         return await api.get("main/subjects-by-class?class_number="+data)
             .then((response) => {
@@ -92,11 +105,13 @@ export const useSubjectStore = defineStore("subject", () => {
         subjectResponse,
         subjectInfoResponse,
         schemeSubjectByClassResponse,
+        academicYearByClassResponse,
         errorMessage,
         newSubjectData,
         fetchSubjects,
         fetchSubjectsByClass,
         fetchSubjectByClass,
+        fetchAcademicYearByClass,
         fetchSchemeSubjectByClass
     }
 })

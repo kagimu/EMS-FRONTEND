@@ -55,6 +55,7 @@
           </select>
         </div>
       </div>
+
     </div>
 
 
@@ -83,7 +84,6 @@
 
       </div>
 
-
       <div class="col-9">
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
@@ -94,6 +94,7 @@
               <div>
                 <div class="ml-4"><b>Scheme of work</b></div>
                 <div class="ml-7" v-if="schemeOfWorkList.name"><small><b>Title:</b> {{schemeOfWorkList.name}}</small></div>
+                <div class="ml-7" v-if="schemeOfWorkList.academic_year_name"><small><b>Class:</b> {{schemeOfWorkList.academic_year_name}}</small></div>
                 <div class="ml-7" v-if="schemeOfWorkList.class_name"><small><b>Class:</b> {{schemeOfWorkList.class_name}}</small></div>
                 <div class="ml-7" v-if="schemeOfWorkList.subject_name"><small><b>Subject:</b> {{schemeOfWorkList.subject_name}}</small></div>
                 <div class="ml-7" v-if="schemeOfWorkList.status"><small><b>Status:</b> {{schemeOfWorkList.status}}</small></div>
@@ -119,13 +120,32 @@
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="scheme_subject_number"
-                  @click="filterSchemeSubject(scheme_subject_number)"
+                  @click="filterSchemeSubject"
               >
                 <option disabled value="">filter Subject</option>
                 <option v-for="(list, index) in schemeSubjectList" :key="index" :value="list.number">{{list.name}}</option>
               </select>
             </div>
               </div>
+
+              <div class="col-3">
+
+                <div class="mb-2">
+                  <label class="textColor"><small>Sort by Academic Year</small></label>
+                  <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm"
+                      v-model="academic_year_number"
+                      @click="filterSchemeSubject"
+                  >
+                    <option disabled value="">Select Class</option>
+<!--                    <option value="">All</option>-->
+                    <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">{{list.academic_year_name+" ["+list.level_name+"]"}}</option>
+                  </select>
+                </div>
+
+              </div>
+
             </div>
 
 
@@ -224,6 +244,7 @@ import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject
 import NewLessonPlan from "@/main/dashboard/schemeOfWork/NewLessonPlan.vue";
 
 const level = ref( "")
+const academic_year_number = ref( "")
 const schemeDataInfo = ref( {})
 const curriculumDialog = ref( false)
 const lessonPlanDialog = ref( false)
@@ -241,6 +262,7 @@ const scheme_subject_number = ref(null)
 const learningAreaRef = ref(null)
 const schemeOfWorkList = ref([])
 const schemeSubjectList = ref([])
+const academicYearList = ref([])
 const commons = useCommonsStore()
 const schemeOfWorkStore = useSchemeOfWorkStore()
 const subjectStore = useSubjectStore()
@@ -268,10 +290,11 @@ const filterClasses = (level) => {
   classStore.fetchClasses(level)
 }
 
-const filterSchemeSubject = (scheme_subject_number) => {
+const filterSchemeSubject = () => {
   schemeOfWorkList.value = []
   let data = {
-    subject_number:scheme_subject_number,
+    academic_year_number:academic_year_number.value,
+    subject_number:scheme_subject_number.value,
     class_number:selectedClass.value
   }
   schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
@@ -282,6 +305,7 @@ onMounted(
       classStore.fetchClasses("")
       if(selectedClass.value) {
         subjectStore.fetchSchemeSubjectByClass(selectedClass.value)
+        subjectStore.fetchAcademicYearByClass(selectedClass.value)
       }
     }
 )
@@ -299,7 +323,15 @@ watch(
             let classNo = classInfo[0].number
             selectedClass.value = classNo
             await subjectStore.fetchSchemeSubjectByClass(classNo)
-            await schemeOfWorkStore.fetchSchemeOfWorkByClass(classInfo[0].number)
+            await subjectStore.fetchAcademicYearByClass(classNo)
+
+            let data = {
+              academic_year_number:academic_year_number.value,
+              subject_number:scheme_subject_number.value,
+              class_number:classInfo[0].number
+            }
+
+            await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
           }
         }
       }
@@ -314,6 +346,7 @@ watch(
       if(data){
         if(selectedClass.value) {
           let data = {
+            academic_year_number:academic_year_number.value,
             subject_number:scheme_subject_number.value,
             class_number:selectedClass.value
           }
@@ -337,11 +370,23 @@ watch(
 
 
 watch(
+    () => subjectStore.academicYearByClassResponse,
+    async (data) => {
+      if(data){
+        academicYearList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
     () => schemeOfWorkStore.updateSchemeOfWorkResponse,
     async (data) => {
       if(data){
         if(selectedClass.value) {
           let data = {
+            academic_year_number:academic_year_number.value,
             subject_number:scheme_subject_number.value,
             class_number:selectedClass.value
           }
@@ -367,7 +412,8 @@ watch(
 
           let data = {
             subject_number:subjectNo,
-            class_number:selectedClass.value
+            class_number:selectedClass.value,
+            academic_year_number:academic_year_number.value,
           }
           await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
 
@@ -384,7 +430,8 @@ watch(
       if (data) {
         let data = {
           subject_number:scheme_subject_number.value,
-          class_number:selectedClass.value
+          class_number:selectedClass.value,
+          academic_year_number:academic_year_number.value,
         }
         await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
         notificationStore.successToast("Success",data.message)

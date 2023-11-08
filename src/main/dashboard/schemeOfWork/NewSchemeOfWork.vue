@@ -21,6 +21,7 @@
           </div>
 
 
+
       <div class="mb-2">
         <label class="textColor"><small>Class</small></label>
         <select
@@ -34,6 +35,21 @@
           <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.name}}</option>
         </select>
       </div>
+
+
+          <div class="mb-2">
+            <label class="textColor"><small>Academic Year</small></label>
+            <select
+                style="box-shadow: none;"
+                class="form-select form-select-sm"
+                v-model="form.academic_year_number"
+            >
+              <option disabled value="">Select Academic Year</option>
+<!--              <option value="">All</option>-->
+              <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">{{list.academic_year_name+" ["+list.level_name+"]"}}</option>
+            </select>
+          </div>
+
 
           <div class="mb-5">
             <label class="textColor"><small>Subject</small></label>
@@ -135,12 +151,14 @@ const schemeOfWorkStore = useSchemeOfWorkStore()
 const subjectStore = useSubjectStore()
 
 const scheme_number = ref(null)
+const academicYearList = ref([])
 
 
 const form = reactive({
   name:"",
   class_number:"",
   subject_number:"",
+  academic_year_number:"",
 })
 
 
@@ -155,7 +173,7 @@ if(classNumber){
 const filterClasses = (classData) => {
   subtopicList.value = []
   subjectList.value = []
-  // subtopicStore.fetchSubTopicsByClass(classData)
+  subjectStore.fetchAcademicYearByClass(classData)
   subjectStore.fetchSubjectByClass(classData)
 
 }
@@ -268,6 +286,16 @@ watch(
     async (data) => {
       if(data){
       subjectList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectStore.academicYearByClassResponse,
+    async (data) => {
+      if(data){
+      academicYearList.value = data.data
       }
     },
     {deep:true}

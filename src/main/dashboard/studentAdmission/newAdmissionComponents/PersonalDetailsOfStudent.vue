@@ -4,6 +4,9 @@
 
 <p class="ml-4 mt-4 mb-10">PERSONAL DETAILS OF STUDENT</p>
 
+  <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+    {{errorMessage}}
+  </div>
 
   <form @submit.prevent="addStudentEducationDetails">
   <div class="row mx-auto">
@@ -152,9 +155,15 @@
 
 <script setup>
 
-import {reactive, ref} from "vue";
+import {reactive, ref, watch} from "vue";
+import {useAdmissionStore} from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
+import useNotificationStore from "@/composables/useNotification.js";
+
+const admissionStore = useAdmissionStore()
+const  notificationStore  = useNotificationStore()
 
 const buttonLoader = ref(false)
+let errorMessage = ref(null)
 
 const emit = defineEmits()
 
@@ -181,9 +190,37 @@ const form = reactive({
 })
 
 const addStudentEducationDetails = () => {
-  emit("next", 2 )
+  buttonLoader.value = true
+  admissionStore.newStudentDetailsAdmission(form)
 }
 
+
+
+
+watch (
+    () => admissionStore.newStudentDetailsAdmissionResponse,
+    async (data) => {
+      if(data){
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+        emit("next", 2 )
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => admissionStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        buttonLoader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
 
 
 </script>
