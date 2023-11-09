@@ -373,7 +373,26 @@ watch(
     () => subjectStore.academicYearByClassResponse,
     async (data) => {
       if(data){
-        academicYearList.value = data.data
+        let acd = data.data
+
+        academicYearList.value = acd
+
+
+       if(!academic_year_number.value) {
+         let acdYrNo = acd[0].number
+         academic_year_number.value =  acdYrNo
+
+
+
+  /*       let data = {
+           academic_year_number:acdYrNo,
+           subject_number:scheme_subject_number.value,
+           class_number:selectedClass.value
+         }
+         await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)*/
+
+       }
+
       }
     },
     {deep:true}
@@ -408,7 +427,6 @@ watch(
         if(!scheme_subject_number.value){
           let subjectNo = subjectInfo[0].number
           scheme_subject_number.value = subjectNo
-
 
           let data = {
             subject_number:subjectNo,
