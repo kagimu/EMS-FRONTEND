@@ -40,6 +40,7 @@
           <div class="mb-2">
             <label class="textColor"><small>Academic Year</small></label>
             <select
+                :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'Pending'))"
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
                 v-model="form.academic_year_number"
@@ -74,14 +75,22 @@
         <thead>
         <tr>
           <th scope="col" style="width: 5%;">#</th>
-          <th scope="col" style="width: 60%;">Name</th>
+          <th scope="col">Strand</th>
+          <th scope="col">Topic</th>
+          <th scope="col" style="width: 60%;">Sub Topic name</th>
           <th scope="col" style="width: 20%;">Code</th>
 <!--          <th scope="col" class="text-end">Action</th>-->
         </tr>
         </thead>
         <tbody>
         <tr v-for="(lst,index) in subtopicList" :key="index" >
-          <th scope="row">{{index+1}}</th>
+          <td scope="row">{{index+1}}</td>
+          <td>
+            {{lst.strand_name}}
+          </td>
+          <td>
+            {{lst.topic_name}}
+          </td>
           <td>
             {{lst.name}}
           </td>
@@ -227,6 +236,7 @@ watch(
         form.name = info.name
         form.class_number = info.class_number
         form.subject_number = info.subject_number
+        form.academic_year_number = info.academic_year_number
 
         subtopicList.value = info.subtopic
       }
