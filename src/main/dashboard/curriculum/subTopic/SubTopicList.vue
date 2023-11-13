@@ -109,7 +109,10 @@
               <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Strand</th>
+                <th scope="col">Topic</th>
+                <th scope="col">Sub Topic Name</th>
                 <th scope="col">Estimated Time (Minutes)</th>
                 <th scope="col">Code</th>
                 <th class="text-end" scope="col">Action</th>
@@ -118,7 +121,16 @@
               <tbody>
               <tr v-for="(lst, index) in subtopicList" :key="index">
                 <td>{{index+1}}</td>
-                <td style="width: 50%;">
+                <td style="width: 20%;">
+                  {{lst.subject_name}}
+                </td>
+                <td style="width: 20%;">
+                  {{lst.strand_name}}
+                </td>
+                <td style="width: 20%;">
+                  {{lst.topic_name}}
+                </td>
+                <td style="width: 20%;">
                   {{lst.name}}
                 </td>
                 <td>

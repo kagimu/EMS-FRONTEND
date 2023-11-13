@@ -104,7 +104,9 @@
               <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Strand</th>
+                <th scope="col">Topic Name</th>
                 <th scope="col">Code</th>
                 <th class="text-end" scope="col">Action</th>
               </tr>
@@ -112,6 +114,12 @@
               <tbody>
               <tr v-for="(lst, index) in topicList" :key="index">
                 <td>{{index+1}}</td>
+                <td>
+                  {{lst.subject_name}}
+                </td>
+                <td>
+                  {{lst.strand_name}}
+                </td>
                 <td>
                   {{lst.name}}
                 </td>
