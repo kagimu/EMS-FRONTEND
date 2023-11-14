@@ -209,7 +209,7 @@
                   <div>
 
 
-                    <div class="ml-5" v-for="(lsn, idx) in lst.lesson_plan" :key="idx">
+                    <div  class="ml-5 text-wrap" v-for="(lsn, idx) in lst.lesson_plan" :key="idx">
                       {{lsn.code+". "+lsn.concept_name}}
                     </div>
 

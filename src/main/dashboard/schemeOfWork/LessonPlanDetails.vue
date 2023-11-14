@@ -1,9 +1,32 @@
 <template>
 <div class="text-sm">
-  <div> <b class="mr-5">Strand:</b> {{lessonPlanInfo.strand_name}}</div>
-  <div><b class="mr-5">Topic:</b> {{lessonPlanInfo.topic_name}}</div>
-  <div class="mt-3 mb-2" style="font-size: 19px;"> <b class="mr-5">Sub Topic:</b> {{lessonPlanInfo.name}}</div>
-  <div><b class="mr-5">Estimated Time:</b> {{lessonPlanInfo.estimated_time}} (Min)</div>
+  <table class="mt-4">
+    <tr>
+      <td style="width: 20%;"><b class="mr-5">Strand:</b></td>
+      <td> <div> {{lessonPlanInfo.strand_name}}</div></td>
+    </tr>
+    <tr>
+      <td><b class="mr-5">Topic:</b></td>
+      <td> <div> {{lessonPlanInfo.topic_name}}</div></td>
+    </tr>
+    <tr>
+      <td>
+        <b class="mr-5">Sub Topic:</b>
+      </td>
+      <td><div class="mt-3 mb-2" style="font-size: 19px;">  <span class="text-blue-900">{{lessonPlanInfo.name}}</span></div> </td>
+    </tr>
+    <tr>
+      <td>
+        <b class="mr-5">Estimated Time:</b>
+      </td>
+      <td> <div> {{lessonPlanInfo.estimated_time}} (Min)</div></td>
+    </tr>
+  </table>
+
+
+
+
+
 
   <div class="mt-10 mb-2" style="font-size: 17px;"><p>Lesson Plan / Concept(s)</p></div>
   <hr />
