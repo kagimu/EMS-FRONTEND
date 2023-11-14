@@ -36,6 +36,24 @@
     </div>
 
 
+    <div class="modal fade" id="lessonPlanDetailsModal" tabindex="-1" :class="{ show: lessonPlanDetailsDialog }" aria-labelledby="" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header text-sm p-0">
+            <h6 class="modal-title ml-3 mt-2 mb-2">Lesson Plan: <b>{{lessonPlanInfo.name}}</b> </h6>
+            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mt-2 mb-2">
+              <lesson-plan-details :lessonPlanInfo="lessonPlanInfo"></lesson-plan-details>
+            </div>
+          </div>
+
+        </div>`
+      </div>
+    </div>
+
+
 
 
 
@@ -162,7 +180,7 @@
                 <th scope="col">Sequence</th>
                 <th scope="col">Subtopic</th>
                 <th scope="col">Estimated Time (Min)</th>
-                <th scope="col">Lesson Plan</th>
+                <th scope="col">Lesson Plan (Concept(s))</th>
 <!--                <th scope="col" class="text-end">Action</th>-->
               </tr>
               </thead>
@@ -189,18 +207,18 @@
                 <td>
 
                   <div>
-                    <p>Concept(s)</p>
 
-                    <div v-for="(lsn, idx) in lst.lesson_plan" :key="idx">
+
+                    <div class="ml-5" v-for="(lsn, idx) in lst.lesson_plan" :key="idx">
                       {{lsn.code+". "+lsn.concept_name}}
                     </div>
 
-                    <div class="flex justify-between mt-3 mb-2" style="width: 350px;">
+                    <div class="flex justify-between mt-4 mb-2" style="width: 350px;">
                       <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="addLessonPlan(lst)" data-bs-toggle="modal" data-bs-target="#lessonPlanModal">
                         <small class="m-0 p-0">Add lesson plan</small>
                       </button>
 
-                      <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="addLessonPlan(lst)" data-bs-toggle="modal" data-bs-target="#lessonPlanModal">
+                      <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="viewLessonPlan(lst)" data-bs-toggle="modal" data-bs-target="#lessonPlanDetailsModal">
                         <small class="m-0 p-0">View lesson plan</small>
                       </button>
                     </div>
@@ -241,12 +259,15 @@ import {useRouter} from "vue-router";
 import {useSchemeOfWorkStore} from "@/main/dashboard/schemeOfWork/store/schemeOfWork.js";
 import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
 import NewLessonPlan from "@/main/dashboard/schemeOfWork/NewLessonPlan.vue";
+import LessonPlanDetails from "@/main/dashboard/schemeOfWork/LessonPlanDetails.vue";
 
 const level = ref( "")
 const academic_year_number = ref( "")
 const schemeDataInfo = ref( {})
 const curriculumDialog = ref( false)
 const lessonPlanDialog = ref( false)
+const lessonPlanDetailsDialog = ref( false)
+const lessonPlanInfo = ref( "")
 const learningAreaList = ref( [])
 const classList = ref( [])
 const classStore = useClassesStore()
@@ -274,6 +295,11 @@ if(subjectNo){
 const addLessonPlan = (schemeData) => {
   schemeDataInfo.value = {...{class_number:selectedClass.value},...{subject_number:scheme_subject_number.value},...schemeData}
   lessonPlanDialog.value = true
+}
+
+const viewLessonPlan = (lst) => {
+  lessonPlanDetailsDialog.value = true
+  lessonPlanInfo.value = lst
 }
 
 const addCurriculum = () => {
