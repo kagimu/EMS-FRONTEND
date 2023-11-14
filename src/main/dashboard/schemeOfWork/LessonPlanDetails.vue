@@ -26,9 +26,7 @@
 
 
 
-
-
-  <div class="mt-10 mb-2" style="font-size: 17px;"><p>Lesson Plan / Concept(s)</p></div>
+  <div class="mt-10 mb-2" style="font-size: 18px;"><p>Lesson Plan / Concept(s)</p></div>
   <hr />
   <div v-for="(lesson, index) in lessonPlanInfo.lesson_plan" :key="index">
 
