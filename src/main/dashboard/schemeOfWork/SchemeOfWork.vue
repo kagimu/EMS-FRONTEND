@@ -188,25 +188,24 @@
                 </td>
                 <td>
 
-                <p>Concept(s)</p>
+                  <div>
+                    <p>Concept(s)</p>
 
-                  <div v-for="(lsn, idx) in lst.lesson_plan" :key="idx">
+                    <div v-for="(lsn, idx) in lst.lesson_plan" :key="idx">
                       {{lsn.code+". "+lsn.concept_name}}
-                    <div class="ml-10 mt-1">
-                      <b>Steps</b>
-                    </div>
-                    <div class="mb-4">
-                    <div class="ml-10" v-for="(stp, idx) in lsn.steps" :key="idx">
-                      {{stp.code+". "+stp.step}}
-                    </div>
                     </div>
 
+                    <div class="flex justify-between mt-3 mb-2" style="width: 350px;">
+                      <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="addLessonPlan(lst)" data-bs-toggle="modal" data-bs-target="#lessonPlanModal">
+                        <small class="m-0 p-0">Add lesson plan</small>
+                      </button>
+
+                      <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="addLessonPlan(lst)" data-bs-toggle="modal" data-bs-target="#lessonPlanModal">
+                        <small class="m-0 p-0">View lesson plan</small>
+                      </button>
+                    </div>
                   </div>
 
-
-                  <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addLessonPlan(lst)" data-bs-toggle="modal" data-bs-target="#lessonPlanModal">
-                   <small>Add lesson plan</small>
-                  </button>
 
                 </td>
               </tr>
