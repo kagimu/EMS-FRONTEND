@@ -48,7 +48,7 @@
             class="form-select form-select-sm"
             v-model="form.level">
           <option disabled value="">Select Level</option>
-          <option v-for="(lvl, index) in commons.classLevelList()" :key="index" :value="lvl">{{lvl}}</option>
+          <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.name}}</option>
         </select>
       </div>
 
@@ -79,10 +79,13 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.
 import {useRouter} from "vue-router";
 import useCommonsStore from "@/composables/useCommons.js";
 import useNotificationStore from "@/composables/useNotification.js";
+import {useLevelStore} from "@/main/settings/level/store/levels.js";
 
 const classError = ref(null)
 const name = ref(null)
+const levelList = ref([])
 const loader = ref(false)
+const levelStore = useLevelStore()
 const routerData = useRouter()
 
 const classStore = useClassesStore()
@@ -135,6 +138,16 @@ watch(
       if(data){
         loader.value = false
         notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => levelStore.levelInfoResponse,
+    async (data) => {
+      if(data){
+        levelList.value = data.data
       }
     },
     {deep:true}

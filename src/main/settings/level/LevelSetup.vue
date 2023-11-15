@@ -4,7 +4,7 @@
 
 
 
-    <div class="modal fade" id="levelModal" tabindex="-1" :class="{ show: classDialog }" aria-labelledby="" aria-hidden="true">
+    <div class="modal fade" id="levelModal" tabindex="-1" :class="{ show: levelDialog }" aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
@@ -96,12 +96,12 @@ const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
 
 const level = ref( "")
-const classDialog = ref( false)
+const levelDialog = ref( false)
 const levelList = ref( [])
 
 
 const addLevel = () => {
-  classDialog.value = true
+  levelDialog.value = true
 }
 
 const editClass = (data) => {
@@ -113,8 +113,8 @@ const deleteClass = (data) => {
 
 
 onMounted(
-    () => {
-      levelStore.fetchLevels()
+    async () => {
+      await levelStore.fetchLevels()
     }
 )
 

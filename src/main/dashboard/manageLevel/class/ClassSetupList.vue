@@ -56,7 +56,7 @@
                   >
                     <option disabled value="">Filter by Level</option>
                     <option value="">All</option>
-                    <option v-for="(lvl, index) in commons.classLevelList()" :key="index" :value="lvl">{{lvl}}</option>
+                    <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.name}}</option>
                   </select>
                 </div>
               </div>
@@ -114,16 +114,19 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes"
 import {useRouter} from "vue-router";
 import NewClassSetUp from "@/main/dashboard/manageLevel/class/NewClassSetUp.vue";
 import useCommonsStore from "@/composables/useCommons.js";
+import {useLevelStore} from "@/main/settings/level/store/levels.js";
 const routerData = useRouter()
 
 
 const classStore = useClassesStore()
 const commons = useCommonsStore()
+const levelStore = useLevelStore()
 const  notificationStore  = useNotificationStore()
 
 const level = ref( "")
 const classDialog = ref( false)
 const classList = ref( [])
+const levelList = ref( [])
 
 
 const addCampus = () => {
@@ -142,8 +145,9 @@ const filterClasses = (level) => {
 }
 
 onMounted(
-    () => {
-      classStore.fetchClasses(level.value)
+    async () => {
+      await  classStore.fetchClasses(level.value)
+      await levelStore.fetchLevels()
     }
 )
 
@@ -164,6 +168,16 @@ watch(
     async (data) => {
       if(data){
         classList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => levelStore.levelInfoResponse,
+    async (data) => {
+      if(data){
+        levelList.value = data.data
       }
     },
     {deep:true}

@@ -18,9 +18,6 @@
                   :to="{name:'settings', query:{s:item.id}}">
                 <small style="font-size:12px;">{{item.name}}</small>
               </router-link>
-
-<!--              <router-link class="list-group-item list-group-item-action active" :to="{name:''}"><small style="font-size:12px;">Roles</small></router-link>-->
-<!--              <router-link class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Profile</small></router-link>-->
             </div>
 
 
@@ -63,7 +60,8 @@ import LevelSetup from "@/main/settings/level/LevelSetup.vue";
 const routerData = useRouter()
 const buttonLoader = ref(false)
 
-const selectedPage = routerData.currentRoute.value.query.s
+const route = routerData.currentRoute.value.query.s
+const selectedPage = route ? route : "profile"
 
 const settingsList = ref([
   {
@@ -83,9 +81,6 @@ const form = reactive({
   name:null
 })
 
-function addCampus(){
-  alert(JSON.stringify(form))
-}
 
 </script>
 
