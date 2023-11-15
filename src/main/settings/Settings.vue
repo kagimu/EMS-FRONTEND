@@ -10,8 +10,17 @@
 
 
             <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-              <router-link class="list-group-item list-group-item-action active" :to="{name:''}"><small style="font-size:12px;">Roles</small></router-link>
-              <router-link class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Profile</small></router-link>
+
+              <router-link
+                  v-for="(item, idx) in  settingsList" :key="idx"
+                  class="list-group-item list-group-item-action"
+                  :class="item.id === selectedPage ? 'active' : ''"
+                  :to="{name:'settings', query:{s:item.id}}">
+                <small style="font-size:12px;">{{item.name}}</small>
+              </router-link>
+
+<!--              <router-link class="list-group-item list-group-item-action active" :to="{name:''}"><small style="font-size:12px;">Roles</small></router-link>-->
+<!--              <router-link class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Profile</small></router-link>-->
             </div>
 
 
@@ -24,10 +33,14 @@
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
 
-            <div class="mt-4">
+            <div>
 
-            <roles></roles>
-
+                <div v-if="selectedPage === 'role'">
+                  <roles></roles>
+                </div>
+                <div v-if="selectedPage === 'level'">
+                  <level-setup></level-setup>
+                </div>
 
             </div>
 
@@ -45,9 +58,27 @@
 
 import {reactive, ref} from "vue";
 import Roles from "@/main/settings/roles/Roles.vue";
-
+import {useRouter} from "vue-router";
+import LevelSetup from "@/main/settings/level/LevelSetup.vue";
+const routerData = useRouter()
 const buttonLoader = ref(false)
 
+const selectedPage = routerData.currentRoute.value.query.s
+
+const settingsList = ref([
+  {
+    name:"Profile",
+    id:"profile"
+  },
+  {
+    name:"Level",
+    id:"level"
+  },
+  {
+    name:"Roles",
+    id:"role"
+  }
+])
 const form = reactive({
   name:null
 })
