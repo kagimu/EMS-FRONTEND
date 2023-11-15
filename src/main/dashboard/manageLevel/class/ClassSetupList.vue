@@ -68,29 +68,39 @@
               <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Abbreviation</th>
                 <th scope="col">Level</th>
-                <th scope="col">Code</th>
-                <th scope="col">Action</th>
+                <th scope="col">Class</th>
+<!--                <th scope="col">Action</th>-->
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(classes, index) in classList" :key="index">
-                <td>{{index+1}}</td>
-                <td> {{classes.name}}</td>
-                <td> {{classes.abbreviation}}</td>
-                <td> {{classes.level}}</td>
-                <td> {{classes.code}}</td>
+              <tr v-for="(lvl, index) in classList" :key="index">
+                <td>{{lvl.code}}</td>
+                <td> {{lvl.name}}</td>
                 <td>
-                  <div>
-                    <i
-                        style="font-size: 13px;"
-                        data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                        class="bi-pencil mr-2 cursor-pointer" @click="editClass(classes)"></i>
-                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(classes)"></i>
-                  </div>
+
+
+                  <table class="table table-hover caption-top" style="font-size: 14px;">
+                    <tbody>
+                    <tr v-for="(cls, idx) in lvl.class" :key="idx">
+                     <td>{{cls.code}}.</td>
+                     <td>{{cls.name+" [ "+cls.abbreviation+" ]"}}</td>
+                     <td>
+                       <div>
+                         <i
+                             style="font-size: 13px;"
+                             data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
+                             class="bi-pencil mr-2 cursor-pointer" @click="editClass(cls)"></i>
+                         <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(cls)"></i>
+                       </div>
+                     </td>
+                    </tr>
+                    </tbody>
+                  </table>
+
+
                 </td>
+
               </tr>
               </tbody>
             </table>
