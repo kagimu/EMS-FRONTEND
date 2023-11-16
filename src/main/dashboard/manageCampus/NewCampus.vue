@@ -76,8 +76,8 @@
               <input
                   v-model="form.level"
                   style="outline: none 0 !important; box-shadow: none;"
-                  class="form-check-input me-1" type="checkbox" :value="lvl" :id="idx">
-              <label class="form-check-label cursor-pointer" :for="idx">{{lvl}}</label>
+                  class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="idx">
+              <label class="form-check-label cursor-pointer" :for="idx">{{lvl.name}}</label>
             </li>
 
           </ul>
@@ -110,6 +110,7 @@ import {onMounted, reactive, ref, watch} from "vue";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useRouter} from "vue-router";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useLevelStore} from "@/main/settings/level/store/levels.js";
 
 const routerData = useRouter()
 const errorMessage = ref(null)
@@ -117,12 +118,13 @@ const name = ref(null)
 const loader = ref(false)
 const schoolsList = ref( [])
 const school = ref( null)
-
+const levelStore = useLevelStore()
+const levelList = ref([])
 
 const campusStore = useCampusStore()
 const schoolStore = useSchoolStore()
 
-const levelList = ref(
+/*const levelList = ref(
     [
         'Kindergarten',
         'Primary',
@@ -130,7 +132,7 @@ const levelList = ref(
         'Vocational',
         'Tertiary'
         ]
-)
+)*/
 
 const campus_number = ref(null)
 
@@ -163,10 +165,8 @@ const props = defineProps({
 
 
 onMounted(
-    () =>{
-      /* if(props.classNumber){
-         classesStore.classDetails(props.classNumber)
-       }*/
+    async () =>{
+      await levelStore.fetchLevels()
     }
 )
 
@@ -225,6 +225,15 @@ watch(
     {deep:true}
 )
 
+watch(
+    () => levelStore.levelInfoResponse,
+    async (data) => {
+      if(data){
+        levelList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 </script>
 
