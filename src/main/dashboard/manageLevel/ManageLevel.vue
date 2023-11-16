@@ -5,6 +5,7 @@
 
       <div class="col-3">
         <div class="mb-2">
+          {{school}}
           <select
               style="box-shadow: none;"
               class="form-select form-select-sm"
@@ -110,10 +111,9 @@ const school = ref( "")
 const campus = ref( "")
 
 
-// const campusId = routerData.currentRoute.value.query.c
 const campusId = localStorage.getItem('campus_number');
-// const schoolId = routerData.currentRoute.value.query.s
 const schoolId  = localStorage.getItem('school_number');
+
 const campusLevel = routerData.currentRoute.value.query.l
 const schoolsList = ref( [])
 const campusList = ref( [])
