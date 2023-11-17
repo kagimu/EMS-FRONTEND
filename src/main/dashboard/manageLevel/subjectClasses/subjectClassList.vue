@@ -31,14 +31,14 @@
     <div class="row mx-auto mb-4">
       <div class="col-3">
     <div class="mb-2">
-      <label class="textColor"><small>Class</small></label>
+<!--      <label class="textColor"><small>Class</small></label>-->
       <select
           style="box-shadow: none;"
           class="form-select form-select-sm"
           v-model="classNumber"
           @change="filterClassSubject(classNumber)"
       >
-        <option disabled value="">Select Class</option>
+        <option disabled value="">filter by Class</option>
         <option value="">All</option>
         <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.name}}</option>
       </select>
@@ -143,7 +143,8 @@ watch(
     async (data) => {
       if(data){
         classSubjectDialog.value = false
-        await classStore.fetchClassSubjects({level:campusLevel, class:classNumber.value})
+        let classNo = classNumber.value ? classNumber.value : ""
+        await classStore.fetchClassSubjects({level:campusLevel, class:classNo})
         notificationStore.successToast("Success", data.message)
       }
     },
