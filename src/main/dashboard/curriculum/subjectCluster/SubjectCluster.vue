@@ -54,34 +54,42 @@
             <table class="table table-hover caption-top" style="font-size: 14px;">
               <thead>
               <tr>
-                <th scope="col">#</th>
+                <th scope="col">Code</th>
                 <th scope="col">Learning Area</th>
                 <th scope="col">Subject Cluster Name</th>
-                <th scope="col">Code</th>
-                <th class="text-end" scope="col">Action</th>
               </tr>
               </thead>
               <tbody>
               <tr v-for="(lst,index) in subjectClusterList" :key="index" >
-                <th scope="row">{{index+1}}</th>
+                <th scope="row"> {{lst.code}}</th>
                 <td>
-                  {{lst.learning_area_name}}
+                  {{lst.name}}
                 </td>
                 <td>
-                    {{lst.name}}
+
+
+
+                  <table class="table table-hover caption-top" style="font-size: 14px; width: 100%;">
+                    <tbody>
+                    <tr v-for="(sbct, idx) in lst.subject_cluster" :key="idx">
+                      <td style="width: 5%;">{{sbct.code}}.</td>
+                      <td style="width: 85%;">{{sbct.name}}</td>
+                      <td>
+                        <div>
+                          <i
+                              style="font-size: 13px;"
+                              data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
+                              class="bi-pencil mr-2 cursor-pointer" @click="editSubjectCluster(sbct)"></i>
+                          <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteSubjectCluster(sbct)"></i>
+                        </div>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+
+
                 </td>
-                <td>
-                  {{lst.code}}
-                </td>
-                <td>
-                  <div class="float-end mr-2">
-                    <i
-                        aria-controls="offcanvasRight"
-                        class="bi-pencil mr-2 cursor-pointer" data-bs-target="#editClass" data-bs-toggle="offcanvas"
-                        style="font-size: 13px;" @click="editSubjectCluster(sbj)"></i>
-                    <i class="bi-trash cursor-pointer" style="font-size: 13px;"  @click="deleteSubjectCluster(sbj)"></i>
-                  </div>
-                </td>
+
               </tr>
               </tbody>
             </table>
@@ -145,7 +153,7 @@ watch(
     async (data) => {
       if(data){
         // curriculumDialog.value = false
-        subjectClusterStore.fetchSubjectCluster(learningAreaNo)
+        await subjectClusterStore.fetchSubjectCluster(learningAreaNo)
         notificationStore.successToast("Success", data.message)
       }
     },

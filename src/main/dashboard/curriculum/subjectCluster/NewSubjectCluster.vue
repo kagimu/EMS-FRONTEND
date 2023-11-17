@@ -111,6 +111,8 @@ watch(
       if(data){
         loader.value = false
         form.name = null
+        form.code = null
+        form.learning_area_number = null
       }
     },
     {deep:true}
