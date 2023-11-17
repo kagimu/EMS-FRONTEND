@@ -9,10 +9,10 @@
         <li class="list-group-item" v-for="(cls,idx) in classList" :key="idx">
           <input
               v-model="classId"
-              @click="addClass(cls.number)"
+              @click="addClass(cls)"
               style="outline: none 0 !important; box-shadow: none;"
               class="form-check-input me-1" type="checkbox" :value="cls.number" :id="cls.number">
-          <label class="form-check-label cursor-pointer ml-2" :for="cls.number">{{cls.name+" &nbsp;&nbsp;&nbsp; ["+cls.abbreviation+"]"}}</label>
+          <label class="form-check-label cursor-pointer ml-2" :for="cls.number">{{cls.code+". "+cls.name+" &nbsp;&nbsp;&nbsp; ["+cls.abbreviation+"]"}}</label>
         </li>
 
       </ul>
@@ -47,9 +47,9 @@ const campusNumber = localStorage.getItem('campus_number');
 const classId = ref([])
 
 
-const addClass = (classNumber) =>{
+const addClass = (classInfo) =>{
   loader.value = true
-  classStore.newClassLevelData({class_number:classNumber, campus_number:campusNumber, level_number:campusLevel})
+  classStore.newClassLevelData({class_code:classInfo.code,class_number:classInfo.number, campus_number:campusNumber, level_number:campusLevel})
 }
 
 const props = defineProps({
