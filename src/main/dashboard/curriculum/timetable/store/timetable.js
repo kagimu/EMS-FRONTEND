@@ -4,6 +4,7 @@ import api from "@/config/api.js";
 
 export const useTimetableStore = defineStore("timetable", () => {
     let newPeriodResponse = ref(null)
+    let newTimetableResponse = ref(null)
     let deletePeriodResponse = ref(null)
     let PeriodListResponse = ref(null)
     let DistinctDays = ref(null)
@@ -18,6 +19,16 @@ export const useTimetableStore = defineStore("timetable", () => {
         return await api.post("main/timetable/add-timetable-period", data)
             .then((response) => {
                 newPeriodResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }  async function newTimetable(data) {
+        return await api.post("main/timetable/create-study-timetable", data)
+            .then((response) => {
+                newTimetableResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -100,6 +111,7 @@ export const useTimetableStore = defineStore("timetable", () => {
 
     return {
         newPeriodResponse,
+        newTimetableResponse,
         PeriodListResponse,
         DistinctDays,
         PeriodInfoResponse,
@@ -113,6 +125,7 @@ export const useTimetableStore = defineStore("timetable", () => {
         editPeriodData,
         deletePeriod,
         fetchTimetables,
-        studyTimetables
+        studyTimetables,
+        newTimetable
     }
 })

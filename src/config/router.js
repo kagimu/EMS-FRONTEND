@@ -68,7 +68,7 @@ const router = createRouter({
                 {path: 'concept', component: ConceptList, name: "concept"},
                 {path: 'class', component: ClassSetupList, name: "class"},
                 {path: 'time-table', component: AllTimeTables, name: "timetable"},
-                {path: 'time-table/:timetable_id', component: Timetable, name: "timetable-details"},
+                {path: 'time-table-details/:timetable_id', component: Timetable, name: "timetable-details"},
                 {path: 'scheme-of-work', component: SchemeOfWork, name: "scheme-of-work"},
                 {path:'calendar', component: GeneralCalendar, name: "general-calendar"},
                 {path:'calendar/:calendar_id', component: CalendarDetails, name: "calendar-details" },

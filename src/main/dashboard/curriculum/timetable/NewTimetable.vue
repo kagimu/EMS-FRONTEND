@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <form @submit.prevent="addPeriod">
+        <form @submit.prevent="addStudyTimetable">
 
             <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
                 {{ classError }}
@@ -77,9 +77,21 @@
                         v-model="study_period_number"
                 >
                     <option disabled value="">Select study period</option>
-                    <option v-for="(list, index) in studyPeriodList" :key="index" :value="list.number">{{ list.name }}
+                    <option v-for="(list, index) in studyPeriodList" :key="index" :value="list.number">{{ list.study_period_name }}
                     </option>
                 </select>
+            </div>
+
+
+            <div class="mb-2">
+
+                <label class="textColor"><small>Name</small></label>
+                <input
+                        type="text"
+                         class="form-control form-control-sm"
+                        v-model="form.name"
+
+                />
             </div>
 
 
@@ -158,12 +170,8 @@ const study_period_number = ref(null)
 
 
 const form = reactive({
-    stream_number: "",
-    subject_number: "",
-    campus_number: "",
-    day: "",
-    start_time: "",
-    end_time: "",
+    study_period_number: "",
+    name: "",
 })
 
 
@@ -221,10 +229,10 @@ const fetchStreams = (class_number) => {
     classStore.fetchClassStreams(class_number)
 }
 
-const addPeriod = () => {
+const addStudyTimetable = () => {
     loader.value = true
-    form.class_level_number = class_number.value
-    timetableStore.newPeriodData(form)
+    form.study_period_number = study_period_number.value
+    timetableStore.newTimetable(form)
 }
 
 
@@ -247,12 +255,12 @@ watch(
 )
 
 watch(
-    () => timetableStore.newPeriodResponse,
+    () => timetableStore.newTimetableResponse,
     async (data) => {
         if (data) {
+            loader.value = false
             notificationStore.successToast("Success",data.message)
-            await timetableStore.fetchPeriods(campus_number.value)
-            await timetableStore.fetchDistinctDays(campus_number.value)
+            await timetableStore.fetchTimetables(campus_number.value)
         }
     },
     {deep: true}
@@ -282,6 +290,16 @@ watch(
     async (data) => {
         if (data) {
             academicYearList.value = data.data
+        }
+    },
+    {deep: true}
+)
+
+watch(
+    () => studyPeriodStore.studyPeriodResponse,
+    async (data) => {
+        if (data) {
+            studyPeriodList.value = data.data
         }
     },
     {deep: true}

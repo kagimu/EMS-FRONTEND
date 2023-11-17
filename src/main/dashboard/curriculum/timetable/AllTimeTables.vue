@@ -52,14 +52,14 @@
         </div>
 
         <div class="row">
-            <div class="col-4" v-for="(campus, index) in campusList" :key="index">
+            <div class="col-4" v-for="(timetable, index) in timetableList" :key="index">
                 <div class="card mt-3">
 
 
                     <div class="card-body">
                         <div class="mb-3 flex justify-between" style="font-size: 20px;">
 
-                            {{campus.name}}
+                            {{timetable.name}}
 
                             <div>
                                 <i
@@ -67,14 +67,14 @@
                                         data-bs-target="#infoModal"
                                         data-bs-toggle="modal"
                                         style="font-size: 14px;"
-                                        @click="editCampus(campus)"></i>
-                                <i style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  @click="deleteCampus(campus)"></i>
+                                        @click="editCampus(timetable)"></i>
+                                <i style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  @click="deleteCampus(timetable)"></i>
                             </div>
 
                         </div>
                         <small>
-                            Status: {{campus.status}}<br />
-                            Study Time: {{campus.status}}<br />
+                            Status: {{timetable.status}}<br />
+                            Study Time: {{timetable.status}}<br />
 
                         </small>
 
@@ -82,7 +82,7 @@
                             &nbsp;
                             <router-link
                                     class="text-decoration-none"
-                                    :to="{name:'level', query:{id:campus.number}}"
+                                    :to="{name:'timetable-details', query:{id:timetable.number}}"
                             >
                                 <button
                                         type="button"
@@ -126,6 +126,7 @@ const  notificationStore  = useNotificationStore()
 const campusDialog = ref( false)
 const campusEditMode = ref( false)
 const campusList = ref( [])
+const timetableList = ref( [])
 const schoolsList = ref( [])
 const school = ref( "")
 
@@ -199,7 +200,7 @@ watch(
     () => timetableStore.studyTimetables,
     async (data) => {
         if(data){
-            campusList.value = data
+            timetableList.value = data
         }
     },
     {deep:true}
