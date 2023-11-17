@@ -24,6 +24,7 @@ import Timetable from "@/main/dashboard/curriculum/timetable/Timetable.vue";
 import SchemeOfWork from "@/main/dashboard/schemeOfWork/SchemeOfWork.vue";
 import GeneralCalendar from "@/main/dashboard/eos/GeneralCalendar.vue";
 import CalendarDetails from "@/main/dashboard/eos/CalendarDetails.vue";
+import AllTimeTables from "@/main/dashboard/curriculum/timetable/AllTimeTables.vue";
 
 
 
@@ -66,7 +67,8 @@ const router = createRouter({
                 {path: 'sub-topic', component: SubTopicList, name: "sub-topic"},
                 {path: 'concept', component: ConceptList, name: "concept"},
                 {path: 'class', component: ClassSetupList, name: "class"},
-                {path: 'time-table', component: Timetable, name: "timetable"},
+                {path: 'time-table', component: AllTimeTables, name: "timetable"},
+                {path: 'time-table/:timetable_id', component: Timetable, name: "timetable-details"},
                 {path: 'scheme-of-work', component: SchemeOfWork, name: "scheme-of-work"},
                 {path:'calendar', component: GeneralCalendar, name: "general-calendar"},
                 {path:'calendar/:calendar_id', component: CalendarDetails, name: "calendar-details" },

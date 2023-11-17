@@ -18,15 +18,38 @@
       </div>
     </div>
 
+      <div class="modal fade" id="subjectModal" tabindex="-1" :class="{ show: subtopicDialog }" aria-labelledby="" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header text-sm p-0">
+                      <h6 class="modal-title ml-3 mt-2 mb-2">Add Timetable Period</h6>
+                      <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="mt-2 mb-2">
+                          <new-period></new-period>
+                      </div>
+                  </div>
+
+              </div>
+          </div>
+      </div>
+
 
 
 
     <div class="flex justify-content-between mt-4">
       <div class="ml-4">Timetable setup</div>
+        <div>
       <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSubtopic" data-bs-toggle="modal" data-bs-target="#subjectModal">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
         Add Period
       </button>
+        <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSubtopic" data-bs-toggle="modal" data-bs-target="#subjectModal">
+            <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+            Create Timetable
+        </button>
+        </div>
     </div>
 
 

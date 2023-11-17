@@ -10,6 +10,7 @@ export const useTimetableStore = defineStore("timetable", () => {
     let editPeriodResponse = ref(null)
     let PeriodInfoResponse = ref(null)
     const errorMessage = ref(null)
+    let studyTimetables = ref(null)
 
 
 
@@ -86,6 +87,14 @@ export const useTimetableStore = defineStore("timetable", () => {
             })
     }
 
+    async function fetchTimetables(){
+        return await api.get("main/timetable/all-study-timetables").then((response)=>{
+            studyTimetables.value = response.data
+        }).catch(error=>{
+            errorMessage.value = error.response.data
+        })
+    }
+
 
 
 
@@ -102,6 +111,8 @@ export const useTimetableStore = defineStore("timetable", () => {
         fetchDistinctDays,
         fetchPeriodData,
         editPeriodData,
-        deletePeriod
+        deletePeriod,
+        fetchTimetables,
+        studyTimetables
     }
 })
