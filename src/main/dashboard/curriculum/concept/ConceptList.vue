@@ -40,8 +40,9 @@
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
+                  v-model="learning_area_number"
                   @click="selectSubjectCluster(learning_area_number)"
-                  v-model="learning_area_number">
+                  >
                 <option disabled value="">Filter by Learning Area</option>
                 <option value="">All</option>
                 <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.name}}</option>
@@ -130,7 +131,7 @@
           </div>
 
           <div style="width: 100%; overflow-x: auto; white-space: nowrap; scrollbar-width: thin;">
-          <table class="table table-hover caption-top" style="font-size: 14px;">
+          <table class="table table-hover caption-top" style="font-size: 12px;">
               <thead>
               <tr>
                 <th scope="col">Code</th>
@@ -142,64 +143,74 @@
               <tr v-for="(lst, index) in conceptList" :key="index">
                 <td>{{lst.code}}</td>
                 <td>
-                  {{lst.name}}
+                  <div class="text-wrap" style="width: 150px;">{{lst.name}}</div>
                 </td>
                <td>
 
 
-                 <table class="table table-hover caption-top" style="font-size: 14px; width: 100%;">
+                 <table class="table table-hover caption-top" style="width: 100%;">
                    <tbody>
                    <tr v-for="(sbct, idx) in lst.subject_cluster" :key="idx">
-                     <td style="width: 5%;">{{sbct.code}}.</td>
-                     <td style="width: 30%;">{{sbct.name}}</td>
-                     <td style="width: 65%;">
+                     <td style="width: 5px;">{{sbct.code}}.</td>
+                     <td style="width: 30px;"><div class="text-wrap" style="width: 150px;">{{sbct.name}}</div></td>
+                     <td style="width: 65px;">
 
 
 
 
-                       <table class="table table-hover caption-top" style="font-size: 14px; width: 100%;">
+                       <table class="table table-hover caption-top" style="width: 100%;">
                          <tbody>
                          <tr v-for="(sbt, idx) in sbct.subject" :key="idx">
                            <td style="width: 5%;">{{sbt.code}}.</td>
-                           <td style="width: 40%;">{{sbt.name}}</td>
-                           <td style="width: 55%;">
+                           <td style="width: 40%;"><div class="text-wrap" style="width: 150px;">{{sbt.name}}</div></td>
+                           <td style="width: 65%;">
 
 
 
-                             <table class="table table-hover caption-top" style="font-size: 14px; width: 100%;">
+                             <table class="table table-hover caption-top" style="width: 100%;">
                                <tbody>
                                <tr v-for="(std, idx) in sbt.strand" :key="idx">
                                  <td style="width: 5%;">{{std.code}}.</td>
-                                 <td style="width: 60%;">{{std.name}}</td>
-                                 <td style="width: 60%;">
+                                 <td style="width: 30%;"><div class="text-wrap" style="width: 150px;">{{std.name}}</div></td>
+                                 <td style="width: 65%;">
 
 
 
 
-                                   <table class="table table-hover caption-top" style="font-size: 14px; width: 100%;">
+                                   <table class="table table-hover caption-top" style="width: 100%;">
                                      <tbody>
                                      <tr v-for="(tpc, idx) in std.topic" :key="idx">
                                        <td style="width: 5%;">{{tpc.code}}.</td>
-                                       <td style="width: 60%;">{{tpc.name}}</td>
-                                       <td style="width: 60%;">
+                                       <td style="width: 30%;">
+                                         <div class="text-wrap" style="width: 100px;">{{tpc.name}}</div>
+                                       </td>
+                                       <td style="width: 65%;">
 
 
 
 
-                                         <table class="table table-hover caption-top" style="font-size: 14px; width: 100%;">
+                                         <table class="table table-hover caption-top" style="width: 100%;">
                                            <tbody>
                                            <tr v-for="(stpc, idx) in tpc.subtopic" :key="idx">
                                              <td style="width: 5%;">{{stpc.code}}.</td>
-                                             <td style="width: 60%;">{{stpc.name}}</td>
-                                             <td style="width: 60%;">{{stpc.estimated_time}} (min)</td>
                                              <td style="width: 60%;">
+                                               <div class="flex justify-between">
+                                                 <div class="text-wrap" style="width: 150px; margin-right: 20px;">{{stpc.name}}</div>
+                                                 <div>{{stpc.estimated_time}} (min)</div>
+                                               </div>
 
 
-                                               <table class="table table-hover caption-top" style="font-size: 14px; width: 100%;">
+                                    <div class="mt-3 ml-10">
+                                               <div  v-if="(stpc.concept && stpc.concept.length > 0)"><b>Concepts</b></div>
+                                               <table class="table table-hover caption-top " style="width: 100%;">
                                                  <tbody>
                                                  <tr v-for="(ccp, idx) in stpc.concept" :key="idx">
-                                                   <td style="width: 5%;">{{ccp.code}}.</td>
-                                                   <td style="width: 60%;">{{ccp.name}}</td>
+                                                   <td style="width: 5%;">{{stpc.code}}.</td>
+                                                   <td>
+                                                     <div class="text-wrap" style="width: 150px;">
+                                                       {{ccp.name}}
+                                                     </div>
+                                                   </td>
                                                    <td>
                                                      <div>
                                                        <i
@@ -212,10 +223,11 @@
                                                  </tr>
                                                  </tbody>
                                                </table>
-
-
+                                    </div>
 
                                              </td>
+
+
 
                                            </tr>
                                            </tbody>
@@ -298,8 +310,7 @@ const notificationStore  = useNotificationStore()
 const conceptDialog = ref( false)
 const conceptList = ref( [])
 const subtopicList = ref( [])
-let subtopicNo = routerData.currentRoute.value.query.id
-     subtopicNo = subtopicNo ? subtopicNo : ""
+
 
 
 const learningAreaList = ref([])
@@ -335,7 +346,8 @@ const selectSubject = (subject_cluster_number) => {
 
 
 const selectSubjectCluster = (learning_area_number) => {
-  subjectClusterStore.fetchSubjectCluster(learning_area_number)
+    fetchConceptsList()
+  subjectClusterStore.fetchSubjectClusterFilter(learning_area_number)
 }
 
 const selectStrand = (subject_number) => {
@@ -360,10 +372,20 @@ const filterConcept = (sub_topic_number) => {
 
 onMounted(
     () => {
-      conceptStore.fetchConcepts(subtopicNo)
+      fetchConceptsList()
       learningAreaStore.fetchLearningArea()
     }
 )
+
+
+const fetchConceptsList = () => {
+  let data = {
+    sub_topic_number:sub_topic_number.value,
+    learning_area_number:learning_area_number.value
+  }
+  conceptStore.fetchConcepts(data)
+}
+
 
 watch(
     () => subtopicStore.subtopicInfoResponse,
@@ -381,7 +403,7 @@ watch(
     async (data) => {
       if(data){
         // conceptDialog.value = false
-        conceptStore.fetchConcepts(subtopicNo)
+        await conceptStore.fetchConcepts(subtopicNo)
         notificationStore.successToast("Success", data.message)
       }
     },
@@ -420,7 +442,7 @@ watch(
 )
 
 watch(
-    () => subjectClusterStore.subjectClusterInfoResponse,
+    () => subjectClusterStore.subjectClusterFilterResponse,
     async (data) => {
       if(data){
         subjectClusterList.value = data.data

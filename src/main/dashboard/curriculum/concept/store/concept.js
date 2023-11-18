@@ -22,7 +22,10 @@ export const useConceptStore = defineStore("concept", () => {
     }
 
     async function fetchConcepts(data) {
-        return await api.get("main/concepts?sub_topic_number="+data)
+        return await api.get("main/concepts?learning_area_number="+
+                data.learning_area_number+"&sub_topic_number="+
+                data.sub_topic_number
+            )
             .then((response) => {
                 conceptInfoResponse.value = response.data
             })
