@@ -61,39 +61,41 @@
 
           </div>
 
-            <table class="table table-hover caption-top" style="font-size: 14px;">
+          <div style="width: 100%; overflow-x: auto; white-space: nowrap; scrollbar-width: thin;">
+            <table class="table table-hover caption-top" style="font-size: 12px;">
               <thead>
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Learning Area</th>
                 <th scope="col">Subject Cluster Name</th>
-<!--                <th scope="col">Subject Name</th>-->
-<!--                <th scope="col">Code</th>-->
-<!--                <th class="text-end" scope="col">Action</th>-->
               </tr>
               </thead>
               <tbody>
               <tr v-for="(lst, index) in subjectList" :key="index">
                 <td>{{lst.code}}</td>
                 <td>
-                  {{lst.name}}
+                  <div class="text-wrap" style="width: 150px;">{{lst.name}}</div>
                 </td>
                 <td>
 
-                  <table class="table table-hover caption-top" style="font-size: 14px; width: 100%;">
+                  <table class="table table-hover caption-top" style="font-size: 12px; width: 100%;">
                     <tbody>
                     <tr v-for="(sbct, idx) in lst.subject_cluster" :key="idx">
                       <td style="width: 5%;">{{sbct.code}}.</td>
-                      <td style="width: 40%;">{{sbct.name}}</td>
+                      <td style="width: 40%;">
+                        <div class="text-wrap" style="width: 150px;">{{sbct.name}}</div>
+                      </td>
                       <td style="width: 55%;">
 
 
 
-                        <table class="table table-hover caption-top" style="font-size: 14px; width: 100%;">
+                        <table class="table table-hover caption-top" style="font-size: 12px; width: 100%;">
                           <tbody>
                           <tr v-for="(sbt, idx) in sbct.subject" :key="idx">
                             <td style="width: 5%;">{{sbt.code}}.</td>
-                            <td style="width: 70%;">{{sbt.name}}</td>
+                            <td style="width: 70%;">
+                              <div class="text-wrap" style="width: 150px;">{{sbt.name}}</div>
+                            </td>
                             <td>
                               <div>
                                 <i
@@ -120,7 +122,7 @@
               </tr>
               </tbody>
             </table>
-
+          </div>
         </div>
       </div>
     </div>

@@ -104,8 +104,8 @@
 
           </div>
 
-
-            <table class="table table-hover caption-top" style="font-size: 14px;">
+          <div style="width: 100%; overflow-x: auto; white-space: nowrap; scrollbar-width: thin;">
+            <table class="table table-hover caption-top" style="font-size: 12px;">
               <thead>
               <tr>
                 <th scope="col">Code</th>
@@ -119,16 +119,18 @@
                   {{lst.code}}
                 </td>
                 <td style="width: 20%;">
-                  {{lst.name}}
+                  <div class="text-wrap" style="width: 150px;">{{lst.name}}</div>
                 </td>
                 <td>
 
 
-                  <table class="table table-hover caption-top" style="font-size: 14px; width: 100%;">
+                  <table class="table table-hover caption-top" style="font-size: 12px; width: 100%;">
                     <tbody>
                     <tr v-for="(sbct, idx) in lst.subject_cluster" :key="idx">
                       <td style="width: 5%;">{{sbct.code}}.</td>
-                      <td style="width: 30%;">{{sbct.name}}</td>
+                      <td style="width: 30%;">
+                        <div class="text-wrap" style="width: 150px;">{{sbct.name}}</div>
+                      </td>
                       <td style="width: 65%;">
 
 
@@ -138,36 +140,44 @@
                           <tbody>
                           <tr v-for="(sbt, idx) in sbct.subject" :key="idx">
                             <td style="width: 5%;">{{sbt.code}}.</td>
-                            <td style="width: 40%;">{{sbt.name}}</td>
+                            <td style="width: 40%;">
+                              <div class="text-wrap" style="width: 150px;">{{sbt.name}}</div>
+                            </td>
                             <td style="width: 55%;">
 
 
 
-                              <table class="table table-hover caption-top" style="font-size: 14px; width: 100%;">
+                              <table class="table table-hover caption-top" style="font-size: 12px; width: 100%;">
                                 <tbody>
                                 <tr v-for="(std, idx) in sbt.strand" :key="idx">
                                   <td style="width: 5%;">{{std.code}}.</td>
-                                  <td style="width: 60%;">{{std.name}}</td>
+                                  <td style="width: 60%;">
+                                    <div class="text-wrap" style="width: 150px;">{{std.name}}</div>
+                                  </td>
                                   <td style="width: 60%;">
 
 
 
 
-                                    <table class="table table-hover caption-top" style="font-size: 14px; width: 100%;">
+                                    <table class="table table-hover caption-top" style="font-size: 12px; width: 100%;">
                                       <tbody>
                                       <tr v-for="(tpc, idx) in std.topic" :key="idx">
                                         <td style="width: 5%;">{{tpc.code}}.</td>
-                                        <td style="width: 60%;">{{tpc.name}}</td>
+                                        <td style="width: 60%;">
+                                          <div class="text-wrap" style="width: 150px;">{{tpc.name}}</div>
+                                        </td>
                                         <td style="width: 60%;">
 
 
 
 
-                                          <table class="table table-hover caption-top" style="font-size: 14px; width: 100%;">
+                                          <table class="table table-hover caption-top" style="font-size: 12px; width: 100%;">
                                             <tbody>
                                             <tr v-for="(stpc, idx) in tpc.subtopic" :key="idx">
                                               <td style="width: 5%;">{{stpc.code}}.</td>
-                                              <td style="width: 60%;">{{stpc.name}}</td>
+                                              <td style="width: 60%;">
+                                                <div class="text-wrap" style="width: 150px;">{{stpc.name}}</div>
+                                              </td>
                                               <td style="width: 60%;">{{stpc.estimated_time}} (min)</td>
                                               <td>
                                                 <div>
@@ -222,7 +232,7 @@
               </tr>
               </tbody>
             </table>
-
+          </div>
 
         </div>
       </div>

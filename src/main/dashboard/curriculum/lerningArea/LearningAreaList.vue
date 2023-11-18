@@ -20,8 +20,6 @@
 
 
 
-
-
   <div class="flex justify-content-between mt-3">
     <div class="ml-4">Learning Area</div>
     <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCurriculum" data-bs-toggle="modal" data-bs-target="#learningAreaModal">
@@ -32,7 +30,7 @@
 
 
 
-  <table class="table table-hover caption-top" style="font-size: 14px;">
+  <table class="table table-hover caption-top" style="font-size: 12px;">
     <thead>
     <tr>
       <th scope="col">#</th>
