@@ -5,6 +5,7 @@ import api from "@/config/api.js";
 export const useSubjectStore = defineStore("subject", () => {
     let subjectResponse = ref(null)
     let subjectInfoResponse = ref(null)
+    let subjectListResponse = ref(null)
     let subjectByClassResponse = ref(null)
     let schemeSubjectByClassResponse = ref(null)
     let academicYearByClassResponse = ref(null)
@@ -41,6 +42,19 @@ export const useSubjectStore = defineStore("subject", () => {
         return await api.get("main/subjects?subject_cluster_number="+data)
             .then((response) => {
                 subjectInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
+    async function fetchSubjectList(data) {
+        return await api.get("main/subject-list?subject_cluster_number="+data)
+            .then((response) => {
+                subjectListResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -102,6 +116,7 @@ export const useSubjectStore = defineStore("subject", () => {
 
     return {
         subjectByClassResponse,
+        subjectListResponse,
         subjectResponse,
         subjectInfoResponse,
         schemeSubjectByClassResponse,
@@ -112,6 +127,7 @@ export const useSubjectStore = defineStore("subject", () => {
         fetchSubjectsByClass,
         fetchSubjectByClass,
         fetchAcademicYearByClass,
-        fetchSchemeSubjectByClass
+        fetchSchemeSubjectByClass,
+        fetchSubjectList
     }
 })

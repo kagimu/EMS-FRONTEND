@@ -5,6 +5,7 @@ import api from "@/config/api.js";
 export const useStrandStore = defineStore("strand", () => {
     let strandResponse = ref(null)
     let strandInfoResponse = ref(null)
+    let strandListResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -21,6 +22,7 @@ export const useStrandStore = defineStore("strand", () => {
             })
     }
 
+
     async function fetchStrands(data) {
         return await api.get("main/strands?subject_number="+data)
             .then((response) => {
@@ -33,14 +35,29 @@ export const useStrandStore = defineStore("strand", () => {
             })
     }
 
+    async function fetchStrandList(data) {
+        return await api.get("main/strand-list?subject_number="+data)
+            .then((response) => {
+                strandListResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
 
 
 
     return {
         strandResponse,
         strandInfoResponse,
+        strandListResponse,
         errorMessage,
         newStrandData,
-        fetchStrands
+        fetchStrands,
+        fetchStrandList
     }
 })

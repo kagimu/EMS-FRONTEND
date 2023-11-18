@@ -45,7 +45,7 @@
                   >
                 <option disabled value="">Filter by Learning Area</option>
                 <option value="">All</option>
-                <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.name}}</option>
+                <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
             </div>
 
@@ -53,11 +53,12 @@
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
+                  v-model="subject_cluster_number"
                   @click="selectSubject(subject_cluster_number)"
-                  v-model="subject_cluster_number">
+                  >
                 <option disabled value="">Filter by Subject Cluster</option>
                 <option value="">All</option>
-                <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.name}}</option>
+                <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
             </div>
 
@@ -65,11 +66,12 @@
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
+                  v-model="subject_number"
                   @click="selectStrand(subject_number)"
-                  v-model="subject_number">
+                  >
                 <option disabled value="">Filter by Subject</option>
                 <option value="">All</option>
-                <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.name}}</option>
+                <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
             </div>
 
@@ -78,12 +80,12 @@
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
-                  @click="selectTopic(strand_number)"
                   v-model="strand_number"
+                  @click="selectTopic(strand_number)"
               >
                 <option disabled value="">Filter by Strand</option>
                 <option value="">All</option>
-                <option v-for="(list, index) in strandList" :key="index" :value="list.number">{{list.name}}</option>
+                <option v-for="(list, index) in strandList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
             </div>
 
@@ -97,23 +99,10 @@
               >
                 <option disabled value="">Select Topic</option>
                 <option value="">All</option>
-                <option v-for="(list, index) in topicList" :key="index" :value="list.number">{{list.name}}</option>
+                <option v-for="(list, index) in topicList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
             </div>
 
-
-            <div class="col-4 mb-2">
-              <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm"
-                  v-model="topic_number"
-                  @click="filterSubTopic(topic_number)"
-              >
-                <option disabled value="">Select Topic</option>
-                <option value="">All</option>
-                <option v-for="(list, index) in topicList" :key="index" :value="list.number">{{list.name}}</option>
-              </select>
-            </div>
 
             <div class="col-4 mb-2">
               <select
@@ -124,7 +113,7 @@
               >
                 <option disabled value="">Select Sub Topic</option>
                 <option value="">All</option>
-                <option v-for="(list, index) in subtopicList" :key="index" :value="list.number">{{list.name}}</option>
+                <option v-for="(list, index) in subtopicList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
             </div>
 
@@ -339,34 +328,34 @@ const deleteClass = (data) => {
 }
 
 
-const selectSubject = (subject_cluster_number) => {
-  subjectStore.fetchSubjects(subject_cluster_number)
-}
-
-
-
 const selectSubjectCluster = (learning_area_number) => {
     fetchConceptsList()
   subjectClusterStore.fetchSubjectClusterFilter(learning_area_number)
 }
 
+
+const selectSubject = (subject_cluster_number) => {
+  fetchConceptsList()
+  subjectStore.fetchSubjectList(subject_cluster_number)
+}
+
 const selectStrand = (subject_number) => {
-  strandStore.fetchStrands(subject_number)
+  fetchConceptsList()
+  strandStore.fetchStrandList(subject_number)
 }
 const selectTopic = (strand_number) => {
-  topicStore.fetchTopics(strand_number)
+  fetchConceptsList()
+  topicStore.fetchTopicList(strand_number)
 }
 const selectSubTopic = (topic_number) => {
-  subtopicStore.fetchSubTopics(topic_number)
+  fetchConceptsList()
+  subtopicStore.fetchSubTopicList(topic_number)
 }
 
-const filterSubTopic = (topic_number) => {
-  subtopicStore.fetchSubTopics(topic_number)
-}
+
 
 const filterConcept = (sub_topic_number) => {
-  conceptStore.fetchConcepts(sub_topic_number)
-
+  fetchConceptsList()
 }
 
 
@@ -380,8 +369,12 @@ onMounted(
 
 const fetchConceptsList = () => {
   let data = {
-    sub_topic_number:sub_topic_number.value,
-    learning_area_number:learning_area_number.value
+    learning_area_number:learning_area_number.value,
+    subject_cluster_number:subject_cluster_number.value,
+    subject_number:subject_number.value,
+    strand_number:strand_number.value,
+    topic_number:topic_number.value,
+    sub_topic_number:sub_topic_number.value
   }
   conceptStore.fetchConcepts(data)
 }
@@ -421,7 +414,7 @@ watch(
 )
 
 watch(
-    () => subtopicStore.subtopicInfoResponse,
+    () => subtopicStore.subtopicListResponse,
     async (data) => {
       if(data){
         subtopicList.value = data.data
@@ -452,7 +445,7 @@ watch(
 )
 
 watch(
-    () => subjectStore.subjectInfoResponse,
+    () => subjectStore.subjectListResponse,
     async (data) => {
       if(data){
         subjectList.value = data.data
@@ -463,7 +456,7 @@ watch(
 
 
 watch(
-    () => strandStore.strandInfoResponse,
+    () => strandStore.strandListResponse,
     async (data) => {
       if(data){
         strandList.value = data.data
@@ -473,7 +466,7 @@ watch(
 )
 
 watch(
-    () => topicStore.topicInfoResponse,
+    () => topicStore.topicListResponse,
     async (data) => {
       if(data){
         topicList.value = data.data
