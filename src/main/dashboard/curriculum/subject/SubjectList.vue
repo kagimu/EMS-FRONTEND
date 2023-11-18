@@ -110,15 +110,6 @@
 
 
                       </td>
-<!--                      <td>
-                        <div>
-                          <i
-                              style="font-size: 13px;"
-                              data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                              class="bi-pencil mr-2 cursor-pointer" @click="editSubjectCluster(sbct)"></i>
-                          <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteSubjectCluster(sbct)"></i>
-                        </div>
-                      </td>-->
                     </tr>
                     </tbody>
                   </table>
