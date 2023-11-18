@@ -109,7 +109,7 @@
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="sub_topic_number"
-                  @click="filterConcept(sub_topic_number)"
+                  @click="fetchConceptsList()"
               >
                 <option disabled value="">Select Sub Topic</option>
                 <option value="">All</option>
@@ -329,33 +329,67 @@ const deleteClass = (data) => {
 
 
 const selectSubjectCluster = (learning_area_number) => {
+
+    // learning_area_number.value = ""
+    subject_cluster_number.value = ""
+    subject_number.value = ""
+    strand_number.value = ""
+    topic_number.value = ""
+    sub_topic_number.value = ""
+
+
     fetchConceptsList()
   subjectClusterStore.fetchSubjectClusterFilter(learning_area_number)
 }
 
 
 const selectSubject = (subject_cluster_number) => {
+
+  // learning_area_number.value = ""
+  // subject_cluster_number.value = ""
+  subject_number.value = ""
+  strand_number.value = ""
+  topic_number.value = ""
+  sub_topic_number.value = ""
+
   fetchConceptsList()
   subjectStore.fetchSubjectList(subject_cluster_number)
 }
 
 const selectStrand = (subject_number) => {
+
+  // learning_area_number.value = ""
+  // subject_cluster_number.value = ""
+  // subject_number.value = ""
+  strand_number.value = ""
+  topic_number.value = ""
+  sub_topic_number.value = ""
+
   fetchConceptsList()
   strandStore.fetchStrandList(subject_number)
 }
 const selectTopic = (strand_number) => {
+
+  // learning_area_number.value = ""
+  // subject_cluster_number.value = ""
+  // subject_number.value = ""
+  // strand_number.value = ""
+  topic_number.value = ""
+  sub_topic_number.value = ""
+
   fetchConceptsList()
   topicStore.fetchTopicList(strand_number)
 }
 const selectSubTopic = (topic_number) => {
+
+  // learning_area_number.value = ""
+  // subject_cluster_number.value = ""
+  // subject_number.value = ""
+  // strand_number.value = ""
+  // topic_number.value = ""
+  sub_topic_number.value = ""
   fetchConceptsList()
   subtopicStore.fetchSubTopicList(topic_number)
-}
-
-
-
-const filterConcept = (sub_topic_number) => {
-  fetchConceptsList()
 }
 
 
