@@ -103,36 +103,96 @@
             <table class="table table-hover caption-top" style="font-size: 14px;">
               <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">Subject</th>
-                <th scope="col">Strand</th>
-                <th scope="col">Topic Name</th>
                 <th scope="col">Code</th>
-                <th class="text-end" scope="col">Action</th>
+                <th scope="col">Learning Area</th>
+                <th scope="col">Subject Cluster</th>
               </tr>
               </thead>
               <tbody>
               <tr v-for="(lst, index) in topicList" :key="index">
-                <td>{{index+1}}</td>
-                <td>
-                  {{lst.subject_name}}
-                </td>
-                <td>
-                  {{lst.strand_name}}
-                </td>
+                <td>{{lst.code}}</td>
                 <td>
                   {{lst.name}}
                 </td>
-                <td>{{lst.code}}</td>
+
                 <td>
-                  <div class="float-end mr-2">
-                    <i
-                        style="font-size: 13px;"
-                        data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                        class="bi-pencil mr-2 cursor-pointer" @click="editClass(lst)"></i>
-                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(lst)"></i>
-                  </div>
+
+
+                  <table class="table table-hover caption-top" style="font-size: 14px; width: 100%;">
+                    <tbody>
+                    <tr v-for="(sbct, idx) in lst.subject_cluster" :key="idx">
+                      <td style="width: 5%;">{{sbct.code}}.</td>
+                      <td style="width: 30%;">{{sbct.name}}</td>
+                      <td style="width: 65%;">
+
+
+
+
+                        <table class="table table-hover caption-top" style="font-size: 14px; width: 100%;">
+                          <tbody>
+                          <tr v-for="(sbt, idx) in sbct.subject" :key="idx">
+                            <td style="width: 5%;">{{sbt.code}}.</td>
+                            <td style="width: 40%;">{{sbt.name}}</td>
+                            <td style="width: 55%;">
+
+
+
+                              <table class="table table-hover caption-top" style="font-size: 14px; width: 100%;">
+                                <tbody>
+                                <tr v-for="(std, idx) in sbt.strand" :key="idx">
+                                  <td style="width: 5%;">{{std.code}}.</td>
+                                  <td style="width: 60%;">{{std.name}}</td>
+                                  <td style="width: 60%;">
+
+
+
+
+                                    <table class="table table-hover caption-top" style="font-size: 14px; width: 100%;">
+                                      <tbody>
+                                      <tr v-for="(tpc, idx) in std.topic" :key="idx">
+                                        <td style="width: 5%;">{{tpc.code}}.</td>
+                                        <td style="width: 60%;">{{tpc.name}}</td>
+                                        <td>
+                                          <div>
+                                            <i
+                                                style="font-size: 13px;"
+                                                data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
+                                                class="bi-pencil mr-2 cursor-pointer" @click="editClass(tpc)"></i>
+                                            <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(tpc)"></i>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                      </tbody>
+                                    </table>
+
+
+
+
+                                  </td>
+
+                                </tr>
+                                </tbody>
+                              </table>
+
+
+
+                            </td>
+
+                          </tr>
+                          </tbody>
+                        </table>
+
+
+
+
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+
+
                 </td>
+
               </tr>
               </tbody>
             </table>
