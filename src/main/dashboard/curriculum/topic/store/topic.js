@@ -23,7 +23,12 @@ export const useTopicStore = defineStore("topic", () => {
     }
 
     async function fetchTopics(data) {
-        return await api.get("main/topics?strand_number="+data)
+        return await api.get("main/topics?learning_area_number="+data.learning_area_number+
+        "&subject_cluster_number="+data.subject_cluster_number+
+        "&subject_number="+data.subject_number+
+        "&strand_number="+data.strand_number+
+        "&class_number="+data.class_number
+            )
             .then((response) => {
                 topicInfoResponse.value = response.data
             })
