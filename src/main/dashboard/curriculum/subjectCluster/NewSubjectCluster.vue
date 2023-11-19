@@ -27,7 +27,7 @@
             class="form-select form-select-sm"
             v-model="form.learning_area_number">
           <option disabled value="">Select Learning Area</option>
-          <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.name}}</option>
+          <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
         </select>
       </div>
 
@@ -62,6 +62,7 @@ import {useRouter} from "vue-router";
 import {useSubjectClusterStore} from "@/main/dashboard/curriculum/subjectCluster/store/subjectCluster.js";
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
 import useCommonsStore from "@/composables/useCommons.js";
+import useNotificationStore from "@/composables/useNotification.js";
 const commons = useCommonsStore()
 const classError = ref(null)
 const name = ref(null)
@@ -69,7 +70,7 @@ const loader = ref(false)
 const routerData = useRouter()
 
 const subjectClusterStore = useSubjectClusterStore()
-// const learningAreaNo = routerData.currentRoute.value.query.id
+const  notificationStore  = useNotificationStore()
 const learningAreaList = ref([])
 const learningAreaStore = useLearningAreaStore()
 
@@ -112,7 +113,17 @@ watch(
         loader.value = false
         form.name = null
         form.code = null
-        form.learning_area_number = null
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectClusterStore.errorMessage,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}

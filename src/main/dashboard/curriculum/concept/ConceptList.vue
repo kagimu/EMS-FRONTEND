@@ -190,7 +190,7 @@
 
 
                                     <div class="mt-3 ml-10">
-                                               <div  v-if="(stpc.concept && stpc.concept.length > 0)"><b>Concepts</b></div>
+                                               <div  v-if="(stpc.concept && stpc.concept.length > 0)"><b>Concept(s)</b></div>
                                                <table class="table table-hover caption-top " style="width: 100%;">
                                                  <tbody>
                                                  <tr v-for="(ccp, idx) in stpc.concept" :key="idx">
@@ -414,15 +414,7 @@ const fetchConceptsList = () => {
 }
 
 
-watch(
-    () => subtopicStore.subtopicInfoResponse,
-    async (data) => {
-      if(data){
-        subtopicList.value = data.data
-      }
-    },
-    {deep:true}
-)
+
 
 
 watch(
@@ -447,15 +439,7 @@ watch(
     {deep:true}
 )
 
-watch(
-    () => subtopicStore.subtopicListResponse,
-    async (data) => {
-      if(data){
-        subtopicList.value = data.data
-      }
-    },
-    {deep:true}
-)
+
 
 
 watch(
@@ -499,6 +483,9 @@ watch(
     {deep:true}
 )
 
+
+
+
 watch(
     () => topicStore.topicListResponse,
     async (data) => {
@@ -509,6 +496,16 @@ watch(
     {deep:true}
 )
 
+
+watch(
+    () => subtopicStore.subtopicListResponse,
+    async (data) => {
+      if(data){
+        subtopicList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 
 </script>

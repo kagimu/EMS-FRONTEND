@@ -59,13 +59,14 @@ import {onMounted, reactive, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
 import useCommonsStore from "@/composables/useCommons.js";
+import useNotificationStore from "@/composables/useNotification.js";
 const commons = useCommonsStore()
 const classError = ref(null)
 const name = ref(null)
 const loader = ref(false)
 const nameRef = ref(null)
 const routerData = useRouter()
-
+const  notificationStore  = useNotificationStore()
 const learningAreaStore = useLearningAreaStore()
 
 
@@ -101,6 +102,17 @@ watch(
         loader.value = false
         form.name = null
         form.code = null
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => learningAreaStore.errorMessage,
+    async (data) => {
+      if(data){
+        loader.value = false
+          notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}

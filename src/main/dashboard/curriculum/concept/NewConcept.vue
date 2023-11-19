@@ -29,7 +29,7 @@
             @click="selectSubjectCluster(learning_area_number)"
         >
           <option disabled value="">Select Learning Area</option>
-          <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.name}}</option>
+          <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
         </select>
       </div>
 
@@ -42,7 +42,7 @@
             @click="selectSubject(subject_cluster_number)"
         >
           <option disabled value="">Select Subject Cluster</option>
-          <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.name}}</option>
+          <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
         </select>
       </div>
 
@@ -57,7 +57,7 @@
             @click="selectStrand(subject_number)"
         >
           <option disabled value="">Select Subject</option>
-          <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.name}}</option>
+          <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
         </select>
       </div>
 
@@ -71,7 +71,7 @@
             @click="selectTopic(strand_number)"
         >
           <option disabled value="">Select Strand</option>
-          <option v-for="(list, index) in strandList" :key="index" :value="list.number">{{list.name}}</option>
+          <option v-for="(list, index) in strandList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
         </select>
       </div>
 
@@ -85,7 +85,7 @@
             @click="selectSubTopic(topic_number)"
         >
           <option disabled value="">Select Topic</option>
-          <option v-for="(list, index) in topicList" :key="index" :value="list.number">{{list.name}}</option>
+          <option v-for="(list, index) in topicList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
         </select>
       </div>
 
@@ -96,7 +96,7 @@
             class="form-select form-select-sm"
             v-model="form.sub_topic_number">
           <option disabled value="">Select Sub Topic</option>
-          <option v-for="(list, index) in subtopicList" :key="index" :value="list.number">{{list.name}}</option>
+          <option v-for="(list, index) in subtopicList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
         </select>
       </div>
 
@@ -138,15 +138,15 @@ import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/stor
 import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
 import {useStrandStore} from "@/main/dashboard/curriculum/strands/store/strand.js";
 import useCommonsStore from "@/composables/useCommons.js";
+import useNotificationStore from "@/composables/useNotification.js";
 
 const classError = ref(null)
 const name = ref(null)
 const loader = ref(false)
 const routerData = useRouter()
+const notificationStore  = useNotificationStore()
 
 const conceptStore = useConceptStore()
-const subtopicNo = routerData.currentRoute.value.query.id
-
 
 const subtopicStore = useSubtopicStore()
 
@@ -189,24 +189,24 @@ const addConcept = () =>{
 
 
 const selectSubjectCluster = (learning_area_number) => {
-  subjectClusterStore.fetchSubjectCluster(learning_area_number)
+  subjectClusterStore.fetchSubjectClusterFilter(learning_area_number)
 }
 
 const selectSubject = (subject_cluster_number) => {
-  subjectStore.fetchSubjects(subject_cluster_number)
+  subjectStore.fetchSubjectList(subject_cluster_number)
 }
 
 
 const selectStrand = (subject_number) => {
-  strandStore.fetchStrands(subject_number)
+  strandStore.fetchStrandList(subject_number)
 }
 
 const selectTopic = (strand_number) => {
-  topicStore.fetchTopics(strand_number)
+  topicStore.fetchTopicList(strand_number)
 }
 
 const selectSubTopic = (topic_number) => {
-  subtopicStore.fetchSubTopics(topic_number)
+  subtopicStore.fetchSubTopicList(topic_number)
 }
 
 onMounted(
@@ -228,7 +228,7 @@ watch(
 
 
 watch(
-    () => subjectClusterStore.subjectClusterInfoResponse,
+    () => subjectClusterStore.subjectClusterFilterResponse,
     async (data) => {
       if(data){
         subjectClusterList.value = data.data
@@ -239,7 +239,7 @@ watch(
 
 
 watch(
-    () => subjectStore.subjectInfoResponse,
+    () => subjectStore.subjectListResponse,
     async (data) => {
       if(data){
         subjectList.value = data.data
@@ -249,7 +249,7 @@ watch(
 )
 
 watch(
-    () => strandStore.strandInfoResponse,
+    () => strandStore.strandListResponse,
     async (data) => {
       if(data){
         strandList.value = data.data
@@ -259,7 +259,7 @@ watch(
 )
 
 watch(
-    () => topicStore.topicInfoResponse,
+    () => topicStore.topicListResponse,
     async (data) => {
       if(data){
         topicList.value = data.data
@@ -269,7 +269,7 @@ watch(
 )
 
 watch(
-    () => subtopicStore.subtopicInfoResponse,
+    () => subtopicStore.subtopicListResponse,
     async (data) => {
       if(data){
         subtopicList.value = data.data
@@ -284,6 +284,17 @@ watch(
       if(data){
         loader.value = false
         form.name = null
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => conceptStore.errorMessage,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}

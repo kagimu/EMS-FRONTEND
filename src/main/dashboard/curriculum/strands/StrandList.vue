@@ -38,8 +38,9 @@
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
+                  v-model="learning_area_number"
                   @click="selectSubjectCluster(learning_area_number)"
-                  v-model="learning_area_number">
+                  >
                 <option disabled value="">Filter by Learning Area</option>
                 <option value="">All</option>
                 <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
@@ -50,8 +51,9 @@
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
+                  v-model="subject_cluster_number"
                   @click="selectSubject(subject_cluster_number)"
-                  v-model="subject_cluster_number">
+                  >
                 <option disabled value="">Filter by Subject Cluster</option>
                 <option value="">All</option>
                 <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
@@ -62,8 +64,9 @@
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
+                  v-model="subject_number"
                   @click="filterStrandList()"
-                  v-model="subject_number">
+                  >
                 <option disabled value="">Filter by Subject</option>
                 <option value="">All</option>
                 <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>

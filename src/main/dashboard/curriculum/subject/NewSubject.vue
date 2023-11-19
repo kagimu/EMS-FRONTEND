@@ -30,7 +30,7 @@
             @click="selectSubjectCluster(learning_area_number)"
         >
           <option disabled value="">Select Learning Area</option>
-          <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.name}}</option>
+          <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
         </select>
       </div>
 
@@ -41,7 +41,7 @@
             class="form-select form-select-sm"
             v-model="form.subject_cluster_number">
           <option disabled value="">Select Subject Cluster</option>
-          <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.name}}</option>
+          <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
         </select>
       </div>
 
@@ -78,6 +78,7 @@ import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
 import {useSubjectClusterStore} from "@/main/dashboard/curriculum/subjectCluster/store/subjectCluster.js";
 import useCommonsStore from "@/composables/useCommons.js";
+import useNotificationStore from "@/composables/useNotification.js";
 const commons = useCommonsStore()
 const classError = ref(null)
 const name = ref(null)
@@ -86,6 +87,7 @@ const routerData = useRouter()
 const learning_area_number = ref("")
 const learningAreaList = ref([])
 const subjectClusterList = ref([])
+const  notificationStore  = useNotificationStore()
 
 const subjectStore = useSubjectStore()
 const learningAreaStore = useLearningAreaStore()
@@ -105,7 +107,7 @@ const addSubject = () =>{
 }
 
 const selectSubjectCluster = (learning_area_number) => {
-  subjectClusterStore.fetchSubjectCluster(learning_area_number)
+  subjectClusterStore.fetchSubjectClusterFilter(learning_area_number)
 }
 
 
@@ -129,7 +131,7 @@ watch(
 
 
 watch(
-    () => subjectClusterStore.subjectClusterInfoResponse,
+    () => subjectClusterStore.subjectClusterFilterResponse,
     async (data) => {
       if(data){
         subjectClusterList.value = data.data
@@ -145,6 +147,18 @@ watch(
       if(data){
         loader.value = false
         form.name = null
+        form.code = null
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectStore.errorMessage,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}
