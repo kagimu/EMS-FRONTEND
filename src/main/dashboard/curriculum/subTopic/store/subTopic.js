@@ -24,7 +24,12 @@ export const useSubtopicStore = defineStore("subtopic", () => {
     }
 
     async function fetchSubTopics(data) {
-        return await api.get("main/sub-topics?topic_number="+data)
+        return await api.get("main/sub-topics?learning_area_number="+data.learning_area_number+
+                "&subject_cluster_number="+data.subject_cluster_number+
+                "&subject_number="+data.subject_number+
+                "&strand_number="+data.strand_number+
+                "&topic_number="+data.topic_number
+            )
             .then((response) => {
                 subtopicInfoResponse.value = response.data
             })

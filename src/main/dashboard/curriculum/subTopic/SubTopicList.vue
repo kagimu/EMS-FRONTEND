@@ -41,11 +41,12 @@
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
+                  v-model="learning_area_number"
                   @click="selectSubjectCluster(learning_area_number)"
-                  v-model="learning_area_number">
+                  >
                 <option disabled value="">Filter by Learning Area</option>
                 <option value="">All</option>
-                <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.name}}</option>
+                <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
             </div>
 
@@ -53,11 +54,12 @@
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
+                  v-model="subject_cluster_number"
                   @click="selectSubject(subject_cluster_number)"
-                  v-model="subject_cluster_number">
+                  >
                 <option disabled value="">Filter by Subject Cluster</option>
                 <option value="">All</option>
-                <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.name}}</option>
+                <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
             </div>
 
@@ -65,11 +67,12 @@
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
+                  v-model="subject_number"
                   @click="selectStrand(subject_number)"
-                  v-model="subject_number">
+                  >
                 <option disabled value="">Filter by Subject</option>
                 <option value="">All</option>
-                <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.name}}</option>
+                <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
             </div>
 
@@ -78,12 +81,12 @@
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
-                  @click="selectTopic(strand_number)"
                   v-model="strand_number"
+                  @click="selectTopic(strand_number)"
               >
                 <option disabled value="">Filter by Strand</option>
                 <option value="">All</option>
-                <option v-for="(list, index) in strandList" :key="index" :value="list.number">{{list.name}}</option>
+                <option v-for="(list, index) in strandList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
             </div>
 
@@ -93,11 +96,11 @@
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="topic_number"
-                  @click="filterSubTopic(topic_number)"
+                  @click="filterSubTopic()"
               >
                 <option disabled value="">Select Topic</option>
                 <option value="">All</option>
-                <option v-for="(list, index) in topicList" :key="index" :value="list.number">{{list.name}}</option>
+                <option v-for="(list, index) in topicList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
             </div>
 
@@ -282,8 +285,7 @@ const learning_area_number = ref("")
 
 const subtopicDialog = ref( false)
 const subtopicList = ref( [])
-let  topicNo = routerData.currentRoute.value.query.id
-      topicNo = topicNo ? topicNo : ""
+
 
 
 const addSubtopic = () => {
@@ -297,41 +299,83 @@ const deleteClass = (data) => {
   alert(JSON.stringify(data))
 }
 
+const selectSubjectCluster = (learning_area_number) => {
+
+  // learning_area_number.value = ""
+  subject_cluster_number.value = ""
+  subject_number.value = ""
+  strand_number.value = ""
+  topic_number.value = ""
+
+  fetchSubTopicLIst()
+  subjectClusterStore.fetchSubjectClusterFilter(learning_area_number)
+}
+
 
 const selectSubject = (subject_cluster_number) => {
-  subjectStore.fetchSubjects(subject_cluster_number)
+
+  // learning_area_number.value = ""
+  // subject_cluster_number.value = ""
+  subject_number.value = ""
+  strand_number.value = ""
+  topic_number.value = ""
+
+  fetchSubTopicLIst()
+  subjectStore.fetchSubjectList(subject_cluster_number)
 }
 
-
-
-const selectSubjectCluster = (learning_area_number) => {
-  subjectClusterStore.fetchSubjectCluster(learning_area_number)
-}
 
 const selectStrand = (subject_number) => {
-  strandStore.fetchStrands(subject_number)
+
+  // learning_area_number.value = ""
+  // subject_cluster_number.value = ""
+  // subject_number.value = ""
+  strand_number.value = ""
+  topic_number.value = ""
+
+  fetchSubTopicLIst()
+  strandStore.fetchStrandList(subject_number)
 }
 const selectTopic = (strand_number) => {
-  topicStore.fetchTopics(strand_number)
+
+  // learning_area_number.value = ""
+  // subject_cluster_number.value = ""
+  // subject_number.value = ""
+  // strand_number.value = ""
+  topic_number.value = ""
+
+  fetchSubTopicLIst()
+  topicStore.fetchTopicList(strand_number)
 }
 
-const filterSubTopic = (topic_number) => {
-  subtopicStore.fetchSubTopics(topic_number)
+const filterSubTopic = () => {
+    fetchSubTopicLIst()
 }
 
 onMounted(
     () => {
-      subtopicStore.fetchSubTopics(topicNo)
+      fetchSubTopicLIst()
       learningAreaStore.fetchLearningArea()
     }
 )
+
+const fetchSubTopicLIst = () => {
+  let data = {
+    learning_area_number:learning_area_number.value,
+    subject_cluster_number:subject_cluster_number.value,
+    subject_number:subject_number.value,
+    strand_number:strand_number.value,
+    topic_number:topic_number.value,
+  }
+  subtopicStore.fetchSubTopics(data)
+}
 
 watch(
     () => subtopicStore.subtopicResponse,
     async (data) => {
       if(data){
         // subtopicDialog.value = false
-        subtopicStore.fetchSubTopics(topicNo)
+        await fetchSubTopicLIst()
         notificationStore.successToast("Success", data.message)
       }
     },
@@ -360,7 +404,7 @@ watch(
 )
 
 watch(
-    () => subjectClusterStore.subjectClusterInfoResponse,
+    () => subjectClusterStore.subjectClusterFilterResponse,
     async (data) => {
       if(data){
         subjectClusterList.value = data.data
@@ -370,7 +414,7 @@ watch(
 )
 
 watch(
-    () => subjectStore.subjectInfoResponse,
+    () => subjectStore.subjectListResponse,
     async (data) => {
       if(data){
         subjectList.value = data.data
@@ -381,7 +425,7 @@ watch(
 
 
 watch(
-    () => strandStore.strandInfoResponse,
+    () => strandStore.strandListResponse,
     async (data) => {
       if(data){
         strandList.value = data.data
@@ -391,7 +435,7 @@ watch(
 )
 
 watch(
-    () => topicStore.topicInfoResponse,
+    () => topicStore.topicListResponse,
     async (data) => {
       if(data){
         topicList.value = data.data

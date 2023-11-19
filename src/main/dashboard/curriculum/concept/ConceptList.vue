@@ -430,7 +430,7 @@ watch(
     async (data) => {
       if(data){
         // conceptDialog.value = false
-        await conceptStore.fetchConcepts(subtopicNo)
+        fetchConceptsList()
         notificationStore.successToast("Success", data.message)
       }
     },

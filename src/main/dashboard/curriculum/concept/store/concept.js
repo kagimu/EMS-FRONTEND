@@ -22,8 +22,7 @@ export const useConceptStore = defineStore("concept", () => {
     }
 
     async function fetchConcepts(data) {
-        return await api.get("main/concepts?learning_area_number="+
-                data.learning_area_number+
+        return await api.get("main/concepts?learning_area_number="+data.learning_area_number+
                 "&subject_cluster_number="+data.subject_cluster_number+
                 "&subject_number="+data.subject_number+
                 "&strand_number="+data.strand_number+
