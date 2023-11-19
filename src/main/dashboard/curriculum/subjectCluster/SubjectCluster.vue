@@ -38,11 +38,12 @@
             <select
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
-                @click="filterSubjectCluster(learning_area_number)"
-                v-model="learning_area_number">
+                v-model="learning_area_number"
+                @click="fetchSubjectClusterList()"
+                >
               <option disabled value="">Filter by Learning Area</option>
               <option value="">All</option>
-              <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.name}}</option>
+              <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
             </select>
           </div>
           </div>
@@ -120,18 +121,11 @@ const subjectClusterList = ref( [])
 const learning_area_number = ref( "")
 const subjectClusterStore = useSubjectClusterStore()
 const  notificationStore  = useNotificationStore()
-let learningAreaNo = routerData.currentRoute.value.query.id
 const learningAreaStore = useLearningAreaStore()
 const learningAreaList = ref([])
 
-        learningAreaNo = learningAreaNo ? learningAreaNo : ""
-
 const addCurriculum = () => {
   curriculumDialog.value = true
-}
-
-const filterSubjectCluster = (learning_area_number) => {
-  subjectClusterStore.fetchSubjectCluster(learning_area_number)
 }
 
 
@@ -145,9 +139,16 @@ const deleteSubjectCluster = (sbj) => {
 
 onMounted(
     () => {
-      subjectClusterStore.fetchSubjectCluster(learningAreaNo)
+      fetchSubjectClusterList()
     }
 )
+
+const fetchSubjectClusterList = () => {
+  let data = {
+    learning_area_number:learning_area_number.value,
+  }
+  subjectClusterStore.fetchSubjectCluster(data)
+}
 
 
 watch(
@@ -155,7 +156,7 @@ watch(
     async (data) => {
       if(data){
         // curriculumDialog.value = false
-        await subjectClusterStore.fetchSubjectCluster(learningAreaNo)
+        await fetchSubjectClusterList()
         notificationStore.successToast("Success", data.message)
       }
     },

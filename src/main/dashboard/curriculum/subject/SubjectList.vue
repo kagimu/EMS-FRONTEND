@@ -39,11 +39,12 @@
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
+                  v-model="learning_area_number"
                   @click="selectSubjectCluster(learning_area_number)"
-                  v-model="learning_area_number">
+                  >
                 <option disabled value="">Filter by Learning Area</option>
                 <option value="">All</option>
-                <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.name}}</option>
+                <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
             </div>
 
@@ -51,11 +52,12 @@
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
-                  @click="filterSubjectCluster(subject_cluster_number)"
-                  v-model="subject_cluster_number">
+                  v-model="subject_cluster_number"
+                  @click="filterSubjectCluster()"
+                  >
                 <option disabled value="">Filter by Subject Cluster</option>
                 <option value="">All</option>
-                <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.name}}</option>
+                <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
             </div>
 
@@ -150,8 +152,6 @@ const  notificationStore  = useNotificationStore()
 
 const subjectDialog = ref( false)
 const subjectList = ref( [])
-let subjectClusterNo = routerData.currentRoute.value.query.id
-    subjectClusterNo = subjectClusterNo ? subjectClusterNo : ""
 const subjectClusterList = ref([])
 const learningAreaList = ref([])
 const subject_cluster_number = ref("")
@@ -169,27 +169,36 @@ const deleteSubject = (data) => {
   alert(JSON.stringify(data))
 }
 
-const filterSubjectCluster = (subject_cluster_number) => {
-  subjectStore.fetchSubjects(subject_cluster_number)
+const filterSubjectCluster = () => {
+  filterSubjectList()
 }
 
 const selectSubjectCluster = (learning_area_number) => {
-  subjectClusterStore.fetchSubjectCluster(learning_area_number)
+  filterSubjectList()
+  subjectClusterStore.fetchSubjectClusterFilter(learning_area_number)
 }
 
 onMounted(
     () => {
-      subjectStore.fetchSubjects(subjectClusterNo)
+      filterSubjectList()
       learningAreaStore.fetchLearningArea()
     }
 )
+
+const filterSubjectList = () => {
+  let data = {
+    learning_area_number:learning_area_number.value,
+    subject_cluster_number:subject_cluster_number.value,
+  }
+  subjectStore.fetchSubjects(data)
+}
 
 watch(
     () => subjectStore.subjectResponse,
     async (data) => {
       if(data){
         // subjectDialog.value = false
-        subjectStore.fetchSubjects(subjectClusterNo)
+        await filterSubjectList()
         notificationStore.successToast("Success", data.message)
       }
     },
@@ -217,7 +226,7 @@ watch(
 )
 
 watch(
-    () => subjectClusterStore.subjectClusterInfoResponse,
+    () => subjectClusterStore.subjectClusterFilterResponse,
     async (data) => {
       if(data){
         subjectClusterList.value = data.data

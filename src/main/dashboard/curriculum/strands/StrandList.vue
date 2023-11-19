@@ -42,7 +42,7 @@
                   v-model="learning_area_number">
                 <option disabled value="">Filter by Learning Area</option>
                 <option value="">All</option>
-                <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.name}}</option>
+                <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
             </div>
 
@@ -54,7 +54,7 @@
                   v-model="subject_cluster_number">
                 <option disabled value="">Filter by Subject Cluster</option>
                 <option value="">All</option>
-                <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.name}}</option>
+                <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
             </div>
 
@@ -62,11 +62,11 @@
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
-                  @click="filterStrand(subject_number)"
+                  @click="filterStrandList()"
                   v-model="subject_number">
                 <option disabled value="">Filter by Subject</option>
                 <option value="">All</option>
-                <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.name}}</option>
+                <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
             </div>
 
@@ -191,8 +191,6 @@ const subjectClusterStore = useSubjectClusterStore()
 
 const strandDialog = ref( false)
 const strandList = ref( [])
-let subjectNo = routerData.currentRoute.value.query.id
-    subjectNo = subjectNo ? subjectNo : ""
 const learningAreaList = ref([])
 const subjectClusterList = ref([])
 const subjectList = ref([])
@@ -211,31 +209,51 @@ const deleteClass = (data) => {
   alert(JSON.stringify(data))
 }
 
-const selectSubject = (subject_cluster_number) => {
-  subjectStore.fetchSubjects(subject_cluster_number)
-}
-
-const filterStrand = (subject_number) => {
-  strandStore.fetchStrands(subject_number)
-}
 
 const selectSubjectCluster = (learning_area_number) => {
-  subjectClusterStore.fetchSubjectCluster(learning_area_number)
+
+
+  // learning_area_number.value = ""
+  subject_cluster_number.value = ""
+  subject_number.value = ""
+
+  filterStrandList()
+  subjectClusterStore.fetchSubjectClusterFilter(learning_area_number)
 }
+
+const selectSubject = (subject_cluster_number) => {
+
+  // learning_area_number.value = ""
+  // subject_cluster_number.value = ""
+  subject_number.value = ""
+
+  filterStrandList()
+  subjectStore.fetchSubjectList(subject_cluster_number)
+}
+
 
 onMounted(
     () => {
-      strandStore.fetchStrands(subjectNo)
+      filterStrandList()
       learningAreaStore.fetchLearningArea()
     }
 )
+
+const filterStrandList = () => {
+  let data = {
+    learning_area_number:learning_area_number.value,
+    subject_cluster_number:subject_cluster_number.value,
+    subject_number:subject_number.value,
+  }
+  strandStore.fetchStrands(data)
+}
 
 watch(
     () => strandStore.strandResponse,
     async (data) => {
       if(data){
         // strandDialog.value = false
-        strandStore.fetchStrands(subjectNo)
+        await filterStrandList()
         notificationStore.successToast("Success", data.message)
       }
     },
@@ -263,7 +281,7 @@ watch(
 )
 
 watch(
-    () => subjectClusterStore.subjectClusterInfoResponse,
+    () => subjectClusterStore.subjectClusterFilterResponse,
     async (data) => {
       if(data){
         subjectClusterList.value = data.data
@@ -273,7 +291,7 @@ watch(
 )
 
 watch(
-    () => subjectStore.subjectInfoResponse,
+    () => subjectStore.subjectListResponse,
     async (data) => {
       if(data){
         subjectList.value = data.data
