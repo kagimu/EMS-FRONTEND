@@ -143,6 +143,7 @@ import {useSubtopicStore} from "@/main/dashboard/curriculum/subTopic/store/subTo
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useSchemeOfWorkStore} from "@/main/dashboard/schemeOfWork/store/schemeOfWork.js";
 import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
+import useNotificationStore from "@/composables/useNotification.js";
 
 const subtopicStore = useSubtopicStore()
 const errorMessage = ref(null)
@@ -151,7 +152,7 @@ const loader = ref(false)
 const classList = ref([])
 const subjectList = ref([])
 const subtopicList = ref([])
-// const nameRef = ref(null)
+const notificationStore  = useNotificationStore()
 const routerData = useRouter()
 const classStore = useClassesStore()
 
@@ -183,8 +184,7 @@ const filterClasses = (classData) => {
   subtopicList.value = []
   subjectList.value = []
   subjectStore.fetchAcademicYearByClass(classData)
-  subjectStore.fetchSubjectByClass(classData)
-
+  subjectStore.fetchSchemeSubjectByClass(classData)
 }
 
 const filterSubject = (subjectNumber) => {
@@ -292,7 +292,18 @@ watch(
 )
 
 watch(
-    () => subjectStore.subjectByClassResponse,
+    () => schemeOfWorkStore.errorMessage,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectStore.schemeSubjectByClassResponse,
     async (data) => {
       if(data){
       subjectList.value = data.data
@@ -314,7 +325,7 @@ watch(
 
 
 watch(
-    () => classStore.classInfoResponse,
+    () => classStore.schemeClassInfoResponse,
     async (data) => {
       if(data){
         let classInfo = data.data
