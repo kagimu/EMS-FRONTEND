@@ -69,7 +69,7 @@
           >
             <option disabled value="">Filter by Level</option>
             <option value="">All</option>
-            <option v-for="(lvl, index) in commons.classLevelList()" :key="index" :value="lvl">{{lvl}}</option>
+            <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
           </select>
         </div>
       </div>
@@ -81,7 +81,6 @@
 
 
       <div class="col-3">
-
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
             <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Classes</div>
@@ -94,7 +93,7 @@
                   :class="item.number === selectedClass ? 'active' : ''"
                   @click="changeMenu(item.number)"
               >
-                <small style="font-size:12px;">{{item.name}}</small>
+                <small style="font-size:12px;">{{item.code+". "+item.name}}</small>
               </div>
             </div>
           </div>
@@ -260,6 +259,7 @@ import {useSchemeOfWorkStore} from "@/main/dashboard/schemeOfWork/store/schemeOf
 import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
 import NewLessonPlan from "@/main/dashboard/schemeOfWork/NewLessonPlan.vue";
 import LessonPlanDetails from "@/main/dashboard/schemeOfWork/LessonPlanDetails.vue";
+import {useLevelStore} from "@/main/settings/level/store/levels.js";
 
 const level = ref( "")
 const academic_year_number = ref( "")
@@ -270,6 +270,7 @@ const lessonPlanDetailsDialog = ref( false)
 const lessonPlanInfo = ref( "")
 const learningAreaList = ref( [])
 const classList = ref( [])
+const levelList = ref( [])
 const classStore = useClassesStore()
 const selectedClass = ref( null)
 const routerData = useRouter()
@@ -284,6 +285,7 @@ const schemeOfWorkList = ref([])
 const schemeSubjectList = ref([])
 const academicYearList = ref([])
 const commons = useCommonsStore()
+const levelStore = useLevelStore()
 const schemeOfWorkStore = useSchemeOfWorkStore()
 const subjectStore = useSubjectStore()
 
@@ -312,7 +314,7 @@ const changeMenu = (value) => {
 }
 
 const filterClasses = (level) => {
-  classStore.fetchClasses(level)
+  classStore.fetchSchemeOfWorkClasses(level)
 }
 
 const filterSchemeSubject = () => {
@@ -326,11 +328,12 @@ const filterSchemeSubject = () => {
 }
 
 onMounted(
-    () => {
-      classStore.fetchClasses("")
+    async () => {
+      await classStore.fetchSchemeOfWorkClasses()
       if(selectedClass.value) {
-        subjectStore.fetchSchemeSubjectByClass(selectedClass.value)
-        subjectStore.fetchAcademicYearByClass(selectedClass.value)
+        await subjectStore.fetchSchemeSubjectByClass(selectedClass.value)
+        await subjectStore.fetchAcademicYearByClass(selectedClass.value)
+        await levelStore.fetchLevels()
       }
     }
 )
@@ -338,7 +341,7 @@ onMounted(
 
 
 watch(
-    () => classStore.classInfoResponse,
+    () => classStore.schemeClassInfoResponse,
     async (data) => {
       if(data){
         let classInfo = data.data
@@ -481,6 +484,17 @@ watch(
       }
     },
     {deep: true}
+)
+
+
+watch(
+    () => levelStore.levelInfoResponse,
+    async (data) => {
+      if(data){
+        levelList.value = data.data
+      }
+    },
+    {deep:true}
 )
 
 </script>

@@ -56,7 +56,7 @@
                   >
                     <option disabled value="">Filter by Level</option>
                     <option value="">All</option>
-                    <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+                    <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
                   </select>
                 </div>
               </div>

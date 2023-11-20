@@ -6,6 +6,7 @@ export const useClassesStore = defineStore("classes", () => {
     let classResponse = ref(null)
     let classLevelResponse = ref(null)
     let classInfoResponse = ref(null)
+    let schemeClassInfoResponse = ref(null)
     let classLevelInfoResponse = ref(null)
     let classSubjectsInfoResponse = ref(null)
     let classSubjectResponse = ref(null)
@@ -63,6 +64,19 @@ export const useClassesStore = defineStore("classes", () => {
         return await api.get("main/classes?level="+data)
             .then((response) => {
                 classInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchSchemeOfWorkClasses(data) {
+        data = data ? data : ""
+        return await api.get("main/scheme-of-work-classes?level="+data)
+            .then((response) => {
+                schemeClassInfoResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -169,10 +183,12 @@ export const useClassesStore = defineStore("classes", () => {
         classLevelInfoResponse,
         classesToAddResponse,
         newStreamSuccess,
+        schemeClassInfoResponse,
         classCurriculumResponse,
         errorMessage,
         newClassData,
         fetchClasses,
+        fetchSchemeOfWorkClasses,
         fetchClassSubjects,
         addClassSubjectData,
         newClassLevelData,
