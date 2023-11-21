@@ -106,6 +106,7 @@ const campusNumber = localStorage.getItem('campus_number');
 const errorMessage = ref(null)
 const campusLevelInfo = ref([])
 const loader = ref(false)
+const  notificationStore  = useNotificationStore()
 
 const currentYear = ref((new Date()).getFullYear());
 
@@ -113,6 +114,7 @@ const currentYear = ref((new Date()).getFullYear());
 
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import useNotificationStore from "@/composables/useNotification.js";
 
 const date = ref();
 
@@ -166,6 +168,17 @@ watch(
         form.academic_year_name = ""
         form.no_of_study_period = ""
         form.academic_year = ""
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => academicYearStore.errorMessage,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}
