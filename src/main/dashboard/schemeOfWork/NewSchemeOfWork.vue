@@ -32,7 +32,7 @@
             @change="filterClasses(form.class_number)"
         >
           <option disabled value="">Select Class</option>
-          <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.name}}</option>
+          <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
         </select>
       </div>
 
@@ -47,7 +47,9 @@
             >
               <option disabled value="">Select Academic Year</option>
 <!--              <option value="">All</option>-->
-              <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">{{list.academic_year_name+" ["+list.level_name+"]"}}</option>
+              <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
+                {{list.code+". "+list.academic_year_name+" ["+list.level_name+"]"}}
+              </option>
             </select>
           </div>
 
@@ -62,7 +64,9 @@
                 @click="filterSubject(form.subject_number)"
             >
               <option disabled value="">Select Subject</option>
-              <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.name}}</option>
+              <option v-for="(list, index) in subjectList" :key="index" :value="list.number">
+                {{list.code+". "+list.name}}
+              </option>
             </select>
           </div>
 

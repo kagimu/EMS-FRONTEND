@@ -41,7 +41,9 @@
             class="form-select form-select-sm"
             v-model="form.academic_year_number">
           <option disabled value="">Select Class</option>
-          <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">{{list.academic_year_name}}</option>
+          <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
+            {{list.code+". "+list.academic_year_name}}
+          </option>
         </select>
       </div>
 
