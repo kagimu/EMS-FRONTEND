@@ -1,7 +1,6 @@
 <template>
   <div>
-    <!--  {{schemeDataInfo}} <br />-->
-    <!--  -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;<br />-->
+
 
 
     <form @submit.prevent="addLessonPlan">
@@ -30,7 +29,8 @@
                 v-model="form.lesson_plan_concept_number"
             >
               <option disabled value="">Select Concept</option>
-              <option v-for="(list, index) in conceptListData" :key="index" :value="list.number">{{ list.name }}
+              <option v-for="(list, index) in conceptListData" :key="index" :value="list.number">
+                {{list.code+". "+list.name}}
               </option>
             </select>
           </div>
