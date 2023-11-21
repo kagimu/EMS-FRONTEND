@@ -197,10 +197,7 @@ watch(
 
         if(campusNumber){
           campusList.value = data.data
-          // if(!campusId) {
             await levelStore.fetchLevelInfo(campusId ? campusId : campusNumber)
-            // await levelStore.fetchLevelInfo(campusNumber)
-          // }
         }
 
 
