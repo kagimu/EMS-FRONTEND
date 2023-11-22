@@ -120,8 +120,6 @@ const menuList = ref([
   {title:"Home", name:"home", icon:"bi-house"},
   // {title:"Reports", name:"reports", icon:"bi-graph-up-arrow"},
   {title:"School", name:"school", icon:"bi-house-add"},
-  {title:"Campus", name:"campus", icon:"bi-house-add"},
-  {title:"Level", name:"level", icon:"bi-sign-intersection"},
   {title:"Curriculum", name:"curriculum", icon:"bi-pen"},
   {title:"Classes", name:"class", icon:"bi-pen"},
   {title:"Scheme Of Work", name:"scheme-of-work", icon:"bi-receipt"},

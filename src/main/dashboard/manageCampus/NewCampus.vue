@@ -12,7 +12,7 @@
           <div class="mx-auto" style="width: 95%;">
 
 
-            <div class="mb-2">
+<!--            <div class="mb-2">
               <label class="textColor"><small>School</small></label>
             <select
                 disabled
@@ -23,7 +23,7 @@
               <option disabled value="">Select School</option>
               <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
             </select>
-            </div>
+            </div>-->
 
 
 
@@ -124,15 +124,8 @@ const levelList = ref([])
 const campusStore = useCampusStore()
 const schoolStore = useSchoolStore()
 
-/*const levelList = ref(
-    [
-        'Kindergarten',
-        'Primary',
-        'Secondary',
-        'Vocational',
-        'Tertiary'
-        ]
-)*/
+let schoolNumber = routerData.currentRoute.value.query.id
+
 
 const campus_number = ref(null)
 
@@ -147,8 +140,7 @@ const form = reactive({
 
 const addCampus = () =>{
   loader.value = true
-  // form.school_number = routerData.currentRoute.value.query.id
-  form.school_number = school.value
+  form.school_number = schoolNumber
   if(campus_number.value){
     form.campus_number = campus_number.value
     campusStore.editCampusData(form)
