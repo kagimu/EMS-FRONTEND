@@ -182,6 +182,7 @@ onMounted(
     () => {
       filterSubjectList()
       learningAreaStore.fetchLearningArea()
+      selectSubjectCluster("")
     }
 )
 
@@ -197,7 +198,6 @@ watch(
     () => subjectStore.subjectResponse,
     async (data) => {
       if(data){
-        // subjectDialog.value = false
         await filterSubjectList()
         notificationStore.successToast("Success", data.message)
       }

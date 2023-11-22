@@ -96,7 +96,7 @@
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="topic_number"
-                  @click="filterSubTopic()"
+                  @click="fetchSubTopicLIst()"
               >
                 <option disabled value="">Select Topic</option>
                 <option value="">All</option>
@@ -336,6 +336,8 @@ const selectStrand = (subject_number) => {
   fetchSubTopicLIst()
   strandStore.fetchStrandList(subject_number)
 }
+
+
 const selectTopic = (strand_number) => {
 
   // learning_area_number.value = ""
@@ -348,14 +350,18 @@ const selectTopic = (strand_number) => {
   topicStore.fetchTopicList(strand_number)
 }
 
-const filterSubTopic = () => {
-    fetchSubTopicLIst()
-}
+
+
+
 
 onMounted(
     () => {
       fetchSubTopicLIst()
       learningAreaStore.fetchLearningArea()
+      selectSubjectCluster("")
+      selectSubject("")
+      selectStrand("")
+      selectTopic("")
     }
 )
 

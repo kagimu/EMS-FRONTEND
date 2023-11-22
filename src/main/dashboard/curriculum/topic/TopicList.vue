@@ -315,6 +315,10 @@ onMounted(
     () => {
       fetchTopicList()
       learningAreaStore.fetchLearningArea()
+
+      selectSubjectCluster("")
+      selectSubject("")
+      selectStrand("")
     }
 )
 

@@ -343,6 +343,7 @@ const selectSubjectCluster = (learning_area_number) => {
 }
 
 
+
 const selectSubject = (subject_cluster_number) => {
 
   // learning_area_number.value = ""
@@ -356,6 +357,8 @@ const selectSubject = (subject_cluster_number) => {
   subjectStore.fetchSubjectList(subject_cluster_number)
 }
 
+
+
 const selectStrand = (subject_number) => {
 
   // learning_area_number.value = ""
@@ -368,6 +371,9 @@ const selectStrand = (subject_number) => {
   fetchConceptsList()
   strandStore.fetchStrandList(subject_number)
 }
+
+
+
 const selectTopic = (strand_number) => {
 
   // learning_area_number.value = ""
@@ -380,6 +386,9 @@ const selectTopic = (strand_number) => {
   fetchConceptsList()
   topicStore.fetchTopicList(strand_number)
 }
+
+
+
 const selectSubTopic = (topic_number) => {
 
   // learning_area_number.value = ""
@@ -397,6 +406,11 @@ onMounted(
     () => {
       fetchConceptsList()
       learningAreaStore.fetchLearningArea()
+      selectSubjectCluster("")
+      selectSubject("")
+      selectStrand("")
+      selectTopic("")
+      selectSubTopic("")
     }
 )
 

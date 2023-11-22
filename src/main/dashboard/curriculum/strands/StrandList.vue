@@ -239,6 +239,8 @@ onMounted(
     () => {
       filterStrandList()
       learningAreaStore.fetchLearningArea()
+      selectSubjectCluster("")
+      selectSubject("")
     }
 )
 
