@@ -10,7 +10,7 @@
           </div>
           <div class="modal-body">
             <div class="mt-2 mb-2">
-              <new-school></new-school>
+              <new-curriculum></new-curriculum>
             </div>
           </div>
 
@@ -90,9 +90,8 @@
 
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
-import NewSchool from "@/main/dashboard/manageSchool/NewSchool.vue";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-import NewCampus from "@/main/dashboard/manageCampus/NewCampus.vue";
+import NewCurriculum from "@/main/dashboard/curriculum/curriculumSetup/NewCurriculum.vue";
 
 const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
