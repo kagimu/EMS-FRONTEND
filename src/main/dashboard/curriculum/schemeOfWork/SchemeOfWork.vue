@@ -13,10 +13,10 @@
               <new-scheme-of-work :schemeOfWorkList="schemeOfWorkList" ref="schemeOfWorkRef"></new-scheme-of-work>
             </div>
           </div>
-
         </div>`
       </div>
     </div>
+
 
     <div class="modal fade" id="lessonPlanModal" tabindex="-1" :class="{ show: lessonPlanDialog }" aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog modal-xl">
@@ -30,7 +30,6 @@
               <new-lesson-plan :schemeDataInfo="schemeDataInfo" ref="lessonPlanRef"></new-lesson-plan>
             </div>
           </div>
-
         </div>`
       </div>
     </div>
@@ -52,9 +51,6 @@
         </div>`
       </div>
     </div>
-
-
-
 
 
 

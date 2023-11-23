@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <form @submit.prevent="addSchool">
+    <form @submit.prevent="addCurriculum">
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
         {{ classError }}
       </div>
@@ -22,10 +22,10 @@
         <button
             type="submit"
             class="btn btn-primary border-0">
-            {{school_number ? "Edit":"Save"}}
-          <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </span>
+                Save
+              <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </span>
         </button>
       </div>
 
@@ -38,14 +38,15 @@
 <script setup>
 
 import {watch, onMounted, reactive, ref} from "vue";
-import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 
 const classError = ref(null)
 const name = ref(null)
 const school_number = ref(null)
 const loader = ref(false)
 
-const schoolStore = useSchoolStore()
+
+const curriculumStore = useCurriculumStore()
 
 
 const form = reactive({
@@ -53,14 +54,14 @@ const form = reactive({
 })
 
 
-const addSchool = () =>{
+const addCurriculum = () =>{
   loader.value = true
-  if(school_number.value){
+/*  if(school_number.value){
     form.school_number = school_number.value
     schoolStore.editSchoolData(form)
-  }else {
-    schoolStore.newSchoolData(form)
-  }
+  }else {*/
+  curriculumStore.newCurriculumData(form)
+  // }
 
 }
 
@@ -77,42 +78,19 @@ onMounted(
 
 
 
-
 watch (
-    () => schoolStore.schoolInfoResponse,
+    () => curriculumStore.curriculumResponse,
     async (data) => {
       if(data){
-        form.name = data.data.name
-        school_number.value = data.data.number
-      }
-    },
-    {deep:true}
-)
-
-watch (
-    () => schoolStore.newSchoolResponse,
-    async (data) => {
-      if(data){
+        loader.value = false
         form.name = null
-        loader.value = false
-      }
-    },
-    {deep:true}
-)
-
-
-watch (
-    () => schoolStore.editSchoolResponse,
-    async (data) => {
-      if(data){
-        loader.value = false
       }
     },
     {deep:true}
 )
 
 watch (
-    () => schoolStore.errorMessage,
+    () => curriculumStore.errorMessage,
     async (data) => {
       if(data){
         notificationStore.errorToast("Error",data.message)

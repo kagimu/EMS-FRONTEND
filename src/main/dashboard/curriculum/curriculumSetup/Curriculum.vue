@@ -39,7 +39,7 @@
 
 
     <div class="row">
-      <div class="col-4" v-for="(school, index) in schoolsList" :key="index">
+      <div class="col-4" v-for="(school, index) in curriculumList" :key="index">
 
         <div class="card mt-3">
           <div class="card-body">
@@ -92,13 +92,14 @@ import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import NewCurriculum from "@/main/dashboard/curriculum/curriculumSetup/NewCurriculum.vue";
+import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 
 const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
-
+const curriculumStore = useCurriculumStore()
 
 const schoolDialog = ref( false)
-const schoolsList = ref( [])
+const curriculumList = ref( [])
 
 
 const addSchool = () => {
@@ -127,65 +128,35 @@ const deleteSchool = (school) => {
 
 onMounted(
     () => {
-      schoolStore.fetchSchools()
+      curriculumStore.fetchCurriculum()
     }
 )
 
+
+watch (
+    () => curriculumStore.curriculumResponse,
+    async (data) => {
+      if(data){
+        await curriculumStore.fetchCurriculum()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+
+
 watch(
-    () => schoolStore.newSchoolResponse,
+    () => curriculumStore.curriculumDataResponse,
     async (data) => {
       if(data){
-        schoolDialog.value = false
-        await schoolStore.fetchSchools()
-        notificationStore.successToast("Success", data.message)
+        curriculumList.value = data.data
       }
     },
     {deep:true}
 )
 
-watch(
-    () => schoolStore.schoolsResponse,
-    async (data) => {
-      if(data){
-        schoolsList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-
-watch (
-    () => schoolStore.editSchoolResponse,
-    async (data) => {
-      if(data){
-        schoolDialog.value = false
-        await schoolStore.fetchSchools()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch (
-    () => schoolStore.deleteSchoolResponse,
-    async (data) => {
-      if(data){
-        await schoolStore.fetchSchools()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch (
-    () => schoolStore.errorMessage,
-    async (data) => {
-      if(data){
-        notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-)
 
 
 </script>
