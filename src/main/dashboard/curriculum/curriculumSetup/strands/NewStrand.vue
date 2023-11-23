@@ -1,11 +1,12 @@
 <template>
   <div>
 
-    <form @submit.prevent="addSubject">
+    <form @submit.prevent="addStrand">
 
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
         {{ classError }}
       </div>
+
 
       <div class="mb-2">
         <label class="textColor"><small>Code</small></label>
@@ -39,15 +40,28 @@
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
-            v-model="form.subject_cluster_number">
+            v-model="subject_cluster_number"
+            @click="selectSubject(subject_cluster_number)"
+        >
           <option disabled value="">Select Subject Cluster</option>
           <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
         </select>
       </div>
 
+      <div class="mb-2">
+        <label class="textColor"><small>Subject</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.subject_number">
+          <option disabled value="">Select Subject</option>
+          <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
 
       <div class="mb-2">
-        <label class="textColor"><small>Subject Name</small></label>
+        <label class="textColor"><small>Strand Name</small></label>
         <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.name" required class="form-control form-select-sm">
       </div>
 
@@ -74,41 +88,51 @@
 
 import {onMounted, reactive, ref, watch} from "vue";
 import {useRouter} from "vue-router";
-import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
-import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
-import {useSubjectClusterStore} from "@/main/dashboard/curriculum/subjectCluster/store/subjectCluster.js";
+import {useStrandStore} from "@/main/dashboard/curriculum/curriculumSetup/strands/store/strand.js";
+import {useSubjectClusterStore} from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/store/subjectCluster.js";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
+import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
 import useCommonsStore from "@/composables/useCommons.js";
 import useNotificationStore from "@/composables/useNotification.js";
-const commons = useCommonsStore()
+
 const classError = ref(null)
 const name = ref(null)
 const loader = ref(false)
 const routerData = useRouter()
-const learning_area_number = ref("")
-const learningAreaList = ref([])
-const subjectClusterList = ref([])
+const subjectClusterStore = useSubjectClusterStore()
+const learningAreaStore = useLearningAreaStore()
+const subjectStore = useSubjectStore()
+const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
 
-const subjectStore = useSubjectStore()
-const learningAreaStore = useLearningAreaStore()
-const subjectClusterStore = useSubjectClusterStore()
+const strandStore = useStrandStore()
+const learningAreaList = ref([])
+const subjectClusterList = ref([])
+const subjectList = ref([])
+const learning_area_number = ref("")
+const subject_cluster_number = ref("")
 
 
 const form = reactive({
   code:null,
   name:null,
-  subject_cluster_number:""
+  subject_number:"",
 })
 
 
-const addSubject = () =>{
+const addStrand = () =>{
   loader.value = true
-  subjectStore.newSubjectData(form)
+  strandStore.newStrandData(form)
 }
 
 const selectSubjectCluster = (learning_area_number) => {
   subjectClusterStore.fetchSubjectClusterFilter(learning_area_number)
 }
+
+const selectSubject = (subject_cluster_number) => {
+  subjectStore.fetchSubjectList(subject_cluster_number)
+}
+
 
 
 onMounted(
@@ -129,7 +153,6 @@ watch(
 )
 
 
-
 watch(
     () => subjectClusterStore.subjectClusterFilterResponse,
     async (data) => {
@@ -142,19 +165,32 @@ watch(
 
 
 watch(
-    () => subjectStore.subjectResponse,
+    () => subjectStore.subjectListResponse,
     async (data) => {
       if(data){
-        loader.value = false
-        form.name = null
-        form.code = null
+        subjectList.value = data.data
       }
     },
     {deep:true}
 )
 
+
 watch(
-    () => subjectStore.errorMessage,
+    () => strandStore.strandResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+        form.code = null
+        form.name = null
+
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => strandStore.errorMessage,
     async (data) => {
       if(data){
         loader.value = false

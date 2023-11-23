@@ -123,7 +123,7 @@
 import {onMounted, reactive, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 
-import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
+import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";

@@ -43,7 +43,7 @@
 import {ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useRouter} from "vue-router";
-import {useCurriculumStore} from "@/main/dashboard/curriculum/store/curriculum.js";
+import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 
 
 const uploadError = ref(null)

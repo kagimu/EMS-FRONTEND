@@ -1,11 +1,12 @@
 <template>
   <div>
 
-    <form @submit.prevent="addConcept">
+    <form @submit.prevent="addSubtopic">
 
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
         {{ classError }}
       </div>
+
 
       <div class="mb-2">
         <label class="textColor"><small>Code</small></label>
@@ -48,6 +49,7 @@
 
 
 
+
       <div class="mb-2">
         <label class="textColor"><small>Subject</small></label>
         <select
@@ -81,30 +83,29 @@
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
-            v-model="topic_number"
-            @click="selectSubTopic(topic_number)"
-        >
+            v-model="form.topic_number">
           <option disabled value="">Select Topic</option>
           <option v-for="(list, index) in topicList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
         </select>
       </div>
 
+
       <div class="mb-2">
-        <label class="textColor"><small>Sub Topic</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="form.sub_topic_number">
-          <option disabled value="">Select Sub Topic</option>
-          <option v-for="(list, index) in subtopicList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-        </select>
+        <label class="textColor"><small>Sub Topic Name</small></label>
+        <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.name" required class="form-control form-select-sm">
       </div>
 
-
-
       <div class="mb-2">
-        <label class="textColor"><small>Concept Name</small></label>
-        <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.name" required class="form-control form-select-sm">
+        <label class="textColor"><small>Estimated time Required</small></label>
+        <input
+            maxlength="15"
+            @keypress="onlyNumberValidator($event)"
+            type="text"
+            style="outline: none 0 !important;
+            box-shadow: none;"
+            v-model="form.estimated_time"
+            required
+            class="form-control form-select-sm">
       </div>
 
 
@@ -130,13 +131,12 @@
 
 import {onMounted, reactive, ref, watch} from "vue";
 import {useRouter} from "vue-router";
-import {useConceptStore} from "@/main/dashboard/curriculum/concept/store/concept.js";
-import {useSubtopicStore} from "@/main/dashboard/curriculum/subTopic/store/subTopic.js";
-import {useTopicStore} from "@/main/dashboard/curriculum/topic/store/topic.js";
-import {useSubjectClusterStore} from "@/main/dashboard/curriculum/subjectCluster/store/subjectCluster.js";
-import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
-import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
-import {useStrandStore} from "@/main/dashboard/curriculum/strands/store/strand.js";
+import {useSubtopicStore} from "@/main/dashboard/curriculum/curriculumSetup/subTopic/store/subTopic.js";
+import {useTopicStore} from "@/main/dashboard/curriculum/curriculumSetup/topic/store/topic.js";
+import {useSubjectClusterStore} from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/store/subjectCluster.js";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
+import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
+import {useStrandStore} from "@/main/dashboard/curriculum/curriculumSetup/strands/store/strand.js";
 import useCommonsStore from "@/composables/useCommons.js";
 import useNotificationStore from "@/composables/useNotification.js";
 
@@ -144,11 +144,10 @@ const classError = ref(null)
 const name = ref(null)
 const loader = ref(false)
 const routerData = useRouter()
-const notificationStore  = useNotificationStore()
-
-const conceptStore = useConceptStore()
+const commons = useCommonsStore()
 
 const subtopicStore = useSubtopicStore()
+const notificationStore  = useNotificationStore()
 
 const topicStore = useTopicStore()
 
@@ -156,8 +155,6 @@ const subjectClusterStore = useSubjectClusterStore()
 const learningAreaStore = useLearningAreaStore()
 const subjectStore = useSubjectStore()
 const strandStore = useStrandStore()
-const commons = useCommonsStore()
-
 
 
 const learningAreaList = ref([])
@@ -165,27 +162,24 @@ const subjectClusterList = ref([])
 const subjectList = ref([])
 const strandList = ref([])
 const topicList = ref([])
-const subtopicList = ref([])
 const learning_area_number = ref("")
 const subject_cluster_number = ref("")
 const subject_number = ref("")
 const strand_number = ref("")
-const topic_number = ref("")
 
 
 const form = reactive({
   code:null,
   name:null,
-  sub_topic_number:"",
+  topic_number:"",
+  estimated_time:"",
 })
 
 
-const addConcept = () =>{
+const addSubtopic = () =>{
   loader.value = true
-  conceptStore.newConceptData(form)
+  subtopicStore.newSubtopicData(form)
 }
-
-
 
 
 const selectSubjectCluster = (learning_area_number) => {
@@ -205,16 +199,16 @@ const selectTopic = (strand_number) => {
   topicStore.fetchTopicList(strand_number)
 }
 
-const selectSubTopic = (topic_number) => {
-  subtopicStore.fetchSubTopicList(topic_number)
-}
-
 onMounted(
     () => {
       learningAreaStore.fetchLearningArea()
     }
 )
 
+function onlyNumberValidator(event) {
+  const validChars = /^[0-9+\-*/.\s]+$/;
+  if (!validChars.test(event.key)) return event.preventDefault();
+}
 
 watch(
     () => learningAreaStore.learningAreaInfResponse,
@@ -269,28 +263,20 @@ watch(
 )
 
 watch(
-    () => subtopicStore.subtopicListResponse,
-    async (data) => {
-      if(data){
-        subtopicList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => conceptStore.conceptResponse,
+    () => subtopicStore.subtopicResponse,
     async (data) => {
       if(data){
         loader.value = false
         form.name = null
+        form.code = null
       }
     },
     {deep:true}
 )
 
+
 watch(
-    () => conceptStore.errorMessage,
+    () => subtopicStore.errorMessage,
     async (data) => {
       if(data){
         loader.value = false
@@ -299,6 +285,7 @@ watch(
     },
     {deep:true}
 )
+
 
 </script>
 

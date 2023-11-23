@@ -121,7 +121,7 @@
 
 
 import {reactive, ref, watch} from "vue";
-import {useSchemeOfWorkStore} from "@/main/dashboard/schemeOfWork/store/schemeOfWork.js";
+import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
 import useCommonsStore from "@/composables/useCommons.js";
 
 const schemeOfWorkStore = useSchemeOfWorkStore()

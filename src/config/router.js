@@ -12,19 +12,20 @@ import settings from "@/main/settings/Settings.vue";
 import ReportCenter from "@/main/dashboard/ReportCenter/ReportCenter.vue";
 import StudentAdmission from "@/main/dashboard/studentAdmission/StudentAdmission.vue";
 import ManageSchool from "@/main/dashboard/manageSchool/ManageSchool.vue";
-import Curriculum from "@/main/dashboard/curriculum/Curriculum.vue";
-import SubjectCluster from "@/main/dashboard/curriculum/subjectCluster/SubjectCluster.vue";
-import SubjectList from "@/main/dashboard/curriculum/subject/SubjectList.vue";
-import StrandList from "@/main/dashboard/curriculum/strands/StrandList.vue";
-import TopicList from "@/main/dashboard/curriculum/topic/TopicList.vue";
-import SubTopicList from "@/main/dashboard/curriculum/subTopic/SubTopicList.vue";
-import ConceptList from "@/main/dashboard/curriculum/concept/ConceptList.vue";
+import Curriculum from "@/main/dashboard/curriculum/curriculumSetup/Curriculum.vue";
+import SubjectCluster from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/SubjectCluster.vue";
+import SubjectList from "@/main/dashboard/curriculum/curriculumSetup/subject/SubjectList.vue";
+import StrandList from "@/main/dashboard/curriculum/curriculumSetup/strands/StrandList.vue";
+import TopicList from "@/main/dashboard/curriculum/curriculumSetup/topic/TopicList.vue";
+import SubTopicList from "@/main/dashboard/curriculum/curriculumSetup/subTopic/SubTopicList.vue";
+import ConceptList from "@/main/dashboard/curriculum/curriculumSetup/concept/ConceptList.vue";
 import ClassSetupList from "@/main/dashboard/manageLevel/class/ClassSetupList.vue";
 import Timetable from "@/main/dashboard/curriculum/timetable/Timetable.vue";
-import SchemeOfWork from "@/main/dashboard/schemeOfWork/SchemeOfWork.vue";
+import SchemeOfWork from "@/main/dashboard/curriculum/schemeOfWork/SchemeOfWork.vue";
 import GeneralCalendar from "@/main/dashboard/eos/GeneralCalendar.vue";
 import CalendarDetails from "@/main/dashboard/eos/CalendarDetails.vue";
 import AllTimeTables from "@/main/dashboard/curriculum/timetable/AllTimeTables.vue";
+import CurriculumSetup from "@/main/dashboard/curriculum/curriculumSetup/CurriculumSetup.vue";
 
 
 
@@ -60,6 +61,7 @@ const router = createRouter({
                 {path: 'report-center', component: ReportCenter, name: "report-center"},
                 {path: 'settings', component: settings, name: "settings"},
                 {path: 'curriculum', component: Curriculum, name: "curriculum"},
+                {path: 'curriculum-setup', component: CurriculumSetup, name: "curriculum-setup"},
                 {path: 'subject-cluster', component: SubjectCluster, name: "subject-cluster"},
                 {path: 'subject', component: SubjectList, name: "subject"},
                 {path: 'strands', component: StrandList, name: "strands"},

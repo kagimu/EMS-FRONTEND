@@ -277,14 +277,14 @@
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useRouter} from "vue-router";
-import NewConcept from "@/main/dashboard/curriculum/concept/NewConcept.vue";
-import {useConceptStore} from "@/main/dashboard/curriculum/concept/store/concept.js";
-import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
-import {useSubjectClusterStore} from "@/main/dashboard/curriculum/subjectCluster/store/subjectCluster.js";
-import {useTopicStore} from "@/main/dashboard/curriculum/topic/store/topic.js";
-import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
-import {useStrandStore} from "@/main/dashboard/curriculum/strands/store/strand.js";
-import {useSubtopicStore} from "@/main/dashboard/curriculum/subTopic/store/subTopic.js";
+import NewConcept from "@/main/dashboard/curriculum/curriculumSetup/concept/NewConcept.vue";
+import {useConceptStore} from "@/main/dashboard/curriculum/curriculumSetup/concept/store/concept.js";
+import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
+import {useSubjectClusterStore} from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/store/subjectCluster.js";
+import {useTopicStore} from "@/main/dashboard/curriculum/curriculumSetup/topic/store/topic.js";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
+import {useStrandStore} from "@/main/dashboard/curriculum/curriculumSetup/strands/store/strand.js";
+import {useSubtopicStore} from "@/main/dashboard/curriculum/curriculumSetup/subTopic/store/subTopic.js";
 const routerData = useRouter()
 
 const subjectStore = useSubjectStore()

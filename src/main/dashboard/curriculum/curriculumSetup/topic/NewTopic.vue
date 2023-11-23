@@ -116,11 +116,11 @@
 
 import {onMounted, reactive, ref, watch} from "vue";
 import {useRouter} from "vue-router";
-import {useTopicStore} from "@/main/dashboard/curriculum/topic/store/topic.js";
-import {useSubjectClusterStore} from "@/main/dashboard/curriculum/subjectCluster/store/subjectCluster.js";
-import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
-import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
-import {useStrandStore} from "@/main/dashboard/curriculum/strands/store/strand.js";
+import {useTopicStore} from "@/main/dashboard/curriculum/curriculumSetup/topic/store/topic.js";
+import {useSubjectClusterStore} from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/store/subjectCluster.js";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
+import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
+import {useStrandStore} from "@/main/dashboard/curriculum/curriculumSetup/strands/store/strand.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import useCommonsStore from "@/composables/useCommons.js";
 import useNotificationStore from "@/composables/useNotification.js";

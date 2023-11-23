@@ -252,17 +252,17 @@
 <script setup>
 
 import {onMounted, ref, watch} from "vue";
-import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
 import useNotificationStore from "@/composables/useNotification.js";
-import NewSchemeOfWork from "@/main/dashboard/schemeOfWork/NewSchemeOfWork.vue";
+import NewSchemeOfWork from "@/main/dashboard/curriculum/schemeOfWork/NewSchemeOfWork.vue";
 import useCommonsStore from "@/composables/useCommons.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import router from "@/config/router.js";
 import {useRouter} from "vue-router";
-import {useSchemeOfWorkStore} from "@/main/dashboard/schemeOfWork/store/schemeOfWork.js";
-import {useSubjectStore} from "@/main/dashboard/curriculum/subject/store/subject.js";
-import NewLessonPlan from "@/main/dashboard/schemeOfWork/NewLessonPlan.vue";
-import LessonPlanDetails from "@/main/dashboard/schemeOfWork/LessonPlanDetails.vue";
+import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
+import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
+import NewLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPlan.vue";
+import LessonPlanDetails from "@/main/dashboard/curriculum/schemeOfWork/LessonPlanDetails.vue";
 import {useLevelStore} from "@/main/settings/level/store/levels.js";
 
 const level = ref( "")

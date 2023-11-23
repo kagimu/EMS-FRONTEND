@@ -75,19 +75,19 @@
 <script setup>
 
 import {ref, watch} from "vue";
-import LearningAreaList from "@/main/dashboard/curriculum/lerningArea/LearningAreaList.vue";
-import SubjectCluster from "@/main/dashboard/curriculum/subjectCluster/SubjectCluster.vue";
-import SubjectList from "@/main/dashboard/curriculum/subject/SubjectList.vue";
-import StrandList from "@/main/dashboard/curriculum/strands/StrandList.vue";
-import TopicList from "@/main/dashboard/curriculum/topic/TopicList.vue";
-import SubTopicList from "@/main/dashboard/curriculum/subTopic/SubTopicList.vue";
-import ConceptList from "@/main/dashboard/curriculum/concept/ConceptList.vue";
+import LearningAreaList from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/LearningAreaList.vue";
+import SubjectCluster from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/SubjectCluster.vue";
+import SubjectList from "@/main/dashboard/curriculum/curriculumSetup/subject/SubjectList.vue";
+import StrandList from "@/main/dashboard/curriculum/curriculumSetup/strands/StrandList.vue";
+import TopicList from "@/main/dashboard/curriculum/curriculumSetup/topic/TopicList.vue";
+import SubTopicList from "@/main/dashboard/curriculum/curriculumSetup/subTopic/SubTopicList.vue";
+import ConceptList from "@/main/dashboard/curriculum/curriculumSetup/concept/ConceptList.vue";
 import ClassSetupList from "@/main/dashboard/manageLevel/class/ClassSetupList.vue";
-import NewLearningArea from "@/main/dashboard/curriculum/lerningArea/NewLearningArea.vue";
+import NewLearningArea from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/NewLearningArea.vue";
 import ImportCurriculum from "@/main/dashboard/curriculum/importCurriculum/importCurriculum.vue";
 import useNotificationStore from "@/composables/useNotification.js";
-import {useCurriculumStore} from "@/main/dashboard/curriculum/store/curriculum.js";
-import ManageCurriculum from "@/main/dashboard/curriculum/ManageCurriculum.vue";
+import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
+import ManageCurriculum from "@/main/dashboard/curriculum/curriculumSetup/ManageCurriculum.vue";
 
 const menuSelected = ref( "learning-area")
 const curriculumMenu = ref( [

@@ -70,8 +70,8 @@
 <script setup>
 
 import {onMounted, ref, watch} from "vue";
-import NewLearningArea from "@/main/dashboard/curriculum/lerningArea/NewLearningArea.vue";
-import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
+import NewLearningArea from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/NewLearningArea.vue";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
 import useNotificationStore from "@/composables/useNotification.js";
 
 

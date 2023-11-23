@@ -22,9 +22,8 @@
 
 
 
-    <div class="mt-3 flex justify-between">
-      &nbsp;
-      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#infoModal">
+    <div class="mt-3">
+      <button type="button"  class="btn btn-sm buttonStyle btn-primary ml-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#infoModal">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
         Add Campus
       </button>

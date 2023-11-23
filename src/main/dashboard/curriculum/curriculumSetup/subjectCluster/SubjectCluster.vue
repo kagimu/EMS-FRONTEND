@@ -111,10 +111,10 @@
 
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
-import NewSubjectCluster from "@/main/dashboard/curriculum/subjectCluster/NewSubjectCluster.vue";
-import {useSubjectClusterStore} from "@/main/dashboard/curriculum/subjectCluster/store/subjectCluster.js";
+import NewSubjectCluster from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/NewSubjectCluster.vue";
+import {useSubjectClusterStore} from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/store/subjectCluster.js";
 import {useRouter} from "vue-router";
-import {useLearningAreaStore} from "@/main/dashboard/curriculum/lerningArea/store/learningArea.js";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
 const routerData = useRouter()
 const curriculumDialog = ref( false)
 const subjectClusterList = ref( [])
