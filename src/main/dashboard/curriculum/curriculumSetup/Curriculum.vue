@@ -5,7 +5,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">New School</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">New Curriculum</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -30,7 +30,7 @@
           data-bs-toggle="modal"
           data-bs-target="#infoModal">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-        Add School
+        Add Curriculum
       </button>
     </div>
 
