@@ -73,10 +73,13 @@ import {onMounted, ref, watch} from "vue";
 import NewLearningArea from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/NewLearningArea.vue";
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
 import useNotificationStore from "@/composables/useNotification.js";
+import {useRouter} from "vue-router";
+const routerData = useRouter()
 
 
 const curriculumDialog = ref( false)
 const learningAreaList = ref( [])
+let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
 const learningAreaStore = useLearningAreaStore()
@@ -94,7 +97,7 @@ const addCurriculum = () => {
 
 onMounted(
     () => {
-      learningAreaStore.fetchLearningArea()
+      learningAreaStore.fetchLearningArea(curriculumNumber)
     }
 )
 
@@ -104,7 +107,7 @@ watch(
     async (data) => {
       if(data){
         // curriculumDialog.value = false
-        await learningAreaStore.fetchLearningArea()
+        await learningAreaStore.fetchLearningArea(curriculumNumber)
         notificationStore.successToast("Success", data.message)
       }
     },

@@ -68,11 +68,13 @@ const nameRef = ref(null)
 const routerData = useRouter()
 const  notificationStore  = useNotificationStore()
 const learningAreaStore = useLearningAreaStore()
+let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
 const form = reactive({
   name:null,
   code:null,
+  curriculum_number:curriculumNumber,
 })
 
 
