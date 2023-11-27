@@ -27,7 +27,8 @@ export const useTopicStore = defineStore("topic", () => {
         "&subject_cluster_number="+data.subject_cluster_number+
         "&subject_number="+data.subject_number+
         "&strand_number="+data.strand_number+
-        "&class_number="+data.class_number
+        "&class_number="+data.class_number+
+        "&curriculum_number="+data.curriculum_number
             )
             .then((response) => {
                 topicInfoResponse.value = response.data

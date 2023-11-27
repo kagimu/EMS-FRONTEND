@@ -166,6 +166,7 @@ const learning_area_number = ref("")
 const subject_cluster_number = ref("")
 const subject_number = ref("")
 const strand_number = ref("")
+let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
 const form = reactive({
@@ -201,7 +202,7 @@ const selectTopic = (strand_number) => {
 
 onMounted(
     () => {
-      learningAreaStore.fetchLearningArea()
+      learningAreaStore.fetchLearningArea(curriculumNumber)
     }
 )
 

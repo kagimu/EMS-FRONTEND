@@ -258,6 +258,7 @@ const subject_number = ref("")
 const strand_number = ref("")
 const learning_area_number = ref("")
 const class_number = ref("")
+let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
 const addSubject = () => {
@@ -314,8 +315,7 @@ const selectStrand = (subject_number) => {
 onMounted(
     () => {
       fetchTopicList()
-      learningAreaStore.fetchLearningArea()
-
+      learningAreaStore.fetchLearningArea(curriculumNumber)
       selectSubjectCluster("")
       selectSubject("")
       selectStrand("")
@@ -329,6 +329,7 @@ onMounted(
      subject_number:subject_number.value,
      strand_number:strand_number.value,
      class_number:class_number.value,
+     curriculum_number:curriculumNumber,
    }
    topicStore.fetchTopics(data)
  }

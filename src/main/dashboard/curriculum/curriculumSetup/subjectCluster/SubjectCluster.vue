@@ -123,6 +123,7 @@ const subjectClusterStore = useSubjectClusterStore()
 const  notificationStore  = useNotificationStore()
 const learningAreaStore = useLearningAreaStore()
 const learningAreaList = ref([])
+let  curriculumNumber = routerData.currentRoute.value.query.id
 
 const addCurriculum = () => {
   curriculumDialog.value = true
@@ -146,6 +147,7 @@ onMounted(
 const fetchSubjectClusterList = () => {
   let data = {
     learning_area_number:learning_area_number.value,
+    curriculum_number:curriculumNumber,
   }
   subjectClusterStore.fetchSubjectCluster(data)
 }

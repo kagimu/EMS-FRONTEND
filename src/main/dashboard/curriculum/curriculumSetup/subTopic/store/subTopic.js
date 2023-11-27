@@ -28,7 +28,8 @@ export const useSubtopicStore = defineStore("subtopic", () => {
                 "&subject_cluster_number="+data.subject_cluster_number+
                 "&subject_number="+data.subject_number+
                 "&strand_number="+data.strand_number+
-                "&topic_number="+data.topic_number
+                "&topic_number="+data.topic_number+
+                "&curriculum_number="+data.curriculum_number
             )
             .then((response) => {
                 subtopicInfoResponse.value = response.data

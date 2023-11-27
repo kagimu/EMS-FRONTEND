@@ -73,6 +73,7 @@ const subjectClusterStore = useSubjectClusterStore()
 const  notificationStore  = useNotificationStore()
 const learningAreaList = ref([])
 const learningAreaStore = useLearningAreaStore()
+let  curriculumNumber = routerData.currentRoute.value.query.id
 
 const form = reactive({
   name:null,
@@ -89,7 +90,7 @@ const addSubjectCluster = () =>{
 
 onMounted(
     () => {
-      learningAreaStore.fetchLearningArea()
+      learningAreaStore.fetchLearningArea(curriculumNumber)
     }
 )
 

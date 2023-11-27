@@ -82,7 +82,7 @@
             class="form-select form-select-sm"
             v-model="form.class_number">
           <option disabled value="">Select Class</option>
-          <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+          <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
         </select>
       </div>
 
@@ -148,6 +148,7 @@ const classList = ref([])
 const learning_area_number = ref("")
 const subject_cluster_number = ref("")
 const subject_number = ref("")
+let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
 const form = reactive({
@@ -181,7 +182,7 @@ const selectStrand = (subject_number) => {
 
 onMounted(
     () => {
-      learningAreaStore.fetchLearningArea()
+      learningAreaStore.fetchLearningArea(curriculumNumber)
     }
 )
 

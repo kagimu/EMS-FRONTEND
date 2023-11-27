@@ -157,6 +157,7 @@ const learningAreaList = ref([])
 const subject_cluster_number = ref("")
 const learning_area_number = ref("")
 const subjectClusterStore = useSubjectClusterStore()
+let  curriculumNumber = routerData.currentRoute.value.query.id
 
 const addSubject = () => {
   subjectDialog.value = true
@@ -181,7 +182,7 @@ const selectSubjectCluster = (learning_area_number) => {
 onMounted(
     () => {
       filterSubjectList()
-      learningAreaStore.fetchLearningArea()
+      learningAreaStore.fetchLearningArea(curriculumNumber)
       selectSubjectCluster("")
     }
 )
@@ -190,6 +191,7 @@ const filterSubjectList = () => {
   let data = {
     learning_area_number:learning_area_number.value,
     subject_cluster_number:subject_cluster_number.value,
+    curriculum_number:curriculumNumber,
   }
   subjectStore.fetchSubjects(data)
 }

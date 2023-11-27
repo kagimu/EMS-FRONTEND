@@ -40,7 +40,7 @@ export const useSubjectStore = defineStore("subject", () => {
 
     async function fetchSubjects(data) {
         return await api.get("main/subjects?learning_area_number="+data.learning_area_number+
-        "&subject_cluster_number="+data.subject_cluster_number
+        "&subject_cluster_number="+data.subject_cluster_number+"&curriculum_number="+data.curriculum_number
             )
             .then((response) => {
                 subjectInfoResponse.value = response.data

@@ -27,7 +27,8 @@ export const useConceptStore = defineStore("concept", () => {
                 "&subject_number="+data.subject_number+
                 "&strand_number="+data.strand_number+
                 "&topic_number="+data.topic_number+
-                "&sub_topic_number="+data.sub_topic_number
+                "&sub_topic_number="+data.sub_topic_number+
+                "&curriculum_number="+data.curriculum_number
             )
             .then((response) => {
                 conceptInfoResponse.value = response.data

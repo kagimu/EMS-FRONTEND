@@ -314,6 +314,7 @@ const strand_number = ref("")
 const topic_number = ref("")
 const sub_topic_number = ref("")
 const learning_area_number = ref("")
+let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
 const addConcept = () => {
@@ -405,7 +406,7 @@ const selectSubTopic = (topic_number) => {
 onMounted(
     () => {
       fetchConceptsList()
-      learningAreaStore.fetchLearningArea()
+      learningAreaStore.fetchLearningArea(curriculumNumber)
       selectSubjectCluster("")
       selectSubject("")
       selectStrand("")
@@ -422,7 +423,8 @@ const fetchConceptsList = () => {
     subject_number:subject_number.value,
     strand_number:strand_number.value,
     topic_number:topic_number.value,
-    sub_topic_number:sub_topic_number.value
+    sub_topic_number:sub_topic_number.value,
+    curriculum_number:curriculumNumber,
   }
   conceptStore.fetchConcepts(data)
 }

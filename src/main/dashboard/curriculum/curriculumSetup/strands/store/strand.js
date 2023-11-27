@@ -26,7 +26,8 @@ export const useStrandStore = defineStore("strand", () => {
     async function fetchStrands(data) {
         return await api.get("main/strands?learning_area_number="+data.learning_area_number+
         "&subject_cluster_number="+data.subject_cluster_number+
-        "&subject_number="+data.subject_number
+        "&subject_number="+data.subject_number+
+        "&curriculum_number="+data.curriculum_number
             )
             .then((response) => {
                 strandInfoResponse.value = response.data
