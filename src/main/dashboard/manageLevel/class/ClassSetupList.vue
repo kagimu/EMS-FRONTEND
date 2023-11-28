@@ -152,22 +152,30 @@ const deleteClass = (data) => {
 }
 
 const filterClasses = (level) => {
-  classStore.fetchClasses(level)
+    fetchClassList()
 }
 
 onMounted(
     async () => {
-      await  classStore.fetchClasses(level.value)
+      await fetchClassList()
       await levelStore.fetchLevels(curriculumNumber)
     }
 )
+
+const fetchClassList = () => {
+  let data = {
+    level:level.value,
+    curriculum_number:curriculumNumber,
+  }
+  classStore.fetchClasses(data)
+}
 
 watch(
     () => classStore.classResponse,
     async (data) => {
       if(data){
         // classDialog.value = false
-        await classStore.fetchClasses(level.value)
+        await fetchClassList()
         notificationStore.successToast("Success", data.message)
       }
     },
