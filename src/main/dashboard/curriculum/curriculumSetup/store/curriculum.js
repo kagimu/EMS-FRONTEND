@@ -8,6 +8,7 @@ export const useCurriculumStore = defineStore("curriculum", () => {
     let curriculumExcelResponse = ref(null)
     let curriculumResponse = ref(null)
     let curriculumDataResponse = ref(null)
+    let curriculumInfoResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -28,6 +29,18 @@ export const useCurriculumStore = defineStore("curriculum", () => {
         return await api.get("main/curriculum-list")
             .then((response) => {
                 curriculumDataResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchCurriculumInfo(data) {
+        return await api.get("main/curriculum-info?curriculum_number="+data)
+            .then((response) => {
+                curriculumInfoResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -74,10 +87,12 @@ export const useCurriculumStore = defineStore("curriculum", () => {
         curriculumExcelResponse,
         curriculumResponse,
         curriculumDataResponse,
+        curriculumInfoResponse,
         errorMessage,
         uploadExcelFile,
         fetchUploadedExcel,
         newCurriculumData,
-        fetchCurriculum
+        fetchCurriculum,
+        fetchCurriculumInfo,
     }
 })

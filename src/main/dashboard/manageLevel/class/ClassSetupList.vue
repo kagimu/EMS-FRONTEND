@@ -31,8 +31,8 @@
 
 
 
-        <div class="card mt-3">
-          <div class="card-body" style="padding: 0;">
+        <div class="mt-3">
+<!--          <div class="card-body" style="padding: 0;">-->
 
 
             <div class="flex justify-content-between mt-3">
@@ -105,7 +105,7 @@
               </tbody>
             </table>
 
-          </div>
+<!--          </div>-->
         </div>
 
       </div>

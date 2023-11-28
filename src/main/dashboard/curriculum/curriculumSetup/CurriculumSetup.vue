@@ -13,8 +13,36 @@
 
           <div class="card mt-3">
             <div class="card-body" style="padding: 0;">
-              <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Curriculum</div>
-              <hr />
+
+              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+                <div
+                    class="list-group-item list-group-item-action cursor-pointer"
+                    :class="menuSelected === 'level' ? 'active' : ''"
+                    @click="changeMenu('level')"
+                >
+                  <small style="font-size:12px;">Level</small>
+                </div>
+              </div>
+
+
+              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+                <div
+                    class="list-group-item list-group-item-action cursor-pointer"
+                    :class="menuSelected === 'classes' ? 'active' : ''"
+                    @click="changeMenu('classes')"
+                >
+                  <small style="font-size:12px;">Classes</small>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+
+          <div class="card mt-3">
+            <div class="card-body" style="padding: 0;">
+<!--              <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Curriculum</div>-->
+<!--              <hr />-->
               <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
                 <div
                     v-for="(item, idx) in  curriculumMenu"
@@ -31,8 +59,7 @@
 
           <div class="card mt-3">
             <div class="card-body" style="padding: 0;">
-<!--              <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Curriculum</div>
-              <hr />-->
+
               <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
                 <div
                     class="list-group-item list-group-item-action cursor-pointer"
@@ -61,7 +88,13 @@
             <topic-list v-if="menuSelected==='topic'"></topic-list>
             <sub-topic-list v-if="menuSelected==='subtopic'"></sub-topic-list>
             <concept-list v-if="menuSelected==='concept'"></concept-list>
+<!--            manage curriculum-->
             <manage-curriculum v-if="menuSelected==='import-curriculum'"></manage-curriculum>
+<!--            manage Level-->
+            <level-setup v-if="menuSelected==='level'"></level-setup>
+<!--            manage classes-->
+            <class-setup-list v-if="menuSelected==='classes'"></class-setup-list>
+
           </div>
         </div>
       </div>
@@ -74,7 +107,7 @@
 
 <script setup>
 
-import {ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import LearningAreaList from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/LearningAreaList.vue";
 import SubjectCluster from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/SubjectCluster.vue";
 import SubjectList from "@/main/dashboard/curriculum/curriculumSetup/subject/SubjectList.vue";
@@ -88,7 +121,10 @@ import ImportCurriculum from "@/main/dashboard/curriculum/importCurriculum/impor
 import useNotificationStore from "@/composables/useNotification.js";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 import ManageCurriculum from "@/main/dashboard/curriculum/curriculumSetup/ManageCurriculum.vue";
+import LevelSetup from "@/main/settings/level/LevelSetup.vue";
+import {useRouter} from "vue-router";
 
+const routerData = useRouter()
 const menuSelected = ref( "learning-area")
 const curriculumMenu = ref( [
   {text:"Learning Area", value:"learning-area"},
@@ -102,6 +138,7 @@ const curriculumMenu = ref( [
 
 const notificationStore  = useNotificationStore()
 const curriculumStore = useCurriculumStore()
+let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
 
@@ -115,12 +152,27 @@ const importFromExcel = () => {
   importDialog.value = true
 }
 
+onMounted(
+    () => {
+      curriculumStore.fetchCurriculumInfo(curriculumNumber)
+    }
+)
 
 watch(
     () => curriculumStore.importResponse,
     async (data) => {
       if(data){
         notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => curriculumStore.curriculumInfoResponse,
+    async (data) => {
+      if(data){
+        alert(JSON.stringify(data))
       }
     },
     {deep:true}
