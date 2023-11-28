@@ -137,6 +137,7 @@ const level = ref( "")
 const classDialog = ref( false)
 const classList = ref( [])
 const levelList = ref( [])
+let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
 const addCampus = () => {
@@ -157,7 +158,7 @@ const filterClasses = (level) => {
 onMounted(
     async () => {
       await  classStore.fetchClasses(level.value)
-      await levelStore.fetchLevels()
+      await levelStore.fetchLevels(curriculumNumber)
     }
 )
 

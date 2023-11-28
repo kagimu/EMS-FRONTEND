@@ -48,7 +48,7 @@
             class="form-select form-select-sm"
             v-model="form.level">
           <option disabled value="">Select Level</option>
-          <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+          <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
         </select>
       </div>
 
@@ -91,6 +91,7 @@ const routerData = useRouter()
 const classStore = useClassesStore()
 const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
+
 
 
 
