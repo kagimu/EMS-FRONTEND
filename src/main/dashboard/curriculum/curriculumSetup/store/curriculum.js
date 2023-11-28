@@ -67,8 +67,8 @@ export const useCurriculumStore = defineStore("curriculum", () => {
     }
 
 
-    async function fetchUploadedExcel() {
-        return await api.get("main/uploaded-curriculum")
+    async function fetchUploadedExcel(data) {
+        return await api.get("main/uploaded-curriculum?curriculum_number="+data)
             .then((response) => {
                 curriculumExcelResponse.value = response.data
             })

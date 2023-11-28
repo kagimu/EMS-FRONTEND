@@ -64,15 +64,16 @@
 <script setup>
 
 import {onMounted, ref, watch} from "vue";
-import NewLearningArea from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/NewLearningArea.vue";
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import ImportCurriculum from "@/main/dashboard/curriculum/importCurriculum/importCurriculum.vue";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
-
+import {useRouter} from "vue-router";
+const routerData = useRouter()
 
 const learningAreaList = ref( [])
 const curriculumStore = useCurriculumStore()
+let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
 const learningAreaStore = useLearningAreaStore()
@@ -91,7 +92,7 @@ const importFromExcel = () => {
 
 onMounted(
     () => {
-      curriculumStore.fetchUploadedExcel()
+      curriculumStore.fetchUploadedExcel(curriculumNumber)
     }
 )
 
@@ -111,7 +112,7 @@ watch(
     async (data) => {
       if(data){
         importDialog.value = false
-        await curriculumStore.fetchUploadedExcel()
+        await curriculumStore.fetchUploadedExcel(curriculumNumber)
       }
     },
     {deep:true}
