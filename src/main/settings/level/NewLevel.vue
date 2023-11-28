@@ -68,12 +68,14 @@ const routerData = useRouter()
 const levelStore = useLevelStore()
 const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
+let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
 
 const form = reactive({
   code:null,
   name:null,
+  curriculum_number:curriculumNumber,
 })
 
 

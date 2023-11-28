@@ -23,8 +23,8 @@ export const useLevelStore = defineStore("level", () => {
 
 
 
-    async function fetchLevels() {
-        return await api.get("main/fetch-level")
+    async function fetchLevels(data) {
+        return await api.get("main/fetch-level?curriculum_number="+data)
             .then((response) => {
                 levelInfoResponse.value = response.data
             })

@@ -98,6 +98,8 @@ const  notificationStore  = useNotificationStore()
 const level = ref( "")
 const levelDialog = ref( false)
 const levelList = ref( [])
+let  curriculumNumber = routerData.currentRoute.value.query.id
+
 
 
 const addLevel = () => {
@@ -114,7 +116,7 @@ const deleteClass = (data) => {
 
 onMounted(
     async () => {
-      await levelStore.fetchLevels()
+      await levelStore.fetchLevels(curriculumNumber)
     }
 )
 
@@ -122,7 +124,7 @@ watch(
     () => levelStore.levelResponse,
     async (data) => {
       if(data){
-        await levelStore.fetchLevels()
+        await levelStore.fetchLevels(curriculumNumber)
         notificationStore.successToast("Success", data.message)
       }
     },

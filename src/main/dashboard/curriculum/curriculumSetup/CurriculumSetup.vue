@@ -1,8 +1,10 @@
 <template>
   <div>
 
-    <div class="mt-3 flex">
-      <div class="ml-4">Curriculum Setup</div>
+    <div class="mt-3">
+      <div class="ml-4 mt-3" v-if="curriculumInfo && curriculumInfo.name">
+       <div style="font-size: 22px; text-transform: capitalize;" class="text-blue-900">{{curriculumInfo.name}} Curriculum</div>
+      </div>
     </div>
 
 
@@ -13,7 +15,8 @@
 
           <div class="card mt-3">
             <div class="card-body" style="padding: 0;">
-
+                <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Curriculum Setup</div>
+       <hr />
               <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
                 <div
                     class="list-group-item list-group-item-action cursor-pointer"
@@ -139,6 +142,7 @@ const curriculumMenu = ref( [
 const notificationStore  = useNotificationStore()
 const curriculumStore = useCurriculumStore()
 let  curriculumNumber = routerData.currentRoute.value.query.id
+let curriculumInfo = ref(null)
 
 
 
@@ -172,7 +176,7 @@ watch(
     () => curriculumStore.curriculumInfoResponse,
     async (data) => {
       if(data){
-        alert(JSON.stringify(data))
+         curriculumInfo.value = data.data
       }
     },
     {deep:true}
