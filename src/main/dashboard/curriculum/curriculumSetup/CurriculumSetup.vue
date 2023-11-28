@@ -119,8 +119,6 @@ import TopicList from "@/main/dashboard/curriculum/curriculumSetup/topic/TopicLi
 import SubTopicList from "@/main/dashboard/curriculum/curriculumSetup/subTopic/SubTopicList.vue";
 import ConceptList from "@/main/dashboard/curriculum/curriculumSetup/concept/ConceptList.vue";
 import ClassSetupList from "@/main/dashboard/manageLevel/class/ClassSetupList.vue";
-import NewLearningArea from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/NewLearningArea.vue";
-import ImportCurriculum from "@/main/dashboard/curriculum/importCurriculum/importCurriculum.vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 import ManageCurriculum from "@/main/dashboard/curriculum/curriculumSetup/ManageCurriculum.vue";

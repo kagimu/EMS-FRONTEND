@@ -54,6 +54,7 @@ const routerData = useRouter()
 
 
 const curriculumStore = useCurriculumStore()
+let  curriculumNumber = routerData.currentRoute.value.query.id
 
 function saveExcelImport(){
   loader.value = true
@@ -61,6 +62,7 @@ function saveExcelImport(){
 
   const formData = new FormData();
   formData.set("excel_file", excel_file.value.files[0]);
+  // formData.set("curriculum_number", curriculumNumber);
    curriculumStore.uploadExcelFile(formData)
 }
 
