@@ -28,6 +28,7 @@ export const useConceptStore = defineStore("concept", () => {
                 "&strand_number="+data.strand_number+
                 "&topic_number="+data.topic_number+
                 "&sub_topic_number="+data.sub_topic_number+
+                "&class_number="+data.class_number+
                 "&curriculum_number="+data.curriculum_number
             )
             .then((response) => {

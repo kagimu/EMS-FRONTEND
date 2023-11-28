@@ -61,8 +61,7 @@ function saveExcelImport(){
   uploadError.value = null
 
   const formData = new FormData();
-  const excelFileBlob = new Blob([excel_file.value.files[0]]);
-  formData.set("excel_file", excelFileBlob);
+  formData.set("excel_file", excel_file.value.files[0]);
   formData.set("curriculum_number", curriculumNumber);
    curriculumStore.uploadExcelFile(formData)
 }

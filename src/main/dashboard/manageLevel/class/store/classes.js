@@ -85,8 +85,8 @@ export const useClassesStore = defineStore("classes", () => {
             })
     }
 
-    async function fetchClassesCurriculum() {
-        return await api.get("main/classes-curriculum")
+    async function fetchClassesCurriculum(data) {
+        return await api.get("main/classes-curriculum?curriculum_number="+data)
             .then((response) => {
                 classCurriculumResponse.value = response.data
             })

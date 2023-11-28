@@ -117,6 +117,19 @@
               </select>
             </div>
 
+            <div class="col-4 mb-2">
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="class_number"
+                  @click="fetchConceptsList()"
+              >
+                <option disabled value="">Filter by Class</option>
+                <option value="">All</option>
+                <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+              </select>
+            </div>
+
           </div>
 
           <div style="width: 100%; overflow-x: auto; white-space: nowrap; scrollbar-width: thin;">
@@ -285,6 +298,7 @@ import {useTopicStore} from "@/main/dashboard/curriculum/curriculumSetup/topic/s
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
 import {useStrandStore} from "@/main/dashboard/curriculum/curriculumSetup/strands/store/strand.js";
 import {useSubtopicStore} from "@/main/dashboard/curriculum/curriculumSetup/subTopic/store/subTopic.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 const routerData = useRouter()
 
 const subjectStore = useSubjectStore()
@@ -294,6 +308,7 @@ const learningAreaStore = useLearningAreaStore()
 const strandStore = useStrandStore()
 const subtopicStore = useSubtopicStore()
 const conceptStore = useConceptStore()
+const classStore = useClassesStore()
 const notificationStore  = useNotificationStore()
 
 const conceptDialog = ref( false)
@@ -314,6 +329,7 @@ const strand_number = ref("")
 const topic_number = ref("")
 const sub_topic_number = ref("")
 const learning_area_number = ref("")
+const class_number = ref("")
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
@@ -412,6 +428,7 @@ onMounted(
       selectStrand("")
       selectTopic("")
       selectSubTopic("")
+      classStore.fetchClassesCurriculum(curriculumNumber)
     }
 )
 
@@ -424,6 +441,7 @@ const fetchConceptsList = () => {
     strand_number:strand_number.value,
     topic_number:topic_number.value,
     sub_topic_number:sub_topic_number.value,
+    class_number:class_number.value,
     curriculum_number:curriculumNumber,
   }
   conceptStore.fetchConcepts(data)
@@ -518,6 +536,16 @@ watch(
     async (data) => {
       if(data){
         subtopicList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => classStore.classCurriculumResponse,
+    async (data) => {
+      if(data){
+        classList.value = data.data
       }
     },
     {deep:true}

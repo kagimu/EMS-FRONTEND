@@ -104,6 +104,19 @@
               </select>
             </div>
 
+            <div class="col-4 mb-2">
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="class_number"
+                  @click="fetchSubTopicLIst()"
+              >
+                <option disabled value="">Filter by Class</option>
+                <option value="">All</option>
+                <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+              </select>
+            </div>
+
 
           </div>
 
@@ -258,11 +271,13 @@ import {useSubjectClusterStore} from "@/main/dashboard/curriculum/curriculumSetu
 import {useTopicStore} from "@/main/dashboard/curriculum/curriculumSetup/topic/store/topic.js";
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
 import {useStrandStore} from "@/main/dashboard/curriculum/curriculumSetup/strands/store/strand.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 const routerData = useRouter()
 
 const subjectStore = useSubjectStore()
 const subjectClusterStore = useSubjectClusterStore()
 const topicStore = useTopicStore()
+const classStore = useClassesStore()
 const learningAreaStore = useLearningAreaStore()
 const strandStore = useStrandStore()
 const subtopicStore = useSubtopicStore()
@@ -280,6 +295,7 @@ const subject_number = ref("")
 const strand_number = ref("")
 const topic_number = ref("")
 const learning_area_number = ref("")
+const class_number = ref("")
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
@@ -363,6 +379,7 @@ onMounted(
       selectSubject("")
       selectStrand("")
       selectTopic("")
+      classStore.fetchClassesCurriculum(curriculumNumber)
     }
 )
 
@@ -373,6 +390,7 @@ const fetchSubTopicLIst = () => {
     subject_number:subject_number.value,
     strand_number:strand_number.value,
     topic_number:topic_number.value,
+    class_number:class_number.value,
     curriculum_number:curriculumNumber,
   }
   subtopicStore.fetchSubTopics(data)
@@ -452,6 +470,16 @@ watch(
     {deep:true}
 )
 
+
+watch(
+    () => classStore.classCurriculumResponse,
+    async (data) => {
+      if(data){
+        classList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 
 </script>

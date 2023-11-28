@@ -307,7 +307,7 @@ const selectStrand = (subject_number) => {
   strand_number.value = ""
 
   fetchTopicList()
-  classStore.fetchClassesCurriculum()
+  classStore.fetchClassesCurriculum(curriculumNumber)
   strandStore.fetchStrandList(subject_number)
 }
 
