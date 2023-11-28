@@ -45,17 +45,15 @@
             <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
               <thead>
               <tr>
-                <th scope="col">#</th>
+                <th scope="col" style="width: 30%;">Code</th>
                 <th scope="col">Name</th>
-                <th scope="col">Code</th>
                 <th scope="col">Action</th>
               </tr>
               </thead>
               <tbody>
               <tr v-for="(levelInfo, index) in levelList" :key="index">
-                <td>{{index+1}}</td>
-                <td> {{levelInfo.name}}</td>
                 <td> {{levelInfo.code}}</td>
+                <td> {{levelInfo.name}}</td>
                 <td>
                   <div>
                     <i

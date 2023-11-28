@@ -9,6 +9,18 @@
 
 
       <div class="mb-2">
+        <label class="textColor"><small>Study Level</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.level">
+          <option disabled value="">Select Level</option>
+          <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
+        </select>
+      </div>
+
+
+      <div class="mb-2">
         <label class="textColor"><small>Code</small></label>
         <input
             @keypress="commons.numbersOnlyValidator($event)"
@@ -41,16 +53,7 @@
       </div>
 
 
-      <div class="mb-2">
-        <label class="textColor"><small>Class Level</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="form.level">
-          <option disabled value="">Select Level</option>
-          <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
-        </select>
-      </div>
+
 
 
 

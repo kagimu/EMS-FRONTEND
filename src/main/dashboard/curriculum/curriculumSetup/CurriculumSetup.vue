@@ -3,7 +3,7 @@
 
     <div class="mt-3">
       <div class="ml-4 mt-3" v-if="curriculumInfo && curriculumInfo.name">
-       <div style="font-size: 22px; text-transform: capitalize;" class="text-blue-900">{{curriculumInfo.name}} Curriculum</div>
+        <div style="font-size: 22px; text-transform: capitalize;">Curriculum: <span class="text-blue-900">{{curriculumInfo.name}}</span> </div>
       </div>
     </div>
 
@@ -126,7 +126,7 @@ import LevelSetup from "@/main/settings/level/LevelSetup.vue";
 import {useRouter} from "vue-router";
 
 const routerData = useRouter()
-const menuSelected = ref( "learning-area")
+const menuSelected = ref( "level")
 const curriculumMenu = ref( [
   {text:"Learning Area", value:"learning-area"},
   {text:"Subject Cluster", value:"subject-cluster"},
