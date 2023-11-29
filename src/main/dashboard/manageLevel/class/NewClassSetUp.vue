@@ -104,7 +104,6 @@ const form = reactive({
   name:null,
   abbreviation:null,
   level:"",
-  curriculum_number:curriculumNumber,
 })
 
 

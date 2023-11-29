@@ -122,7 +122,6 @@ import ClassSetupList from "@/main/dashboard/manageLevel/class/ClassSetupList.vu
 import useNotificationStore from "@/composables/useNotification.js";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 import ManageCurriculum from "@/main/dashboard/curriculum/curriculumSetup/ManageCurriculum.vue";
-import LevelSetup from "@/main/settings/level/LevelSetup.vue";
 import {useRouter} from "vue-router";
 import CurriculumLevel from "@/main/settings/level/CurriculumLevel.vue";
 

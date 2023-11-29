@@ -38,6 +38,9 @@
                 <div v-if="selectedPage === 'level'">
                   <level-setup></level-setup>
                 </div>
+                <div v-if="selectedPage === 'classes'">
+                  <class-setup-list v-if="selectedPage==='classes'"></class-setup-list>
+                </div>
 
             </div>
 
@@ -57,6 +60,7 @@ import {reactive, ref} from "vue";
 import Roles from "@/main/settings/roles/Roles.vue";
 import {useRouter} from "vue-router";
 import LevelSetup from "@/main/settings/level/LevelSetup.vue";
+import ClassSetupList from "@/main/dashboard/manageLevel/class/ClassSetupList.vue";
 const routerData = useRouter()
 const buttonLoader = ref(false)
 
@@ -71,6 +75,10 @@ const settingsList = ref([
   {
     name:"Level",
     id:"level"
+  },
+  {
+    name:"Classes",
+    id:"classes"
   },
   {
     name:"Roles",

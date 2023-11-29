@@ -158,14 +158,13 @@ const filterClasses = (level) => {
 onMounted(
     async () => {
       await fetchClassList()
-      await levelStore.fetchLevels(curriculumNumber)
+      await levelStore.fetchLevels()
     }
 )
 
 const fetchClassList = () => {
   let data = {
     level:level.value,
-    curriculum_number:curriculumNumber,
   }
   classStore.fetchClasses(data)
 }
@@ -174,7 +173,6 @@ watch(
     () => classStore.classResponse,
     async (data) => {
       if(data){
-        // classDialog.value = false
         await fetchClassList()
         notificationStore.successToast("Success", data.message)
       }
