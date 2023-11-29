@@ -23,7 +23,7 @@
                     :class="menuSelected === 'level' ? 'active' : ''"
                     @click="changeMenu('level')"
                 >
-                  <small style="font-size:12px;">Level</small>
+                  <small style="font-size:12px;">Curriculum Level</small>
                 </div>
               </div>
 
@@ -94,7 +94,7 @@
 <!--            manage curriculum-->
             <manage-curriculum v-if="menuSelected==='import-curriculum'"></manage-curriculum>
 <!--            manage Level-->
-            <level-setup v-if="menuSelected==='level'"></level-setup>
+            <curriculum-level v-if="menuSelected==='level'"></curriculum-level>
 <!--            manage classes-->
             <class-setup-list v-if="menuSelected==='classes'"></class-setup-list>
 
@@ -124,6 +124,7 @@ import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/st
 import ManageCurriculum from "@/main/dashboard/curriculum/curriculumSetup/ManageCurriculum.vue";
 import LevelSetup from "@/main/settings/level/LevelSetup.vue";
 import {useRouter} from "vue-router";
+import CurriculumLevel from "@/main/settings/level/CurriculumLevel.vue";
 
 const routerData = useRouter()
 const menuSelected = ref( "level")

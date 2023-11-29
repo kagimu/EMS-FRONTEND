@@ -114,7 +114,7 @@ const deleteClass = (data) => {
 
 onMounted(
     async () => {
-      await levelStore.fetchLevels(curriculumNumber)
+      await levelStore.fetchLevels()
     }
 )
 
@@ -122,7 +122,7 @@ watch(
     () => levelStore.levelResponse,
     async (data) => {
       if(data){
-        await levelStore.fetchLevels(curriculumNumber)
+        await levelStore.fetchLevels()
         notificationStore.successToast("Success", data.message)
       }
     },
