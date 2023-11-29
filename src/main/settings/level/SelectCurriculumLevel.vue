@@ -8,7 +8,7 @@
 
         <li class="list-group-item" v-for="(lvl,idx) in levelList" :key="idx">
           <input
-              v-model="classId"
+              v-model="levelId"
               @click="addCurriculumLevel(lvl)"
               style="outline: none 0 !important; box-shadow: none;"
               class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="lvl.number">
@@ -44,7 +44,7 @@ let  curriculumNumber = routerData.currentRoute.value.query.id
 const levelList = ref([])
 
 
-const classId = ref([])
+const levelId = ref([])
 
 
 const addCurriculumLevel = (level) =>{
@@ -53,7 +53,7 @@ const addCurriculumLevel = (level) =>{
 }
 
 const props = defineProps({
-  classListInfo: {},
+  curriculumLevel: {},
 })
 
 
@@ -96,14 +96,14 @@ watch(
 )
 
 watch(
-    () => props.classListInfo,
+    () => props.curriculumLevel,
     async (data) => {
       if(data){
       let arr = []
         data.forEach(lst => {
-          arr.push(lst.class_number)
+          arr.push(lst.level_number)
         })
-        classId.value = arr
+        levelId.value = arr
       }
     },
     {deep:true}

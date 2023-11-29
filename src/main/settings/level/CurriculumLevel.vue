@@ -13,7 +13,7 @@
           </div>
           <div class="modal-body">
             <div class="mt-2 mb-2">
-              <select-curriculum-level></select-curriculum-level>
+              <select-curriculum-level :curriculumLevel="levelList"></select-curriculum-level>
             </div>
           </div>
         </div>
