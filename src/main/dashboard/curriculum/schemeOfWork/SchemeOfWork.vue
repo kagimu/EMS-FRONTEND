@@ -289,7 +289,8 @@ const levelStore = useLevelStore()
 const schemeOfWorkStore = useSchemeOfWorkStore()
 const subjectStore = useSubjectStore()
 
-let subjectNo = routerData.currentRoute.value.query.c
+let   subjectNo = routerData.currentRoute.value.query.c
+let   curriculumNumber = routerData.currentRoute.value.query.id
 if(subjectNo){
   selectedClass.value =  subjectNo
 }
