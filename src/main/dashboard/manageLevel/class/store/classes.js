@@ -86,6 +86,18 @@ export const useClassesStore = defineStore("classes", () => {
             })
     }
 
+    async function fetchCurriculumClasses(data) {
+        return await api.get("main/fetch-curriculum-classes?level="+data.level+"&curriculum_number="+data.curriculum_number)
+            .then((response) => {
+                curriculumClassInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     async function fetchSchemeOfWorkClasses(data) {
         data = data ? data : ""
         return await api.get("main/scheme-of-work-classes?level="+data)
@@ -228,6 +240,7 @@ export const useClassesStore = defineStore("classes", () => {
         fetchClassesByLevelAndCampus,
         fetchClassesCurriculum,
         filterCurriculumClassesData,
-        newCurriculumClassData
+        newCurriculumClassData,
+        fetchCurriculumClasses
     }
 })

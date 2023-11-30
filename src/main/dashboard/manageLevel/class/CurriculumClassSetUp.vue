@@ -26,14 +26,9 @@
 
     <div class="row">
 
-
       <div class="col-12">
 
-
-
         <div class="mt-3">
-<!--          <div class="card-body" style="padding: 0;">-->
-
 
             <div class="flex justify-content-between mt-3">
               <div class="ml-4">Curriculum Classes</div>
@@ -167,8 +162,9 @@ onMounted(
 const fetchClassList = () => {
   let data = {
     level:level.value,
+    curriculum_number:curriculumNumber,
   }
-  classStore.fetchClasses(data)
+  classStore.fetchCurriculumClasses(data)
 }
 
 watch(
@@ -183,7 +179,7 @@ watch(
 )
 
 watch(
-    () => classStore.classInfoResponse,
+    () => classStore.curriculumClassInfoResponse,
     async (data) => {
       if(data){
         classList.value = data.data
@@ -197,7 +193,7 @@ watch(
     () => classStore.curriculumClassResponse,
     async (data) => {
       if(data){
-        // await levelStore.fetchCurriculumLevels(curriculumNumber)
+        await fetchClassList()
         notificationStore.successToast("Success", data.message)
       }
     },
