@@ -13,7 +13,7 @@
           </div>
           <div class="modal-body">
             <div class="mt-2 mb-2">
-              <new-curriculum-class></new-curriculum-class>
+              <new-curriculum-class  :curriculumClass="classList"></new-curriculum-class>
             </div>
           </div>
         </div>
@@ -51,7 +51,7 @@
                   >
                     <option disabled value="">Filter by Level</option>
                     <option value="">All</option>
-                    <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
+                    <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.level_number">{{lvl.code+". "+lvl.name}}</option>
                   </select>
                 </div>
               </div>

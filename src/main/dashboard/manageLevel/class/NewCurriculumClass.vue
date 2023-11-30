@@ -114,6 +114,11 @@ onMounted(
 )
 
 
+const props = defineProps({
+  curriculumClass: {},
+})
+
+
 watch(
     () => classStore.classResponse,
     async (data) => {
@@ -170,6 +175,21 @@ watch(
 )
 
 
+watch(
+    () => props.curriculumClass,
+    async (data) => {
+      if(data){
+        let arr = []
+        data.forEach(lst => {
+          lst.class.forEach(list => {
+            arr.push(list.class_number)
+          })
+        })
+        classId.value = arr
+      }
+    },
+    {deep:true}
+)
 
 
 </script>
