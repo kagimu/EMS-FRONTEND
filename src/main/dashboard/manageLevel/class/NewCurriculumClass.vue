@@ -45,7 +45,6 @@
 
 
 
-
 <!--    </form>-->
 
 
@@ -161,7 +160,7 @@ watch(
 )
 
 watch(
-    () => classStore.curriculumClassInfoResponse,
+    () => classStore.curriculumClassSetResponse,
     async (data) => {
       if(data){
         classList.value = data.data

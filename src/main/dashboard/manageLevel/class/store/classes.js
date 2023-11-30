@@ -7,6 +7,7 @@ export const useClassesStore = defineStore("classes", () => {
     let classLevelResponse = ref(null)
     let classInfoResponse = ref(null)
     let schemeClassInfoResponse = ref(null)
+    let curriculumClassSetResponse = ref(null)
     let classLevelInfoResponse = ref(null)
     let classSubjectsInfoResponse = ref(null)
     let classSubjectResponse = ref(null)
@@ -115,7 +116,7 @@ export const useClassesStore = defineStore("classes", () => {
         data = data ? data : ""
         return await api.get("main/filter-curriculum-classes?level="+data)
             .then((response) => {
-                curriculumClassInfoResponse.value = response.data
+                curriculumClassSetResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -226,6 +227,7 @@ export const useClassesStore = defineStore("classes", () => {
         classCurriculumResponse,
         curriculumClassInfoResponse,
         curriculumClassResponse,
+        curriculumClassSetResponse,
         errorMessage,
         newClassData,
         fetchClasses,
