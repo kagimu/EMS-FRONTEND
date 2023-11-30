@@ -175,7 +175,7 @@ const selectSubject = (subject_cluster_number) => {
 
 
 const selectStrand = (subject_number) => {
-  classStore.fetchClassesCurriculum()
+  classStore.fetchClassesCurriculum(curriculumNumber)
   strandStore.fetchStrandList(subject_number)
 }
 

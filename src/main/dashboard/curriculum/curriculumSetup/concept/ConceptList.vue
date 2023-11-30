@@ -126,7 +126,8 @@
               >
                 <option disabled value="">Filter by Class</option>
                 <option value="">All</option>
-                <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+                <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+<!--                <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>-->
               </select>
             </div>
 
