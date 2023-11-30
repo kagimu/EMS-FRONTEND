@@ -49,7 +49,6 @@ const levelId = ref([])
 
 const addCurriculumLevel = (level) =>{
   levelStore.newCurriculumLevel({level_number:level.number, curriculum_number:curriculumNumber, code:level.code})
-  // classStore.newClassLevelData({class_code:classInfo.code,class_number:classInfo.number, campus_number:campusNumber, level_number:campusLevel})
 }
 
 const props = defineProps({
@@ -87,6 +86,16 @@ watch(
 
 watch(
     () => classStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => levelStore.errorMessage,
     async (data) => {
       if(data){
         notificationStore.errorToast("Error",data.message)
