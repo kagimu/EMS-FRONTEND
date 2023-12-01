@@ -20,6 +20,32 @@
       </div>
     </div>
 
+    <div class="ml-3 mt-3" >
+
+      <div class="row">
+        <div class="col-6">
+          <div v-if="schoolData"><b>School:</b> {{schoolData.name}}</div>
+        </div>
+        <div class="col-6">
+          <div class="ml-5 mt-1">
+            <small><b>School Curriculum</b></small>
+            <span v-if="schoolData">
+                <div v-for="(schools, index) in schoolData.school_curriculum" :key="index">
+                  <small>{{(index+1)+". "+schools.name}}</small>
+                </div>
+            </span>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+    </div>
 
 
     <div class="mt-3">
@@ -101,6 +127,7 @@ const  notificationStore  = useNotificationStore()
 const campusDialog = ref( false)
 const campusEditMode = ref( false)
 const campusList = ref( [])
+const schoolData = ref( null)
 
 
 let schoolNumber = routerData.currentRoute.value.query.id
@@ -134,7 +161,7 @@ const deleteCampus = (campus) => {
 onMounted(
     () => {
       fetchCampusInfo(schoolNumber)
-      schoolStore.fetchSchools()
+      schoolStore.fetchSchoolData(schoolNumber)
     }
 )
 
@@ -195,6 +222,17 @@ watch (
     async (data) => {
       if(data){
         notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+watch (
+    () => schoolStore.schoolInfoResponse,
+    async (data) => {
+      if(data){
+       schoolData.value = data.data
       }
     },
     {deep:true}
