@@ -54,14 +54,14 @@
 
 
 
-    <div class="row mx-auto mt-5">
+    <div class="row mt-5">
       <div class="col-3">
         <div class="mb-2">
           <select
               style="box-shadow: none;"
               class="form-select form-select-sm"
               v-model="level"
-              @change="filterClasses(level)"
+              @change="fetchSchemeClasses()"
           >
             <option disabled value="">Filter by Level</option>
             <option value="">All</option>
@@ -314,9 +314,6 @@ const changeMenu = (value) => {
   router.push({ name: "scheme-of-work", query:{c:value} })
 }
 
-const filterClasses = (level) => {
-  classStore.fetchSchemeOfWorkClasses(level)
-}
 
 const filterSchemeSubject = () => {
   schemeOfWorkList.value = []
@@ -330,16 +327,22 @@ const filterSchemeSubject = () => {
 
 onMounted(
     async () => {
-      await classStore.fetchSchemeOfWorkClasses()
+      await levelStore.fetchCurriculumLevels(curriculumNumber)
+      await fetchSchemeClasses()
       if(selectedClass.value) {
         await subjectStore.fetchSchemeSubjectByClass(selectedClass.value)
         await subjectStore.fetchAcademicYearByClass(selectedClass.value)
-        await levelStore.fetchLevels()
       }
     }
 )
 
-
+const fetchSchemeClasses = () => {
+  let data = {
+    level:level.value,
+    curriculum_number:curriculumNumber
+  }
+   classStore.fetchSchemeOfWorkClasses(data)
+}
 
 watch(
     () => classStore.schemeClassInfoResponse,
@@ -489,7 +492,7 @@ watch(
 
 
 watch(
-    () => levelStore.levelInfoResponse,
+    () => levelStore.curriculumLevelInfoResponse,
     async (data) => {
       if(data){
         levelList.value = data.data
