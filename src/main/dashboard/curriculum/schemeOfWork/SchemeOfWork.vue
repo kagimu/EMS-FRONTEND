@@ -48,7 +48,14 @@
             </div>
           </div>
 
-        </div>`
+        </div>
+      </div>
+    </div>
+
+
+    <div class="mt-3">
+      <div class="mt-3" v-if="curriculumInfo && curriculumInfo.name">
+        <div style="font-size: 22px; text-transform: capitalize;">Curriculum: <span class="text-blue-900">{{curriculumInfo.name}}</span> </div>
       </div>
     </div>
 
@@ -89,7 +96,7 @@
                   :class="item.number === selectedClass ? 'active' : ''"
                   @click="changeMenu(item.number)"
               >
-                <small style="font-size:12px;">{{item.code+". "+item.name}}</small>
+                <small style="font-size:12px;">{{item.code+". "+item.name+" [ "+item.abbreviation+" ]"}}</small>
               </div>
             </div>
           </div>
@@ -260,6 +267,7 @@ import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subje
 import NewLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPlan.vue";
 import LessonPlanDetails from "@/main/dashboard/curriculum/schemeOfWork/LessonPlanDetails.vue";
 import {useLevelStore} from "@/main/settings/level/store/levels.js";
+import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 
 const level = ref( "")
 const academic_year_number = ref( "")
@@ -288,6 +296,8 @@ const commons = useCommonsStore()
 const levelStore = useLevelStore()
 const schemeOfWorkStore = useSchemeOfWorkStore()
 const subjectStore = useSubjectStore()
+const curriculumStore = useCurriculumStore()
+let curriculumInfo = ref(null)
 
 let   subjectNo = routerData.currentRoute.value.query.c
 let   curriculumNumber = routerData.currentRoute.value.query.id
@@ -311,7 +321,7 @@ const addCurriculum = () => {
 
 const changeMenu = (value) => {
   selectedClass.value = value
-  router.push({ name: "scheme-of-work", query:{c:value} })
+  router.push({ name: "scheme-of-work", query:{id:curriculumNumber, c:value} })
 }
 
 
@@ -328,6 +338,7 @@ const filterSchemeSubject = () => {
 onMounted(
     async () => {
       await levelStore.fetchCurriculumLevels(curriculumNumber)
+      await curriculumStore.fetchCurriculumInfo(curriculumNumber)
       await fetchSchemeClasses()
       if(selectedClass.value) {
         await subjectStore.fetchSchemeSubjectByClass(selectedClass.value)
@@ -496,6 +507,16 @@ watch(
     async (data) => {
       if(data){
         levelList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => curriculumStore.curriculumInfoResponse,
+    async (data) => {
+      if(data){
+        curriculumInfo.value = data.data
       }
     },
     {deep:true}
