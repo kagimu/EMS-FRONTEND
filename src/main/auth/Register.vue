@@ -2,13 +2,11 @@
   <div>
 
     <div class="row">
-      <div class="col-lg-4 content">
+      <div class="col-lg-4"></div>
+      <div class="col-lg-4">
         <div class="text-center mb-3" style="font-size: 27px;">Wholesome Education</div>
         <div class="card">
           <div class="card-body">
-
-
-
             <div v-if="showSuccessPage" class="text-center mt-8" style="font-size: 16px; color: #757575;">
               <p style="color: green; font-size: 38px; font-weight: bold;" class="mb-9">Success</p>
               <p>You have successfully created an account with WHolesomeEd,<br />
@@ -111,6 +109,7 @@
         </div>
 
       </div>
+      <div class="col-lg-4"></div>
     </div>
 
   </div>
@@ -193,7 +192,7 @@ watch(
 .content {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 80%;
   transform: translate(-50%, -50%);
 }
 

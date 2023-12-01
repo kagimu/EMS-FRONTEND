@@ -26,7 +26,7 @@ import GeneralCalendar from "@/main/dashboard/eos/GeneralCalendar.vue";
 import CalendarDetails from "@/main/dashboard/eos/CalendarDetails.vue";
 import AllTimeTables from "@/main/dashboard/curriculum/timetable/AllTimeTables.vue";
 import CurriculumSetup from "@/main/dashboard/curriculum/curriculumSetup/CurriculumSetup.vue";
-
+import Application from "../main/application/Application.vue";
 
 
 const router = createRouter({
@@ -39,6 +39,7 @@ const router = createRouter({
             children:[
                 {path: 'login', component: Login, name:'login'},
                 {path: 'register', component: Register, name:'register'},
+                {path: 'application', component: Application, name:'application'},
             ]
         },
         {
