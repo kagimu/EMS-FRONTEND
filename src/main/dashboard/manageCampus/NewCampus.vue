@@ -12,20 +12,6 @@
           <div class="mx-auto" style="width: 95%;">
 
 
-<!--            <div class="mb-2">
-              <label class="textColor"><small>School</small></label>
-            <select
-                disabled
-                style="box-shadow: none;"
-                class="form-select form-select-sm"
-                v-model="school"
-            >
-              <option disabled value="">Select School</option>
-              <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
-            </select>
-            </div>-->
-
-
 
           <div class="mb-2">
             <label class="textColor"><small>Campus Name</small></label>
