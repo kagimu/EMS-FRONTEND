@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-0 py-3">
   <div class="container-xl">
     <a class="navbar-brand" href="#">
-      <img src="https://preview.webpixels.io/web/img/logos/clever-light.svg" class="h-8" alt="...">
+      <img src="logo.svg" class="h-8" alt="Logo">
     </a>
       <div class="d-flex align-items-lg-center mt-3 mt-lg-0">
         <router-link class="btn btn-sm btn-primary w-full w-lg-auto" :to="{name:'application'}"> Application </router-link>
