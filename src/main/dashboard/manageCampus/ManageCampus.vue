@@ -20,26 +20,36 @@
       </div>
     </div>
 
-    <div class="ml-3 mt-3" >
 
+
+    <div class="card mt-3">
+      <div class="card-body">
+
+    <div class="ml-3 mt-3" >
       <div class="row">
         <div class="col-6">
-          <div v-if="schoolData"><b>School:</b> {{schoolData.name}}</div>
+          <div v-if="schoolData">
+           <small>School:</small> <br />
+           <div style="font-size: 20px;">
+             {{schoolData.name}}
+           </div>
+          </div>
         </div>
         <div class="col-6">
           <div class="ml-5 mt-1">
-            <small><b>School Curriculum</b></small>
-            <span v-if="schoolData">
+            <small><b>School Curriculum (s)</b></small>
+            <div class="ml-4" v-if="schoolData">
                 <div v-for="(schools, index) in schoolData.school_curriculum" :key="index">
                   <small>{{(index+1)+". "+schools.name}}</small>
                 </div>
-            </span>
+            </div>
           </div>
         </div>
       </div>
 
 
-
+</div>
+      </div>
 
 
 
