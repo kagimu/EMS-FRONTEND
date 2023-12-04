@@ -2,7 +2,7 @@
   <div>
   <p class="ml-4 mt-4 mb-10"> LEARNER'S DETAILS</p>
     <form>
-    <div class="row mx-auto">
+    <div class="row">
       <div class="col-6">
           <div class="mb-2">
             <label class="textColor text-sm">Surname/Family name *</label>
@@ -21,7 +21,6 @@
       </div>
   
       <div class="col-6">
-        
           <div class="mb-2">
             <label class="textColor text-sm">Desired Class</label>
             <input type="text" style="outline: none 0 !important; box-shadow: none;"  required class="form-control form-control-sm">
@@ -71,5 +70,12 @@
   </script>
   
   <style scoped>
-  
+  .mb-8 {
+    margin-bottom: 2rem;
+    text-align: left;
+}
+.mb-2 {
+    margin-bottom: 2rem;
+    text-align: left;
+}
   </style>

@@ -86,5 +86,12 @@
     </script>
     
     <style scoped>
-    
-    </style>
+  .mb-8 {
+    margin-bottom: 2rem;
+    text-align: left;
+}
+.mb-2 {
+    margin-bottom: 2rem;
+    text-align: left;
+}
+</style> 

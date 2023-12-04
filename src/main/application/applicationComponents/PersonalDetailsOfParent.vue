@@ -2,19 +2,20 @@
 <div>
 <p class="ml-4 mt-4 mb-10">GUARDIAN/PARENT DETAILS</p>
   <form>
+
   <div class="row mx-auto">
     <div class="col-6">
-        <div class="mb-2">
+        <div class="mb-8">
           <label class="textColor text-sm">Surname/Family name *</label>
           <input type="text" style="outline: none 0 !important; box-shadow: none;"  required class="form-control form-control-sm">
         </div>
 
-        <div class="mb-2">
+        <div class="mb-8">
           <label class="textColor text-sm">Second name *</label>
           <input type="text" style="outline: none 0 !important; box-shadow: none;"  required class="form-control form-control-sm">
         </div>
 
-        <div class="mb-2">
+        <div class="mb-8">
           <label class="textColor text-sm">Other names *</label>
           <input type="text" style="outline: none 0 !important; box-shadow: none;"  required class="form-control form-control-sm">
         </div>
@@ -44,9 +45,7 @@
         </div>
           </div>
          </div>
-       
     </div>
-  
   </div>
     <hr />
 
@@ -72,5 +71,18 @@ let errorMessage = ref(null)
 </script>
 
 <style scoped>
-
+.textColor {
+    text-align: left!important;
+}
+.mb-8 .text-center{
+  text-align: left!important;
+}
+.mb-8 {
+    margin-bottom: 2rem;
+    text-align: left;
+}
+.mb-2 {
+    margin-bottom: 2rem;
+    text-align: left;
+}
 </style>
