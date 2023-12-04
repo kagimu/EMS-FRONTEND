@@ -61,18 +61,33 @@
 
             <div class="flex justify-content-between">
               &nbsp;
+<div class="flex">
               <router-link
                   class="text-decoration-none"
                   :to="{name:'curriculum-setup', query:{id:school.number}}"
               >
                 <button
                     type="button"
-                    class="btn-primary border-0 d-none d-lg-block viewButtonStyle">
+                    class="btn-primary border-0 d-none d-lg-block viewButtonStyle mr-2">
                       <span class="mx-9 text-sm">
-                        View
+                        Setup Curriculum
                       </span>
                 </button>
               </router-link>
+
+              <router-link
+                  class="text-decoration-none"
+                  :to="{name:'scheme-of-work', query:{id:school.number}}"
+              >
+                <button
+                    type="button"
+                    class="btn-primary border-0 d-none d-lg-block viewButtonStyle">
+                      <span class="mx-9 text-sm">
+                        Setup Scheme
+                      </span>
+                </button>
+              </router-link>
+</div>
             </div>
 
           </div>
@@ -127,8 +142,8 @@ const deleteSchool = (school) => {
 }
 
 onMounted(
-    () => {
-      curriculumStore.fetchCurriculum()
+    async () => {
+    await  curriculumStore.fetchCurriculum()
     }
 )
 

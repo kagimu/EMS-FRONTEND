@@ -7,6 +7,7 @@ export const useClassesStore = defineStore("classes", () => {
     let classLevelResponse = ref(null)
     let classInfoResponse = ref(null)
     let schemeClassInfoResponse = ref(null)
+    let curriculumClassSetResponse = ref(null)
     let classLevelInfoResponse = ref(null)
     let classSubjectsInfoResponse = ref(null)
     let classSubjectResponse = ref(null)
@@ -14,6 +15,8 @@ export const useClassesStore = defineStore("classes", () => {
     let classCurriculumResponse = ref(null)
     let newStreamSuccess = ref(null)
     let classesToAddResponse = ref(null)
+    let curriculumClassInfoResponse = ref(null)
+    let curriculumClassResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -24,6 +27,18 @@ export const useClassesStore = defineStore("classes", () => {
         return await api.post("main/new-class", data)
             .then((response) => {
                 classResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function newCurriculumClassData(data) {
+        return await api.post("main/new-curriculum-class", data)
+            .then((response) => {
+                curriculumClassResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -72,11 +87,35 @@ export const useClassesStore = defineStore("classes", () => {
             })
     }
 
+    async function fetchCurriculumClasses(data) {
+        return await api.get("main/fetch-curriculum-classes?level="+data.level+"&curriculum_number="+data.curriculum_number)
+            .then((response) => {
+                curriculumClassInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     async function fetchSchemeOfWorkClasses(data) {
-        data = data ? data : ""
-        return await api.get("main/scheme-of-work-classes?level="+data)
+        return await api.get("main/scheme-of-work-classes?level="+data.level+"&curriculum_number="+data.curriculum_number)
             .then((response) => {
                 schemeClassInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function filterCurriculumClassesData(data) {
+        data = data ? data : ""
+        return await api.get("main/filter-curriculum-classes?level="+data)
+            .then((response) => {
+                curriculumClassSetResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -185,6 +224,9 @@ export const useClassesStore = defineStore("classes", () => {
         newStreamSuccess,
         schemeClassInfoResponse,
         classCurriculumResponse,
+        curriculumClassInfoResponse,
+        curriculumClassResponse,
+        curriculumClassSetResponse,
         errorMessage,
         newClassData,
         fetchClasses,
@@ -197,6 +239,9 @@ export const useClassesStore = defineStore("classes", () => {
         fetchClassStreams,
         addStream,
         fetchClassesByLevelAndCampus,
-        fetchClassesCurriculum
+        fetchClassesCurriculum,
+        filterCurriculumClassesData,
+        newCurriculumClassData,
+        fetchCurriculumClasses
     }
 })

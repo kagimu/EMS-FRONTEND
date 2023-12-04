@@ -9,6 +9,8 @@ export const useCurriculumStore = defineStore("curriculum", () => {
     let curriculumResponse = ref(null)
     let curriculumDataResponse = ref(null)
     let curriculumInfoResponse = ref(null)
+    let schoolCurriculumResponse = ref(null)
+    let schoolCurriculumLevelResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -41,6 +43,31 @@ export const useCurriculumStore = defineStore("curriculum", () => {
         return await api.get("main/curriculum-info?curriculum_number="+data)
             .then((response) => {
                 curriculumInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
+    async function fetchSchoolCurriculum(data) {
+        return await api.get("main/fetch-school-curriculum?school_number="+data)
+            .then((response) => {
+                schoolCurriculumResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchSchoolCurriculumLevel(data) {
+        return await api.get("main/fetch-school-curriculum-level?school_curriculum_number="+data)
+            .then((response) => {
+                schoolCurriculumLevelResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -88,11 +115,15 @@ export const useCurriculumStore = defineStore("curriculum", () => {
         curriculumResponse,
         curriculumDataResponse,
         curriculumInfoResponse,
+        schoolCurriculumResponse,
+        schoolCurriculumLevelResponse,
         errorMessage,
         uploadExcelFile,
         fetchUploadedExcel,
         newCurriculumData,
         fetchCurriculum,
         fetchCurriculumInfo,
+        fetchSchoolCurriculum,
+        fetchSchoolCurriculumLevel,
     }
 })

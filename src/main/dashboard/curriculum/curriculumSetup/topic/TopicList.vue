@@ -99,7 +99,7 @@
               >
                 <option disabled value="">Filter by Class</option>
                 <option value="">All</option>
-                <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+                <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
               </select>
             </div>
 
@@ -307,7 +307,6 @@ const selectStrand = (subject_number) => {
   strand_number.value = ""
 
   fetchTopicList()
-  classStore.fetchClassesCurriculum(curriculumNumber)
   strandStore.fetchStrandList(subject_number)
 }
 
@@ -319,6 +318,7 @@ onMounted(
       selectSubjectCluster("")
       selectSubject("")
       selectStrand("")
+      classStore.fetchClassesCurriculum(curriculumNumber)
     }
 )
 
