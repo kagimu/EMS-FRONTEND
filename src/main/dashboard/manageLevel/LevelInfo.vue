@@ -57,9 +57,9 @@
 
 <script setup>
 
-import {onMounted, ref, watch} from "vue";
- import {useLevelStore} from "@/main/dashboard/manageLevel/store/level.js";
+import {ref, watch} from "vue";
  import {useRouter} from "vue-router";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
  const levelStore = useLevelStore()
  const routerData = useRouter()
 

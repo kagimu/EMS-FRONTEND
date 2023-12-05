@@ -118,7 +118,7 @@ import {onMounted, reactive, ref, watch} from "vue";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useRouter} from "vue-router";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-import {useLevelStore} from "@/main/settings/level/store/levels.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 
 const routerData = useRouter()

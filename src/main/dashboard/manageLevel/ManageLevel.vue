@@ -1,38 +1,6 @@
 <template>
   <div>
 
-<!--    <div class="row mx-auto mt-5">
-
-      <div class="col-3">
-        <div class="mb-2">
-          <select
-              style="box-shadow: none;"
-              class="form-select form-select-sm"
-              v-model="school"
-              @change="filterSchool(school)"
-          >
-            <option disabled value="">Filter by School</option>
-            <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="col-3">
-        <div class="mb-2">
-          <select
-              style="box-shadow: none;"
-              class="form-select form-select-sm"
-              v-model="campus"
-              @change="filterCampus(campus)"
-          >
-            <option disabled value="">Filter by Campus</option>
-            <option v-for="(lvl, index) in campusList" :key="index" :value="lvl.number">{{lvl.name}}</option>
-          </select>
-        </div>
-      </div>
-
-
-    </div>-->
 
     <div style="font-size: 25px; color: #262626;" class="mt-3 ml-2" v-if="levelDataInfo">
       {{levelDataInfo.name}}
@@ -44,7 +12,7 @@
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;" v-if="levelDataInfo">
             <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-              <router-link class="list-group-item list-group-item-action" :class="showHomeLevel && showHomeLevel === 'home' ? 'active' : ''" :to="{name:'level', query:{id:campus}}"><small style="font-size:12px;">Home</small></router-link>
+              <router-link class="list-group-item list-group-item-action" :class="showHomeLevel && showHomeLevel === 'home' ? 'active' : ''" :to="{name:'level', query:{id:campusNumber}}"><small style="font-size:12px;">Home</small></router-link>
             </div>
 
           </div>
@@ -56,11 +24,11 @@
             <hr />
             <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
               <router-link
-                  v-for="(item, idx) in  levelDataInfo.level" :key="idx"
+                  v-for="(item, idx) in  levelDataInfo" :key="idx"
                   class="list-group-item list-group-item-action"
                   :class="item.number === campusLevel ? 'active' : ''"
-                  :to="{name:'level', query:{id:campus, l:item.number}}">
-                <small style="font-size:12px;">{{item.level_name}}</small></router-link>
+                  :to="{name:'level', query:{id:campusNumber, l:item.number}}">
+                <small style="font-size:12px;">{{item.code+". "+item.name}}</small></router-link>
             </div>
 
           </div>
@@ -99,9 +67,9 @@
 
 import {onMounted, ref, watch} from "vue";
 import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
-import {useLevelStore} from "@/main/dashboard/manageLevel/store/level.js";
 import {useRouter} from "vue-router";
 import LevelSettings from "@/main/dashboard/manageLevel/LevelSettings.vue";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
 const levelStore = useLevelStore()
 const levelDataInfo = ref(null)
 const routerData = useRouter()
@@ -109,7 +77,7 @@ const showHomeLevel = ref("home")
 const school = ref( "")
 
 
-const campus = routerData.currentRoute.value.query.id
+const campusNumber = routerData.currentRoute.value.query.id
 const campusLevel = routerData.currentRoute.value.query.l
 
 
@@ -118,15 +86,14 @@ showHomeLevel.value = campusLevel ? "level" : "home"
 
 onMounted(
     () => {
-      levelStore.fetchLevelInfo(campus)
-
+      levelStore.fetchCampusLevelList(campusNumber)
     }
 )
 
 
 
 watch(
-    () => levelStore.levelResponse,
+    () => levelStore.campusLevelResponse,
     async (data) => {
       if(data){
         levelDataInfo.value = data.data
