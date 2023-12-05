@@ -48,7 +48,6 @@
        
             <div class="mb-2">
               <label class="textColor text-sm">How Did You Know ABout the School ?</label>
-              <input type="text" >
             <select style="outline: none 0 !important; box-shadow: none;" v-model="form.know_school"  required class="select form-control form-control-sm" multiple>
             <option value="1">Old parent</option>
             <option value="2">Friend</option>
