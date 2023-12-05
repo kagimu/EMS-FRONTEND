@@ -91,7 +91,6 @@ const form = reactive({
 const addParentPersonalDetails = () => {
   buttonLoader.value = true
   applicationStore.newApplicationDetails(form)
-  emit("next", 2 )
 }
 
 watch (

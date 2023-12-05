@@ -88,7 +88,6 @@ const  notificationStore  = useNotificationStore()
 const addLearnerDetails = () => {
   buttonLoader.value = true
   applicationStore.newApplicationDetails(form)
-  emit("next", 3 )
 }
 
 watch (
