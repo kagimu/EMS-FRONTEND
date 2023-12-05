@@ -103,7 +103,7 @@ const  notificationStore  = useNotificationStore()
 })
 
 const addSchoolDetails = () => {
-  buttonLoader.value = true,
+  buttonLoader.value = true
   applicationStore.newApplicationDetails(form)
 }
 
