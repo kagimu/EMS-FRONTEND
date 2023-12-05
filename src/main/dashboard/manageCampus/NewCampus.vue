@@ -143,17 +143,19 @@ const campus_number = ref(null)
 
 const form = reactive({
   name:null,
-  school_curriculum_number:"",
   email:null,
   phone:null,
   location:null,
+  school_curriculum_number:"",
   curriculum_level_number:[]
 })
 
 
 const addCampus = () =>{
+
   loader.value = true
   form.school_number = schoolNumber
+
   if(campus_number.value){
     form.campus_number = campus_number.value
     campusStore.editCampusData(form)
