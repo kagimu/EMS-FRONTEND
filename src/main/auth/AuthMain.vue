@@ -1,10 +1,8 @@
 <template>
 
-
-  
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top ">
       <div class="container-fluid">
-        <a href="#" class="navbar-brand" style="margin-left:20px;font-size:34px; font-weight:900">Wholesome Education</a>
+        <a href="#" class="navbar-brand" style="margin-left:20px;font-size:24px; font-weight:500">Wholesome Education</a>
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -35,11 +33,9 @@ name: "AuthMain"
 </script>
 
 <style scoped>
-.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl{
-  --bs-gutter-x: 0rem;
-  --bs-gutter-x: 0rem !important;
-}
 .navbar-expand-lg .navbar-nav .nav-link{
   color:white;
 }
+.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+  padding: 0px !important; }
 </style>
