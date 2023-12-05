@@ -74,9 +74,7 @@
 
               <div class="card-body">
                 <div class="mb-3 flex justify-between" style="font-size: 20px;">
-
                     {{campus.name}}
-
                   <div>
                   <i
                       class="bi-pencil ml-2 cursor-pointer"
