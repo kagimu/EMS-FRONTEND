@@ -6,17 +6,15 @@
       {{levelDataInfo.name}}
     </div>
 
+    <div class="card mt-3">
+      <div class="card-body" style="padding: 0;">
+         <level-info></level-info>
+      </div>
+    </div>
+
+
     <div class="row">
       <div class="col-3">
-
-        <div class="card mt-3">
-          <div class="card-body" style="padding: 0;" v-if="levelDataInfo">
-            <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-              <router-link class="list-group-item list-group-item-action" :class="showHomeLevel && showHomeLevel === 'home' ? 'active' : ''" :to="{name:'level', query:{id:campusNumber}}"><small style="font-size:12px;">Home</small></router-link>
-            </div>
-
-          </div>
-        </div>
 
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;" v-if="levelDataInfo">
@@ -43,11 +41,9 @@
 
             <div class="mt-4">
 
-              <div v-if="showHomeLevel && showHomeLevel === 'home'">
-                <level-info></level-info>
-              </div>
 
-              <div v-if="showHomeLevel && showHomeLevel === 'level'">
+
+              <div>
                 <level-settings></level-settings>
               </div>
 
@@ -73,15 +69,15 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 const levelStore = useLevelStore()
 const levelDataInfo = ref(null)
 const routerData = useRouter()
-const showHomeLevel = ref("home")
+
 const school = ref( "")
 
 
 const campusNumber = routerData.currentRoute.value.query.id
-const campusLevel = routerData.currentRoute.value.query.l
+let campusLevel = routerData.currentRoute.value.query.l
 
 
-showHomeLevel.value = campusLevel ? "level" : "home"
+
 
 
 onMounted(
@@ -96,7 +92,12 @@ watch(
     () => levelStore.campusLevelResponse,
     async (data) => {
       if(data){
-        levelDataInfo.value = data.data
+        let campusInfo = data.data
+
+        levelDataInfo.value = campusInfo
+        if(!campusLevel){
+          campusLevel = campusInfo[0].number
+        }
       }
     },
     {deep:true}
