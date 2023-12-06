@@ -118,7 +118,7 @@ import {onMounted, reactive, ref, watch} from "vue";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useRouter} from "vue-router";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-import {useLevelStore} from "@/main/settings/level/store/levels.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 
 const routerData = useRouter()
@@ -143,17 +143,19 @@ const campus_number = ref(null)
 
 const form = reactive({
   name:null,
-  school_curriculum_number:"",
   email:null,
   phone:null,
   location:null,
+  school_curriculum_number:"",
   curriculum_level_number:[]
 })
 
 
 const addCampus = () =>{
+
   loader.value = true
   form.school_number = schoolNumber
+
   if(campus_number.value){
     form.campus_number = campus_number.value
     campusStore.editCampusData(form)

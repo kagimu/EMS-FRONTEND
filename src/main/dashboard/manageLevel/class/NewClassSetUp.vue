@@ -82,7 +82,7 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.
 import {useRouter} from "vue-router";
 import useCommonsStore from "@/composables/useCommons.js";
 import useNotificationStore from "@/composables/useNotification.js";
-import {useLevelStore} from "@/main/settings/level/store/levels.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
 
 const classError = ref(null)
 const name = ref(null)
