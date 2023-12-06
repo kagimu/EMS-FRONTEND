@@ -119,7 +119,7 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes"
 import {useRouter} from "vue-router";
 import NewClassSetUp from "@/main/dashboard/manageLevel/class/NewClassSetUp.vue";
 import useCommonsStore from "@/composables/useCommons.js";
-import {useLevelStore} from "@/main/settings/level/store/levels.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
 import NewCurriculumClass from "@/main/dashboard/manageLevel/class/NewCurriculumClass.vue";
 const routerData = useRouter()
 

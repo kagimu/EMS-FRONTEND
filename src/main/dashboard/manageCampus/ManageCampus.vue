@@ -89,9 +89,10 @@
 
                 </div>
                 <small>
-                  Email: {{campus.email}}<br />
-                  Phone: {{campus.phone}}<br />
-                  Location: {{campus.location}}
+                  <b>Email:</b> {{campus.email}}<br />
+                  <b>Phone:</b> {{campus.phone}}<br />
+                  <b>Location:</b> {{campus.location}}<br />
+                  <b>Curriculum:</b> {{campus.curriculum_name}}
                 </small>
 
                 <div class="flex justify-content-between">
