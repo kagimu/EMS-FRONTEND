@@ -89,7 +89,7 @@ watch(
       if(data){
       let arr = []
         data.forEach(lst => {
-          arr.push(lst.class_number)
+          arr.push(lst.curriculum_class_number)
         })
         classId.value = arr
       }

@@ -11,6 +11,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="mt-2 mb-2">
+
                             <new-class :classListInfo="classList"></new-class>
                         </div>
                     </div>
