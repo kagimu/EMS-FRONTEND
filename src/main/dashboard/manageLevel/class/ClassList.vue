@@ -11,8 +11,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="mt-2 mb-2">
-
-                            <new-class :classListInfo="classList"></new-class>
+                            <new-campus-class :classListInfo="classList"></new-campus-class>
                         </div>
                     </div>
                 </div>
@@ -127,9 +126,9 @@
 
 import {onMounted, reactive, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
-import NewClass from "@/main/dashboard/manageLevel/class/NewClass.vue";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes";
 import {useRouter} from "vue-router";
+import NewCampusClass from "@/main/dashboard/manageLevel/class/NewCampusClass.vue";
 
 const routerData = useRouter()
 
