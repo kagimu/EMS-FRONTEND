@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-lg-4"></div>
       <div class="col-lg-4">
-        <div class="text-center mb-3" style="font-size: 27px;">Wholesome Education</div>
+        <!-- <div class="text-center mb-3" style="font-size: 27px;">Wholesome Education</div> -->
         <div class="card">
           <div class="card-body">
             <div v-if="showSuccessPage" class="text-center mt-8" style="font-size: 16px; color: #757575;">
@@ -192,7 +192,7 @@ watch(
 .content {
   position: absolute;
   left: 50%;
-  top: 80%;
+  top: 50%;
   transform: translate(-50%, -50%);
 }
 

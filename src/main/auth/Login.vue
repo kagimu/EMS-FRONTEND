@@ -3,15 +3,9 @@
 
     <div class="row">
       <div class="col-lg-4 content">
-        <div class="text-center mb-3" style="font-size: 27px;">Wholesome Education</div>
+        <!-- <div class="text-center mb-3" style="font-size: 27px;">Wholesome Education</div> -->
         <div class="card">
           <div class="card-body">
-
-
-
-
-
-
             <div class="text-center textColor"><b>Login</b></div>
             <!--          <div class="text-center">Wholesome Education</div>-->
             <div class="text-center mb-3 textColor"><small>---- Please login to your account.----</small></div>
@@ -149,7 +143,7 @@ watch(
 .content {
   position: absolute;
   left: 50%;
-  top: 60%;
+  top: 50%;
   transform: translate(-50%, -50%);
 }
 
