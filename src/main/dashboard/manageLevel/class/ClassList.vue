@@ -141,7 +141,6 @@ const streamDialog = ref(false)
 const classList = ref([])
 const streamClass = ref(null)
 const campusNumber = routerData.currentRoute.value.query.id
-// const campusNumber = localStorage.getItem('campus_number');
 const levelNumber = routerData.currentRoute.value.query.l
 
 const streamForm = reactive({
@@ -193,7 +192,7 @@ watch(
     async (data) => {
         if (data) {
             // classDialog.value = false
-            filterClassInfo()
+           filterClassInfo()
             notificationStore.successToast("Success", data.message)
         }
     },
