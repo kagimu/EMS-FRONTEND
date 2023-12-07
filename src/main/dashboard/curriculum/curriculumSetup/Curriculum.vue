@@ -142,8 +142,8 @@ const deleteSchool = (school) => {
 }
 
 onMounted(
-    () => {
-      curriculumStore.fetchCurriculum()
+    async () => {
+    await  curriculumStore.fetchCurriculum()
     }
 )
 

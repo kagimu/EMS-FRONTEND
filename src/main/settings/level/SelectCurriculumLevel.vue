@@ -30,7 +30,7 @@ import {onMounted, ref, watch} from "vue";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useRouter} from "vue-router";
 import useNotificationStore from "@/composables/useNotification.js";
-import {useLevelStore} from "@/main/settings/level/store/levels.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
 
 const classError = ref(null)
 const name = ref(null)

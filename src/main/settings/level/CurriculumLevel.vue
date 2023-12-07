@@ -84,7 +84,7 @@ import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useRouter} from "vue-router";
 import useCommonsStore from "@/composables/useCommons.js";
-import {useLevelStore} from "@/main/settings/level/store/levels.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
 import SelectCurriculumLevel from "@/main/settings/level/SelectCurriculumLevel.vue";
 const routerData = useRouter()
 

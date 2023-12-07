@@ -4,6 +4,8 @@
 
 <p class="ml-4 mt-4 mb-10">PERSONAL DETAILS OF STUDENT</p>
 
+
+
   <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
     {{errorMessage}}
   </div>
@@ -188,6 +190,7 @@ const form = reactive({
   home_phone2:null,
   home_email2:null,
 })
+
 
 const addStudentEducationDetails = () => {
   buttonLoader.value = true

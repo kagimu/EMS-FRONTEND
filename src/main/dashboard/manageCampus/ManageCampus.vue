@@ -22,6 +22,42 @@
 
 
 
+    <div class="card mt-3">
+      <div class="card-body">
+
+    <div class="ml-3 mt-3" >
+      <div class="row">
+        <div class="col-6">
+          <div v-if="schoolData">
+           <small>School:</small> <br />
+           <div style="font-size: 20px;">
+             {{schoolData.name}}
+           </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="ml-5 mt-1">
+            <small><b>School Curriculum (s)</b></small>
+            <div class="ml-4" v-if="schoolData">
+                <div v-for="(schools, index) in schoolData.school_curriculum" :key="index">
+                  <small>{{(index+1)+". "+schools.name}}</small>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+</div>
+      </div>
+
+
+
+
+
+    </div>
+
+
     <div class="mt-3">
       <button type="button"  class="btn btn-sm buttonStyle btn-primary ml-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#infoModal">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
@@ -53,9 +89,10 @@
 
                 </div>
                 <small>
-                  Email: {{campus.email}}<br />
-                  Phone: {{campus.phone}}<br />
-                  Location: {{campus.location}}
+                  <b>Email:</b> {{campus.email}}<br />
+                  <b>Phone:</b> {{campus.phone}}<br />
+                  <b>Location:</b> {{campus.location}}<br />
+                  <b>Curriculum:</b> {{campus.curriculum_name}}
                 </small>
 
                 <div class="flex justify-content-between">
@@ -99,6 +136,7 @@ const  notificationStore  = useNotificationStore()
 const campusDialog = ref( false)
 const campusEditMode = ref( false)
 const campusList = ref( [])
+const schoolData = ref( null)
 
 
 let schoolNumber = routerData.currentRoute.value.query.id
@@ -132,7 +170,7 @@ const deleteCampus = (campus) => {
 onMounted(
     () => {
       fetchCampusInfo(schoolNumber)
-      schoolStore.fetchSchools()
+      schoolStore.fetchSchoolData(schoolNumber)
     }
 )
 
@@ -193,6 +231,17 @@ watch (
     async (data) => {
       if(data){
         notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+watch (
+    () => schoolStore.schoolInfoResponse,
+    async (data) => {
+      if(data){
+       schoolData.value = data.data
       }
     },
     {deep:true}

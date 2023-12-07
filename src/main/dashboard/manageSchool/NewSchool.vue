@@ -6,6 +6,9 @@
         {{ classError }}
       </div>
 
+
+
+
       <div class="mb-2">
         <label class="textColor text-sm">School Name</label>
         <input
@@ -14,6 +17,22 @@
             v-model="form.name"
             required
             class="form-control form-control-sm">
+      </div>
+
+
+
+      <div class="mb-2">
+        <label class="textColor mt-3 mb-2"><small>Select Curriculum(s) to adopt to this School</small></label>
+        <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+          <li class="list-group-item" v-for="(lvl,idx) in curriculumList">
+            <input
+                v-model="form.curriculum"
+                style="outline: none 0 !important; box-shadow: none;"
+                class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="idx">
+            <label class="form-check-label cursor-pointer" :for="idx">{{lvl.name}}</label>
+          </li>
+
+        </ul>
       </div>
 
 
@@ -39,17 +58,21 @@
 
 import {watch, onMounted, reactive, ref} from "vue";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 
 const classError = ref(null)
 const name = ref(null)
 const school_number = ref(null)
 const loader = ref(false)
+const curriculumList = ref([])
+const curriculumStore = useCurriculumStore()
 
 const schoolStore = useSchoolStore()
 
 
 const form = reactive({
   name:null,
+  curriculum:[],
 })
 
 
@@ -64,16 +87,11 @@ const addSchool = () =>{
 
 }
 
-
-
 onMounted(
-    () =>{
-      /* if(props.classNumber){
-         classesStore.classDetails(props.classNumber)
-       }*/
+    async () => {
+      await  curriculumStore.fetchCurriculum()
     }
 )
-
 
 
 
@@ -121,7 +139,15 @@ watch (
     {deep:true}
 )
 
-
+watch(
+    () => curriculumStore.curriculumDataResponse,
+    async (data) => {
+      if(data){
+        curriculumList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 
 </script>

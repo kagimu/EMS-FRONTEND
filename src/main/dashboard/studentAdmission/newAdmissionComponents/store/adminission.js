@@ -3,7 +3,7 @@ import { ref } from "vue"
 import api from "@/config/api.js";
 
 export const useAdmissionStore = defineStore("admission", () => {
-    let newStudentDetailsAdmissionResponse = ref(null)
+    const newStudentDetailsAdmissionResponse = ref(null)
     const errorMessage = ref(null)
 
 

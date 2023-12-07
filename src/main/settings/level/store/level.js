@@ -3,10 +3,11 @@ import { ref } from "vue"
 import api from "@/config/api.js";
 
 export const useLevelStore = defineStore("level", () => {
-    let levelInfoResponse = ref(null)
-    let levelResponse = ref(null)
-    let curriculumLevelResponse = ref(null)
+    const levelInfoResponse = ref(null)
+    const levelResponse = ref(null)
+    const curriculumLevelResponse = ref(null)
     const curriculumLevelInfoResponse = ref(null)
+    const campusLevelResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -64,7 +65,51 @@ export const useLevelStore = defineStore("level", () => {
 
 
 
+
+    async function fetchLevelInfo(data) {
+        return await api.get("main/level?campus_number="+data)
+            .then((response) => {
+                levelResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchCampusLevelList(data) {
+        return await api.get("main/fetch-campus-level?campus_number="+data)
+            .then((response) => {
+                campusLevelResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
+
+
+    async function fetchLevelsByCampusNumber(campusNumber) {
+        return await api.get("main/timetable/fetch-levels-by-campus-number/"+campusNumber)
+            .then((response) => {
+                levelResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
+
+
     return {
+        campusLevelResponse,
         levelInfoResponse,
         levelResponse,
         curriculumLevelResponse,
@@ -73,6 +118,9 @@ export const useLevelStore = defineStore("level", () => {
         newLevelData,
         fetchLevels,
         newCurriculumLevel,
-        fetchCurriculumLevels
+        fetchCurriculumLevels,
+        fetchLevelInfo,
+        fetchCampusLevelList,
+        fetchLevelsByCampusNumber,
     }
 })

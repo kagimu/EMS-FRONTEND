@@ -85,7 +85,7 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {useRouter} from "vue-router";
 import useCommonsStore from "@/composables/useCommons.js";
 import NewLevel from "@/main/settings/level/NewLevel.vue";
-import {useLevelStore} from "@/main/settings/level/store/levels.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
 const routerData = useRouter()
 
 

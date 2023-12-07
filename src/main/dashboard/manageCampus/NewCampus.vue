@@ -12,20 +12,6 @@
           <div class="mx-auto" style="width: 95%;">
 
 
-<!--            <div class="mb-2">
-              <label class="textColor"><small>School</small></label>
-            <select
-                disabled
-                style="box-shadow: none;"
-                class="form-select form-select-sm"
-                v-model="school"
-            >
-              <option disabled value="">Select School</option>
-              <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
-            </select>
-            </div>-->
-
-
 
           <div class="mb-2">
             <label class="textColor"><small>Campus Name</small></label>
@@ -70,17 +56,39 @@
         </div>
         <div v-if="!campus_number"  class="col-6">
           <div class="mx-auto" style="width: 95%;">
-          <label class="textColor mt-3 mb-2"><small>Select Class Levels</small></label>
-          <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-            <li class="list-group-item" v-for="(lvl,idx) in levelList">
-              <input
-                  v-model="form.level"
-                  style="outline: none 0 !important; box-shadow: none;"
-                  class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="idx">
-              <label class="form-check-label cursor-pointer" :for="idx">{{lvl.name}}</label>
-            </li>
 
-          </ul>
+
+            <div class="mb-2">
+              <label class="textColor"><small>Curriculum</small></label>
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="form.school_curriculum_number"
+                  @change="filterCurriculumLevel(form.school_curriculum_number)"
+              >
+                <option disabled value="">Select Curriculum</option>
+                <!--              <option value="">All</option>-->
+                <option v-for="(list, index) in curriculumList" :key="index" :value="list.number">
+                  {{list.name}}
+                </option>
+              </select>
+            </div>
+
+
+
+         <div>
+           <label class="textColor mt-3 mb-2"><small>Select Class Levels</small></label>
+           <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+             <li class="list-group-item" v-for="(lvl,idx) in curriculumLevelList">
+               <input
+                   v-model="form.curriculum_level_number"
+                   style="outline: none 0 !important; box-shadow: none;"
+                   class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="idx">
+               <label class="form-check-label cursor-pointer" :for="idx">{{lvl.name}}</label>
+             </li>
+           </ul>
+         </div>
+
           </div>
         </div>
       </div>
@@ -110,7 +118,8 @@ import {onMounted, reactive, ref, watch} from "vue";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useRouter} from "vue-router";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-import {useLevelStore} from "@/main/settings/level/store/levels.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 
 const routerData = useRouter()
 const errorMessage = ref(null)
@@ -120,11 +129,14 @@ const schoolsList = ref( [])
 const school = ref( null)
 const levelStore = useLevelStore()
 const levelList = ref([])
+const curriculumList = ref([])
+const curriculumLevelList = ref([])
 
 const campusStore = useCampusStore()
 const schoolStore = useSchoolStore()
 
 let schoolNumber = routerData.currentRoute.value.query.id
+const curriculumStore = useCurriculumStore()
 
 
 const campus_number = ref(null)
@@ -134,13 +146,16 @@ const form = reactive({
   email:null,
   phone:null,
   location:null,
-  level:[]
+  school_curriculum_number:"",
+  curriculum_level_number:[]
 })
 
 
 const addCampus = () =>{
+
   loader.value = true
   form.school_number = schoolNumber
+
   if(campus_number.value){
     form.campus_number = campus_number.value
     campusStore.editCampusData(form)
@@ -159,9 +174,13 @@ const props = defineProps({
 onMounted(
     async () =>{
       await levelStore.fetchLevels()
+      await curriculumStore.fetchSchoolCurriculum(schoolNumber)
     }
 )
 
+const filterCurriculumLevel = (school_curriculum_number) => {
+  curriculumStore.fetchSchoolCurriculumLevel(school_curriculum_number)
+}
 
 watch(
     () => props.school,
@@ -222,6 +241,26 @@ watch(
     async (data) => {
       if(data){
         levelList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => curriculumStore.schoolCurriculumResponse,
+    async (data) => {
+      if(data){
+        curriculumList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => curriculumStore.schoolCurriculumLevelResponse,
+    async (data) => {
+      if(data){
+        curriculumLevelList.value = data.data
       }
     },
     {deep:true}

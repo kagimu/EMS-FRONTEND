@@ -159,8 +159,8 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useAuthStore} from "@/main/auth/store/auth.js";
 import {useTimetableStore} from "@/main/dashboard/curriculum/timetable/store/timetable.js";
-import {useLevelStore} from "@/main/dashboard/manageLevel/store/level.js";
 import useNotificationStore from "@/composables/useNotification.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
 
 const classError = ref(null)
 const name = ref(null)
