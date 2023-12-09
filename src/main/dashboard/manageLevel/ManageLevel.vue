@@ -41,8 +41,6 @@
 
             <div class="mt-4">
 
-
-
               <div>
                 <level-settings></level-settings>
               </div>

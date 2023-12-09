@@ -101,6 +101,7 @@ const commons = useCommonsStore()
 const routerData = useRouter()
 const campusStore = useCampusStore()
 const academicYearStore = useAcademicYearStore()
+const levelStore = useLevelStore()
 const campusLevel = routerData.currentRoute.value.query.l
 const campusNumber = routerData.currentRoute.value.query.id
 const errorMessage = ref(null)
@@ -115,6 +116,7 @@ const currentYear = ref((new Date()).getFullYear());
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import useNotificationStore from "@/composables/useNotification.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
 
 const date = ref();
 
@@ -140,7 +142,7 @@ const format = (date) => {
 
 onMounted(
     () =>{
-      campusStore.fetchCampusLevel(campusNumber)
+      // campusStore.fetchCampusLevel(campusNumber)
     }
 )
 
@@ -148,6 +150,7 @@ const addAcademicYear = () => {
   loader.value = true
   academicYearStore.newAcademicYear(form)
 }
+/*
 
 watch(
     () => campusStore.campusLevelListResponse,
@@ -158,6 +161,26 @@ watch(
     },
     {deep:true}
 )
+
+*/
+
+
+
+watch(
+    () => levelStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        let campusInfo = data.data
+
+        campusLevelInfo.value = campusInfo
+       /* if(!campusLevel){
+          campusLevel = campusInfo[0].number
+        }*/
+      }
+    },
+    {deep:true}
+)
+
 
 watch(
     () => academicYearStore.newAcademicYearResponse,
