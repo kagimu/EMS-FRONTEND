@@ -52,7 +52,7 @@
     <table class="table table-hover caption-top" style="font-size: 14px;">
       <thead>
       <tr>
-        <th scope="col">#</th>
+<!--        <th scope="col">#</th>-->
         <th scope="col">Code</th>
         <th scope="col">Period name</th>
         <th scope="col">Academic Year</th>
@@ -62,7 +62,7 @@
       </thead>
       <tbody>
       <tr v-for="(styPeriod, index) in studyPeriodList" :key="index">
-        <td>{{index+1}}</td>
+<!--        <td>{{index+1}}</td>-->
         <td> {{styPeriod.code}}</td>
         <td> {{styPeriod.study_period_name}}</td>
         <td> {{styPeriod.academic_year_name}}</td>
