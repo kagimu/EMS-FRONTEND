@@ -115,7 +115,6 @@ const form = reactive({
   study_period_name:"",
   academic_year_number:"",
   study_period_date_range:"",
-  level_number:campusLevel,
 })
 
 
