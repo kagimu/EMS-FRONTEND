@@ -93,20 +93,41 @@
                   <b>Curriculum:</b> {{campus.curriculum_name}}
                 </small>
 
-                <div class="flex justify-content-between">
+                <div class="flex justify-content-between mt-4">
                   &nbsp;
+
+
+
+                  <div class="flex">
+
                   <router-link
                       class="text-decoration-none"
-                      :to="{name:'level', query:{id:campus.number}}"
+                      :to="{name:'scheme-of-work', query:{id:campus.number}}"
                   >
-                  <button
-                      type="button"
-                      class="btn-primary border-0 d-none d-lg-block viewButtonStyle">
+                    <button
+                        type="button"
+                        class="btn-primary border-0 d-none d-lg-block viewButtonStyle mr-2">
                       <span class="mx-9 text-sm">
-                        View
+                        Setup Scheme
                       </span>
-                  </button>
+                    </button>
                   </router-link>
+
+                    <router-link
+                        class="text-decoration-none"
+                        :to="{name:'level', query:{id:campus.number}}"
+                    >
+                      <button
+                          type="button"
+                          class="btn-primary border-0 d-none d-lg-block viewButtonStyle">
+                      <span class="mx-9 text-sm">
+                        Setup Campus
+                      </span>
+                      </button>
+                    </router-link>
+
+                  </div>
+
                 </div>
 
               </div>
