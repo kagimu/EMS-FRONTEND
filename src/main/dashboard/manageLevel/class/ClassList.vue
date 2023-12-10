@@ -129,8 +129,10 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes";
 import {useRouter} from "vue-router";
 import NewCampusClass from "@/main/dashboard/manageLevel/class/NewCampusClass.vue";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
 
 const routerData = useRouter()
+const levelStore = useLevelStore()
 
 
 const classStore = useClassesStore()
@@ -184,8 +186,14 @@ onMounted(
 )
 
 const filterClassInfo = () => {
-    classStore.fetchClassLevel({campusNumber: campusNumber, levelNumber: levelNumber})
+    fetchClasses(levelNumber)
 }
+
+
+const fetchClasses = (levelNo) => {
+  classStore.fetchClassLevel({campusNumber: campusNumber, levelNumber: levelNo})
+}
+
 
 watch(
     () => classStore.classLevelResponse,
@@ -219,6 +227,21 @@ watch(
         }
     },
     {deep: true}
+)
+
+
+watch(
+    () => levelStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        let campusInfo = data.data
+
+        if(!levelNumber){
+          fetchClasses(campusInfo[0].number)
+        }
+      }
+    },
+    {deep:true}
 )
 
 
