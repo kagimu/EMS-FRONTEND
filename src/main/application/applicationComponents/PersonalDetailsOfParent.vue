@@ -1,6 +1,6 @@
 <template>
 <div>
-<p class="ml-4 mt-4 mb-10">GUARDIAN/PARENT DETAILS</p>
+<p class="ml-4 mt-4 mb-10" style="text-align: center !important;"><b>GUARDIAN/PARENT DETAILS</b></p>
 
 <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
     {{errorMessage}}
