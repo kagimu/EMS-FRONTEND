@@ -140,10 +140,16 @@ watch (
   .mb-8 {
     margin-bottom: 2rem;
     text-align: left;
+    color: rgb(0, 0, 0);
+    font-family: Roboto, sans-serif;
+    font-size: 17px;
 }
 .mb-2 {
     margin-bottom: 2rem;
     text-align: left;
+    color: rgb(0, 0, 0);
+    font-family: Roboto, sans-serif;
+    font-size: 17px;
 }
 input{
   width:480px;

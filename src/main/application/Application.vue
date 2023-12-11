@@ -10,7 +10,7 @@
         <div class="card" style="margin:50px;border-radius: 16px;">
           <div class="card-body" >
            <div class="row">
-            <div class="col-lg-6" style="text-align: center;padding-top:20px;">
+            <div class="col-lg-6" style="text-align: center;padding-top:28px;">
               <p class="txt4">You are applying for</p>
               <h1 class="txt3">Wholesome Services</h1>
               <p class="txt4">To continue your application, please fill out the form below.</p>
@@ -84,7 +84,7 @@ input:focus {
     font-weight: 700;
 }
 .txt2{
-  color: rgb(0, 151, 178);
+  color: rgb(10, 77, 159);
     text-shadow: rgba(0, 0, 0, 0.3) 0px 0px 6px;
     text-transform: uppercase;
     font-family: Spartan, sans-serif;
@@ -93,7 +93,7 @@ input:focus {
 }
 .txt3{
   text-align: center;
-    color: rgb(0, 151, 178);
+    color: rgb(10, 77, 159);
     font-family: Spartan, sans-serif;
     font-size: 33px;
     font-weight: 800;
