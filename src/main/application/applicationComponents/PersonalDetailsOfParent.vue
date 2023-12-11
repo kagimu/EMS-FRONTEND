@@ -34,30 +34,22 @@
           <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.alternative_no"  required class="form-control form-control-sm">
         </div>
          <div class="row">
-          <div class="col-lg-6">
+          
             <div class="mb-2">
           <label class="textColor text-sm">Email</label>
           <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.email"  required class="form-control form-control-sm">
         </div>
-          </div>
-          <div class="col-lg-6">
+         
+          
             <div class="mb-2">
           <label class="textColor text-sm">Alternative Email</label>
           <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.alternative_email"  required class="form-control form-control-sm">
         </div>
           </div>
-         </div>
+        
     </div>
         <div class="text- mt-4">
           <div class="row">
-            <div class="col-lg-3">
-              <button type="submit" class="btn btn-success mb-2 mr-4">
-           <i class="bi bi-box-arrow-in-left"></i> Back
-            <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          </button>
-            </div>
             <div class="col-lg-3">
               <button type="submit" class="btn btn-primary mb-2 mr-4">
                 Next &nbsp;<i class="bi bi-box-arrow-in-right"></i> 
@@ -136,7 +128,12 @@ watch (
     text-align: left;
 }
 .mb-2 {
-    margin-bottom: 2rem;
     text-align: left;
+}
+input{
+  width:480px;
+  margin-top: 8px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
 }
 </style>

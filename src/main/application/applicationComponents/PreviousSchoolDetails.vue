@@ -145,4 +145,10 @@ watch (
     margin-bottom: 2rem;
     text-align: left;
 }
+input{
+  width:480px;
+  margin-top: 8px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
 </style> 

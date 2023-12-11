@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="temp">
     <div class="row">
       <div style="padding-top: 120px;">
       <h5 class="txt" >APPLY</h5>
-      <h1  class="txt">STUDENT APPLICATION</h1>
+      <h1  class="txt2">STUDENT APPLICATION</h1>
       <p  class="txt">Get Started Today With Few Steps </p>
     </div>
       <div class="col-lg-12">
@@ -11,9 +11,9 @@
           <div class="card-body" >
            <div class="row">
             <div class="col-lg-6" style="text-align: center;padding-top:20px;">
-              <p>You are applying for</p>
-              <h1>Wholesome Services</h1>
-              <p>To continue your application, please fill out the form below.</p>
+              <p class="txt4">You are applying for</p>
+              <h1 class="txt3">Wholesome Services</h1>
+              <p class="txt4">To continue your application, please fill out the form below.</p>
             </div>
             <div class="col-lg-6">
               <div>
@@ -78,9 +78,45 @@ input:focus {
   float: left !important;
 }.txt{
   text-align: center;
-  color: #0b0b0b;
+  color: rgb(255, 255, 255);
+    font-family: Spartan, sans-serif;
+    font-size: 19px;
+    font-weight: 700;
 }
+.txt2{
+  color: rgb(0, 151, 178);
+    text-shadow: rgba(0, 0, 0, 0.3) 0px 0px 6px;
+    text-transform: uppercase;
+    font-family: Spartan, sans-serif;
+    font-weight: 600;
+    text-align: center;
+}
+.txt3{
+  text-align: center;
+    color: rgb(0, 151, 178);
+    font-family: Spartan, sans-serif;
+    font-size: 33px;
+    font-weight: 800;
+}
+.tx4{
+  text-align: center;
+    color: rgb(0, 0, 0);
+    font-family: Roboto, sans-serif;
+    font-size: 17px;
+}
+.temp{ 
+  height: 100%;
+    width: 100%;
+    opacity: 0.8;
+    /* position: fixed; */
+    background: url(https://remotetutora.com/background-tutor.jpg) center center / cover no-repeat fixed;
+    margin-top: -20px;
+    margin-bottom: -20px;
+}
+.container-fluid{
+  padding-top: 0%;
 
+}
 </style>
 
 <script setup>
