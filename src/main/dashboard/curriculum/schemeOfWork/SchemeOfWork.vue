@@ -274,6 +274,7 @@ import LessonPlanDetails from "@/main/dashboard/curriculum/schemeOfWork/LessonPl
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
+import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 
 const level = ref( "")
 const academic_year_number = ref( "")
@@ -302,6 +303,7 @@ const commons = useCommonsStore()
 const levelStore = useLevelStore()
 const schemeOfWorkStore = useSchemeOfWorkStore()
 const subjectStore = useSubjectStore()
+const academicYearStore = useAcademicYearStore()
 
 let   subjectNo = routerData.currentRoute.value.query.c
 let campusNumber = routerData.currentRoute.value.query.id
@@ -346,10 +348,15 @@ onMounted(
       await fetchSchemeClasses()
       if(selectedClass.value) {
         await subjectStore.fetchSchemeSubjectByClass(selectedClass.value)
-        await subjectStore.fetchAcademicYearByClass(selectedClass.value)
+        // await subjectStore.fetchAcademicYearByClass(selectedClass.value)
+        await fetchAcademicYrList()
       }
     }
 )
+
+const fetchAcademicYrList = () => {
+  academicYearStore.fetchAcademicYear(level.value)
+}
 
 const fetchSchemeClasses = () => {
 /*  let data = {
@@ -358,6 +365,7 @@ const fetchSchemeClasses = () => {
   }
    classStore.fetchSchemeOfWorkClasses(data)*/
   classStore.fetchClassLevel({campusNumber: campusNumber, levelNumber: level.value})
+  fetchAcademicYrList()
 }
 
 watch(
@@ -372,7 +380,8 @@ watch(
             let classNo = classInfo[0].number
             selectedClass.value = classNo
             await subjectStore.fetchSchemeSubjectByClass(classNo)
-            await subjectStore.fetchAcademicYearByClass(classNo)
+            // await subjectStore.fetchAcademicYearByClass(classNo)
+            await fetchAcademicYrList()
 
             let data = {
               academic_year_number:academic_year_number.value,
@@ -419,7 +428,8 @@ watch(
 
 
 watch(
-    () => subjectStore.academicYearByClassResponse,
+    // () => subjectStore.academicYearByClassResponse,
+    () => academicYearStore.academicYearResponse,
     async (data) => {
       if(data){
         let acd = data.data
