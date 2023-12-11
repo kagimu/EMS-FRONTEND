@@ -40,7 +40,6 @@ const router = createRouter({
             children:[
                 {path: 'login', component: Login, name:'login'},
                 {path: 'register', component: Register, name:'register'},
-                {path: 'application', component: Application, name:'application'},
                 {path: 'welcome', component: Welcome, name:'welcome'},
             ]
         },
@@ -77,6 +76,20 @@ const router = createRouter({
                 {path: 'scheme-of-work', component: SchemeOfWork, name: "scheme-of-work"},
                 {path:'calendar', component: GeneralCalendar, name: "general-calendar"},
                 {path:'calendar/:calendar_id', component: CalendarDetails, name: "calendar-details" },
+                
+            ]
+        },
+
+        {
+            path: '/',
+            component: Application,
+            name :"application",
+            redirect:{ name: 'login' },
+            meta: {
+                requiresAuth: true,
+            },
+            children:[
+                {path: 'application', component: Application, name:'application'},
             ]
         },
         {

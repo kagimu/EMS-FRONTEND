@@ -1,7 +1,7 @@
 <template>
   <div class="temp">
     <div class="row">
-      <div style="padding-top: 120px;">
+      <div style="padding-top: 200px;">
       <h5 class="txt" >APPLY</h5>
       <h1  class="txt2">STUDENT APPLICATION</h1>
       <p  class="txt">Get Started Today With Few Steps </p>
@@ -90,6 +90,7 @@ input:focus {
     font-family: Spartan, sans-serif;
     font-weight: 600;
     text-align: center;
+    font-size: 25px;
 }
 .txt3{
   text-align: center;
@@ -107,9 +108,9 @@ input:focus {
 .temp{ 
   height: 100%;
     width: 100%;
-    opacity: 0.8;
+    opacity: 0.9;
     /* position: fixed; */
-    background: url(https://remotetutora.com/background-tutor.jpg) center center / cover no-repeat fixed;
+    background: url(https://blog.bestbuy.ca/wp-content/uploads/2017/07/the-top-10-laptops-for-back-to-school.jpg) center center / cover no-repeat fixed;
     margin-top: -20px;
     margin-bottom: -20px;
 }

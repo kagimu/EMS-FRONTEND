@@ -13,8 +13,8 @@
         <div class="navbar-nav">
           <router-link class="nav-item nav-link" :to="{name:'welcome'}"> 
             <i class="bi bi-house"></i> &nbsp;Home </router-link> 
-          <!-- <router-link class="nav-item nav-link" :to="{name:'application'}"> 
-          <i class="bi bi-arrow-right-circle"></i> &nbsp;Apply </router-link>  -->
+          <router-link class="nav-item nav-link" :to="{name:'application'}"> 
+          <i class="bi bi-arrow-right-circle"></i> &nbsp;Apply </router-link> 
           <router-link class="nav-item nav-link" :to="{name:'login'}"><i class="bi bi-box-arrow-in-right"></i>&nbsp; Login</router-link>
           <router-link class="nav-item nav-link" :to="{name:'register'}"><i class="bi bi-person"></i> &nbsp; Register </router-link>
         </div>
