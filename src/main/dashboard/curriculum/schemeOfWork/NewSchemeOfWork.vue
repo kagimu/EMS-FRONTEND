@@ -329,7 +329,8 @@ watch(
 
 
 watch(
-    () => classStore.schemeClassInfoResponse,
+    // () => classStore.schemeClassInfoResponse,
+    () => classStore.classLevelInfoResponse,
     async (data) => {
       if(data){
         let classInfo = data.data

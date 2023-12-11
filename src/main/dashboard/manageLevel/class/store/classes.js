@@ -100,7 +100,7 @@ export const useClassesStore = defineStore("classes", () => {
     }
 
     async function fetchSchemeOfWorkClasses(data) {
-        return await api.get("main/scheme-of-work-classes?level="+data.level+"&curriculum_number="+data.curriculum_number)
+        return await api.get("main/scheme-of-work-classes?level="+data.level+"&campus_number="+data.campus_number)
             .then((response) => {
                 schemeClassInfoResponse.value = response.data
             })

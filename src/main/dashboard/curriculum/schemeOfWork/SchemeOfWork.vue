@@ -52,12 +52,17 @@
       </div>
     </div>
 
+    <div class="card mt-3">
+      <div class="card-body" style="padding: 0;">
+        <level-info></level-info>
+      </div>
+    </div>
 
-    <div class="mt-3">
+<!--    <div class="mt-3">
       <div class="mt-3" v-if="curriculumInfo && curriculumInfo.name">
         <div style="font-size: 22px; text-transform: capitalize;">Curriculum: <span class="text-blue-900">{{curriculumInfo.name}}</span> </div>
       </div>
-    </div>
+    </div>-->
 
 
 
@@ -268,6 +273,7 @@ import NewLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPla
 import LessonPlanDetails from "@/main/dashboard/curriculum/schemeOfWork/LessonPlanDetails.vue";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
+import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
 
 const level = ref( "")
 const academic_year_number = ref( "")
@@ -296,11 +302,10 @@ const commons = useCommonsStore()
 const levelStore = useLevelStore()
 const schemeOfWorkStore = useSchemeOfWorkStore()
 const subjectStore = useSubjectStore()
-const curriculumStore = useCurriculumStore()
-let curriculumInfo = ref(null)
 
 let   subjectNo = routerData.currentRoute.value.query.c
-let   curriculumNumber = routerData.currentRoute.value.query.id
+let campusNumber = routerData.currentRoute.value.query.id
+
 if(subjectNo){
   selectedClass.value =  subjectNo
 }
@@ -321,7 +326,7 @@ const addCurriculum = () => {
 
 const changeMenu = (value) => {
   selectedClass.value = value
-  router.push({ name: "scheme-of-work", query:{id:curriculumNumber, c:value} })
+  router.push({ name: "scheme-of-work", query:{id:campusNumber, c:value} })
 }
 
 
@@ -337,8 +342,7 @@ const filterSchemeSubject = () => {
 
 onMounted(
     async () => {
-      await levelStore.fetchCurriculumLevels(curriculumNumber)
-      await curriculumStore.fetchCurriculumInfo(curriculumNumber)
+      await levelStore.fetchCampusLevelList(campusNumber)
       await fetchSchemeClasses()
       if(selectedClass.value) {
         await subjectStore.fetchSchemeSubjectByClass(selectedClass.value)
@@ -348,15 +352,17 @@ onMounted(
 )
 
 const fetchSchemeClasses = () => {
-  let data = {
+/*  let data = {
     level:level.value,
-    curriculum_number:curriculumNumber
+    campus_number:campusNumber
   }
-   classStore.fetchSchemeOfWorkClasses(data)
+   classStore.fetchSchemeOfWorkClasses(data)*/
+  classStore.fetchClassLevel({campusNumber: campusNumber, levelNumber: level.value})
 }
 
 watch(
-    () => classStore.schemeClassInfoResponse,
+    // () => classStore.schemeClassInfoResponse,
+    () => classStore.classLevelInfoResponse,
     async (data) => {
       if(data){
         let classInfo = data.data
@@ -502,21 +508,12 @@ watch(
 )
 
 
+
 watch(
-    () => levelStore.curriculumLevelInfoResponse,
+    () => levelStore.campusLevelResponse,
     async (data) => {
       if(data){
         levelList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => curriculumStore.curriculumInfoResponse,
-    async (data) => {
-      if(data){
-        curriculumInfo.value = data.data
       }
     },
     {deep:true}

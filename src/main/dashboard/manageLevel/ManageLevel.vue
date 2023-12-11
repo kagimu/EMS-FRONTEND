@@ -90,11 +90,11 @@ watch(
     () => levelStore.campusLevelResponse,
     async (data) => {
       if(data){
-        let campusInfo = data.data
+        let levelInfo = data.data
 
-        levelDataInfo.value = campusInfo
+        levelDataInfo.value = levelInfo
         if(!campusLevel){
-          campusLevel = campusInfo[0].number
+          campusLevel = levelInfo[0].number
         }
       }
     },
