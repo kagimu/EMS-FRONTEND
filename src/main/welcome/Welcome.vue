@@ -40,7 +40,7 @@
     <router-link class="nav-item nav-link" :to="{name:'application'}"> 
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title text-gray"><b>Apply</b></h5>
+        <h5 class="card-title text-gray"><b>Apply<hr class="hr"></b></h5>
         <p class="card-text text-gray">With supporting text below as a natural lead-in to additional content.</p>
       </div>
     </div>
@@ -84,7 +84,19 @@ div.card {
 }
 .card-title{
   font-size: 1.25rem;
+
 }
+.hr{
+  display: none;
+  border-top:none;
+  width: 150px;
+ border-bottom: 2px solid rgb(0, 123, 255);
+ border-left: none;
+ border-right: none;
+margin-left: 30%;
+ margin-right: 30%;
+}
+
 </style>
 
 <script setup>

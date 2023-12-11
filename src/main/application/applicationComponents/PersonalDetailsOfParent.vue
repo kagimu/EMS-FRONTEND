@@ -8,7 +8,7 @@
 
   <form  @submit.prevent="addParentPersonalDetails"> 
   <div class="row mx-auto">
-    <div class="col-6">
+    <div class="col-12">
         <div class="mb-8">
           <label class="textColor text-sm">Surname/Family name *</label>
           <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.surname" required class="form-control form-control-sm">
@@ -23,9 +23,7 @@
           <label class="textColor text-sm">Other names *</label>
           <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name"  required class="form-control form-control-sm">
         </div>
-    </div>
 
-    <div class="col-6">
         <div class="mb-2">
           <label class="textColor text-sm"> Telephone No.*</label>
           <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.tel_no"   required class="form-control form-control-sm">
@@ -50,17 +48,30 @@
           </div>
          </div>
     </div>
-  </div>
-    <hr />
-
-    <div class="text-right mt-4">
-      <button type="submit" class="btn btn-primary mb-2 mr-4">
-        Next
+        <div class="text- mt-4">
+          <div class="row">
+            <div class="col-lg-3">
+              <button type="submit" class="btn btn-success mb-2 mr-4">
+           <i class="bi bi-box-arrow-in-left"></i> Back
+            <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </button>
+            </div>
+            <div class="col-lg-3">
+              <button type="submit" class="btn btn-primary mb-2 mr-4">
+                Next &nbsp;<i class="bi bi-box-arrow-in-right"></i> 
         <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
           <span class="visually-hidden">Loading...</span>
         </div>
       </button>
+            </div>
+            <div class="col-lg-6"></div>
+          </div>
+        </div>
+
     </div>
+    
   </form>
 </div>
 </template>

@@ -3,16 +3,7 @@
     <notifications position="bottom right" />
     <router-view :key="$route.fullPath"></router-view>
 
-    <footer class="footer">
-    <div class="d-flex flex-column flex-sm-row justify-content-between py-2 my-0 mx-0 border-top">
-      <p style="font-size: 12px;">© 2023 WholeSome Ed, All rights reserved.</p>
-      <ul class="list-unstyled d-flex">
-        <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
-        <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
-        <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
-      </ul>
-    </div>
-  </footer>
+
   </div>
  
 </template>
@@ -64,16 +55,6 @@
 .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
   padding:0px;
 }
-.footer {
-   position: absolute !important;
-   left: 0  !important;;
-   bottom: 0  !important;
-   width: 100%  !important;;
-   background-color:  rgb(13, 86, 195) !important;
-   color: rgb(216, 214, 214);
-   text-align: center;
-   padding-left: 10px;
-   font-size: 12px;
-}
+
 
 </style>
