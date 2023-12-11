@@ -329,7 +329,6 @@ watch(
 
 
 watch(
-    // () => classStore.schemeClassInfoResponse,
     () => classStore.classLevelInfoResponse,
     async (data) => {
       if(data){
@@ -345,7 +344,6 @@ watch(
           }
           form.class_number = number
           await subjectStore.fetchSubjectByClass(number)
-          // await subtopicStore.fetchSubTopicsByClass(number)
         }
       }
     },
