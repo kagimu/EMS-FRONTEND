@@ -75,18 +75,7 @@
                 </button>
               </router-link>
 
-              <router-link
-                  class="text-decoration-none"
-                  :to="{name:'scheme-of-work', query:{id:school.number}}"
-              >
-                <button
-                    type="button"
-                    class="btn-primary border-0 d-none d-lg-block viewButtonStyle">
-                      <span class="mx-9 text-sm">
-                        Setup Scheme
-                      </span>
-                </button>
-              </router-link>
+
 </div>
             </div>
 
