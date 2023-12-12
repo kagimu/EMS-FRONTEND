@@ -1,21 +1,15 @@
 <template>
   <div>
 
-    <div class="row">
-      <div class="col-lg-4 content">
-        <div class="text-center mb-3" style="font-size: 27px;">Wholesome Education</div>
+  
+    <div class="row" style="margin-top: 80px;margin-bottom: 80px;">
+      <div class="col-lg-4"></div>
+      <div class="col-lg-4">
         <div class="card">
           <div class="card-body">
-
-
-
-
-
-
             <div class="text-center textColor"><b>Login</b></div>
             <!--          <div class="text-center">Wholesome Education</div>-->
             <div class="text-center mb-3 textColor"><small>---- Please login to your account.----</small></div>
-
             <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
               {{errorMessage}}
             </div>
@@ -68,8 +62,8 @@
             </form>
           </div>
         </div>
-
       </div>
+      <div class="col-lg-4"></div>
     </div>
 
   </div>
