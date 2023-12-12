@@ -97,7 +97,8 @@
                   <b>Email:</b> {{campus.email}}<br />
                   <b>Phone:</b> {{campus.phone}}<br />
                   <b>Location:</b> {{campus.location}}<br />
-                  <b>Curriculum:</b> {{campus.curriculum_name}}
+                  <b>Curriculum:</b> {{campus.curriculum_name}}<br />
+                  <b>Commencement Date:</b> {{campus.commencement_date}}
                 </small>
 
                 <div class="flex justify-content-between mt-4">
