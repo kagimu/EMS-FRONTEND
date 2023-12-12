@@ -55,7 +55,7 @@ name: "AuthMain"
     padding: 0px;;
   }
   .footer {
-   /* position: absolute !important; */
+   position: absolute !important;
    margin-top: 20px;
    left: 0  !important;;
    bottom: 0  !important;
