@@ -355,7 +355,8 @@ onMounted(
 )
 
 const fetchAcademicYrList = () => {
-  academicYearStore.fetchAcademicYear(level.value)
+  // academicYearStore.fetchAcademicYear(level.value)
+  subjectStore.fetchAcademicYearByClass(selectedClass.value)
 }
 
 const fetchSchemeClasses = () => {
@@ -428,8 +429,8 @@ watch(
 
 
 watch(
-    // () => subjectStore.academicYearByClassResponse,
-    () => academicYearStore.academicYearResponse,
+    () => subjectStore.academicYearByClassResponse,
+    // () => academicYearStore.academicYearResponse,
     async (data) => {
       if(data){
         let acd = data.data
