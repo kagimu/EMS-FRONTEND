@@ -47,8 +47,8 @@ export const useClassesStore = defineStore("classes", () => {
             })
     }
 
-    async function newClassLevelData(data) {
-        return await api.post("main/new-class-level", data)
+    async function newCampusClass(data) {
+        return await api.post("main/new-campus-class", data)
             .then((response) => {
                 classLevelResponse.value = response.data
             })
@@ -100,7 +100,7 @@ export const useClassesStore = defineStore("classes", () => {
     }
 
     async function fetchSchemeOfWorkClasses(data) {
-        return await api.get("main/scheme-of-work-classes?level="+data.level+"&curriculum_number="+data.curriculum_number)
+        return await api.get("main/scheme-of-work-classes?level="+data.level+"&campus_number="+data.campus_number)
             .then((response) => {
                 schemeClassInfoResponse.value = response.data
             })
@@ -233,7 +233,7 @@ export const useClassesStore = defineStore("classes", () => {
         fetchSchemeOfWorkClasses,
         fetchClassSubjects,
         addClassSubjectData,
-        newClassLevelData,
+        newCampusClass,
         fetchClassLevel,
         fetchClassLevelToAdd,
         fetchClassStreams,

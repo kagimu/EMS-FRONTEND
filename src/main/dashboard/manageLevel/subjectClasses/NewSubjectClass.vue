@@ -83,7 +83,7 @@ const classStore = useClassesStore()
 const learningAreaStore = useLearningAreaStore()
 const subjectStore = useSubjectStore()
 const campusLevel = routerData.currentRoute.value.query.l
-const campusNumber = localStorage.getItem('campus_number');
+const campusNumber = routerData.currentRoute.value.query.id
 
 
 const classList = ref([])
