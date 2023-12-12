@@ -47,8 +47,8 @@ export const useClassesStore = defineStore("classes", () => {
             })
     }
 
-    async function newClassLevelData(data) {
-        return await api.post("main/new-class-level", data)
+    async function newCampusClass(data) {
+        return await api.post("main/new-campus-class", data)
             .then((response) => {
                 classLevelResponse.value = response.data
             })
@@ -233,7 +233,7 @@ export const useClassesStore = defineStore("classes", () => {
         fetchSchemeOfWorkClasses,
         fetchClassSubjects,
         addClassSubjectData,
-        newClassLevelData,
+        newCampusClass,
         fetchClassLevel,
         fetchClassLevelToAdd,
         fetchClassStreams,

@@ -48,7 +48,7 @@ const classId = ref([])
 
 const addClass = (classInfo) =>{
   loader.value = true
-  classStore.newClassLevelData({class_code:classInfo.code,class_number:classInfo.number, campus_number:campusNumber, level_number:campusLevel})
+  classStore.newCampusClass({class_code:classInfo.code,class_number:classInfo.number, campus_number:campusNumber, level_number:campusLevel})
 }
 
 const props = defineProps({
