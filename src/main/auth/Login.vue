@@ -6,7 +6,7 @@
       <div class="col-lg-4"></div>
       <div class="col-lg-4">
         <div class="align-centre mt-2 h6 font500 text-uppercase mb-2">
-          <p class="fs-4" style="color:#0b5dd7cc;">Wholesome Education</p>
+          <p class="fs-4" style="color:#0b5dd7cc;"><b>Wholesome Education</b></p>
           <p style="text-align: center !important;color:#0b5dd7cc;font-size: 14px;;">ONLINE APPLICATION</p></div>
         <hr>
         <div class="card">

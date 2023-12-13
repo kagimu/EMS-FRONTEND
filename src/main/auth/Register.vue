@@ -1,13 +1,17 @@
 <template>
   <div>
-
     <div class="row">
       <div class="col-lg-4"></div>
       <div class="col-lg-4">
         <div class="align-centre mt-2 h6 font500 text-uppercase mb-2">
-          <p class="fs-4" style="color:#0b5dd7cc;">Wholesome Education</p>
+          <p class="fs-4" style="color:#0b5dd7cc;"><b>Wholesome Education</b></p>
           <p style="text-align: center !important;color:#0b5dd7cc;font-size: 14px;;">ONLINE APPLICATION</p></div>
         <hr>
+        <div role="alert" class="fade text-md fw-normal alert alert-info show">
+          Register with your current details to get a free account today. 
+          Your ONE TIME activation Link will be sent to the email address you provide 
+          here to activate your account</div>
+        <div class="text-uppercase fs-4"><p style="font-size: 14px;"><b>Create Your Account</b></p></div>
         <div class="card">
           <div class="card-body">
             <div v-if="showSuccessPage" class="text-center mt-8" style="font-size: 16px; color: #757575;">
@@ -42,13 +46,13 @@
                 <div class="col-lg-6">
                   <div class="mb-2">
                     <label class="textColor"><small>First name</small></label>
-                    <input type="text" v-model="form.first_name" required class="form-control">
+                    <input type="text" v-model="form.first_name" required class="form-control form-control-sm">
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="mb-2">
                     <label class="textColor"><small>Second name</small></label>
-                    <input type="text" v-model="form.second_name" required class="form-control">
+                    <input type="text" v-model="form.second_name" required class="form-control form-control-sm">
                   </div>
                 </div>
               </div>
@@ -56,13 +60,13 @@
                 <div class="col-lg-6">
                   <div class="mb-2">
                 <label class="textColor"><small>Last name</small></label>
-                <input type="text" v-model="form.last_name" class="form-control">
+                <input type="text" v-model="form.last_name" class="form-control form-control-sm">
               </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="mb-2">
                 <label class="textColor"><small>Gender</small></label>
-              <select class="form-select" v-model="form.gender" aria-label="Default select example">
+              <select class="form-control form-select form-control-sm" v-model="form.gender" aria-label="Default select example">
                 <option disabled value="">Select Gender</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
@@ -72,18 +76,18 @@
               </div>
               <div class="mb-2">
                 <label class="textColor"><small>Phone</small></label>
-                <input type="tel" v-model="form.phone" required class="form-control">
+                <input type="tel" v-model="form.phone" required class="form-control form-control-sm">
               </div>
 
               <div class="mb-2">
                 <label class="textColor"><small>Email</small></label>
-                <input type="email" v-model="form.email" required class="form-control">
+                <input type="email" v-model="form.email" required class="form-control form-control-sm">
               </div>
 
 
 
               <div class="">
-                <button type="submit" class="btn btn-sm btn-primary mb-2 mt-3 form-control"
+                <button type="submit" class="btn btn-sm btn-primary mb-2 mt-3 form-control form-control-sm"
                  style="border-radius: 0px !important;">
                   <b><i class="bi bi-pencil-square"></i> &nbsp;REGISTER</b>
                   <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
@@ -215,6 +219,16 @@ hr {
 .fs-4 {
     font-size: 1.2rem!important;
     text-align: center;
+    color:#0b5dd7cc !important;
+    font-weight: 900px;
 
+}
+.form-select{
+  min-height: calc(1.5em + 0.5rem + var(--bs-border-width)*2);
+    padding: 0.25rem 0.5rem;
+    font-size: .875rem;
+}
+.alert {
+  background-color: rgba(0, 153, 255, 0.413);
 }
 </style>
