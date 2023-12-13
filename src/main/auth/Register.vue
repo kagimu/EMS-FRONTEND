@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="row">
+  <div style="margin-top: 40px !important;">
+    <div class="row" >
       <div class="col-lg-4"></div>
       <div class="col-lg-4">
         <div class="align-centre mt-2 h6 font500 text-uppercase mb-2">
@@ -230,5 +230,8 @@ hr {
 }
 .alert {
   background-color: rgba(0, 153, 255, 0.413);
+}
+.btn{
+  border-radius: 0px !important;
 }
 </style>

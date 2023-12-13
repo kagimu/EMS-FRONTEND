@@ -17,14 +17,14 @@
             <form @submit.prevent="doLogin">
               <div class="mb-2">
                 <label class="textColor font500 mb-1 mt-0 "><small>Email Address <strong class="text-danger ms-1">*</strong></small></label>
-                <input type="email" v-model="form.email" required class="form-control">
+                <input type="email" v-model="form.email" required class="form-control form-control-sm">
               </div>
               <label class="textColor font500 mb-1 mt-0"><small>Password<strong class="text-danger ms-1">*</strong></small></label>
               <div class="input-group mb-3">
                 <input
                     :type="show ? 'text' : 'password'"
                     v-model="form.password" required
-                    class="form-control" aria-label="Username"
+                    class="form-control form-control-sm" aria-label="Username"
                     aria-describedby="basic-addon1">
                 <div style="cursor: pointer;"  @click="show = !show" class="input-group-text" id="basic-addon1">
                   <i :class="show ? 'bi-eye-slash' : 'bi-eye'"></i>
