@@ -63,7 +63,7 @@
 <style scoped>
 
 .content {
-  position: absolute;
+  /* position: absolute; */
   left: 50%;
   top: 80%;
   transform: translate(-50%, -50%);
