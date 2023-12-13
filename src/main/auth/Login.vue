@@ -31,8 +31,8 @@
                 </div>
               </div>
               <div class="text-right">
-                <button type="submit" class="btn btn-primary mb-2 form-control">
-                  <i class="bi bi-box-arrow-in-right"></i> Login
+                <button type="submit" class="btn btn-sm btn-primary mb-2 form-control">
+                  <b><i class="bi bi-box-arrow-in-right"></i>&nbsp;LOGIN</b> 
                   <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
                     <span class="visually-hidden">Loading...</span>
                   </div>
@@ -46,8 +46,8 @@
         </div>
 
         <div class="mt-5 mb-2 text-center">
-          <router-link class="d-inline text-sm2 font500 text-white text-uppercase btn btn-success" :to="{name:'register'}"><i class="bi bi-question-circle"></i>&nbsp;How to Apply</router-link>&nbsp;&nbsp;
-          <router-link class="d-inline text-sm2 font500 text-white text-uppercase btn btn-primary" :to="{name:'register'}"><i class="bi bi-pencil-square"></i>&nbsp;Get an account</router-link></div>
+          <router-link class="d-inline text-sm2 font500 text-white text-uppercase btn btn-sm btn-success" :to="{name:'register'}" style="font-size: 12px !important;font-weight: 500px;"><i class="bi bi-question-circle"></i>&nbsp;How to Apply</router-link>&nbsp;&nbsp;
+          <router-link class="d-inline text-sm2 font500 text-white text-uppercase btn btn-sm btn-primary" :to="{name:'register'}"  style="font-size: 12px !important;font-weight: 500px;"><i class="bi bi-pencil-square"></i>&nbsp;Get an account</router-link></div>
       </div>
       <div class="col-lg-4"></div>
     </div>
@@ -152,6 +152,9 @@ input:focus {
 }
 .btn-info{
   background-color: #1d5f7d !important;
+}
+.btn{
+  border-radius: 0px !important;
 }
 hr {
     margin: 1rem 0;
