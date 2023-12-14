@@ -10,17 +10,17 @@
         <div class="card" style="margin:50px;border-radius: 16px;">
           <div class="card-body" >
            <div class="row">
-            <div class="col-lg-6" style="text-align: center;padding-top:28px;">
+            <div class="col-lg-5" style="text-align: center;padding-top:28px;">
               <p class="txt4">You are applying for</p>
               <h1 class="txt3">Wholesome Services</h1>
               <p class="txt4">To continue your application, please fill out the form below.</p>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-7">
               <div>
             <div class="text-center">
               <ul class="nav nav-tabs text-xs" style="margin-top: 50px;">
               <li class="nav-item cursor-pointer">
-                <a style="color: black;" class="nav-link" @click="nextPage(1)" :class="step === 1 ? 'active activeTab' : ''">GUARDIAN/PARENT DETAILS</a>
+                <a style="color: black;font-family: Roboto, sans-serif !important;" class="nav-link" @click="nextPage(1)" :class="step === 1 ? 'active activeTab' : ''">GUARDIAN/PARENT DETAILS</a>
               </li>
               <li class="nav-item cursor-pointer">
                 <a style="color: black;" class="nav-link" @click="nextPage(2)" :class="step === 2 ? 'active activeTab' : ''">DETAILS OF THE LEARNER</a>
@@ -116,7 +116,15 @@ input:focus {
 }
 .container-fluid{
   padding-top: 0%;
-
+}
+.nav-link{
+  color: rgb(10, 77, 159) !important;
+    font-family: Spartan, sans-serif !important;
+  font-size: 12px !important;
+  font-family: bold;
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: red !important;
 }
 </style>
 

@@ -1,10 +1,10 @@
 <template>
   <div>
-  <p class="ml-4 mt-4 mb-10"> LEARNER'S DETAILS</p>
+  <!-- <p class="ml-4 mt-4 mb-10"> LEARNER'S DETAILS</p> -->
   <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
     {{errorMessage}}
   </div>
-    <form @submit.prevent="addLearnerDetails">
+    <form @submit.prevent="addLearnerDetails" style="margin-top: 15px;">
     <div class="row">
       <div class="col-12">
           <div class="mb-2">

@@ -1,11 +1,12 @@
 <template>
     <div>
-    <p class="ml-4 mt-4 mb-10"> SCHOOLS ATTENDED</p>
-      <form @submit.prevent="addSchoolDetails">
+    <!-- <p class="ml-4 mt-4 mb-10"> SCHOOLS ATTENDED</p> -->
+      <form @submit.prevent="addSchoolDetails" style="margin-top: 20px;">
       <div class="row mx-auto">
         <div class="col-12" style="border-right:solid whitesmoke 1px;">
-            <h6><center>1</center></h6>
+            
             <div class="mb-2">
+              <h6 class="tit">1</h6>
               <label class="textColor text-sm">School Name*</label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_one"   required class="form-control form-control-sm">
             </div>
@@ -15,24 +16,26 @@
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.classes_attended_one"   required class="form-control form-control-sm">
             </div>
          
-              <h6><center>2</center></h6>
+             
             <div class="mb-2">
+              <h6 class="tit">2</h6>
               <label class="textColor text-sm">School Name*</label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_two" required class="form-control form-control-sm">
             </div>
-
-            <h6><center>3</center></h6>
             <div class="mb-2">
+              <label class="textColor text-sm">Classes Attended *</label>
+              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_three"  required class="form-control form-control-sm">
+            </div>
+            
+            <div class="mb-2">
+              <h6 class="tit">3</h6>
               <label class="textColor text-sm">School Name*</label>
               <input type="text" 
               style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_three" 
                required class="form-control">
             </div>
     
-            <div class="mb-2">
-              <label class="textColor text-sm">Classes Attended *</label>
-              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_three"  required class="form-control form-control-sm">
-            </div>
+           
             <div class="mb-2">
               <label class="textColor text-sm">Classes Attended *</label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_two"  required class="form-control form-control-sm">
@@ -158,4 +161,11 @@ input{
   background-color: #f8f9fa;
   border-radius: 8px;
 }
+.tit{
+  width:480px;
+  text-align: center;
+  margin-top: 15px;
+  text-decoration: underline;
+}
+
 </style> 
