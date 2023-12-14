@@ -28,6 +28,7 @@ import AllTimeTables from "@/main/dashboard/curriculum/timetable/AllTimeTables.v
 import CurriculumSetup from "@/main/dashboard/curriculum/curriculumSetup/CurriculumSetup.vue";
 import Application from "../main/application/Application.vue";
 import Welcome from "../main/welcome/Welcome.vue";
+import UserDashboard from "../main/application/UserDashboard.vue";
 
 
 const router = createRouter({
@@ -41,6 +42,7 @@ const router = createRouter({
                 {path: 'login', component: Login, name:'login'},
                 {path: 'register', component: Register, name:'register'},
                 {path: 'welcome', component: Welcome, name:'welcome'},
+                {path: 'userdashboard', component: UserDashboard, name:'userdashboard'}
             ]
         },
         {
@@ -96,6 +98,8 @@ const router = createRouter({
             path: '/:pathMatch(.*)*',
             redirect: { name: "login" }
         }
+
+ 
     ],
 });
 

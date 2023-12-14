@@ -109,7 +109,7 @@ input:focus {
   height: 100%;
     width: 100%;
     opacity: 0.9;
-     position: fixed;
+     /* position: fixed; */
     background: url(https://blog.bestbuy.ca/wp-content/uploads/2017/07/the-top-10-laptops-for-back-to-school.jpg) center center / cover no-repeat fixed;
     margin-top: -20px;
     margin-bottom: -20px;
