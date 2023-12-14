@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top"  style="position: absolute; top: 0; left: 0; width: 100%;">
         <div class="container-fluid">
           <router-link :to="{name:''}" class="navbar-brand" style="margin-left:20px;font-size:14px;
-           font-weight:400"><i class="bi bi-list"></i>&nbsp;<b>Wholesome ED | Online Application</b>
+           font-weight:400"><i class="bi bi-list"></i>&nbsp;<b>Wholesome ED</b>
   </router-link>
           <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
           <span class="navbar-toggler-icon"></span>
@@ -40,7 +40,7 @@
       </nav>
 
    <div class="row">
-
+    <router-view></router-view>
     </div>
    
     

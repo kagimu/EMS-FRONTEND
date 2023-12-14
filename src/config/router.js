@@ -83,12 +83,12 @@ const router = createRouter({
         },
 
         {
-            path: '/',
-            component: Application,
-            name :"application",
-            redirect:{ name: 'login' },
+            path: '/main',
+            component: UserDashboard,
+            name :"userdashboard",
+            redirect:{ name: 'application' },
             meta: {
-                requiresAuth: true,
+                requiresAuth: false,
             },
             children:[
                 {path: 'application', component: Application, name:'application'},
