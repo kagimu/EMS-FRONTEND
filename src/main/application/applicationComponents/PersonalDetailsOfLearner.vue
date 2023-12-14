@@ -28,21 +28,22 @@
           </div>
            <div>
             <div class="row">
-         <div class="col-lg-6">
+         <div class="col-lg-6" style="width:240px;margin-right: 5px;">
           <div class="mb-2">
             <label class="textColor text-sm">DOB</label>
-            <input type="date" style="outline: none 0 !important; box-shadow: none; width: 220px;;" v-model="form.dob"  required
+            <input type="date" style="outline: none 0 !important; box-shadow: none; width: 240px;" v-model="form.dob"  required
              class="form-control form-control-sm">
           </div>
          </div>   
-         <div class="col-lg-6">
+         <div class="col-lg-6" style="width:240px;">
           <div class="mb-2">
             <label class="textColor text-sm">Sex *</label>
-            <select class="form-control form-control-sm" v-model="form.sex" style="width: 220px;">
+            <select class="form-control form-control-sm" v-model="form.sex" style="outline: none 0 !important; box-shadow: none; width: 240px;">
               <option>-select-</option>
               <option>Male</option>
               <option>Female</option>
             </select>
+        
           </div>
          </div>
            </div>
@@ -146,6 +147,11 @@ watch (
 input{
   width:480px;
   margin-top: 8px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+select{
+  margin-top: 8px !important;
   background-color: #f8f9fa;
   border-radius: 8px;
 }
