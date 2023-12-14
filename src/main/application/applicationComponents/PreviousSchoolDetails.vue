@@ -40,7 +40,7 @@
 
             <div class="mb-2">
             <label class="textColor text-sm">How Did You Know ABout the School ?</label>
-            <select style="outline: none 0 !important; box-shadow: none;" v-model="form.know_school"  required class="select form-control form-control-sm" multiple>
+            <select style="outline: none 0 !important; box-shadow: none;margin-top: 8px;" v-model="form.know_school"  required class="select form-control form-control-sm" multiple>
             <option value="1">Old parent</option>
             <option value="2">Friend</option>
             <option value="3">Newspaper</option>
@@ -48,30 +48,31 @@
             <option value="5">Internet</option>
             </select>
             <br>
-            <p>Other (specify in form of memo description) </p>
-            <textarea class="select form-control form-control-sm" v-model="form.other_description"></textarea>
+            <label>Other (specify in form of memo description) </label>
+            <textarea style="margin-top: 8px;" class="select form-control form-control-sm" v-model="form.other_description"></textarea>
             </div>
         </div>
         <div class="text- mt-4">
           <div class="row">
           
             <div class="col-lg-3">
-              <button type="submit" class="btn btn-success mb-2 mr-4">
+              <button type="submit" class="btn btn-success mb-2 mr-4" style="color: white;">
            <i class="bi bi-box-arrow-in-left"></i> Back
             <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
               <span class="visually-hidden">Loading...</span>
             </div>
           </button>
             </div>
-            <div class="col-lg-3">
-              <button type="submit" class="btn btn-primary mb-2 mr-4" style="align-items: left;">
+            <div class="col-lg-5"></div>
+            <div class="col-lg-4">
+              <button type="submit" class="btn btn-primary mb-2 mr-4" style="color: white;float:  right;margin-right: 0px;">
                 <i class="bi bi-save"></i> Submit
             <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
               <span class="visually-hidden">Loading...</span>
             </div>
           </button>
             </div>
-            <div class="col-lg-7"></div>
+           
           </div>
        
         </div>

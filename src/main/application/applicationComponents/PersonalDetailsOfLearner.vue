@@ -26,46 +26,49 @@
             <label class="textColor text-sm">Desired Class</label>
             <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.desired_class"  required class="form-control form-control-sm">
           </div>
-           <div class="row">
-            <div class="col-lg-6">
-              <div class="mb-2">
+           <div>
+            <div class="row">
+         <div class="col-lg-6">
+          <div class="mb-2">
             <label class="textColor text-sm">DOB</label>
-            <input type="date" style="outline: none 0 !important; box-shadow: none;" v-model="form.dob"  required class="form-control form-control-sm">
-
+            <input type="date" style="outline: none 0 !important; box-shadow: none; width: 220px;;" v-model="form.dob"  required
+             class="form-control form-control-sm">
           </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="mb-2">
+         </div>   
+         <div class="col-lg-6">
+          <div class="mb-2">
             <label class="textColor text-sm">Sex *</label>
-            <select class="form-control form-control-sm" v-model="form.sex">
+            <select class="form-control form-control-sm" v-model="form.sex" style="width: 220px;">
               <option>-select-</option>
               <option>Male</option>
               <option>Female</option>
             </select>
           </div>
-            </div>
+         </div>
+           </div>
            </div>
       </div>   
    
         <div class="text- mt-4">
           <div class="row">
             <div class="col-lg-3">
-              <button type="submit" class="btn btn-success mb-2 mr-4">
+              <button type="submit" class="btn btn-success mb-2 mr-4" style="color: white;">
            <i class="bi bi-box-arrow-in-left"></i> Back
             <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
               <span class="visually-hidden">Loading...</span>
             </div>
           </button>
             </div>
+            <div class="col-lg-6"></div>
             <div class="col-lg-3">
-              <button type="submit" class="btn btn-primary mb-2 mr-4">
+              <button type="submit" class="btn btn-primary mb-2 mr-4" style="color: white;">
                 Next &nbsp;<i class="bi bi-box-arrow-in-right"></i> 
         <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
           <span class="visually-hidden">Loading...</span>
         </div>
       </button>
             </div>
-            <div class="col-lg-6"></div>
+            
           </div>
         </div>
     </div>

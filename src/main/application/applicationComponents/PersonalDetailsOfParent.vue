@@ -51,7 +51,7 @@
         <div class="text- mt-4">
           <div class="row">
             <div class="col-lg-3">
-              <button type="submit" class="btn btn-primary mb-2 mr-4">
+              <button type="submit" class="btn btn-primary mb-2 mr-4" style="color: white;">
                 Next &nbsp;<i class="bi bi-box-arrow-in-right"></i> 
         <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
           <span class="visually-hidden">Loading...</span>
