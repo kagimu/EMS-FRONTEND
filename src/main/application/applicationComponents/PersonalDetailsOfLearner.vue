@@ -51,8 +51,8 @@
       </div>   
    
         <div class="text- mt-4">
-          <div class="row">
-            <div class="col-lg-3">
+          <div class="row" style="width: 520px">
+            <div class="col-lg-4">
               <button type="submit" class="btn btn-success mb-2 mr-4" style="color: white;">
            <i class="bi bi-box-arrow-in-left"></i> Back
             <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
@@ -60,9 +60,9 @@
             </div>
           </button>
             </div>
-            <div class="col-lg-6"></div>
-            <div class="col-lg-3">
-              <button type="submit" class="btn btn-primary mb-2 mr-4" style="color: white;">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+              <button type="submit" class="btn btn-primary mb-2 mr-4" style="color: white;float: right;">
                 Next &nbsp;<i class="bi bi-box-arrow-in-right"></i> 
         <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
           <span class="visually-hidden">Loading...</span>
