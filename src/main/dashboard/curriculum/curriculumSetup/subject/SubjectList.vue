@@ -176,7 +176,7 @@ const filterSubjectCluster = () => {
 
 const selectSubjectCluster = (learning_area_number) => {
   filterSubjectList()
-  subjectClusterStore.fetchSubjectClusterFilter(learning_area_number)
+  subjectClusterStore.fetchSubjectClusterFilter({learning_area_number:learning_area_number, curriculum_number:curriculumNumber})
 }
 
 onMounted(

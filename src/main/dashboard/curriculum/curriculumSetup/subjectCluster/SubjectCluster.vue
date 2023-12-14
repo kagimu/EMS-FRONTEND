@@ -141,6 +141,7 @@ const deleteSubjectCluster = (sbj) => {
 onMounted(
     () => {
       fetchSubjectClusterList()
+      learningAreaStore.fetchLearningArea(curriculumNumber)
     }
 )
 
