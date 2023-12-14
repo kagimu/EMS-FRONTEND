@@ -1,4 +1,6 @@
 <template>
+
+
   <div class="temp">
     <div class="row">
       <div style="padding-top: 200px;">
@@ -56,7 +58,7 @@
             </div>
 
            </div>
-          
+      
 </template>
 
 
@@ -78,19 +80,21 @@ input:focus {
   float: left !important;
 }.txt{
   text-align: center;
-  color: rgb(255, 255, 255);
+  color: rgb(215, 214, 214);
     font-family: Spartan, sans-serif;
-    font-size: 19px;
+    font-size: 17px;
     font-weight: 700;
 }
 .txt2{
-  color: rgb(10, 77, 159);
+  color: rgb(255, 255, 255);
     text-shadow: rgba(0, 0, 0, 0.3) 0px 0px 6px;
     text-transform: uppercase;
     font-family: Spartan, sans-serif;
-    font-weight: 600;
+    font-weight: 900;
     text-align: center;
-    font-size: 25px;
+    font-size: 20px;
+    padding-top: 10px;
+    padding-bottom: 14px;
 }
 .txt3{
   text-align: center;
@@ -108,11 +112,18 @@ input:focus {
 .temp{ 
   height: 100%;
     width: 100%;
-    opacity: 0.9;
-     /* position: fixed; */
-    background: url(https://blog.bestbuy.ca/wp-content/uploads/2017/07/the-top-10-laptops-for-back-to-school.jpg) center center / cover no-repeat fixed;
+ background-image: linear-gradient(
+    rgba(0, 0, 0, 0.705),
+    rgba(0, 0, 0, 0.511)
+    ),
+    url(https://blog.bestbuy.ca/wp-content/uploads/2017/07/the-top-10-laptops-for-back-to-school.jpg);
+  background-size: cover;
+  background-position: top;
+  position: relative;
     margin-top: -20px;
     margin-bottom: 30px;
+    
+    
 }
 .container-fluid{
   padding-top: 0%;
@@ -126,6 +137,13 @@ input:focus {
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
     color: red !important;
 }
+* {
+  margin: 0;
+  padding: 0;
+}
+
+
+
 </style>
 
 <script setup>
@@ -133,7 +151,6 @@ input:focus {
 import PersonalDetailsOfStudent from "@/main/application/applicationComponents/PersonalDetailsOfParent.vue";
 import PersonalDetailsOfLearner from "@/main/application/applicationComponents/PersonalDetailsOfLearner.vue";
 import PreviousSchoolDetails from "@/main/application/applicationComponents/PreviousSchoolDetails.vue";
-
 
 import {ref} from "vue";
 
