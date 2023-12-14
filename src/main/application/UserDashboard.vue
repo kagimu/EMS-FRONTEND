@@ -30,7 +30,7 @@
     <i class="bi bi-person-fill-lock"></i>&nbsp;Change Password
 </li>
 <li  class="text-sm2">
-    <i class="bi bi-box-arrow-right"></i>&nbsp;Logout
+    <router-link  :to="{name:'login'}" class="text-sm2"><i class="bi bi-box-arrow-right"></i>&nbsp;Logout</router-link>
 </li>
 </ul>
 </li>
@@ -138,7 +138,7 @@
     color:rgba(0, 0, 0, 0.868) !important;
     font-weight: 900px !important;
     padding: 4px;
-  
+   text-decoration: none;
 }
   </style>
   
