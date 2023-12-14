@@ -11,7 +11,7 @@
           <div class="navbar-nav">
           </div>
           <div class="navbar-nav">
-            <router-link  class="btn btn btn-success nav-item nav-link" :to="{name:'application'}"> 
+            <router-link   class="btn btn btn-light nav-item nav-link" style="color:rgba(16, 54, 135, 0.751) !important" :to="{name:'application'}"> 
               <b>APPLY NOW</b> </router-link> 
             <router-link class="btn btn-outline-success nav-item nav-link" :to="{name:''}" style="border-radius: 0px;" > 
             APPLICATION HISTORY </router-link> 
