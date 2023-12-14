@@ -179,6 +179,7 @@ const form = reactive({
 
 const addSubtopic = () =>{
   loader.value = true
+  form.curriculum_number = curriculumNumber
   subtopicStore.newSubtopicData(form)
 }
 
