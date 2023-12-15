@@ -29,6 +29,7 @@ import CurriculumSetup from "@/main/dashboard/curriculum/curriculumSetup/Curricu
 import Application from "../main/application/Application.vue";
 import Welcome from "../main/welcome/Welcome.vue";
 import UserDashboard from "../main/application/UserDashboard.vue";
+import ApplicationGuide from "../main/auth/ApplicationGuide.vue";
 
 
 const router = createRouter({
@@ -42,7 +43,8 @@ const router = createRouter({
                 {path: 'login', component: Login, name:'login'},
                 {path: 'register', component: Register, name:'register'},
                 {path: 'welcome', component: Welcome, name:'welcome'},
-                {path: 'userdashboard', component: UserDashboard, name:'userdashboard'}
+                {path: 'userdashboard', component: UserDashboard, name:'userdashboard'},
+                {path: 'applicationguide', component: ApplicationGuide, name:'applicationguide'}
             ]
         },
         {

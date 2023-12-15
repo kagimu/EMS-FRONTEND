@@ -47,7 +47,7 @@
 
   <footer class="footer">
       <div class="d-flex flex-column flex-sm-row justify-content-between py-2 my-0 mx-0 border-top">
-        <p style="font-size: 12px;">© 2023 WholeSome Ed, All rights reserved.</p>
+        <p style="font-size: 12px;color:rgba(255, 255, 255, 0.833) !important;">© 2023 WholeSome Ed, All rights reserved.</p>
         <ul class="list-unstyled d-flex">
           <li class="ms-3" ><a  style="text-decoration: none;color:white !important;" class="link-dark" href="#"><span style="color: rgb(215, 213, 213);">Powered by</span> <b>Hamsoft</b> </a></li>
           <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>

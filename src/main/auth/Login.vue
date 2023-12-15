@@ -47,7 +47,7 @@
         </div>
 
         <div class="mt-5 mb-2 text-center">
-          <router-link class="d-inline text-sm2 font500 text-white text-uppercase btn btn-sm btn-success" :to="{name:'register'}" style="font-size: 12px !important;font-weight: 500px;"><i class="bi bi-question-circle"></i>&nbsp;How to Apply</router-link>&nbsp;&nbsp;
+          <router-link class="d-inline text-sm2 font500 text-white text-uppercase btn btn-sm btn-success" :to="{name:'applicationguide'}" style="font-size: 12px !important;font-weight: 500px;"><i class="bi bi-question-circle"></i>&nbsp;How to Apply</router-link>&nbsp;&nbsp;
           <router-link class="d-inline text-sm2 font500 text-white text-uppercase btn btn-sm btn-primary" :to="{name:'register'}"  style="font-size: 12px !important;font-weight: 500px;"><i class="bi bi-pencil-square"></i>&nbsp;Get an account</router-link></div>
       </div>
       <div class="col-lg-4"></div>

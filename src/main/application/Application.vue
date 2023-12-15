@@ -1,23 +1,21 @@
 <template>
-
-
   <div class="temp">
     <div class="row">
-      <div style="padding-top: 200px;">
+      <div style="padding-top: 210px;">
       <h5 class="txt" >APPLY</h5>
       <h1  class="txt2">STUDENT APPLICATION</h1>
-      <p  class="txt">Get Started Today With Few Steps </p>
+      <h5  class="txt">Get Started Today With Few Steps </h5>
     </div>
       <div class="col-lg-12">
-        <div class="card" style="margin:50px;border-radius: 16px;">
+        <div class="card sect" style="margin-bottom:60px;margin-top:50px;margin-right:80px;margin-left:80px;border-radius: 16px;">
           <div class="card-body" >
            <div class="row">
-            <div class="col-lg-5" style="text-align: center;padding-top:28px;">
+            <div class="col-lg-6" style="text-align: center;padding-top:15px;">
               <p class="txt4">You are applying for</p>
               <h1 class="txt3">Wholesome Services</h1>
               <p class="txt4">To continue your application, please fill out the form below.</p>
             </div>
-            <div class="col-lg-7">
+            <div class="col-lg-6">
               <div>
             <div class="text-center">
               <ul class="nav nav-tabs text-xs" style="margin-top: 50px;">
@@ -64,6 +62,17 @@
 
 <style scoped>
 
+.sect {
+    /* padding: 60px 80px; */
+    background: rgba(251, 251, 251, 0.94);
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 30px;
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    padding: 10px;
+}
+
 .content {
   /* position: absolute; */
   left: 50%;
@@ -76,32 +85,35 @@ input:focus {
 }
 
 .textColor{
-  color: #717375;
+  color: #070707;
   float: left !important;
 }.txt{
   text-align: center;
-  color: rgb(215, 214, 214);
+  color: rgba(6, 6, 6, 0.623);
     font-family: Spartan, sans-serif;
     font-size: 17px;
     font-weight: 700;
+
 }
 .txt2{
-  color: rgb(255, 255, 255);
+    color: rgb(19, 108, 250);
+    text-align: center;
     text-shadow: rgba(0, 0, 0, 0.3) 0px 0px 6px;
     text-transform: uppercase;
     font-family: Spartan, sans-serif;
-    font-weight: 900;
-    text-align: center;
-    font-size: 20px;
-    padding-top: 10px;
-    padding-bottom: 14px;
+    font-weight: 600;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-size: 22px;;
 }
 .txt3{
   text-align: center;
-    color: rgb(10, 77, 159);
+    color: rgb(19, 108, 250);
     font-family: Spartan, sans-serif;
     font-size: 33px;
     font-weight: 800;
+    padding: 20px;
+    /* padding-bottom: 20px; */
 }
 .tx4{
   text-align: center;
@@ -112,11 +124,7 @@ input:focus {
 .temp{ 
   height: 100%;
     width: 100%;
- background-image: linear-gradient(
-    rgba(0, 0, 0, 0.705),
-    rgba(0, 0, 0, 0.511)
-    ),
-    url(https://blog.bestbuy.ca/wp-content/uploads/2017/07/the-top-10-laptops-for-back-to-school.jpg);
+ 
   background-size: cover;
   background-position: top;
   position: relative;
@@ -129,13 +137,13 @@ input:focus {
   padding-top: 0%;
 }
 .nav-link{
-  color: rgb(10, 77, 159) !important;
+  color: rgba(0, 0, 0, 0.874) !important;
     font-family: Spartan, sans-serif !important;
   font-size: 12px !important;
   font-family: bold;
 }
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-    color: red !important;
+    color: rgb(19, 108, 250) !important;
 }
 * {
   margin: 0;
