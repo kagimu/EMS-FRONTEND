@@ -2,7 +2,7 @@ import { defineStore } from "pinia"
 import { ref } from "vue"
 import api from "@/config/api.js";
 
-export const useLearningMaterialStore = defineStore("level", () => {
+export const useLearningMaterialStore = defineStore("learningMaterial", () => {
     const addMaterialResponse = ref(null)
     const learningMaterialsResponse = ref(null)
     const errorMessage = ref(null)
