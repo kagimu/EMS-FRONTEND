@@ -79,15 +79,26 @@ watch(
     {deep:true}
 )
 
-/*watch(
-    () => classStore.errorMessage,
+watch(
+    () => resourcesStore.curriculumSubtopicReferenceResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success","Login successfully")
+       await resourcesStore.fetchLearningMaterials()
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => resourcesStore.errorMessage,
     async (data) => {
       if(data){
         notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}
-)*/
+)
 
 watch(
     () => props.subTopicInfo,
