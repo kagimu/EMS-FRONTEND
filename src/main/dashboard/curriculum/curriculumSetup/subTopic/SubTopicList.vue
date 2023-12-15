@@ -20,6 +20,24 @@
 
 
 
+    <div class="modal fade" id="referenceModal" tabindex="-1" :class="{ show: referenceDialog }" aria-labelledby="" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header text-sm p-0">
+            <h6 class="modal-title ml-3 mt-2 mb-2">References: <b>{{subTopicInfo.name}}</b> </h6>
+            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mt-2 mb-2">
+              {{subTopicInfo}}
+<!--              <new-lesson-plan :schemeDataInfo="schemeDataInfo" ref="lessonPlanRef"></new-lesson-plan>-->
+            </div>
+          </div>
+        </div>`
+      </div>
+    </div>
+
+
 
     <div class="flex justify-content-between mt-3">
       <div class="ml-4">Sub Topic</div>
@@ -187,13 +205,19 @@
 
 
 
-
                                           <table class="table table-hover caption-top" style="font-size: 12px; width: 100%;">
                                             <tbody>
                                             <tr v-for="(stpc, idx) in tpc.subtopic" :key="idx">
                                               <td style="width: 5%;">{{stpc.code}}.</td>
                                               <td style="width: 60%;">
                                                 <div class="text-wrap" style="width: 150px;">{{stpc.name}}</div>
+
+                                                <div class="mt-2" style="width: 250px;">
+                                                  <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="addReference(stpc)" data-bs-toggle="modal" data-bs-target="#referenceModal">
+                                                    <small class="m-0 p-0">Reference(s)</small>
+                                                  </button>
+                                                </div>
+
                                               </td>
                                               <td style="width: 60%;">{{stpc.estimated_time}} (min)</td>
                                               <td>
@@ -273,6 +297,7 @@ import {useTopicStore} from "@/main/dashboard/curriculum/curriculumSetup/topic/s
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
 import {useStrandStore} from "@/main/dashboard/curriculum/curriculumSetup/strands/store/strand.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import NewLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPlan.vue";
 const routerData = useRouter()
 
 const subjectStore = useSubjectStore()
@@ -285,6 +310,8 @@ const subtopicStore = useSubtopicStore()
 const notificationStore  = useNotificationStore()
 
 
+const referenceDialog = ref(false)
+const subTopicInfo = ref({})
 const learningAreaList = ref([])
 const subjectClusterList = ref([])
 const subjectList = ref([])
@@ -332,8 +359,6 @@ const selectSubjectCluster = (learning_area_number) => {
 
 const selectSubject = (subject_cluster_number) => {
 
-  // learning_area_number.value = ""
-  // subject_cluster_number.value = ""
   subject_number.value = ""
   strand_number.value = ""
   topic_number.value = ""
@@ -345,9 +370,6 @@ const selectSubject = (subject_cluster_number) => {
 
 const selectStrand = (subject_number) => {
 
-  // learning_area_number.value = ""
-  // subject_cluster_number.value = ""
-  // subject_number.value = ""
   strand_number.value = ""
   topic_number.value = ""
 
@@ -358,16 +380,19 @@ const selectStrand = (subject_number) => {
 
 const selectTopic = (strand_number) => {
 
-  // learning_area_number.value = ""
-  // subject_cluster_number.value = ""
-  // subject_number.value = ""
-  // strand_number.value = ""
   topic_number.value = ""
 
   fetchSubTopicLIst()
   topicStore.fetchTopicList({strand_number:strand_number, curriculum_number:curriculumNumber})
 }
 
+
+const addReference = (referenceData) => {
+  if(referenceData) {
+    subTopicInfo.value = referenceData
+    referenceDialog.value = true
+  }
+}
 
 
 
@@ -401,7 +426,7 @@ watch(
     () => subtopicStore.subtopicResponse,
     async (data) => {
       if(data){
-        // subtopicDialog.value = false
+
         await fetchSubTopicLIst()
         notificationStore.successToast("Success", data.message)
       }
