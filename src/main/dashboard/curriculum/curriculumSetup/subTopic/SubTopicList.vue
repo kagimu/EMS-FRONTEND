@@ -29,8 +29,7 @@
           </div>
           <div class="modal-body">
             <div class="mt-2 mb-2">
-              {{subTopicInfo}}
-<!--              <new-lesson-plan :schemeDataInfo="schemeDataInfo" ref="lessonPlanRef"></new-lesson-plan>-->
+              <new-subtopic-reference :subTopicInfo="subTopicInfo" ref="referenceRef"></new-subtopic-reference>
             </div>
           </div>
         </div>`
@@ -298,6 +297,7 @@ import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/
 import {useStrandStore} from "@/main/dashboard/curriculum/curriculumSetup/strands/store/strand.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import NewLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPlan.vue";
+import NewSubtopicReference from "@/main/dashboard/curriculum/curriculumSetup/subTopic/NewSubtopicReference.vue";
 const routerData = useRouter()
 
 const subjectStore = useSubjectStore()
