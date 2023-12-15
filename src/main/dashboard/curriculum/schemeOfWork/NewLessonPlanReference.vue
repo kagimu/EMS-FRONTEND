@@ -2,10 +2,12 @@
     <div>
 <form @submit.prevent="addLessonPlanReference">
         <!--{{subTopicData}}-->
+
+    <label class="textColor mt-3 mb-2 ">Add References</label>
         <div class="mx-auto" style="width: 95%;">
-            <label class="textColor mt-3 mb-2"><small>Add References</small></label>
 
 
+            <label class="textColor"><small>Learning Material </small></label>
                     <select
                             v-model="form.learning_material_number"
                             style="outline: none 0 !important; box-shadow: none;"
@@ -34,7 +36,7 @@
 
 
             <div class="mb-2">
-                <label class="textColor"><small>Description </small></label>
+                <label class="textColor"><small>Reference Description </small></label>
                 <textarea
                         style="outline: none 0 !important; box-shadow: none;"
                         type="text" v-model="form.name"
@@ -46,8 +48,8 @@
             <div class="flex justify-content-end mt-2" style="width: 100%;">
                 <button
                         type="submit"
-                        class="btn btn-primary border-0">
-                    Save
+                        class="btn btn-sm btn-secondary border-0 mt-2">
+                    Save reference
                     <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>
@@ -138,15 +140,16 @@ watch(
     {deep:true}
 )
 
-/*watch(
-    () => classStore.errorMessage,
+watch(
+    () => schemeOfWorkStore.addReferenceResponse,
     async (data) => {
       if(data){
-        notificationStore.errorToast("Error",data.message)
+        notificationStore.successToast("Success",data.message)
+          loader.value = false
       }
     },
     {deep:true}
-)*/
+)
 
 watch(
     () => props.subTopicInfo,

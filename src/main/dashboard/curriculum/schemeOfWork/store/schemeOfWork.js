@@ -118,6 +118,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         updateSchemeOfWorkData,
         fetchConceptsBySubTopic,
         saveLessonPlan,
-        saveLessonPlanReference
+        saveLessonPlanReference,
+        addReferenceResponse
     }
 })
