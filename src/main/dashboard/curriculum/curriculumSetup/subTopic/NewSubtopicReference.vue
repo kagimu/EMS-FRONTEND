@@ -1,22 +1,22 @@
 <template>
   <div>
 
-{{subTopicData}}
-<!--    <div class="mx-auto" style="width: 95%;">
+<!--{{subTopicData}}-->
+    <div class="mx-auto" style="width: 95%;">
       <label class="textColor mt-3 mb-2"><small>Add References</small></label>
       <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
 
-        <li class="list-group-item" v-for="(cls,idx) in classList" :key="idx">
+        <li class="list-group-item" v-for="(material,idx) in learningMaterialsList" :key="idx">
           <input
-              v-model="classId"
-              @click="addClass(cls)"
+              v-model="learningMaterialNumber"
+              @click="addLearningMaterial(material)"
               style="outline: none 0 !important; box-shadow: none;"
-              class="form-check-input me-1" type="checkbox" :value="cls.number" :id="cls.number">
-          <label class="form-check-label cursor-pointer ml-2" :for="cls.number">{{cls.code+". "+cls.name+" &nbsp;&nbsp;&nbsp; ["+cls.abbreviation+"]"}}</label>
+              class="form-check-input me-1" type="checkbox" :value="material.number" :id="material.number">
+          <label class="form-check-label cursor-pointer ml-2" :for="material.number">{{material.code+". "+material.name}}</label>
         </li>
 
       </ul>
-    </div>-->
+    </div>
 
 
 
@@ -36,7 +36,7 @@ import {useLearningMaterialStore} from "@/main/settings/learning-materials/resou
 const classError = ref(null)
 const name = ref(null)
 const loader = ref(false)
-const classList = ref([])
+const learningMaterialsList = ref([])
 const routerData = useRouter()
 const  notificationStore  = useNotificationStore()
 const resourcesStore = useLearningMaterialStore()
@@ -46,14 +46,16 @@ const campusLevel = routerData.currentRoute.value.query.l
 const campusNumber = routerData.currentRoute.value.query.id
 
 const subTopicData = ref(null)
+const subTopicNumber = ref(null)
 
 
-const classId = ref([])
+const learningMaterialNumber = ref([])
 
 
-const addClass = (classInfo) =>{
+const addLearningMaterial = (materialInfo) =>{
+  alert(JSON.stringify(materialInfo))
   loader.value = true
-  classStore.newCampusClass({class_code:classInfo.code,class_number:classInfo.number, campus_number:campusNumber, level_number:campusLevel})
+  classStore.newCampusClass({material_code:materialInfo.code,material_number:materialInfo.number, campus_number:campusNumber, sub_topic_number:subTopicNumber.value})
 }
 
 const props = defineProps({
@@ -72,8 +74,7 @@ watch(
     () => resourcesStore.learningMaterialsResponse,
     async (data) => {
       if(data){
-        alert(JSON.stringify(data))
-        // classList.value = data.data
+         learningMaterialsList.value = data.data
       }
     },
     {deep:true}
@@ -94,11 +95,12 @@ watch(
     async (data) => {
       if(data){
         subTopicData.value = data
+        subTopicNumber.value = data.number
        /* let arr = []
         data.forEach(lst => {
           arr.push(lst.curriculum_class_number)
         })
-        classId.value = arr*/
+        learningMaterialNumber.value = arr*/
       }
     },
     {deep:true}
