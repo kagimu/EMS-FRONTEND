@@ -26,7 +26,17 @@
 
 
 
+                        <new-lesson-plan-reference :lesson_plan_number="lessonPlanInfo.number"></new-lesson-plan-reference>
+
+
+<button @click="openReferenceDialog" class="btn btn-sm btn-secondary border-0 mt-2" data-bs-toggle="modal" data-bs-target="#referenceModal">
+    <i style="font-size: 15px;" class="bi-plus mr-1"></i>
+    Add Reference
+</button>
+
+
   <div class="mt-10 mb-2" style="font-size: 18px;"><p>Lesson Plan / Concept(s)</p></div>
+   <div></div>
   <hr />
   <div v-for="(lesson, index) in lessonPlanInfo.lesson_plan" :key="index">
 
@@ -51,9 +61,20 @@
 
 <script setup>
 
+import NewLessonPlanReference from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPlanReference.vue";
+import {ref} from "vue";
+
+
 const props = defineProps({
   lessonPlanInfo: {}
 })
+
+const referenceDialog = ref(false)
+
+const openReferenceDialog = () =>{
+    alert("hello")
+  referenceDialog.value = true
+}
 
 </script>
 
