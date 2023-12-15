@@ -58,13 +58,6 @@
       </div>
     </div>
 
-<!--    <div class="mt-3">
-      <div class="mt-3" v-if="curriculumInfo && curriculumInfo.name">
-        <div style="font-size: 22px; text-transform: capitalize;">Curriculum: <span class="text-blue-900">{{curriculumInfo.name}}</span> </div>
-      </div>
-    </div>-->
-
-
 
     <div class="row mt-5">
       <div class="col-3">
@@ -244,18 +237,11 @@
 
 
 
-
-
           </div>
         </div>
       </div>
 
-
     </div>
-
-
-
-
 
 
   </div>

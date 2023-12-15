@@ -357,7 +357,7 @@ const selectSubjectCluster = (learning_area_number) => {
 
 
     fetchConceptsList()
-  subjectClusterStore.fetchSubjectClusterFilter(learning_area_number)
+  subjectClusterStore.fetchSubjectClusterFilter({learning_area_number:learning_area_number, curriculum_number:curriculumNumber})
 }
 
 
@@ -372,7 +372,7 @@ const selectSubject = (subject_cluster_number) => {
   sub_topic_number.value = ""
 
   fetchConceptsList()
-  subjectStore.fetchSubjectList(subject_cluster_number)
+  subjectStore.fetchSubjectList({subject_cluster_number:subject_cluster_number, curriculum_number:curriculumNumber})
 }
 
 
@@ -387,7 +387,7 @@ const selectStrand = (subject_number) => {
   sub_topic_number.value = ""
 
   fetchConceptsList()
-  strandStore.fetchStrandList(subject_number)
+  strandStore.fetchStrandList({subject_number:subject_number, curriculum_number:curriculumNumber})
 }
 
 
@@ -402,7 +402,7 @@ const selectTopic = (strand_number) => {
   sub_topic_number.value = ""
 
   fetchConceptsList()
-  topicStore.fetchTopicList(strand_number)
+  topicStore.fetchTopicList({strand_number:strand_number, curriculum_number:curriculumNumber})
 }
 
 
@@ -416,7 +416,7 @@ const selectSubTopic = (topic_number) => {
   // topic_number.value = ""
   sub_topic_number.value = ""
   fetchConceptsList()
-  subtopicStore.fetchSubTopicList(topic_number)
+  subtopicStore.fetchSubTopicList({topic_number:topic_number, curriculum_number:curriculumNumber})
 }
 
 

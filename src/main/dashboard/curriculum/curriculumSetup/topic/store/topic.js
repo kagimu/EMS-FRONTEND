@@ -41,7 +41,7 @@ export const useTopicStore = defineStore("topic", () => {
     }
 
     async function fetchTopicList(data) {
-        return await api.get("main/topic-list?strand_number="+data)
+        return await api.get("main/topic-list?strand_number="+data.strand_number+"&curriculum_number="+data.curriculum_number)
             .then((response) => {
                 topicListResponse.value = response.data
             })
