@@ -183,6 +183,7 @@ const form = reactive({
 
 const addConcept = () =>{
   loader.value = true
+  form.curriculum_number = curriculumNumber
   conceptStore.newConceptData(form)
 }
 

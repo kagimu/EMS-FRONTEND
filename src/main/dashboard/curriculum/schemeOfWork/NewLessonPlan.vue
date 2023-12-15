@@ -202,6 +202,16 @@ watch(
     {deep: true}
 )
 
+watch(
+    () => schemeOfWorkStore.errorMessage,
+    async (data) => {
+      if (data) {
+        loader.value = false
+      }
+    },
+    {deep: true}
+)
+
 
 </script>
 <style scoped>

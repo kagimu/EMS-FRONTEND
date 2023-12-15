@@ -73,11 +73,13 @@ import {onMounted, ref, watch} from "vue";
 import NewAcademicYear from "@/main/dashboard/manageLevel/academicYear/NewAcademicYear.vue";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useRouter} from "vue-router";
+import useNotificationStore from "@/composables/useNotification.js";
 const routerData = useRouter()
 const academicYearStore = useAcademicYearStore()
 const newAcademicYearDialog = ref( false)
 const campusLevel = routerData.currentRoute.value.query.l
 const academicYearList = ref( [])
+const  notificationStore  = useNotificationStore()
 
 const addAcademicYear = (item) => {
   // classNumber.value = item.number
@@ -105,6 +107,7 @@ watch(
     async (data) => {
       if(data){
         await academicYearStore.fetchAcademicYear(campusLevel)
+        notificationStore.successToast("Success","Login successfully")
       }
     },
     {deep:true}
