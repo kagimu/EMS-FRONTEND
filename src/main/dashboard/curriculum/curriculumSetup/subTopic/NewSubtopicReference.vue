@@ -42,8 +42,7 @@ const  notificationStore  = useNotificationStore()
 const resourcesStore = useLearningMaterialStore()
 
 const classStore = useClassesStore()
-const campusLevel = routerData.currentRoute.value.query.l
-const campusNumber = routerData.currentRoute.value.query.id
+const curriculumNumber = routerData.currentRoute.value.query.id
 
 const subTopicData = ref(null)
 const subTopicNumber = ref(null)
@@ -54,7 +53,7 @@ const learningMaterialNumber = ref([])
 
 const addLearningMaterial = (materialInfo) =>{
   loader.value = true
-  resourcesStore.newCurriculumSubtopicReference({material_code:materialInfo.code,material_number:materialInfo.number, campus_number:campusNumber, sub_topic_number:subTopicNumber.value})
+  resourcesStore.newCurriculumSubtopicReference({material_code:materialInfo.code,material_number:materialInfo.number, curriculum_number:curriculumNumber, sub_topic_number:subTopicNumber.value})
 }
 
 const props = defineProps({
@@ -79,15 +78,26 @@ watch(
     {deep:true}
 )
 
-/*watch(
-    () => classStore.errorMessage,
+watch(
+    () => resourcesStore.curriculumSubtopicReferenceResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success","Login successfully")
+       await resourcesStore.fetchLearningMaterials()
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => resourcesStore.errorMessage,
     async (data) => {
       if(data){
         notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}
-)*/
+)
 
 watch(
     () => props.subTopicInfo,

@@ -4,6 +4,7 @@ import api from "@/config/api.js";
 
 export const useLearningMaterialStore = defineStore("learningMaterial", () => {
     const addMaterialResponse = ref(null)
+    const curriculumSubtopicReferenceResponse = ref(null)
     const learningMaterialsResponse = ref(null)
     const errorMessage = ref(null)
 
@@ -23,20 +24,19 @@ export const useLearningMaterialStore = defineStore("learningMaterial", () => {
             })
     }
 
+
     async function newCurriculumSubtopicReference(data) {
-        return await api.post("/main/learning-materials", data,{
-            headers: {
-                "Content-Type": "multipart/form-data"
-            }})
+        return await api.post("main/learning-materials/new-curriculum-reference", data)
             .then((response) => {
-                addMaterialResponse.value = response.data
+                curriculumSubtopicReferenceResponse.value = response.data
             })
             .catch((response) => {
-                if (response) {
+                if(response){
                     errorMessage.value = response.response.data
                 }
             })
     }
+
 
     async function fetchLearningMaterials(){
         return await api.get("/main/learning-materials",).then((response)=>{
@@ -52,6 +52,7 @@ export const useLearningMaterialStore = defineStore("learningMaterial", () => {
     return {
         addMaterialResponse,
         learningMaterialsResponse,
+        curriculumSubtopicReferenceResponse,
         errorMessage,
         fetchLearningMaterials,
         newLearningMaterial,
