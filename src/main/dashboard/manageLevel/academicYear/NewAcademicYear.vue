@@ -61,13 +61,21 @@
 
 
         <div class="mb-2">
-          <label class="textColor"><small>Academic Year Range</small></label>
+          <label class="textColor"><small>Academic Year Start Date</small></label>
           <VueDatePicker
               style="font-size: 7px;"
-              v-model="form.academic_year"
-              range
+              v-model="form.academic_year_start_date"
               :preview-format="format"
-              :multi-calendars="{ solo: true }"></VueDatePicker>
+              ></VueDatePicker>
+        </div>
+
+      <div class="mb-2">
+          <label class="textColor"><small>Academic Year End Date</small></label>
+          <VueDatePicker
+              style="font-size: 7px;"
+              v-model="form.academic_year_end_date"
+              :preview-format="format"
+              ></VueDatePicker>
         </div>
 
 
@@ -127,7 +135,8 @@ const form = reactive({
   code:"",
   academic_year_name:"",
   no_of_study_period:"",
-  academic_year:"",
+  academic_year_start_date:"",
+  academic_year_end_date:"",
   level_number:campusLevel,
 })
 
@@ -190,7 +199,8 @@ watch(
         form.code = ""
         form.academic_year_name = ""
         form.no_of_study_period = ""
-        form.academic_year = ""
+        form.academic_year_start_date = ""
+        form.academic_year_end_date = ""
       }
     },
     {deep:true}
