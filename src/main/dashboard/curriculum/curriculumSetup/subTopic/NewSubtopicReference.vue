@@ -53,9 +53,8 @@ const learningMaterialNumber = ref([])
 
 
 const addLearningMaterial = (materialInfo) =>{
-  alert(JSON.stringify(materialInfo))
   loader.value = true
-  classStore.newCampusClass({material_code:materialInfo.code,material_number:materialInfo.number, campus_number:campusNumber, sub_topic_number:subTopicNumber.value})
+  resourcesStore.newCurriculumSubtopicReference({material_code:materialInfo.code,material_number:materialInfo.number, campus_number:campusNumber, sub_topic_number:subTopicNumber.value})
 }
 
 const props = defineProps({
