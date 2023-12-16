@@ -24,7 +24,6 @@
     </div>
 
 
-
     <div v-for="(lst, idx) in form" :key="idx">
       <div class="row">
         <div class="col-lg-3 content">
@@ -83,7 +82,7 @@
           <button
               type="submit"
               class="btn btn-primary border-0">
-            Save
+               {{(form && form[0].number) ? 'Edit' : 'Save'}}
             <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>
@@ -133,7 +132,7 @@ const subTopicNumber = ref(null)
 
 const form = ref([
   {
-    number: null,
+    number: "",
     code: 1,
     learningMaterialNumber: "",
     description: "",
@@ -200,7 +199,7 @@ watch(
     async (data) => {
       if(data){
         loader.value = false
-        notificationStore.successToast("Success","Login successfully")
+        notificationStore.successToast("Error",data.message)
        await resourcesStore.fetchLearningMaterials()
       }
     },
@@ -226,9 +225,17 @@ watch(
         subTopicNumber.value = data.number
         let references = data.references
 
-        let arr = []
-        let obj = {}
+        form.value =   [{
+          number: null,
+          code: 1,
+          learningMaterialNumber: "",
+          description: "",
+        }]
+
         if(references && (references.length > 0)){
+          form.value = []
+          let arr = []
+          let obj = {}
           references.forEach(lst => {
             obj = {
               code: lst.code,
@@ -238,19 +245,8 @@ watch(
             }
             arr.push(obj)
           })
+          form.value = arr
         }
-
-        form.value = arr
-
-
-
-
-
-       /* let arr = []
-        data.forEach(lst => {
-          arr.push(lst.curriculum_class_number)
-        })
-        learningMaterialNumber.value = arr*/
       }
     },
     {deep:true}
