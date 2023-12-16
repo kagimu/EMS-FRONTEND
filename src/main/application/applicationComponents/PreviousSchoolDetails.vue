@@ -1,49 +1,49 @@
 <template>
     <div>
-    <!-- <p class="ml-4 mt-4 mb-10"> SCHOOLS ATTENDED</p> -->
+    <p class="ml-4 mt-4 mb-10" style="text-align: center !important;">PREVIOUS SCHOOL RECORDS</p>
       <form @submit.prevent="addSchoolDetails" style="margin-top: 20px;">
       <div class="row mx-auto">
         <div class="col-12" style="border-right:solid whitesmoke 1px;">
             
             <div class="mb-2">
               <h6 class="tit">1</h6>
-              <label class="textColor text-sm">School Name*</label>
+              <label class="textColor text-sm" ><small>School Name</small> <span class="star">*</span></label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_one"   required class="form-control form-control-sm">
             </div>
     
             <div class="mb-2">
-              <label class="textColor text-sm">Classes Attended *</label>
+              <label class="textColor text-sm"><small>Classes Attended</small> <span class="star">*</span></label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.classes_attended_one"   required class="form-control form-control-sm">
             </div>
          
              
             <div class="mb-2">
               <h6 class="tit">2</h6>
-              <label class="textColor text-sm">School Name*</label>
+              <label class="textColor text-sm"><small>School Name</small> <span class="star">*</span></label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_two" required class="form-control form-control-sm">
             </div>
             <div class="mb-2">
-              <label class="textColor text-sm">Classes Attended *</label>
+              <label class="textColor text-sm"><small>Classes Attended</small> <span class="star">*</span></label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_three"  required class="form-control form-control-sm">
             </div>
             
             <div class="mb-2">
               <h6 class="tit">3</h6>
-              <label class="textColor text-sm">School Name*</label>
+              <label class="textColor text-sm"><small>School Name</small> <span class="star">*</span></label>
               <input type="text" 
               style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_three" 
-               required class="form-control">
+               required class="form-control form-control-sm">
             </div>
     
            
             <div class="mb-2">
-              <label class="textColor text-sm">Classes Attended *</label>
+              <label class="textColor text-sm"><small>Classes Attended</small> <span class="star">*</span></label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_two"  required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-            <label class="textColor text-sm">How Did You Know ABout the School ?</label>
-            <select style="outline: none 0 !important; box-shadow: none;margin-top: 8px;width: 480px" v-model="form.know_school"  required class="select form-control form-control-sm" multiple>
+            <label class="textColor text-sm"><small>How Did You Know ABout the School ?</small></label>
+            <select style="outline: none 0 !important; box-shadow: none;font-size: 10px;" v-model="form.know_school"  required class="select form-control form-control-sm" multiple>
             <option value="1">Old parent</option>
             <option value="2">Friend</option>
             <option value="3">Newspaper</option>
@@ -51,16 +51,16 @@
             <option value="5">Internet</option>
             </select>
             <br>
-            <label>Other (specify in form of memo description) </label>
-            <textarea  style="margin-top: 8px;width: 480px;" class="select form-control form-control-sm" v-model="form.other_description"></textarea>
+            <label  class="textColor text-sm"><small>Other (specify in form of memo description)</small> </label>
+            <textarea  style="" class="select form-control form-control-sm" v-model="form.other_description"></textarea>
             </div>
         </div>
         <div class="text- mt-4">
-          <div class="row" style="width: 520px">
+          <div class="row">
           
             <div class="col-lg-4">
-              <button type="submit" class="btn btn-success mb-2 mr-4" style="color: white;">
-           <i class="bi bi-box-arrow-in-left"></i> Back
+              <button type="submit" class="btn btn-sm btn-success mb-2 mr-4" style="color: white;">
+         <small><i class="bi bi-box-arrow-in-left"></i> Back</small>  
             <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
               <span class="visually-hidden">Loading...</span>
             </div>
@@ -68,8 +68,8 @@
             </div>
             <div class="col-lg-4"></div>
             <div class="col-lg-4">
-              <button type="submit" class="btn btn-primary mb-2 mr-4" style="color: white;float: right !important;margin-right: 0px;">
-                <i class="bi bi-save"></i> Submit
+              <button type="submit" class="btn btn-sm btn-primary mb-2 mr-4" style="color: white;float: right !important;margin-right: 0px;">
+                <small><i class="bi bi-save"></i> Submit</small>
             <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
               <span class="visually-hidden">Loading...</span>
             </div>
@@ -149,23 +149,33 @@ watch (
     font-size: 17px;
 }
 .mb-2 {
-    margin-bottom: 2rem;
+    /* margin-bottom: 2rem; */
     text-align: left;
     color: rgb(0, 0, 0);
     font-family: Roboto, sans-serif;
-    font-size: 17px;
+    /* font-size: 17px; */
+    border-radius: 3px !important;
 }
 input{
-  width:480px;
-  margin-top: 8px;
+  /* width:480px; */
+  /* margin-top: 8px; */
   background-color: #f8f9fa;
-  border-radius: 8px;
+  border-radius: 2px;
+  font-size: 10px !important;
 }
 .tit{
-  width:480px;
+  /* width:480px; */
   text-align: center;
   margin-top: 15px;
   text-decoration: underline;
 }
-
+.star{
+  color:red;
+}
+textarea{
+  border-radius: 2px !important;
+}
+select{
+  border-radius: 2px !important;
+}
 </style> 

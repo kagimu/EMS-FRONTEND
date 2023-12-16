@@ -90,7 +90,7 @@ const router = createRouter({
             name :"userdashboard",
             redirect:{ name: 'application' },
             meta: {
-                requiresAuth: false,
+                requiresAuth: true,
             },
             children:[
                 {path: 'application', component: Application, name:'application'},
