@@ -133,6 +133,7 @@ const subTopicNumber = ref(null)
 
 const form = ref([
   {
+    number: null,
     code: 1,
     learningMaterialNumber: "",
     description: "",
@@ -233,6 +234,7 @@ watch(
               code: lst.code,
               learningMaterialNumber: lst.learning_material_number,
               description: lst.description,
+              number: lst.number,
             }
             arr.push(obj)
           })
