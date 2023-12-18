@@ -25,7 +25,8 @@
 
 <div class="row mx-auto">
     <div class="col col-8">
-        <new-lesson-plan-reference :lesson_plan_number="lessonPlanInfo.lesson_plan[0].number"></new-lesson-plan-reference>
+<!--        <new-lesson-plan-reference :lesson_plan_number="lessonPlanInfo.lesson_plan[0].number"></new-lesson-plan-reference>-->
+        <new-lesson-plan-reference :lesson_plan_number="lessonPlanInfo.number"></new-lesson-plan-reference>
     </div>
 
 </div>

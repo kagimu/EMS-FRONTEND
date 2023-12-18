@@ -5,17 +5,22 @@
 
     <form @submit.prevent="addLessonPlan">
 
+
+
+      <div v-for="(list, index) in conceptListData" :key="index">
+
       <div class="row mx-auto">
         <div class="col-lg-4 content">
 
           <div class="mb-2">
             <label class="textColor text-sm">Code</label>
             <input
+                disabled
                 @keypress="commons.numbersOnlyValidator($event)"
                 maxlength="10"
                 style="outline: none 0 !important; box-shadow: none;"
                 type="text"
-                v-model="form.code"
+                v-model="list.code"
                 required
                 class="form-control form-control-sm">
           </div>
@@ -24,9 +29,10 @@
           <div class="mb-2">
             <label class="textColor"><small>Concept</small></label>
             <select
+                disabled
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
-                v-model="form.lesson_plan_concept_number"
+                v-model="list.lesson_plan_concept_number"
             >
               <option disabled value="">Select Concept</option>
               <option v-for="(list, index) in conceptListData" :key="index" :value="list.number">
@@ -98,6 +104,8 @@
 
 
         </div>
+      </div>
+      <hr />
       </div>
 
 
@@ -186,7 +194,15 @@ watch(
     () => schemeOfWorkStore.conceptsBySubtopicResponse,
     async (data) => {
       if (data) {
-        conceptListData.value = data.data
+      let conceptInfo = data.data
+
+        conceptInfo.forEach((lst, index) => {
+         lst.lesson_plan_concept_number = lst.number
+         lst.code = (index + 1)
+        })
+
+
+        conceptListData.value = conceptInfo
       }
     },
     {deep: true}
