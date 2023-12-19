@@ -35,6 +35,7 @@
 
 
 
+
 <!--<button @click="openReferenceDialog" class="btn btn-sm btn-secondary border-0 mt-2" data-bs-toggle="modal" data-bs-target="#referenceModal">
     <i style="font-size: 15px;" class="bi-plus mr-1"></i>
     Add Reference
@@ -43,15 +44,22 @@
 
   <div class="mt-10 mb-2" style="font-size: 18px;"><p>Lesson Plan / Concept(s)</p></div>
    <div></div>
+  <div class="row">
+    <div class="col-lg-6 content">
+      <div> <b class="mr-5">Concept</b></div>
+    </div>
+    <div class="col-lg-6 content">
+      <div><b>Teaching steps</b></div>
+    </div>
+  </div>
   <hr />
-  <div v-for="(lesson, index) in lessonPlanInfo.lesson_plan" :key="index">
+  <div v-if="lessonPlanDetailsInfo" v-for="(lesson, index) in lessonPlanDetailsInfo.concepts" :key="index">
 
     <div class="row">
       <div class="col-lg-6 content">
-        <div> <b class="mr-5">Concept {{lesson.code}}:</b> {{lesson.concept_name}}</div>
+        <div> <b class="mr-5">{{lesson.code}}.</b> {{lesson.concept_name}}</div>
       </div>
       <div class="col-lg-6 content">
-        <div><b>Teaching steps</b></div>
         <div class="ml-5 mt-2" v-for="(lsn, idx) in lesson.steps" :key="idx">
           {{lsn.code+". "+lsn.step}}
         </div>
@@ -68,19 +76,52 @@
 <script setup>
 
 import NewLessonPlanReference from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPlanReference.vue";
-import {ref} from "vue";
+import {ref, watch} from "vue";
+import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
 
+const referenceDialog = ref(false)
+const lessonPlanDetailsInfo = ref(null)
+const scheme_sub_topic_number = ref(null)
+const schemeOfWorkStore = useSchemeOfWorkStore()
 
 const props = defineProps({
   lessonPlanInfo: {}
 })
 
-const referenceDialog = ref(false)
+
+
+
+watch(
+    () => props.lessonPlanInfo,
+    async (data) => {
+      if (data) {
+        scheme_sub_topic_number.value = props.lessonPlanInfo.number
+        await schemeOfWorkStore.fetchLessonPlanDetails(props.lessonPlanInfo.number)
+      }
+    },
+    {deep: true}
+)
 
 const openReferenceDialog = () =>{
     alert("hello")
   referenceDialog.value = true
 }
+
+
+
+watch(
+    () => schemeOfWorkStore.lessonPlanResponse,
+    async (data) => {
+      if (data) {
+       lessonPlanDetailsInfo.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+
+
+
 
 </script>
 

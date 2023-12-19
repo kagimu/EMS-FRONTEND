@@ -12,6 +12,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     let references = ref([])
     let addReferenceResponse = ref(null)
     const errorMessage = ref(null)
+    const lessonPlanResponse = ref(null)
 
 
     async function newSchemeOfWorkData(data) {
@@ -103,6 +104,18 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
             })
     }
 
+    async function fetchLessonPlanDetails(data) {
+        return await api.get("main/lesson-plan/fetch-lesson-plan?sub_topic_number="+data)
+            .then((response) => {
+                lessonPlanResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
 
 
@@ -113,12 +126,14 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         conceptsBySubtopicResponse,
         newLessonPlanResponse,
         errorMessage,
+        lessonPlanResponse,
+        addReferenceResponse,
         newSchemeOfWorkData,
         fetchSchemeOfWorkByClass,
         updateSchemeOfWorkData,
         fetchConceptsBySubTopic,
         saveLessonPlan,
         saveLessonPlanReference,
-        addReferenceResponse
+        fetchLessonPlanDetails,
     }
 })
