@@ -64,8 +64,6 @@
           <div class="mb-3">
 
 
-
-
             <div v-for="(lst, idx) in list.steps" :key="idx">
 
               <div class="row">
@@ -210,6 +208,8 @@ watch(
       if (data) {
         scheme_sub_topic_number.value = props.schemeDataInfo.number
         await schemeOfWorkStore.fetchConceptsBySubTopic(props.schemeDataInfo.sub_topic_number)
+        // fetch lesson plan draftData
+        await schemeOfWorkStore.fetchLessonPlanDetails(props.schemeDataInfo.number)
       }
     },
     {deep: true}
@@ -260,7 +260,7 @@ watch(
     {deep: true}
 )
 
-watch(
+/*watch(
     () => schemeOfWorkStore.errorMessage,
     async (data) => {
       if (data) {
@@ -268,8 +268,51 @@ watch(
       }
     },
     {deep: true}
-)
+)*/
 
+
+watch(
+    () => schemeOfWorkStore.lessonPlanResponse,
+    async (data) => {
+      if (data && data.data) {
+
+        //lessonPlanDetailsInfo.value = data.data
+        let conceptsInfo = data.data.concepts
+        if(conceptsInfo && (conceptsInfo.length > 0)){
+          form.value = []
+          let arr = []
+          let obj = {}
+
+          conceptsInfo.forEach(lst => {
+            obj = {
+              code: lst.code,
+              lesson_plan_concept_number: lst.lesson_plan_concept_number,
+              concept_name: lst.concept_name,
+              steps: lst.steps
+            }
+            arr.push(obj)
+          })
+          form.value = arr
+        }
+
+
+
+    /*    const form = ref([{
+          code: "",
+          lesson_plan_concept_number: "",
+          concept_name: "",
+          steps: [{
+            number: "",
+            code: "1",
+            step: ""
+          }]
+        }])*/
+
+
+      }
+    },
+    {deep: true}
+)
 
 </script>
 <style scoped>
