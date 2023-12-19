@@ -144,9 +144,10 @@ const loader = ref(false)
 
 const scheme_sub_topic_number = ref(null)
 
-
+const lessonPlanNumber = ref("")
 
 const form = ref([{
+  number: "",
   code: "",
   lesson_plan_concept_number: "",
   concept_name: "",
@@ -175,29 +176,19 @@ form.value[index].steps.splice(idx, 1)
 }
 const addLessonPlan = () => {
     loader.value = true
-    /*let stepInfo = steps.value
-
-  stepInfo.forEach(lst => {
-    lst.code = parseInt(lst.code)
-  })*/
-
-    // form.steps = stepInfo
 
     let formData = {}
 
-
-
   formData.scheme_sub_topic_number = scheme_sub_topic_number.value
   formData.concepts = form.value
+  formData.lesson_plan_number = lessonPlanNumber.value
 
   if(formData.concepts && (formData.concepts.length > 0)){}
   formData.concepts.forEach(lst => {
-    // lst.code = parseInt(lst.code )
     lst.steps.forEach(list => {
       list.code = parseInt(lst.code)
     })
   })
-
 
   schemeOfWorkStore.saveLessonPlan(formData)
 }
@@ -221,6 +212,7 @@ watch(
       if (data) {
       let conceptInfo = data.data
 
+
         conceptListData.value = conceptInfo
 
         let obj = {}
@@ -229,6 +221,7 @@ watch(
           form.value = []
           conceptInfo.forEach((lst, index) => {
             obj = {
+              number: "",
               code: (index + 1),
               lesson_plan_concept_number: lst.number,
               concept_name: lst.name,
@@ -277,18 +270,22 @@ watch(
       if (data && data.data) {
 
         //lessonPlanDetailsInfo.value = data.data
-        let conceptsInfo = data.data.concepts
+        let lessonPlan = data.data
+         lessonPlanNumber.value = lessonPlan.number ? lessonPlan.number : ""
+        let conceptsInfo = lessonPlan.concepts
         if(conceptsInfo && (conceptsInfo.length > 0)){
           form.value = []
           let arr = []
           let obj = {}
 
           conceptsInfo.forEach(lst => {
+            let step = (lst.steps && (lst.steps.length > 0)) ? lst.steps : [{number:"", code: "1", step: ""}]
             obj = {
+              number: lst.number,
               code: lst.code,
               lesson_plan_concept_number: lst.lesson_plan_concept_number,
               concept_name: lst.concept_name,
-              steps: lst.steps
+              steps: step
             }
             arr.push(obj)
           })

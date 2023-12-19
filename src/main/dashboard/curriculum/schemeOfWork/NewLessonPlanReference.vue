@@ -3,7 +3,7 @@
 <form @submit.prevent="addLessonPlanReference">
         <!--{{subTopicData}}-->
 
-    <label class="textColor mt-3 mb-2 ">Add References</label>
+  <label class="textColor mt-3 mb-2 "><b>Add References</b></label>
         <div class="mx-auto" style="width: 95%;">
 
 
