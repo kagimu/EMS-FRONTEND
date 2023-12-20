@@ -109,7 +109,7 @@ const addSubject = () =>{
 }
 
 const selectSubjectCluster = (learning_area_number) => {
-  subjectClusterStore.fetchSubjectClusterFilter(learning_area_number)
+  subjectClusterStore.fetchSubjectClusterFilter({learning_area_number:learning_area_number, curriculum_number:curriculumNumber})
 }
 
 
