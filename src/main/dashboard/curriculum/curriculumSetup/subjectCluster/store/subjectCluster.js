@@ -36,7 +36,7 @@ export const useSubjectClusterStore = defineStore("subjectCluster", () => {
     }
 
     async function fetchSubjectClusterFilter(data) {
-        return await api.get("main/subject-cluster-filter?learning_area_number="+data)
+        return await api.get("main/subject-cluster-filter?learning_area_number="+data.learning_area_number+"&curriculum_number="+data.curriculum_number)
             .then((response) => {
                 subjectClusterFilterResponse.value = response.data
             })

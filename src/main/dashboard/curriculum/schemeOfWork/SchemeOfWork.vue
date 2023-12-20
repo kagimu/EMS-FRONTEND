@@ -52,18 +52,14 @@
       </div>
     </div>
 
+
+<p class="mt-3" style="font-size: 20px;">Scheme of work</p>
+
     <div class="card mt-3">
       <div class="card-body" style="padding: 0;">
         <level-info></level-info>
       </div>
     </div>
-
-<!--    <div class="mt-3">
-      <div class="mt-3" v-if="curriculumInfo && curriculumInfo.name">
-        <div style="font-size: 22px; text-transform: capitalize;">Curriculum: <span class="text-blue-900">{{curriculumInfo.name}}</span> </div>
-      </div>
-    </div>-->
-
 
 
     <div class="row mt-5">
@@ -242,16 +238,13 @@
             </table>
             </div>
 
+
+
           </div>
         </div>
       </div>
 
-
     </div>
-
-
-
-
 
 
   </div>

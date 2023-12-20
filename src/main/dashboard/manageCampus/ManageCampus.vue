@@ -27,7 +27,7 @@
 
     <div class="ml-3 mt-3" >
       <div class="row">
-        <div class="col-6">
+        <div class="col-4">
           <div v-if="schoolData">
            <small>School:</small> <br />
            <div style="font-size: 20px;">
@@ -35,7 +35,14 @@
            </div>
           </div>
         </div>
-        <div class="col-6">
+
+          <div  v-if="schoolData" class="col-4">
+              <small>Commencement date</small>
+              <div>{{schoolData.commencement_date}}</div>
+          </div>
+
+
+        <div class="col-4">
           <div class="ml-5 mt-1">
             <small><b>School Curriculum (s)</b></small>
             <div class="ml-4" v-if="schoolData">
@@ -90,7 +97,8 @@
                   <b>Email:</b> {{campus.email}}<br />
                   <b>Phone:</b> {{campus.phone}}<br />
                   <b>Location:</b> {{campus.location}}<br />
-                  <b>Curriculum:</b> {{campus.curriculum_name}}
+                  <b>Curriculum:</b> {{campus.curriculum_name}}<br />
+                  <b>Commencement Date:</b> {{campus.commencement_date}}
                 </small>
 
                 <div class="flex justify-content-between mt-4">

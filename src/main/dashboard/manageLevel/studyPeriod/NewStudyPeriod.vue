@@ -50,14 +50,22 @@
 
 
         <div class="mb-2">
-          <label class="textColor"><small>Select Date Range</small></label>
+          <label class="textColor"><small>Study Period Start Date</small></label>
           <VueDatePicker
               style="font-size: 7px;"
-              v-model="form.study_period_date_range"
-              range
+              v-model="form.study_period_start_date"
               :preview-format="format"
-              :multi-calendars="{ solo: true }"></VueDatePicker>
+              ></VueDatePicker>
         </div>
+
+      <div class="mb-2">
+        <label class="textColor"><small>Study Period End Date</small></label>
+        <VueDatePicker
+            style="font-size: 7px;"
+            v-model="form.study_period_end_date"
+            :preview-format="format"
+        ></VueDatePicker>
+      </div>
 
 
 
@@ -114,7 +122,8 @@ const form = reactive({
   code:"",
   study_period_name:"",
   academic_year_number:"",
-  study_period_date_range:"",
+  study_period_start_date:"",
+  study_period_end_date:"",
 })
 
 

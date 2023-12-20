@@ -84,13 +84,14 @@ const form = reactive({
 
 const addSubjectCluster = () =>{
   loader.value = true
+  form.curriculum_number = curriculumNumber
   subjectClusterStore.newSubjectClusterData(form)
 }
 
 
 onMounted(
     () => {
-      learningAreaStore.fetchLearningArea(curriculumNumber)
+      //learningAreaStore.fetchLearningArea(curriculumNumber)
     }
 )
 

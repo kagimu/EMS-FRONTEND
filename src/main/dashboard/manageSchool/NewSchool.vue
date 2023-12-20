@@ -19,6 +19,16 @@
             class="form-control form-control-sm">
       </div>
 
+      <div class="mb-2">
+        <label class="textColor text-sm">Commencement Date</label>
+        <input
+            style="outline: none 0 !important; box-shadow: none;"
+            type="date"
+            v-model="form.commencement_date"
+            required
+            class="form-control form-control-sm">
+      </div>
+
 
 
       <div class="mb-2">
@@ -72,6 +82,7 @@ const schoolStore = useSchoolStore()
 
 const form = reactive({
   name:null,
+  commencement_date:null,
   curriculum:[],
 })
 
