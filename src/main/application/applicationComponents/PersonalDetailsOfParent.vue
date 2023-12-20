@@ -1,12 +1,12 @@
 <template>
 <div>
-<p class="ml-4 mt-4 mb-10" style="text-align: center !important;"><b>GUARDIAN/PARENT DETAILS</b></p>
+<!-- <p class="ml-4 mt-4 mb-10" style="text-align: center !important;"><b>GUARDIAN/PARENT DETAILS</b></p> -->
 
 <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
     {{errorMessage}}
   </div>
 
-  <form  @submit.prevent="addParentPersonalDetails"> 
+  <form  @submit.prevent="addParentPersonalDetails" style="margin-top: 16px;"> 
   <div class="row mx-auto">
     <div class="col-12">
         <div class="mb-8">
@@ -50,15 +50,15 @@
     </div>
         <div class="text- mt-4">
           <div class="row">
-            <div class="col-lg-3">
-              <button type="submit" class="btn btn-primary mb-2 mr-4">
+            <div class="col-lg-4">
+              <button type="submit" class="btn btn-primary mb-2 mr-4" style="color: white;">
                 Next &nbsp;<i class="bi bi-box-arrow-in-right"></i> 
         <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
           <span class="visually-hidden">Loading...</span>
         </div>
       </button>
             </div>
-            <div class="col-lg-6"></div>
+            <div class="col-lg-5"></div>
           </div>
         </div>
 
@@ -124,7 +124,7 @@ watch (
 <style scoped>
 
 .mb-8 {
-    margin-bottom: 2rem;
+    margin-bottom: 0.5rem !important;
     text-align: left;
     color: rgb(0, 0, 0);
     font-family: Roboto, sans-serif;
