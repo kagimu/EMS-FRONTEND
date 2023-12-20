@@ -1,11 +1,12 @@
 <template>
     <div>
-    <p class="ml-4 mt-4 mb-10"> SCHOOLS ATTENDED</p>
-      <form @submit.prevent="addSchoolDetails">
+    <!-- <p class="ml-4 mt-4 mb-10"> SCHOOLS ATTENDED</p> -->
+      <form @submit.prevent="addSchoolDetails" style="margin-top: 20px;">
       <div class="row mx-auto">
         <div class="col-12" style="border-right:solid whitesmoke 1px;">
-            <h6><center>1</center></h6>
+            
             <div class="mb-2">
+              <h6 class="tit">1</h6>
               <label class="textColor text-sm">School Name*</label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_one"   required class="form-control form-control-sm">
             </div>
@@ -15,24 +16,26 @@
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.classes_attended_one"   required class="form-control form-control-sm">
             </div>
          
-              <h6><center>2</center></h6>
+             
             <div class="mb-2">
+              <h6 class="tit">2</h6>
               <label class="textColor text-sm">School Name*</label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_two" required class="form-control form-control-sm">
             </div>
-
-            <h6><center>3</center></h6>
             <div class="mb-2">
+              <label class="textColor text-sm">Classes Attended *</label>
+              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_three"  required class="form-control form-control-sm">
+            </div>
+            
+            <div class="mb-2">
+              <h6 class="tit">3</h6>
               <label class="textColor text-sm">School Name*</label>
               <input type="text" 
               style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_three" 
                required class="form-control">
             </div>
     
-            <div class="mb-2">
-              <label class="textColor text-sm">Classes Attended *</label>
-              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_three"  required class="form-control form-control-sm">
-            </div>
+           
             <div class="mb-2">
               <label class="textColor text-sm">Classes Attended *</label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_two"  required class="form-control form-control-sm">
@@ -40,7 +43,7 @@
 
             <div class="mb-2">
             <label class="textColor text-sm">How Did You Know ABout the School ?</label>
-            <select style="outline: none 0 !important; box-shadow: none;" v-model="form.know_school"  required class="select form-control form-control-sm" multiple>
+            <select style="outline: none 0 !important; box-shadow: none;margin-top: 8px;width: 480px" v-model="form.know_school"  required class="select form-control form-control-sm" multiple>
             <option value="1">Old parent</option>
             <option value="2">Friend</option>
             <option value="3">Newspaper</option>
@@ -48,30 +51,31 @@
             <option value="5">Internet</option>
             </select>
             <br>
-            <p>Other (specify in form of memo description) </p>
-            <textarea class="select form-control form-control-sm" v-model="form.other_description"></textarea>
+            <label>Other (specify in form of memo description) </label>
+            <textarea  style="margin-top: 8px;width: 480px;" class="select form-control form-control-sm" v-model="form.other_description"></textarea>
             </div>
         </div>
         <div class="text- mt-4">
-          <div class="row">
+          <div class="row" style="width: 520px">
           
-            <div class="col-lg-3">
-              <button type="submit" class="btn btn-success mb-2 mr-4">
+            <div class="col-lg-4">
+              <button type="submit" class="btn btn-success mb-2 mr-4" style="color: white;">
            <i class="bi bi-box-arrow-in-left"></i> Back
             <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
               <span class="visually-hidden">Loading...</span>
             </div>
           </button>
             </div>
-            <div class="col-lg-3">
-              <button type="submit" class="btn btn-primary mb-2 mr-4" style="align-items: left;">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+              <button type="submit" class="btn btn-primary mb-2 mr-4" style="color: white;float: right !important;margin-right: 0px;">
                 <i class="bi bi-save"></i> Submit
             <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
               <span class="visually-hidden">Loading...</span>
             </div>
           </button>
             </div>
-            <div class="col-lg-7"></div>
+           
           </div>
        
         </div>
@@ -157,4 +161,11 @@ input{
   background-color: #f8f9fa;
   border-radius: 8px;
 }
+.tit{
+  width:480px;
+  text-align: center;
+  margin-top: 15px;
+  text-decoration: underline;
+}
+
 </style> 
