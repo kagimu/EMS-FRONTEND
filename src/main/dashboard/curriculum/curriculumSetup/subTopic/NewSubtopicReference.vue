@@ -1,22 +1,103 @@
 <template>
   <div>
 
-<!--{{subTopicData}}-->
-    <div class="mx-auto" style="width: 95%;">
-      <label class="textColor mt-3 mb-2"><small>Add References</small></label>
-      <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+    <form @submit.prevent="addReference">
 
-        <li class="list-group-item" v-for="(material,idx) in learningMaterialsList" :key="idx">
-          <input
-              v-model="learningMaterialNumber"
-              @click="addLearningMaterial(material)"
-              style="outline: none 0 !important; box-shadow: none;"
-              class="form-check-input me-1" type="checkbox" :value="material.number" :id="material.number">
-          <label class="form-check-label cursor-pointer ml-2" :for="material.number">{{material.code+". "+material.name}}</label>
-        </li>
+    <div class="row mx-auto">
+      <div class="col-lg-10 content mx-auto">
 
-      </ul>
+
+    <div class="row mt-2">
+      <div class="col-lg-3 content">
+        <small>Code</small>
+      </div>
+      <div class="col-lg-3 content">
+        <small>
+          Learning Material
+        </small>
+      </div>
+      <div class="col-lg-5 content">
+      <small>
+        Reference description
+      </small>
     </div>
+    </div>
+
+
+    <div v-for="(lst, idx) in form" :key="idx">
+      <div class="row">
+        <div class="col-lg-3 content">
+          <input
+              @keypress="commons.numbersOnlyValidator($event)"
+              maxlength="10"
+              style="outline: none 0 !important; box-shadow: none;"
+              type="text"
+              v-model="lst.code"
+              required
+              class="form-control form-control-sm">
+        </div>
+        <div class="col-lg-3 content">
+
+
+            <select
+                style="box-shadow: none;"
+                class="form-select form-select-sm"
+                v-model="lst.learningMaterialNumber"
+            >
+              <option disabled value="">Select Material</option>
+              <option v-for="(list, index) in learningMaterialsList" :key="index" :value="list.number">
+                {{list.code+". "+list.name}}
+              </option>
+            </select>
+
+        </div>
+        <div class="col-lg-5 content">
+          <input
+              style="outline: none 0 !important; box-shadow: none;"
+              type="text"
+              v-model="lst.description"
+              required
+              class="form-control form-control-sm">
+        </div>
+        <div class="col-lg-1 content">
+          <button
+              @click="removeRef(idx)"
+              type="button"
+              class="btn-close btn-sm border-0">
+          </button>
+        </div>
+      </div>
+
+    </div>
+        <button
+            @click="addRef"
+            type="button"
+            class="btn btn-sm btn-secondary border-0 mt-2">
+          <i style="font-size: 15px;" class="bi-plus mr-1"></i>
+          Add Reference
+        </button>
+
+
+        <div class="flex justify-content-end" style="width: 100%;">
+          <button
+              type="submit"
+              class="btn btn-primary border-0">
+               {{(form && form[0].number) ? 'Edit' : 'Save'}}
+            <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </span>
+          </button>
+        </div>
+
+
+      </div>
+    </div>
+
+
+
+
+
+    </form>
 
 
 
@@ -30,8 +111,8 @@ import {onMounted, ref, watch} from "vue";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useRouter} from "vue-router";
 import useNotificationStore from "@/composables/useNotification.js";
-import {useSubtopicStore} from "@/main/dashboard/curriculum/curriculumSetup/subTopic/store/subTopic.js";
 import {useLearningMaterialStore} from "@/main/settings/learning-materials/resources_store.js";
+import useCommonsStore from "@/composables/useCommons.js";
 
 const classError = ref(null)
 const name = ref(null)
@@ -40,6 +121,7 @@ const learningMaterialsList = ref([])
 const routerData = useRouter()
 const  notificationStore  = useNotificationStore()
 const resourcesStore = useLearningMaterialStore()
+const commons = useCommonsStore()
 
 const classStore = useClassesStore()
 const curriculumNumber = routerData.currentRoute.value.query.id
@@ -48,13 +130,47 @@ const subTopicData = ref(null)
 const subTopicNumber = ref(null)
 
 
-const learningMaterialNumber = ref([])
+const form = ref([
+  {
+    number: "",
+    code: 1,
+    learningMaterialNumber: "",
+    description: "",
+  }
+])
 
 
-const addLearningMaterial = (materialInfo) =>{
+const addReference = () => {
   loader.value = true
-  resourcesStore.newCurriculumSubtopicReference({material_code:materialInfo.code,material_number:materialInfo.number, curriculum_number:curriculumNumber, sub_topic_number:subTopicNumber.value})
+
+  let formData =  form.value
+
+  formData.forEach(lst => {
+    lst.code = parseInt(lst.code)
+  })
+
+  let data = {}
+  data.references = formData
+  data.sub_topic_number = subTopicNumber.value
+
+  resourcesStore.newCurriculumSubtopicReference(data)
 }
+
+const addRef = () => {
+
+  let data = {
+    code: (form.value.length + 1),
+    learningMaterialNumber: "",
+    description: "",
+  }
+  form.value.push(data)
+}
+
+const removeRef = (idx) => {
+  form.value.splice(idx, 1)
+}
+
+
 
 const props = defineProps({
   subTopicInfo: {},
@@ -82,7 +198,8 @@ watch(
     () => resourcesStore.curriculumSubtopicReferenceResponse,
     async (data) => {
       if(data){
-        notificationStore.successToast("Success","Login successfully")
+        loader.value = false
+        notificationStore.successToast("Error",data.message)
        await resourcesStore.fetchLearningMaterials()
       }
     },
@@ -103,13 +220,33 @@ watch(
     () => props.subTopicInfo,
     async (data) => {
       if(data){
+
         subTopicData.value = data
         subTopicNumber.value = data.number
-       /* let arr = []
-        data.forEach(lst => {
-          arr.push(lst.curriculum_class_number)
-        })
-        learningMaterialNumber.value = arr*/
+        let references = data.references
+
+        form.value =   [{
+          number: null,
+          code: 1,
+          learningMaterialNumber: "",
+          description: "",
+        }]
+
+        if(references && (references.length > 0)){
+          form.value = []
+          let arr = []
+          let obj = {}
+          references.forEach(lst => {
+            obj = {
+              code: lst.code,
+              learningMaterialNumber: lst.learning_material_number,
+              description: lst.description,
+              number: lst.number,
+            }
+            arr.push(obj)
+          })
+          form.value = arr
+        }
       }
     },
     {deep:true}

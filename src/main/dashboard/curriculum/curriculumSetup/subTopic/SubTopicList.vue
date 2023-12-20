@@ -213,7 +213,7 @@
 
                                                 <div class="mt-2" style="width: 250px;">
                                                   <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="addReference(stpc)" data-bs-toggle="modal" data-bs-target="#referenceModal">
-                                                    <small class="m-0 p-0">Reference(s)</small>
+                                                    <small class="m-0 p-0">Reference(s) &nbsp;{{stpc.references ? '['+stpc.references.length+']' : ''}}</small>
                                                   </button>
                                                 </div>
 
@@ -231,8 +231,6 @@
                                             </tr>
                                             </tbody>
                                           </table>
-
-
 
 
                                         </td>
