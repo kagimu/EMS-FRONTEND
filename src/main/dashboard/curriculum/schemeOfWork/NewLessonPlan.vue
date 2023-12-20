@@ -186,7 +186,7 @@ const addLessonPlan = () => {
   if(formData.concepts && (formData.concepts.length > 0)){}
   formData.concepts.forEach(lst => {
     lst.steps.forEach(list => {
-      list.code = parseInt(lst.code)
+      list.code = parseInt(list.code)
     })
   })
 
