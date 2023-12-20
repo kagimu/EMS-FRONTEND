@@ -26,7 +26,10 @@ import GeneralCalendar from "@/main/dashboard/eos/GeneralCalendar.vue";
 import CalendarDetails from "@/main/dashboard/eos/CalendarDetails.vue";
 import AllTimeTables from "@/main/dashboard/curriculum/timetable/AllTimeTables.vue";
 import CurriculumSetup from "@/main/dashboard/curriculum/curriculumSetup/CurriculumSetup.vue";
-
+import Application from "../main/application/Application.vue";
+import Welcome from "../main/welcome/Welcome.vue";
+import UserDashboard from "../main/application/UserDashboard.vue";
+import ApplicationGuide from "../main/auth/ApplicationGuide.vue";
 
 
 const router = createRouter({
@@ -35,10 +38,13 @@ const router = createRouter({
         {
             path: '/',
             component: AuthMain,
-            redirect:{ name: 'login' },
+            redirect:{ name: 'welcome' },
             children:[
                 {path: 'login', component: Login, name:'login'},
                 {path: 'register', component: Register, name:'register'},
+                {path: 'welcome', component: Welcome, name:'welcome'},
+                {path: 'userdashboard', component: UserDashboard, name:'userdashboard'},
+                {path: 'applicationguide', component: ApplicationGuide, name:'applicationguide'}
             ]
         },
         {
@@ -74,12 +80,28 @@ const router = createRouter({
                 {path: 'scheme-of-work', component: SchemeOfWork, name: "scheme-of-work"},
                 {path:'calendar', component: GeneralCalendar, name: "general-calendar"},
                 {path:'calendar/:calendar_id', component: CalendarDetails, name: "calendar-details" },
+                
+            ]
+        },
+
+        {
+            path: '/main',
+            component: UserDashboard,
+            name :"userdashboard",
+            redirect:{ name: 'application' },
+            meta: {
+                requiresAuth: false,
+            },
+            children:[
+                {path: 'application', component: Application, name:'application'},
             ]
         },
         {
             path: '/:pathMatch(.*)*',
             redirect: { name: "login" }
         }
+
+ 
     ],
 });
 

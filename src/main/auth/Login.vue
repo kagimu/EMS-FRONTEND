@@ -1,77 +1,57 @@
 <template>
   <div>
-
-    <div class="row">
-      <div class="col-lg-4 content">
-        <div class="text-center mb-3" style="font-size: 27px;">Wholesome Education</div>
+    <div class="row" style="margin-top: 80px;margin-bottom: 80px;">
+      <div class="col-lg-4"></div>
+      <div class="col-lg-4">
+        <div class="align-centre mt-2 h6 font500 text-uppercase mb-2">
+          <p class="fs-4" style="color:#0b5dd7cc;"><b>Wholesome Ed</b></p>
+          <p style="text-align: center !important;color:#0b5dd7cc;font-size: 14px;;">LOGIN</p></div>
+        <hr>
         <div class="card">
           <div class="card-body">
-
-
-
-
-
-
-            <div class="text-center textColor"><b>Login</b></div>
-            <!--          <div class="text-center">Wholesome Education</div>-->
-            <div class="text-center mb-3 textColor"><small>---- Please login to your account.----</small></div>
-
             <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
               {{errorMessage}}
             </div>
-
             <form @submit.prevent="doLogin">
-
-
               <div class="mb-2">
-                <label class="textColor"><small>Email</small></label>
-                <input type="email" v-model="form.email" required class="form-control">
+                <label class="textColor font500 mb-1 mt-0 "><small>Email Address <strong class="text-danger ms-1">*</strong></small></label>
+                <input type="email" v-model="form.email" required class="form-control form-control-sm">
               </div>
-
-
-              <label class="textColor"><small>Password</small></label>
+              <label class="textColor font500 mb-1 mt-0"><small>Password<strong class="text-danger ms-1">*</strong></small></label>
               <div class="input-group mb-3">
                 <input
                     :type="show ? 'text' : 'password'"
                     v-model="form.password" required
-                    class="form-control" aria-label="Username"
+                    class="form-control form-control-sm" aria-label="Username"
                     aria-describedby="basic-addon1">
                 <div style="cursor: pointer;"  @click="show = !show" class="input-group-text" id="basic-addon1">
                   <i :class="show ? 'bi-eye-slash' : 'bi-eye'"></i>
                 </div>
               </div>
-
-
-
               <div class="text-right">
-                <button type="submit" class="btn btn-primary mb-2">
-                  Login
-
+                <button type="submit" class="btn btn-sm btn-primary mb-2 form-control">
+                  <b><i class="bi bi-box-arrow-in-right"></i>&nbsp;LOGIN</b> 
                   <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
                     <span class="visually-hidden">Loading...</span>
                   </div>
                 </button>
-              </div>
 
-              <div class="text-center">
-                <small>
-                  <router-link class="ml-2 text-decoration-none textColor" :to="{name:'register'}">Forgot Password?</router-link>
-                </small>
+                <!-- temporary link -->
+                <router-link type="button" class="font500 py-0 text-sm text-danger btn btn-link btn-sm" :to="{name:'userdashboard'}">haha-account</router-link>
               </div>
-
-              <div class="text-center">
-                <small class="textColor">
-                  Dont have account?  <router-link class="ml-2 text-decoration-none textColor" :to="{name:'register'}"> Get an account </router-link>
-                </small>
-              </div>
-
             </form>
           </div>
         </div>
+        <div class="text-sm mt-4 mb-4 text-muted text-center">Did you Forget your Password?
+          <router-link type="button" class="font500 py-0 text-sm text-danger btn btn-link btn-sm" :to="{name:'register'}">Click Here</router-link>
+        </div>
 
+        <div class="mt-5 mb-2 text-center">
+          <router-link class="d-inline text-sm2 font500 text-white text-uppercase btn btn-sm btn-success" :to="{name:'applicationguide'}" style="font-size: 12px !important;font-weight: 500px;"><i class="bi bi-question-circle"></i>&nbsp;How to Apply</router-link>&nbsp;&nbsp;
+          <router-link class="d-inline text-sm2 font500 text-white text-uppercase btn btn-sm btn-primary" :to="{name:'register'}"  style="font-size: 12px !important;font-weight: 500px;"><i class="bi bi-pencil-square"></i>&nbsp;Get an account</router-link></div>
       </div>
+      <div class="col-lg-4"></div>
     </div>
-
   </div>
 </template>
 
@@ -158,7 +138,35 @@ input:focus {
 }
 
 .textColor{
-  color: #717375;
+  color:rgba(33,37,41,0.75);
+    font-size: .875rem!important;
+    line-height: 1.25rem!important;
+    font-weight: 500!important;
+    margin: bottom 0.25em;
 }
+.text-sm2 {
+    font-size: 13px !important;
+    line-height: 0.5rem!important;
+    color:white !important;
+    font-weight: 900px !important;
+  
+}
+.btn-info{
+  background-color: #1d5f7d !important;
+}
+.btn{
+  border-radius: 0px !important;
+}
+hr {
+    margin: 1rem 0;
+    color:#0b5dd762;
+    border: 0;
+    border-top: 1px solid;
+    opacity: .25;
+}
+.fs-4 {
+    font-size: 1.2rem!important;
+    text-align: center;
 
+}
 </style>
