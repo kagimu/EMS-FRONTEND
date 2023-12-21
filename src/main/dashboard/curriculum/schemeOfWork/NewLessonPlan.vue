@@ -332,7 +332,7 @@ watch(
     {deep: true}
 )
 
-/*watch(
+watch(
     () => schemeOfWorkStore.errorMessage,
     async (data) => {
       if (data) {
@@ -340,7 +340,7 @@ watch(
       }
     },
     {deep: true}
-)*/
+)
 
 
 watch(
