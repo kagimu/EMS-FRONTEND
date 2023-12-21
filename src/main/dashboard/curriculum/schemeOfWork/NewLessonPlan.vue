@@ -264,6 +264,7 @@ watch(
     () => props.schemeDataInfo,
     async (data) => {
       if (data) {
+        resetFormData()
         scheme_sub_topic_number.value = props.schemeDataInfo.number
         await schemeOfWorkStore.fetchConceptsBySubTopic(props.schemeDataInfo.sub_topic_number)
         // fetch lesson plan draftData
@@ -272,6 +273,20 @@ watch(
     },
     {deep: true}
 )
+
+const resetFormData = () => {
+   form.value = [{
+    number: "",
+    code: 1,
+    lesson_plan_concept_number: "",
+    concept_name: "",
+    steps: [{
+      number: "",
+      code: "1",
+      step: ""
+    }]
+  }]
+}
 
 watch(
     () => schemeOfWorkStore.conceptsBySubtopicResponse,
@@ -338,7 +353,7 @@ watch(
          lessonPlanNumber.value = lessonPlan.number ? lessonPlan.number : ""
         let conceptsInfo = lessonPlan.concepts
         if(conceptsInfo && (conceptsInfo.length > 0)){
-          form.value = []
+
           let arr = []
           let obj = {}
 
@@ -356,18 +371,6 @@ watch(
           form.value = arr
         }
 
-
-
-    /*    const form = ref([{
-          code: "",
-          lesson_plan_concept_number: "",
-          concept_name: "",
-          steps: [{
-            number: "",
-            code: "1",
-            step: ""
-          }]
-        }])*/
 
 
       }

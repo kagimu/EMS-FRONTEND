@@ -100,6 +100,7 @@ watch(
     () => props.lessonPlanInfo,
     async (data) => {
       if (data) {
+        lessonPlanDetailsInfo.value = null
         scheme_sub_topic_number.value = props.lessonPlanInfo.number
         await schemeOfWorkStore.fetchLessonPlanDetails(props.lessonPlanInfo.number)
       }
