@@ -40,7 +40,7 @@ export const useStrandStore = defineStore("strand", () => {
     }
 
     async function fetchStrandList(data) {
-        return await api.get("main/strand-list?subject_number="+data)
+        return await api.get("main/strand-list?subject_number="+data.subject_number+"&curriculum_number="+data.curriculum_number)
             .then((response) => {
                 strandListResponse.value = response.data
             })

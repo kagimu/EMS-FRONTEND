@@ -161,6 +161,7 @@ const form = reactive({
 
 const addTopic = () =>{
   loader.value = true
+  form.curriculum_number = curriculumNumber
   topicStore.newTopicData(form)
 }
 

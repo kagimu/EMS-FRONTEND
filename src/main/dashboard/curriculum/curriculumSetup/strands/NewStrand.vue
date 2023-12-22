@@ -123,6 +123,7 @@ const form = reactive({
 
 const addStrand = () =>{
   loader.value = true
+  form.curriculum_number = curriculumNumber
   strandStore.newStrandData(form)
 }
 

@@ -27,7 +27,7 @@
 
     <div class="ml-3 mt-3" >
       <div class="row">
-        <div class="col-6">
+        <div class="col-4">
           <div v-if="schoolData">
            <small>School:</small> <br />
            <div style="font-size: 20px;">
@@ -35,7 +35,14 @@
            </div>
           </div>
         </div>
-        <div class="col-6">
+
+          <div  v-if="schoolData" class="col-4">
+              <small>Commencement date</small>
+              <div>{{schoolData.commencement_date}}</div>
+          </div>
+
+
+        <div class="col-4">
           <div class="ml-5 mt-1">
             <small><b>School Curriculum (s)</b></small>
             <div class="ml-4" v-if="schoolData">
@@ -74,9 +81,7 @@
 
               <div class="card-body">
                 <div class="mb-3 flex justify-between" style="font-size: 20px;">
-
                     {{campus.name}}
-
                   <div>
                   <i
                       class="bi-pencil ml-2 cursor-pointer"
@@ -92,23 +97,45 @@
                   <b>Email:</b> {{campus.email}}<br />
                   <b>Phone:</b> {{campus.phone}}<br />
                   <b>Location:</b> {{campus.location}}<br />
-                  <b>Curriculum:</b> {{campus.curriculum_name}}
+                  <b>Curriculum:</b> {{campus.curriculum_name}}<br />
+                  <b>Commencement Date:</b> {{campus.commencement_date}}
                 </small>
 
-                <div class="flex justify-content-between">
+                <div class="flex justify-content-between mt-4">
                   &nbsp;
+
+
+
+                  <div class="flex">
+
                   <router-link
                       class="text-decoration-none"
-                      :to="{name:'level', query:{id:campus.number}}"
+                      :to="{name:'scheme-of-work', query:{id:campus.number}}"
                   >
-                  <button
-                      type="button"
-                      class="btn-primary border-0 d-none d-lg-block viewButtonStyle">
+                    <button
+                        type="button"
+                        class="btn-primary border-0 d-none d-lg-block viewButtonStyle mr-2">
                       <span class="mx-9 text-sm">
-                        View
+                        Setup Scheme
                       </span>
-                  </button>
+                    </button>
                   </router-link>
+
+                    <router-link
+                        class="text-decoration-none"
+                        :to="{name:'level', query:{id:campus.number}}"
+                    >
+                      <button
+                          type="button"
+                          class="btn-primary border-0 d-none d-lg-block viewButtonStyle">
+                      <span class="mx-9 text-sm">
+                        Setup Campus
+                      </span>
+                      </button>
+                    </router-link>
+
+                  </div>
+
                 </div>
               </div>
         </div>

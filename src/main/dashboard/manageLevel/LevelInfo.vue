@@ -15,7 +15,11 @@
                     <div class="mb-4">
                       <b>Contacts</b><br />
                       Email:  <span>{{campusInfo.email}}</span> <br />
-                      Phone:   <span>{{campusInfo.phone}}</span>
+                      Phone:  <span>{{campusInfo.phone}}</span><br /><br />
+
+                      <b>Commencement Date</b><br />
+                      Phone:  <span>{{campusInfo.commencement_date}}</span><br />
+
                     </div>
                 </div>
 
