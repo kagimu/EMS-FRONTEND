@@ -8,7 +8,7 @@ export const useApplicationStore = defineStore("application", () => {
     const errorMessage = ref(null)
 
     async function newApplicationDetails(data) {
-        return await api.post("main/application/parents", data)
+        return await api.post("main/applications/parents", data)
             .then((response) => {
                 newApplicationDetailsResponse.value = response.data
             })
@@ -20,7 +20,7 @@ export const useApplicationStore = defineStore("application", () => {
     }
 
     async function newApplicationLeanerDetails(data) {
-        return await api.post("main/application/new-student", data)
+        return await api.post("/applications/new-student", data)
             .then((response) => {
                 newApplicationDetailsLearnerResponse.value = response.data
             })
