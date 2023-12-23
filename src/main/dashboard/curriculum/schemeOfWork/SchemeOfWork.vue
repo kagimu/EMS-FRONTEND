@@ -177,7 +177,7 @@
             <hr />
 
 
-            <div style="width: 100%; overflow-x: auto; white-space: nowrap; scrollbar-width: thin;">
+            <div style="width: 100%; max-height: 600px; overflow-x: auto; white-space: nowrap; scrollbar-width: thin;">
               <table class="table table-hover caption-top" style="font-size: 13px;">
               <thead>
               <tr>

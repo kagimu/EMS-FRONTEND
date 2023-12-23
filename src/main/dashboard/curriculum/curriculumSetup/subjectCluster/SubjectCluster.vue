@@ -62,7 +62,7 @@
               </thead>
               <tbody>
               <tr v-for="(lst,index) in subjectClusterList" :key="index" >
-                <th scope="row"> {{lst.code}}</th>
+                <td> {{lst.code}}</td>
                 <td>
                   <div class="text-wrap" style="width: 150px;">{{lst.name}}</div>
                 </td>

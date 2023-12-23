@@ -7,8 +7,8 @@
       </div>
 
 
-      <div class="row">
-        <div class="col-lg-4 content">
+      <div class="row mx-auto">
+        <div class="col-lg-6 content">
 
           <div class="mb-2">
             <label class="textColor text-sm">Scheme Title</label>
@@ -36,8 +36,7 @@
         </select>
       </div>
 
-
-          <div class="mb-2">
+          <div class="mb-5">
             <label class="textColor"><small>Academic Year</small></label>
             <select
                 :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'Pending'))"
@@ -46,7 +45,7 @@
                 v-model="form.academic_year_number"
             >
               <option disabled value="">Select Academic Year</option>
-<!--              <option value="">All</option>-->
+              <!--              <option value="">All</option>-->
               <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
                 {{list.code+". "+list.academic_year_name+" ["+list.level_name+"]"}}
               </option>
@@ -54,7 +53,11 @@
           </div>
 
 
-          <div class="mb-5">
+        </div>
+        <div class="col-lg-6 content">
+
+
+          <div class="mb-2">
             <label class="textColor"><small>Subject</small></label>
             <select
                 :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'Pending'))"
@@ -66,6 +69,22 @@
               <option disabled value="">Select Subject</option>
               <option v-for="(list, index) in subjectList" :key="index" :value="list.number">
                 {{list.code+". "+list.name}}
+              </option>
+            </select>
+          </div>
+
+
+          <div class="mb-5">
+            <label class="textColor"><small>Scheme by</small></label>
+            <select
+                style="box-shadow: none;"
+                class="form-select form-select-sm"
+                v-model="type"
+                @click="filterByType(type)"
+            >
+              <option disabled value="">Select type</option>
+              <option v-for="(list, index) in schemeOptions" :key="index" :value="list.value">
+                {{list.text}}
               </option>
             </select>
           </div>
@@ -167,6 +186,24 @@ const subjectStore = useSubjectStore()
 const scheme_number = ref(null)
 const academicYearList = ref([])
 
+const type = ref("")
+
+const schemeOptions  = ref([
+  {
+    text:"Template",
+    value:"template"
+  },
+  {
+    text:"New",
+    value:"new"
+  },
+  {
+    text:"Standard Scheme",
+    value:"standard_scheme"
+  }
+])
+
+
 
 const form = reactive({
   name:"",
@@ -174,6 +211,12 @@ const form = reactive({
   subject_number:"",
   academic_year_number:"",
 })
+
+const filterByType = (type) => {
+  if(type){
+    alert(type)
+  }
+}
 
 
 let classNumber = routerData.currentRoute.value.query.c
