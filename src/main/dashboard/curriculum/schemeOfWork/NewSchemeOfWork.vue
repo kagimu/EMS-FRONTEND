@@ -90,6 +90,14 @@
           </div>
 
 
+          <div>
+            <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="downloadSchemeByTemplate" data-bs-toggle="modal">
+              <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+                Download template
+            </button>
+          </div>
+
+
         </div>
       </div>
 
@@ -205,6 +213,8 @@ const schemeOptions  = ref([
 
 
 
+
+
 const form = reactive({
   name:"",
   class_number:"",
@@ -216,6 +226,12 @@ const filterByType = (type) => {
   if(type){
     alert(type)
   }
+}
+
+
+const downloadSchemeByTemplate = () => {
+  subtopicList.value = []
+  subtopicStore.downloadSchemeTemplateExcel({class_number:form.class_number, subject_number:form.subject_number})
 }
 
 
@@ -364,6 +380,17 @@ watch(
     async (data) => {
       if(data){
       academicYearList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => subtopicStore.subtopicByClassTemplateResponse,
+    async (data) => {
+      if(data){
+        alert(JSON.stringify(data))
       }
     },
     {deep:true}
