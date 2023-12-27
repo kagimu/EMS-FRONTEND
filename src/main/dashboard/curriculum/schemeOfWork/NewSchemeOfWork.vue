@@ -90,19 +90,39 @@
           </div>
 
 
-          <div>
-            <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="downloadSchemeByTemplate" data-bs-toggle="modal">
-              <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-                Download template
-            </button>
-          </div>
-
-
         </div>
       </div>
 
 
-      <table class="table table-hover caption-top" style="font-size: 14px;">
+      <div class="row mx-auto">
+        <div class="col-lg-12 content">
+          <hr v-if="type === 'template'" class="mb-2 mt-3" />
+          <div v-if="type === 'template'">
+            <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="downloadSchemeByTemplate">
+              <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+              Download template
+            </button>
+            <button type="button"  class="btn btn-sm buttonStyle btn-success mr-2"  @click="uploadTemplate">
+              <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+              Upload template
+            </button>
+
+
+
+            <div v-if="showTemplateUpload">
+              show upload form
+            </div>
+
+
+          </div>
+          <hr v-if="type === 'template'" class="mb-2 mt-3" />
+        </div>
+      </div>
+
+
+
+
+      <table v-if="type === 'new'" class="table table-hover caption-top" style="font-size: 14px;">
         <thead>
         <tr>
           <th scope="col" style="width: 5%;">#</th>
@@ -110,7 +130,6 @@
           <th scope="col">Topic</th>
           <th scope="col" style="width: 60%;">Sub Topic name</th>
           <th scope="col" style="width: 20%;">Code</th>
-<!--          <th scope="col" class="text-end">Action</th>-->
         </tr>
         </thead>
         <tbody>
@@ -193,14 +212,11 @@ const subjectStore = useSubjectStore()
 
 const scheme_number = ref(null)
 const academicYearList = ref([])
+const showTemplateUpload = ref(false)
 
-const type = ref("")
+const type = ref("new")
 
 const schemeOptions  = ref([
-  {
-    text:"Template",
-    value:"template"
-  },
   {
     text:"New",
     value:"new"
@@ -208,7 +224,11 @@ const schemeOptions  = ref([
   {
     text:"Standard Scheme",
     value:"standard_scheme"
-  }
+  },
+  {
+    text:"Template",
+    value:"template"
+  },
 ])
 
 
@@ -224,16 +244,20 @@ const form = reactive({
 
 const filterByType = (type) => {
   if(type){
-    alert(type)
+  //  alert(type)
   }
 }
 
 
-const downloadSchemeByTemplate = () => {
+const downloadSchemeByTemplate = (event) => {
+  event.preventDefault();
   subtopicList.value = []
   subtopicStore.downloadSchemeTemplateExcel({class_number:form.class_number, subject_number:form.subject_number})
 }
 
+const uploadTemplate = () => {
+    showTemplateUpload.value = !showTemplateUpload.value
+}
 
 let classNumber = routerData.currentRoute.value.query.c
 if(classNumber){
@@ -390,7 +414,9 @@ watch(
     () => subtopicStore.subtopicByClassTemplateResponse,
     async (data) => {
       if(data){
-        alert(JSON.stringify(data))
+        const pdfObj = document.createElement("a");
+        pdfObj.href = data.data;
+        pdfObj.click();
       }
     },
     {deep:true}

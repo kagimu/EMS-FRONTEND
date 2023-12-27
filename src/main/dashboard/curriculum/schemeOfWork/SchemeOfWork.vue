@@ -13,9 +13,12 @@
               <new-scheme-of-work :schemeOfWorkList="schemeOfWorkList" ref="schemeOfWorkRef"></new-scheme-of-work>
             </div>
           </div>
-        </div>`
+        </div>
       </div>
     </div>
+
+
+
 
 
     <div class="modal fade" id="lessonPlanModal" tabindex="-1" :class="{ show: lessonPlanDialog }" aria-labelledby="" aria-hidden="true">
@@ -30,7 +33,7 @@
               <new-lesson-plan :schemeDataInfo="schemeDataInfo" ref="lessonPlanRef"></new-lesson-plan>
             </div>
           </div>
-        </div>`
+        </div>
       </div>
     </div>
 
@@ -268,6 +271,7 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import NewCurriculum from "@/main/dashboard/curriculum/curriculumSetup/NewCurriculum.vue";
 
 const level = ref( "")
 const academic_year_number = ref( "")
