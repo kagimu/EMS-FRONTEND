@@ -23,7 +23,7 @@
           <td>P2</td>
           <td>10/10/21</td>
           <td>
-            <button title="View Details"><small><i class="bi bi-eye">&nbsp;view more</i></small></button> 
+            <router-link  :to="{name:''}" class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small><i class="bi bi-eye">&nbsp;view more</i></small></router-link>
           </td>
         </tr>
         
