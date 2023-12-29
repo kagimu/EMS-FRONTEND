@@ -2,7 +2,7 @@
   <div>
     <!-- modal for viewing more details -->
     <div class="modal fade" id="infoModal" tabindex="-1" :class="{ show: schoolDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
+      <div class="modal-dialog modal-xl">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
             <h6 class="modal-title ml-3 mt-2 mb-2"><small>Application Details</small></h6>
