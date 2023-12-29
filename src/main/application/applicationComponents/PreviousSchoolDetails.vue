@@ -70,12 +70,11 @@
 
 
  
-    <script setup>
+ <script setup>
     
 import {reactive, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
-
 
 const buttonLoader = ref(false)
 let errorMessage = ref(null)
@@ -84,15 +83,9 @@ const emit = defineEmits()
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
 
+
   const form = reactive({
-  school_name_one:null,
-  classes_attended_one:null,
-  school_name_two:null,
-  classes_attended_two:null,
-  school_name_three:null,
-  classes_attended_three:null,
-  know_school:null,
-  other_description:null
+ 
 
 })
 
@@ -123,12 +116,9 @@ watch (
     },
     {deep:true}
 )
-
-
-
     </script>
     
-    <style scoped>
+ <style scoped>
   .mb-8 {
     margin-bottom: 2rem;
     text-align: left;
@@ -137,22 +127,17 @@ watch (
     font-size: 17px;
 }
 .mb-2 {
-    /* margin-bottom: 2rem; */
     text-align: left;
     color: rgb(0, 0, 0);
     font-family: Roboto, sans-serif;
-    /* font-size: 17px; */
     border-radius: 3px !important;
 }
 input{
-  /* width:480px; */
-  /* margin-top: 8px; */
   background-color: #f8f9fa;
   border-radius: 2px;
   font-size: 10px !important;
 }
 .tit{
-  /* width:480px; */
   text-align: center;
   margin-top: 15px;
   text-decoration: underline;
@@ -166,10 +151,11 @@ textarea{
 select{
   border-radius: 2px !important;
 }
-
+.small-input {
+  width: 150px;
+  font-size: 13px;
+}
 </style> 
-
-
 
 <script>
 export default {
@@ -186,11 +172,10 @@ export default {
   methods: {
     addSchool() {
       const lastSchool = this.formData.schools[this.formData.schools.length - 1];
-      // Only add a new school if the current school has a non-empty name and classes array is not empty
       if (lastSchool.name !== '' && lastSchool.classes.some(className => className !== '')) {
         this.formData.schools.push({
           name: '',
-          classes: [''], // Add an initial empty class attended field for the new school
+          classes: [''], 
         });
       }
     },
@@ -199,7 +184,6 @@ export default {
     },
     addClass(schoolIndex) {
       const lastClass = this.formData.schools[schoolIndex].classes[this.formData.schools[schoolIndex].classes.length - 1];
-      // Only add a new class if the current class is non-empty
       if (lastClass !== '') {
         this.formData.schools[schoolIndex].classes.push('');
       }
@@ -219,10 +203,4 @@ export default {
 };
 </script>
 
-<style scoped>
-/* Add custom styles for small input fields and font size */
-.small-input {
-  width: 150px;
-  font-size: 13px;
-}
-</style>
+
