@@ -3,20 +3,10 @@
     <!-- modal for viewing more details -->
     <div class="modal fade" id="infoModal" tabindex="-1" :class="{ show: schoolDialog }" aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2"><small>Application Details</small></h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-              <application-details></application-details>
-            </div>
-          </div>
-        </div>
+        <application-details></application-details>
       </div>
     </div>
-
+    
   
 
   <div class="container mt-4">
