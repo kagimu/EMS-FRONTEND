@@ -1,108 +1,55 @@
 <template>
     <div>
     <p class="ml-4 mt-4 mb-10" style="text-align: center !important;">PREVIOUS SCHOOL RECORDS</p>
-      <form @submit.prevent="addSchoolDetails" style="margin-top: 20px; display: none;">
-      <div class="row mx-auto">
-        <div class="col-12" style="border-right:solid whitesmoke 1px;">
-            <div class="mb-2">
-            <label class="textColor text-sm"><small>How Did You Know ABout the School ?</small></label>
-            <select style="outline: none 0 !important; box-shadow: none;font-size: 10px;" v-model="form.know_school"  required class="select form-control form-control-sm" multiple>
-            <option value="1">Old parent</option>
-            <option value="2">Friend</option>
-            <option value="3">Newspaper</option>
-            <option value="4">Television</option>
-            <option value="5">Internet</option>
-            </select>
-            <br>
-            <label  class="textColor text-sm"><small>Other (specify in form of memo description)</small> </label>
-            <textarea  style="" class="select form-control form-control-sm" v-model="form.other_description"></textarea>
-            </div>
-        </div>
-        <div class="text- mt-4">
-          <div class="row">
-          
-            <div class="col-lg-4">
-              <button type="submit" class="btn btn-sm btn-success mb-2 mr-4" style="color: white;">
-         <small><i class="bi bi-box-arrow-in-left"></i> Back</small>  
-            <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          </button>
-            </div>
-            <div class="col-lg-4"></div>
-            <div class="col-lg-4">
-              <button type="submit" class="btn btn-sm btn-primary mb-2 mr-4" style="color: white;float: right !important;margin-right: 0px;">
-                <small><i class="bi bi-save"></i> Submit</small>
-            <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          </button>
-            </div>
-           
-          </div>
-       
-        </div>
-      </div>       
-    </form>
-    </div>
-
-
-   
+   </div>
 <div class="container mt-0">
-      <form @submit.prevent="submitForm">
-  
+      <form @submit.prevent="addSchoolDetails">
         <div v-for="(school, schoolIndex) in formData.schools" :key="schoolIndex" class="school-section mb-4" style="background-color: #f8f9fa;">
           <div class="row">
             <div class="col-lg-12">
               <div class="form-group">
-                <label class="textColor text-sm" ><small>School Name&nbsp;<button title="Remove Class" style="width:10px;padding:0px;height: 10px;color:red;"    @click="removeSchool(schoolIndex)">X</button></small> </label>
+           <label class="textColor text-sm" ><small>School Name&nbsp;
+           <button title="Remove Class" style="width:10px;padding:0px;height: 10px;color:red;"    @click="removeSchool(schoolIndex)">X</button></small> </label>
             <input type="text" class="form-control" v-model="school.name"> 
           </div>
             </div>
           </div>
          
           <div class="classes-section">
-            <label class="textColor text-sm" ><small>Classes Attended   &nbsp;
-                <button title="Add class" style="color:rgb(33, 9, 154);width: 12px;height: 12px;"  @click="addClass(schoolIndex)"><i class="bi bi-plus-circle"></i></button></small> </label>
-            <div class="input-group mb-3" v-for="(className, classIndex) in school.classes" :key="classIndex">
-              <input type="text" class="form-control" v-model="school.classes[classIndex]"> &nbsp;&nbsp;<button  @click="removeClass(schoolIndex, classIndex)" style="color:red;width: 12px;height: 12px;" title="Remove class"><i class="bi bi-x-circle-fill"></i></button>
-           
-            </div>
-            
-          </div>
           
+          <div class="row">
+            <div class="col-lg-7">
+              <label class="textColor text-sm" ><small>Classes Attended &nbsp;
+                <button title="Add class" style="color:rgb(33, 9, 154);width: 12px;height: 12px;"  @click="addClass(schoolIndex)"><i class="bi bi-plus-circle"></i></button></small> </label>
+              <div class="input-group mb-3" v-for="(className, classIndex) in school.classes" :key="classIndex">
+              <input type="text" class="form-control" v-model="school.classes[classIndex]">
+            </div>
+            </div>
+            <div class="col-lg-4">
+              <div class=" mb-3" v-for="(className, classIndex) in school.classes" :key="classIndex">
+                <label class="textColor text-sm" ><small>Year</small></label>
+              <input type="year" class="form-control" v-model="school.year"> 
+            </div>
+            </div>
+            <div class="col-lg-1">
+              <label class="textColor text-sm" ><small></small></label>
+             <button  @click="removeClass(schoolIndex, classIndex)" style="color:red;width: 12px;height: 12px;" title="Remove class"><i class="bi bi-x-circle-fill"></i></button>
+            </div>
+          </div>
+           
+          </div> 
         </div>
         <div class="row" style="margin-top: -20px;">
           <div class="col-lg-12">
-            <!-- Only add a new school if the current school has a non-empty name and classes array is not empty -->
             <button class="btn btn-sm btn-outline-success mb-2 mr-4" @click="addSchool" :disabled="!canAddSchool()"><small  style="color: rgb(8, 8, 8);">Add Another School</small></button>
           </div>
-        </div>
-  
-        <div class="col-12" style="border-right:solid whitesmoke 1px;display: none;">
-            <div class="mb-2">
-            <label class="textColor text-sm"><small>How Did You Know ABout the School ?</small></label>
-            <select style="outline: none 0 !important; box-shadow: none;font-size: 10px;" v-model="form.know_school"  class="select form-control form-control-sm" multiple>
-            <option value="1">Old parent</option>
-            <option value="2">Friend</option>
-            <option value="3">Newspaper</option>
-            <option value="4">Television</option>
-            <option value="5">Internet</option>
-            </select>
-            <br>
-            <label  class="textColor text-sm"><small>Other (specify in form of memo description)</small> </label>
-            <textarea  style="" class="select form-control form-control-sm" v-model="form.other_description"></textarea>
-            </div>
         </div>
         <div class="text- mt-4">
           <div class="row">
           
             <div class="col-lg-4">
               <button type="submit" class="btn btn-sm btn-success mb-2 mr-4" style="color: white;">
-         <small><i class="bi bi-box-arrow-in-left"></i> Back</small>  
-            <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
-              <span class="visually-hidden">Loading...</span>
-            </div>
+              <small><i class="bi bi-box-arrow-in-left"></i> Back</small>  
           </button>
             </div>
             <div class="col-lg-4"></div>
@@ -114,9 +61,7 @@
             </div>
           </button>
             </div>
-           
           </div>
-       
         </div>
       </form>
     </div>
