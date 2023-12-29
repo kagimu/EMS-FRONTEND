@@ -79,10 +79,10 @@
           </div>
         </div>
   
-        <div class="col-12" style="border-right:solid whitesmoke 1px;">
+        <div class="col-12" style="border-right:solid whitesmoke 1px;display: none;">
             <div class="mb-2">
             <label class="textColor text-sm"><small>How Did You Know ABout the School ?</small></label>
-            <select style="outline: none 0 !important; box-shadow: none;font-size: 10px;" v-model="form.know_school"  required class="select form-control form-control-sm" multiple>
+            <select style="outline: none 0 !important; box-shadow: none;font-size: 10px;" v-model="form.know_school"  class="select form-control form-control-sm" multiple>
             <option value="1">Old parent</option>
             <option value="2">Friend</option>
             <option value="3">Newspaper</option>
