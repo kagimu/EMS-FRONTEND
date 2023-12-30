@@ -14,7 +14,7 @@
     <table
       id="datatable"
       class="table table-striped"
-      style="font-size: 12px !important;"
+      style="font-size: 13px !important;"
     >
       <thead>
         <tr>
