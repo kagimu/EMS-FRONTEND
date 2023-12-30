@@ -80,12 +80,16 @@
     <div class="col-4" style="border-right: 1px solid rgba(128, 128, 128, 0.137);">
         <p class="ml-4 mt-4 mb-10" style="text-align: left !important;">PREVIOUS SCHOOL DETAILS</p>
         <div class="mb-2">
-          <span class="textColor text-sm"><small>School Name</small> </span>
+          <span class="textColor text-sm"><small>1. <span class="details">Paul Mukasa P/s | P.1 - 2020, P.3 - 2021 </span></small> </span>
+        </div>
+        <div class="mb-2">
+          <span class="textColor text-sm"><small>2. <span class="details">Paul Mukasa P/s | P.1 - 2020, P.3 - 2021 </span></small> </span>
+        </div>
+        <div class="mb-2">
+          <span class="textColor text-sm"><small>3. <span class="details">Paul Mukasa P/s | P.1 - 2020, P.3 - 2021 </span></small> </span>
         </div>
 
-        <div class="mb-2">
-          <span class="textColor text-sm"><small>Classes Attended </small></span>
-        </div>
+
 
         
         
@@ -96,10 +100,10 @@
 
     </div>
     <div class="col-lg-2">
-        <button style="float: right" type="button" class="btn btn-success btn-sm">Approve</button>
+        <button style="float: right" type="button" class="btn btn-sm btn-primary mb-2 mr-4"><i class="bi bi-save2"></i>&nbsp;<small>Approve</small></button>
 </div>
 <div class="col-lg-2">
-    <button style="margin-right: 5px;" type="button" class="btn btn-danger btn-sm">Reject</button>
+    <button style="margin-right: 5px;" type="button" class="btn btn-sm btn-danger mb-2 mr-4"><i class="bi bi-x-circle"></i>&nbsp;<small>Reject</small></button>
 </div>
 
 </div>
@@ -118,6 +122,13 @@
 
   
   <style scoped>
+  .mb-2 {
+    text-align: left;
+
+    font-family: Roboto, sans-serif;
+    /* font-size: 17px; */
+    border-radius: 3px !important;
+}
   .details{
     color:rgba(0, 0, 0, 0.824);
   }
