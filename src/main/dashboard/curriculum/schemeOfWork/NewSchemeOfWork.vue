@@ -94,7 +94,40 @@
       </div>
 
 
-      <table class="table table-hover caption-top" style="font-size: 14px;">
+      <div class="row mx-auto">
+        <div class="col-lg-12 content">
+          <hr v-if="type === 'template'" class="mb-2 mt-3" />
+          <div v-if="type === 'template'">
+            <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="downloadSchemeByTemplate">
+              <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+              Download template
+            </button>
+            <button type="button"  class="btn btn-sm buttonStyle btn-success mr-2"  @click="uploadTemplate">
+              <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+              Import template
+            </button>
+
+
+
+            <div v-if="showTemplateUpload">
+              <div>
+
+                      <ImportSchemeOfWork :schemeDetailsForm="form"></ImportSchemeOfWork>
+
+              </div>
+
+            </div>
+
+
+          </div>
+          <hr v-if="type === 'template' && !showTemplateUpload" class="mb-2 mt-3" />
+        </div>
+      </div>
+
+
+
+
+      <table v-if="type === 'new'" class="table table-hover caption-top" style="font-size: 14px;">
         <thead>
         <tr>
           <th scope="col" style="width: 5%;">#</th>
@@ -102,7 +135,6 @@
           <th scope="col">Topic</th>
           <th scope="col" style="width: 60%;">Sub Topic name</th>
           <th scope="col" style="width: 20%;">Code</th>
-<!--          <th scope="col" class="text-end">Action</th>-->
         </tr>
         </thead>
         <tbody>
@@ -140,7 +172,7 @@
 
 
 
-      <div class="flex justify-content-end" style="width: 100%;">
+      <div v-if="type === 'new'" class="flex justify-content-end" style="width: 100%;">
         <button
             type="submit"
             class="btn btn-primary border-0">
@@ -167,6 +199,7 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.
 import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
 import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
 import useNotificationStore from "@/composables/useNotification.js";
+import ImportSchemeOfWork from "@/main/dashboard/curriculum/schemeOfWork/ImportSchemeOfWork.vue";
 
 const subtopicStore = useSubtopicStore()
 const errorMessage = ref(null)
@@ -185,14 +218,11 @@ const subjectStore = useSubjectStore()
 
 const scheme_number = ref(null)
 const academicYearList = ref([])
+const showTemplateUpload = ref(false)
 
-const type = ref("")
+const type = ref("new")
 
 const schemeOptions  = ref([
-  {
-    text:"Template",
-    value:"template"
-  },
   {
     text:"New",
     value:"new"
@@ -200,8 +230,14 @@ const schemeOptions  = ref([
   {
     text:"Standard Scheme",
     value:"standard_scheme"
-  }
+  },
+  {
+    text:"Template",
+    value:"template"
+  },
 ])
+
+
 
 
 
@@ -214,10 +250,20 @@ const form = reactive({
 
 const filterByType = (type) => {
   if(type){
-    alert(type)
+  //  alert(type)
   }
 }
 
+
+const downloadSchemeByTemplate = (event) => {
+  event.preventDefault();
+  subtopicList.value = []
+  subtopicStore.downloadSchemeTemplateExcel({class_number:form.class_number, subject_number:form.subject_number})
+}
+
+const uploadTemplate = () => {
+    showTemplateUpload.value = !showTemplateUpload.value
+}
 
 let classNumber = routerData.currentRoute.value.query.c
 if(classNumber){
@@ -364,6 +410,19 @@ watch(
     async (data) => {
       if(data){
       academicYearList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => subtopicStore.subtopicByClassTemplateResponse,
+    async (data) => {
+      if(data){
+        const pdfObj = document.createElement("a");
+        pdfObj.href = data.data;
+        pdfObj.click();
       }
     },
     {deep:true}

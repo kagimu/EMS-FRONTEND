@@ -7,6 +7,8 @@ export const useSubtopicStore = defineStore("subtopic", () => {
     let subtopicInfoResponse = ref(null)
     let subtopicListResponse = ref(null)
     let subtopicByClassInfoResponse = ref(null)
+    let subtopicByClassTemplateResponse = ref(null)
+    let importSchemeResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -66,18 +68,49 @@ export const useSubtopicStore = defineStore("subtopic", () => {
             })
     }
 
+    async function downloadSchemeTemplateExcel(data) {
+        return await api.get("main/scheme-of-work/download-scheme-template?class_number="+data.class_number+"&subject_number="+data.subject_number)
+            .then((response) => {
+                subtopicByClassTemplateResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function importSchemeOfWork(data) {
+        return await api.post("main/scheme-of-work/upload-scheme-of-work", data, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })
+            .then((response) => {
+                importSchemeResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
 
 
     return {
         subtopicResponse,
+        importSchemeResponse,
         subtopicInfoResponse,
         subtopicByClassInfoResponse,
         subtopicListResponse,
+        subtopicByClassTemplateResponse,
         errorMessage,
         newSubtopicData,
         fetchSubTopics,
         fetchSubTopicsByClass,
-        fetchSubTopicList
+        fetchSubTopicList,
+        downloadSchemeTemplateExcel,
+        importSchemeOfWork
     }
 })
