@@ -42,7 +42,7 @@
             </form>
           </div>
         </div>
-        <div class="text-sm mt-4 mb-4 text-muted text-center">Did you Forget your Password?
+        <div class="text-sm mt-4 mb-4 text-muted text-center">Forgot your Password?
           <router-link type="button" class="font500 py-0 text-sm text-danger btn btn-link btn-sm" :to="{name:'register'}">Click Here</router-link>
         </div>
 
