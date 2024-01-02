@@ -104,18 +104,23 @@
             </button>
             <button type="button"  class="btn btn-sm buttonStyle btn-success mr-2"  @click="uploadTemplate">
               <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-              Upload template
+              Import template
             </button>
 
 
 
             <div v-if="showTemplateUpload">
-              show upload form
+              <div>
+
+                      <ImportSchemeOfWork :schemeDetailsForm="form"></ImportSchemeOfWork>
+
+              </div>
+
             </div>
 
 
           </div>
-          <hr v-if="type === 'template'" class="mb-2 mt-3" />
+          <hr v-if="type === 'template' && !showTemplateUpload" class="mb-2 mt-3" />
         </div>
       </div>
 
@@ -167,7 +172,7 @@
 
 
 
-      <div class="flex justify-content-end" style="width: 100%;">
+      <div v-if="type === 'new'" class="flex justify-content-end" style="width: 100%;">
         <button
             type="submit"
             class="btn btn-primary border-0">
@@ -194,6 +199,7 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.
 import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
 import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
 import useNotificationStore from "@/composables/useNotification.js";
+import ImportSchemeOfWork from "@/main/dashboard/curriculum/schemeOfWork/ImportSchemeOfWork.vue";
 
 const subtopicStore = useSubtopicStore()
 const errorMessage = ref(null)

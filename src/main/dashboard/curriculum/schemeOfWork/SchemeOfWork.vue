@@ -345,7 +345,6 @@ onMounted(
       await fetchSchemeClasses()
       if(selectedClass.value) {
         await subjectStore.fetchSchemeSubjectByClass(selectedClass.value)
-        // await subjectStore.fetchAcademicYearByClass(selectedClass.value)
         await fetchAcademicYrList()
       }
     }
