@@ -15,7 +15,7 @@
             <form @submit.prevent="doLogin">
               <div class="mb-2">
                 <label class="textColor font500 mb-1 mt-0 "><small>Email Address <strong class="text-danger ms-1">*</strong></small></label>
-                <input type="email" v-model="form.email" required class="form-control form-control-sm">
+                <input type="email" v-model="form.email" required class="form-control form-control-sm" style="font-size: 12px;">
               </div>
               <label class="textColor font500 mb-1 mt-0"><small>Password<strong class="text-danger ms-1">*</strong></small></label>
               <div class="input-group mb-3">
@@ -23,8 +23,8 @@
                     :type="show ? 'text' : 'password'"
                     v-model="form.password" required
                     class="form-control form-control-sm" aria-label="Username"
-                    aria-describedby="basic-addon1">
-                <div style="cursor: pointer;"  @click="show = !show" class="input-group-text" id="basic-addon1">
+                    aria-describedby="basic-addon1" style="font-size: 12px;">
+                <div style="cursor: pointer;font-size: 12px;"  @click="show = !show" class="input-group-text px-2 py-0" id="basic-addon1">
                   <i :class="show ? 'bi-eye-slash' : 'bi-eye'"></i>
                 </div>
               </div>
@@ -35,9 +35,6 @@
                     <span class="visually-hidden">Loading...</span>
                   </div>
                 </button>
-
-                <!-- temporary link -->
-                <router-link type="button" class="font500 py-0 text-sm text-danger btn btn-link btn-sm" :to="{name:'userdashboard'}">haha-account</router-link>
               </div>
             </form>
           </div>

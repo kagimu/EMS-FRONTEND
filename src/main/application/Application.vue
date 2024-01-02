@@ -1,13 +1,13 @@
 <template>
   <div class="temp">
     <div class="row">
-      <div style="padding-top: 210px;">
+      <div style="padding-top: 140px;">
       <h5 class="txt" >APPLY</h5>
       <h1  class="txt2">STUDENT APPLICATION</h1>
       <h5  class="txt">Get Started Today With Few Steps </h5>
     </div>
       <div class="col-lg-12">
-        <div class="card sect" style="margin-bottom:60px;margin-top:50px;margin-right:80px;margin-left:80px;border-radius: 16px;">
+        <div class="card sect mx-auto" style="margin-bottom:60px;margin-top:50px;border-radius: 16px; width: 70%;">
           <div class="card-body" >
            <div class="row">
             <div class="col-lg-6" style="text-align: center;padding-top:15px;">
@@ -20,13 +20,15 @@
             <div class="text-center">
               <ul class="nav nav-tabs text-xs" style="margin-top: 50px;">
               <li class="nav-item cursor-pointer">
-                <a style="color: black;font-family: Roboto, sans-serif !important;" class="nav-link" @click="nextPage(1)" :class="step === 1 ? 'active activeTab' : ''">GUARDIAN/PARENT DETAILS</a>
+                <a style="color: black;font-family: Roboto, sans-serif !important;" class="nav-link" @click="nextPage(1)" :class="step === 1 ? 'active activeTab' : ''"><small>GUARDIAN/PARENT</small></a>
               </li>
               <li class="nav-item cursor-pointer">
-                <a style="color: black;" class="nav-link" @click="nextPage(2)" :class="step === 2 ? 'active activeTab' : ''">DETAILS OF THE LEARNER</a>
+                <a style="color: black;" class="nav-link" @click="nextPage(2)" :class="step === 2 ? 'active activeTab' : ''"><small>LEARNER</small></a>
               </li>
               <li class="nav-item cursor-pointer">
-                <a style="color: black;" class="nav-link" @click="nextPage(3)" :class="step === 3 ? 'active activeTab' : ''">PREVIOUS SCHOOL RECORDS</a>
+                <a style="color: black;" class="nav-link" @click="nextPage(3)" :class="step === 3 ? 'active activeTab' : ''">
+                  <small>PREVIOUS SCHOOL</small>
+                </a>
               </li>
             </ul>
           </div>
@@ -98,21 +100,20 @@ input:focus {
 .txt2{
     color: rgb(19, 108, 250);
     text-align: center;
-    text-shadow: rgba(0, 0, 0, 0.3) 0px 0px 6px;
     text-transform: uppercase;
     font-family: Spartan, sans-serif;
     font-weight: 600;
     padding-top: 20px;
-    padding-bottom: 20px;
+    padding-bottom: 5px;
     font-size: 22px;;
 }
 .txt3{
   text-align: center;
     color: rgb(19, 108, 250);
     font-family: Spartan, sans-serif;
-    font-size: 33px;
+    font-size: 25px;
     font-weight: 800;
-    padding: 20px;
+    padding: 10px;
     /* padding-bottom: 20px; */
 }
 .tx4{
@@ -138,7 +139,7 @@ input:focus {
 }
 .nav-link{
   color: rgba(0, 0, 0, 0.874) !important;
-    font-family: Spartan, sans-serif !important;
+  font-family: Spartan, sans-serif !important;
   font-size: 12px !important;
   font-family: bold;
 }
