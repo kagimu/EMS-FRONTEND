@@ -30,6 +30,7 @@ import Application from "../main/application/Application.vue";
 import Welcome from "../main/welcome/Welcome.vue";
 import UserDashboard from "../main/application/UserDashboard.vue";
 import ApplicationGuide from "../main/auth/ApplicationGuide.vue";
+ import StudentApplication from "@/main/dashboard/studentApplication/studentApplication.vue";
 
 
 const router = createRouter({
@@ -62,6 +63,7 @@ const router = createRouter({
                 {path: 'level', component: ManageLevel, name: "level"},
                 {path: 'reports', component: ManageCampus, name: "reports"},
                 {path: 'student-admission', component: StudentAdmission, name: "student-admission"},
+                 {path: 'student-application', component: StudentApplication, name: "student-application"},
                 {path: 'profiles', component: userProfiles, name: "profiles"},
                 {path: 'accounting', component: ManageCampus, name: "accounting"},
                 {path: 'report-center', component: ReportCenter, name: "report-center"},
@@ -90,7 +92,7 @@ const router = createRouter({
             name :"userdashboard",
             redirect:{ name: 'application' },
             meta: {
-                requiresAuth: false,
+                requiresAuth: true,
             },
             children:[
                 {path: 'application', component: Application, name:'application'},

@@ -4,12 +4,14 @@ import api from "@/config/api.js";
 
 export const useApplicationStore = defineStore("application", () => {
     let newApplicationDetailsResponse = ref(null)
+    let newApplicationDetailsLearnerResponse = ref(null)
     const errorMessage = ref(null)
 
     async function newApplicationDetails(data) {
-        return await api.post("main/new-student-details-admission", data)
+        return await api.post("main/applications/new-parent", data)
             .then((response) => {
-                newApplicationDetailsResponse.value = response.data
+                newApplicationDetailsResponse.value = response.data.data
+
             })
             .catch((response) => {
                 if(response){
@@ -17,9 +19,24 @@ export const useApplicationStore = defineStore("application", () => {
                 }
             })
     }
+
+    async function newApplicationLeanerDetails(data) {
+        return await api.post("main/applications/new-student", data)
+            .then((response) => {
+                newApplicationDetailsLearnerResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     return {
         newApplicationDetailsResponse ,
         errorMessage,
         newApplicationDetails,
+        newApplicationLeanerDetails,
+        newApplicationDetailsLearnerResponse ,
     }
 })

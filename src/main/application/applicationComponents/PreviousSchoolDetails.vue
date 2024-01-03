@@ -1,95 +1,80 @@
 <template>
     <div>
-    <!-- <p class="ml-4 mt-4 mb-10"> SCHOOLS ATTENDED</p> -->
-      <form @submit.prevent="addSchoolDetails" style="margin-top: 20px;">
-      <div class="row mx-auto">
-        <div class="col-12" style="border-right:solid whitesmoke 1px;">
-            
-            <div class="mb-2">
-              <h6 class="tit">1</h6>
-              <label class="textColor text-sm">School Name*</label>
-              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_one"   required class="form-control form-control-sm">
+    <p class="ml-4 mt-4 mb-10" style="text-align: center !important;">PREVIOUS SCHOOL RECORDS</p>
+   </div>
+<div class="container mt-0">
+      <form @submit.prevent="addSchoolDetails">
+        <div v-for="(school, schoolIndex) in formData.schools" :key="schoolIndex" class="school-section mb-4" style="background-color: #f8f9fa;">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+           <label class="textColor text-sm" ><small>School Name&nbsp;
+           <button title="Remove Class" style="width:10px;padding:0px;height: 10px;color:red;"    @click="removeSchool(schoolIndex)">X</button></small> </label>
+            <input type="text" class="form-control" v-model="school.name"> 
+          </div>
             </div>
-    
-            <div class="mb-2">
-              <label class="textColor text-sm">Classes Attended *</label>
-              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.classes_attended_one"   required class="form-control form-control-sm">
-            </div>
+          </div>
          
-             
-            <div class="mb-2">
-              <h6 class="tit">2</h6>
-              <label class="textColor text-sm">School Name*</label>
-              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_two" required class="form-control form-control-sm">
+          <div class="classes-section">
+          
+          <div class="row">
+            <div class="col-lg-7">
+              <label class="textColor text-sm" ><small>Classes Attended &nbsp;
+                <button title="Add class" style="color:rgb(33, 9, 154);width: 12px;height: 12px;"  @click="addClass(schoolIndex)"><i class="bi bi-plus-circle"></i></button></small> </label>
+              <div class="input-group mb-3" v-for="(className, classIndex) in school.classes" :key="classIndex">
+              <input type="text" class="form-control" v-model="school.classes[classIndex]">
             </div>
-            <div class="mb-2">
-              <label class="textColor text-sm">Classes Attended *</label>
-              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_three"  required class="form-control form-control-sm">
             </div>
-            
-            <div class="mb-2">
-              <h6 class="tit">3</h6>
-              <label class="textColor text-sm">School Name*</label>
-              <input type="text" 
-              style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_three" 
-               required class="form-control">
+            <div class="col-lg-4">
+              <div class=" mb-3" v-for="(className, classIndex) in school.classes" :key="classIndex">
+                <label class="textColor text-sm" ><small>Year</small></label>
+              <input type="year" class="form-control" v-model="school.year"> 
             </div>
-    
+            </div>
+            <div class="col-lg-1">
+              <label class="textColor text-sm" ><small></small></label>
+             <button  @click="removeClass(schoolIndex, classIndex)" style="color:red;width: 12px;height: 12px;" title="Remove class"><i class="bi bi-x-circle-fill"></i></button>
+            </div>
+          </div>
            
-            <div class="mb-2">
-              <label class="textColor text-sm">Classes Attended *</label>
-              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.school_name_two"  required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-            <label class="textColor text-sm">How Did You Know ABout the School ?</label>
-            <select style="outline: none 0 !important; box-shadow: none;margin-top: 8px;width: 480px" v-model="form.know_school"  required class="select form-control form-control-sm" multiple>
-            <option value="1">Old parent</option>
-            <option value="2">Friend</option>
-            <option value="3">Newspaper</option>
-            <option value="4">Television</option>
-            <option value="5">Internet</option>
-            </select>
-            <br>
-            <label>Other (specify in form of memo description) </label>
-            <textarea  style="margin-top: 8px;width: 480px;" class="select form-control form-control-sm" v-model="form.other_description"></textarea>
-            </div>
+          </div> 
+        </div>
+        <div class="row" style="margin-top: -20px;">
+          <div class="col-lg-12">
+            <button class="btn btn-sm btn-outline-success mb-2 mr-4" @click="addSchool" :disabled="!canAddSchool()"><small  style="color: rgb(8, 8, 8);">Add Another School</small></button>
+          </div>
         </div>
         <div class="text- mt-4">
-          <div class="row" style="width: 520px">
+          <div class="row">
           
             <div class="col-lg-4">
-              <button type="submit" class="btn btn-success mb-2 mr-4" style="color: white;">
-           <i class="bi bi-box-arrow-in-left"></i> Back
-            <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
-              <span class="visually-hidden">Loading...</span>
-            </div>
+              <button type="submit" class="btn btn-sm btn-success mb-2 mr-4" style="color: white;">
+              <small><i class="bi bi-box-arrow-in-left"></i> Back</small>  
           </button>
             </div>
             <div class="col-lg-4"></div>
             <div class="col-lg-4">
-              <button type="submit" class="btn btn-primary mb-2 mr-4" style="color: white;float: right !important;margin-right: 0px;">
-                <i class="bi bi-save"></i> Submit
+              <button type="submit" class="btn btn-sm btn-primary mb-2 mr-4" style="color: white;float: right !important;margin-right: 0px;">
+                <small><i class="bi bi-save"></i> Submit</small>
             <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
               <span class="visually-hidden">Loading...</span>
             </div>
           </button>
             </div>
-           
           </div>
-       
         </div>
-      </div>       
       </form>
     </div>
     </template>
-    
-    <script setup>
+ 
+
+
+ 
+ <script setup>
     
 import {reactive, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
-
 
 const buttonLoader = ref(false)
 let errorMessage = ref(null)
@@ -98,15 +83,9 @@ const emit = defineEmits()
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
 
+
   const form = reactive({
-  school_name_one:null,
-  classes_attended_one:null,
-  school_name_two:null,
-  classes_attended_two:null,
-  school_name_three:null,
-  classes_attended_three:null,
-  know_school:null,
-  other_description:null
+ 
 
 })
 
@@ -137,10 +116,9 @@ watch (
     },
     {deep:true}
 )
-
     </script>
     
-    <style scoped>
+ <style scoped>
   .mb-8 {
     margin-bottom: 2rem;
     text-align: left;
@@ -149,23 +127,80 @@ watch (
     font-size: 17px;
 }
 .mb-2 {
-    margin-bottom: 2rem;
     text-align: left;
     color: rgb(0, 0, 0);
     font-family: Roboto, sans-serif;
-    font-size: 17px;
+    border-radius: 3px !important;
 }
 input{
-  width:480px;
-  margin-top: 8px;
   background-color: #f8f9fa;
-  border-radius: 8px;
+  border-radius: 2px;
+  font-size: 10px !important;
 }
 .tit{
-  width:480px;
   text-align: center;
   margin-top: 15px;
   text-decoration: underline;
 }
-
+.star{
+  color:red;
+}
+textarea{
+  border-radius: 2px !important;
+}
+select{
+  border-radius: 2px !important;
+}
+.small-input {
+  width: 150px;
+  font-size: 13px;
+}
 </style> 
+
+<script>
+export default {
+  data() {
+    return {
+      formData: {
+        schools: [{
+          name: '',
+          classes: [''],
+        }],
+      },
+    };
+  },
+  methods: {
+    addSchool() {
+      const lastSchool = this.formData.schools[this.formData.schools.length - 1];
+      if (lastSchool.name !== '' && lastSchool.classes.some(className => className !== '')) {
+        this.formData.schools.push({
+          name: '',
+          classes: [''], 
+        });
+      }
+    },
+    removeSchool(schoolIndex) {
+      this.formData.schools.splice(schoolIndex, 1);
+    },
+    addClass(schoolIndex) {
+      const lastClass = this.formData.schools[schoolIndex].classes[this.formData.schools[schoolIndex].classes.length - 1];
+      if (lastClass !== '') {
+        this.formData.schools[schoolIndex].classes.push('');
+      }
+    },
+    removeClass(schoolIndex, classIndex) {
+      this.formData.schools[schoolIndex].classes.splice(classIndex, 1);
+    },
+    submitForm() {
+      // Handle form submission logic here
+      // console.log('Form submitted:', this.formData);
+    },
+    canAddSchool() {
+      const lastSchool = this.formData.schools[this.formData.schools.length - 1];
+      return lastSchool.name !== '' && lastSchool.classes.some(className => className !== '');
+    },
+  },
+};
+</script>
+
+
