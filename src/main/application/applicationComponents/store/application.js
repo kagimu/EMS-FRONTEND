@@ -8,9 +8,10 @@ export const useApplicationStore = defineStore("application", () => {
     const errorMessage = ref(null)
 
     async function newApplicationDetails(data) {
-        return await api.post("main/applications/parents", data)
+        return await api.post("main/applications/new-parent", data)
             .then((response) => {
-                newApplicationDetailsResponse.value = response.data
+                newApplicationDetailsResponse.value = response.data.data
+
             })
             .catch((response) => {
                 if(response){

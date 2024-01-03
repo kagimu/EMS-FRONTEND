@@ -47,6 +47,12 @@
             </div>
 
 
+                    <div v-if="selectedPage === 'sosinfo'">
+                        <sos-info></sos-info>
+                    </div>
+
+
+
           </div>
         </div>
       </div>
@@ -90,7 +96,11 @@ const settingsList = ref([
   {
     name:"Roles",
     id:"role"
-  }
+  },
+    {
+        name:"Source of school Info",
+        id:"sosinfo"
+    }
 ])
 const form = reactive({
   name:null

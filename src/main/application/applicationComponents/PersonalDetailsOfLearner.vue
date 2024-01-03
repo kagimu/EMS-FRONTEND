@@ -29,10 +29,32 @@
 
           
           <div class="mb-2">
-            <label class="textColor text-sm"><small>Reason </small> </label>
+            <label class="textColor text-sm"><small>Reason to enroll </small> </label>
             <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.reason" required class="form-control form-control-sm">
           </div>
-           
+
+
+          <div class="mb-2">
+              <label class="textColor text-sm"><small>Reason to enroll </small> </label>
+              <select >
+                  <option>News paper</option>
+                  <option>Old parent</option>
+                  <option>Television</option>
+                  <option>Internet</option>
+              </select>
+          </div>
+
+
+          <div class="mb-2">
+              <label class="textColor text-sm"><small>Reason to enroll </small> </label>
+              <select >
+                  <option>News paper</option>
+                  <option>Old parent</option>
+                  <option>Television</option>
+                  <option>Internet</option>
+              </select>
+          </div>
+
           <div class="row">
             <div class="col-lg-6">
               <label class="textColor text-sm"><small>DOB</small> <span class="star">*</span></label>
@@ -97,7 +119,8 @@ const  notificationStore  = useNotificationStore()
   preferred_type_of_enrollment:null,
   dob:null,
   sex:null,
-  reason:null
+  reason:null,
+
 })
 
 
