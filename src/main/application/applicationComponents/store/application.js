@@ -5,6 +5,7 @@ import api from "@/config/api.js";
 export const useApplicationStore = defineStore("application", () => {
     let newApplicationDetailsResponse = ref(null)
     let newApplicationDetailsLearnerResponse = ref(null)
+    let applicationListResponse = ref(null)
     const errorMessage = ref(null)
 
     async function newApplicationDetails(data) {
@@ -21,9 +22,21 @@ export const useApplicationStore = defineStore("application", () => {
     }
 
     async function newApplicationLeanerDetails(data) {
-        return await api.post("/applications/new-student", data)
+        return await api.post("main/applications/new-student", data)
             .then((response) => {
                 newApplicationDetailsLearnerResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchApplicationList() {
+        return await api.get("main/applications/all")
+            .then((response) => {
+                applicationListResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -37,6 +50,8 @@ export const useApplicationStore = defineStore("application", () => {
         errorMessage,
         newApplicationDetails,
         newApplicationLeanerDetails,
-        newApplicationDetailsLearnerResponse ,
+        newApplicationDetailsLearnerResponse,
+        fetchApplicationList,
+        applicationListResponse,
     }
 })

@@ -37,13 +37,13 @@
           
             <div class="mb-2">
           <label class="textColor text-sm"><small>Email</small> <span class="star">*</span></label>
-          <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.email"  required class="form-control form-control-sm">
+          <input type="email" style="outline: none 0 !important; box-shadow: none;" v-model="form.email"  required class="form-control form-control-sm">
         </div>
          
           
             <div class="mb-2">
           <label class="textColor text-sm"><small>Alternative Email</small></label>
-          <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.alternative_email" class="form-control form-control-sm">
+          <input type="email" style="outline: none 0 !important; box-shadow: none;" v-model="form.alternative_email" class="form-control form-control-sm">
         </div>
           </div>
         

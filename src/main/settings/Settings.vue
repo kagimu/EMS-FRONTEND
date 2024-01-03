@@ -47,7 +47,7 @@
             </div>
 
 
-                    <div v-if="selectedPage === 'sosinfo'">
+                    <div v-if="selectedPage === 'sosinfos'">
                         <sos-info></sos-info>
                     </div>
 
@@ -70,6 +70,7 @@ import {useRouter} from "vue-router";
 import LevelSetup from "@/main/settings/level/LevelSetup.vue";
 import ClassSetupList from "@/main/dashboard/manageLevel/class/ClassSetupList.vue";
 import LearningMaterialSetup from "@/main/settings/learning-materials/LearningMaterialSetup.vue";
+import SosInfo from "@/main/settings/sosinfo/SosInfo.vue";
 const routerData = useRouter()
 const buttonLoader = ref(false)
 
@@ -99,7 +100,7 @@ const settingsList = ref([
   },
     {
         name:"Source of school Info",
-        id:"sosinfo"
+        id:"sosinfos"
     }
 ])
 const form = reactive({
