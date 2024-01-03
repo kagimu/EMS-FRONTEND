@@ -21,7 +21,7 @@ export const useApplicationStore = defineStore("application", () => {
     }
 
     async function newApplicationLeanerDetails(data) {
-        return await api.post("/applications/new-student", data)
+        return await api.post("main/applications/new-student", data)
             .then((response) => {
                 newApplicationDetailsLearnerResponse.value = response.data
             })
