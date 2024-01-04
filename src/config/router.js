@@ -30,7 +30,7 @@ import Application from "../main/application/Application.vue";
 import Welcome from "../main/welcome/Welcome.vue";
 import UserDashboard from "../main/application/UserDashboard.vue";
 import ApplicationGuide from "../main/auth/ApplicationGuide.vue";
- import StudentApplication from "@/main/dashboard/studentApplication/studentApplication.vue";
+ import StudentApplication from "@/main/dashboard/studentApplication/StudentApplication.vue";
 
 
 const router = createRouter({
