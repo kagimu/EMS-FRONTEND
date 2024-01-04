@@ -5,6 +5,7 @@ import api from "@/config/api.js";
 export const useApplicationStore = defineStore("application", () => {
     let newApplicationDetailsResponse = ref(null)
     let newApplicationDetailsLearnerResponse = ref(null)
+    let applicationListResponse = ref(null)
     const errorMessage = ref(null)
 
     async function newApplicationDetails(data) {
@@ -32,11 +33,25 @@ export const useApplicationStore = defineStore("application", () => {
             })
     }
 
+    async function fetchApplicationList() {
+        return await api.get("main/applications/all")
+            .then((response) => {
+                applicationListResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     return {
         newApplicationDetailsResponse ,
         errorMessage,
         newApplicationDetails,
         newApplicationLeanerDetails,
-        newApplicationDetailsLearnerResponse ,
+        newApplicationDetailsLearnerResponse,
+        fetchApplicationList,
+        applicationListResponse,
     }
 })
