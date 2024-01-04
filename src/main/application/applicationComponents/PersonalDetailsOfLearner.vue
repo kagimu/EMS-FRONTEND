@@ -29,10 +29,54 @@
 
           
           <div class="mb-2">
-            <label class="textColor text-sm"><small>Reason </small> </label>
+            <label class="textColor text-sm"><small>Reason to enroll </small> </label>
             <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.reason" required class="form-control form-control-sm">
           </div>
-           
+
+
+          <div class="mb-2">
+              <label class="textColor text-sm"><small>How did you know about us ? </small> </label>
+              <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm"
+                      v-model="form.source_of_school_info">
+                  <option value="News paper" >News paper</option>
+                  <option value="Old parent">Old parent</option>
+                  <option value="Television">Television</option>
+                  <option value="Internet">Internet</option>
+              </select>
+          </div>
+
+
+          <div class="mb-2">
+              <label class="textColor"><small>School</small></label>
+              <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm"
+                      v-model="school_number"
+                      @change="fetchCampuses(school_number)"
+              >
+                  <option disabled value="">Select School</option>
+                  <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+                  </option>
+              </select>
+          </div>
+
+
+          <div class="mb-2">
+              <label class="textColor"><small>Campus</small></label>
+              <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm"
+                      v-model="form.preferred_campus_number"
+              >
+                  <option disabled value="">Select campus</option>
+                  <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+                  </option>
+              </select>
+          </div>
+
+
           <div class="row">
             <div class="col-lg-6">
               <label class="textColor text-sm"><small>DOB</small> <span class="star">*</span></label>
@@ -40,8 +84,8 @@
              class="form-control form-control-sm">
             </div>
             <div class="col-lg-6">
-              <label class="textColor text-sm"><small>Sex</small> <span class="star">*</span></label>
-            <select class="form-control form-control-sm" v-model="form.sex" style="outline: none 0 !important; box-shadow: none;">
+              <label class="textColor text-sm"><small>gender</small> <span class="star">*</span></label>
+            <select class="form-control form-control-sm" v-model="form.gender" style="outline: none 0 !important; box-shadow: none;">
               <option>-select-</option>
               <option>Male</option>
               <option>Female</option>
@@ -79,30 +123,53 @@
   </template>
   
   <script setup>
-import {reactive, ref, watch} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+  import {onMounted, reactive, ref, watch} from "vue";
+  import useNotificationStore from "@/composables/useNotification.js";
+  import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+  import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+  import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 
-const buttonLoader = ref(false)
+  const buttonLoader = ref(false)
 let errorMessage = ref(null)
 const emit = defineEmits()
 
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
+  const campusList = ref([])
+  const schoolList = ref([])
+  const schoolStore = useSchoolStore()
+  const campusStore = useCampusStore()
+  const school_number = ref(null)
   
   const form = reactive({
   surname:null,
   second_name:null,
   other_name:null,
   preferred_type_of_enrollment:null,
-  dob:null,
-  sex:null,
-  reason:null
+      date_of_birth:null,
+  gender:null,
+  reason:null,
+      preferred_campus_number: null,
+      source_of_school_info: null,
+      application_number: localStorage.getItem("applicationId"),
+
+
 })
+
+
+  const fetchCampuses = (school_number) => {
+      campusStore.fetchCampuses(school_number)
+  }
+
+  onMounted(() => {
+          schoolStore.fetchSchools()
+      }
+  )
 
 
 const addLearnerDetails = () => {
   buttonLoader.value = true
+    form.application_number = localStorage.getItem("applicationId")
   applicationStore.newApplicationLeanerDetails(form)
 }
 
@@ -129,6 +196,27 @@ watch (
     },
     {deep:true}
 )
+
+  watch(
+      () => schoolStore.schoolsResponse,
+      async (data) => {
+          if (data) {
+              schoolList.value = data.data
+          }
+      },
+      {deep: true}
+  )
+
+  watch(
+      () => campusStore.campusListResponse,
+      async (data) => {
+          if (data) {
+              campusList.value = data.data
+          }
+      },
+      {deep: true}
+  )
+
   </script>
   
   <style scoped>

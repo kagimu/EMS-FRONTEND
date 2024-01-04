@@ -12,9 +12,6 @@
               {{ uploadError }}
             </div>
 
-            {{schemeInfo}} <br />
-            ---------------------<br />
-            {{schemeDetailsForm}}
 
             <div class="mb-3">
               <label for="formFileSm" class="form-label">Upload file</label>

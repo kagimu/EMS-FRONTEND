@@ -37,13 +37,13 @@
           
             <div class="mb-2">
           <label class="textColor text-sm"><small>Email</small> <span class="star">*</span></label>
-          <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.email"  required class="form-control form-control-sm">
+          <input type="email" style="outline: none 0 !important; box-shadow: none;" v-model="form.email"  required class="form-control form-control-sm">
         </div>
          
           
             <div class="mb-2">
           <label class="textColor text-sm"><small>Alternative Email</small></label>
-          <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.alternative_email" class="form-control form-control-sm">
+          <input type="email" style="outline: none 0 !important; box-shadow: none;" v-model="form.alternative_email" class="form-control form-control-sm">
         </div>
           </div>
         
@@ -100,6 +100,8 @@ watch (
     () => applicationStore.newApplicationDetailsResponse,
     async (data) => {
       if(data){
+          alert(data.application_number)
+          localStorage.setItem("applicationId", data.application_number)
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
         emit("next", 2 )
