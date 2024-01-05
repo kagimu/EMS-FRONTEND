@@ -47,7 +47,7 @@ export const useApplicationStore = defineStore("application", () => {
     }
 
     async function fetchInterviewList() {
-        return await api.get("main/applications?status=draft")
+        return await api.get("main/applications?status=completed")
             .then((response) => {
                 interviewListResponse.value = response.data
             })

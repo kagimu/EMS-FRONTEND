@@ -7,10 +7,12 @@
       </div>
     </div>
     
-  
 
   <div class="container mt-4">
     <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Application List<hr style="width:30px;"></h6>
+    <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+    {{errorMessage}}
+  </div>
     <table
       id="datatable"
       class="table table-striped"
@@ -23,6 +25,9 @@
           <th>Payment Status</th>
           <th>#</th>
         </tr>
+      <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+    {{errorMessage}}
+  </div>
       </thead>
       <tbody>
 
@@ -32,12 +37,14 @@
           <td>{{ interlist.application_fee_payment }}</td>
           <td>
             <router-link data-bs-toggle="modal" data-bs-target="#infoModal" 
-             :to="{name:'student-application', query:{id:interlist.number}}" class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small><i class="bi bi-eye">&nbsp;view more</i></small></router-link>
-          </td>
-        </tr>
-
-
-        
+             :to="{name:'student-application', query:{id:interlist.number}}" class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small><i class="bi bi-eye">&nbsp;Grade</i></small></router-link>
+    
+    <router-link @click="openModal(interlist)" class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details">
+      <small><i class="bi bi-eye">&nbsp;Grade</i></small>
+    </router-link>
+         
+            </td>
+        </tr>        
       </tbody>
     </table>
   </div>
@@ -48,10 +55,13 @@
 import {onMounted,reactive, ref, watch} from "vue";
 import ApplicationDetails from './ApplicationDetails.vue';
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+import useNotificationStore from "@/composables/useNotification.js";
 
 const interviewList = ref( [])
+let errorMessage = ref(null)
 
 const applicationStore= useApplicationStore()
+const  notificationStore  = useNotificationStore()
 
 onMounted(
     async () => {
@@ -67,6 +77,19 @@ onMounted(
     },
     {deep:true}
 )
+
+watch (
+    () => applicationStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        buttonLoader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
   </script>
 
 
