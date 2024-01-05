@@ -28,10 +28,11 @@
 
         <tr v-for="(applist, index) in applicationInfoList" :key="index">
           <td>{{ applist.number }}</td>
-          <td>{{ applist.status }}</td>
-          <td>{{ applist.application_fee_payment }}</td>
+          <td>{{ applist.status }} </td>
+          <td>{{ applist.application_fee_payment === false ? 'pending' : 'completed' }}</td>
           <td>
-            <router-link data-bs-toggle="modal" data-bs-target="#infoModal"  :to="{name:'student-application', query:{id:123}}" class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small><i class="bi bi-eye">&nbsp;view more</i></small></router-link>
+            <router-link data-bs-toggle="modal" data-bs-target="#infoModal"  
+            :to="{name:'student-application', query:{id:applist.number}}" class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small><i class="bi bi-eye">&nbsp;view more</i></small></router-link>
           </td>
         </tr>
 
@@ -46,7 +47,6 @@
   <script setup>
 import {onMounted,reactive, ref, watch} from "vue";
 import ApplicationDetails from './ApplicationDetails.vue';
-import useNotificationStore from "@/composables/useNotification.js";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 
 const applicationInfoList = ref( [])

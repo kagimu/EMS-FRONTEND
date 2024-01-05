@@ -6,6 +6,7 @@ export const useApplicationStore = defineStore("application", () => {
     let newApplicationDetailsResponse = ref(null)
     let newApplicationDetailsLearnerResponse = ref(null)
     let applicationListResponse = ref(null)
+    let interviewListResponse = ref(null)
     const errorMessage = ref(null)
 
     async function newApplicationDetails(data) {
@@ -45,6 +46,18 @@ export const useApplicationStore = defineStore("application", () => {
             })
     }
 
+    async function fetchInterviewList() {
+        return await api.get("main/applications?status=draft")
+            .then((response) => {
+                interviewListResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     return {
         newApplicationDetailsResponse ,
         errorMessage,
@@ -53,5 +66,7 @@ export const useApplicationStore = defineStore("application", () => {
         newApplicationDetailsLearnerResponse,
         fetchApplicationList,
         applicationListResponse,
+        fetchInterviewList,
+        interviewListResponse,
     }
 })
