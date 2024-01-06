@@ -5,6 +5,8 @@ import api from "@/config/api.js";
 export const useSosStore = defineStore("sos", () => {
     let newsosInfoResponse = ref(null)
     let  sosInfoResponse= ref(null)
+    let  deletesosInfoResponse= ref(null)
+    
     const errorMessage = ref(null)
 
     async function newSosInfo(data) {
@@ -30,12 +32,25 @@ export const useSosStore = defineStore("sos", () => {
                 }
             })
     }
+    async function deleteSos() {
+        return await api.delete("main/applications/source-of-school-info")
+            .then((response) => {
+                deletesosInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
     return {
         newsosInfoResponse,
         errorMessage,
         newSosInfo,
         fetchSosInfo,
-        sosInfoResponse
+        deleteSos,
+        sosInfoResponse,
+        deletesosInfoResponse
     }
 } )

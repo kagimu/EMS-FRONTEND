@@ -130,7 +130,6 @@ watch (
     text-align: left;
     color: rgb(0, 0, 0);
     font-family: Roboto, sans-serif;
-   
 }
 .mb-2 {
     text-align: left;

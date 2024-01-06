@@ -41,7 +41,7 @@
                         style="font-size: 13px;color:rgb(5, 32, 171)"
                         data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
                         class="bi-pencil mr-2 cursor-pointer" ></i>
-                    <i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer" ></i>
+                    <i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer" @click="deleteSosInfo(SosInfo)" ></i>
                   </div>
                 </td>
               </tr>
@@ -55,7 +55,6 @@
 
 <script setup>
 import {onMounted,reactive, ref, watch} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
 import {useSosStore} from  "@/main/settings/sosinfo/store/sos.js";
 
 const sosInfoList = ref( [])
@@ -97,6 +96,17 @@ watch(
 )
 
 
+const deleteSosInfo = (SosInfo) => {
+
+if(!confirm("Are you sure, you want to delete: "+SosInfo.name)){
+  return
+}
+let data = {
+  sosinfodata:SosInfo.name
+}
+sosInfo.deleteSos(data)
+
+}
 
 </script>
 

@@ -2,7 +2,7 @@
 
     <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2"><small>Application Details</small></h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2"><small>Application Details {{ applicationNumber }}</small></h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -107,8 +107,7 @@
 </div>
 
 </div>
-   
-            
+           
     </div>   
 </div>
 </div>
@@ -116,7 +115,25 @@
   </template>
   
   <script setup>
+import {reactive, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 
+const ApplicationStore = useApplicationStore()
+const notificationStore = useNotificationStore()
+
+  defineProps({
+    applicationNumber:String
+  })
+
+function appDetails(){
+  let id = applicationNumber
+  if(id == ""){
+    ApplicationStore.fetchApplicationById(id)
+  }else{
+    notificationStore.errorToast("Error : ","Invalid Application Number")
+  }
+}
   </script>
 
 
