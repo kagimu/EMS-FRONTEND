@@ -88,10 +88,6 @@
         <div class="mb-2">
           <span class="textColor text-sm"><small>3. <span class="details">Paul Mukasa P/s | P.1 - 2020, P.3 - 2021 </span></small> </span>
         </div>
-
-
-
-        
         
     </div>
 <div class="row">
