@@ -7,6 +7,7 @@ export const useApplicationStore = defineStore("application", () => {
     let newApplicationDetailsLearnerResponse = ref(null)
     let applicationListResponse = ref(null)
     let interviewListResponse = ref(null)
+    let applicationByIdResponse = ref(null)
     const errorMessage = ref(null)
 
     async function newApplicationDetails(data) {
@@ -57,6 +58,17 @@ export const useApplicationStore = defineStore("application", () => {
                 }
             })
     }
+    async function fetchApplicationById(applicationId){
+    return await api.get("main/applications/"+applicationId)
+    .then((response) => {
+        applicationByIdResponse.value = response.data
+    })
+    .catch((error) => {
+        if(error){
+            errorMessage.value = error.data
+        } 
+    } )
+    }
 
     return {
         newApplicationDetailsResponse ,
@@ -68,5 +80,7 @@ export const useApplicationStore = defineStore("application", () => {
         applicationListResponse,
         fetchInterviewList,
         interviewListResponse,
+        fetchApplicationById,
+        applicationByIdResponse,
     }
 })

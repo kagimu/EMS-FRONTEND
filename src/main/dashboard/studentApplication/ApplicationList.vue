@@ -3,7 +3,7 @@
     <!-- modal for viewing more details -->
     <div class="modal fade" id="infoModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog modal-lg">
-        <application-details></application-details>
+        <application-details :application-number="applicationNumber"></application-details>
       </div>
     </div>
   <div class="container mt-4">
@@ -32,8 +32,8 @@
           <td>{{ applist.status }} </td>
           <td>{{ applist.application_fee_payment === false ? 'pending' : 'completed' }}</td>
           <td>
-            <router-link data-bs-toggle="modal" data-bs-target="#infoModal"  
-            :to="{name:'student-application', query:{id:applist.number}}" class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small><i class="bi bi-eye">&nbsp;view more</i></small></router-link>
+            <button data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
+            class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small><i class="bi bi-eye">&nbsp;view more</i></small></button>
          
           </td>
         </tr>
@@ -52,10 +52,18 @@ import useNotificationStore from "@/composables/useNotification.js";
 const applicationInfoList = ref( [])
 let errorMessage = ref(null)
 
+const applicationNumber = ref(null)
+
 const infoModalRef = ref(null)
 
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
+
+const setApplicationNumber = (ap) =>{
+
+  applicationNumber.value = ap
+}
+
 
 onMounted(
     async () => {
