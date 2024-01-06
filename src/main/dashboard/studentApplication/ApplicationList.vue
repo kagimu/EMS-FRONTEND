@@ -2,7 +2,7 @@
   <div>
     <!-- modal for viewing more details -->
     <div class="modal fade" id="infoModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
+      <div class="modal-dialog modal-xl">
         <application-details :application-number="applications"></application-details>
       </div>
     </div>
