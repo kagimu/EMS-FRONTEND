@@ -69,9 +69,24 @@
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
                       v-model="form.preferred_campus_number"
+                      @change="fetchClasses(form.preferred_campus_number)"
               >
                   <option disabled value="">Select campus</option>
                   <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+                  </option>
+              </select>
+          </div>
+
+
+          <div class="mb-2">
+              <label class="textColor"><small>Preferred Class</small></label>
+              <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm"
+                      v-model="form.class_number"
+              >
+                  <option disabled value="">Select class</option>
+                  <option v-for="(list, index) in classList" :key="index" :value="list.class_number">{{ list.class_name }}
                   </option>
               </select>
           </div>
@@ -137,21 +152,22 @@ const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
   const campusList = ref([])
   const schoolList = ref([])
+  const classList = ref([])
   const schoolStore = useSchoolStore()
   const campusStore = useCampusStore()
   const school_number = ref(null)
-  
   const form = reactive({
   surname:null,
   second_name:null,
   other_name:null,
   preferred_type_of_enrollment:null,
-      date_of_birth:null,
+  date_of_birth:null,
   gender:null,
   reason:null,
-      preferred_campus_number: null,
-      source_of_school_info: null,
-      application_number: localStorage.getItem("applicationId"),
+  preferred_campus_number: null,
+  source_of_school_info: null,
+  application_number: localStorage.getItem("applicationId"),
+  class_number: null,
 
 
 })
@@ -159,6 +175,10 @@ const  notificationStore  = useNotificationStore()
 
   const fetchCampuses = (school_number) => {
       campusStore.fetchCampuses(school_number)
+  }
+
+  const fetchClasses = (campus_number) => {
+      campusStore.fetchClassesByCampus(campus_number)
   }
 
   onMounted(() => {
@@ -213,6 +233,26 @@ watch (
           if (data) {
               campusList.value = data.data
           }
+      },
+      {deep: true}
+  )
+
+  watch(
+      () => campusStore.campusClassesResponse,
+      async (data) => {
+          if (data) {
+              classList.value = data.data
+          }
+      },
+      {deep: true}
+  )
+
+  watch(
+      () => campusStore.errorMessage,
+      async (data) => {
+            if (data) {
+                notificationStore.errorToast("Error", data.message)
+            }
       },
       {deep: true}
   )

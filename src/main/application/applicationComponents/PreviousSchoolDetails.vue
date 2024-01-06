@@ -84,15 +84,54 @@ const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
 
 
-  const form = reactive({
- 
 
+
+const formData =  reactive({
+    schools: [{
+        name: '',
+        classes: [''],
+    }],
 })
 
 const addSchoolDetails = () => {
-  buttonLoader.value = true,
-  applicationStore.newApplicationDetails(form)
+  buttonLoader.value = true
+  applicationStore.newApplicationDetails(formData)
 }
+
+
+
+const addSchool = () => {
+    const lastSchool = formData.schools[formData.schools.length - 1];
+    if (lastSchool.name !== '' && lastSchool.classes.some(className => className !== '')) {
+        formData.schools.push({
+            name: '',
+            classes: [''],
+        });
+    }
+}
+const removeSchool = (schoolIndex) => {
+    formData.schools.splice(schoolIndex, 1);
+}
+const addClass = (schoolIndex) => {
+    const lastClass = formData.schools[schoolIndex].classes[formData.schools[schoolIndex].classes.length - 1];
+    if (lastClass !== '') {
+        formData.schools[schoolIndex].classes.push('');
+    }
+}
+const removeClass = (schoolIndex, classIndex) => {
+    formData.schools[schoolIndex].classes.splice(classIndex, 1);
+}
+const submitForm = () => {
+    // Handle form submission logic here
+    // console.log('Form submitted:', this.formData);
+}
+const canAddSchool = () => {
+    const lastSchool = formData.schools[formData.schools.length - 1];
+    return lastSchool.name !== '' && lastSchool.classes.some(className => className !== '');
+}
+
+
+
 
 watch (
     () => applicationStore.newApplicationDetailsResponse,
@@ -116,6 +155,9 @@ watch (
     },
     {deep:true}
 )
+
+
+
     </script>
     
  <style scoped>
@@ -156,51 +198,4 @@ select{
   font-size: 13px;
 }
 </style> 
-
-<script>
-export default {
-  data() {
-    return {
-      formData: {
-        schools: [{
-          name: '',
-          classes: [''],
-        }],
-      },
-    };
-  },
-  methods: {
-    addSchool() {
-      const lastSchool = this.formData.schools[this.formData.schools.length - 1];
-      if (lastSchool.name !== '' && lastSchool.classes.some(className => className !== '')) {
-        this.formData.schools.push({
-          name: '',
-          classes: [''], 
-        });
-      }
-    },
-    removeSchool(schoolIndex) {
-      this.formData.schools.splice(schoolIndex, 1);
-    },
-    addClass(schoolIndex) {
-      const lastClass = this.formData.schools[schoolIndex].classes[this.formData.schools[schoolIndex].classes.length - 1];
-      if (lastClass !== '') {
-        this.formData.schools[schoolIndex].classes.push('');
-      }
-    },
-    removeClass(schoolIndex, classIndex) {
-      this.formData.schools[schoolIndex].classes.splice(classIndex, 1);
-    },
-    submitForm() {
-      // Handle form submission logic here
-      // console.log('Form submitted:', this.formData);
-    },
-    canAddSchool() {
-      const lastSchool = this.formData.schools[this.formData.schools.length - 1];
-      return lastSchool.name !== '' && lastSchool.classes.some(className => className !== '');
-    },
-  },
-};
-</script>
-
 
