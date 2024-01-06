@@ -54,7 +54,6 @@ let errorMessage = ref(null)
 
 const applicationNumber = ref(null)
 
-const infoModalRef = ref(null)
 
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
