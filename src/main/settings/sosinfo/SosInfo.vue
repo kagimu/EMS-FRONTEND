@@ -59,7 +59,6 @@
 </template>
 
 
-
 <script setup>
 import {onMounted,reactive, ref, watch} from "vue";
 import {useSosStore} from  "@/main/settings/sosinfo/store/sos.js";

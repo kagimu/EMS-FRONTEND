@@ -14,7 +14,6 @@
         <div class="mb-2">
           <span class="textColor text-sm"><small>Surname : <span class="details">Mpiima</span></small></span>
         </div>
-
         <div class="mb-2">
           <span class="textColor text-sm"><small>Second name : <span class="details">Collins</span></small></span>
         </div>
