@@ -33,8 +33,7 @@
           <td>{{ applist.application_fee_payment === false ? 'pending' : 'completed' }}</td>
           <td>
             <button data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
-            class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small><i class="bi bi-eye">&nbsp;view more</i></small></button>
-         
+            class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small><i class="bi bi-eye">&nbsp;view more</i></small></button>    
           </td>
         </tr>
       </tbody>

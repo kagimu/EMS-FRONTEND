@@ -38,13 +38,15 @@
           <td>
             <router-link data-bs-toggle="modal" data-bs-target="#infoModal" 
              :to="{name:'student-application', query:{id:interlist.number}}" class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small><i class="bi bi-eye">&nbsp;Grade</i></small></router-link>
-    
-    <router-link @click="openModal(interlist)" class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details">
+    <button @click="openModal(interlist)" class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details">
       <small><i class="bi bi-eye">&nbsp;Grade</i></small>
-    </router-link>
+    </button>
          
             </td>
         </tr>        
+        
+
+
       </tbody>
     </table>
   </div>
