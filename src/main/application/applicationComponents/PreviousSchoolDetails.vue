@@ -16,19 +16,23 @@
           </div>
          
           <div class="classes-section">
-          
-          <div class="row">
-            <div class="col-lg-7">
-              <label class="textColor text-sm" ><small>Classes Attended &nbsp;
-                <button title="Add class" style="color:rgb(33, 9, 154);width: 12px;height: 12px;"  @click="addClass(schoolIndex)"><i class="bi bi-plus-circle"></i></button></small> </label>
-              <div class="input-group mb-3" v-for="(className, classIndex) in school.classes" :key="classIndex">
-              <input type="text" class="form-control" v-model="school.classes[classIndex]">
+              &nbsp;
+              <label class="textColor text-sm" ><small> Classes Attended</small></label>
+              <label class="textColor text-sm" ><small>
+                  <button title="Add class" style="color:rgb(33, 9, 154);width: 12px;height: 12px;"  @click="addClass(schoolIndex)"><i class="bi bi-plus-circle"></i></button></small> </label>
+
+              <div class="row" v-for="(className, classIndex) in school.classes" :key="classIndex">
+            <div class="col-lg-5">
+                <div class="input-group mb-3 flex " >
+                    <label class="textColor text-sm" ><small>Class</small></label>
+              <input type="text" class="form-control mx-2" v-model="school.classes[classIndex].class">
             </div>
             </div>
-            <div class="col-lg-4">
-              <div class=" mb-3" v-for="(className, classIndex) in school.classes" :key="classIndex">
+            <div class="col-lg-5">
+              <div class="mb-3 flex" >
                 <label class="textColor text-sm" ><small>Year</small></label>
-              <input type="year" class="form-control" v-model="school.year"> 
+              <input type="text" class="form-control mx-2" v-model="school.classes[classIndex].year">
+
             </div>
             </div>
             <div class="col-lg-1">
@@ -89,13 +93,14 @@ const  notificationStore  = useNotificationStore()
 const formData =  reactive({
     schools: [{
         name: '',
-        classes: [''],
+        classes: [{year:'',class:''}],
     }],
 })
 
 const addSchoolDetails = () => {
   buttonLoader.value = true
-  applicationStore.newApplicationDetails(formData)
+    let application_id = localStorage.getItem('applicationId')
+  applicationStore.newApplicationPrevSchoolDetails(application_id,formData.schools)
 }
 
 
@@ -105,7 +110,7 @@ const addSchool = () => {
     if (lastSchool.name !== '' && lastSchool.classes.some(className => className !== '')) {
         formData.schools.push({
             name: '',
-            classes: [''],
+            classes: [{year:'',class:''}],
         });
     }
 }
@@ -115,7 +120,7 @@ const removeSchool = (schoolIndex) => {
 const addClass = (schoolIndex) => {
     const lastClass = formData.schools[schoolIndex].classes[formData.schools[schoolIndex].classes.length - 1];
     if (lastClass !== '') {
-        formData.schools[schoolIndex].classes.push('');
+        formData.schools[schoolIndex].classes.push({year:'',class:''});
     }
 }
 const removeClass = (schoolIndex, classIndex) => {
