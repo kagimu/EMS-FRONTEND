@@ -67,10 +67,10 @@ function saveExcelImport(){
 
   const formData = new FormData();
   formData.set("scheme_excel_file", excel_file.value.files[0]);
-  formData.set("name", schemeInfo.name);
-  formData.set("class_number", schemeInfo.class_number);
-  formData.set("subject_number", schemeInfo.subject_number);
-  formData.set("academic_year_number", schemeInfo.academic_year_number);
+  formData.set("name", (schemeInfo.value.name).trim());
+  formData.set("class_number", schemeInfo.value.class_number);
+  formData.set("subject_number", schemeInfo.value.subject_number);
+  formData.set("academic_year_number", schemeInfo.value.academic_year_number);
   subtopicStore.importSchemeOfWork(formData)
 }
 
