@@ -16,19 +16,23 @@
           </div>
          
           <div class="classes-section">
-          
-          <div class="row">
-            <div class="col-lg-7">
-              <label class="textColor text-sm" ><small>Classes Attended &nbsp;
-                <button title="Add class" style="color:rgb(33, 9, 154);width: 12px;height: 12px;"  @click="addClass(schoolIndex)"><i class="bi bi-plus-circle"></i></button></small> </label>
-              <div class="input-group mb-3" v-for="(className, classIndex) in school.classes" :key="classIndex">
-              <input type="text" class="form-control" v-model="school.classes[classIndex]">
+              &nbsp;
+              <label class="textColor text-sm" ><small> Classes Attended</small></label>
+              <label class="textColor text-sm" ><small>
+                  <button title="Add class" style="color:rgb(33, 9, 154);width: 12px;height: 12px;"  @click="addClass(schoolIndex)"><i class="bi bi-plus-circle"></i></button></small> </label>
+
+              <div class="row" v-for="(className, classIndex) in school.classes" :key="classIndex">
+            <div class="col-lg-5">
+                <div class="input-group mb-3 flex " >
+                    <label class="textColor text-sm" ><small>Class</small></label>
+              <input type="text" class="form-control mx-2" v-model="school.classes[classIndex].class">
             </div>
             </div>
-            <div class="col-lg-4">
-              <div class=" mb-3" v-for="(className, classIndex) in school.classes" :key="classIndex">
+            <div class="col-lg-5">
+              <div class="mb-3 flex" >
                 <label class="textColor text-sm" ><small>Year</small></label>
-              <input type="year" class="form-control" v-model="school.year"> 
+              <input type="text" class="form-control mx-2" v-model="school.classes[classIndex].year">
+
             </div>
             </div>
             <div class="col-lg-1">
@@ -84,15 +88,55 @@ const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
 
 
-  const form = reactive({
- 
 
+
+const formData =  reactive({
+    schools: [{
+        name: '',
+        classes: [{year:'',class:''}],
+    }],
 })
 
 const addSchoolDetails = () => {
-  buttonLoader.value = true,
-  applicationStore.newApplicationDetails(form)
+  buttonLoader.value = true
+    let application_id = localStorage.getItem('applicationId')
+  applicationStore.newApplicationPrevSchoolDetails(application_id,formData.schools)
 }
+
+
+
+const addSchool = () => {
+    const lastSchool = formData.schools[formData.schools.length - 1];
+    if (lastSchool.name !== '' && lastSchool.classes.some(className => className !== '')) {
+        formData.schools.push({
+            name: '',
+            classes: [{year:'',class:''}],
+        });
+    }
+}
+const removeSchool = (schoolIndex) => {
+    formData.schools.splice(schoolIndex, 1);
+}
+const addClass = (schoolIndex) => {
+    const lastClass = formData.schools[schoolIndex].classes[formData.schools[schoolIndex].classes.length - 1];
+    if (lastClass !== '') {
+        formData.schools[schoolIndex].classes.push({year:'',class:''});
+    }
+}
+const removeClass = (schoolIndex, classIndex) => {
+    formData.schools[schoolIndex].classes.splice(classIndex, 1);
+}
+const submitForm = () => {
+    // Handle form submission logic here
+    // console.log('Form submitted:', this.formData);
+}
+const canAddSchool = () => {
+    const lastSchool = formData.schools[formData.schools.length - 1];
+    return lastSchool.name !== '' && lastSchool.classes.some(className => className !== '');
+}
+
+
+
 
 watch (
     () => applicationStore.newApplicationDetailsResponse,
@@ -116,6 +160,9 @@ watch (
     },
     {deep:true}
 )
+
+
+
     </script>
     
  <style scoped>
@@ -156,51 +203,4 @@ select{
   font-size: 13px;
 }
 </style> 
-
-<script>
-export default {
-  data() {
-    return {
-      formData: {
-        schools: [{
-          name: '',
-          classes: [''],
-        }],
-      },
-    };
-  },
-  methods: {
-    addSchool() {
-      const lastSchool = this.formData.schools[this.formData.schools.length - 1];
-      if (lastSchool.name !== '' && lastSchool.classes.some(className => className !== '')) {
-        this.formData.schools.push({
-          name: '',
-          classes: [''], 
-        });
-      }
-    },
-    removeSchool(schoolIndex) {
-      this.formData.schools.splice(schoolIndex, 1);
-    },
-    addClass(schoolIndex) {
-      const lastClass = this.formData.schools[schoolIndex].classes[this.formData.schools[schoolIndex].classes.length - 1];
-      if (lastClass !== '') {
-        this.formData.schools[schoolIndex].classes.push('');
-      }
-    },
-    removeClass(schoolIndex, classIndex) {
-      this.formData.schools[schoolIndex].classes.splice(classIndex, 1);
-    },
-    submitForm() {
-      // Handle form submission logic here
-      // console.log('Form submitted:', this.formData);
-    },
-    canAddSchool() {
-      const lastSchool = this.formData.schools[this.formData.schools.length - 1];
-      return lastSchool.name !== '' && lastSchool.classes.some(className => className !== '');
-    },
-  },
-};
-</script>
-
 

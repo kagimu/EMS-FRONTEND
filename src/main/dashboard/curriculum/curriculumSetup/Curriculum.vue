@@ -55,7 +55,8 @@
                     style="font-size: 14px;"
                     @click="editSchool(school)"></i>
 
-                <i style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  @click="deleteSchool(school)"></i>
+                <i style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  
+                @click="deleteSchool(school)"></i>
               </div>
             </div>
 
