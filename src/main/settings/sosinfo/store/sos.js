@@ -6,6 +6,7 @@ export const useSosStore = defineStore("sos", () => {
     let newsosInfoResponse = ref(null)
     let  sosInfoResponse= ref(null)
     let  deletesosInfoResponse= ref(null)
+    let updateSosInfoResponse = ref(null)
     
     const errorMessage = ref(null)
 
@@ -43,6 +44,17 @@ export const useSosStore = defineStore("sos", () => {
                 }
             })
     }
+    async function updateSos(sosnumber,data) {
+        return await api.put("main/applications/edit-source-of-school-info/"+sosnumber,data)
+            .then((response) => {
+                updateSosInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
     return {
         newsosInfoResponse,
@@ -51,6 +63,8 @@ export const useSosStore = defineStore("sos", () => {
         fetchSosInfo,
         deleteSos,
         sosInfoResponse,
-        deletesosInfoResponse
+        deletesosInfoResponse,
+        updateSosInfoResponse,
+        updateSos,
     }
 } )

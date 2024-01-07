@@ -100,7 +100,6 @@ watch (
     () => applicationStore.newApplicationDetailsResponse,
     async (data) => {
       if(data){
-          alert(data.application_number)
           localStorage.setItem("applicationId", data.application_number)
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)

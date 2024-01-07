@@ -2,8 +2,8 @@
   <div>
     <!-- modal for viewing more details -->
     <div class="modal fade" id="infoModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <application-details :application-number="applicationNumber"></application-details>
+      <div class="modal-dialog modal-xl">
+        <application-details :application-number="applications"></application-details>
       </div>
     </div>
   <div class="container mt-4">
@@ -11,7 +11,6 @@
     <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
     {{errorMessage}}
   </div>
-
     <table
       id="datatable"
       class="table table-striped"
@@ -19,22 +18,20 @@
     >
       <thead>
         <tr>
-          <th>APN</th>
+          <th>Parent/Guardian</th>
           <th>Status</th>
           <th>Payment Status</th>
           <th>#</th>
         </tr>
       </thead>
       <tbody>
-
         <tr v-for="(applist, index) in applicationInfoList" :key="index">
-          <td>{{ applist.number }}</td>
+          <td>{{ applist.Parent.surname+ " "+ applist.Parent.second_name+ " "+ applist.Parent.other_name  }} </td>
           <td>{{ applist.status }} </td>
           <td>{{ applist.application_fee_payment === false ? 'pending' : 'completed' }}</td>
           <td>
             <button data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
-            class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small><i class="bi bi-eye">&nbsp;view more</i></small></button>
-         
+            class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small><i class="bi bi-eye">&nbsp;view more</i></small></button>    
           </td>
         </tr>
       </tbody>
@@ -52,15 +49,14 @@ import useNotificationStore from "@/composables/useNotification.js";
 const applicationInfoList = ref( [])
 let errorMessage = ref(null)
 
-const applicationNumber = ref(null)
+const applications= ref(null)
 
 
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
 
 const setApplicationNumber = (ap) =>{
-
-  applicationNumber.value = ap
+  applications.value = ap
 }
 
 

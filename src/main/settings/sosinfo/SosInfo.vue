@@ -1,10 +1,17 @@
-
-
 <template>
 <div>
-<div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+
+  <!-- source of info bootstrap modal -->
+  <div class="modal fade" id="infoModal" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: sosInfoDialog }">
+      <div class="modal-dialog">
+        <SosInformation :sosnumber="sosNumber" ></SosInformation>
+      </div>
+    </div>
+
+
+<!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
     {{errorMessage}}
-  </div>
+  </div> -->
  <form  @submit.prevent="addSos"> 
   <div class="row mx-auto">
     <div class="col-12" style="margin-top: 20px;">
@@ -37,10 +44,10 @@
                 <td>{{SosInfo.name }}</td>
                 <td>
                   <div>
-                    <i
-                        style="font-size: 13px;color:rgb(5, 32, 171)"
-                        data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                        class="bi-pencil mr-2 cursor-pointer" ></i>
+                    <button data-bs-toggle="modal" data-bs-target="#infoModal" @click="setSosNumber(SosInfo)" 
+                    class="link-primary" style="border-width: 0px;text-decoration: none;"><small>
+                      
+                    <i style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small></button>
                     <i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer" @click="deleteSosInfo(SosInfo)" ></i>
                   </div>
                 </td>
@@ -52,15 +59,27 @@
 </template>
 
 
-
 <script setup>
 import {onMounted,reactive, ref, watch} from "vue";
 import {useSosStore} from  "@/main/settings/sosinfo/store/sos.js";
+import SosInformation from './SosInformation.vue';
+import useNotificationStore from "@/composables/useNotification.js";
+
+const  notificationStore  = useNotificationStore()
 
 const sosInfoList = ref( [])
 
 const sosInfo= useSosStore()
 let errorMessage = ref(null)
+
+const sosNumber = ref(null)
+
+const sosInfoDialog = ref(false)
+
+function setSosNumber(sosN){
+sosNumber.value = sosN
+sosInfoDialog.value = true
+}
 
 const form = reactive({
     name:null
@@ -75,6 +94,7 @@ onMounted(
       await sosInfo.fetchSosInfo()
     } )
 
+
 watch (
     () => sosInfo.errorMessage,
     async (data) => {
@@ -85,6 +105,8 @@ watch (
     },
     {deep:true}
 )
+
+
 watch(
     () => sosInfo.sosInfoResponse,
     async (data) => {
@@ -95,9 +117,41 @@ watch(
     {deep:true}
 )
 
+watch(
+    () => sosInfo.updateSosInfoResponse,
+    async (data) => {
+      if(data){
+        sosInfoDialog.value =false
+        notificationStore.successToast("Success", data.message)
+        await sosInfo.fetchSosInfo()
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => sosInfo.errorMessage,
+    async (data) => {
+      if(data){
+        sosInfo.errorToast("Error",data.message)
+        console.log(data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => sosInfo.errorMessage,
+    async (data) => {
+      if(data){
+        // sosInfoDialog.value =false
+      }
+    },
+    {deep:true}
+)
+
 
 const deleteSosInfo = (SosInfo) => {
-
 if(!confirm("Are you sure, you want to delete: "+SosInfo.name)){
   return
 }
