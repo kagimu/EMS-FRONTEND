@@ -161,22 +161,23 @@ const form = reactive({
 
 const addTopic = () =>{
   loader.value = true
+  form.curriculum_number = curriculumNumber
   topicStore.newTopicData(form)
 }
 
 
 const selectSubjectCluster = (learning_area_number) => {
-  subjectClusterStore.fetchSubjectClusterFilter(learning_area_number)
+  subjectClusterStore.fetchSubjectClusterFilter({learning_area_number:learning_area_number, curriculum_number:curriculumNumber})
 }
 
 const selectSubject = (subject_cluster_number) => {
-  subjectStore.fetchSubjectList(subject_cluster_number)
+  subjectStore.fetchSubjectList({subject_cluster_number:subject_cluster_number, curriculum_number:curriculumNumber})
 }
 
 
 const selectStrand = (subject_number) => {
   classStore.fetchClassesCurriculum(curriculumNumber)
-  strandStore.fetchStrandList(subject_number)
+  strandStore.fetchStrandList({subject_number:subject_number, curriculum_number:curriculumNumber})
 }
 
 

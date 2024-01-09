@@ -30,7 +30,7 @@
     <table class="table table-hover caption-top" style="font-size: 13px;">
       <thead>
       <tr>
-        <th scope="col">#</th>
+<!--        <th scope="col">#</th>-->
         <th scope="col">Code</th>
         <th scope="col">Academic Year</th>
         <th scope="col">Number of Study Periods</th>
@@ -40,7 +40,7 @@
       </thead>
       <tbody>
       <tr v-for="(academicYre, index) in academicYearList" :key="index">
-        <td>{{index+1}}</td>
+<!--        <td>{{index+1}}</td>-->
         <td> {{academicYre.code}}</td>
         <td> {{academicYre.academic_year_name}}</td>
         <td> {{academicYre.no_of_study_period}}</td>
@@ -73,11 +73,13 @@ import {onMounted, ref, watch} from "vue";
 import NewAcademicYear from "@/main/dashboard/manageLevel/academicYear/NewAcademicYear.vue";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useRouter} from "vue-router";
+import useNotificationStore from "@/composables/useNotification.js";
 const routerData = useRouter()
 const academicYearStore = useAcademicYearStore()
 const newAcademicYearDialog = ref( false)
 const campusLevel = routerData.currentRoute.value.query.l
 const academicYearList = ref( [])
+const  notificationStore  = useNotificationStore()
 
 const addAcademicYear = (item) => {
   // classNumber.value = item.number
@@ -105,6 +107,7 @@ watch(
     async (data) => {
       if(data){
         await academicYearStore.fetchAcademicYear(campusLevel)
+        notificationStore.successToast("Success","Login successfully")
       }
     },
     {deep:true}

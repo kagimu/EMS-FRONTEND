@@ -2,8 +2,6 @@
 <div>
 
 
-
-
   <ul class="nav nav-tabs text-xs" style="margin-top: 50px;">
     <li class="nav-item cursor-pointer">
       <a style="color: black;" class="nav-link" @click="nextPage(1)" :class="step === 1 ? 'active activeTab' : ''">PERSONAL DETAILS OF STUDENT</a>

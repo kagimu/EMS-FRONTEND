@@ -7,7 +7,6 @@
     <div class="row mx-auto">
       <div class="col-6">
 
-
         <div>
           <div class="mb-2">
             <label class="textColor text-sm">Height:</label>

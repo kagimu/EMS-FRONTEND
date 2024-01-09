@@ -52,7 +52,7 @@
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
                       v-model="level"
-                      @click="filterClasses(level)"
+                      @click="filterClasses()"
                   >
                     <option disabled value="">Filter by Level</option>
                     <option value="">All</option>
@@ -151,7 +151,7 @@ const deleteClass = (data) => {
   alert(JSON.stringify(data))
 }
 
-const filterClasses = (level) => {
+const filterClasses = () => {
     fetchClassList()
 }
 

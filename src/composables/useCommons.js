@@ -154,7 +154,10 @@ export default function useCommonsStore() {
         return  moment(date).format("Do MMMM YYYY");
     }
 
-
+   function getAgeFromDateOfBirth(dateOfBirth) {
+        return moment().diff(dateOfBirth
+          , "years", false);
+      }
 
 /*
     function generateUniqueString(length) {
@@ -182,7 +185,8 @@ export default function useCommonsStore() {
         classLevelList,
         onlyNumberValidator,
         numbersOnlyValidator,
-        getOrdinalDate
+        getOrdinalDate,
+        getAgeFromDateOfBirth
 // generateUniqueKey
     }
 }
