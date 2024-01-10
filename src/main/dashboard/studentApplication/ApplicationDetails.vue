@@ -128,22 +128,21 @@
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
-            <form >
+              {{ applicationNumber }}
+            <form @submit.prevent="scheduleInterview" >
               <div class="mb-2">
                 <label class="textColor"><small>Date</small></label>
-                <input type="datetime-local" required class="form-control">
+                <input v-model="formData.scheduled_on" type="datetime-local" required class="form-control">
               </div>
               <div class="mb-2">
                 <label class="textColor"><small>Message</small></label>
-                <textarea class="form-control noFocus" id="floatingTextarea2" style="height: 100px"></textarea>
+                <textarea  v-model="formData.message" required class="form-control noFocus" id="floatingTextarea2" style="height: 100px"></textarea>
               </div>
               <div class="text-right mt-4">
-                <button type="submit" class="btn btn-primary mb-2">
-                  submit
+                <button style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
                   <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader" >
                     <span class="visually-hidden">Loading...</span>
-                  </div>
-                </button>
+                  </div></button>
               </div>
             </form>
           </div>
@@ -195,10 +194,6 @@ function getAge(dob){
   return useCommonsStore.getAgeFromDateOfBirth(dob)
 }
 
-// function appDetails(){
-//     let id = applicationNumber
-//     ApplicationStore.fetchApplicationById(id)
-// }
 
 watch (
     () => props.applicationNumber,
@@ -238,6 +233,16 @@ watch (
     {deep:true}
 )
 
+
+const formData = reactive({
+  scheduled_on:null,
+  message:null,
+})
+
+function scheduleInterview(){
+  alert(JSON.stringify(formData))
+  //code to call the endpoint
+}
 
   </script>
 
