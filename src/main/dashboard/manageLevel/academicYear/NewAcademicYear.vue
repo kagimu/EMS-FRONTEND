@@ -25,7 +25,7 @@
         <label class="textColor"><small>Academic year name</small></label>
         <input
             :placeholder="'Year '+currentYear"
-            maxlength="20"
+            maxlength="50"
             type="text"
             style="outline: none 0 !important;
                box-shadow: none;"

@@ -30,7 +30,7 @@
           
           <div class="mb-2">
             <label class="textColor text-sm"><small>Reason to enroll </small> </label>
-            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.reason" required class="form-control form-control-sm">
+            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.reason_for_choosing_school" required class="form-control form-control-sm">
           </div>
 
 
@@ -163,13 +163,11 @@ const  notificationStore  = useNotificationStore()
   preferred_type_of_enrollment:null,
   date_of_birth:null,
   gender:null,
-  reason:null,
+  reason_for_choosing_school:null,
   preferred_campus_number: null,
   source_of_school_info: null,
   application_number: localStorage.getItem("applicationId"),
   class_number: null,
-
-
 })
 
 

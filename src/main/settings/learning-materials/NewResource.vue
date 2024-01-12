@@ -33,6 +33,22 @@
 
 
             <div>
+                <label class="textColor"><small>Category</small></label>
+                <select
+                        style="outline: none 0 !important; box-shadow: none;"
+                        type="text" v-model="form.category"
+                        required
+                        class="form-control form-select-sm">
+
+                    <option disabled value="">Select category</option>
+                    <option v-for="(lvl, index) in materialCategory" :key="index" :value="lvl.id">{{ lvl.name }}</option>
+
+                </select>
+
+            </div>
+
+
+            <div>
                 <label class="textColor"><small>Type</small></label>
                 <select
                         style="outline: none 0 !important; box-shadow: none;"
@@ -46,6 +62,8 @@
                 </select>
 
             </div>
+
+
 
 
             <div>
@@ -98,6 +116,16 @@ const excel_file = ref(null)
 const uploadError = ref(null)
 const name = ref(null)
 const loader = ref(false)
+const materialCategory = ref([
+    {
+        name: "Learner",
+        id: "learner"
+    },
+    {
+        name: "Educator",
+        id: "educator"
+    }
+])
 const materialType = ref([
     {
         name: "Book",
@@ -135,6 +163,7 @@ const form = reactive({
     code: null,
     name: null,
     type: null,
+    category: null,
     upload: null,
 })
 
@@ -144,6 +173,7 @@ const addLevel = () => {
 
     const formData = new FormData();
     formData.set("file", excel_file.value.files[0]);
+    formData.set("category", form.category);
     formData.set("code", form.code);
     formData.set("name", form.name);
     formData.set("type", form.type);
@@ -167,6 +197,8 @@ watch(
         if (data) {
             form.name = null
             form.code = null
+            form.type = null
+            form.category = null
             loader.value = false
         }
     },

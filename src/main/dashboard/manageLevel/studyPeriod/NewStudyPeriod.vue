@@ -24,7 +24,7 @@
       <div class="mb-2">
         <label class="textColor"><small>Study period name</small></label>
         <input
-            maxlength="20"
+            maxlength="50"
             type="text"
             style="outline: none 0 !important;
                box-shadow: none;"
