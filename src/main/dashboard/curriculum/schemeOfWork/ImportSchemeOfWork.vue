@@ -62,13 +62,15 @@ const schemeInfo = ref(null)
 
 
 function saveExcelImport(){
-  loader.value = true
+
   uploadError.value = null
 
    if(validateForm(schemeInfo.value)){
      notificationStore.warningToast("Warning",validateForm(schemeInfo.value))
      return
    }
+
+  loader.value = true
 
   const formData = new FormData();
   formData.set("scheme_excel_file", excel_file.value.files[0]);
