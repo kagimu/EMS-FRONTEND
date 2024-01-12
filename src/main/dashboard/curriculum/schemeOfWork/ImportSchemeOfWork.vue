@@ -65,6 +65,11 @@ function saveExcelImport(){
   loader.value = true
   uploadError.value = null
 
+   if(validateForm(schemeInfo.value)){
+     notificationStore.warningToast("Warning",validateForm(schemeInfo.value))
+     return
+   }
+
   const formData = new FormData();
   formData.set("scheme_excel_file", excel_file.value.files[0]);
   formData.set("name", (schemeInfo.value.name).trim());
@@ -74,7 +79,31 @@ function saveExcelImport(){
   subtopicStore.importSchemeOfWork(formData)
 }
 
+const validateForm = (schemeInfo) => {
+  let message = ""
+  if(!schemeInfo.name){
+    message = "Scheme title is required!"
+  }
 
+  if(!schemeInfo.class_number){
+    message = "Class is required!"
+  }
+
+  if(!schemeInfo.subject_number){
+    message =  "Subject is required!"
+  }
+
+  if(!schemeInfo.academic_year_number){
+    message =  "Academic year is required!"
+  }
+
+  if(!excel_file.value.files[0]){
+    message = "Attach a file!"
+  }
+
+  return message;
+
+}
 
 const props = defineProps({
   schemeDetailsForm: {},
