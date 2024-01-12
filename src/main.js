@@ -15,7 +15,7 @@ import  SetupCalendar  from 'v-calendar';
 
 // Use calendar defaults (optional)
 
-// localStorage.clear();
+
 
 const app = createApp(App);
 app.use(router);

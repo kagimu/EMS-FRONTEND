@@ -2,7 +2,8 @@
 
     <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2"><small>Application Details {{ applicationNumber }}</small></h6>
+            <!-- {{ applicationNumber }} -->
+            <h6 class="modal-title ml-3 mt-2 mb-2"><small>Application Details</small></h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -98,10 +99,7 @@
         </div>
       </div>
     
-        
-          
-
-
+  
       </div>
         
     </div>
@@ -111,7 +109,7 @@
 
     </div>
     <div class="col-lg-2">
-        <button style="float: right" type="button" class="btn btn-sm btn-primary mb-2 mr-4"><i class="bi bi-save2"></i>&nbsp;<small>Approve</small></button>
+        <button style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><i class="bi bi-save2"></i>&nbsp;<small>Approve</small></button>
 </div>
 <div class="col-lg-2">
     <button style="margin-right: 5px;" type="button" class="btn btn-sm btn-danger mb-2 mr-4"><i class="bi bi-x-circle"></i>&nbsp;<small>Reject</small></button>
@@ -122,6 +120,36 @@
     </div>   
 </div>
 </div>
+
+<!-- schedule interview -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="rolesDialog" aria-labelledby="offcanvasRightLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">Schedule Interview</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+              {{ applicationNumber }}
+            <form @submit.prevent="scheduleInterview" >
+              <div class="mb-2">
+                <label class="textColor"><small>Date</small></label>
+                <input v-model="formData.scheduled_on" type="datetime-local" required class="form-control">
+              </div>
+              <div class="mb-2">
+                <label class="textColor"><small>Message</small></label>
+                <textarea  v-model="formData.message" required class="form-control noFocus" id="floatingTextarea2" style="height: 100px"></textarea>
+              </div>
+              <div class="text-right mt-4">
+                <button style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
+                  <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader" >
+                    <span class="visually-hidden">Loading...</span>
+                  </div></button>
+              </div>
+            </form>
+          </div>
+        </div>
+<!-- wnd  -->
+
+
 </div>
   </template>
   
@@ -130,6 +158,7 @@ import {reactive, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import useCommons from "@/composables/useCommons.js";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+
 
 const ApplicationStore = useApplicationStore()
 const notificationStore = useNotificationStore()
@@ -165,10 +194,6 @@ function getAge(dob){
   return useCommonsStore.getAgeFromDateOfBirth(dob)
 }
 
-// function appDetails(){
-//     let id = applicationNumber
-//     ApplicationStore.fetchApplicationById(id)
-// }
 
 watch (
     () => props.applicationNumber,
@@ -208,6 +233,16 @@ watch (
     {deep:true}
 )
 
+
+const formData = reactive({
+  scheduled_on:null,
+  message:null,
+})
+
+function scheduleInterview(){
+  alert(JSON.stringify(formData))
+  //code to call the endpoint
+}
 
   </script>
 
