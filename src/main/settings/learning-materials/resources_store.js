@@ -6,6 +6,7 @@ export const useLearningMaterialStore = defineStore("learningMaterial", () => {
     const addMaterialResponse = ref(null)
     const curriculumSubtopicReferenceResponse = ref(null)
     const learningMaterialsResponse = ref(null)
+    const materialsSubTypeResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -14,6 +15,18 @@ export const useLearningMaterialStore = defineStore("learningMaterial", () => {
             headers: {
                 "Content-Type": "multipart/form-data"
             }})
+            .then((response) => {
+                addMaterialResponse.value = response.data
+            })
+            .catch((response) => {
+                if (response) {
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function newLearningMaterialSubType(data) {
+        return await api.post("/main/learning-materials/sub-type", data)
             .then((response) => {
                 addMaterialResponse.value = response.data
             })
@@ -47,6 +60,15 @@ export const useLearningMaterialStore = defineStore("learningMaterial", () => {
         });
     }
 
+    async function fetchLearningMaterialSubTypes(category){
+        return await api.get("/main/learning-materials/sub-types/"+category,).then((response)=>{
+            materialsSubTypeResponse.value = response.data
+        }).catch((error)=>{
+
+            errorMessage.value = error.response.data
+        });
+    }
+
 
 
     return {
@@ -56,7 +78,10 @@ export const useLearningMaterialStore = defineStore("learningMaterial", () => {
         errorMessage,
         fetchLearningMaterials,
         newLearningMaterial,
-        newCurriculumSubtopicReference
+        newLearningMaterialSubType,
+        newCurriculumSubtopicReference,
+        fetchLearningMaterialSubTypes,
+        materialsSubTypeResponse
     }
 
 });

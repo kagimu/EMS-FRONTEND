@@ -133,7 +133,8 @@
           <th scope="col" style="width: 5%;">#</th>
           <th scope="col">Strand</th>
           <th scope="col">Topic</th>
-          <th scope="col" style="width: 60%;">Sub Topic name</th>
+          <th scope="col" style="width: 50%;">Sub Topic name</th>
+          <th scope="col" style="width: 15%;">Estimated Time</th>
           <th scope="col" style="width: 20%;">Code</th>
         </tr>
         </thead>
@@ -148,6 +149,9 @@
           </td>
           <td>
             {{lst.name}}
+          </td>
+          <td>
+            {{lst.estimated_time}}
           </td>
           <td>
             <input
@@ -227,10 +231,10 @@ const schemeOptions  = ref([
     text:"New",
     value:"new"
   },
-  {
+ /* {
     text:"Standard Scheme",
     value:"standard_scheme"
-  },
+  },*/
   {
     text:"Template",
     value:"template"
@@ -299,6 +303,12 @@ const props = defineProps({
 
 
 const addSchemeOfWork = () =>{
+
+  if(validateForm()){
+    notificationStore.warningToast("Warning",validateForm())
+    return
+  }
+
   loader.value = true
   let topic = [...subtopicList.value]
 
@@ -315,6 +325,29 @@ const addSchemeOfWork = () =>{
     schemeOfWorkStore.newSchemeOfWorkData(form)
   }
 
+
+}
+
+
+const validateForm = () => {
+  let message = ""
+  if(!form.name){
+    message = "Scheme title is required!"
+  }
+
+  if(!form.class_number){
+    message = "Class is required!"
+  }
+
+  if(!form.subject_number){
+    message =  "Subject is required!"
+  }
+
+  if(!form.academic_year_number){
+    message =  "Academic year is required!"
+  }
+
+  return message;
 
 }
 
