@@ -165,7 +165,6 @@
                       @click="filterSchemeSubject"
                   >
                     <option disabled value="">Select Class</option>
-<!--                    <option value="">All</option>-->
                     <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
                       {{list.code+". "+list.academic_year_name+" ["+list.level_name+"]"}}
                     </option>
