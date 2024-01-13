@@ -99,9 +99,17 @@ watch(
     () => authStore.profile,
     async (data) => {
       if(data){
-        let r = router.resolve({
-          name: "home"
-        });
+          let r = router.resolve({
+              name: "home"
+          });
+
+
+          if (data.type === "User"){
+              r = router.resolve({
+                  name: "client_dashboard"
+              });
+          }
+
         window.location.assign(r.href);
 
         notificationStore.successToast("Success","Login successfully")
