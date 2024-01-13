@@ -31,6 +31,7 @@ import Welcome from "../main/welcome/Welcome.vue";
 import UserDashboard from "../main/application/UserDashboard.vue";
 import ApplicationGuide from "../main/auth/ApplicationGuide.vue";
  import StudentApplication from "@/main/dashboard/studentApplication/StudentApplication.vue";
+import ClientApplications from "@/main/application/ClientApplications.vue";
 
 
 const router = createRouter({
@@ -87,15 +88,18 @@ const router = createRouter({
         },
 
         {
-            path: '/main',
+            path: '/client-dashboard',
             component: UserDashboard,
-            name :"userdashboard",
+            name :"client_dashboard",
             redirect:{ name: 'application' },
             meta: {
                 requiresAuth: true,
             },
             children:[
                 {path: 'application', component: Application, name:'application'},
+                {path: 'start', component: Application, name:'application'},
+                {path: 'admission', component: Application, name:'admission_history'},
+                {path: 'applications', component: ClientApplications, name:'application_history'},
             ]
         },
         {
