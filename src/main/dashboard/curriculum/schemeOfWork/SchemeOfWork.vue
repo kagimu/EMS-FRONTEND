@@ -68,16 +68,17 @@
     <div class="row mt-5">
       <div class="col-3">
         <div class="mb-2">
+
           <select
-              style="box-shadow: none;"
-              class="form-select form-select-sm"
+              style="box-shadow: none; padding-bottom: 0;"
+              class="form-select form-select-sm pb-0"
               v-model="level"
               @change="fetchSchemeClasses()"
           >
-            <option disabled value="">Filter by Level</option>
             <option value="">All</option>
             <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
           </select>
+          <div style="font-size: 10px;">Filter by level</div>
         </div>
       </div>
 
@@ -283,7 +284,7 @@ const learningAreaList = ref( [])
 const classList = ref( [])
 const levelList = ref( [])
 const classStore = useClassesStore()
-const selectedClass = ref( null)
+let selectedClass = ref( null)
 const routerData = useRouter()
 
 
@@ -301,11 +302,11 @@ const schemeOfWorkStore = useSchemeOfWorkStore()
 const subjectStore = useSubjectStore()
 const academicYearStore = useAcademicYearStore()
 
-let   subjectNo = routerData.currentRoute.value.query.c
+let classNo = routerData.currentRoute.value.query.c
 let campusNumber = routerData.currentRoute.value.query.id
 
-if(subjectNo){
-  selectedClass.value =  subjectNo
+if(classNo){
+  selectedClass.value =  classNo
 }
 
 const addLessonPlan = (schemeData) => {
@@ -335,6 +336,7 @@ const filterSchemeSubject = () => {
     subject_number:scheme_subject_number.value,
     class_number:selectedClass.value
   }
+
   schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
 }
 
@@ -343,25 +345,19 @@ onMounted(
       await levelStore.fetchCampusLevelList(campusNumber)
       await fetchSchemeClasses()
       if(selectedClass.value) {
+        await fetchAcademicYrList(selectedClass.value)
         await subjectStore.fetchSchemeSubjectByClass(selectedClass.value)
-        await fetchAcademicYrList()
       }
     }
 )
 
-const fetchAcademicYrList = () => {
+const fetchAcademicYrList = (classNumber) => {
   // academicYearStore.fetchAcademicYear(level.value)
-  subjectStore.fetchAcademicYearByClass(selectedClass.value)
+  subjectStore.fetchAcademicYearByClass(classNumber)
 }
 
 const fetchSchemeClasses = () => {
-/*  let data = {
-    level:level.value,
-    campus_number:campusNumber
-  }
-   classStore.fetchSchemeOfWorkClasses(data)*/
   classStore.fetchClassLevel({campusNumber: campusNumber, levelNumber: level.value})
-  fetchAcademicYrList()
 }
 
 watch(
@@ -384,6 +380,7 @@ watch(
               subject_number:scheme_subject_number.value,
               class_number:classInfo[0].number
             }
+
 
             await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
           }
@@ -436,8 +433,6 @@ watch(
        if(!academic_year_number.value) {
          let acdYrNo = acd[0].number
          academic_year_number.value =  acdYrNo
-
-
 
   /*       let data = {
            academic_year_number:acdYrNo,
@@ -506,6 +501,7 @@ watch(
           class_number:selectedClass.value,
           academic_year_number:academic_year_number.value,
         }
+
         await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
         notificationStore.successToast("Success",data.message)
       }
