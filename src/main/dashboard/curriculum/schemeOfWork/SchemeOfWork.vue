@@ -224,7 +224,7 @@
 
                     <div class="flex justify-between mt-4 mb-2" style="width: 350px;">
                       <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="addLessonPlan(lst)" data-bs-toggle="modal" data-bs-target="#lessonPlanModal">
-                        <small class="m-0 p-0">Add lesson plan</small>
+                        <small class="m-0 p-0">Add lesson plan [{{lst.concept_count}}]</small>
                       </button>
 
                       <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="viewLessonPlan(lst)" data-bs-toggle="modal" data-bs-target="#lessonPlanDetailsModal">
