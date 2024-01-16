@@ -79,6 +79,7 @@
 import {reactive, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+import router from "@/config/router.js";
 
 const buttonLoader = ref(false)
 let errorMessage = ref(null)
@@ -139,11 +140,12 @@ const canAddSchool = () => {
 
 
 watch (
-    () => applicationStore.newApplicationDetailsResponse,
+    () => applicationStore.newApplicationPreviousSchoolsResponse,
     async (data) => {
       if(data){
         buttonLoader.value = false
-        notificationStore.successToast("Success", data.message)
+        notificationStore.successToast("Success application submitted", data.message)
+          await router.push({name: "application_history"})
       }
     },
     {deep:true}

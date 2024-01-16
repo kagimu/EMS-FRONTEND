@@ -77,6 +77,7 @@
           <div class="mb-5">
             <label class="textColor"><small>Scheme by</small></label>
             <select
+                :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'Pending'))"
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
                 v-model="type"
@@ -133,7 +134,8 @@
           <th scope="col" style="width: 5%;">#</th>
           <th scope="col">Strand</th>
           <th scope="col">Topic</th>
-          <th scope="col" style="width: 60%;">Sub Topic name</th>
+          <th scope="col" style="width: 50%;">Sub Topic name</th>
+          <th scope="col" style="width: 15%;">Estimated Time</th>
           <th scope="col" style="width: 20%;">Code</th>
         </tr>
         </thead>
@@ -153,19 +155,18 @@
             <input
                 type="text"
                 style="outline: none 0 !important; box-shadow: none;"
+                v-model="lst.estimated_time"
+                required
+                class="form-control form-select-sm" />
+          </td>
+          <td>
+            <input
+                type="text"
+                style="outline: none 0 !important; box-shadow: none;"
                 v-model="lst.sort_code"
                 required
                 class="form-control form-select-sm" />
           </td>
-<!--          <td>
-            <div class="float-end mr-2">
-              <i
-                  style="font-size: 13px;"
-                  data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                  class="bi-pencil mr-2 cursor-pointer" @click="editClass(sbj)"></i>
-              <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(sbj)"></i>
-            </div>
-          </td>-->
         </tr>
         </tbody>
       </table>
@@ -227,10 +228,10 @@ const schemeOptions  = ref([
     text:"New",
     value:"new"
   },
-  {
+ /* {
     text:"Standard Scheme",
     value:"standard_scheme"
-  },
+  },*/
   {
     text:"Template",
     value:"template"
@@ -299,12 +300,19 @@ const props = defineProps({
 
 
 const addSchemeOfWork = () =>{
+
+  if(validateForm()){
+    notificationStore.warningToast("Warning",validateForm())
+    return
+  }
+
   loader.value = true
   let topic = [...subtopicList.value]
 
   topic.forEach(lst => {
     lst.code = parseInt(lst.code)
     lst.sort_code = parseInt(lst.sort_code)
+    lst.estimated_time = parseInt(lst.estimated_time)
   })
   form.subtopicList = topic
 
@@ -315,6 +323,29 @@ const addSchemeOfWork = () =>{
     schemeOfWorkStore.newSchemeOfWorkData(form)
   }
 
+
+}
+
+
+const validateForm = () => {
+  let message = ""
+  if(!form.name){
+    message = "Scheme title is required!"
+  }
+
+  if(!form.class_number){
+    message = "Class is required!"
+  }
+
+  if(!form.subject_number){
+    message =  "Subject is required!"
+  }
+
+  if(!form.academic_year_number){
+    message =  "Academic year is required!"
+  }
+
+  return message;
 
 }
 

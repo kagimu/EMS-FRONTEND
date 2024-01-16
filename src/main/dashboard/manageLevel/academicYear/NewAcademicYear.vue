@@ -25,7 +25,7 @@
         <label class="textColor"><small>Academic year name</small></label>
         <input
             :placeholder="'Year '+currentYear"
-            maxlength="20"
+            maxlength="50"
             type="text"
             style="outline: none 0 !important;
                box-shadow: none;"
@@ -63,6 +63,9 @@
         <div class="mb-2">
           <label class="textColor"><small>Academic Year Start Date</small></label>
           <VueDatePicker
+              text-input
+              auto-apply
+              :teleport="true"
               style="font-size: 7px;"
               v-model="form.academic_year_start_date"
               :preview-format="format"
@@ -72,6 +75,9 @@
       <div class="mb-2">
           <label class="textColor"><small>Academic Year End Date</small></label>
           <VueDatePicker
+              text-input
+              auto-apply
+              :teleport="true"
               style="font-size: 7px;"
               v-model="form.academic_year_end_date"
               :preview-format="format"

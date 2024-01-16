@@ -24,7 +24,7 @@
       <div class="mb-2">
         <label class="textColor"><small>Study period name</small></label>
         <input
-            maxlength="20"
+            maxlength="50"
             type="text"
             style="outline: none 0 !important;
                box-shadow: none;"
@@ -52,18 +52,24 @@
         <div class="mb-2">
           <label class="textColor"><small>Study Period Start Date</small></label>
           <VueDatePicker
+              text-input
+              auto-apply
               style="font-size: 7px;"
               v-model="form.study_period_start_date"
               :preview-format="format"
+              :teleport="true"
               ></VueDatePicker>
         </div>
 
       <div class="mb-2">
         <label class="textColor"><small>Study Period End Date</small></label>
         <VueDatePicker
+            text-input
+            auto-apply
             style="font-size: 7px;"
             v-model="form.study_period_end_date"
             :preview-format="format"
+            :teleport="true"
         ></VueDatePicker>
       </div>
 

@@ -2,7 +2,7 @@
     <div>
 
 
-        <div id="levelModal" :class="{ show: levelDialog }" aria-hidden="true" aria-labelledby="" class="modal fade"
+        <div id="levelModal" :class="{ show: newMaterialDialog }" aria-hidden="true" aria-labelledby="" class="modal fade"
              tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -20,25 +20,49 @@
             </div>
         </div>
 
+        <div id="subTypeModal" :class="{ show: newSubTypeDialog }" aria-hidden="true" aria-labelledby="" class="modal fade"
+             tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header text-sm p-0">
+                        <h6 class="modal-title ml-3 mt-2 mb-2">Add  Material Sub Type </h6>
+                        <button aria-label="Close" class="btn-close btn-sm" data-bs-dismiss="modal"
+                                style="margin-right: 5px;" type="button"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mt-2 mb-2">
+                            <new-learning-material-sub-type></new-learning-material-sub-type>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 
         <div class="row">
 
             <div class="col-12">
 
+                    <div class="row  mt-2">
+                   <div class="col-lg-4">Learning Materials</div>
+                   <div class="col-lg-4"></div>
+                   <div class="col-lg-2"> <button class="btn btn-sm buttonStyle btn-primary mr-2" data-bs-target="#levelModal"
+                                          data-bs-toggle="modal"
+                                          type="button" @click="addMaterial">
+                       <i class="bi-plus mr-2" style="font-size: 15px;"></i>
+                       Add resource
+                   </button>
+                   </div>
+                   <div  class="col-lg-2"> <button class="btn btn-sm buttonStyle btn-primary mr-2" data-bs-target="#subTypeModal"
+                                         data-bs-toggle="modal"
+                                         type="button" @click="addSubType">
+                       <i class="bi-plus mr-2" style="font-size: 15px;"></i>
+                       Add sub category
+                   </button></div>
 
-                <!--        <div class="card mt-3">-->
-                <!--          <div class="card-body" style="padding: 0;">-->
+                    </div>
 
-
-                <div class="flex justify-content-between mt-3">
-                    <div class="ml-4">Learning Materials</div>
-                    <button class="btn btn-sm buttonStyle btn-primary mr-2" data-bs-target="#levelModal"
-                            data-bs-toggle="modal"
-                            type="button" @click="addLevel">
-                        <i class="bi-plus mr-2" style="font-size: 15px;"></i>
-                        Add resource
-                    </button>
-                </div>
 
 
                 <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
@@ -70,12 +94,8 @@
 
             </div>
         </div>
-
-        <!--      </div>-->
-        <!--    </div>-->
-
-
     </div>
+
 </template>
 
 <script setup>
@@ -86,6 +106,7 @@ import {useRouter} from "vue-router";
 import useCommonsStore from "@/composables/useCommons.js";
 import {useLearningMaterialStore} from "@/main/settings/learning-materials/resources_store.js";
 import NewResource from "@/main/settings/learning-materials/NewResource.vue";
+import NewLearningMaterialSubType from "@/main/settings/learning-materials/NewLearningMaterialSubType.vue";
 
 const routerData = useRouter()
 
@@ -95,12 +116,17 @@ const commons = useCommonsStore()
 const notificationStore = useNotificationStore()
 
 const level = ref("")
-const levelDialog = ref(false)
+const newMaterialDialog = ref(false)
+const newSubTypeDialog = ref(false)
 const resourcesList = ref([])
 
 
-const addLevel = () => {
-    levelDialog.value = true
+const addMaterial = () => {
+    newMaterialDialog.value = true
+}
+
+const addSubType = () => {
+    newSubTypeDialog.value = true
 }
 
 const editClass = (data) => {

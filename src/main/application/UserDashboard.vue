@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top"  style="position: absolute; top: 0; left: 0; width: 100%;">
         <div class="container-fluid">
-          <router-link :to="{name:''}" class="navbar-brand" style="margin-left:20px;font-size:14px;
+          <router-link :to="{name:'client_dashboard'}" class="navbar-brand" style="margin-left:20px;font-size:14px;
            font-weight:400"><i class="bi bi-list"></i>&nbsp;<b>Wholesome ED</b>
   </router-link>
           <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -11,16 +11,20 @@
           <div class="navbar-nav">
           </div>
           <div class="navbar-nav">
-            <router-link   class="btn btn btn-light nav-item nav-link" style="color:rgba(16, 54, 135, 0.751) !important" :to="{name:'application'}"> 
-              <b>APPLY NOW</b> </router-link> 
-            <router-link class="btn btn-outline-success nav-item nav-link" :to="{name:''}" style="border-radius: 0px;" > 
-            APPLICATION HISTORY </router-link> 
-            <router-link class="btn btn-outline-success nav-item nav-link" :to="{name:''}">ADMISSION HISTORY</router-link>
-            <li class="nav-item dropdown">
+            <router-link   :class="[ menuSelected('application') ? 'btn btn-outline-success nav-item nav-link text-black' : 'btn btn-outline-success nav-item nav-link text-white']"  :to="{name:'application'}">
+              <b>APPLY NOW</b> </router-link>
+
+            <router-link :class="[ menuSelected('application_history') ? 'btn  btn-light nav-item nav-link' : 'btn btn-outline-success nav-item nav-link']" :to="{name:'application_history'}" style="border-radius: 0px; color:rgba(16, 54, 135, 0.751)" >
+            APPLICATION HISTORY </router-link>
+
+            <router-link :class="[ menuSelected('admission_history') ? 'btn  btn-light nav-item nav-link' : 'btn btn-outline-success nav-item nav-link']" :to="{name:'admission_history'}">ADMISSION HISTORY</router-link>
+
+            <span class="nav-item dropdown">
 
 <a class="btn btn-link nav-link dropdown-toggle d-flex align-items-center" 
  aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static"
- aria-label="Toggle theme (light)" style="border: 0px;">collinsmpiima@gmail.com
+ aria-label="Toggle theme (light)" style="border: 0px;">
+    {{name}}
             </a>
 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme-text">
 <li class="text-sm2">
@@ -30,10 +34,10 @@
     <i class="bi bi-person-fill-lock"></i>&nbsp;Change Password
 </li>
 <li  class="text-sm2">
-    <router-link  :to="{name:'login'}" class="text-sm2"><i class="bi bi-box-arrow-right"></i>&nbsp;Logout</router-link>
+    <span style="cursor: pointer" @click="userLogout" class="text-sm2"><i class="bi bi-box-arrow-right"></i>&nbsp;Logout</span>
 </li>
 </ul>
-</li>
+</span>
         </div>
         </div>
         </div>
@@ -143,6 +147,35 @@
   </style>
   
   <script setup>
-  
+
+  import {onMounted, ref} from "vue";
+  import router from "@/config/router.js";
+import {useAuthStore} from "@/main/auth/store/auth.js";
+const  authStore = useAuthStore();
+  const name = ref(null)
+  let p = authStore.profile
+
+  name.value = p.first_name+" "+p.second_name+" "+p.last_name
+
+  function userLogout(){
+
+      localStorage.clear();
+
+      let r = router.resolve({
+          name: "login"
+      });
+      window.location.assign(r.href);
+
+  }
+
+  function  menuSelected(name){
+    return router.currentRoute.value.name === name
+  }
+
+  onMounted(
+      async () => {
+       // alert(router.currentRoute.value.name)
+
+      } )
   </script>
   

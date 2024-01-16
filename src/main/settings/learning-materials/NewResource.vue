@@ -33,6 +33,40 @@
 
 
             <div>
+                <label class="textColor"><small>Category</small></label>
+                <select
+                        @change="FetchSubTypes"
+                        style="outline: none 0 !important; box-shadow: none;"
+                        type="text" v-model="form.category"
+                        required
+                        class="form-control form-select-sm">
+
+                    <option disabled value="">Select category</option>
+                    <option v-for="(lvl, index) in materialCategory" :key="index" :value="lvl.id">{{ lvl.name }}</option>
+
+                </select>
+
+            </div>
+
+
+            <div>
+                <label class="textColor"><small>Sub category</small></label>
+                <select
+
+                        style="outline: none 0 !important; box-shadow: none;"
+                        type="text" v-model="form.sub_category"
+                        required
+                        class="form-control form-select-sm">
+
+                    <option disabled value="">Select sub type</option>
+                    <option v-for="(lvl, index) in materialSubTypes" :key="index" :value="lvl.id">{{ lvl.name }}</option>
+
+                </select>
+
+            </div>
+
+
+            <div>
                 <label class="textColor"><small>Type</small></label>
                 <select
                         style="outline: none 0 !important; box-shadow: none;"
@@ -46,6 +80,8 @@
                 </select>
 
             </div>
+
+
 
 
             <div>
@@ -98,6 +134,16 @@ const excel_file = ref(null)
 const uploadError = ref(null)
 const name = ref(null)
 const loader = ref(false)
+const materialCategory = ref([
+    {
+        name: "Learner",
+        id: "learner"
+    },
+    {
+        name: "Educator",
+        id: "educator"
+    }
+])
 const materialType = ref([
     {
         name: "Book",
@@ -124,6 +170,8 @@ const materialType = ref([
         id: "other"
 
     }])
+
+const materialSubTypes = ref([])
 const routerData = useRouter()
 
 const resourceStore = useLearningMaterialStore()
@@ -135,7 +183,9 @@ const form = reactive({
     code: null,
     name: null,
     type: null,
+    category: null,
     upload: null,
+    sub_category:null
 })
 
 
@@ -144,6 +194,8 @@ const addLevel = () => {
 
     const formData = new FormData();
     formData.set("file", excel_file.value.files[0]);
+    formData.set("category", form.category);
+    formData.set("sub_category", form.sub_category);
     formData.set("code", form.code);
     formData.set("name", form.name);
     formData.set("type", form.type);
@@ -159,6 +211,9 @@ onMounted(
     }
 )
 
+const FetchSubTypes = async () => {
+    await resourceStore.fetchLearningMaterialSubTypes(form.category)
+}
 
 watch(
     () => resourceStore.addMaterialResponse,
@@ -167,6 +222,9 @@ watch(
         if (data) {
             form.name = null
             form.code = null
+            form.type = null
+            form.category = null
+            form.sub_category = null
             loader.value = false
         }
     },
@@ -180,6 +238,23 @@ watch(
         if (data) {
             loader.value = false
             notificationStore.errorToast("Error", data.message)
+        }
+    },
+    {deep: true}
+)
+
+
+watch(
+    () => resourceStore.materialsSubTypeResponse,
+    async (data) => {
+        if (data) {
+            materialSubTypes.value = []
+            data.data.forEach((item) => {
+                materialSubTypes.value.push({
+                    name: item.name,
+                    id: item.number
+                })
+            })
         }
     },
     {deep: true}
