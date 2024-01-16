@@ -312,6 +312,7 @@ const addSchemeOfWork = () =>{
   topic.forEach(lst => {
     lst.code = parseInt(lst.code)
     lst.sort_code = parseInt(lst.sort_code)
+    lst.estimated_time = parseInt(lst.estimated_time)
   })
   form.subtopicList = topic
 
