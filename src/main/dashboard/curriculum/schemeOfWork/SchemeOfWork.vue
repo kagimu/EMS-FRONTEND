@@ -303,7 +303,6 @@ const commons = useCommonsStore()
 const levelStore = useLevelStore()
 const schemeOfWorkStore = useSchemeOfWorkStore()
 const subjectStore = useSubjectStore()
-const academicYearStore = useAcademicYearStore()
 
 let classNo = routerData.currentRoute.value.query.c
 let campusNumber = routerData.currentRoute.value.query.id
@@ -332,7 +331,7 @@ const exportSchemeOfWorkPdf = () => {
     subject_number:scheme_subject_number.value,
     class_number:selectedClass.value
   }
-  schemeOfWorkStore.exportSchemeOfWorkByClass(data)
+  schemeOfWorkStore.exportSchemeOfWorkPdfByClass(data)
 }
 
 
@@ -541,7 +540,7 @@ watch(
 )
 
 watch(
-    () => schemeOfWorkStore.exportSchemeOfWorkByClassResponse,
+    () => schemeOfWorkStore.exportSchemeOfWorkPdfByClassResponse,
     async (data) => {
       if(data){
         alert(JSON.stringify(data))
