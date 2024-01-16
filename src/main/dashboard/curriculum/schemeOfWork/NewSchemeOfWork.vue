@@ -77,6 +77,7 @@
           <div class="mb-5">
             <label class="textColor"><small>Scheme by</small></label>
             <select
+                :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'Pending'))"
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
                 v-model="type"
