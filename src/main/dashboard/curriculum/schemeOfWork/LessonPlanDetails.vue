@@ -30,8 +30,37 @@
 
   </div>
     <div class="col col-6">
+        <button
+                @click="showHideReferenceForm"
+                type="button"
+                class="btn btn-sm btn-secondary border-0 mt-2">
+            <i style="font-size: 15px;" class="bi-plus mr-1"></i>
+            {{ referenceDialog ? 'Hide Reference ' : 'Add Reference' }}
+        </button>
 <!--        <new-lesson-plan-reference :lesson_plan_number="lessonPlanInfo.lesson_plan[0].number"></new-lesson-plan-reference>-->
-        <new-lesson-plan-reference v-if="lessonPlanDetailsInfo" :lesson_plan_number="lessonPlanDetailsInfo.number"></new-lesson-plan-reference>
+        <div v-if="referenceDialog">
+            <new-lesson-plan-reference v-if="lessonPlanDetailsInfo"
+                                       :lesson_plan_number="lessonPlanDetailsInfo.number"></new-lesson-plan-reference>
+        </div>
+        <div>
+            <table style="width: 100%; margin-top: 3px"  v-if="lessonPlanDetailsInfo">
+                <thead >
+
+                <tr>
+                    <td>#</td>
+                    <td>Code</td>
+                    <td>Name</td>
+                </tr>
+
+                </thead>
+
+                <tr v-for="(reference,idx) in lessonPlanDetailsInfo.references" :key="idx">
+                    <td>{{ idx + 1 }}</td>
+                    <td>{{ reference.code }}</td>
+                    <td>{{ reference.name }}</td>
+                </tr>
+            </table>
+        </div>
     </div>
 
 </div>
@@ -113,6 +142,10 @@ const openReferenceDialog = () =>{
   referenceDialog.value = true
 }
 
+
+const showHideReferenceForm = () => {
+    referenceDialog.value = !referenceDialog.value
+}
 
 
 watch(
