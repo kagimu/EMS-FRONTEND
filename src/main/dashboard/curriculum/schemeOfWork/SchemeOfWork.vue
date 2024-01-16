@@ -191,7 +191,6 @@
                 <th scope="col">Subtopic</th>
                 <th scope="col">Estimated Time (Min)</th>
                 <th scope="col">Lesson Plan (Concept(s))</th>
-<!--                <th scope="col" class="text-end">Action</th>-->
               </tr>
               </thead>
               <tbody>
