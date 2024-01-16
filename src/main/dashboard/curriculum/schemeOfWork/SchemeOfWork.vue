@@ -126,7 +126,11 @@
               </div>
 
                 <div>
-                  <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCurriculum" data-bs-toggle="modal" data-bs-target="#schemeOfWorkModal">
+                  <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="exportSchemeOfWorkPdf">
+                    <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+                    Export PDF
+                  </button>
+                  <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSchemeOfWork" data-bs-toggle="modal" data-bs-target="#schemeOfWorkModal">
                     <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
                     {{(schemeOfWorkList.number && (schemeOfWorkList.status === "Pending")) ? " Edit Scheme" : " Add Scheme"}}
                   </button>
@@ -318,9 +322,19 @@ const viewLessonPlan = (lst) => {
   lessonPlanInfo.value = lst
 }
 
-const addCurriculum = () => {
+const addSchemeOfWork = () => {
   curriculumDialog.value = true
 }
+
+const exportSchemeOfWorkPdf = () => {
+  let data = {
+    academic_year_number:academic_year_number.value,
+    subject_number:scheme_subject_number.value,
+    class_number:selectedClass.value
+  }
+  schemeOfWorkStore.exportSchemeOfWorkByClass(data)
+}
+
 
 const changeMenu = (value) => {
   selectedClass.value = value
@@ -521,6 +535,16 @@ watch(
     async (data) => {
       if(data){
         levelList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => schemeOfWorkStore.exportSchemeOfWorkByClassResponse,
+    async (data) => {
+      if(data){
+        alert(JSON.stringify(data))
       }
     },
     {deep:true}

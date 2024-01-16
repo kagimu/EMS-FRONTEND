@@ -6,6 +6,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     let newSchemeOfWorkResponse = ref(null)
     let updateSchemeOfWorkResponse = ref(null)
     let schemeOfWorkByClassResponse = ref(null)
+    let exportSchemeOfWorkByClassResponse = ref(null)
     let newLessonPlanResponse = ref(null)
     let conceptsBySubtopicResponse = ref(null)
     let referencesByLessonPlanNumberResponse = ref(null)
@@ -92,6 +93,18 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
             })
     }
 
+    async function exportSchemeOfWorkByClass(data) {
+        return await api.get("main/fetch-scheme-of-work-by-class-and-subject?class_number="+data.class_number+"&subject_number="+data.subject_number+"&academic_year_number="+data.academic_year_number)
+            .then((response) => {
+                exportSchemeOfWorkByClassResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     async function fetchConceptsBySubTopic(data) {
         return await api.get("main/fetch-concepts-by-subtopic?sub_topic_number="+data)
             .then((response) => {
@@ -125,6 +138,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         schemeOfWorkByClassResponse,
         conceptsBySubtopicResponse,
         newLessonPlanResponse,
+        exportSchemeOfWorkByClassResponse,
         errorMessage,
         lessonPlanResponse,
         addReferenceResponse,
@@ -135,5 +149,6 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         saveLessonPlan,
         saveLessonPlanReference,
         fetchLessonPlanDetails,
+        exportSchemeOfWorkByClass,
     }
 })
