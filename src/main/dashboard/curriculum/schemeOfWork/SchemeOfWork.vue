@@ -191,7 +191,6 @@
                 <th scope="col">Subtopic</th>
                 <th scope="col">Estimated Time (Min)</th>
                 <th scope="col">Lesson Plan (Concept(s))</th>
-<!--                <th scope="col" class="text-end">Action</th>-->
               </tr>
               </thead>
               <tbody>
@@ -373,16 +372,17 @@ watch(
             selectedClass.value = classNo
             await subjectStore.fetchSchemeSubjectByClass(classNo)
             // await subjectStore.fetchAcademicYearByClass(classNo)
-            await fetchAcademicYrList()
+            await fetchAcademicYrList(classNo)
 
-            let data = {
-              academic_year_number:academic_year_number.value,
-              subject_number:scheme_subject_number.value,
-              class_number:classInfo[0].number
-            }
-
-
-            await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
+              // fetch scheme of work
+              if(academic_year_number.value && scheme_subject_number.value) {
+                let data = {
+                  academic_year_number: academic_year_number.value,
+                  subject_number: scheme_subject_number.value,
+                  class_number: classInfo[0].number
+                }
+                await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
+              }
           }
         }
       }
@@ -422,7 +422,6 @@ watch(
 
 watch(
     () => subjectStore.academicYearByClassResponse,
-    // () => academicYearStore.academicYearResponse,
     async (data) => {
       if(data){
         let acd = data.data
@@ -434,12 +433,15 @@ watch(
          let acdYrNo = acd[0].number
          academic_year_number.value =  acdYrNo
 
-  /*       let data = {
-           academic_year_number:acdYrNo,
-           subject_number:scheme_subject_number.value,
-           class_number:selectedClass.value
+         // fetch scheme of work
+         if(scheme_subject_number.value && selectedClass.value) {
+           let data = {
+             academic_year_number: acdYrNo,
+             subject_number: scheme_subject_number.value,
+             class_number: selectedClass.value
+           }
+           await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
          }
-         await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)*/
 
        }
 
@@ -478,12 +480,15 @@ watch(
           let subjectNo = subjectInfo[0].number
           scheme_subject_number.value = subjectNo
 
-          let data = {
-            subject_number:subjectNo,
-            class_number:selectedClass.value,
-            academic_year_number:academic_year_number.value,
-          }
-          await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
+         if(selectedClass.value && academic_year_number.value){
+             let data = {
+               subject_number:subjectNo,
+               class_number:selectedClass.value,
+               academic_year_number:academic_year_number.value,
+             }
+             await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
+         }
+
 
         }
       }
