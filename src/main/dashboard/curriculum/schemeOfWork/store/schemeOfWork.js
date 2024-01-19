@@ -94,9 +94,25 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     }
 
     async function exportSchemeOfWorkPdfByClass(data) {
-        return await api.get("main/scheme-of-work/export-pdf-scheme-of-work-by-class-and-subject?class_number="+data.class_number+"&subject_number="+data.subject_number+"&academic_year_number="+data.academic_year_number)
+        let fileName = data.fileName;
+        data = {"html":data.html,"options":data.options};
+        return await api.post("https://pdfgenerator.ursb.go.ug/html-pdf", data)
             .then((response) => {
-                exportSchemeOfWorkPdfByClassResponse.value = response.data
+                    if(response) {
+                        if (navigator.userAgent.indexOf("Firefox") !== -1) {
+                            // Firefox
+                            window.open(response.data.pdf_b64, '_target')
+                        } else {
+                            let a = document.createElement("a");
+                            a.href = response.data.pdf_b64;
+                            a.setAttribute('download', fileName)
+                            a.target = "_blank";
+                            document.body.appendChild(a)
+                            a.click();
+                        }
+
+                        // exportSchemeOfWorkPdfByClassResponse.value = response.data
+                    }
             })
             .catch((response) => {
                 if(response){
@@ -104,6 +120,8 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
                 }
             })
     }
+
+
 
     async function fetchConceptsBySubTopic(data) {
         return await api.get("main/fetch-concepts-by-subtopic?sub_topic_number="+data)

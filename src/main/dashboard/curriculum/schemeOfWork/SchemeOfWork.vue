@@ -271,10 +271,7 @@ import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subje
 import NewLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPlan.vue";
 import LessonPlanDetails from "@/main/dashboard/curriculum/schemeOfWork/LessonPlanDetails.vue";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
-import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
-import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
-import NewCurriculum from "@/main/dashboard/curriculum/curriculumSetup/NewCurriculum.vue";
 
 const level = ref( "")
 const academic_year_number = ref( "")
@@ -326,12 +323,26 @@ const addSchemeOfWork = () => {
 }
 
 const exportSchemeOfWorkPdf = () => {
-  let data = {
-    academic_year_number:academic_year_number.value,
-    subject_number:scheme_subject_number.value,
-    class_number:selectedClass.value
-  }
-  schemeOfWorkStore.exportSchemeOfWorkPdfByClass(data)
+  schemeOfWorkStore.exportSchemeOfWorkPdfByClass(commons.initializePdfData("Scheme Of Work", generateHtml()));
+}
+
+ function generateHtml (){
+  let htmlData = `
+		<!DOCTYPE html>
+		<html>
+		<body style="font-family: Arial, sans-serif;">
+			   <div>
+            <div class="ml-4"><b>Scheme of work</b></div>
+            <div class="ml-7" v-if="schemeOfWorkList.name"><small><b>Title:</b> {{schemeOfWorkList.name}}</small></div>
+            <div class="ml-7" v-if="schemeOfWorkList.academic_year_name"><small><b>Class:</b> {{schemeOfWorkList.academic_year_name}}</small></div>
+            <div class="ml-7" v-if="schemeOfWorkList.class_name"><small><b>Class:</b> {{schemeOfWorkList.class_name}}</small></div>
+            <div class="ml-7" v-if="schemeOfWorkList.subject_name"><small><b>Subject:</b> {{schemeOfWorkList.subject_name}}</small></div>
+            <div class="ml-7" v-if="schemeOfWorkList.status"><small><b>Status:</b> {{schemeOfWorkList.status}}</small></div>
+          </div>
+		</body>
+		</html>`
+
+  return htmlData
 }
 
 
