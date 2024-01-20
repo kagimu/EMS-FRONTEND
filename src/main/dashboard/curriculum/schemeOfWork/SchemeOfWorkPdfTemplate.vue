@@ -16,13 +16,13 @@
 
               <table cellspacing="0" cellpadding="0"   style="width:100%; font-size: 7px;">
               <tr>
-                <td style="border-top: 1px solid #949698;border-bottom: 1px solid #949698;">#</td>
-                <td style="border-top: 1px solid #949698;border-bottom: 1px solid #949698;">Strand</td>
-                <td style="border-top: 1px solid #949698;border-bottom: 1px solid #949698;">Topic</td>
-                <td style="border-top: 1px solid #949698;border-bottom: 1px solid #949698;">Sequence</td>
-                <td style="border-top: 1px solid #949698;border-bottom: 1px solid #949698;">Subtopic</td>
-                <td style="border-top: 1px solid #949698;border-bottom: 1px solid #949698;">Estimated Time (Min)</td>
-                <td style="border-top: 1px solid #949698;border-bottom: 1px solid #949698;">Lesson Plan (Concept(s))</td>
+                <td style="border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;">#</td>
+                <td style="border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;">Strand</td>
+                <td style="border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;">Topic</td>
+                <td style="border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;">Sequence</td>
+                <td style="border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;">Subtopic</td>
+                <td style="border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;">Estimated Time (Min)</td>
+                <td style="border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;">Lesson Plan (Concept(s))</td>
               </tr>
               <tr v-for="(lst,index) in schemeOfWorkList.subtopic" :key="index" >
                 <td style="border-bottom: 1px solid #1a1e21;">{{index+1}}</td>
