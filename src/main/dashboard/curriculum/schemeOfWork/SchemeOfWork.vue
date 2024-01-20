@@ -129,6 +129,11 @@
                   <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="exportSchemeOfWorkPdf">
                     <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
                     Export PDF
+
+                    <div class="spinner-border spinner-border-sm" role="status" v-if="exportLoader">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+
                   </button>
                   <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSchemeOfWork" data-bs-toggle="modal" data-bs-target="#schemeOfWorkModal">
                     <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
@@ -253,6 +258,16 @@
     </div>
 
 
+    <div style="display: none">
+        <div ref="schemeOfWorkRef">
+          <SchemeOfWorkPdfTemplate
+
+          ></SchemeOfWorkPdfTemplate>
+        </div>
+    </div>
+
+
+
   </div>
 </template>
 
@@ -272,11 +287,14 @@ import NewLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPla
 import LessonPlanDetails from "@/main/dashboard/curriculum/schemeOfWork/LessonPlanDetails.vue";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
+import SchemeOfWorkPdfTemplate from "@/main/dashboard/curriculum/schemeOfWork/SchemeOfWorkPdfTemplate.vue";
 
 const level = ref( "")
+const schemeOfWorkRef = ref( null)
 const academic_year_number = ref( "")
 const schemeDataInfo = ref( {})
 const curriculumDialog = ref( false)
+const exportLoader = ref( false)
 const lessonPlanDialog = ref( false)
 const lessonPlanDetailsDialog = ref( false)
 const lessonPlanInfo = ref( "")
@@ -323,26 +341,8 @@ const addSchemeOfWork = () => {
 }
 
 const exportSchemeOfWorkPdf = () => {
-  schemeOfWorkStore.exportSchemeOfWorkPdfByClass(commons.initializePdfData("Scheme Of Work", generateHtml()));
-}
-
- function generateHtml (){
-  let htmlData = `
-		<!DOCTYPE html>
-		<html>
-		<body style="font-family: Arial, sans-serif;">
-			   <div>
-            <div class="ml-4"><b>Scheme of work</b></div>
-            <div class="ml-7" v-if="schemeOfWorkList.name"><small><b>Title:</b> {{schemeOfWorkList.name}}</small></div>
-            <div class="ml-7" v-if="schemeOfWorkList.academic_year_name"><small><b>Class:</b> {{schemeOfWorkList.academic_year_name}}</small></div>
-            <div class="ml-7" v-if="schemeOfWorkList.class_name"><small><b>Class:</b> {{schemeOfWorkList.class_name}}</small></div>
-            <div class="ml-7" v-if="schemeOfWorkList.subject_name"><small><b>Subject:</b> {{schemeOfWorkList.subject_name}}</small></div>
-            <div class="ml-7" v-if="schemeOfWorkList.status"><small><b>Status:</b> {{schemeOfWorkList.status}}</small></div>
-          </div>
-		</body>
-		</html>`
-
-  return htmlData
+  exportLoader.value = true
+  schemeOfWorkStore.exportSchemeOfWorkPdfByClass(commons.initializePdfData("Scheme Of Work", schemeOfWorkRef.value.innerHTML));
 }
 
 
@@ -554,7 +554,19 @@ watch(
     () => schemeOfWorkStore.exportSchemeOfWorkPdfByClassResponse,
     async (data) => {
       if(data){
-        alert(JSON.stringify(data))
+        exportLoader.value = false
+        if (navigator.userAgent.indexOf("Firefox") !== -1) {
+          // Firefox
+          window.open(data.data.pdf_b64, '_target')
+        } else {
+          let a = document.createElement("a");
+          a.href = data.data.pdf_b64;
+          a.setAttribute('download', fileName)
+          a.target = "_blank";
+          document.body.appendChild(a)
+          a.click();
+        }
+
       }
     },
     {deep:true}

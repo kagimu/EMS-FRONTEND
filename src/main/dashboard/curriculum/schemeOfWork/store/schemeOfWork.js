@@ -9,7 +9,6 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     let exportSchemeOfWorkPdfByClassResponse = ref(null)
     let newLessonPlanResponse = ref(null)
     let conceptsBySubtopicResponse = ref(null)
-    let referencesByLessonPlanNumberResponse = ref(null)
     let references = ref([])
     let addReferenceResponse = ref(null)
     const errorMessage = ref(null)
@@ -99,19 +98,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         return await api.post("https://pdfgenerator.ursb.go.ug/html-pdf", data)
             .then((response) => {
                     if(response) {
-                        if (navigator.userAgent.indexOf("Firefox") !== -1) {
-                            // Firefox
-                            window.open(response.data.pdf_b64, '_target')
-                        } else {
-                            let a = document.createElement("a");
-                            a.href = response.data.pdf_b64;
-                            a.setAttribute('download', fileName)
-                            a.target = "_blank";
-                            document.body.appendChild(a)
-                            a.click();
-                        }
-
-                        // exportSchemeOfWorkPdfByClassResponse.value = response.data
+                        exportSchemeOfWorkPdfByClassResponse.value = response
                     }
             })
             .catch((response) => {

@@ -62,11 +62,11 @@ export default function useCommonsStore() {
             "format": "A4",
             "orientation": "portrait",
             "header": {
-                "height": "25mm",
+                "height": "5mm",
                 //"contents": '<div style="text-align: center;">Author: Marc Bachmann</div>'
             },
             "footer": {
-                "height": "25mm",
+                "height": "5mm",
                 "contents": {
                     default: '<small style="color: #444; font-size: 8px; width: 100%; text-align:right"><i>Page {{page}} of  {{pages}}</i></small>', // fallback value
                 }
