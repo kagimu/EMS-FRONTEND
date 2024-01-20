@@ -195,6 +195,7 @@ preferred_type_of_enrollment: null,
 preferred_campus_number:null,
 reason:null,
 previousSchools:[],
+
 })
 
 
@@ -246,7 +247,7 @@ const formData = reactive({
   interview_date:null,
   message:null,
   venue:null,
-  studentNumber:null,
+  student_number:null,
 })
 
 function scheduleInterview(){

@@ -21,8 +21,9 @@
       <thead>
         <tr>
           <th>APN</th>
-          <th>Status</th>
-          <th>Payment Status</th>
+          <th>Scheduled_on</th>
+          <th>Venue</th>
+          <th>Message</th>
           <th>#</th>
         </tr>
       <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
@@ -30,18 +31,15 @@
   </div>
       </thead>
       <tbody>
-
         <tr v-for="(interlist, index) in interviewList" :key="index">
-          <td>{{ interlist.number }}</td>
-          <td>{{ interlist.status }}</td>
-          <td>{{ interlist.application_fee_payment }}</td>
+          <td>{{ interlist.student_number }}</td>
+          <td>{{ interlist.interview_date }}</td>
+          <td>{{ interlist.venue }}</td>
+          <td>{{ interlist.message }}</td>
           <td>
-            <router-link data-bs-toggle="modal" data-bs-target="#infoModal" 
-             :to="{name:'student-application', query:{id:interlist.number}}" class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small><i class="bi bi-eye">&nbsp;Grade</i></small></router-link>
-    <button @click="openModal(interlist)" class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details">
-      <small><i class="bi bi-eye">&nbsp;Grade</i></small>
-    </button>
-         
+            <button data-bs-toggle="modal" data-bs-target="#infoModal" 
+             class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
+              <i class="bi bi-edit">&nbsp;edit</i></small></button>        
             </td>
         </tr>        
         
