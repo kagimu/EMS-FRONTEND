@@ -12,38 +12,38 @@
             </div>
 
 
-
+<br />
 
               <table cellspacing="0" cellpadding="0"   style="width:100%; font-size: 7px;">
               <tr>
-                <td style="border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;">#</td>
-                <td style="border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;">Strand</td>
-                <td style="border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;">Topic</td>
-                <td style="border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;">Sequence</td>
-                <td style="border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;">Subtopic</td>
-                <td style="border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;">Estimated Time (Min)</td>
-                <td style="border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;">Lesson Plan (Concept(s))</td>
+                <td style="border-right: 1px solid #7a7c7e;border-left: 1px solid #7a7c7e;border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;padding: 2px;">#</td>
+                <td style="border-right: 1px solid #7a7c7e;border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;padding: 2px;">Strand</td>
+                <td style="border-right: 1px solid #7a7c7e;border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;padding: 2px;">Topic</td>
+                <td style="border-right: 1px solid #7a7c7e;border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;text-align: center;padding: 2px;">Sequence</td>
+                <td style="border-right: 1px solid #7a7c7e;border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;padding: 2px;">Subtopic</td>
+                <td style="border-right: 1px solid #7a7c7e;border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;text-align: center;padding: 2px;">Estimated Time (Min)</td>
+                <td style="border-right: 1px solid #7a7c7e;border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;padding: 2px;">Lesson Plan (Concept(s))</td>
               </tr>
               <tr v-for="(lst,index) in schemeOfWorkList.subtopic" :key="index" >
-                <td style="border-bottom: 1px solid #1a1e21;">{{index+1}}</td>
-                <td style="border-bottom: 1px solid #1a1e21;" >
+                <td style="border-right: 1px solid #7a7c7e;border-left: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;padding: 2px;">{{index+1}}</td>
+                <td style="border-right: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;padding: 2px;" >
                   {{lst.strand_name}}
                 </td>
-                <td style="border-bottom: 1px solid #1a1e21;">
+                <td style="border-right: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;padding: 2px;">
                   {{lst.topic_name}}
                 </td>
-                <td style="border-bottom: 1px solid #1a1e21;">
+                <td style="border-right: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e; text-align: center;padding: 2px;">
                   {{lst.code}}
                 </td>
-                <td style="border-bottom: 1px solid #1a1e21;">
+                <td style="border-right: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;padding: 2px;">
                   <div style="width: 200px; white-space: break-spaces">
                     {{lst.name}}
                   </div>
                 </td>
-                <td style="border-bottom: 1px solid #1a1e21;">
+                <td style="border-right: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e; text-align: center;padding: 2px;">
                   {{lst.estimated_time}}
                 </td>
-                <td style="border-bottom: 1px solid #1a1e21;">
+                <td style="border-right: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;padding: 2px;">
 
                   <div >
                     <div  class="ml-5 text-wrap" v-for="(lsn, idx) in lst.lesson_plan" :key="idx">
