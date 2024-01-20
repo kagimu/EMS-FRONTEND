@@ -126,8 +126,8 @@
               </div>
 
                 <div>
-                  <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="exportSchemeOfWorkPdf">
-                    <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+                  <button type="button"  class="btn btn-sm buttonStyle btn-success mr-2"  @click="exportSchemeOfWorkPdf">
+                    <i style="font-size: 15px;"  class="bi-file-earmark-pdf mr-2"></i>
                     Export PDF
 
                     <div class="spinner-border spinner-border-sm" role="status" v-if="exportLoader">
@@ -261,7 +261,7 @@
     <div style="display: none">
         <div ref="schemeOfWorkRef">
           <SchemeOfWorkPdfTemplate
-
+              :schemeOfWorkList="schemeOfWorkList"
           ></SchemeOfWorkPdfTemplate>
         </div>
     </div>
@@ -575,5 +575,8 @@ watch(
 </script>
 
 <style scoped>
-
+.buttonStyle{
+  font-size: 12px;
+  padding: 2px 7px;
+}
 </style>
