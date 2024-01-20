@@ -161,13 +161,13 @@
   </template>
   
   <script setup>
-import {reactive, ref, watch} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import useCommons from "@/composables/useCommons.js";
-import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+  import {reactive, ref, watch} from "vue";
+  import useNotificationStore from "@/composables/useNotification.js";
+  import useCommons from "@/composables/useCommons.js";
+  import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 
 
-const ApplicationStore = useApplicationStore()
+  const ApplicationStore = useApplicationStore()
 const notificationStore = useNotificationStore()
 const buttonLoader = ref(null)
 
@@ -195,6 +195,7 @@ preferred_type_of_enrollment: null,
 preferred_campus_number:null,
 reason:null,
 previousSchools:[],
+    student_number: null,
 })
 
 
@@ -235,6 +236,8 @@ watch (
         appDatails.preferred_campus_number=data.Student.preferred_campus_number,
         appDatails.reason=data.Student.reason
         appDatails.previousSchools=data.PreviousSchools
+          appDatails.student_number = data.Student.number
+
         // alert(JSON.stringify(data.Parent.surname))
       }
     },
@@ -246,26 +249,31 @@ const formData = reactive({
   interview_date:null,
   message:null,
   venue:null,
-  studentNumber:null,
+    student_number: null,
 })
 
 function scheduleInterview(){
   // alert(JSON.stringify(formData))
   //code to call the endpoint
   buttonLoader.value = true
+    alert(JSON.stringify(appDatails.student_number))
+    formData.student_number = appDatails.student_number
   ApplicationStore.createNewInterview(formData)
-  watch (
-    () => ApplicationStore.newInterviewResponse,
-    async (data) => {
-      if(data){
-        buttonLoader.value = false
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
+
 
 }
+
+  watch(
+      () => ApplicationStore.newInterviewResponse,
+      async (data) => {
+          if (data) {
+              buttonLoader.value = false
+              notificationStore.successToast("Success", data.message)
+          }
+      },
+      {deep: true}
+  )
+
 
   </script>
 
