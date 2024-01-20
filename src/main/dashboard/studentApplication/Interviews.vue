@@ -9,10 +9,12 @@
     
 
   <div class="container mt-4">
-    <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Application List<hr style="width:30px;"></h6>
-    <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-    {{errorMessage}}
-  </div>
+    <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Interview List
+      <button style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
+      data-bs-toggle="offcanvas" data-bs-target="#rolesDialogg" aria-controls="rolesDialogg">
+      <i class="bi bi-save2"></i>&nbsp;<small>
+        schedule Interview</small></button>
+      <hr style="width:30px;"></h6>
     <table
       id="datatable"
       class="table table-striped"
@@ -39,7 +41,7 @@
           <td>
             <button data-bs-toggle="modal" data-bs-target="#infoModal" 
              class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
-              <i class="bi bi-edit">&nbsp;edit</i></small></button>        
+              <i class="bi bi-pencil">&nbsp;Grade</i></small></button>        
             </td>
         </tr>        
         
@@ -48,6 +50,40 @@
       </tbody>
     </table>
   </div>
+
+  <!-- schedule interview -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="rolesDialogg" aria-labelledby="offcanvasRightLabel" >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">Schedule Interview</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <form>
+              <div class="mb-2">
+                <label class="textColor"><small>Date</small></label>
+                <input  type="date" required class="form-control">
+              </div>
+              <div class="mb-2">
+                <label class="textColor"><small>Venue</small></label>
+                <input  type="text" required class="form-control" >
+              </div>
+
+              <div class="mb-2">
+                <label class="textColor"><small>Message</small></label>
+                <textarea  required class="form-control noFocus" id="floatingTextarea2" style="height: 100px"></textarea>
+              </div>
+              <div class="text-right mt-4">
+                <button style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
+                  <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader" >
+                    <span class="visually-hidden">Loading...</span>
+                  </div></button>
+              </div>
+            </form>
+          </div>
+        </div>
+<!-- wnd  -->
+
+
   </div>
   </template>
   

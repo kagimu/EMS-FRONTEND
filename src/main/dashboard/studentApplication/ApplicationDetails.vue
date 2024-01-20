@@ -122,7 +122,7 @@
 </div>
 
 <!-- schedule interview -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="rolesDialog" aria-labelledby="offcanvasRightLabel">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="rolesDialog" aria-labelledby="offcanvasRightLabel" :class="{ show: interviewDialog }">
           <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasRightLabel">Schedule Interview</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -161,17 +161,18 @@
   </template>
   
   <script setup>
-import {reactive, ref, watch} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import useCommons from "@/composables/useCommons.js";
-import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+  import {reactive, ref, watch} from "vue";
+  import useNotificationStore from "@/composables/useNotification.js";
+  import useCommons from "@/composables/useCommons.js";
+  import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 
 
-const ApplicationStore = useApplicationStore()
+  const ApplicationStore = useApplicationStore()
 const notificationStore = useNotificationStore()
 const buttonLoader = ref(null)
 
 const useCommonsStore = useCommons()
+
 
   const props = defineProps({
     applicationNumber:String
@@ -195,7 +196,7 @@ preferred_type_of_enrollment: null,
 preferred_campus_number:null,
 reason:null,
 previousSchools:[],
-
+    student_number: null,
 })
 
 
@@ -236,6 +237,8 @@ watch (
         appDatails.preferred_campus_number=data.Student.preferred_campus_number,
         appDatails.reason=data.Student.reason
         appDatails.previousSchools=data.PreviousSchools
+          appDatails.student_number = data.Student.number
+
         // alert(JSON.stringify(data.Parent.surname))
       }
     },
@@ -253,20 +256,26 @@ const formData = reactive({
 function scheduleInterview(){
   // alert(JSON.stringify(formData))
   //code to call the endpoint
+  interviewDialog.value = true
   buttonLoader.value = true
+    // alert(JSON.stringify(appDatails.student_number))
+    formData.student_number = appDatails.student_number
   ApplicationStore.createNewInterview(formData)
-  watch (
-    () => ApplicationStore.newInterviewResponse,
-    async (data) => {
-      if(data){
-        buttonLoader.value = false
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
+
 
 }
+
+  watch(
+      () => ApplicationStore.newInterviewResponse,
+      async (data) => {
+          if (data) {
+              buttonLoader.value = false
+              notificationStore.successToast("Success", data.message)
+          }
+      },
+      {deep: true}
+  )
+
 
   </script>
 
