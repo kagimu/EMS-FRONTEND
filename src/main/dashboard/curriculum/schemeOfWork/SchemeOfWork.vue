@@ -126,7 +126,16 @@
               </div>
 
                 <div>
-                  <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCurriculum" data-bs-toggle="modal" data-bs-target="#schemeOfWorkModal">
+                  <button type="button"  class="btn btn-sm buttonStyle btn-success mr-2"  @click="exportSchemeOfWorkPdf">
+                    <i style="font-size: 15px;"  class="bi-file-earmark-pdf mr-2"></i>
+                    Export PDF
+
+                    <div class="spinner-border spinner-border-sm" role="status" v-if="exportLoader">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+
+                  </button>
+                  <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSchemeOfWork" data-bs-toggle="modal" data-bs-target="#schemeOfWorkModal">
                     <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
                     {{(schemeOfWorkList.number && (schemeOfWorkList.status === "Pending")) ? " Edit Scheme" : " Add Scheme"}}
                   </button>
@@ -191,7 +200,6 @@
                 <th scope="col">Subtopic</th>
                 <th scope="col">Estimated Time (Min)</th>
                 <th scope="col">Lesson Plan (Concept(s))</th>
-<!--                <th scope="col" class="text-end">Action</th>-->
               </tr>
               </thead>
               <tbody>
@@ -225,7 +233,7 @@
 
                     <div class="flex justify-between mt-4 mb-2" style="width: 350px;">
                       <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="addLessonPlan(lst)" data-bs-toggle="modal" data-bs-target="#lessonPlanModal">
-                        <small class="m-0 p-0">Add lesson plan</small>
+                        <small class="m-0 p-0">Add lesson plan [ {{lst.concept_count}} ]</small>
                       </button>
 
                       <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="viewLessonPlan(lst)" data-bs-toggle="modal" data-bs-target="#lessonPlanDetailsModal">
@@ -250,6 +258,16 @@
     </div>
 
 
+    <div style="display: none">
+        <div ref="schemeOfWorkRef">
+          <SchemeOfWorkPdfTemplate
+              :schemeOfWorkList="schemeOfWorkList"
+          ></SchemeOfWorkPdfTemplate>
+        </div>
+    </div>
+
+
+
   </div>
 </template>
 
@@ -268,15 +286,15 @@ import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subje
 import NewLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPlan.vue";
 import LessonPlanDetails from "@/main/dashboard/curriculum/schemeOfWork/LessonPlanDetails.vue";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
-import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
-import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
-import NewCurriculum from "@/main/dashboard/curriculum/curriculumSetup/NewCurriculum.vue";
+import SchemeOfWorkPdfTemplate from "@/main/dashboard/curriculum/schemeOfWork/SchemeOfWorkPdfTemplate.vue";
 
 const level = ref( "")
+const schemeOfWorkRef = ref( null)
 const academic_year_number = ref( "")
 const schemeDataInfo = ref( {})
 const curriculumDialog = ref( false)
+const exportLoader = ref( false)
 const lessonPlanDialog = ref( false)
 const lessonPlanDetailsDialog = ref( false)
 const lessonPlanInfo = ref( "")
@@ -300,7 +318,6 @@ const commons = useCommonsStore()
 const levelStore = useLevelStore()
 const schemeOfWorkStore = useSchemeOfWorkStore()
 const subjectStore = useSubjectStore()
-const academicYearStore = useAcademicYearStore()
 
 let classNo = routerData.currentRoute.value.query.c
 let campusNumber = routerData.currentRoute.value.query.id
@@ -319,9 +336,15 @@ const viewLessonPlan = (lst) => {
   lessonPlanInfo.value = lst
 }
 
-const addCurriculum = () => {
+const addSchemeOfWork = () => {
   curriculumDialog.value = true
 }
+
+const exportSchemeOfWorkPdf = () => {
+  exportLoader.value = true
+  schemeOfWorkStore.exportSchemeOfWorkPdfByClass(commons.initializePdfData("Scheme Of Work", schemeOfWorkRef.value.innerHTML));
+}
+
 
 const changeMenu = (value) => {
   selectedClass.value = value
@@ -527,8 +550,33 @@ watch(
     {deep:true}
 )
 
+watch(
+    () => schemeOfWorkStore.exportSchemeOfWorkPdfByClassResponse,
+    async (data) => {
+      if(data){
+        exportLoader.value = false
+        if (navigator.userAgent.indexOf("Firefox") !== -1) {
+          // Firefox
+          window.open(data.data.pdf_b64, '_target')
+        } else {
+          let a = document.createElement("a");
+          a.href = data.data.pdf_b64;
+          a.setAttribute('download', fileName)
+          a.target = "_blank";
+          document.body.appendChild(a)
+          a.click();
+        }
+
+      }
+    },
+    {deep:true}
+)
+
 </script>
 
 <style scoped>
-
+.buttonStyle{
+  font-size: 12px;
+  padding: 2px 7px;
+}
 </style>

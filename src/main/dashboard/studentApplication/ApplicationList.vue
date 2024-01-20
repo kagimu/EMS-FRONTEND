@@ -45,7 +45,7 @@ import {onMounted,reactive, ref, watch} from "vue";
 import ApplicationDetails from './ApplicationDetails.vue';
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import useNotificationStore from "@/composables/useNotification.js";
-
+const buttonLoader = ref(false)
 const applicationInfoList = ref( [])
 let errorMessage = ref(null)
 

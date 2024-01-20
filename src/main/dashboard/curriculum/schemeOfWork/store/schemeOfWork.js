@@ -6,9 +6,9 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     let newSchemeOfWorkResponse = ref(null)
     let updateSchemeOfWorkResponse = ref(null)
     let schemeOfWorkByClassResponse = ref(null)
+    let exportSchemeOfWorkPdfByClassResponse = ref(null)
     let newLessonPlanResponse = ref(null)
     let conceptsBySubtopicResponse = ref(null)
-    let referencesByLessonPlanNumberResponse = ref(null)
     let references = ref([])
     let addReferenceResponse = ref(null)
     const errorMessage = ref(null)
@@ -81,7 +81,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
 
 
     async function fetchSchemeOfWorkByClass(data) {
-        return await api.get("main/fetch-scheme-of-work-by-class-and-subject?class_number="+data.class_number+"&subject_number="+data.subject_number+"&academic_year_number="+data.academic_year_number)
+        return await api.get("main/scheme-of-work/fetch-scheme-of-work-by-class-and-subject?class_number="+data.class_number+"&subject_number="+data.subject_number+"&academic_year_number="+data.academic_year_number)
             .then((response) => {
                 schemeOfWorkByClassResponse.value = response.data
             })
@@ -91,6 +91,24 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
                 }
             })
     }
+
+    async function exportSchemeOfWorkPdfByClass(data) {
+        let fileName = data.fileName;
+        data = {"html":data.html,"options":data.options};
+        return await api.post("https://pdfgenerator.ursb.go.ug/html-pdf", data)
+            .then((response) => {
+                    if(response) {
+                        exportSchemeOfWorkPdfByClassResponse.value = response
+                    }
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
 
     async function fetchConceptsBySubTopic(data) {
         return await api.get("main/fetch-concepts-by-subtopic?sub_topic_number="+data)
@@ -125,6 +143,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         schemeOfWorkByClassResponse,
         conceptsBySubtopicResponse,
         newLessonPlanResponse,
+        exportSchemeOfWorkPdfByClassResponse,
         errorMessage,
         lessonPlanResponse,
         addReferenceResponse,
@@ -135,5 +154,6 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         saveLessonPlan,
         saveLessonPlanReference,
         fetchLessonPlanDetails,
+        exportSchemeOfWorkPdfByClass,
     }
 })

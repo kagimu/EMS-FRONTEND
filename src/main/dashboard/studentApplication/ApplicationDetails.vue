@@ -128,12 +128,19 @@
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
-              {{ applicationNumber }}
+              <!-- {{ applicationNumber }} -->
             <form @submit.prevent="scheduleInterview" >
               <div class="mb-2">
                 <label class="textColor"><small>Date</small></label>
-                <input v-model="formData.scheduled_on" type="datetime-local" required class="form-control">
+                <input v-model="formData.interview_date" type="date" required class="form-control">
               </div>
+
+
+              <div class="mb-2">
+                <label class="textColor"><small>Venue</small></label>
+                <input  type="text" required class="form-control" v-model="formData.venue">
+              </div>
+
               <div class="mb-2">
                 <label class="textColor"><small>Message</small></label>
                 <textarea  v-model="formData.message" required class="form-control noFocus" id="floatingTextarea2" style="height: 100px"></textarea>
@@ -154,14 +161,15 @@
   </template>
   
   <script setup>
-import {reactive, ref, watch} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import useCommons from "@/composables/useCommons.js";
-import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+  import {reactive, ref, watch} from "vue";
+  import useNotificationStore from "@/composables/useNotification.js";
+  import useCommons from "@/composables/useCommons.js";
+  import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 
 
-const ApplicationStore = useApplicationStore()
+  const ApplicationStore = useApplicationStore()
 const notificationStore = useNotificationStore()
+const buttonLoader = ref(null)
 
 const useCommonsStore = useCommons()
 
@@ -187,6 +195,7 @@ preferred_type_of_enrollment: null,
 preferred_campus_number:null,
 reason:null,
 previousSchools:[],
+    student_number: null,
 })
 
 
@@ -227,6 +236,8 @@ watch (
         appDatails.preferred_campus_number=data.Student.preferred_campus_number,
         appDatails.reason=data.Student.reason
         appDatails.previousSchools=data.PreviousSchools
+          appDatails.student_number = data.Student.number
+
         // alert(JSON.stringify(data.Parent.surname))
       }
     },
@@ -235,14 +246,34 @@ watch (
 
 
 const formData = reactive({
-  scheduled_on:null,
+  interview_date:null,
   message:null,
+  venue:null,
+    student_number: null,
 })
 
 function scheduleInterview(){
-  alert(JSON.stringify(formData))
+  // alert(JSON.stringify(formData))
   //code to call the endpoint
+  buttonLoader.value = true
+    alert(JSON.stringify(appDatails.student_number))
+    formData.student_number = appDatails.student_number
+  ApplicationStore.createNewInterview(formData)
+
+
 }
+
+  watch(
+      () => ApplicationStore.newInterviewResponse,
+      async (data) => {
+          if (data) {
+              buttonLoader.value = false
+              notificationStore.successToast("Success", data.message)
+          }
+      },
+      {deep: true}
+  )
+
 
   </script>
 

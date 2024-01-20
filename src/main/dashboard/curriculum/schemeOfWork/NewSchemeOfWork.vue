@@ -152,7 +152,12 @@
             {{lst.name}}
           </td>
           <td>
-            {{lst.estimated_time}}
+            <input
+                type="text"
+                style="outline: none 0 !important; box-shadow: none;"
+                v-model="lst.estimated_time"
+                required
+                class="form-control form-select-sm" />
           </td>
           <td>
             <input
@@ -162,15 +167,6 @@
                 required
                 class="form-control form-select-sm" />
           </td>
-<!--          <td>
-            <div class="float-end mr-2">
-              <i
-                  style="font-size: 13px;"
-                  data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                  class="bi-pencil mr-2 cursor-pointer" @click="editClass(sbj)"></i>
-              <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(sbj)"></i>
-            </div>
-          </td>-->
         </tr>
         </tbody>
       </table>
@@ -316,6 +312,7 @@ const addSchemeOfWork = () =>{
   topic.forEach(lst => {
     lst.code = parseInt(lst.code)
     lst.sort_code = parseInt(lst.sort_code)
+    lst.estimated_time = parseInt(lst.estimated_time)
   })
   form.subtopicList = topic
 
