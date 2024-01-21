@@ -341,6 +341,12 @@ const addSchemeOfWork = () => {
 }
 
 const exportSchemeOfWorkPdf = () => {
+
+    if(schemeOfWorkList.value && schemeOfWorkList.value.length < 1){
+      notificationStore.warningToast("Warning", "No details found on scheme of work")
+      return
+    }
+
   exportLoader.value = true
   schemeOfWorkStore.exportSchemeOfWorkPdfByClass(commons.initializePdfData("Scheme Of Work", schemeOfWorkRef.value.innerHTML));
 }
@@ -555,18 +561,6 @@ watch(
     async (data) => {
       if(data){
         exportLoader.value = false
-        if (navigator.userAgent.indexOf("Firefox") !== -1) {
-          // Firefox
-          window.open(data.data.pdf_b64, '_target')
-        } else {
-          let a = document.createElement("a");
-          a.href = data.data.pdf_b64;
-          a.setAttribute('download', fileName)
-          a.target = "_blank";
-          document.body.appendChild(a)
-          a.click();
-        }
-
       }
     },
     {deep:true}
