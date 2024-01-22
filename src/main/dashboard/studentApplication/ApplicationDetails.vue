@@ -170,6 +170,7 @@
   const ApplicationStore = useApplicationStore()
 const notificationStore = useNotificationStore()
 const buttonLoader = ref(null)
+const interviewDialog = ref(false)
 
 const useCommonsStore = useCommons()
 
