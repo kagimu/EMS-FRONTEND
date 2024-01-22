@@ -8,9 +8,9 @@
     </div>
   <div class="container mt-4">
     <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Application List<hr style="width:30px;"></h6>
-    <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+    <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
     {{errorMessage}}
-  </div>
+  </div> -->
     <table
       id="datatable"
       class="table table-striped"
@@ -54,6 +54,7 @@ const applications= ref(null)
 
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
+const interviewDialog = ref(false)
 
 const setApplicationNumber = (ap) =>{
   applications.value = ap
@@ -80,6 +81,7 @@ onMounted(
     async (data) => {
       if(data){
         errorMessage.value = data.message
+        interviewDialog.value = true
         buttonLoader.value = false
         notificationStore.errorToast("Error",data.message)
       }

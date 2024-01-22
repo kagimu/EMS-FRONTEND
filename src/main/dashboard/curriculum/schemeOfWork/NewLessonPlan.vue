@@ -61,6 +61,7 @@
             <div class="col-lg-8">
               <div class="mb-2 flex justify-content-between">
                 <select
+                    :disabled="!!form[0].number"
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
                     v-model="list.lesson_plan_concept_number"
@@ -71,7 +72,7 @@
                   </option>
                 </select>
                 <button
-                    v-if="index !== 0"
+                    v-if="index !== 0 && !form[0].number"
                     @click="removeConcept(index)"
                     type="button"
                     class="btn-close btn-sm border-0 mt-1">
@@ -155,7 +156,7 @@
         <button
             type="submit"
             class="btn btn-primary border-0">
-          Save
+            {{form[0].number ? "Edit" : "Save"}}
           <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>

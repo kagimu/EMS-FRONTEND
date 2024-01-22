@@ -1,5 +1,15 @@
 <template>
 <div class="text-sm">
+  <div class="flex justify-content-between" style="border-bottom: 1px solid #dee2e6; padding-bottom: 15px; margin-bottom: 25px;">
+    &nbsp;
+  <button type="button"  class="btn btn-sm buttonStyle btn-success mr-2" style="margin-right: 5px;"  @click="exportLessonPlanPdf">
+    <i style="font-size: 15px;"  class="bi-file-earmark-pdf mr-2"></i>
+    Export PDF
+    <div class="spinner-border spinner-border-sm" role="status" v-if="exportLoader">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </button>
+  </div>
 
 
 <div class="row mx-auto">
@@ -7,12 +17,12 @@
 
     <table class="mt-4">
       <tr>
-        <td style="width: 20%;"><b class="mr-5">Strand:</b></td>
+        <td style="width: 30%;"><b class="mr-5">Strand:</b></td>
         <td> <div> {{lessonPlanInfo.strand_name}}</div></td>
       </tr>
       <tr>
         <td><b class="mr-5">Topic:</b></td>
-        <td> <div> {{lessonPlanInfo.topic_name}}</div></td>
+        <td><div> {{lessonPlanInfo.topic_name}}</div></td>
       </tr>
       <tr>
         <td>
@@ -37,7 +47,7 @@
             <i style="font-size: 15px;" class="bi-plus mr-1"></i>
             {{ referenceDialog ? 'Hide Reference ' : 'Add Reference' }}
         </button>
-<!--        <new-lesson-plan-reference :lesson_plan_number="lessonPlanInfo.lesson_plan[0].number"></new-lesson-plan-reference>-->
+
         <div v-if="referenceDialog">
             <new-lesson-plan-reference v-if="lessonPlanDetailsInfo"
                                        :lesson_plan_number="lessonPlanDetailsInfo.number"></new-lesson-plan-reference>
@@ -66,14 +76,6 @@
 </div>
 
 
-
-
-
-
-<!--<button @click="openReferenceDialog" class="btn btn-sm btn-secondary border-0 mt-2" data-bs-toggle="modal" data-bs-target="#referenceModal">
-    <i style="font-size: 15px;" class="bi-plus mr-1"></i>
-    Add Reference
-</button>-->
 
 
   <div class="mt-10 mb-2" style="font-size: 18px;"><p>Lesson Plan / Concept(s)</p></div>
@@ -114,6 +116,7 @@ import {ref, watch} from "vue";
 import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
 
 const referenceDialog = ref(false)
+const exportLoader = ref(false)
 const lessonPlanDetailsInfo = ref(null)
 const scheme_sub_topic_number = ref(null)
 const schemeOfWorkStore = useSchemeOfWorkStore()
@@ -122,6 +125,10 @@ const props = defineProps({
   lessonPlanInfo: {}
 })
 
+
+const exportLessonPlanPdf = () => {
+alert(JSON.stringify(props.lessonPlanInfo))
+}
 
 
 
@@ -136,11 +143,6 @@ watch(
     },
     {deep: true}
 )
-
-const openReferenceDialog = () =>{
-    alert("hello")
-  referenceDialog.value = true
-}
 
 
 const showHideReferenceForm = () => {
@@ -165,5 +167,8 @@ watch(
 </script>
 
 <style scoped>
-
+.buttonStyle{
+  font-size: 12px;
+  padding: 2px 7px;
+}
 </style>
