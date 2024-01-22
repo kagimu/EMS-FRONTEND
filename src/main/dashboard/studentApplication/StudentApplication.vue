@@ -38,6 +38,9 @@
                   <div v-if="selectedPage === 'interviews'">
                     <interviews></interviews>
                   </div>
+                  <div v-if="selectedPage === 'interviewquestions'">
+                    <interviews-questions></interviews-questions>
+                  </div>
               </div>
   
   
@@ -56,6 +59,7 @@
   import {useRouter} from "vue-router";
   import ApplicationList from "./ApplicationList.vue";
   import Interviews from "./Interviews.vue";
+import InterviewsQuestions from "./Interviews@Questions.vue";
 
   const routerData = useRouter()
   const buttonLoader = ref(false)
@@ -71,6 +75,10 @@
     {
       name:"Interviews",
       id:"interviews"
+    },
+    {
+      name:"Interview Questions",
+      id:"interviewquestions"
     },
 
   ])

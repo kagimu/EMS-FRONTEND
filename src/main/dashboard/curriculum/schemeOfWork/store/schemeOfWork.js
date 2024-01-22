@@ -98,6 +98,20 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         return await api.post("https://pdfgenerator.ursb.go.ug/html-pdf", data)
             .then((response) => {
                     if(response) {
+
+                        if (navigator.userAgent.indexOf("Firefox") !== -1) {
+                            // Firefox
+                            window.open(response.data.pdf_b64, '_target')
+                        } else {
+                            let a = document.createElement("a");
+                            a.href = response.data.pdf_b64;
+                            a.setAttribute('download', fileName)
+                            a.target = "_blank";
+                            document.body.appendChild(a)
+                            a.click();
+                        }
+
+
                         exportSchemeOfWorkPdfByClassResponse.value = response
                     }
             })

@@ -122,7 +122,7 @@
 </div>
 
 <!-- schedule interview -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="rolesDialog" aria-labelledby="offcanvasRightLabel">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="rolesDialog" aria-labelledby="offcanvasRightLabel" :class="{ show: interviewDialog }">
           <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasRightLabel">Schedule Interview</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -172,6 +172,7 @@ const notificationStore = useNotificationStore()
 const buttonLoader = ref(null)
 
 const useCommonsStore = useCommons()
+
 
   const props = defineProps({
     applicationNumber:String
@@ -249,14 +250,15 @@ const formData = reactive({
   interview_date:null,
   message:null,
   venue:null,
-    student_number: null,
+  student_number:null,
 })
 
 function scheduleInterview(){
   // alert(JSON.stringify(formData))
   //code to call the endpoint
+  interviewDialog.value = true
   buttonLoader.value = true
-    alert(JSON.stringify(appDatails.student_number))
+    // alert(JSON.stringify(appDatails.student_number))
     formData.student_number = appDatails.student_number
   ApplicationStore.createNewInterview(formData)
 

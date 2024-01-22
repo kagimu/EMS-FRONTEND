@@ -46,7 +46,7 @@
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <div class="mt-2 mb-2">
+            <div class="mb-2">
               <lesson-plan-details :lessonPlanInfo="lessonPlanInfo"></lesson-plan-details>
             </div>
           </div>
@@ -129,11 +129,9 @@
                   <button type="button"  class="btn btn-sm buttonStyle btn-success mr-2"  @click="exportSchemeOfWorkPdf">
                     <i style="font-size: 15px;"  class="bi-file-earmark-pdf mr-2"></i>
                     Export PDF
-
                     <div class="spinner-border spinner-border-sm" role="status" v-if="exportLoader">
                       <span class="visually-hidden">Loading...</span>
                     </div>
-
                   </button>
                   <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSchemeOfWork" data-bs-toggle="modal" data-bs-target="#schemeOfWorkModal">
                     <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
@@ -341,6 +339,12 @@ const addSchemeOfWork = () => {
 }
 
 const exportSchemeOfWorkPdf = () => {
+
+    if(schemeOfWorkList.value && schemeOfWorkList.value.length < 1){
+      notificationStore.warningToast("Warning", "No details found on scheme of work")
+      return
+    }
+
   exportLoader.value = true
   schemeOfWorkStore.exportSchemeOfWorkPdfByClass(commons.initializePdfData("Scheme Of Work", schemeOfWorkRef.value.innerHTML));
 }
@@ -555,18 +559,6 @@ watch(
     async (data) => {
       if(data){
         exportLoader.value = false
-        if (navigator.userAgent.indexOf("Firefox") !== -1) {
-          // Firefox
-          window.open(data.data.pdf_b64, '_target')
-        } else {
-          let a = document.createElement("a");
-          a.href = data.data.pdf_b64;
-          a.setAttribute('download', fileName)
-          a.target = "_blank";
-          document.body.appendChild(a)
-          a.click();
-        }
-
       }
     },
     {deep:true}
