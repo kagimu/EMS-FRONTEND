@@ -46,7 +46,7 @@
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <div class="mt-2 mb-2">
+            <div class="mb-2">
               <lesson-plan-details :lessonPlanInfo="lessonPlanInfo"></lesson-plan-details>
             </div>
           </div>
@@ -129,11 +129,9 @@
                   <button type="button"  class="btn btn-sm buttonStyle btn-success mr-2"  @click="exportSchemeOfWorkPdf">
                     <i style="font-size: 15px;"  class="bi-file-earmark-pdf mr-2"></i>
                     Export PDF
-
                     <div class="spinner-border spinner-border-sm" role="status" v-if="exportLoader">
                       <span class="visually-hidden">Loading...</span>
                     </div>
-
                   </button>
                   <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSchemeOfWork" data-bs-toggle="modal" data-bs-target="#schemeOfWorkModal">
                     <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
