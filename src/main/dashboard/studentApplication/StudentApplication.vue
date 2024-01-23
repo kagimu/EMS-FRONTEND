@@ -59,7 +59,7 @@
   import {useRouter} from "vue-router";
   import ApplicationList from "./ApplicationList.vue";
   import Interviews from "./Interviews.vue";
-import InterviewsQuestions from "./Interviews@Questions.vue";
+  import InterviewsQuestions from "./InterviewsQuestions.vue";
 
   const routerData = useRouter()
   const buttonLoader = ref(false)

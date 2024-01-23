@@ -12,6 +12,8 @@ export const useApplicationStore = defineStore("application", () => {
     let newNnterview = ref(null)
     let newInterviewResponse = ref(null)
     const errorMessage = ref(null)
+    let  newInterviewQuestionsResponse = ref(null)
+    let  interviewQuestionsResponse = ref(null)
 
     async function newApplicationDetails(data) {
         return await api.post("main/applications/new-parent", data)
@@ -98,6 +100,31 @@ export const useApplicationStore = defineStore("application", () => {
             })
     }
 
+    async function createNewInterviewQuestion(data) {
+        return await api.post("main/interview-questions", data)
+            .then((response) => {
+                newInterviewQuestionsResponse.value = response.data
+
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchApplicationInterviewQuestions(applicationId){
+        return await api.get("main/interview-questions")
+        .then((response) => {
+            interviewQuestionsResponse.value = response.data
+        })
+        .catch((error) => {
+            if(error){
+                errorMessage.value = error.data
+            } 
+        } )
+        }
+
     return {
         newApplicationDetailsResponse ,
         errorMessage,
@@ -114,5 +141,10 @@ export const useApplicationStore = defineStore("application", () => {
         newApplicationPreviousSchoolsResponse,
         newInterviewResponse,
         createNewInterview,
+        newInterviewQuestionsResponse,
+        createNewInterviewQuestion,
+        interviewQuestionsResponse,
+        fetchApplicationInterviewQuestions
+        
     }
 })

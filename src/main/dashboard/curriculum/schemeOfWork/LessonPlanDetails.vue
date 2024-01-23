@@ -105,6 +105,14 @@
 
   </div>
 
+  <div style="display: none">
+    <div ref="lessonPlanRef">
+      <LessonPlanDetailsPdf
+          :lessonPlanInfo="lessonPlanInfo"
+      ></LessonPlanDetailsPdf>
+    </div>
+  </div>
+
 
 </div>
 </template>
@@ -114,12 +122,16 @@
 import NewLessonPlanReference from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPlanReference.vue";
 import {ref, watch} from "vue";
 import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
+import LessonPlanDetailsPdf from "@/main/dashboard/curriculum/schemeOfWork/LessonPlanDetailsPdf.vue";
+import useCommonsStore from "@/composables/useCommons.js";
 
 const referenceDialog = ref(false)
 const exportLoader = ref(false)
+const lessonPlanRef = ref(null)
 const lessonPlanDetailsInfo = ref(null)
 const scheme_sub_topic_number = ref(null)
 const schemeOfWorkStore = useSchemeOfWorkStore()
+const commons = useCommonsStore()
 
 const props = defineProps({
   lessonPlanInfo: {}
@@ -127,7 +139,9 @@ const props = defineProps({
 
 
 const exportLessonPlanPdf = () => {
-alert(JSON.stringify(props.lessonPlanInfo))
+
+  exportLoader.value = true
+  schemeOfWorkStore.exportPdf(commons.initializePdfData("Lesson Plan", lessonPlanRef.value.innerHTML));
 }
 
 
@@ -160,7 +174,15 @@ watch(
     {deep: true}
 )
 
-
+watch(
+    () => schemeOfWorkStore.exportPdfResponse,
+    async (data) => {
+      if(data){
+        exportLoader.value = false
+      }
+    },
+    {deep:true}
+)
 
 
 
