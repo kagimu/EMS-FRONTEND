@@ -344,9 +344,8 @@ const exportSchemeOfWorkPdf = () => {
       notificationStore.warningToast("Warning", "No details found on scheme of work")
       return
     }
-
   exportLoader.value = true
-  schemeOfWorkStore.exportSchemeOfWorkPdfByClass(commons.initializePdfData("Scheme Of Work", schemeOfWorkRef.value.innerHTML));
+  schemeOfWorkStore.exportPdf(commons.initializePdfData("Scheme Of Work", schemeOfWorkRef.value.innerHTML));
 }
 
 
@@ -555,7 +554,7 @@ watch(
 )
 
 watch(
-    () => schemeOfWorkStore.exportSchemeOfWorkPdfByClassResponse,
+    () => schemeOfWorkStore.exportPdfResponse,
     async (data) => {
       if(data){
         exportLoader.value = false
