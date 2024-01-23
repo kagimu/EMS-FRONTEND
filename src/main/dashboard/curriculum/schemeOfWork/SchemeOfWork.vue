@@ -230,7 +230,14 @@
                     </div>
 
                     <div class="flex justify-between mt-4 mb-2" style="width: 350px;">
-                      <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="addLessonPlan(lst)" data-bs-toggle="modal" data-bs-target="#lessonPlanModal">
+                      <button
+                          type="button"
+                          class="btn btn-sm  btn-primary mr-2 m-0 py-0"
+                          @click="addLessonPlan(lst)"
+                          data-bs-toggle="modal"
+                          data-bs-target="#lessonPlanModal"
+                          v-tooltip.bottom="lst.concept_count+(lst.concept_count <1 ? ' Concept' : ' Concepts')"
+                      >
                         <small class="m-0 p-0">Add lesson plan [ {{lst.concept_count}} ]</small>
                       </button>
 
@@ -344,9 +351,8 @@ const exportSchemeOfWorkPdf = () => {
       notificationStore.warningToast("Warning", "No details found on scheme of work")
       return
     }
-
   exportLoader.value = true
-  schemeOfWorkStore.exportSchemeOfWorkPdfByClass(commons.initializePdfData("Scheme Of Work", schemeOfWorkRef.value.innerHTML));
+  schemeOfWorkStore.exportPdf(commons.initializePdfData("Scheme Of Work", schemeOfWorkRef.value.innerHTML));
 }
 
 
@@ -555,7 +561,7 @@ watch(
 )
 
 watch(
-    () => schemeOfWorkStore.exportSchemeOfWorkPdfByClassResponse,
+    () => schemeOfWorkStore.exportPdfResponse,
     async (data) => {
       if(data){
         exportLoader.value = false

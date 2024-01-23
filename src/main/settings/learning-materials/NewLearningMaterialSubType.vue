@@ -8,6 +8,19 @@
             </div>
 
 
+          <div class="mb-2">
+            <label class="textColor"><small>Code</small></label>
+            <input
+                @keypress="commons.numbersOnlyValidator($event)"
+                maxlength="10"
+                type="text"
+                style="outline: none 0 !important;
+               box-shadow: none;"
+                v-model="form.code"
+                required
+                class="form-control form-select-sm">
+          </div>
+
 
 
             <div>
@@ -25,18 +38,7 @@
 
             </div>
 
-            <div class="mb-2">
-                <label class="textColor"><small>Code</small></label>
-                <input
-                        @keypress="commons.numbersOnlyValidator($event)"
-                        maxlength="10"
-                        type="text"
-                        style="outline: none 0 !important;
-               box-shadow: none;"
-                        v-model="form.code"
-                        required
-                        class="form-control form-select-sm">
-            </div>
+
 
 
             <div class="mb-2">
