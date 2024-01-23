@@ -18,7 +18,8 @@
       <thead>
         <tr>
           <th>Question</th>
-          <th>Answer</th>
+          <th>Correct Answer</th>
+          <th>Student Answer</th>
           <th>Score</th>
         </tr>
       <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
@@ -28,22 +29,20 @@
       <tbody>
         <tr>
           <td>Who is the President of Uganda</td>
-          <td>Museveni</td>
+          <td>
+          <form>
+          <input type="text" class="form-control" value="Museveni" disabled >
+          </form>
+        </td>
+          <td> <form>
+          <input type="text" class="form-control" value="Kyagulanyi">
+          </form></td>
           <td>
           <form>
           <input type="text" class="form-control score" value="90">
           </form>
         </td>
-        </tr>   
-        <tr>
-          <td>Do you eat pork?</td>
-          <td>Neda</td>
-          <td> <form>
-          <input type="text" class="form-control score" value="59">
-          </form></td>
-  
-        </tr>       
-        
+        </tr>     
       </tbody>
     </table>
   </div>
