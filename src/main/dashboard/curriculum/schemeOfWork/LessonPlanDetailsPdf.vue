@@ -1,6 +1,12 @@
 <template>
 <div class="text-sm" style="font-size: 8px;">
 
+  <p style="font-size: 10px;">
+    <b>Lesson Plan</b>
+  </p>
+
+  <br />
+
   <table style="width: 100%;">
     <tr>
       <td style="width: 50%;">
