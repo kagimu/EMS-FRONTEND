@@ -1,7 +1,6 @@
 <template>
   <div>
 
-
     <div style="font-size: 25px; color: #262626;" class="mt-3 ml-2" v-if="levelDataInfo">
       {{levelDataInfo.name}}
     </div>
