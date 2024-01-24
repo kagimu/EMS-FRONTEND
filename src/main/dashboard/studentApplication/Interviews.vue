@@ -1,13 +1,5 @@
 <template>
   <div>
-    <!-- modal for viewing more details -->
-    <div class="modal fade" id="infoModal" tabindex="-1" :class="{ show: schoolDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <application-details></application-details>
-      </div>
-    </div>
-    
-
   <div class="container mt-4">
     <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Interview List
       <button style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
@@ -28,9 +20,7 @@
           <th>Message</th>
           <th>#</th>
         </tr>
-      <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-    {{errorMessage}}
-  </div>
+
       </thead>
       <tbody>
         <tr v-for="(interlist, index) in interviewList" :key="index">
@@ -39,14 +29,16 @@
           <td>{{ interlist.venue }}</td>
           <td>{{ interlist.message }}</td>
           <td>
-            <button data-bs-toggle="modal" data-bs-target="#infoModal" 
-             class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
-              <i class="bi bi-pencil">&nbsp;Grade</i></small></button>        
+            
+            <router-link
+                  class="text-decoration-none"
+                  :to="{name:'interview-details', query:{id:interlist.number}}"
+              ><button class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
+              <i class="bi bi-eye">&nbsp;View Details</i></small></button>   
+            </router-link>     
             </td>
         </tr>        
         
-
-
       </tbody>
     </table>
   </div>
@@ -54,23 +46,27 @@
   <!-- schedule interview -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="rolesDialogg" aria-labelledby="offcanvasRightLabel" >
           <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasRightLabel">Schedule Interview</h5>
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">Create Interview</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
-            <form>
+            <form @submit.prevent="createInterview">
               <div class="mb-2">
-                <label class="textColor"><small>Date</small></label>
-                <input  type="date" required class="form-control">
+                <label class="textColor"><small>Title</small></label>
+                <input v-model="formData.title" type="text" required class="form-control">
+              </div>
+              <div class="mb-2">
+                <label class="textColor"><small>Interview Date</small></label>
+                <input v-model="formData.interview_date"  type="date" required class="form-control">
               </div>
               <div class="mb-2">
                 <label class="textColor"><small>Venue</small></label>
-                <input  type="text" required class="form-control" >
+                <input v-model="formData.venue"  type="text" required class="form-control" >
               </div>
 
               <div class="mb-2">
-                <label class="textColor"><small>Message</small></label>
-                <textarea  required class="form-control noFocus" id="floatingTextarea2" style="height: 100px"></textarea>
+                <label class="textColor"><small>Description</small></label>
+                <textarea v-model="formData.message"  required class="form-control noFocus" id="floatingTextarea2" style="height: 100px"></textarea>
               </div>
               <div class="text-right mt-4">
                 <button style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
@@ -83,18 +79,18 @@
         </div>
 <!-- wnd  -->
 
-
   </div>
   </template>
   
   <script setup>
 import {onMounted,reactive, ref, watch} from "vue";
-import ApplicationDetails from './ApplicationDetails.vue';
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import useNotificationStore from "@/composables/useNotification.js";
 
 const interviewList = ref( [])
 let errorMessage = ref(null)
+
+const buttonLoader = ref(false)
 
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
@@ -125,6 +121,31 @@ watch (
     },
     {deep:true}
 )
+
+const formData = reactive({ 
+title:null,
+interview_date:null,
+venue:null,
+message:null,
+})
+
+
+const createInterview = () => {
+alert(JSON.stringify(formData))
+applicationStore.createNewInterview(formData)
+}
+
+watch(
+      () => applicationStore.newInterviewResponse,
+      async (data) => {
+          if (data) {
+              buttonLoader.value = false
+              notificationStore.successToast("Success", data.message)
+          }
+      },
+      {deep: true}
+  )
+
 
   </script>
 

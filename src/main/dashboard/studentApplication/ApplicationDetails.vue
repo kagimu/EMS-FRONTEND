@@ -130,21 +130,13 @@
           <div class="offcanvas-body">
               <!-- {{ applicationNumber }} -->
             <form @submit.prevent="scheduleInterview" >
-              <div class="mb-2">
-                <label class="textColor"><small>Date</small></label>
-                <input v-model="formData.interview_date" type="date" required class="form-control">
-              </div>
-
-
-              <div class="mb-2">
-                <label class="textColor"><small>Venue</small></label>
-                <input  type="text" required class="form-control" v-model="formData.venue">
-              </div>
-
-              <div class="mb-2">
-                <label class="textColor"><small>Message</small></label>
-                <textarea  v-model="formData.message" required class="form-control noFocus" id="floatingTextarea2" style="height: 100px"></textarea>
-              </div>
+              <label> Select Interview</label>
+              <select required class="form-control" v-model="formData.interview_number" >
+                <option disabled value=""> - Select Interview - </option>
+                  <option v-for="(list, index) in interviewListData" :key="index" :value="list.number">
+                    {{ list.number}} 
+                  </option>
+               </select>
               <div class="text-right mt-4">
                 <button style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
                   <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader" >
@@ -161,16 +153,17 @@
   </template>
   
   <script setup>
-  import {reactive, ref, watch} from "vue";
+  import {onMounted,reactive, ref, watch} from "vue";
   import useNotificationStore from "@/composables/useNotification.js";
   import useCommons from "@/composables/useCommons.js";
   import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 
 
-  const ApplicationStore = useApplicationStore()
+const ApplicationStore = useApplicationStore()
 const notificationStore = useNotificationStore()
 const buttonLoader = ref(null)
 const interviewDialog = ref(false)
+const interviewListData = ref([])
 
 const useCommonsStore = useCommons()
 
@@ -248,10 +241,7 @@ watch (
 
 
 const formData = reactive({
-  interview_date:null,
-  message:null,
-  venue:null,
-  student_number:null,
+  interview_number:null
 })
 
 function scheduleInterview(){
@@ -276,6 +266,24 @@ function scheduleInterview(){
       },
       {deep: true}
   )
+
+
+
+  onMounted(
+    async () => {
+      await ApplicationStore.fetchInterviewList()
+    } )
+
+    watch(
+    () => ApplicationStore.interviewListResponse,
+    async (data) => {
+      if(data){
+        interviewListData.value = data.data
+      }
+    },
+    {deep:true}
+)
+
 
 
   </script>
