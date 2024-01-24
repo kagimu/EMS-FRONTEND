@@ -111,7 +111,6 @@
                                 style="font-size: 13px;"
                                 @click="addStream(classes)">Add Stream
                         </button>
-                        <i style="font-size: 13px;" class="bi-trash cursor-pointer" @click="deleteClass(classes)"></i>
                     </div>
                 </td>
             </tr>
@@ -166,9 +165,6 @@ const addStream = (data) => {
 
 const saveStream = () => {
 classStore.addStream(streamForm)
-}
-const deleteClass = (data) => {
-    alert(JSON.stringify(data))
 }
 
 const deleteStream = (lst) => {
