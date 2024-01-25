@@ -14,7 +14,7 @@
             <form >
                 <div class="row">
                     <div class="col-lg-3">
-                        <label class="textColor text-sm"><small>No. Of <br>Interviews </small></label>
+                        <label class="textColor text-sm"><small>No. Of <br>Students</small></label>
                     </div>
                     <div class="col-lg-5">
              

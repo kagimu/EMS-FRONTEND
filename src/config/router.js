@@ -33,6 +33,7 @@ import ApplicationGuide from "../main/auth/ApplicationGuide.vue";
  import StudentApplication from "@/main/dashboard/studentApplication/StudentApplication.vue";
 import ClientApplications from "@/main/application/ClientApplications.vue";
 import InterviewDetails from "@/main/dashboard/studentApplication/InterviewDetails.vue";
+import Services from "@/main/dashboard/servicesAndProducts/Services.vue";
 
 
 
@@ -87,6 +88,7 @@ const router = createRouter({
                 {path:'calendar', component: GeneralCalendar, name: "general-calendar"},
                 {path:'calendar/:calendar_id', component: CalendarDetails, name: "calendar-details" },
                 {path: 'interview-details', component: InterviewDetails, name: "interview-details"},
+                {path: 'services', component: Services, name: "services"},
                 
             ]
         },
