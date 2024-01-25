@@ -1,0 +1,26 @@
+import { defineStore } from "pinia"
+import { ref } from "vue"
+import api from "@/config/api.js";
+
+export const useServiceStore = defineStore("service", () => {
+    let newServiceResponse = ref(null)
+    let errorMessage = ref(null)
+
+        async function createNewService(data) {
+            return await api.post("main/"+data)
+                .then((response) => {
+                    newServiceResponse.value = response.data
+                })
+                .catch((response) => {
+                    if(response){
+                        errorMessage.value = response.response.data
+                    }
+                })
+        }
+
+    return {
+        newServiceResponse,
+        errorMessage,      
+        createNewService
+    }
+})

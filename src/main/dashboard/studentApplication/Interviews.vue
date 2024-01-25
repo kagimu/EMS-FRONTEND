@@ -14,7 +14,7 @@
     >
       <thead>
         <tr>
-          <th>APN</th>
+          <th>Name</th>
           <th>Scheduled_on</th>
           <th>Venue</th>
           <th>Message</th>
@@ -24,7 +24,7 @@
       </thead>
       <tbody>
         <tr v-for="(interlist, index) in interviewList" :key="index">
-          <td>{{ interlist.student_number }}</td>
+          <td>{{ interlist.name}}</td>
           <td>{{ interlist.interview_date }}</td>
           <td>{{ interlist.venue }}</td>
           <td>{{ interlist.message }}</td>
@@ -53,7 +53,7 @@
             <form @submit.prevent="createInterview">
               <div class="mb-2">
                 <label class="textColor"><small>Title</small></label>
-                <input v-model="formData.title" type="text" required class="form-control">
+                <input v-model="formData.name" type="text" required class="form-control">
               </div>
               <div class="mb-2">
                 <label class="textColor"><small>Interview Date</small></label>
@@ -123,7 +123,7 @@ watch (
 )
 
 const formData = reactive({ 
-title:null,
+name:null,
 interview_date:null,
 venue:null,
 message:null,

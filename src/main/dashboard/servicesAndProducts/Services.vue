@@ -92,7 +92,7 @@
   import {onMounted,reactive, ref, watch} from "vue";
   import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
   import useNotificationStore from "@/composables/useNotification.js";
-  import NewService from "./NewService.vue";
+  import NewService from "./newService.vue";
   
   const interviewList = ref( [])
   let errorMessage = ref(null)

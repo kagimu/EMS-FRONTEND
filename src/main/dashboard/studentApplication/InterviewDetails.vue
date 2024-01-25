@@ -8,9 +8,13 @@
       </div>
     </div>
     <!-- end  -->
-
+    <div class="row">
+      <div class="col-12">
+        <div class="card mt-3">
+          <div class="card-body" style="padding: 0;">
   <div class="container mt-4">
-    <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Students Scheduled For <b>Interview Title</b> </h6>
+    <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Students On Interview<b></b> 
+      <hr style="color:rgba(192, 192, 192, 0.781); width:200px"></h6>
     <table
       id="datatable"
       class="table table-striped"
@@ -41,6 +45,10 @@
         
       </tbody>
     </table>
+  </div>
+  </div>
+  </div>
+  </div>
   </div>
 
 
