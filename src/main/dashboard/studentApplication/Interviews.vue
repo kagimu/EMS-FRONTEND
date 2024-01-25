@@ -4,8 +4,8 @@
     <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Interview List
       <button style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
       data-bs-toggle="offcanvas" data-bs-target="#rolesDialogg" aria-controls="rolesDialogg">
-      <i class="bi bi-save2"></i>&nbsp;<small>
-        schedule Interview</small></button>
+      <i class="bi bi-plus"></i>&nbsp;<small>
+        Add Interview</small></button>
       <hr style="width:30px;"></h6>
     <table
       id="datatable"
@@ -32,7 +32,7 @@
             
             <router-link
                   class="text-decoration-none"
-                  :to="{name:'interview-details', query:{id:interlist.number}}"
+                  :to="{name:'interview-details', query:{interview_id:interlist.number}}"
               ><button class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
               <i class="bi bi-eye">&nbsp;View Details</i></small></button>   
             </router-link>     

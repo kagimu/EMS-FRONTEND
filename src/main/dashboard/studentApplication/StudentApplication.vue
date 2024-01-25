@@ -41,6 +41,9 @@
                   <div v-if="selectedPage === 'interviewquestions'">
                     <interviews-questions></interviews-questions>
                   </div>
+                  <div v-if="selectedPage === 'grade-results'">
+                    <grade-results></grade-results>
+                  </div>
               </div>
   
   
@@ -60,6 +63,7 @@
   import ApplicationList from "./ApplicationList.vue";
   import Interviews from "./Interviews.vue";
   import InterviewsQuestions from "./InterviewsQuestions.vue";
+  import GradeResults from "./GradeResults.vue";
 
   const routerData = useRouter()
   const buttonLoader = ref(false)
@@ -79,6 +83,10 @@
     {
       name:"Interview Questions",
       id:"interviewquestions"
+    },
+    {
+      name:"Interview Results",
+      id:"grade-results"
     },
 
   ])

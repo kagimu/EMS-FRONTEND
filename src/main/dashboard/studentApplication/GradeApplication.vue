@@ -2,8 +2,7 @@
 
 <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <!-- {{ applicationNumber }} -->
-            <h6 class="modal-title ml-3 mt-2 mb-2"><small>Grading : Collins Mpiima</small></h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2"><small>Grading : Collins Mpiima  {{  studentonInterviewid }}</small></h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -43,6 +42,8 @@
           </form>
         </td>
         </tr>     
+
+
       </tbody>
     </table>
   </div>
@@ -60,8 +61,17 @@
   </template>
   
   <script setup>
+  import {onMounted,reactive, ref, watch} from "vue";
+  import useNotificationStore from "@/composables/useNotification.js";
+  import useCommons from "@/composables/useCommons.js";
+
+  const props = defineProps({
+    studentonInterviewid:String
+  })
 
 
+
+  
   </script>
 
 

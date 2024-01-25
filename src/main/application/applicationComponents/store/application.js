@@ -14,6 +14,9 @@ export const useApplicationStore = defineStore("application", () => {
     const errorMessage = ref(null)
     let  newInterviewQuestionsResponse = ref(null)
     let  interviewQuestionsResponse = ref(null)
+    let  StudentsOnInterviewResponse = ref(null)
+    let createInterviewGradeResponse = ref(null)
+    let getInterviewQuestionsForGradingResponse = ref(null)
 
     async function newApplicationDetails(data) {
         return await api.post("main/applications/new-parent", data)
@@ -125,6 +128,43 @@ export const useApplicationStore = defineStore("application", () => {
         } )
         }
 
+        async function fetchStudentsOnInterview(data) {
+            return await api.get("main/interviews/"+data+"/students")
+                .then((response) => {
+                    StudentsOnInterviewResponse.value = response.data
+                })
+                .catch((response) => {
+                    if(response){
+                        errorMessage.value = response.response.data
+                    }
+                })
+        }
+
+
+        async function createInterviewGrade(data) {
+            return await api.post("main/interview-grades/"+data)
+                .then((response) => {
+                    gradeStudentResponse.value = response.data
+                })
+                .catch((response) => {
+                    if(response){
+                        errorMessage.value = response.response.data
+                    }
+                })
+        }
+
+        async function getInterviewQuestionForGrading(data) {
+            return await api.post("main/interview-grades/"+data)
+                .then((response) => {
+                     getInterviewQuestionsForGradingResponse.value = response.data
+                })
+                .catch((response) => {
+                    if(response){
+                        errorMessage.value = response.response.data
+                    }
+                })
+        }
+
     return {
         newApplicationDetailsResponse ,
         errorMessage,
@@ -144,7 +184,13 @@ export const useApplicationStore = defineStore("application", () => {
         newInterviewQuestionsResponse,
         createNewInterviewQuestion,
         interviewQuestionsResponse,
-        fetchApplicationInterviewQuestions
+        fetchApplicationInterviewQuestions,
+        StudentsOnInterviewResponse,
+        fetchStudentsOnInterview,
+        createInterviewGrade,
+        createInterviewGradeResponse,
+        getInterviewQuestionsForGradingResponse,
+        getInterviewQuestionForGrading
         
     }
 })
