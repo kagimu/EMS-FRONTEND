@@ -7,11 +7,6 @@
         <SosInformation :sosnumber="sosNumber" ></SosInformation>
       </div>
     </div>
-
-
-<!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-    {{errorMessage}}
-  </div> -->
  <form  @submit.prevent="addSos"> 
   <div class="row mx-auto">
     <div class="col-12" style="margin-top: 20px;">

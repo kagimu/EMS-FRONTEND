@@ -49,33 +49,26 @@
   
         </thead>
         <tbody>
-          <tr>
-            <td>Ream of Papers</td>
-            <td>400000</td>
-            <td>paid per Term</td>
+          <tr v-for="(serviceData, index) in servicesList" :key="index" >
+            <td>{{ serviceData.description}}</td>
+            <td>{{ serviceData.cost}}</td>
+            <td>{{ serviceData.description}}</td>
             <td>
-              <button class="link-primary"><i class="bi bi-pencil"></i></button>   |
-               <button class="link-danger"><i class="bi bi-x-circle"></i></button>        
+              <button @click="setServiceId(serviceData)" data-bs-target="#editServiceModal"  data-bs-toggle="modal" class="link-primary"><i class="bi bi-pencil"></i></button>&nbsp;&nbsp;   |
+              &nbsp;&nbsp; <button  @click="deleteService(serviceData)" class="link-danger"><i class="bi bi-trash"></i></button>        
               </td>
           </tr>  
+
           <tr>
-            <td>Pair of Uniform</td>
-            <td>30000</td>
-            <td>Paid per Uniform</td>
+            <td>Ream</td>
+            <td>3000</td>
+            <td>Come with 2 reams</td>
             <td>
-                <button class="link-primary"><i class="bi bi-pencil"></i></button>   |
-               <button class="link-danger"><i class="bi bi-x-circle"></i></button>        
+              <button data-bs-target="#editServiceModal"  data-bs-toggle="modal" class="link-primary"><i class="bi bi-pencil"></i></button>&nbsp;&nbsp;   |
+              &nbsp;&nbsp; <button  @click="deleteService(serviceData)" class="link-danger"><i class="bi bi-trash"></i></button>        
               </td>
-          </tr> 
-          <tr>
-            <td>Development Fee</td>
-            <td>500000</td>
-            <td>Per Year </td>
-            <td>
-              <button class="link-primary"><i class="bi bi-pencil"></i></button>   |
-               <button class="link-danger"><i class="bi bi-x-circle"></i></button>     
-              </td>
-          </tr>       
+          </tr>  
+           
           
         </tbody>
       </table>
@@ -86,18 +79,38 @@
     </div>
   
  
+    <!-- //editing modal  -->    
+    <div class="modal fade" id="editServiceModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header text-sm p-0">
+                        <h6 class="modal-title ml-3 mt-2 mb-2">UpdateService/Product</h6>
+                        <button aria-label="Close" class="btn-close btn-sm" data-bs-dismiss="modal"
+                                style="margin-right: 5px;" type="button"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mt-2 mb-2">           
+                           <UpdateService :service="serviceId"></UpdateService>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div></div>
+       
     </template>
     
     <script setup>
   import {onMounted,reactive, ref, watch} from "vue";
   import useNotificationStore from "@/composables/useNotification.js";
   import NewService from "./NewService.vue";
+  import UpdateService from "./UpdateService.vue";
   import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js";
 
 
   const servicesList = ref( [])
   let errorMessage = ref(null)
-  
+  const serviceId = ref(null)
   const serviceStore= useServiceStore()
 const  notificationStore  = useNotificationStore()
   
@@ -127,6 +140,21 @@ const  notificationStore  = useNotificationStore()
       {deep:true}
   )
   
+  const deleteService = (serviceData) => {
+if(!confirm("Are you sure, you want to delete: "+ serviceData.description)){
+  return
+}
+let data = {
+  serviceid:serviceData.service_id
+}
+// connect endpoint
+serviceStore.deleteService(data)
+}
+
+function setServiceId(sId){
+serviceId.value = sId
+}
+
     </script>
   
   
