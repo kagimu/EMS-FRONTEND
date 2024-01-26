@@ -3,7 +3,7 @@
           <div class="mb-2">
             <label class="textColor"><small>Service Name</small></label>
             <input maxlength="10" type="text" style="outline: none 0 !important;box-shadow: none;"
-                required class="form-control form-select-sm" v-model="formData.name">
+                required class="form-control form-select-sm" v-model="formData.description">
           </div>
             <div class="mb-2">
                 <label class="textColor"><small>Cost</small></label>
@@ -21,18 +21,46 @@
 </template>
 
 <script setup>
-
 import {onMounted, reactive, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js";
 
+const serviceStore= useServiceStore()
+const  notificationStore  = useNotificationStore()
+const buttonLoader = ref(false)
+let errorMessage = ref(null)
 
 const formData = reactive({
-    name: null,
+    description: null,
     cost: null,
 })
 
 const createNewService = () =>{
-alert(JSON.stringify(formData))
+// alert(JSON.stringify(formData))
+serviceStore.createNewService(formData)
 }
+watch (
+    () => serviceStore.createNewService,
+    async (data) => {
+      if(data){
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => serviceStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        buttonLoader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
 
 </script>
 

@@ -5,9 +5,10 @@ import api from "@/config/api.js";
 export const useServiceStore = defineStore("service", () => {
     let newServiceResponse = ref(null)
     let errorMessage = ref(null)
+    let servicesListResponse = ref(null)
 
         async function createNewService(data) {
-            return await api.post("main/"+data)
+            return await api.post("main/services", data)
                 .then((response) => {
                     newServiceResponse.value = response.data
                 })
@@ -18,9 +19,24 @@ export const useServiceStore = defineStore("service", () => {
                 })
         }
 
+        async function fetchServicesList() {
+            return await api.get("main/services")
+                .then((response) => {
+                    servicesListResponse.value = response.data
+                })
+                .catch((response) => {
+                    if(response){
+                        errorMessage.value = response.response.data
+                    }
+                })
+        }
+    
+
     return {
         newServiceResponse,
         errorMessage,      
-        createNewService
+        createNewService,
+        servicesListResponse,
+        fetchServicesList
     }
 })

@@ -134,7 +134,7 @@
               <select required class="form-control" v-model="formData.interview_number" >
                 <option disabled value=""> - Select Interview - </option>
                   <option v-for="(list, index) in interviewListData" :key="index" :value="list.number">
-                    {{ list.number}} 
+                    {{ list.name}} 
                   </option>
                </select>
               <div class="text-right mt-4">
@@ -250,7 +250,7 @@ function scheduleInterview(){
   interviewDialog.value = true
   buttonLoader.value = true
     // alert(JSON.stringify(appDatails.student_number))
-    formData.student_number = appDatails.student_number
+  formData.student_number = appDatails.student_number
   ApplicationStore.createNewInterview(formData)
 
 

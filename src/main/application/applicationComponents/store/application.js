@@ -91,9 +91,9 @@ export const useApplicationStore = defineStore("application", () => {
     }
 
     async function createNewInterview(data) {
-        return await api.post("main/interviews", data)
+        return await api.post("main/interviews/add-student-to-interview", data)
             .then((response) => {
-                newInterviewResponse.value = response.data.data
+                newInterviewResponse.value = response.data
 
             })
             .catch((response) => {

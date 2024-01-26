@@ -131,7 +131,7 @@ message:null,
 
 
 const createInterview = () => {
-alert(JSON.stringify(formData))
+// alert(JSON.stringify(formData))
 applicationStore.createNewInterview(formData)
 }
 

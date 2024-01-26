@@ -90,69 +90,42 @@
     
     <script setup>
   import {onMounted,reactive, ref, watch} from "vue";
-  import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
   import useNotificationStore from "@/composables/useNotification.js";
-  import NewService from "./newService.vue";
-  
-  const interviewList = ref( [])
+  import NewService from "./NewService.vue";
+  import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js";
+
+
+  const servicesList = ref( [])
   let errorMessage = ref(null)
   
-  const buttonLoader = ref(false)
-  
-  const applicationStore= useApplicationStore()
-  const  notificationStore  = useNotificationStore()
+  const serviceStore= useServiceStore()
+const  notificationStore  = useNotificationStore()
   
   onMounted(
       async () => {
-        await applicationStore.fetchInterviewList()
+        await serviceStore.fetchServicesList()
       } )
   
       watch(
-      () => applicationStore.interviewListResponse,
+      () => serviceStore.servicesListResponse,
       async (data) => {
         if(data){
-          interviewList.value = data.data
+          servicesList.value = data.data
         }
       },
       {deep:true}
   )
   
   watch (
-      () => applicationStore.errorMessage,
+      () => serviceStore.errorMessage,
       async (data) => {
         if(data){
           errorMessage.value = data.message
-          buttonLoader.value = false
           notificationStore.errorToast("Error",data.message)
         }
       },
       {deep:true}
   )
-  
-  const formData = reactive({ 
-  title:null,
-  interview_date:null,
-  venue:null,
-  message:null,
-  })
-  
-  
-  const createInterview = () => {
-  alert(JSON.stringify(formData))
-  applicationStore.createNewInterview(formData)
-  }
-  
-  watch(
-        () => applicationStore.newInterviewResponse,
-        async (data) => {
-            if (data) {
-                buttonLoader.value = false
-                notificationStore.successToast("Success", data.message)
-            }
-        },
-        {deep: true}
-    )
-  
   
     </script>
   
