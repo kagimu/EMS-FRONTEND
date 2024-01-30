@@ -51,6 +51,9 @@
                         <sos-info></sos-info>
                     </div>
 
+                    <div v-if="selectedPage === 'services'">
+                        <Services></Services>
+                    </div>
 
 
           </div>
@@ -71,6 +74,8 @@ import LevelSetup from "@/main/settings/level/LevelSetup.vue";
 import ClassSetupList from "@/main/dashboard/manageLevel/class/ClassSetupList.vue";
 import LearningMaterialSetup from "@/main/settings/learning-materials/LearningMaterialSetup.vue";
 import SosInfo from "@/main/settings/sosinfo/SosInfo.vue";
+import Services from "../dashboard/servicesAndProducts/Services.vue";
+
 const routerData = useRouter()
 const buttonLoader = ref(false)
 
@@ -101,6 +106,10 @@ const settingsList = ref([
     {
         name:"Source of school Info",
         id:"sosinfos"
+    },
+    {
+        name:"Services And Products",
+        id:"services"
     }
 ])
 const form = reactive({

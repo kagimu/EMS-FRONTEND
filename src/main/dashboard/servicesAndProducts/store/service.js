@@ -41,18 +41,18 @@ export const useServiceStore = defineStore("service", () => {
                 })
                 .catch((response) => {
                     if(response){
-                        errorMessage.value = response.response.data
+                        errorMessage.value = response.data
                     }
                 })
         }
         async function updateService(serviceid,data) {
-            return await api.put("main/")
+            return await api.put("main/services/"+serviceid,data)
                 .then((response) => {
                     updateServiceResponse.value = response.data
                 })
                 .catch((response) => {
                     if(response){
-                        errorMessage.value = response.response.data
+                        errorMessage.value = response.data
                     }
                 })
         }

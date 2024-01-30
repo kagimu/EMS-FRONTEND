@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <div class="modal fade" id="serviceModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-dialog">
@@ -19,8 +18,6 @@
             </div>
         </div></div>
         </div>
-        
-
         <div class="row">
       <div class="col-12">
         <div class="card mt-3">
@@ -45,31 +42,18 @@
             <th>Cost</th>
             <th>Addition Info</th>
             <th>#</th>
-          </tr>
-  
+          </tr> 
         </thead>
         <tbody>
           <tr v-for="(serviceData, index) in servicesList" :key="index" >
-            <td>{{ serviceData.description}}</td>
+            <td>{{ serviceData.name}}</td>
             <td>{{ serviceData.cost}}</td>
             <td>{{ serviceData.description}}</td>
             <td>
               <button @click="setServiceId(serviceData)" data-bs-target="#editServiceModal"  data-bs-toggle="modal" class="link-primary"><i class="bi bi-pencil"></i></button>&nbsp;&nbsp;   |
               &nbsp;&nbsp; <button  @click="deleteService(serviceData)" class="link-danger"><i class="bi bi-trash"></i></button>        
               </td>
-          </tr>  
-
-          <tr>
-            <td>Ream</td>
-            <td>3000</td>
-            <td>Come with 2 reams</td>
-            <td>
-              <button data-bs-target="#editServiceModal"  data-bs-toggle="modal" class="link-primary"><i class="bi bi-pencil"></i></button>&nbsp;&nbsp;   |
-              &nbsp;&nbsp; <button  @click="deleteService(serviceData)" class="link-danger"><i class="bi bi-trash"></i></button>        
-              </td>
-          </tr>  
-           
-          
+          </tr>      
         </tbody>
       </table>
       </div>
@@ -77,8 +61,6 @@
   </div>
   </div>
     </div>
-  
- 
     <!-- //editing modal  -->    
     <div class="modal fade" id="editServiceModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog">
@@ -123,7 +105,7 @@ const  notificationStore  = useNotificationStore()
       () => serviceStore.servicesListResponse,
       async (data) => {
         if(data){
-          servicesList.value = data.data
+          servicesList.value = data
         }
       },
       {deep:true}
@@ -139,7 +121,7 @@ const  notificationStore  = useNotificationStore()
       },
       {deep:true}
   )
-  
+   
   const deleteService = (serviceData) => {
 if(!confirm("Are you sure, you want to delete: "+ serviceData.description)){
   return
@@ -150,12 +132,10 @@ let data = {
 // connect endpoint
 serviceStore.deleteService(data)
 }
-
 function setServiceId(sId){
 serviceId.value = sId
 }
-
-    </script>
+  </script>
   
   
     

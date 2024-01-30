@@ -3,7 +3,7 @@
           <div class="mb-2">
             <label class="textColor"><small>Service Name</small></label>
             <input maxlength="10" type="text" style="outline: none 0 !important;box-shadow: none;"
-                required class="form-control form-select-sm" v-model="formData.description">
+                required class="form-control form-select-sm" v-model="formData.name">
           </div>
             <div class="mb-2">
                 <label class="textColor"><small>Cost</small></label>
@@ -11,7 +11,7 @@
             </div>
             <div class="mb-2">
                 <label class="textColor"><small>Addition Info</small></label>
-                <textarea class="form-control "></textarea>
+                <textarea v-model="formData.description" class="form-control "></textarea>
             </div>
             <div class="flex justify-content-end mt-2" style="width: 100%;">
                 <button type="submit" class="btn btn-primary border-0"> <i class="bi bi-save"></i> SaveData
@@ -37,6 +37,7 @@ let errorMessage = ref(null)
 const formData = reactive({
     description: null,
     cost: null,
+    name:null,
 })
 
 const createNewService = () =>{

@@ -251,13 +251,13 @@ function scheduleInterview(){
   buttonLoader.value = true
     // alert(JSON.stringify(appDatails.student_number))
   formData.student_number = appDatails.student_number
-  ApplicationStore.createNewInterview(formData)
+  ApplicationStore. addStudentToInterview(formData)
 
 
 }
 
   watch(
-      () => ApplicationStore.newInterviewResponse,
+      () => ApplicationStore.addStudentToInterviewResponse,
       async (data) => {
           if (data) {
               buttonLoader.value = false
