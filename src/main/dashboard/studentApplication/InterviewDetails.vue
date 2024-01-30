@@ -4,7 +4,7 @@
        <!-- modal for viewing more details -->
        <div class="modal fade" id="infoModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog modal-xl">
-       <GradeApplication :studenton-interviewid="studentOnInterviewId"></GradeApplication>
+       <GradeApplication :student="student" :studenton-interviewid="studentOnInterviewId"></GradeApplication>
       </div>
     </div>
     <!-- end  -->
@@ -23,7 +23,7 @@
       <thead>
         <tr>
           <th>Name</th>
-          <th>School&Campus</th>
+          <th>Reason</th>
           <th>Prefered Class</th>
           <th>#</th>
         </tr>
@@ -32,12 +32,12 @@
   </div>
       </thead>
       <tbody>
-        <tr v-for="(studentInterList, index) in interviewStudentList" :key="index">
-          <td>{{ studentInterList.User.first_name + studentInterList.User.last_name }} </td>
-          <td></td>
-          <td></td>
+        <tr v-for="(student, index) in interviewStudentList" :key="index">
+          <td>{{ student.Student.surname + " " + student.Student.second_name }} </td>
+          <td>{{ student.Student.reason_for_choosing_school}}</td>
+          <td>{{ student.Student.preferred_type_of_enrollment }}</td>
           <td>
-            <button data-bs-toggle="modal" data-bs-target="#infoModal" @click="setStudentOnInterviewID(studentInterList.user_number)" class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
+            <button data-bs-toggle="modal" data-bs-target="#infoModal" @click="setStudentOnInterviewID(student.student_number,student)" class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
               <i class="bi bi-arrow">&nbsp;Grade</i></small></button>        
             </td>
         </tr>   
@@ -73,9 +73,11 @@ const routerData = useRouter()
 
 let  interviewNumber = routerData.currentRoute.value.query.interview_id
 const studentOnInterviewId= ref(null)
+const student=ref(null)
 
-const setStudentOnInterviewID = (id) =>{
+const setStudentOnInterviewID = (student,id) =>{
   studentOnInterviewId.value = id
+  student.value={}
 }
 
 
@@ -90,7 +92,7 @@ watch(
     async (data) => {
       if(data){
         notificationStore.successToast("Success", data.message)
-        interviewStudentList.value = data
+        interviewStudentList.value = data.data
       }
     },
     {deep:true}

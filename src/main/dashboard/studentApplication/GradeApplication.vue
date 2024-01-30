@@ -2,7 +2,7 @@
 
 <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2"><small>Grading : Collins Mpiima  {{  studentonInterviewid }}</small></h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2"><small>{{  student.surname }}</small></h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -26,26 +26,27 @@
   </div> -->
       </thead>
       <tbody>
-        <tr>
-          <td>Who is the President of Uganda</td>
+        <tr v-for="(question, index) in interviewQuestionsListData" :key="index">
+          <td>{{ question.question }}</td>
           <td>
-          <form>
-          <input type="text" class="form-control" value="Museveni" disabled >
-          </form>
+          <label>{{ question.correct_answer }}</label>
         </td>
-          <td> <form>
-          <input type="text" class="form-control" value="Kyagulanyi">
-          </form></td>
           <td>
-          <form>
-          <input type="text" class="form-control score" value="90">
-          </form>
-        </td>
-        </tr>     
-
-
+          <input type="text" class="form-control" value="">
+          </td>
+          <td>
+          <input type="text" class="form-control score" value="">
+          </td></tr>    
       </tbody>
     </table>
+
+    <button type="submit" class="btn btn-sm btn-primary mb-2 mr-4 " style="color: white;float: right;">
+               <small>Submit&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  
+        <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </button>
+
   </div>
 
 
@@ -64,11 +65,48 @@
   import {onMounted,reactive, ref, watch} from "vue";
   import useNotificationStore from "@/composables/useNotification.js";
   import useCommons from "@/composables/useCommons.js";
+  import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+
+const applicationStore = useApplicationStore()
+const notificationStore = useNotificationStore()
+const interviewQuestionsListData = ref([])
 
   const props = defineProps({
-    studentonInterviewid:String
+    studentonInterviewid:String,
+    student:{}
   })
 
+
+  watch (
+    () => props.studentonInterviewid,
+    async (data) => {
+      if(data){
+        applicationStore.fetchQuestionsOnInterview(data)
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => applicationStore.QuestionsOnInterviewResponse,
+    async (data) => {
+      if(data){
+        interviewQuestionsListData.value=data.data
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+watch (
+    () => applicationStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
 
 
   

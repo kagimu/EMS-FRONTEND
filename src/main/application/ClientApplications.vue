@@ -6,6 +6,11 @@
                 <client-application-details :application-number="applications"></client-application-details>
             </div>
         </div>
+
+        <div class="row">
+      <div class="col-12">
+        <div class="card mt-3">
+          <div class="card-body" style="padding: 0;">
         <div class="container mt-4">
             <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Application List<hr style="width:30px;"></h6>
             <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
@@ -34,14 +39,17 @@
                                 class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small><i class="bi bi-eye">&nbsp;view more</i></small></button>
 
                         <button  @click="resumeApplication(applist.number)"
-                                class="btn bg-blue mx-2 rounded-sm text-white" title="CLick to resume application">
-                            <small>Resume<i class="bi bi-arrow-right"></i></small></button>
+                                class="btn bg-blu mx-2 rounded-sm text-white" title="CLick to resume application">
+                            <small style = "color:rgb(244, 27, 27)">Resume<i class="bi bi-arrow-right"></i></small></button>
 
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
+        </div></div></div>
+        </div>
+
     </div>
 </template>
 

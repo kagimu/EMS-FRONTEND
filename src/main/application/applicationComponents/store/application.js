@@ -17,6 +17,8 @@ export const useApplicationStore = defineStore("application", () => {
     let  StudentsOnInterviewResponse = ref(null)
     let createInterviewGradeResponse = ref(null)
     let getInterviewQuestionsForGradingResponse = ref(null)
+    let addStudentToInterviewResponse = ref(null)
+    let QuestionsOnInterviewResponse = ref(null)
 
     async function newApplicationDetails(data) {
         return await api.post("main/applications/new-parent", data)
@@ -91,7 +93,7 @@ export const useApplicationStore = defineStore("application", () => {
     }
 
     async function createNewInterview(data) {
-        return await api.post("main/interviews/add-student-to-interview", data)
+        return await api.post("main/interviews", data)
             .then((response) => {
                 newInterviewResponse.value = response.data
 
@@ -102,6 +104,20 @@ export const useApplicationStore = defineStore("application", () => {
                 }
             })
     }
+
+    async function addStudentToInterview(data) {
+        return await api.post("main/interviews/add-student-to-interview", data)
+            .then((response) => {
+                addStudentToInterviewResponse.value = response.data
+
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
     async function createNewInterviewQuestion(data) {
         return await api.post("main/interview-questions", data)
@@ -164,6 +180,19 @@ export const useApplicationStore = defineStore("application", () => {
                     }
                 })
         }
+     
+        async function fetchQuestionsOnInterview(data) {
+            return await api.get("main/interviews/"+data+"/questions")
+                .then((response) => {
+                   QuestionsOnInterviewResponse.value = response.data
+                })
+                .catch((response) => {
+                    if(response){
+                        errorMessage.value = response.response.data
+                    }
+                })
+        }
+           
 
     return {
         newApplicationDetailsResponse ,
@@ -190,7 +219,11 @@ export const useApplicationStore = defineStore("application", () => {
         createInterviewGrade,
         createInterviewGradeResponse,
         getInterviewQuestionsForGradingResponse,
-        getInterviewQuestionForGrading
+        getInterviewQuestionForGrading,
+        addStudentToInterviewResponse,
+        addStudentToInterview,
+        QuestionsOnInterviewResponse,
+        fetchQuestionsOnInterview
         
     }
 })

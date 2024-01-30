@@ -2,8 +2,8 @@
         <form @submit.prevent="updateService">
           <div class="mb-2">
             <label class="textColor"><small>Service Name</small></label>
-            <input maxlength="10" type="text" style="outline: none 0 !important;box-shadow: none;"
-                required class="form-control form-select-sm" v-model="formData.description">
+            <input type="text" style="outline: none 0 !important;box-shadow: none;"
+                required class="form-control form-select-sm" v-model="formData.name">
           </div>
             <div class="mb-2">
                 <label class="textColor"><small>Cost</small></label>
@@ -11,13 +11,13 @@
             </div>
             <div class="mb-2">
                 <label class="textColor"><small>Addition Info</small></label>
-                <textarea class="form-control "></textarea>
+                <textarea v-model="formData.description" class="form-control "></textarea>
             </div>
             <div class="flex justify-content-end mt-2" style="width: 100%;">
                 <button type="submit" class="btn btn-primary border-0"> <i class="bi bi-save"></i> Update
-                    <!-- <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
-                          role="status"><span class="visually-hidden">Loading...</span> 
-                        </span> -->
+                    <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
+                          role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span> 
+                        </span>
                 </button>
             </div>
         </form>
@@ -41,6 +41,7 @@ const props = defineProps({
 const formData = reactive({
     description: null,
     cost: null,
+    name:null
 })
 
 
@@ -50,23 +51,31 @@ watch (
       if(data){
         formData.description = props.service.description
         formData.cost = props.service.cost
+        formData.name = props.service.name
       }
     },
     {deep:true}
 )
 
 const updateService = () =>{
-alert(JSON.stringify(formData))
-serviceStore.updateService(props.serviceid.serviceNumber,formData)
+// alert(JSON.stringify(formData))
+serviceStore.updateService(props.service.number,formData)
 }
 
+onMounted(
+    () => {
+      serviceStore.fetchServicesList()
+      buttonLoader.value = false
+    }
+)
 
 watch(
     () => serviceStore.updateServiceResponse,
     async (data) => {
       if(data){
          notificationStore.successToast("Success", data.message)
-        await serviceStore.fetchServicesList()
+       buttonLoader.value=false
+       await serviceStore.fetchServicesList()
       }
     },
     {deep:true}
@@ -76,7 +85,7 @@ watch (
     async (data) => {
       if(data){
    //error message
-
+    notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}
