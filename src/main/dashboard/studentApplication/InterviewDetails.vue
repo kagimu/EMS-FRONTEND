@@ -4,7 +4,7 @@
        <!-- modal for viewing more details -->
        <div class="modal fade" id="infoModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog modal-xl">
-       <GradeApplication :student="student" :studenton-interviewid="studentOnInterviewId"></GradeApplication>
+       <GradeApplication  :studenton-interviewid="studentOnInterviewId"></GradeApplication>
       </div>
     </div>
     <!-- end  -->
@@ -37,7 +37,7 @@
           <td>{{ student.Student.reason_for_choosing_school}}</td>
           <td>{{ student.Student.preferred_type_of_enrollment }}</td>
           <td>
-            <button data-bs-toggle="modal" data-bs-target="#infoModal" @click="setStudentOnInterviewID(student.student_number,student)" class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
+            <button data-bs-toggle="modal" data-bs-target="#infoModal" @click="setStudentOnInterviewID(student.interview_number)" class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
               <i class="bi bi-arrow">&nbsp;Grade</i></small></button>        
             </td>
         </tr>   
@@ -75,9 +75,8 @@ let  interviewNumber = routerData.currentRoute.value.query.interview_id
 const studentOnInterviewId= ref(null)
 const student=ref(null)
 
-const setStudentOnInterviewID = (student,id) =>{
+const setStudentOnInterviewID = (id) =>{
   studentOnInterviewId.value = id
-  student.value={}
 }
 
 
