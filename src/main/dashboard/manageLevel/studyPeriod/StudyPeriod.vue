@@ -76,7 +76,10 @@
                 style="font-size: 13px;"
                 data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
                 class="bi-pencil mr-2 cursor-pointer" @click="editStudyPeriod(styPeriod)"></i>
-            <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteStudyPeriod(styPeriod)"></i>
+            <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteStudyPeriod(styPeriod,index)"></i>
+            <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
+              <span class="visually-hidden">Loading...</span>
+            </div>
           </div>
         </td>
       </tr>
@@ -107,6 +110,7 @@ const studyPeriodList = ref( [])
 const  notificationStore  = useNotificationStore()
 const academicYearNumber = ref( "")
 const academicYearList = ref( [])
+const deletionLoader = ref( undefined)
 
 const addStudyPeriod = (item) => {
   // classNumber.value = item.number
@@ -118,7 +122,18 @@ const editStudyPeriod = (styPeriod)  => {
 
 }
 
-const deleteStudyPeriod = (styPeriod) => {
+const deleteStudyPeriod = (styPeriod, idx) => {
+  deletionLoader.value = idx
+
+  if(!confirm("Are you sure, you want to delete: "+styPeriod.study_period_name)){
+    return
+  }
+
+
+  let data = {
+    number:styPeriod.number
+  }
+  studyPeriodStore.deleteStudyPeriod(data)
 
 }
 
@@ -162,6 +177,17 @@ watch(
     async (data) => {
       if(data){
         academicYearList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => studyPeriodStore.deleteStudyPeriodResponse,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
+        await studyPeriodStore.fetchStudyPeriod({level: campusLevel, academic_year_number: academicYearNumber.value})
       }
     },
     {deep:true}

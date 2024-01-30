@@ -14,7 +14,8 @@
     >
       <thead>
         <tr>
-          <th>Interview</th>
+          <!-- <th>Interview</th> -->
+          <th>Correct Answer</th>
           <th>Question</th>
           <th>#</th>
         </tr>
@@ -22,7 +23,8 @@
       <tbody>
         <!-- v-for="(interlist, index) in interviewList" :key="index" -->
         <tr v-for="(interviewQuestionData, index) in interviewQuestionList" :key="index">
-          <td>{{ interviewQuestionData.interview_number }}</td>
+          <!-- <td>{{ interviewQuestionData.interview_number }}</td> -->
+          <td>{{ interviewQuestionData.correct_answer }}</td>
           <td>{{ interviewQuestionData.question }}</td>
            <td>
             <button data-bs-toggle="modal" data-bs-target="#infoModal" 
@@ -51,7 +53,7 @@
                <select required class="form-control" v-model="form.interview_number" >
                 <option disabled value=""> - Select Interview - </option>
                   <option v-for="(list, index) in interviewListData" :key="index" :value="list.number">
-                    {{ list.number}} 
+                    {{ list.name}} 
                   </option>
                </select>
               </div>
@@ -140,7 +142,7 @@ const showInterviewDialog = () => {
 
 
     const addInterviewQuestions = () => {
-    //  alert(JSON.stringify(form))
+     alert(JSON.stringify(form))
     interviewDialog.value = true;
      buttonLoader.value = true
      applicationStore.createNewInterviewQuestion(form)

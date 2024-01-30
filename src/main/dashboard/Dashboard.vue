@@ -124,6 +124,7 @@ const menuList = ref([
   // {title:"Classes", name:"class", icon:"bi-pen"},
   // {title:"Scheme Of Work", name:"scheme-of-work", icon:"bi-receipt"},
   {title:"Time table", name:"timetable", icon:"bi-pen"},
+  {title:"Services&Products", name:"services", icon:"bi-person-plus"},
   {title:"Student Admission", name:"student-admission", icon:"bi-person-plus"},
   {title:"Student Application", name:"student-application", icon:"bi-person-plus"},
   {title:"Profiles", name:"profiles", icon:"bi-people"},

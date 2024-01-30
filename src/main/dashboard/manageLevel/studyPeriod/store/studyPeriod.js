@@ -7,6 +7,7 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
     const academicYearResponse = ref(null)
     const newStudyPeriodResponse = ref(null)
     const studyPeriodResponse = ref(null)
+    const deleteStudyPeriodResponse = ref(null)
 
 
 
@@ -38,13 +39,28 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
 
 
 
+    async function deleteStudyPeriod(data) {
+        return await api.post("main/study-period/delete", data)
+            .then((response) => {
+                deleteStudyPeriodResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
 
     return {
         newStudyPeriodResponse,
         academicYearResponse,
         studyPeriodResponse,
+        deleteStudyPeriodResponse,
         errorMessage,
         newStudyPeriod,
         fetchStudyPeriod,
+        deleteStudyPeriod,
     }
 })
