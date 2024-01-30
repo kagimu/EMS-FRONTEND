@@ -2,7 +2,7 @@
 
 <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2"><small></small></h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2"><small>Your Grading : {{ surName }} {{ secondN }}</small></h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -68,9 +68,12 @@ const applicationStore = useApplicationStore()
 const notificationStore = useNotificationStore()
 const interviewQuestionsListData = ref([])
 const errorMessage = ref(null)
+const surName = ref(null)
+const secondN = ref(null)
 
   const props = defineProps({
     studentonInterviewid:String,
+    stud:{}
   })
 
 
@@ -79,6 +82,19 @@ const errorMessage = ref(null)
     async (data) => {
       if(data){
         applicationStore.fetchQuestionsOnInterview(data)
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => props.stud,
+    async (data) => {
+      if(data){
+
+        surName.value=props.stud.Student.surname
+        secondN.value=props.stud.Student.second_name
+        // alert(JSON.stringify(props.stud.Student.second_name))
       }
     },
     {deep:true}
