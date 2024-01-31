@@ -37,7 +37,7 @@
           <td>{{ student.Student.reason_for_choosing_school}}</td>
           <td>{{ student.Student.preferred_type_of_enrollment }}</td>
           <td>
-            <button data-bs-toggle="modal" data-bs-target="#infoModal" @click="setStudentOnInterviewID(student.student_number,student)" class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
+            <button data-bs-toggle="modal" data-bs-target="#infoModal" @click="setStudentOnInterviewID(student.student,student.interview_number)" class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
               <i class="bi bi-arrow">&nbsp;Grade</i></small></button>        
             </td>
         </tr>   
@@ -73,7 +73,7 @@ const routerData = useRouter()
 
 let  interviewNumber = routerData.currentRoute.value.query.interview_id
 const studentOnInterviewId= ref(null)
-const student=ref(null)
+const student=ref({})
 
 const setStudentOnInterviewID = (student,id) =>{
   studentOnInterviewId.value = id
