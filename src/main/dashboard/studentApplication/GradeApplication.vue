@@ -3,7 +3,7 @@
 <div class="modal-content">
     {{student}}
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2"><small>{{  student.surname }}</small></h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2"><small>Your Grading : {{ surName }} {{ secondN }}</small></h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -22,9 +22,6 @@
           <th>Student Answer</th>
           <th>Score</th>
         </tr>
-      <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-    {{errorMessage}}
-  </div> -->
       </thead>
       <tbody>
         <tr v-for="(question, index) in interviewQuestionsListData" :key="index">
@@ -71,10 +68,13 @@
 const applicationStore = useApplicationStore()
 const notificationStore = useNotificationStore()
 const interviewQuestionsListData = ref([])
+const errorMessage = ref(null)
+const surName = ref(null)
+const secondN = ref(null)
 
   const props = defineProps({
     studentonInterviewid:String,
-    student:{}
+    stud:{}
   })
 
 
@@ -83,6 +83,19 @@ const interviewQuestionsListData = ref([])
     async (data) => {
       if(data){
         applicationStore.fetchQuestionsOnInterview(data)
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => props.stud,
+    async (data) => {
+      if(data){
+
+        surName.value=props.stud.Student.surname
+        secondN.value=props.stud.Student.second_name
+        // alert(JSON.stringify(props.stud.Student.second_name))
       }
     },
     {deep:true}
