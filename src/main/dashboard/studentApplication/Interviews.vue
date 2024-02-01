@@ -142,6 +142,7 @@ watch(
               buttonLoader.value = false
               notificationStore.successToast("Success", data.message)
               await applicationStore.fetchInterviewList()
+
           }
       },
       {deep: true}

@@ -155,7 +155,7 @@ const showInterviewDialog = () => {
       if(data){
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        await applicationStore.fetchInterviewList()
+        await applicationStore.fetchApplicationInterviewQuestions()
       }
     },
     {deep:true}
