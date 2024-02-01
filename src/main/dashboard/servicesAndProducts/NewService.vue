@@ -2,9 +2,18 @@
         <form @submit.prevent="createNewService">
           <div class="mb-2">
             <label class="textColor"><small>Campus</small></label><br>
-            <input  type="checkbox"  >Main Campus<br>
-                <input  type="checkbox">Kampala Campus<br>
-                <input  type="checkbox"  >Jinja Campus
+
+                <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+          <li class="list-group-item" >
+            <input style="outline: none 0 !important; box-shadow: none;" class="form-check-input me-1" type="checkbox">
+            <label class="form-check-label cursor-pointer textColor"><small>Main</small></label></li><li class="list-group-item">
+            <input style="outline: none 0 !important; box-shadow: none;" class="form-check-input me-1" type="checkbox">
+            <label class="form-check-label cursor-pointer textColor"><small>Kampala Campus</small></label></li><li class="list-group-item">
+            <input style="outline: none 0 !important; box-shadow: none;" class="form-check-input me-1" type="checkbox">
+            <label class="form-check-label cursor-pointer textColor"><small>Buwatta</small></label>
+          </li>
+
+        </ul>
           </div>
 
           <div class="mb-2">
