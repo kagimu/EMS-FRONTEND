@@ -146,6 +146,7 @@ const showInterviewDialog = () => {
     interviewDialog.value = true;
      buttonLoader.value = true
      applicationStore.createNewInterviewQuestion(form)  
+     
     }
   
 

@@ -8,8 +8,8 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="form-group">
-           <label class="textColor text-sm" ><small>School Name&nbsp;
-           <button title="Remove Class" style="width:10px;padding:0px;height: 10px;color:red;"    @click="removeSchool(schoolIndex)">X</button></small> </label>
+           <label class="textColor text-sm" ><small>School Name
+           <span><i style="color:red;width: 12px;height: 12px;" class="bi bi-x-circle" @click="removeSchool(schoolIndex)"></i></span></small> </label>
             <input type="text" class="form-control" v-model="school.name"> 
           </div>
             </div>
@@ -19,7 +19,7 @@
               &nbsp;
               <label class="textColor text-sm" ><small> Classes Attended</small></label>
               <label class="textColor text-sm" ><small>
-                  <button title="Add class" style="color:rgb(33, 9, 154);width: 12px;height: 12px;"  @click="addClass(schoolIndex)"><i class="bi bi-plus-circle"></i></button></small> </label>
+                  &nbsp;&nbsp;<i @click="addClass(schoolIndex)" class="bi bi-plus-circle"></i></small> </label>
 
               <div class="row" v-for="(className, classIndex) in school.classes" :key="classIndex">
             <div class="col-lg-5">
