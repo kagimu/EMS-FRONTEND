@@ -9,7 +9,7 @@
             <div class="col-lg-12">
               <div class="form-group">
            <label class="textColor text-sm" ><small>School Name
-           <span><i style="color:red;width: 12px;height: 12px;" class="bi bi-x-circle" @click="removeSchool(schoolIndex)"></i></span></small> </label>
+           <button @click="removeSchool(schoolIndex)" type="button"><i style="color:red;width: 12px;height: 12px;" class="bi bi-x-circle"></i></button></small> </label>
             <input type="text" class="form-control" v-model="school.name"> 
           </div>
             </div>
@@ -19,7 +19,7 @@
               &nbsp;
               <label class="textColor text-sm" ><small> Classes Attended</small></label>
               <label class="textColor text-sm" ><small>
-                  &nbsp;&nbsp;<i @click="addClass(schoolIndex)" class="bi bi-plus-circle"></i></small> </label>
+                  &nbsp;&nbsp;<button type="button" @click="addClass(schoolIndex)"><i  class="bi bi-plus-circle"></i></button></small> </label>
 
               <div class="row" v-for="(className, classIndex) in school.classes" :key="classIndex">
             <div class="col-lg-5">
@@ -37,7 +37,7 @@
             </div>
             <div class="col-lg-1">
               <label class="textColor text-sm" ><small></small></label>
-             <button  @click="removeClass(schoolIndex, classIndex)" style="color:red;width: 12px;height: 12px;" title="Remove class"><i class="bi bi-x-circle-fill"></i></button>
+             <button type="button"  @click="removeClass(schoolIndex, classIndex)" style="color:red;width: 12px;height: 12px;" title="Remove class"><i class="bi bi-x-circle-fill"></i></button>
             </div>
           </div>
            
@@ -45,14 +45,14 @@
         </div>
         <div class="row" style="margin-top: -20px;">
           <div class="col-lg-12">
-            <button class="btn btn-sm btn-outline-success mb-2 mr-4" @click="addSchool" :disabled="!canAddSchool()"><small  style="color: rgb(8, 8, 8);">Add Another School</small></button>
+            <button class="btn btn-sm btn-outline-primary mb-2 mr-4" @click="addSchool" :disabled="!canAddSchool()"><small>Add Another School</small></button>
           </div>
         </div>
         <div class="text- mt-4">
           <div class="row">
           
             <div class="col-lg-4">
-              <button type="submit" class="btn btn-sm btn-success mb-2 mr-4" style="color: white;">
+              <button type="button" class="btn btn-sm btn-success mb-2 mr-4" style="color: white;">
               <small><i class="bi bi-box-arrow-in-left"></i> Back</small>  
           </button>
             </div>
