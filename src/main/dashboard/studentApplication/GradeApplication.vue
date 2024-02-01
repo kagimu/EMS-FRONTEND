@@ -105,7 +105,7 @@ watch (
     async (data) => {
       if(data){
         interviewQuestionsListData.value=data.data
-        notificationStore.successToast("Success", data.message)
+        // notificationStore.successToast("Success", data.message)
       }
     },
     {deep:true}

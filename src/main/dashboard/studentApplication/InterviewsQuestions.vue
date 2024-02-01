@@ -142,10 +142,10 @@ const showInterviewDialog = () => {
 
 
     const addInterviewQuestions = () => {
-     alert(JSON.stringify(form))
+    //  alert(JSON.stringify(form))
     interviewDialog.value = true;
      buttonLoader.value = true
-     applicationStore.createNewInterviewQuestion(form)
+     applicationStore.createNewInterviewQuestion(form)  
     }
   
 
@@ -155,6 +155,7 @@ const showInterviewDialog = () => {
       if(data){
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
+        await applicationStore.fetchInterviewList()
       }
     },
     {deep:true}

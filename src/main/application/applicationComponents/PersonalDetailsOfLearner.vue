@@ -1,9 +1,9 @@
 <template>
   <div>
   <p class="ml-4 mt-4 mb-10" style="text-align: center !important;">DETAILS OF THE LEARNER</p>
-  <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+  <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
     {{errorMessage}}
-  </div>
+  </div> -->
     <form @submit.prevent="addLearnerDetails" style="margin-top: 15px;">
     <div class="row">
       <div class="col-12">
@@ -19,7 +19,7 @@
   
           <div class="mb-2">
             <label class="textColor text-sm"><small>Other names</small> </label>
-            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" required class="form-control form-control-sm">
+            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" class="form-control form-control-sm">
           </div>
 
           <div class="mb-2">
@@ -30,7 +30,7 @@
           
           <div class="mb-2">
             <label class="textColor text-sm"><small>Reason to enroll </small> </label>
-            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.reason_for_choosing_school" required class="form-control form-control-sm">
+            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.reason_for_choosing_school" class="form-control form-control-sm">
           </div>
 
 
@@ -49,10 +49,10 @@
 
 
           <div class="mb-2">
-              <label class="textColor"><small>School</small></label>
+              <label class="textColor"><small>School</small> <span class="star">*</span></label>
               <select
                       style="box-shadow: none;"
-                      class="form-select form-select-sm"
+                      class="form-select form-select-sm" required
                       v-model="school_number"
                       @change="fetchCampuses(school_number)"
               >
@@ -64,11 +64,11 @@
 
 
           <div class="mb-2">
-              <label class="textColor"><small>Campus</small></label>
+              <label class="textColor"><small>Campus</small>  <span class="star">*</span></label>
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
-                      v-model="form.preferred_campus_number"
+                      v-model="form.preferred_campus_number" required
                       @change="fetchClasses(form.preferred_campus_number)"
               >
                   <option disabled value="">Select campus</option>
@@ -79,10 +79,10 @@
 
 
           <div class="mb-2">
-              <label class="textColor"><small>Preferred Class</small></label>
+              <label class="textColor"><small>Preferred Class</small> <span class="star">*</span></label>
               <select
                       style="box-shadow: none;"
-                      class="form-select form-select-sm"
+                      class="form-select form-select-sm" required
                       v-model="form.class_number"
               >
                   <option disabled value="">Select class</option>

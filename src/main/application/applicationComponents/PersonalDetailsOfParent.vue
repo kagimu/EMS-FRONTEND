@@ -2,9 +2,9 @@
 <div>
 <p class="ml-4 mt-4 mb-10" style="text-align: center !important;">GUARDIAN/PARENT DETAILS</p>
 
-<div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+<!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
     {{errorMessage}}
-  </div>
+  </div> -->
 
   <form  @submit.prevent="addParentPersonalDetails" style="margin-top: 16px;"> 
   <div class="row mx-auto">
@@ -21,7 +21,7 @@
 
         <div class="mb-8">
           <label class="textColor text-sm"><small>Other names</small> </label>
-          <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name"  required class="form-control form-control-sm">
+          <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" class="form-control form-control-sm">
         </div>
 
         <div class="mb-2">
