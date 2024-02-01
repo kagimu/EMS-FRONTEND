@@ -101,6 +101,7 @@ const  notificationStore  = useNotificationStore()
         await serviceStore.fetchServicesList()
       } )
   
+
       watch(
       () => serviceStore.servicesListResponse,
       async (data) => {
@@ -110,6 +111,17 @@ const  notificationStore  = useNotificationStore()
       },
       {deep:true}
   )
+
+  watch (
+    () => serviceStore.newServiceResponse,
+    async (data) => {
+      if(data){
+  
+        await serviceStore.fetchServicesList()
+      }
+    },
+    {deep:true}
+)
   
   watch (
       () => serviceStore.errorMessage,

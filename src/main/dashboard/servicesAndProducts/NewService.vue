@@ -1,8 +1,15 @@
 <template>
         <form @submit.prevent="createNewService">
           <div class="mb-2">
+            <label class="textColor"><small>Campus</small></label><br>
+            <input  type="checkbox"  >Main Campus<br>
+                <input  type="checkbox">Kampala Campus<br>
+                <input  type="checkbox"  >Jinja Campus
+          </div>
+
+          <div class="mb-2">
             <label class="textColor"><small>Service Name</small></label>
-            <input maxlength="10" type="text" style="outline: none 0 !important;box-shadow: none;"
+            <input  type="text" style="outline: none 0 !important;box-shadow: none;"
                 required class="form-control form-select-sm" v-model="formData.name">
           </div>
             <div class="mb-2">
@@ -45,7 +52,7 @@ const createNewService = () =>{
 serviceStore.createNewService(formData)
 }
 watch (
-    () => serviceStore.createNewService,
+    () => serviceStore.newServiceResponse,
     async (data) => {
       if(data){
         buttonLoader.value = false
