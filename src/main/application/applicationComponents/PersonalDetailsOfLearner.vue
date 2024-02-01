@@ -113,7 +113,7 @@
         <div class="text- mt-4">
           <div class="row" >
             <div class="col-lg-4">
-              <button type="button" class="btn btn-sm btn-success mb-2 mr-4" style="color: white;">
+              <button type="button" @click="goBack()" class="btn btn-sm btn-success mb-2 mr-4" style="color: white;">
            <small><i class="bi bi-box-arrow-in-left"></i> Back</small>
             <!-- <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
               <span class="visually-hidden">Loading...</span>
@@ -170,7 +170,9 @@ const  notificationStore  = useNotificationStore()
   class_number: null,
 })
 
-
+const goBack = () =>{
+  emit("next", 1 )
+}
   const fetchCampuses = (school_number) => {
       campusStore.fetchCampuses(school_number)
   }

@@ -52,7 +52,7 @@
           <div class="row">
           
             <div class="col-lg-4">
-              <button type="button" class="btn btn-sm btn-success mb-2 mr-4" style="color: white;">
+              <button @click="goBack()" type="button" class="btn btn-sm btn-success mb-2 mr-4" style="color: white;">
               <small><i class="bi bi-box-arrow-in-left"></i> Back</small>  
           </button>
             </div>
@@ -88,7 +88,9 @@ const emit = defineEmits()
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
 
-
+const goBack = () =>{
+  emit("next", 2 )
+}
 
 
 const formData =  reactive({
