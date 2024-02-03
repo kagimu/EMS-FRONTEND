@@ -38,7 +38,7 @@
         <button
             type="submit"
             class="btn btn-primary border-0">
-          Save
+            {{levelNumber ? "Edit" : "Save"}}
           <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>
@@ -68,20 +68,24 @@ const routerData = useRouter()
 const levelStore = useLevelStore()
 const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
-let  curriculumNumber = routerData.currentRoute.value.query.id
 
-
+const levelNumber = ref("")
 
 const form = reactive({
   code:null,
   name:null,
-  curriculum_number:curriculumNumber,
 })
 
 
 const addLevel = () =>{
   loader.value = true
-  levelStore.newLevelData(form)
+  if(levelNumber.value){
+    form.level_number = levelNumber.value
+    levelStore.editLevelData(form)
+  }else {
+    levelStore.newLevelData(form)
+  }
+
 }
 
 
@@ -114,6 +118,29 @@ watch(
       if(data){
         loader.value = false
         notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => levelStore.levelDataInfoResponse,
+    async (data) => {
+      if(data){
+        let info = data.data
+            form.code = String(info.code)
+            form.name = info.name
+            levelNumber.value = info.number
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => levelStore.levelEditResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
       }
     },
     {deep:true}

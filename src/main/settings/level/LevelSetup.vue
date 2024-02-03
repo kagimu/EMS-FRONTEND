@@ -8,7 +8,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Add Level</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2"> {{levelEditMode ? "Edit" : "Add"}} Level</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -54,7 +54,7 @@
                   <div>
                     <i
                         style="font-size: 13px;"
-                        data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
+                        data-bs-toggle="modal" data-bs-target="#levelModal"
                         class="bi-pencil mr-2 cursor-pointer" @click="editLevel(levelInfo)"></i>
                     <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLevel(levelInfo, index)"></i>
                     <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
@@ -91,6 +91,7 @@ const  notificationStore  = useNotificationStore()
 
 const level = ref( "")
 const levelDialog = ref( false)
+const levelEditMode = ref( false)
 const levelList = ref( [])
 const deletionLoader = ref( undefined)
 let  curriculumNumber = routerData.currentRoute.value.query.id
@@ -98,11 +99,13 @@ let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
 const addLevel = () => {
+  levelEditMode.value = false
   levelDialog.value = true
 }
 
 const editLevel = (data) => {
-  alert(JSON.stringify(data))
+  levelEditMode.value = true
+  levelStore.LevelData(data.number)
 }
 const deleteLevel = (data, index) => {
   deletionLoader.value = index
@@ -128,6 +131,17 @@ onMounted(
 
 watch(
     () => levelStore.levelResponse,
+    async (data) => {
+      if(data){
+        await levelStore.fetchLevels()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => levelStore.levelEditResponse,
     async (data) => {
       if(data){
         await levelStore.fetchLevels()

@@ -9,6 +9,8 @@ export const useLevelStore = defineStore("level", () => {
     const curriculumLevelResponse = ref(null)
     const curriculumLevelInfoResponse = ref(null)
     const campusLevelResponse = ref(null)
+    const levelDataInfoResponse = ref(null)
+    const levelEditResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -17,6 +19,18 @@ export const useLevelStore = defineStore("level", () => {
         return await api.post("main/new-level", data)
             .then((response) => {
                 levelResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function editLevelData(data) {
+        return await api.post("main/level/edit", data)
+            .then((response) => {
+                levelEditResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -121,6 +135,20 @@ export const useLevelStore = defineStore("level", () => {
 
 
 
+    async function LevelData(data) {
+        return await api.get("main/level/info?level_number="+data)
+            .then((response) => {
+                levelDataInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
+
     return {
         campusLevelResponse,
         levelInfoResponse,
@@ -128,8 +156,11 @@ export const useLevelStore = defineStore("level", () => {
         curriculumLevelResponse,
         curriculumLevelInfoResponse,
         deleteLevelSetUpResponse,
+        levelDataInfoResponse,
+        levelEditResponse,
         errorMessage,
         newLevelData,
+        editLevelData,
         fetchLevels,
         newCurriculumLevel,
         fetchCurriculumLevels,
@@ -137,5 +168,6 @@ export const useLevelStore = defineStore("level", () => {
         fetchCampusLevelList,
         fetchLevelsByCampusNumber,
         deleteLevelSetUp,
+        LevelData,
     }
 })
