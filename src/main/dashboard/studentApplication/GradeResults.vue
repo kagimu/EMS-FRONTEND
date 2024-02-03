@@ -83,24 +83,22 @@ import {onMounted,reactive, ref, watch} from "vue";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import useNotificationStore from "@/composables/useNotification.js";
 
-const interviewList = ref( [])
+const interviewResultList = ref( [])
 let errorMessage = ref(null)
-
-const buttonLoader = ref(false)
 
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
 
 onMounted(
     async () => {
-      await applicationStore.fetchInterviewList()
+      await applicationStore.fetchInterviewResultsAll()
     } )
 
     watch(
-    () => applicationStore.interviewListResponse,
+    () => applicationStore.interviewResultsResponse,
     async (data) => {
       if(data){
-        interviewList.value = data.data
+        interviewResultList.value = data.data
       }
     },
     {deep:true}
@@ -111,38 +109,11 @@ watch (
     async (data) => {
       if(data){
         errorMessage.value = data.message
-        buttonLoader.value = false
         notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}
 )
-
-const formData = reactive({ 
-title:null,
-interview_date:null,
-venue:null,
-message:null,
-})
-
-
-const createInterview = () => {
-alert(JSON.stringify(formData))
-applicationStore.createNewInterview(formData)
-}
-
-watch(
-      () => applicationStore.newInterviewResponse,
-      async (data) => {
-          if (data) {
-              buttonLoader.value = false
-              notificationStore.successToast("Success", data.message)
-          }
-      },
-      {deep: true}
-  )
-
-
   </script>
 
 
