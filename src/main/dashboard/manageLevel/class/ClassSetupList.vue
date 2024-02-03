@@ -91,7 +91,10 @@
                              style="font-size: 13px;"
                              data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
                              class="bi-pencil mr-2 cursor-pointer" @click="editClass(cls)"></i>
-                         <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(cls)"></i>
+                         <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(cls, idx)"></i>
+                         <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === idx">
+                           <span class="visually-hidden">Loading...</span>
+                         </div>
                        </div>
                      </td>
                     </tr>
@@ -131,6 +134,7 @@ const routerData = useRouter()
 const classStore = useClassesStore()
 const commons = useCommonsStore()
 const levelStore = useLevelStore()
+const deletionLoader = ref( undefined)
 const  notificationStore  = useNotificationStore()
 
 const level = ref( "")
@@ -147,8 +151,19 @@ const addCampus = () => {
 const editClass = (data) => {
   alert(JSON.stringify(data))
 }
-const deleteClass = (data) => {
-  alert(JSON.stringify(data))
+const deleteClass = (data, index) => {
+
+  deletionLoader.value = index
+
+  if(!confirm("Are you sure, you want to delete: "+data.name)){
+    return
+  }
+
+  let info = {
+    number:data.number
+  }
+
+  classStore.deleteClassSetUp(info)
 }
 
 const filterClasses = () => {
@@ -173,6 +188,18 @@ watch(
     () => classStore.classResponse,
     async (data) => {
       if(data){
+        await fetchClassList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => classStore.deleteClassSetUpResponse,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
         await fetchClassList()
         notificationStore.successToast("Success", data.message)
       }

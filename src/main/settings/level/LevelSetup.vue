@@ -119,7 +119,6 @@ const deleteLevel = (data, index) => {
   }
 
   levelStore.deleteLevelSetUp(info)
-
 }
 
 

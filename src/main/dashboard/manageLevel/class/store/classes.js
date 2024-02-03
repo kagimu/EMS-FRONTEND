@@ -6,6 +6,7 @@ export const useClassesStore = defineStore("classes", () => {
     let classResponse = ref(null)
     let classLevelResponse = ref(null)
     let classInfoResponse = ref(null)
+    let deleteClassSetUpResponse = ref(null)
     let schemeClassInfoResponse = ref(null)
     let curriculumClassSetResponse = ref(null)
     let classLevelInfoResponse = ref(null)
@@ -86,6 +87,20 @@ export const useClassesStore = defineStore("classes", () => {
                 }
             })
     }
+
+
+    async function deleteClassSetUp(data) {
+        return await api.post("main/class/delete", data)
+            .then((response) => {
+                deleteClassSetUpResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
     async function fetchCurriculumClasses(data) {
         return await api.get("main/fetch-curriculum-classes?level="+data.level+"&curriculum_number="+data.curriculum_number)
@@ -227,6 +242,7 @@ export const useClassesStore = defineStore("classes", () => {
         curriculumClassInfoResponse,
         curriculumClassResponse,
         curriculumClassSetResponse,
+        deleteClassSetUpResponse,
         errorMessage,
         newClassData,
         fetchClasses,
@@ -242,6 +258,7 @@ export const useClassesStore = defineStore("classes", () => {
         fetchClassesCurriculum,
         filterCurriculumClassesData,
         newCurriculumClassData,
-        fetchCurriculumClasses
+        fetchCurriculumClasses,
+        deleteClassSetUp
     }
 })
