@@ -56,7 +56,7 @@
         </tr>
 
       </thead>
-      <tbody>
+      <tbody>    
         <tr>
           <td>Collins Mpiima</td>
           <td>Primary One</td>
@@ -64,39 +64,12 @@
           <td>
             <router-link
                   class="text-decoration-none"
-                  :to="{name:''}"
+                  :to="{name:'admit-student'}"
               ><button class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
                 <i class="bi bi-arrow-right-short"></i>Admit</small></button>   
             </router-link>     
             </td>
-        </tr>     
-        <tr>
-          <td>Collins Mpiima</td>
-          <td>Primary One</td>
-          <td><input disabled type="text" value="89"></td>
-          <td>
-            <router-link
-                  class="text-decoration-none"
-                  :to="{name:''}"
-              ><button class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
-                <i class="bi bi-arrow-right-short"></i>Admit</small></button>   
-            </router-link>     
-            </td>
-        </tr>
-        <tr>
-          <td>Collins Mpiima</td>
-          <td>Primary One</td>
-          <td><input disabled type="text" value="89"></td>
-          <td>
-            <router-link
-                  class="text-decoration-none"
-                  :to="{name:''}"
-              ><button class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
-                <i class="bi bi-arrow-right-short"></i>Admit</small></button>   
-            </router-link>     
-            </td>
-        </tr>   
-        
+        </tr> 
       </tbody>
     </table>
   </div>
