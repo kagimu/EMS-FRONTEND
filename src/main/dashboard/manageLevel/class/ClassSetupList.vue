@@ -8,7 +8,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Add Class</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">{{classEditMode ? "Edit" : "Add"}} Class</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -139,17 +139,19 @@ const  notificationStore  = useNotificationStore()
 
 const level = ref( "")
 const classDialog = ref( false)
+const classEditMode = ref( false)
 const classList = ref( [])
 const levelList = ref( [])
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
 const addCampus = () => {
+  classEditMode.value = false
   classDialog.value = true
 }
 
 const editClass = (data) => {
-
+  classEditMode.value = true
   classStore.classData(data.number)
 }
 
