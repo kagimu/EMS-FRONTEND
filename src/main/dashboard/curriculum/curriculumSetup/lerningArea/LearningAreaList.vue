@@ -5,7 +5,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header text-sm p-0">
-          <h6 class="modal-title ml-3 mt-2 mb-2">Add Learning Area</h6>
+          <h6 class="modal-title ml-3 mt-2 mb-2">{{learningAreaEditMode ? "Edit" : "Add"}} Learning Area</h6>
           <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -50,7 +50,7 @@
         <div class="float-end mr-2">
           <i
               style="font-size: 13px;"
-              data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
+              data-bs-toggle="modal" data-bs-target="#learningAreaModal"
               class="bi-pencil mr-2 cursor-pointer" @click="editLearningArea(lst)"></i>
           <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLearningArea(lst)"></i>
           <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === lst.number">
@@ -79,6 +79,7 @@ const routerData = useRouter()
 
 
 const curriculumDialog = ref( false)
+const learningAreaEditMode = ref( false)
 const learningAreaList = ref( [])
 const deletionLoader = ref( undefined)
 let  curriculumNumber = routerData.currentRoute.value.query.id
@@ -91,8 +92,14 @@ const learningAreaRef = ref(null)
 
 
 const addCurriculum = () => {
+  learningAreaEditMode.value = false
   learningAreaRef.value.autoInputFocusInfo()
   curriculumDialog.value = true
+}
+
+const editLearningArea = (data) => {
+  learningAreaEditMode.value = true
+  learningAreaStore.learningAreaData(data.number)
 }
 
 const deleteLearningArea = (data) => {
@@ -118,6 +125,17 @@ onMounted(
 
 watch(
     () => learningAreaStore.learningAreaResponse,
+    async (data) => {
+      if(data){
+        await learningAreaStore.fetchLearningArea(curriculumNumber)
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => learningAreaStore.learningAreaEditResponse,
     async (data) => {
       if(data){
         await learningAreaStore.fetchLearningArea(curriculumNumber)
