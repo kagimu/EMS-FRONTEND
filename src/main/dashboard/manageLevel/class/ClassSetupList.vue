@@ -91,8 +91,8 @@
                              style="font-size: 13px;"
                              data-bs-toggle="modal" data-bs-target="#classModal"
                              class="bi-pencil mr-2 cursor-pointer" @click="editClass(cls)"></i>
-                         <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(cls, idx)"></i>
-                         <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === idx">
+                         <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(cls)"></i>
+                         <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === cls.number">
                            <span class="visually-hidden">Loading...</span>
                          </div>
                        </div>
@@ -155,9 +155,9 @@ const editClass = (data) => {
   classStore.classData(data.number)
 }
 
-const deleteClass = (data, index) => {
+const deleteClass = (data) => {
 
-  deletionLoader.value = index
+  deletionLoader.value = data.number
 
   if(!confirm("Are you sure, you want to delete: "+data.name)){
     return

@@ -51,8 +51,11 @@
           <i
               style="font-size: 13px;"
               data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-              class="bi-pencil mr-2 cursor-pointer" @click="editClass(sbj)"></i>
-          <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(sbj)"></i>
+              class="bi-pencil mr-2 cursor-pointer" @click="editLearningArea(lst)"></i>
+          <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLearningArea(lst)"></i>
+          <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === lst.number">
+            <span class="visually-hidden">Loading...</span>
+          </div>
         </div>
       </td>
     </tr>
@@ -77,6 +80,7 @@ const routerData = useRouter()
 
 const curriculumDialog = ref( false)
 const learningAreaList = ref( [])
+const deletionLoader = ref( undefined)
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
@@ -91,7 +95,19 @@ const addCurriculum = () => {
   curriculumDialog.value = true
 }
 
+const deleteLearningArea = (data) => {
+  deletionLoader.value = data.number
 
+  if(!confirm("Are you sure, you want to delete: "+data.name)){
+    return
+  }
+
+  let info = {
+    number:data.number
+  }
+
+  learningAreaStore.deleteLearningArea(info)
+}
 
 onMounted(
     () => {
@@ -104,7 +120,17 @@ watch(
     () => learningAreaStore.learningAreaResponse,
     async (data) => {
       if(data){
-        // curriculumDialog.value = false
+        await learningAreaStore.fetchLearningArea(curriculumNumber)
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => learningAreaStore.deleteLearningAreaResponse,
+    async (data) => {
+      if(data){
         await learningAreaStore.fetchLearningArea(curriculumNumber)
         notificationStore.successToast("Success", data.message)
       }
@@ -118,6 +144,16 @@ watch(
     async (data) => {
       if(data){
         learningAreaList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => learningAreaStore.errorMessage,
+    async (data) => {
+      if(data){
+       deletionLoader.value = undefined
       }
     },
     {deep:true}

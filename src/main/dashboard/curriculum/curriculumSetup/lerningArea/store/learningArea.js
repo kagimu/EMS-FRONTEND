@@ -5,6 +5,7 @@ import api from "@/config/api.js";
 export const useLearningAreaStore = defineStore("learningArea", () => {
     let learningAreaResponse = ref(null)
     let learningAreaInfResponse = ref(null)
+    let deleteLearningAreaResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -35,13 +36,27 @@ export const useLearningAreaStore = defineStore("learningArea", () => {
     }
 
 
+    async function deleteLearningArea(data) {
+        return await api.post("main/learning-area/delete", data)
+            .then((response) => {
+                deleteLearningAreaResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
 
     return {
+        deleteLearningAreaResponse,
         learningAreaResponse,
         learningAreaInfResponse,
         errorMessage,
         newLearningAreaData,
         fetchLearningArea,
+        deleteLearningArea,
     }
 })
