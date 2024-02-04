@@ -96,6 +96,7 @@ const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
+const classNumber = ref(null)
 
 
 
@@ -109,7 +110,14 @@ const form = reactive({
 
 const addClass = () =>{
   loader.value = true
-  classStore.newClassData(form)
+
+  if(classNumber.value){
+    form.class_number = classNumber.value
+    classStore.editClassData(form)
+  }else {
+    classStore.newClassData(form)
+  }
+
 }
 
 
@@ -158,6 +166,31 @@ watch(
     {deep:true}
 )
 
+watch(
+    () => classStore.classDataInfoResponse,
+    async (data) => {
+      if(data){
+        let info = data.data
+        form.code = info.code ? String(info.code) : ""
+        form.name  = info.name ? info.name : ""
+        form.abbreviation  = info.abbreviation ? info.abbreviation : ""
+        form.level  = info.level_number ? info.level_number : ""
+        classNumber.value = info.number ? info.number : ""
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => classStore.classEditResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
 
 </script>
 

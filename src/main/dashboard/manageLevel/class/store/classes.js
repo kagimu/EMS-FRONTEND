@@ -4,7 +4,9 @@ import api from "@/config/api.js";
 
 export const useClassesStore = defineStore("classes", () => {
     let classResponse = ref(null)
+    let classEditResponse = ref(null)
     let classLevelResponse = ref(null)
+    let classDataInfoResponse = ref(null)
     let classInfoResponse = ref(null)
     let deleteClassSetUpResponse = ref(null)
     let schemeClassInfoResponse = ref(null)
@@ -28,6 +30,18 @@ export const useClassesStore = defineStore("classes", () => {
         return await api.post("main/new-class", data)
             .then((response) => {
                 classResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function editClassData(data) {
+        return await api.post("main/class/edit", data)
+            .then((response) => {
+                classEditResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -226,6 +240,19 @@ export const useClassesStore = defineStore("classes", () => {
 
 
 
+    async function classData(data) {
+        return await api.get("main/class/info?class_number="+data)
+            .then((response) => {
+                classDataInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
 
     return {
         classResponse,
@@ -242,9 +269,12 @@ export const useClassesStore = defineStore("classes", () => {
         curriculumClassInfoResponse,
         curriculumClassResponse,
         curriculumClassSetResponse,
+        classEditResponse,
         deleteClassSetUpResponse,
+        classDataInfoResponse,
         errorMessage,
         newClassData,
+        editClassData,
         fetchClasses,
         fetchSchemeOfWorkClasses,
         fetchClassSubjects,
@@ -259,6 +289,7 @@ export const useClassesStore = defineStore("classes", () => {
         filterCurriculumClassesData,
         newCurriculumClassData,
         fetchCurriculumClasses,
-        deleteClassSetUp
+        deleteClassSetUp,
+        classData
     }
 })

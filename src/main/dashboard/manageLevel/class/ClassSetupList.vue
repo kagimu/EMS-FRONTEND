@@ -4,7 +4,7 @@
 
 
 
-    <div class="modal fade" id="learningAreaModal" tabindex="-1" :class="{ show: classDialog }" aria-labelledby="" aria-hidden="true">
+    <div class="modal fade" id="classModal" tabindex="-1" :class="{ show: classDialog }" aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
@@ -37,7 +37,7 @@
 
             <div class="flex justify-content-between mt-3">
               <div class="ml-4">Classes</div>
-              <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#learningAreaModal">
+              <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#classModal">
                 <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
                 Add Class
               </button>
@@ -89,7 +89,7 @@
                        <div>
                          <i
                              style="font-size: 13px;"
-                             data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
+                             data-bs-toggle="modal" data-bs-target="#classModal"
                              class="bi-pencil mr-2 cursor-pointer" @click="editClass(cls)"></i>
                          <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(cls, idx)"></i>
                          <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === idx">
@@ -149,8 +149,10 @@ const addCampus = () => {
 }
 
 const editClass = (data) => {
-  alert(JSON.stringify(data))
+
+  classStore.classData(data.number)
 }
+
 const deleteClass = (data, index) => {
 
   deletionLoader.value = index
@@ -200,6 +202,17 @@ watch(
     async (data) => {
       if(data){
         deletionLoader.value = undefined
+        await fetchClassList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => classStore.classEditResponse,
+    async (data) => {
+      if(data){
         await fetchClassList()
         notificationStore.successToast("Success", data.message)
       }
