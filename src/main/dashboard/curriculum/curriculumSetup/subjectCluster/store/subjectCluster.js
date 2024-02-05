@@ -6,6 +6,7 @@ export const useSubjectClusterStore = defineStore("subjectCluster", () => {
     let subjectClusterResponse = ref(null)
     let subjectClusterInfoResponse = ref(null)
     let subjectClusterFilterResponse = ref(null)
+    let deleteSubjectClusterResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -48,15 +49,29 @@ export const useSubjectClusterStore = defineStore("subjectCluster", () => {
     }
 
 
+    async function deleteSubjectCluster(data) {
+        return await api.post("main/subject-cluster/delete", data)
+            .then((response) => {
+                deleteSubjectClusterResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
 
     return {
         subjectClusterResponse,
         subjectClusterInfoResponse,
         subjectClusterFilterResponse,
+        deleteSubjectClusterResponse,
         errorMessage,
         newSubjectClusterData,
         fetchSubjectCluster,
-        fetchSubjectClusterFilter
+        fetchSubjectClusterFilter,
+        deleteSubjectCluster
     }
 })
