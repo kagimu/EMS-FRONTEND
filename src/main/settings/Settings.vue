@@ -30,8 +30,6 @@
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
 
-            <div>
-
                 <div v-if="selectedPage === 'role'">
                   <roles></roles>
                 </div>
@@ -44,18 +42,12 @@
                 <div v-if="selectedPage === 'learning-materials'">
                   <learning-material-setup></learning-material-setup>
                 </div>
-            </div>
-
-
-                    <div v-if="selectedPage === 'sosinfos'">
-                        <sos-info></sos-info>
-                    </div>
-
-                    <div v-if="selectedPage === 'services'">
-                        <Services></Services>
-                    </div>
-
-
+                <div v-if="selectedPage === 'sosinfos'">
+                    <sos-info></sos-info>
+                </div>
+                <div v-if="selectedPage === 'services'">
+                    <Services></Services>
+                </div>
           </div>
         </div>
       </div>

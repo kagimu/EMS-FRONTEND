@@ -40,7 +40,7 @@
         <button
             type="submit"
             class="btn btn-primary border-0">
-          Save
+            {{learningAreaNumber ? "Edit" : "Save"}}
           <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>
@@ -69,7 +69,7 @@ const routerData = useRouter()
 const  notificationStore  = useNotificationStore()
 const learningAreaStore = useLearningAreaStore()
 let  curriculumNumber = routerData.currentRoute.value.query.id
-
+const learningAreaNumber = ref(null)
 
 const form = reactive({
   name:null,
@@ -80,7 +80,13 @@ const form = reactive({
 
 const addLearningArea = () =>{
   loader.value = true
-  learningAreaStore.newLearningAreaData(form)
+  if(learningAreaNumber.value){
+   form.learning_area_number = learningAreaNumber.value
+    learningAreaStore.editLearningAreaData(form)
+  }else {
+    learningAreaStore.newLearningAreaData(form)
+  }
+
 }
 
 const  autoInputFocusInfo =  () => {
@@ -98,7 +104,7 @@ onMounted(
 )
 
 watch(
-    () => learningAreaStore.learningAreaInfResponse,
+    () => learningAreaStore.learningAreaResponse,
     async (data) => {
       if(data){
         loader.value = false
@@ -110,11 +116,35 @@ watch(
 )
 
 watch(
+    () => learningAreaStore.learningAreaEditResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
     () => learningAreaStore.errorMessage,
     async (data) => {
       if(data){
         loader.value = false
           notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => learningAreaStore.learningAreaDataInfoResponse,
+    async (data) => {
+      if(data){
+        let info = data.data
+        form.name = info.name ? info.name : ""
+        form.code = info.code ? String(info.code) : ""
+        learningAreaNumber.value = info.number ? info.number : ""
       }
     },
     {deep:true}
