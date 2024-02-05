@@ -148,7 +148,7 @@ const submitScores = () => {
     interview_number: props.stud.interview_number,
     scores: scoresArray,
   })
-  alert(JSON.stringify(data))
+  // alert(JSON.stringify(data))
   //endpoint
   buttonLoader.value = true
   applicationStore.createInterviewResults(props.stud.Student.number,data) 
