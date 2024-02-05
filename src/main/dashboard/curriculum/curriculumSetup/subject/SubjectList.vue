@@ -105,6 +105,9 @@
                                     data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
                                     class="bi-pencil mr-2 cursor-pointer" @click="editSubject(sbt)"></i>
                                 <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteSubject(sbt)"></i>
+                                <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === sbt.number">
+                                  <span class="visually-hidden">Loading...</span>
+                                </div>
                               </div>
                             </td>
                           </tr>
@@ -151,6 +154,7 @@ const learningAreaStore = useLearningAreaStore()
 const  notificationStore  = useNotificationStore()
 
 const subjectDialog = ref( false)
+const deletionLoader = ref( undefined)
 const subjectList = ref( [])
 const subjectClusterList = ref([])
 const learningAreaList = ref([])
@@ -167,7 +171,16 @@ const editSubject = (data) => {
   alert(JSON.stringify(data))
 }
 const deleteSubject = (data) => {
-  alert(JSON.stringify(data))
+  deletionLoader.value = data.number
+  if(!confirm("Are you sure, you want to delete: "+data.name)){
+    return
+  }
+
+  let info = {
+    number:data.number
+  }
+
+  subjectStore.deleteSubject(info)
 }
 
 const filterSubjectCluster = () => {
@@ -202,6 +215,28 @@ watch(
       if(data){
         await filterSubjectList()
         notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectStore.deleteSubjectResponse,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
+        await filterSubjectList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectStore.errorMessage,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
       }
     },
     {deep:true}
