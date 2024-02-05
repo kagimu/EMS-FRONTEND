@@ -102,7 +102,7 @@
                               <div>
                                 <i
                                     style="font-size: 13px;"
-                                    data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
+                                    data-bs-toggle="modal" data-bs-target="#subjectModal"
                                     class="bi-pencil mr-2 cursor-pointer" @click="editSubject(sbt)"></i>
                                 <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteSubject(sbt)"></i>
                                 <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === sbt.number">
@@ -168,7 +168,8 @@ const addSubject = () => {
 }
 
 const editSubject = (data) => {
-  alert(JSON.stringify(data))
+
+  subjectStore.subjectData(data.number)
 }
 const deleteSubject = (data) => {
   deletionLoader.value = data.number
@@ -211,6 +212,17 @@ const filterSubjectList = () => {
 
 watch(
     () => subjectStore.subjectResponse,
+    async (data) => {
+      if(data){
+        await filterSubjectList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectStore.subjectEditResponse,
     async (data) => {
       if(data){
         await filterSubjectList()
