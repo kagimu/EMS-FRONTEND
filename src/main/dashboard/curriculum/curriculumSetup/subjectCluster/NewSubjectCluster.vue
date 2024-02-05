@@ -42,7 +42,7 @@
         <button
             type="submit"
             class="btn btn-primary border-0">
-              Save
+              {{subjectClusterNumber ? "Edit" : "Save"}}
           <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>
@@ -67,6 +67,7 @@ const commons = useCommonsStore()
 const classError = ref(null)
 const name = ref(null)
 const loader = ref(false)
+
 const routerData = useRouter()
 
 const subjectClusterStore = useSubjectClusterStore()
@@ -74,6 +75,8 @@ const  notificationStore  = useNotificationStore()
 const learningAreaList = ref([])
 const learningAreaStore = useLearningAreaStore()
 let  curriculumNumber = routerData.currentRoute.value.query.id
+
+const subjectClusterNumber = ref(null)
 
 const form = reactive({
   name:null,
@@ -85,7 +88,15 @@ const form = reactive({
 const addSubjectCluster = () =>{
   loader.value = true
   form.curriculum_number = curriculumNumber
-  subjectClusterStore.newSubjectClusterData(form)
+
+  if(subjectClusterNumber.value){
+    form.subject_cluster_number = subjectClusterNumber.value
+    subjectClusterStore.editSubjectClusterData(form)
+  }else {
+    subjectClusterStore.newSubjectClusterData(form)
+  }
+
+
 }
 
 
@@ -95,6 +106,16 @@ onMounted(
     }
 )
 
+
+watch(
+    () => subjectClusterStore.subjectClusterEditResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
 
 
 watch(
@@ -126,6 +147,20 @@ watch(
       if(data){
         loader.value = false
         notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectClusterStore.subjectClusterDataInfoResponse,
+    async (data) => {
+      if(data){
+        let info = data.data
+        form.name = info.name ? info.name : ""
+        form.code = info.code ? String(info.code) : ""
+        form.learning_area_number  =  info.learning_area_number ? info.learning_area_number : ""
+        subjectClusterNumber.value = info.number ? info.number : ""
       }
     },
     {deep:true}
