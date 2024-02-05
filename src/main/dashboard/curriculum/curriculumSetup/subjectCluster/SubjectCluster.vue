@@ -5,7 +5,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Add Subject Cluster</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">{{subjectClusterEditMode ? "Edit" : "Add"}} Subject Cluster</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -13,7 +13,6 @@
               <new-subject-cluster></new-subject-cluster>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -81,9 +80,12 @@
                         <div>
                           <i
                               style="font-size: 13px;"
-                              data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
+                              data-bs-toggle="modal" data-bs-target="#subjectClusterModal"
                               class="bi-pencil mr-2 cursor-pointer" @click="editSubjectCluster(sbct)"></i>
                           <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteSubjectCluster(sbct)"></i>
+                          <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === sbct.number">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
                         </div>
                       </td>
                     </tr>
@@ -117,8 +119,10 @@ import {useRouter} from "vue-router";
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
 const routerData = useRouter()
 const curriculumDialog = ref( false)
+const subjectClusterEditMode = ref( false)
 const subjectClusterList = ref( [])
 const learning_area_number = ref( "")
+const deletionLoader = ref( undefined)
 const subjectClusterStore = useSubjectClusterStore()
 const  notificationStore  = useNotificationStore()
 const learningAreaStore = useLearningAreaStore()
@@ -126,15 +130,26 @@ const learningAreaList = ref([])
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 const addCurriculum = () => {
+  subjectClusterEditMode.value = false
   curriculumDialog.value = true
 }
 
 
-const editSubjectCluster = (sbj) => {
-
+const editSubjectCluster = (data) => {
+  subjectClusterEditMode.value = true
+  subjectClusterStore.subjectClusterData(data.number)
 }
-const deleteSubjectCluster = (sbj) => {
+const deleteSubjectCluster = (data) => {
+  deletionLoader.value = data.number
+  if(!confirm("Are you sure, you want to delete: "+data.name)){
+    return
+  }
 
+  let info = {
+    number:data.number
+  }
+
+  subjectClusterStore.deleteSubjectCluster(info)
 }
 
 
@@ -155,9 +170,40 @@ watch(
     () => subjectClusterStore.subjectClusterResponse,
     async (data) => {
       if(data){
-        // curriculumDialog.value = false
         await fetchSubjectClusterList()
         notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectClusterStore.subjectClusterEditResponse,
+    async (data) => {
+      if(data){
+        await fetchSubjectClusterList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectClusterStore.deleteSubjectClusterResponse,
+    async (data) => {
+      if(data){
+        await fetchSubjectClusterList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectClusterStore.errorMessage,
+    async (data) => {
+      if(data){
+         deletionLoader.value = false
       }
     },
     {deep:true}
