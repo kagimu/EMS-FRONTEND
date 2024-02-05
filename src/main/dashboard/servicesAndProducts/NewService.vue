@@ -16,6 +16,37 @@
         </ul>
           </div>
 
+
+            <div class="mb-2">
+                <label class="textColor"><small>School</small> <span class="star">*</span></label>
+                <select
+                        style="box-shadow: none;"
+                        class="form-select form-select-sm" required
+                        v-model="school_number"
+                        @change="fetchCampuses(school_number)"
+                >
+                    <option disabled value="">Select School</option>
+                    <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+                    </option>
+                </select>
+            </div>
+
+
+            <div class="mb-2">
+                <label class="textColor"><small>Campus</small>  <span class="star">*</span></label>
+                <select
+                        style="box-shadow: none;"
+                        class="form-select form-select-sm"
+                        v-model="form.preferred_campus_number" required
+                        @change="fetchClasses(form.preferred_campus_number)"
+                >
+                    <option disabled value="">Select campus</option>
+                    <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+                    </option>
+                </select>
+            </div>
+
+
           <div class="mb-2">
             <label class="textColor"><small>Service Name</small></label>
             <input  type="text" style="outline: none 0 !important;box-shadow: none;"
@@ -44,17 +75,37 @@
 import {onMounted, reactive, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 
 const serviceStore= useServiceStore()
 const  notificationStore  = useNotificationStore()
+const schoolStore = useSchoolStore()
+const campusStore = useCampusStore()
 const buttonLoader = ref(false)
 let errorMessage = ref(null)
+const campusList = ref([])
+const schoolList = ref([])
 
 const formData = reactive({
     description: null,
     cost: null,
     name:null,
 })
+
+const fetchCampuses = (school_number) => {
+    campusStore.fetchCampuses(school_number)
+}
+
+const fetchClasses = (campus_number) => {
+    campusStore.fetchClassesByCampus(campus_number)
+}
+
+onMounted(() => {
+        schoolStore.fetchSchools()
+    }
+)
+
 
 const createNewService = () =>{
 // alert(JSON.stringify(formData))
@@ -81,6 +132,26 @@ watch (
       }
     },
     {deep:true}
+)
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+        if (data) {
+            schoolList.value = data.data
+        }
+    },
+    {deep: true}
+)
+
+watch(
+    () => campusStore.campusListResponse,
+    async (data) => {
+        if (data) {
+            campusList.value = data.data
+        }
+    },
+    {deep: true}
 )
 
 </script>

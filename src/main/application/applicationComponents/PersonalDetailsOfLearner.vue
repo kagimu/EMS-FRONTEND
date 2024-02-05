@@ -22,11 +22,6 @@
             <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" class="form-control form-control-sm">
           </div>
 
-          <div class="mb-2">
-            <label class="textColor text-sm"><small>Prefered Class</small> <span class="star">*</span></label>
-            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.preferred_type_of_enrollment"  required class="form-control form-control-sm">
-          </div>
-
           
           <div class="mb-2">
             <label class="textColor text-sm"><small>Reason to enroll </small> </label>
