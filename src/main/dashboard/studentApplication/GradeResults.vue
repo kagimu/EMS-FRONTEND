@@ -57,9 +57,9 @@
 
       </thead>
       <tbody>    
-        <tr>
-          <td>Collins Mpiima</td>
-          <td>Primary One</td>
+        <tr v-for="(resultList, index) in interviewResultList" :key="index">
+          <td>{{ gewwwww }}</td>
+          <td>{{ hshsjsjsj }}</td>
           <td><input disabled type="text" value="89"></td>
           <td>
             <router-link
