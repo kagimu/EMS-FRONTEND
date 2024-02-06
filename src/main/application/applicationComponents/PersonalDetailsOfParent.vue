@@ -134,10 +134,7 @@ watch(
     () => routerData.currentRoute.value.query.applicationId, 
     async (data) => { 
         if (data) {
-            // applicationNumber = newApplicationId; 
-            applicationStore.fetchApplicationById(data)
-            
-            
+            applicationStore.fetchApplicationById(data)  
         }
     },
     { deep: true } 
