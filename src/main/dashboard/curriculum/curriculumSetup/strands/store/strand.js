@@ -6,6 +6,7 @@ export const useStrandStore = defineStore("strand", () => {
     let strandResponse = ref(null)
     let strandInfoResponse = ref(null)
     let strandListResponse = ref(null)
+    const deleteStrandResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -52,6 +53,17 @@ export const useStrandStore = defineStore("strand", () => {
     }
 
 
+    async function deleteStrand(data) {
+        return await api.post("main/strand/delete", data)
+            .then((response) => {
+                deleteStrandResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
 
 
@@ -59,9 +71,11 @@ export const useStrandStore = defineStore("strand", () => {
         strandResponse,
         strandInfoResponse,
         strandListResponse,
+        deleteStrandResponse,
         errorMessage,
         newStrandData,
         fetchStrands,
-        fetchStrandList
+        fetchStrandList,
+        deleteStrand
     }
 })

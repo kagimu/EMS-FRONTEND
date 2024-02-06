@@ -129,8 +129,11 @@
                                       <i
                                           style="font-size: 13px;"
                                           data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                                          class="bi-pencil mr-2 cursor-pointer" @click="editClass(std)"></i>
-                                      <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(std)"></i>
+                                          class="bi-pencil mr-2 cursor-pointer" @click="editStrand(std)"></i>
+                                      <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteStrand(std)"></i>
+                                      <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === std.number">
+                                        <span class="visually-hidden">Loading...</span>
+                                      </div>
                                     </div>
                                   </td>
                                 </tr>
@@ -200,17 +203,28 @@ const subjectList = ref([])
 const subject_cluster_number = ref("")
 const subject_number = ref("")
 const learning_area_number = ref("")
+const deletionLoader = ref(undefined)
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 const addSubject = () => {
   strandDialog.value = true
 }
 
-const editClass = (data) => {
+const editStrand = (data) => {
   alert(JSON.stringify(data))
 }
-const deleteClass = (data) => {
-  alert(JSON.stringify(data))
+const deleteStrand = (data) => {
+  if(!confirm("Are you sure, you want to delete: "+data.name)){
+    return
+  }
+
+  deletionLoader.value = data.number
+
+  let info = {
+    number:data.number
+  }
+
+  strandStore.deleteStrand(info)
 }
 
 
@@ -259,9 +273,30 @@ watch(
     () => strandStore.strandResponse,
     async (data) => {
       if(data){
-        // strandDialog.value = false
         await filterStrandList()
         notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => strandStore.deleteStrandResponse,
+    async (data) => {
+      if(data){
+         deletionLoader.value = false
+        await filterStrandList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => strandStore.errorMessage,
+    async (data) => {
+      if(data){
+        deletionLoader.value = false
       }
     },
     {deep:true}
