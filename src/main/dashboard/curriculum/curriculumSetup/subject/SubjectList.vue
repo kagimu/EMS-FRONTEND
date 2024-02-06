@@ -5,7 +5,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Add Subject</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">{{subjectEditMode ? "Edit" : "Add"}} Subject</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -154,6 +154,7 @@ const learningAreaStore = useLearningAreaStore()
 const  notificationStore  = useNotificationStore()
 
 const subjectDialog = ref( false)
+const subjectEditMode = ref( false)
 const deletionLoader = ref( undefined)
 const subjectList = ref( [])
 const subjectClusterList = ref([])
@@ -164,13 +165,15 @@ const subjectClusterStore = useSubjectClusterStore()
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 const addSubject = () => {
+  subjectEditMode.value = false
   subjectDialog.value = true
 }
 
 const editSubject = (data) => {
-
+  subjectEditMode.value = true
   subjectStore.subjectData(data.number)
 }
+
 const deleteSubject = (data) => {
   deletionLoader.value = data.number
   if(!confirm("Are you sure, you want to delete: "+data.name)){

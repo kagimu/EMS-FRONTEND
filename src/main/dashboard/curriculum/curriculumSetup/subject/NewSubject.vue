@@ -57,7 +57,7 @@
         <button
             type="submit"
             class="btn btn-primary border-0">
-          Save
+             {{subjectNumber ? "Edit" : "Save"}}
           <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>
@@ -129,6 +129,17 @@ onMounted(
 
 
 watch(
+    () => subjectStore.subjectEditResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
     () => learningAreaStore.learningAreaInfResponse,
     async (data) => {
       if(data){
@@ -182,6 +193,7 @@ watch(
         form.name = info.name ? info.name : ""
         form.code = info.code ? String(info.code) : ""
         form.subject_cluster_number = info.subject_cluster_number ? info.subject_cluster_number : ""
+        form.learning_area_number = info.learning_area_number ? info.learning_area_number : ""
         subjectNumber.value = info.number ? info.number : ""
       }
     },
