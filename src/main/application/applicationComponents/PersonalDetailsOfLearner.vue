@@ -1,9 +1,6 @@
 <template>
   <div>
   <p class="ml-4 mt-4 mb-10" style="text-align: center !important;">DETAILS OF THE LEARNER</p>
-  <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-    {{errorMessage}}
-  </div>
     <form @submit.prevent="addLearnerDetails" style="margin-top: 15px;">
     <div class="row">
       <div class="col-12">
@@ -19,18 +16,13 @@
   
           <div class="mb-2">
             <label class="textColor text-sm"><small>Other names</small> </label>
-            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" required class="form-control form-control-sm">
-          </div>
-
-          <div class="mb-2">
-            <label class="textColor text-sm"><small>Prefered Class</small> <span class="star">*</span></label>
-            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.preferred_type_of_enrollment"  required class="form-control form-control-sm">
+            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" class="form-control form-control-sm">
           </div>
 
           
           <div class="mb-2">
             <label class="textColor text-sm"><small>Reason to enroll </small> </label>
-            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.reason_for_choosing_school" required class="form-control form-control-sm">
+            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.reason_for_choosing_school" class="form-control form-control-sm">
           </div>
 
 
@@ -49,10 +41,10 @@
 
 
           <div class="mb-2">
-              <label class="textColor"><small>School</small></label>
+              <label class="textColor"><small>School</small> <span class="star">*</span></label>
               <select
                       style="box-shadow: none;"
-                      class="form-select form-select-sm"
+                      class="form-select form-select-sm" required
                       v-model="school_number"
                       @change="fetchCampuses(school_number)"
               >
@@ -64,11 +56,11 @@
 
 
           <div class="mb-2">
-              <label class="textColor"><small>Campus</small></label>
+              <label class="textColor"><small>Campus</small>  <span class="star">*</span></label>
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
-                      v-model="form.preferred_campus_number"
+                      v-model="form.preferred_campus_number" required
                       @change="fetchClasses(form.preferred_campus_number)"
               >
                   <option disabled value="">Select campus</option>
@@ -79,10 +71,10 @@
 
 
           <div class="mb-2">
-              <label class="textColor"><small>Preferred Class</small></label>
+              <label class="textColor"><small>Preferred Class</small> <span class="star">*</span></label>
               <select
                       style="box-shadow: none;"
-                      class="form-select form-select-sm"
+                      class="form-select form-select-sm" required
                       v-model="form.class_number"
               >
                   <option disabled value="">Select class</option>
@@ -100,7 +92,8 @@
             </div>
             <div class="col-lg-6">
               <label class="textColor text-sm"><small>gender</small> <span class="star">*</span></label>
-            <select class="form-control form-control-sm" v-model="form.gender" style="outline: none 0 !important; box-shadow: none;">
+            <select class="form-control form-control-sm"
+             v-model="form.gender" style="outline: none 0 !important; box-shadow: none;">
               <option>-select-</option>
               <option>Male</option>
               <option>Female</option>
@@ -113,7 +106,7 @@
         <div class="text- mt-4">
           <div class="row" >
             <div class="col-lg-4">
-              <button class="btn btn-sm btn-success mb-2 mr-4" style="color: white;">
+              <button type="button" @click="goBack()" class="btn btn-sm btn-success mb-2 mr-4" style="color: white;">
            <small><i class="bi bi-box-arrow-in-left"></i> Back</small>
             <!-- <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
               <span class="visually-hidden">Loading...</span>
@@ -143,8 +136,13 @@
   import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
   import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
   import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+  import {useRouter} from "vue-router";
 
-  const buttonLoader = ref(false)
+const routerData = useRouter()
+let  applicationNumber = routerData.currentRoute.value.query.applicationId
+
+
+const buttonLoader = ref(false)
 let errorMessage = ref(null)
 const emit = defineEmits()
 
@@ -170,7 +168,9 @@ const  notificationStore  = useNotificationStore()
   class_number: null,
 })
 
-
+const goBack = () =>{
+  emit("next", 1 )
+}
   const fetchCampuses = (school_number) => {
       campusStore.fetchCampuses(school_number)
   }
@@ -254,6 +254,30 @@ watch (
       },
       {deep: true}
   )
+
+  
+  onMounted(
+    () => {
+      applicationStore.fetchApplicationById(applicationNumber)
+    }
+)
+
+watch (
+    () => applicationStore.applicationByIdResponse,
+    async (data) => {
+      if(data){
+        form.surname= data.Student.surname
+        form.second_name=data.Student.second_name,
+        form.other_name=data.Student.other_name,
+        form.gender= data.Student.gender,
+        form.date_of_birth=data.Student.date_of_birth,
+        form.preferred_campus_number=data.Student.preferred_campus_number,
+        form.reason_for_choosing_school=data.Student.reason_for_choosing_school
+        form.source_of_school_info = data.Student.source_of_school_info
+      }
+    },
+    {deep:true}
+)
 
   </script>
   

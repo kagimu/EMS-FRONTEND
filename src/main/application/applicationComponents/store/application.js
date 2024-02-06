@@ -19,7 +19,8 @@ export const useApplicationStore = defineStore("application", () => {
     let getInterviewQuestionsForGradingResponse = ref(null)
     let addStudentToInterviewResponse = ref(null)
     let QuestionsOnInterviewResponse = ref(null)
-
+    let interviewResultsResponse = ref(null)
+    let interviewResultesponse  = ref(null)
     async function newApplicationDetails(data) {
         return await api.post("main/applications/new-parent", data)
             .then((response) => {
@@ -193,6 +194,32 @@ export const useApplicationStore = defineStore("application", () => {
                 })
         }
            
+        async function fetchInterviewResultsAll(data) {
+            return await api.get("main/interview-results/all")
+                .then((response) => {
+                   interviewResultsResponse.value = response.data
+                })
+                .catch((response) => {
+                    if(response){
+                        errorMessage.value = response.response.data
+                    }
+                })
+        }
+
+        async function createInterviewResults(studentId,data) {
+            return await api.post("main/interview-results/"+studentId, data)
+                .then((response) => {
+                    interviewResultesponse.value = response.data
+                })
+                .catch((response) => {
+                    if(response){
+                        errorMessage.value = response.response.data
+                    }
+                })
+        }
+
+              
+        
 
     return {
         newApplicationDetailsResponse ,
@@ -223,7 +250,10 @@ export const useApplicationStore = defineStore("application", () => {
         addStudentToInterviewResponse,
         addStudentToInterview,
         QuestionsOnInterviewResponse,
-        fetchQuestionsOnInterview
-        
+        fetchQuestionsOnInterview,
+        fetchInterviewResultsAll,
+        interviewResultsResponse,
+        interviewResultesponse,
+        createInterviewResults 
     }
 })

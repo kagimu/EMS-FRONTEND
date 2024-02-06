@@ -103,7 +103,7 @@ const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
 const curriculumStore = useCurriculumStore()
 
-const schoolDialog = ref( false)
+const schoolDialog = ref(false)
 const curriculumList = ref( [])
 
 

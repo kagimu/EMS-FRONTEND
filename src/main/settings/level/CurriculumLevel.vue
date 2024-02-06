@@ -47,14 +47,14 @@
               <tr>
                 <th scope="col" style="width: 30%;">Code</th>
                 <th scope="col">Name</th>
-                <th scope="col">Action</th>
+<!--                <th scope="col">Action</th>-->
               </tr>
               </thead>
               <tbody>
               <tr v-for="(levelInfo, index) in levelList" :key="index">
                 <td> {{levelInfo.code}}</td>
                 <td> {{levelInfo.name}}</td>
-                <td>
+<!--                <td>
                   <div>
                     <i
                         style="font-size: 13px;"
@@ -62,7 +62,7 @@
                         class="bi-pencil mr-2 cursor-pointer" @click="editClass(levelInfo)"></i>
                     <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(levelInfo)"></i>
                   </div>
-                </td>
+                </td>-->
               </tr>
               </tbody>
             </table>

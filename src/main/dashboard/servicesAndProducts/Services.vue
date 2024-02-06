@@ -51,7 +51,8 @@
             <td>{{ serviceData.description}}</td>
             <td>
               <button @click="setServiceId(serviceData)" data-bs-target="#editServiceModal"  data-bs-toggle="modal" class="link-primary"><i class="bi bi-pencil"></i></button>&nbsp;&nbsp;   |
-              &nbsp;&nbsp; <button  @click="deleteService(serviceData)" class="link-danger"><i class="bi bi-trash"></i></button>        
+              &nbsp;&nbsp; 
+              <button  @click="deleteService(serviceData.number)" class="link-danger"><i class="bi bi-trash"></i></button>        
               </td>
           </tr>      
         </tbody>
@@ -95,12 +96,14 @@
   const serviceId = ref(null)
   const serviceStore= useServiceStore()
 const  notificationStore  = useNotificationStore()
+const servId = ref(null)
   
   onMounted(
       async () => {
         await serviceStore.fetchServicesList()
       } )
   
+
       watch(
       () => serviceStore.servicesListResponse,
       async (data) => {
@@ -110,6 +113,17 @@ const  notificationStore  = useNotificationStore()
       },
       {deep:true}
   )
+
+  watch (
+    () => serviceStore.newServiceResponse,
+    async (data) => {
+      if(data){
+  
+        await serviceStore.fetchServicesList()
+      }
+    },
+    {deep:true}
+)
   
   watch (
       () => serviceStore.errorMessage,
@@ -122,16 +136,28 @@ const  notificationStore  = useNotificationStore()
       {deep:true}
   )
    
-  const deleteService = (serviceData) => {
-if(!confirm("Are you sure, you want to delete: "+ serviceData.description)){
+  const deleteService = (sid) => {
+if(!confirm("Are you sure, you want to delete: " + sid)){
   return
 }
-let data = {
-  serviceid:serviceData.service_id
+serviceStore.deleteService(sid)
 }
-// connect endpoint
-serviceStore.deleteService(data)
-}
+
+
+watch (
+    () => serviceStore.deleteServiceResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+        await serviceStore.fetchServicesList()
+      }
+    },
+    {deep:true}
+)
+  
+
+
+
 function setServiceId(sId){
 serviceId.value = sId
 }
