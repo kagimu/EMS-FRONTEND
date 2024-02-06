@@ -5,7 +5,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Add Strand</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">{{strandEditMode ? "Edit" : "Add"}} Strand</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -196,6 +196,7 @@ const learningAreaStore = useLearningAreaStore()
 const subjectClusterStore = useSubjectClusterStore()
 
 const strandDialog = ref( false)
+const strandEditMode = ref( false)
 const strandList = ref( [])
 const learningAreaList = ref([])
 const subjectClusterList = ref([])
@@ -207,11 +208,12 @@ const deletionLoader = ref(undefined)
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 const addSubject = () => {
+  strandEditMode.value = false
   strandDialog.value = true
 }
 
 const editStrand = (data) => {
-
+  strandEditMode.value = true
   strandStore.strandData(data.number)
 }
 const deleteStrand = (data) => {
@@ -272,6 +274,17 @@ const filterStrandList = () => {
 
 watch(
     () => strandStore.strandResponse,
+    async (data) => {
+      if(data){
+        await filterStrandList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => strandStore.strandEditResponse,
     async (data) => {
       if(data){
         await filterStrandList()

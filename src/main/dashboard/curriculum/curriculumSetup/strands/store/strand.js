@@ -4,6 +4,7 @@ import api from "@/config/api.js";
 
 export const useStrandStore = defineStore("strand", () => {
     let strandResponse = ref(null)
+    let strandEditResponse = ref(null)
     let strandInfoResponse = ref(null)
     let strandListResponse = ref(null)
     const deleteStrandResponse = ref(null)
@@ -16,6 +17,18 @@ export const useStrandStore = defineStore("strand", () => {
         return await api.post("main/new-strand", data)
             .then((response) => {
                 strandResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function editStrandData(data) {
+        return await api.post("main/strand/edit", data)
+            .then((response) => {
+                strandEditResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -86,11 +99,13 @@ export const useStrandStore = defineStore("strand", () => {
         strandListResponse,
         deleteStrandResponse,
         strandDataInfoResponse,
+        strandEditResponse,
         errorMessage,
         newStrandData,
         fetchStrands,
         fetchStrandList,
         deleteStrand,
-        strandData
+        strandData,
+        editStrandData
     }
 })
