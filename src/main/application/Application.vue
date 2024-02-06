@@ -4,7 +4,7 @@
       <div style="padding-top: 140px;">
       <h5 class="txt" >APPLY</h5>
       <h1  class="txt2">STUDENT APPLICATION</h1>
-      <h5  class="txt">Get Started Today With Few Steps  {{ applicationNumber }}</h5>
+      <h5  class="txt">Get Started Today With Few Steps </h5>
     </div>
       <div class="col-lg-12">
         <div class="card sect mx-auto" style="margin-bottom:60px;margin-top:50px;border-radius: 16px; width: 70%;">
@@ -34,8 +34,8 @@
           </div>
         
   <div v-show="step === 1">
-    <personal-details-of-student
-        v-on:next="nextPage"
+    <personal-details-of-student  
+        v-on:next="nextPage" 
     ></personal-details-of-student>
   </div>
   <div v-show="step === 2">
@@ -156,34 +156,10 @@ input:focus {
 
 <script setup>
 import {onMounted,reactive, ref, watch} from "vue";
-import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
-import {useRouter} from "vue-router";
 import useNotificationStore from "@/composables/useNotification.js";
 import PersonalDetailsOfStudent from "@/main/application/applicationComponents/PersonalDetailsOfParent.vue";
 import PersonalDetailsOfLearner from "@/main/application/applicationComponents/PersonalDetailsOfLearner.vue";
 import PreviousSchoolDetails from "@/main/application/applicationComponents/PreviousSchoolDetails.vue";
-
-const routerData = useRouter()
-let  applicationNumber = routerData.currentRoute.value.query.applicationId
-const applicationInfoList = ref( [])
-
-const applicationStore= useApplicationStore()
-const  notificationStore  = useNotificationStore()
-
-onMounted(
-    async () => {
-        await applicationStore.fetchApplicationById(applicationNumber)
-    } )
-
-watch(
-    () => applicationStore.applicationByIdResponse,
-    async (data) => {
-        if(data){
-            applicationInfoList.value = data.data
-        }
-    },
-    {deep:true}
-)
 
 
 const step = ref(1)
