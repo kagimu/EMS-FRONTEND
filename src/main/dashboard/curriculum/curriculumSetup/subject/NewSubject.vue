@@ -193,7 +193,7 @@ watch(
         form.name = info.name ? info.name : ""
         form.code = info.code ? String(info.code) : ""
         form.subject_cluster_number = info.subject_cluster_number ? info.subject_cluster_number : ""
-        form.learning_area_number = info.learning_area_number ? info.learning_area_number : ""
+        learning_area_number.value = info.learning_area_number ? info.learning_area_number : ""
         subjectNumber.value = info.number ? info.number : ""
       }
     },
