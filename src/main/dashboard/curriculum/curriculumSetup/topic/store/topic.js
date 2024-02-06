@@ -6,6 +6,7 @@ export const useTopicStore = defineStore("topic", () => {
     let topicResponse = ref(null)
     let topicInfoResponse = ref(null)
     let topicListResponse = ref(null)
+    let deleteTopicResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -53,15 +54,28 @@ export const useTopicStore = defineStore("topic", () => {
     }
 
 
+    async function deleteTopic(data) {
+        return await api.post("main/topic/delete", data)
+            .then((response) => {
+                deleteTopicResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
 
     return {
         topicResponse,
         topicInfoResponse,
         topicListResponse,
+        deleteTopicResponse,
         errorMessage,
         newTopicData,
         fetchTopics,
-        fetchTopicList
+        fetchTopicList,
+        deleteTopic
     }
 })
