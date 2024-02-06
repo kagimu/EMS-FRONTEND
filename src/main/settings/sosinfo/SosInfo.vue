@@ -107,10 +107,15 @@ watch(
     async (data) => {
       if(data){
         sosInfoList.value = data.data
+        await sosInfo.fetchSosInfo()
       }
     },
     {deep:true}
 )
+
+
+
+
 
 watch(
     () => sosInfo.updateSosInfoResponse,
@@ -144,7 +149,18 @@ watch (
     },
     {deep:true}
 )
-
+// newsosInfoResponse.value = response.data
+watch(
+    () => sosInfo.newsosInfoResponse,
+    async (data) => {
+      if(data){
+        sosInfoDialog.value =false
+        notificationStore.successToast("Success", data.message)
+        await sosInfo.fetchSosInfo()
+      }
+    },
+    {deep:true}
+)
 
 const deleteSosInfo = (SosInfo) => {
 if(!confirm("Are you sure, you want to delete: "+SosInfo.name)){

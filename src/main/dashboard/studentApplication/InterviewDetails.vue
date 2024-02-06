@@ -2,11 +2,28 @@
   <div>
 
        <!-- modal for viewing more details -->
-       <div class="modal fade" id="infoModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
+       <!-- <div class="modal fade" id="infoModal" tabindex="-1"  aria-labelledby="" aria-hidden="true"  :class="{ show: gradeDialog }">
       <div class="modal-dialog modal-xl">
        <GradeApplication :stud="studentData"  :studenton-interviewid="studentOnInterviewId"></GradeApplication>
       </div>
+    </div> -->
+
+
+    <div class="modal fade" id="infoModal" tabindex="-1" :class="{ show: gradeDialog }" aria-labelledby="" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+        
+          <div class="modal-body">
+            <div class="mt-2 mb-2">
+              <GradeApplication :stud="studentData"  :studenton-interviewid="studentOnInterviewId"></GradeApplication>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
+
+
     <!-- end  -->
     <div class="row">
       <div class="col-12">
@@ -70,6 +87,7 @@ const buttonLoader = ref(false)
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
 const routerData = useRouter()
+const gradeDialog = ref( false)
 
 let  interviewNumber = routerData.currentRoute.value.query.interview_id
 const studentOnInterviewId= ref(null)
@@ -78,6 +96,7 @@ const studentData=ref(null)
 const setStudentOnInterviewID = (id,studa) =>{
   studentOnInterviewId.value = id
   studentData.value=studa
+  
 }
 
 
@@ -91,7 +110,7 @@ watch(
     () => applicationStore.StudentsOnInterviewResponse,
     async (data) => {
       if(data){
-        notificationStore.successToast("Success", data.message)
+        // notificationStore.successToast("Success", data.message)
         interviewStudentList.value = data.data
       }
     },
@@ -106,6 +125,18 @@ watch (
     },
     {deep:true}
 )
+
+watch (
+      () => applicationStore.interviewResultesponse,
+      async (data) => {
+        if(data){     
+          gradeDialog.value = false
+          applicationStore.fetchStudentsOnInterview(interviewNumber)
+
+        }
+      },
+      {deep:true}
+  )
 
 
 
