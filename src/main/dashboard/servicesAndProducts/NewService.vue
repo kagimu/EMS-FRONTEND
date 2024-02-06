@@ -1,20 +1,5 @@
 <template>
         <form @submit.prevent="createNewService">
-          <div class="mb-2">
-            <label class="textColor"><small>Campus</small></label><br>
-
-                <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-          <li class="list-group-item" >
-            <input style="outline: none 0 !important; box-shadow: none;" class="form-check-input me-1" type="checkbox">
-            <label class="form-check-label cursor-pointer textColor"><small>Main</small></label></li><li class="list-group-item">
-            <input style="outline: none 0 !important; box-shadow: none;" class="form-check-input me-1" type="checkbox">
-            <label class="form-check-label cursor-pointer textColor"><small>Kampala Campus</small></label></li><li class="list-group-item">
-            <input style="outline: none 0 !important; box-shadow: none;" class="form-check-input me-1" type="checkbox">
-            <label class="form-check-label cursor-pointer textColor"><small>Buwatta</small></label>
-          </li>
-
-        </ul>
-          </div>
 
 
             <div class="mb-2">
@@ -34,16 +19,19 @@
 
             <div class="mb-2">
                 <label class="textColor"><small>Campus</small>  <span class="star">*</span></label>
-                <select
-                        style="box-shadow: none;"
-                        class="form-select form-select-sm"
-                        v-model="form.preferred_campus_number" required
-                        @change="fetchClasses(form.preferred_campus_number)"
-                >
-                    <option disabled value="">Select campus</option>
-                    <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-                    </option>
-                </select>
+
+                <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+
+                    <li class="list-group-item" v-for="(lvl,idx) in campusList" :key="idx">
+                        <input
+                                v-model="formData.campus_numbers"
+
+                                style="outline: none 0 !important; box-shadow: none;"
+                                class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="lvl.number">
+                        <label class="form-check-label cursor-pointer ml-2" :for="lvl.number">{{lvl.name}}</label>
+                    </li>
+
+                </ul>
             </div>
 
 
@@ -56,6 +44,14 @@
                 <label class="textColor"><small>Cost</small></label>
                 <input v-model="formData.cost" style="outline: none 0 !important; box-shadow: none;" type="number"  required  class="form-control form-select-sm">
             </div>
+
+            <div class="mb-2">
+                <label class="textColor"><small>Service is ?</small></label>
+                <br/>
+                <input type="radio" v-model="formData.mandatory" :value="true" >&nbsp; Mandatory  &nbsp;&nbsp;&nbsp;
+                <input type="radio" v-model="formData.mandatory" :value="false">&nbsp; Optional
+            </div>
+
             <div class="mb-2">
                 <label class="textColor"><small>Addition Info</small></label>
                 <textarea v-model="formData.description" class="form-control "></textarea>
@@ -86,11 +82,16 @@ const buttonLoader = ref(false)
 let errorMessage = ref(null)
 const campusList = ref([])
 const schoolList = ref([])
+const school_number = ref(null)
 
 const formData = reactive({
     description: null,
     cost: null,
     name:null,
+    mandatory:false,
+    campus_numbers:[],
+    payment_mode:null
+
 })
 
 const fetchCampuses = (school_number) => {
