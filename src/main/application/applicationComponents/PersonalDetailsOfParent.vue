@@ -1,10 +1,8 @@
 <template>
 <div>
-<p class="ml-4 mt-4 mb-10" style="text-align: center !important;">GUARDIAN/PARENT DETAILS</p>
-
-<!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-    {{errorMessage}}
-  </div> -->
+<p class="ml-4 mt-4 mb-10" style="text-align: center !important;">GUARDIAN/PARENT DETAILS
+  <!-- {{ applicationNumber }} -->
+</p>
 
   <form  @submit.prevent="addParentPersonalDetails" style="margin-top: 16px;"> 
   <div class="row mx-auto">
@@ -70,9 +68,13 @@
 
 <script setup>
 
-import {reactive, ref, watch} from "vue";
+import {onMounted,reactive, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+import {useRouter} from "vue-router";
+
+const routerData = useRouter()
+let  applicationNumber = routerData.currentRoute.value.query.applicationId
 
 const buttonLoader = ref(false)
 let errorMessage = ref(null)
@@ -120,6 +122,42 @@ watch (
     },
     {deep:true}
 )
+
+
+onMounted(
+    () => {
+      applicationStore.fetchApplicationById(applicationNumber)
+    }
+)
+
+watch(
+    () => routerData.currentRoute.value.query.applicationId, 
+    async (data) => { 
+        if (data) {
+            applicationStore.fetchApplicationById(data)  
+        }
+    },
+    { deep: true } 
+)
+
+watch (
+    () => applicationStore.applicationByIdResponse,
+    async (data) => {
+      if(data){
+        form.surname = data.Parent.surname
+        form.second_name = data.Parent.second_name
+        form.other_name = data.Parent.other_name
+        form.main_telephone_number = data.Parent.main_telephone_number
+        form.alternative_telephone_number= data.Parent.alternative_telephone_number
+        form.email= data.Parent.email
+        form.alternative_email=data.Parent.alternative_email
+        // alert(JSON.stringify(data))
+        // notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
 </script>
 
 <style scoped>

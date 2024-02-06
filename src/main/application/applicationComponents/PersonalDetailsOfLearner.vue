@@ -1,9 +1,6 @@
 <template>
   <div>
   <p class="ml-4 mt-4 mb-10" style="text-align: center !important;">DETAILS OF THE LEARNER</p>
-  <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-    {{errorMessage}}
-  </div> -->
     <form @submit.prevent="addLearnerDetails" style="margin-top: 15px;">
     <div class="row">
       <div class="col-12">
@@ -95,7 +92,8 @@
             </div>
             <div class="col-lg-6">
               <label class="textColor text-sm"><small>gender</small> <span class="star">*</span></label>
-            <select class="form-control form-control-sm" v-model="form.gender" style="outline: none 0 !important; box-shadow: none;">
+            <select class="form-control form-control-sm"
+             v-model="form.gender" style="outline: none 0 !important; box-shadow: none;">
               <option>-select-</option>
               <option>Male</option>
               <option>Female</option>
@@ -138,8 +136,13 @@
   import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
   import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
   import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+  import {useRouter} from "vue-router";
 
-  const buttonLoader = ref(false)
+const routerData = useRouter()
+let  applicationNumber = routerData.currentRoute.value.query.applicationId
+
+
+const buttonLoader = ref(false)
 let errorMessage = ref(null)
 const emit = defineEmits()
 
@@ -251,6 +254,30 @@ watch (
       },
       {deep: true}
   )
+
+  
+  onMounted(
+    () => {
+      applicationStore.fetchApplicationById(applicationNumber)
+    }
+)
+
+watch (
+    () => applicationStore.applicationByIdResponse,
+    async (data) => {
+      if(data){
+        form.surname= data.Student.surname
+        form.second_name=data.Student.second_name,
+        form.other_name=data.Student.other_name,
+        form.gender= data.Student.gender,
+        form.date_of_birth=data.Student.date_of_birth,
+        form.preferred_campus_number=data.Student.preferred_campus_number,
+        form.reason_for_choosing_school=data.Student.reason_for_choosing_school
+        form.source_of_school_info = data.Student.source_of_school_info
+      }
+    },
+    {deep:true}
+)
 
   </script>
   

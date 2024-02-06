@@ -103,7 +103,7 @@ const schoolsList = ref( [])
 
 
 const addSchool = () => {
-  schoolDialog.value = true
+  schoolDialog.value = false
 }
 
 const editSchool = (school) => {

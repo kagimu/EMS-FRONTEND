@@ -217,6 +217,10 @@ export const useApplicationStore = defineStore("application", () => {
                     }
                 })
         }
+
+              
+        
+
     return {
         newApplicationDetailsResponse ,
         errorMessage,

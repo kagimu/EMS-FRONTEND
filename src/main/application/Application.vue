@@ -34,8 +34,8 @@
           </div>
         
   <div v-show="step === 1">
-    <personal-details-of-student
-        v-on:next="nextPage"
+    <personal-details-of-student  
+        v-on:next="nextPage" 
     ></personal-details-of-student>
   </div>
   <div v-show="step === 2">
@@ -60,7 +60,6 @@
            </div>
       
 </template>
-
 
 <style scoped>
 
@@ -156,12 +155,12 @@ input:focus {
 </style>
 
 <script setup>
-
+import {onMounted,reactive, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
 import PersonalDetailsOfStudent from "@/main/application/applicationComponents/PersonalDetailsOfParent.vue";
 import PersonalDetailsOfLearner from "@/main/application/applicationComponents/PersonalDetailsOfLearner.vue";
 import PreviousSchoolDetails from "@/main/application/applicationComponents/PreviousSchoolDetails.vue";
 
-import {ref} from "vue";
 
 const step = ref(1)
 

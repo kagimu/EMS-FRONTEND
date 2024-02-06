@@ -34,8 +34,8 @@ export const useServiceStore = defineStore("service", () => {
         }
     
 
-        async function deleteService() {
-            return await api.delete("main/")
+        async function deleteService(serviceid) {
+            return await api.delete("main/services/"+serviceid)
                 .then((response) => {
                     deleteServiceResponse.value = response.data
                 })

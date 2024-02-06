@@ -37,10 +37,13 @@
                     <td>
                         <button data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)"
                                 class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small><i class="bi bi-eye">&nbsp;view more</i></small></button>
-
-                        <button  @click="resumeApplication(applist.number)"
-                                class="btn bg-blu mx-2 rounded-sm text-white" title="CLick to resume application">
-                            <small style = "color:rgb(244, 27, 27)">Resume<i class="bi bi-arrow-right"></i></small></button>
+                            <router-link
+                  class="text-decoration-none"
+                  :to="{name:'application', query:{applicationId:applist.number}}"
+              ><button class="btn bg-blu mx-2 rounded-sm text-white" style="border-width: 0px;text-decoration: none;" title="">
+                <small  style = "color:rgb(244, 27, 27)">
+              <i class="bi bi-arrow-right">&nbsp;Resume</i></small></button>   
+            </router-link>  
 
                     </td>
                 </tr>

@@ -1,12 +1,12 @@
 <template>
 
-  <div class="modal-content">
+
       {{student}}
             <div class="modal-header text-sm p-0">
-              <h6 class="modal-title ml-3 mt-2 mb-2"><small>Your Grading : {{ surName }} {{ secondN }}</small></h6>
+              <h6 class=" ml-3 mt-2 mb-2"><small>Your Grading : {{ surName }} {{ secondN }}</small></h6>
               <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div>
               <div class="mt-2 mb-2">
                 <div>
     <div class="container mt-4">
@@ -67,7 +67,7 @@
  
                 </div>
             </div>
-  </div>
+ 
     </template>
     
     <script setup>
@@ -86,8 +86,7 @@ const scores = ref({})
 const buttonLoader = ref(false)
 
 
-  
-    const props = defineProps({
+  const props = defineProps({
       studentonInterviewid:String,
       stud:{}
     })
@@ -138,10 +137,10 @@ const buttonLoader = ref(false)
   )
 
 
-
-const submitScores = () => {
+  const submitScores = () => {
   const questionNumbers = Object.keys(scores.value);
   const scoresArray = questionNumbers.map((questionNumber) => scores.value[questionNumber]);
+  
   const data = reactive({ 
     student_number: props.stud.Student.number,
     question_numbers: questionNumbers,
@@ -153,14 +152,13 @@ const submitScores = () => {
   buttonLoader.value = true
   applicationStore.createInterviewResults(props.stud.Student.number,data) 
 }
-
 watch (
       () => applicationStore.interviewResultesponse,
       async (data) => {
-        if(data){
-        
+        if(data){     
         notificationStore.successToast("Success", data.message)
         buttonLoader.value = false
+      
         }
       },
       {deep:true}
