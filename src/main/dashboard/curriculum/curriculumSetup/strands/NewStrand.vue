@@ -202,6 +202,16 @@ watch(
     {deep:true}
 )
 
+watch(
+    () => strandStore.strandDataInfoResponse,
+    async (data) => {
+      if(data){
+         alert(JSON.stringify(data))
+      }
+    },
+    {deep:true}
+)
+
 </script>
 
 <style scoped>

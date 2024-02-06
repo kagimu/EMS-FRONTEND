@@ -7,6 +7,7 @@ export const useStrandStore = defineStore("strand", () => {
     let strandInfoResponse = ref(null)
     let strandListResponse = ref(null)
     const deleteStrandResponse = ref(null)
+    const strandDataInfoResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -65,6 +66,18 @@ export const useStrandStore = defineStore("strand", () => {
             })
     }
 
+    async function strandData(data) {
+        return await api.get("main/strand/info?strand_number="+data)
+            .then((response) => {
+                strandDataInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
 
     return {
@@ -72,10 +85,12 @@ export const useStrandStore = defineStore("strand", () => {
         strandInfoResponse,
         strandListResponse,
         deleteStrandResponse,
+        strandDataInfoResponse,
         errorMessage,
         newStrandData,
         fetchStrands,
         fetchStrandList,
-        deleteStrand
+        deleteStrand,
+        strandData
     }
 })

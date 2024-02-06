@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div class="modal fade" id="subjectModal" tabindex="-1" :class="{ show: strandDialog }" aria-labelledby="" aria-hidden="true">
+    <div class="modal fade" id="strandModal" tabindex="-1" :class="{ show: strandDialog }" aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
@@ -21,7 +21,7 @@
 
     <div class="flex justify-content-between mt-3">
       <div class="ml-4">Strand</div>
-      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSubject" data-bs-toggle="modal" data-bs-target="#subjectModal">
+      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSubject" data-bs-toggle="modal" data-bs-target="#strandModal">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
         Add Strand
       </button>
@@ -128,7 +128,7 @@
                                     <div>
                                       <i
                                           style="font-size: 13px;"
-                                          data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
+                                          data-bs-toggle="modal" data-bs-target="#strandModal"
                                           class="bi-pencil mr-2 cursor-pointer" @click="editStrand(std)"></i>
                                       <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteStrand(std)"></i>
                                       <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === std.number">
@@ -211,7 +211,8 @@ const addSubject = () => {
 }
 
 const editStrand = (data) => {
-  alert(JSON.stringify(data))
+
+  strandStore.strandData(data.number)
 }
 const deleteStrand = (data) => {
   if(!confirm("Are you sure, you want to delete: "+data.name)){
