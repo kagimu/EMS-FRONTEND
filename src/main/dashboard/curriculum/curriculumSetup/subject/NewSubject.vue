@@ -93,7 +93,7 @@ const subjectStore = useSubjectStore()
 const learningAreaStore = useLearningAreaStore()
 const subjectClusterStore = useSubjectClusterStore()
 let  curriculumNumber = routerData.currentRoute.value.query.id
-
+const subjectNumber = ref(null)
 
 const form = reactive({
   code:null,
@@ -105,7 +105,15 @@ const form = reactive({
 const addSubject = () =>{
   loader.value = true
   form.curriculum_number = curriculumNumber
-  subjectStore.newSubjectData(form)
+
+  if(subjectNumber.value){
+    form.subject_number = subjectNumber.value
+    subjectStore.editSubjectData(form)
+  }else {
+    subjectStore.newSubjectData(form)
+  }
+
+
 }
 
 const selectSubjectCluster = (learning_area_number) => {
@@ -161,6 +169,20 @@ watch(
       if(data){
         loader.value = false
         notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectStore.subjectDataInfoResponse,
+    async (data) => {
+      if(data){
+        let info = data.data
+        form.name = info.name ? info.name : ""
+        form.code = info.code ? String(info.code) : ""
+        form.subject_cluster_number = info.subject_cluster_number ? info.subject_cluster_number : ""
+        subjectNumber.value = info.number ? info.number : ""
       }
     },
     {deep:true}
