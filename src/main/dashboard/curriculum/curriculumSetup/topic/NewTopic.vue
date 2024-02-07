@@ -99,7 +99,7 @@
         <button
             type="submit"
             class="btn btn-primary border-0">
-          Save
+            {{topicNumber ? "Edit" : "Save"}}
           <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>
@@ -147,6 +147,7 @@ const strandList = ref([])
 const classList = ref([])
 const learning_area_number = ref("")
 const subject_cluster_number = ref("")
+const topicNumber = ref("")
 const subject_number = ref("")
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
@@ -162,7 +163,13 @@ const form = reactive({
 const addTopic = () =>{
   loader.value = true
   form.curriculum_number = curriculumNumber
-  topicStore.newTopicData(form)
+  if(topicNumber.value){
+    form.topic_number = topicNumber.value
+    topicStore.editTopicData(form)
+  }else {
+    topicStore.newTopicData(form)
+  }
+
 }
 
 
@@ -261,6 +268,24 @@ watch(
       if(data){
         loader.value = false
         notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => topicStore.topicDataInfoResponse,
+    async (data) => {
+      if(data){
+        let info = data.data
+        form.name = info.name ? info.name : ""
+        form.code = info.code ? String(info.code) : ""
+        form.class_number = info.curriculum_class_number ? info.curriculum_class_number : ""
+        form.strand_number = info.strand_number ? info.strand_number : ""
+        subject_number.value = info.subject_number ? info.subject_number : ""
+        learning_area_number.value = info.learning_area_number ? info.learning_area_number : ""
+        subject_cluster_number.value = info.subject_cluster_number ? info.subject_cluster_number : ""
+        topicNumber.value = info.number ? info.number : ""
       }
     },
     {deep:true}

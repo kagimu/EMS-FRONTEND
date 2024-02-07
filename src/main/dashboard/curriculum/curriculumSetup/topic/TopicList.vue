@@ -2,7 +2,7 @@
   <div>
 
 
-    <div class="modal fade" id="subjectModal" tabindex="-1" :class="{ show: strandDialog }" aria-labelledby="" aria-hidden="true">
+    <div class="modal fade" id="topicModal" tabindex="-1" :class="{ show: strandDialog }" aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
@@ -25,7 +25,7 @@
 
     <div class="flex justify-content-between mt-3">
       <div class="ml-4">Topic</div>
-      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSubject" data-bs-toggle="modal" data-bs-target="#subjectModal">
+      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSubject" data-bs-toggle="modal" data-bs-target="#topicModal">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
         Add Topic
       </button>
@@ -170,7 +170,7 @@
                                           <div>
                                             <i
                                                 style="font-size: 13px;"
-                                                data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
+                                                data-bs-toggle="modal" data-bs-target="#topicModal"
                                                 class="bi-pencil mr-2 cursor-pointer" @click="editTopic(tpc)"></i>
                                             <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteTopic(tpc)"></i>
                                             <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === tpc.number">
@@ -182,25 +182,16 @@
                                       </tbody>
                                     </table>
 
-
-
-
                                   </td>
 
                                 </tr>
                                 </tbody>
                               </table>
-
-
-
                             </td>
 
                           </tr>
                           </tbody>
                         </table>
-
-
-
 
                       </td>
                     </tr>
@@ -270,7 +261,7 @@ const addSubject = () => {
 }
 
 const editTopic = (data) => {
-  alert(JSON.stringify(data))
+  topicStore.topicData(data.number)
 }
 const deleteTopic = (data) => {
   if(!confirm("Are you sure, you want to delete: "+data.name)){
@@ -364,9 +355,29 @@ watch(
     () => topicStore.deleteTopicResponse,
     async (data) => {
       if(data){
-        // strandDialog.value = false
       await  fetchTopicList()
         notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => topicStore.topicEditResponse,
+    async (data) => {
+      if(data){
+      await  fetchTopicList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => topicStore.errorMessage,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
       }
     },
     {deep:true}

@@ -5,8 +5,10 @@ import api from "@/config/api.js";
 export const useTopicStore = defineStore("topic", () => {
     let topicResponse = ref(null)
     let topicInfoResponse = ref(null)
+    let topicEditResponse = ref(null)
     let topicListResponse = ref(null)
     let deleteTopicResponse = ref(null)
+    let topicDataInfoResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -22,6 +24,20 @@ export const useTopicStore = defineStore("topic", () => {
                 }
             })
     }
+
+
+    async function editTopicData(data) {
+        return await api.post("main/topic/edit", data)
+            .then((response) => {
+                topicEditResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
     async function fetchTopics(data) {
         return await api.get("main/topics?learning_area_number="+data.learning_area_number+
@@ -67,15 +83,32 @@ export const useTopicStore = defineStore("topic", () => {
     }
 
 
+    async function topicData(data) {
+        return await api.get("main/topic/info?topic_number="+data)
+            .then((response) => {
+                topicDataInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
     return {
         topicResponse,
         topicInfoResponse,
         topicListResponse,
         deleteTopicResponse,
+        topicDataInfoResponse,
+        topicEditResponse,
         errorMessage,
         newTopicData,
         fetchTopics,
         fetchTopicList,
-        deleteTopic
+        deleteTopic,
+        topicData,
+        editTopicData,
     }
 })
