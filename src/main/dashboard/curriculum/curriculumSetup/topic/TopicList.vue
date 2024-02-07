@@ -6,7 +6,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Add Topic</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">{{topicEditMode ? "Edit" : "Add"}} Topic</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -241,6 +241,7 @@ const notificationStore  = useNotificationStore()
 const strandDialog = ref( false)
 const topicList = ref( [])
 const deletionLoader = ref( undefined)
+const topicEditMode = ref( false)
 
 
 const learningAreaList = ref([])
@@ -257,10 +258,12 @@ let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
 const addSubject = () => {
+  topicEditMode.value = false
   strandDialog.value = true
 }
 
 const editTopic = (data) => {
+  topicEditMode.value = true
   topicStore.topicData(data.number)
 }
 const deleteTopic = (data) => {

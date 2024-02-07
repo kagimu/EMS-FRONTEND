@@ -196,6 +196,16 @@ onMounted(
 
 
 watch(
+    () => topicStore.topicEditResponse,
+    async (data) => {
+      if(data){
+         loader.value = false
+      }
+    },
+    {deep:true}
+)
+
+watch(
     () => learningAreaStore.learningAreaInfResponse,
     async (data) => {
       if(data){
