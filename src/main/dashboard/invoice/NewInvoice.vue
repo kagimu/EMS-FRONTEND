@@ -6,7 +6,7 @@
             <div class="card-header">
        <div class="row">
         <div class="col-lg-4">
-            <h6 style="margin-top:20px; text-align: left;font-size: 15px;">New Invoice <b></b>     </h6>
+            <h6 style="margin-top:20px; text-align: left;font-size: 15px;"><i class="bi bi-x-lg"></i>&nbsp;&nbsp;&nbsp;Create Invoice <b></b>     </h6>
         </div>
         <div class="col-lg-8">
         </div>
