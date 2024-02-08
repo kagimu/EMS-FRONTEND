@@ -5,7 +5,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header text-sm p-0">
-          <h6 class="modal-title ml-3 mt-2 mb-2">Add Learning Area</h6>
+          <h6 class="modal-title ml-3 mt-2 mb-2">{{learningAreaEditMode ? "Edit" : "Add"}} Learning Area</h6>
           <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -33,28 +33,29 @@
   <table class="table table-hover caption-top" style="font-size: 12px;">
     <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">Name</th>
       <th scope="col">Code</th>
+      <th scope="col">Name</th>
       <th scope="col" class="text-end">Action</th>
     </tr>
     </thead>
     <tbody>
     <tr v-for="(lst,index) in learningAreaList" :key="index" >
-      <th scope="row">{{index+1}}</th>
-      <td>
-          {{lst.name}}
-      </td>
       <td>
         {{lst.code}}
+      </td>
+      <td>
+          {{lst.name}}
       </td>
       <td>
         <div class="float-end mr-2">
           <i
               style="font-size: 13px;"
-              data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-              class="bi-pencil mr-2 cursor-pointer" @click="editClass(sbj)"></i>
-          <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(sbj)"></i>
+              data-bs-toggle="modal" data-bs-target="#learningAreaModal"
+              class="bi-pencil mr-2 cursor-pointer" @click="editLearningArea(lst)"></i>
+          <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLearningArea(lst)"></i>
+          <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === lst.number">
+            <span class="visually-hidden">Loading...</span>
+          </div>
         </div>
       </td>
     </tr>
@@ -78,7 +79,9 @@ const routerData = useRouter()
 
 
 const curriculumDialog = ref( false)
+const learningAreaEditMode = ref( false)
 const learningAreaList = ref( [])
+const deletionLoader = ref( undefined)
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
@@ -89,11 +92,30 @@ const learningAreaRef = ref(null)
 
 
 const addCurriculum = () => {
+  learningAreaEditMode.value = false
   learningAreaRef.value.autoInputFocusInfo()
   curriculumDialog.value = true
 }
 
+const editLearningArea = (data) => {
+  learningAreaEditMode.value = true
+  learningAreaStore.learningAreaData(data.number)
+}
 
+const deleteLearningArea = (data) => {
+
+  if(!confirm("Are you sure, you want to delete: "+data.name)){
+    return
+  }
+
+  deletionLoader.value = data.number
+
+  let info = {
+    number:data.number
+  }
+
+  learningAreaStore.deleteLearningArea(info)
+}
 
 onMounted(
     () => {
@@ -106,7 +128,28 @@ watch(
     () => learningAreaStore.learningAreaResponse,
     async (data) => {
       if(data){
-        // curriculumDialog.value = false
+        await learningAreaStore.fetchLearningArea(curriculumNumber)
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => learningAreaStore.learningAreaEditResponse,
+    async (data) => {
+      if(data){
+        await learningAreaStore.fetchLearningArea(curriculumNumber)
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => learningAreaStore.deleteLearningAreaResponse,
+    async (data) => {
+      if(data){
         await learningAreaStore.fetchLearningArea(curriculumNumber)
         notificationStore.successToast("Success", data.message)
       }
@@ -120,6 +163,16 @@ watch(
     async (data) => {
       if(data){
         learningAreaList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => learningAreaStore.errorMessage,
+    async (data) => {
+      if(data){
+       deletionLoader.value = undefined
       }
     },
     {deep:true}

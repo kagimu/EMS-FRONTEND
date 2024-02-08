@@ -26,6 +26,17 @@ import GeneralCalendar from "@/main/dashboard/eos/GeneralCalendar.vue";
 import CalendarDetails from "@/main/dashboard/eos/CalendarDetails.vue";
 import AllTimeTables from "@/main/dashboard/curriculum/timetable/AllTimeTables.vue";
 import CurriculumSetup from "@/main/dashboard/curriculum/curriculumSetup/CurriculumSetup.vue";
+import Application from "../main/application/Application.vue";
+import Welcome from "../main/welcome/Welcome.vue";
+import UserDashboard from "../main/application/UserDashboard.vue";
+import ApplicationGuide from "../main/auth/ApplicationGuide.vue";
+ import StudentApplication from "@/main/dashboard/studentApplication/StudentApplication.vue";
+import ClientApplications from "@/main/application/ClientApplications.vue";
+import InterviewDetails from "@/main/dashboard/studentApplication/InterviewDetails.vue";
+import Services from "@/main/dashboard/servicesAndProducts/Services.vue";
+import AdmitStudent from "@/main/dashboard/studentApplication/AdmitStudent.vue";
+import InterviewAssessmentAreas from "@/main/dashboard/studentApplication/InterviewAssesmentAreas.vue"
+
 
 
 
@@ -35,10 +46,13 @@ const router = createRouter({
         {
             path: '/',
             component: AuthMain,
-            redirect:{ name: 'login' },
+            redirect:{ name: 'welcome' },
             children:[
                 {path: 'login', component: Login, name:'login'},
                 {path: 'register', component: Register, name:'register'},
+                {path: 'welcome', component: Welcome, name:'welcome'},
+                {path: 'userdashboard', component: UserDashboard, name:'userdashboard'},
+                {path: 'applicationguide', component: ApplicationGuide, name:'applicationguide'}
             ]
         },
         {
@@ -56,6 +70,7 @@ const router = createRouter({
                 {path: 'level', component: ManageLevel, name: "level"},
                 {path: 'reports', component: ManageCampus, name: "reports"},
                 {path: 'student-admission', component: StudentAdmission, name: "student-admission"},
+                 {path: 'student-application', component: StudentApplication, name: "student-application"},
                 {path: 'profiles', component: userProfiles, name: "profiles"},
                 {path: 'accounting', component: ManageCampus, name: "accounting"},
                 {path: 'report-center', component: ReportCenter, name: "report-center"},
@@ -74,12 +89,36 @@ const router = createRouter({
                 {path: 'scheme-of-work', component: SchemeOfWork, name: "scheme-of-work"},
                 {path:'calendar', component: GeneralCalendar, name: "general-calendar"},
                 {path:'calendar/:calendar_id', component: CalendarDetails, name: "calendar-details" },
+                {path: 'interview-details', component: InterviewDetails, name: "interview-details"},
+                {path: 'admit-student', component: AdmitStudent, name: "admit-student"},
+                {path: 'services', component: Services, name: "services"},
+                {path: 'assessment-areas', component: InterviewAssessmentAreas, name: "assessment-areas"},
+
+                
+            ]
+        },
+
+        {
+            path: '/client-dashboard',
+            component: UserDashboard,
+            name :"client_dashboard",
+            redirect:{ name: 'application' },
+            meta: {
+                requiresAuth: true,
+            },
+            children:[
+                {path: 'application', component: Application, name:'application'},
+                {path: 'start', component: Application, name:'application'},
+                {path: 'admission', component: Application, name:'admission_history'},
+                {path: 'applications', component: ClientApplications, name:'application_history'},
             ]
         },
         {
             path: '/:pathMatch(.*)*',
             redirect: { name: "login" }
         }
+
+ 
     ],
 });
 

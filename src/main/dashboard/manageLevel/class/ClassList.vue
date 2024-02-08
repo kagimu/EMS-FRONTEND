@@ -11,7 +11,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="mt-2 mb-2">
-                            <new-class :classListInfo="classList"></new-class>
+                            <new-campus-class :classListInfo="classList"></new-campus-class>
                         </div>
                     </div>
                 </div>
@@ -111,7 +111,6 @@
                                 style="font-size: 13px;"
                                 @click="addStream(classes)">Add Stream
                         </button>
-                        <i style="font-size: 13px;" class="bi-trash cursor-pointer" @click="deleteClass(classes)"></i>
                     </div>
                 </td>
             </tr>
@@ -126,11 +125,13 @@
 
 import {onMounted, reactive, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
-import NewClass from "@/main/dashboard/manageLevel/class/NewClass.vue";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes";
 import {useRouter} from "vue-router";
+import NewCampusClass from "@/main/dashboard/manageLevel/class/NewCampusClass.vue";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
 
 const routerData = useRouter()
+const levelStore = useLevelStore()
 
 
 const classStore = useClassesStore()
@@ -141,7 +142,6 @@ const streamDialog = ref(false)
 const classList = ref([])
 const streamClass = ref(null)
 const campusNumber = routerData.currentRoute.value.query.id
-// const campusNumber = localStorage.getItem('campus_number');
 const levelNumber = routerData.currentRoute.value.query.l
 
 const streamForm = reactive({
@@ -166,9 +166,6 @@ const addStream = (data) => {
 const saveStream = () => {
 classStore.addStream(streamForm)
 }
-const deleteClass = (data) => {
-    alert(JSON.stringify(data))
-}
 
 const deleteStream = (lst) => {
   if(!confirm("Are you sure, you want to delete: "+lst.name)){
@@ -185,15 +182,21 @@ onMounted(
 )
 
 const filterClassInfo = () => {
-    classStore.fetchClassLevel({campusNumber: campusNumber, levelNumber: levelNumber})
+    fetchClasses(levelNumber)
 }
+
+
+const fetchClasses = (levelNo) => {
+  classStore.fetchClassLevel({campusNumber: campusNumber, levelNumber: levelNo})
+}
+
 
 watch(
     () => classStore.classLevelResponse,
     async (data) => {
         if (data) {
             // classDialog.value = false
-            filterClassInfo()
+           filterClassInfo()
             notificationStore.successToast("Success", data.message)
         }
     },
@@ -220,6 +223,21 @@ watch(
         }
     },
     {deep: true}
+)
+
+
+watch(
+    () => levelStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        let campusInfo = data.data
+
+        if(!levelNumber){
+          fetchClasses(campusInfo[0].number)
+        }
+      }
+    },
+    {deep:true}
 )
 
 

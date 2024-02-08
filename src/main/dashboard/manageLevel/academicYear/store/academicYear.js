@@ -6,6 +6,7 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
     let newAcademicYearResponse = ref(null)
     const errorMessage = ref(null)
     const academicYearResponse = ref(null)
+    const deleteAcademicYearResponse = ref(null)
 
 
 
@@ -37,13 +38,27 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
 
 
 
+    async function deleteAcademicYear(data) {
+        return await api.post("main/academic-year/delete", data)
+            .then((response) => {
+                deleteAcademicYearResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
 
     return {
         newAcademicYearResponse,
         academicYearResponse,
+        deleteAcademicYearResponse,
         errorMessage,
         newAcademicYear,
-        fetchAcademicYear
+        fetchAcademicYear,
+        deleteAcademicYear
     }
 })

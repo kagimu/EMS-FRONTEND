@@ -13,9 +13,12 @@
               <new-scheme-of-work :schemeOfWorkList="schemeOfWorkList" ref="schemeOfWorkRef"></new-scheme-of-work>
             </div>
           </div>
-        </div>`
+        </div>
       </div>
     </div>
+
+
+
 
 
     <div class="modal fade" id="lessonPlanModal" tabindex="-1" :class="{ show: lessonPlanDialog }" aria-labelledby="" aria-hidden="true">
@@ -30,7 +33,7 @@
               <new-lesson-plan :schemeDataInfo="schemeDataInfo" ref="lessonPlanRef"></new-lesson-plan>
             </div>
           </div>
-        </div>`
+        </div>
       </div>
     </div>
 
@@ -43,7 +46,7 @@
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <div class="mt-2 mb-2">
+            <div class="mb-2">
               <lesson-plan-details :lessonPlanInfo="lessonPlanInfo"></lesson-plan-details>
             </div>
           </div>
@@ -53,27 +56,29 @@
     </div>
 
 
-    <div class="mt-3">
-      <div class="mt-3" v-if="curriculumInfo && curriculumInfo.name">
-        <div style="font-size: 22px; text-transform: capitalize;">Curriculum: <span class="text-blue-900">{{curriculumInfo.name}}</span> </div>
+<p class="mt-3" style="font-size: 20px;">Scheme of work</p>
+
+    <div class="card mt-3">
+      <div class="card-body" style="padding: 0;">
+        <level-info></level-info>
       </div>
     </div>
-
 
 
     <div class="row mt-5">
       <div class="col-3">
         <div class="mb-2">
+
           <select
-              style="box-shadow: none;"
-              class="form-select form-select-sm"
+              style="box-shadow: none; padding-bottom: 0;"
+              class="form-select form-select-sm pb-0"
               v-model="level"
               @change="fetchSchemeClasses()"
           >
-            <option disabled value="">Filter by Level</option>
             <option value="">All</option>
             <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
           </select>
+          <div style="font-size: 10px;">Filter by level</div>
         </div>
       </div>
 
@@ -121,7 +126,14 @@
               </div>
 
                 <div>
-                  <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCurriculum" data-bs-toggle="modal" data-bs-target="#schemeOfWorkModal">
+                  <button type="button"  class="btn btn-sm buttonStyle btn-success mr-2"  @click="exportSchemeOfWorkPdf">
+                    <i style="font-size: 15px;"  class="bi-file-earmark-pdf mr-2"></i>
+                    Export PDF
+                    <div class="spinner-border spinner-border-sm" role="status" v-if="exportLoader">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </button>
+                  <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSchemeOfWork" data-bs-toggle="modal" data-bs-target="#schemeOfWorkModal">
                     <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
                     {{(schemeOfWorkList.number && (schemeOfWorkList.status === "Pending")) ? " Edit Scheme" : " Add Scheme"}}
                   </button>
@@ -161,7 +173,6 @@
                       @click="filterSchemeSubject"
                   >
                     <option disabled value="">Select Class</option>
-<!--                    <option value="">All</option>-->
                     <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
                       {{list.code+". "+list.academic_year_name+" ["+list.level_name+"]"}}
                     </option>
@@ -176,7 +187,7 @@
             <hr />
 
 
-            <div style="width: 100%; overflow-x: auto; white-space: nowrap; scrollbar-width: thin;">
+            <div style="width: 100%; max-height: 600px; overflow-x: auto; white-space: nowrap; scrollbar-width: thin;">
               <table class="table table-hover caption-top" style="font-size: 13px;">
               <thead>
               <tr>
@@ -187,7 +198,6 @@
                 <th scope="col">Subtopic</th>
                 <th scope="col">Estimated Time (Min)</th>
                 <th scope="col">Lesson Plan (Concept(s))</th>
-<!--                <th scope="col" class="text-end">Action</th>-->
               </tr>
               </thead>
               <tbody>
@@ -220,8 +230,15 @@
                     </div>
 
                     <div class="flex justify-between mt-4 mb-2" style="width: 350px;">
-                      <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="addLessonPlan(lst)" data-bs-toggle="modal" data-bs-target="#lessonPlanModal">
-                        <small class="m-0 p-0">Add lesson plan</small>
+                      <button
+                          type="button"
+                          class="btn btn-sm  btn-primary mr-2 m-0 py-0"
+                          @click="addLessonPlan(lst)"
+                          data-bs-toggle="modal"
+                          data-bs-target="#lessonPlanModal"
+                          v-tooltip.bottom="lst.concept_count+(lst.concept_count <1 ? ' Concept' : ' Concepts')"
+                      >
+                        <small class="m-0 p-0">Add lesson plan [ {{lst.concept_count}} ]</small>
                       </button>
 
                       <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="viewLessonPlan(lst)" data-bs-toggle="modal" data-bs-target="#lessonPlanDetailsModal">
@@ -237,15 +254,22 @@
             </table>
             </div>
 
+
+
           </div>
         </div>
       </div>
 
-
     </div>
 
 
-
+    <div style="display: none">
+        <div ref="schemeOfWorkRef">
+          <SchemeOfWorkPdfTemplate
+              :schemeOfWorkList="schemeOfWorkList"
+          ></SchemeOfWorkPdfTemplate>
+        </div>
+    </div>
 
 
 
@@ -267,12 +291,15 @@ import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subje
 import NewLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPlan.vue";
 import LessonPlanDetails from "@/main/dashboard/curriculum/schemeOfWork/LessonPlanDetails.vue";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
-import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
+import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
+import SchemeOfWorkPdfTemplate from "@/main/dashboard/curriculum/schemeOfWork/SchemeOfWorkPdfTemplate.vue";
 
 const level = ref( "")
+const schemeOfWorkRef = ref( null)
 const academic_year_number = ref( "")
 const schemeDataInfo = ref( {})
 const curriculumDialog = ref( false)
+const exportLoader = ref( false)
 const lessonPlanDialog = ref( false)
 const lessonPlanDetailsDialog = ref( false)
 const lessonPlanInfo = ref( "")
@@ -280,7 +307,7 @@ const learningAreaList = ref( [])
 const classList = ref( [])
 const levelList = ref( [])
 const classStore = useClassesStore()
-const selectedClass = ref( null)
+let selectedClass = ref( null)
 const routerData = useRouter()
 
 
@@ -296,13 +323,12 @@ const commons = useCommonsStore()
 const levelStore = useLevelStore()
 const schemeOfWorkStore = useSchemeOfWorkStore()
 const subjectStore = useSubjectStore()
-const curriculumStore = useCurriculumStore()
-let curriculumInfo = ref(null)
 
-let   subjectNo = routerData.currentRoute.value.query.c
-let   curriculumNumber = routerData.currentRoute.value.query.id
-if(subjectNo){
-  selectedClass.value =  subjectNo
+let classNo = routerData.currentRoute.value.query.c
+let campusNumber = routerData.currentRoute.value.query.id
+
+if(classNo){
+  selectedClass.value =  classNo
 }
 
 const addLessonPlan = (schemeData) => {
@@ -315,13 +341,24 @@ const viewLessonPlan = (lst) => {
   lessonPlanInfo.value = lst
 }
 
-const addCurriculum = () => {
+const addSchemeOfWork = () => {
   curriculumDialog.value = true
 }
 
+const exportSchemeOfWorkPdf = () => {
+
+    if(schemeOfWorkList.value && schemeOfWorkList.value.length < 1){
+      notificationStore.warningToast("Warning", "No details found on scheme of work")
+      return
+    }
+  exportLoader.value = true
+  schemeOfWorkStore.exportPdf(commons.initializePdfData("Scheme Of Work", schemeOfWorkRef.value.innerHTML));
+}
+
+
 const changeMenu = (value) => {
   selectedClass.value = value
-  router.push({ name: "scheme-of-work", query:{id:curriculumNumber, c:value} })
+  router.push({ name: "scheme-of-work", query:{id:campusNumber, c:value} })
 }
 
 
@@ -332,31 +369,33 @@ const filterSchemeSubject = () => {
     subject_number:scheme_subject_number.value,
     class_number:selectedClass.value
   }
+
   schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
 }
 
 onMounted(
     async () => {
-      await levelStore.fetchCurriculumLevels(curriculumNumber)
-      await curriculumStore.fetchCurriculumInfo(curriculumNumber)
+      await levelStore.fetchCampusLevelList(campusNumber)
       await fetchSchemeClasses()
       if(selectedClass.value) {
+        await fetchAcademicYrList(selectedClass.value)
         await subjectStore.fetchSchemeSubjectByClass(selectedClass.value)
-        await subjectStore.fetchAcademicYearByClass(selectedClass.value)
       }
     }
 )
 
+const fetchAcademicYrList = (classNumber) => {
+  // academicYearStore.fetchAcademicYear(level.value)
+  subjectStore.fetchAcademicYearByClass(classNumber)
+}
+
 const fetchSchemeClasses = () => {
-  let data = {
-    level:level.value,
-    curriculum_number:curriculumNumber
-  }
-   classStore.fetchSchemeOfWorkClasses(data)
+  classStore.fetchClassLevel({campusNumber: campusNumber, levelNumber: level.value})
 }
 
 watch(
-    () => classStore.schemeClassInfoResponse,
+    // () => classStore.schemeClassInfoResponse,
+    () => classStore.classLevelInfoResponse,
     async (data) => {
       if(data){
         let classInfo = data.data
@@ -366,15 +405,18 @@ watch(
             let classNo = classInfo[0].number
             selectedClass.value = classNo
             await subjectStore.fetchSchemeSubjectByClass(classNo)
-            await subjectStore.fetchAcademicYearByClass(classNo)
+            // await subjectStore.fetchAcademicYearByClass(classNo)
+            await fetchAcademicYrList(classNo)
 
-            let data = {
-              academic_year_number:academic_year_number.value,
-              subject_number:scheme_subject_number.value,
-              class_number:classInfo[0].number
-            }
-
-            await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
+              // fetch scheme of work
+              if(academic_year_number.value && scheme_subject_number.value) {
+                let data = {
+                  academic_year_number: academic_year_number.value,
+                  subject_number: scheme_subject_number.value,
+                  class_number: classInfo[0].number
+                }
+                await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
+              }
           }
         }
       }
@@ -425,14 +467,15 @@ watch(
          let acdYrNo = acd[0].number
          academic_year_number.value =  acdYrNo
 
-
-
-  /*       let data = {
-           academic_year_number:acdYrNo,
-           subject_number:scheme_subject_number.value,
-           class_number:selectedClass.value
+         // fetch scheme of work
+         if(scheme_subject_number.value && selectedClass.value) {
+           let data = {
+             academic_year_number: acdYrNo,
+             subject_number: scheme_subject_number.value,
+             class_number: selectedClass.value
+           }
+           await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
          }
-         await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)*/
 
        }
 
@@ -471,12 +514,15 @@ watch(
           let subjectNo = subjectInfo[0].number
           scheme_subject_number.value = subjectNo
 
-          let data = {
-            subject_number:subjectNo,
-            class_number:selectedClass.value,
-            academic_year_number:academic_year_number.value,
-          }
-          await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
+         if(selectedClass.value && academic_year_number.value){
+             let data = {
+               subject_number:subjectNo,
+               class_number:selectedClass.value,
+               academic_year_number:academic_year_number.value,
+             }
+             await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
+         }
+
 
         }
       }
@@ -494,6 +540,7 @@ watch(
           class_number:selectedClass.value,
           academic_year_number:academic_year_number.value,
         }
+
         await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
         notificationStore.successToast("Success",data.message)
       }
@@ -502,8 +549,9 @@ watch(
 )
 
 
+
 watch(
-    () => levelStore.curriculumLevelInfoResponse,
+    () => levelStore.campusLevelResponse,
     async (data) => {
       if(data){
         levelList.value = data.data
@@ -513,10 +561,10 @@ watch(
 )
 
 watch(
-    () => curriculumStore.curriculumInfoResponse,
+    () => schemeOfWorkStore.exportPdfResponse,
     async (data) => {
       if(data){
-        curriculumInfo.value = data.data
+        exportLoader.value = false
       }
     },
     {deep:true}
@@ -525,5 +573,8 @@ watch(
 </script>
 
 <style scoped>
-
+.buttonStyle{
+  font-size: 12px;
+  padding: 2px 7px;
+}
 </style>

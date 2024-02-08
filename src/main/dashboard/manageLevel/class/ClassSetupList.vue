@@ -4,11 +4,11 @@
 
 
 
-    <div class="modal fade" id="learningAreaModal" tabindex="-1" :class="{ show: classDialog }" aria-labelledby="" aria-hidden="true">
+    <div class="modal fade" id="classModal" tabindex="-1" :class="{ show: classDialog }" aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Add Class</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">{{classEditMode ? "Edit" : "Add"}} Class</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -37,7 +37,7 @@
 
             <div class="flex justify-content-between mt-3">
               <div class="ml-4">Classes</div>
-              <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#learningAreaModal">
+              <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#classModal">
                 <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
                 Add Class
               </button>
@@ -52,7 +52,7 @@
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
                       v-model="level"
-                      @click="filterClasses(level)"
+                      @click="filterClasses()"
                   >
                     <option disabled value="">Filter by Level</option>
                     <option value="">All</option>
@@ -89,9 +89,12 @@
                        <div>
                          <i
                              style="font-size: 13px;"
-                             data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
+                             data-bs-toggle="modal" data-bs-target="#classModal"
                              class="bi-pencil mr-2 cursor-pointer" @click="editClass(cls)"></i>
                          <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(cls)"></i>
+                         <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === cls.number">
+                           <span class="visually-hidden">Loading...</span>
+                         </div>
                        </div>
                      </td>
                     </tr>
@@ -131,27 +134,43 @@ const routerData = useRouter()
 const classStore = useClassesStore()
 const commons = useCommonsStore()
 const levelStore = useLevelStore()
+const deletionLoader = ref( undefined)
 const  notificationStore  = useNotificationStore()
 
 const level = ref( "")
 const classDialog = ref( false)
+const classEditMode = ref( false)
 const classList = ref( [])
 const levelList = ref( [])
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
 const addCampus = () => {
+  classEditMode.value = false
   classDialog.value = true
 }
 
 const editClass = (data) => {
-  alert(JSON.stringify(data))
-}
-const deleteClass = (data) => {
-  alert(JSON.stringify(data))
+  classEditMode.value = true
+  classStore.classData(data.number)
 }
 
-const filterClasses = (level) => {
+const deleteClass = (data) => {
+
+  if(!confirm("Are you sure, you want to delete: "+data.name)){
+    return
+  }
+
+  deletionLoader.value = data.number
+
+  let info = {
+    number:data.number
+  }
+
+  classStore.deleteClassSetUp(info)
+}
+
+const filterClasses = () => {
     fetchClassList()
 }
 
@@ -171,6 +190,29 @@ const fetchClassList = () => {
 
 watch(
     () => classStore.classResponse,
+    async (data) => {
+      if(data){
+        await fetchClassList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => classStore.deleteClassSetUpResponse,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
+        await fetchClassList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => classStore.classEditResponse,
     async (data) => {
       if(data){
         await fetchClassList()

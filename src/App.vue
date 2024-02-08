@@ -2,7 +2,10 @@
   <div class="app container-fluid">
     <notifications position="bottom right" />
     <router-view :key="$route.fullPath"></router-view>
+
+
   </div>
+ 
 </template>
 
 <script setup>
@@ -48,5 +51,10 @@
 .noFocus {
   box-shadow: none !important
 }
+
+.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+  padding:0px;
+}
+
 
 </style>

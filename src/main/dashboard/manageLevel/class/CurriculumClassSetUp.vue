@@ -80,7 +80,7 @@
                     <tr v-for="(cls, idx) in lvl.class" :key="idx">
                      <td>{{cls.code}}.</td>
                      <td>{{cls.name+" [ "+cls.abbreviation+" ]"}}</td>
-                     <td>
+<!--                     <td>
                        <div>
                          <i
                              style="font-size: 13px;"
@@ -88,7 +88,7 @@
                              class="bi-pencil mr-2 cursor-pointer" @click="editClass(cls)"></i>
                          <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(cls)"></i>
                        </div>
-                     </td>
+                     </td>-->
                     </tr>
                     </tbody>
                   </table>

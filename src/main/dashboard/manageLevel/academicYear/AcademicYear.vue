@@ -30,7 +30,7 @@
     <table class="table table-hover caption-top" style="font-size: 13px;">
       <thead>
       <tr>
-        <th scope="col">#</th>
+<!--        <th scope="col">#</th>-->
         <th scope="col">Code</th>
         <th scope="col">Academic Year</th>
         <th scope="col">Number of Study Periods</th>
@@ -40,7 +40,7 @@
       </thead>
       <tbody>
       <tr v-for="(academicYre, index) in academicYearList" :key="index">
-        <td>{{index+1}}</td>
+<!--        <td>{{index+1}}</td>-->
         <td> {{academicYre.code}}</td>
         <td> {{academicYre.academic_year_name}}</td>
         <td> {{academicYre.no_of_study_period}}</td>
@@ -54,7 +54,10 @@
                         style="font-size: 13px;"
                         data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
                         class="bi-pencil mr-2 cursor-pointer" @click="editAcademicYear(academicYre)"></i>
-                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteAcademicYear(academicYre)"></i>
+                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteAcademicYear(academicYre, index)"></i>
+                    <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
                   </div>
                 </td>
       </tr>
@@ -73,11 +76,14 @@ import {onMounted, ref, watch} from "vue";
 import NewAcademicYear from "@/main/dashboard/manageLevel/academicYear/NewAcademicYear.vue";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useRouter} from "vue-router";
+import useNotificationStore from "@/composables/useNotification.js";
 const routerData = useRouter()
 const academicYearStore = useAcademicYearStore()
 const newAcademicYearDialog = ref( false)
+const deletionLoader = ref( undefined)
 const campusLevel = routerData.currentRoute.value.query.l
 const academicYearList = ref( [])
+const  notificationStore  = useNotificationStore()
 
 const addAcademicYear = (item) => {
   // classNumber.value = item.number
@@ -89,7 +95,19 @@ const editAcademicYear = (academicYre)  => {
 
 }
 
-const deleteAcademicYear = (academicYre) => {
+const deleteAcademicYear = (academicYre, idx) => {
+
+  deletionLoader.value = idx
+
+  if(!confirm("Are you sure, you want to delete: "+academicYre.academic_year_name)){
+    return
+  }
+
+  let data = {
+    number:academicYre.number
+  }
+
+  academicYearStore.deleteAcademicYear(data)
 
 }
 
@@ -105,6 +123,7 @@ watch(
     async (data) => {
       if(data){
         await academicYearStore.fetchAcademicYear(campusLevel)
+        notificationStore.successToast("Success","Login successfully")
       }
     },
     {deep:true}
@@ -115,6 +134,27 @@ watch(
     async (data) => {
       if(data){
         academicYearList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => academicYearStore.deleteAcademicYearResponse,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
+        await academicYearStore.fetchAcademicYear(campusLevel)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => academicYearStore.errorMessage,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
       }
     },
     {deep:true}

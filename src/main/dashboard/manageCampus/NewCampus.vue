@@ -59,6 +59,17 @@
 
 
             <div class="mb-2">
+              <label class="textColor text-sm">Commencement Date</label>
+              <input
+                  style="outline: none 0 !important; box-shadow: none;"
+                  type="date"
+                  v-model="form.commencement_date"
+                  required
+                  class="form-control form-control-sm">
+            </div>
+
+
+            <div class="mb-2">
               <label class="textColor"><small>Curriculum</small></label>
               <select
                   style="box-shadow: none;"
@@ -67,7 +78,6 @@
                   @change="filterCurriculumLevel(form.school_curriculum_number)"
               >
                 <option disabled value="">Select Curriculum</option>
-                <!--              <option value="">All</option>-->
                 <option v-for="(list, index) in curriculumList" :key="index" :value="list.number">
                   {{list.name}}
                 </option>
@@ -146,6 +156,7 @@ const form = reactive({
   email:null,
   phone:null,
   location:null,
+  commencement_date:null,
   school_curriculum_number:"",
   curriculum_level_number:[]
 })

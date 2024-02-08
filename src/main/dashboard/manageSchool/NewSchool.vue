@@ -19,6 +19,16 @@
             class="form-control form-control-sm">
       </div>
 
+      <div class="mb-2">
+        <label class="textColor text-sm">Commencement Date</label>
+        <input
+            style="outline: none 0 !important; box-shadow: none;"
+            type="date"
+            v-model="form.commencement_date"
+            required
+            class="form-control form-control-sm">
+      </div>
+
 
 
       <div class="mb-2">
@@ -43,7 +53,7 @@
             class="btn btn-primary border-0">
             {{school_number ? "Edit":"Save"}}
           <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
-              <span class="visually-hidden">Loading...</span>
+              <span class="visually-hidden">&nbsp;Loading...</span>
             </span>
         </button>
       </div>
@@ -72,6 +82,7 @@ const schoolStore = useSchoolStore()
 
 const form = reactive({
   name:null,
+  commencement_date:null,
   curriculum:[],
 })
 
@@ -148,7 +159,6 @@ watch(
     },
     {deep:true}
 )
-
 
 </script>
 

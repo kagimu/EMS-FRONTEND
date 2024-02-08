@@ -40,8 +40,7 @@ const  notificationStore  = useNotificationStore()
 
 const classStore = useClassesStore()
 const campusLevel = routerData.currentRoute.value.query.l
-// const campusNumber = routerData.currentRoute.value.query.id
-const campusNumber = localStorage.getItem('campus_number');
+const campusNumber = routerData.currentRoute.value.query.id
 
 
 const classId = ref([])
@@ -49,7 +48,7 @@ const classId = ref([])
 
 const addClass = (classInfo) =>{
   loader.value = true
-  classStore.newClassLevelData({class_code:classInfo.code,class_number:classInfo.number, campus_number:campusNumber, level_number:campusLevel})
+  classStore.newCampusClass({class_code:classInfo.code,class_number:classInfo.number, campus_number:campusNumber, level_number:campusLevel})
 }
 
 const props = defineProps({
@@ -90,7 +89,7 @@ watch(
       if(data){
       let arr = []
         data.forEach(lst => {
-          arr.push(lst.class_number)
+          arr.push(lst.curriculum_class_number)
         })
         classId.value = arr
       }

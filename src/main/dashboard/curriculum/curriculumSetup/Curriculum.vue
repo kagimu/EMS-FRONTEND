@@ -55,7 +55,8 @@
                     style="font-size: 14px;"
                     @click="editSchool(school)"></i>
 
-                <i style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  @click="deleteSchool(school)"></i>
+                <i style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  
+                @click="deleteSchool(school)"></i>
               </div>
             </div>
 
@@ -75,18 +76,7 @@
                 </button>
               </router-link>
 
-              <router-link
-                  class="text-decoration-none"
-                  :to="{name:'scheme-of-work', query:{id:school.number}}"
-              >
-                <button
-                    type="button"
-                    class="btn-primary border-0 d-none d-lg-block viewButtonStyle">
-                      <span class="mx-9 text-sm">
-                        Setup Scheme
-                      </span>
-                </button>
-              </router-link>
+
 </div>
             </div>
 
@@ -113,7 +103,7 @@ const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
 const curriculumStore = useCurriculumStore()
 
-const schoolDialog = ref( false)
+const schoolDialog = ref(false)
 const curriculumList = ref( [])
 
 

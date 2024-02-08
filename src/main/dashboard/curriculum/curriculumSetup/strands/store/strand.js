@@ -4,8 +4,11 @@ import api from "@/config/api.js";
 
 export const useStrandStore = defineStore("strand", () => {
     let strandResponse = ref(null)
+    let strandEditResponse = ref(null)
     let strandInfoResponse = ref(null)
     let strandListResponse = ref(null)
+    const deleteStrandResponse = ref(null)
+    const strandDataInfoResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -14,6 +17,18 @@ export const useStrandStore = defineStore("strand", () => {
         return await api.post("main/new-strand", data)
             .then((response) => {
                 strandResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function editStrandData(data) {
+        return await api.post("main/strand/edit", data)
+            .then((response) => {
+                strandEditResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -40,7 +55,7 @@ export const useStrandStore = defineStore("strand", () => {
     }
 
     async function fetchStrandList(data) {
-        return await api.get("main/strand-list?subject_number="+data)
+        return await api.get("main/strand-list?subject_number="+data.subject_number+"&curriculum_number="+data.curriculum_number)
             .then((response) => {
                 strandListResponse.value = response.data
             })
@@ -52,6 +67,29 @@ export const useStrandStore = defineStore("strand", () => {
     }
 
 
+    async function deleteStrand(data) {
+        return await api.post("main/strand/delete", data)
+            .then((response) => {
+                deleteStrandResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function strandData(data) {
+        return await api.get("main/strand/info?strand_number="+data)
+            .then((response) => {
+                strandDataInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
 
 
@@ -59,9 +97,15 @@ export const useStrandStore = defineStore("strand", () => {
         strandResponse,
         strandInfoResponse,
         strandListResponse,
+        deleteStrandResponse,
+        strandDataInfoResponse,
+        strandEditResponse,
         errorMessage,
         newStrandData,
         fetchStrands,
-        fetchStrandList
+        fetchStrandList,
+        deleteStrand,
+        strandData,
+        editStrandData
     }
 })

@@ -5,7 +5,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Add Subject</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">{{subjectEditMode ? "Edit" : "Add"}} Subject</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -102,9 +102,12 @@
                               <div>
                                 <i
                                     style="font-size: 13px;"
-                                    data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
+                                    data-bs-toggle="modal" data-bs-target="#subjectModal"
                                     class="bi-pencil mr-2 cursor-pointer" @click="editSubject(sbt)"></i>
                                 <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteSubject(sbt)"></i>
+                                <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === sbt.number">
+                                  <span class="visually-hidden">Loading...</span>
+                                </div>
                               </div>
                             </td>
                           </tr>
@@ -151,6 +154,8 @@ const learningAreaStore = useLearningAreaStore()
 const  notificationStore  = useNotificationStore()
 
 const subjectDialog = ref( false)
+const subjectEditMode = ref( false)
+const deletionLoader = ref( undefined)
 const subjectList = ref( [])
 const subjectClusterList = ref([])
 const learningAreaList = ref([])
@@ -160,14 +165,28 @@ const subjectClusterStore = useSubjectClusterStore()
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 const addSubject = () => {
+  subjectEditMode.value = false
   subjectDialog.value = true
 }
 
 const editSubject = (data) => {
-  alert(JSON.stringify(data))
+  subjectEditMode.value = true
+  subjectStore.subjectData(data.number)
 }
+
 const deleteSubject = (data) => {
-  alert(JSON.stringify(data))
+
+  if(!confirm("Are you sure, you want to delete: "+data.name)){
+    return
+  }
+
+  deletionLoader.value = data.number
+
+  let info = {
+    number:data.number
+  }
+
+  subjectStore.deleteSubject(info)
 }
 
 const filterSubjectCluster = () => {
@@ -176,7 +195,7 @@ const filterSubjectCluster = () => {
 
 const selectSubjectCluster = (learning_area_number) => {
   filterSubjectList()
-  subjectClusterStore.fetchSubjectClusterFilter(learning_area_number)
+  subjectClusterStore.fetchSubjectClusterFilter({learning_area_number:learning_area_number, curriculum_number:curriculumNumber})
 }
 
 onMounted(
@@ -202,6 +221,39 @@ watch(
       if(data){
         await filterSubjectList()
         notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectStore.subjectEditResponse,
+    async (data) => {
+      if(data){
+        await filterSubjectList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectStore.deleteSubjectResponse,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
+        await filterSubjectList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectStore.errorMessage,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
       }
     },
     {deep:true}

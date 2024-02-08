@@ -1,7 +1,6 @@
 <template>
   <div>
 
-
     <div style="font-size: 25px; color: #262626;" class="mt-3 ml-2" v-if="levelDataInfo">
       {{levelDataInfo.name}}
     </div>
@@ -40,8 +39,6 @@
           <div class="card-body" style="padding: 0;">
 
             <div class="mt-4">
-
-
 
               <div>
                 <level-settings></level-settings>
@@ -92,11 +89,11 @@ watch(
     () => levelStore.campusLevelResponse,
     async (data) => {
       if(data){
-        let campusInfo = data.data
+        let levelInfo = data.data
 
-        levelDataInfo.value = campusInfo
+        levelDataInfo.value = levelInfo
         if(!campusLevel){
-          campusLevel = campusInfo[0].number
+          campusLevel = levelInfo[0].number
         }
       }
     },

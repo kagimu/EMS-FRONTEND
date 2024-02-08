@@ -25,7 +25,7 @@
         <label class="textColor"><small>Academic year name</small></label>
         <input
             :placeholder="'Year '+currentYear"
-            maxlength="20"
+            maxlength="50"
             type="text"
             style="outline: none 0 !important;
                box-shadow: none;"
@@ -61,13 +61,27 @@
 
 
         <div class="mb-2">
-          <label class="textColor"><small>Academic Year Range</small></label>
+          <label class="textColor"><small>Academic Year Start Date</small></label>
           <VueDatePicker
+              text-input
+              auto-apply
+              :teleport="true"
               style="font-size: 7px;"
-              v-model="form.academic_year"
-              range
+              v-model="form.academic_year_start_date"
               :preview-format="format"
-              :multi-calendars="{ solo: true }"></VueDatePicker>
+              ></VueDatePicker>
+        </div>
+
+      <div class="mb-2">
+          <label class="textColor"><small>Academic Year End Date</small></label>
+          <VueDatePicker
+              text-input
+              auto-apply
+              :teleport="true"
+              style="font-size: 7px;"
+              v-model="form.academic_year_end_date"
+              :preview-format="format"
+              ></VueDatePicker>
         </div>
 
 
@@ -101,8 +115,9 @@ const commons = useCommonsStore()
 const routerData = useRouter()
 const campusStore = useCampusStore()
 const academicYearStore = useAcademicYearStore()
+const levelStore = useLevelStore()
 const campusLevel = routerData.currentRoute.value.query.l
-const campusNumber = localStorage.getItem('campus_number');
+const campusNumber = routerData.currentRoute.value.query.id
 const errorMessage = ref(null)
 const campusLevelInfo = ref([])
 const loader = ref(false)
@@ -115,6 +130,7 @@ const currentYear = ref((new Date()).getFullYear());
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import useNotificationStore from "@/composables/useNotification.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
 
 const date = ref();
 
@@ -125,7 +141,8 @@ const form = reactive({
   code:"",
   academic_year_name:"",
   no_of_study_period:"",
-  academic_year:"",
+  academic_year_start_date:"",
+  academic_year_end_date:"",
   level_number:campusLevel,
 })
 
@@ -140,7 +157,7 @@ const format = (date) => {
 
 onMounted(
     () =>{
-      campusStore.fetchCampusLevel(campusNumber)
+      // campusStore.fetchCampusLevel(campusNumber)
     }
 )
 
@@ -148,6 +165,7 @@ const addAcademicYear = () => {
   loader.value = true
   academicYearStore.newAcademicYear(form)
 }
+/*
 
 watch(
     () => campusStore.campusLevelListResponse,
@@ -159,6 +177,26 @@ watch(
     {deep:true}
 )
 
+*/
+
+
+
+watch(
+    () => levelStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        let campusInfo = data.data
+
+        campusLevelInfo.value = campusInfo
+       /* if(!campusLevel){
+          campusLevel = campusInfo[0].number
+        }*/
+      }
+    },
+    {deep:true}
+)
+
+
 watch(
     () => academicYearStore.newAcademicYearResponse,
     async (data) => {
@@ -167,7 +205,8 @@ watch(
         form.code = ""
         form.academic_year_name = ""
         form.no_of_study_period = ""
-        form.academic_year = ""
+        form.academic_year_start_date = ""
+        form.academic_year_end_date = ""
       }
     },
     {deep:true}

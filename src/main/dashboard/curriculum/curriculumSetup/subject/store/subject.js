@@ -9,7 +9,10 @@ export const useSubjectStore = defineStore("subject", () => {
     let subjectByClassResponse = ref(null)
     let schemeSubjectByClassResponse = ref(null)
     let academicYearByClassResponse = ref(null)
+    const deleteSubjectResponse = ref(null)
+    const subjectDataInfoResponse = ref(null)
     const errorMessage = ref(null)
+    const subjectEditResponse = ref(null)
 
 
 
@@ -54,7 +57,7 @@ export const useSubjectStore = defineStore("subject", () => {
 
 
     async function fetchSubjectList(data) {
-        return await api.get("main/subject-list?subject_cluster_number="+data)
+        return await api.get("main/subject-list?subject_cluster_number="+data.subject_cluster_number+"&curriculum_number="+data.curriculum_number)
             .then((response) => {
                 subjectListResponse.value = response.data
             })
@@ -115,6 +118,44 @@ export const useSubjectStore = defineStore("subject", () => {
 
 
 
+    async function deleteSubject(data) {
+        return await api.post("main/subject/delete", data)
+            .then((response) => {
+                deleteSubjectResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function subjectData(data) {
+        return await api.get("main/subject/info?subject_number="+data)
+            .then((response) => {
+                subjectDataInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
+
+    async function editSubjectData(data) {
+        return await api.post("main/subject/edit", data)
+            .then((response) => {
+                subjectEditResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
     return {
         subjectByClassResponse,
@@ -123,6 +164,9 @@ export const useSubjectStore = defineStore("subject", () => {
         subjectInfoResponse,
         schemeSubjectByClassResponse,
         academicYearByClassResponse,
+        deleteSubjectResponse,
+        subjectDataInfoResponse,
+        subjectEditResponse,
         errorMessage,
         newSubjectData,
         fetchSubjects,
@@ -130,6 +174,9 @@ export const useSubjectStore = defineStore("subject", () => {
         fetchSubjectByClass,
         fetchAcademicYearByClass,
         fetchSchemeSubjectByClass,
-        fetchSubjectList
+        fetchSubjectList,
+        deleteSubject,
+        subjectData,
+        editSubjectData,
     }
 })

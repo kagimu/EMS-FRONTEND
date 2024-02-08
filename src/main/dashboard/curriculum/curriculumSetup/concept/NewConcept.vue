@@ -183,6 +183,7 @@ const form = reactive({
 
 const addConcept = () =>{
   loader.value = true
+  form.curriculum_number = curriculumNumber
   conceptStore.newConceptData(form)
 }
 
@@ -190,24 +191,24 @@ const addConcept = () =>{
 
 
 const selectSubjectCluster = (learning_area_number) => {
-  subjectClusterStore.fetchSubjectClusterFilter(learning_area_number)
+  subjectClusterStore.fetchSubjectClusterFilter({learning_area_number:learning_area_number, curriculum_number:curriculumNumber})
 }
 
 const selectSubject = (subject_cluster_number) => {
-  subjectStore.fetchSubjectList(subject_cluster_number)
+  subjectStore.fetchSubjectList({subject_cluster_number:subject_cluster_number, curriculum_number:curriculumNumber})
 }
 
 
 const selectStrand = (subject_number) => {
-  strandStore.fetchStrandList(subject_number)
+  strandStore.fetchStrandList({subject_number:subject_number, curriculum_number:curriculumNumber})
 }
 
 const selectTopic = (strand_number) => {
-  topicStore.fetchTopicList(strand_number)
+  topicStore.fetchTopicList({strand_number:strand_number, curriculum_number:curriculumNumber})
 }
 
 const selectSubTopic = (topic_number) => {
-  subtopicStore.fetchSubTopicList(topic_number)
+  subtopicStore.fetchSubTopicList({topic_number:topic_number, curriculum_number:curriculumNumber})
 }
 
 onMounted(

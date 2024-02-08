@@ -30,8 +30,6 @@
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
 
-            <div>
-
                 <div v-if="selectedPage === 'role'">
                   <roles></roles>
                 </div>
@@ -41,10 +39,15 @@
                 <div v-if="selectedPage === 'classes'">
                   <class-setup-list v-if="selectedPage==='classes'"></class-setup-list>
                 </div>
-
-            </div>
-
-
+                <div v-if="selectedPage === 'learning-materials'">
+                  <learning-material-setup></learning-material-setup>
+                </div>
+                <div v-if="selectedPage === 'sosinfos'">
+                    <sos-info></sos-info>
+                </div>
+                <div v-if="selectedPage === 'services'">
+                    <Services></Services>
+                </div>
           </div>
         </div>
       </div>
@@ -61,6 +64,10 @@ import Roles from "@/main/settings/roles/Roles.vue";
 import {useRouter} from "vue-router";
 import LevelSetup from "@/main/settings/level/LevelSetup.vue";
 import ClassSetupList from "@/main/dashboard/manageLevel/class/ClassSetupList.vue";
+import LearningMaterialSetup from "@/main/settings/learning-materials/LearningMaterialSetup.vue";
+import SosInfo from "@/main/settings/sosinfo/SosInfo.vue";
+import Services from "../dashboard/servicesAndProducts/Services.vue";
+
 const routerData = useRouter()
 const buttonLoader = ref(false)
 
@@ -80,10 +87,22 @@ const settingsList = ref([
     name:"Classes",
     id:"classes"
   },
+    {
+       name: "Learning Materials" ,
+         id: "learning-materials"
+    },
   {
     name:"Roles",
     id:"role"
-  }
+  },
+    {
+        name:"Source of school Info",
+        id:"sosinfos"
+    },
+    {
+        name:"Services And Products",
+        id:"services"
+    }
 ])
 const form = reactive({
   name:null

@@ -4,8 +4,11 @@ import api from "@/config/api.js";
 
 export const useClassesStore = defineStore("classes", () => {
     let classResponse = ref(null)
+    let classEditResponse = ref(null)
     let classLevelResponse = ref(null)
+    let classDataInfoResponse = ref(null)
     let classInfoResponse = ref(null)
+    let deleteClassSetUpResponse = ref(null)
     let schemeClassInfoResponse = ref(null)
     let curriculumClassSetResponse = ref(null)
     let classLevelInfoResponse = ref(null)
@@ -35,6 +38,18 @@ export const useClassesStore = defineStore("classes", () => {
             })
     }
 
+    async function editClassData(data) {
+        return await api.post("main/class/edit", data)
+            .then((response) => {
+                classEditResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     async function newCurriculumClassData(data) {
         return await api.post("main/new-curriculum-class", data)
             .then((response) => {
@@ -47,8 +62,8 @@ export const useClassesStore = defineStore("classes", () => {
             })
     }
 
-    async function newClassLevelData(data) {
-        return await api.post("main/new-class-level", data)
+    async function newCampusClass(data) {
+        return await api.post("main/new-campus-class", data)
             .then((response) => {
                 classLevelResponse.value = response.data
             })
@@ -87,6 +102,20 @@ export const useClassesStore = defineStore("classes", () => {
             })
     }
 
+
+    async function deleteClassSetUp(data) {
+        return await api.post("main/class/delete", data)
+            .then((response) => {
+                deleteClassSetUpResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
     async function fetchCurriculumClasses(data) {
         return await api.get("main/fetch-curriculum-classes?level="+data.level+"&curriculum_number="+data.curriculum_number)
             .then((response) => {
@@ -100,7 +129,7 @@ export const useClassesStore = defineStore("classes", () => {
     }
 
     async function fetchSchemeOfWorkClasses(data) {
-        return await api.get("main/scheme-of-work-classes?level="+data.level+"&curriculum_number="+data.curriculum_number)
+        return await api.get("main/scheme-of-work-classes?level="+data.level+"&campus_number="+data.campus_number)
             .then((response) => {
                 schemeClassInfoResponse.value = response.data
             })
@@ -211,6 +240,19 @@ export const useClassesStore = defineStore("classes", () => {
 
 
 
+    async function classData(data) {
+        return await api.get("main/class/info?class_number="+data)
+            .then((response) => {
+                classDataInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
 
     return {
         classResponse,
@@ -227,13 +269,17 @@ export const useClassesStore = defineStore("classes", () => {
         curriculumClassInfoResponse,
         curriculumClassResponse,
         curriculumClassSetResponse,
+        classEditResponse,
+        deleteClassSetUpResponse,
+        classDataInfoResponse,
         errorMessage,
         newClassData,
+        editClassData,
         fetchClasses,
         fetchSchemeOfWorkClasses,
         fetchClassSubjects,
         addClassSubjectData,
-        newClassLevelData,
+        newCampusClass,
         fetchClassLevel,
         fetchClassLevelToAdd,
         fetchClassStreams,
@@ -242,6 +288,8 @@ export const useClassesStore = defineStore("classes", () => {
         fetchClassesCurriculum,
         filterCurriculumClassesData,
         newCurriculumClassData,
-        fetchCurriculumClasses
+        fetchCurriculumClasses,
+        deleteClassSetUp,
+        classData
     }
 })

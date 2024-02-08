@@ -8,7 +8,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Add Level</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2"> {{levelEditMode ? "Edit" : "Add"}} Level</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -26,10 +26,6 @@
 
       <div class="col-12">
 
-
-
-<!--        <div class="card mt-3">-->
-<!--          <div class="card-body" style="padding: 0;">-->
 
 
             <div class="flex justify-content-between mt-3">
@@ -58,9 +54,12 @@
                   <div>
                     <i
                         style="font-size: 13px;"
-                        data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                        class="bi-pencil mr-2 cursor-pointer" @click="editClass(levelInfo)"></i>
-                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(levelInfo)"></i>
+                        data-bs-toggle="modal" data-bs-target="#levelModal"
+                        class="bi-pencil mr-2 cursor-pointer" @click="editLevel(levelInfo)"></i>
+                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLevel(levelInfo, index)"></i>
+                    <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
                   </div>
                 </td>
               </tr>
@@ -69,9 +68,6 @@
 
           </div>
         </div>
-
-<!--      </div>-->
-<!--    </div>-->
 
 
 
@@ -95,20 +91,34 @@ const  notificationStore  = useNotificationStore()
 
 const level = ref( "")
 const levelDialog = ref( false)
+const levelEditMode = ref( false)
 const levelList = ref( [])
+const deletionLoader = ref( undefined)
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
 
 const addLevel = () => {
+  levelEditMode.value = false
   levelDialog.value = true
 }
 
-const editClass = (data) => {
-  alert(JSON.stringify(data))
+const editLevel = (data) => {
+  levelEditMode.value = true
+  levelStore.LevelData(data.number)
 }
-const deleteClass = (data) => {
-  alert(JSON.stringify(data))
+const deleteLevel = (data, index) => {
+  deletionLoader.value = index
+
+  if(!confirm("Are you sure, you want to delete: "+data.name)){
+    return
+  }
+
+  let info = {
+    number:data.number
+  }
+
+  levelStore.deleteLevelSetUp(info)
 }
 
 
@@ -130,10 +140,44 @@ watch(
 )
 
 watch(
+    () => levelStore.levelEditResponse,
+    async (data) => {
+      if(data){
+        await levelStore.fetchLevels()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
     () => levelStore.levelInfoResponse,
     async (data) => {
       if(data){
         levelList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => levelStore.deleteLevelSetUpResponse,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
+        await  levelStore.fetchLevels()
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => levelStore.errorMessage,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
       }
     },
     {deep:true}
