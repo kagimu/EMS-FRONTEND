@@ -126,7 +126,9 @@ watch (
 
 onMounted(
     () => {
+      if(applicationNumber !=""){
       applicationStore.fetchApplicationById(applicationNumber)
+      }
     }
 )
 
