@@ -36,7 +36,7 @@
   <!-- schedule interview -->
   <div class="offcanvas offcanvas-end" tabindex="-1" id="rolesDialogg" :class="{ show: interviewDialog }" aria-labelledby="offcanvasRightLabel">
           <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasRightLabel">Add Interview Assesment Area</h5>
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">Interview Assesment Area</h5>
             <button type="button" class="btn-close"  data-bs-dismiss="offcanvas" aria-label="Close" @click="closeInterviewDialog"></button>
           </div>
           <div class="offcanvas-body">

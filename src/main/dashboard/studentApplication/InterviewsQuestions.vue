@@ -49,6 +49,16 @@
           <div class="offcanvas-body">
             <form @submit.prevent="addInterviewQuestions">
               <div class="mb-2">
+                <label class="textColor"><small>Assesment Area</small></label>
+               <select required class="form-control" v-model="form.interview_number" >
+                <option disabled value=""> - Select Interview - </option>
+                  <option v-for="(listdata, index) in interviewAssesmentListData" :key="index" :value="listdata.number">
+                    {{ listdata.name}} 
+                  </option>
+               </select>
+              </div>
+              
+              <div class="mb-2">
                 <label class="textColor"><small>Interviews</small></label>
                <select required class="form-control" v-model="form.interview_number" >
                 <option disabled value=""> - Select Interview - </option>
@@ -57,6 +67,8 @@
                   </option>
                </select>
               </div>
+
+              
 
               <div class="mb-2">
                 <label class="textColor"><small>Question</small></label>
@@ -109,6 +121,8 @@
     const interviewQuestionList = ref([])
     const interviewDialog= ref(false)
     let errorMessage = ref(null)
+    const interviewAssesmentListData = ref([])
+
 
     const applicationStore= useApplicationStore()
     const  notificationStore  = useNotificationStore()
@@ -135,10 +149,26 @@ const updatePossibleAnswer = (event, index) => {
 //working on dialog
 const closeInterviewDialog = () => {
   interviewDialog.value = false;
-};
+}
 const showInterviewDialog = () => {
   interviewDialog.value = true;
 }
+
+
+onMounted(
+    async () => {
+      await applicationStore.fetchInterviewAssesment()
+    } )
+
+    watch(
+    () => applicationStore.interviewAssesmentResultsResponse,
+    async (data) => {
+      if(data){
+        interviewAssesmentListData.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 
     const addInterviewQuestions = () => {
@@ -170,6 +200,7 @@ watch (
         errorMessage.value = data.message
         buttonLoader.value = false
         notificationStore.errorToast("Error",data.message)
+        interviewDialog.value = false;
       }
     },
     {deep:true}
