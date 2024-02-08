@@ -23,7 +23,7 @@
         
           <div class="row">
             <div class="col-lg-4">
-              <p class="textColor">Payee Details</p>
+              <p class="textColor" style="margin-bottom: -4px;">Payee Details</p>
               <div class="mb-2">
               <label class="textColor text-sm"><small>Student</small> <span class="star">*</span></label>
               <select class="form-control">
@@ -49,7 +49,7 @@
             </div>
             <div class="col-lg-1"></div>
             <div class="col-lg-7">
-              <p class="textColor">Invoice Details</p>
+              <p class="textColor" style="margin-bottom: -4px;">Invoice Details</p>
               <div class="row">
                 <div class="col-lg-8">
                 <div class="mb-2">
@@ -65,25 +65,25 @@
                 </div>
               </div>
 
-              <p class="textColor">Product / Service Details</p>
+              <p class="textColor" style="margin-bottom: -10px;">Product / Service Details</p>
               
 
               <div>
 
                 <div>
-      <div class="mb-3" v-for="(item, index) in items" :key="index">
-        <div class="row align-items-center">
+      <div class="mb-3" v-for="(item, index) in formData.services" :key="index">
+        <div class="row align-services-center">
           <div class="col-lg-5">
             <label class="textColor"><small>Product/Service<span class="star">*</span></small></label>
-            <input type="text" class="form-control" v-model="item.description" placeholder="Product Name">
+            <input type="text" class="form-control" v-model="formData.services[index].service" placeholder="Product Name">
           </div>
           <div class="col-lg-2">
             <label class="textColor"><small>Quantity<span class="star">*</span></small></label>
-            <input type="number" class="form-control" v-model="item.quantity" placeholder="Quantity">
+            <input type="number" class="form-control" v-model="formData.services[index].quantity" placeholder="Quantity">
           </div>
           <div class="col-lg-2">
             <label class="textColor"><small>Unit Price<span class="star">*</span></small></label>
-            <input type="number" class="form-control" v-model="item.price" placeholder="Unit Price">
+            <input type="number" class="form-control" v-model="formData.services[index].price" placeholder="Unit Price">
           </div>
           <div class="col-lg-3">
 
@@ -96,7 +96,7 @@
         </div>
       </div>
 </div>
-      <button type="button" class="link-primary textColor" @click="addItem">Add Another Service/Product</button>
+      <button type="button" class="link-primary textColor " @click="addItem">Add Another Service/Product</button>
     </div>
    <hr>
     <div class="text-end">
@@ -151,29 +151,39 @@
   </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-
+import { ref, computed,reactive } from 'vue';
+const formData = reactive({
+  
+  services: [
+    {
+     service: null,
+     quantity: null,
+     price: null
+    },
+  ],
+});
 
 const goBack = () => {
    window.history.back()
   }
 
 const createInvoice = () =>{
-
+  alert(JSON.stringify(formData));
 }
 
-const items = ref([
-  { description: '', quantity: 0, price: 0 },
+const services = ref([
+  { service: '', quantity: 0, price: 0 },
 ]);
 
-const total = computed(() => items.value.reduce((acc, item) => acc + (item.quantity * item.price), 0));
+const total = computed(() => formData.services.reduce((acc, item) => acc + (item.quantity * item.price || 0), 0));
 
 function addItem() {
-  items.value.push({ description: '', quantity: 0, price: 0 });
+  formData.services.push({ service: '', quantity: null, price: null })
+
 }
 
 function removeItem(index) {
-  items.value.splice(index, 1);
+  formData.services.splice(index, 1)
 }
 </script>
 
