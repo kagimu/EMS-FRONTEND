@@ -1,11 +1,11 @@
 <template>
   <div>
 
-    <div class="modal fade" id="subjectModal" tabindex="-1" :class="{ show: strandDialog }" aria-labelledby="" aria-hidden="true">
+    <div class="modal fade" id="strandModal" tabindex="-1" :class="{ show: strandDialog }" aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Add Strand</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">{{strandEditMode ? "Edit" : "Add"}} Strand</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -21,7 +21,7 @@
 
     <div class="flex justify-content-between mt-3">
       <div class="ml-4">Strand</div>
-      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSubject" data-bs-toggle="modal" data-bs-target="#subjectModal">
+      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSubject" data-bs-toggle="modal" data-bs-target="#strandModal">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
         Add Strand
       </button>
@@ -128,9 +128,12 @@
                                     <div>
                                       <i
                                           style="font-size: 13px;"
-                                          data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                                          class="bi-pencil mr-2 cursor-pointer" @click="editClass(std)"></i>
-                                      <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(std)"></i>
+                                          data-bs-toggle="modal" data-bs-target="#strandModal"
+                                          class="bi-pencil mr-2 cursor-pointer" @click="editStrand(std)"></i>
+                                      <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteStrand(std)"></i>
+                                      <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === std.number">
+                                        <span class="visually-hidden">Loading...</span>
+                                      </div>
                                     </div>
                                   </td>
                                 </tr>
@@ -146,18 +149,12 @@
                         </table>
 
 
-
-
                       </td>
                     </tr>
                     </tbody>
                   </table>
 
-
-
                 </td>
-
-
 
               </tr>
               </tbody>
@@ -193,6 +190,7 @@ const learningAreaStore = useLearningAreaStore()
 const subjectClusterStore = useSubjectClusterStore()
 
 const strandDialog = ref( false)
+const strandEditMode = ref( false)
 const strandList = ref( [])
 const learningAreaList = ref([])
 const subjectClusterList = ref([])
@@ -200,17 +198,30 @@ const subjectList = ref([])
 const subject_cluster_number = ref("")
 const subject_number = ref("")
 const learning_area_number = ref("")
+const deletionLoader = ref(undefined)
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 const addSubject = () => {
+  strandEditMode.value = false
   strandDialog.value = true
 }
 
-const editClass = (data) => {
-  alert(JSON.stringify(data))
+const editStrand = (data) => {
+  strandEditMode.value = true
+  strandStore.strandData(data.number)
 }
-const deleteClass = (data) => {
-  alert(JSON.stringify(data))
+const deleteStrand = (data) => {
+  if(!confirm("Are you sure, you want to delete: "+data.name)){
+    return
+  }
+
+  deletionLoader.value = data.number
+
+  let info = {
+    number:data.number
+  }
+
+  strandStore.deleteStrand(info)
 }
 
 
@@ -259,9 +270,41 @@ watch(
     () => strandStore.strandResponse,
     async (data) => {
       if(data){
-        // strandDialog.value = false
         await filterStrandList()
         notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => strandStore.strandEditResponse,
+    async (data) => {
+      if(data){
+        await filterStrandList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => strandStore.deleteStrandResponse,
+    async (data) => {
+      if(data){
+         deletionLoader.value = false
+        await filterStrandList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => strandStore.errorMessage,
+    async (data) => {
+      if(data){
+        deletionLoader.value = false
       }
     },
     {deep:true}

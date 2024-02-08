@@ -38,6 +38,9 @@
                   <div v-if="selectedPage === 'interviews'">
                     <interviews></interviews>
                   </div>
+                  <div v-if="selectedPage === 'assessment-areas'">
+                    <interview-assesment-areas></interview-assesment-areas>
+                  </div>
                   <div v-if="selectedPage === 'interviewquestions'">
                     <interviews-questions></interviews-questions>
                   </div>
@@ -64,6 +67,7 @@
   import Interviews from "./Interviews.vue";
   import InterviewsQuestions from "./InterviewsQuestions.vue";
   import GradeResults from "./GradeResults.vue";
+import InterviewAssesmentAreas from "./InterviewAssesmentAreas.vue";
 
   const routerData = useRouter()
   const buttonLoader = ref(false)
@@ -81,6 +85,10 @@
       id:"interviews"
     },
     {
+      name:"Interview Assessment Areas",
+      id:"assessment-areas"
+    },
+    {
       name:"Interview Questions",
       id:"interviewquestions"
     },
@@ -88,6 +96,7 @@
       name:"Interview Results",
       id:"grade-results"
     },
+   
 
   ])
   const form = reactive({

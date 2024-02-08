@@ -71,7 +71,7 @@
         <button
             type="submit"
             class="btn btn-primary border-0">
-          Save
+            {{strandNumber ? "Edit" : "Save"}}
           <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>
@@ -111,6 +111,7 @@ const subjectClusterList = ref([])
 const subjectList = ref([])
 const learning_area_number = ref("")
 const subject_cluster_number = ref("")
+const strandNumber = ref(null)
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
@@ -124,7 +125,13 @@ const form = reactive({
 const addStrand = () =>{
   loader.value = true
   form.curriculum_number = curriculumNumber
-  strandStore.newStrandData(form)
+  if(strandNumber.value){
+    form.strand_number = strandNumber.value
+    strandStore.editStrandData(form)
+  }else {
+    strandStore.newStrandData(form)
+  }
+
 }
 
 const selectSubjectCluster = (learning_area_number) => {
@@ -143,6 +150,15 @@ onMounted(
     }
 )
 
+watch(
+    () => strandStore.strandEditResponse,
+    async (data) => {
+      if(data){
+         loader.value = false
+      }
+    },
+    {deep:true}
+)
 
 watch(
     () => learningAreaStore.learningAreaInfResponse,
@@ -197,6 +213,22 @@ watch(
       if(data){
         loader.value = false
         notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => strandStore.strandDataInfoResponse,
+    async (data) => {
+      if(data){
+        let info = data.data
+        form.name = info.name ? info.name : ""
+        form.code = info.code ? String(info.code) : ""
+        form.subject_number = info.subject_number ? info.subject_number : ""
+        learning_area_number.value = info.learning_area_number ? info.learning_area_number : ""
+        subject_cluster_number.value = info.subject_cluster_number ? info.subject_cluster_number : ""
+        strandNumber.value = info.number ? info.number : ""
       }
     },
     {deep:true}

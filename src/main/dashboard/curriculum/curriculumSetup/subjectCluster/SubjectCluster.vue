@@ -140,10 +140,12 @@ const editSubjectCluster = (data) => {
   subjectClusterStore.subjectClusterData(data.number)
 }
 const deleteSubjectCluster = (data) => {
-  deletionLoader.value = data.number
+
   if(!confirm("Are you sure, you want to delete: "+data.name)){
     return
   }
+
+  deletionLoader.value = data.number
 
   let info = {
     number:data.number

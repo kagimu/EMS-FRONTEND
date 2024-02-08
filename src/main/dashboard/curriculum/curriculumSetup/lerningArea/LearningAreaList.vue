@@ -103,11 +103,12 @@ const editLearningArea = (data) => {
 }
 
 const deleteLearningArea = (data) => {
-  deletionLoader.value = data.number
 
   if(!confirm("Are you sure, you want to delete: "+data.name)){
     return
   }
+
+  deletionLoader.value = data.number
 
   let info = {
     number:data.number
