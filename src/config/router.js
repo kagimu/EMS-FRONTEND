@@ -38,6 +38,7 @@ import AdmitStudent from "@/main/dashboard/studentApplication/AdmitStudent.vue";
 import InterviewAssessmentAreas from "@/main/dashboard/studentApplication/InterviewAssesmentAreas.vue"
 import Invoice from "@/main/dashboard/invoice/Invoice.vue"
 import NewInvoice from "@/main/dashboard/invoice/NewInvoice.vue"
+import InvoiceDetails from "@/main/dashboard/invoice/InvoiceDetails.vue"
 
 
 
@@ -97,6 +98,7 @@ const router = createRouter({
                 {path: 'assessment-areas', component: InterviewAssessmentAreas, name: "assessment-areas"},
                 {path: 'invoices', component: Invoice, name: "invoices"},
                 {path: 'new-invoice', component: NewInvoice, name: "new-invoice"},
+                {path: 'invoice-details', component: InvoiceDetails, name: "invoice-details"},
 
                 
             ]

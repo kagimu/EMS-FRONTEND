@@ -115,7 +115,8 @@
             </div>
             <div class="col-lg-4"></div>
             <div class="col-lg-4">
-              <button type="submit" class="btn btn-sm btn-primary mb-2 mr-4 " style="color: white;float: right;">
+              <button type="submit" class="btn btn-sm btn-primary mb-2 mr-4 "
+               style="color: white;float: right;">
                <small>Next &nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  
         <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
           <span class="visually-hidden">Loading...</span>
