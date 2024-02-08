@@ -6,7 +6,8 @@
             <div class="card-header">
        <div class="row">
         <div class="col-lg-8">
-            <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Invoice Details<b></b>     </h6>
+            <h6 style="margin-top:20px; text-align: left;font-size: 15px;">
+              <i  @click="goBack()" class="bi bi-x-lg"></i>&nbsp;&nbsp;Invoice Details<b></b>     </h6>
         </div>
         <div class="col-lg-4">
           <button  class="btn btn-primary  btn-sm mb-2 mr-4" style="float: right;">
@@ -32,7 +33,9 @@
     </template>
 
 <script setup>
-
+const goBack = () => {
+     window.history.back()
+    }
 
 </script>
 
