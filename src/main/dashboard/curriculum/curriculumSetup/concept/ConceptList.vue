@@ -218,9 +218,12 @@
                                                      <div>
                                                        <i
                                                            style="font-size: 13px;"
-                                                           data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                                                           class="bi-pencil mr-2 cursor-pointer" @click="editClass(ccp)"></i>
-                                                       <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(ccp)"></i>
+                                                           data-bs-toggle="modal" data-bs-target="#subjectModal"
+                                                           class="bi-pencil mr-2 cursor-pointer" @click="editConcept(ccp)"></i>
+                                                       <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteConcept(ccp)"></i>
+                                                       <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === ccp.number">
+                                                         <span class="visually-hidden">Loading...</span>
+                                                       </div>
                                                      </div>
                                                    </td>
                                                  </tr>
@@ -311,7 +314,7 @@ const subtopicStore = useSubtopicStore()
 const conceptStore = useConceptStore()
 const classStore = useClassesStore()
 const notificationStore  = useNotificationStore()
-
+const deletionLoader = ref( undefined)
 const conceptDialog = ref( false)
 const conceptList = ref( [])
 const subtopicList = ref( [])
@@ -338,11 +341,21 @@ const addConcept = () => {
   conceptDialog.value = true
 }
 
-const editClass = (data) => {
+const editConcept = (data) => {
   alert(JSON.stringify(data))
 }
-const deleteClass = (data) => {
-  alert(JSON.stringify(data))
+const deleteConcept = (data) => {
+  if(!confirm("Are you sure, you want to delete: "+data.name)){
+    return
+  }
+
+  deletionLoader.value = data.number
+
+  let info = {
+    number:data.number
+  }
+
+  conceptStore.deleteConcept(info)
 }
 
 
@@ -456,7 +469,17 @@ watch(
     () => conceptStore.conceptResponse,
     async (data) => {
       if(data){
-        // conceptDialog.value = false
+        fetchConceptsList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => conceptStore.deleteConceptResponse,
+    async (data) => {
+      if(data){
         fetchConceptsList()
         notificationStore.successToast("Success", data.message)
       }

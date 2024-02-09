@@ -5,6 +5,7 @@ import api from "@/config/api.js";
 export const useConceptStore = defineStore("concept", () => {
     let conceptResponse = ref(null)
     let conceptInfoResponse = ref(null)
+    let deleteConceptResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -42,13 +43,27 @@ export const useConceptStore = defineStore("concept", () => {
     }
 
 
+    async function deleteConcept(data) {
+        return await api.post("main/concept/delete", data)
+            .then((response) => {
+                deleteConceptResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
 
     return {
         conceptResponse,
         conceptInfoResponse,
+        deleteConceptResponse,
         errorMessage,
         newConceptData,
-        fetchConcepts
+        fetchConcepts,
+        deleteConcept
     }
 })
