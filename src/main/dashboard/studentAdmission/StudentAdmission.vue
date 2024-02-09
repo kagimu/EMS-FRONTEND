@@ -2,40 +2,47 @@
   <div>
 
 
-
     <div class="row">
-      <div class="col-12">
-        <div class="card mt-3">
-          <div class="card-body" style="padding: 0;">
-
-            <div class="mb-3 ml-5 mt-3" style="font-size: 18px;">Students Admission</div>
-
-            <div class="mt-4">
-              <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                  <button class="nav-link navColor active" id="babyClass-tab" data-bs-toggle="tab" data-bs-target="#babyClass" type="button" role="tab" aria-controls="babyClass" aria-selected="false"><small>Admissions</small></button>
-                  <button class="nav-link navColor" id="grading-scale-tab" data-bs-toggle="tab" data-bs-target="#grading-scale" type="button" role="tab" aria-controls="grading-scale" aria-selected="true"><small>New Admission</small></button>
-                </div>
-              </nav>
-              <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="babyClass" role="tabpanel" aria-labelledby="babyClass-tab" tabindex="0">
-                 <admission-list></admission-list>
-                </div>
-                <div class="tab-pane fade" id="grading-scale" role="tabpanel" aria-labelledby="grading-scale-tab" tabindex="0">
-                  <new-admission></new-admission>
-                </div>
+        <div class="col-3">
+          <div class="card mt-3">
+            <div class="card-body" style="padding: 0;">
+              <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Admission</div>
+  
+  
+              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+  
+                <router-link
+                    v-for="(item, idx) in admission" :key="idx"
+                    class="list-group-item list-group-item-action"
+                    :class="item.id === selectedPage ? 'active' : ''"
+                    :to="{name:'student-admission', query:{s:item.id}}">
+                  <small style="font-size:12px;">{{item.name}}</small>
+                </router-link>
               </div>
-
+  
+  
+  
             </div>
-
-
+          </div>
+        </div>
+  
+        <div class="col-9">
+          <div class="card mt-3">
+            <div class="card-body" style="padding: 0;">
+  
+              <div>
+  
+                  <div v-if="selectedPage === 'admission-offers'">
+                    <admission-list></admission-list>
+                  </div>
+                  
+              </div>
+  
+  
+            </div>
           </div>
         </div>
       </div>
-
-
-    </div>
-
   </div>
 </template>
 
@@ -44,22 +51,23 @@
 import {reactive, ref} from "vue";
 import AdmissionList from "@/main/dashboard/studentAdmission/AdmissionList.vue";
 import NewAdmission from "@/main/dashboard/studentAdmission/NewAdmission.vue";
+import {useRouter} from "vue-router";
 
-const buttonLoader = ref(false)
-let show = ref(false)
 
-const form = reactive({
-  first_name:null,
-  second_name:null,
-  email:null,
-  phone:null,
-  location:null,
-  level:""
-})
+  const routerData = useRouter()
+  
+  const route = routerData.currentRoute.value.query.s
+  const selectedPage = route ? route : "admission-offers"
+  
+  const admission = ref([
+    {
+      name:"Admission Offers",
+      id:"admission-offers"
+    },
+  ])
 
-function addCampus(){
-  alert(JSON.stringify(form))
-}
+  
+
 
 </script>
 

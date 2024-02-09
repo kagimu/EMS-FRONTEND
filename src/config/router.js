@@ -39,6 +39,7 @@ import InterviewAssessmentAreas from "@/main/dashboard/studentApplication/Interv
 import Invoice from "@/main/dashboard/invoice/Invoice.vue"
 import NewInvoice from "@/main/dashboard/invoice/NewInvoice.vue"
 import InvoiceDetails from "@/main/dashboard/invoice/InvoiceDetails.vue"
+import NewAdmission from "@/main/dashboard/studentAdmission/NewAdmission.vue"
 
 
 
@@ -99,6 +100,7 @@ const router = createRouter({
                 {path: 'invoices', component: Invoice, name: "invoices"},
                 {path: 'new-invoice', component: NewInvoice, name: "new-invoice"},
                 {path: 'invoice-details', component: InvoiceDetails, name: "invoice-details"},
+                {path: 'new-admission', component: NewAdmission, name: "new-admission"},
 
                 
             ]
