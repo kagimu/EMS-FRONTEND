@@ -33,7 +33,7 @@
               <button type="button" class="btn-close"  data-bs-dismiss="offcanvas" aria-label="Close" @click="closeInterviewDialog"></button>
             </div>
             <div class="offcanvas-body">
-              <form @submit.prevent="addConditiont">
+              <form @submit.prevent="addCondition">
                 <div class="mb-2">
                   <label class="textColor"><small>Name</small></label>
                   <input v-model="form.name"  type="text" required class="form-control">
