@@ -9,6 +9,7 @@ export const useSubtopicStore = defineStore("subtopic", () => {
     let subtopicByClassInfoResponse = ref(null)
     let subtopicByClassTemplateResponse = ref(null)
     let importSchemeResponse = ref(null)
+    let deleteSubTopicResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -96,6 +97,17 @@ export const useSubtopicStore = defineStore("subtopic", () => {
             })
     }
 
+    async function deleteSubTopic(data) {
+        return await api.post("main/sub-topic/delete", data)
+            .then((response) => {
+                deleteSubTopicResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
 
     return {
@@ -105,12 +117,14 @@ export const useSubtopicStore = defineStore("subtopic", () => {
         subtopicByClassInfoResponse,
         subtopicListResponse,
         subtopicByClassTemplateResponse,
+        deleteSubTopicResponse,
         errorMessage,
         newSubtopicData,
         fetchSubTopics,
         fetchSubTopicsByClass,
         fetchSubTopicList,
         downloadSchemeTemplateExcel,
-        importSchemeOfWork
+        importSchemeOfWork,
+        deleteSubTopic
     }
 })
