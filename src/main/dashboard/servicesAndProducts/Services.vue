@@ -5,7 +5,7 @@
         <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header text-sm p-0">
-                        <h6 class="modal-title ml-3 mt-2 mb-2">Service/Product</h6>
+                        <h6 class="modal-title ml-3 mt-2 mb-2">Services</h6>
                         <button aria-label="Close" class="btn-close btn-sm" data-bs-dismiss="modal"
                                 style="margin-right: 5px;" type="button"></button>
                     </div>
@@ -20,11 +20,11 @@
         </div>
         <div class="row">
       <div class="col-12">
-        <div class="card mt-3">
+        <div class="car mt-3">
           <div class="card-body" style="padding: 0;">
 
     <div class="container mt-4">
-      <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Service/Product
+      <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Services
         <button style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
         data-bs-target="#serviceModal"  data-bs-toggle="modal">
         <i class="bi bi-plus"></i>&nbsp;<small>
@@ -38,7 +38,7 @@
       >
         <thead>
           <tr>
-            <th>Service/Product Name</th>
+            <th>Service Name</th>
             <th>Cost</th>
             <th>Addition Info</th>
             <th>#</th>
@@ -68,7 +68,7 @@
         <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header text-sm p-0">
-                        <h6 class="modal-title ml-3 mt-2 mb-2">UpdateService/Product</h6>
+                        <h6 class="modal-title ml-3 mt-2 mb-2">UpdateService</h6>
                         <button aria-label="Close" class="btn-close btn-sm" data-bs-dismiss="modal"
                                 style="margin-right: 5px;" type="button"></button>
                     </div>

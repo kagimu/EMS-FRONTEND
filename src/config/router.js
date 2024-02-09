@@ -41,6 +41,7 @@ import NewInvoice from "@/main/dashboard/invoice/NewInvoice.vue"
 import InvoiceDetails from "@/main/dashboard/invoice/InvoiceDetails.vue"
 import NewAdmission from "@/main/dashboard/studentAdmission/NewAdmission.vue"
 import Conditions from "@/main/settings/conditions/Conditions.vue"
+import Products from "@/main/dashboard/servicesAndProducts/Products.vue";
 
 
 
@@ -103,6 +104,7 @@ const router = createRouter({
                 {path: 'invoice-details', component: InvoiceDetails, name: "invoice-details"},
                 {path: 'new-admission', component: NewAdmission, name: "new-admission"},
                 {path: 'condtions', component:Conditions , name: "conditions"},
+                {path: 'products', component: Products, name: "products"},
 
                 
             ]

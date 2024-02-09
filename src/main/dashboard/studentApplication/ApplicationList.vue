@@ -27,7 +27,7 @@
       <tbody>
         <tr v-for="(applist, index) in applicationInfoList" :key="index">
           <td>{{ applist.Parent.surname+ " "+ applist.Parent.second_name+ " "+ applist.Parent.other_name  }} </td>
-          <td>{{ applist.status }} </td>
+          <td>{{ applist.status == "ADMITTED" ? 'scheduled for interview' : 'new'}} </td>
           <td>{{ applist.application_fee_payment === false ? 'pending' : 'completed' }}</td>
           <td>
             <button data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
