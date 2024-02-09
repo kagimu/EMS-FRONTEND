@@ -43,7 +43,7 @@
         </tr> 
       </tbody>
     </table>
-    <form>
+    <form @submit.prevent="admitStudent">
     <label><small>Are there conditions to fullfil ?</small></label><br>
     <input type="radio" v-model="answer" value="no" >&nbsp; No  &nbsp;&nbsp;&nbsp;
     <input type="radio" v-model="answer" value="yes">&nbsp; Yes 
@@ -72,7 +72,7 @@
 
     </div>
     <div class="col-lg-2">
-        <button style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><i class="bi bi-save2"></i>&nbsp;<small>Admit</small></button>
+        <button style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><i class="bi bi-save2"></i>&nbsp;<small>Admit</small></button>
 </div>
 <div class="col-lg-2">
     <button style="margin-right: 5px;" type="button" class="btn btn-sm btn-danger mb-2 mr-4"><i class="bi bi-x-circle"></i>&nbsp;<small>Cancel</small></button>
@@ -121,6 +121,10 @@ const updateCondition = (event, index) => {
   form.conditions[index] = event.target.value;
 }
 
+const admitStudent = () =>{
+  //go to invoice
+  
+}
 
   </script>
 
