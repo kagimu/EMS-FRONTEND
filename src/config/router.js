@@ -35,6 +35,10 @@ import ClientApplications from "@/main/application/ClientApplications.vue";
 import InterviewDetails from "@/main/dashboard/studentApplication/InterviewDetails.vue";
 import Services from "@/main/dashboard/servicesAndProducts/Services.vue";
 import AdmitStudent from "@/main/dashboard/studentApplication/AdmitStudent.vue";
+import InterviewAssessmentAreas from "@/main/dashboard/studentApplication/InterviewAssesmentAreas.vue"
+import Invoice from "@/main/dashboard/invoice/Invoice.vue"
+import NewInvoice from "@/main/dashboard/invoice/NewInvoice.vue"
+import InvoiceDetails from "@/main/dashboard/invoice/InvoiceDetails.vue"
 
 
 
@@ -91,6 +95,11 @@ const router = createRouter({
                 {path: 'interview-details', component: InterviewDetails, name: "interview-details"},
                 {path: 'admit-student', component: AdmitStudent, name: "admit-student"},
                 {path: 'services', component: Services, name: "services"},
+                {path: 'assessment-areas', component: InterviewAssessmentAreas, name: "assessment-areas"},
+                {path: 'invoices', component: Invoice, name: "invoices"},
+                {path: 'new-invoice', component: NewInvoice, name: "new-invoice"},
+                {path: 'invoice-details', component: InvoiceDetails, name: "invoice-details"},
+
                 
             ]
         },
