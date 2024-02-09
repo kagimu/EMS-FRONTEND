@@ -5,7 +5,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Add Sub Topic</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">{{subTopicEditMode ? "Edit" : "Add"}} Sub Topic</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -316,6 +316,7 @@ const strand_number = ref("")
 const topic_number = ref("")
 const learning_area_number = ref("")
 const class_number = ref("")
+const subTopicEditMode = ref("")
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
@@ -326,11 +327,13 @@ const subtopicList = ref( [])
 
 
 const addSubtopic = () => {
+  subTopicEditMode.value = false
   subtopicDialog.value = true
 }
 
 const editSubTopic = (data) => {
-  alert(JSON.stringify(data))
+  subTopicEditMode.value = true
+  subtopicStore.subTopicData(data.number)
 }
 const deleteSubTopic = (data) => {
   if(!confirm("Are you sure, you want to delete: "+data.name)){
@@ -437,6 +440,17 @@ watch(
 
 watch(
     () => subtopicStore.deleteSubTopicResponse,
+    async (data) => {
+      if(data){
+        await fetchSubTopicLIst()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subtopicStore.subtopicEditResponse,
     async (data) => {
       if(data){
         await fetchSubTopicLIst()
