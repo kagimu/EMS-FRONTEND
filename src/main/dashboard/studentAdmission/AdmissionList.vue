@@ -6,24 +6,22 @@
           <div class="card">
             <div class="card-header">
        <div class="row">
-        <div class="col-lg-6">
-            <h6 style=" text-align: left;font-size: 11px;">
-              <input type="text" v-model="searchQuery" class="form-control" placeholder="Search..."><br>
-                   </h6>
+        <div class="col-lg-6 "> 
+              <input type="text" v-model="searchQuery" class="form-control mt-1 mb-0" placeholder="Search...">  
         </div>
         <div class="col-lg-6">
-          <button  class="btn btn-outline-primary  btn-sm" style="float: right; border:none">
+          <button  class="btn btn-outline-primary  btn-sm mt-1" style="float: right; border:none">
             <small><i class="bi bi-download">&nbsp;Download</i></small></button> 
-            <button  class="btn btn-outline-secondary  btn-sm" style="float: right;border: none;">
+            <button  class="btn btn-outline-secondary  btn-sm mt-1" style="float: right;border: none;">
             <small><i class="bi bi-printer">&nbsp;Print</i></small></button> 
         </div>
 
        </div>
            </div>
-            <div class="card-body" style="padding: 0;">
+            <div class="card-body" >
     <div >
        
-  <table id="datatable"
+  <table id="data"
       class="table table-striped"
       style="font-size: 11px !important;" >
     <thead>
@@ -97,6 +95,46 @@ const infoData = ref([
     gender: 'male',
     email: "wlukka@gmail.com",
     phone : "0783839392"
+   },
+   { 
+    id: 1, 
+    firstname: 'Petero', 
+    secondname: 'Awoluganda', 
+    gender: 'male',
+    email: "aowloow@gmail.com",
+    phone : "09383839392"
+   },
+   { 
+    id: 1, 
+    firstname: 'Petero', 
+    secondname: 'Awoluganda', 
+    gender: 'male',
+    email: "aowloow@gmail.com",
+    phone : "09383839392"
+   },
+   { 
+    id: 1, 
+    firstname: 'Petero', 
+    secondname: 'Awoluganda', 
+    gender: 'male',
+    email: "aowloow@gmail.com",
+    phone : "09383839392"
+   },
+   { 
+    id: 1, 
+    firstname: 'Petero', 
+    secondname: 'Awoluganda', 
+    gender: 'male',
+    email: "aowloow@gmail.com",
+    phone : "09383839392"
+   },
+   { 
+    id: 1, 
+    firstname: 'Petero', 
+    secondname: 'Awoluganda', 
+    gender: 'male',
+    email: "aowloow@gmail.com",
+    phone : "09383839392"
    },
    { 
     id: 1, 
