@@ -5,11 +5,13 @@ import api from "@/config/api.js";
 export const useSubtopicStore = defineStore("subtopic", () => {
     let subtopicResponse = ref(null)
     let subtopicInfoResponse = ref(null)
+    let subtopicEditResponse = ref(null)
     let subtopicListResponse = ref(null)
     let subtopicByClassInfoResponse = ref(null)
     let subtopicByClassTemplateResponse = ref(null)
     let importSchemeResponse = ref(null)
     let deleteSubTopicResponse = ref(null)
+    let subTopicDataInfoResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -18,6 +20,18 @@ export const useSubtopicStore = defineStore("subtopic", () => {
         return await api.post("main/new-sub-topic", data)
             .then((response) => {
                 subtopicResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function editSubtopicData(data) {
+        return await api.post("main/sub-topic/edit", data)
+            .then((response) => {
+                subtopicEditResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -110,6 +124,19 @@ export const useSubtopicStore = defineStore("subtopic", () => {
     }
 
 
+    async function subTopicData(data) {
+        return await api.get("main/sub-topic/info?sub_topic_number="+data)
+            .then((response) => {
+                subTopicDataInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
     return {
         subtopicResponse,
         importSchemeResponse,
@@ -118,6 +145,8 @@ export const useSubtopicStore = defineStore("subtopic", () => {
         subtopicListResponse,
         subtopicByClassTemplateResponse,
         deleteSubTopicResponse,
+        subTopicDataInfoResponse,
+        subtopicEditResponse,
         errorMessage,
         newSubtopicData,
         fetchSubTopics,
@@ -125,6 +154,8 @@ export const useSubtopicStore = defineStore("subtopic", () => {
         fetchSubTopicList,
         downloadSchemeTemplateExcel,
         importSchemeOfWork,
-        deleteSubTopic
+        deleteSubTopic,
+        subTopicData,
+        editSubtopicData
     }
 })
