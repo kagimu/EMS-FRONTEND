@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div class="modal fade" id="subjectModal" tabindex="-1" :class="{ show: subtopicDialog }" aria-labelledby="" aria-hidden="true">
+    <div class="modal fade" id="subTopicModal" tabindex="-1" :class="{ show: subtopicDialog }" aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
@@ -40,7 +40,7 @@
 
     <div class="flex justify-content-between mt-3">
       <div class="ml-4">Sub Topic</div>
-      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSubtopic" data-bs-toggle="modal" data-bs-target="#subjectModal">
+      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSubtopic" data-bs-toggle="modal" data-bs-target="#subTopicModal">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
         Add Sub Topic
       </button>
@@ -223,15 +223,17 @@
                                                 <div>
                                                   <i
                                                       style="font-size: 13px;"
-                                                      data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                                                      class="bi-pencil mr-2 cursor-pointer" @click="editClass(stpc)"></i>
-                                                  <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(stpc)"></i>
+                                                      data-bs-toggle="modal" data-bs-target="#subTopicModal"
+                                                      class="bi-pencil mr-2 cursor-pointer" @click="editSubTopic(stpc)"></i>
+                                                  <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteSubTopic(stpc)"></i>
+                                                  <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === stpc.number">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                  </div>
                                                 </div>
                                               </td>
                                             </tr>
                                             </tbody>
                                           </table>
-
 
                                         </td>
 
@@ -239,25 +241,17 @@
                                       </tbody>
                                     </table>
 
-
-
-
                                   </td>
 
                                 </tr>
                                 </tbody>
                               </table>
 
-
-
                             </td>
 
                           </tr>
                           </tbody>
                         </table>
-
-
-
 
                       </td>
                     </tr>
@@ -306,7 +300,7 @@ const learningAreaStore = useLearningAreaStore()
 const strandStore = useStrandStore()
 const subtopicStore = useSubtopicStore()
 const notificationStore  = useNotificationStore()
-
+const deletionLoader = ref( undefined)
 
 const referenceDialog = ref(false)
 const subTopicInfo = ref({})
@@ -335,11 +329,21 @@ const addSubtopic = () => {
   subtopicDialog.value = true
 }
 
-const editClass = (data) => {
+const editSubTopic = (data) => {
   alert(JSON.stringify(data))
 }
-const deleteClass = (data) => {
-  alert(JSON.stringify(data))
+const deleteSubTopic = (data) => {
+  if(!confirm("Are you sure, you want to delete: "+data.name)){
+    return
+  }
+
+  deletionLoader.value = data.number
+
+  let info = {
+    number:data.number
+  }
+
+  subtopicStore.deleteSubTopic(info)
 }
 
 const selectSubjectCluster = (learning_area_number) => {
@@ -424,9 +428,29 @@ watch(
     () => subtopicStore.subtopicResponse,
     async (data) => {
       if(data){
-
         await fetchSubTopicLIst()
         notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subtopicStore.deleteSubTopicResponse,
+    async (data) => {
+      if(data){
+        await fetchSubTopicLIst()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subtopicStore.errorMessage,
+    async (data) => {
+      if(data){
+         deletionLoader.value = false
       }
     },
     {deep:true}
