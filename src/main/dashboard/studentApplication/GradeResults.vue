@@ -66,7 +66,7 @@
                   class="text-decoration-none"
                   :to="{name:'admit-student'}"
               ><button class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
-                <i class="bi bi-arrow-right-short"></i>Admit</small></button>   
+                <i class="bi bi-eye"></i>view</small></button>   
             </router-link>     
             </td>
         </tr> 
@@ -80,7 +80,7 @@
                   class="text-decoration-none"
                   :to="{name:'admit-student'}"
               ><button class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
-                <i class="bi bi-arrow-right-short"></i>Admit</small></button>   
+                <i class="bi bi-eye"></i>&nbsp;view</small></button>   
             </router-link>     
             </td>
         </tr> 
