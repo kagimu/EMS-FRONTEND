@@ -7,7 +7,7 @@
        <div class="row">
         <div class="col-lg-4">
             <h6 class="textColor" style="margin-top:20px; text-align: left;font-size: 15px;">
-              <i class="bi bi-x-lg" @click="goBac()"></i>&nbsp;&nbsp;&nbsp;Create Invoice <b></b>    
+              <i class="bi bi-x-lg" @click="goBac()"></i>&nbsp;&nbsp;&nbsp;Offer Admission | School Requirements Invoice <b></b>    
             </h6>
         </div>
         <div class="col-lg-8">
@@ -17,17 +17,10 @@
            </div>
             <div class="card-body" style="padding: 0;">
         <div class="container mt-4">
-          <form @submit.prevent="createInvoice">
-          
+          <form @submit.prevent="submitInvoice">
             <div class="row">
               <div class="col-lg-4">
                 <p class="textColor" style="margin-bottom: -4px;">Payee Details</p>
-                <div class="mb-2">
-                <label class="textColor text-sm"><small>Student</small> <span class="star">*</span></label>
-                <select class="form-control">
-                  <option>-select-</option>
-                </select>
-              </div>
               <div class="mb-2">
                 <label class="textColor"><small>Campus</small> </label>
                 <input disabled type="text" class="form-control" value="Main Campus">
@@ -69,36 +62,28 @@
                 <div>
   
                   <div>
-        <div class="mb-3" v-for="(item, index) in formData.services" :key="index">
+        <div class="mb-3">
           <div class="row align-services-center">
-            <div class="col-lg-5">
-              <label class="textColor"><small>Product/Service<span class="star">*</span></small></label>
-              <input type="text" class="form-control" v-model="formData.services[index].service" >
-            </div>
-            <div class="col-lg-2">
-              <label class="textColor"><small>Quantity<span class="star">*</span></small></label>
-              <input type="number" class="form-control" v-model="formData.services[index].quantity">
-            </div>
-            <div class="col-lg-2">
-              <label class="textColor"><small>Unit Price<span class="star">*</span></small></label>
-              <input type="number" class="form-control" v-model="formData.services[index].price" >
-            </div>
-            <div class="col-lg-3">
+         
+            <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+            <li class="list-group-item" >
+                <div class="item-selector">
+          <input type="checkbox" id="selectAll" v-model="selectAll" @change="selectAllItems">
+          <label for="selectAll"><small>&nbsp;select all</small></label>
+        </div>
+          </li>
+            <li class="list-group-item"  v-for="(item, index) in invoice.items" :key="index">
+              <input  style="outline: none 0 !important; box-shadow: none;" class="form-check-input me-1" type="checkbox" :id="'itemCheckbox' + index" v-model="selectedItems" :value="index">
+              <label class="form-check-label cursor-pointer textColor" :for="'itemCheckbox' + index">{{ item.description }} - Price: ugshs {{ item.price }}</label>
+            </li>
+          </ul>
   
-              <label class="textColor"><small>Amount<span class="star">*</span></small></label>
-              <p style="margin-top:8px;">{{ item.quantity * item.price }}
-              <button style="float:right"  >
-                <i v-if="index > 0" @click="removeItem(index)" style="color:red" class="bi bi-trash"></i></button>
-              </p>
-            </div>
-  
+
           </div>
   
         </div>
   
-  </div>
-  <button type="button" class="link-primary textColor "  style="margin-top: -100px;" @click="addItem">Add Another Service/Product</button>
-  
+  </div>  
       </div>
      <hr>
       <div class="text-end">
@@ -117,10 +102,6 @@
         </div>
   
       </div>
-  
-  
-  
-  
   
               </div>
   
@@ -161,43 +142,42 @@
   <script setup>
   import { ref, computed,reactive } from 'vue';
 
-  const emit = defineEmits()
-  const formData = reactive({
-    
-    services: [
-      {
-       service: null,
-       quantity: null,
-       price: null
-      },
-    ],
-  });
+  let  student_number = '1203039490402st'
   
-  const goBack = () => {
-     window.history.back()
+  const invoice = ref({
+    items: [
+      { description: 'School Fees ', price: 100000000 },
+      { description: 'Ream Of Papers', price: 200000 },
+      { description: 'Broom', price: 15000 },
+    ]
+  })
+  
+  const selectAll = ref(false)
+  const selectedItems = ref([])
+  
+  const total = computed(() => selectedItems.value.reduce((acc, index) => acc + invoice.value.items[index].price, 0));
+  
+  const selectAllItems = () => {
+    if (selectAll.value) {
+      selectedItems.value = invoice.value.items.map((item, index) => index);
+    } else {
+      selectedItems.value = [];
     }
-    const goBac = () =>{
-  emit("next", 1 )
-}
-  
-  const createInvoice = () =>{
-    alert(JSON.stringify(formData));
   }
   
-  const services = ref([
-    { service: '', quantity: 0, price: 0 },
-  ]);
-  
-  const total = computed(() => formData.services.reduce((acc, item) => acc + (item.quantity * item.price || 0), 0));
-  
-  function addItem() {
-    formData.services.push({ service: '', quantity: null, price: null })
-  
+  const submitInvoice = () => {
+    const selectedItemsData = selectedItems.value.map(index => {
+      const item = invoice.value.items[index];
+      return { description: item.description, price: item.price };
+    })
+
+    const data = {
+        student_number,
+      items: selectedItemsData
+    }
+    alert(JSON.stringify(data));
   }
-  
-  function removeItem(index) {
-    formData.services.splice(index, 1)
-  }
+
   </script>
   
   <style>

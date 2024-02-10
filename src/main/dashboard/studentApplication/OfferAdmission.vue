@@ -5,7 +5,7 @@
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
   <div class="container mt-4">
-    <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Admission Offer<b></b> 
+    <h6 style="margin-top:20px; text-align: left;font-size: 13px;"><small>Offer Admission</small> <b></b> 
       <hr style="color:rgba(192, 192, 192, 0.781); width:200px"></h6>
 
       <table
@@ -67,7 +67,7 @@
         </ul>
       </div>
 
-    <label class="textColor text-sm"><small>Specify Others</small></label>
+    <label class="textColor text-sm"><small>Others</small></label>
     <div class="mb-2">
    <textarea class="form-control">
 
