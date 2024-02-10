@@ -7,7 +7,7 @@
      <div class="row">
       <div class="col-lg-4">
           <h6 class="textColor" style="margin-top:20px; text-align: left;font-size: 15px;">
-            <i class="bi bi-x-lg" @click="goBack()"></i>&nbsp;&nbsp;&nbsp;Create Invoice <b></b>    
+            <i class="bi bi-x-lg" @click="goBack()"></i>&nbsp;&nbsp;&nbsp;Create Custom Invoice <b></b>    
           </h6>
       </div>
       <div class="col-lg-8">
@@ -93,11 +93,12 @@
           </div>
 
         </div>
-        <button type="button" class="link-primary textColor "  style="margin-top: -100px;" @click="addItem">Add Another Service/Product</button>
 
       </div>
 
 </div>
+<button type="button" class="link-primary textColor "  style="margin-top: -100px;" @click="addItem">Add Another Service/Product</button>
+
     </div>
    <hr>
     <div class="text-end">
