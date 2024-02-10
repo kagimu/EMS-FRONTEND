@@ -6,7 +6,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Add Concept</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">{{conceptEditMode ? "Edit" : "Add"}} Concept</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -208,7 +208,7 @@
                                                <table class="table table-hover caption-top " style="width: 100%;">
                                                  <tbody>
                                                  <tr v-for="(ccp, idx) in stpc.concept" :key="idx">
-                                                   <td style="width: 5%;">{{stpc.code}}.</td>
+                                                   <td style="width: 5%;">{{ccp.code}}.</td>
                                                    <td>
                                                      <div class="text-wrap" style="width: 150px;">
                                                        {{ccp.name}}
@@ -229,18 +229,13 @@
                                                  </tr>
                                                  </tbody>
                                                </table>
-                                    </div>
+                                              </div>
 
                                              </td>
-
-
 
                                            </tr>
                                            </tbody>
                                          </table>
-
-
-
 
                                        </td>
 
@@ -248,25 +243,15 @@
                                      </tbody>
                                    </table>
 
-
-
-
                                  </td>
-
                                </tr>
                                </tbody>
                              </table>
 
-
-
                            </td>
-
                          </tr>
                          </tbody>
                        </table>
-
-
-
 
                      </td>
                    </tr>
@@ -316,6 +301,7 @@ const classStore = useClassesStore()
 const notificationStore  = useNotificationStore()
 const deletionLoader = ref( undefined)
 const conceptDialog = ref( false)
+const conceptEditMode = ref( false)
 const conceptList = ref( [])
 const subtopicList = ref( [])
 
@@ -338,11 +324,13 @@ let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
 const addConcept = () => {
+  conceptEditMode.value = false
   conceptDialog.value = true
 }
 
 const editConcept = (data) => {
-  alert(JSON.stringify(data))
+  conceptEditMode.value = true
+  conceptStore.conceptData(data.number)
 }
 const deleteConcept = (data) => {
   if(!confirm("Are you sure, you want to delete: "+data.name)){
@@ -478,6 +466,17 @@ watch(
 
 watch(
     () => conceptStore.deleteConceptResponse,
+    async (data) => {
+      if(data){
+        fetchConceptsList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => conceptStore.conceptEditResponse,
     async (data) => {
       if(data){
         fetchConceptsList()

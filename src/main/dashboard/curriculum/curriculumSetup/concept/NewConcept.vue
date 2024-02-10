@@ -113,7 +113,7 @@
         <button
             type="submit"
             class="btn btn-primary border-0">
-          Save
+            {{conceptNumber ? "Edit" : "Save"}}
           <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>
@@ -171,6 +171,7 @@ const subject_cluster_number = ref("")
 const subject_number = ref("")
 const strand_number = ref("")
 const topic_number = ref("")
+const conceptNumber = ref("")
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
@@ -184,7 +185,13 @@ const form = reactive({
 const addConcept = () =>{
   loader.value = true
   form.curriculum_number = curriculumNumber
-  conceptStore.newConceptData(form)
+  if(conceptNumber.value){
+    form.concept_number = conceptNumber.value
+    conceptStore.editConceptData(form)
+  }else {
+    conceptStore.newConceptData(form)
+  }
+
 }
 
 
@@ -217,6 +224,15 @@ onMounted(
     }
 )
 
+watch(
+    () => conceptStore.conceptEditResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
 
 watch(
     () => learningAreaStore.learningAreaInfResponse,
@@ -297,6 +313,25 @@ watch(
       if(data){
         loader.value = false
         notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => conceptStore.conceptDataInfoResponse,
+    async (data) => {
+      if(data){
+        let info = data.data
+        form.name = info.name ? info.name : ""
+        form.code = info.code ? String(info.code) : ""
+        form.sub_topic_number = info.sub_topic_number ? info.sub_topic_number : ""
+        topic_number.value = info.topic_number ? info.topic_number : ""
+        subject_number.value = info.subject_number ? info.subject_number : ""
+        learning_area_number.value = info.learning_area_number ? info.learning_area_number : ""
+        subject_cluster_number.value = info.subject_cluster_number ? info.subject_cluster_number : ""
+        strand_number.value = info.strand_number ? info.strand_number : ""
+        conceptNumber.value = info.number ? info.number : ""
       }
     },
     {deep:true}
