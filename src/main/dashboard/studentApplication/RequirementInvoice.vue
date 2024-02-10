@@ -74,7 +74,7 @@
           </li>
             <li class="list-group-item"  v-for="(item, index) in invoice.items" :key="index">
               <input  style="outline: none 0 !important; box-shadow: none;" class="form-check-input me-1" type="checkbox" :id="'itemCheckbox' + index" v-model="selectedItems" :value="index">
-              <label class="form-check-label cursor-pointer textColor" :for="'itemCheckbox' + index">{{ item.description }} - Price: ugshs {{ item.price }}</label>
+              <label class="form-check-label cursor-pointer textColor" :for="'itemCheckbox' + index">{{ item.description }} - [ {{ item.price }} ugshs ]</label>
             </li>
           </ul>
   
