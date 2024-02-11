@@ -59,7 +59,13 @@
               </div>
             </div>
 
-            <div class="flex justify-content-between">
+
+            <small>
+              <b>Commencement Date:</b> &nbsp;&nbsp;&nbsp; {{school.commencement_date}}
+            </small>
+
+
+            <div class="flex justify-content-between mt-3">
               &nbsp;
               <router-link
                   class="text-decoration-none"
