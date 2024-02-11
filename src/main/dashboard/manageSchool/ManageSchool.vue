@@ -60,9 +60,13 @@
             </div>
 
 
-            <small>
-              <b>Commencement Date:</b> &nbsp;&nbsp;&nbsp; {{school.commencement_date}}
-            </small>
+            <div>
+              <small><b>Commencement Date:</b> &nbsp;&nbsp;&nbsp; {{school.commencement_date}}</small>
+              <div class="mt-2"><b><small>Curriculum:</small></b></div>
+              <div v-for="(curr, idx) in school.school_curriculum" key="idx">
+               <small>{{idx+1}}. {{curr.name}}</small>
+              </div>
+            </div>
 
 
             <div class="flex justify-content-between mt-3">
