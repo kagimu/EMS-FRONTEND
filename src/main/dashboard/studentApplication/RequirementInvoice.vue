@@ -20,8 +20,7 @@
           <form @submit.prevent="submitInvoice">
             <div class="row">
               
-              <div class="col-lg-7">
-                <p class="textColor" style="margin-bottom: -4px;">Invoice Details</p>
+              <div class="col-lg-12">
                 <div class="row">
                   <div class="col-lg-8">
                   <div class="mb-2">
@@ -46,18 +45,22 @@
         <div class="mb-3">
           <div class="row align-services-center">
          
-            <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-            <li class="list-group-item" >
-                <div class="item-selector">
-          <input type="checkbox" id="selectAll" v-model="selectAll" @change="selectAllItems">
-          <label for="selectAll"><small>&nbsp;select all</small></label>
-        </div>
-          </li>
-            <li class="list-group-item"  v-for="(item, index) in invoice.items" :key="index">
-              <input  style="outline: none 0 !important; box-shadow: none;" class="form-check-input me-1" type="checkbox" :id="'itemCheckbox' + index" v-model="selectedItems" :value="index">
-              <label class="form-check-label cursor-pointer textColor" :for="'itemCheckbox' + index">{{ item.description }} - [ {{ item.price }} ugshs ]</label>
-            </li>
+            <ul>
+            <li class="list-group-item">
+                <input class="form-check-input me-1" type="checkbox" :id="'selectAllCheckbox' + columnIndex" v-model="selectAllAll" @change="selectAllItems">
+                <label class="form-check-label cursor-pointer textColor" :for="'selectAllCheckbox' + columnIndex">Select All</label>
+              </li>
           </ul>
+
+          <div v-for="(column, columnIndex) in columns" :key="columnIndex" class="col-md-4">
+            <ul class="list-group text-sm mb-4" style="border-radius: 0;">
+              
+              <li class="list-group-item" v-for="(item, index) in column" :key="index">
+                <input class="form-check-input me-1" type="checkbox" :id="'itemCheckbox' + index" v-model="selectedItems" :value="(columnIndex * 7) + index">
+                <label class="form-check-label cursor-pointer textColor" :for="'itemCheckbox' + index">{{ item.description }} - [ ugshs {{ item.price }} ]</label>
+              </li>
+            </ul>
+          </div>
   
 
           </div>
@@ -66,7 +69,7 @@
   
   </div>  
       </div>
-     <hr>
+
       <div class="text-end">
         
           <!-- <strong>Total: {{ total }}</strong> -->
@@ -88,7 +91,7 @@
   
             </div>
   
-            <hr>
+       
             <div class="row">
              
               <div class="col-lg-4">
@@ -122,42 +125,69 @@
   
   <script setup>
   import { ref, computed,reactive } from 'vue';
+  const studentNumber = '1203039490402st';
+const invoice = ref({
+  items: [
+    { description: 'Item 1', price: 10 },
+    { description: 'Item 2', price: 20 },
+    { description: 'Item 3', price: 15 },
+    { description: 'Item 1', price: 10 },
+    { description: 'Item 2', price: 20 },
+    { description: 'Item 3', price: 15 },
+    { description: 'Item 1', price: 10 },
+    { description: 'Item 2', price: 20 },
+    { description: 'Item 3', price: 15 },
+    { description: 'Item 1', price: 10 },
+    { description: 'Item 2', price: 20 },
+    { description: 'Item 3', price: 15 },
+    { description: 'Item 1', price: 10 },
+    { description: 'Item 2', price: 20 },
+    { description: 'Item 3', price: 15 },
+    { description: 'Item 1', price: 10 },
+    { description: 'Item 2', price: 20 },
+    { description: 'Item 3', price: 15 },
+    { description: 'Item 1', price: 10 },
+    { description: 'Item 2', price: 20 },
+    { description: 'Item 3', price: 15 },
 
-  let  student_number = '1203039490402st'
-  
-  const invoice = ref({
-    items: [
-      { description: 'School Fees ', price: 100000000 },
-      { description: 'Ream Of Papers', price: 200000 },
-      { description: 'Broom', price: 15000 },
-    ]
-  })
-  
-  const selectAll = ref(false)
-  const selectedItems = ref([])
-  
-  const total = computed(() => selectedItems.value.reduce((acc, index) => acc + invoice.value.items[index].price, 0));
-  
-  const selectAllItems = () => {
-    if (selectAll.value) {
-      selectedItems.value = invoice.value.items.map((item, index) => index);
-    } else {
-      selectedItems.value = [];
-    }
-  }
-  
-  const submitInvoice = () => {
-    const selectedItemsData = selectedItems.value.map(index => {
-      const item = invoice.value.items[index];
-      return { description: item.description, price: item.price };
-    })
+  ]
+});
 
-    const data = {
-        student_number,
-      items: selectedItemsData
-    }
-    alert(JSON.stringify(data));
+const selectAllAll = ref(false); // Select all items across all columns
+const selectedItems = ref([]);
+
+const total = computed(() => selectedItems.value.reduce((acc, index) => acc + invoice.value.items[index].price, 0));
+
+const columns = computed(() => {
+  const items = invoice.value.items;
+  const numColumns = Math.ceil(items.length / 7);
+  const columns = Array.from({ length: numColumns }, (_, columnIndex) => {
+    const startIndex = columnIndex * 7;
+    return items.slice(startIndex, startIndex + 7);
+  });
+  return columns;
+});
+
+const selectAllItems = () => {
+  if (selectAllAll.value) {
+    const allItems = invoice.value.items.map((_, index) => index);
+    selectedItems.value = [...new Set([...selectedItems.value, ...allItems])]; // Add all items
+  } else {
+    selectedItems.value = []; // Clear selected items
   }
+};
+
+const submitInvoice = () => {
+  const selectedItemsData = selectedItems.value.map(index => {
+    const item = invoice.value.items[index];
+    return { description: item.description, price: item.price };
+  });
+  const data = {
+    student_number: studentNumber,
+    items: selectedItemsData
+  };
+  alert(JSON.stringify(data));
+}
 
   </script>
   
