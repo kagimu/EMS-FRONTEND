@@ -106,13 +106,20 @@ onMounted(
 
 
 
-
 watch (
     () => schoolStore.schoolInfoResponse,
     async (data) => {
       if(data){
-        form.name = data.data.name
-        school_number.value = data.data.number
+        let info = data.data
+        form.name = info.name
+        form.commencement_date = info.commencement_date
+        school_number.value = info.number
+
+        let arr = []
+        info.school_curriculum.forEach(lst => {
+          arr.push(lst.number)
+        })
+        form.curriculum = arr
       }
     },
     {deep:true}

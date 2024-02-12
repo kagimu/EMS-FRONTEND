@@ -36,7 +36,7 @@ export const useSchoolStore = defineStore("school", () => {
     }
 
     async function editSchoolData(data) {
-        return await api.post("main/edit-school", data)
+        return await api.post("main/school/edit", data)
             .then((response) => {
                 editSchoolResponse.value = response.data
             })

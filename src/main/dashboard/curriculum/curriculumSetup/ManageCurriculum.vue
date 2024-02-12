@@ -44,10 +44,10 @@
         </td>
         <td>
           <div class="float-end mr-2">
-            <i
+<!--            <i
                 style="font-size: 13px;"
                 data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                class="bi-pencil mr-2 cursor-pointer" @click="editClass(sbj)"></i>
+                class="bi-pencil mr-2 cursor-pointer" @click="editClass(sbj)"></i>-->
             <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(sbj)"></i>
           </div>
         </td>

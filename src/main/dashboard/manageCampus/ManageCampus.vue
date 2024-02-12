@@ -91,7 +91,6 @@
                       @click="editCampus(campus)"></i>
                   <i style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  @click="deleteCampus(campus)"></i>
                   </div>
-
                 </div>
                 <small>
                   <b>Email:</b> {{campus.email}}<br />
