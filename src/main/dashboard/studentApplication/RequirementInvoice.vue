@@ -19,26 +19,7 @@
         <div class="container mt-4">
           <form @submit.prevent="submitInvoice">
             <div class="row">
-              <div class="col-lg-4">
-                <p class="textColor" style="margin-bottom: -4px;">Payee Details</p>
-              <div class="mb-2">
-                <label class="textColor"><small>Campus</small> </label>
-                <input disabled type="text" class="form-control" value="Main Campus">
-              </div>
-              <div class="mb-2">
-                <label class="textColor"><small>Class</small> </label>
-                <input disabled type="text" class="form-control" value="P1">
-              </div>
-              <div class="mb-2">
-                <label class="textColor"><small>Name</small></label>
-                <input disabled type="text" class="form-control" value="collins Mpiima">
-              </div>
-              <div class="mb-2">
-                <label class="textColor"><small>Email</small></label>
-                <input disabled type="email" class="form-control" value="collinsmppima@gmail.com">
-              </div>
-              </div>
-              <div class="col-lg-1"></div>
+              
               <div class="col-lg-7">
                 <p class="textColor" style="margin-bottom: -4px;">Invoice Details</p>
                 <div class="row">
