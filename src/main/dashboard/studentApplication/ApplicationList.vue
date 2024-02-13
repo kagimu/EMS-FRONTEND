@@ -36,7 +36,7 @@
           <td>{{ applist.status == "ADMITTED" ? 'interview scheduled' : 'new'}} </td>
           <td>{{ applist.application_fee_payment === false ? 'pending' : 'completed' }}</td>
           <td>
-            <button data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
+            <button  data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
             class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
               
             {{  applist.status == "ADMITTED" ? 'view Details' : 'schedule Interview' }}
@@ -58,7 +58,7 @@
 
   <div>
     <!-- modal for viewing more details -->
-    <div class="modal fade" id="infoModal" tabindex="-1"   aria-hidden="true">
+    <div class="modal fade" tabindex="-1"   id="infoModal" aria-hidden="true" :class="{ show: showDialog }">
       <div class="modal-dialog modal-xl">
         <application-details :application-number="applications"></application-details>
       </div>
@@ -78,7 +78,7 @@ const applicationInfoList = ref( [])
 let errorMessage = ref(null)
 
 const searchQuery = ref('')
-
+const showDialog = ref(false)
 
 const applications= ref(null)
 
@@ -87,6 +87,7 @@ const  notificationStore  = useNotificationStore()
 
 const setApplicationNumber = (ap) =>{
   applications.value = ap
+  showDialog.value = true
 }
 
 
@@ -109,8 +110,10 @@ onMounted(
     () => applicationStore.errorMessage,
     async (data) => {
       if(data){
+        showDialog.value = false
         errorMessage.value = data.message
         notificationStore.errorToast("Error",data.message)
+
       }
     },
     {deep:true}
