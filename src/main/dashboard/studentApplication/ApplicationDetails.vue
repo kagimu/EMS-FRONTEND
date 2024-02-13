@@ -103,7 +103,6 @@
   <form @submit.prevent="scheduleInterview" >
               <label> <span style="text-align: center;font-size: 12px;"><small>Select Interview</small></span></label>
               <select required class="form-control" v-model="formData.interview_number" >
-                <option disabled value=""> - Select Interview - </option>
                   <option v-for="(list, index) in interviewListData" :key="index" :value="list.number">
                     {{ list.name}} 
                   </option>
@@ -162,14 +161,12 @@
   import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 
 
-const ApplicationStore = useApplicationStore()
+const applicationStore = useApplicationStore()
 const notificationStore = useNotificationStore()
 const buttonLoader = ref(false)
-const interviewDialog = ref(false)
 const interviewListData = ref([])
 
 const useCommonsStore = useCommons()
-
 
   const props = defineProps({
     applicationNumber:String
@@ -206,7 +203,7 @@ watch (
     () => props.applicationNumber,
     async (data) => {
       if(data){
-        ApplicationStore.fetchApplicationById(data)
+        applicationStore.fetchApplicationById(data)
         //.setvalues
       }
     },
@@ -214,7 +211,7 @@ watch (
 )
 
 watch (
-    () => ApplicationStore.applicationByIdResponse,
+    () => applicationStore.applicationByIdResponse,
     async (data) => {
       if(data){
         // alert(JSON.stringify(data))
@@ -249,33 +246,34 @@ const formData = reactive({
 
 function scheduleInterview(){
   // alert(JSON.stringify(formData))
-  buttonLoader.value = false
+  buttonLoader.value = true
     // alert(JSON.stringify(appDatails.student_number))
   formData.student_number = appDatails.student_number
-  ApplicationStore. addStudentToInterview(formData)
-
-
+  applicationStore. addStudentToInterview(formData)
+  formData.value = ''
 }
 
   watch(
-      () => ApplicationStore.addStudentToInterviewResponse,
+      () => applicationStore.addStudentToInterviewResponse,
       async (data) => {
           if (data) {
+            formData.value = ''
               buttonLoader.value = false
               notificationStore.successToast("Success", data.message)
-              formData.value = ''
+              
           }
       },
       {deep: true}
   )
 
   watch (
-    () => ApplicationStore.errorMessage,
+    () => applicationStore.errorMessage,
     async (data) => {
       if(data){
+        formData.value = ''
         errorMessage.value = data.message
         buttonLoader.value = false
-        formData.value = ''
+      
       }
     },
     {deep:true}
@@ -284,11 +282,11 @@ function scheduleInterview(){
 
   onMounted(
     async () => {
-      await ApplicationStore.fetchInterviewList()
+      await applicationStore.fetchInterviewList()
     } )
 
     watch(
-    () => ApplicationStore.interviewListResponse,
+    () => applicationStore.interviewListResponse,
     async (data) => {
       if(data){
         interviewListData.value = data.data

@@ -95,7 +95,7 @@
             <div class="row">
              
               <div class="col-lg-4">
-              <button @click="goBac()" type="button" class="btn btn-sm btn-outline-danger mb-2 mr-4" style="float: left !important;margin-right: 0px;">
+              <button @click="goBack()" type="button" class="btn btn-sm btn-outline-danger mb-2 mr-4" style="float: left !important;margin-right: 0px;">
                 <i class="bi bi-box-arrow-in-left"></i> back</button>
             </div>
             <div class="col-lg-4"></div>
@@ -127,7 +127,12 @@
   import { ref, computed,reactive } from 'vue'
   import { useRouter } from 'vue-router'
   const router = useRouter()
+  const emit = defineEmits()
  
+  const goBack = () => {
+    //  window.history.back()
+     emit("next", 1)
+    }
   const studentNumber = '1203039490402st';
 const invoice = ref({
   items: [

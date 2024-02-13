@@ -58,7 +58,7 @@
 
   <div>
     <!-- modal for viewing more details -->
-    <div class="modal fade" id="infoModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
+    <div class="modal fade" id="infoModal" tabindex="-1"   aria-hidden="true">
       <div class="modal-dialog modal-xl">
         <application-details :application-number="applications"></application-details>
       </div>
@@ -74,7 +74,6 @@ import {onMounted,reactive, computed,ref, watch} from "vue";
 import ApplicationDetails from './ApplicationDetails.vue';
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import useNotificationStore from "@/composables/useNotification.js";
-const buttonLoader = ref(false)
 const applicationInfoList = ref( [])
 let errorMessage = ref(null)
 
@@ -83,10 +82,8 @@ const searchQuery = ref('')
 
 const applications= ref(null)
 
-
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
-const interviewDialog = ref(false)
 
 const setApplicationNumber = (ap) =>{
   applications.value = ap
@@ -113,12 +110,26 @@ onMounted(
     async (data) => {
       if(data){
         errorMessage.value = data.message
-        buttonLoader.value = false
         notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}
 )
+
+
+watch(
+      () => applicationStore.addStudentToInterviewResponse,
+      async (data) => {
+          if (data) {
+            formData.value = ''
+              buttonLoader.value = false
+              notificationStore.successToast("Success", data.message)
+              
+          }
+      },
+      {deep: true}
+  )
+
 
 
   </script>
