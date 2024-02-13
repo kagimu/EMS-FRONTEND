@@ -124,7 +124,10 @@
     </template>
   
   <script setup>
-  import { ref, computed,reactive } from 'vue';
+  import { ref, computed,reactive } from 'vue'
+  import { useRouter } from 'vue-router'
+  const router = useRouter()
+ 
   const studentNumber = '1203039490402st';
 const invoice = ref({
   items: [
@@ -187,6 +190,7 @@ const submitInvoice = () => {
     items: selectedItemsData
   };
   alert(JSON.stringify(data));
+  router.push({ name: 'invoice-details', params: { studentNumber }});
 }
 
   </script>
