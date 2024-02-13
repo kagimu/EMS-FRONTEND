@@ -7,10 +7,8 @@
      <div class="row">
       <div class="col-lg-4">
           <h6 class="textColor" style="margin-top:20px; text-align: left;font-size: 15px;">
-            <i class="bi bi-x-lg" @click="goBack()"></i>&nbsp;&nbsp;&nbsp;Create Invoice <b></b> 
-            
+            <i class="bi bi-x-lg" @click="goBack()"></i>&nbsp;&nbsp;&nbsp;Create Custom Invoice <b></b>    
           </h6>
-            
       </div>
       <div class="col-lg-8">
         <button type="link" @click="goBack()" class="link-primary textColor" style="margin-top:20px;float: right;font-size: 15px;margin-left:"><i class="bi bi-arrow-right" ></i>&nbsp;&nbsp;&nbsp;View Invoices</button>
@@ -65,7 +63,7 @@
                 </div>
               </div>
 
-              <p class="textColor" style="margin-bottom: -10px;">Product / Service Details</p>
+             
               
 
               <div>
@@ -75,15 +73,15 @@
         <div class="row align-services-center">
           <div class="col-lg-5">
             <label class="textColor"><small>Product/Service<span class="star">*</span></small></label>
-            <input type="text" class="form-control" v-model="formData.services[index].service" placeholder="Product Name">
+            <input type="text" class="form-control" v-model="formData.services[index].service" >
           </div>
           <div class="col-lg-2">
             <label class="textColor"><small>Quantity<span class="star">*</span></small></label>
-            <input type="number" class="form-control" v-model="formData.services[index].quantity" placeholder="Quantity">
+            <input type="number" class="form-control" v-model="formData.services[index].quantity">
           </div>
           <div class="col-lg-2">
             <label class="textColor"><small>Unit Price<span class="star">*</span></small></label>
-            <input type="number" class="form-control" v-model="formData.services[index].price" placeholder="Unit Price">
+            <input type="number" class="form-control" v-model="formData.services[index].price" >
           </div>
           <div class="col-lg-3">
 
@@ -91,12 +89,16 @@
             <p style="margin-top:8px;">{{ item.quantity * item.price }}
             <button style="float:right"  >
               <i v-if="index > 0" @click="removeItem(index)" style="color:red" class="bi bi-trash"></i></button>
-            </p></div>
+            </p>
+          </div>
 
         </div>
+
       </div>
+
 </div>
-      <button type="button" class="link-primary textColor " @click="addItem">Add Another Service/Product</button>
+<button type="button" class="link-primary textColor "  style="margin-top: -100px;" @click="addItem">Add Another Service/Product</button>
+
     </div>
    <hr>
     <div class="text-end">

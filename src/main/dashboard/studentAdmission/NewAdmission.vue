@@ -1,7 +1,26 @@
 <template>
 <div>
 
+  <div class="row">
+      <div class="col-12">
+        <div class="card mt-3">
+          <div class="card-header">
+     <div class="row">
+      <div class="col-lg-4">
+          <h6 class="textColor" style=" text-align: left;font-size: 15px;">
+            <i class="bi bi-x-lg" @click="goBack()"></i>&nbsp;&nbsp;&nbsp;Student Admission<b></b>    
+          </h6>
+      </div>
+      <div class="col-lg-8">
+        <button type="link" @click="goBack()" class="link-primary textColor" style="float: right;font-size: 15px;margin-left:"><i class="bi bi-arrow-right" ></i>&nbsp;&nbsp;&nbsp;View Admission Offers</button>
+      </div>
+     </div>
+         </div>
+          <div class="card-body" style="padding: 0;">
+      <div class="container mt-4">
 
+
+        
   <ul class="nav nav-tabs text-xs" style="margin-top: 50px;">
     <li class="nav-item cursor-pointer">
       <a style="color: black;" class="nav-link" @click="nextPage(1)" :class="step === 1 ? 'active activeTab' : ''">PERSONAL DETAILS OF STUDENT</a>
@@ -72,6 +91,32 @@
     ></student-education>
   </div>
 
+
+
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
 </template>
 
@@ -93,6 +138,9 @@ function nextPage(data){
   step.value = data
 }
 
+const goBack = () => {
+   window.history.back()
+  }
 </script>
 
 <style scoped>

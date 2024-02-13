@@ -9,8 +9,8 @@
           <h6 style="margin-top:20px; text-align: left;font-size: 15px;">4 Invoices<b></b>     </h6>
       </div>
       <div class="col-lg-8">
-        <RouterLink :to="{name : 'new-invoice'}" class="btn btn-primary" style="float: right;">
-          <small><i class="bi bi-plus"> New Invoice</i></small></RouterLink></div>
+        <RouterLink :to="{name : 'new-invoice'}" class="btn btn-primary btn-sm" style="float: right;">
+          <small><i class="bi bi-plus"> Add Custom Invoice</i></small></RouterLink></div>
      </div>
          </div>
           <div class="card-body" style="padding: 0;">
