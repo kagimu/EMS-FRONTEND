@@ -10,6 +10,7 @@
 
       <div class="row">
         <div class="col-lg-8">
+          <p><small>Student Details </small></p>
           <table
       id="datatable"
       class="table table-striped border"
@@ -45,6 +46,7 @@
 
         </div>
         <div class="col-lg-4">
+          <p><small>Offer School </small></p>
           <div class="mb-2">
               <label class="textColor"><small>School</small> <span class="star">*</span></label>
               <select
