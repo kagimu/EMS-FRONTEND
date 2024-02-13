@@ -10,7 +10,7 @@
             <div class="mt-2 mb-2">
 
   <div class="row mx-auto">
-    <div class="col-4" style="border-right: 1px solid rgba(128, 128, 128, 0.137);">
+    <div class="col-3" style="border-right: 1px solid rgba(128, 128, 128, 0.137);">
         <p class="ml-4 mt-4 mb-10" style="text-align: left !important;">GUARDIAN/PARENT DETAILS</p>
         <div class="mb-2">
           <span class="textColor text-sm"><small>Surname : <span class="details">{{appDatails.surname}}</span></small></span>
@@ -42,7 +42,7 @@
     </div>
 
 
-    <div class="col-4" style="border-right: 1px solid rgba(128, 128, 128, 0.137);">
+    <div class="col-3" style="border-right: 1px solid rgba(128, 128, 128, 0.137);">
         <p class="ml-4 mt-4 mb-10" style="text-align: left !important;">LEARNER DETAILS</p>
         <div class="mb-2">
           <span class="textColor text-sm"><small>Surname: <span class="details">{{ appDatails.studentSurname }}</span></small> </span>
@@ -62,12 +62,9 @@
 
       
          <div class="row">
-          
             <div class="mb-2">
           <span class="textColor text-sm"><small>Reason</small>: <span class="details"><i>{{ appDatails.reason}}</i></span> </span>
         </div>
-         
-          
             <div class="mb-2">
           <span class="textColor text-sm"><small>Age: <span class="details">{{getAge(appDatails.StudentDate_of_birth) }}</span></small></span>
         </div>
@@ -77,7 +74,7 @@
 
 
     
-    <div class="col-4" style="border-right: 1px solid rgba(128, 128, 128, 0.137);">
+    <div class="col-3" style="border-right: 1px solid rgba(128, 128, 128, 0.137);">
         <p class="ml-4 mt-4 mb-10" style="text-align: left !important;">PREVIOUS SCHOOL DETAILS</p>
         
         <div v-for="(school,index) in appDatails.previousSchools" :key="index">
@@ -98,31 +95,37 @@
         </div>
         </div>
       </div>
-    
-  
       </div>
         
     </div>
-<div class="row">
-    <hr style="color: rgba(17, 17, 17, 0.265);">
-    <div class="col-lg-8">
 
+    <div class="col-3"> 
+  <form @submit.prevent="scheduleInterview" >
+              <label> <span style="text-align: center;font-size: 12px;"><small>Select Interview</small></span></label>
+              <select required class="form-control" v-model="formData.interview_number" >
+                <option disabled value=""> - Select Interview - </option>
+                  <option v-for="(list, index) in interviewListData" :key="index" :value="list.number">
+                    {{ list.name}} 
+                  </option>
+               </select>
+              <div class="text-right mt-1">
+                <button style="margin-right: 0px;float: left;" type="button" class="btn btn-sm btn-danger mb-2 mr-4" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i>&nbsp;<small>Reject</small></button>
+                <button style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2"  ><i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
+                  <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader" >
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </button>
+              </div>
+            </form>
     </div>
-    <div class="col-lg-2">
-        <button style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><i class="bi bi-save2"></i>&nbsp;<small>Approve</small></button>
-</div>
-<div class="col-lg-2">
-    <button style="margin-right: 5px;" type="button" class="btn btn-sm btn-danger mb-2 mr-4"><i class="bi bi-x-circle"></i>&nbsp;<small>Reject</small></button>
-</div>
 
-</div>
            
     </div>   
 </div>
 </div>
 
-<!-- schedule interview -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="rolesDialog" aria-labelledby="offcanvasRightLabel" :class="{ show: interviewDialog }">
+<!-- schedule interview this is left out -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="rolesDialog" aria-labelledby="offcanvasRightLabel">
           <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasRightLabel">Schedule Interview</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -161,7 +164,7 @@
 
 const ApplicationStore = useApplicationStore()
 const notificationStore = useNotificationStore()
-const buttonLoader = ref(null)
+const buttonLoader = ref(false)
 const interviewDialog = ref(false)
 const interviewListData = ref([])
 
@@ -246,9 +249,7 @@ const formData = reactive({
 
 function scheduleInterview(){
   // alert(JSON.stringify(formData))
-  //code to call the endpoint
-  interviewDialog.value = true
-  buttonLoader.value = true
+  buttonLoader.value = false
     // alert(JSON.stringify(appDatails.student_number))
   formData.student_number = appDatails.student_number
   ApplicationStore. addStudentToInterview(formData)
@@ -262,11 +263,23 @@ function scheduleInterview(){
           if (data) {
               buttonLoader.value = false
               notificationStore.successToast("Success", data.message)
+              formData.value = ''
           }
       },
       {deep: true}
   )
 
+  watch (
+    () => ApplicationStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        buttonLoader.value = false
+        formData.value = ''
+      }
+    },
+    {deep:true}
+)
 
 
   onMounted(
