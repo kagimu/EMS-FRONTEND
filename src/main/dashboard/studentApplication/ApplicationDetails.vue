@@ -270,7 +270,7 @@ function scheduleInterview(){
     () => applicationStore.errorMessage,
     async (data) => {
       if(data){
-        formData.interview_number.value = ''
+        formData.value = ''
         errorMessage.value = data.message
         buttonLoader.value = false
       
