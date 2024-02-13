@@ -157,15 +157,35 @@
 
 <script setup>
 
-import {reactive, ref, watch} from "vue";
+import {reactive, ref, watch,onMounted} from "vue";
 import {useAdmissionStore} from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
 import useNotificationStore from "@/composables/useNotification.js";
-
+import {useRouter} from "vue-router";
 const admissionStore = useAdmissionStore()
 const  notificationStore  = useNotificationStore()
 
 const buttonLoader = ref(false)
 let errorMessage = ref(null)
+const routerData = useRouter()
+
+let studentNumber = routerData.currentRoute.value.query.id
+
+onMounted(
+    async () => {
+      await admissionStore.fetchAdmissionOfferByAdmissionId(studentNumber)
+    } )
+
+    watch(
+    () => admissionStore.admissionOfferByAdmissionIdResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+    )
+
+
 
 const emit = defineEmits()
 

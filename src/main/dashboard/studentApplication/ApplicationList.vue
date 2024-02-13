@@ -103,6 +103,7 @@ onMounted(
     async (data) => {
       if(data){
         applicationInfoList.value = data.data
+       
       }
     },
     {deep:true}

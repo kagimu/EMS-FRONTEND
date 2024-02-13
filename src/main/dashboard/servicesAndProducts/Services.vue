@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="modal fade" id="serviceModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
+        <div class="modal fade" id="serviceModal" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: showDialog }">
       <div class="modal-dialog">
         <div class="modal-dialog">
                 <div class="modal-content">
@@ -97,6 +97,7 @@
   const serviceStore= useServiceStore()
 const  notificationStore  = useNotificationStore()
 const servId = ref(null)
+const showDialog = ref(false)
   
   onMounted(
       async () => {
@@ -118,7 +119,6 @@ const servId = ref(null)
     () => serviceStore.newServiceResponse,
     async (data) => {
       if(data){
-  
         await serviceStore.fetchServicesList()
       }
     },
@@ -129,6 +129,7 @@ const servId = ref(null)
       () => serviceStore.errorMessage,
       async (data) => {
         if(data){
+          showDialog.value = false
           errorMessage.value = data.message
           notificationStore.errorToast("Error",data.message)
         }

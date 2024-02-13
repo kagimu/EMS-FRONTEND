@@ -12,7 +12,7 @@ export const useServiceStore = defineStore("service", () => {
         async function createNewService(data) {
             return await api.post("main/services", data)
                 .then((response) => {
-                    newServiceResponse.value = response.data
+                    newServiceResponse.value = response.response.data
                 })
                 .catch((response) => {
                     if(response){

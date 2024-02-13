@@ -1,5 +1,6 @@
 <template>
   <div>
+    <form @submit.prevent="admitStudent">
     <div class="row">
       <div class="col-12">
         <div class="card mt-3">
@@ -93,7 +94,7 @@
       </div>
      
 
-    <form @submit.prevent="admitStudent">
+   
 
     
 
@@ -149,7 +150,7 @@
 
 
 </div>
-  </form>
+
     
   </div>
   </div>
@@ -159,34 +160,56 @@
 
 
 
-
+</form>
   </div>
   </template>
   
   <script setup>
   import {onMounted,reactive, ref, watch,watchEffect} from "vue"
-  import useNotificationStore from "@/composables/useNotification.js";
-  import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
-  import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-  import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-  import {useRouter} from "vue-router";
+  import useNotificationStore from "@/composables/useNotification.js"
+  import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
+  import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
+  import {useAdmissionStore} from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
+  import {useRouter} from "vue-router"
 
-  let errorMessage = ref(null)
+const routerData = useRouter()
 
-  const emit = defineEmits()
+const admissionStore = useAdmissionStore()
+const buttonLoader = ref(false)
 
-  const answer = ref('')
-  const selectAll = ref(false)
-  const selectedconditions = ref([])
-
-  const applicationStore= useApplicationStore()
+let errorMessage = ref(null)
+const emit = defineEmits()
+const answer = ref('')
+const selectAll = ref(false)
+const selectedconditions = ref([])
 const  notificationStore  = useNotificationStore()
-  const campusList = ref([])
-  const schoolList = ref([])
-  const classList = ref([])
-  const schoolStore = useSchoolStore()
-  const campusStore = useCampusStore()
-  const school_number = ref(null)
+const campusList = ref([])
+const schoolList = ref([])
+const classList = ref([])
+const schoolStore = useSchoolStore()
+const campusStore = useCampusStore()
+const school_number = ref(null)
+
+
+let studentNumber = routerData.currentRoute.value.query.id
+
+onMounted(
+    async () => {
+      await admissionStore.fetchAdmissionOfferByStudentId(studentNumber)
+    } )
+
+    watch(
+    () => admissionStore.admissionOfferByStudentIdResponse,
+    async (data) => {
+      if(data){
+        admissionOfferList.value = data.data
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+    )
+
+
 
   const conditions = [
   'condition 1', 
@@ -200,9 +223,46 @@ const  notificationStore  = useNotificationStore()
      window.history.back()
     }
 
+    // "class_number":"bcffbfed-ddfa-438f-a462-cac106658ea3",
+    // "school_number":"{{SCHOOL_ID}}",
+    // "campus_number":"2d8e19d3-78e4-450a-8fdc-1cabe7e63a16",
+    // "student_number":"{{STUDENT_ID}}"
+
   const form = reactive({ 
       conditions:[],
+      class_number:null,
+      school_number:null,
+      campus_number:null,
+      student_number:null
     })
+
+    const admitStudent = () =>{
+  admissionStore.newAdmissionOffer(form)
+  
+}
+
+watch(
+    () => admissionStore.newAdmissionOfferResponse,
+    async (data) => {
+      if(data){
+        emit("next", 2 )
+        admissionOfferList.value = data.data
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+    )
+
+    watch(
+      () =>  admissionStore.errorMessage,
+      async (data) => {
+            if (data) {
+              emit("next", 2 )
+                notificationStore.errorToast("Error", data.message)
+            }
+      },
+      {deep: true}
+  )
 
 
 watchEffect(() => {
@@ -213,11 +273,7 @@ watchEffect(() => {
   }
 })
 
-const admitStudent = () =>{
-  //go to invoice
-  emit("next", 2 )
-  
-}
+
 
 const fetchCampuses = (school_number) => {
       campusStore.fetchCampuses(school_number)
