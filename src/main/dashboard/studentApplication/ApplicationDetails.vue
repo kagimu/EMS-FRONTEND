@@ -165,7 +165,7 @@ const applicationStore = useApplicationStore()
 const notificationStore = useNotificationStore()
 const buttonLoader = ref(false)
 const interviewListData = ref([])
-
+let errorMessage = ref(null)
 const useCommonsStore = useCommons()
 
   const props = defineProps({
@@ -250,7 +250,7 @@ function scheduleInterview(){
     // alert(JSON.stringify(appDatails.student_number))
   formData.student_number = appDatails.student_number
   applicationStore. addStudentToInterview(formData)
-  formData.value = ''
+  
 }
 
   watch(
@@ -270,7 +270,7 @@ function scheduleInterview(){
     () => applicationStore.errorMessage,
     async (data) => {
       if(data){
-        formData.value = ''
+        formData.interview_number.value = ''
         errorMessage.value = data.message
         buttonLoader.value = false
       

@@ -77,6 +77,8 @@ import useNotificationStore from "@/composables/useNotification.js";
 const applicationInfoList = ref( [])
 let errorMessage = ref(null)
 
+const buttonLoader = ref(false)
+
 const searchQuery = ref('')
 const showDialog = ref(false)
 
@@ -111,6 +113,7 @@ onMounted(
     async (data) => {
       if(data){
         showDialog.value = false
+        buttonLoader.value = false
         errorMessage.value = data.message
         notificationStore.errorToast("Error",data.message)
 
