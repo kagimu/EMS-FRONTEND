@@ -11,6 +11,7 @@ export const useCurriculumStore = defineStore("curriculum", () => {
     let curriculumInfoResponse = ref(null)
     let schoolCurriculumResponse = ref(null)
     let schoolCurriculumLevelResponse = ref(null)
+    let deleteCurriculumResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -108,6 +109,19 @@ export const useCurriculumStore = defineStore("curriculum", () => {
 
 
 
+    async function deleteCurriculum(data) {
+        return await api.post("main/curriculum/delete", data)
+            .then((response) => {
+                deleteCurriculumResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
 
     return {
         importResponse,
@@ -117,6 +131,7 @@ export const useCurriculumStore = defineStore("curriculum", () => {
         curriculumInfoResponse,
         schoolCurriculumResponse,
         schoolCurriculumLevelResponse,
+        deleteCurriculumResponse,
         errorMessage,
         uploadExcelFile,
         fetchUploadedExcel,
@@ -125,5 +140,6 @@ export const useCurriculumStore = defineStore("curriculum", () => {
         fetchCurriculumInfo,
         fetchSchoolCurriculum,
         fetchSchoolCurriculumLevel,
+        deleteCurriculum,
     }
 })

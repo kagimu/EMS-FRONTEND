@@ -39,12 +39,12 @@
 
 
     <div class="row">
-      <div class="col-4" v-for="(school, index) in curriculumList" :key="index">
+      <div class="col-4" v-for="(curr, index) in curriculumList" :key="index">
 
         <div class="card mt-3">
           <div class="card-body">
             <div class="mb-3 flex justify-between" style="font-size: 20px;">
-              {{school.name}}
+              {{curr.name}}
 
               <div>
                 <i
@@ -53,31 +53,34 @@
                     data-bs-target="#infoModal"
                     data-bs-toggle="modal"
                     style="font-size: 14px;"
-                    @click="editSchool(school)"></i>
+                    @click="editCurriculum(curr)"></i>
 
                 <i style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  
-                @click="deleteSchool(school)"></i>
+                @click="deleteCurriculum(curr)"></i>
+                <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === curr.number">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
               </div>
             </div>
 
             <div class="flex justify-content-between">
               &nbsp;
-<div class="flex">
-              <router-link
-                  class="text-decoration-none"
-                  :to="{name:'curriculum-setup', query:{id:school.number}}"
-              >
-                <button
-                    type="button"
-                    class="btn-primary border-0 d-none d-lg-block viewButtonStyle mr-2">
-                      <span class="mx-9 text-sm">
-                        Setup Curriculum
-                      </span>
-                </button>
-              </router-link>
+              <div class="flex">
+                            <router-link
+                                class="text-decoration-none"
+                                :to="{name:'curriculum-setup', query:{id:curr.number}}"
+                            >
+                              <button
+                                  type="button"
+                                  class="btn-primary border-0 d-none d-lg-block viewButtonStyle mr-2">
+                                    <span class="mx-9 text-sm">
+                                      Setup Curriculum
+                                    </span>
+                              </button>
+                            </router-link>
 
 
-</div>
+              </div>
             </div>
 
           </div>
@@ -105,30 +108,32 @@ const curriculumStore = useCurriculumStore()
 
 const schoolDialog = ref(false)
 const curriculumList = ref( [])
+const deletionLoader = ref( undefined)
 
 
 const addSchool = () => {
   schoolDialog.value = true
 }
 
-const editSchool = (school) => {
-  if(school) {
+const editCurriculum = (curriculum) => {
+  if(curriculum) {
     schoolDialog.value = true
-    schoolStore.fetchSchoolData(school.number)
+    schoolStore.fetchSchoolData(curriculum.number)
   }
 }
 
 
-const deleteSchool = (school) => {
-
-  if(!confirm("Are you sure, you want to delete: "+school.name)){
+const deleteCurriculum = (data) => {
+  if(!confirm("Are you sure, you want to delete: "+data.name)){
     return
   }
-  let data = {
-    school_number:school.number
-  }
-  schoolStore.deleteSchool(data)
 
+  deletionLoader.value = data.number
+
+  let info = {
+    number:data.number
+  }
+  curriculumStore.deleteCurriculum(info)
 }
 
 onMounted(
@@ -140,6 +145,17 @@ onMounted(
 
 watch (
     () => curriculumStore.curriculumResponse,
+    async (data) => {
+      if(data){
+        await curriculumStore.fetchCurriculum()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => curriculumStore.deleteCurriculumResponse,
     async (data) => {
       if(data){
         await curriculumStore.fetchCurriculum()
@@ -162,7 +178,15 @@ watch(
     {deep:true}
 )
 
-
+watch(
+    () => curriculumStore.errorMessage,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
+      }
+    },
+    {deep:true}
+)
 
 </script>
 
