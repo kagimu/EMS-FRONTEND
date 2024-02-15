@@ -19,28 +19,8 @@
         <div class="container mt-4">
           <form @submit.prevent="submitInvoice">
             <div class="row">
-              <div class="col-lg-4">
-                <p class="textColor" style="margin-bottom: -4px;">Payee Details</p>
-              <div class="mb-2">
-                <label class="textColor"><small>Campus</small> </label>
-                <input disabled type="text" class="form-control" value="Main Campus">
-              </div>
-              <div class="mb-2">
-                <label class="textColor"><small>Class</small> </label>
-                <input disabled type="text" class="form-control" value="P1">
-              </div>
-              <div class="mb-2">
-                <label class="textColor"><small>Name</small></label>
-                <input disabled type="text" class="form-control" value="collins Mpiima">
-              </div>
-              <div class="mb-2">
-                <label class="textColor"><small>Email</small></label>
-                <input disabled type="email" class="form-control" value="collinsmppima@gmail.com">
-              </div>
-              </div>
-              <div class="col-lg-1"></div>
-              <div class="col-lg-7">
-                <p class="textColor" style="margin-bottom: -4px;">Invoice Details</p>
+              
+              <div class="col-lg-12">
                 <div class="row">
                   <div class="col-lg-8">
                   <div class="mb-2">
@@ -65,18 +45,22 @@
         <div class="mb-3">
           <div class="row align-services-center">
          
-            <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-            <li class="list-group-item" >
-                <div class="item-selector">
-          <input type="checkbox" id="selectAll" v-model="selectAll" @change="selectAllItems">
-          <label for="selectAll"><small>&nbsp;select all</small></label>
-        </div>
-          </li>
-            <li class="list-group-item"  v-for="(item, index) in invoice.items" :key="index">
-              <input  style="outline: none 0 !important; box-shadow: none;" class="form-check-input me-1" type="checkbox" :id="'itemCheckbox' + index" v-model="selectedItems" :value="index">
-              <label class="form-check-label cursor-pointer textColor" :for="'itemCheckbox' + index">{{ item.description }} - [ {{ item.price }} ugshs ]</label>
-            </li>
+            <ul>
+            <li class="list-group-item">
+                <input class="form-check-input me-1" type="checkbox" :id="'selectAllCheckbox' + columnIndex" v-model="selectAllAll" @change="selectAllItems">
+                <label class="form-check-label cursor-pointer textColor" :for="'selectAllCheckbox' + columnIndex">Select All</label>
+              </li>
           </ul>
+
+          <div v-for="(column, columnIndex) in columns" :key="columnIndex" class="col-md-4">
+            <ul class="list-group text-sm mb-4" style="border-radius: 0;">
+              
+              <li class="list-group-item" v-for="(item, index) in column" :key="index">
+                <input class="form-check-input me-1" type="checkbox" :id="'itemCheckbox' + index" v-model="selectedItems" :value="(columnIndex * 7) + index">
+                <label class="form-check-label cursor-pointer textColor" :for="'itemCheckbox' + index">{{ item.description }} - [ ugshs {{ item.price }} ]</label>
+              </li>
+            </ul>
+          </div>
   
 
           </div>
@@ -85,7 +69,7 @@
   
   </div>  
       </div>
-     <hr>
+
       <div class="text-end">
         
           <!-- <strong>Total: {{ total }}</strong> -->
@@ -107,11 +91,11 @@
   
             </div>
   
-            <hr>
+       
             <div class="row">
              
               <div class="col-lg-4">
-              <button @click="goBac()" type="button" class="btn btn-sm btn-outline-danger mb-2 mr-4" style="float: left !important;margin-right: 0px;">
+              <button @click="goBack()" type="button" class="btn btn-sm btn-outline-danger mb-2 mr-4" style="float: left !important;margin-right: 0px;">
                 <i class="bi bi-box-arrow-in-left"></i> back</button>
             </div>
             <div class="col-lg-4"></div>
@@ -140,43 +124,79 @@
     </template>
   
   <script setup>
-  import { ref, computed,reactive } from 'vue';
-
-  let  student_number = '1203039490402st'
-  
-  const invoice = ref({
-    items: [
-      { description: 'School Fees ', price: 100000000 },
-      { description: 'Ream Of Papers', price: 200000 },
-      { description: 'Broom', price: 15000 },
-    ]
-  })
-  
-  const selectAll = ref(false)
-  const selectedItems = ref([])
-  
-  const total = computed(() => selectedItems.value.reduce((acc, index) => acc + invoice.value.items[index].price, 0));
-  
-  const selectAllItems = () => {
-    if (selectAll.value) {
-      selectedItems.value = invoice.value.items.map((item, index) => index);
-    } else {
-      selectedItems.value = [];
+  import { ref, computed,reactive } from 'vue'
+  import { useRouter } from 'vue-router'
+  const router = useRouter()
+  const emit = defineEmits()
+ 
+  const goBack = () => {
+    //  window.history.back()
+     emit("next", 1)
     }
-  }
-  
-  const submitInvoice = () => {
-    const selectedItemsData = selectedItems.value.map(index => {
-      const item = invoice.value.items[index];
-      return { description: item.description, price: item.price };
-    })
+  const studentNumber = '1203039490402st';
+const invoice = ref({
+  items: [
+    { description: 'Item 1', price: 10 },
+    { description: 'Item 2', price: 20 },
+    { description: 'Item 3', price: 15 },
+    { description: 'Item 1', price: 10 },
+    { description: 'Item 2', price: 20 },
+    { description: 'Item 3', price: 15 },
+    { description: 'Item 1', price: 10 },
+    { description: 'Item 2', price: 20 },
+    { description: 'Item 3', price: 15 },
+    { description: 'Item 1', price: 10 },
+    { description: 'Item 2', price: 20 },
+    { description: 'Item 3', price: 15 },
+    { description: 'Item 1', price: 10 },
+    { description: 'Item 2', price: 20 },
+    { description: 'Item 3', price: 15 },
+    { description: 'Item 1', price: 10 },
+    { description: 'Item 2', price: 20 },
+    { description: 'Item 3', price: 15 },
+    { description: 'Item 1', price: 10 },
+    { description: 'Item 2', price: 20 },
+    { description: 'Item 3', price: 15 },
 
-    const data = {
-        student_number,
-      items: selectedItemsData
-    }
-    alert(JSON.stringify(data));
+  ]
+});
+
+const selectAllAll = ref(false); // Select all items across all columns
+const selectedItems = ref([]);
+
+const total = computed(() => selectedItems.value.reduce((acc, index) => acc + invoice.value.items[index].price, 0));
+
+const columns = computed(() => {
+  const items = invoice.value.items;
+  const numColumns = Math.ceil(items.length / 7);
+  const columns = Array.from({ length: numColumns }, (_, columnIndex) => {
+    const startIndex = columnIndex * 7;
+    return items.slice(startIndex, startIndex + 7);
+  });
+  return columns;
+});
+
+const selectAllItems = () => {
+  if (selectAllAll.value) {
+    const allItems = invoice.value.items.map((_, index) => index);
+    selectedItems.value = [...new Set([...selectedItems.value, ...allItems])]; // Add all items
+  } else {
+    selectedItems.value = []; // Clear selected items
   }
+};
+
+const submitInvoice = () => {
+  const selectedItemsData = selectedItems.value.map(index => {
+    const item = invoice.value.items[index];
+    return { description: item.description, price: item.price };
+  });
+  const data = {
+    student_number: studentNumber,
+    items: selectedItemsData
+  };
+  alert(JSON.stringify(data));
+  router.push({ name: 'invoice-details', params: { studentNumber }});
+}
 
   </script>
   
