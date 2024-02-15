@@ -53,8 +53,8 @@
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm" required
-                      v-model="school_number"
-                      @change="fetchCampuses(school_number)"
+                      v-model="form.school_number"
+                      @change="fetchCampuses(form.school_number)"
               >
                   <option disabled value="">Select School</option>
                   <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
@@ -67,8 +67,8 @@
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
-                      v-model="form.preferred_campus_number" required
-                      @change="fetchClasses(form.preferred_campus_number)"
+                      v-model="form.campus_number" required
+                      @change="fetchClasses(form.campus_number)"
               >
                   <option disabled value="">Select campus</option>
                   <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
@@ -92,21 +92,11 @@
         </div>
 
       </div>
-     
-
-   
-
-    
 
     <label class="textColor mt-3 mb-2 textColor"><small>Are there conditions to fullfil ?</small></label><br>
     <input type="radio" v-model="answer" value="no" > <span class="textColor">No </span> &nbsp;&nbsp;&nbsp;
     <input type="radio" v-model="answer" value="yes"> <span class="textColor">Yes </span>
     <div class="mb-2" v-if="answer === 'yes'">
-
-
-    
-
-
       <div class="mb-2">
        
         <label class="textColor mt-3 mb-2 textColor"><small>Select Condition</small></label>
@@ -118,13 +108,11 @@
           </li>
           <li class="list-group-item"  v-for="(condition, index) in conditions" :key="index" >
             <input style="outline: none 0 !important; box-shadow: none;"
-                class="form-check-input me-1" type="checkbox" v-model="selectedconditions" :value="condition">
+                class="form-check-input me-1" type="checkbox" v-model="selectedconditions" :value="condition.number">
                 
-            <label class="form-check-label cursor-pointer textColor" ><small>{{ condition }}</small></label>
+            <label class="form-check-label cursor-pointer textColor" ><small>{{ condition.description}}</small></label>
           </li>
          
-         
-
         </ul>
       </div>
 
@@ -171,10 +159,12 @@
   import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
   import {useAdmissionStore} from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
   import {useRouter} from "vue-router"
+  import { useConditionStore } from "../../settings/conditions/conditionStore"
 
 const routerData = useRouter()
 
 const admissionStore = useAdmissionStore()
+const conditionStore = useConditionStore()
 const buttonLoader = ref(false)
 
 let errorMessage = ref(null)
@@ -188,14 +178,37 @@ const schoolList = ref([])
 const classList = ref([])
 const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
-const school_number = ref(null)
 
 
-let studentNumber = routerData.currentRoute.value.query.id
+const conditions = ref([])
+
+onMounted(
+      async () => {
+        await conditionStore.fetchOfferAdmissionCondition()
+      } )
+      watch(
+      () => conditionStore.offerAdmissionConditionResponse,
+      async (data) => {
+        if(data){
+          conditions.value = data
+        }
+      },
+      {deep:true}
+  )
+
+// const conditions = [
+//   'condition 1', 
+//   'condition 2', 
+//   'condition 3', 
+//   'condition 4'
+// ]
+
+
+let student_number = ref(null)
 
 onMounted(
     async () => {
-      await admissionStore.fetchAdmissionOfferByStudentId(studentNumber)
+      await admissionStore.fetchAdmissionOfferByStudentId(routerData.currentRoute.value.query.id)
     } )
 
     watch(
@@ -209,15 +222,13 @@ onMounted(
     {deep:true}
     )
 
-
-
-  const conditions = [
-  'condition 1', 
-  'condition 2', 
-  'condition 3', 
-  'condition 4'
-]
-
+    watchEffect(() => {
+  if (selectAll.value) {
+    selectedconditions.value = conditions.slice() // Select all conditions
+  } else {
+    selectedconditions.value = [] // Deselect all conditions
+  }
+})
 
   const goBack = () => {
      window.history.back()
@@ -229,16 +240,16 @@ onMounted(
     // "student_number":"{{STUDENT_ID}}"
 
   const form = reactive({ 
-      conditions:[],
+    selectedconditions,
       class_number:null,
       school_number:null,
       campus_number:null,
-      student_number:null
+      student_number:routerData.currentRoute.value.query.id,
     })
 
     const admitStudent = () =>{
-  admissionStore.newAdmissionOffer(form)
-  
+      alert(JSON.stringify(form))
+      admissionStore.newAdmissionOffer(form)
 }
 
 watch(
@@ -265,13 +276,6 @@ watch(
   )
 
 
-watchEffect(() => {
-  if (selectAll.value) {
-    selectedconditions.value = conditions.slice(); // Select all conditions
-  } else {
-    selectedconditions.value = []; // Deselect all conditions
-  }
-})
 
 
 
@@ -329,8 +333,6 @@ const fetchCampuses = (school_number) => {
   )
 
   
-
-
   </script>
 
 

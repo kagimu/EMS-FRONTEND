@@ -9,6 +9,11 @@ export const useServiceStore = defineStore("service", () => {
     let deleteServiceResponse = ref(null)
     let updateServiceResponse = ref(null)
 
+    let newProductResponse = ref(null)
+    let productListResponse = ref(null)
+    let deleteProductResponse = ref(null)
+    let updateProductResponse = ref(null)
+
         async function createNewService(data) {
             return await api.post("main/services", data)
                 .then((response) => {
@@ -58,6 +63,56 @@ export const useServiceStore = defineStore("service", () => {
         }
 
 
+
+        async function createNewProduct(data) {
+            return await api.post("main/products", data)
+                .then((response) => {
+                    newProductResponse.value = response.data
+                })
+                .catch((response) => {
+                    if(response){
+                        errorMessage.value = response.response.data
+                    }
+                })
+        }
+
+        async function fetchProductsList() {
+            return await api.get("main/products")
+                .then((response) => {
+                    productListResponse.value = response.data
+                })
+                .catch((response) => {
+                    if(response){
+                        errorMessage.value = response.response.data
+                    }
+                })
+        }
+    
+
+        async function deleteProduct(productid) {
+            return await api.delete("main/products/"+productid)
+                .then((response) => {
+                    deleteProductResponse.value = response.data
+                })
+                .catch((response) => {
+                    if(response){
+                        errorMessage.value = response.data
+                    }
+                })
+        }
+        async function updateProduct(productid,data) {
+            return await api.put("main/products/"+productid,data)
+                .then((response) => {
+                    updateProductResponse.value = response.data
+                })
+                .catch((response) => {
+                    if(response){
+                        errorMessage.value = response.data
+                    }
+                })
+        }
+
+
     return {
         newServiceResponse,
         errorMessage,      
@@ -67,7 +122,15 @@ export const useServiceStore = defineStore("service", () => {
         deleteServiceResponse,
         deleteService,
         updateServiceResponse,
-        updateService
+        updateService,
+        newProductResponse,   
+        createNewProduct,
+        productListResponse,
+        fetchProductsList,
+        deleteServiceResponse,
+        deleteProduct,
+        updateProductResponse,
+        updateProduct
 
     }
 })

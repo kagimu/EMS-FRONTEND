@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="modal fade" id="serviceModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
+        <div class="modal fade" id="serviceModal" tabindex="-1"   aria-hidden="true" :class="{ show: showDialog }">
       <div class="modal-dialog">
         <div class="modal-dialog">
                 <div class="modal-content">
@@ -26,7 +26,7 @@
     <div class="container mt-4">
       <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Product
         <button style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
-        data-bs-target="#serviceModal"  data-bs-toggle="modal">
+        data-bs-target="#serviceModal"  data-bs-toggle="modal" @click="openModal()">
         <i class="bi bi-plus"></i>&nbsp;<small>
           Add Product</small></button>
           
@@ -45,16 +45,16 @@
           </tr> 
         </thead>
         <tbody>
-          <!-- <tr v-for="(serviceData, index) in servicesList" :key="index" >
-            <td>{{ serviceData.name}}</td>
-            <td>{{ serviceData.cost}}</td>
-            <td>{{ serviceData.description}}</td>
+          <tr v-for="(productData, index) in productsList" :key="index" >
+            <td>{{ productData.name}}</td>
+            <td>{{ productData.cost}}</td>
+            <td>{{ productData.description}}</td>
             <td>
-              <button @click="setServiceId(serviceData)" data-bs-target="#editServiceModal"  data-bs-toggle="modal" class="link-primary"><i class="bi bi-pencil"></i></button>&nbsp;&nbsp;   |
+              <button @click="setProductId(productData)" data-bs-target="#editServiceModal"  data-bs-toggle="modal" class="link-primary"><i class="bi bi-pencil"></i></button>&nbsp;&nbsp;   |
               &nbsp;&nbsp; 
-              <button  @click="deleteService(serviceData.number)" class="link-danger"><i class="bi bi-trash"></i></button>        
+              <button  @click="deleteProduct(productData.number)" class="link-danger"><i class="bi bi-trash"></i></button>        
               </td>
-          </tr>       -->
+          </tr>      
         </tbody>
       </table>
       </div>
@@ -74,7 +74,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="mt-2 mb-2">           
-                           <UpdateService :service="serviceId"></UpdateService>
+                           <UpdateProduct :product="productId"></UpdateProduct>
                         </div>
                     </div>
                 </div>
@@ -87,46 +87,52 @@
   import {onMounted,reactive, ref, watch} from "vue";
   import useNotificationStore from "@/composables/useNotification.js";
   import NewProduct from "./NewProduct.vue";
-  import UpdateService from "./UpdateService.vue";
+  import UpdateProduct from "./UpdateProduct.vue";
   import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js";
 
-
-  const servicesList = ref( [])
-  let errorMessage = ref(null)
-  const serviceId = ref(null)
-  const serviceStore= useServiceStore()
+const productsList = ref( [])
+let errorMessage = ref(null)
+const productId = ref(null)
+const productStore= useServiceStore()
 const  notificationStore  = useNotificationStore()
-const servId = ref(null)
+const showDialog = ref(false)
+
+const openModal = () =>{
+  showDialog.value=true
+}
+
+function setProductId(sId){
+productId.value = sId
+}
   
   onMounted(
       async () => {
-        await serviceStore.fetchServicesList()
+        await productStore.fetchProductsList()
       } )
   
-
       watch(
-      () => serviceStore.servicesListResponse,
+      () => productStore.productsListResponse,
       async (data) => {
         if(data){
-          servicesList.value = data
+          productsList.value = data
         }
       },
       {deep:true}
   )
 
   watch (
-    () => serviceStore.newServiceResponse,
+    () => productStore.newProductResponse,
     async (data) => {
       if(data){
-  
-        await serviceStore.fetchServicesList()
+       showDialog.value = false
+        await productStore.fetchProductsList()
       }
     },
     {deep:true}
 )
   
   watch (
-      () => serviceStore.errorMessage,
+      () => productStore.errorMessage,
       async (data) => {
         if(data){
           errorMessage.value = data.message
@@ -136,35 +142,26 @@ const servId = ref(null)
       {deep:true}
   )
    
-  const deleteService = (sid) => {
+  const deleteProduct = (sid) => {
 if(!confirm("Are you sure, you want to delete: " + sid)){
   return
 }
-serviceStore.deleteService(sid)
+productStore.deleteProduct(sid)
 }
 
 
 watch (
-    () => serviceStore.deleteServiceResponse,
+    () => productStore.deleteProductResponse,
     async (data) => {
       if(data){
         notificationStore.successToast("Success", data.message)
-        await serviceStore.fetchServicesList()
+        await productStore.fetchProductsList()
       }
     },
     {deep:true}
 )
-  
-
-
-
-function setServiceId(sId){
-serviceId.value = sId
-}
   </script>
   
-  
-    
     <style scoped>
     
     </style>

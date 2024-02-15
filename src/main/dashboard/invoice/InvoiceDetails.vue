@@ -1,7 +1,7 @@
 <template>
     <div>
       <!-- invoice payment -->
-      <div class="modal fade" id="infoModal" tabindex="-1" :class="{ show: inShow }" aria-labelledby="" aria-hidden="true">
+      <div class="modal fade" id="infoModal" tabindex="-1" :class="{ show: showDialog }" aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog ">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
@@ -19,7 +19,7 @@
     </div>
 
      <!-- Item In Kind(Tick off brought Item)-->
-     <div class="modal fade" id="itemInKind" tabindex="-1" :class="{ show: itemShow }" aria-labelledby="" aria-hidden="true">
+     <div class="modal fade" id="itemInKind" tabindex="-1" :class="{ show: showModl }" aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
@@ -49,7 +49,7 @@
         <div class="col-lg-4">
           <button  class="btn btn-primary  btn-sm mb-2 mr-4" style="float: right;" data-bs-toggle="modal" data-bs-target="#itemInKind">
             <small><i class="bi bi-book">&nbsp;Item In Kind</i></small></button> 
-            <button  class="btn btn-warning btn-sm mb-2 mr-4" style="float: right;" type="button" data-bs-toggle="modal" data-bs-target="#infoModal">
+            <button @click="openModal()"  class="btn btn-warning btn-sm mb-2 mr-4" style="float: right;" type="button" data-bs-toggle="modal" data-bs-target="#infoModal">
             <small><i class="bi bi-check-lg"><small>&nbsp;Mark As Paid</small></i></small></button>
             <button  class="btn btn-secondary  btn-sm mb-2 mr-4" style="float: right;">
             <small><i class="bi bi-printer">&nbsp;Print</i></small></button> 
@@ -105,8 +105,7 @@
               <div>
 
                 <div>
-     
-
+    
 </div>
 
     </div>
@@ -144,12 +143,31 @@
 
 <script setup>
 import InvoicePayment from './InvoicePayment.vue';
-import { ref, computed,reactive } from 'vue'
+import {onMounted, reactive, ref, watch,computed} from "vue";
+import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
+  import { useRouter } from 'vue-router'
 
+  const invoiceStore = useInvoiceStore()
+const showDialog = ref(false)
 
 const goBack = () => {
      window.history.back()
     }
+
+const openModal = () =>{
+  showDialog.value = true
+}
+
+watch (
+    () => invoiceStore.newInvoicePaymentResponse,
+    async (data) => {
+      if(data){
+        showDialog.value = false
+      }
+    },
+    {deep:true}
+)
+
 const invoice = ref({
   items: [
     { description: 'Item 1', price: 10 },

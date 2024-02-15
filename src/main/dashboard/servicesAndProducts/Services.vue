@@ -57,6 +57,21 @@
           </tr>      
         </tbody>
       </table>
+        <!-- Pagination controls -->
+        <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" :class="{disabled: currentPage === 1}">
+            <button class="page-link btn-sm textColor" @click="prevPage"><small>Previous</small></button>
+          </li>
+          <li class="page-item" :class="{active: page === currentPage}" v-for="page in totalPages" :key="page">
+            <button class="page-link btn-sm textColor" @click="gotoPage(page)"><small>{{ page }}</small></button>
+          </li>
+          <li class="page-item" :class="{disabled: currentPage === totalPages}">
+            <button class="page-link btn-sm textColor" @click="nextPage"><small>Next</small></button>
+          </li>
+        </ul>
+      </nav>
+      <!-- // -->
       </div>
     </div>
   </div>
@@ -85,19 +100,25 @@
     
     <script setup>
   import {onMounted,reactive, ref, watch} from "vue";
-  import useNotificationStore from "@/composables/useNotification.js";
-  import NewService from "./NewService.vue";
-  import UpdateService from "./UpdateService.vue";
-  import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js";
+  import useNotificationStore from "@/composables/useNotification.js"
+  import NewService from "./NewService.vue"
+  import UpdateService from "./UpdateService.vue"
+  import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js"
 
 
-  const servicesList = ref( [])
-  let errorMessage = ref(null)
-  const serviceId = ref(null)
-  const serviceStore= useServiceStore()
+const servicesList = ref( [])
+let errorMessage = ref(null)
+const serviceId = ref(null)
+const serviceStore= useServiceStore()
 const  notificationStore  = useNotificationStore()
 const servId = ref(null)
 const showDialog = ref(false)
+
+// Pagination variables
+const itemsPerPage = 9 // Number of items per page
+const currentPage = ref(1) // Current page
+const totalPages = ref(1) // Total pages
+const paginatedConditionList = ref([]) // Paginated condition list
   
   onMounted(
       async () => {
@@ -105,15 +126,15 @@ const showDialog = ref(false)
       } )
   
 
-      watch(
-      () => serviceStore.servicesListResponse,
-      async (data) => {
-        if(data){
-          servicesList.value = data
-        }
-      },
-      {deep:true}
-  )
+  //     watch(
+  //     () => serviceStore.servicesListResponse,
+  //     async (data) => {
+  //       if(data){
+  //         servicesList.value = data
+  //       }
+  //     },
+  //     {deep:true}
+  // )
 
   watch (
     () => serviceStore.newServiceResponse,
@@ -155,13 +176,42 @@ watch (
     },
     {deep:true}
 )
-  
-
-
 
 function setServiceId(sId){
 serviceId.value = sId
 }
+
+
+
+//paginantion =============================================
+ // Methods to handle pagination
+ const prevPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value--
+  }
+}
+const nextPage = () => {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++
+  }
+}
+const gotoPage = (page) => {
+  currentPage.value = page
+}
+// Watch for changes in conditionList and currentPage
+watch(
+  [() => serviceStore.servicesListResponse, () => currentPage.value],
+  ([newData, currentPageValue]) => {
+    if (newData) {
+      totalPages.value = Math.ceil(newData.length / itemsPerPage)
+      const startIndex = (currentPageValue - 1) * itemsPerPage
+      const endIndex = startIndex + itemsPerPage;
+      servicesList.value = newData.slice(startIndex, endIndex)
+    }
+  },
+  { deep: true }
+)
+// ================================================
   </script>
   
   
