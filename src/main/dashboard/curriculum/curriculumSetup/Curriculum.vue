@@ -1,11 +1,11 @@
 <template>
   <div>
 
-    <div class="modal fade" id="infoModal" tabindex="-1" :class="{ show: schoolDialog }" aria-labelledby="" aria-hidden="true">
+    <div class="modal fade" id="CurriculumModal" tabindex="-1" :class="{ show: CurriculumDialog }" aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">New Curriculum</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">{{curiculumEditMode ? "Edit" : "New"}} Curriculum</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -28,7 +28,7 @@
           class="btn btn-sm buttonStyle btn-primary mr-2"
           @click="addSchool"
           data-bs-toggle="modal"
-          data-bs-target="#infoModal">
+          data-bs-target="#CurriculumModal">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
         Add Curriculum
       </button>
@@ -48,10 +48,9 @@
 
               <div>
                 <i
-                    aria-controls="offcanvasRight"
                     class="bi-pencil ml-2 cursor-pointer"
-                    data-bs-target="#infoModal"
                     data-bs-toggle="modal"
+                    data-bs-target="#CurriculumModal"
                     style="font-size: 14px;"
                     @click="editCurriculum(curr)"></i>
 
@@ -106,19 +105,22 @@ const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
 const curriculumStore = useCurriculumStore()
 
-const schoolDialog = ref(false)
+const CurriculumDialog = ref(false)
+const curiculumEditMode = ref(false)
 const curriculumList = ref( [])
 const deletionLoader = ref( undefined)
 
 
 const addSchool = () => {
-  schoolDialog.value = true
+  curiculumEditMode.value = false
+  CurriculumDialog.value = true
 }
 
 const editCurriculum = (curriculum) => {
   if(curriculum) {
-    schoolDialog.value = true
-    schoolStore.fetchSchoolData(curriculum.number)
+    curiculumEditMode.value = true
+    CurriculumDialog.value = true
+    curriculumStore.fetchCurriculumData(curriculum.number)
   }
 }
 
@@ -145,6 +147,17 @@ onMounted(
 
 watch (
     () => curriculumStore.curriculumResponse,
+    async (data) => {
+      if(data){
+        await curriculumStore.fetchCurriculum()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => curriculumStore.curriculumEditResponse,
     async (data) => {
       if(data){
         await curriculumStore.fetchCurriculum()
