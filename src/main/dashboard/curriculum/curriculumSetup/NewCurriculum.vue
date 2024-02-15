@@ -22,7 +22,7 @@
         <button
             type="submit"
             class="btn btn-primary border-0">
-                Save
+                 {{curriculumNumber ? "Edit" : "Save"}}
               <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
                   <span class="visually-hidden">Loading...</span>
                 </span>
@@ -44,6 +44,7 @@ const classError = ref(null)
 const name = ref(null)
 const school_number = ref(null)
 const loader = ref(false)
+const curriculumNumber = ref(null)
 
 
 const curriculumStore = useCurriculumStore()
@@ -56,12 +57,12 @@ const form = reactive({
 
 const addCurriculum = () =>{
   loader.value = true
-/*  if(school_number.value){
-    form.school_number = school_number.value
-    schoolStore.editSchoolData(form)
-  }else {*/
+  if(curriculumNumber.value){
+    form.curriculum_number = curriculumNumber.value
+    curriculumStore.editCurriculumData(form)
+  }else {
   curriculumStore.newCurriculumData(form)
-  // }
+  }
 
 }
 
@@ -69,9 +70,7 @@ const addCurriculum = () =>{
 
 onMounted(
     () =>{
-      /* if(props.classNumber){
-         classesStore.classDetails(props.classNumber)
-       }*/
+
     }
 )
 
@@ -93,13 +92,35 @@ watch (
     () => curriculumStore.errorMessage,
     async (data) => {
       if(data){
+        loader.value = false
         notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}
 )
 
+watch (
+    () => curriculumStore.curriculumDataInfoResponse,
+    async (data) => {
+      if(data){
+        let info = data.data
+        form.name = info.name ? info.name : ""
+        curriculumNumber.value = info.number ? info.number : ""
+      }
+    },
+    {deep:true}
+)
 
+
+watch (
+    () => curriculumStore.curriculumEditResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
 
 
 </script>
