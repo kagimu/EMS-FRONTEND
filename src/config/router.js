@@ -44,7 +44,6 @@ import Conditions from "@/main/settings/conditions/Conditions.vue"
 import Products from "@/main/dashboard/servicesAndProducts/Products.vue";
 import Designsidework from "../main/dashboard/Designsidework.vue";
 
-
 const router = createRouter({
     history: createWebHistory(),
     routes:[

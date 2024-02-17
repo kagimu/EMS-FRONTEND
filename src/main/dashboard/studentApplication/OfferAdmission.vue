@@ -244,7 +244,7 @@ onMounted(
       class_number:null,
       school_number:null,
       campus_number:null,
-      student_number:routerData.currentRoute.value.query.id,
+      // student_number:routerData.currentRoute.value.query.id,
     })
 
     const admitStudent = () =>{
