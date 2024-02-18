@@ -1,5 +1,6 @@
 <template>
   <div>
+    <form @submit.prevent="admitStudent">
     <div class="row">
       <div class="col-12">
         <div class="card mt-3">
@@ -52,8 +53,8 @@
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm" required
-                      v-model="school_number"
-                      @change="fetchCampuses(school_number)"
+                      v-model="form.school_number"
+                      @change="fetchCampuses(form.school_number)"
               >
                   <option disabled value="">Select School</option>
                   <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
@@ -66,8 +67,8 @@
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
-                      v-model="form.preferred_campus_number" required
-                      @change="fetchClasses(form.preferred_campus_number)"
+                      v-model="form.campus_number" required
+                      @change="fetchClasses(form.campus_number)"
               >
                   <option disabled value="">Select campus</option>
                   <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
@@ -91,21 +92,11 @@
         </div>
 
       </div>
-     
-
-    <form @submit.prevent="admitStudent">
-
-    
 
     <label class="textColor mt-3 mb-2 textColor"><small>Are there conditions to fullfil ?</small></label><br>
     <input type="radio" v-model="answer" value="no" > <span class="textColor">No </span> &nbsp;&nbsp;&nbsp;
     <input type="radio" v-model="answer" value="yes"> <span class="textColor">Yes </span>
     <div class="mb-2" v-if="answer === 'yes'">
-
-
-    
-
-
       <div class="mb-2">
        
         <label class="textColor mt-3 mb-2 textColor"><small>Select Condition</small></label>
@@ -117,13 +108,11 @@
           </li>
           <li class="list-group-item"  v-for="(condition, index) in conditions" :key="index" >
             <input style="outline: none 0 !important; box-shadow: none;"
-                class="form-check-input me-1" type="checkbox" v-model="selectedconditions" :value="condition">
+                class="form-check-input me-1" type="checkbox" v-model="selectedconditions" :value="condition.number">
                 
-            <label class="form-check-label cursor-pointer textColor" ><small>{{ condition }}</small></label>
+            <label class="form-check-label cursor-pointer textColor" ><small>{{ condition.description}}</small></label>
           </li>
          
-         
-
         </ul>
       </div>
 
@@ -149,7 +138,7 @@
 
 
 </div>
-  </form>
+
     
   </div>
   </div>
@@ -159,65 +148,136 @@
 
 
 
-
+</form>
   </div>
   </template>
   
   <script setup>
   import {onMounted,reactive, ref, watch,watchEffect} from "vue"
-  import useNotificationStore from "@/composables/useNotification.js";
-  import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
-  import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-  import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-  import {useRouter} from "vue-router";
+  import useNotificationStore from "@/composables/useNotification.js"
+  import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
+  import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
+  import {useAdmissionStore} from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
+  import {useRouter} from "vue-router"
+  import { useConditionStore } from "../../settings/conditions/conditionStore"
 
-  let errorMessage = ref(null)
+const routerData = useRouter()
 
-  const emit = defineEmits()
+const admissionStore = useAdmissionStore()
+const conditionStore = useConditionStore()
+const buttonLoader = ref(false)
 
-  const answer = ref('')
-  const selectAll = ref(false)
-  const selectedconditions = ref([])
-
-  const applicationStore= useApplicationStore()
+let errorMessage = ref(null)
+const emit = defineEmits()
+const answer = ref('')
+const selectAll = ref(false)
+const selectedconditions = ref([])
 const  notificationStore  = useNotificationStore()
-  const campusList = ref([])
-  const schoolList = ref([])
-  const classList = ref([])
-  const schoolStore = useSchoolStore()
-  const campusStore = useCampusStore()
-  const school_number = ref(null)
+const campusList = ref([])
+const schoolList = ref([])
+const classList = ref([])
+const schoolStore = useSchoolStore()
+const campusStore = useCampusStore()
 
-  const conditions = [
-  'condition 1', 
-  'condition 2', 
-  'condition 3', 
-  'condition 4'
-]
 
+const conditions = ref([])
+
+onMounted(
+      async () => {
+        await conditionStore.fetchOfferAdmissionCondition()
+      } )
+      watch(
+      () => conditionStore.offerAdmissionConditionResponse,
+      async (data) => {
+        if(data){
+          conditions.value = data
+        }
+      },
+      {deep:true}
+  )
+
+// const conditions = [
+//   'condition 1', 
+//   'condition 2', 
+//   'condition 3', 
+//   'condition 4'
+// ]
+
+
+let student_number = ref(null)
+
+onMounted(
+    async () => {
+      await admissionStore.fetchAdmissionOfferByStudentId(routerData.currentRoute.value.query.id)
+    } )
+
+    watch(
+    () => admissionStore.admissionOfferByStudentIdResponse,
+    async (data) => {
+      if(data){
+        admissionOfferList.value = data.data
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+    )
+
+    watchEffect(() => {
+  if (selectAll.value) {
+    selectedconditions.value = conditions.slice() // Select all conditions
+  } else {
+    selectedconditions.value = [] // Deselect all conditions
+  }
+})
 
   const goBack = () => {
      window.history.back()
     }
 
+    // "class_number":"bcffbfed-ddfa-438f-a462-cac106658ea3",
+    // "school_number":"{{SCHOOL_ID}}",
+    // "campus_number":"2d8e19d3-78e4-450a-8fdc-1cabe7e63a16",
+    // "student_number":"{{STUDENT_ID}}"
+
   const form = reactive({ 
-      conditions:[],
+    selectedconditions,
+      class_number:null,
+      school_number:null,
+      campus_number:null,
+      student_number:routerData.currentRoute.value.query.id,
     })
 
-
-watchEffect(() => {
-  if (selectAll.value) {
-    selectedconditions.value = conditions.slice(); // Select all conditions
-  } else {
-    selectedconditions.value = []; // Deselect all conditions
-  }
-})
-
-const admitStudent = () =>{
-  //go to invoice
-  emit("next", 2 )
-  
+    const admitStudent = () =>{
+      alert(JSON.stringify(form))
+      admissionStore.newAdmissionOffer(form)
 }
+
+watch(
+    () => admissionStore.newAdmissionOfferResponse,
+    async (data) => {
+      if(data){
+        emit("next", 2 )
+        admissionOfferList.value = data.data
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+    )
+
+    watch(
+      () =>  admissionStore.errorMessage,
+      async (data) => {
+            if (data) {
+              emit("next", 2 )
+                notificationStore.errorToast("Error", data.message)
+            }
+      },
+      {deep: true}
+  )
+
+
+
+
 
 const fetchCampuses = (school_number) => {
       campusStore.fetchCampuses(school_number)
@@ -273,8 +333,6 @@ const fetchCampuses = (school_number) => {
   )
 
   
-
-
   </script>
 
 

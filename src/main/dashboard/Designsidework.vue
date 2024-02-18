@@ -1,100 +1,63 @@
 <template>
   <div>
-    <div class="invoice-details">
-      <div class="invoice-items">
-        <h3>Invoice Items:</h3>
-        <div class="row">
-          <div v-for="(column, columnIndex) in columns" :key="columnIndex" class="col-md-4">
-            <ul class="list-group text-sm mb-4" style="border-radius: 0;">
-              <li class="list-group-item">
-                <input class="form-check-input me-1" type="checkbox" :id="'selectAllCheckbox' + columnIndex" v-model="selectAllAll" @change="selectAllItems">
-                <label class="form-check-label cursor-pointer textColor" :for="'selectAllCheckbox' + columnIndex">Select All</label>
-              </li>
-              <li class="list-group-item" v-for="(item, index) in column" :key="index">
-                <input class="form-check-input me-1" type="checkbox" :id="'itemCheckbox' + index" v-model="selectedItems" :value="(columnIndex * 7) + index">
-                <label class="form-check-label cursor-pointer textColor" :for="'itemCheckbox' + index">{{ item.description }} - [ ugshs {{ item.price }} ]</label>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="invoice-total">
-        <h3>Total:</h3>
-        <p>{{ total }}</p>
-      </div>
-      <button @click="submitInvoice">Submit</button>
+    <div class="mb-2">
+      <label class="textColor"><small>Actual Price</small></label>
+      <input v-model="cost" @input="computeDiscountPercentage" style="outline: none 0 !important; box-shadow: none;" type="number" required class="form-control form-select-sm">
+    </div>
+
+    <div class="mb-2">
+      <label class="textColor"><small>Discount Price</small></label>
+      <input v-model="discountAmount" @input="computeDiscountPercentage" style="outline: none 0 !important; box-shadow: none;" type="number" required class="form-control form-select-sm">
+    </div>
+
+    <div class="mb-2">
+      <label class="textColor"><small>Discount Percentage</small></label>
+      <input v-model="discountPercentage" style="outline: none 0 !important; box-shadow: none;" type="number" required class="form-control form-select-sm" readonly>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
+import useNotificationStore from "@/composables/useNotification.js";
 
-const studentNumber = '1203039490402st';
-const invoice = ref({
-  items: [
-    { description: 'Item 1', price: 10 },
-    { description: 'Item 2', price: 20 },
-    { description: 'Item 3', price: 15 },
-    { description: 'Item 1', price: 10 },
-    { description: 'Item 2', price: 20 },
-    { description: 'Item 3', price: 15 },
-    { description: 'Item 1', price: 10 },
-    { description: 'Item 2', price: 20 },
-    { description: 'Item 3', price: 15 },
-    { description: 'Item 1', price: 10 },
-    { description: 'Item 2', price: 20 },
-    { description: 'Item 3', price: 15 },
-    { description: 'Item 1', price: 10 },
-    { description: 'Item 2', price: 20 },
-    { description: 'Item 3', price: 15 },
-    { description: 'Item 1', price: 10 },
-    { description: 'Item 2', price: 20 },
-    { description: 'Item 3', price: 15 },
-    { description: 'Item 1', price: 10 },
-    { description: 'Item 2', price: 20 },
-    { description: 'Item 3', price: 15 },
+const cost = ref(null);
+const discountAmount = ref(null);
+const  notificationStore  = useNotificationStore()
 
-  ]
+const discountPercentage = computed(() => {
+  if (cost.value !== null && discountAmount.value !== null) {
+    const actualPrice = parseFloat(cost.value);
+    const discountPrice = parseFloat(discountAmount.value);
+    if (actualPrice > 0 && discountPrice > 0 && discountPrice <= actualPrice) {
+      return ((actualPrice - discountPrice) / actualPrice) * 100;
+    }
+  }
+  return null;
 });
 
-const selectAllAll = ref(false); // Select all items across all columns
-const selectedItems = ref([]);
-
-const total = computed(() => selectedItems.value.reduce((acc, index) => acc + invoice.value.items[index].price, 0));
-
-const columns = computed(() => {
-  const items = invoice.value.items;
-  const numColumns = Math.ceil(items.length / 7);
-  const columns = Array.from({ length: numColumns }, (_, columnIndex) => {
-    const startIndex = columnIndex * 7;
-    return items.slice(startIndex, startIndex + 7);
-  });
-  return columns;
-});
-
-const selectAllItems = () => {
-  if (selectAllAll.value) {
-    const allItems = invoice.value.items.map((_, index) => index);
-    selectedItems.value = [...new Set([...selectedItems.value, ...allItems])]; // Add all items
-  } else {
-    selectedItems.value = []; // Clear selected items
+const computeDiscountPercentage = () => {
+  // Validate that discount price is not greater than actual price
+  if (discountAmount.value !== null && cost.value !== null) {
+    const actualPrice = parseFloat(cost.value);
+    const discountPrice = parseFloat(discountAmount.value);
+    if (discountPrice > actualPrice) {
+      // Reset discount price to actual price
+      discountAmount.value = actualPrice;
+      // Show toast notification
+   
+      notificationStore.errorToast("Error", 'Discount price cannot exceed actual price')
+    }
   }
 };
 
-const submitInvoice = () => {
-  const selectedItemsData = selectedItems.value.map(index => {
-    const item = invoice.value.items[index];
-    return { description: item.description, price: item.price };
-  });
-  const data = {
-    student_number: studentNumber,
-    items: selectedItemsData
-  };
-  alert(JSON.stringify(data));
-};
+// Watch for changes in cost and discountAmount
+watch([cost, discountAmount], () => {
+  computeDiscountPercentage();
+});
+
 </script>
 
-<style scoped>
-/* Add your custom styles here */
+<style>
+/* Add your styles here */
 </style>

@@ -155,6 +155,7 @@ const  notificationStore  = useNotificationStore()
   const schoolStore = useSchoolStore()
   const campusStore = useCampusStore()
   const school_number = ref(null)
+  
   const form = reactive({
   surname:null,
   second_name:null,

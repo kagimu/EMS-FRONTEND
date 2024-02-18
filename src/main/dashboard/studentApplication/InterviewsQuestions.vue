@@ -235,16 +235,7 @@ onMounted(
     },
     {deep:true}
 )
-watch (
-    () => applicationStore.errorMessage,
-    async (data) => {
-      if(data){
-        errorMessage.value = data.message
-        notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-)
+
 
   </script>
 
