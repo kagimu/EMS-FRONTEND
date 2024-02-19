@@ -132,21 +132,43 @@
                   <div>
         <div class="mb-3">
           <div class="row align-services-center">
-            <ul>
-            <li class="list-group-item">
-              <label class="form-check-label cursor-pointer textColor" :for="'selectAllCheckbox' + columnIndex"> <input class="form-check-input me-" type="checkbox" :id="'selectAllCheckbox' + columnIndex" v-model="selectAllAll" @change="selectAllservices">
-                Select All</label>
-              </li>
-          </ul>
+            <form class="mt-20"> 
+        <table class="table table-bordered">
+          <thead>
+            <tr class="textColor"  style="padding: 0px;margin: 0px;">
+              <th>Service</th>
+              <th>Quantity</th>
+              <th>Unit Price</th>
+              <th>Amount</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(Service, index) in Services" :key="index" class="textColor">
+              <td>
 
-          <div v-for="(column, columnIndex) in columns" :key="columnIndex" class="col-md-4">
-            <ul class="list-group text-sm mb-4" style="border-radius: 0;">
-              <li class="list-group-item" v-for="(item, index) in column" :key="index">
-                <input class="form-check-input me-1" type="checkbox" :id="'itemCheckbox' + index" v-model="selectedservices" :value="(columnIndex * 7) + index">
-                <label class="form-check-label cursor-pointer textColor" :for="'itemCheckbox' + index">{{ item.description }} - [ ugshs {{ item.cost }} ]</label>
-              </li>
+                <select class="form-select form-select-lg form-control select-no-border" v-model="Service.name" @change="updateService(index)">
+                  <option :value="option.name" v-for="option in availableOptions(index)">{{ option.name }}</option>
+                </select>
+              </td>
+              <td><input   type="text" v-model="Service.quantity" @input="updateAmount(index)" placeholder="1.0" class="inp"></td>
+              <td><input  type="text" v-model="Service.cost" @input="updateAmount(index)" placeholder="Unit Price" class="inp"></td>
+              <td>{{ Service.amount }}</td>
+              <td><button type="button" @click="removeService(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="btn btn-primary btn-sm textColor" @click.prevent="addService" :disabled="isAddButtonDisabled"><small>ADD ANOTHER SERVICE</small></button>
+        <div class="row mt-10">
+          <div class="col-lg-8"></div>
+          <div class="col-lg-4" >
+            <ul style="float: right;">
+              <!-- <li>Subtotal - {{ calculateSubtotal() }}</li> -->
+              <li>Total : <span style="color:rgba(173, 12, 12, 0.92)">{{ calculateTotal() }}</span> </li>
             </ul>
           </div>
+        </div>
+      </form>
           </div>
         </div>
   </div>  
@@ -165,7 +187,6 @@
           <input style="color:rgb(15, 15, 15); border: none; font-size: 15px !important;font-weight: 600;" disabled  class="form-control" v-model="total">
         </div>
         </div>
-  
       </div>
   
               </div>
@@ -189,12 +210,8 @@
     <div class="col-lg-2">
         <button style="float: right" type="submit" class="btn btn-outline-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><small>Submit<i class="bi bi-box-arrow-in-right"></i></small></button>
 </div>
-
-
 </div>
   </div>
- 
-
 </div>
   </div>
   </div></div>
@@ -221,7 +238,6 @@ const admissionStore = useAdmissionStore()
 const conditionStore = useConditionStore()
 const buttonLoader = ref(false)
 
-
 const services = ref( [])
 const serviceId = ref(null)
 const serviceStore= useServiceStore()
@@ -239,7 +255,7 @@ const schoolList = ref([])
 const classList = ref([])
 const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
-
+const studentNumber = routerData.currentRoute.value.query.id;
 
 const conditions = ref([])
 
@@ -256,13 +272,6 @@ onMounted(
       },
       {deep:true}
   )
-
-// const conditions = [
-//   'condition 1', 
-//   'condition 2', 
-//   'condition 3', 
-//   'condition 4'
-// ]
 
 
 let student_number = ref(null)
@@ -295,10 +304,6 @@ onMounted(
      window.history.back()
     }
 
-    // "class_number":"bcffbfed-ddfa-438f-a462-cac106658ea3",
-    // "school_number":"{{SCHOOL_ID}}",
-    // "campus_number":"2d8e19d3-78e4-450a-8fdc-1cabe7e63a16",
-    // "student_number":"{{STUDENT_ID}}"
 
   const form = reactive({ 
     selectedconditions,
@@ -335,10 +340,6 @@ watch(
       },
       {deep: true}
   )
-
-
-
-
 
 const fetchCampuses = (school_number) => {
       campusStore.fetchCampuses(school_number)
@@ -393,8 +394,58 @@ const fetchCampuses = (school_number) => {
       {deep: true}
   )
 
-  // invoice
-  
+// creaating invoice Logic =========================================================
+  const Services = ref([]);
+  // const ServiceOptions = ref([
+  //   { name: 'Fees', cost: 2000 },
+  //   { name: 'Toilet Paper', cost: 150 },
+  //   { name: 'Ream Of papers', cost: 2000 },
+  //   { name: 'Shoes', cost: 150 },
+  // ])
+
+  const ServiceOptions = ref([])
+
+  function updateService(index) {
+    const Service = Services.value[index];
+    const selectedOption = ServiceOptions.value.find(option => option.name === Service.name);
+    if (selectedOption) {
+      Service.cost = selectedOption.cost;
+      updateAmount(index);
+    }
+  }
+
+  function updateAmount(index) {
+    const Service = Services.value[index];
+    Service.amount = Service.quantity * Service.cost;
+  }
+
+  function addService() {
+    Services.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
+  }
+
+  function removeService(index) {
+    Services.value.splice(index, 1);
+  }
+
+  function calculateSubtotal() {
+    return Services.value.reduce((total, Service) => total + Service.amount, 0);
+  }
+
+  function calculateTotal() {
+    return calculateSubtotal();
+  }
+
+  function availableOptions(index) {
+    const selectedNames = Services.value.map(Service => Service.name);
+    return ServiceOptions.value.filter(option => !selectedNames.includes(option.name) || option.name === Services.value[index].name);
+  }
+
+  const isAddButtonDisabled = ref(false);
+  watch(Services, (newServices) => {
+    isAddButtonDisabled.value = newServices.length === ServiceOptions.value.length;
+  }, { deep: true });
+
+// =
 onMounted(
       async () => {
         await serviceStore.fetchServicesList()
@@ -404,56 +455,13 @@ onMounted(
       () => serviceStore.servicesListResponse,
       async (data) => {
         if(data){
-          services.value = data
+          ServiceOptions.value = data
         }
       },
       {deep:true}
   )
 
-const studentNumber = routerData.currentRoute.value.query.id;
-const invoice = ref({
-  services
-})
-
-const selectAllAll = ref(false)// Select all services across all columns
-const selectedservices = ref([])
-
-const total = computed(() => selectedservices.value.reduce((acc, index) => acc + invoice.value.services[index].cost, 0))
-
-const columns = computed(() => {
-  const services = invoice.value.services
-  const numColumns = Math.ceil(services.length / 7)
-  const columns = Array.from({ length: numColumns }, (_, columnIndex) => {
-    const startIndex = columnIndex * 7
-    return services.slice(startIndex, startIndex + 7)
-  })
-  return columns
-})
-
-const selectAllservices = () => {
-  if (selectAllAll.value) {
-    const allservices = invoice.value.services.map((_, index) => index)
-    selectedservices.value = [...new Set([...selectedservices.value, ...allservices])] // Add all services
-  } else {
-    selectedservices.value = [] // Clear selected services
-  }
-}
-
-const submitInvoice = () => {
-  const selectedservicesData = selectedservices.value.map(index => {
-    const item = invoice.value.services[index]
-    return  item.number
-  })
-  const data = {
-    student_number: studentNumber,
-    services: selectedservicesData
-  }
-  alert(JSON.stringify(data))
-  // router.push({ name: 'invoice-details', params: { studentNumber }})
-
-  //create Invoice ======================
-  invoiceStore.createNewInvoice(data)
-}
+  //connect invoice store==========================================
 watch (
     () => invoiceStore.newInvoiceResponse,
     async (data) => {
