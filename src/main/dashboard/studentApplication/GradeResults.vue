@@ -33,32 +33,33 @@
       </thead>
       <tbody>    
         <tr v-for="(resultList, index) in interviewResultList" :key="index">
-          <td>{{ gewwwww }}</td>
-          <td>{{ hshsjsjsj }}</td>
-          <td><input disabled type="text" value="89"></td>
+          <td>{{ resultList.Student.surname }}</td>
+          <td>{{ resultList.Student.preferred_type_of_enrollment }}</td>
+          <td><input style="width: 30px;align-items: center;" disabled type="text" v-model="resultList.score"></td>
           <td>
             <router-link
                   class="text-decoration-none"
-                  :to="{name:'admit-student'}"
+                  :to="{name:'admit-student',query:{id:resultList.Student.number}}"
               ><button class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
                  Offer Admission <i class="bi bi-arrow-right"></i></small></button>   
             </router-link>    
             </td>
         </tr> 
 
-        <tr>
-          <td>Collins Mpiima</td>
+        <tr >
+          <td>Collins</td>
           <td>Primary One</td>
-          <td><input style="width: 30px;align-items: center;" disabled type="text" value="89"></td>
+          <td><input style="width: 30px;align-items: center;" disabled type="text" value="90"></td>
           <td>
             <router-link
                   class="text-decoration-none"
-                  :to="{name:'admit-student'}"
+                  :to="{name:'admit-student',query:{id:sampleid}}"
               ><button class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
                  Offer Admission <i class="bi bi-arrow-right"></i></small></button>   
-            </router-link>     
+            </router-link>    
             </td>
         </tr> 
+
       </tbody>
     </table>
     </div>
@@ -74,6 +75,7 @@ import {onMounted,reactive, ref, watch} from "vue";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import useNotificationStore from "@/composables/useNotification.js";
 
+let sampleid ="hfhhdhdh00092"
 const interviewResultList = ref( [])
 let errorMessage = ref(null)
 
