@@ -45,21 +45,6 @@
             </router-link>    
             </td>
         </tr> 
-
-        <tr >
-          <td>Collins</td>
-          <td>Primary One</td>
-          <td><input style="width: 30px;align-items: center;" disabled type="text" value="90"></td>
-          <td>
-            <router-link
-                  class="text-decoration-none"
-                  :to="{name:'admit-student',query:{id:sampleid}}"
-              ><button class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
-                 Offer Admission <i class="bi bi-arrow-right"></i></small></button>   
-            </router-link>    
-            </td>
-        </tr> 
-
       </tbody>
     </table>
     </div>

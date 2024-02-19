@@ -99,7 +99,8 @@
         
     </div>
 
-    <div class="col-3"> 
+    <div class="col-3" v-if="appDatails.status != 'INTERVIEW_SCHEDULED'" > 
+      <!-- {{ appDatails.status }} -->
   <form @submit.prevent="scheduleInterview" >
               <label> <span style="text-align: center;font-size: 12px;"><small>Select Interview</small></span></label>
               <select required class="form-control" v-model="formData.interview_number" >
@@ -189,6 +190,7 @@ StudentDate_of_birth: null,
 preferred_type_of_enrollment: null,
 preferred_campus_number:null,
 reason:null,
+status:null,
 previousSchools:[],
     student_number: null,
 })
@@ -229,7 +231,8 @@ watch (
         appDatails.StudentDate_of_birth=data.Student.date_of_birth,
         appDatails.preferred_type_of_enrollment=data.preferred_type_of_enrollment,
         appDatails.preferred_campus_number=data.Student.preferred_campus_number,
-        appDatails.reason=data.Student.reason
+        appDatails.reason=data.Student.reason,
+        appDatails.status=data.status
         appDatails.previousSchools=data.PreviousSchools
           appDatails.student_number = data.Student.number
 

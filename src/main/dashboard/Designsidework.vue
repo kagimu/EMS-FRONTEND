@@ -1,63 +1,116 @@
 <template>
-  <div>
-    <div class="mb-2">
-      <label class="textColor"><small>Actual Price</small></label>
-      <input v-model="cost" @input="computeDiscountPercentage" style="outline: none 0 !important; box-shadow: none;" type="number" required class="form-control form-select-sm">
-    </div>
+  <div class="card">
+    <div class="card-body">
+      <form class="mt-20"> 
+        <table class="table table-bordered">
+          <thead>
+            <tr class="textColor"  style="padding: 0px;margin: 0px;">
+              <th>Service</th>
+              <th>Quantity</th>
+              <th>Unit Price</th>
+              <th>Amount</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(Service, index) in Services" :key="index" class="textColor">
+              <td>
 
-    <div class="mb-2">
-      <label class="textColor"><small>Discount Price</small></label>
-      <input v-model="discountAmount" @input="computeDiscountPercentage" style="outline: none 0 !important; box-shadow: none;" type="number" required class="form-control form-select-sm">
-    </div>
-
-    <div class="mb-2">
-      <label class="textColor"><small>Discount Percentage</small></label>
-      <input v-model="discountPercentage" style="outline: none 0 !important; box-shadow: none;" type="number" required class="form-control form-select-sm" readonly>
+                <select class="form-select form-select-lg form-control select-no-border" v-model="Service.name" @change="updateService(index)">
+                  <option :value="option.name" v-for="option in availableOptions(index)">{{ option.name }}</option>
+                </select>
+              </td>
+              <td><input   type="text" v-model="Service.quantity" @input="updateAmount(index)" placeholder="1.0" class="inp"></td>
+              <td><input  type="text" v-model="Service.unitPrice" @input="updateAmount(index)" placeholder="Unit Price" class="inp"></td>
+              <td>{{ Service.amount }}</td>
+              <td><button type="button" @click="removeService(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="btn btn-success btn-sm textColor p-0" @click.prevent="addService" :disabled="isAddButtonDisabled"><small>ADD ANOTHER SERVICE</small></button>
+        <div class="row mt-10">
+          <div class="col-lg-8"></div>
+          <div class="col-lg-4" >
+            <ul style="float: right;">
+              <!-- <li>Subtotal - {{ calculateSubtotal() }}</li> -->
+              <li>Total : <span style="color:rgba(173, 12, 12, 0.92)">{{ calculateTotal() }}</span> </li>
+            </ul>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
-import useNotificationStore from "@/composables/useNotification.js";
+  import { ref, watch } from 'vue';
 
-const cost = ref(null);
-const discountAmount = ref(null);
-const  notificationStore  = useNotificationStore()
+  const Services = ref([]);
+  const ServiceOptions = ref([
+    { name: 'Fees', unitPrice: 2000 },
+    { name: 'Toilet Paper', unitPrice: 150 },
+    { name: 'Ream Of papers', unitPrice: 2000 },
+    { name: 'Shoes', unitPrice: 150 },
+  ]);
 
-const discountPercentage = computed(() => {
-  if (cost.value !== null && discountAmount.value !== null) {
-    const actualPrice = parseFloat(cost.value);
-    const discountPrice = parseFloat(discountAmount.value);
-    if (actualPrice > 0 && discountPrice > 0 && discountPrice <= actualPrice) {
-      return ((actualPrice - discountPrice) / actualPrice) * 100;
+  function updateService(index) {
+    const Service = Services.value[index];
+    const selectedOption = ServiceOptions.value.find(option => option.name === Service.name);
+    if (selectedOption) {
+      Service.unitPrice = selectedOption.unitPrice;
+      updateAmount(index);
     }
   }
-  return null;
-});
 
-const computeDiscountPercentage = () => {
-  // Validate that discount price is not greater than actual price
-  if (discountAmount.value !== null && cost.value !== null) {
-    const actualPrice = parseFloat(cost.value);
-    const discountPrice = parseFloat(discountAmount.value);
-    if (discountPrice > actualPrice) {
-      // Reset discount price to actual price
-      discountAmount.value = actualPrice;
-      // Show toast notification
-   
-      notificationStore.errorToast("Error", 'Discount price cannot exceed actual price')
-    }
+  function updateAmount(index) {
+    const Service = Services.value[index];
+    Service.amount = Service.quantity * Service.unitPrice;
   }
-};
 
-// Watch for changes in cost and discountAmount
-watch([cost, discountAmount], () => {
-  computeDiscountPercentage();
-});
+  function addService() {
+    Services.value.push({ name: '', quantity: 1, unitPrice: 0, amount: 0 });
+  }
 
+  function removeService(index) {
+    Services.value.splice(index, 1);
+  }
+
+  function calculateSubtotal() {
+    return Services.value.reduce((total, Service) => total + Service.amount, 0);
+  }
+
+  function calculateTotal() {
+    return calculateSubtotal();
+  }
+
+  function availableOptions(index) {
+    const selectedNames = Services.value.map(Service => Service.name);
+    return ServiceOptions.value.filter(option => !selectedNames.includes(option.name) || option.name === Services.value[index].name);
+  }
+
+  const isAddButtonDisabled = ref(false);
+  watch(Services, (newServices) => {
+    isAddButtonDisabled.value = newServices.length === ServiceOptions.value.length;
+  }, { deep: true });
 </script>
 
 <style>
-/* Add your styles here */
+  /* Remove border and styling when select element is clicked */
+  .select-no-border {
+    border: none !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important; 
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  .inp{
+    border: none !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important; 
+    outline: none !important;
+    box-shadow: none !important;
+    background-color: white !important;
+  }
 </style>

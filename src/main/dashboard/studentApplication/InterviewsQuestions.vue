@@ -15,8 +15,9 @@
       <thead>
         <tr>
           <!-- <th>Interview</th> -->
-          <th>Correct Answer</th>
+          
           <th>Question</th>
+          <th>Correct Answer</th>
           <th>#</th>
         </tr>
       </thead>
@@ -24,8 +25,9 @@
         <!-- v-for="(interlist, index) in interviewList" :key="index" -->
         <tr v-for="(interviewQuestionData, index) in interviewQuestionList" :key="index">
           <!-- <td>{{ interviewQuestionData.interview_number }}</td> -->
-          <td>{{ interviewQuestionData.correct_answer }}</td>
+          
           <td>{{ interviewQuestionData.question }}</td>
+          <td>{{ interviewQuestionData.correct_answer }}</td>
            <td>
             <button data-bs-toggle="modal" data-bs-target="#infoModal" 
              class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
@@ -50,7 +52,7 @@
             <form @submit.prevent="addInterviewQuestions">
               <div class="mb-2">
                 <label class="textColor"><small>Assesment Area</small></label>
-               <select required class="form-control" v-model="form.interview_number" >
+               <select required class="form-control" v-model="form.assessment_area_number" >
                 <option disabled value=""> - Select Interview - </option>
                   <option v-for="(listdata, index) in interviewAssesmentListData" :key="index" :value="listdata.number">
                     {{ listdata.name}} 
@@ -131,6 +133,7 @@
       question:null,
       correct_answer:null,
       possible_answers:[],
+      assessment_area_number:null,
     })
 
     
