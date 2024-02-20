@@ -8,15 +8,13 @@
   <div class="container mt-4">
     <h6 style="margin-top:20px; text-align: left;font-size: 13px;"><small>Offer Admission</small> <b></b> 
       <hr style="color:rgba(192, 192, 192, 0.781); width:200px"></h6>
-
       <div class="row">
         <div class="col-lg-8">
           <p><small>Student Details </small></p>
           <table
       id="datatable"
       class="table table-striped border"
-      style="font-size: 11px !important;border: 0px;"
-    >
+      style="font-size: 11px !important;border: 0px;">
       <thead>
         <tr>
           <th>#</th>
@@ -75,8 +73,6 @@
                   </option>
               </select>
           </div>
-
-
           <div class="mb-2">
               <label class="textColor"><small>Preferred Class</small> <span class="star">*</span></label>
               <select
@@ -90,9 +86,7 @@
               </select>
           </div>
         </div>
-
       </div>
-
     <label class="textColor mt-3 mb-2 textColor"><small>Are there conditions to fullfil ?</small></label><br>
     <input type="radio" v-model="answer" value="no" > <span class="textColor">No </span> &nbsp;&nbsp;&nbsp;
     <input type="radio" v-model="answer" value="yes"> <span class="textColor">Yes </span>
@@ -119,12 +113,93 @@
     <label class="textColor text-sm"><small>Others</small></label>
     <div class="mb-2">
    <textarea class="form-control">
-
    </textarea>
      </div>
      </div>
+    
+<!-- Invoice Details -->
+<div>
+      <div class="row">
+        <div class="col-12">
+           </div>
+            <div class="card-body" style="padding: 0;">
+        <div class="container mt-4">
+          <hr>
+          <h1 class="textColor"><b>Invoice Details</b></h1>
+            <div class="row">      
+              <div class="col-lg-12">              
+                <div>
+                  <div>
+        <div class="mb-3">
+          <div class="row align-services-center">
+            <form class="mt-20"> 
+        <table class="table table-bordered">
+          <thead>
+            <tr class="textColor"  style="padding: 0px;margin: 0px;">
+              <th>Service</th>
+              <th>Quantity</th>
+              <th>Unit Price</th>
+              <th>Amount</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(Service, index) in Services" :key="index" class="textColor">
+              <td>
+
+                <select class="form-select form-select-lg form-control select-no-border" v-model="Service.name" @change="updateService(index)">
+                  <option :value="option.name" v-for="option in availableOptions(index)">{{ option.name }}</option>
+                </select>
+              </td>
+              <td><input   type="text" v-model="Service.quantity" @input="updateAmount(index)" placeholder="1.0" class="inp"></td>
+              <td><input  type="text" v-model="Service.cost" @input="updateAmount(index)" placeholder="Unit Price" class="inp"></td>
+              <td>{{ Service.amount }}</td>
+              <td><button type="button" @click="removeService(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="btn btn-primary btn-sm textColor" @click.prevent="addService" :disabled="isAddButtonDisabled"><small>ADD ANOTHER SERVICE</small></button>
+        <div class="row mt-10">
+          <div class="col-lg-8"></div>
+          <div class="col-lg-4" >
+            <ul style="float: right;">
+              <!-- <li>Subtotal - {{ calculateSubtotal() }}</li> -->
+              <li>Total : <span style="color:rgba(173, 12, 12, 0.92)">{{ calculateTotal() }}</span> </li>
+            </ul>
+          </div>
+        </div>
+      </form>
+          </div>
+        </div>
+  </div>  
+      </div>
+
+      <div class="text-end">
+          <!-- <strong>Total: {{ total }}</strong> -->
+        <div class="row">
+          <div class="col-lg-7">
+  
+          </div>
+          <div class="col-lg-2">
+         <b>TOTAL</b> 
+        </div>
+        <div class="col-lg-3">
+          <input style="color:rgb(15, 15, 15); border: none; font-size: 15px !important;font-weight: 600;" disabled  class="form-control" v-model="total">
+        </div>
+        </div>
+      </div>
+  
+              </div>
+  
+            </div>
+  
+        </div>
+    </div>
+    </div>
+    </div>
+
     <div class="row">
-    <hr style="color: rgba(17, 17, 17, 0.265);">
+    <hr style="color: rgba(17, 17, 17, 0.265);margin-top: 8px;">
     <div class="col-lg-2">
     <button @click="goBack()" type="button" class="btn btn-sm btn-outline-danger mb-2 mr-4"><small><i class="bi bi-x-circle"></i> Cancel</small></button>
 </div>
@@ -133,39 +208,41 @@
     </div>
     
     <div class="col-lg-2">
-        <button style="float: right" type="submit" class="btn btn-outline-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><small>Next<i class="bi bi-box-arrow-in-right"></i></small></button>
+        <button style="float: right" type="submit" class="btn btn-outline-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><small>Submit<i class="bi bi-box-arrow-in-right"></i></small></button>
 </div>
-
-
 </div>
-
-    
   </div>
+</div>
   </div>
-  </div>
-  </div>
-  </div>
-
-
-
+  </div></div>
 </form>
+
   </div>
+  
   </template>
   
   <script setup>
-  import {onMounted,reactive, ref, watch,watchEffect} from "vue"
+  import {onMounted,reactive, ref, watch,watchEffect,computed} from "vue"
   import useNotificationStore from "@/composables/useNotification.js"
   import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
   import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
   import {useAdmissionStore} from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
   import {useRouter} from "vue-router"
   import { useConditionStore } from "../../settings/conditions/conditionStore"
+  import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js"
+  import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
 
 const routerData = useRouter()
 
 const admissionStore = useAdmissionStore()
 const conditionStore = useConditionStore()
 const buttonLoader = ref(false)
+
+const services = ref( [])
+const serviceId = ref(null)
+const serviceStore= useServiceStore()
+const  invoiceStore  = useInvoiceStore()
+const router = useRouter()
 
 let errorMessage = ref(null)
 const emit = defineEmits()
@@ -178,7 +255,7 @@ const schoolList = ref([])
 const classList = ref([])
 const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
-
+const studentNumber = routerData.currentRoute.value.query.id;
 
 const conditions = ref([])
 
@@ -195,13 +272,6 @@ onMounted(
       },
       {deep:true}
   )
-
-// const conditions = [
-//   'condition 1', 
-//   'condition 2', 
-//   'condition 3', 
-//   'condition 4'
-// ]
 
 
 let student_number = ref(null)
@@ -234,10 +304,6 @@ onMounted(
      window.history.back()
     }
 
-    // "class_number":"bcffbfed-ddfa-438f-a462-cac106658ea3",
-    // "school_number":"{{SCHOOL_ID}}",
-    // "campus_number":"2d8e19d3-78e4-450a-8fdc-1cabe7e63a16",
-    // "student_number":"{{STUDENT_ID}}"
 
   const form = reactive({ 
     selectedconditions,
@@ -256,7 +322,7 @@ watch(
     () => admissionStore.newAdmissionOfferResponse,
     async (data) => {
       if(data){
-        emit("next", 2 )
+        // emit("next", 2 )
         admissionOfferList.value = data.data
         notificationStore.successToast("Success", data.message)
       }
@@ -268,16 +334,12 @@ watch(
       () =>  admissionStore.errorMessage,
       async (data) => {
             if (data) {
-              emit("next", 2 )
+              // emit("next", 2 )
                 notificationStore.errorToast("Error", data.message)
             }
       },
       {deep: true}
   )
-
-
-
-
 
 const fetchCampuses = (school_number) => {
       campusStore.fetchCampuses(school_number)
@@ -330,6 +392,99 @@ const fetchCampuses = (school_number) => {
             }
       },
       {deep: true}
+  )
+
+// creaating invoice Logic =========================================================
+  const Services = ref([]);
+  // const ServiceOptions = ref([
+  //   { name: 'Fees', cost: 2000 },
+  //   { name: 'Toilet Paper', cost: 150 },
+  //   { name: 'Ream Of papers', cost: 2000 },
+  //   { name: 'Shoes', cost: 150 },
+  // ])
+
+  const ServiceOptions = ref([])
+
+  function updateService(index) {
+    const Service = Services.value[index];
+    const selectedOption = ServiceOptions.value.find(option => option.name === Service.name);
+    if (selectedOption) {
+      Service.cost = selectedOption.cost;
+      updateAmount(index);
+    }
+  }
+
+  function updateAmount(index) {
+    const Service = Services.value[index];
+    Service.amount = Service.quantity * Service.cost;
+  }
+
+  function addService() {
+    Services.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
+  }
+
+  function removeService(index) {
+    Services.value.splice(index, 1);
+  }
+
+  function calculateSubtotal() {
+    return Services.value.reduce((total, Service) => total + Service.amount, 0);
+  }
+
+  function calculateTotal() {
+    return calculateSubtotal();
+  }
+
+  function availableOptions(index) {
+    const selectedNames = Services.value.map(Service => Service.name);
+    return ServiceOptions.value.filter(option => !selectedNames.includes(option.name) || option.name === Services.value[index].name);
+  }
+
+  const isAddButtonDisabled = ref(false);
+  watch(Services, (newServices) => {
+    isAddButtonDisabled.value = newServices.length === ServiceOptions.value.length;
+  }, { deep: true });
+
+// =
+onMounted(
+      async () => {
+        await serviceStore.fetchServicesList()
+      } )
+      
+      watch(
+      () => serviceStore.servicesListResponse,
+      async (data) => {
+        if(data){
+          ServiceOptions.value = data
+        }
+      },
+      {deep:true}
+  )
+
+  //connect invoice store==========================================
+watch (
+    () => invoiceStore.newInvoiceResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+        router.push({ name: 'invoice-details', params: { studentNumber }})
+
+      }
+    },
+    {deep:true}
+)
+  
+  watch (
+      () => invoiceStore.errorMessage,
+      async (data) => {
+        if(data){
+          errorMessage.value = data.message
+          notificationStore.errorToast("Error",data.message)
+          router.push({ name: 'invoice-details', params: { studentNumber }})
+
+        }
+      },
+      {deep:true}
   )
 
   

@@ -111,7 +111,7 @@ productId.value = sId
       } )
   
       watch(
-      () => productStore.productsListResponse,
+      () => productStore.productListResponse,
       async (data) => {
         if(data){
           productsList.value = data
