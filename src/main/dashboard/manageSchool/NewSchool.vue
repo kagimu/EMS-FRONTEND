@@ -69,6 +69,7 @@
 import {watch, onMounted, reactive, ref} from "vue";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
+import useNotificationStore from "@/composables/useNotification.js";
 
 const classError = ref(null)
 const name = ref(null)
@@ -78,7 +79,7 @@ const curriculumList = ref([])
 const curriculumStore = useCurriculumStore()
 
 const schoolStore = useSchoolStore()
-
+const  notificationStore  = useNotificationStore()
 
 const form = reactive({
   name:null,

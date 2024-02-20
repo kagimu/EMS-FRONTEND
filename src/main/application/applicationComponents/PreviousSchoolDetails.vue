@@ -147,7 +147,9 @@ watch (
       if(data){
         buttonLoader.value = false
         notificationStore.successToast("Success application submitted", data.message)
+        localStorage.removeItem('applicationId')
           await router.push({name: "application_history"})
+          
       }
     },
     {deep:true}

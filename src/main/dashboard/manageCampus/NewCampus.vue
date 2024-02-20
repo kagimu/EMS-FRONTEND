@@ -8,7 +8,7 @@
       </div>
 
       <div class="row">
-        <div :class="campus_number ? 'col-12' : 'col-6'">
+        <div class="col-6">
           <div class="mx-auto" style="width: 95%;">
 
 
@@ -54,7 +54,7 @@
           </div>
           </div>
         </div>
-        <div v-if="!campus_number"  class="col-6">
+        <div   class="col-6">
           <div class="mx-auto" style="width: 95%;">
 
 
@@ -69,7 +69,7 @@
             </div>
 
 
-            <div class="mb-2">
+<!--            <div class="mb-2">
               <label class="textColor"><small>Curriculum</small></label>
               <select
                   style="box-shadow: none;"
@@ -82,11 +82,25 @@
                   {{list.name}}
                 </option>
               </select>
+            </div>-->
+
+            <div class="mb-2">
+              <label class="textColor mt-3 mb-2"><small>Select Curriculum(s) to adopt to this campus</small></label>
+              <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+                <li class="list-group-item" v-for="(lvl,idx) in curriculumList">
+                  <input
+                      v-model="form.campus_curriculum"
+                      style="outline: none 0 !important; box-shadow: none;"
+                      class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="idx">
+                  <label class="form-check-label cursor-pointer" :for="idx">{{lvl.name}}</label>
+                </li>
+
+              </ul>
             </div>
 
 
 
-         <div>
+<!--         <div>
            <label class="textColor mt-3 mb-2"><small>Select Class Levels</small></label>
            <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
              <li class="list-group-item" v-for="(lvl,idx) in curriculumLevelList">
@@ -97,7 +111,7 @@
                <label class="form-check-label cursor-pointer" :for="idx">{{lvl.name}}</label>
              </li>
            </ul>
-         </div>
+         </div>-->
 
           </div>
         </div>
@@ -156,9 +170,8 @@ const form = reactive({
   email:null,
   phone:null,
   location:null,
+  campus_curriculum:[],
   commencement_date:null,
-  school_curriculum_number:"",
-  curriculum_level_number:[]
 })
 
 
@@ -208,18 +221,20 @@ watch(
     () => campusStore.campusInfoResponse,
     async (data) => {
       if(data){
-        form.name = data.data.name
-        form.phone = data.data.phone
-        form.email = data.data.email
-        form.location = data.data.location
-        campus_number.value = data.data.number
+        let info = data.data
+        form.name = info.name
+        form.phone = info.phone
+        form.email = info.email
+        form.location = info.location
+        form.commencement_date = info.commencement_date
+        campus_number.value = info.number
 
         let arr = []
-        data.data.levels.forEach(lst => {
-          arr.push(lst.name)
+        info.curriculum.forEach(lst => {
+          arr.push(lst.number)
         })
 
-        form.level = arr
+        form.campus_curriculum = arr
 
       }
     },

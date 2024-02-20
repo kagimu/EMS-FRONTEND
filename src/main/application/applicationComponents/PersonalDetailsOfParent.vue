@@ -48,15 +48,16 @@
     </div>
         <div class="text- mt-4">
           <div class="row">
+            <div class="col-lg-8"></div>
             <div class="col-lg-4">
-              <button type="submit" class="btn btn-sm btn-primary mb-2 mr-4" style="color: white;">
+              <button type="submit" class="btn btn-sm btn-primary mb-2 mr-0" style="color: white;float: right;">
                 <small>Next &nbsp;<i class="bi bi-box-arrow-in-right"></i></small> 
         <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
           <span class="visually-hidden">Loading...</span>
         </div>
       </button>
             </div>
-            <div class="col-lg-5"></div>
+           
           </div>
         </div>
 

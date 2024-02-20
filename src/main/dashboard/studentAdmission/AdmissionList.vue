@@ -36,7 +36,25 @@
     </tr>
     </thead>
     <tbody>
-    <tr v-for="(info, index) in filteredInfoData" :key="info.id">
+    <tr v-for="(offerListst, index) in admissionOfferList" :key="index">
+      <td>{{ index + 1 }}</td>
+          <td>{{ offerListst.firstname }}</td>
+          <td>{{ offerListst.secondname }}</td>
+          <td>{{offerListst.gender }}</td>
+      <td>{{offerListst.email }}</td>
+      <td>{{offerListst.phone }}</td>
+      <td>
+        <RouterLink :to="{name : 'new-admission',query:{id:studid}}" class="link-primary" style="text-decoration: none;"  >
+          <i class="bi bi-person-fill-check"></i> admit  
+        </RouterLink> <span style="color: rgb(42, 41, 41);">&nbsp;|&nbsp;</span>
+        <RouterLink :to="{name : 'new-admission', query:{id:studid} }" class="link-danger" style="text-decoration: none;"  >
+          <i class="bi bi-eye"></i>  
+        </RouterLink>
+      </td>
+    </tr>
+
+
+    <tr v-for="(info, index) in filteredInfoData" :key="info.id" style="display: non;">
       <td>{{ index + 1 }}</td>
           <td>{{ info.firstname }}</td>
           <td>{{ info.secondname }}</td>
@@ -44,7 +62,7 @@
       <td>{{info.email }}</td>
       <td>{{info.phone }}</td>
       <td>
-        <RouterLink :to="{name : 'new-admission'}" class="link-primary" style="text-decoration: none;"  >
+        <RouterLink :to="{name : 'new-admission', query:{id:studid}}" class="link-primary" style="text-decoration: none;"  >
           <i class="bi bi-person-fill-check"></i> admit  
         </RouterLink> <span style="color: rgb(42, 41, 41);">&nbsp;|&nbsp;</span>
         <RouterLink :to="{name : 'new-admission'}" class="link-danger" style="text-decoration: none;"  >
@@ -75,9 +93,43 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-
+import {onMounted,reactive, computed,ref, watch} from "vue";
+import { useAdmissionStore } from "./newAdmissionComponents/store/adminission";
+import useNotificationStore from "@/composables/useNotification.js";
 const searchQuery = ref('')
+
+let studid = "002773383838383"
+
+const admissionOfferList = ref( [])
+const admissionStore= useAdmissionStore()
+const  notificationStore  = useNotificationStore()
+
+onMounted(
+    async () => {
+      await admissionStore.fetchAdmissionOffers()
+    } )
+
+    watch(
+    () => admissionStore.admissionOffersResponse,
+    async (data) => {
+      if(data){
+        admissionOfferList.value = data.data
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+    )
+
+    watch (
+    () => admissionStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error",data.message)
+
+      }
+    },
+    {deep:true}
+)
 
 const infoData = ref([
   { 
