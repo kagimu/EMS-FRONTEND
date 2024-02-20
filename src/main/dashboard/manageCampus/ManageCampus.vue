@@ -123,7 +123,7 @@
 
                     <router-link
                         class="text-decoration-none"
-                        :to="{name:'level', query:{id:campus.number}}"
+                        :to="{name:'campus-setup', query:{id:campus.number}}"
                     >
                       <button
                           type="button"
