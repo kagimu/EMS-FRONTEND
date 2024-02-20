@@ -141,6 +141,7 @@ const paginatedConditionList = ref([]) // Paginated condition list
     async (data) => {
       if(data){
         await serviceStore.fetchServicesList()
+   
       }
     },
     {deep:true}

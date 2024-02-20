@@ -90,6 +90,7 @@ let errorMessage = ref(null)
 const campusList = ref([])
 const schoolList = ref([])
 const school_number = ref(null)
+const showDialog = ref(false)
 
 
 const formData = reactive({
