@@ -46,13 +46,13 @@
         </thead>
         <tbody>
           <tr v-for="(serviceData, index) in servicesList" :key="index" >
-            <td>{{ serviceData.name}}</td>
-            <td>{{ serviceData.cost}}</td>
-            <td>{{ serviceData.description}}</td>
+            <td>{{ serviceData.Item.name}}</td>
+            <td>{{ serviceData.Item.cost}}</td>
+            <td>{{ serviceData.Item.description}}</td>
             <td>
               <button @click="setServiceId(serviceData)" data-bs-target="#editServiceModal"  data-bs-toggle="modal" class="link-primary"><i class="bi bi-pencil"></i></button>&nbsp;&nbsp;   |
               &nbsp;&nbsp; 
-              <button  @click="deleteService(serviceData.number)" class="link-danger"><i class="bi bi-trash"></i></button>        
+              <button  @click="deleteService(serviceData.Item.number)" class="link-danger"><i class="bi bi-trash"></i></button>        
               </td>
           </tr>      
         </tbody>
