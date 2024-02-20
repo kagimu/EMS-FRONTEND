@@ -9,6 +9,7 @@ export const useLevelStore = defineStore("level", () => {
     const curriculumLevelResponse = ref(null)
     const curriculumLevelInfoResponse = ref(null)
     const campusLevelResponse = ref(null)
+    const campusCurriculumResponse = ref(null)
     const levelDataInfoResponse = ref(null)
     const levelEditResponse = ref(null)
     const errorMessage = ref(null)
@@ -106,6 +107,19 @@ export const useLevelStore = defineStore("level", () => {
     }
 
 
+    async function fetchCampusCurriculum(data) {
+        return await api.get("main/campus/curriculum?campus_number="+data)
+            .then((response) => {
+                campusCurriculumResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
 
 
     async function fetchLevelsByCampusNumber(campusNumber) {
@@ -158,6 +172,7 @@ export const useLevelStore = defineStore("level", () => {
         deleteLevelSetUpResponse,
         levelDataInfoResponse,
         levelEditResponse,
+        campusCurriculumResponse,
         errorMessage,
         newLevelData,
         editLevelData,
@@ -169,5 +184,6 @@ export const useLevelStore = defineStore("level", () => {
         fetchLevelsByCampusNumber,
         deleteLevelSetUp,
         LevelData,
+        fetchCampusCurriculum
     }
 })
