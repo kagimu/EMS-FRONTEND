@@ -51,7 +51,7 @@
 
             <div class="col-lg-8">
               <!-- New Design -->
-<form class="mt-20"> 
+<form class="mt-4"> 
         <table class="table table-bordered">
           <thead>
             <tr class="textColor"  style="padding: 0px;margin: 0px;">
