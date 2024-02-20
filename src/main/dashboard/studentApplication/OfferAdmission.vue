@@ -148,7 +148,7 @@
               <td>
 
                 <select class="form-select form-select-lg form-control select-no-border" v-model="Service.name" @change="updateService(index)">
-                  <option :value="option.name" v-for="option in availableOptions(index)">{{ option.name }}</option>
+                  <option :value="option.Item.name" v-for="option in availableOptions(index)">{{ option.Item.name }}</option>
                 </select>
               </td>
               <td><input   type="text" v-model="Service.quantity" @input="updateAmount(index)" placeholder="1.0" class="inp"></td>
