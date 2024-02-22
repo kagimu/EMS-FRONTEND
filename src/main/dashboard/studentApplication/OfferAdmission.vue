@@ -455,7 +455,9 @@ onMounted(
       () => serviceStore.servicesListResponse,
       async (data) => {
         if(data){
-          ServiceOptions.value = data
+          // ServiceOptions.value = data
+          ServiceOptions.value = data.map(option => ({ name: option.Item.name, cost: option.Item.cost }));
+
         }
       },
       {deep:true}

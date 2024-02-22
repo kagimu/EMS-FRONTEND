@@ -17,15 +17,22 @@
           </div>
           <div class="card-body" style="padding: 0;">
             <div class="container mt-4">
+              <form @submit.prevent="createInvoice">
               <div class="row">
                 <div class="col-lg-4">
-                  <form @submit.prevent="createInvoice">
+                 
                     <p class="textColor" style="margin-bottom: -4px;">Payee Details</p>
                     <div class="mb-2">
                       <label class="textColor text-sm"><small>Student</small> <span class="star">*</span></label>
-                      <select class="form-control">
-                        <option>-select-</option>
-                      </select>
+                      <select
+                        style="box-shadow: none;"
+                        class="form-select form-select-sm" required
+                        v-model="student_number"
+                >
+                    <option disabled value="">Select Student</option>
+                    <option v-for="(list, index) in studentInfoList" :key="index" :value="list.Student.number">{{ list.Student.surname }}
+                    </option>
+                </select>
                     </div>
                     <div class="mb-2">
                       <label class="textColor"><small>Campus</small> </label>
@@ -43,12 +50,12 @@
                       <label class="textColor"><small>Email</small></label>
                       <input disabled type="email" class="form-control" value="collinsmppima@gmail.com">
                     </div>
-                  </form>
+            
                 </div>
                 <div class="col-lg-8">
                   <!-- New Design -->
-                  <form class="mt-4">
-                    <table class="table table-bordered">
+              
+                    <table class="table bordered">
                       <thead>
                         <tr class="textColor" style="padding: 0px;margin: 0px;">
                           <th>Service</th>
@@ -59,9 +66,9 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="(Service, index) in Services" :key="index" class="textColor">
+                        <tr v-for="(Service, index) in Services" :key="index" >
                           <td>
-                            <select class="form-select form-select-lg form-control select-no-border" v-model="Service.name" @change="updateService(index)">
+                            <select class="form-select form-select-sm form-control select-no-border" v-model="Service.name" @change="updateService(index)">
                               <option :value="option.name" v-for="option in availableOptions(index)">{{ option.name }}</option>
                             </select>
                           </td>
@@ -82,10 +89,28 @@
                         </ul>
                       </div>
                     </div>
-                  </form>
+                
                   <!-- ends here -->
                 </div>
-              </div>
+              </div> 
+              <div class="row">
+             
+             <div class="col-lg-4">
+             <button @click="goBack()" type="button" class="btn btn-sm btn-outline-danger mb-2 mr-4" style="float: left !important;margin-right: 0px;">
+               <i class="bi bi-box-arrow-in-left"></i> back</button>
+           </div>
+           <div class="col-lg-4"></div>
+           <div class="col-lg-4 ">
+             <button type="submit" class="btn btn-sm btn-outline-primary mb-2 mt-1" style="float: right !important;margin-right: 0px;">
+               <small><i class="bi bi-save"></i> Publish</small>
+           <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
+             <span class="visually-hidden">Loading...</span>
+           </div>
+         </button>
+           </div>
+          
+           </div>
+             </form>
             </div>
           </div>
           <hr>
@@ -100,17 +125,18 @@ import {onMounted, reactive, ref, watch, watchEffect, computed} from "vue"
 import useNotificationStore from "@/composables/useNotification.js"
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
-import {useAdmissionStore} from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
 import {useRouter} from "vue-router"
-import { useConditionStore } from "../../settings/conditions/conditionStore"
+
 import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js"
 import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
+import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 
+const studentInfoList = ref( [])
 const routerData = useRouter()
-
 const serviceStore= useServiceStore()
 const  invoiceStore  = useInvoiceStore()
 const router = useRouter()
+const applicationStore= useApplicationStore()
 
 let errorMessage = ref(null)
 const emit = defineEmits()
@@ -127,6 +153,24 @@ const goBack = () => {
 // Creating invoice Logic =========================================================
 const Services = ref([]);
 const ServiceOptions = ref([])
+
+
+onMounted(
+    async () => {
+      await applicationStore.fetchApplicationList()
+    } )
+
+    watch(
+    () => applicationStore.applicationListResponse,
+    async (data) => {
+      if(data){
+        studentInfoList.value = data.data
+       
+      }
+    },
+    {deep:true}
+    )
+
 
 function updateService(index) {
   const Service = Services.value[index];
@@ -181,6 +225,24 @@ watch(
 )
 
 // Connect invoice store ==========================================
+const createInvoice = () => {
+  const selectedData = Services.value.map(service => ({
+      name: service.name,
+      quantity: service.quantity,
+      unitPrice: service.unitPrice,
+      amount: service.amount
+    }))
+
+  const data = {
+    student_number: 'studentNumber',
+    selectedData
+  }
+  alert(JSON.stringify(data))
+  //create Invoice ======================
+  invoiceStore.createNewInvoice(data)
+}
+
+
 watch (
   () => invoiceStore.newInvoiceResponse,
   async (data) => {
@@ -198,7 +260,8 @@ watch (
     if (data) {
       errorMessage.value = data.message
       notificationStore.errorToast("Error",data.message)
-      router.push({ name: 'invoice-details', params: { studentNumber }})
+      //redirecting to another page
+      // router.push({ name: 'invoice-details', params: { studentNumber }})
     }
   },
   { deep: true }
@@ -223,10 +286,10 @@ watch (
 input{
   background-color: #f8f9fa;
   border-radius: 2px;
-  font-size: 10px !important;
+  /* font-size: 10px !important; */
 }
 select{
-  background-color: #f8f9fa;
+  background-color: transparent;
   border-radius: 2px;
   font-size: 10px !important;
 }
@@ -236,4 +299,22 @@ select{
 .textColor{
   font-size: 11px !important;
 }
+  .select-no-border {
+    border: none !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important; 
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  .inp{
+    border: none !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important; 
+    outline: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+  }
+
 </style>

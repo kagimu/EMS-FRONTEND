@@ -18,7 +18,7 @@
             <ul class="list-group text-sm mb-4" style="border-radius: 0;">
               <li class="list-group-item" v-for="(item, index) in column" :key="index">
                 <input class=" me-1" type="checkbox" :id="'itemCheckbox' + index" v-model="selectedservices" :value="(columnIndex * 7) + index">
-                <label class=" cursor-pointer textColor" :for="'itemCheckbox' + index">{{ item.description }} - [ ugshs {{ item.cost }} ]</label>
+                <label class=" cursor-pointer textColor" :for="'itemCheckbox' + index">{{ item.Item.description }} - [ ugshs {{ item.Item.cost }} ]</label>
               </li>
             </ul>
           </div>
@@ -116,7 +116,7 @@ const invoice = ref({
 const selectAllAll = ref(false)
 const selectedservices = ref([])
 
-const total = computed(() => selectedservices.value.reduce((acc, index) => acc + invoice.value.services[index].cost, 0))
+const total = computed(() => selectedservices.value.reduce((acc, index) => acc + invoice.value.services[index].Item.cost, 0))
 
 const columns = computed(() => {
   const services = invoice.value.services
