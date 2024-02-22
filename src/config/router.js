@@ -34,7 +34,7 @@ import ClientApplications from "@/main/application/ClientApplications.vue";
 import InterviewDetails from "@/main/dashboard/studentApplication/InterviewDetails.vue";
 import Services from "@/main/dashboard/servicesAndProducts/Services.vue";
 import AdmitStudent from "@/main/dashboard/studentApplication/AdmitStudent.vue";
-import InterviewAssessmentAreas from "@/main/dashboard/studentApplication/InterviewAssesmentAreas.vue"
+import InterviewAssessmentAreas from "@/main/dashboard/assessment/assessmentComponents/AssesmentAreas.vue"
 import Invoice from "@/main/dashboard/invoice/Invoice.vue"
 import NewInvoice from "@/main/dashboard/invoice/NewInvoice.vue"
 import InvoiceDetails from "@/main/dashboard/invoice/InvoiceDetails.vue"
@@ -43,6 +43,9 @@ import Conditions from "@/main/settings/conditions/Conditions.vue"
 import Products from "@/main/dashboard/servicesAndProducts/Products.vue";
 import Designsidework from "../main/dashboard/Designsidework.vue";
 import CampusSetup from "@/main/dashboard/manageLevel/CampusSetup.vue";
+import Assessment from "@/main/dashboard/assessment/Assessment.vue";
+import AssessmentList from "@/main/dashboard/assessment/assessmentComponents/AssessmentList.vue"
+import ExamType from "@/main/dashboard/assessment/assessmentComponents/ExamType.vue"
 
 const router = createRouter({
     history: createWebHistory(),
@@ -104,8 +107,9 @@ const router = createRouter({
                 {path: 'condtions', component:Conditions , name: "conditions"},
                 {path: 'products', component: Products, name: "products"},
                 {path: 'let-us-design', component: Designsidework, name: "let-us-design"},
-
-                
+                {path: 'assessment', component: Assessment, name: "assessment"},
+                {path: 'assessment-list', component: AssessmentList, name: "assessment-list"},
+                {path: 'examtype', component: ExamType, name: "examtype"},      
             ]
         },
 
