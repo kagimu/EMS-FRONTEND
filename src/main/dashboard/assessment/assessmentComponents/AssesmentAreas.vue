@@ -6,7 +6,7 @@
                 <div class="card-header">
            <div class="row">
             <div class="col-lg-6 "> 
-                  <input type="text" v-model="searchQuery" class="form-control mt-1 mb-0" placeholder="Search...">  
+                  <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">  
             </div>
             <div class="col-lg-6">
               <button style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
@@ -39,8 +39,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(interviewAssesmentData, index) in interviewAssesmentListData " :key="index">
-          <td>{{ interviewAssesmentData.name}}</td>
+        <tr v-for="(assesmentData, index) in AsessmentListData " :key="index">
+          <td>{{ assesmentData.name}}</td>
            <td>
             <button data-bs-toggle="modal" data-bs-target="#infoModal" 
              class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
@@ -131,14 +131,14 @@
   import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
   import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
 
-    const buttonLoader = ref(false)
-    const interviewAssesmentListData = ref([])
-    const interviewDialog= ref(false)
-    let errorMessage = ref(null)
+  const buttonLoader = ref(false)
+  const AsessmentListData = ref([])
+  const interviewDialog= ref(false)
+  let errorMessage = ref(null)
 
-    const assessmentStore= useAssessmentStore()
-    const  notificationStore  = useNotificationStore()
-    const campusList = ref([])
+  const assessmentStore= useAssessmentStore()
+  const  notificationStore  = useNotificationStore()
+  const campusList = ref([])
   const schoolList = ref([])
   const classList = ref([])
   const schoolStore = useSchoolStore()
@@ -153,7 +153,6 @@
 
     })
 
-
  //working on dialog
 const closeInterviewDialog = () => {
   interviewDialog.value = false;
@@ -167,13 +166,13 @@ const showInterviewDialog = () => {
     //  alert(JSON.stringify(form))
     interviewDialog.value = true;
      buttonLoader.value = true
-     assessmentStore.createInterviewAssesmentAreas(form)  
+     assessmentStore.createAssesmentAreas(form)  
      
     }
   
 
     watch (
-    () => assessmentStore.InterviewAssesmentAreasResponse,
+    () => assessmentStore.newAssesmentAreasResponse,
     async (data) => {
       if(data){
         buttonLoader.value = false
@@ -203,10 +202,11 @@ onMounted(
     } )
 
     watch(
-    () => assessmentStore.interviewAssesmentResultsResponse,
+    () => assessmentStore.assesmentAreaResponse,
     async (data) => {
       if(data){
-        interviewAssesmentListData.value = data.data
+        AsessmentListData.value = data.data
+        notificationStore.successToast("Success", data.message)
       }
     },
     {deep:true}

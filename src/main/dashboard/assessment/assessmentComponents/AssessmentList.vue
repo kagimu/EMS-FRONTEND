@@ -7,7 +7,7 @@
                 <div class="card-header">
            <div class="row">
             <div class="col-lg-6 "> 
-                  <input type="text" v-model="searchQuery" class="form-control mt-1 mb-0" placeholder="Search...">  
+                  <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">  
             </div>
             <div class="col-lg-6">
               <button  class="btn btn-outline-primary  btn-sm mt-1" style="float: right; border:none">
@@ -51,7 +51,42 @@
     </template>
     
     <script setup>
+    import {onMounted,reactive, computed,ref, watch} from "vue";
+    import useNotificationStore from "@/composables/useNotification.js";
+    import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
 
+    
+    const assessmentList = ref( [])
+    const assessmentStore= useAssessmentStore()
+    const  notificationStore  = useNotificationStore()
+    
+    onMounted(
+        async () => {
+          await assessmentStore.fetchAssessments()
+        } )
+    
+        watch(
+        () => assessmentStore.assessmentResponse,
+        async (data) => {
+          if(data){
+            assessmentList.value = data.data
+            notificationStore.successToast("Success", data.message)
+          }
+        },
+        {deep:true}
+        )
+    
+        watch (
+        () => assessmentStore.errorMessage,
+        async (data) => {
+          if(data){
+            notificationStore.errorToast("Error",data.message)
+    
+          }
+        },
+        {deep:true}
+    )
+  
     </script>
     
     <style scoped>
