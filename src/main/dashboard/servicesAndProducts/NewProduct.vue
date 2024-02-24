@@ -109,6 +109,13 @@ watch (
       if(data){
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
+        await productStore.fetchProductsList()
+        formData.description = null,
+        formData.name = null,
+        formData.prefix = null,
+        formData.cost = null,
+        formData.discount_amount = null
+        formData.discount_percentage = null
       }
     },
     {deep:true}

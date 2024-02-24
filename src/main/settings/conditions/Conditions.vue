@@ -135,7 +135,7 @@
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
         await conditionStore.fetchOfferAdmissionCondition()
-        thisDialog.value = false
+        // thisDialog.value = false
         formData.description = null
         formData.custom_admission_condition = null
       }
