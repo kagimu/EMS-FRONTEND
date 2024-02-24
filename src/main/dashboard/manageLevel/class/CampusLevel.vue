@@ -11,7 +11,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="mt-2 mb-2">
-                          <new-campus-level :classListInfo="classList"></new-campus-level>
+                          <new-campus-level :levelList="levelList"></new-campus-level>
                         </div>
                     </div>
                 </div>
@@ -78,41 +78,14 @@
         <table class="table table-hover caption-top" style="font-size: 14px;">
             <thead>
             <tr>
-                <th scope="col">#</th>
+                <th scope="col">Code</th>
                 <th scope="col">Name</th>
-                <th scope="col">Abbreviation</th>
-                <th scope="col">Streams</th>
-                <th scope="col" class="text-right">
-                  <div style="margin-right: 60px;">Action</div>
-                </th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(classes, index) in classList" :key="index">
-                <td>{{ index + 1 }}</td>
+            <tr v-for="(classes, index) in levelList" :key="index">
+                <td>{{ classes.code }}</td>
                 <td>{{ classes.name }}</td>
-                <td>{{ classes.abbreviation }}</td>
-                <td>
-                  <div v-for="(lst,idx) in classes.streams" :key="idx">
-                    <small>
-                      {{lst.name}}
-                      <i class="bi bi-x-circle cursor-pointer" style="font-size: 13px;" @click="deleteStream(lst)"></i>
-                    </small>
-                  </div>
-                </td>
-                <td class="text-right">
-                    <div style="margin-right: 10px;">
-                        <button
-                                type="button"
-                                class="btn btn-sm buttonStyle btn-primary mr-2"
-                                data-bs-toggle="modal"
-                                data-bs-target="#streamModal"
-
-                                style="font-size: 13px;"
-                                @click="addStream(classes)">Add Stream
-                        </button>
-                    </div>
-                </td>
             </tr>
             </tbody>
         </table>
@@ -140,10 +113,11 @@ const notificationStore = useNotificationStore()
 
 const classDialog = ref(false)
 const streamDialog = ref(false)
-const classList = ref([])
+const levelList = ref([])
 const streamClass = ref(null)
+
 const campusNumber = routerData.currentRoute.value.query.id
-const levelNumber = routerData.currentRoute.value.query.l
+const campus_curriculum_number = routerData.currentRoute.value.query.l
 
 const streamForm = reactive({
     name: "",
@@ -178,21 +152,17 @@ const deleteStream = (lst) => {
 
 onMounted(
     () => {
-        filterClassInfo()
+        fetchCampusLevel()
       // levelStore.fetchCampusLevelList(campusNumber)
     }
 )
 
-const filterClassInfo = () => {
-    fetchClasses(levelNumber)
+
+const fetchCampusLevel = () => {
+  classStore.fetchCampusLevel(campus_curriculum_number)
 }
 
-
-const fetchClasses = (levelNo) => {
-  classStore.fetchClassLevel({campusNumber: campusNumber, levelNumber: levelNo})
-}
-
-
+/*
 watch(
     () => classStore.classLevelResponse,
     async (data) => {
@@ -203,13 +173,13 @@ watch(
         }
     },
     {deep: true}
-)
+)*/
 
-watch(
+/*watch(
     () => classStore.classLevelInfoResponse,
     async (data) => {
         if (data) {
-          classList.value = data.data
+          levelList.value = data.data
         }
     },
     {deep: true}
@@ -225,14 +195,24 @@ watch(
         }
     },
     {deep: true}
-)
+)*/
 
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        levelList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 watch(
     () => classStore.newCampusLevelResponse,
     async (data) => {
       if(data){
-        alert(JSON.stringify(data))
+        fetchCampusLevel()
       }
     },
     {deep:true}

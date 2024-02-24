@@ -41,7 +41,7 @@ const routerData = useRouter()
 const  notificationStore  = useNotificationStore()
 
 const classStore = useClassesStore()
-const curriculum_number = routerData.currentRoute.value.query.l
+const campus_curriculum_number = routerData.currentRoute.value.query.l
 const campusNumber = routerData.currentRoute.value.query.id
 
 
@@ -50,18 +50,18 @@ const curriculumLevelId = ref([])
 
 const addLevel = (levelInfo) =>{
   loader.value = true
-  classStore.newCampusLevel({level_number:levelInfo.number, campus_curriculum_number:curriculum_number})
+  classStore.newCampusLevel({level_number:levelInfo.number, campus_curriculum_number:campus_curriculum_number})
 }
 
 const props = defineProps({
-  classListInfo: {},
+  levelList: {},
 })
 
 
 onMounted(
     () =>{
       // classStore.fetchClassLevelToAdd(campusLevel)
-      curriculumStore.fetchCampusCurriculumLevelList(curriculum_number)
+      curriculumStore.fetchCampusCurriculumLevelList(campus_curriculum_number)
     }
 )
 
@@ -97,12 +97,12 @@ watch(
 )
 
 watch(
-    () => props.classListInfo,
+    () => props.levelList,
     async (data) => {
       if(data){
       let arr = []
         data.forEach(lst => {
-          arr.push(lst.curriculum_class_number)
+          arr.push(lst.curriculum_level_number)
         })
         curriculumLevelId.value = arr
       }
