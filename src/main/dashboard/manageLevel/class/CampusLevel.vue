@@ -5,13 +5,13 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header text-sm p-0">
-                        <h6 class="modal-title ml-3 mt-2 mb-2">Add Class</h6>
+                        <h6 class="modal-title ml-3 mt-2 mb-2">Add Level to Campus</h6>
                         <button style="margin-right: 5px;" type="button" class="btn-close btn-sm"
                                 data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mt-2 mb-2">
-                            <new-campus-class :classListInfo="classList"></new-campus-class>
+                          <new-campus-level :classListInfo="classList"></new-campus-level>
                         </div>
                     </div>
                 </div>
@@ -129,6 +129,7 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes"
 import {useRouter} from "vue-router";
 import NewCampusClass from "@/main/dashboard/manageLevel/class/NewCampusClass.vue";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
+import NewCampusLevel from "@/main/dashboard/manageLevel/class/NewCampusLevel.vue";
 
 const routerData = useRouter()
 const levelStore = useLevelStore()
@@ -178,6 +179,7 @@ const deleteStream = (lst) => {
 onMounted(
     () => {
         filterClassInfo()
+      // levelStore.fetchCampusLevelList(campusNumber)
     }
 )
 
@@ -227,6 +229,16 @@ watch(
 
 
 watch(
+    () => classStore.newCampusLevelResponse,
+    async (data) => {
+      if(data){
+        alert(JSON.stringify(data))
+      }
+    },
+    {deep:true}
+)
+
+/*watch(
     () => levelStore.campusLevelResponse,
     async (data) => {
       if(data){
@@ -238,7 +250,7 @@ watch(
       }
     },
     {deep:true}
-)
+)*/
 
 
 </script>

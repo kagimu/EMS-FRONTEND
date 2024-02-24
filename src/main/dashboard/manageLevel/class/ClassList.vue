@@ -226,7 +226,7 @@ watch(
 )
 
 
-watch(
+/*watch(
     () => levelStore.campusLevelResponse,
     async (data) => {
       if(data){
@@ -238,7 +238,7 @@ watch(
       }
     },
     {deep:true}
-)
+)*/
 
 
 </script>
