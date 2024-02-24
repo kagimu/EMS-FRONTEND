@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="modal fade" id="learningAreaModal" tabindex="-1" :class="{ show: classDialog }" aria-labelledby=""
+        <div class="modal fade" id="campusClassModal" tabindex="-1" :class="{ show: classDialog }" aria-labelledby=""
              aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -68,7 +68,7 @@
         <div class="flex justify-content-between mt-4 mb-4 mr-3">
             &nbsp;
             <button type="button" class="btn btn-sm buttonStyle btn-primary mr-2" @click="addCampus"
-                    data-bs-toggle="modal" data-bs-target="#learningAreaModal">
+                    data-bs-toggle="modal" data-bs-target="#campusClassModal">
                 <i style="font-size: 15px;" class="bi-plus mr-2"></i>
                 Add Class
             </button>

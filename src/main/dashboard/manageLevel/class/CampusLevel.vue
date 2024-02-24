@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="modal fade" id="learningAreaModal" tabindex="-1" :class="{ show: classDialog }" aria-labelledby=""
+        <div class="modal fade" id="campusLevelModel" tabindex="-1" :class="{ show: campusLevelDialog }" aria-labelledby=""
              aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -19,56 +19,10 @@
         </div>
 
 
-        <div class="modal fade" id="streamModal" tabindex="-1" :class="{ show: streamDialog }" aria-labelledby=""
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header text-sm p-0">
-                        <h6 class="modal-title ml-3 mt-2 mb-2">Add Streams on {{streamClass}}</h6>
-                        <button style="margin-right: 5px;" type="button" class="btn-close btn-sm"
-                                data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mt-2 mb-2">
-
-                          <div class="mb-6">
-                            <label class="textColor"><small>Stream</small></label>
-                            <input
-                                placeholder="East,West,North"
-                                ref="nameRef"
-                                type="text"
-                                style="outline: none 0 !important; box-shadow: none;"
-                                v-model="streamForm.name"
-                                required
-                                class="form-control">
-                          </div>
-
-
-                        </div>
-
-                        <div class="flex justify-content-between mb-3">
-                          &nbsp;
-                            <button
-                                    type="button"
-                                    class="btn btn-sm buttonStyle btn-primary mr-2"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#streamModal"
-
-                                    style="font-size: 13px;"
-                                    @click="saveStream">Save Stream(s)
-                            </button>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
         <div class="flex justify-content-between mt-4 mb-4 mr-3">
             &nbsp;
             <button type="button" class="btn btn-sm buttonStyle btn-primary mr-2" @click="addCampus"
-                    data-bs-toggle="modal" data-bs-target="#learningAreaModal">
+                    data-bs-toggle="modal" data-bs-target="#campusLevelModel">
                 <i style="font-size: 15px;" class="bi-plus mr-2"></i>
                 Add Level
             </button>
@@ -78,8 +32,8 @@
         <table class="table table-hover caption-top" style="font-size: 14px;">
             <thead>
             <tr>
-                <th scope="col">Code</th>
-                <th scope="col">Name</th>
+                <th>Code</th>
+                <th>Name</th>
             </tr>
             </thead>
             <tbody>
@@ -111,7 +65,7 @@ const levelStore = useLevelStore()
 const classStore = useClassesStore()
 const notificationStore = useNotificationStore()
 
-const classDialog = ref(false)
+const campusLevelDialog = ref(false)
 const streamDialog = ref(false)
 const levelList = ref([])
 const streamClass = ref(null)
@@ -124,7 +78,7 @@ const streamForm = reactive({
     class_level_number: null
 })
 const addCampus = () => {
-    classDialog.value = true
+    campusLevelDialog.value = true
 }
 
 const editClass = (data) => {
@@ -167,7 +121,7 @@ watch(
     () => classStore.classLevelResponse,
     async (data) => {
         if (data) {
-            // classDialog.value = false
+            // campusLevelDialog.value = false
            filterClassInfo()
             notificationStore.successToast("Success", data.message)
         }
