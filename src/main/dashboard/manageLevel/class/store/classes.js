@@ -65,7 +65,7 @@ export const useClassesStore = defineStore("classes", () => {
     }
 
     async function newCampusClass(data) {
-        return await api.post("main/new-campus-class", data)
+        return await api.post("main/campus/new-class", data)
             .then((response) => {
                 classLevelResponse.value = response.data
             })
@@ -168,7 +168,7 @@ export const useClassesStore = defineStore("classes", () => {
     }
     async function fetchClassLevelToAdd(data) {
         data = data ? data : ""
-        return await api.get("main/classes-to-add?level="+data)
+        return await api.get("main/class/curriculum-class?level_number="+data)
             .then((response) => {
                 classesToAddResponse.value = response.data
             })
