@@ -79,7 +79,8 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
+                <th scope="col">Level</th>
+                <th scope="col">Classes</th>
                 <th scope="col">Abbreviation</th>
                 <th scope="col">Streams</th>
                 <th scope="col" class="text-right">
@@ -91,6 +92,11 @@
             <tr v-for="(classes, index) in classList" :key="index">
                 <td>{{ index + 1 }}</td>
                 <td>{{ classes.name }}</td>
+                <td>
+                  <div class="mb-2" v-for="(list,idx) in classes.classes" :key="idx">
+                    {{list.code+". "+list.name}}
+                  </div>
+                </td>
                 <td>{{ classes.abbreviation }}</td>
                 <td>
                   <div v-for="(lst,idx) in classes.streams" :key="idx">
@@ -142,7 +148,7 @@ const streamDialog = ref(false)
 const classList = ref([])
 const streamClass = ref(null)
 const campusNumber = routerData.currentRoute.value.query.id
-const levelNumber = routerData.currentRoute.value.query.l
+const campus_curriculum_number = routerData.currentRoute.value.query.l
 
 const streamForm = reactive({
     name: "",
@@ -182,12 +188,12 @@ onMounted(
 )
 
 const filterClassInfo = () => {
-    fetchClasses(levelNumber)
+    fetchClasses(campus_curriculum_number)
 }
 
 
-const fetchClasses = (levelNo) => {
-  classStore.fetchClassLevel({campusNumber: campusNumber, levelNumber: levelNo})
+const fetchClasses = (campusCurriculumNumber, campusLevelNumber) => {
+  classStore.fetchClassLevel({campusCurriculumNumber: campusCurriculumNumber, campusLevelNumber:campusLevelNumber})
 }
 
 
