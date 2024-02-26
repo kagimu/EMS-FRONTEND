@@ -46,6 +46,8 @@ import CampusSetup from "@/main/dashboard/manageLevel/CampusSetup.vue";
 import Assessment from "@/main/dashboard/assessment/Assessment.vue";
 import AssessmentList from "@/main/dashboard/assessment/assessmentComponents/AssessmentList.vue"
 import ExamType from "@/main/dashboard/assessment/assessmentComponents/ExamType.vue"
+import Account from "@/main/dashboard/account/Account.vue"
+import UserManagement from "@/main/dashboard/account/accountComponents/UserManagement.vue"
 
 const router = createRouter({
     history: createWebHistory(),
@@ -109,7 +111,9 @@ const router = createRouter({
                 {path: 'let-us-design', component: Designsidework, name: "let-us-design"},
                 {path: 'assessment', component: Assessment, name: "assessment"},
                 {path: 'assessment-list', component: AssessmentList, name: "assessment-list"},
-                {path: 'examtype', component: ExamType, name: "examtype"},      
+                {path: 'examtype', component: ExamType, name: "examtype"},  
+                {path: 'account-management', component: Account, name: "account-management"},  
+                {path: 'user-management', component: UserManagement, name: "user-management"},      
             ]
         },
 

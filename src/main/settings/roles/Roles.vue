@@ -13,6 +13,24 @@
         </div>
       </div>
 
+
+      <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+           <div class="row">
+            <div class="col-lg-6 "> 
+                  <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">  
+            </div>
+            <div class="col-lg-6">
+                <button style="float: right; margin-right: 5px;" data-bs-toggle="modal" data-bs-target="#addRoleModel"  type="button"  aria-controls="rolesDialog" class="btn btn-primary btn-sm"><i class="bi bi-plus"></i>New Role</button>
+            </div>
+    
+           </div>
+               </div>
+                <div class="card-body" >
+   
+
     <div class="row">
       <div class="col-12">
         <div class="cad mt-3">
@@ -20,7 +38,7 @@
             <div class="row mt-3">
       <div class="col-9"></div>
       <div class="col-3">
-        <button style="float: right; margin-right: 5px;" data-bs-toggle="modal" data-bs-target="#addRoleModel"  type="button"  aria-controls="rolesDialog" class="btn btn-primary btn-sm"><i class="bi bi-plus"></i>New Role</button>
+       
       </div>
     </div>
 
@@ -59,6 +77,11 @@
 </div>
 </div>
 </div>
+    </div>
+
+    </div>
+    </div>
+    </div>
     </div>
 
   </div>

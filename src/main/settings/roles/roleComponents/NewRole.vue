@@ -107,7 +107,6 @@ watch (
         form.description = null
         permissionSelected.value = []
         notificationStore.successToast("Success", data.message)
-      
       }
     },
     {deep:true}

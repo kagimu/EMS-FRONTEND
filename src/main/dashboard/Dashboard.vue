@@ -132,6 +132,7 @@ const menuList = ref([
   // {title:"Accounting", name:"accounting", icon:"bi-receipt"},
   {title:"Calendar", name:"general-calendar", icon:"bi-calendar3"},
   {title:"Report Center", name:"report-center", icon:"bi-card-heading"},
+  {title:"Account Management", name:"account-management", icon:"bi-people"},
   {title:"Settings", name:"settings", icon:"bi-gear"},
 ])
 
