@@ -46,9 +46,9 @@
         </thead>
         <tbody>
           <tr v-for="(productData, index) in productsList" :key="index" >
-            <td>{{ productData.name}}</td>
-            <td>{{ productData.cost}}</td>
-            <td>{{ productData.description}}</td>
+            <td>{{ productData.Item.name}}</td>
+            <td>{{ productData.Item.cost}}</td>
+            <td>{{ productData.Item.description}}</td>
             <td>
               <button @click="setProductId(productData)" data-bs-target="#editServiceModal"  data-bs-toggle="modal" class="link-primary"><i class="bi bi-pencil"></i></button>&nbsp;&nbsp;   |
               &nbsp;&nbsp; 
@@ -124,7 +124,7 @@ productId.value = sId
     () => productStore.newProductResponse,
     async (data) => {
       if(data){
-       showDialog.value = false
+      /// showDialog.value = false
         await productStore.fetchProductsList()
       }
     },

@@ -17,9 +17,11 @@ export const useClassesStore = defineStore("classes", () => {
     let classStreams = ref(null)
     let classCurriculumResponse = ref(null)
     let newStreamSuccess = ref(null)
+    let newCampusLevelResponse = ref(null)
     let classesToAddResponse = ref(null)
     let curriculumClassInfoResponse = ref(null)
     let curriculumClassResponse = ref(null)
+    let campusLevelResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -63,7 +65,7 @@ export const useClassesStore = defineStore("classes", () => {
     }
 
     async function newCampusClass(data) {
-        return await api.post("main/new-campus-class", data)
+        return await api.post("main/campus/new-class", data)
             .then((response) => {
                 classLevelResponse.value = response.data
             })
@@ -166,7 +168,7 @@ export const useClassesStore = defineStore("classes", () => {
     }
     async function fetchClassLevelToAdd(data) {
         data = data ? data : ""
-        return await api.get("main/classes-to-add?level="+data)
+        return await api.get("main/class/curriculum-class?level_number="+data)
             .then((response) => {
                 classesToAddResponse.value = response.data
             })
@@ -179,7 +181,7 @@ export const useClassesStore = defineStore("classes", () => {
 
     async function fetchClassLevel(data) {
         data = data ? data : ""
-        return await api.get("main/class-level?level_number="+data.levelNumber+"&campus_number="+data.campusNumber)
+        return await api.get("main/campus/class-list?campus_curriculum_number="+data.campusCurriculumNumber+"&campus_level_number="+data.campusLevelNumber)
             .then((response) => {
                 classLevelInfoResponse.value = response.data
             })
@@ -238,12 +240,36 @@ export const useClassesStore = defineStore("classes", () => {
             })
     }
 
+    async function newCampusLevel(data) {
+        return await api.post("main/campus/new-level",data)
+            .then((response) => {
+                newCampusLevelResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
 
     async function classData(data) {
         return await api.get("main/class/info?class_number="+data)
             .then((response) => {
                 classDataInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchCampusLevel(data) {
+        return await api.get("main/campus/level-list?campus_curriculum_number="+data)
+            .then((response) => {
+                campusLevelResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -272,6 +298,8 @@ export const useClassesStore = defineStore("classes", () => {
         classEditResponse,
         deleteClassSetUpResponse,
         classDataInfoResponse,
+        newCampusLevelResponse,
+        campusLevelResponse,
         errorMessage,
         newClassData,
         editClassData,
@@ -290,6 +318,8 @@ export const useClassesStore = defineStore("classes", () => {
         newCurriculumClassData,
         fetchCurriculumClasses,
         deleteClassSetUp,
-        classData
+        classData,
+        newCampusLevel,
+        fetchCampusLevel
     }
 })

@@ -6,7 +6,6 @@ import AuthMain from "@/main/auth/AuthMain.vue";
 import Dashboard from "@/main/dashboard/Dashboard.vue";
 import {useAuthStore} from "@/main/auth/store/auth.js";
 import ManageCampus from "@/main/dashboard/manageCampus/ManageCampus.vue";
-import ManageLevel from "@/main/dashboard/manageLevel/ManageLevel.vue";
 import userProfiles from "@/main/dashboard/profiles/userProfiles.vue";
 import settings from "@/main/settings/Settings.vue";
 import ReportCenter from "@/main/dashboard/ReportCenter/ReportCenter.vue";
@@ -35,7 +34,7 @@ import ClientApplications from "@/main/application/ClientApplications.vue";
 import InterviewDetails from "@/main/dashboard/studentApplication/InterviewDetails.vue";
 import Services from "@/main/dashboard/servicesAndProducts/Services.vue";
 import AdmitStudent from "@/main/dashboard/studentApplication/AdmitStudent.vue";
-import InterviewAssessmentAreas from "@/main/dashboard/studentApplication/InterviewAssesmentAreas.vue"
+import InterviewAssessmentAreas from "@/main/dashboard/assessment/assessmentComponents/AssesmentAreas.vue"
 import Invoice from "@/main/dashboard/invoice/Invoice.vue"
 import NewInvoice from "@/main/dashboard/invoice/NewInvoice.vue"
 import InvoiceDetails from "@/main/dashboard/invoice/InvoiceDetails.vue"
@@ -43,6 +42,14 @@ import NewAdmission from "@/main/dashboard/studentAdmission/NewAdmission.vue"
 import Conditions from "@/main/settings/conditions/Conditions.vue"
 import Products from "@/main/dashboard/servicesAndProducts/Products.vue";
 import Designsidework from "../main/dashboard/Designsidework.vue";
+import CampusSetup from "@/main/dashboard/manageLevel/CampusSetup.vue";
+import Assessment from "@/main/dashboard/assessment/Assessment.vue";
+import AssessmentList from "@/main/dashboard/assessment/assessmentComponents/AssessmentList.vue"
+import ExamType from "@/main/dashboard/assessment/assessmentComponents/ExamType.vue"
+import Account from "@/main/dashboard/account/Account.vue"
+import UserManagement from "@/main/dashboard/account/accountComponents/UserManagement.vue"
+import GradingStandard from "@/main/dashboard/assessment/assessmentComponents/GradingStandards.vue"
+import GradingScale from "@/main/dashboard/assessment/assessmentComponents/GradingScale.vue"
 
 const router = createRouter({
     history: createWebHistory(),
@@ -71,10 +78,10 @@ const router = createRouter({
                 {path: 'home', component: Home, name: "home"},
                 {path: 'school', component: ManageSchool, name: "school"},
                 {path: 'campus', component: ManageCampus, name: "campus"},
-                {path: 'level', component: ManageLevel, name: "level"},
+                {path: 'campus-setup', component: CampusSetup, name: "campus-setup"},
                 {path: 'reports', component: ManageCampus, name: "reports"},
                 {path: 'student-admission', component: StudentAdmission, name: "student-admission"},
-                 {path: 'student-application', component: StudentApplication, name: "student-application"},
+                {path: 'student-application', component: StudentApplication, name: "student-application"},
                 {path: 'profiles', component: userProfiles, name: "profiles"},
                 {path: 'accounting', component: ManageCampus, name: "accounting"},
                 {path: 'report-center', component: ReportCenter, name: "report-center"},
@@ -104,8 +111,13 @@ const router = createRouter({
                 {path: 'condtions', component:Conditions , name: "conditions"},
                 {path: 'products', component: Products, name: "products"},
                 {path: 'let-us-design', component: Designsidework, name: "let-us-design"},
-
-                
+                {path: 'assessment', component: Assessment, name: "assessment"},
+                {path: 'assessment-list', component: AssessmentList, name: "assessment-list"},
+                {path: 'examtype', component: ExamType, name: "examtype"},  
+                {path: 'account-management', component: Account, name: "account-management"},  
+                {path: 'user-management', component: UserManagement, name: "user-management"},    
+                {path: 'grade-scale', component: GradingScale, name: "grade-scale"}, 
+                {path: 'grade-standard', component: GradingStandard, name: "grade-standard"},   
             ]
         },
 

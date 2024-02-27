@@ -52,26 +52,6 @@
         </RouterLink>
       </td>
     </tr>
-
-
-    <tr v-for="(info, index) in filteredInfoData" :key="info.id" style="display: non;">
-      <td>{{ index + 1 }}</td>
-          <td>{{ info.firstname }}</td>
-          <td>{{ info.secondname }}</td>
-          <td>{{info.gender }}</td>
-      <td>{{info.email }}</td>
-      <td>{{info.phone }}</td>
-      <td>
-        <RouterLink :to="{name : 'new-admission', query:{id:studid}}" class="link-primary" style="text-decoration: none;"  >
-          <i class="bi bi-person-fill-check"></i> admit  
-        </RouterLink> <span style="color: rgb(42, 41, 41);">&nbsp;|&nbsp;</span>
-        <RouterLink :to="{name : 'new-admission'}" class="link-danger" style="text-decoration: none;"  >
-          <i class="bi bi-eye"></i>  
-        </RouterLink>
-      </td>
-    </tr>
-   
-  
     </tbody>
   </table>
 
@@ -131,74 +111,7 @@ onMounted(
     {deep:true}
 )
 
-const infoData = ref([
-  { 
-    id: 1, 
-    firstname: 'Collins', 
-    secondname: 'Mpiima', 
-    gender: 'male',
-    email: "collinsmpiima@gmail.com",
-    phone : "07383839392"
-   },
-   { 
-    id: 1, 
-    firstname: 'Luke ', 
-    secondname: 'Fisherman', 
-    gender: 'male',
-    email: "wlukka@gmail.com",
-    phone : "0783839392"
-   },
-   { 
-    id: 1, 
-    firstname: 'Petero', 
-    secondname: 'Awoluganda', 
-    gender: 'male',
-    email: "aowloow@gmail.com",
-    phone : "09383839392"
-   },
-   { 
-    id: 1, 
-    firstname: 'Petero', 
-    secondname: 'Awoluganda', 
-    gender: 'male',
-    email: "aowloow@gmail.com",
-    phone : "09383839392"
-   },
-   { 
-    id: 1, 
-    firstname: 'Petero', 
-    secondname: 'Awoluganda', 
-    gender: 'male',
-    email: "aowloow@gmail.com",
-    phone : "09383839392"
-   },
-   { 
-    id: 1, 
-    firstname: 'Petero', 
-    secondname: 'Awoluganda', 
-    gender: 'male',
-    email: "aowloow@gmail.com",
-    phone : "09383839392"
-   },
-   { 
-    id: 1, 
-    firstname: 'Petero', 
-    secondname: 'Awoluganda', 
-    gender: 'male',
-    email: "aowloow@gmail.com",
-    phone : "09383839392"
-   },
-   { 
-    id: 1, 
-    firstname: 'Petero', 
-    secondname: 'Awoluganda', 
-    gender: 'male',
-    email: "aowloow@gmail.com",
-    phone : "09383839392"
-   },
-  
-])
-
+const infoData = ref([])
 const filteredInfoData = computed(() => {
   return infoData.value.filter(infoData =>
   infoData.firstname.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
