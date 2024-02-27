@@ -28,7 +28,7 @@
 
                                 style="outline: none 0 !important; box-shadow: none;"
                                 class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="lvl.number">
-                        <label class="form-check-label cursor-pointer ml-2" :for="lvl.number">{{lvl.name}}</label>
+                        <label class="textColor" :for="lvl.number"><small>{{lvl.name}}</small></label>
                     </li>
 
                 </ul>
@@ -40,6 +40,12 @@
             <input  type="text" style="outline: none 0 !important;box-shadow: none;"
                 required class="form-control form-select-sm" v-model="formData.name">
           </div>
+          <div class="mb-2">
+            <label class="textColor"><small>Prefix</small></label>
+            <input  type="text" style="outline: none 0 !important;box-shadow: none;"
+                required class="form-control form-select-sm" v-model="formData.prefix">
+          </div>
+          
             <div class="mb-2">
                 <label class="textColor"><small>Cost</small></label>
                 <input v-model="formData.cost" style="outline: none 0 !important; box-shadow: none;" type="number"  required  class="form-control form-select-sm">
@@ -57,10 +63,11 @@
                 <textarea v-model="formData.description" class="form-control "></textarea>
             </div>
             <div class="flex justify-content-end mt-2" style="width: 100%;">
-                <button type="submit" class="btn btn-primary border-0"> <i class="bi bi-save"></i> SaveData
-                    <!-- <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
+                <button type="submit" class="btn btn-primary border-0 btn-sm">
+                     <i class="bi bi-save"></i> Submit
+                    <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" v-if="buttonLoader"
                           role="status"><span class="visually-hidden">Loading...</span> 
-                        </span> -->
+                        </span>
                 </button>
             </div>
         </form>
@@ -83,6 +90,8 @@ let errorMessage = ref(null)
 const campusList = ref([])
 const schoolList = ref([])
 const school_number = ref(null)
+const showDialog = ref(false)
+
 
 const formData = reactive({
     description: null,
@@ -110,12 +119,14 @@ onMounted(() => {
 
 const createNewService = () =>{
 // alert(JSON.stringify(formData))
+buttonLoader.value=true
 serviceStore.createNewService(formData)
 }
 watch (
     () => serviceStore.newServiceResponse,
     async (data) => {
       if(data){
+        showDialog.value = false
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
       }
@@ -158,6 +169,9 @@ watch(
 </script>
 
 <style scoped>
+.textColor{
+    font-size: 11px !important;
+}
 .noFocus:focus {
     outline: none 0 !important;
     box-shadow: none;

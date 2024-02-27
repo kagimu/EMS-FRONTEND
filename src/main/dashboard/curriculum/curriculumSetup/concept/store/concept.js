@@ -4,7 +4,10 @@ import api from "@/config/api.js";
 
 export const useConceptStore = defineStore("concept", () => {
     let conceptResponse = ref(null)
+    let conceptEditResponse = ref(null)
     let conceptInfoResponse = ref(null)
+    let deleteConceptResponse = ref(null)
+    let conceptDataInfoResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -20,6 +23,20 @@ export const useConceptStore = defineStore("concept", () => {
                 }
             })
     }
+
+
+    async function editConceptData(data) {
+        return await api.post("main/concept/edit", data)
+            .then((response) => {
+                conceptEditResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
     async function fetchConcepts(data) {
         return await api.get("main/concepts?learning_area_number="+data.learning_area_number+
@@ -42,13 +59,43 @@ export const useConceptStore = defineStore("concept", () => {
     }
 
 
+    async function deleteConcept(data) {
+        return await api.post("main/concept/delete", data)
+            .then((response) => {
+                deleteConceptResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
+    async function conceptData(data) {
+        return await api.get("main/concept/info?concept_number="+data)
+            .then((response) => {
+               conceptDataInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
 
     return {
         conceptResponse,
         conceptInfoResponse,
+        deleteConceptResponse,
+        conceptDataInfoResponse,
+        conceptEditResponse,
         errorMessage,
         newConceptData,
-        fetchConcepts
+        fetchConcepts,
+        deleteConcept,
+        conceptData,
+        editConceptData
     }
 })

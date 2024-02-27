@@ -6,7 +6,6 @@ import AuthMain from "@/main/auth/AuthMain.vue";
 import Dashboard from "@/main/dashboard/Dashboard.vue";
 import {useAuthStore} from "@/main/auth/store/auth.js";
 import ManageCampus from "@/main/dashboard/manageCampus/ManageCampus.vue";
-import ManageLevel from "@/main/dashboard/manageLevel/ManageLevel.vue";
 import userProfiles from "@/main/dashboard/profiles/userProfiles.vue";
 import settings from "@/main/settings/Settings.vue";
 import ReportCenter from "@/main/dashboard/ReportCenter/ReportCenter.vue";
@@ -36,9 +35,14 @@ import InterviewDetails from "@/main/dashboard/studentApplication/InterviewDetai
 import Services from "@/main/dashboard/servicesAndProducts/Services.vue";
 import AdmitStudent from "@/main/dashboard/studentApplication/AdmitStudent.vue";
 import InterviewAssessmentAreas from "@/main/dashboard/studentApplication/InterviewAssesmentAreas.vue"
-
-
-
+import Invoice from "@/main/dashboard/invoice/Invoice.vue"
+import NewInvoice from "@/main/dashboard/invoice/NewInvoice.vue"
+import InvoiceDetails from "@/main/dashboard/invoice/InvoiceDetails.vue"
+import NewAdmission from "@/main/dashboard/studentAdmission/NewAdmission.vue"
+import Conditions from "@/main/settings/conditions/Conditions.vue"
+import Products from "@/main/dashboard/servicesAndProducts/Products.vue";
+import Designsidework from "../main/dashboard/Designsidework.vue";
+import CampusSetup from "@/main/dashboard/manageLevel/CampusSetup.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -67,10 +71,10 @@ const router = createRouter({
                 {path: 'home', component: Home, name: "home"},
                 {path: 'school', component: ManageSchool, name: "school"},
                 {path: 'campus', component: ManageCampus, name: "campus"},
-                {path: 'level', component: ManageLevel, name: "level"},
+                {path: 'campus-setup', component: CampusSetup, name: "campus-setup"},
                 {path: 'reports', component: ManageCampus, name: "reports"},
                 {path: 'student-admission', component: StudentAdmission, name: "student-admission"},
-                 {path: 'student-application', component: StudentApplication, name: "student-application"},
+                {path: 'student-application', component: StudentApplication, name: "student-application"},
                 {path: 'profiles', component: userProfiles, name: "profiles"},
                 {path: 'accounting', component: ManageCampus, name: "accounting"},
                 {path: 'report-center', component: ReportCenter, name: "report-center"},
@@ -93,6 +97,13 @@ const router = createRouter({
                 {path: 'admit-student', component: AdmitStudent, name: "admit-student"},
                 {path: 'services', component: Services, name: "services"},
                 {path: 'assessment-areas', component: InterviewAssessmentAreas, name: "assessment-areas"},
+                {path: 'invoices', component: Invoice, name: "invoices"},
+                {path: 'new-invoice', component: NewInvoice, name: "new-invoice"},
+                {path: 'invoice-details', component: InvoiceDetails, name: "invoice-details"},
+                {path: 'new-admission', component: NewAdmission, name: "new-admission"},
+                {path: 'condtions', component:Conditions , name: "conditions"},
+                {path: 'products', component: Products, name: "products"},
+                {path: 'let-us-design', component: Designsidework, name: "let-us-design"},
 
                 
             ]

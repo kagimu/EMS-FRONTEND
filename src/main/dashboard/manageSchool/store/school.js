@@ -12,7 +12,7 @@ export const useSchoolStore = defineStore("school", () => {
 
 
     async function newSchoolData(data) {
-        return await api.post("main/new-school", data)
+        return await api.post("main/school/new", data)
             .then((response) => {
                 newSchoolResponse.value = response.data
             })
@@ -24,7 +24,7 @@ export const useSchoolStore = defineStore("school", () => {
     }
 
     async function deleteSchool(data) {
-        return await api.post("main/delete-school", data)
+        return await api.post("main/school/delete", data)
             .then((response) => {
                 deleteSchoolResponse.value = response.data
             })
@@ -36,7 +36,7 @@ export const useSchoolStore = defineStore("school", () => {
     }
 
     async function editSchoolData(data) {
-        return await api.post("main/edit-school", data)
+        return await api.post("main/school/edit", data)
             .then((response) => {
                 editSchoolResponse.value = response.data
             })
@@ -48,7 +48,7 @@ export const useSchoolStore = defineStore("school", () => {
     }
 
     async function fetchSchools(userId=null) {
-        return await api.get("main/schools?by="+userId)
+        return await api.get("main/school/all?by="+userId)
             .then((response) => {
                 schoolsResponse.value = response.data
             })
@@ -63,7 +63,7 @@ export const useSchoolStore = defineStore("school", () => {
 
 
     async function fetchSchoolData(data) {
-        return await api.get("main/school-info?school_number="+data)
+        return await api.get("main/school/info?school_number="+data)
             .then((response) => {
                 schoolInfoResponse.value = response.data
             })

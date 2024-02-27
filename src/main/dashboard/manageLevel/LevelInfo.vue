@@ -36,7 +36,7 @@
                 <div class="col-3">
                   <div class="mb-4">
                     <b>Curriculum</b> <br />
-                     <span>{{campusInfo.curriculum_name}}</span>
+                     <div v-for="(item, index) in campusInfo.curriculum" :key="index">{{(index+1)+". "+item.name}}</div>
                   </div>
                 </div>
 

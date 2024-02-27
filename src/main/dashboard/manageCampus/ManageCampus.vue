@@ -91,14 +91,14 @@
                       @click="editCampus(campus)"></i>
                   <i style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  @click="deleteCampus(campus)"></i>
                   </div>
-
                 </div>
                 <small>
                   <b>Email:</b> {{campus.email}}<br />
                   <b>Phone:</b> {{campus.phone}}<br />
                   <b>Location:</b> {{campus.location}}<br />
-                  <b>Curriculum:</b> {{campus.curriculum_name}}<br />
-                  <b>Commencement Date:</b> {{campus.commencement_date}}
+                  <b>Commencement Date:</b> {{campus.commencement_date}}<br />
+                  <b>Curriculum:</b> <br />
+                  <div class="ml-2" v-for="(curr,idx) in campus.curriculum" :key="idx">{{(idx + 1)+". "+curr.name}}</div>
                 </small>
 
                 <div class="flex justify-content-between mt-4">
@@ -123,7 +123,7 @@
 
                     <router-link
                         class="text-decoration-none"
-                        :to="{name:'level', query:{id:campus.number}}"
+                        :to="{name:'campus-setup', query:{id:campus.number}}"
                     >
                       <button
                           type="button"

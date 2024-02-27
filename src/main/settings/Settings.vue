@@ -48,6 +48,12 @@
                 <div v-if="selectedPage === 'services'">
                     <Services></Services>
                 </div>
+                <div v-if="selectedPage === 'products'">
+                    <Products></Products>
+                </div>
+                <div v-if="selectedPage === 'conditions'">
+                    <Conditions></Conditions>
+                </div>
           </div>
         </div>
       </div>
@@ -67,6 +73,8 @@ import ClassSetupList from "@/main/dashboard/manageLevel/class/ClassSetupList.vu
 import LearningMaterialSetup from "@/main/settings/learning-materials/LearningMaterialSetup.vue";
 import SosInfo from "@/main/settings/sosinfo/SosInfo.vue";
 import Services from "../dashboard/servicesAndProducts/Services.vue";
+import Conditions from "@/main/settings/conditions/Conditions.vue";
+import Products from "../dashboard/servicesAndProducts/Products.vue";
 
 const routerData = useRouter()
 const buttonLoader = ref(false)
@@ -100,8 +108,16 @@ const settingsList = ref([
         id:"sosinfos"
     },
     {
-        name:"Services And Products",
+        name:"Services",
         id:"services"
+    },
+    {
+        name:"Products",
+        id:"products"
+    },
+    {
+        name:"Conditions",
+        id:"conditions"
     }
 ])
 const form = reactive({

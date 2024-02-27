@@ -7,10 +7,13 @@ export const useCurriculumStore = defineStore("curriculum", () => {
     let importResponse = ref(null)
     let curriculumExcelResponse = ref(null)
     let curriculumResponse = ref(null)
+    let curriculumEditResponse = ref(null)
     let curriculumDataResponse = ref(null)
     let curriculumInfoResponse = ref(null)
     let schoolCurriculumResponse = ref(null)
-    let schoolCurriculumLevelResponse = ref(null)
+    let campusCurriculumLevelResponse = ref(null)
+    let deleteCurriculumResponse = ref(null)
+    let curriculumDataInfoResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -18,6 +21,18 @@ export const useCurriculumStore = defineStore("curriculum", () => {
         return await api.post("main/new-curriculum", data)
             .then((response) => {
                 curriculumResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function editCurriculumData(data) {
+        return await api.post("main/curriculum/edit", data)
+            .then((response) => {
+                curriculumEditResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -64,10 +79,10 @@ export const useCurriculumStore = defineStore("curriculum", () => {
             })
     }
 
-    async function fetchSchoolCurriculumLevel(data) {
-        return await api.get("main/fetch-school-curriculum-level?school_curriculum_number="+data)
+    async function fetchCampusCurriculumLevelList(data) {
+        return await api.get("main/curriculum/campus-curriculum-level?campus_curriculum_number="+data)
             .then((response) => {
-                schoolCurriculumLevelResponse.value = response.data
+                campusCurriculumLevelResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -108,6 +123,31 @@ export const useCurriculumStore = defineStore("curriculum", () => {
 
 
 
+    async function deleteCurriculum(data) {
+        return await api.post("main/curriculum/delete", data)
+            .then((response) => {
+                deleteCurriculumResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
+    async function fetchCurriculumData(data) {
+        return await api.get("main/curriculum/info?curriculum_number="+data)
+            .then((response) => {
+                curriculumDataInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
     return {
         importResponse,
@@ -116,7 +156,10 @@ export const useCurriculumStore = defineStore("curriculum", () => {
         curriculumDataResponse,
         curriculumInfoResponse,
         schoolCurriculumResponse,
-        schoolCurriculumLevelResponse,
+        campusCurriculumLevelResponse,
+        deleteCurriculumResponse,
+        curriculumDataInfoResponse,
+        curriculumEditResponse,
         errorMessage,
         uploadExcelFile,
         fetchUploadedExcel,
@@ -124,6 +167,9 @@ export const useCurriculumStore = defineStore("curriculum", () => {
         fetchCurriculum,
         fetchCurriculumInfo,
         fetchSchoolCurriculum,
-        fetchSchoolCurriculumLevel,
+        fetchCampusCurriculumLevelList,
+        deleteCurriculum,
+        fetchCurriculumData,
+        editCurriculumData,
     }
 })

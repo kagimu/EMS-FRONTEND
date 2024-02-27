@@ -7,7 +7,7 @@
       <h5  class="txt">Get Started Today With Few Steps </h5>
     </div>
       <div class="col-lg-12">
-        <div class="card sect mx-auto" style="margin-bottom:60px;margin-top:50px;border-radius: 16px; width: 70%;">
+        <div class="card sect mx-auto" style="margin-bottom:60px;margin-top:50px;border-radius: 16px; width: 80%;">
           <div class="card-body" >
            <div class="row">
             <div class="col-lg-6" style="text-align: center;padding-top:15px;">
@@ -20,14 +20,19 @@
             <div class="text-center">
               <ul class="nav nav-tabs text-xs" style="margin-top: 50px;">
               <li class="nav-item cursor-pointer">
-                <a style="color: black;font-family: Roboto, sans-serif !important;" class="nav-link" @click="nextPage(1)" :class="step === 1 ? 'active activeTab' : ''"><small>GUARDIAN/PARENT</small></a>
+                <a style="color: black;font-family: Roboto, sans-serif !important;" class="nav-link" @click="" :class="step === 1 ? 'active activeTab' : ''"><small>GUARDIAN/PARENT</small></a>
               </li>
               <li class="nav-item cursor-pointer">
-                <a style="color: black;" class="nav-link" @click="nextPage(2)" :class="step === 2 ? 'active activeTab' : ''"><small>LEARNER</small></a>
+                <a style="color: black;" class="nav-link" @click="" :class="step === 2 ? 'active activeTab' : ''"><small>LEARNER</small></a>
               </li>
               <li class="nav-item cursor-pointer">
-                <a style="color: black;" class="nav-link" @click="nextPage(3)" :class="step === 3 ? 'active activeTab' : ''">
+                <a style="color: black;" class="nav-link" @click="" :class="step === 3 ? 'active activeTab' : ''">
                   <small>PREVIOUS SCHOOL</small>
+                </a>
+              </li>
+              <li class="nav-item cursor-pointer">
+                <a style="color: black;" class="nav-link" @click="nextPage(4)" :class="step === 4 ? 'active activeTab' : ''">
+                  <small>PAYMENT</small>
                 </a>
               </li>
             </ul>
@@ -47,6 +52,10 @@
     <previous-school-details
         v-on:next="nextPage"
     ></previous-school-details>
+  </div>
+  <div v-show="step === 4">
+  <application-payement  v-on:next="nextPage">
+  </application-payement>
   </div>
  </div>
           </div>
@@ -160,7 +169,7 @@ import useNotificationStore from "@/composables/useNotification.js";
 import PersonalDetailsOfStudent from "@/main/application/applicationComponents/PersonalDetailsOfParent.vue";
 import PersonalDetailsOfLearner from "@/main/application/applicationComponents/PersonalDetailsOfLearner.vue";
 import PreviousSchoolDetails from "@/main/application/applicationComponents/PreviousSchoolDetails.vue";
-
+import ApplicationPayement from "./applicationComponents/ApplicationPayement.vue";
 
 const step = ref(1)
 

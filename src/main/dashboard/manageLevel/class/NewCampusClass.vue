@@ -3,6 +3,23 @@
 
 
     <div class="mx-auto" style="width: 95%;">
+
+
+      <div class="mb-2">
+        <label class="textColor"><small>Level</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="campus_level_number"
+            @change="fetchCurriculumClass(campus_level_number)"
+        >
+          <option disabled value="">Select Level</option>
+          <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
+
+
       <label class="textColor mt-3 mb-2"><small>Add Classes to Levels</small></label>
       <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
 
@@ -35,20 +52,22 @@ const classError = ref(null)
 const name = ref(null)
 const loader = ref(false)
 const classList = ref([])
+const campusLevelList = ref([])
 const routerData = useRouter()
 const  notificationStore  = useNotificationStore()
 
 const classStore = useClassesStore()
-const campusLevel = routerData.currentRoute.value.query.l
+const campus_curriculum_number = routerData.currentRoute.value.query.l
 const campusNumber = routerData.currentRoute.value.query.id
 
 
 const classId = ref([])
+const campus_level_number = ref("")
 
 
 const addClass = (classInfo) =>{
   loader.value = true
-  classStore.newCampusClass({class_code:classInfo.code,class_number:classInfo.number, campus_number:campusNumber, level_number:campusLevel})
+  classStore.newCampusClass({class_code:classInfo.code,class_number:classInfo.number, campus_number:campusNumber, campus_level_number:campus_level_number.value})
 }
 
 const props = defineProps({
@@ -56,12 +75,15 @@ const props = defineProps({
 })
 
 
-onMounted(
+/*onMounted(
     () =>{
-      classStore.fetchClassLevelToAdd(campusLevel)
-    }
-)
 
+    }
+)*/
+
+const fetchCurriculumClass = (level_number) => {
+  classStore.fetchClassLevelToAdd(level_number)
+}
 
 watch(
     () => classStore.classesToAddResponse,
@@ -92,6 +114,16 @@ watch(
           arr.push(lst.curriculum_class_number)
         })
         classId.value = arr
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        campusLevelList.value = data.data
       }
     },
     {deep:true}

@@ -1,0 +1,123 @@
+<template>
+    <div>
+
+    
+      <div class="row">
+        <div class="col-3">
+          <div class="card mt-3">
+            <div class="card-body" style="padding: 0;">
+              <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Application</div>
+  
+  
+              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+  
+                <router-link
+                    v-for="(item, idx) in application" :key="idx"
+                    class="list-group-item list-group-item-action"
+                    :class="item.id === selectedPage ? 'active' : ''"
+                    :to="{name:'student-application', query:{s:item.id}}">
+                  <small style="font-size:12px;">{{item.name}}</small>
+                </router-link>
+              </div>
+  
+  
+  
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-9">
+          <div class="card mt-3">
+            <div class="card-body" style="padding: 0;">
+  
+              <div>
+  
+                  <div v-if="selectedPage === 'application-list'">
+                    <application-list></application-list>
+                  </div>
+                  <div v-if="selectedPage === 'interviews'">
+                    <interviews></interviews>
+                  </div>
+                  <div v-if="selectedPage === 'assessment-areas'">
+                    <interview-assesment-areas></interview-assesment-areas>
+                  </div>
+                  <div v-if="selectedPage === 'interviewquestions'">
+                    <interviews-questions></interviews-questions>
+                  </div>
+                  <div v-if="selectedPage === 'grade-results'">
+                    <grade-results></grade-results>
+                  </div>
+              </div>
+  
+  
+            </div>
+          </div>
+        </div>
+  
+      </div>
+  
+    </div>
+  </template>
+  
+  <script setup>
+  
+  import {reactive, ref} from "vue";
+  import {useRouter} from "vue-router";
+  import ApplicationList from "./ApplicationList.vue";
+  import Interviews from "./Interviews.vue";
+  import InterviewsQuestions from "./InterviewsQuestions.vue";
+  import GradeResults from "./GradeResults.vue";
+import InterviewAssesmentAreas from "./InterviewAssesmentAreas.vue";
+
+  const routerData = useRouter()
+  const buttonLoader = ref(false)
+  
+  const route = routerData.currentRoute.value.query.s
+  const selectedPage = route ? route : "application-list"
+  
+  const application = ref([
+    {
+      name:"Application List",
+      id:"application-list"
+    },
+    {
+      name:"Interviews",
+      id:"interviews"
+    },
+    {
+      name:"Interview Assessment Areas",
+      id:"assessment-areas"
+    },
+    {
+      name:"Interview Questions",
+      id:"interviewquestions"
+    },
+    {
+      name:"Interview Results",
+      id:"grade-results"
+    },
+   
+
+  ])
+  const form = reactive({
+    name:null
+  })
+  
+  
+  </script>
+  
+  <style scoped>
+  
+  input:focus {
+    box-shadow: none;
+  }
+  
+  .textColor{
+    color: #717375;
+  }
+  
+  .navColor{
+    color: black;
+  }
+  
+  </style>
