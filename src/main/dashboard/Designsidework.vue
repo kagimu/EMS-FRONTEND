@@ -111,6 +111,6 @@
     -moz-appearance: none !important; 
     outline: none !important;
     box-shadow: none !important;
-    background-color: white !important;
+    background-color: transparent !important;
   }
 </style>

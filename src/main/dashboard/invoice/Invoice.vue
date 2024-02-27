@@ -6,7 +6,7 @@
           <div class="card-header">
      <div class="row">
       <div class="col-lg-4">
-          <h6 style="margin-top:20px; text-align: left;font-size: 15px;">4 Invoices<b></b>     </h6>
+          <!-- <h6 style="margin-top:20px; text-align: left;font-size: 15px;">4 Invoices<b></b>     </h6> -->
       </div>
       <div class="col-lg-8">
         <RouterLink :to="{name : 'new-invoice'}" class="btn btn-primary btn-sm" style="float: right;">
@@ -24,9 +24,7 @@
         <tr>
           <th>Payer</th>
           <th>Amount</th>
-          <th>Invoice Title</th>
-          <th>Invoice no.</th>
-          <th>Date Issued</th>
+          <th>Title</th>
           <th>Status</th>
           <th>#</th>
         </tr>
@@ -35,13 +33,11 @@
       <tbody>
        
      
-           <tr>
-          <td>Collins Mpiima</td>
-          <td>40000</td>
-          <td>Service Payment</td>
-          <td>#309070113618</td>
-          <td>Jan 17, 2024 1:08 PM</td>
-          <td><span class="link-success">Paid</span></td>
+           <tr v-for="(invoiceList, index) in invoiceData" :key="index">
+          <td>{{ invoiceList.surname + invoiceList.firstname }}</td>
+          <td>{{ invoiceList.total }}</td>
+          <td>{{ invoiceList.title }}</td>
+          <td><span class="link-success">{{ invoiceList.status }}</span></td>
           <td>
             <router-link
                 class="text-decoration-none"
@@ -63,9 +59,44 @@
   </template>
 
 <script setup>
+import {onMounted, reactive, ref, watch,computed} from "vue";
+import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
+import useNotificationStore from "@/composables/useNotification.js"
+
 let invoiceId = "sirina-id"
 
+const invoiceData = ref([])
+const invoiceStore = useInvoiceStore()
+const  notificationStore  = useNotificationStore()
+
+onMounted(
+    () => {
+      invoiceStore.fetchInvoice()
+    }
+)
+
+watch(
+    () => invoiceStore.invoiceResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => invoiceStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
 </script>
+
 
 <style>
 

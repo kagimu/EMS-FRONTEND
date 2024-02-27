@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="modal fade" id="learningAreaModal" tabindex="-1" :class="{ show: classDialog }" aria-labelledby=""
+        <div class="modal fade" id="campusClassModal" tabindex="-1" :class="{ show: classDialog }" aria-labelledby=""
              aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -68,31 +68,65 @@
         <div class="flex justify-content-between mt-4 mb-4 mr-3">
             &nbsp;
             <button type="button" class="btn btn-sm buttonStyle btn-primary mr-2" @click="addCampus"
-                    data-bs-toggle="modal" data-bs-target="#learningAreaModal">
+                    data-bs-toggle="modal" data-bs-target="#campusClassModal">
                 <i style="font-size: 15px;" class="bi-plus mr-2"></i>
                 Add Class
             </button>
         </div>
 
 
-        <table class="table table-hover caption-top" style="font-size: 14px;">
+        <table class="table table-hover caption-top text-sm">
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Abbreviation</th>
-                <th scope="col">Streams</th>
-                <th scope="col" class="text-right">
+                <th scope="col">Level</th>
+                <th scope="col">Classes</th>
+<!--                <th scope="col">Abbreviation</th>-->
+<!--                <th scope="col">Streams</th>-->
+<!--                <th scope="col" class="text-right">
                   <div style="margin-right: 60px;">Action</div>
-                </th>
+                </th>-->
             </tr>
             </thead>
             <tbody>
             <tr v-for="(classes, index) in classList" :key="index">
                 <td>{{ index + 1 }}</td>
                 <td>{{ classes.name }}</td>
-                <td>{{ classes.abbreviation }}</td>
                 <td>
+                  <table class="table table-hover caption-top text-sm">
+                    <tbody>
+                    <tr v-for="(list,idx) in classes.classes" :key="idx">
+                      <td>{{list.code}}</td>
+                      <td>{{list.name}}</td>
+                      <td>[{{list.abbreviation}}]</td>
+                      <td>
+                        <div v-for="(lst,idx) in list.streams" :key="idx">
+                        <small>
+                          {{lst.name}}
+                          <i class="bi bi-x-circle cursor-pointer" style="font-size: 13px;" @click="deleteStream(lst)"></i>
+                        </small>
+                      </div>
+                      </td>
+                      <td>
+                        <button
+                            type="button"
+                            class="btn btn-sm buttonStyle btn-primary mr-2"
+                            data-bs-toggle="modal"
+                            data-bs-target="#streamModal"
+
+                            style="font-size: 13px;"
+                            @click="addStream(list)">Add Stream
+                        </button>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+<!--                  <div class="mb-2" v-for="(list,idx) in classes.classes" :key="idx">
+                    {{list.code+". "+list.name+" ["+list.abbreviation+"]"}}
+                  </div>-->
+                </td>
+<!--                <td>{{ classes.abbreviation }}</td>-->
+<!--                <td>
                   <div v-for="(lst,idx) in classes.streams" :key="idx">
                     <small>
                       {{lst.name}}
@@ -112,7 +146,7 @@
                                 @click="addStream(classes)">Add Stream
                         </button>
                     </div>
-                </td>
+                </td>-->
             </tr>
             </tbody>
         </table>
@@ -142,7 +176,7 @@ const streamDialog = ref(false)
 const classList = ref([])
 const streamClass = ref(null)
 const campusNumber = routerData.currentRoute.value.query.id
-const levelNumber = routerData.currentRoute.value.query.l
+const campus_curriculum_number = routerData.currentRoute.value.query.l
 
 const streamForm = reactive({
     name: "",
@@ -182,12 +216,12 @@ onMounted(
 )
 
 const filterClassInfo = () => {
-    fetchClasses(levelNumber)
+    fetchClasses(campus_curriculum_number)
 }
 
 
-const fetchClasses = (levelNo) => {
-  classStore.fetchClassLevel({campusNumber: campusNumber, levelNumber: levelNo})
+const fetchClasses = (campusCurriculumNumber, campusLevelNumber) => {
+  classStore.fetchClassLevel({campusCurriculumNumber: campusCurriculumNumber, campusLevelNumber:campusLevelNumber})
 }
 
 
@@ -226,7 +260,7 @@ watch(
 )
 
 
-watch(
+/*watch(
     () => levelStore.campusLevelResponse,
     async (data) => {
       if(data){
@@ -238,7 +272,7 @@ watch(
       }
     },
     {deep:true}
-)
+)*/
 
 
 </script>

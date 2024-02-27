@@ -24,7 +24,7 @@
                   v-for="(item, idx) in  campusCurriculumDataInfo" :key="idx"
                   class="list-group-item list-group-item-action"
                   :class="item.number === campusCurriculumNumber ? 'active' : ''"
-                  :to="{name:'level', query:{id:campusNumber, l:item.number}}">
+                  :to="{name:'campus-setup', query:{id:campusNumber, l:item.number}}">
                 <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></router-link>
             </div>
 
@@ -41,7 +41,7 @@
             <div class="mt-4">
 
               <div>
-                <level-settings></level-settings>
+                <campus-settings></campus-settings>
               </div>
 
             </div>
@@ -61,8 +61,8 @@
 import {computed, onMounted, ref, watch} from "vue";
 import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
 import {useRouter} from "vue-router";
-import LevelSettings from "@/main/dashboard/manageLevel/LevelSettings.vue";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
+import CampusSettings from "@/main/dashboard/manageLevel/CampusSettings.vue";
 const levelStore = useLevelStore()
 const campusCurriculumDataInfo = ref(null)
 const routerData = useRouter()

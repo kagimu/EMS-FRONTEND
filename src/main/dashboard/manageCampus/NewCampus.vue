@@ -154,7 +154,7 @@ const school = ref( null)
 const levelStore = useLevelStore()
 const levelList = ref([])
 const curriculumList = ref([])
-const curriculumLevelList = ref([])
+// const curriculumLevelList = ref([])
 
 const campusStore = useCampusStore()
 const schoolStore = useSchoolStore()
@@ -202,9 +202,9 @@ onMounted(
     }
 )
 
-const filterCurriculumLevel = (school_curriculum_number) => {
+/*const filterCurriculumLevel = (school_curriculum_number) => {
   curriculumStore.fetchSchoolCurriculumLevel(school_curriculum_number)
-}
+}*/
 
 watch(
     () => props.school,
@@ -282,7 +282,7 @@ watch(
     {deep:true}
 )
 
-watch(
+/*watch(
     () => curriculumStore.schoolCurriculumLevelResponse,
     async (data) => {
       if(data){
@@ -290,7 +290,7 @@ watch(
       }
     },
     {deep:true}
-)
+)*/
 
 </script>
 

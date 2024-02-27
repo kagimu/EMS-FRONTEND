@@ -6,7 +6,6 @@ import AuthMain from "@/main/auth/AuthMain.vue";
 import Dashboard from "@/main/dashboard/Dashboard.vue";
 import {useAuthStore} from "@/main/auth/store/auth.js";
 import ManageCampus from "@/main/dashboard/manageCampus/ManageCampus.vue";
-import ManageLevel from "@/main/dashboard/manageLevel/ManageLevel.vue";
 import userProfiles from "@/main/dashboard/profiles/userProfiles.vue";
 import settings from "@/main/settings/Settings.vue";
 import ReportCenter from "@/main/dashboard/ReportCenter/ReportCenter.vue";
@@ -43,6 +42,7 @@ import NewAdmission from "@/main/dashboard/studentAdmission/NewAdmission.vue"
 import Conditions from "@/main/settings/conditions/Conditions.vue"
 import Products from "@/main/dashboard/servicesAndProducts/Products.vue";
 import Designsidework from "../main/dashboard/Designsidework.vue";
+import CampusSetup from "@/main/dashboard/manageLevel/CampusSetup.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -71,10 +71,10 @@ const router = createRouter({
                 {path: 'home', component: Home, name: "home"},
                 {path: 'school', component: ManageSchool, name: "school"},
                 {path: 'campus', component: ManageCampus, name: "campus"},
-                {path: 'level', component: ManageLevel, name: "level"},
+                {path: 'campus-setup', component: CampusSetup, name: "campus-setup"},
                 {path: 'reports', component: ManageCampus, name: "reports"},
                 {path: 'student-admission', component: StudentAdmission, name: "student-admission"},
-                 {path: 'student-application', component: StudentApplication, name: "student-application"},
+                {path: 'student-application', component: StudentApplication, name: "student-application"},
                 {path: 'profiles', component: userProfiles, name: "profiles"},
                 {path: 'accounting', component: ManageCampus, name: "accounting"},
                 {path: 'report-center', component: ReportCenter, name: "report-center"},

@@ -11,7 +11,7 @@ export const useCurriculumStore = defineStore("curriculum", () => {
     let curriculumDataResponse = ref(null)
     let curriculumInfoResponse = ref(null)
     let schoolCurriculumResponse = ref(null)
-    let schoolCurriculumLevelResponse = ref(null)
+    let campusCurriculumLevelResponse = ref(null)
     let deleteCurriculumResponse = ref(null)
     let curriculumDataInfoResponse = ref(null)
     const errorMessage = ref(null)
@@ -79,10 +79,10 @@ export const useCurriculumStore = defineStore("curriculum", () => {
             })
     }
 
-    async function fetchSchoolCurriculumLevel(data) {
-        return await api.get("main/fetch-school-curriculum-level?school_curriculum_number="+data)
+    async function fetchCampusCurriculumLevelList(data) {
+        return await api.get("main/curriculum/campus-curriculum-level?campus_curriculum_number="+data)
             .then((response) => {
-                schoolCurriculumLevelResponse.value = response.data
+                campusCurriculumLevelResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -156,7 +156,7 @@ export const useCurriculumStore = defineStore("curriculum", () => {
         curriculumDataResponse,
         curriculumInfoResponse,
         schoolCurriculumResponse,
-        schoolCurriculumLevelResponse,
+        campusCurriculumLevelResponse,
         deleteCurriculumResponse,
         curriculumDataInfoResponse,
         curriculumEditResponse,
@@ -167,7 +167,7 @@ export const useCurriculumStore = defineStore("curriculum", () => {
         fetchCurriculum,
         fetchCurriculumInfo,
         fetchSchoolCurriculum,
-        fetchSchoolCurriculumLevel,
+        fetchCampusCurriculumLevelList,
         deleteCurriculum,
         fetchCurriculumData,
         editCurriculumData,
