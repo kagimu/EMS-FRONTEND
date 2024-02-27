@@ -7,13 +7,14 @@
       </div>
       <div class="modal-body">
         <form @submit.prevent="assignRole">
-      <div class="mb-2">
+      <div class="mb-2">      
         <label class="textColor"><small>User</small></label>
-       <select v-model="formData.user_number" class="form-control">
-        <option value="user-rolenumber">Collins Mpiima</option>
-        <option value="user-rolenumber">Collins Mpiima</option>
-        <option value="user-rolenumber">Collins Mpiima</option>
-       </select>
+              <select  v-model="formData.user_number"  style="box-shadow: none;" class="form-select form-select-sm" required >
+                  <option disabled value="">Select User</option>
+                  <option v-for="(list, index) in userData" :key="index" :value="list.number">{{ list.first_name }}
+                  </option>
+              </select>
+
       </div>
       <div class="mb-2">
         <label class="textColor"><small>Role</small></label>
@@ -53,10 +54,11 @@ import { useAccountStore } from "../store/account.js";
 import { useRolesStore } from "@/main/settings/roles/store/roles.js";
 
 const roleStore = useRolesStore()
+const accountStore = useAccountStore()
 const notificationStore = useNotificationStore()
 const buttonLoader = ref(false)
-const showDialog = ref(false)
 const errorMessage = ref(null)
+const userData = ref([])
 
 const formData = reactive({
   user_number: null,
@@ -82,11 +84,11 @@ onMounted(
     {deep:true}
     )
 const assignRole = () =>{
-  alert(JSON.stringify(formData))
-  roleStore.createNewRole(formData)
+  // alert(JSON.stringify(formData))
+  accountStore.createNewAccount(formData)
 }
 watch (
-    () => roleStore.newAccountResponse,
+    () => accountStore.newAccountResponse,
     async (data) => {
       if(data){
         // buttonLoader.value = false
@@ -95,8 +97,27 @@ watch (
     },
     {deep:true}
 )
+
+
+//fetch
+onMounted(
+    async () => {
+      await accountStore.fetchUsersToAssign()
+    } )
+
+    watch(
+    () => accountStore.userResponse,
+    async (data) => {
+      if(data){
+        userData.value = data.data
+      }
+    },
+    {deep:true}
+    )
+
+
 watch (
-    () => roleStore.errorMessage,
+    () => accountStore.errorMessage,
     async (data) => {
       if(data){
         errorMessage.value = data.message

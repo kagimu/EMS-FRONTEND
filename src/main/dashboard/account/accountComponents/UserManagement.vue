@@ -1,7 +1,7 @@
 <template>
     <div>
     
-        <div class="modal fade" id="addAccount" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: showDialog }">
+        <div class="modal fade" id="addAccount" tabindex="-1"  aria-labelledby="" aria-hidden="true" >
       <div class="modal-dialog">
         <new-account></new-account>
         </div>
@@ -78,6 +78,7 @@
     <script setup>
     import {onMounted,reactive, computed,ref, watch} from "vue";
     import NewAccount from "./NewAccount.vue";
+
     
     </script>
     

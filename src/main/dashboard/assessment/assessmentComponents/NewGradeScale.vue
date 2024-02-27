@@ -78,7 +78,7 @@
             </div>
 
             <div class="col-lg-4">
-                <label class="textColor"><small>Scole</small></label>
+                <label class="textColor"><small>Scale</small></label>
              <input type="text" class="form-control" placeholder="D1">
             </div>
         </div>
