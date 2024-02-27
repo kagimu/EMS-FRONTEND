@@ -67,7 +67,7 @@
   import Interviews from "./Interviews.vue";
   import InterviewsQuestions from "./InterviewsQuestions.vue";
   import GradeResults from "./GradeResults.vue";
-import InterviewAssesmentAreas from "./InterviewAssesmentAreas.vue";
+  import InterviewAssesmentAreas from "../assessment/assessmentComponents/AssesmentAreas.vue";
 
   const routerData = useRouter()
   const buttonLoader = ref(false)
@@ -85,7 +85,7 @@ import InterviewAssesmentAreas from "./InterviewAssesmentAreas.vue";
       id:"interviews"
     },
     {
-      name:"Interview Assessment Areas",
+      name:"Assessment Areas",
       id:"assessment-areas"
     },
     {

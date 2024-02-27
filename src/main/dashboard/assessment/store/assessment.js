@@ -1,0 +1,114 @@
+import { defineStore } from "pinia"
+import { ref } from "vue"
+import api from "@/config/api.js";
+
+export const useAssessmentStore = defineStore("assessment", () => {
+    const newAssessmentResponse = ref(null)
+    const errorMessage = ref(null)
+    const assessmentResponse = ref(null)
+    const newExamTypeResponse=ref(null)
+    const examTypeResponse = ref(null)
+    const assessmentByStudentIdResponse = ref(null)
+    const newAssesmentAreasResponse = ref(null)
+    const assesmentAreaResponse = ref(null)
+
+    async function createAssesmentAreas(data) {
+        return await api.post("main/assessment-areas",data)
+            .then((response) => {
+             newAssesmentAreasResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
+    async function fetchAssesmentArea(data) {
+        return await api.get("main/assessment-areas")
+            .then((response) => {
+               assesmentAreaResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function createNewAssessment(data) {
+        return await api.post("main/assessments", data)
+            .then((response) => {
+                newAssessmentResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+    
+    async function fetchAssessments(data) {
+        return await api.get("main/assessments")
+            .then((response) => {
+                assessmentResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+    async function fetchAssessmentsByStudentId(studentid,data) {
+        return await api.get("main/assessments?student_number="+studentid,data)
+            .then((response) => {
+                assessmentByStudentIdResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+//exam type ==
+async function createExamType(data) {
+    return await api.post("main/assessments/examination-types", data)
+        .then((response) => {
+            newExamTypeResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+async function fetchExamType(data) {
+    return await api.get("main/assessments/examination-types")
+        .then((response) => {
+            examTypeResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+    return {
+        createAssesmentAreas,
+        newAssesmentAreasResponse,
+        assesmentAreaResponse,
+        fetchAssesmentArea,
+        newAssessmentResponse,
+        createNewAssessment,
+        fetchAssessments,
+        fetchAssessmentsByStudentId,
+        assessmentResponse,
+        errorMessage,
+        newExamTypeResponse,
+        createExamType,
+        examTypeResponse,
+        fetchExamType,
+        assessmentByStudentIdResponse,
+    }
+})
