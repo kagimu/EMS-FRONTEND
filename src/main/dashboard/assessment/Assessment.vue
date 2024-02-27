@@ -42,6 +42,13 @@
                   <div v-if="selectedPage === 'examtype'">
                     <ExamType></ExamType>
                   </div>
+                  <div v-if="selectedPage === 'grade-standards'">
+                 <GradingStandards></GradingStandards>
+                  </div>
+                  <div v-if="selectedPage === 'grade-scale'">
+                    <GradingScale></GradingScale>
+                  </div>
+                
                   
               </div>
   
@@ -62,6 +69,8 @@
   import InterviewAssesmentAreas from "../assessment/assessmentComponents/AssesmentAreas.vue";
   import AssessmentList from "./assessmentComponents/AssessmentList.vue";
   import ExamType from "./assessmentComponents/ExamType.vue"
+  import GradingScale from "./assessmentComponents/GradingScale.vue";
+  import GradingStandards from "./assessmentComponents/GradingStandards.vue";
 
   const routerData = useRouter()
   
@@ -81,6 +90,14 @@
     {
       name:"Exam Type",
       id:"examtype"
+    },
+    {
+      name:"Grade Standards",
+      id:"grade-standards"
+    },
+    {
+      name:"Grade Scale",
+      id:"grade-scale"
     },
    
   ])

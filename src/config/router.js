@@ -48,6 +48,8 @@ import AssessmentList from "@/main/dashboard/assessment/assessmentComponents/Ass
 import ExamType from "@/main/dashboard/assessment/assessmentComponents/ExamType.vue"
 import Account from "@/main/dashboard/account/Account.vue"
 import UserManagement from "@/main/dashboard/account/accountComponents/UserManagement.vue"
+import GradingStandard from "@/main/dashboard/assessment/assessmentComponents/GradingStandards.vue"
+import GradingScale from "@/main/dashboard/assessment/assessmentComponents/GradingScale.vue"
 
 const router = createRouter({
     history: createWebHistory(),
@@ -113,7 +115,9 @@ const router = createRouter({
                 {path: 'assessment-list', component: AssessmentList, name: "assessment-list"},
                 {path: 'examtype', component: ExamType, name: "examtype"},  
                 {path: 'account-management', component: Account, name: "account-management"},  
-                {path: 'user-management', component: UserManagement, name: "user-management"},      
+                {path: 'user-management', component: UserManagement, name: "user-management"},    
+                {path: 'grade-scale', component: GradingScale, name: "grade-scale"}, 
+                {path: 'grade-standard', component: GradingStandard, name: "grade-standard"},   
             ]
         },
 
