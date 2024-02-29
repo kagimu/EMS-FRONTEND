@@ -1,7 +1,27 @@
 <template>
     <div>
+
+          <!-- Popup warning Modal -->
+    <div class="modal fade" id="removeRoleConfirmation" :class="{ show: showDialog }" tabindex="-1" aria-labelledby="removeRoleConfirmationLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="removeRoleConfirmationLabel">Confirmation</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to remove this role?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">NO</button>
+            <button type="button" class="btn btn-danger btn-sm" @click="confirmRemoveRole">YES</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     
-        <div class="modal fade" id="addAccount" tabindex="-1"  aria-labelledby="" aria-hidden="true" >
+        <div class="modal fade" :class="{ show: assignDialog }" id="addAccount" tabindex="-1"  aria-labelledby="" aria-hidden="true" >
       <div class="modal-dialog">
         <new-account></new-account>
         </div>
@@ -16,7 +36,7 @@
                   <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">  
             </div>
             <div class="col-lg-6">
-                <button style="float: right; margin-right: 5px;" data-bs-toggle="modal" data-bs-target="#addAccount"  type="button"  aria-controls="rolesDialog" class="btn btn-primary btn-sm"><i class="bi bi-person-add"></i> New Account</button>
+                <button @click="openModal()" style="float: right; margin-right: 5px;" data-bs-toggle="modal" data-bs-target="#addAccount"  type="button"  aria-controls="rolesDialog" class="btn btn-primary btn-sm">Assign Role</button>
  
                 <button  class="btn btn-outline-secondary  btn-sm mt-1" style="float: right;border: none;">
                 <small><i class="bi bi-printer">&nbsp;Print</i></small></button> 
@@ -45,7 +65,7 @@
             <tr v-for="(user, index) in userData" :key="index">
             <td>{{ user.first_name + " " +user.last_name + " " + user.second_name }}</td>
             <td>{{ user.type }}
-              <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
+              <button @click="openRemoveRoleConfirmationModal(user.type,user.number)" data-bs-toggle="modal" data-bs-target="#removeRoleConfirmation" type="button" aria-controls="rolesDialog">
             &nbsp;<i class="bi bi-x-circle-fill" style="color:rgb(228, 23, 23)"></i>
           </button>
             </td>
@@ -95,6 +115,13 @@ const notificationStore = useNotificationStore()
 const buttonLoader = ref(false)
 const errorMessage = ref(null)
 const userData = ref([])
+const showDialog = ref(false)
+const assignDialog = ref(false)
+
+const openModal = () =>{
+  assignDialog.value = true
+}
+
 
 
 const rolesData= ref([])
@@ -114,16 +141,12 @@ onMounted(
     },
     {deep:true}
     )
-const assignRole = () =>{
-  // alert(JSON.stringify(formData))
-  accountStore.createNewAccount(formData)
-}
+
 watch (
     () => accountStore.newAccountResponse,
     async (data) => {
       if(data){
-        // buttonLoader.value = false
-        notificationStore.successToast("Success", data.message)
+        assignDialog.value = false
       }
     },
     {deep:true}
@@ -147,6 +170,38 @@ onMounted(
     )
 
 
+
+const formData = reactive({
+  user_number:null,
+  role_number:null
+})
+const selectedIndex = ref(null);
+const openRemoveRoleConfirmationModal = (index,num) => {
+  showDialog.value=true
+  selectedIndex.value = index
+  formData.role_number=index
+  formData.user_number=num
+}
+
+
+const confirmRemoveRole = () => {
+  showDialog.value=false
+  //  alert(JSON.stringify(formData))
+   accountStore.removeAccountRole(formData)
+}
+
+
+watch(
+    () => accountStore.removeRoleResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+    )
+
+    
 watch (
     () => accountStore.errorMessage,
     async (data) => {
@@ -157,8 +212,11 @@ watch (
     },
     {deep:true}
 )
+
 </script>
 
     <style scoped>
-    
+    .btn{
+      border-radius: 4px !important;
+    }
     </style>

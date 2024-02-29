@@ -60,8 +60,8 @@ export const useAccountStore = defineStore("account", () => {
         }
 
 
-        async function removeAccountRole(accountid) {
-            return await api.delete("main/settings"+accountid)
+        async function removeAccountRole(data) {
+            return await api.delete("main/settings/roles/remove",data)
                 .then((response) => {
                     removeRoleResponse.value = response.data
                 })
