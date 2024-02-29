@@ -117,6 +117,7 @@
     import {onMounted,reactive, ref, watch} from "vue";
     import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
     import useNotificationStore from "@/composables/useNotification.js";
+    import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
 
     const buttonLoader = ref(false)
     const interviewListData = ref([])
@@ -124,6 +125,7 @@
     const interviewDialog= ref(false)
     let errorMessage = ref(null)
     const interviewAssesmentListData = ref([])
+    const assessmentStore= useAssessmentStore()
 
 
     const applicationStore= useApplicationStore()
@@ -160,11 +162,11 @@ const showInterviewDialog = () => {
 
 onMounted(
     async () => {
-      await applicationStore.fetchInterviewAssesment()
+      await assessmentStore.fetchAssesmentArea()
     } )
 
     watch(
-    () => applicationStore.interviewAssesmentResultsResponse,
+    () => assessmentStore.assesmentAreaResponse,
     async (data) => {
       if(data){
         interviewAssesmentListData.value = data.data
@@ -175,7 +177,7 @@ onMounted(
 
 
     const addInterviewQuestions = () => {
-    //  alert(JSON.stringify(form))
+     alert(JSON.stringify(form))
     interviewDialog.value = true;
      buttonLoader.value = true
      applicationStore.createNewInterviewQuestion(form)  
@@ -190,6 +192,11 @@ onMounted(
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
         await applicationStore.fetchApplicationInterviewQuestions()
+        form.interview_number=null
+      form.question =null
+      form.correct_answer=null
+      form.possible_answers=null
+      form.assessment_area_number=null
       }
     },
     {deep:true}

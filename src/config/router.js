@@ -50,6 +50,11 @@ import Account from "@/main/dashboard/account/Account.vue"
 import UserManagement from "@/main/dashboard/account/accountComponents/UserManagement.vue"
 import GradingStandard from "@/main/dashboard/assessment/assessmentComponents/GradingStandards.vue"
 import GradingScale from "@/main/dashboard/assessment/assessmentComponents/GradingScale.vue"
+import Classes from "@/main/dashboard/classes/Classes.vue"
+import ClassList from "@/main/dashboard/classes/classesComponents/ClassList.vue"
+import ClassAttendance from "@/main/dashboard/classes/classesComponents/ClassAttendance.vue"
+import SubjectAttendance from "@/main/dashboard/classes/classesComponents/SubjectAttendance.vue"
+import ManageClassList from "@/main/dashboard/classes/classesComponents/ManageClassList.vue"
 
 const router = createRouter({
     history: createWebHistory(),
@@ -117,7 +122,13 @@ const router = createRouter({
                 {path: 'account-management', component: Account, name: "account-management"},  
                 {path: 'user-management', component: UserManagement, name: "user-management"},    
                 {path: 'grade-scale', component: GradingScale, name: "grade-scale"}, 
-                {path: 'grade-standard', component: GradingStandard, name: "grade-standard"},   
+                {path: 'grade-standard', component: GradingStandard, name: "grade-standard"}, 
+                {path: 'classes', component: Classes, name: "classes"}, 
+                {path: 'class-list', component: ClassList, name: "class-list"},
+                {path: 'class-attendance', component: ClassAttendance, name: "class-attendance"},
+                {path: 'subject-attendance', component: SubjectAttendance, name: "subject-attendance"},
+                {path: 'manage-class-list', component: ManageClassList, name: "manage-class-list"},
+
             ]
         },
 

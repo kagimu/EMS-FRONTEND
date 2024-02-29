@@ -41,11 +41,14 @@
       <tbody>
         <tr v-for="(assesmentData, index) in AsessmentListData " :key="index">
           <td>{{ assesmentData.name}}</td>
-           <td>
-            <button data-bs-toggle="modal" data-bs-target="#infoModal" 
-             class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
-              <i class="bi bi-eye">&nbsp;View More</i></small></button>        
-            </td>
+          <td>
+          <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
+            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+          </button>
+          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
+          <button type="button">
+            <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+          </button></td>
         </tr>  
 
       </tbody>
@@ -153,6 +156,11 @@
 
     })
 
+    onMounted(
+    async () => {
+      await assessmentStore.fetchAssesmentArea()
+    } )
+
  //working on dialog
 const closeInterviewDialog = () => {
   interviewDialog.value = false;
@@ -160,24 +168,22 @@ const closeInterviewDialog = () => {
 const showInterviewDialog = () => {
   interviewDialog.value = true;
 }
-
-
     const addInterviewAssesment = () => {
     //  alert(JSON.stringify(form))
     interviewDialog.value = true;
      buttonLoader.value = true
-     assessmentStore.createAssesmentAreas(form)  
-     
+     assessmentStore.createAssesmentAreas(form)
     }
   
-
     watch (
     () => assessmentStore.newAssesmentAreasResponse,
     async (data) => {
       if(data){
         buttonLoader.value = false
+         assessmentStore.fetchAssesmentArea()
         notificationStore.successToast("Success", data.message)
-        // await assessmentStore.fetchInterviewAssesment()
+       form.name= ""
+       form.class_number="s"
       }
     },
     {deep:true}
@@ -196,17 +202,14 @@ watch (
     {deep:true}
 )
 
-onMounted(
-    async () => {
-      await assessmentStore.fetchAssesmentArea()
-    } )
+
 
     watch(
     () => assessmentStore.assesmentAreaResponse,
     async (data) => {
       if(data){
         AsessmentListData.value = data.data
-        notificationStore.successToast("Success", data.message)
+       // notificationStore.successToast("Success", data.message)
       }
     },
     {deep:true}
