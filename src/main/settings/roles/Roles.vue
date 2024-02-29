@@ -35,7 +35,7 @@
       <div class="col-12">
         <div class="cad mt-3">
           <div class="card-body" style="padding: 0;">
-            <div class="row mt-3">
+            <div class="row">
       <div class="col-9"></div>
       <div class="col-3">
        
@@ -43,7 +43,7 @@
     </div>
 
     <div class="container mt-4">
-            <div class="mb-3 ml-5 mt-3" style="font-size: 18px;">Roles and Permission</div>
+            <!-- <div class="mb-3 ml-5 mt-3" style="font-size: 18px;">Roles and Permission</div> -->
 
             <table class="table table-hover caption-top table-striped" style="font-size: 14px;">
     <thead>

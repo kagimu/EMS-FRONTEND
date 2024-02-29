@@ -30,9 +30,9 @@
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
 
-                <div v-if="selectedPage === 'role'">
+                <!-- <div v-if="selectedPage === 'role'">
                   <roles></roles>
-                </div>
+                </div> -->
                 <div v-if="selectedPage === 'level'">
                   <level-setup></level-setup>
                 </div>
@@ -99,10 +99,10 @@ const settingsList = ref([
        name: "Learning Materials" ,
          id: "learning-materials"
     },
-  {
-    name:"Roles",
-    id:"role"
-  },
+  // {
+  //   name:"Roles",
+  //   id:"role"
+  // },
     {
         name:"Source of school Info",
         id:"sosinfos"

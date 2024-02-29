@@ -35,22 +35,28 @@
           <th scope="col">Name</th>
           <th scope="col">Role (s)</th>
           <th scope="col">Email</th>
-          <th scope="col">Phone</th>
+          <th scope="col">Gender</th>
           <th scope="col">Status</th>
           <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-            <tr>
-            <td>Collins Mpiima</td>
-            <td>Super Admin
+          <!-- v-for="(roles, index) in rolesData" :key="index" -->
+            <tr v-for="(user, index) in userData" :key="index">
+            <td>{{ user.first_name + " " +user.last_name + " " + user.second_name }}</td>
+            <td>{{ user.type }}
               <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
             &nbsp;<i class="bi bi-x-circle-fill" style="color:rgb(228, 23, 23)"></i>
           </button>
             </td>
-            <td>collinsmpiima@gmail.com</td>
-            <td>0786850671</td>
-            <td>Active</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.gender }}</td>
+            <td>
+              <span v-if="user.status == 'Active'" style="color:rgb(8, 238, 8)"><b>{{ user.status }}</b>
+            </span>
+            <span v-if="user.status != 'Active'" style="color:rgb(239, 13, 13)"><b>{{ user.status }}</b>
+            </span>
+          </td>
             <td>
           <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
@@ -74,14 +80,85 @@
     
     
     </template>
-    
-    <script setup>
-    import {onMounted,reactive, computed,ref, watch} from "vue";
-    import NewAccount from "./NewAccount.vue";
+      
 
-    
-    </script>
-    
+<script setup>
+import {onMounted, reactive, ref, watch,computed} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import { useAccountStore } from "../store/account.js";
+import { useRolesStore } from "@/main/settings/roles/store/roles.js";
+import NewAccount from "./NewAccount.vue";
+
+const roleStore = useRolesStore()
+const accountStore = useAccountStore()
+const notificationStore = useNotificationStore()
+const buttonLoader = ref(false)
+const errorMessage = ref(null)
+const userData = ref([])
+
+
+const rolesData= ref([])
+
+//fetch
+onMounted(
+    async () => {
+      await roleStore.fetchRoles()
+    } )
+
+    watch(
+    () => roleStore.roleResponse,
+    async (data) => {
+      if(data){
+        rolesData.value = data.data
+      }
+    },
+    {deep:true}
+    )
+const assignRole = () =>{
+  // alert(JSON.stringify(formData))
+  accountStore.createNewAccount(formData)
+}
+watch (
+    () => accountStore.newAccountResponse,
+    async (data) => {
+      if(data){
+        // buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+//fetch
+onMounted(
+    async () => {
+      await accountStore.fetchUsersToAssign()
+    } )
+
+    watch(
+    () => accountStore.userResponse,
+    async (data) => {
+      if(data){
+        userData.value = data.data
+      }
+    },
+    {deep:true}
+    )
+
+
+watch (
+    () => accountStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+</script>
+
     <style scoped>
     
     </style>
