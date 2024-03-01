@@ -105,7 +105,7 @@ const academicYearStore = useAcademicYearStore()
 
 const routerData = useRouter()
 const newAcademicYearDialog = ref( false)
-const campusLevel = routerData.currentRoute.value.query.l
+const campusCurriculumNumber = routerData.currentRoute.value.query.l
 const studyPeriodList = ref( [])
 const  notificationStore  = useNotificationStore()
 const academicYearNumber = ref( "")
@@ -138,12 +138,12 @@ const deleteStudyPeriod = (styPeriod, idx) => {
 }
 
 const filterStudyPeriod = (academicYearNumber) => {
-  studyPeriodStore.fetchStudyPeriod({level:campusLevel, academic_year_number:academicYearNumber})
+  studyPeriodStore.fetchStudyPeriod({level:campusCurriculumNumber, academic_year_number:academicYearNumber})
 }
 
 onMounted(
     () => {
-      studyPeriodStore.fetchStudyPeriod({level:campusLevel, academic_year_number:academicYearNumber.value})
+      studyPeriodStore.fetchStudyPeriod({level:campusCurriculumNumber, academic_year_number:academicYearNumber.value})
       // academicYearStore.fetchAcademicYear(campusLevel)
     }
 )
@@ -165,7 +165,7 @@ watch(
     () => studyPeriodStore.newStudyPeriodResponse,
     async (data) => {
       if(data){
-        await studyPeriodStore.fetchStudyPeriod({level:campusLevel, academic_year_number:academicYearNumber.value})
+        await studyPeriodStore.fetchStudyPeriod({level:campusCurriculumNumber, academic_year_number:academicYearNumber.value})
         notificationStore.successToast("Success","Study Period added successfully")
       }
     },
@@ -187,7 +187,7 @@ watch(
     async (data) => {
       if(data){
         deletionLoader.value = undefined
-        await studyPeriodStore.fetchStudyPeriod({level: campusLevel, academic_year_number: academicYearNumber.value})
+        await studyPeriodStore.fetchStudyPeriod({level: campusCurriculumNumber, academic_year_number: academicYearNumber.value})
       }
     },
     {deep:true}
