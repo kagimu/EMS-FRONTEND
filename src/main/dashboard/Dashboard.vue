@@ -62,6 +62,7 @@
               style="font-size: 13px;">
              <router-link
                  v-for="(lst,idx) in menuList" :key="idx"
+                 v-show="can(lst.action, 'general')"
                  :class="(lst.name === routerName) ? 'active' : ''"
                  class="list-group-item list-group-item-action"
                  :to="{name:lst.name}">
@@ -112,15 +113,17 @@ import router from "@/config/router.js";
 import {getCurrentInstance, ref} from 'vue'
 import {useAuthStore} from "@/main/auth/store/auth.js";
 import {useRouter} from "vue-router";
+import { useAbility } from '@casl/vue';
 const routerName = useRouter().currentRoute.value.name;
 const authStore = useAuthStore()
 const defaultMenuSize = ref(false)
+const { can } = useAbility();
 
 const menuList = ref([
   {title:"Home", name:"home", icon:"bi-house"},
   // {title:"Reports", name:"reports", icon:"bi-graph-up-arrow"},
-  {title:"School", name:"school", icon:"bi-house-add"},
-  {title:"Classes", name:"classes", icon:"bi-person-lines-fill"},
+  {title:"School", name:"school", icon:"bi-house-add" , action:"can_view_school"},
+  {title:"Classes", name:"classes", icon:"bi-person-lines-fill",  action: "can_view_classes",},
   {title:"Curriculum", name:"curriculum", icon:"bi-pen"},
   // {title:"Classes", name:"class", icon:"bi-pen"},
   // {title:"Scheme Of Work", name:"scheme-of-work", icon:"bi-receipt"},

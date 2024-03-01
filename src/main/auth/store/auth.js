@@ -14,15 +14,24 @@ export const useAuthStore = defineStore("auth", () => {
     async function userLogin(data) {
         return await api.post("auth/login", data)
             .then((response) => {
+
                 let dataInfo = response.data
                 // localStorage.setItem("token", dataInfo.access_token)
                 localStorage.clear()
                 localStorage.setItem("token", dataInfo.token)
+
+                let permissions = []
+                response.data.data.permissions.forEach(permission => {
+                        permissions.push({"action":permission,"resource":"general"})
+                    });
+                localStorage.setItem('abilities',JSON.stringify(permissions))
+
                 // localStorage.setItem("expires_in", dataInfo.expires_in)
                 loginResponse.value = dataInfo
                 userNumber.value = dataInfo.data.number
                 token.value = dataInfo.token
-                // token.value = dataInfo.access_token
+
+
             })
             .catch((response) => {
                 if(response){
