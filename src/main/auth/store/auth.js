@@ -21,6 +21,9 @@ export const useAuthStore = defineStore("auth", () => {
                 localStorage.setItem("token", dataInfo.token)
 
                 let permissions = []
+                if (response.data.data.permissions === undefined)
+                    permissions.push({"action":"read","resource":"general"})
+                else
                 response.data.data.permissions.forEach(permission => {
                         permissions.push({"action":permission,"resource":"general"})
                     });
