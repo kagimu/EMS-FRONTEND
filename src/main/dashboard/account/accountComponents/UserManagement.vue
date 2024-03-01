@@ -6,7 +6,7 @@
       <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="removeRoleConfirmationLabel">Confirmation</h5>
+            <h5 class="modal-title" id="removeRoleConfirmationLabel">Please Confirm !</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -81,10 +81,11 @@
           <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
-          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
-          <button type="button">
+          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>
+          <!-- <button type="button">
             <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
-          </button></td>
+          </button> -->
+        </td>
         </tr>
     
       
