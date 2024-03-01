@@ -221,7 +221,7 @@ const filterClassInfo = () => {
 
 
 const fetchClasses = (campusCurriculumNumber, campusLevelNumber) => {
-  classStore.fetchClassLevel({campusCurriculumNumber: campusCurriculumNumber, campusLevelNumber:campusLevelNumber})
+  classStore.fetchClassLevel({campusCurriculumNumber: campusCurriculumNumber, campusLevelNumber:(campusLevelNumber?campusLevelNumber:'')})
 }
 
 

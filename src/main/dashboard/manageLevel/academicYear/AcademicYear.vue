@@ -32,23 +32,51 @@
       <tr>
 <!--        <th scope="col">#</th>-->
         <th scope="col">Code</th>
+        <th scope="col">Level</th>
         <th scope="col">Academic Year</th>
-        <th scope="col">Number of Study Periods</th>
-        <th scope="col">Date Period</th>
-                <th scope="col">Action</th>
+<!--        <th scope="col">Number of Study Periods</th>-->
+<!--        <th scope="col">Date Period</th>-->
+<!--                <th scope="col">Action</th>-->
       </tr>
       </thead>
       <tbody>
       <tr v-for="(academicYre, index) in academicYearList" :key="index">
-<!--        <td>{{index+1}}</td>-->
         <td> {{academicYre.code}}</td>
-        <td> {{academicYre.academic_year_name}}</td>
-        <td> {{academicYre.no_of_study_period}}</td>
+        <td> {{academicYre.name}}</td>
         <td>
+          <table class="table table-hover caption-top text-sm">
+            <tbody>
+            <tr v-for="(list,idx) in academicYre.academicYear" :key="idx">
+              <td>{{list.code}}</td>
+              <td>{{list.academic_year_name}}</td>
+              <td>{{list.no_of_study_period}}</td>
+              <td>
+                <b>Start Date:</b>   {{list.academic_year_start_date}}  <br />
+                <b>End Date:</b>  {{list.academic_year_end_date}}
+              </td>
+              <td>
+                <div>
+                  <i
+                      style="font-size: 13px;"
+                      data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
+                      class="bi-pencil mr-2 cursor-pointer" @click="editAcademicYear(list)"></i>
+                  <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteAcademicYear(list, idx)"></i>
+                  <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === idx">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+        </td>
+<!--        <td> {{academicYre.no_of_study_period}}</td>-->
+<!--        <td>
           <b>Start Date:</b>   {{academicYre.academic_year_start_date}}  <br />
            <b>End Date:</b>  {{academicYre.academic_year_end_date}}
-        </td>
-                <td>
+        </td>-->
+<!--                <td>
                   <div>
                     <i
                         style="font-size: 13px;"
@@ -59,7 +87,7 @@
                       <span class="visually-hidden">Loading...</span>
                     </div>
                   </div>
-                </td>
+                </td>-->
       </tr>
       </tbody>
     </table>
@@ -81,7 +109,7 @@ const routerData = useRouter()
 const academicYearStore = useAcademicYearStore()
 const newAcademicYearDialog = ref( false)
 const deletionLoader = ref( undefined)
-const campusLevel = routerData.currentRoute.value.query.l
+const campusCurriculumNumber = routerData.currentRoute.value.query.l
 const academicYearList = ref( [])
 const  notificationStore  = useNotificationStore()
 
@@ -97,11 +125,11 @@ const editAcademicYear = (academicYre)  => {
 
 const deleteAcademicYear = (academicYre, idx) => {
 
-  deletionLoader.value = idx
-
   if(!confirm("Are you sure, you want to delete: "+academicYre.academic_year_name)){
     return
   }
+
+  deletionLoader.value = idx
 
   let data = {
     number:academicYre.number
@@ -113,7 +141,7 @@ const deleteAcademicYear = (academicYre, idx) => {
 
 onMounted(
     () => {
-      academicYearStore.fetchAcademicYear(campusLevel)
+      academicYearStore.fetchAcademicYear(campusCurriculumNumber)
     }
 )
 
@@ -122,7 +150,7 @@ watch(
     () => academicYearStore.newAcademicYearResponse,
     async (data) => {
       if(data){
-        await academicYearStore.fetchAcademicYear(campusLevel)
+        await academicYearStore.fetchAcademicYear(campusCurriculumNumber)
         notificationStore.successToast("Success","Login successfully")
       }
     },
@@ -144,7 +172,7 @@ watch(
     async (data) => {
       if(data){
         deletionLoader.value = undefined
-        await academicYearStore.fetchAcademicYear(campusLevel)
+        await academicYearStore.fetchAcademicYear(campusCurriculumNumber)
       }
     },
     {deep:true}

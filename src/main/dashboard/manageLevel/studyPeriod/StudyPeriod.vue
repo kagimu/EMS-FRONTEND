@@ -144,7 +144,7 @@ const filterStudyPeriod = (academicYearNumber) => {
 onMounted(
     () => {
       studyPeriodStore.fetchStudyPeriod({level:campusLevel, academic_year_number:academicYearNumber.value})
-      academicYearStore.fetchAcademicYear(campusLevel)
+      // academicYearStore.fetchAcademicYear(campusLevel)
     }
 )
 
