@@ -34,7 +34,7 @@ import ClientApplications from "@/main/application/ClientApplications.vue";
 import InterviewDetails from "@/main/dashboard/studentApplication/InterviewDetails.vue";
 import Services from "@/main/dashboard/servicesAndProducts/Services.vue";
 import AdmitStudent from "@/main/dashboard/studentApplication/AdmitStudent.vue";
-import InterviewAssessmentAreas from "@/main/dashboard/studentApplication/InterviewAssesmentAreas.vue"
+import InterviewAssessmentAreas from "@/main/dashboard/assessment/assessmentComponents/AssesmentAreas.vue"
 import Invoice from "@/main/dashboard/invoice/Invoice.vue"
 import NewInvoice from "@/main/dashboard/invoice/NewInvoice.vue"
 import InvoiceDetails from "@/main/dashboard/invoice/InvoiceDetails.vue"
@@ -43,6 +43,18 @@ import Conditions from "@/main/settings/conditions/Conditions.vue"
 import Products from "@/main/dashboard/servicesAndProducts/Products.vue";
 import Designsidework from "../main/dashboard/Designsidework.vue";
 import CampusSetup from "@/main/dashboard/manageLevel/CampusSetup.vue";
+import Assessment from "@/main/dashboard/assessment/Assessment.vue";
+import AssessmentList from "@/main/dashboard/assessment/assessmentComponents/AssessmentList.vue"
+import ExamType from "@/main/dashboard/assessment/assessmentComponents/ExamType.vue"
+import Account from "@/main/dashboard/account/Account.vue"
+import UserManagement from "@/main/dashboard/account/accountComponents/UserManagement.vue"
+import GradingStandard from "@/main/dashboard/assessment/assessmentComponents/GradingStandards.vue"
+import GradingScale from "@/main/dashboard/assessment/assessmentComponents/GradingScale.vue"
+import Classes from "@/main/dashboard/classes/Classes.vue"
+import ClassList from "@/main/dashboard/classes/classesComponents/ClassList.vue"
+import ClassAttendance from "@/main/dashboard/classes/classesComponents/ClassAttendance.vue"
+import SubjectAttendance from "@/main/dashboard/classes/classesComponents/SubjectAttendance.vue"
+import ManageClassList from "@/main/dashboard/classes/classesComponents/ManageClassList.vue"
 
 const router = createRouter({
     history: createWebHistory(),
@@ -104,8 +116,19 @@ const router = createRouter({
                 {path: 'condtions', component:Conditions , name: "conditions"},
                 {path: 'products', component: Products, name: "products"},
                 {path: 'let-us-design', component: Designsidework, name: "let-us-design"},
+                {path: 'assessment', component: Assessment, name: "assessment"},
+                {path: 'assessment-list', component: AssessmentList, name: "assessment-list"},
+                {path: 'examtype', component: ExamType, name: "examtype"},  
+                {path: 'account-management', component: Account, name: "account-management"},  
+                {path: 'user-management', component: UserManagement, name: "user-management"},    
+                {path: 'grade-scale', component: GradingScale, name: "grade-scale"}, 
+                {path: 'grade-standard', component: GradingStandard, name: "grade-standard"}, 
+                {path: 'classes', component: Classes, name: "classes"}, 
+                {path: 'class-list', component: ClassList, name: "class-list"},
+                {path: 'class-attendance', component: ClassAttendance, name: "class-attendance"},
+                {path: 'subject-attendance', component: SubjectAttendance, name: "subject-attendance"},
+                {path: 'manage-class-list', component: ManageClassList, name: "manage-class-list"},
 
-                
             ]
         },
 

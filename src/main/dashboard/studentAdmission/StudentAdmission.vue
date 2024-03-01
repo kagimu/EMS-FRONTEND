@@ -64,10 +64,10 @@ import {useRouter} from "vue-router";
       name:"Admission Offers",
       id:"admission-offers"
     },
-    {
-      name:"Admitted Students",
-      id:"admissions"
-    },
+    // {
+    //   name:"Admitted Students",
+    //   id:"admissions"
+    // },
   ])
 
   

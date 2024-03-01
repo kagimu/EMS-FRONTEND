@@ -98,6 +98,11 @@
       </div>
         
     </div>
+    <div class="col-3" v-if="appDatails.status == 'INTERVIEW_SCHEDULED'" > 
+      <p>Interview Has Been Scheduled</p>
+
+      <button class="btn btn-primary btn-sm"><i class="bi bi-printer"></i> Print</button>
+    </div>
 
     <div class="col-3" v-if="appDatails.status != 'INTERVIEW_SCHEDULED'" > 
       <!-- {{ appDatails.status }} -->
