@@ -31,6 +31,11 @@
                     <input type="text" v-model="form.second_name" required class="form-control">
                   </div>
 
+                  <div class="mb-2">
+                    <label class="textColor"><small>Last name</small></label>
+                    <input type="text" v-model="form.last_name" required class="form-control">
+                  </div>
+
 
 
               <div class="mb-2">
@@ -53,6 +58,22 @@
                 <input type="email" v-model="form.email" required class="form-control">
               </div>
 
+
+          <div class="mb-2">
+            <label class="textColor"><small>Role</small></label>
+            <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+
+            <li class="list-group-item" v-for="(list, index) in rolesData" :key="index" :value="list.number">
+            <input
+            v-model="form.role_numbers"
+
+            style="outline: none 0 !important; box-shadow: none;"
+            class="form-check-input me-1" type="checkbox" :value="list.number" :id="list.number">
+            <label class="textColor" :for="list.number"><small>{{list.name}}</small></label>
+            </li>
+
+            </ul>
+          </div>
 
                   <label class="textColor"><small>Password</small></label>
                   <div class="input-group mb-3">
@@ -171,10 +192,20 @@
 
 <script setup>
 
-import {reactive, ref} from "vue";
+import {onMounted, reactive, ref, watch,computed} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
 import { useAbility } from '@casl/vue';
+import { useAccountStore } from "@/main/dashboard/account/store/account.js";
+import { useRolesStore } from "@/main/settings/roles/store/roles.js";
+import { useUserStore } from "./store/users.js"
 
+const userStore = useUserStore()
+const notificationStore = useNotificationStore()
+const roleStore = useRolesStore()
+const accountStore = useAccountStore()
+const rolesData = ref([])
 const { can } = useAbility()
+const errorMessage = ref(null)
 
 const buttonLoader = ref(false)
 let show = ref(false)
@@ -182,15 +213,61 @@ let show = ref(false)
 const form = reactive({
   first_name:null,
   second_name:null,
+  last_name:null,
   email:null,
   phone:null,
   location:null,
-  level:""
+  level:"",
+  role_numbers:[]
 })
 
+
 function addCampus(){
+  buttonLoader.value = true
   alert(JSON.stringify(form))
+  userStore.createNewUser(form)
+
 }
+
+
+watch (
+    () => userStore.newUserResponse,
+    async (data) => {
+      if(data){
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+        form.first_name = null
+        form.second_name = null
+      }
+    },
+    {deep:true}
+)
+watch (
+    () => userStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+//fetch
+onMounted(
+    async () => {
+      await roleStore.fetchRoles()
+    } )
+
+    watch(
+    () => roleStore.roleResponse,
+    async (data) => {
+      if(data){
+        rolesData.value = data.data
+      }
+    },
+    {deep:true}
+    )
 
 </script>
 
