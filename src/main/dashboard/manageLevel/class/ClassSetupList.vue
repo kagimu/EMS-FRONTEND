@@ -37,7 +37,9 @@
 
             <div class="flex justify-content-between mt-3">
               <div class="ml-4">Classes</div>
-              <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#classModal">
+              <button
+              v-if="can('add_class','general')"
+               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#classModal">
                 <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
                 Add Class
               </button>
@@ -88,10 +90,13 @@
                      <td>
                        <div>
                          <i
+                         v-if="can('edit_class','general')"
                              style="font-size: 13px;"
                              data-bs-toggle="modal" data-bs-target="#classModal"
                              class="bi-pencil mr-2 cursor-pointer" @click="editClass(cls)"></i>
-                         <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(cls)"></i>
+                         <i
+                         v-if="can('delete_class','general')"
+                          style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteClass(cls)"></i>
                          <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === cls.number">
                            <span class="visually-hidden">Loading...</span>
                          </div>
@@ -130,6 +135,9 @@ import useCommonsStore from "@/composables/useCommons.js";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 const routerData = useRouter()
 
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
 
 const classStore = useClassesStore()
 const commons = useCommonsStore()

@@ -38,7 +38,6 @@
       <div class="mb-2">
         <label class="textColor"><small>Level</small></label>
         <select
-            disabled
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="form.level_number">
@@ -111,8 +110,15 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useRouter} from "vue-router";
 import useCommonsStore from "@/composables/useCommons.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+import useNotificationStore from "@/composables/useNotification.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+
 const commons = useCommonsStore()
 const routerData = useRouter()
+const classStore = useClassesStore()
 const campusStore = useCampusStore()
 const academicYearStore = useAcademicYearStore()
 const levelStore = useLevelStore()
@@ -126,12 +132,6 @@ const  notificationStore  = useNotificationStore()
 const currentYear = ref((new Date()).getFullYear());
 
 
-
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
-import useNotificationStore from "@/composables/useNotification.js";
-import {useLevelStore} from "@/main/settings/level/store/level.js";
-
 const date = ref();
 
 
@@ -143,7 +143,7 @@ const form = reactive({
   no_of_study_period:"",
   academic_year_start_date:"",
   academic_year_end_date:"",
-  level_number:campusLevel,
+  level_number:"",
 })
 
 
@@ -182,15 +182,10 @@ watch(
 
 
 watch(
-    () => levelStore.campusLevelResponse,
+    () => classStore.campusLevelResponse,
     async (data) => {
       if(data){
-        let campusInfo = data.data
-
-        campusLevelInfo.value = campusInfo
-       /* if(!campusLevel){
-          campusLevel = campusInfo[0].number
-        }*/
+        campusLevelInfo.value = data.data
       }
     },
     {deep:true}

@@ -39,7 +39,7 @@
             <button  data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
             class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
               
-            {{  applist.status == "ADMITTED" ? 'view Details' : 'schedule Interview' }}
+            {{  applist.status == "INTERVIEW_SCHEDULED" ? 'view Details' : 'schedule Interview' }}
             <i class="bi bi-arrow-right"> </i></small></button>    
           </td>
         </tr>
@@ -75,6 +75,7 @@ import ApplicationDetails from './ApplicationDetails.vue';
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import useNotificationStore from "@/composables/useNotification.js";
 const applicationInfoList = ref( [])
+
 let errorMessage = ref(null)
 
 const buttonLoader = ref(false)

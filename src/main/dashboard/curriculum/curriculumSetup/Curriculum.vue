@@ -23,7 +23,8 @@
 
 
     <div class="mt-3">
-      <button
+      <button 
+         v-if="can('create_curriculum','general')"
           type="button"
           class="btn btn-sm buttonStyle btn-primary mr-2"
           @click="addSchool"
@@ -47,7 +48,8 @@
               {{curr.name}}
 
               <div>
-                <i
+                <i 
+                    v-if="can('edit_curriculum','general')"
                     class="bi-pencil ml-2 cursor-pointer"
                     data-bs-toggle="modal"
                     data-bs-target="#CurriculumModal"
@@ -55,6 +57,7 @@
                     @click="editCurriculum(curr)"></i>
 
                 <i style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  
+                v-if="can('delete_curriculum','general')"
                 @click="deleteCurriculum(curr)"></i>
                 <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === curr.number">
                   <span class="visually-hidden">Loading...</span>
@@ -70,6 +73,7 @@
                                 :to="{name:'curriculum-setup', query:{id:curr.number}}"
                             >
                               <button
+                              v-if="can('setup_curriculum','general')"
                                   type="button"
                                   class="btn-primary border-0 d-none d-lg-block viewButtonStyle mr-2">
                                     <span class="mx-9 text-sm">
@@ -100,6 +104,10 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import NewCurriculum from "@/main/dashboard/curriculum/curriculumSetup/NewCurriculum.vue";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
+
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
 
 const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()

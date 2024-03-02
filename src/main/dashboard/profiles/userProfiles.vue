@@ -5,7 +5,9 @@
       <div class="col-12">
 
 
-        <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">New User</button>
+        <button  
+        v-if="can('add_user','general')"
+        class="btn btn-primary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">New User</button>
 
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
           <div class="offcanvas-header">
@@ -170,6 +172,9 @@
 <script setup>
 
 import {reactive, ref} from "vue";
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
 
 const buttonLoader = ref(false)
 let show = ref(false)

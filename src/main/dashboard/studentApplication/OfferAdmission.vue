@@ -45,7 +45,7 @@
 
         </div>
         <div class="col-lg-4">
-          <p><small>Offer School </small></p>
+          <p><small>Offer School</small></p>
           <div class="mb-2">
               <label class="textColor"><small>School</small> <span class="star">*</span></label>
               <select
@@ -274,8 +274,6 @@ onMounted(
   )
 
 
-let student_number = ref(null)
-
 onMounted(
     async () => {
       await admissionStore.fetchAdmissionOfferByStudentId(routerData.currentRoute.value.query.id)
@@ -310,7 +308,7 @@ onMounted(
       class_number:null,
       school_number:null,
       campus_number:null,
-      student_number:routerData.currentRoute.value.query.id,
+      student_number:studentNumber
     })
 
     const admitStudent = () =>{
