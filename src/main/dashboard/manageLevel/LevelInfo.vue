@@ -11,7 +11,7 @@
             <div style="width: 95%; font-size: 13px;" class="mx-auto mt-4">
 
               <div class="row">
-                <div class="col-3">
+                <div class="col-4">
                     <div class="mb-4">
                       <b>Contacts</b><br />
                       Email:  <span>{{campusInfo.email}}</span> <br />
@@ -25,7 +25,7 @@
 
 
 
-                <div class="col-3">
+                <div class="col-4">
               <div class="mb-4">
                 <b>Address</b> <br />
                 Location: <span>{{campusInfo.location}}</span>
@@ -33,7 +33,7 @@
                 </div>
 
 
-                <div class="col-3">
+                <div class="col-4">
                   <div class="mb-4">
                     <b>Curriculum</b> <br />
                      <div v-for="(item, index) in campusInfo.curriculum" :key="index">{{(index+1)+". "+item.name}}</div>
@@ -41,14 +41,7 @@
                 </div>
 
 
-                    <div class="col-3">
-                    <b>Levels</b>
-                      <div class="mb-7 mt-2">
-                          <div class="mb-1" v-for="(item, index) in levelInfo" :key="index">
-                            <span>{{item.code+". "+item.name}}</span>
-                          </div>
-                    </div>
-                    </div>
+
                   </div>
 
             </div>
