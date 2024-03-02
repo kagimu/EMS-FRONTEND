@@ -55,9 +55,14 @@
 <!--        <th scope="col">#</th>-->
         <th scope="col">Code</th>
         <th scope="col">Level</th>
-        <th>Academic Year</th>
-<!--        <th scope="col">Date Period</th>-->
-<!--        <th scope="col">Action</th>-->
+        <th>
+          <div class="row" >
+            <div class="col-lg-4">Academic Year</div>
+            <div class="col-lg-8">
+             <span class="ml-3">Study Period</span>
+            </div>
+          </div>
+        </th>
       </tr>
       </thead>
       <tbody>
@@ -72,7 +77,8 @@
               <td>{{academicYre.code}}</td>
               <td class="w-[30%] capitalize">
                 <div>
-                  {{academicYre.academic_year_name}} [ {{academicYre.no_of_study_period}} ]
+                  {{academicYre.academic_year_name}}
+                  <span class="bg-[#0d6efd] ml-2 px-2 py-[2px] rounded-sm text-white text-xs">{{academicYre.no_of_study_period}} Periods</span>
                 </div>
                 <div class="ml-5 text-sm">
                   <small>
