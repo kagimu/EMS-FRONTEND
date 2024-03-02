@@ -91,17 +91,17 @@
             <tbody>
             <tr v-for="(classes, index) in classList" :key="index">
                 <td>{{ index + 1 }}</td>
-                <td>{{ classes.name }}</td>
+                <td class="capitalize">{{ classes.name }}</td>
                 <td>
                   <table class="table table-hover caption-top text-sm">
                     <tbody>
                     <tr v-for="(list,idx) in classes.classes" :key="idx">
                       <td>{{list.code}}</td>
-                      <td>{{list.name}}</td>
+                      <td class="capitalize">{{list.name}}</td>
                       <td>[{{list.abbreviation}}]</td>
                       <td>
                         <div v-for="(lst,idx) in list.streams" :key="idx">
-                        <small>
+                        <small class="capitalize">
                           {{lst.name}}
                           <i class="bi bi-x-circle cursor-pointer" style="font-size: 13px;" @click="deleteStream(lst)"></i>
                         </small>
