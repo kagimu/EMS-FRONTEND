@@ -79,7 +79,7 @@ const router = createRouter({
             meta: {
                 requiresAuth: true,
                 resource: "dashboard",
-                action: "can_access_dashboard",
+                action: "access_dashboard",
                   
             },
             children:[
@@ -87,285 +87,285 @@ const router = createRouter({
                 {path: 'school', component: ManageSchool, name: "school",
                 meta: {
                     resource: "school",
-                    action: "can_view_schools",
+                    action: "view_schools",
                       
                 }
             },
                 {path: 'campus', component: ManageCampus, name: "campus",
                 meta: {
                     resource: "campus",
-                    action: "can_view_campuses",
+                    action: "view_campuses",
                       
                 }
             },
                 {path: 'campus-setup', component: CampusSetup, name: "campus-setup",
                 meta: {
                     resource: "campus-setup",
-                    action: "can_view_campus-setup",
+                    action: "view_campus-setup",
                       
                 }},
                 {path: 'reports', component: ManageCampus, name: "reports",
                 meta: {
                     resource: "reports",
-                    action: "can_view_reports",
+                    action: "view_reports",
                       
                 }},
                 {path: 'student-admission', component: StudentAdmission, name: "student-admission",
                 meta: {
                     resource: "student-admission",
-                    action: "can_view_student-admission",
+                    action: "view_student-admission",
                       
                 }},
                 {path: 'student-application', component: StudentApplication, name: "student-application",
                 meta: {
                     resource: "student-application",
-                    action: "can_view_student-application",
+                    action: "view_student-application",
                       
                 }},
                 {path: 'profiles', component: userProfiles, name: "profiles",
                 meta: {
                     resource: "profiles",
-                    action: "can_view_profiles",
+                    action: "view_profiles",
                       
                 }},
                 {path: 'accounting', component: ManageCampus, name: "accounting",
                 meta: {
                     resource: "accounting",
-                    action: "can_view_accounting",
+                    action: "view_accounting",
                       
                 }},
                 {path: 'report-center', component: ReportCenter, name: "report-center",
                 meta: {
                     resource: "report-center",
-                    action: "can_view_report-center",
+                    action: "view_report-center",
                       
                 }},
                 {path: 'settings', component: settings, name: "settings",
                 meta: {
                     resource: "settings",
-                    action: "can_view_settings",
+                    action: "view_settings",
                       
                 }},
                 {path: 'curriculum', component: Curriculum, name: "curriculum",
                 meta: {
                     resource: "campus",
-                    action: "can_view_curriculum",
+                    action: "view_curriculum",
                       
                 }},
                 {path: 'curriculum-setup', component: CurriculumSetup, name: "curriculum-setup",
                 meta: {
                     resource: "curriculum-setup",
-                    action: "can_view_curriculum-setup",
+                    action: "view_curriculum-setup",
                       
                 }},
                 {path: 'subject-cluster', component: SubjectCluster, name: "subject-cluster",
                 meta: {
                     resource: "subject-cluster",
-                    action: "can_view_subject-cluster",
+                    action: "view_subject-cluster",
                       
                 }},
                 {path: 'subject', component: SubjectList, name: "subject",
                 meta: {
                     resource: "subject",
-                    action: "can_view_subject",
+                    action: "view_subject",
                       
                 }},
                 {path: 'strands', component: StrandList, name: "strands",
                 meta: {
                     resource: "strands",
-                    action: "can_view_strands",
+                    action: "view_strands",
                       
                 }},
                 {path: 'topic', component: TopicList, name: "topic",
                 meta: {
                     resource: "topic",
-                    action: "can_view_topic",
+                    action: "view_topic",
                       
                 }},
                 {path: 'sub-topic', component: SubTopicList, name: "sub-topic",
                 meta: {
                     resource: "sub-topic",
-                    action: "can_view_sub-topic",
+                    action: "view_sub-topic",
                       
                 }},
                 {path: 'concept', component: ConceptList, name: "concept",
                 meta: {
                     resource: "concept",
-                    action: "can_view_concept",
+                    action: "view_concept",
                       
                 }},
                 {path: 'class', component: ClassSetupList, name: "class",
                 meta: {
                     resource: "class",
-                    action: "can_view_class",
+                    action: "view_class",
                       
                 }},
                 {path: 'time-table', component: AllTimeTables, name: "timetable",
                 meta: {
                     resource: "time-table",
-                    action: "can_view_time-table",
+                    action: "view_time-table",
                       
                 }},
                 {path: 'time-table-details/:timetable_id', component: Timetable, name: "timetable-details",
                 meta: {
                     resource: "timetable-details",
-                    action: "can_view_timetable-details",
+                    action: "view_timetable-details",
                       
                 }},
                 {path: 'scheme-of-work', component: SchemeOfWork, name: "scheme-of-work",
                 meta: {
                     resource: "scheme-of-work",
-                    action: "can_view_scheme-of-work",
+                    action: "view_scheme-of-work",
                       
                 }},
                 {path:'calendar', component: GeneralCalendar, name: "general-calendar",
                 meta: {
                     resource: "calendar",
-                    action: "can_view_calendar",
+                    action: "view_calendar",
                       
                 }},
                 {path:'calendar/:calendar_id', component: CalendarDetails, name: "calendar-details",
                 meta: {
                     resource: "calendar-details",
-                    action: "can_view_calendar-details",
+                    action: "view_calendar-details",
                       
                 } },
                 {path: 'interview-details', component: InterviewDetails, name: "interview-details",
                 meta: {
                     resource: "interview-details",
-                    action: "can_view_interview-details",
+                    action: "view_interview-details",
                       
                 }},
                 {path: 'admit-student', component: AdmitStudent, name: "admit-student",
                 meta: {
                     resource: "admit-student",
-                    action: "can_view_admit-student",
+                    action: "view_admit-student",
                       
                 }},
                 {path: 'services', component: Services, name: "services",
                 meta: {
                     resource: "services",
-                    action: "can_view_services",
+                    action: "view_services",
                       
                 }},
                 {path: 'assessment-areas', component: InterviewAssessmentAreas, name: "assessment-areas",
                 meta: {
                     resource: "assessment-areas",
-                    action: "can_view_assessment-areas",
+                    action: "view_assessment-areas",
                       
                 }},
                 {path: 'invoices', component: Invoice, name: "invoices",
                 meta: {
                     resource: "invoices",
-                    action: "can_view_invoices",
+                    action: "view_invoices",
                       
                 }},
                 {path: 'new-invoice', component: NewInvoice, name: "new-invoice",
                 meta: {
                     resource: "new-invoice",
-                    action: "can_view_new-invoice",
+                    action: "view_new-invoice",
                       
                 }},
                 {path: 'invoice-details', component: InvoiceDetails, name: "invoice-details",
                 meta: {
                     resource: "invoice-details",
-                    action: "can_view_invoice-details",
+                    action: "view_invoice-details",
                       
                 }},
                 {path: 'new-admission', component: NewAdmission, name: "new-admission",
                 meta: {
                     resource: "new-admission",
-                    action: "can_view_new-admission",
+                    action: "view_new-admission",
                       
                 }},
                 {path: 'condtions', component:Conditions , name: "conditions",
                 meta: {
                     resource: "condtions",
-                    action: "can_view_condtions",
+                    action: "view_condtions",
                       
                 }},
                 {path: 'products', component: Products, name: "products",
                 meta: {
                     resource: "products",
-                    action: "can_view_products",
+                    action: "view_products",
                       
                 }},
                 {path: 'let-us-design', component: Designsidework, name: "let-us-design",
                 meta: {
                     resource: "let-us-design",
-                    action: "can_view_let-us-design",
+                    action: "view_let-us-design",
                       
                 }},
                 {path: 'assessment', component: Assessment, name: "assessment",
                 meta: {
                     resource: "assessment",
-                    action: "can_view_assessment",
+                    action: "view_assessment",
                       
                 }},
                 {path: 'assessment-list', component: AssessmentList, name: "assessment-list",
                 meta: {
                     resource: "assessment-list",
-                    action: "can_view_assessment-list",
+                    action: "view_assessment-list",
                       
                 }},
                 {path: 'examtype', component: ExamType, name: "examtype",
                 meta: {
                     resource: "examtype",
-                    action: "can_view_examtype",
+                    action: "view_examtype",
                       
                 }},  
                 {path: 'account-management', component: Account, name: "account-management",
                 meta: {
                     resource: "account-management",
-                    action: "can_view_account-management",
+                    action: "view_account-management",
                       
                 }},  
                 {path: 'user-management', component: UserManagement, name: "user-management",
                 meta: {
                     resource: "user-management",
-                    action: "can_view_user-management",
+                    action: "view_user-management",
                       
                 }},    
                 {path: 'grade-scale', component: GradingScale, name: "grade-scale",
                 meta: {
                     resource: "grade-scale",
-                    action: "can_view_grade-scale",
+                    action: "view_grade-scale",
                       
                 }}, 
                 {path: 'grade-standard', component: GradingStandard, name: "grade-standard",
                 meta: {
                     resource: "grade-standard",
-                    action: "can_view_grade-standard",
+                    action: "view_grade-standard",
                       
                 }}, 
                 {path: 'classes', component: Classes, name: "classes",
                 meta: {
                     resource: "classes",
-                    action: "can_view_classes",
+                    action: "view_classes",
                       
                 }}, 
                 {path: 'class-list', component: ClassList, name: "class-list",
                 meta: {
                     resource: "class-list",
-                    action: "can_view_class-list",
+                    action: "view_class-list",
                       
                 }},
                 {path: 'class-attendance', component: ClassAttendance, name: "class-attendance",
                 meta: {
                     resource: "class-attendance",
-                    action: "can_view_class-attendance",
+                    action: "view_class-attendance",
                       
                 }},
                 {path: 'subject-attendance', component: SubjectAttendance, name: "subject-attendance",
                 meta: {
                     resource: "subject-attendance",
-                    action: "can_view_subject-attendance",
+                    action: "view_subject-attendance",
                       
                 }},
                 {path: 'manage-class-list', component: ManageClassList, name: "manage-class-list",
                 meta: {
                     resource: "manage-class-list",
-                    action: "can_view_manage-class-list",
+                    action: "view_manage-class-list",
                       
                 }},
 
