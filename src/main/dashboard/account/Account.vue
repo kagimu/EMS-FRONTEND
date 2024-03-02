@@ -13,6 +13,7 @@
   
                 <router-link
                     v-for="(item, idx) in  accountList" :key="idx"
+                    v-show="can(item.action,'general')"
                     class="list-group-item list-group-item-action"
                     :class="item.id === selectedPage ? 'active' : ''"
                     :to="{name:'account-management', query:{s:item.id}}">
@@ -53,8 +54,10 @@
   import {useRouter} from "vue-router";
   import UserManagement from "./accountComponents/UserManagement.vue";
 
+  import { useAbility } from '@casl/vue';
 
-  
+const { can } = useAbility()
+
   const routerData = useRouter()
   const buttonLoader = ref(false)
   
@@ -65,11 +68,13 @@
    
       {
          name: "User Management" ,
-           id: "user-management"
+           id: "user-management",
+           action:"view_account_management"
       },
     {
       name:"Roles",
-      id:"role"
+      id:"role",
+      action : "view_roles"
     },
      
   ])

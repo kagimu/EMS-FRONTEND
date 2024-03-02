@@ -9,7 +9,9 @@
                   <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">  
             </div>
             <div class="col-lg-6">
-              <button style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
+              <button
+              v-if="can('add_examtype','general')"
+               style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
       data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="shoDialog">
      <b><i class="bi bi-plus"></i></b> <small>
       Add Exam Type</small></button>
@@ -87,6 +89,9 @@
   import {onMounted,reactive, ref, watch} from "vue";
   import useNotificationStore from "@/composables/useNotification.js";
   import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
+  import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
 
   const buttonLoader = ref(false)
   const examTypeListData = ref([])

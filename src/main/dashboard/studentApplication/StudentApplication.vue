@@ -13,6 +13,7 @@
   
                 <router-link
                     v-for="(item, idx) in application" :key="idx"
+                    v-show="can(item.action,'general')"
                     class="list-group-item list-group-item-action"
                     :class="item.id === selectedPage ? 'active' : ''"
                     :to="{name:'student-application', query:{s:item.id}}">
@@ -68,6 +69,10 @@
   import InterviewsQuestions from "./InterviewsQuestions.vue";
   import GradeResults from "./GradeResults.vue";
   import InterviewAssesmentAreas from "../assessment/assessmentComponents/AssesmentAreas.vue";
+  import { useAbility } from '@casl/vue'
+
+  const { can } = useAbility()
+
 
   const routerData = useRouter()
   const buttonLoader = ref(false)
@@ -78,23 +83,28 @@
   const application = ref([
     {
       name:"Application List",
-      id:"application-list"
+      id:"application-list",
+      action:"view_application_list"
     },
     {
       name:"Interviews",
-      id:"interviews"
+      id:"interviews",
+      action:"view_interviews"
     },
     {
       name:"Assessment Areas",
-      id:"assessment-areas"
+      id:"assessment-areas",
+      action:"view_assessment_areas"
     },
     {
       name:"Interview Questions",
-      id:"interviewquestions"
+      id:"interviewquestions",
+      action:"view_interviewquestions"
     },
     {
       name:"Interview Results",
-      id:"grade-results"
+      id:"grade-results",
+      action:"view_grade_results"
     },
    
 

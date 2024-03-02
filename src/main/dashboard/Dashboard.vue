@@ -62,6 +62,7 @@
               style="font-size: 13px;">
              <router-link
                  v-for="(lst,idx) in menuList" :key="idx"
+                 v-show="can(lst.action, 'general')"
                  :class="(lst.name === routerName) ? 'active' : ''"
                  class="list-group-item list-group-item-action"
                  :to="{name:lst.name}">
@@ -112,28 +113,31 @@ import router from "@/config/router.js";
 import {getCurrentInstance, ref} from 'vue'
 import {useAuthStore} from "@/main/auth/store/auth.js";
 import {useRouter} from "vue-router";
+import { useAbility } from '@casl/vue';
 const routerName = useRouter().currentRoute.value.name;
 const authStore = useAuthStore()
 const defaultMenuSize = ref(false)
+const { can } = useAbility();
 
 const menuList = ref([
-  {title:"Home", name:"home", icon:"bi-house"},
+  {title:"Home", name:"home", icon:"bi-house",action:"view_dashboard"},
   // {title:"Reports", name:"reports", icon:"bi-graph-up-arrow"},
-  {title:"School", name:"school", icon:"bi-house-add"},
-  {title:"Curriculum", name:"curriculum", icon:"bi-pen"},
+  {title:"School", name:"school", icon:"bi-house-add" , action:"view_school"},
+  {title:"Classes", name:"classes", icon:"bi-person-lines-fill",  action: "view_classes"},
+  {title:"Curriculum", name:"curriculum", icon:"bi-pen", action:"view_curriculum"},
   // {title:"Classes", name:"class", icon:"bi-pen"},
   // {title:"Scheme Of Work", name:"scheme-of-work", icon:"bi-receipt"},
-  {title:"Time table", name:"timetable", icon:"bi-pen"},
-  {title:"Assessment", name:"assessment", icon:"bi-book"},
-  {title:"Student Admission", name:"student-admission", icon:"bi-database-down"},
-  {title:"Student Application", name:"student-application", icon:"bi-person-plus"},
-  {title:"Invoices", name:"invoices", icon:"bi-receipt-cutoff"},
-  {title:"Profiles", name:"profiles", icon:"bi-people"},
+  {title:"Time table", name:"timetable", icon:"bi-pen",action:"view_timetable"},
+  {title:"Assessment", name:"assessment", icon:"bi-book",action:"view_assessment"},
+  {title:"Student Admission", name:"student-admission", icon:"bi-database-down",action:"view_student-admission"},
+  {title:"Student Application", name:"student-application", icon:"bi-person-plus",action:"view_student-application"},
+  {title:"Invoices", name:"invoices", icon:"bi-receipt-cutoff",action:"view_invoices"},
+  {title:"Profiles", name:"profiles", icon:"bi-people",action:"view_profiles"},
   // {title:"Accounting", name:"accounting", icon:"bi-receipt"},
-  {title:"Calendar", name:"general-calendar", icon:"bi-calendar3"},
-  {title:"Report Center", name:"report-center", icon:"bi-card-heading"},
-  {title:"Account Management", name:"account-management", icon:"bi-people"},
-  {title:"Settings", name:"settings", icon:"bi-gear"},
+  {title:"Calendar", name:"general-calendar", icon:"bi-calendar3",action:"view_general-calendar"},
+  {title:"Report Center", name:"report-center", icon:"bi-card-heading",action:"view_report-center"},
+  {title:"Account Management", name:"account-management", icon:"bi-people",action:"view_account-management"},
+  {title:"Settings", name:"settings", icon:"bi-gear",action:"view_settings"},
 ])
 
 

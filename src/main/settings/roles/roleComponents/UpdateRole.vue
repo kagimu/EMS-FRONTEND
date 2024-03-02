@@ -1,7 +1,7 @@
 <template>
     <div class="modal-content">
       <div class="modal-header text-sm p-0">
-        {{ roleNumber }}
+        <!-- {{ roleNumber }} -->
         <h6 class="modal-title ml-3 mt-2 mb-2"><small>Update Role</small></h6>
         <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>

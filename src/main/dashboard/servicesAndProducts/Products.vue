@@ -25,7 +25,9 @@
 
     <div class="container mt-4">
       <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Product
-        <button style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
+        <button 
+        v-if="can('add_product','general')"
+        style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
         data-bs-target="#serviceModal"  data-bs-toggle="modal" @click="openModal()">
         <i class="bi bi-plus"></i>&nbsp;<small>
           Add Product</small></button>
@@ -50,9 +52,13 @@
             <td>{{ productData.Item.cost}}</td>
             <td>{{ productData.Item.description}}</td>
             <td>
-              <button @click="setProductId(productData)" data-bs-target="#editServiceModal"  data-bs-toggle="modal" class="link-primary"><i class="bi bi-pencil"></i></button>&nbsp;&nbsp;   |
+              <button 
+              v-if="can('edit_product','general')"
+              @click="setProductId(productData)" data-bs-target="#editServiceModal"  data-bs-toggle="modal" class="link-primary"><i class="bi bi-pencil"></i></button>&nbsp;&nbsp;   |
               &nbsp;&nbsp; 
-              <button  @click="deleteProduct(productData.number)" class="link-danger"><i class="bi bi-trash"></i></button>        
+              <button
+              v-if="can('delete_product','general')"
+                @click="deleteProduct(productData.number)" class="link-danger"><i class="bi bi-trash"></i></button>        
               </td>
           </tr>      
         </tbody>
@@ -89,6 +95,10 @@
   import NewProduct from "./NewProduct.vue";
   import UpdateProduct from "./UpdateProduct.vue";
   import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js";
+
+  import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
 
 const productsList = ref( [])
 let errorMessage = ref(null)

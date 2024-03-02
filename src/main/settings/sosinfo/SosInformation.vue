@@ -38,6 +38,7 @@
 import {reactive, ref, watch} from "vue";
 import {useSosStore} from  "@/main/settings/sosinfo/store/sos.js";
 
+
 const loader = ref(false)
 const sosinform = useSosStore()
 

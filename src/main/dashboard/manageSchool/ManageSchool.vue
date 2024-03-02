@@ -24,6 +24,7 @@
 
     <div class="mt-3">
       <button
+      v-if="can('add_school','general')"
           type="button"
           class="btn btn-sm buttonStyle btn-primary mr-2"
           @click="addSchool"
@@ -48,6 +49,7 @@
 
               <div>
               <i
+              v-if="can('edit_school','general')"
                   aria-controls="offcanvasRight"
                   class="bi-pencil ml-2 cursor-pointer"
                   data-bs-target="#infoModal"
@@ -55,7 +57,9 @@
                   style="font-size: 14px;"
                   @click="editSchool(school)"></i>
 
-              <i style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  @click="deleteSchool(school)"></i>
+              <i 
+              v-if="can('delete_school','general')"
+              style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  @click="deleteSchool(school)"></i>
               </div>
             </div>
 
@@ -76,6 +80,7 @@
                   :to="{name:'campus', query:{id:school.number}}"
               >
                 <button
+                v-if="can('view_school','general')"
                     type="button"
                     class="btn-primary border-0 d-none d-lg-block viewButtonStyle">
                       <span class="mx-9 text-sm">
@@ -103,6 +108,11 @@ import useNotificationStore from "@/composables/useNotification.js";
 import NewSchool from "@/main/dashboard/manageSchool/NewSchool.vue";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import NewCampus from "@/main/dashboard/manageCampus/NewCampus.vue";
+
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
+
 
 const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()

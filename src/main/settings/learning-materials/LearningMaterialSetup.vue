@@ -47,14 +47,20 @@
                     <div class="row  mt-2">
                    <div class="col-lg-4">Learning Materials</div>
                    <div class="col-lg-4"></div>
-                   <div class="col-lg-2"> <button class="btn btn-sm buttonStyle btn-primary mr-2" data-bs-target="#levelModal"
+                   <div class="col-lg-2">
+                     <button
+                     v-if="can('add_resource','general')" 
+                     class="btn btn-sm buttonStyle btn-primary mr-2" data-bs-target="#levelModal"
                                           data-bs-toggle="modal"
                                           type="button" @click="addMaterial">
                        <i class="bi-plus mr-2" style="font-size: 15px;"></i>
                        Add resource
                    </button>
                    </div>
-                   <div  class="col-lg-2"> <button class="btn btn-sm buttonStyle btn-primary mr-2" data-bs-target="#subTypeModal"
+                   <div  class="col-lg-2"> 
+                    <button
+                    v-if="can('add_material_sub_category','general')" 
+                     class="btn btn-sm buttonStyle btn-primary mr-2" data-bs-target="#subTypeModal"
                                          data-bs-toggle="modal"
                                          type="button" @click="addSubType">
                        <i class="bi-plus mr-2" style="font-size: 15px;"></i>
@@ -80,11 +86,14 @@
                         <td>
                             <div>
                                 <i
+                                v-if="can('edit_learning_material','general')"
                                         aria-controls="offcanvasRight"
                                         class="bi-pencil mr-2 cursor-pointer" data-bs-target="#editClass"
                                         data-bs-toggle="offcanvas"
                                         style="font-size: 13px;" @click="editClass(levelInfo)"></i>
-                                <i class="bi-trash cursor-pointer" style="font-size: 13px;"
+                                <i 
+                                v-if="can('delete_learning_material','general')" 
+                                 class="bi-trash cursor-pointer" style="font-size: 13px;"
                                    @click="deleteClass(levelInfo)"></i>
                             </div>
                         </td>
@@ -110,6 +119,9 @@ import NewLearningMaterialSubType from "@/main/settings/learning-materials/NewLe
 
 const routerData = useRouter()
 
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
 
 const resourcesStore = useLearningMaterialStore()
 const commons = useCommonsStore()

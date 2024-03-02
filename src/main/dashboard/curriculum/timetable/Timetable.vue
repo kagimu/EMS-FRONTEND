@@ -292,7 +292,9 @@ import NewPeriod from "@/main/dashboard/curriculum/timetable/NewPeriod.vue";
 import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useTimetableStore} from "@/main/dashboard/curriculum/timetable/store/timetable.js";
+import { useAbility } from '@casl/vue';
 
+const { can } = useAbility()
 const routerData = useRouter()
 
 const subjectStore = useSubjectStore()

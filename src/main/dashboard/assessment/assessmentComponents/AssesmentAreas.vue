@@ -9,7 +9,9 @@
                   <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">  
             </div>
             <div class="col-lg-6">
-              <button style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
+              <button
+              v-if="can('add_assessment_area','general')"
+               style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
       data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="showInterviewDialog">
      <b><i class="bi bi-plus"></i></b> <small>
       Add Assessment Area</small></button>
@@ -41,11 +43,14 @@
       <tbody>
         <tr v-for="(assesmentData, index) in AsessmentListData " :key="index">
           <td>{{ assesmentData.name}}</td>
-           <td>
-            <button data-bs-toggle="modal" data-bs-target="#infoModal" 
-             class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
-              <i class="bi bi-eye">&nbsp;View More</i></small></button>        
-            </td>
+          <td>
+          <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
+            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+          </button>
+          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
+          <button type="button">
+            <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+          </button></td>
         </tr>  
 
       </tbody>
@@ -131,6 +136,10 @@
   import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
   import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
 
+  import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
+
   const buttonLoader = ref(false)
   const AsessmentListData = ref([])
   const interviewDialog= ref(false)
@@ -153,6 +162,11 @@
 
     })
 
+    onMounted(
+    async () => {
+      await assessmentStore.fetchAssesmentArea()
+    } )
+
  //working on dialog
 const closeInterviewDialog = () => {
   interviewDialog.value = false;
@@ -160,24 +174,22 @@ const closeInterviewDialog = () => {
 const showInterviewDialog = () => {
   interviewDialog.value = true;
 }
-
-
     const addInterviewAssesment = () => {
     //  alert(JSON.stringify(form))
     interviewDialog.value = true;
      buttonLoader.value = true
-     assessmentStore.createAssesmentAreas(form)  
-     
+     assessmentStore.createAssesmentAreas(form)
     }
   
-
     watch (
     () => assessmentStore.newAssesmentAreasResponse,
     async (data) => {
       if(data){
         buttonLoader.value = false
+         assessmentStore.fetchAssesmentArea()
         notificationStore.successToast("Success", data.message)
-        // await assessmentStore.fetchInterviewAssesment()
+       form.name= ""
+       form.class_number="s"
       }
     },
     {deep:true}
@@ -196,17 +208,14 @@ watch (
     {deep:true}
 )
 
-onMounted(
-    async () => {
-      await assessmentStore.fetchAssesmentArea()
-    } )
+
 
     watch(
     () => assessmentStore.assesmentAreaResponse,
     async (data) => {
       if(data){
         AsessmentListData.value = data.data
-        notificationStore.successToast("Success", data.message)
+       // notificationStore.successToast("Success", data.message)
       }
     },
     {deep:true}

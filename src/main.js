@@ -9,6 +9,8 @@ import "bootstrap"
 import Notifications from '@kyvg/vue3-notification'
 import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css'
+import {abilitiesPlugin} from "@casl/vue";
+import abilities from "@/abilities";
 
 // main.js
 import  SetupCalendar  from 'v-calendar';
@@ -20,6 +22,9 @@ import  SetupCalendar  from 'v-calendar';
 const app = createApp(App);
 app.use(router);
 app.config.globalProperties.$http = axios;
+app.use(abilitiesPlugin, abilities, {
+    useGlobalProperties: true,
+});
 app.use(createPinia());
 app.use(FloatingVue)
 app.use(Notifications)

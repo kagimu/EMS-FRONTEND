@@ -30,7 +30,9 @@
 
             <div class="flex justify-content-between mt-3">
               <div class="ml-4">Level</div>
-              <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addLevel" data-bs-toggle="modal" data-bs-target="#levelModal">
+              <button
+              v-if="can('add_level','general')"
+               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addLevel" data-bs-toggle="modal" data-bs-target="#levelModal">
                 <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
                 Add Level
               </button>
@@ -53,10 +55,13 @@
                 <td>
                   <div>
                     <i
+                       v-if="can('edit_level','general')"
                         style="font-size: 13px;"
                         data-bs-toggle="modal" data-bs-target="#levelModal"
                         class="bi-pencil mr-2 cursor-pointer" @click="editLevel(levelInfo)"></i>
-                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLevel(levelInfo, index)"></i>
+                    <i 
+                    v-if="can('delete_level','general')"
+                    style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLevel(levelInfo, index)"></i>
                     <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
                       <span class="visually-hidden">Loading...</span>
                     </div>
@@ -84,6 +89,9 @@ import NewLevel from "@/main/settings/level/NewLevel.vue";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 const routerData = useRouter()
 
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
 
 const levelStore = useLevelStore()
 const commons = useCommonsStore()

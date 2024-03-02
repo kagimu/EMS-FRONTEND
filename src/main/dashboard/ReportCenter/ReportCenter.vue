@@ -9,11 +9,21 @@
 
 
           <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-            <router-link class="list-group-item list-group-item-action active" :to="{name:''}"><small style="font-size:12px;">Kindergarten</small></router-link>
-            <router-link class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Primary</small></router-link>
-            <router-link class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Secondary</small></router-link>
-            <router-link class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Tertiary</small></router-link>
-            <router-link class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Vocational</small></router-link>
+            <router-link 
+            v-if="can('view_kindergaten_reports','general')"
+            class="list-group-item list-group-item-action active" :to="{name:''}"><small style="font-size:12px;">Kindergarten</small></router-link>
+            <router-link
+            v-if="can('view_primary_reports','general')"
+             class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Primary</small></router-link>
+            <router-link 
+            v-if="can('view_secondary_reports','general')"
+            class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Secondary</small></router-link>
+            <router-link
+            v-if="can('view_tertiary_reports','general')"
+             class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Tertiary</small></router-link>
+            <router-link 
+            v-if="can('view_vocational_reports','general')"
+            class="list-group-item list-group-item-action" :to="{name:''}"><small style="font-size:12px;">Vocational</small></router-link>
           </div>
 
 
@@ -31,7 +41,9 @@
             <div class="mt-4">
               <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                  <button class="nav-link navColor active" id="babyClass-tab" data-bs-toggle="tab" data-bs-target="#babyClass" type="button" role="tab" aria-controls="babyClass" aria-selected="false"><small>Baby Class</small></button>
+                  <button 
+                  
+                  class="nav-link navColor active" id="babyClass-tab" data-bs-toggle="tab" data-bs-target="#babyClass" type="button" role="tab" aria-controls="babyClass" aria-selected="false"><small>Baby Class</small></button>
                   <button class="nav-link navColor" id="grading-scale-tab" data-bs-toggle="tab" data-bs-target="#grading-scale" type="button" role="tab" aria-controls="grading-scale" aria-selected="true"><small>Middle CLass</small></button>
                   <button class="nav-link navColor" id="study-period-tab" data-bs-toggle="tab" data-bs-target="#study-period" type="button" role="tab" aria-controls="study-period" aria-selected="false"><small>Top Class</small></button>
                   <button class="nav-link navColor" id="assessment-manager-tab" data-bs-toggle="tab" data-bs-target="#assessment-manager" type="button" role="tab" aria-controls="assessment-manager" aria-selected="false"><small>Primary</small></button>
@@ -80,6 +92,11 @@
 import BabyClassReport from "@/main/dashboard/ReportCenter/BabyClassReport.vue";
 import TopClassReport from "@/main/dashboard/ReportCenter/TopClassReport.vue";
 import PrimaryReport from "@/main/dashboard/ReportCenter/PrimaryReport.vue";
+
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
+
 </script>
 
 <style scoped>

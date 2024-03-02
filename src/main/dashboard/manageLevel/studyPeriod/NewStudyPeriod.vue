@@ -33,6 +33,19 @@
             class="form-control form-select-sm">
       </div>
 
+      <div class="mb-2">
+        <label class="textColor"><small>Level</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="campus_level_number"
+            @change="fetchCurriculumClass(campus_level_number)"
+        >
+          <option disabled value="">Select Level</option>
+          <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
 
       <div class="mb-2">
         <label class="textColor"><small>Academic Year</small></label>
@@ -106,18 +119,21 @@ const  notificationStore  = useNotificationStore()
 const campusStore = useCampusStore()
 const academicYearStore = useAcademicYearStore()
 const studyPeriodStore = useStudyPeriodStore()
+const classStore = useClassesStore()
 const campusLevel = routerData.currentRoute.value.query.l
 const campusNumber = routerData.currentRoute.value.query.id
 const errorMessage = ref(null)
-const campusLevelInfo = ref([])
 const academicYearList = ref([])
 const loader = ref(false)
+const campus_level_number = ref("")
+const campusLevelList = ref([])
 
 
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import useNotificationStore from "@/composables/useNotification.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 
 const date = ref();
 
@@ -141,9 +157,13 @@ const format = (date) => {
   return `Selected date is ${day}/${month}/${year}`;
 }
 
+const fetchCurriculumClass = (campus_level_number) => {
+  academicYearStore.fetchAcademicYearByLevel(campus_level_number)
+}
+
 onMounted(
     () =>{
-      campusStore.fetchCampusLevel(campusNumber)
+       //
     }
 )
 
@@ -153,15 +173,7 @@ const addStudyPeriod = () => {
   studyPeriodStore.newStudyPeriod(form)
 }
 
-watch(
-    () => campusStore.campusLevelListResponse,
-    async (data) => {
-      if(data){
-        campusLevelInfo.value = data.data
-      }
-    },
-    {deep:true}
-)
+
 
 watch(
     () => studyPeriodStore.newStudyPeriodResponse,
@@ -178,7 +190,7 @@ watch(
 )
 
 watch(
-    () => academicYearStore.academicYearResponse,
+    () => academicYearStore.academicYearByLevelResponse,
     async (data) => {
       if(data){
         academicYearList.value = data.data
@@ -200,6 +212,15 @@ watch(
     {deep:true}
 )
 
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        campusLevelList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 </script>
 
