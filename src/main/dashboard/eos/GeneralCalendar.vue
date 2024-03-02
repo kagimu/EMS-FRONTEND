@@ -68,13 +68,19 @@
         <div class="my-2" style="display: flex; flex-direction: row; justify-content: flex-end" >
 
             <div >
-                <button class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#newCompany" @click="showAddCompanyDialog" >Add Company</button>
+                <button
+                v-if="can('add_company','general')" 
+                class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#newCompany" @click="showAddCompanyDialog" >Add Company</button>
             </div>
                 <div >
-                <button class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#newCalendar" @click="showAddCalendarDialog" >Add new Calendar</button>
+                <button
+                v-if="can('add_calendar','general')" 
+                 class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#newCalendar" @click="showAddCalendarDialog" >Add new Calendar</button>
             </div>
             <div >
-                <button class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#newCalendarEvent" @click="showAddCalendarEventDialog" >Add Events</button>
+                <button 
+                v-if="can('add_events','general')" 
+                class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#newCalendarEvent" @click="showAddCalendarEventDialog" >Add Events</button>
             </div>
         </div>
 
@@ -89,7 +95,9 @@
                         <p class="card-text">To : {{dateFormat(calendar.end_date)}}</p>
 
                         <div class="card-footer bg-transparent border-success">
-                            <a href="#" @click="goToCalendar(calendar.number)" class="btn btn-primary"> View</a>
+                            <a
+                            v-if="can('view_calendar','general')"
+                             href="#" @click="goToCalendar(calendar.number)" class="btn btn-primary"> View</a>
                         </div>
                     </div>
                     </div>
@@ -118,6 +126,10 @@ import useNotificationStore from "@/composables/useNotification.js";
 import router from "@/config/router.js";
 import useCommonsStore from "@/composables/useCommons.js";
 import NewCompany from "@/main/dashboard/eos/components/NewCompany.vue";
+
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
 
 const calendar = ref(null);
 const calendars = ref([]);

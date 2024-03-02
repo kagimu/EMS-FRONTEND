@@ -13,6 +13,7 @@
 
               <router-link
                   v-for="(item, idx) in  settingsList" :key="idx"
+                  v-show="can(item.action,'general')"
                   class="list-group-item list-group-item-action"
                   :class="item.id === selectedPage ? 'active' : ''"
                   :to="{name:'settings', query:{s:item.id}}">
@@ -30,9 +31,9 @@
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
 
-                <div v-if="selectedPage === 'role'">
+                <!-- <div v-if="selectedPage === 'role'">
                   <roles></roles>
-                </div>
+                </div> -->
                 <div v-if="selectedPage === 'level'">
                   <level-setup></level-setup>
                 </div>
@@ -76,6 +77,10 @@ import Services from "../dashboard/servicesAndProducts/Services.vue";
 import Conditions from "@/main/settings/conditions/Conditions.vue";
 import Products from "../dashboard/servicesAndProducts/Products.vue";
 
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
+
 const routerData = useRouter()
 const buttonLoader = ref(false)
 
@@ -85,39 +90,47 @@ const selectedPage = route ? route : "profile"
 const settingsList = ref([
   {
     name:"Profile",
-    id:"profile"
+    id:"profile",
+    action:"view_profile"
   },
   {
     name:"Level",
-    id:"level"
+    id:"level",
+    action:"view_level"
   },
   {
     name:"Classes",
-    id:"classes"
+    id:"classes",
+    action:"view_classes"
   },
     {
        name: "Learning Materials" ,
-         id: "learning-materials"
+         id: "learning-materials",
+         action:"view_learning_materials"
     },
-  {
-    name:"Roles",
-    id:"role"
-  },
+  // {
+  //   name:"Roles",
+  //   id:"role"
+  // },
     {
         name:"Source of school Info",
-        id:"sosinfos"
+        id:"sosinfos",
+        action:"view_source_of_school_info"
     },
     {
         name:"Services",
-        id:"services"
+        id:"services",
+        action:"view_services"
     },
     {
         name:"Products",
-        id:"products"
+        id:"products",
+        action:"view_products"
     },
     {
         name:"Conditions",
-        id:"conditions"
+        id:"conditions",
+        action:"view_conditions"
     }
 ])
 const form = reactive({

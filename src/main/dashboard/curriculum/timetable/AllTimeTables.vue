@@ -26,7 +26,9 @@
 
         <div class="mt-3 flex justify-between">
             &nbsp;
-            <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addTimetable" data-bs-toggle="modal" data-bs-target="#infoModal">
+            <button 
+            v-if="can('add_timetable','general')"
+            type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addTimetable" data-bs-toggle="modal" data-bs-target="#infoModal">
                 <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
                 Add Timetable
             </button>
@@ -38,7 +40,7 @@
         <div class="row mx-auto mt-5">
             <div class="col-3">
                 <div class="mb-2">
-                    <select
+                    <select 
                             style="box-shadow: none;"
                             class="form-select form-select-sm"
                             v-model="school"
