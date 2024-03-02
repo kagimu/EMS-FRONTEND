@@ -81,27 +81,22 @@
                 <th scope="col">#</th>
                 <th scope="col">Level</th>
                 <th scope="col">Classes</th>
-<!--                <th scope="col">Abbreviation</th>-->
-<!--                <th scope="col">Streams</th>-->
-<!--                <th scope="col" class="text-right">
-                  <div style="margin-right: 60px;">Action</div>
-                </th>-->
             </tr>
             </thead>
             <tbody>
             <tr v-for="(classes, index) in classList" :key="index">
                 <td>{{ index + 1 }}</td>
-                <td>{{ classes.name }}</td>
+                <td class="capitalize">{{ classes.name }}</td>
                 <td>
                   <table class="table table-hover caption-top text-sm">
                     <tbody>
                     <tr v-for="(list,idx) in classes.classes" :key="idx">
                       <td>{{list.code}}</td>
-                      <td>{{list.name}}</td>
+                      <td class="capitalize">{{list.name}}</td>
                       <td>[{{list.abbreviation}}]</td>
                       <td>
                         <div v-for="(lst,idx) in list.streams" :key="idx">
-                        <small>
+                        <small class="capitalize">
                           {{lst.name}}
                           <i class="bi bi-x-circle cursor-pointer" style="font-size: 13px;" @click="deleteStream(lst)"></i>
                         </small>
@@ -110,43 +105,16 @@
                       <td>
                         <button
                             type="button"
-                            class="btn btn-sm buttonStyle btn-primary mr-2"
+                            class="bg-[#0d6efd] text-white rounded-md px-2 py-[2px;] text-xs hover:bg-blue-500"
                             data-bs-toggle="modal"
                             data-bs-target="#streamModal"
-
-                            style="font-size: 13px;"
                             @click="addStream(list)">Add Stream
                         </button>
                       </td>
                     </tr>
                     </tbody>
                   </table>
-<!--                  <div class="mb-2" v-for="(list,idx) in classes.classes" :key="idx">
-                    {{list.code+". "+list.name+" ["+list.abbreviation+"]"}}
-                  </div>-->
                 </td>
-<!--                <td>{{ classes.abbreviation }}</td>-->
-<!--                <td>
-                  <div v-for="(lst,idx) in classes.streams" :key="idx">
-                    <small>
-                      {{lst.name}}
-                      <i class="bi bi-x-circle cursor-pointer" style="font-size: 13px;" @click="deleteStream(lst)"></i>
-                    </small>
-                  </div>
-                </td>
-                <td class="text-right">
-                    <div style="margin-right: 10px;">
-                        <button
-                                type="button"
-                                class="btn btn-sm buttonStyle btn-primary mr-2"
-                                data-bs-toggle="modal"
-                                data-bs-target="#streamModal"
-
-                                style="font-size: 13px;"
-                                @click="addStream(classes)">Add Stream
-                        </button>
-                    </div>
-                </td>-->
             </tr>
             </tbody>
         </table>
@@ -259,20 +227,6 @@ watch(
     {deep: true}
 )
 
-
-/*watch(
-    () => levelStore.campusLevelResponse,
-    async (data) => {
-      if(data){
-        let campusInfo = data.data
-
-        if(!levelNumber){
-          fetchClasses(campusInfo[0].number)
-        }
-      }
-    },
-    {deep:true}
-)*/
 
 
 </script>

@@ -42,14 +42,16 @@
       <tbody>
       <tr v-for="(academicYre, index) in academicYearList" :key="index">
         <td> {{academicYre.code}}</td>
-        <td> {{academicYre.name}}</td>
+        <td class="capitalize"> {{academicYre.name}}</td>
         <td>
           <table class="table table-hover caption-top text-sm">
             <tbody>
             <tr v-for="(list,idx) in academicYre.academicYear" :key="idx">
               <td>{{list.code}}</td>
-              <td>{{list.academic_year_name}}</td>
-              <td>{{list.no_of_study_period}}</td>
+              <td class="capitalize">
+                {{list.academic_year_name}}
+                <span class="bg-[#0d6efd] ml-2 px-2 py-[2px] rounded-sm text-white text-xs">{{list.no_of_study_period}} Periods</span>
+              </td>
               <td>
                 <b>Start Date:</b>   {{list.academic_year_start_date}}  <br />
                 <b>End Date:</b>  {{list.academic_year_end_date}}

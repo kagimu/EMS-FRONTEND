@@ -49,40 +49,84 @@
     </div>
 
 
-    <table class="table table-hover caption-top" style="font-size: 14px;">
+    <table class="table table-hover caption-top text-sm" style="font-size: 14px;">
       <thead>
       <tr>
 <!--        <th scope="col">#</th>-->
         <th scope="col">Code</th>
-        <th scope="col">Period name</th>
-        <th scope="col">Academic Year</th>
-        <th scope="col">Date Period</th>
-        <th scope="col">Action</th>
+        <th scope="col">Level</th>
+        <th>
+          <div class="row" >
+            <div class="col-lg-4">Academic Year</div>
+            <div class="col-lg-8">
+             <span class="ml-3">Study Period</span>
+            </div>
+          </div>
+        </th>
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(styPeriod, index) in studyPeriodList" :key="index">
-<!--        <td>{{index+1}}</td>-->
-        <td> {{styPeriod.code}}</td>
-        <td> {{styPeriod.study_period_name}}</td>
-        <td> {{styPeriod.academic_year_name}}</td>
-        <td class="text-sm">
-          Start Date:   {{styPeriod.study_period_start_date}}  <br />
-          End Date:  {{styPeriod.study_period_end_date}}
-        </td>
+
+      <tr v-for="(level, index) in studyPeriodList" :key="index">
+        <td> {{level.code}}</td>
+        <td class="capitalize"> {{level.name}}</td>
         <td>
-          <div>
-            <i
-                style="font-size: 13px;"
-                data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                class="bi-pencil mr-2 cursor-pointer" @click="editStudyPeriod(styPeriod)"></i>
-            <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteStudyPeriod(styPeriod,index)"></i>
-            <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          </div>
+          <table class="table table-hover caption-top text-sm">
+            <tbody>
+            <tr v-for="(academicYre,idx) in level.academicYear" :key="idx">
+              <td>{{academicYre.code}}</td>
+              <td class="w-[30%] capitalize">
+                <div>
+                  {{academicYre.academic_year_name}}
+                  <span class="bg-[#0d6efd] ml-2 px-2 py-[2px] rounded-sm text-white text-xs">{{academicYre.no_of_study_period}} Periods</span>
+                </div>
+                <div class="ml-5 text-sm">
+                  <small>
+                   <b>From:</b>  <small>{{academicYre.academic_year_start_date}}</small><br />
+                   <b>To:</b>  <small>{{academicYre.academic_year_end_date}}</small>
+                  </small>
+                </div>
+              </td>
+
+              <td>
+                <table class="table table-hover caption-top text-sm">
+                  <tbody>
+                  <tr v-for="(styPeriod, index) in academicYre.studyPeriod" :key="index">
+
+                    <td> {{styPeriod.code}}</td>
+                    <td class="capitalize"> {{styPeriod.study_period_name}}</td>
+                    <td>
+                      <small>
+                       <b>From:</b> {{styPeriod.study_period_start_date}}<br />
+                       <b>To:</b> {{styPeriod.study_period_end_date}}
+                      </small>
+                    </td>
+                    <td>
+                      <div>
+                        <i
+                            data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
+                            class="bi-pencil mr-2 cursor-pointer" @click="editStudyPeriod(styPeriod)"></i>
+                        <i class="bi-trash cursor-pointer"  @click="deleteStudyPeriod(styPeriod,index)"></i>
+                        <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
         </td>
+
       </tr>
+
+
+
       </tbody>
     </table>
 
@@ -112,6 +156,8 @@ const academicYearNumber = ref( "")
 const academicYearList = ref( [])
 const deletionLoader = ref( undefined)
 
+
+
 const addStudyPeriod = (item) => {
   // classNumber.value = item.number
   newAcademicYearDialog.value = true
@@ -138,17 +184,24 @@ const deleteStudyPeriod = (styPeriod, idx) => {
 }
 
 const filterStudyPeriod = (academicYearNumber) => {
-  studyPeriodStore.fetchStudyPeriod({level:campusCurriculumNumber, academic_year_number:academicYearNumber})
+  if(academicYearNumber) {
+    studyPeriodData()
+    //studyPeriodStore.fetchStudyPeriod({level:campusCurriculumNumber, academic_year_number:academicYearNumber})
+  }
 }
 
 onMounted(
     () => {
-      studyPeriodStore.fetchStudyPeriod({level:campusCurriculumNumber, academic_year_number:academicYearNumber.value})
+      studyPeriodData()
+      // studyPeriodStore.fetchStudyPeriod({level:campusCurriculumNumber, academic_year_number:academicYearNumber.value})
       // academicYearStore.fetchAcademicYear(campusLevel)
     }
 )
 
 
+const studyPeriodData = () => {
+  studyPeriodStore.fetchStudyPeriod({campus_curriculum_number:campusCurriculumNumber, academic_year_number:academicYearNumber.value})
+}
 
 
 watch(
@@ -165,7 +218,7 @@ watch(
     () => studyPeriodStore.newStudyPeriodResponse,
     async (data) => {
       if(data){
-        await studyPeriodStore.fetchStudyPeriod({level:campusCurriculumNumber, academic_year_number:academicYearNumber.value})
+        await studyPeriodData()
         notificationStore.successToast("Success","Study Period added successfully")
       }
     },
