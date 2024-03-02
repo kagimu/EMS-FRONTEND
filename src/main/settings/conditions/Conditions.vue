@@ -2,7 +2,9 @@
     <div>
     <div class="container mt-4">
       <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Admission Offer Conditions
-        <button style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
+        <button
+        v-if="can('add_condition','general')"
+        style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
         data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="showInterviewDialog">
        <small> <b><i class="bi bi-plus"></i></b>
           Add Condition</small></button>
@@ -24,9 +26,13 @@
           <tr v-for="(cond, index) in paginatedConditionList" :key="index" >
             <td>{{ cond.description }}</td>
             <td>
-              <button @click="setConditionId(cond)" data-bs-target="#editConditionModal"  data-bs-toggle="modal" class="link-primary"><i class="bi bi-pencil"></i></button>&nbsp;&nbsp;   |
+              <button
+              v-if="can('edit_condition','general')"
+               @click="setConditionId(cond)" data-bs-target="#editConditionModal"  data-bs-toggle="modal" class="link-primary"><i class="bi bi-pencil"></i></button>&nbsp;&nbsp;   |
               &nbsp;&nbsp; 
-              <button  @click="deleteCondition(cond.number)" class="link-danger"><i class="bi bi-trash"></i></button>        
+              <button
+              v-if="can('delete_condition','general')"
+                @click="deleteCondition(cond.number)" class="link-danger"><i class="bi bi-trash"></i></button>        
               </td>
           </tr>
   
@@ -88,6 +94,11 @@
       import {onMounted,reactive, ref, watch} from "vue";
       import useNotificationStore from "@/composables/useNotification.js";
       import { useConditionStore } from "./conditionStore";
+
+      
+  import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
 
       const conditionStore = useConditionStore()
       const  notificationStore  = useNotificationStore()

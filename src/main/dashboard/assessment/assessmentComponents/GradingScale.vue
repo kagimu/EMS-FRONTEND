@@ -16,7 +16,11 @@
                   <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">  
             </div>
             <div class="col-lg-6">
-                <button style="float: right; margin-right: 5px;" data-bs-toggle="modal" data-bs-target="#addAccount"  type="button"  aria-controls="rolesDialog" class="btn btn-primary btn-sm"><i class="bi bi-plus"></i> New Grade-Scale </button>
+                <button 
+                v-if="can('add_grade_scale','general')"
+                 style="float: right; margin-right: 5px;" data-bs-toggle="modal"
+                  data-bs-target="#addAccount"  type="button"  aria-controls="rolesDialog" 
+                  class="btn btn-primary btn-sm"><i class="bi bi-plus"></i> New Grade-Scale </button>
  
                 <!-- <button  class="btn btn-outline-secondary  btn-sm mt-1" style="float: right;border: none;">
                 <small><i class="bi bi-printer">&nbsp;Print</i></small></button>  -->
@@ -75,6 +79,9 @@
     import {onMounted,reactive, computed,ref, watch} from "vue";
     import NewGradeScale from "@/main/dashboard/assessment/assessmentComponents/NewGradeScale.vue"
 
+    import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
     
     </script>
     

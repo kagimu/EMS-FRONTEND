@@ -23,7 +23,9 @@
                   <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">  
             </div>
             <div class="col-lg-6">
-                <button style="float: right; margin-right: 5px;" data-bs-toggle="modal" data-bs-target="#addRoleModel"  type="button"  aria-controls="rolesDialog" class="btn btn-primary btn-sm"><i class="bi bi-plus"></i>New Role</button>
+                <button
+                v-if="can('add_role','general')" 
+                style="float: right; margin-right: 5px;" data-bs-toggle="modal" data-bs-target="#addRoleModel"  type="button"  aria-controls="rolesDialog" class="btn btn-primary btn-sm"><i class="bi bi-plus"></i>New Role</button>
             </div>
     
            </div>
@@ -61,11 +63,15 @@
         <td>{{ roles.permissions }}</td>
         <td>
           <!-- Buttons for actions -->
-          <button @click="setEditRolesId(roles.number)" data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
+          <button
+          v-if="can('edit_role','general')"
+           @click="setEditRolesId(roles.number)" data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
-          <button @click="deleteroles(index)" type="button">
+          <button 
+          v-if="can('delete_role','general')"
+          @click="deleteroles(index)" type="button">
             <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
           </button>
         </td>
@@ -93,6 +99,10 @@ import NewRole from "./roleComponents/NewRole.vue";
 import UpdateRole from "./roleComponents/UpdateRole.vue"
 import { useRolesStore } from "./store/roles";
 import useNotificationStore from "@/composables/useNotification.js";
+
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
 
 const roleStore = useRolesStore()
 const notificationStore = useNotificationStore()

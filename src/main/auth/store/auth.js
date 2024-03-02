@@ -19,14 +19,21 @@ export const useAuthStore = defineStore("auth", () => {
                 // localStorage.setItem("token", dataInfo.access_token)
                 localStorage.clear()
                 localStorage.setItem("token", dataInfo.token)
-
                 let permissions = []
+
+                if(response.data.data.type === 'Admin'){
+                    permissions.push({"action":"manage","resource":"all"})
+                }
+                else {
+               
+
                 if (response.data.data.permissions === undefined)
                     permissions.push({"action":"read","resource":"general"})
                 else
                 response.data.data.permissions.forEach(permission => {
                         permissions.push({"action":permission,"resource":"general"})
                     });
+                }
                 localStorage.setItem('abilities',JSON.stringify(permissions))
 
                 // localStorage.setItem("expires_in", dataInfo.expires_in)

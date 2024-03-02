@@ -9,7 +9,8 @@
           <!-- <h6 style="margin-top:20px; text-align: left;font-size: 15px;">4 Invoices<b></b>     </h6> -->
       </div>
       <div class="col-lg-8">
-        <RouterLink :to="{name : 'new-invoice'}" class="btn btn-primary btn-sm" style="float: right;">
+        <RouterLink :to="{name : 'new-invoice'}" class="btn btn-primary btn-sm" style="float: right;"
+        v-if="can('add_custom_invoice','general')">
           <small><i class="bi bi-plus"> Add Custom Invoice</i></small></RouterLink></div>
      </div>
          </div>
@@ -62,7 +63,9 @@
 import {onMounted, reactive, ref, watch,computed} from "vue";
 import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
 import useNotificationStore from "@/composables/useNotification.js"
+import { useAbility } from '@casl/vue';
 
+const { can } = useAbility()
 let invoiceId = "sirina-id"
 
 const invoiceData = ref([])

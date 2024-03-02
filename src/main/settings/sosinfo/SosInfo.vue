@@ -39,11 +39,13 @@
                 <td>{{SosInfo.name }}</td>
                 <td>
                   <div>
-                    <button data-bs-toggle="modal" data-bs-target="#infoModal" @click="setSosNumber(SosInfo)" 
+                    <button 
+                    v-if="can('edit_source_of_school_info','general')"
+                    data-bs-toggle="modal" data-bs-target="#infoModal" @click="setSosNumber(SosInfo)" 
                     class="link-primary" style="border-width: 0px;text-decoration: none;"><small>
                       
-                    <i style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small></button>
-                    <i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer" @click="deleteSosInfo(SosInfo)" ></i>
+                    <i  style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small></button>
+                    <i v-if="can('delete_source_of_school_info','general')" style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer" @click="deleteSosInfo(SosInfo)" ></i>
                   </div>
                 </td>
               </tr>
@@ -59,6 +61,10 @@ import {onMounted,reactive, ref, watch} from "vue";
 import {useSosStore} from  "@/main/settings/sosinfo/store/sos.js";
 import SosInformation from './SosInformation.vue';
 import useNotificationStore from "@/composables/useNotification.js";
+
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
 
 const  notificationStore  = useNotificationStore()
 

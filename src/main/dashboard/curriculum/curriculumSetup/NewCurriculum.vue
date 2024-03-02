@@ -40,6 +40,7 @@
 import {watch, onMounted, reactive, ref} from "vue";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 
+
 const classError = ref(null)
 const name = ref(null)
 const school_number = ref(null)

@@ -13,6 +13,7 @@
   
                 <router-link
                     v-for="(item, idx) in admission" :key="idx"
+                    v-show="can(item.action, 'general')"
                     class="list-group-item list-group-item-action"
                     :class="item.id === selectedPage ? 'active' : ''"
                     :to="{name:'student-admission', query:{s:item.id}}">
@@ -52,7 +53,9 @@ import {reactive, ref} from "vue";
 import AdmissionList from "@/main/dashboard/studentAdmission/AdmissionList.vue";
 import NewAdmission from "@/main/dashboard/studentAdmission/NewAdmission.vue";
 import {useRouter} from "vue-router";
+import { useAbility } from '@casl/vue';
 
+const { can } = useAbility()
 
   const routerData = useRouter()
   
@@ -62,7 +65,8 @@ import {useRouter} from "vue-router";
   const admission = ref([
     {
       name:"Admission Offers",
-      id:"admission-offers"
+      id:"admission-offers",
+      action:"view_admission_offer"
     },
     // {
     //   name:"Admitted Students",
