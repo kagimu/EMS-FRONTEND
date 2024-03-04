@@ -37,6 +37,9 @@
                   <div v-if="selectedPage === 'user-management'">
                  <UserManagement></UserManagement>
                   </div>
+                  <div v-if="selectedPage === 'users'">
+                    <userProfiles></userProfiles>
+                  </div>
                 
             </div>
           </div>
@@ -53,6 +56,7 @@
   import Roles from "@/main/settings/roles/Roles.vue";
   import {useRouter} from "vue-router";
   import UserManagement from "./accountComponents/UserManagement.vue";
+  import userProfiles from "../profiles/userProfiles.vue";
 
   import { useAbility } from '@casl/vue';
 
@@ -76,6 +80,11 @@ const { can } = useAbility()
       id:"role",
       action : "view_roles"
     },
+    {
+         name: "Users" ,
+           id: "users",
+           action:"users"
+      },
      
   ])
   const form = reactive({

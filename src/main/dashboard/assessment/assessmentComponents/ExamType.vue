@@ -37,12 +37,14 @@
         <tr>
           <!-- <th>Interview</th> -->
           <th>Name</th>
+          <th>Decription</th>
           <th>#</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(examTypeData, index) in examTypeListData " :key="index">
           <td>{{ examTypeData.name}}</td>
+          <td>{{ examTypeData.description}}</td>
            <td>
             <button data-bs-toggle="modal" data-bs-target="#infoModal" 
              class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
@@ -58,14 +60,20 @@
   <div class="offcanvas offcanvas-end" tabindex="-1" id="rolesDialogg" :class="{ show: showDialog }" aria-labelledby="offcanvasRightLabel">
           <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasRightLabel"><small>Exam Type</small></h5>
-            <button type="button" class="btn-close"  data-bs-dismiss="offcanvas" aria-label="Close" @click="closeshowDialog"></button>
+            <button  type="button" class="btn-close"  data-bs-dismiss="offcanvas" aria-label="Close" @click="closeShowDialog()"></button>
           </div>
           <div class="offcanvas-body">
             <form @submit.prevent="addExamType">
-     <div class="mb-2">
+             <div class="mb-2">
                 <label class="textColor"><small>Name</small></label>
                 <input v-model="form.name"  type="text" required class="form-control">
               </div>
+              <div class="mb-2">
+                <label class="textColor"><small>Description</small></label>
+                <input v-model="form.description"  type="text" required class="form-control">
+              </div>
+
+              
               
               <div class="text-right mt-4">
                 <button  style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
@@ -104,6 +112,7 @@ const { can } = useAbility()
 
     const form = reactive({ 
       name:null,
+      description:null
 
     })
 
@@ -124,14 +133,20 @@ const shoDialog = () => {
      
     }
   
+    
+onMounted(
+    async () => {
+      await assessmentStore.fetchExamType()
+    } )
 
     watch (
     () => assessmentStore.newExamTypeResponse,
     async (data) => {
       if(data){
+        assessmentStore.fetchExamType()
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        // await assessmentStore.fetchInterviewAssesment()
+        
       }
     },
     {deep:true}
@@ -149,17 +164,14 @@ watch (
     {deep:true}
 )
 
-onMounted(
-    async () => {
-      await assessmentStore.fetchExamType()
-    } )
 
     watch(
-    () => assessmentStore.newExamTypeResponse,
+    () => assessmentStore.examTypeResponse,
     async (data) => {
       if(data){
         examTypeListData.value = data.data
-        notificationStore.successToast("Success", data.message)
+
+        // notificationStore.successToast("Success", data.message)
       }
     },
     {deep:true}
