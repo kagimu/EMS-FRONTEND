@@ -133,52 +133,54 @@
 
             <div class="mb-3 ml-5 mt-3" style="font-size: 18px;">User profiles</div>
 
-            <table class="table table-hover caption-top" style="font-size: 14px;">
-              <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">First name</th>
-                <th scope="col">Second name</th>
-                <th scope="col">Gender</th>
-                <th scope="col">Email</th>
-                <th scope="col">Phone</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>Male</td>
-                <td>otto@gmail.com</td>
-                <td>0789878765</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>Male</td>
-                <td>thornton@gmail.com</td>
-                <td>078675654</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry the Bird</td>
-                <td>twitter</td>
-                <td>Female</td>
-                <td>twitter@gmail.com</td>
-                <td>0709897656</td>
-              </tr>
-              <tr>
-                <th scope="row">4</th>
-                <td>Larry the Bird</td>
-                <td>twitter</td>
-                <td>Male</td>
-                <td>twitter@gmail.com</td>
-                <td>0709897656</td>
-              </tr>
-              </tbody>
-            </table>
+            <table id="data"
+          class="table table-striped"
+          style="font-size: 11px !important;" >
+        <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Role (s)</th>
+          <th scope="col">Email</th>
+          <th scope="col">Gender</th>
+          <th scope="col">Status</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+          <!-- v-for="(roles, index) in rolesData" :key="index" -->
+            <tr v-for="(user, index) in userData" :key="index">
+            <td>{{ user.first_name + " " +user.last_name + " " + user.second_name }}</td>
+            <td>{{ user.type }}
+              <!-- <button 
+              v-if="can('remove_assigned_role','general')"
+               @click="openRemoveRoleConfirmationModal(user.type,user.number)" data-bs-toggle="modal" data-bs-target="#removeRoleConfirmation" type="button" aria-controls="rolesDialog">
+            &nbsp;<i class="bi bi-x-circle-fill" style="color:rgb(228, 23, 23)"></i>
+          </button> -->
+            </td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.gender }}</td>
+            <td>
+              <span v-if="user.status == 'Active'" style="color:rgb(8, 238, 8)"><b>{{ user.status }}</b>
+            </span>
+            <span v-if="user.status != 'Active'" style="color:rgb(239, 13, 13)"><b>{{ user.status }}</b>
+            </span>
+          </td>
+            <td>
+          <button 
+          v-if="can('update_assigned_role','general')"
+           data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
+            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+          </button>
+          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>
+          <button type="button">
+            <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+          </button>
+        </td>
+        </tr>
+    
+      
+        </tbody>
+      </table>
 
           </div>
         </div>
@@ -206,7 +208,7 @@ const accountStore = useAccountStore()
 const rolesData = ref([])
 const { can } = useAbility()
 const errorMessage = ref(null)
-
+const userData = ref([])
 const buttonLoader = ref(false)
 let show = ref(false)
 
@@ -222,22 +224,51 @@ const form = reactive({
 })
 
 
+//fetch
+onMounted(
+    async () => {
+      await accountStore.fetchUsersToAssign()
+    } )
+
+    watch(
+    () => accountStore.userResponse,
+    async (data) => {
+      if(data){
+        userData.value = data.data
+      }
+    },
+    {deep:true}
+    )
+
+
 function addCampus(){
   buttonLoader.value = true
   alert(JSON.stringify(form))
   userStore.createNewUser(form)
 
 }
-
+//fetch
+onMounted(
+    async () => {
+      await roleStore.fetchRoles()
+    } )
 
 watch (
     () => userStore.newUserResponse,
     async (data) => {
       if(data){
+        accountStore.fetchUsersToAssign()
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
+        roleStore.fetchRoles()
         form.first_name = null
         form.second_name = null
+        form.last_name=null,
+        form.email=null,
+        form. phone=null,
+        form.location=null,
+        form.level=null,
+        form.role_numbers=null
       }
     },
     {deep:true}
@@ -253,11 +284,7 @@ watch (
     {deep:true}
 )
 
-//fetch
-onMounted(
-    async () => {
-      await roleStore.fetchRoles()
-    } )
+
 
     watch(
     () => roleStore.roleResponse,

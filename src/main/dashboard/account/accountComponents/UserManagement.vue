@@ -115,6 +115,9 @@ import useNotificationStore from "@/composables/useNotification.js";
 import { useAccountStore } from "../store/account.js";
 import { useRolesStore } from "@/main/settings/roles/store/roles.js";
 import NewAccount from "./NewAccount.vue";
+import { useUserStore } from "@/main/dashboard/profiles/store/users.js"
+
+const userStore = useUserStore()
 
 import { useAbility } from '@casl/vue';
 
@@ -152,7 +155,11 @@ onMounted(
     },
     {deep:true}
     )
-
+    onMounted(
+    async () => {
+      await accountStore.fetchUsersToAssign()
+    } )
+    
 watch (
     () => accountStore.newAccountResponse,
     async (data) => {
@@ -165,10 +172,7 @@ watch (
 
 
 //fetch
-onMounted(
-    async () => {
-      await accountStore.fetchUsersToAssign()
-    } )
+
 
     watch(
     () => accountStore.userResponse,
