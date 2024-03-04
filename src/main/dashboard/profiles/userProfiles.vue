@@ -243,7 +243,7 @@ onMounted(
 
 function addCampus(){
   buttonLoader.value = true
-  alert(JSON.stringify(form))
+  // alert(JSON.stringify(form))
   userStore.createNewUser(form)
 
 }
