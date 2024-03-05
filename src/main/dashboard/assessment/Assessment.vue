@@ -96,7 +96,7 @@
       id:"grade-standards"
     },
     {
-      name:"Grade Scale",
+      name:"Aggregate Scale",
       id:"grade-scale"
     },
    

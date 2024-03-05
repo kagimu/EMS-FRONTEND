@@ -35,14 +35,19 @@
         <thead>
         <tr>
           <th scope="col">Name</th>
-          <th scope="col">Class (s)</th>
+          <th scope="col">Type</th>
+          <th>Descriptions</th>
+          <th>Class</th>
           <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-            <tr>
-            <td>Name 1</td>
-            <td>P1,P2</td>
+            <tr v-for="(gradeList,index) in gradeStandardData" :key="index">
+              <td>{{ gradeList.name }}</td>
+              <td>{{ gradeList.type }}</td>
+              <td>{{ gradeList.description }}</td>
+              <td>{{ gradeList.class }}</td>
+            
             <td>
           <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
@@ -70,10 +75,41 @@
     <script setup>
     import {onMounted,reactive, computed,ref, watch} from "vue";
     import NewGradeStandard from "@/main/dashboard/assessment/assessmentComponents/NewGradeStandard.vue"
-
+    import { useAssessmentStore } from "../store/assessment";
     import { useAbility } from '@casl/vue';
+    import useNotificationStore from "@/composables/useNotification.js";
 
     const { can } = useAbility()
+    const assessmentStore = useAssessmentStore()
+    const gradeStandardData = ref([])
+    const errorMessage = ref(null)
+    const notificationStore = useNotificationStore()
+
+    onMounted(
+    async () => {
+      await assessmentStore.fetchGradeStandard()
+    } )
+    
+watch (
+    () => assessmentStore.newAccountResponse,
+    async (data) => {
+      if(data){
+        agradeStandardData.value = false
+      }
+    },
+    {deep:true}
+)
+watch (
+    () => assessmentStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        // notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
     </script>
     
     <style scoped>
