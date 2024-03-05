@@ -6,7 +6,7 @@
         <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form @submit.prevent="">
+        <form @submit.prevent="addGradeStandard()">
       <div class="mb-2">
         <label class="textColor"><small>Name</small></label>
        <input type="text" class="form-control">
@@ -54,6 +54,28 @@
               </select>
           </div>
 
+          <div class="mb-2">
+              <label class="textColor"><small>Type</small> <span class="star">*</span></label>
+              <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm" required
+                      v-model="form.type"
+              >
+                  <option disabled value="">Select Type</option>
+                  <option value="internal">internal
+                  </option>
+                  <option value="external">external
+                  </option>
+                  
+              </select>
+          </div>
+
+          <div class="mb-2">
+              <label class="textColor"><small>Description</small> <span class="star">*</span></label>
+            <textarea class="form-control" v-model="form.description"></textarea>
+            </div>
+          
+
      <div class="flex justify-content-end mt-2" style="width: 100%;">
             <button type="submit" class="btn btn-primary border-0 btn-sm">
                  <small><i class="bi bi-save"></i> submit</small>
@@ -75,6 +97,7 @@ import {onMounted, reactive, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import { useAssessmentStore } from "../store/assessment";
 
 const  notificationStore  = useNotificationStore()
 const campusList = ref([])
@@ -84,12 +107,43 @@ const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
 const school_number = ref(null)
 const buttonLoader = ref(false)
+const assessmentStore = useAssessmentStore()
+const errorMessage = ref(null)
 
 
 const form = reactive({
 preferred_campus_number: null,
 class_number: null,
+type:null,
+name:null,
+description:null
 })
+
+
+
+const addGradeStandard = () => {
+assessmentStore.createGradeStandard(form)
+}
+watch(
+    () => assessmentStore.newGradeStandardResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+    )
+
+watch (
+    () => assessmentStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
 
 const fetchCampuses = (school_number) => {
       campusStore.fetchCampuses(school_number)

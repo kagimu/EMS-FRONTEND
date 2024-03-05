@@ -118,7 +118,14 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useTimetableStore} from "@/main/dashboard/curriculum/timetable/store/timetable.js";
 import NewTimetable from "@/main/dashboard/curriculum/timetable/NewTimetable.vue";
 
+
+
 const routerData = useRouter()
+
+
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
 
 const campusStore = useCampusStore()
 const schoolStore = useSchoolStore()
