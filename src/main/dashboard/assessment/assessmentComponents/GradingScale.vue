@@ -41,16 +41,17 @@
           <th scope="col">Values(Min - Max)</th>
           <th scope="col">Score</th>
           <th scope="col">Grade Standard</th>
+          <th scope="col">School</th>
           <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-            <tr>
-            <td>Name 1</td>
-            <td>P1,P2</td>
-            <td>80 - 100</td>
-            <td>D1</td>
-            <td>Grade Standard</td>
+            <tr v-for="(aggregateList,index) in aggregateData" :key="index">
+            <td>{{aggregateList.name}}</td>
+            <td>{{ aggregateList.name }}</td>
+            <td>{{  aggregateList.min_value}} - {{  aggregateList.max_value}}</td>
+            <td>{{aggregateList.min_scale}}</td>
+            <td>{{aggregateList.school}}</td>
             <td>
           <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
@@ -78,10 +79,44 @@
     <script setup>
     import {onMounted,reactive, computed,ref, watch} from "vue";
     import NewGradeScale from "@/main/dashboard/assessment/assessmentComponents/NewGradeScale.vue"
+    import { useAssessmentStore } from "../store/assessment";
 
     import { useAbility } from '@casl/vue';
 
-const { can } = useAbility()
+    const { can } = useAbility()
+    const aggregateData = ref([])
+    const assessmentStore = useAssessmentStore()
+    const errorMessage = ref(null)
+
+    //fetch
+    onMounted(
+    async () => {
+      await assessmentStore.fetchAggregateScale()
+    } )
+
+    watch(
+    () => assessmentStore.aggregateScaleResponse,
+    async (data) => {
+      if(data){
+        aggregateData.value = data.data
+      }
+    },
+    {deep:true}
+    )
+
+    watch (
+    () => assessmentStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        // notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+    )
+    
+
+
     
     </script>
     

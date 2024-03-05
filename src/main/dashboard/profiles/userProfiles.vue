@@ -1,11 +1,11 @@
 <template>
   <div>
 
-    <div class="row mt-3">
+    <div class="row m-3">
       <div class="col-12">
 
 
-        <button  
+        <button  style="float: right;"
         v-if="can('add_user','general')"
         class="btn btn-primary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">New User</button>
 
@@ -128,8 +128,8 @@
 
     <div class="row">
       <div class="col-12">
-        <div class="card mt-3">
-          <div class="card-body" style="padding: 0;">
+        <div class="m-3">
+          <div class="" style="padding: 0;">
 
             <div class="mb-3 ml-5 mt-3" style="font-size: 18px;">User profiles</div>
 

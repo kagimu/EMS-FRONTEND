@@ -68,17 +68,30 @@
     <div class="row mt-5">
       <div class="col-3">
         <div class="mb-2">
-
           <select
               style="box-shadow: none; padding-bottom: 0;"
-              class="form-select form-select-sm pb-0"
+              class="form-select form-select-sm py-2"
               v-model="level"
               @change="fetchSchemeClasses()"
           >
             <option value="">All</option>
             <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
           </select>
-          <div style="font-size: 10px;">Filter by level</div>
+          <div class="text-[12px]">Filter by Curriculum</div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="mb-2">
+          <select
+              style="box-shadow: none; padding-bottom: 0;"
+              class="form-select form-select-sm py-2"
+              v-model="level"
+              @change="fetchSchemeClasses()"
+          >
+            <option value="">All</option>
+            <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
+          </select>
+          <div class="text-[12px]">Filter by level</div>
         </div>
       </div>
 

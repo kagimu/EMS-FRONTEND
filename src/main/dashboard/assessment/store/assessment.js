@@ -11,6 +11,10 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const assessmentByStudentIdResponse = ref(null)
     const newAssesmentAreasResponse = ref(null)
     const assesmentAreaResponse = ref(null)
+    const newAggregateScaleResponse = ref(null)
+    const aggregateScaleResponse = ref(null)
+    const newGradeStandardResponse = ref(null)
+    const gradeStandardResponse = ref(null)
 
     async function createAssesmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -83,10 +87,58 @@ async function createExamType(data) {
             }
         })
 }
-async function fetchExamType(data) {
+async function fetchExamType() {
     return await api.get("main/assessments/examination-types")
         .then((response) => {
             examTypeResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function createAggregateScale(data) {
+    return await api.post("main/assessments/aggregate-scales",data)
+        .then((response) => {
+         newAggregateScaleResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function fetchAggregateScale() {
+    return await api.get("main/assessments/aggregate-scales")
+        .then((response) => {
+            aggregateScaleResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function createGradeStandard(data) {
+    return await api.post("main/grading-standard",data)
+        .then((response) => {
+         newGradeStandardResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function fetchGradeStandard() {
+    return await api.get("main/grading-standard")
+        .then((response) => {
+            gradeStandardResponse.value = response.data
         })
         .catch((response) => {
             if(response){
@@ -110,5 +162,13 @@ async function fetchExamType(data) {
         examTypeResponse,
         fetchExamType,
         assessmentByStudentIdResponse,
+        newAggregateScaleResponse,
+        createAggregateScale,
+        aggregateScaleResponse,
+        fetchAggregateScale,
+        newGradeStandardResponse,
+        createGradeStandard,
+        gradeStandardResponse,
+        fetchGradeStandard
     }
 })

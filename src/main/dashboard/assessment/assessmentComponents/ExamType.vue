@@ -46,9 +46,13 @@
           <td>{{ examTypeData.name}}</td>
           <td>{{ examTypeData.description}}</td>
            <td>
-            <button data-bs-toggle="modal" data-bs-target="#infoModal" 
-             class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
-              <i class="bi bi-eye">&nbsp;View More</i></small></button>        
+            <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
+            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+          </button>
+          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>
+          <button type="button">
+            <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+          </button> 
             </td>
         </tr>  
 
