@@ -269,7 +269,7 @@ export const useClassesStore = defineStore("classes", () => {
     async function fetchCampusLevel(data) {
         return await api.get("main/campus/level-list?campus_curriculum_number="+data)
             .then((response) => {
-                campusLevelResponse.value = response.data
+                campusLevelResponse.value = response.data //---------------
             })
             .catch((response) => {
                 if(response){

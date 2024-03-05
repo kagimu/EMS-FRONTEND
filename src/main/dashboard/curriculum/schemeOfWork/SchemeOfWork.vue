@@ -68,17 +68,28 @@
     <div class="row mt-5">
       <div class="col-3">
         <div class="mb-2">
-
           <select
-              style="box-shadow: none; padding-bottom: 0;"
-              class="form-select form-select-sm pb-0"
+              class="form-select py-2 shadow-none"
+              v-model="curriculumNumber"
+              @change="fetchCampusLevel(curriculumNumber)"
+          >
+            <option value="" class="text-[12px]">--Select--</option>
+            <option class="text-[12px]" v-for="(lvl, index) in curriculumList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+          </select>
+          <div class="text-[12px]">Filter by Curriculum</div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="mb-2">
+          <select
+              class="form-select py-2 shadow-none"
               v-model="level"
               @change="fetchSchemeClasses()"
           >
             <option value="">All</option>
             <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
           </select>
-          <div style="font-size: 10px;">Filter by level</div>
+          <div class="text-[12px]">Filter by level</div>
         </div>
       </div>
 
@@ -295,6 +306,7 @@ import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
 import SchemeOfWorkPdfTemplate from "@/main/dashboard/curriculum/schemeOfWork/SchemeOfWorkPdfTemplate.vue";
 
 const level = ref( "")
+const curriculumNumber = ref( "")
 const schemeOfWorkRef = ref( null)
 const academic_year_number = ref( "")
 const schemeDataInfo = ref( {})
@@ -319,6 +331,7 @@ const learningAreaRef = ref(null)
 const schemeOfWorkList = ref([])
 const schemeSubjectList = ref([])
 const academicYearList = ref([])
+const curriculumList = ref([])
 const commons = useCommonsStore()
 const levelStore = useLevelStore()
 const schemeOfWorkStore = useSchemeOfWorkStore()
@@ -375,7 +388,8 @@ const filterSchemeSubject = () => {
 
 onMounted(
     async () => {
-      await levelStore.fetchCampusLevelList(campusNumber)
+      await levelStore.fetchCampusCurriculum(campusNumber)
+      // await levelStore.fetchCampusLevelList(campusNumber)
       await fetchSchemeClasses()
       if(selectedClass.value) {
         await fetchAcademicYrList(selectedClass.value)
@@ -385,8 +399,13 @@ onMounted(
 )
 
 const fetchAcademicYrList = (classNumber) => {
-  // academicYearStore.fetchAcademicYear(level.value)
   subjectStore.fetchAcademicYearByClass(classNumber)
+}
+
+const fetchCampusLevel = (curriculumNumber) => {
+  if(curriculumNumber){
+    classStore.fetchCampusLevel(curriculumNumber)
+  }
 }
 
 const fetchSchemeClasses = () => {
@@ -551,10 +570,10 @@ watch(
 
 
 watch(
-    () => levelStore.campusLevelResponse,
+    () => classStore.campusLevelResponse,
     async (data) => {
       if(data){
-        levelList.value = data.data
+        levelList.value = data.data ///---------------
       }
     },
     {deep:true}
@@ -569,6 +588,21 @@ watch(
     },
     {deep:true}
 )
+
+
+watch(
+    () => levelStore.campusCurriculumResponse,
+    async (data) => {
+      if(data){
+        curriculumList.value = data.data
+       /* if(!campusCurriculumNumber){
+          campusCurriculumNumber = curriculumInfo[0].number
+        }*/
+      }
+    },
+    {deep:true}
+)
+
 
 </script>
 
