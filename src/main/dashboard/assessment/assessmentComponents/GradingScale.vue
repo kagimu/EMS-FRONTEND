@@ -30,7 +30,63 @@
                </div>
                 <div class="card-body" >
         <div >
-           
+          <div class="row">
+      <div class="col-12">
+        <div class="mt-3">
+
+          <div class="row mx-auto">
+
+            <div class="col-4 mb-5 mt-5">
+              <label class="textColor"><small>School</small></label>
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="learning_area_number"
+                  @click="selectSubjectCluster(learning_area_number)"
+                  >
+                
+                <option disabled value="">Filter by School</option>
+                <option value="">All</option>
+                <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+              </select>
+            </div>
+
+            <div class="col-4 mb-5 mt-5">
+              <label class="textColor"><small>Campus</small></label>
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="subject_cluster_number"
+                  @click="selectSubject(subject_cluster_number)"
+                  >
+        
+                <option disabled value="">Filter by Campus</option>
+                <option value="">All</option>
+                <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+              </select>
+            </div>
+
+            <div class="col-4 mb-5 mt-5">
+              <label class="textColor"><small>Class</small></label>
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="subject_number"
+                  @click="filterStrandList()"
+                  >
+                <option disabled value="">Filter by Class</option>
+                <option value="">All</option>
+                <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+              </select>
+            </div>
+
+          </div>
+
+        
+
+        </div>
+      </div>
+    </div>   
       <table id="data"
           class="table table-striped"
           style="font-size: 11px !important;" >

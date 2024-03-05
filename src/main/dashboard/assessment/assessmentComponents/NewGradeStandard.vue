@@ -9,7 +9,7 @@
         <form @submit.prevent="addGradeStandard()">
       <div class="mb-2">
         <label class="textColor"><small>Name</small></label>
-       <input type="text" class="form-control">
+       <input v-model="form.name" type="text" class="form-control">
       </div>
       <div class="mb-2">
               <label class="textColor"><small>School</small> <span class="star">*</span></label>
@@ -129,6 +129,11 @@ watch(
     async (data) => {
       if(data){
         assessmentStore.fetchGradeStandard()
+        form.preferred_campus_number = null,
+        form.class_number = null,
+        form.type = null,
+        form.name = null,
+        form.description = null
         notificationStore.successToast("Success", data.message)
       }
     },
