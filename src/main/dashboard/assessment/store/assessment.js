@@ -14,6 +14,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const newAggregateScaleResponse = ref(null)
     const aggregateScaleResponse = ref(null)
     const newGradeStandardResponse = ref(null)
+    const gradeStandardResponse = ref(null)
 
     async function createAssesmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -133,6 +134,18 @@ async function createGradeStandard(data) {
             }
         })
 }
+
+async function fetchGradeStandard() {
+    return await api.get("main/grading-standard")
+        .then((response) => {
+            gradeStandardResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
     return {
         createAssesmentAreas,
         newAssesmentAreasResponse,
@@ -154,6 +167,8 @@ async function createGradeStandard(data) {
         aggregateScaleResponse,
         fetchAggregateScale,
         newGradeStandardResponse,
-        createGradeStandard
+        createGradeStandard,
+        gradeStandardResponse,
+        fetchGradeStandard
     }
 })

@@ -128,6 +128,7 @@ watch(
     () => assessmentStore.newGradeStandardResponse,
     async (data) => {
       if(data){
+        assessmentStore.fetchGradeStandard()
         notificationStore.successToast("Success", data.message)
       }
     },
