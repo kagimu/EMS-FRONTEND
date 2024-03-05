@@ -132,7 +132,7 @@ const menuList = ref([
   {title:"Student Admission", name:"student-admission", icon:"bi-database-down",action:"view_student-admission"},
   {title:"Student Application", name:"student-application", icon:"bi-person-plus",action:"view_student-application"},
   {title:"Invoices", name:"invoices", icon:"bi-receipt-cutoff",action:"view_invoices"},
-  {title:"Profiles", name:"profiles", icon:"bi-people",action:"view_profiles"},
+  // {title:"Profiles", name:"profiles", icon:"bi-people",action:"view_profiles"},
   // {title:"Accounting", name:"accounting", icon:"bi-receipt"},
   {title:"Calendar", name:"general-calendar", icon:"bi-calendar3",action:"view_general-calendar"},
   {title:"Report Center", name:"report-center", icon:"bi-card-heading",action:"view_report-center"},
