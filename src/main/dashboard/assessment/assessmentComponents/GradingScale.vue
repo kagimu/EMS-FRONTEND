@@ -167,7 +167,7 @@
         cmp:null,
         cla:null
     })
-    const cont = reactive({ name: null, description: null })
+
     //fetch
     // onMounted(
     // async () => {
