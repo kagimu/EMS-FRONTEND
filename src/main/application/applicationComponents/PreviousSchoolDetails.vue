@@ -58,8 +58,11 @@
             </div>
             <div class="col-lg-4"></div>
             <div class="col-lg-4">
-              <button type="submit" class="btn btn-sm btn-primary mb-2 mr-4" style="color: white;float: right !important;margin-right: 0px;">
-                <small><i class="bi bi-save"></i> Submit</small>
+              <button @click="skip()"   type="button"  class="btn btn-sm btn-danger mb-2 ml-3" style="color: white;float: right;">
+                <small><i class="bi bi-skip-end"></i>Skip</small>
+          </button>
+              <button type="submit" class="btn btn-sm btn-primary mb-2 mr-1" style="color: white;float: right !important;margin-right: 0px;">
+                <small><i class="bi bi-save"></i>Next</small>
             <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
               <span class="visually-hidden">Loading...</span>
             </div>
@@ -90,6 +93,9 @@ const  notificationStore  = useNotificationStore()
 
 const goBack = () =>{
   emit("next", 2 )
+}
+const skip = () =>{
+  emit("next",4)
 }
 
 
@@ -148,7 +154,8 @@ watch (
         buttonLoader.value = false
         notificationStore.successToast("Success application submitted", data.message)
         localStorage.removeItem('applicationId')
-          await router.push({name: "application_history"})
+          // await router.push({name: "application_history"})
+          emit("next",4)
           
       }
     },

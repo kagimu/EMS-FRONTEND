@@ -1,6 +1,8 @@
 <template>
     <div>
-    <p class="ml-4 mt-4 mb-10" style="text-align: center !important;">Payment Summary</p>
+    <p class="ml-4 mt-4 mb-4" style="text-align: center !important;">
+      <i class="bi bi-arrow-left" @click="goBack()"></i> &nbsp;
+      Payment Summary</p>
    </div>
 <div class="container mt-0">
   <div>
@@ -40,7 +42,7 @@
             </div>
           </div>
 
-          <div class="row">
+          <div class="row" >
             <hr>
             <div class="col-lg-9"></div>
           <div class="col-lg-3">
@@ -48,9 +50,7 @@
           </div>
         </div>
           </div>
-         
-
-
+        
         </div>
 
           </form>
@@ -70,8 +70,11 @@
   import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js"
   
   const answer = ref('')
+  const emit = defineEmits()
 
-  
+  const goBack = () =>{
+  emit("next", 3 )
+  }
     </script>
     
  <style scoped>

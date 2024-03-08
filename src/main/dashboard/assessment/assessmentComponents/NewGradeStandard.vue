@@ -134,6 +134,7 @@ watch(
         form.type = null,
         form.name = null,
         form.description = null
+        school_number = null
         notificationStore.successToast("Success", data.message)
       }
     },

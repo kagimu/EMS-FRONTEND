@@ -131,6 +131,8 @@ watch(
           if (data) {
             formData.value = ''
               buttonLoader.value = false
+              showDialog.value = false,
+              applicationStore.fetchApplicationList()
               notificationStore.successToast("Success", data.message)
               
           }

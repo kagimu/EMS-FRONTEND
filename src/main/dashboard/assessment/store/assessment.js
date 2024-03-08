@@ -16,6 +16,8 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const newGradeStandardResponse = ref(null)
     const gradeStandardResponse = ref(null)
     const newReportCardResponse = ref(null)
+    const newAssessmentMetricResponse = ref(null)
+    const assessmentMetricsResponse = ref(null)
 
     async function createAssesmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -172,6 +174,30 @@ async function fetchAggregateScale(campus_number,school_number,class_number) {
         })
 }
 
+async function createAssessmentMetrics(data) {
+    return await api.post("main/assessments/assessment-metrics",data)
+        .then((response) => {
+         newAssessmentMetricResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function fetchAssessmentMetrics() {
+    return await api.get("main/")
+        .then((response) => {
+            assessmentMetricsResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
     return {
         createAssesmentAreas,
         newAssesmentAreasResponse,
@@ -197,6 +223,10 @@ async function fetchAggregateScale(campus_number,school_number,class_number) {
         gradeStandardResponse,
         fetchGradeStandard,
         createReportCard,
-        newReportCardResponse
+        newReportCardResponse,
+        newAssessmentMetricResponse,
+        assessmentMetricsResponse,
+        createAssessmentMetrics,
+        fetchAssessmentMetrics
     }
 })
