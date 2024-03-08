@@ -68,6 +68,19 @@
               </select>
           </div>
 
+          <div class="mb-2">
+              <label class="textColor"><small>Grading Standard</small> <span class="star">*</span></label>
+              <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm" required
+                      v-model="form.grading_standard_number"
+              >
+                  <option disabled value="">Select</option>
+                 <option v-for="(gradeList,index) in gradeData" :key="index" :value="gradeList.number">{{ gradeList.name }}</option>
+                 <option></option>
+              </select>
+          </div>
+
           
       <div class="mb-2">
         <div class="row">
@@ -131,7 +144,7 @@ const errorMessage = ref(null)
 const aggregateData = ref([])
 const levelData = ref([])
 const levelStore = useLevelStore()
-
+const gradeData = ref([])
 
 const form = reactive({
 name : null,
@@ -144,8 +157,9 @@ study_period_number: null,
 class_number: null,
 school_number: null,
 campus_number: null,
-level_number:'leveln',
-study_period_number:'2023'
+level_number:null,
+study_period_number:'2023',
+grading_standard_number:null
 })
 
 const createScale = () =>{
@@ -173,6 +187,22 @@ watch (
       if(data){
         errorMessage.value = data.message
         notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+onMounted(
+    async () => {
+      await assessmentStore.fetchGradeStandard()
+    } )
+    
+watch (
+    () => assessmentStore.gradeStandardResponse,
+    async (data) => {
+      if(data){
+        gradeData.value = data.data
       }
     },
     {deep:true}

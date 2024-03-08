@@ -15,6 +15,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const aggregateScaleResponse = ref(null)
     const newGradeStandardResponse = ref(null)
     const gradeStandardResponse = ref(null)
+    const newReportCardResponse = ref(null)
 
     async function createAssesmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -111,17 +112,17 @@ async function createAggregateScale(data) {
         })
 }
 
-async function fetchAggregateScale() {
-    return await api.get("main/assessments/aggregate-scales")
-        .then((response) => {
-            aggregateScaleResponse.value = response.data
-        })
-        .catch((response) => {
-            if(response){
-                errorMessage.value = response.response.data
-            }
-        })
-}
+// async function fetchAggregateScale() {
+//     return await api.get("main/assessments/aggregate-scales")
+//         .then((response) => {
+//             aggregateScaleResponse.value = response.data
+//         })
+//         .catch((response) => {
+//             if(response){
+//                 errorMessage.value = response.response.data
+//             }
+//         })
+// }
 
 async function createGradeStandard(data) {
     return await api.post("main/grading-standard",data)
@@ -146,6 +147,31 @@ async function fetchGradeStandard() {
             }
         })
 }
+
+async function createReportCard(data) {
+    return await api.post("main/grading-standard",data)
+        .then((response) => {
+         newReportCardResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function fetchAggregateScale(campus_number,school_number,class_number) {
+    return await api.get("main/assessments/aggregate-scales?campus_number="+campus_number+"&school_number="+school_number+"&class_number="+class_number)
+        .then((response) => {
+            aggregateScaleResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
     return {
         createAssesmentAreas,
         newAssesmentAreasResponse,
@@ -169,6 +195,8 @@ async function fetchGradeStandard() {
         newGradeStandardResponse,
         createGradeStandard,
         gradeStandardResponse,
-        fetchGradeStandard
+        fetchGradeStandard,
+        createReportCard,
+        newReportCardResponse
     }
 })
