@@ -197,7 +197,6 @@ watch(
     () => classStore.classLevelResponse,
     async (data) => {
         if (data) {
-            // classDialog.value = false
            filterClassInfo()
             notificationStore.successToast("Success", data.message)
         }
