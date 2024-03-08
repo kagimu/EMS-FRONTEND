@@ -104,8 +104,6 @@
                 <div class="flex justify-content-between mt-4">
                   &nbsp;
 
-
-
                   <div class="flex">
 
                   <router-link

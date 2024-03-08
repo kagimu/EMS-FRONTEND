@@ -107,7 +107,6 @@ import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import NewSchool from "@/main/dashboard/manageSchool/NewSchool.vue";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-import NewCampus from "@/main/dashboard/manageCampus/NewCampus.vue";
 
 import { useAbility } from '@casl/vue';
 

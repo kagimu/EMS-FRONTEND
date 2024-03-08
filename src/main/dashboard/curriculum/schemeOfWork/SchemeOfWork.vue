@@ -84,7 +84,7 @@
           <select
               class="form-select py-2 shadow-none"
               v-model="level"
-              @change="fetchSchemeClasses()"
+              @change="fetchSchemeClasses(level)"
           >
             <option value="">All</option>
             <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
@@ -104,6 +104,7 @@
           <div class="card-body" style="padding: 0;">
             <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Classes</div>
             <hr />
+
             <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
               <div
                   v-for="(item, idx) in  classList"
@@ -319,7 +320,7 @@ const learningAreaList = ref( [])
 const classList = ref( [])
 const levelList = ref( [])
 const classStore = useClassesStore()
-let selectedClass = ref( null)
+let selectedClass = ref( "")
 const routerData = useRouter()
 
 
@@ -339,6 +340,8 @@ const subjectStore = useSubjectStore()
 
 let classNo = routerData.currentRoute.value.query.c
 let campusNumber = routerData.currentRoute.value.query.id
+let curriculumNo = routerData.currentRoute.value.query.crr
+let levelNo = routerData.currentRoute.value.query.lv
 
 if(classNo){
   selectedClass.value =  classNo
@@ -369,9 +372,11 @@ const exportSchemeOfWorkPdf = () => {
 }
 
 
-const changeMenu = (value) => {
-  selectedClass.value = value
-  router.push({ name: "scheme-of-work", query:{id:campusNumber, c:value} })
+const changeMenu = (classNo) => {
+  if(classNo){
+    router.push({name:'scheme-of-work', query:{id:campusNumber,crr:curriculumNo,lv:levelNo,c:classNo}})
+  }
+
 }
 
 
@@ -388,9 +393,23 @@ const filterSchemeSubject = () => {
 
 onMounted(
     async () => {
+
+      //fetch level after selecting curriculum
+      if(curriculumNo) {
+        curriculumNumber.value = curriculumNo
+        await classStore.fetchCampusLevel(curriculumNo)
+      }
+
+      // fetch classes after selecting level
+      if(levelNo){
+        level.value = levelNo
+        await classStore.fetchClassLevel({campusCurriculumNumber: curriculumNumber.value, campusLevelNumber: levelNo})
+        await fetchSchemeClasses(levelNo)
+      }
+
       await levelStore.fetchCampusCurriculum(campusNumber)
       // await levelStore.fetchCampusLevelList(campusNumber)
-      await fetchSchemeClasses()
+
       if(selectedClass.value) {
         await fetchAcademicYrList(selectedClass.value)
         await subjectStore.fetchSchemeSubjectByClass(selectedClass.value)
@@ -404,12 +423,16 @@ const fetchAcademicYrList = (classNumber) => {
 
 const fetchCampusLevel = (curriculumNumber) => {
   if(curriculumNumber){
-    classStore.fetchCampusLevel(curriculumNumber)
+    router.push({name:'scheme-of-work', query:{id:campusNumber,crr:curriculumNumber}})
   }
 }
 
-const fetchSchemeClasses = () => {
-  classStore.fetchClassLevel({campusNumber: campusNumber, levelNumber: level.value})
+const fetchSchemeClasses = (levelNumber) => {
+  if(curriculumNumber.value && levelNumber){
+    if(campusNumber && curriculumNo){
+      router.push({name:'scheme-of-work', query:{id:campusNumber,crr:curriculumNo,lv:levelNumber,c:classNo??''}})
+    }
+  }
 }
 
 watch(
@@ -417,12 +440,12 @@ watch(
     () => classStore.classLevelInfoResponse,
     async (data) => {
       if(data){
-        let classInfo = data.data
+        let classInfo = data.data[0].classes
        classList.value = classInfo
         if(classInfo && (classInfo.length > 0)){
           if(!selectedClass.value){
             let classNo = classInfo[0].number
-            selectedClass.value = classNo
+            // selectedClass.value = classNo
             await subjectStore.fetchSchemeSubjectByClass(classNo)
             // await subjectStore.fetchAcademicYearByClass(classNo)
             await fetchAcademicYrList(classNo)
