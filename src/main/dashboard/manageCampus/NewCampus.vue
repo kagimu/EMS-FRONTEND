@@ -11,8 +11,6 @@
         <div class="col-6">
           <div class="mx-auto" style="width: 95%;">
 
-
-
           <div class="mb-2">
             <label class="textColor"><small>Campus Name</small></label>
             <input
@@ -69,21 +67,6 @@
             </div>
 
 
-<!--            <div class="mb-2">
-              <label class="textColor"><small>Curriculum</small></label>
-              <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm"
-                  v-model="form.school_curriculum_number"
-                  @change="filterCurriculumLevel(form.school_curriculum_number)"
-              >
-                <option disabled value="">Select Curriculum</option>
-                <option v-for="(list, index) in curriculumList" :key="index" :value="list.number">
-                  {{list.name}}
-                </option>
-              </select>
-            </div>-->
-
             <div class="mb-2">
               <label class="textColor mt-3 mb-2"><small>Select Curriculum(s) to adopt to this campus</small></label>
               <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
@@ -98,20 +81,6 @@
               </ul>
             </div>
 
-
-
-<!--         <div>
-           <label class="textColor mt-3 mb-2"><small>Select Class Levels</small></label>
-           <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-             <li class="list-group-item" v-for="(lvl,idx) in curriculumLevelList">
-               <input
-                   v-model="form.curriculum_level_number"
-                   style="outline: none 0 !important; box-shadow: none;"
-                   class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="idx">
-               <label class="form-check-label cursor-pointer" :for="idx">{{lvl.name}}</label>
-             </li>
-           </ul>
-         </div>-->
 
           </div>
         </div>
@@ -154,7 +123,7 @@ const school = ref( null)
 const levelStore = useLevelStore()
 const levelList = ref([])
 const curriculumList = ref([])
-// const curriculumLevelList = ref([])
+
 
 const campusStore = useCampusStore()
 const schoolStore = useSchoolStore()
@@ -202,9 +171,7 @@ onMounted(
     }
 )
 
-/*const filterCurriculumLevel = (school_curriculum_number) => {
-  curriculumStore.fetchSchoolCurriculumLevel(school_curriculum_number)
-}*/
+
 
 watch(
     () => props.school,
@@ -231,7 +198,7 @@ watch(
 
         let arr = []
         info.curriculum.forEach(lst => {
-          arr.push(lst.number)
+          arr.push(lst.school_curriculum_number)
         })
 
         form.campus_curriculum = arr
@@ -282,15 +249,7 @@ watch(
     {deep:true}
 )
 
-/*watch(
-    () => curriculumStore.schoolCurriculumLevelResponse,
-    async (data) => {
-      if(data){
-        curriculumLevelList.value = data.data
-      }
-    },
-    {deep:true}
-)*/
+
 
 </script>
 
