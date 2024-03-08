@@ -99,19 +99,7 @@ const filterClassData = (level_number) => {
   }
 }
 
-/*watch(
-    () => props.classListInfo,
-    async (data) => {
-      if(data){
-        let arr = []
-        data.forEach(lst => {
-          arr.push(lst.curriculum_class_number)
-        })
-        classId.value = arr
-      }
-    },
-    {deep:true}
-)*/
+
 
 watch(
     () => classStore.classesToAddResponse,
