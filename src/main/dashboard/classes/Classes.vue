@@ -1,23 +1,16 @@
 <template>
    
-
-    <div class="mt-3">
-    
-
-
+<div class="mt-3">   
   <div class="row">
         <div class="col-12">
           <div class="card">
-           
             <div class="card-body" >
-    <div >
+    <div>
       <div class="row">
   <div class="col-12">
     <div class="mt-3">
-
       <div class="row mx-auto">
-
-        <div class="col-4 mb-5 mt-5">
+        <div class="col-6 mb-2">
           <div class="mb-2">
           <label class="textColor"><small>School</small></label>
           <select
@@ -33,7 +26,7 @@
       </div>
         </div>
 
-        <div class="col-4 mb-5 mt-5">
+        <div class="col-6 mb-2">
       
           <div class="mb-2">
           <label class="textColor"><small>Campus</small> </label>
@@ -50,9 +43,9 @@
       </div>
         </div>
 
-        <div class="col-4 mb-5 mt-5">
+        <!-- <div class="col-4 mb-5 mt-5">
          
-      <!-- <div class="mb-2">
+      <div class="mb-2">
           <label class="textColor"><small>Class</small></label>
           <select
                   style="box-shadow: none;"
@@ -64,8 +57,8 @@
               <option v-for="(list, index) in classList" :key="index" :value="list.class_number">{{ list.class_name }}
               </option>
           </select>
-      </div> -->
-        </div>
+      </div>
+        </div> -->
 
       </div>
 
@@ -74,8 +67,9 @@
     </div>
   </div>
 </div>   
- Classes in Kampala Central Campus {{constent.cmp  }}
-  <table id="data"
+ <h4 class="mb-3 mt-3" style="text-align: center;font-size: 13px;text-transform: uppercase;">Classes in Kampala Central Campus {{constent.cmp  }}<hr></h4>
+ 
+ <table id="data"
       class="table table-striped"
       style="font-size: 11px !important;" >
     <thead>
@@ -94,8 +88,9 @@
         <td>50</td>
         <td>Room 1A</td>
         <td>
-          <button type="button" @click="goToClassList()" class="btn btn-outline-primary  btn-sm">
-        Manage <i class="bi bi-arrow-right"></i>
+          <button type="button" @click="goToClassList()" class="btn btn-primary  btn-sm">
+        manage 
+        <!-- <i class="bi bi-arrow-right"></i> -->
       </button></td>
     </tr>
 
@@ -106,8 +101,9 @@
         <td>Room 3A</td>
         <td>
     
-      <button type="button" @click="goToClassList()" class="btn btn-outline-primary  btn-sm">
-        Manage <i class="bi bi-arrow-right"></i>
+      <button type="button" @click="goToClassList()" class="btn btn-primary  btn-sm">
+        manage 
+        <!-- <i class="bi bi-arrow-right"></i> -->
       </button>
     </td>
     </tr>
@@ -118,8 +114,9 @@
         <td>100</td>
         <td>Room 3A</td>
         <td>
-          <button type="button" @click="goToClassList()" class="btn btn-outline-primary  btn-sm">
-        Manage <i class="bi bi-arrow-right"></i>
+          <button type="button" @click="goToClassList()" class="btn btn-primary  btn-sm">
+        manage
+         <!-- <i class="bi bi-arrow-right"></i> -->
       </button>
     </td>
     </tr>
