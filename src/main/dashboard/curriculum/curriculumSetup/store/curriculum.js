@@ -18,7 +18,7 @@ export const useCurriculumStore = defineStore("curriculum", () => {
 
 
     async function newCurriculumData(data) {
-        return await api.post("main/new-curriculum", data)
+        return await api.post("main/curriculum/new", data)
             .then((response) => {
                 curriculumResponse.value = response.data
             })
