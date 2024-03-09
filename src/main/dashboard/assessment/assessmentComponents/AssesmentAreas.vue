@@ -64,52 +64,52 @@
             <button type="button" class="btn-close"  data-bs-dismiss="offcanvas" aria-label="Close" @click="closeInterviewDialog"></button>
           </div>
           <div class="offcanvas-body">
-            <form @submit.prevent="addInterviewAssesment">
-              <div class="mb-2">
-              <label class="textColor"><small>School</small> <span class="star">*</span></label>
-              <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="school_number"
-                      @change="fetchCampuses(school_number)"
-              >
-                  <option disabled value="">Select School</option>
-                  <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-                  </option>
-              </select>
-          </div>
-
-          <div class="mb-2">
-              <label class="textColor"><small>Campus</small>  <span class="star">*</span></label>
-              <select
+            <form @submit.prevent="addAssesmentArea">
+           
+            <div class="mb-2">
+              <label class="textColor"><small>Level</small> <span class="star">*</span></label>
+                  <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
-                      v-model="preferred_campus_number" required
-                      @change="fetchClasses(preferred_campus_number)"
-              >
-                  <option disabled value="">Select campus</option>
-                  <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-                  </option>
+                      v-model="level"
+                      @click="filterClasses()">
+                    <option disabled value="">Select Level</option>
+                    <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.level_number">{{lvl.code+". "+lvl.name}}</option>
+                  </select>
+              </div>
+
+
+                
+          <div class="mb-2">
+            <label class="textColor"><small>Class</small> <span class="star">*</span></label>
+            <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm"
+                      v-model="form.curriculum_class_number"
+                      @click="fetchSubject(form.curriculum_class_number)">
+                    <option disabled value="">Select Class</option>
+                    <option v-for="(cls, index) in classList" :key="index" :value="cls.number">{{cls.name}}</option>
+                  </select>
+          </div>
+
+
+              <div class="mb-2">
+              <label class="textColor"><small>Subjects</small> <span class="star">*</span></label>
+              <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm" 
+                      v-model="form.subject_number"
+              >                
+                  <option v-for="(sbj, index) in subjectList" :key="index" :value="sbj.number">{{sbj.name}}</option>
+                  <option  value="">Other</option>
               </select>
           </div>
 
-          <div class="mb-2">
-            <label class="textColor"><small>Class</small> <span class="star">*</span></label>
-         <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-          <li class="list-group-item" v-for="(list,index) in classList" :key="index">
-          <input
-          v-model="form.class_number"
-          style="outline: none 0 !important; box-shadow: none;"
-          class="form-check-input me-1" type="checkbox" :value="list.number" :id="list.class_number">
-          <label class="textColor" :for="list.number"><small>{{list.class_name}}</small></label>
-          </li>
-          </ul>
-          </div>
-
-              <div class="mb-2">
-                <label class="textColor"><small>Name</small></label>
+          <div class="mb-2" v-if="form.subject_number === ''">
+                <label class="textColor"><small>Specify Name</small></label>
                 <input v-model="form.name"  type="text" required class="form-control">
               </div>
+
               
               <div class="text-right mt-4">
                 <button  style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
@@ -135,7 +135,10 @@
   import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
   import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
   import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
-
+  import {useLevelStore} from "@/main/settings/level/store/level.js";
+  import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes";
+  import {useRouter} from "vue-router";
+  const routerData = useRouter()
   import { useAbility } from '@casl/vue';
 
 const { can } = useAbility()
@@ -144,6 +147,8 @@ const { can } = useAbility()
   const AsessmentListData = ref([])
   const interviewDialog= ref(false)
   let errorMessage = ref(null)
+  const levelStore = useLevelStore()
+  const classStore = useClassesStore()
 
   const assessmentStore= useAssessmentStore()
   const  notificationStore  = useNotificationStore()
@@ -153,19 +158,86 @@ const { can } = useAbility()
   const schoolStore = useSchoolStore()
   const campusStore = useCampusStore()
   const school_number = ref(null)
+  const levelList = ref( [])
+  const level = ref( "")
+  const subjectList = ref([])
+
+  let  curriculumNumber = routerData.currentRoute.value.query.id
 
   const preferred_campus_number = ref(null)
 
     const form = reactive({ 
       name:null,
-      class_number:[],
-
+      curriculum_class_number:[],
+      subject_number:null
     })
 
     onMounted(
     async () => {
       await assessmentStore.fetchAssesmentArea()
     } )
+
+    
+onMounted(
+    async () => {
+      await levelStore.fetchCurriculumLevels(curriculumNumber)
+    }
+)
+
+const subject_n = ref(null)
+
+//fetching class
+const fetchSubject = (a) =>{
+  subject_n.value = a
+  classStore.fetchCurriculumClassesByID(subject_n.value )
+}
+
+    watch(
+    () => classStore.curriculumClassByIdResponse,
+    async (data) => {  
+    subjectList.value = data.data
+    },
+    {deep:true}
+)
+    
+
+
+const filterClasses = () => {
+    fetchClassList()
+}
+
+const fetchClassList = () => {
+  let data = {
+    level:level.value,
+    curriculum_number:curriculumNumber,
+  }
+  classStore.fetchCurriculumClasses(data)
+}
+
+watch(
+    () => classStore.curriculumClassInfoResponse,
+    async (data) => {
+      if(data && data.data){
+        let classData = data.data
+        if(classData && (classData.length > 0)){
+          classList.value = classData[0].class
+        }
+        
+      }
+    },
+    {deep:true}
+)
+
+    watch(
+    () => levelStore.curriculumLevelInfoResponse,
+    async (data) => {
+      if(data){
+        levelList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
 
  //working on dialog
 const closeInterviewDialog = () => {
@@ -174,8 +246,10 @@ const closeInterviewDialog = () => {
 const showInterviewDialog = () => {
   interviewDialog.value = true;
 }
-    const addInterviewAssesment = () => {
-    //  alert(JSON.stringify(form))
+
+    const addAssesmentArea = () => {
+
+    alert(JSON.stringify(form))
     interviewDialog.value = true;
      buttonLoader.value = true
      assessmentStore.createAssesmentAreas(form)
@@ -186,10 +260,11 @@ const showInterviewDialog = () => {
     async (data) => {
       if(data){
         buttonLoader.value = false
-         assessmentStore.fetchAssesmentArea()
+        assessmentStore.fetchAssesmentArea()
         notificationStore.successToast("Success", data.message)
-       form.name= ""
-       form.class_number="s"
+        form.name=null,
+      form.curriculum_class_number=null,
+      form.subject_number=null
       }
     },
     {deep:true}

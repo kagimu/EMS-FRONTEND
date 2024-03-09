@@ -81,7 +81,7 @@
                 <div class="row">
                 <div class="col-lg-6">           
                   <label class="textColor"><small>Weight</small></label>
-                  <input v-model="form.weight"  type="number" required class="form-control">
+                  <input v-model="form.weight"  type="text" required class="form-control">
                 </div>
                 <div class="col-lg-6">
                   <label class="textColor"><small>Max_Score</small></label>
@@ -89,6 +89,19 @@
                 </div>
             </div>
             </div>
+
+            <div class="mb-2">
+              <label class="textColor"><small>Grading Standard</small> <span class="star">*</span></label>
+              <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm" required
+                      v-model="form.grading_standard_number"
+              >
+                  <option disabled value="">Select</option>
+                 <option v-for="(gradeList,index) in gradeData" :key="index" :value="gradeList.number">{{ gradeList.name }}</option>
+                 <option></option>
+              </select>
+          </div>
 
             <div class="mb-2">
                 <label class="textColor"><small>Description</small></label>
@@ -99,9 +112,7 @@
 
             <div class="mb-2">
                 <label class="textColor"><small>Scheduled On</small></label>
-                <textarea class="form-control" v-model="form.scheduled_on">
-
-                </textarea>
+                <input type="date" class="form-control" v-model="form.scheduled_on">
             </div>
 
 
@@ -129,6 +140,10 @@
     import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
     import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
     import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
+
+    import {useRouter} from "vue-router";
+  const routerData = useRouter()
+    let  curriculumNumber = routerData.currentRoute.value.query.id
   
     import { useAbility } from '@casl/vue';
   
@@ -148,18 +163,20 @@
     const campusStore = useCampusStore()
     const school_number = ref(null)
     const AsessmentListData = ref([])
+    const gradeData = ref([])
   
     const preferred_campus_number = ref(null)
   
       const form = reactive({ 
         name:null,
-        class_number:[],
         assessment_area_number:null,
         weight:null,
         description:null,
         assessment_area_number:null,
         scheduled_on:null,
-        max_score:null
+        max_score:null,
+        grading_standard_number:null,
+        curriculum_number:curriculumNumber
       })
   
       onMounted(
@@ -287,6 +304,22 @@
         {deep: true}
     )
   
+    onMounted(
+    async () => {
+      await assessmentStore.fetchGradeStandard()
+    } )
+    
+watch (
+    () => assessmentStore.gradeStandardResponse,
+    async (data) => {
+      if(data){
+        gradeData.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
     </script>
   
   

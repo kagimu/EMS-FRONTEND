@@ -119,6 +119,7 @@
             <curriculum-class-set-up v-if="menuSelected==='classes'"></curriculum-class-set-up>
             <assesment-areas v-if="menuSelected === 'assessmentarea'"></assesment-areas>
             <assessment-metrics v-if="menuSelected == 'assessmentmetric'"></assessment-metrics>
+            <metric v-if="menuSelected == 'metric'"></metric>
 
           </div>
         </div>
@@ -149,6 +150,7 @@ import CurriculumLevel from "@/main/settings/level/CurriculumLevel.vue";
 import CurriculumClassSetUp from "@/main/dashboard/manageLevel/class/CurriculumClassSetUp.vue";
 import AssesmentAreas from "@/main/dashboard/assessment/assessmentComponents/AssesmentAreas.vue";
 import AssessmentMetrics from "@/main/dashboard/assessment/assessmentComponents/AssessmentMetrics.vue";
+import Metric from "@/main/dashboard/assessment/assessmentComponents/Metric.vue";
 
 
 
@@ -167,6 +169,7 @@ const curriculumMenu = ref( [
 const assessmentMenu = ref( [
   {text:"Assessment Area", value:"assessmentarea"},
   {text:"Assessment Metric", value:"assessmentmetric"},
+  {text:"Metric", value:"metric"},
 ])
 
 const notificationStore  = useNotificationStore()
