@@ -201,7 +201,7 @@ async function fetchAssessmentMetrics() {
 
 
 async function createMetric(data) {
-    return await api.post("main/", data)
+    return await api.post("main/assessments/metrics", data)
         .then((response) => {
             newMetricResponse.value = response.data
         })

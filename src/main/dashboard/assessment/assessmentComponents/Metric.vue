@@ -69,7 +69,7 @@
                 <select
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
-                        v-model="form.examtype">
+                        v-model="form.exam_type">
                     <option disabled value="">Select</option>
                     <option value="internal">Internal</option>
                     <option value="external">External</option>
@@ -105,6 +105,7 @@
     import {useRouter} from "vue-router";
 
    const routerData = useRouter()
+   let  curriculumNumber = routerData.currentRoute.value.query.id
 
   
      const { can } = useAbility()
@@ -119,9 +120,9 @@
    
       const form = reactive({ 
         name:null,
-       examtype:null,
+        exam_type:null,
+       curriculum_number:curriculumNumber
       })
-    
 
    
    //working on dialog

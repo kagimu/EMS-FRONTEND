@@ -118,7 +118,7 @@
 <!--            manage classes-->
             <curriculum-class-set-up v-if="menuSelected==='classes'"></curriculum-class-set-up>
             <assesment-areas v-if="menuSelected === 'assessmentarea'"></assesment-areas>
-            <assessment-metrics v-if="menuSelected == 'assessmentmetric'"></assessment-metrics>
+            <!-- <assessment-metrics v-if="menuSelected == 'assessmentmetric'"></assessment-metrics> -->
             <metric v-if="menuSelected == 'metric'"></metric>
 
           </div>
@@ -168,7 +168,7 @@ const curriculumMenu = ref( [
 
 const assessmentMenu = ref( [
   {text:"Assessment Area", value:"assessmentarea"},
-  {text:"Assessment Metric", value:"assessmentmetric"},
+  // {text:"Assessment Metric", value:"assessmentmetric"},
   {text:"Metric", value:"metric"},
 ])
 

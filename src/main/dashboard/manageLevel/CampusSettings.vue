@@ -8,7 +8,7 @@
           <button class="nav-link navColor" id="academic-year-tab" data-bs-toggle="tab" data-bs-target="#academic-year" type="button" role="tab" aria-controls="academic-year" aria-selected="false"><small>Academic Year</small></button>
           <button class="nav-link navColor" id="study-period-tab" data-bs-toggle="tab" data-bs-target="#study-period" type="button" role="tab" aria-controls="study-period" aria-selected="false"><small>Study Period</small></button>
           <button class="nav-link navColor" id="grading-scale-tab" data-bs-toggle="tab" data-bs-target="#grading-scale" type="button" role="tab" aria-controls="grading-scale" aria-selected="true"><small>Grading Scale</small></button>
-          <button class="nav-link navColor" id="assessment-manager-tab" data-bs-toggle="tab" data-bs-target="#assessment-manager" type="button" role="tab" aria-controls="assessment-manager" aria-selected="false"><small>Assessment Manager</small></button>
+          <button class="nav-link navColor" id="assessment-metrics-tab" data-bs-toggle="tab" data-bs-target="#assessment-metrics" type="button" role="tab" aria-controls="assessment-metrics" aria-selected="false"><small>Assessment Metrics</small></button>
           <button class="nav-link navColor" id="mode-of-assessment-tab" data-bs-toggle="tab" data-bs-target="#mode-of-assessment" type="button" role="tab" aria-controls="mode-of-assessment" aria-selected="false"><small>Mode of Assessment</small></button>
           <button class="nav-link navColor" id="grading-term-tab" data-bs-toggle="tab" data-bs-target="#grading-term" type="button" role="tab" aria-controls="grading-term" aria-selected="false"><small>Grading Term</small></button>
         </div>
@@ -27,7 +27,9 @@
          <study-period></study-period>
         </div>
         <div class="tab-pane fade" id="grading-scale" role="tabpanel" aria-labelledby="grading-scale-tab" tabindex="0">Grading Scale</div>
-        <div class="tab-pane fade" id="assessment-manager" role="tabpanel" aria-labelledby="assessment-manager-tab" tabindex="0">Assessment Manger</div>
+        <div class="tab-pane fade" id="assessment-metrics" role="tabpanel" aria-labelledby="assessment-metrics-tab" tabindex="0">
+          <assessmentMetrics></assessmentMetrics>
+        </div>
         <div class="tab-pane fade" id="mode-of-assessment" role="tabpanel" aria-labelledby="mode-of-assessment-tab" tabindex="0">Mode of Assessment</div>
         <div class="tab-pane fade" id="grading-term" role="tabpanel" aria-labelledby="grading-term-tab" tabindex="0">Grading Term</div>
       </div>
@@ -45,6 +47,7 @@ import SubjectClassList from "@/main/dashboard/manageLevel/subjectClasses/subjec
 import StudyPeriod from "@/main/dashboard/manageLevel/studyPeriod/StudyPeriod.vue";
 import AcademicYear from "@/main/dashboard/manageLevel/academicYear/AcademicYear.vue";
 import CampusLevel from "@/main/dashboard/manageLevel/class/CampusLevel.vue";
+import assessmentMetrics from "../assessment/assessmentComponents/assessmentMetrics.vue";
 </script>
 
 <style scoped>

@@ -1,17 +1,17 @@
 <template>
     <div>
   
-      <div class="col-12">
-                <div class="card">
-                  <div class="card-header">
+      <div class="col-12 mt-2" >
+                <div class="">
+                  <div class="">
              <div class="row">
               <div class="col-lg-6 "> 
-                    <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">  
+                    <!-- <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">   -->
               </div>
               <div class="col-lg-6">
                 <button
                 v-if="can('add_assessment_area','general')"
-                 style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
+                 style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-0 mr-4"  
         data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="showDialog">
        <b><i class="bi bi-plus"></i></b> <small>
         Add Assessment Metric</small></button>
@@ -58,11 +58,47 @@
             </div>
             <div class="offcanvas-body">
               <form @submit.prevent="addInterviewAssesmentMetrics">
+
+                <div class="mb-2">
+        <label class="textColor"><small>Level</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="campus_level_number"
+            @change="fetchCurriculumClass(campus_level_number)"
+        >
+          <option disabled value="">Select Level</option>
+          <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
+
+            <div class="mb-2">
+                <label class="textColor"><small>Class</small> <span class="star">*</span></label>
+                <select
+                        style="box-shadow: none;"
+                        class="form-select form-select-sm"
+                        v-model="form.curriculum_class_number"
+                >
+                    <option disabled value="">Select Class</option>
+                    <option value="">P1</option>
+                </select>
+            </div>
+
+
                 
                 <div class="mb-2">
-                  <label class="textColor"><small>Name</small></label>
-                  <input v-model="form.name"  type="text" required class="form-control">
-                </div>
+                <label class="textColor"><small>Metric</small> <span class="star">*</span></label>
+                <select
+                        style="box-shadow: none;"
+                        class="form-select form-select-sm"
+                        v-model="form.metric_number"
+                >
+                    <option disabled value="">Select</option>
+                    <option v-for="(list, index) in AsessmentListData" :key="index" :value="list.number">{{ list.name }}
+                    </option>
+                </select>
+            </div>
 
                 <div class="mb-2">
                 <label class="textColor"><small>Assessment Area</small> <span class="star">*</span></label>
@@ -140,10 +176,11 @@
     import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
     import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
     import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
+    import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 
     import {useRouter} from "vue-router";
-  const routerData = useRouter()
-    let  curriculumNumber = routerData.currentRoute.value.query.id
+    const routerData = useRouter()
+    let  curriculumNumber = routerData.currentRoute.value.query.l
   
     import { useAbility } from '@casl/vue';
   
@@ -154,6 +191,7 @@
     const interviewDialog= ref(false)
     let errorMessage = ref(null)
   
+    const classStore = useClassesStore()
     const assessmentStore= useAssessmentStore()
     const  notificationStore  = useNotificationStore()
     const campusList = ref([])
@@ -164,6 +202,7 @@
     const school_number = ref(null)
     const AsessmentListData = ref([])
     const gradeData = ref([])
+    const campusLevelList = ref([])
   
     const preferred_campus_number = ref(null)
   
@@ -176,8 +215,10 @@
         scheduled_on:null,
         max_score:null,
         grading_standard_number:null,
-        curriculum_number:curriculumNumber
+        metric_number:null,
+        curriculum_class_number:curriculumNumber
       })
+
   
       onMounted(
       async () => {
@@ -319,6 +360,16 @@ watch (
     {deep:true}
 )
 
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        campusLevelList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
     </script>
   
