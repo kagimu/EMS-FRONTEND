@@ -42,6 +42,9 @@
                   <div v-if="selectedPage === 'assessment-areas'">
                     <interview-assesment-areas></interview-assesment-areas>
                   </div>
+                  <div v-if="selectedPage === 'assessment-metrics'">
+                    <AssessmentMetrics></AssessmentMetrics>
+                  </div>
                   <div v-if="selectedPage === 'interviewquestions'">
                     <interviews-questions></interviews-questions>
                   </div>
@@ -70,6 +73,7 @@
   import GradeResults from "./GradeResults.vue";
   import InterviewAssesmentAreas from "../assessment/assessmentComponents/AssesmentAreas.vue";
   import { useAbility } from '@casl/vue'
+  import AssessmentMetrics from '../assessment/assessmentComponents/AssessmentMetrics.vue'
 
   const { can } = useAbility()
 
@@ -87,7 +91,7 @@
       action:"view_application_list"
     },
     {
-      name:"Interviews",
+      name:"Interview Schedule",
       id:"interviews",
       action:"view_interviews"
     },
@@ -95,6 +99,11 @@
       name:"Assessment Areas",
       id:"assessment-areas",
       action:"view_assessment_areas"
+    },
+    {
+      name:"Assessment Metrics",
+      id:"assessment-metrics",
+      action:"view_assessment_metrics"
     },
     {
       name:"Interview Questions",
