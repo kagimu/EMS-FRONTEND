@@ -42,7 +42,7 @@ export const useLevelStore = defineStore("level", () => {
 
 
     async function newCurriculumLevel(data) {
-        return await api.post("main/new-curriculum-level", data)
+        return await api.post("main/curriculum/new", data)
             .then((response) => {
                 curriculumLevelResponse.value = response.data
             })
