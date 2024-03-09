@@ -9,7 +9,7 @@
         <form @submit.prevent="createScale()">
       <div class="mb-2">
         <label class="textColor"><small>Name</small></label>
-       <input v-model="form.name" type="text" class="form-control">
+       <input v-model="form.name" placeholder="D2" type="text" class="form-control">
       </div>
       <div class="mb-2">
               <label class="textColor"><small>School</small> <span class="star">*</span></label>
@@ -94,8 +94,8 @@
             </div>
 
             <div class="col-lg-4">
-                <label class="textColor"><small>Scale</small></label>
-             <input v-model="form.scale" type="text" class="form-control" placeholder="D1">
+                <label class="textColor"><small>Weight</small></label>
+             <input v-model="form.weight" type="text" class="form-control" placeholder="1">
             </div>
         </div>
       </div>
@@ -151,14 +151,12 @@ name : null,
 min_value: null,
 max_value: null,
 level_number: null,
-scale: null,
+weight: null,
 description: null,
 study_period_number: null,
 class_number: null,
 school_number: null,
 campus_number: null,
-level_number:null,
-study_period_number:'2023',
 grading_standard_number:null
 })
 
