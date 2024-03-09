@@ -20,10 +20,12 @@
 
   <div class="container mt-4">
     <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Interview List
+
       <button style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
       data-bs-toggle="offcanvas" data-bs-target="#rolesDialogg" aria-controls="rolesDialogg">
-      <i class="bi bi-plus"></i>&nbsp;<small>
-        Add Interview</small></button>
+      <i class="bi bi-plus"></i>&nbsp;<small>Add Interview</small>
+      </button>
+
       <hr style="width:30px;"></h6>
     <table
       id="datatable"
