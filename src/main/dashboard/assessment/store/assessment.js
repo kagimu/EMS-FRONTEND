@@ -18,6 +18,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const newReportCardResponse = ref(null)
     const newAssessmentMetricResponse = ref(null)
     const assessmentMetricsResponse = ref(null)
+    const newMetricResponse = ref(null)
 
     async function createAssesmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -198,6 +199,22 @@ async function fetchAssessmentMetrics() {
         })
 }
 
+
+async function createMetric(data) {
+    return await api.post("main/", data)
+        .then((response) => {
+            newMetricResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+
+
+
     return {
         createAssesmentAreas,
         newAssesmentAreasResponse,
@@ -227,6 +244,8 @@ async function fetchAssessmentMetrics() {
         newAssessmentMetricResponse,
         assessmentMetricsResponse,
         createAssessmentMetrics,
-        fetchAssessmentMetrics
+        fetchAssessmentMetrics,
+        createMetric,
+        newMetricResponse
     }
 })

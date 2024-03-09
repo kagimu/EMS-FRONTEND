@@ -15,6 +15,7 @@ export const useCurriculumStore = defineStore("curriculum", () => {
     let deleteCurriculumResponse = ref(null)
     let curriculumDataInfoResponse = ref(null)
     const errorMessage = ref(null)
+    const newMetricResponse = ref(null)
 
 
     async function newCurriculumData(data) {
@@ -147,6 +148,7 @@ export const useCurriculumStore = defineStore("curriculum", () => {
                 }
             })
     }
+
 
 
     return {

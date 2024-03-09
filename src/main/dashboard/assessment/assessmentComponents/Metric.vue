@@ -12,7 +12,7 @@
                 <button
                 v-if="can('add_assessment_area','general')"
                  style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
-        data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="showDialog">
+        data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="sDialog">
        <b><i class="bi bi-plus"></i></b> <small>
         Add Metric</small></button>
               </div>
@@ -57,7 +57,7 @@
               <button type="button" class="btn-close"  data-bs-dismiss="offcanvas" aria-label="Close" @click="closeDialog"></button>
             </div>
             <div class="offcanvas-body">
-              <form @submit.prevent="addMetrics">
+              <form @submit.prevent="addMetric">
                 
                 <div class="mb-2">
                   <label class="textColor"><small>Name</small></label>
@@ -69,11 +69,11 @@
                 <select
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
-                        v-model="form.examtype_number"
-                >
+                        v-model="form.examtype">
                     <option disabled value="">Select</option>
-                    <option v-for="(list, index) in ExamListData" :key="index" :value="list.number">{{ list.name }}
-                    </option>
+                    <option value="internal">Internal</option>
+                    <option value="external">External</option>
+                    <option value="National">National</option>
                 </select>
             </div>
                 
@@ -96,8 +96,8 @@
     </template>
     
     <script setup>
-      import {onMounted,reactive, ref, watch} from "vue";
-      import useNotificationStore from "@/composables/useNotification.js";
+    import {onMounted,reactive, ref, watch} from "vue";
+    import useNotificationStore from "@/composables/useNotification.js";
     import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
     import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
     import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
@@ -105,35 +105,34 @@
     import {useRouter} from "vue-router";
 
    const routerData = useRouter()
-   let  curriculumNumber = routerData.currentRoute.value.query.id
+
   
      const { can } = useAbility()
   
     const buttonLoader = ref(false)
+    const showDialog= ref(false)
     let errorMessage = ref(null)
+
+
     const assessmentStore= useAssessmentStore()
     const  notificationStore  = useNotificationStore()
    
       const form = reactive({ 
         name:null,
-       examtype_number:null,
+       examtype:null,
       })
     
 
-    onMounted(
-    async () => {
-      await assessmentStore.fetchMetrics()
-    } )
-
+   
    //working on dialog
   const closeDialog = () => {
     showDialog.value = false;
   };
-  const showDialog = () => {
+  const sDialog = () => {
     showDialog.value = true;
   }
   
-  const addMetrics = () => {
+  const addMetric = () => {
        alert(JSON.stringify(form))
        showDialog.value = true;
        buttonLoader.value = true
