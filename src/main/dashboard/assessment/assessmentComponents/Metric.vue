@@ -30,12 +30,14 @@
           <tr>
             <!-- <th>Interview</th> -->
             <th>Name</th>
+            <th>Exam Type</th>
             <th>#</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(metricsData, index) in AsessmentMetricsData " :key="index">
+          <tr v-for="(metricsData, index) in metricData " :key="index">
             <td>{{ metricsData.name}}</td>
+            <td>{{metricsData.exam_type}}</td>
             <td>
             <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
               <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
@@ -113,6 +115,7 @@
     const buttonLoader = ref(false)
     const showDialog= ref(false)
     let errorMessage = ref(null)
+    const metricData = ref(null)
 
 
     const assessmentStore= useAssessmentStore()
@@ -124,6 +127,19 @@
        curriculum_number:curriculumNumber
       })
 
+    onMounted(
+        async () => {
+          await assessmentStore.fetchMetrics()
+        } )
+    watch(
+        () => assessmentStore.metricResponse,
+        async (data) => {
+          if(data){
+            metricData.value = data.data
+          }
+        },
+        {deep:true}
+    )
    
    //working on dialog
   const closeDialog = () => {
@@ -134,7 +150,7 @@
   }
   
   const addMetric = () => {
-       alert(JSON.stringify(form))
+       // alert(JSON.stringify(form))
        showDialog.value = true;
        buttonLoader.value = true
        assessmentStore.createMetric(form)
@@ -145,8 +161,11 @@
       async (data) => {
         if(data){
           buttonLoader.value = false
-           assessmentStore.fetchMetrics()
+           await assessmentStore.fetchMetrics()
           notificationStore.successToast("Success", data.message)
+          form.name = null
+          form.exam_type = null
+
         }
       },
       {deep:true}

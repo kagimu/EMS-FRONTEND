@@ -81,7 +81,7 @@
                         v-model="form.curriculum_class_number"
                 >
                     <option disabled value="">Select Class</option>
-                    <option value="">P1</option>
+                     <option v-for="(clist, index) in classLevelList" :key="index" :value="clist.number">{{clist.name}}</option>
                 </select>
             </div>
 
@@ -95,7 +95,7 @@
                         v-model="form.metric_number"
                 >
                     <option disabled value="">Select</option>
-                    <option v-for="(list, index) in AsessmentListData" :key="index" :value="list.number">{{ list.name }}
+                    <option v-for="(list, index) in metricListData" :key="index" :value="list.number">{{ list.name }}
                     </option>
                 </select>
             </div>
@@ -126,7 +126,7 @@
             </div>
             </div>
 
-            <div class="mb-2">
+            <!-- <div class="mb-2">
               <label class="textColor"><small>Grading Standard</small> <span class="star">*</span></label>
               <select
                       style="box-shadow: none;"
@@ -137,7 +137,7 @@
                  <option v-for="(gradeList,index) in gradeData" :key="index" :value="gradeList.number">{{ gradeList.name }}</option>
                  <option></option>
               </select>
-          </div>
+          </div> -->
 
             <div class="mb-2">
                 <label class="textColor"><small>Description</small></label>
@@ -203,23 +203,66 @@
     const AsessmentListData = ref([])
     const gradeData = ref([])
     const campusLevelList = ref([])
-  
+    const classLevelList = ref([])
     const preferred_campus_number = ref(null)
+    const metricListData = ref([])
   
       const form = reactive({ 
         name:null,
         assessment_area_number:null,
         weight:null,
         description:null,
-        assessment_area_number:null,
-        scheduled_on:null,
         max_score:null,
-        grading_standard_number:null,
         metric_number:null,
-        curriculum_class_number:curriculumNumber
+        curriculum_class_number:null
       })
 
   
+const fetchCurriculumClass = (campus_lnumber) =>{
+//fetch classes
+// alert (campus_lnumber)
+// campusCurriculumNumber, campusLevelNumber
+classStore.fetchClassByLevel(curriculumNumber,campus_lnumber)
+
+}
+
+watch(
+    () => classStore.classLevelByLevelResponse,
+    async (data) => {
+        if (data) {
+            //notificationStore.successToast("Success", data.message)
+            // alert(JSON.stringify(data.data))
+            if(data && data.data){
+        let classData = data.data
+        if(classData && (classData.length > 0)){
+          classLevelList.value = classData[0].classes
+        }
+        
+      }
+            // classLevelList.value = data
+        }
+    },
+    {deep: true}
+)
+
+
+onMounted(
+        async () => {
+          await assessmentStore.fetchMetrics()
+        } )
+    watch(
+        () => assessmentStore.metricResponse,
+        async (data) => {
+          if(data){
+            metricListData.value = data.data
+          }
+        },
+        {deep:true}
+    )
+
+
+
+
       onMounted(
       async () => {
         await assessmentStore.fetchAssessmentMetrics()
