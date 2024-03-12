@@ -58,6 +58,10 @@
             </div>
             <div class="offcanvas-body">
               <form @submit.prevent="addInterviewAssesmentMetrics">
+                <div class="mb-2">
+                  <label class="textColor"><small>Name</small></label>
+                  <input type="text" v-model="form.name" class="form-control">
+                </div>
 
                 <div class="mb-2">
         <label class="textColor"><small>Level</small></label>
@@ -117,7 +121,7 @@
                 <div class="row">
                 <div class="col-lg-6">           
                   <label class="textColor"><small>Weight</small></label>
-                  <input v-model="form.weight"  type="text" required class="form-control">
+                  <input v-model="form.weight"  type="number" required class="form-control">
                 </div>
                 <div class="col-lg-6">
                   <label class="textColor"><small>Max_Score</small></label>
@@ -126,7 +130,7 @@
             </div>
             </div>
 
-            <!-- <div class="mb-2">
+            <div class="mb-2">
               <label class="textColor"><small>Grading Standard</small> <span class="star">*</span></label>
               <select
                       style="box-shadow: none;"
@@ -137,7 +141,7 @@
                  <option v-for="(gradeList,index) in gradeData" :key="index" :value="gradeList.number">{{ gradeList.name }}</option>
                  <option></option>
               </select>
-          </div> -->
+          </div>
 
             <div class="mb-2">
                 <label class="textColor"><small>Description</small></label>
@@ -171,8 +175,8 @@
     </template>
     
     <script setup>
-      import {onMounted,reactive, ref, watch} from "vue";
-      import useNotificationStore from "@/composables/useNotification.js";
+    import {onMounted,reactive, ref, watch} from "vue";
+    import useNotificationStore from "@/composables/useNotification.js";
     import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
     import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
     import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
@@ -214,7 +218,8 @@
         description:null,
         max_score:null,
         metric_number:null,
-        curriculum_class_number:null
+        curriculum_class_number:null,
+        grading_standard_number:null
       })
 
   
