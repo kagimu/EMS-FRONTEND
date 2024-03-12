@@ -21,6 +21,7 @@ export const useApplicationStore = defineStore("application", () => {
     let QuestionsOnInterviewResponse = ref(null)
     let interviewResultsResponse = ref(null)
     let interviewResultesponse  = ref(null)
+    let interviewDetails  = ref(null)
 
     async function newApplicationDetails(data) {
         return await api.post("main/applications/new-parent", data)
@@ -219,7 +220,19 @@ export const useApplicationStore = defineStore("application", () => {
                 })
         }
 
-        // async function createInterviewAssesmentAreas(data) {
+        async function  fetchInterviewDetails(interviewNumber) {
+            return await api.get("main/interviews/"+interviewNumber)
+                .then((response) => {
+                    interviewDetails.value = response.data
+                })
+                .catch((response) => {
+                    if(response){
+                        errorMessage.value = response.response.data
+                    }
+                })
+    }
+
+        // async function createInterviewAssessments(data) {
         //     return await api.post("main/assessment-areas",data)
         //         .then((response) => {
         //             InterviewAssesmentAreasResponse.value = response.data
@@ -281,5 +294,7 @@ export const useApplicationStore = defineStore("application", () => {
         interviewResultsResponse,
         interviewResultesponse,
         createInterviewResults ,
+        fetchInterviewDetails,
+        interviewDetails,
     }
 })
