@@ -149,7 +149,7 @@ const academicYearStore = useAcademicYearStore()
 
 const routerData = useRouter()
 const newAcademicYearDialog = ref( false)
-const campusCurriculumNumber = routerData.currentRoute.value.query.l
+const campusCurriculumNumber = routerData.currentRoute.value.query.crr
 const studyPeriodList = ref( [])
 const  notificationStore  = useNotificationStore()
 const academicYearNumber = ref( "")

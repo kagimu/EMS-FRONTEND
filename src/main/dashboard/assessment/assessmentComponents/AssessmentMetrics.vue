@@ -180,7 +180,7 @@
 
     import {useRouter} from "vue-router";
     const routerData = useRouter()
-    let  curriculumNumber = routerData.currentRoute.value.query.l
+    let  curriculumNumber = routerData.currentRoute.value.query.crr
   
     import { useAbility } from '@casl/vue';
   

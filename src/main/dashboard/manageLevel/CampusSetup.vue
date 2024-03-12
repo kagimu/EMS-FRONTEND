@@ -13,7 +13,7 @@
 
 
     <div class="row">
-      <div class="col-3">
+      <div :class="campusCurriculumNumber ? 'col-3' : 'col-12 mx-auto'">
 
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;" v-if="campusCurriculumDataInfo">
@@ -24,7 +24,7 @@
                   v-for="(item, idx) in  campusCurriculumDataInfo" :key="idx"
                   class="list-group-item list-group-item-action"
                   :class="item.number === campusCurriculumNumber ? 'active' : ''"
-                  :to="{name:'campus-setup', query:{id:campusNumber, l:item.number}}">
+                  :to="{name:'campus-setup', query:{id:campusNumber, crr:item.number}}">
                 <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></router-link>
             </div>
 
@@ -33,7 +33,7 @@
 
       </div>
 
-      <div class="col-9">
+      <div class="col-9" v-if="campusCurriculumNumber">
 
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
@@ -71,8 +71,7 @@ const school = ref( "")
 
 
 const campusNumber = routerData.currentRoute.value.query.id
-let campusCurriculumNumber = routerData.currentRoute.value.query.l
-
+let campusCurriculumNumber = routerData.currentRoute.value.query.crr
 
 
 
@@ -86,7 +85,7 @@ onMounted(
 
 const curriculumName =  computed(()=>{
   let c = ""
-  if(campusCurriculumDataInfo.value) {
+  if(campusCurriculumDataInfo.value && campusCurriculumNumber) {
     c = campusCurriculumDataInfo.value.find(curriculum => {
       return curriculum.number === campusCurriculumNumber;
     }).name;
@@ -102,7 +101,7 @@ watch(
 
         campusCurriculumDataInfo.value = curriculumInfo
         if(!campusCurriculumNumber){
-          campusCurriculumNumber = curriculumInfo[0].number
+          // campusCurriculumNumber = curriculumInfo[0].number
         }
       }
     },
