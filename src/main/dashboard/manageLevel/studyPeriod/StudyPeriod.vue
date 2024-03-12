@@ -198,11 +198,9 @@ onMounted(
     }
 )
 
-
 const studyPeriodData = () => {
   studyPeriodStore.fetchStudyPeriod({campus_curriculum_number:campusCurriculumNumber, academic_year_number:academicYearNumber.value})
 }
-
 
 watch(
     () => studyPeriodStore.studyPeriodResponse,
