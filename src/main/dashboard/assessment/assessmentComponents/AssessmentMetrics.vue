@@ -192,15 +192,15 @@
 
             <div class="mb-2">
                 <label class="textColor"><small>Scheduled On</small></label>
-                <!-- <input type="date" class="form-control" v-model="form.scheduled_on"> -->
-                <VueDatePicker
+                <input type="date" class="form-control" v-model="form.scheduled_on">
+                <!-- <VueDatePicker
               text-input
               auto-apply
               :teleport="true"
               style="font-size: 7px;"
               v-model="form.scheduled_on"
               :preview-format="format"
-              ></VueDatePicker>
+              ></VueDatePicker> -->
             </div>
 
 
@@ -275,7 +275,8 @@
         metric_number:null,
         curriculum_class_number:null,
         grading_standard_number:null,
-        study_period_number:null
+        study_period_number:null,
+        scheduled_on:null
       })
 
 
