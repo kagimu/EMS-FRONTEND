@@ -90,6 +90,32 @@
             </div>
 
 
+            <div class="mb-2">
+        <label class="textColor"><small>Academic Year</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="academic_year"
+            @change="fetchStudyPeriod(academic_year)"
+        >
+          <option disabled value="">Select Level</option>
+          <option></option>
+        </select>
+      </div>
+
+
+      <div class="mb-2">
+                <label class="textColor"><small>Study Period</small> <span class="star">*</span></label>
+                <select
+                        style="box-shadow: none;"
+                        class="form-select form-select-sm"
+                        v-model="form.study_period_number"
+                >
+                    <option disabled value="">Select Study Period</option>
+                     <option ></option>
+                </select>
+            </div>
+
                 
                 <div class="mb-2">
                 <label class="textColor"><small>Metric</small> <span class="star">*</span></label>
@@ -219,7 +245,8 @@
         max_score:null,
         metric_number:null,
         curriculum_class_number:null,
-        grading_standard_number:null
+        grading_standard_number:null,
+        study_period_number:null
       })
 
   
