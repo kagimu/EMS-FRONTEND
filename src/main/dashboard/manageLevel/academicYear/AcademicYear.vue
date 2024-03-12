@@ -111,7 +111,7 @@ const routerData = useRouter()
 const academicYearStore = useAcademicYearStore()
 const newAcademicYearDialog = ref( false)
 const deletionLoader = ref( undefined)
-const campusCurriculumNumber = routerData.currentRoute.value.query.l
+const campusCurriculumNumber = routerData.currentRoute.value.query.crr
 const academicYearList = ref( [])
 const  notificationStore  = useNotificationStore()
 

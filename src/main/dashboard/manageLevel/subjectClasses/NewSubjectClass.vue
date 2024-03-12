@@ -82,7 +82,7 @@ const classStore = useClassesStore()
 
 const learningAreaStore = useLearningAreaStore()
 const subjectStore = useSubjectStore()
-const campusLevel = routerData.currentRoute.value.query.l
+const campusLevel = routerData.currentRoute.value.query.crr
 const campusNumber = routerData.currentRoute.value.query.id
 
 
