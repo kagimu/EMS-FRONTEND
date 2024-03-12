@@ -32,7 +32,7 @@
             @change="filterClasses(form.class_number)"
         >
           <option disabled value="">Select Class</option>
-          <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+          <option v-for="(list, index) in classList[0].classes" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
         </select>
       </div>
 
