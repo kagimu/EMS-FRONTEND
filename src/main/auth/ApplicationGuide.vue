@@ -229,11 +229,11 @@ label{
     height: 24px;
     right: 13px;
     top: 7px;
-    //background: transparent url(../images/arrow_down.png) no-repeat center center;
+
 }
 
 .ac-container input:checked + label:hover:after {
-    //background-image: url(../images/arrow_up.png);
+
 }
 
 .ac-container input {
