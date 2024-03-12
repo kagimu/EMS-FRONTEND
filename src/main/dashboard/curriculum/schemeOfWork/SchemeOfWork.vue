@@ -66,7 +66,7 @@
 
 
     <div class="row mt-5">
-      <div class="col-3">
+      <div :class="curriculumNo ? 'col-3' : 'col-6'">
         <div class="mb-2">
           <select
               class="form-select py-2 shadow-none"
@@ -79,14 +79,14 @@
           <div class="text-[12px]">Filter by Curriculum</div>
         </div>
       </div>
-      <div class="col-3">
+      <div class="col-3" v-if="curriculumNo">
         <div class="mb-2">
           <select
               class="form-select py-2 shadow-none"
               v-model="level"
               @change="fetchSchemeClasses(level)"
           >
-            <option value="">All</option>
+            <option value="">--Select--</option>
             <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
           </select>
           <div class="text-[12px]">Filter by level</div>
@@ -99,7 +99,7 @@
     <div class="row">
 
 
-      <div class="col-3">
+      <div :class="classNo ? 'col-3' : 'col-12'" v-if="level">
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
             <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Classes</div>
@@ -121,7 +121,7 @@
 
       </div>
 
-      <div class="col-9">
+      <div v-if="classNo" class="col-9">
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
 
