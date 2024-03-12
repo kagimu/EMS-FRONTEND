@@ -102,6 +102,7 @@
         </select>
       </div> -->
 
+
       <div class="mb-2">
         <label class="textColor"><small>Academic Year</small></label>
         <select
@@ -265,6 +266,8 @@
     const academicYearList = ref([])
     const studyPeriodStore = useStudyPeriodStore()
     const studyPeriodList = ref([])
+    const campus_level_number = ref(null)
+    const academic_year_number = ref(null)
 
       const form = reactive({ 
         name:null,
