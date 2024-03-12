@@ -71,7 +71,7 @@ const levelList = ref([])
 const streamClass = ref(null)
 
 const campusNumber = routerData.currentRoute.value.query.id
-const campus_curriculum_number = routerData.currentRoute.value.query.l
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
 
 const streamForm = reactive({
     name: "",

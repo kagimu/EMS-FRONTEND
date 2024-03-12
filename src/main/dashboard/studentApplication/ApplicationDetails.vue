@@ -11,7 +11,7 @@
 
   <div class="row mx-auto">
     <div class="col-3" style="border-right: 1px solid rgba(128, 128, 128, 0.137);">
-        <p class="ml-4 mt-4 mb-10" style="text-align: left !important;">GUARDIAN/PARENT DETAILS</p>
+        <p class="ml-0 mt-2 mb-2" style="text-align: left !important;">GUARDIAN/PARENT DETAILS</p>
         <div class="mb-2">
           <span class="textColor text-sm"><small>Surname : <span class="details">{{appDatails.surname}}</span></small></span>
         </div>
@@ -43,7 +43,7 @@
 
 
     <div class="col-3" style="border-right: 1px solid rgba(128, 128, 128, 0.137);">
-        <p class="ml-4 mt-4 mb-10" style="text-align: left !important;">LEARNER DETAILS</p>
+        <p class="ml-0 mt-2 mb-2" style="text-align: left !important;">LEARNER DETAILS</p>
         <div class="mb-2">
           <span class="textColor text-sm"><small>Surname: <span class="details">{{ appDatails.studentSurname }}</span></small> </span>
         </div>
@@ -75,7 +75,7 @@
 
     
     <div class="col-3" style="border-right: 1px solid rgba(128, 128, 128, 0.137);">
-        <p class="ml-4 mt-4 mb-10" style="text-align: left !important;">PREVIOUS SCHOOL DETAILS</p>
+        <p class="ml-0 mt-2 mb-2" style="text-align: left !important;">PREVIOUS SCHOOL DETAILS</p>
         
         <div v-for="(school,index) in appDatails.previousSchools" :key="index">
         
@@ -236,7 +236,7 @@ watch (
         appDatails.StudentDate_of_birth=data.Student.date_of_birth,
         appDatails.preferred_type_of_enrollment=data.preferred_type_of_enrollment,
         appDatails.preferred_campus_number=data.Student.preferred_campus_number,
-        appDatails.reason=data.Student.reason,
+        appDatails.reason=data.Student.reason_for_choosing_school,
         appDatails.status=data.status
         appDatails.previousSchools=data.PreviousSchools
           appDatails.student_number = data.Student.number
@@ -302,8 +302,6 @@ function scheduleInterview(){
     },
     {deep:true}
 )
-
-
 
   </script>
 

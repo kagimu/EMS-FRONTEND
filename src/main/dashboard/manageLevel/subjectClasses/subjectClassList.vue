@@ -92,7 +92,7 @@ import NewSubjectClass from "@/main/dashboard/manageLevel/subjectClasses/NewSubj
 import useNotificationStore from "@/composables/useNotification.js";
 const routerData = useRouter()
 const classStore = useClassesStore()
-const campusLevel = routerData.currentRoute.value.query.l
+const campusLevel = routerData.currentRoute.value.query.crr
 const  notificationStore  = useNotificationStore()
 
 const classSubjectDialog = ref( false)

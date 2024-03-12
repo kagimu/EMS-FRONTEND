@@ -36,9 +36,9 @@
                     <AssessmentList></AssessmentList>
                   </div>
           
-                  <div v-if="selectedPage === 'assessment-areas'">
+                  <!-- <div v-if="selectedPage === 'assessment-areas'">
                     <interview-assesment-areas></interview-assesment-areas>
-                  </div>
+                  </div> -->
                   <div v-if="selectedPage === 'examtype'">
                     <ExamType></ExamType>
                   </div>
@@ -83,10 +83,10 @@
       id:"assessments"
     },
    
-    {
-      name:"Assessment Areas",
-      id:"assessment-areas"
-    },
+    // {
+    //   name:"Assessment Areas",
+    //   id:"assessment-areas"
+    // },
     {
       name:"Exam Type",
       id:"examtype"

@@ -195,7 +195,7 @@ const form = reactive({references:[{
 
 
 const classStore = useClassesStore()
-const campusLevel = routerData.currentRoute.value.query.l
+const campusLevel = routerData.currentRoute.value.query.crr
 const campusNumber = routerData.currentRoute.value.query.id
 
 const subTopicData = ref(null)

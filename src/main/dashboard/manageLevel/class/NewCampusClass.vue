@@ -2,7 +2,7 @@
   <div>
 
 
-    <div class="mx-auto" style="width: 95%;">
+    <div class="mx-auto w-[95%]">
 
 
       <div class="mb-2">
@@ -57,7 +57,7 @@ const routerData = useRouter()
 const  notificationStore  = useNotificationStore()
 
 const classStore = useClassesStore()
-const campus_curriculum_number = routerData.currentRoute.value.query.l
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const campusNumber = routerData.currentRoute.value.query.id
 
 
@@ -83,7 +83,23 @@ const props = defineProps({
 
 const fetchCurriculumClass = (level_number) => {
   classStore.fetchClassLevelToAdd(level_number)
+  filterClassData(level_number)
 }
+
+const filterClassData = (level_number) => {
+  if(level_number){
+    let classInfo = props.classListInfo
+
+   let lvl = classInfo.find(lst => {return lst.number === level_number})
+
+    if (lvl) {
+      classId.value = lvl.classes.map(lst => lst.curriculum_class_number);
+    }
+
+  }
+}
+
+
 
 watch(
     () => classStore.classesToAddResponse,
@@ -105,19 +121,7 @@ watch(
     {deep:true}
 )
 
-watch(
-    () => props.classListInfo,
-    async (data) => {
-      if(data){
-      let arr = []
-        data.forEach(lst => {
-          arr.push(lst.curriculum_class_number)
-        })
-        classId.value = arr
-      }
-    },
-    {deep:true}
-)
+
 
 watch(
     () => classStore.campusLevelResponse,

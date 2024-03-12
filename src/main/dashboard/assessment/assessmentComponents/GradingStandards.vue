@@ -1,7 +1,7 @@
 <template>
     <div>
     
-        <div class="modal fade" id="addAccount" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: showDialog }">
+        <div class="modal fade" id="addAccount" tabindex="-1"  aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog">
        <NewGradeStandard></NewGradeStandard>
         </div>
@@ -42,11 +42,11 @@
         </tr>
         </thead>
         <tbody>
-            <tr v-for="(gradeList,index) in gradeStandardData" :key="index">
+            <tr v-for="(gradeList, index) in gradeStandardData " :key="index">
               <td>{{ gradeList.name }}</td>
               <td>{{ gradeList.type }}</td>
               <td>{{ gradeList.description }}</td>
-              <td>{{ gradeList.class }}</td>
+              <td>Class</td>
             
             <td>
           <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
@@ -91,10 +91,10 @@
     } )
     
 watch (
-    () => assessmentStore.newAccountResponse,
+    () => assessmentStore.gradeStandardResponse,
     async (data) => {
       if(data){
-        agradeStandardData.value = false
+        gradeStandardData.value = data.data
       }
     },
     {deep:true}

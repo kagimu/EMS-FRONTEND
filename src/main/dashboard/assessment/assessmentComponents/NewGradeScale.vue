@@ -9,7 +9,7 @@
         <form @submit.prevent="createScale()">
       <div class="mb-2">
         <label class="textColor"><small>Name</small></label>
-       <input v-model="form.name" type="text" class="form-control">
+       <input v-model="form.name" placeholder="D2" type="text" class="form-control">
       </div>
       <div class="mb-2">
               <label class="textColor"><small>School</small> <span class="star">*</span></label>
@@ -68,6 +68,19 @@
               </select>
           </div>
 
+          <div class="mb-2">
+              <label class="textColor"><small>Grading Standard</small> <span class="star">*</span></label>
+              <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm" required
+                      v-model="form.grading_standard_number"
+              >
+                  <option disabled value="">Select</option>
+                 <option v-for="(gradeList,index) in gradeData" :key="index" :value="gradeList.number">{{ gradeList.name }}</option>
+                 <option></option>
+              </select>
+          </div>
+
           
       <div class="mb-2">
         <div class="row">
@@ -81,8 +94,8 @@
             </div>
 
             <div class="col-lg-4">
-                <label class="textColor"><small>Scale</small></label>
-             <input v-model="form.scale" type="text" class="form-control" placeholder="D1">
+                <label class="textColor"><small>Weight</small></label>
+             <input v-model="form.weight" type="text" class="form-control" placeholder="1">
             </div>
         </div>
       </div>
@@ -131,21 +144,20 @@ const errorMessage = ref(null)
 const aggregateData = ref([])
 const levelData = ref([])
 const levelStore = useLevelStore()
-
+const gradeData = ref([])
 
 const form = reactive({
 name : null,
 min_value: null,
 max_value: null,
 level_number: null,
-scale: null,
+weight: null,
 description: null,
 study_period_number: null,
 class_number: null,
 school_number: null,
 campus_number: null,
-level_number:'leveln',
-study_period_number:'2023'
+grading_standard_number:null
 })
 
 const createScale = () =>{
@@ -173,6 +185,22 @@ watch (
       if(data){
         errorMessage.value = data.message
         notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+onMounted(
+    async () => {
+      await assessmentStore.fetchGradeStandard()
+    } )
+    
+watch (
+    () => assessmentStore.gradeStandardResponse,
+    async (data) => {
+      if(data){
+        gradeData.value = data.data
       }
     },
     {deep:true}
