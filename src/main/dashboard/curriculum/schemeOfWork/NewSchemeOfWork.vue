@@ -22,7 +22,7 @@
 
 
 
-      <div class="mb-2">
+      <div class="mb-2" v-if="classList && (classList.length > 0)">
         <label class="textColor"><small>Class</small></label>
         <select
             :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'Pending'))"
@@ -32,7 +32,7 @@
             @change="filterClasses(form.class_number)"
         >
           <option disabled value="">Select Class</option>
-          <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+          <option v-for="(list, index) in classList[0].classes" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
         </select>
       </div>
 
