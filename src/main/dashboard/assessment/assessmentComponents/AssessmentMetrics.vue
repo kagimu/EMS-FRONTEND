@@ -58,6 +58,10 @@
             </div>
             <div class="offcanvas-body">
               <form @submit.prevent="addInterviewAssesmentMetrics">
+                <div class="mb-2">
+                  <label class="textColor"><small>Name</small></label>
+                  <input type="text" v-model="form.name" class="form-control">
+                </div>
 
                 <div class="mb-2">
         <label class="textColor"><small>Level</small></label>
@@ -85,6 +89,46 @@
                 </select>
             </div>
 
+
+      <!-- <div class="mb-2">
+        <label class="textColor"><small>Academic Year</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="academic_year"
+            @change="fetchStudyPeriod(academic_year)">
+          <option disabled value="">Select Level</option>
+          <option></option>
+        </select>
+      </div> -->
+
+      <div class="mb-2">
+        <label class="textColor"><small>Academic Year</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="academic_year_number"
+            @change="fetchStudyPeriod(academic_year_number)" >
+          <option disabled value="">Select Class</option>
+          <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
+            {{list.code+". "+list.academic_year_name}}
+          </option>
+        </select>
+      </div>
+
+
+      <div class="mb-2">
+                <label class="textColor"><small>Study Period</small> <span class="star">*</span></label>
+                <select
+                        style="box-shadow: none;"
+                        class="form-select form-select-sm"
+                        v-model="form.study_period_number"
+                >
+                    <option disabled value="">Select Study Period</option>
+                    <option v-for="(list, index) in studyPeriodList" :key="index" :value="list.number">{{ list.study_period_name }}
+                    </option>
+                </select>
+            </div>
 
                 
                 <div class="mb-2">
@@ -117,7 +161,7 @@
                 <div class="row">
                 <div class="col-lg-6">           
                   <label class="textColor"><small>Weight</small></label>
-                  <input v-model="form.weight"  type="text" required class="form-control">
+                  <input v-model="form.weight"  type="number" required class="form-control">
                 </div>
                 <div class="col-lg-6">
                   <label class="textColor"><small>Max_Score</small></label>
@@ -126,7 +170,7 @@
             </div>
             </div>
 
-            <!-- <div class="mb-2">
+            <div class="mb-2">
               <label class="textColor"><small>Grading Standard</small> <span class="star">*</span></label>
               <select
                       style="box-shadow: none;"
@@ -137,7 +181,7 @@
                  <option v-for="(gradeList,index) in gradeData" :key="index" :value="gradeList.number">{{ gradeList.name }}</option>
                  <option></option>
               </select>
-          </div> -->
+          </div>
 
             <div class="mb-2">
                 <label class="textColor"><small>Description</small></label>
@@ -148,7 +192,15 @@
 
             <div class="mb-2">
                 <label class="textColor"><small>Scheduled On</small></label>
-                <input type="date" class="form-control" v-model="form.scheduled_on">
+                <!-- <input type="date" class="form-control" v-model="form.scheduled_on"> -->
+                <VueDatePicker
+              text-input
+              auto-apply
+              :teleport="true"
+              style="font-size: 7px;"
+              v-model="form.scheduled_on"
+              :preview-format="format"
+              ></VueDatePicker>
             </div>
 
 
@@ -171,16 +223,20 @@
     </template>
     
     <script setup>
-      import {onMounted,reactive, ref, watch} from "vue";
-      import useNotificationStore from "@/composables/useNotification.js";
+    import {onMounted,reactive, ref, watch} from "vue";
+    import useNotificationStore from "@/composables/useNotification.js";
     import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
     import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
     import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
     import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+    import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+   import { useStudyPeriodStore } from "../../manageLevel/studyPeriod/store/studyPeriod";
+   import VueDatePicker from '@vuepic/vue-datepicker';
+    const academicYearStore = useAcademicYearStore()
 
     import {useRouter} from "vue-router";
     const routerData = useRouter()
-    let  curriculumNumber = routerData.currentRoute.value.query.l
+    let  curriculumNumber = routerData.currentRoute.value.query.crr
   
     import { useAbility } from '@casl/vue';
   
@@ -206,7 +262,10 @@
     const classLevelList = ref([])
     const preferred_campus_number = ref(null)
     const metricListData = ref([])
-  
+    const academicYearList = ref([])
+    const studyPeriodStore = useStudyPeriodStore()
+    const studyPeriodList = ref([])
+
       const form = reactive({ 
         name:null,
         assessment_area_number:null,
@@ -214,8 +273,22 @@
         description:null,
         max_score:null,
         metric_number:null,
-        curriculum_class_number:null
+        curriculum_class_number:null,
+        grading_standard_number:null,
+        study_period_number:null
       })
+
+
+const currentYear = ref((new Date()).getFullYear());
+const date = ref();
+
+const format = (date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  return `Selected date is ${day}/${month}/${year}`;
+}
 
   
 const fetchCurriculumClass = (campus_lnumber) =>{
@@ -223,6 +296,7 @@ const fetchCurriculumClass = (campus_lnumber) =>{
 // alert (campus_lnumber)
 // campusCurriculumNumber, campusLevelNumber
 classStore.fetchClassByLevel(curriculumNumber,campus_lnumber)
+academicYearStore.fetchAcademicYearByLevel(campus_lnumber)
 
 }
 
@@ -413,6 +487,33 @@ watch(
     },
     {deep:true}
 )
+
+
+watch(
+    () => academicYearStore.academicYearByLevelResponse,
+    async (data) => {
+      if(data){
+        academicYearList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+const fetchStudyPeriod = (academic_num) =>{
+  studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
+}
+
+
+watch(
+    () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+    async (data) => {
+      if(data){
+        studyPeriodList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
 
     </script>
   
