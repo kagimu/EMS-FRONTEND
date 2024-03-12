@@ -49,10 +49,10 @@
             <tr v-for="(list,idx) in academicYre.academicYear" :key="idx">
               <td>{{list.code}}</td>
               <td class="capitalize">
-                {{list.academic_year_name}}
-                <span class="bg-[#0d6efd] ml-2 px-2 py-[2px] rounded-sm text-white text-xs">{{list.no_of_study_period}} Periods</span>
+                <div>{{list.academic_year_name}}</div>
+                <span class="bg-[#0d6efd] px-2 py-[2px] rounded-sm text-white text-xs">{{list.no_of_study_period}} Periods</span>
               </td>
-              <td>
+              <td class="text-sm">
                 <b>Start Date:</b>   {{list.academic_year_start_date}}  <br />
                 <b>End Date:</b>  {{list.academic_year_end_date}}
               </td>

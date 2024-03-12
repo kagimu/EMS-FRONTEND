@@ -22,7 +22,7 @@
 
 
 
-      <div class="mb-2">
+      <div class="mb-2" v-if="classList && (classList.length > 0)">
         <label class="textColor"><small>Class</small></label>
         <select
             :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'Pending'))"
