@@ -90,16 +90,29 @@
             </div>
 
 
-            <div class="mb-2">
+      <!-- <div class="mb-2">
         <label class="textColor"><small>Academic Year</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="academic_year"
-            @change="fetchStudyPeriod(academic_year)"
-        >
+            @change="fetchStudyPeriod(academic_year)">
           <option disabled value="">Select Level</option>
           <option></option>
+        </select>
+      </div> -->
+
+      <div class="mb-2">
+        <label class="textColor"><small>Academic Year</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="academic_year_number"
+            @change="fetchStudyPeriod(academic_year_number)" >
+          <option disabled value="">Select Class</option>
+          <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
+            {{list.code+". "+list.academic_year_name}}
+          </option>
         </select>
       </div>
 
@@ -112,7 +125,8 @@
                         v-model="form.study_period_number"
                 >
                     <option disabled value="">Select Study Period</option>
-                     <option ></option>
+                    <option v-for="(list, index) in studyPeriodList" :key="index" :value="list.number">{{ list.study_period_name }}
+                    </option>
                 </select>
             </div>
 
@@ -178,7 +192,15 @@
 
             <div class="mb-2">
                 <label class="textColor"><small>Scheduled On</small></label>
-                <input type="date" class="form-control" v-model="form.scheduled_on">
+                <!-- <input type="date" class="form-control" v-model="form.scheduled_on"> -->
+                <VueDatePicker
+              text-input
+              auto-apply
+              :teleport="true"
+              style="font-size: 7px;"
+              v-model="form.scheduled_on"
+              :preview-format="format"
+              ></VueDatePicker>
             </div>
 
 
@@ -207,6 +229,10 @@
     import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
     import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
     import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+    import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+   import { useStudyPeriodStore } from "../../manageLevel/studyPeriod/store/studyPeriod";
+   import VueDatePicker from '@vuepic/vue-datepicker';
+    const academicYearStore = useAcademicYearStore()
 
     import {useRouter} from "vue-router";
     const routerData = useRouter()
@@ -236,7 +262,10 @@
     const classLevelList = ref([])
     const preferred_campus_number = ref(null)
     const metricListData = ref([])
-  
+    const academicYearList = ref([])
+    const studyPeriodStore = useStudyPeriodStore()
+    const studyPeriodList = ref([])
+
       const form = reactive({ 
         name:null,
         assessment_area_number:null,
@@ -249,12 +278,25 @@
         study_period_number:null
       })
 
+
+const currentYear = ref((new Date()).getFullYear());
+const date = ref();
+
+const format = (date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  return `Selected date is ${day}/${month}/${year}`;
+}
+
   
 const fetchCurriculumClass = (campus_lnumber) =>{
 //fetch classes
 // alert (campus_lnumber)
 // campusCurriculumNumber, campusLevelNumber
 classStore.fetchClassByLevel(curriculumNumber,campus_lnumber)
+academicYearStore.fetchAcademicYearByLevel(campus_lnumber)
 
 }
 
@@ -445,6 +487,33 @@ watch(
     },
     {deep:true}
 )
+
+
+watch(
+    () => academicYearStore.academicYearByLevelResponse,
+    async (data) => {
+      if(data){
+        academicYearList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+const fetchStudyPeriod = (academic_num) =>{
+  studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
+}
+
+
+watch(
+    () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+    async (data) => {
+      if(data){
+        studyPeriodList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
 
     </script>
   

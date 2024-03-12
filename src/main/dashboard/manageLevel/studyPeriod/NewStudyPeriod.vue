@@ -113,11 +113,12 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useRouter} from "vue-router";
 import useCommonsStore from "@/composables/useCommons.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+const academicYearStore = useAcademicYearStore()
 const commons = useCommonsStore()
 const routerData = useRouter()
 const  notificationStore  = useNotificationStore()
 const campusStore = useCampusStore()
-const academicYearStore = useAcademicYearStore()
+
 const studyPeriodStore = useStudyPeriodStore()
 const classStore = useClassesStore()
 const campusLevel = routerData.currentRoute.value.query.crr
