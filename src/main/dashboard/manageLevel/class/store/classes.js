@@ -23,6 +23,8 @@ export const useClassesStore = defineStore("classes", () => {
     let curriculumClassResponse = ref(null)
     let campusLevelResponse = ref(null)
     const errorMessage = ref(null)
+    const curriculumClassByIdResponse = ref(null)
+    const classLevelByLevelResponse = ref(null)
 
 
 
@@ -269,7 +271,7 @@ export const useClassesStore = defineStore("classes", () => {
     async function fetchCampusLevel(data) {
         return await api.get("main/campus/level-list?campus_curriculum_number="+data)
             .then((response) => {
-                campusLevelResponse.value = response.data
+                campusLevelResponse.value = response.data //---------------
             })
             .catch((response) => {
                 if(response){
@@ -278,8 +280,31 @@ export const useClassesStore = defineStore("classes", () => {
             })
     }
 
+    // subject/by-curriculum-class?curriculum_class_number=be32281c-c03e-4f51-86fe-3c754b0aa170
 
+    async function fetchCurriculumClassesByID(data) {
+        return await api.get("main/subject/by-curriculum-class?curriculum_class_number="+data)
+            .then((response) => {
+                curriculumClassByIdResponse.value = response.data 
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
+    async function fetchClassByLevel(campusCurriculumNumber,campusLevelNumber) {
+        return await api.get("main/campus/class-list?campus_curriculum_number="+campusCurriculumNumber+"&campus_level_number="+campusLevelNumber)
+            .then((response) => {
+                classLevelByLevelResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
     return {
         classResponse,
         classStreams,
@@ -301,6 +326,7 @@ export const useClassesStore = defineStore("classes", () => {
         newCampusLevelResponse,
         campusLevelResponse,
         errorMessage,
+        classLevelByLevelResponse,
         newClassData,
         editClassData,
         fetchClasses,
@@ -320,6 +346,7 @@ export const useClassesStore = defineStore("classes", () => {
         deleteClassSetUp,
         classData,
         newCampusLevel,
-        fetchCampusLevel
+        fetchCampusLevel,
+        fetchClassByLevel
     }
 })

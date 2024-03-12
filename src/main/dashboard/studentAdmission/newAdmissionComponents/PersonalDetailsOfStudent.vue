@@ -27,8 +27,8 @@
         </div>
 
         <div class="mb-2">
-          <label class="textColor text-sm">Other names *</label>
-          <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" required class="form-control form-control-sm">
+          <label class="textColor text-sm">Other names </label>
+          <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" class="form-control form-control-sm">
         </div>
 
 

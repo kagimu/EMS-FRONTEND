@@ -15,6 +15,11 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const aggregateScaleResponse = ref(null)
     const newGradeStandardResponse = ref(null)
     const gradeStandardResponse = ref(null)
+    const newReportCardResponse = ref(null)
+    const newAssessmentMetricResponse = ref(null)
+    const assessmentMetricsResponse = ref(null)
+    const newMetricResponse = ref(null)
+    const metricResponse = ref(null)
 
     async function createAssesmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -111,17 +116,17 @@ async function createAggregateScale(data) {
         })
 }
 
-async function fetchAggregateScale() {
-    return await api.get("main/assessments/aggregate-scales")
-        .then((response) => {
-            aggregateScaleResponse.value = response.data
-        })
-        .catch((response) => {
-            if(response){
-                errorMessage.value = response.response.data
-            }
-        })
-}
+// async function fetchAggregateScale() {
+//     return await api.get("main/assessments/aggregate-scales")
+//         .then((response) => {
+//             aggregateScaleResponse.value = response.data
+//         })
+//         .catch((response) => {
+//             if(response){
+//                 errorMessage.value = response.response.data
+//             }
+//         })
+// }
 
 async function createGradeStandard(data) {
     return await api.post("main/grading-standard",data)
@@ -146,6 +151,81 @@ async function fetchGradeStandard() {
             }
         })
 }
+
+async function createReportCard(data) {
+    return await api.post("main/grading-standard",data)
+        .then((response) => {
+         newReportCardResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function fetchAggregateScale(campus_number,school_number,class_number) {
+    return await api.get("main/assessments/aggregate-scales?campus_number="+campus_number+"&school_number="+school_number+"&class_number="+class_number)
+        .then((response) => {
+            aggregateScaleResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function createAssessmentMetrics(data) {
+    return await api.post("main/assessments/assessment-metrics",data)
+        .then((response) => {
+         newAssessmentMetricResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function fetchAssessmentMetrics() {
+    return await api.get("main/assessments/assessment-metrics")
+        .then((response) => {
+            assessmentMetricsResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+
+async function createMetric(data) {
+    return await api.post("main/assessments/metrics", data)
+        .then((response) => {
+            newMetricResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+    async function fetchMetrics() {
+        return await api.get("main/assessments/metrics")
+            .then((response) => {
+                metricResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
     return {
         createAssesmentAreas,
         newAssesmentAreasResponse,
@@ -169,6 +249,16 @@ async function fetchGradeStandard() {
         newGradeStandardResponse,
         createGradeStandard,
         gradeStandardResponse,
-        fetchGradeStandard
+        fetchGradeStandard,
+        createReportCard,
+        newReportCardResponse,
+        newAssessmentMetricResponse,
+        assessmentMetricsResponse,
+        createAssessmentMetrics,
+        fetchAssessmentMetrics,
+        createMetric,
+        newMetricResponse,
+        metricResponse,
+        fetchMetrics
     }
 })

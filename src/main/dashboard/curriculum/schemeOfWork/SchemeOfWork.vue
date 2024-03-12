@@ -66,29 +66,27 @@
 
 
     <div class="row mt-5">
-      <div class="col-3">
+      <div :class="curriculumNo ? 'col-3' : 'col-6'">
         <div class="mb-2">
           <select
-              style="box-shadow: none; padding-bottom: 0;"
-              class="form-select form-select-sm py-2"
-              v-model="level"
-              @change="fetchSchemeClasses()"
+              class="form-select py-2 shadow-none"
+              v-model="curriculumNumber"
+              @change="fetchCampusLevel(curriculumNumber)"
           >
-            <option value="">All</option>
-            <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
+            <option value="" class="text-[12px]">--Select--</option>
+            <option class="text-[12px]" v-for="(lvl, index) in curriculumList" :key="index" :value="lvl.number">{{lvl.name}}</option>
           </select>
           <div class="text-[12px]">Filter by Curriculum</div>
         </div>
       </div>
-      <div class="col-3">
+      <div class="col-3" v-if="curriculumNo">
         <div class="mb-2">
           <select
-              style="box-shadow: none; padding-bottom: 0;"
-              class="form-select form-select-sm py-2"
+              class="form-select py-2 shadow-none"
               v-model="level"
-              @change="fetchSchemeClasses()"
+              @change="fetchSchemeClasses(level)"
           >
-            <option value="">All</option>
+            <option value="">--Select--</option>
             <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
           </select>
           <div class="text-[12px]">Filter by level</div>
@@ -101,11 +99,12 @@
     <div class="row">
 
 
-      <div class="col-3">
+      <div :class="classNo ? 'col-3' : 'col-12'" v-if="level">
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
             <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Classes</div>
             <hr />
+
             <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
               <div
                   v-for="(item, idx) in  classList"
@@ -122,7 +121,7 @@
 
       </div>
 
-      <div class="col-9">
+      <div v-if="classNo" class="col-9">
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
 
@@ -308,6 +307,7 @@ import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
 import SchemeOfWorkPdfTemplate from "@/main/dashboard/curriculum/schemeOfWork/SchemeOfWorkPdfTemplate.vue";
 
 const level = ref( "")
+const curriculumNumber = ref( "")
 const schemeOfWorkRef = ref( null)
 const academic_year_number = ref( "")
 const schemeDataInfo = ref( {})
@@ -320,7 +320,7 @@ const learningAreaList = ref( [])
 const classList = ref( [])
 const levelList = ref( [])
 const classStore = useClassesStore()
-let selectedClass = ref( null)
+let selectedClass = ref( "")
 const routerData = useRouter()
 
 
@@ -332,6 +332,7 @@ const learningAreaRef = ref(null)
 const schemeOfWorkList = ref([])
 const schemeSubjectList = ref([])
 const academicYearList = ref([])
+const curriculumList = ref([])
 const commons = useCommonsStore()
 const levelStore = useLevelStore()
 const schemeOfWorkStore = useSchemeOfWorkStore()
@@ -339,6 +340,8 @@ const subjectStore = useSubjectStore()
 
 let classNo = routerData.currentRoute.value.query.c
 let campusNumber = routerData.currentRoute.value.query.id
+let curriculumNo = routerData.currentRoute.value.query.crr
+let levelNo = routerData.currentRoute.value.query.lv
 
 if(classNo){
   selectedClass.value =  classNo
@@ -369,9 +372,11 @@ const exportSchemeOfWorkPdf = () => {
 }
 
 
-const changeMenu = (value) => {
-  selectedClass.value = value
-  router.push({ name: "scheme-of-work", query:{id:campusNumber, c:value} })
+const changeMenu = (classNo) => {
+  if(classNo){
+    router.push({name:'scheme-of-work', query:{id:campusNumber,crr:curriculumNo,lv:levelNo,c:classNo}})
+  }
+
 }
 
 
@@ -388,8 +393,23 @@ const filterSchemeSubject = () => {
 
 onMounted(
     async () => {
-      await levelStore.fetchCampusLevelList(campusNumber)
-      await fetchSchemeClasses()
+
+      //fetch level after selecting curriculum
+      if(curriculumNo) {
+        curriculumNumber.value = curriculumNo
+        await classStore.fetchCampusLevel(curriculumNo)
+      }
+
+      // fetch classes after selecting level
+      if(levelNo){
+        level.value = levelNo
+        await classStore.fetchClassLevel({campusCurriculumNumber: curriculumNumber.value, campusLevelNumber: levelNo})
+        await fetchSchemeClasses(levelNo)
+      }
+
+      await levelStore.fetchCampusCurriculum(campusNumber)
+      // await levelStore.fetchCampusLevelList(campusNumber)
+
       if(selectedClass.value) {
         await fetchAcademicYrList(selectedClass.value)
         await subjectStore.fetchSchemeSubjectByClass(selectedClass.value)
@@ -398,12 +418,21 @@ onMounted(
 )
 
 const fetchAcademicYrList = (classNumber) => {
-  // academicYearStore.fetchAcademicYear(level.value)
   subjectStore.fetchAcademicYearByClass(classNumber)
 }
 
-const fetchSchemeClasses = () => {
-  classStore.fetchClassLevel({campusNumber: campusNumber, levelNumber: level.value})
+const fetchCampusLevel = (curriculumNumber) => {
+  if(curriculumNumber){
+    router.push({name:'scheme-of-work', query:{id:campusNumber,crr:curriculumNumber}})
+  }
+}
+
+const fetchSchemeClasses = (levelNumber) => {
+  if(curriculumNumber.value && levelNumber){
+    if(campusNumber && curriculumNo){
+      router.push({name:'scheme-of-work', query:{id:campusNumber,crr:curriculumNo,lv:levelNumber,c:classNo??''}})
+    }
+  }
 }
 
 watch(
@@ -411,12 +440,12 @@ watch(
     () => classStore.classLevelInfoResponse,
     async (data) => {
       if(data){
-        let classInfo = data.data
+        let classInfo = data.data[0].classes
        classList.value = classInfo
         if(classInfo && (classInfo.length > 0)){
           if(!selectedClass.value){
             let classNo = classInfo[0].number
-            selectedClass.value = classNo
+            // selectedClass.value = classNo
             await subjectStore.fetchSchemeSubjectByClass(classNo)
             // await subjectStore.fetchAcademicYearByClass(classNo)
             await fetchAcademicYrList(classNo)
@@ -564,10 +593,10 @@ watch(
 
 
 watch(
-    () => levelStore.campusLevelResponse,
+    () => classStore.campusLevelResponse,
     async (data) => {
       if(data){
-        levelList.value = data.data
+        levelList.value = data.data ///---------------
       }
     },
     {deep:true}
@@ -582,6 +611,21 @@ watch(
     },
     {deep:true}
 )
+
+
+watch(
+    () => levelStore.campusCurriculumResponse,
+    async (data) => {
+      if(data){
+        curriculumList.value = data.data
+       /* if(!campusCurriculumNumber){
+          campusCurriculumNumber = curriculumInfo[0].number
+        }*/
+      }
+    },
+    {deep:true}
+)
+
 
 </script>
 

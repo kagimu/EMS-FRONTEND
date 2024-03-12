@@ -77,8 +77,8 @@
               <td>{{academicYre.code}}</td>
               <td class="w-[30%] capitalize">
                 <div>
-                  {{academicYre.academic_year_name}}
-                  <span class="bg-[#0d6efd] ml-2 px-2 py-[2px] rounded-sm text-white text-xs">{{academicYre.no_of_study_period}} Periods</span>
+                <div>{{academicYre.academic_year_name}}</div>
+                  <span class="bg-[#0d6efd] px-2 py-[2px] rounded-sm text-white text-xs">{{academicYre.no_of_study_period}} Study Periods</span>
                 </div>
                 <div class="ml-5 text-sm">
                   <small>
@@ -149,7 +149,7 @@ const academicYearStore = useAcademicYearStore()
 
 const routerData = useRouter()
 const newAcademicYearDialog = ref( false)
-const campusCurriculumNumber = routerData.currentRoute.value.query.l
+const campusCurriculumNumber = routerData.currentRoute.value.query.crr
 const studyPeriodList = ref( [])
 const  notificationStore  = useNotificationStore()
 const academicYearNumber = ref( "")
@@ -198,11 +198,9 @@ onMounted(
     }
 )
 
-
 const studyPeriodData = () => {
   studyPeriodStore.fetchStudyPeriod({campus_curriculum_number:campusCurriculumNumber, academic_year_number:academicYearNumber.value})
 }
-
 
 watch(
     () => studyPeriodStore.studyPeriodResponse,

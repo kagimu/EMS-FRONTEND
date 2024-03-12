@@ -55,6 +55,9 @@ import ClassList from "@/main/dashboard/classes/classesComponents/ClassList.vue"
 import ClassAttendance from "@/main/dashboard/classes/classesComponents/ClassAttendance.vue"
 import SubjectAttendance from "@/main/dashboard/classes/classesComponents/SubjectAttendance.vue"
 import ManageClassList from "@/main/dashboard/classes/classesComponents/ManageClassList.vue"
+import AssessmentMetrics from "@/main/dashboard/assessment/assessmentComponents/AssessmentMetrics.vue"
+
+
 
 const router = createRouter({
     history: createWebHistory(),
@@ -368,6 +371,13 @@ const router = createRouter({
                     action: "view_manage-class-list",
                       
                 }},
+                {path: 'assessment-metrics', component: AssessmentMetrics, name: "assessment-metrics",
+                meta: {
+                    resource: "assessment-metrics",
+                    action: "view_manage-assessment-metrics",
+                      
+                }},
+
 
             ]
         },

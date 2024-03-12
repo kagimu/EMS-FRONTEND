@@ -41,7 +41,7 @@ const routerData = useRouter()
 const  notificationStore  = useNotificationStore()
 
 const classStore = useClassesStore()
-const campus_curriculum_number = routerData.currentRoute.value.query.l
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const campusNumber = routerData.currentRoute.value.query.id
 
 

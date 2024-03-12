@@ -3,7 +3,6 @@
  <div>
 
 
-
      <div class="row">
 
        <div v-for="(lst,idx) in analytics" :key="idx" class="col-3">

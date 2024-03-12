@@ -15,10 +15,11 @@ export const useCurriculumStore = defineStore("curriculum", () => {
     let deleteCurriculumResponse = ref(null)
     let curriculumDataInfoResponse = ref(null)
     const errorMessage = ref(null)
+    const newMetricResponse = ref(null)
 
 
     async function newCurriculumData(data) {
-        return await api.post("main/new-curriculum", data)
+        return await api.post("main/curriculum/new", data)
             .then((response) => {
                 curriculumResponse.value = response.data
             })
@@ -43,7 +44,7 @@ export const useCurriculumStore = defineStore("curriculum", () => {
 
 
     async function fetchCurriculum() {
-        return await api.get("main/curriculum-list")
+        return await api.get("main/curriculum/all")
             .then((response) => {
                 curriculumDataResponse.value = response.data
             })
@@ -55,7 +56,7 @@ export const useCurriculumStore = defineStore("curriculum", () => {
     }
 
     async function fetchCurriculumInfo(data) {
-        return await api.get("main/curriculum-info?curriculum_number="+data)
+        return await api.get("main/curriculum/data?curriculum_number="+data)
             .then((response) => {
                 curriculumInfoResponse.value = response.data
             })
@@ -68,7 +69,7 @@ export const useCurriculumStore = defineStore("curriculum", () => {
 
 
     async function fetchSchoolCurriculum(data) {
-        return await api.get("main/fetch-school-curriculum?school_number="+data)
+        return await api.get("main/curriculum/school-curriculum?school_number="+data)
             .then((response) => {
                 schoolCurriculumResponse.value = response.data
             })
@@ -93,7 +94,7 @@ export const useCurriculumStore = defineStore("curriculum", () => {
 
 
     async function uploadExcelFile(data) {
-        return await api.post("main/upload-curriculum", data, {
+        return await api.post("main/curriculum/upload", data, {
             headers: {
                 "Content-Type": "multipart/form-data"
             }
@@ -110,7 +111,7 @@ export const useCurriculumStore = defineStore("curriculum", () => {
 
 
     async function fetchUploadedExcel(data) {
-        return await api.get("main/uploaded-curriculum?curriculum_number="+data)
+        return await api.get("main/curriculum/uploaded?curriculum_number="+data)
             .then((response) => {
                 curriculumExcelResponse.value = response.data
             })
@@ -147,6 +148,7 @@ export const useCurriculumStore = defineStore("curriculum", () => {
                 }
             })
     }
+
 
 
     return {
