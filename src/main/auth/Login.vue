@@ -35,6 +35,9 @@
                     <span class="visually-hidden">Loading...</span>
                   </div>
                 </button>
+
+                <!-- temporary link -->
+                <router-link type="button" class="font500 py-0 text-sm text-danger btn btn-link btn-sm" :to="{name:'userdashboard'}">Apply now</router-link>
               </div>
             </form>
           </div>
