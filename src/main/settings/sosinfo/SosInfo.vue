@@ -113,7 +113,7 @@ watch(
     async (data) => {
       if(data){
         sosInfoList.value = data.data
-        await sosInfo.fetchSosInfo()
+        // await sosInfo.fetchSosInfo()
       }
     },
     {deep:true}
@@ -162,7 +162,7 @@ watch(
       if(data){
         sosInfoDialog.value =false
         notificationStore.successToast("Success", data.message)
-        await sosInfo.fetchSosInfo()
+        sosInfo.fetchSosInfo()
       }
     },
     {deep:true}

@@ -272,9 +272,9 @@
       const form = reactive({ 
         name:null,
         assessment_area_number:null,
-        weight:null,
+        weight:0,
         description:null,
-        max_score:null,
+        max_score:0,
         metric_number:null,
         curriculum_class_number:null,
         grading_standard_number:null,
