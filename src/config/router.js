@@ -56,6 +56,7 @@ import ClassAttendance from "@/main/dashboard/classes/classesComponents/ClassAtt
 import SubjectAttendance from "@/main/dashboard/classes/classesComponents/SubjectAttendance.vue"
 import ManageClassList from "@/main/dashboard/classes/classesComponents/ManageClassList.vue"
 import AssessmentMetrics from "@/main/dashboard/assessment/assessmentComponents/AssessmentMetrics.vue"
+import InterviewAssessmentResults from '../main/dashboard/studentApplication/InterviewAssessmentResults.vue';
 
 
 
@@ -375,6 +376,13 @@ const router = createRouter({
                 meta: {
                     resource: "assessment-metrics",
                     action: "view_manage-assessment-metrics",
+                      
+                }},
+
+                {path: 'assessment-results', component: InterviewAssessmentResults, name: "assessment-results",
+                meta: {
+                    resource: "assessmtnt-results",
+                    action: "view_assessment-results",
                       
                 }},
 

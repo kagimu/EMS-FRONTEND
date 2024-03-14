@@ -7,6 +7,7 @@ export const useStudentApplicationStore = defineStore("student-application", () 
     const interviewAssessmentResponse = ref(null)
     const errorMessage = ref(null)
     const interviewAssessment = ref()
+    
 
 
     async function newInterviewAssessment(data) {

@@ -177,7 +177,7 @@ onMounted(
 
 
     const addInterviewQuestions = () => {
-     alert(JSON.stringify(form))
+    //  alert(JSON.stringify(form))
     interviewDialog.value = true;
      buttonLoader.value = true
      applicationStore.createNewInterviewQuestion(form)  

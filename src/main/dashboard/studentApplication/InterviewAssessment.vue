@@ -2,16 +2,18 @@
 import {onMounted, ref, watch} from "vue";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
 import {useStudentApplicationStore} from "@/main/dashboard/studentApplication/store/student_application.js";
-
+import useNotificationStore from "@/composables/useNotification.js";
 const assessmentStore = useAssessmentStore()
 const studentApplicationStore = useStudentApplicationStore()
 const props = defineProps({
   interviewNumber: String,
 })
+const notificationStore = useNotificationStore()
 
 const assessmentMetricList = ref([])
 const assessment_metric_number = ref(null)
 const loader = ref(false)
+const errorMessage = ref(null)
 
 
 
@@ -22,10 +24,12 @@ onMounted(
 )
 
 const saveInterviewAssessment = () => {
+  
   let data = {
     assessment_metric_number:assessment_metric_number.value,
-    interview_number:props.interview_number,
+    interview_number:props.interviewNumber,
   }
+  // alert(JSON.stringify(data))
   studentApplicationStore.newInterviewAssessment(data)
 }
 
@@ -50,6 +54,28 @@ watch (
 )
 
 
+watch(
+      () => studentApplicationStore.interviewAssessmentResponse,
+      async (data) => {
+          if (data) {
+              notificationStore.successToast("Success", data.message)
+          }
+      },
+      {deep: true}
+  )
+
+
+  watch (
+    () => studentApplicationStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
 
 </script>
 
@@ -61,7 +87,7 @@ watch (
       <label class="textColor"><small>Assessment Metric</small></label>
       <select class="form-control form-select form-control-sm shadow-none" v-model="assessment_metric_number" aria-label="Default select example">
         <option disabled value="">--Select Assessment--</option>
-        <option v-for="(list, index) in assessmentMetricList" :key="index" :value="list.number">{{list.name}}</option>
+        <option v-for="(list, index) in assessmentMetricList" :key="index" :value="list.number">{{list.description}}</option>
       </select>
     </div>
 

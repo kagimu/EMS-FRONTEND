@@ -110,7 +110,7 @@
 
 import router from "@/config/router.js";
 
-import {getCurrentInstance, ref} from 'vue'
+import {getCurrentInstance, ref,onMounted} from 'vue'
 import {useAuthStore} from "@/main/auth/store/auth.js";
 import {useRouter} from "vue-router";
 import { useAbility } from '@casl/vue';
@@ -165,6 +165,23 @@ function toggleMenu(){
   defaultMenuSize.value = !defaultMenuSize.value
 }
 
+
+onMounted(
+    async () => {
+      await  updateOnlineStatus()
+    }
+)
+
+const online = ref(navigator.onLine);
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+
+function updateOnlineStatus() {
+  online.value = navigator.onLine;
+  if (!online.value) {
+    alert("You are currently offline. Please check your internet connection.");
+  }
+}
 </script>
 
 <style scoped>

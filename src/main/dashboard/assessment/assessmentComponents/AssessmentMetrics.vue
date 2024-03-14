@@ -82,7 +82,7 @@
                 <select
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
-                        v-model="form.curriculum_class_number"
+                        v-model="form.campus_class_number"
                 >
                     <option disabled value="">Select Class</option>
                      <option v-for="(clist, index) in classLevelList" :key="index" :value="clist.number">{{clist.name}}</option>
@@ -180,28 +180,27 @@
               >
                   <option disabled value="">Select</option>
                  <option v-for="(gradeList,index) in gradeData" :key="index" :value="gradeList.number">{{ gradeList.name }}</option>
-                 <option></option>
               </select>
           </div>
 
             <div class="mb-2">
                 <label class="textColor"><small>Description</small></label>
-                <textarea class="form-control" v-model="form.description">
+                <textarea class="form-control textColor"  v-model="form.description">
 
                 </textarea>
             </div>
 
             <div class="mb-2">
                 <label class="textColor"><small>Scheduled On</small></label>
-                <!-- <input type="date" class="form-control" v-model="form.scheduled_on"> -->
-                <VueDatePicker
+                <input type="date" class="form-control" v-model="form.scheduled_on">
+                <!-- <VueDatePicker
               text-input
               auto-apply
               :teleport="true"
               style="font-size: 7px;"
               v-model="form.scheduled_on"
               :preview-format="format"
-              ></VueDatePicker>
+              ></VueDatePicker> -->
             </div>
 
 
@@ -272,11 +271,11 @@
       const form = reactive({ 
         name:null,
         assessment_area_number:null,
-        weight:0,
+        weight:null,
         description:null,
-        max_score:0,
+        max_score:null,
         metric_number:null,
-        curriculum_class_number:null,
+        campus_class_number:null,
         grading_standard_number:null,
         study_period_number:null,
         scheduled_on:null
@@ -369,7 +368,7 @@ onMounted(
     interviewDialog.value = true;
   }
       const addInterviewAssesmentMetrics = () => {
-       alert(JSON.stringify(form))
+      //  alert(JSON.stringify(form))
        interviewDialog.value = true;
        buttonLoader.value = true
        assessmentStore.createAssessmentMetrics(form)
