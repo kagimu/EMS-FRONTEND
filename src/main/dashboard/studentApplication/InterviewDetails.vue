@@ -1,12 +1,21 @@
 <template>
   <div>
 
-       <!-- modal for viewing more details -->
-       <!-- <div class="modal fade" id="infoModal" tabindex="-1"  aria-labelledby="" aria-hidden="true"  :class="{ show: gradeDialog }">
-      <div class="modal-dialog modal-xl">
-       <GradeApplication :stud="studentData"  :studenton-interviewid="studentOnInterviewId"></GradeApplication>
+
+             <!-- Popup warning Modal -->
+             <div class="modal fade" id="enterMarkModal" :class="{ show: enterScoreDialog }" tabindex="-1" aria-labelledby="removeRoleConfirmationLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="removeRoleConfirmationLabel">Please Enter Score !</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <enter-assessment-marks :studentNumber="studentNumber"></enter-assessment-marks>
+          </div>
+        </div>
       </div>
-    </div> -->
+    </div>
 
 
     <div class="modal fade" id="infoModal" tabindex="-1" :class="{ show: gradeDialog }" aria-labelledby="" aria-hidden="true">
@@ -23,15 +32,56 @@
       </div>
     </div>
 
-
+<form onsubmit="">
     <!-- end  -->
     <div class="row">
       <div class="col-12">
-        <div class="card mt-3">
+        <div class="card">
           <div class="card-body" style="padding: 0;">
   <div class="container mt-4">
-    <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Students On Interview<b></b> 
-      <hr style="color:rgba(192, 192, 192, 0.781); width:200px"></h6>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <ul>
+                <h5 style="font-size: 14px;margin-top: 2px;">ASSESSMENT FOR INTERVIEW APPLICANTS </h5>
+                <li>Interview : Primary One Interviews </li>
+                <li>Exam Type: Interview</li>
+                <li>
+                  <div class="row">
+                    <div class="col-lg-2">Assessment Metric </div>
+                    <div class="col-lg-4">
+                      <!-- <form >
+                    <div class="">
+              <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm" required 
+                      onchange="getStudentsOnMetrics()">
+                  <option>Select</option>
+                  <option v-for="(metricsList,index) in assessmentMetricsData" :key="index" :value="metricsList.AssessmentMetric.number">{{ metricsList.AssessmentMetric.number }}</option>
+              </select>
+          </div>
+                  </form> -->
+                  {{ interviewM}}
+
+                    </div>
+                    <div class="col-lg-6">
+
+</div>
+
+                  </div>
+                 
+
+                </li>
+              </ul>
+
+              <button style="float: right;" class="btn btn-primary"> Publish </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
     <table
       id="datatable"
       class="table table-striped"
@@ -39,24 +89,30 @@
     >
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Reason</th>
-          <th>Prefered Class</th>
-          <th>#</th>
+          <th>Student Name</th>
+          <th>Gender</th>
+          <th>Action</th>
         </tr>
-      <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+  <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
     {{errorMessage}}
   </div>
       </thead>
       <tbody>
         <tr v-for="(student, index) in interviewStudentList" :key="index">
-          <td>{{ student.Student.surname + " " + student.Student.second_name }} </td>
-          <td>{{ student.Student.reason_for_choosing_school}}</td>
-          <td>{{ student.Student.preferred_type_of_enrollment }}</td>
+          <td>{{ student.Student.surname + " " + student.Student.second_name + " " + student.Student.other_name}} </td>
           <td>
-            <button data-bs-toggle="modal" data-bs-target="#infoModal" @click="setStudentOnInterviewID(student.interview_number,student)" class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
-              <i class="bi bi-arrow">&nbsp;Grade</i></small></button>        
-            </td>
+            <!-- <input type="number" class="form-control" style="width:100px"> -->
+            {{  student.Student.gender }}
+          </td>
+          <td>
+            <!-- <input type="text" class="form-control"> -->
+            <button type="button"
+                  class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
+                  @click="showD(student.Student.number)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#enterMarkModal"
+              >ENTER ACTUAL SCORE</button>
+          </td>
         </tr>   
           
         
@@ -67,7 +123,7 @@
   </div>
   </div>
   </div>
-
+</form>
 
 
 
@@ -80,6 +136,9 @@ import {useApplicationStore} from "@/main/application/applicationComponents/stor
 import useNotificationStore from "@/composables/useNotification.js";
 import GradeApplication from './GradeApplication.vue';
 import {useRouter} from "vue-router";
+import EnterAssessmentMarks from "./EnterAssessmentMarks.vue";
+import { useStudentApplicationStore } from "./store/student_application"
+
 
 const interviewStudentList = ref( [])
 let errorMessage = ref(null)
@@ -90,8 +149,16 @@ const routerData = useRouter()
 const gradeDialog = ref( false)
 
 let  interviewNumber = routerData.currentRoute.value.query.interview_id
+let assessmentricsNumber = routerData.currentRoute.value.query.assessment_metric_id
+let interviewM = routerData.currentRoute.value.query.interview_m
 const studentOnInterviewId= ref(null)
 const studentData=ref(null)
+
+const studentNumber = ref(null)
+const studentApplicationStore = useStudentApplicationStore()
+const assessmentMetricsData = ref([])
+
+const enterScoreDialog = ref(false)
 
 const setStudentOnInterviewID = (id,studa) =>{
   studentOnInterviewId.value = id
@@ -106,6 +173,12 @@ onMounted(
     }
 )
 
+onMounted(
+    () => {
+      studentApplicationStore.fetchAssessmentMetricsOnInterview(interviewNumber)
+    }
+)
+
 watch(
     () => applicationStore.StudentsOnInterviewResponse,
     async (data) => {
@@ -116,6 +189,7 @@ watch(
     },
     {deep:true}
 )
+
 watch (
     () => applicationStore.errorMessage,
     async (data) => {
@@ -139,6 +213,23 @@ watch (
   )
 
 
+  watch(
+    () => studentApplicationStore.assessmentMetricsOnInterviewResponse,
+    async (data) => {
+      if(data){
+        // notificationStore.successToast("Success", data.message)
+        assessmentMetricsData.value = data.data
+      }
+    },
+    {deep:true}
+)
+const showD = (student) => {
+  studentNumber.value = student
+  // alert(studentNumber.value)
+  enterScoreDialog.value = true
+  // endpoint ===========
+
+}
 
   </script>
 

@@ -1,6 +1,26 @@
 <template>
   <div>
 
+    <div class="modal fade" id="assesssmentMetricsModal" tabindex="-1" :class="{ show: assesssmentMetricsDialog }" aria-labelledby="" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header text-sm p-0">
+            <h6 class="modal-title ml-8 mt-2 mb-2">Assessment Metrics</h6>
+            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mt-2 mb-2">
+              <!-- <interview-assessment :interviewNumber="interviewNumber"></interview-assessment> -->
+              <interview-assessment-metrics-list :interviewNumber="interviewNumber"></interview-assessment-metrics-list>
+          </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    
+
+
     <div class="modal fade" id="interviewAssessmentModal" tabindex="-1" :class="{ show: interviewAssessmentDialog }" aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -48,13 +68,13 @@
           <td>{{ interview.interview_date }}</td>
           <td>{{ interview.venue }}</td>
           <td class="w-[25%]">{{ interview.message }}</td>
-          <td class="w-[25%]">
+          <td class="w-[35%]">
             <div class="mb-1">
               <router-link
                   class="text-decoration-none"
                   :to="{name:'interview-details', query:{interview_id:interview.number}}">
                 <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
-                <i class="bi bi-eye text-[15px]"></i>&nbsp;<small>View Applicant</small>
+                <i class="bi bi-eye text-[15px]"></i>&nbsp;<small>View Applicants</small>
                 </button>
               </router-link>
             </div>
@@ -62,14 +82,19 @@
             <div>
               <button
                   class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
+                  @click="showAssesssmentMetricsDialog(interview)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#assesssmentMetricsModal"
+              > <i class="bi bi-eye textColor"></i>&nbsp;Assessement Metrics</button>
+              
+
+              <button
+                  class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
                   @click="showInterviewAssessmentDialog(interview)"
                   data-bs-toggle="modal"
                   data-bs-target="#interviewAssessmentModal"
-              >
-                <small>
-                  <i class="bi bi-plus text-[15px]"></i>&nbsp; Add Interview Assessment
-                </small>
-              </button>
+              > <i class="bi bi-plus textColor"></i>&nbsp; Add Interview Assessment</button>
+
 
             </div>
 
@@ -126,6 +151,7 @@ import {useApplicationStore} from "@/main/application/applicationComponents/stor
 import useNotificationStore from "@/composables/useNotification.js";
 import NewSchool from "@/main/dashboard/manageSchool/NewSchool.vue";
 import InterviewAssessment from "@/main/dashboard/studentApplication/InterviewAssessment.vue";
+import InterviewAssessmentMetricsList from "@/main/dashboard/studentApplication/InterviewAssessmentMetricsList.vue"
 
 const interviewList = ref( [])
 let errorMessage = ref(null)
@@ -136,6 +162,7 @@ const interviewNumber = ref(null)
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
 const interviewAssessmentDialog = ref(false)
+const assesssmentMetricsDialog = ref(false)
 onMounted(
     async () => {
       await applicationStore.fetchInterviewList()
@@ -169,6 +196,8 @@ const showInterviewAssessmentDialog = (interview) =>{
 
 }
 
+
+
 const formData = reactive({ 
 name:null,
 interview_date:null,
@@ -194,6 +223,15 @@ watch(
       },
       {deep: true}
   )
+
+
+  const showAssesssmentMetricsDialog = (interview) =>{
+ 
+  interviewNumber.value = interview.number
+  // alert(interviewNumber.value)
+  assesssmentMetricsDialog.value = true
+
+}
 
  
   </script>

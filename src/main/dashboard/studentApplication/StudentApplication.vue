@@ -86,7 +86,7 @@
   
   const application = ref([
     {
-      name:"Application List",
+      name:"Applicants",
       id:"application-list",
       action:"view_application_list"
     },

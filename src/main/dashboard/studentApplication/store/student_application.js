@@ -7,8 +7,9 @@ export const useStudentApplicationStore = defineStore("student-application", () 
     const interviewAssessmentResponse = ref(null)
     const errorMessage = ref(null)
     const interviewAssessment = ref()
-    
+    const assessmentMetricsOnInterviewResponse = ref(null)
 
+    const interviewAssessmentResultResponse = ref(null)
 
     async function newInterviewAssessment(data) {
         return await api.post("main/interviews/add-interview-assessment-metric", data)
@@ -22,6 +23,29 @@ export const useStudentApplicationStore = defineStore("student-application", () 
             })
     }
 
+    async function newInterviewAssessmentResult(data) {
+        return await api.post("main/assessments", data)
+            .then((response) => {
+                interviewAssessmentResultResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchAssessmentMetricsOnInterview(interview_number) {
+        return await api.get("/main/interviews/"+interview_number+"/interview-assessment-metrics")
+            .then((response) => {
+                assessmentMetricsOnInterviewResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
 
 
@@ -29,5 +53,9 @@ export const useStudentApplicationStore = defineStore("student-application", () 
         errorMessage,
         interviewAssessmentResponse,
         newInterviewAssessment,
+        assessmentMetricsOnInterviewResponse,
+        fetchAssessmentMetricsOnInterview,
+        interviewAssessmentResultResponse,
+        newInterviewAssessmentResult
     }
 })

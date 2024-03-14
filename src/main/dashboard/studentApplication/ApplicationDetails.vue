@@ -86,11 +86,12 @@
         </div>
 
         <div v-for="(cls,idx) in school.Classes" :key="idx">
-        <div class="row" style="width: 80px;">
-        <div class="col-lg-4">
+        <div class="row">
+        <div class="col-lg-12">
           <span class="textColor text-sm" ><small> {{cls.class}}</small></span>
-        </div>
-        <div class="col-lg-4">
+        </div></div>
+        <div class="row">
+        <div class="col-lg-6">
           <span class="textColor text-sm" ><small> {{cls.year}}</small></span>
         </div>
         </div>
