@@ -75,7 +75,7 @@
                 </li>
               </ul>
 
-              <button style="float: right;" class="btn btn-primary"> Publish </button>
+              <!-- <button style="float: right;" class="btn btn-primary"> Publish </button> -->
             </div>
           </div>
         </div>
@@ -111,7 +111,14 @@
                   @click="showD(student.Student.number)"
                   data-bs-toggle="modal"
                   data-bs-target="#enterMarkModal"
-              >ENTER ACTUAL SCORE</button>
+              >ENTER ACTUAL SCORE</button>  <button type="button"
+                  class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
+                  @click="viewMark(student.Student.number,assessmentricsNumber)"
+              ><i class="bi bi-eye"></i> VIEW SCORE</button>
+             
+             <span v-for="(listD, index) in scoreDataList " :key="index">
+            <span>{{ listD.actual_score }}</span></span>
+            
           </td>
         </tr>   
           
@@ -159,13 +166,15 @@ const studentApplicationStore = useStudentApplicationStore()
 const assessmentMetricsData = ref([])
 
 const enterScoreDialog = ref(false)
-
+const scoreDataList = ref([])
 const setStudentOnInterviewID = (id,studa) =>{
   studentOnInterviewId.value = id
   studentData.value=studa
   
 }
-
+const ScoreData = reactive ({
+  score:null
+})
 
 onMounted(
     () => {
@@ -231,6 +240,37 @@ const showD = (student) => {
 
 }
 
+
+
+watch (
+    () => studentApplicationStore.interviewAssessmentResultResponse,
+    async (data) => {
+      if(data){
+        enterScoreDialog.value = false
+      }
+    },
+    {deep:true}
+)
+
+const viewMark = (student,a) => {
+  studentNumber.value = student
+  // alert(studentNumber.value)
+  ScoreData.score = student
+  // endpoint ===========for view assessment
+  studentApplicationStore.fetchAssessmentByStudent(ScoreData.score,assessmentricsNumber)
+}
+watch (
+    () => studentApplicationStore.assessmentByStudentResponse,
+    async (data) => {
+      if(data){
+       
+          scoreDataList.value = data.data
+      
+      
+      }
+    },
+    {deep:true}
+)
   </script>
 
 

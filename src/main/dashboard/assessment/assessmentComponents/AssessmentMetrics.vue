@@ -35,7 +35,7 @@
         </thead>
         <tbody>
           <tr v-for="(metricsData, index) in AsessmentMetricsData " :key="index">
-            <td>{{ metricsData.name}}</td>
+            <td>{{ metricsData.assessment_area.name}}</td>
             <td>
             <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
               <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>

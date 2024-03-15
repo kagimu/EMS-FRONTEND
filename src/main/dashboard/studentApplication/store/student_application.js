@@ -10,6 +10,7 @@ export const useStudentApplicationStore = defineStore("student-application", () 
     const assessmentMetricsOnInterviewResponse = ref(null)
 
     const interviewAssessmentResultResponse = ref(null)
+    const assessmentByStudentResponse = ref(null)
 
     async function newInterviewAssessment(data) {
         return await api.post("main/interviews/add-interview-assessment-metric", data)
@@ -46,6 +47,18 @@ export const useStudentApplicationStore = defineStore("student-application", () 
                 }
             })
     }
+    // assessments?student_number={{STUDENT_ID}}
+    async function fetchAssessmentByStudent(studentNumber,AmetricNumber) {
+        return await api.get("/main/assessments?student_number="+studentNumber+"&assessment_metric_number="+AmetricNumber)
+            .then((response) => {
+                assessmentByStudentResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
 
 
@@ -56,6 +69,8 @@ export const useStudentApplicationStore = defineStore("student-application", () 
         assessmentMetricsOnInterviewResponse,
         fetchAssessmentMetricsOnInterview,
         interviewAssessmentResultResponse,
-        newInterviewAssessmentResult
+        newInterviewAssessmentResult,
+        fetchAssessmentByStudent,
+        assessmentByStudentResponse
     }
 })

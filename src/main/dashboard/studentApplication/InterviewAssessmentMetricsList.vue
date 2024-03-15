@@ -17,7 +17,7 @@ const assessmentMetricList = ref([])
 const assessment_metric_number = ref(null)
 const loader = ref(false)
 const errorMessage = ref(null)
-
+const examTypeListData = ref([])
 
 
 onMounted(
@@ -99,19 +99,32 @@ watch(
 )
 
 
+    // examType
+    onMounted(
+    async () => {
+      await assessmentStore.fetchExamType()
+    } )
+
+    watch(
+    () => assessmentStore.examTypeResponse,
+    async (data) => {
+      if(data){
+        examTypeListData.value = data.data
+      }
+    },
+    {deep:true}
+)
+
 </script>
 
 <template>
   <div>
-      <ul>
-        <!-- :value="list.number" -->
-        <li  ></li>
-      </ul>
 
 <ul v-for="(list, index) in assessmentMetricList" :key="index" class="list-group">
   <li class="list-group-item d-flex justify-content-between align-items-start">
+    
     <div class="ms-2 me-auto">
-      <div class="fw-bold">{{list.AssessmentMetric.number}}</div>
+      <div class="fw-bold">{{list.AssessmentMetric.assessment_area_name}}</div>
     {{  list.AssessmentMetric.description }}
     </div>
     <router-link

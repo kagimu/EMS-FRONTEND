@@ -63,6 +63,7 @@ const errorMessage = ref(null)
 
 const student = ref(null)
 
+
 watch (
     () => props.studentNumber,
     async (data) => {
@@ -76,7 +77,6 @@ watch (
 
 const form = reactive({
     assessment_metric_number:assessmentricsNumber,
-    examination_type_number:null,
     comment:null,
     student_number:student,
     assessment_date:null,
@@ -95,6 +95,11 @@ watch (
     async (data) => {
       if(data){
         // buttonLoader.value = false
+    form.comment=null
+    form.student_number=null,
+    form.assessment_date=null,
+    form.actual_score=null
+
         notificationStore.successToast("Success", data.message)
       }
     },
