@@ -74,6 +74,7 @@
 import {onMounted,reactive, computed,ref, watch} from "vue";
 import { useAdmissionStore } from "./newAdmissionComponents/store/adminission";
 import useNotificationStore from "@/composables/useNotification.js";
+
 const searchQuery = ref('')
 
 let studid = "002773383838383"

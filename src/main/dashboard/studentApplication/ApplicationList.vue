@@ -40,7 +40,10 @@
             class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
               
             {{  applist.status == "INTERVIEW_SCHEDULED" ? 'view Details' : 'schedule Interview' }}
-            <i class="bi bi-arrow-right"> </i></small></button>    
+            <i class="bi bi-arrow-right"> </i></small></button> &nbsp;
+            <RouterLink :to="{name : 'admit-student', query:{id:applist.number} }" class="link-danger" style="text-decoration: none;"  >
+          <i class="bi bi-eye"></i>  
+        </RouterLink>  
           </td>
         </tr>
       </tbody>
@@ -74,6 +77,7 @@ import {onMounted,reactive, computed,ref, watch} from "vue";
 import ApplicationDetails from './ApplicationDetails.vue';
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import useNotificationStore from "@/composables/useNotification.js";
+
 const applicationInfoList = ref( [])
 
 let errorMessage = ref(null)
@@ -147,5 +151,7 @@ watch(
 
 
   <style scoped>
-  
+  .textColor{
+    
+  }
   </style>

@@ -2,62 +2,16 @@
   <div>
     <div class="row">
       <div class="col-12">
-        <div class="card mt-3">
-          <div class="card-header">
-            <div class="row">
-              <div class="col-lg-4">
-                <h6 class="textColor" style="margin-top:20px; text-align: left;font-size: 15px;">
-                  <i class="bi bi-x-lg" @click="goBack()"></i>&nbsp;&nbsp;&nbsp;Create Custom Invoice <b></b>
-                </h6>
-              </div>
-              <div class="col-lg-8">
-                <button type="link" @click="goBack()" class="link-primary textColor" style="margin-top:20px;float: right;font-size: 15px;margin-left:"><i class="bi bi-arrow-right"></i>&nbsp;&nbsp;&nbsp;View Invoices</button>
-              </div>
-            </div>
-          </div>
           <div class="card-body" style="padding: 0;">
             <div class="container mt-4">
               <form @submit.prevent="createInvoice">
               <div class="row">
-                <div class="col-lg-4">
-                 
-                    <p class="textColor" style="margin-bottom: -4px;">Payee Details</p>
-                    <div class="mb-2">
-                      <label class="textColor text-sm"><small>Student</small> <span class="star">*</span></label>
-                      <select
-                        style="box-shadow: none;"
-                        class="form-select form-select-sm" required
-                        v-model="student_number"
-                >
-                    <option disabled value="">Select Student</option>
-                    <option v-for="(list, index) in studentInfoList" :key="index" :value="list.Student.number">{{ list.Student.surname }}
-                    </option>
-                </select>
-                    </div>
-                    <div class="mb-2">
-                      <label class="textColor"><small>Campus</small> </label>
-                      <input disabled type="text" class="form-control" value="Main Campus">
-                    </div>
-                    <div class="mb-2">
-                      <label class="textColor"><small>Class</small> </label>
-                      <input disabled type="text" class="form-control" value="P1">
-                    </div>
-                    <div class="mb-2">
-                      <label class="textColor"><small>Name</small></label>
-                      <input disabled type="text" class="form-control" value="collins Mpiima">
-                    </div>
-                    <div class="mb-2">
-                      <label class="textColor"><small>Email</small></label>
-                      <input disabled type="email" class="form-control" value="collinsmppima@gmail.com">
-                    </div>
             
-                </div>
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                   <!-- New Design -->
-              
                     <table class="table bordered">
                       <thead>
-                        <tr class="textColor" style="padding: 0px;margin: 0px;">
+                        <tr class="" style="padding: 0px;margin: 0px;">
                           <th>Service</th>
                           <th>Quantity</th>
                           <th>Unit Price</th>
@@ -102,7 +56,7 @@
            <div class="col-lg-4"></div>
            <div class="col-lg-4 ">
              <button type="submit" class="btn btn-sm btn-outline-primary mb-2 mt-1" style="float: right !important;margin-right: 0px;">
-               <small><i class="bi bi-save"></i> Publish</small>
+               <small><i class="bi bi-save"></i>Generate</small>
            <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
              <span class="visually-hidden">Loading...</span>
            </div>
@@ -115,7 +69,7 @@
           </div>
           <hr>
         </div>
-      </div>
+      
     </div>
   </div>
 </template>
@@ -297,7 +251,7 @@ select{
   color:red;
 }
 .textColor{
-  font-size: 11px !important;
+  /* font-size: 1px !important; */
 }
   .select-no-border {
     border: none !important;
