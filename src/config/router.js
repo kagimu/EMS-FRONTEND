@@ -57,7 +57,8 @@ import SubjectAttendance from "@/main/dashboard/classes/classesComponents/Subjec
 import ManageClassList from "@/main/dashboard/classes/classesComponents/ManageClassList.vue"
 import AssessmentMetrics from "@/main/dashboard/assessment/assessmentComponents/AssessmentMetrics.vue"
 import InterviewAssessmentResults from '../main/dashboard/studentApplication/InterviewAssessmentResults.vue';
-
+import InterviewLearnersList from "@/main/dashboard/studentApplication/InterviewLearnersList.vue";
+import InterviewLearnersDetails from '@/main/dashboard/studentApplication/InterviewLearnersDetails.vue';
 
 
 const router = createRouter({
@@ -383,6 +384,18 @@ const router = createRouter({
                 meta: {
                     resource: "assessmtnt-results",
                     action: "view_assessment-results",
+                      
+                }},
+                {path: 'interview-learners-list', component: InterviewLearnersList, name: "interview-learners-list",
+                meta: {
+                    resource: "interview-learners-list",
+                    action: "interview-learners-list",
+                      
+                }},
+                {path: 'interview-learners-details', component: InterviewLearnersDetails, name: "interview-learners-details",
+                meta: {
+                    resource: "interview-learners-details",
+                    action: "interview-learners-details",
                       
                 }},
 

@@ -5,112 +5,149 @@
       <div class="col-12">
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
-  <div class="container mt-4">
-    <h6 style="margin-top:20px; text-align: left;font-size: 13px;"><small>Offer Admission</small> <b></b> 
-      <hr style="color:rgba(192, 192, 192, 0.781); width:200px"></h6>
-      <div class="row">
-        <div class="col-lg-8">
-          <p><small>Student Details </small></p>
-          <table
-      id="datatable"
-      class="table table-striped border"
-      style="font-size: 11px !important;border: 0px;">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr >
-          <td>Name</td>
-          <td>
-          <label class="textColor">Collins Mpiima</label>
-        </td>
-        </tr> 
-        <tr >
-          <td>Desired Class</td>
-          <td>
-          <label class="textColor">P.1</label>
-        </td>
-        </tr>    
-        <tr >
-          <td>Campus</td>
-          <td>
-          <label class="textColor">Kampala Campus</label>
-        </td>
-        </tr> 
-      </tbody>
-    </table>
 
-        </div>
-        <div class="col-lg-4">
-          <p><small>Offer School</small></p>
-          <div class="mb-2">
-              <label class="textColor"><small>School</small> <span class="star">*</span></label>
-              <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="form.school_number"
-                      @change="fetchCampuses(form.school_number)"
-              >
-                  <option disabled value="">Select School</option>
-                  <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-                  </option>
-              </select>
-          </div>
+            <div class="card-body"><div class="pt-2"><div><div data-show="true"
+               class="ant-alert ant-alert-info ant-alert-no-icon mb-3 css-zxymk0" role="alert">
+               <div class="ant-alert-content"><div class="ant-alert-message">OFFER ADDMISSION</div>
+              </div>
+               <div class="ant-alert-action">
+                <button type="submit" class="ant-btn css-zxymk0 ant-btn-primary ant-btn-sm ant-btn-dangerous text-sm text-uppercase fw-bold"></button>
+         </div>
+              <div class="ant-card-body">
+              <div class="row"><div class="col-md-9"><div class="table-responsive">
+                <table class="text-sm table table-sm table-striped table-bordered">
+                  <tbody>
+                    <tr>
+                      <td style="width: 200px;">APPLICANT:</td>
+                      <td><span class="ant-tag ant-tag-error css-zxymk0"><span role="img" aria-label="stop" class="anticon anticon-stop">  
+                  </span><span>Collins Mpiima</span></span>
+                </td>
+              </tr>
+              <tr>
+                <td>APPLICATION ID:</td><td>23APF1262809490107136</td></tr>
+                  <tr><td>PREFERED CLASS:</td><td>P.2</td></tr>
+                  <tr><td>SCHOOL:</td><td>Paul Mukasa Primary</td>
+                  </tr>
+                  <tr><td>CAMPUS:</td><td>MAIN CAMPUS</td></tr>
+                  <tr><td>INTERVIEW STATUS:</td>
+                    <td class="font500 text-info">PASSED &nbsp;<a href="#"><i class="bi bi-eye"></i> view interview Results</a></td> </tr>
+                    <tr><td>Payment Status:</td>
+                      <td class="font500"><span class="font500 text-info ms-1"><span class="text-warning">PENDING</span></span></td>
+                    </tr></tbody>
+                  </table>
 
-          <div class="mb-2">
-              <label class="textColor"><small>Campus</small>  <span class="star">*</span></label>
-              <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
-                      v-model="form.campus_number" required
-                      @change="fetchClasses(form.campus_number)"
-              >
-                  <option disabled value="">Select campus</option>
-                  <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-                  </option>
-              </select>
-          </div>
-          <div class="mb-2">
-              <label class="textColor"><small>Preferred Class</small> <span class="star">*</span></label>
-              <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="form.class_number"
-              >
-                  <option disabled value="">Select class</option>
-                  <option v-for="(list, index) in classList" :key="index" :value="list.class_number">{{ list.class_name }}
-                  </option>
-              </select>
-          </div>
-        </div>
+                </div></div>
+                <div class="text-end col-md-3">
+
+                  <div class="row">
+  
+  <div class="">
+    <h6>ADMISSION</h6>
+    <div class="mb-2">
+        <label class=""><small>School</small> <span class="star">*</span></label>
+        <select
+                style="box-shadow: none;"
+                class="form-select form-select-sm" required
+                v-model="form.school_number"
+                @change="fetchCampuses(form.school_number)"
+        >
+            <option disabled value="">Select School</option>
+            <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+            </option>
+        </select>
+    </div>
+
+    <div class="mb-2">
+        <label class=""><small>Campus</small>  <span class="star">*</span></label>
+        <select
+                style="box-shadow: none;"
+                class="form-select form-select-sm"
+                v-model="form.campus_number" required
+                @change="fetchClasses(form.campus_number)"
+        >
+            <option disabled value="">Select campus</option>
+            <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+            </option>
+        </select>
+    </div>
+    <div class="mb-2">
+        <label class=""><small>Preferred Class</small> <span class="star">*</span></label>
+        <select
+                style="box-shadow: none;"
+                class="form-select form-select-sm" required
+                v-model="form.class_number"
+        >
+            <option disabled value="">Select class</option>
+            <option v-for="(list, index) in classList" :key="index" :value="list.class_number">{{ list.class_name }}
+            </option>
+        </select>
+    </div>
+    
+    <div class="mb-2">
+        <label ><small>Academic Year</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm">
+          <option disabled value="">Select Academic Year</option>
+       
+        </select>
       </div>
-    <label class="textColor mt-3 mb-2 textColor"><small>Are there conditions to fullfil ?</small></label><br>
-    <input type="radio" v-model="answer" value="no" > <span class="textColor">No </span> &nbsp;&nbsp;&nbsp;
-    <input type="radio" v-model="answer" value="yes"> <span class="textColor">Yes </span>
+
+
+      <div class="mb-2">
+                <label><small>Study Period</small> <span class="star">*</span></label>
+                <select
+                        style="box-shadow: none;"
+                        class="form-select form-select-sm"
+                  
+                >
+                    <option disabled value="">Select Study Period</option>
+                </select>
+            </div>
+  </div>
+</div>
+                  <div role="group" class="w-100 btn-group-vertical btn-group-sm">
+                    <button type="button" disabled="" class="text-uppercase w-100 mb-2 btn btn-primary">
+                      <span role="img" aria-label="stop" class="anticon anticon-stop me-1">
+                        </span>ADMIT STUDENT &nbsp; <i class="bi bi-arrow-right"></i></button>
+                        <button variant="info" type="submit" class="ant-btn css-zxymk0 ant-btn-primary ant-btn-block text-uppercase font500 d-inline"><span class="ant-btn-icon"><span role="img" aria-label="printer" class="anticon anticon-printer me-1">
+                        </span></span><span>&nbsp; <i class="bi bi-printer"></i> Preview &amp; Print</span>
+                      </button>
+                    </div>
+                    </div>
+                  </div>
+                
+                  
+                  </div>
+                </div></div>
+                </div>
+              </div>
+
+  <div class="container mt-4">
+    <label class=" mt-3 mb-2 "><small>Are there conditions to fullfil ?</small></label><br>
+    <input type="radio" v-model="answer" value="no" > <span class="">No </span> &nbsp;&nbsp;&nbsp;
+    <input type="radio" v-model="answer" value="yes"> <span class="">Yes </span>
     <div class="mb-2" v-if="answer === 'yes'">
       <div class="mb-2">
        
-        <label class="textColor mt-3 mb-2 textColor"><small>Select Condition</small></label>
+        <label class=" mt-3 mb-2 "><small>Select Condition</small></label>
         
 
         <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
           <li class="list-group-item" >
-            <input type="checkbox" v-model="selectAll"> <span class="textColor link-secondary" ><b>Select all</b></span>
+            <input type="checkbox" v-model="selectAll"> <span class=" link-secondary" ><b>Select all</b></span>
           </li>
           <li class="list-group-item"  v-for="(condition, index) in conditions" :key="index" >
             <input style="outline: none 0 !important; box-shadow: none;"
                 class="form-check-input me-1" type="checkbox" v-model="selectedconditions" :value="condition.number">
                 
-            <label class="form-check-label cursor-pointer textColor" ><small>{{ condition.description}}</small></label>
+            <label class="form-check-label cursor-pointer " ><small>{{ condition.description}}</small></label>
           </li>
          
         </ul>
       </div>
 
-    <label class="textColor text-sm"><small>Others</small></label>
+    <label class=" text-sm"><small>Others</small></label>
     <div class="mb-2">
    <textarea class="form-control">
    </textarea>
@@ -125,7 +162,7 @@
             <div class="card-body" style="padding: 0;">
         <div class="container mt-4">
           <hr>
-          <h1 class="textColor"><b>Invoice Details</b></h1>
+          <h5 class=""><b>Invoice</b></h5>
             <div class="row">      
               <div class="col-lg-12">              
                 <div>
@@ -135,7 +172,7 @@
             <form class="mt-20"> 
         <table class="table table-bordered">
           <thead>
-            <tr class="textColor"  style="padding: 0px;margin: 0px;">
+            <tr class=""  style="padding: 0px;margin: 0px;">
               <th>Service</th>
               <th>Quantity</th>
               <th>Unit Price</th>
@@ -144,7 +181,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(Service, index) in Services" :key="index" class="textColor">
+            <tr v-for="(Service, index) in Services" :key="index" class="">
               <td>
 
                 <select class="form-select form-select-lg form-control select-no-border" v-model="Service.name" @change="updateService(index)">
@@ -158,7 +195,7 @@
             </tr>
           </tbody>
         </table>
-        <button class="btn btn-primary btn-sm textColor" @click.prevent="addService" :disabled="isAddButtonDisabled"><small>ADD ANOTHER SERVICE</small></button>
+        <button class="btn btn-primary btn-sm " @click.prevent="addService" :disabled="isAddButtonDisabled"><small>ADD ANOTHER SERVICE</small></button>
         <div class="row mt-10">
           <div class="col-lg-8"></div>
           <div class="col-lg-4" >
