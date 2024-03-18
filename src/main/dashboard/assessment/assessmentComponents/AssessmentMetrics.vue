@@ -295,9 +295,6 @@ const format = (date) => {
 
   
 const fetchCurriculumClass = (campus_lnumber) =>{
-//fetch classes
-// alert (campus_lnumber)
-// campusCurriculumNumber, campusLevelNumber
 classStore.fetchClassByLevel(curriculumNumber,campus_lnumber)
 academicYearStore.fetchAcademicYearByLevel(campus_lnumber)
 

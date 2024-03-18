@@ -101,7 +101,8 @@
     import {onMounted,reactive, ref, watch,watchEffect,computed} from "vue"
     import useNotificationStore from "@/composables/useNotification.js"
     import {useRouter} from "vue-router"
-import AdmitModel from "../../studentApplication/AdmitModel.vue";
+    import AdmitModel from "../../studentApplication/AdmitModel.vue";
+    import { useAdmissionStore } from "./store/adminission";
 
   
   const routerData = useRouter()
@@ -109,16 +110,50 @@ import AdmitModel from "../../studentApplication/AdmitModel.vue";
   let errorMessage = ref(null)
   const emit = defineEmits()
   const admitshow = ref(false)
+  const admissionStore = useAdmissionStore()
+  const resultDataList = ref([])
 
   const selectedconditions = ref([])
   const  notificationStore  = useNotificationStore()
 
-  const studentNumber = routerData.currentRoute.value.query.id;
+  const studentNumber = routerData.currentRoute.value.query.st_id;
+  const interviewNumber = routerData.currentRoute.value.query.interview_id;
+
+  onMounted(
+      () => {
+        admissionStore.fetchStudentInterviewAssessmentResults(studentNumber,interviewNumber)
+      }
+  )
+  watch(
+      () => admissionStore.studentAssessmentResultsResponse,
+      async (data) => {
+        if(data){
+          notificationStore.successToast("Success", data.message)
+          resultDataList.value = data.data
+        }
+      },
+      {deep:true}
+  )
+
+  watch (
+      () => admissionStore.errorMessage,
+      async (data) => {
+        if(data){
+          errorMessage.value = data.message
+        }
+      },
+      {deep:true}
+  )
+
+
 
   const showDialog = () => {
     admitshow.value = true
   }
   
+
+
+
 
 
   

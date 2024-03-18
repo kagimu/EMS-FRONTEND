@@ -4,6 +4,34 @@
       <div class="col-12 mt-2" >
           
         <form @submit.prevent="addInterviewAssesmentMetrics">
+            <div class="mb-2">
+                <label class="textColor"><small>School</small> <span class="star">*</span></label>
+                <select
+                        style="box-shadow: none;"
+                        class="form-select form-select-sm" required
+                        v-model="school_number"
+                        @change="fetchCampuses(school_number)"
+                >
+                    <option disabled value="">Select School</option>
+                    <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+                    </option>
+                </select>
+            </div>
+
+
+            <div class="mb-2">
+                <label class="textColor"><small>Campus</small>  <span class="star">*</span></label>
+                <select
+                        style="box-shadow: none;"
+                        class="form-select form-select-sm" required
+                        v-model="campus_number"
+                        @change="fetchLevel(campus_number)"
+                >
+                    <option disabled value="">Select Campus</option>
+                    <option v-for="(lvl,idx) in campusList" :key="idx" :value="lvl.number">{{lvl.numb}}
+                    </option>
+                </select>
+            </div>
                
     <div class="mb-2">
         <label class="textColor"><small>Level</small></label>
@@ -85,6 +113,9 @@
     import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
     import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
    import { useStudyPeriodStore } from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod";
+   import {useLevelStore} from "@/main/settings/level/store/level.js";
+   const levelStore = useLevelStore()
+
    import VueDatePicker from '@vuepic/vue-datepicker';
     const academicYearStore = useAcademicYearStore()
 
@@ -101,6 +132,8 @@
     const interviewDialog= ref(false)
     let errorMessage = ref(null)
   
+    const schoolList = ref([])
+
     const classStore = useClassesStore()
     const assessmentStore= useAssessmentStore()
     const  notificationStore  = useNotificationStore()
@@ -123,16 +156,8 @@
     const academic_year_number = ref(null)
 
       const form = reactive({ 
-        name:null,
-        assessment_area_number:null,
-        weight:null,
-        description:null,
-        max_score:null,
-        metric_number:null,
-        campus_class_number:null,
-        grading_standard_number:null,
-        study_period_number:null,
-        scheduled_on:null
+        campus_numbers:null,
+        study_period_number:null
       })
 
 
@@ -147,7 +172,55 @@ const format = (date) => {
   return `Selected date is ${day}/${month}/${year}`;
 }
 
-  
+
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+        if (data) {
+            schoolList.value = data.data
+        }
+    },
+    {deep: true}
+)
+
+watch(
+    () => campusStore.campusListResponse,
+    async (data) => {
+        if (data) {
+            campusList.value = data.data
+        }
+    },
+    {deep: true}
+)
+
+
+
+const fetchLevel = (campusNo) =>{ 
+// alert(campusNo)
+campusStore.fetchCampusLevel(campusNo)
+}
+
+
+watch(
+    () => campusStore.campusLevelListResponse,
+    async (data) => {
+        if (data) {
+            campusLevelList.value = data.data
+        }
+    },
+    {deep: true}
+)
+
+
+
+
+
+
+
+
+
+
 const fetchCurriculumClass = (campus_lnumber) =>{
 //fetch classes
 // alert (campus_lnumber)
@@ -156,6 +229,8 @@ classStore.fetchClassByLevel(curriculumNumber,campus_lnumber)
 academicYearStore.fetchAcademicYearByLevel(campus_lnumber)
 
 }
+
+
 
 watch(
     () => classStore.classLevelByLevelResponse,
@@ -267,7 +342,7 @@ onMounted(
   
   
   const fetchCampuses = (school_number) => {
-        campusStore.fetchCampuses(school_number)
+    campusStore.fetchCampuses(school_number)
     }
   
     const fetchClasses = (campus_number) => {
@@ -335,15 +410,15 @@ watch (
 )
 
 
-watch(
-    () => classStore.campusLevelResponse,
-    async (data) => {
-      if(data){
-        campusLevelList.value = data.data
-      }
-    },
-    {deep:true}
-)
+// watch(
+//     () => classStore.campusLevelResponse,
+//     async (data) => {
+//       if(data){
+//         campusLevelList.value = data.data
+//       }
+//     },
+//     {deep:true}
+// )
 
 
 watch(
