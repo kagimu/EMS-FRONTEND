@@ -11,9 +11,9 @@
                 <i class="bi bi-x-lg" @click="goBack()"></i>&nbsp;&nbsp;&nbsp;STUDENT ADMISSION<b></b>    
               </h6>
           </div>
-          <div class="col-lg-8">
+          <!-- <div class="col-lg-8">
             <button type="link" @click="goBack()" class="btn btn-primary textColor" style="float: right;font-size: 15px;margin-left:">ADMIT STUDENT</button>
-          </div>
+          </div> -->
          </div>
              </div>
               <div class="card-body" style="padding: 0;">
