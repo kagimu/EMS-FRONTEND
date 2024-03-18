@@ -103,6 +103,7 @@
           <td>
             <!-- <input type="number" class="form-control" style="width:100px"> -->
             {{  student.Student.gender }}
+            {{ student.number }}
           </td>
           <td>
             <!-- <input type="text" class="form-control"> -->

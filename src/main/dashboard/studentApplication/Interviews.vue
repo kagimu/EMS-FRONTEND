@@ -70,7 +70,7 @@
           <td class="w-[25%]">{{ interview.message }}</td>
           <td class="w-[35%]">
             <div class="mb-1">
-              <router-link
+              <router-link style="display: none;"
                   class="text-decoration-none"
                   :to="{name:'interview-details', query:{interview_id:interview.number}}">
                 <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">

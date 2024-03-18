@@ -46,7 +46,7 @@ import ClassList from "@/main/dashboard/manageLevel/class/ClassList.vue";
 import StudyPeriod from "@/main/dashboard/manageLevel/studyPeriod/StudyPeriod.vue";
 import AcademicYear from "@/main/dashboard/manageLevel/academicYear/AcademicYear.vue";
 import CampusLevel from "@/main/dashboard/manageLevel/class/CampusLevel.vue";
-import assessmentMetrics from "../assessment/assessmentComponents/assessmentMetrics.vue";
+import assessmentMetrics from "@/main/dashboard/assessment/assessmentComponents/assessmentMetrics.vue";
 </script>
 
 <style scoped>

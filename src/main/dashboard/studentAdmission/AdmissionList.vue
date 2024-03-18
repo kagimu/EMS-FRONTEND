@@ -26,9 +26,7 @@
       style="font-size: 11px !important;" >
     <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">First name</th>
-      <th scope="col">Second name</th>
+      <th scope="col"> Name</th>
       <th scope="col">Gender</th>
       <th scope="col">Email</th>
       <th scope="col">Phone</th>
@@ -36,13 +34,13 @@
     </tr>
     </thead>
     <tbody>
-    <tr v-for="(offerListst, index) in admissionOfferList" :key="index">
-      <td>{{ index + 1 }}</td>
-          <td>{{ offerListst.firstname }}</td>
-          <td>{{ offerListst.secondname }}</td>
-          <td>{{offerListst.gender }}</td>
-      <td>{{offerListst.email }}</td>
-      <td>{{offerListst.phone }}</td>
+    <tr>
+          <td>Collins Mpiima</td>
+          <td></td>
+          <td></td>
+          <td></td>
+      <td></td>
+      <td></td>
       <td>
         <RouterLink :to="{name : 'new-admission',query:{id:studid}}" class="link-primary" style="text-decoration: none;"  >
           <i class="bi bi-person-fill-check"></i> admit  
@@ -84,32 +82,8 @@ const admissionOfferList = ref( [])
 const admissionStore= useAdmissionStore()
 const  notificationStore  = useNotificationStore()
 
-onMounted(
-    async () => {
-      await admissionStore.fetchAdmissionOffers()
-    } )
 
-    watch(
-    () => admissionStore.admissionOffersResponse,
-    async (data) => {
-      if(data){
-        admissionOfferList.value = data.data
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-    )
-
-    watch (
-    () => admissionStore.errorMessage,
-    async (data) => {
-      if(data){
-        notificationStore.errorToast("Error",data.message)
-
-      }
-    },
-    {deep:true}
-)
+   
 
 const infoData = ref([])
 const filteredInfoData = computed(() => {
