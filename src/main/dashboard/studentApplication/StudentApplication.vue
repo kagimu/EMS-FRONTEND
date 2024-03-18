@@ -49,7 +49,7 @@
                     <interviews-questions></interviews-questions>
                   </div>
                   <div v-if="selectedPage === 'offer-admission'">
-            <AdmitStudent></AdmitStudent>
+            <!-- <AdmitStudent></AdmitStudent> -->
                   </div>
               </div>
   
