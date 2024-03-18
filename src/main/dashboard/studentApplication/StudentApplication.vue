@@ -113,17 +113,17 @@
     //   id:"interviewquestions",
     //   action:"view_interviewquestions"
     // },
-    {
-      name:"Interviews",
-      id:"grade-results",
-      action:"view_grade_results"
-    },
+    // {
+    //   name:"Interviews",
+    //   id:"grade-results",
+    //   action:"view_grade_results"
+    // },
 
-    {
-      name:"Admission Offer",
-      id:"offer-admission",
-      action:"view_admision-offer"
-    },
+    // {
+    //   name:"Admission Offer",
+    //   id:"offer-admission",
+    //   action:"view_admision-offer"
+    // },
    
 
   ])

@@ -70,9 +70,9 @@
           <td class="w-[25%]">{{ interview.message }}</td>
           <td class="w-[35%]">
             <div class="mb-1">
-              <router-link style="display: none;"
+              <router-link style=""
                   class="text-decoration-none"
-                  :to="{name:'interview-details', query:{interview_id:interview.number}}">
+                  :to="{name:'interview-learners-list', query:{interview_id:interview.number}}">
                 <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
                 <i class="bi bi-eye text-[15px]"></i>&nbsp;<small>View Applicants</small>
                 </button>
