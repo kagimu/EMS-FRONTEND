@@ -49,7 +49,7 @@
                       v-model="level"
                       @click="filterClasses(level)"
                   >
-                    <option disabled value="">Filter by Level</option>
+                    <option disabled value="">--Filter by Level--</option>
                     <option value="">All</option>
                     <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.level_number">{{lvl.code+". "+lvl.name}}</option>
                   </select>

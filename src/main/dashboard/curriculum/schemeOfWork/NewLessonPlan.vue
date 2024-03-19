@@ -66,7 +66,7 @@
                     class="form-select form-select-sm"
                     v-model="list.lesson_plan_concept_number"
                 >
-                  <option disabled value="">Select Concept</option>
+                  <option disabled value="">--Select Concept--</option>
                   <option v-for="(list, index) in conceptListData" :key="index" :value="list.number">
                     {{list.code+". "+list.name}}
                   </option>

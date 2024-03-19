@@ -41,7 +41,7 @@
                         required
                         class="form-control form-select-sm">
 
-                    <option disabled value="">Select category</option>
+                    <option disabled value="">--Select category--</option>
                     <option v-for="(lvl, index) in materialCategory" :key="index" :value="lvl.id">{{ lvl.name }}</option>
 
                 </select>
@@ -58,7 +58,7 @@
                         required
                         class="form-control form-select-sm">
 
-                    <option disabled value="">Select sub type</option>
+                    <option disabled value="">--Select sub type--</option>
                     <option v-for="(lvl, index) in materialSubTypes" :key="index" :value="lvl.id">{{ lvl.name }}</option>
 
                 </select>
@@ -74,7 +74,7 @@
                         required
                         class="form-control form-select-sm">
 
-                    <option disabled value="">Select type</option>
+                    <option disabled value="">--Select type--</option>
                     <option v-for="(lvl, index) in materialType" :key="index" :value="lvl.id">{{ lvl.name }}</option>
 
                 </select>

@@ -16,7 +16,7 @@
                         v-model="school_number"
                         @change="fetchCampuses(school_number)"
                 >
-                    <option disabled value="">Select School</option>
+                    <option disabled value="">--Select School--</option>
                     <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
                     </option>
                 </select>
@@ -31,7 +31,7 @@
                         v-model="form.campus_number"
                         @change="fetchLevelsByCampus(form.campus_number)"
                 >
-                    <option disabled value="">Select campus</option>
+                    <option disabled value="">--Select campus--</option>
                     <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
                     </option>
                 </select>
@@ -46,7 +46,7 @@
                         class="form-select form-select-sm"
                         v-model="level_number"
                 >
-                    <option disabled value="">Select level</option>
+                    <option disabled value="">--Select level--</option>
                     <option v-for="(list, index) in levelList" :key="index" :value="list.number">{{ list.name }}
                     </option>
                 </select>
@@ -60,7 +60,7 @@
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
                         v-model="class_number">
-                    <option disabled value="">Select Class</option>
+                    <option disabled value="">--Select Class--</option>
                     <option v-for="(list, index) in classList" :key="index" :value="list.number">{{ list.Class ? list.Class.name : "" }}
                     </option>
                 </select>
@@ -72,7 +72,7 @@
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
                         v-model="form.stream_number">
-                    <option disabled value="">Select stream</option>
+                    <option disabled value="">--Select stream--</option>
                     <option v-for="(stream, index) in streamList" :key="index" :value="stream.number">
                         {{ stream.name }}
                     </option>
@@ -86,7 +86,7 @@
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
                         v-model="form.subject_number">
-                    <option disabled value="">Select subject</option>
+                    <option disabled value="">--Select subject--</option>
                     <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{ list.name }}
                     </option>
                 </select>
@@ -99,7 +99,7 @@
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
                         v-model="form.day">
-                    <option disabled value="">Select day of the week</option>
+                    <option disabled value="">--Select day of the week--</option>
                     <option v-for="(list, index) in daysOfWeek" :key="index" :value="list.name">{{ list.name }}
                     </option>
                 </select>

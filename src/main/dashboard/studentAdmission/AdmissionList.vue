@@ -34,7 +34,7 @@
                       v-model="school_number"
                       @change="fetchCampuses(school_number)"   
               >
-                  <option disabled value="">Select School</option>
+                  <option disabled value="">--Select School--</option>
                   <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
                   </option>
               </select>
@@ -51,7 +51,7 @@
                       v-model="campus_number" required
                       @change="fetchClasses(campus_number)"
               >
-                  <option disabled value="">Select campus</option>
+                  <option disabled value="">--Select campus--</option>
                   <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
                   </option>
               </select>
@@ -68,7 +68,7 @@
                       v-model="class_number"
                       @change="fetchAdmissionByClass(class_number)"
               >
-                  <option disabled value="">Select class</option>
+                  <option disabled value="">--Select class--</option>
                   <option v-for="(list, index) in classList" :key="index" :value="list.class_number">{{ list.class_name }}
                   </option>
               </select>

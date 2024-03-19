@@ -40,7 +40,7 @@
                 v-model="learning_area_number"
                 @click="fetchSubjectClusterList()"
                 >
-              <option disabled value="">Filter by Learning Area</option>
+              <option disabled value="">--Filter by Learning Area--</option>
               <option value="">All</option>
               <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
             </select>

@@ -106,7 +106,7 @@
                                         class="form-select form-select-sm"
                                         v-model="lst.learning_material_number"
                                 >
-                                    <option disabled value="">Select Material</option>
+                                    <option disabled value="">--Select Material--</option>
                                     <option v-for="(list, index) in learningMaterialsList" :key="index" :value="list.number">
                                         {{list.code+". "+list.name}}
                                     </option>

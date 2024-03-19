@@ -13,7 +13,7 @@
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
                         v-model="form.calendar_number">
-                    <option disabled value="">Select calendar</option>
+                    <option disabled value="">--Select calendar--</option>
                     <option v-for="(calendar, index) in generalCalendars" :key="index" :value="calendar.number">
                         {{ calendar.name }}
                     </option>
