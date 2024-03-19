@@ -160,7 +160,7 @@ grading_standard_number:null
 })
 
 const createScale = () =>{
-    alert(JSON.stringify(form))
+    // alert(JSON.stringify(form))
     assessmentStore.createAggregateScale(form)
 }
 

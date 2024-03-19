@@ -19,7 +19,73 @@
        </div>
            </div>
             <div class="card-body" >
-    <div >
+              <div class="row">
+      <div class="col-12">
+        <div class="mt-3">
+
+          <div class="row mx-auto">
+
+            <div class="col-4 mb-5 mt-5">
+              <div class="mb-2">
+              <label class="textColor"><small>School</small></label>
+              <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm" required
+                      v-model="school_number"
+                      @change="fetchCampuses(school_number)"   
+              >
+                  <option disabled value="">Select School</option>
+                  <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+                  </option>
+              </select>
+          </div>
+            </div>
+
+            <div class="col-4 mb-5 mt-5">
+          
+              <div class="mb-2">
+              <label class="textColor"><small>Campus</small> </label>
+              <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm"
+                      v-model="campus_number" required
+                      @change="fetchClasses(campus_number)"
+              >
+                  <option disabled value="">Select campus</option>
+                  <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+                  </option>
+              </select>
+          </div>
+            </div>
+
+            <div class="col-4 mb-5 mt-5">
+             
+          <div class="mb-2">
+              <label class="textColor"><small>Class</small></label>
+              <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm" required
+                      v-model="class_number"
+                      @change="fetchAdmissionByClass(class_number)"
+              >
+                  <option disabled value="">Select class</option>
+                  <option v-for="(list, index) in classList" :key="index" :value="list.class_number">{{ list.class_name }}
+                  </option>
+              </select>
+          </div>
+            </div>
+
+          </div>
+
+        
+
+        </div>
+      </div>
+    </div>
+
+
+
+    <div>
        
   <table id="data"
       class="table table-striped"
@@ -34,22 +100,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-          <td>Collins Mpiima</td>
-          <td></td>
-          <td></td>
-          <td></td>
-      <td></td>
-      <td></td>
-      <td>
-        <RouterLink :to="{name : 'new-admission',query:{id:studid}}" class="link-primary" style="text-decoration: none;"  >
-          <i class="bi bi-person-fill-check"></i> admit  
-        </RouterLink> <span style="color: rgb(42, 41, 41);">&nbsp;|&nbsp;</span>
-        <RouterLink :to="{name : 'new-admission', query:{id:studid} }" class="link-danger" style="text-decoration: none;"  >
-          <i class="bi bi-eye"></i>  
-        </RouterLink>
-      </td>
-    </tr>
+   
     </tbody>
   </table>
 
@@ -70,12 +121,32 @@
 
 </template>
 
+
 <script setup>
-import {onMounted,reactive, computed,ref, watch} from "vue";
-import { useAdmissionStore } from "./newAdmissionComponents/store/adminission";
+    import {onMounted,reactive, computed,ref, watch} from "vue";
+    import NewGradeScale from "@/main/dashboard/assessment/assessmentComponents/NewGradeScale.vue"
+    import { useAssessmentStore } from "@/main/dashboard/assessment/store/assessment";
+    import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+    import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+    import { useAdmissionStore } from "./newAdmissionComponents/store/adminission";
 import useNotificationStore from "@/composables/useNotification.js";
 
-const searchQuery = ref('')
+    import { useAbility } from '@casl/vue';
+
+    const { can } = useAbility()
+    const admissionList = ref([])
+    const assessmentStore = useAssessmentStore()
+    const errorMessage = ref(null)
+    const campusList = ref([])
+    const schoolList = ref([])
+    const classList = ref([])
+    const schoolStore = useSchoolStore()
+    const campusStore = useCampusStore()
+    const school_number = ref(null)
+    const campus_number = ref(null)
+    const class_number = ref(null)
+    const showDialog = ref(null)
+    const searchQuery = ref('')
 
 let studid = "002773383838383"
 
@@ -94,7 +165,116 @@ const filteredInfoData = computed(() => {
   )
 })
 
-</script>
+
+    const constent = reactive({
+        sch:null,
+        cmp:null,
+        cla:null
+    })
+
+    //fetch
+    // onMounted(
+    // async () => {
+    //   await assessmentStore.fetchAggregateScale()
+    // } )
+
+
+  
+    const fetchCampuses = (school_number) => {
+      campusStore.fetchCampuses(school_number)
+      // assessmentStore.fetchAggregateScale(school_number)
+      constent.sch = school_number
+      
+  }
+
+  const fetchClasses = (campus_number) => {
+      campusStore.fetchClassesByCampus(campus_number)
+      constent.cmp = campus_number
+  }
+
+  const fetchAdmissionByClass = (class_number) =>{
+    constent.cla = class_number
+    // window.alert(class_number)
+    fetchAdmission(constent.cmp)
+  }
+  
+  const fetchAdmission = (a) =>{
+    admissionStore.fetchAdmissionByClass(a)
+  }
+
+  onMounted(() => {
+          schoolStore.fetchSchools()
+      }
+  )
+
+  watch(
+      () => schoolStore.schoolsResponse,
+      async (data) => {
+          if (data) {
+              schoolList.value = data.data
+          }
+      },
+      {deep: true}
+  )
+
+  watch(
+      () => campusStore.campusListResponse,
+      async (data) => {
+          if (data) {
+              campusList.value = data.data
+          }
+      },
+      {deep: true}
+  )
+
+  watch(
+      () => campusStore.campusClassesResponse,
+      async (data) => {
+          if (data) {
+              classList.value = data.data
+          }
+      },
+      {deep: true}
+  )
+
+  watch(
+      () => campusStore.errorMessage,
+      async (data) => {
+            if (data) {
+                notificationStore.errorToast("Error", data.message)
+            }
+      },
+      {deep: true}
+  )
+
+
+// admissionList
+  watch(
+    () => assessmentStore.admissionByClassResponse,
+    async (data) => {
+      if(data){
+        admissionList.value = data.data
+      }
+    },
+    {deep:true}
+    )
+
+    watch (
+    () => assessmentStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        // notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+    )
+
+    
+    </script>
+
+
+
 
 <style scoped>
 
