@@ -9,6 +9,7 @@ export const useAdmissionStore = defineStore("admission", () => {
     const newAdmissionOfferResponse = ref(null)
     const admissionOfferByStudentIdResponse = ref(null)
     const admissionOfferByAdmissionIdResponse = ref(null)
+    const studentAssessmentResultsResponse = ref(null)
 
     async function newStudentDetailsAdmission(data) {
         return await api.post("main/new-student-details-admission", data)
@@ -73,6 +74,18 @@ export const useAdmissionStore = defineStore("admission", () => {
             })
     }
 
+    async function fetchStudentInterviewAssessmentResults(studNo,interviewNumber) {
+        return await api.get("main/interviews/student-interview-assessment-results?student_number="+studNo+"&interview_number="+interviewNumber)
+            .then((response) => {
+                studentAssessmentResultsResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
 
 
@@ -87,7 +100,9 @@ export const useAdmissionStore = defineStore("admission", () => {
         admissionOfferByStudentIdResponse,
         fetchAdmissionOfferByStudentId,
         admissionOfferByAdmissionIdResponse,
-        fetchAdmissionOfferByAdmissionId
+        fetchAdmissionOfferByAdmissionId,
+        studentAssessmentResultsResponse,
+        fetchStudentInterviewAssessmentResults
         
     }
 })

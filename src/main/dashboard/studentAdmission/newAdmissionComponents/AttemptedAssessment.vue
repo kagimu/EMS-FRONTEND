@@ -1,11 +1,32 @@
 <template>
     <div>
+
+
       <div class="row">
-  
+        <div class="modal fade" id="admitMainModal" tabindex="-1" :class="{ show: admitshow }" aria-labelledby="" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header text-sm p-0">
+            <h6 class="modal-title ml-8 mt-2 mb-2">CHOOSE STUDY PERIOD</h6>
+            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mt-2 mb-2">
+           <AdmitModel></AdmitModel>
+          </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
           
                  <div class="ant-alert-action mt-3">
-                  <button type="submit" class="mb-2 btn btn-outline-primary"><i></i>Preview/Print Report</button>
-           </div>
+                  <button type="submit" class="mb-2 btn btn-outline-primary btn-sm" style="float: right;"><i></i>Preview/Print Report</button>
+                  <button @click="showDialog()" data-bs-toggle="modal" data-bs-target="#admitMainModal" type="submit" class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " style="float: right;"><i></i>Admit Student</button>
+           
+                </div>
                 <div class="ant-card-body mt-0 mb-5">
                 <div class="row">
                     <div class="col-md-12">
@@ -80,18 +101,59 @@
     import {onMounted,reactive, ref, watch,watchEffect,computed} from "vue"
     import useNotificationStore from "@/composables/useNotification.js"
     import {useRouter} from "vue-router"
+    import AdmitModel from "../../studentApplication/AdmitModel.vue";
+    import { useAdmissionStore } from "./store/adminission";
 
   
   const routerData = useRouter()
   const router = useRouter()
   let errorMessage = ref(null)
   const emit = defineEmits()
+  const admitshow = ref(false)
+  const admissionStore = useAdmissionStore()
+  const resultDataList = ref([])
 
   const selectedconditions = ref([])
   const  notificationStore  = useNotificationStore()
 
-  const studentNumber = routerData.currentRoute.value.query.id;
+  const studentNumber = routerData.currentRoute.value.query.st_id;
+  const interviewNumber = routerData.currentRoute.value.query.interview_id;
+
+  onMounted(
+      () => {
+        admissionStore.fetchStudentInterviewAssessmentResults(studentNumber,interviewNumber)
+      }
+  )
+  watch(
+      () => admissionStore.studentAssessmentResultsResponse,
+      async (data) => {
+        if(data){
+          notificationStore.successToast("Success", data.message)
+          resultDataList.value = data.data
+        }
+      },
+      {deep:true}
+  )
+
+  watch (
+      () => admissionStore.errorMessage,
+      async (data) => {
+        if(data){
+          errorMessage.value = data.message
+        }
+      },
+      {deep:true}
+  )
+
+
+
+  const showDialog = () => {
+    admitshow.value = true
+  }
   
+
+
+
 
 
   
