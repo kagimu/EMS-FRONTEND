@@ -78,10 +78,10 @@
   const selectedPage = route ? route : "assessments"
   
   const assess = ref([
-    {
-      name:"Assessment List",
-      id:"assessments"
-    },
+    // {
+    //   name:"Assessment List",
+    //   id:"assessments"
+    // },
    
     // {
     //   name:"Assessment Areas",
