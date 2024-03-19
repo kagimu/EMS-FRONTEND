@@ -16,7 +16,7 @@
               
               <div class="row">
                 <div class="col-md-12">
-                  <h5 class="mb-4 pt-5">STUDENT DETAILS</h5>
+                  <h5 class="mb-2" style="font-size: 14px;">STUDENT DETAILS</h5>
                 <div class="table-responsive">
                 <table class="text-sm table table-sm table-striped table-bordered">
                   <tbody>
@@ -62,7 +62,7 @@
                   
               <div class="row">
                 <div class="col-md-12">
-                  <h5>PARENT DETAILS</h5>
+                  <h5 class="mb-2 pt-4" style="font-size: 14px;">PARENT DETAILS</h5>
                 <div class="table-responsive">
                 <table class="text-sm table table-sm table-striped table-bordered">
                   <tbody>
