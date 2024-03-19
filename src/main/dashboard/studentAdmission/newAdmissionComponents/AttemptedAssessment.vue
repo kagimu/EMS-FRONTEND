@@ -25,7 +25,8 @@
                  <div class="ant-alert-action mt-3">
                   <button type="submit" class="mb-2 btn btn-outline-primary btn-sm" style="float: right;"><i></i>Preview/Print Report</button>
                   <button @click="showDialog()" data-bs-toggle="modal" data-bs-target="#admitMainModal" type="submit" class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " style="float: right;"><i></i>Admit Student</button>
-           
+                  <!-- <button @click="showAdmit()"  type="submit" class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " style="float: right;"><i></i>Admit Student</button> -->
+
                 </div>
                 <div class="ant-card-body mt-0 mb-5">
                 <div class="row">
@@ -104,7 +105,6 @@
     import AdmitModel from "../../studentApplication/AdmitModel.vue";
     import { useAdmissionStore } from "./store/adminission";
 
-  
   const routerData = useRouter()
   const router = useRouter()
   let errorMessage = ref(null)
@@ -145,14 +145,24 @@
       {deep:true}
   )
 
-
-
   const showDialog = () => {
     admitshow.value = true
   }
   
 
+const showAdmit = () => {
+  admissionStore.admitStudent(studentNumber)
+}
+watch(
+      () => admissionStore.admitStudentResponse,
+      async (data) => {
+        if(data){
+          notificationStore.successToast("Success", data.message)
 
+        }
+      },
+      {deep:true}
+  )
 
 
 
