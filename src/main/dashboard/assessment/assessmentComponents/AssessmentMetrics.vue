@@ -231,7 +231,6 @@
     import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
     import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
    import { useStudyPeriodStore } from "../../manageLevel/studyPeriod/store/studyPeriod";
-   import VueDatePicker from '@vuepic/vue-datepicker';
     const academicYearStore = useAcademicYearStore()
 
     import {useRouter} from "vue-router";
