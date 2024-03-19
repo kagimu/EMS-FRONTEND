@@ -99,9 +99,12 @@ export const useAdmissionStore = defineStore("admission", () => {
                 }
             })
     }
-    
-    async function admitStudent(studentNumber,class_number,interview_number,campus_number,stream_number,study_period_number,) {
-        return await api.put("main/admissions?student_number="+studentNumber+"&class_number="+class_number+"&campus_number="+campus_number+"&stream_number="+stream_number+"&study_period_number="+study_period_number+"&interview_number="+interview_number)
+
+    // {{baseUrl}}/admissions?student_number={{STUDENT_ID}}&class_number={{CLASS_ID}}&campus_number={{CAMPUS_ID}}
+    // &stream_number={{STREAM_ID}}&study_period_number={{STUDY_PERIOD_ID}}&interview_number={{INTERVIEW_ID}}
+
+    async function admitStudent(studentNumber,class_number,campus_number,stream_number,study_period_number,interview_number) {
+        return await api.post("main/admissions?student_number="+studentNumber+"&class_number="+class_number+"&campus_number="+campus_number+"&stream_number="+stream_number+"&study_period_number="+study_period_number+"&interview_number="+interview_number)
             .then((response) => {
                 admitStudentResponse.value = response.data
             })
