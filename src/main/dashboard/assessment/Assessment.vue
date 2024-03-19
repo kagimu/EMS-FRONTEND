@@ -75,7 +75,7 @@
   const routerData = useRouter()
   
   const route = routerData.currentRoute.value.query.s
-  const selectedPage = route ? route : "assessments"
+  const selectedPage = route ? route : "examtype"
   
   const assess = ref([
     // {

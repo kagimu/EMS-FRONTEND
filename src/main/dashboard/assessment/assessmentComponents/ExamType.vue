@@ -162,7 +162,7 @@ watch (
       if(data){
         errorMessage.value = data.message
         buttonLoader.value = false
-        notificationStore.errorToast("Error",data.message)
+        // notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}

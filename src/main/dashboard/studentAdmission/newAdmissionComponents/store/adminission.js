@@ -100,8 +100,8 @@ export const useAdmissionStore = defineStore("admission", () => {
             })
     }
     
-    async function admitStudent(studentNumber) {
-        return await api.put("main/admissions/"+studentNumber+"/admit")
+    async function admitStudent(studentNumber,class_number,interview_number,campus_number,stream_number,study_period_number,) {
+        return await api.put("main/admissions?student_number="+studentNumber+"&class_number="+class_number+"&campus_number="+campus_number+"&stream_number="+stream_number+"&study_period_number="+study_period_number+"&interview_number="+interview_number)
             .then((response) => {
                 admitStudentResponse.value = response.data
             })
