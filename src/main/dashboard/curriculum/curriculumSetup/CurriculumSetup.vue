@@ -149,7 +149,6 @@ import {useRouter} from "vue-router";
 import CurriculumLevel from "@/main/settings/level/CurriculumLevel.vue";
 import CurriculumClassSetUp from "@/main/dashboard/manageLevel/class/CurriculumClassSetUp.vue";
 import AssesmentAreas from "@/main/dashboard/assessment/assessmentComponents/AssesmentAreas.vue";
-import AssessmentMetrics from "@/main/dashboard/assessment/assessmentComponents/AssessmentMetrics.vue";
 import Metric from "@/main/dashboard/assessment/assessmentComponents/Metric.vue";
 
 
