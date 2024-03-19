@@ -95,7 +95,7 @@
 
             <div class="col-lg-4">
                 <label class="textColor"><small>Weight</small></label>
-             <input v-model="form.weight" type="text" class="form-control" placeholder="1">
+             <input v-model="form.weight" type="number" class="form-control" placeholder="1">
             </div>
         </div>
       </div>
