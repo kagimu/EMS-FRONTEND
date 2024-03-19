@@ -80,6 +80,9 @@ const emit = defineEmits()
 const studentNumber = routerData.currentRoute.value.query.id;
 const conditions = ref([])
 
+const admitStudent = () => {
+
+}
 
 
   </script>
