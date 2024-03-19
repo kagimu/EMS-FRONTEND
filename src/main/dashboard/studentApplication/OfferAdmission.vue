@@ -13,7 +13,11 @@
                 <button type="submit" class="ant-btn css-zxymk0 ant-btn-primary ant-btn-sm ant-btn-dangerous text-sm text-uppercase fw-bold"></button>
          </div>
               <div class="ant-card-body">
-              <div class="row"><div class="col-md-9"><div class="table-responsive">
+              
+              <div class="row">
+                <div class="col-md-12">
+                  <h5 class="mb-4 pt-5">STUDENT DETAILS</h5>
+                <div class="table-responsive">
                 <table class="text-sm table table-sm table-striped table-bordered">
                   <tbody>
                     <tr>
@@ -38,11 +42,11 @@
               </tr>
 
               <tr>
-                <td>APPLICATION ID:</td><td>{{ appDatails.number }}</td></tr>
-                  <tr><td>PREFERED CLASS:</td><td>P.2</td></tr>
+                <td>APPLICATION ID:</td><td>{{ appNo }}</td></tr>
+                  <tr><td>PREFERED CLASS:</td><td>P.1</td></tr>
                   <tr><td>SCHOOL:</td><td>Paul Mukasa Primary</td>
                   </tr>
-                  <tr><td>CAMPUS:</td><td>{{ appDatails.preferred_campus_number }}</td></tr>
+                  <tr><td>PREFFERED CAMPUS:</td><td>Kampala Main Campus</td></tr>
                   <tr><td>INTERVIEW STATUS:</td>
                     <td class="font500 text-info">{{ appDatails.status }}</td> </tr>
                     <tr><td>Payment Status:</td>
@@ -52,7 +56,44 @@
 
                 </div>
               </div>
-        
+                  </div>
+
+
+                  
+              <div class="row">
+                <div class="col-md-12">
+                  <h5>PARENT DETAILS</h5>
+                <div class="table-responsive">
+                <table class="text-sm table table-sm table-striped table-bordered">
+                  <tbody>
+                    <tr>
+                      <td style="width: 200px;">PARENT:</td>
+                      <td><span class="ant-tag ant-tag-error css-zxymk0"><span role="img" aria-label="stop" class="anticon anticon-stop">  
+                  </span><span>{{appDatails.surname + " "+ appDatails.second_name + " " + appDatails.other_name}}</span></span>
+                </td>
+
+              </tr>
+              <tr>
+                      <td style="width: 200px;">Telephone:</td>
+                      <td><span class="ant-tag ant-tag-error css-zxymk0"><span role="img" aria-label="stop" class="anticon anticon-stop">  
+                  </span><span>{{ appDatails.alternative_telephone_number }}</span></span>
+                </td>
+              </tr>
+              <tr>
+                      <td style="width: 200px;">Email:</td>
+                      <td><span class="ant-tag ant-tag-error css-zxymk0"><span role="img" aria-label="stop" class="anticon anticon-stop">  
+                  </span><span>{{ appDatails.email }}</span></span>
+                </td>
+                
+              </tr>
+
+              <tr>
+                <td>alternative_email:</td><td>{{ appDatails.alternative_email }}</td></tr>
+                  </tbody>
+                  </table>
+
+                </div>
+              </div>
                   </div>
                 
                   
