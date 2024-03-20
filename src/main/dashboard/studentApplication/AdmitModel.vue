@@ -147,7 +147,8 @@ stream_number:null
 
 const Admit = () =>{
   alert(JSON.stringify(form))
-  admissionStore.admitStudent(form.student_number,form.class_number,form.campus_number,form.stream_number,form.study_period_number,form.interview_number)
+  admissionStore.admitStudent(form)
+//   admissionStore.admitStudent(form.student_number,form.class_number,form.campus_number,form.stream_number,form.study_period_number,form.interview_number)
 }
 
 
