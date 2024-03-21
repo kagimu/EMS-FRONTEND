@@ -25,7 +25,8 @@
                  <div class="ant-alert-action mt-3">
                   <button type="submit" class="mb-2 btn btn-outline-primary btn-sm" style="float: right;"><i></i>Preview/Print Report</button>
                   <button @click="showDialog()" data-bs-toggle="modal" data-bs-target="#admitMainModal" type="submit" class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " style="float: right;"><i></i>Admit Student</button>
-           
+                  <!-- <button @click="showAdmit()"  type="submit" class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " style="float: right;"><i></i>Admit Student</button> -->
+
                 </div>
                 <div class="ant-card-body mt-0 mb-5">
                 <div class="row">
@@ -39,52 +40,18 @@
                         <th>COMMENT</th>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td style="width: 200px;">Mathematics</td>
+                  <tr v-for="(list, index) in resultDataList" :key="index">
+                        <td style="width: 200px;">{{ list.Name }}</td>
                         <td><span class="ant-tag ant-tag-error css-zxymk0"><span role="img" aria-label="stop" class="anticon anticon-stop">  
-                    </span><span>79</span></span>
+                    </span><span>{{ list.Score }}</span></span>
                   </td>
                   <td><span class="ant-tag ant-tag-error css-zxymk0">
                     <span role="img" aria-label="stop" class="anticon anticon-stop">  
-                    </span><span>D1</span></span>
+                    </span><span>{{ list.Grade }}</span></span>
                   </td>
-                  <td>Excellent Mark</td>
+                  <td>{{ list.Comment }}</td>
                 </tr>
-                <tr>
-                        <td style="width: 200px;">SST</td>
-                        <td><span class="ant-tag ant-tag-error css-zxymk0"><span role="img" aria-label="stop" class="anticon anticon-stop">  
-                    </span><span>89</span></span>
-                  </td>
-                  <td><span class="ant-tag ant-tag-error css-zxymk0">
-                    <span role="img" aria-label="stop" class="anticon anticon-stop">  
-                    </span><span>D1</span></span>
-                  </td>
-                  <td>Excellent</td>
-                </tr>
-
-                <tr>
-                        <td style="width: 200px;">SST</td>
-                        <td><span class="ant-tag ant-tag-error css-zxymk0"><span role="img" aria-label="stop" class="anticon anticon-stop">  
-                    </span><span>89</span></span>
-                  </td>
-                  <td><span class="ant-tag ant-tag-error css-zxymk0">
-                    <span role="img" aria-label="stop" class="anticon anticon-stop">  
-                    </span><span>D1</span></span>
-                  </td>
-                  <td>Excellent</td>
-                </tr>
-
-                <tr>
-                        <td style="width: 200px;">SST</td>
-                        <td><span class="ant-tag ant-tag-error css-zxymk0"><span role="img" aria-label="stop" class="anticon anticon-stop">  
-                    </span><span>89</span></span>
-                  </td>
-                  <td><span class="ant-tag ant-tag-error css-zxymk0">
-                    <span role="img" aria-label="stop" class="anticon anticon-stop">  
-                    </span><span>D1</span></span>
-                  </td>
-                  <td>Excellent</td>
-                </tr>
+        
                     </tbody>
                     </table>
   
@@ -100,11 +67,10 @@
     <script setup>
     import {onMounted,reactive, ref, watch,watchEffect,computed} from "vue"
     import useNotificationStore from "@/composables/useNotification.js"
-    import {useRouter} from "vue-router"
+   
     import AdmitModel from "../../studentApplication/AdmitModel.vue";
     import { useAdmissionStore } from "./store/adminission";
-
-  
+    import {useRouter} from "vue-router"
   const routerData = useRouter()
   const router = useRouter()
   let errorMessage = ref(null)
@@ -128,7 +94,7 @@
       () => admissionStore.studentAssessmentResultsResponse,
       async (data) => {
         if(data){
-          notificationStore.successToast("Success", data.message)
+          // notificationStore.successToast("Success", data.message)
           resultDataList.value = data.data
         }
       },
@@ -145,14 +111,24 @@
       {deep:true}
   )
 
-
-
   const showDialog = () => {
     admitshow.value = true
   }
   
 
+const showAdmit = () => {
+  admissionStore.admitStudent(studentNumber)
+}
+watch(
+      () => admissionStore.admitStudentResponse,
+      async (data) => {
+        if(data){
+          notificationStore.successToast("Success", data.message)
 
+        }
+      },
+      {deep:true}
+  )
 
 
 
