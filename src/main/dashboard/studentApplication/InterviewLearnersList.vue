@@ -27,7 +27,7 @@
 
             <form @submit.prevent="Admit()">
               <div class="row">
-                <div class="col-2">
+                <div class="col-3">
                   <div class="mb-2">
             <label class="textColor"><small>School</small> </label>
             <select
@@ -75,7 +75,7 @@
         </div>
         </div>
 
-        <div class="col-2">
+        <div class="col-1">
           <div class="mb-2">
             <label class="textColor"><small>Stream</small> </label>
             <select
@@ -91,7 +91,7 @@
 
         </div>
 
-        <div class="col-2">
+        <div class="col-3">
           <div class="mb-2">
             <label class="textColor"><small>Academic Year</small> </label>
             <select
@@ -105,7 +105,7 @@
         </div>
         </div>
 
-        <div class="col-2">
+        <div class="col-1">
           <div class="mb-2">
             <label class="textColor"><small>Study Period</small> 
             <!-- {{ studyPeriodList }} -->
@@ -396,7 +396,14 @@ const Admit = () => {
       })
       .filter(data => data !== null);
 
-    const confirmMessage = `Are you sure you want to admit the selected students: ${selectedStudentsData.join(', ')}?`;
+
+      if (selectedStudentsData.length === 0) {
+    notificationStore.errorToast("Error", "Please select at least one student to admit.");
+    return;
+  }
+
+  // const confirmMessage = `Are you sure you want to admit the selected students: ${selectedStudentsData.join(', ')}?`;
+    const confirmMessage = `Are you sure you want to admit the selected students ?`;
     if (window.confirm(confirmMessage)) {
       const formData = {
         student_number: selectedStudentsData,
@@ -406,7 +413,7 @@ const Admit = () => {
         study_period_number: form.study_period_number, // Replace with actual study period number
         interview_number: interviewNumber, // Use the interview number from the router data
       };
-      alert(JSON.stringify(formData));
+      // alert(JSON.stringify(formData));
      //endpoint to submit
      admissionStore.admitStudent(formData)
 
