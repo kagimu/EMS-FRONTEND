@@ -36,11 +36,11 @@
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm" required
-                    v-model="form.class_number"
-                    @change="fetchAcademicYear(form.class_number)"
+                    v-model="form.campus_class_number"
+                    @change="fetchAcademicYear(form.campus_class_number)"
             >
                 <option disabled value="">Select class</option>
-                <option v-for="(list, index) in classList" :key="index" :value="list.number">{{ list.class_name }}
+                <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}
                 </option>
             </select>
         </div>
@@ -133,13 +133,25 @@ const classStore = useClassesStore()
 const streamList = ref([])
 
 const studentNumber = routerData.currentRoute.value.query.st_id;
-  const interviewNumber = routerData.currentRoute.value.query.interview_id;
+const interviewNumber = routerData.currentRoute.value.query.interview_id;
 
+// {
+//   "student_number": [
+//       "{{STUDENT_ID}}"
+//   ],
+//   "campus_class_number":"{{CLASS_ID}}",
+//   "campus_number":"{{CAMPUS_ID}}",
+//   "stream_number":"{{STREAM_ID}}",
+//   "study_period_number":"{{STUDY_PERIOD_ID}}",
+//   "interview_number":"{{INTERVIEW_ID}}"
+// }
 const form = reactive({
+ student_number: [
+    studentNumber
+  ],
 academic_year: null,
-student_number:studentNumber,
 study_period_number: null,
-class_number: null,
+campus_class_number: null,
 campus_number: null,
 interview_number:interviewNumber,
 stream_number:null
@@ -148,7 +160,7 @@ stream_number:null
 const Admit = () =>{
   alert(JSON.stringify(form))
   admissionStore.admitStudent(form)
-//   admissionStore.admitStudent(form.student_number,form.class_number,form.campus_number,form.stream_number,form.study_period_number,form.interview_number)
+//   admissionStore.admitStudent(form.student_number,form.campus_class_number,form.campus_number,form.stream_number,form.study_period_number,form.interview_number)
 }
 
 

@@ -68,19 +68,6 @@
               </select>
           </div>
 
-          <div class="mb-2">
-              <label class="textColor"><small>Grading Standard</small> <span class="star">*</span></label>
-              <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="form.grading_standard_number"
-              >
-                  <option disabled value="">Select</option>
-                 <option v-for="(gradeList,index) in gradeData" :key="index" :value="gradeList.number">{{ gradeList.name }}</option>
-                 <option></option>
-              </select>
-          </div>
-
           
       <div class="mb-2">
         <div class="row">
@@ -94,8 +81,8 @@
             </div>
 
             <div class="col-lg-4">
-                <label class="textColor"><small>Weight</small></label>
-             <input v-model="form.weight" type="text" class="form-control" placeholder="1">
+                <label class="textColor"><small>scale</small></label>
+             <input v-model="form.scale" type="text" class="form-control" placeholder="1">
             </div>
         </div>
       </div>
@@ -141,37 +128,48 @@ const school_number = ref(null)
 const buttonLoader = ref(false)
 const assessmentStore = useAssessmentStore()
 const errorMessage = ref(null)
-const aggregateData = ref([])
 const levelData = ref([])
 const levelStore = useLevelStore()
-const gradeData = ref([])
+
 
 const form = reactive({
 name : null,
 min_value: null,
 max_value: null,
 level_number: null,
-weight: null,
+scale: null,
 description: null,
 study_period_number: null,
 class_number: null,
 school_number: null,
 campus_number: null,
-grading_standard_number:null
 })
+
+// {
+//     "name": "Name",
+//     "min_value": 0,
+//     "max_value": 10,
+//     "level_number": "{{LEVEL_ID}}",
+//     "scale": "Division 1",
+//     "description": "this is a description",
+//     "study_period_number": "{{STUDY_PERIOD}}",
+//     "class_number": "{{CLASS_ID}}",
+//     "school_number": "{{SCHOOL_ID}}",
+//     "campus_number": "{{CAMPUS_ID}}"
+// }
 
 const createScale = () =>{
     // alert(JSON.stringify(form))
-    assessmentStore.createAggregateScale(form)
+    assessmentStore.createAssessmentScale(form)
 }
 
 
 
 watch (
-    () => assessmentStore.newAggregateScaleResponse,
+    () => assessmentStore.newAssessmentScaleResponse,
     async (data) => {
       if(data){
-        assessmentStore.fetchAggregateScale()
+        assessmentStore.fetchAssessmentScale()
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
       }
@@ -191,20 +189,6 @@ watch (
 )
 
 
-onMounted(
-    async () => {
-      await assessmentStore.fetchGradeStandard()
-    } )
-    
-watch (
-    () => assessmentStore.gradeStandardResponse,
-    async (data) => {
-      if(data){
-        gradeData.value = data.data
-      }
-    },
-    {deep:true}
-)
 
 
 const fetchCampuses = (school_number) => {
