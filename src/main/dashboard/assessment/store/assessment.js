@@ -20,6 +20,8 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const assessmentMetricsResponse = ref(null)
     const newMetricResponse = ref(null)
     const metricResponse = ref(null)
+    const newAssessmentScaleResponse = ref(null)
+    const assessmentScaleResponse = ref(null)
 
     async function createAssesmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -225,6 +227,32 @@ async function createMetric(data) {
             })
     }
 
+    // assessmentscale
+    async function createAssessmentScale(data) {
+        return await api.post("main/assessments/aggregate-scales/alternative",data)
+            .then((response) => {
+             newAssessmentScaleResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+    
+    async function fetchAssessmentScale() {
+        return await api.get("main/assessments/aggregate-scales")
+            .then((response) => {
+                assessmentScaleResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
 
     return {
         createAssesmentAreas,
@@ -259,6 +287,10 @@ async function createMetric(data) {
         createMetric,
         newMetricResponse,
         metricResponse,
-        fetchMetrics
+        fetchMetrics,
+        newAssessmentScaleResponse,
+        createAssessmentScale,
+        fetchAssessmentScale,
+        assessmentScaleResponse
     }
 })
