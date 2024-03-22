@@ -131,6 +131,7 @@ const menuList = ref([
   {title:"Assessment", name:"assessment", icon:"bi-book",action:"view_assessment"},
   {title:"Student Application", name:"student-application", icon:"bi-person-plus",action:"view_student-application"},
   {title:"Student Admission", name:"admission-list", icon:"bi-database-down",action:"view_student-admission"},
+  {title:"Student Enrolment", name:"enrolment", icon:"bi-database-down",action:"view_enrolment"},
   {title:"Invoices", name:"invoices", icon:"bi-receipt-cutoff",action:"view_invoices"},
   // {title:"Profiles", name:"profiles", icon:"bi-people",action:"view_profiles"},
   // {title:"Accounting", name:"accounting", icon:"bi-receipt"},

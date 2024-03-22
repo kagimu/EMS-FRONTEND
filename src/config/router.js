@@ -60,6 +60,7 @@ import InterviewAssessmentResults from '../main/dashboard/studentApplication/Int
 import InterviewLearnersList from "@/main/dashboard/studentApplication/InterviewLearnersList.vue";
 import InterviewLearnersDetails from '@/main/dashboard/studentApplication/InterviewLearnersDetails.vue';
 import AdmissionList from '@/main/dashboard/studentAdmission/AdmissionList.vue';
+import Enrollment from '@/main/dashboard/enrollment/Enrollment.vue';
 
 
 const router = createRouter({
@@ -403,6 +404,13 @@ const router = createRouter({
                 meta: {
                     resource: "interview-learners-details",
                     action: "interview-learners-details",
+                      
+                }},
+
+                {path: 'enrolment', component: Enrollment, name: "enrolment",
+                meta: {
+                    resource: "enrolment",
+                    action: "view-enrolment",
                       
                 }},
 
