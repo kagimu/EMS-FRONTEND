@@ -2,7 +2,7 @@
 import useCommonsStore from "@/composables/useCommons.js";
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
 import useNotificationStore from "@/composables/useNotification.js";
-import {reactive, ref, watch} from "vue";
+import {onMounted, reactive, ref, watch} from "vue";
 
 const commons = useCommonsStore()
 const reportSetupStore = useReportSetupStore()
@@ -10,6 +10,7 @@ const notificationStore  = useNotificationStore()
 
 const errorMessage = ref("")
 const loader = ref(false)
+const reportSettingsList = ref(null)
 
 const form = reactive({
   code:null,
@@ -18,6 +19,12 @@ const form = reactive({
   percentage_share:null
 })
 
+
+onMounted(
+    async () => {
+      await reportSetupStore.fetchReportSettings()
+    }
+)
 
 
 const addReportColumn = () => {
@@ -36,6 +43,27 @@ watch(
       }
     }
 )
+
+
+watch(
+    () => reportSetupStore.reportSettingsListResponse,
+    async (data) => {
+      if(data){
+        reportSettingsList.value = data.data
+      }
+    }
+)
+
+
+watch(
+    () => reportSetupStore.reportColumnResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    }
+)
+
 </script>
 
 <template>
@@ -62,21 +90,6 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Report Settings</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="form.report_setting_number"
-        >
-          <option disabled value="">--Select Level--</option>
-          <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-        </select>
-      </div>
-
-
-
-
-      <div class="mb-2">
         <label class="textColor"><small>Name</small></label>
         <input
             maxlength="50"
@@ -87,6 +100,24 @@ watch(
             required
             class="form-control form-select-sm">
       </div>
+
+
+      <div class="mb-2">
+        <label class="textColor"><small>Report Settings</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.report_setting_number"
+        >
+          <option disabled value="">--Select Settings--</option>
+          <option v-for="(list, index) in reportSettingsList" :key="index" :value="list.number">{{list.name}}</option>
+        </select>
+      </div>
+
+
+
+
+
 
 
       <div class="mb-2">
