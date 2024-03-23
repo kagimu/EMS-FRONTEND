@@ -110,7 +110,7 @@
 
 import router from "@/config/router.js";
 
-import {getCurrentInstance, ref,onMounted} from 'vue'
+import {ref,onMounted} from 'vue'
 import {useAuthStore} from "@/main/auth/store/auth.js";
 import {useRouter} from "vue-router";
 import { useAbility } from '@casl/vue';

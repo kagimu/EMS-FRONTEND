@@ -5,6 +5,7 @@ import api from "@/config/api.js";
 export const useAcademicYearStore = defineStore("academicYear", () => {
     let newAcademicYearResponse = ref(null)
     let academicYearByLevelResponse = ref(null)
+    let campusClassByLevelResponse = ref(null)
     const errorMessage = ref(null)
     const academicYearResponse = ref(null)
     const deleteAcademicYearResponse = ref(null)
@@ -30,6 +31,18 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
         return await api.get("main/academic-year/by-level?campus_level_number="+campus_level_number)
             .then((response) => {
                 academicYearByLevelResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchCampusClassByLevel(campus_level_number) {
+        return await api.get("main/class/campus-class-by-level?campus_level_number="+campus_level_number)
+            .then((response) => {
+                campusClassByLevelResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -85,11 +98,13 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
         deleteAcademicYearResponse,
         academicYearByLevelResponse,
         errorMessage,
+        academicYearByCampusResponse,
+        campusClassByLevelResponse,
         newAcademicYear,
         fetchAcademicYear,
         deleteAcademicYear,
         fetchAcademicYearByLevel,
         fetchAcademicYearByCampus,
-        academicYearByCampusResponse
+        fetchCampusClassByLevel
     }
 })

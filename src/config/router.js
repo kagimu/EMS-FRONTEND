@@ -156,7 +156,6 @@ const router = createRouter({
                 meta: {
                     resource: "settings",
                     action: "view_settings",
-                      
                 }},
                 {path: 'curriculum', component: Curriculum, name: "curriculum",
                 meta: {
