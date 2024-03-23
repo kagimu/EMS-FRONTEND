@@ -87,20 +87,24 @@ watch(
 
 
 
-        <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
+        <table class="table table-hover caption-top mt-5 table-sm text-sm" style="font-size: 14px;">
           <thead>
           <tr>
             <th scope="col" style="width: 30%;">Code</th>
             <th scope="col">Name</th>
-            <th scope="col">Action</th>
+            <th scope="col">Number of Columns</th>
+            <th scope="col">Status</th>
+<!--            <th scope="col">Action</th>-->
           </tr>
           </thead>
           <tbody>
           <tr v-for="(levelInfo, index) in reportSettingsList" :key="index">
             <td> {{levelInfo.code}}</td>
             <td> {{levelInfo.name}}</td>
+            <td> {{levelInfo.columns}}</td>
+            <td> {{levelInfo.status}}</td>
             <td>
-              <div>
+<!--              <div>
                 <i
                     style="font-size: 13px;"
                     data-bs-toggle="modal" data-bs-target="#levelModal"
@@ -110,7 +114,7 @@ watch(
                 <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
                   <span class="visually-hidden">Loading...</span>
                 </div>
-              </div>
+              </div>-->
             </td>
           </tr>
           </tbody>

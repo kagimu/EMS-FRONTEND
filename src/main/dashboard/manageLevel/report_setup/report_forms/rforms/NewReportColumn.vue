@@ -29,6 +29,8 @@ onMounted(
 
 const addReportColumn = () => {
   loader.value = true
+  form.code = form.code ? parseInt(form.code) : form.code
+  form.percentage_share = form.percentage_share ? parseInt(form.percentage_share) : form.percentage_share
   reportSetupStore.newReportColumn(form)
 }
 

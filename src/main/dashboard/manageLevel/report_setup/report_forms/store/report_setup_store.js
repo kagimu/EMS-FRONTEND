@@ -11,6 +11,7 @@ export const useReportSetupStore = defineStore("report_setup", () => {
     const reportScoreResponse = ref(null)
     const reportScoreSummaryResponse = ref(null)
     const reportSettingsListResponse = ref(null)
+    const reportColumnListResponse = ref(null)
     const errorMessage = ref(null)
 
     async function newReportSettings(data) {
@@ -99,6 +100,19 @@ export const useReportSetupStore = defineStore("report_setup", () => {
     }
 
 
+    async function fetchReportColumn() {
+        return await api.get("main/report-settings/columns")
+            .then((response) => {
+                reportColumnListResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
 
     return {
         errorMessage,
@@ -109,6 +123,7 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         reportScoreSummaryResponse,
         reportColumnAssessmentResponse,
         reportSettingsListResponse,
+        reportColumnListResponse,
         newReportSettings,
         newReportColumn,
         newReportColumnAssessment,
@@ -116,5 +131,6 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         newReportScore,
         newReportScoreSummary,
         fetchReportSettings,
+        fetchReportColumn,
     }
 })

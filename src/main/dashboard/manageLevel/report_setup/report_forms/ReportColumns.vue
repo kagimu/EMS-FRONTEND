@@ -1,16 +1,36 @@
 <script setup>
 
 import NewReportColumn from "@/main/dashboard/manageLevel/report_setup/report_forms/rforms/NewReportColumn.vue";
-import {watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
+import useNotificationStore from "@/composables/useNotification.js";
 
 const reportSetupStore = useReportSetupStore()
+const  notificationStore  = useNotificationStore()
+const reportColumnList = ref(null)
+
+onMounted(
+    async () => {
+      await reportSetupStore.fetchReportColumn()
+    }
+)
+
+
 
 watch(
     () => reportSetupStore.reportColumnResponse,
     async (data) => {
       if(data){
         notificationStore.successToast("Success",data.message)
+      }
+    }
+)
+
+watch(
+    () => reportSetupStore.reportColumnListResponse,
+    async (data) => {
+      if(data){
+        reportColumnList.value = data.data
       }
     }
 )
@@ -63,15 +83,19 @@ watch(
           <tr>
             <th scope="col" style="width: 30%;">Code</th>
             <th scope="col">Name</th>
-            <th scope="col">Action</th>
+            <th scope="col">Percentage Share (%)</th>
+            <th scope="col">Report settings</th>
+<!--            <th scope="col">Action</th>-->
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(levelInfo, index) in levelList" :key="index">
+          <tr v-for="(levelInfo, index) in reportColumnList" :key="index">
             <td> {{levelInfo.code}}</td>
             <td> {{levelInfo.name}}</td>
+            <td> {{levelInfo.percentage_share}}</td>
+            <td>  </td>
             <td>
-              <div>
+<!--              <div>
                 <i
                     style="font-size: 13px;"
                     data-bs-toggle="modal" data-bs-target="#levelModal"
@@ -81,7 +105,7 @@ watch(
                 <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
                   <span class="visually-hidden">Loading...</span>
                 </div>
-              </div>
+              </div>-->
             </td>
           </tr>
           </tbody>
