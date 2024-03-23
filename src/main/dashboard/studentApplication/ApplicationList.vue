@@ -40,10 +40,12 @@
             class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
               
             {{  applist.status == "INTERVIEW_SCHEDULED" ? 'view Details' : 'schedule Interview' }}
-            <i class="bi bi-arrow-right"> </i></small></button> &nbsp;
-            <RouterLink :to="{name : 'admit-student', query:{id:applist.number} }" class="link-danger" style="text-decoration: none;"  >
+            </small></button> &nbsp;
+
+            
+            <!-- <RouterLink :to="{name : 'admit-student', query:{id:applist.number} }" class="link-danger" style="text-decoration: none;"  >
           <i class="bi bi-eye"></i>  
-        </RouterLink>  
+        </RouterLink>   -->
           </td>
         </tr>
       </tbody>
