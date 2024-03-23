@@ -1,6 +1,23 @@
 <template>
   <div>
    
+    <div class="modal fade" id="admitMainModal" tabindex="-1" :class="{ show: enrolDialog }" aria-labelledby="" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header text-sm p-0">
+            <h6 class="modal-title ml-8 mt-2 mb-2">ENROLMENT</h6>
+            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mt-2 mb-2">
+           <EnrolModel :studN="studN"></EnrolModel>
+          </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
 
     <!-- end  -->
     <div class="row mt-3">
@@ -165,11 +182,13 @@
         <tr>
           <th style="width: 2px;">#</th>
           <th>ADN</th>
-          <th>Year</th>
+          <th>Year</th>      
           <th>Student</th>
           <th>Campus</th>
           <th>Class</th>
           <th>Stream</th>
+          <th>Study Period</th>
+          <th>Status</th>
           <th>Action</th>
         </tr>
   <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
@@ -177,71 +196,37 @@
   </div> -->
       </thead>
       <tbody>
-        <tr>
+        <tr v-for="(adm , index) in admissionList" :key="index">
           <td>
               <input type="checkbox"   class="checkbox-primary">
           </td>
-          <td>Adn0003637782</td>
-          <td>2024</td>
-          <td>Collins Mpiima</td>
-          <td>Main Campus</td>
-          <td>P.1</td>
-          <td>EAST</td>
+          <td>{{ adm.Student.adn }}</td>
+          <td>{{ adm.AcademicYear.academic_year_name }}</td>
+          <td>{{ adm.Student.surname }}</td>
+          <td>{{ adm.Campus.name }}</td>
+          <td>{{ adm.Stream.class_name }}</td>
+          <td>{{ adm.Stream.name }}</td>
+          <td>{{ adm.StudyPeriod.study_period_name }}</td>
+          <span v-if="adm.status == 'Enrolled'" class="link link-primary"><i>{{ adm.status }}</i></span>
           <td>
-            <button type="submit" class="btn btn-sm btn-primary mb-2 mr-4 "
+            <button v-if="adm.status != 'Enrolled'" @click="showDialog(adm.Student.number)" data-bs-toggle="modal" data-bs-target="#admitMainModal" type="submit" class="btn btn-sm btn-primary mb-2 mr-4 "
                style="color: white;">
                <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  
         <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
           <span class="visually-hidden">Loading...</span>
         </div>
       </button> 
-          </td>
-        
-        </tr>  
-        
-        <tr>
-          <td>
-              <input type="checkbox"   class="checkbox-primary">
-          </td>
-          <td>Adn0003637782</td>
-          <td>2024</td>
-          <td>Rastliee Denilam</td>
-          <td>Main Campus</td>
-          <td>P.1</td>
-          <td>EAST</td>
-          <td>
-            <button type="submit" class="btn btn-sm btn-primary mb-2 mr-4 "
-               style="color: white;">
-               <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  
-        <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
-          <span class="visually-hidden">Loading...</span>
-        </div>
+      <button v-if="adm.status == 'Enrolled'">
+      <i class="bi bi-eye"></i> 
+      </button>&nbsp;&nbsp;
+      <button v-if="adm.status == 'Enrolled'">
+      <i class="bi bi-pencil"></i> 
       </button>
+    
           </td>
         
         </tr>  
-
-        <tr>
-          <td>
-              <input type="checkbox"   class="checkbox-primary">
-          </td>
-          <td>Adn0003637782</td>
-          <td>2024</td>
-          <td>Kaliso Muwasta</td>
-          <td>Main Campus</td>
-          <td>P.1</td>
-          <td>EAST</td>
-          <td>
-            <button type="submit" class="btn btn-sm btn-primary mb-2 mr-4 "
-               style="color: white;">
-               <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  
-        <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </button> 
-          </td>
-        
-        </tr>  
+  
                   
       </tbody>
     </table>
@@ -264,6 +249,8 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
+import EnrolModel from "@/main/dashboard/enrollment/EnrolModel.vue"
+
 
 
 const interviewStudentList = ref( [])
@@ -271,9 +258,11 @@ let errorMessage = ref(null)
 const buttonLoader = ref(false)
 const  notificationStore  = useNotificationStore()
 
-const admissionStore = useAdmissionStore()
 
-let  interviewNumber = "lelel"
+const showDialog = (stud) => {
+    enrolDialog.value = true
+    studN.value = stud
+  }
 
 const campusList = ref([])
 const schoolList = ref([])
@@ -287,14 +276,14 @@ const academicYearList = ref([])
 const studyPeriodList  = ref([])
 const classStore = useClassesStore()
 const streamList = ref([])
-
+const admissionList = ref([])
+const admissionStore = useAdmissionStore()
+const studN = ref(null)
 
 onMounted(() => {
   admissionStore.fetchAdmissionByFilters(form.study_period_number,form.interview_number,form.stream_number,form.campus_number,form.campus_class_number)
   }
 )
-
-
 
 const form = reactive({
 academic_year: "",
@@ -305,6 +294,7 @@ stream_number:"",
 interview_number:""
 })
 
+const enrolDialog  = ref(null)
 
 const fetchCampuses = (school_number) => {
   campusStore.fetchCampuses(school_number)
@@ -411,7 +401,8 @@ watch (
   () => admissionStore.admissionByFiltersResponse,
   async (data) => {
     if(data){
-      notificationStore.successToast("Success", data.message)
+      // notificationStore.successToast("Success", data.message)
+      admissionList.value = data.data
     }
   },
   {deep:true}
@@ -421,7 +412,7 @@ watch(
   () => admissionStore.errorMessage,
   async (data) => {
         if (data) {
-            notificationStore.errorToast("Error", data.message)
+            notificationStore.errorToast("Error", data.message)      
         }
   },
   {deep: true}

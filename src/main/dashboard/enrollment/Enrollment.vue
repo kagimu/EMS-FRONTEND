@@ -157,11 +157,12 @@
           <tr>
             <th style="width: 2px;">#</th>
             <th>ADN</th>
-            <th>Year</th>
+            <th>Study Period</th>
             <th>Student</th>
+            <th>School</th>
             <th>Campus</th>
-            <th>Class</th>
-            <th>Stream</th>
+            <th>Enrolment Date</th>
+            <!-- <th>Class</th> -->
             <th>Action</th>
           </tr>
     <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
@@ -169,33 +170,16 @@
     </div> -->
         </thead>
         <tbody>
-          <tr>
+          <tr v-for="(enrolData,index) in enrollmentList" :key="index" >
             <td>
                 <input type="checkbox"   class="checkbox-primary">
             </td>
-            <td>Adn0003637782</td>
-            <td>2024</td>
-            <td>Collins Mpiima</td>
-            <td>Main Campus</td>
-            <td>P.1</td>
-            <td>EAST</td>
-            <td>
-                <button><i class="bi bi-trash"></i></button> &nbsp;
-                <button><i class="bi bi-pencil"></i></button>
-            </td>
-          
-          </tr>  
-          
-          <tr>
-            <td>
-                <input type="checkbox"   class="checkbox-primary">
-            </td>
-            <td>Adn0003637782</td>
-            <td>2024</td>
-            <td>Rastliee Denilam</td>
-            <td>Main Campus</td>
-            <td>P.1</td>
-            <td>EAST</td>
+            <td>{{ enrolData.Student.apn }}</td>
+            <td>{{ enrolData.StudyPeriod.study_period_name }}</td>
+            <td>{{ enrolData.Student.surname + " "+ enrolData.Student.second_name + " "  + enrolData.Student.other_name}}</td>
+            <td>{{enrolData.School.name }}</td>
+            <td>{{ enrolData.Campus.name }}</td>
+            <td>{{ enrolData.enrollment_date }}</td>
             <td>
                 <button><i class="bi bi-trash"></i></button> &nbsp;
                 <button><i class="bi bi-pencil"></i></button>
@@ -203,22 +187,7 @@
           
           </tr>  
 
-          <tr>
-            <td>
-                <input type="checkbox"   class="checkbox-primary">
-            </td>
-            <td>Adn0003637782</td>
-            <td>2024</td>
-            <td>Kaliso Muwasta</td>
-            <td>Main Campus</td>
-            <td>P.1</td>
-            <td>EAST</td>
-            <td>
-                <button><i class="bi bi-trash"></i></button> &nbsp;
-                <button><i class="bi bi-pencil"></i></button>
-            </td>
-          
-          </tr>  
+         
                     
         </tbody>
       </table>
@@ -241,16 +210,15 @@
   import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
   import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
   import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
-
+  import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
+  import EnrolModel from "@/main/dashboard/enrollment/EnrolModel.vue"
   
-  const interviewStudentList = ref( [])
+  const enrollmentList = ref( [])
   let errorMessage = ref(null)
   const buttonLoader = ref(false)
   const  notificationStore  = useNotificationStore()
   
-  const admissionStore = useAdmissionStore()
-  
-  let  interviewNumber = "lelel"
+  const enrollmentStore = useEnrolmentStore()
   
   const campusList = ref([])
   const schoolList = ref([])
@@ -282,7 +250,6 @@
   
   const fetchClasses = (campus_number) => {
     campusStore.fetchClassesByCampus(campus_number)
-    admissionStore.fetchAdmissionByFilters(form.study_period_number,form.interview_number,form.stream_number,form.campus_number,form.campus_class_number)
   }
   
   
@@ -291,7 +258,6 @@
   // alert(campusN)
   academicYearStore.fetchAcademicYearByCampus(campusN)
   classStore.fetchClassStreams(campusN)
-  admissionStore.fetchAdmissionByFilters(form.study_period_number,form.interview_number,form.stream_number,form.campus_number,form.campus_class_number)
   }
   watch(
     () => academicYearStore.academicYearByCampusResponse,
@@ -312,11 +278,13 @@
   
   
   const filterByStream = () => {
-    admissionStore.fetchAdmissionByFilters(form.study_period_number,form.interview_number,form.stream_number,form.campus_number,form.campus_class_number)
+    //filterStream
+
   }
   
   const filterByStudyPeriod = () => {
-    admissionStore.fetchAdmissionByFilters(form.study_period_number,form.interview_number,form.stream_number,form.campus_number,form.campus_class_number)
+    // filterByStudyPeriod
+
   }
   watch(
     () => classStore.classStreams,
@@ -327,8 +295,6 @@
     },
     {deep: true}
   )
-  
-  
   
   
   onMounted(() => {
@@ -376,19 +342,26 @@
     {deep: true}
   )
   
-  // filters 
+   
+  onMounted(() => {
+    enrollmentStore.fetchEnrolment()
+    }
+  )
+
+
   watch (
-    () => admissionStore.admissionByFiltersResponse,
+    () => enrollmentStore.enrolmentResponse,
     async (data) => {
       if(data){
-        notificationStore.successToast("Success", data.message)
+        // notificationStore.successToast("Success", data.message)
+        enrollmentList.value = data.data
       }
     },
     {deep:true}
   )
   
   watch(
-    () => admissionStore.errorMessage,
+    () => enrollmentStore.errorMessage,
     async (data) => {
           if (data) {
               notificationStore.errorToast("Error", data.message)

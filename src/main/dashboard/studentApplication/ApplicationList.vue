@@ -11,7 +11,7 @@
           <div class="card">
             <div class="card-body">
               <ul>
-                <h5 style="font-size: 14px;margin-top: 2px;">APPLICATIONS</h5>
+                <h5 style="font-size: 14px;margin-top: 2px;">APPLICANTS</h5>
                 <li>
                 </li>
               </ul>
@@ -139,27 +139,57 @@
       <table
       id="datatable"
       class="table table-striped"
-      style="font-size: 13px !important;"
+      style="font-size: 14px !important;"
     >
       <thead>
         <tr>
-          <th>Parent/Guardian</th>
+          <th>APN</th>
+          <th>Student</th>
+          <th>Gender</th>
+          <th>DOB</th>
           <th>Status</th>
-          <th>Payment Status</th>
-          <th>#</th>
+          <th>Payment</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(applist, index) in applicationInfoList" :key="index">
-          <td>{{ applist.Parent.surname+ " "+ applist.Parent.second_name+ " "+ applist.Parent.other_name  }} </td>
-          <td>{{ applist.status == "INTERVIEW_SCHEDULED" ? 'interview scheduled' : 'new'}} </td>
+          <td>{{ applist.Student.apn }}</td>
+          <td>{{ applist.Student.surname+ " "+ applist.Student.second_name+ " "+ applist.Student.other_name  }} </td>
+          <td>{{ applist.Student.gender }}</td>
+          <td>{{ applist.Student.date_of_birth }}</td>
+          <td>{{ applist.status}} </td>
           <td>{{ applist.application_fee_payment === false ? 'pending' : 'completed' }}</td>
           <td>
-            <button  data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
-            class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
+            <!-- <button  data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
+            class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
               
-            {{  applist.status == "INTERVIEW_SCHEDULED" ? 'view Details' : 'schedule Interview' }}
-            </small></button> &nbsp;
+            {{  applist.status == "INTERVIEW_SCHEDULED"||applist.status == "ENROLLED" || applist.status == "ADMITTED"  ? 'view Details' : 'Schedule Interview' }}
+            </small>
+          </button> -->
+      
+
+          <button v-if="applist.status == 'DRAFTED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
+            class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
+              View Details
+            </small>
+          </button>
+
+          <button v-if="applist.status == 'ENROLLED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
+            class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
+              View Details
+            </small>
+          </button>
+
+          <button v-if="applist.status == 'INTERVIEW_SCHEDULED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
+            class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
+              View Details
+            </small>
+          </button>
+
+
+
+
 
             
             <!-- <RouterLink :to="{name : 'admit-student', query:{id:applist.number} }" class="link-danger" style="text-decoration: none;"  >
