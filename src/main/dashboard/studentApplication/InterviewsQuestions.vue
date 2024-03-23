@@ -124,7 +124,7 @@
     const interviewQuestionList = ref([])
     const interviewDialog= ref(false)
     let errorMessage = ref(null)
-    const interviewAssesmentListData = ref([])
+    const interviewAssessmentListData = ref([])
     const assessmentStore= useAssessmentStore()
 
 
@@ -162,14 +162,14 @@ const showInterviewDialog = () => {
 
 onMounted(
     async () => {
-      await assessmentStore.fetchAssesmentArea()
+      await assessmentStore.fetchAssessmentArea()
     } )
 
     watch(
     () => assessmentStore.assesmentAreaResponse,
     async (data) => {
       if(data){
-        interviewAssesmentListData.value = data.data
+        interviewAssessmentListData.value = data.data
       }
     },
     {deep:true}

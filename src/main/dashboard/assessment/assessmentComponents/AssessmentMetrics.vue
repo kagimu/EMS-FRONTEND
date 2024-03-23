@@ -355,7 +355,7 @@ onMounted(
 
       onMounted(
     async () => {
-      await assessmentStore.fetchAssesmentArea()
+      await assessmentStore.fetchAssessmentArea()
     } )
 
    //working on dialog
