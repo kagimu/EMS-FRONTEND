@@ -1,6 +1,48 @@
 <script setup>
 
 import NewReportSettings from "@/main/dashboard/manageLevel/report_setup/report_forms/rforms/NewReportSettings.vue";
+import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
+import {onMounted, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+
+const reportSetupStore = useReportSetupStore()
+const notificationStore  = useNotificationStore()
+const reportSettingsList = ref(null)
+
+
+onMounted(
+    async () => {
+      await reportSetupStore.fetchReportSettings()
+    }
+)
+
+
+watch(
+    () => reportSetupStore.reportSettingsResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success",data.message)
+      }
+    }
+)
+
+watch(
+    () => reportSetupStore.reportSettingsListResponse,
+    async (data) => {
+      if(data){
+       reportSettingsList.value = data.data
+      }
+    }
+)
+
+
+
+
+
+
+
+
+
 </script>
 
 <template>
@@ -11,10 +53,10 @@ import NewReportSettings from "@/main/dashboard/manageLevel/report_setup/report_
 
 
     <div class="modal fade" id="levelModal" tabindex="-1" :class="{ show: levelDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2"> {{levelEditMode ? "Edit" : "Add"}} Level</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">Add Settings</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -54,7 +96,7 @@ import NewReportSettings from "@/main/dashboard/manageLevel/report_setup/report_
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(levelInfo, index) in levelList" :key="index">
+          <tr v-for="(levelInfo, index) in reportSettingsList" :key="index">
             <td> {{levelInfo.code}}</td>
             <td> {{levelInfo.name}}</td>
             <td>

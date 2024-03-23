@@ -2,6 +2,21 @@
 
 import NewReportScoreSummary
   from "@/main/dashboard/manageLevel/report_setup/report_forms/rforms/NewReportScoreSummary.vue";
+import {watch} from "vue";
+
+import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
+
+const reportSetupStore = useReportSetupStore()
+
+watch(
+    () => reportSetupStore.reportScoreSummaryResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success",data.message)
+      }
+    }
+)
+
 </script>
 
 <template>
@@ -14,7 +29,7 @@ import NewReportScoreSummary
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2"> {{levelEditMode ? "Edit" : "Add"}} Level</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">Add Report Score Summary</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">

@@ -250,6 +250,7 @@
   
     const classStore = useClassesStore()
     const assessmentStore= useAssessmentStore()
+    const studyPeriodStore = useStudyPeriodStore()
     const  notificationStore  = useNotificationStore()
     const campusList = ref([])
     const assessmentMetricsList = ref([])
@@ -264,7 +265,6 @@
     const preferred_campus_number = ref(null)
     const metricListData = ref([])
     const academicYearList = ref([])
-    const studyPeriodStore = useStudyPeriodStore()
     const studyPeriodList = ref([])
     const campus_level_number = ref(null)
     const academic_year_number = ref(null)
