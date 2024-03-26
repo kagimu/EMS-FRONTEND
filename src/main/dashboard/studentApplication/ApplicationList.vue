@@ -171,7 +171,7 @@
 
           <button v-if="applist.status == 'DRAFTED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
             class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
-              View Details
+              Schedule Interview
             </small>
           </button>
 
