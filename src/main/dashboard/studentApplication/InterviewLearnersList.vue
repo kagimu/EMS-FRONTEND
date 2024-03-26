@@ -125,7 +125,7 @@
         <div class="col-1 mt-2">
           <div class="flex justify-content-end mt-2" style="width: 100%;">
           <button type="submit" class="btn btn-primary border-0 btn-sm">
-               <small>ADMIT</small>
+               <small>Offer Admission</small>
                <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
                     role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span> 
                   </span>

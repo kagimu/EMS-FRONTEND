@@ -32,7 +32,7 @@
 
               <div class="row">
                 <div class="col-lg-11">
-                  <h5 style="font-size: 14px;margin-top: 2px;">ADMISSION LIST</h5>
+                  <h5 style="font-size: 14px;margin-top: 2px;">ADMISSION OFFERS </h5>
                 </div>
 
                 <div class="col-lg-1">
@@ -182,13 +182,13 @@
         <tr>
           <th style="width: 2px;">#</th>
           <th>ADN</th>
-          <th>Year</th>      
+          <!-- <th>Year</th>       -->
           <th>Student</th>
           <th>Campus</th>
           <th>Class</th>
           <th>Stream</th>
           <th>Study Period</th>
-          <th>Status</th>
+          <!-- <th>Status</th> -->
           <th>Action</th>
         </tr>
   <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
@@ -201,13 +201,14 @@
               <input type="checkbox"   class="checkbox-primary">
           </td>
           <td>{{ adm.Student.adn }}</td>
-          <td>{{ adm.AcademicYear.academic_year_name }}</td>
+          <!-- <td>{{ adm.AcademicYear.academic_year_name }}</td> -->
           <td>{{ adm.Student.surname }}</td>
           <td>{{ adm.Campus.name }}</td>
           <td>{{ adm.Stream.class_name }}</td>
           <td>{{ adm.Stream.name }}</td>
           <td>{{ adm.StudyPeriod.study_period_name }}</td>
-          <span v-if="adm.status == 'Enrolled'" class="link link-primary"><i>{{ adm.status }}</i></span>
+          <!-- <td>{{ adm.status }}</td> -->
+          <!-- <span v-if="adm.status == 'Enrolled'" class="link link-primary"><i>{{ adm.status }}</i></span> -->
           <td>
             <button v-if="adm.status != 'Enrolled'" @click="showDialog(adm.Student.number)" data-bs-toggle="modal" data-bs-target="#admitMainModal" type="submit" class="btn btn-sm btn-primary mb-2 mr-4 "
                style="color: white;">
@@ -216,9 +217,17 @@
           <span class="visually-hidden">Loading...</span>
         </div>
       </button> 
-      <button v-if="adm.status == 'Enrolled'">
-      <i class="bi bi-eye"></i> 
-      </button>&nbsp;&nbsp;
+
+      <router-link style=""
+                  class="text-decoration-none"
+                  :to="{name:'interview-learners-details', query:{ad_st_id:adm.Student.number}}">
+                  <button type="button"
+                    class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
+                >view Details</button>
+
+              </router-link>
+
+
       <button v-if="adm.status == 'Enrolled'">
       <i class="bi bi-pencil"></i> 
       </button>
