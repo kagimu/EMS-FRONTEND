@@ -14,38 +14,39 @@ export const useAuthStore = defineStore("auth", () => {
     async function userLogin(data) {
         return await api.post("auth/login", data)
             .then((response) => {
-                if(response && response.data) {
-                    let dataInfo = response.data
-                    // localStorage.setItem("token", dataInfo.access_token)
-                    // localStorage.clear()
-                    // alert(JSON.stringify(dataInfo))
-                    localStorage.setItem("token", dataInfo.token)
-                    let permissions = []
 
-                    if (dataInfo.data.type === 'Admin') {
-                        permissions.push({"action": "manage", "resource": "all"})
-                    } else {
-                        if (dataInfo.data && dataInfo.data.permissions.length > 0){
-                            dataInfo.data.permissions.forEach(permission => {
-                                permissions.push({"action": permission, "resource": "general"})
-                            });
-                        }else {
-                            permissions.push({"action": "read", "resource": "general"})
-                        }
-                    }
-                    localStorage.setItem('abilities', JSON.stringify(permissions))
+                let dataInfo = response.data
+                // localStorage.setItem("token", dataInfo.access_token)
+                localStorage.clear()
+                localStorage.setItem("token", dataInfo.token)
+                let permissions = []
 
-                    // localStorage.setItem("expires_in", dataInfo.expires_in)
-                    loginResponse.value = dataInfo
-                    userNumber.value = dataInfo.data.number
-                    token.value = dataInfo.token
+                if(response.data.data.type === 'Admin'){
+                    permissions.push({"action":"manage","resource":"all"})
                 }
+                else {
+               
+
+                if (response.data.data.permissions === undefined)
+                    permissions.push({"action":"read","resource":"general"})
+                else
+                response.data.data.permissions.forEach(permission => {
+                        permissions.push({"action":permission,"resource":"general"})
+                    });
+                }
+                localStorage.setItem('abilities',JSON.stringify(permissions))
+
+                // localStorage.setItem("expires_in", dataInfo.expires_in)
+                loginResponse.value = dataInfo
+                userNumber.value = dataInfo.data.number
+                token.value = dataInfo.token
+
 
             })
-            .catch((error) => {
-                if(error && error.response){
+            .catch((response) => {
+                if(response){
                     localStorage.removeItem("token")
-                    errorMessage.value = error.response.data
+                    errorMessage.value = response.response.data
                 }
             })
     }

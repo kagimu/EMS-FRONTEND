@@ -36,7 +36,7 @@
         </thead>
         <tbody>
           <tr v-for="(metricsData, index) in AsessmentMetricsData " :key="index">
-            <td>{{ metricsData.assessment_area.name + "("+metricsData.number+")" }}</td>
+            <td>{{ metricsData.name}}</td>
             <td>{{ metricsData.description }}</td>
             <td>
             <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
@@ -60,11 +60,7 @@
             </div>
             <div class="offcanvas-body">
               <form @submit.prevent="addInterviewAssesmentMetrics">
-                <div class="mb-2">
-                  <label class="textColor"><small>Name</small></label>
-                  <input type="text" v-model="form.name" class="form-control">
-                </div>
-
+        
                 <div class="mb-2">
         <label class="textColor"><small>Level</small></label>
         <select
