@@ -169,20 +169,20 @@
           </button> -->
       
 
-          <button v-if="applist.status == 'DRAFT'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
-            class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
+          <button v-if="applist.status === 'DRAFT'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)"
+                  class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
               Schedule Interview
             </small>
           </button>
 
-          <button v-if="applist.status == 'ENROLLED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
-            class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
+          <button v-if="applist.status === 'ENROLLED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)"
+                  class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
               View Details
             </small>
           </button>
 
-          <button v-if="applist.status == 'INTERVIEW_SCHEDULED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
-            class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
+          <button v-if="applist.status === 'INTERVIEW_SCHEDULED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)"
+                  class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
               View Details
             </small>
           </button>
