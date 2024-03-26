@@ -113,7 +113,17 @@ export const useAdmissionStore = defineStore("admission", () => {
     }
 
 
-
+    async function fetchAdmissionByStudentID(student_number) {
+        return await api.get("main/admissions?"+student_number)
+            .then((response) => {
+                admissionByFiltersResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
 
 
