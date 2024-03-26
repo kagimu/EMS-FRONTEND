@@ -105,7 +105,13 @@
       <button class="btn btn-primary btn-sm"><i class="bi bi-printer"></i> Print</button>
     </div>
 
-    <div class="col-3" v-if="appDatails.status != 'INTERVIEW_SCHEDULED'" > 
+    <div class="col-3" v-if="appDatails.status == 'ADMITTED'" > 
+      <p> STUDENT HASBEEN OFFERED AN ADMISSION</p>
+
+      <button class="btn btn-primary btn-sm">View Admission Details</button>
+    </div>
+
+    <div class="col-3" v-if="appDatails.status == 'DRAFT'" > 
       <!-- {{ appDatails.status }} -->
   <form @submit.prevent="scheduleInterview" >
               <label> <span style="text-align: center;font-size: 12px;"><small>Select Interview</small></span></label>
