@@ -167,22 +167,22 @@
             {{  applist.status == "INTERVIEW_SCHEDULED"||applist.status == "ENROLLED" || applist.status == "ADMITTED"  ? 'view Details' : 'Schedule Interview' }}
             </small>
           </button> -->
+      
 
+          <button v-if="applist.status == 'DRAFTED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
+            class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
+              Schedule Interview
+            </small>
+          </button>
 
-          <button v-if="applist.status === 'DRAFTED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)"
-                  class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
+          <button v-if="applist.status == 'ENROLLED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
+            class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
               View Details
             </small>
           </button>
 
-          <button v-if="applist.status === 'ENROLLED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)"
-                  class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
-              View Details
-            </small>
-          </button>
-
-          <button v-if="applist.status === 'INTERVIEW_SCHEDULED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)"
-                  class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
+          <button v-if="applist.status == 'INTERVIEW_SCHEDULED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
+            class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
               View Details
             </small>
           </button>
@@ -229,6 +229,7 @@ import ApplicationDetails from './ApplicationDetails.vue';
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import useNotificationStore from "@/composables/useNotification.js";
 
+import { useAdmissionStore } from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
