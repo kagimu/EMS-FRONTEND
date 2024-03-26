@@ -2,9 +2,19 @@
 
 import NewReportColumnsAssessment
   from "@/main/dashboard/manageLevel/report_setup/report_forms/rforms/NewReportColumnsAssessment.vue";
-import {watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
+import useNotificationStore from "@/composables/useNotification.js";
 const reportSetupStore = useReportSetupStore()
+const  notificationStore  = useNotificationStore()
+const reportColumnAssessmentList = ref(null)
+
+onMounted(
+    async () => {
+      await reportSetupStore.fetchReportColumnAssessment()
+    }
+)
+
 
 
 watch(
@@ -12,6 +22,15 @@ watch(
     async (data) => {
       if(data){
         notificationStore.successToast("Success",data.message)
+      }
+    }
+)
+
+watch(
+    () => reportSetupStore.reportColumnAssessmentListResponse,
+    async (data) => {
+      if(data){
+        reportColumnAssessmentList.value = data.data
       }
     }
 )
@@ -69,7 +88,7 @@ watch(
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(levelInfo, index) in levelList" :key="index">
+          <tr v-for="(levelInfo, index) in reportColumnAssessmentList" :key="index">
             <td> {{levelInfo.code}}</td>
             <td> {{levelInfo.name}}</td>
             <td>

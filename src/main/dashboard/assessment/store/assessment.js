@@ -36,7 +36,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     }
 
 
-    async function fetchAssesmentArea(data) {
+    async function fetchAssessmentArea() {
         return await api.get("main/assessment-areas")
             .then((response) => {
                assesmentAreaResponse.value = response.data
@@ -258,7 +258,7 @@ async function createMetric(data) {
         createAssesmentAreas,
         newAssesmentAreasResponse,
         assesmentAreaResponse,
-        fetchAssesmentArea,
+        fetchAssessmentArea,
         newAssessmentResponse,
         createNewAssessment,
         fetchAssessments,
