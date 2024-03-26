@@ -43,10 +43,10 @@ export const useAuthStore = defineStore("auth", () => {
 
 
             })
-            .catch((response) => {
-                if(response){
+            .catch((error) => {
+                if(error && error.response){
                     localStorage.removeItem("token")
-                    errorMessage.value = response.response.data
+                    errorMessage.value = error.response.data
                 }
             })
     }
