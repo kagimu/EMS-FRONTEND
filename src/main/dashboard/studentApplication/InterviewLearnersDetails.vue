@@ -8,7 +8,7 @@
          <div class="row">
           <div class="col-lg-4">
               <h6 class="textColor" style=" text-align: left;font-size: 15px;">
-                <i class="bi bi-x-lg" @click="goBack()"></i>&nbsp;&nbsp;&nbsp;STUDENT ADMISSION<b></b>    
+                <i class="bi bi-x-lg" @click="goBack()"></i>&nbsp;&nbsp;&nbsp;STUDENT PROFILE<b></b>    
               </h6>
           </div>
           <!-- <div class="col-lg-8">
@@ -31,6 +31,9 @@
         <li class="nav-item cursor-pointer">
           <a style="color: black;" class="nav-link" @click="nextPage(3)" :class="step === 3 ? 'active activeTab' : ''">ATTEMPTED ASSESSMENTS</a>
         </li>
+        <li class="nav-item cursor-pointer">
+          <a style="color: black;" class="nav-link" @click="nextPage(4)" :class="step === 4 ? 'active activeTab' : ''">ADMISSION OFFERS</a>
+        </li>
       </ul>
 
       <div v-show="step === 1">
@@ -44,6 +47,12 @@
       </div>
       <div v-show="step === 3">
  <attempted-assessment v-on:next="nextPage"></attempted-assessment>
+      </div>
+    
+      <div v-show="step === 4">
+ 
+        <AdmissionDetails v-on:next="nextPage">
+       </AdmissionDetails>
       </div>
     
 
@@ -79,6 +88,8 @@
     import NewInvoice from "@/main/dashboard/invoice/NewInvoice.vue";
     import admitStudent from "@/main/dashboard/studentApplication/admitStudent.vue";
     import AttemptedAssessment from "@/main/dashboard/studentAdmission/newAdmissionComponents/AttemptedAssessment.vue";
+    import AdmissionDetails from "@/main/dashboard/studentAdmission/newAdmissionComponents/AdmissionDetails.vue";
+
     import {ref} from "vue";
     
     const step = ref(1)
