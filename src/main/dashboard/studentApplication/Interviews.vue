@@ -74,7 +74,7 @@
                   class="text-decoration-none"
                   :to="{name:'interview-learners-list', query:{interview_id:interview.number}}">
                 <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
-                <i class="bi bi-eye text-[15px]"></i>&nbsp;<small>View Applicants</small>
+                <small>View Applicants</small>
                 </button>
               </router-link>
             </div>
@@ -85,7 +85,7 @@
                   @click="showAssesssmentMetricsDialog(interview)"
                   data-bs-toggle="modal"
                   data-bs-target="#assesssmentMetricsModal"
-              > <i class="bi bi-eye textColor"></i>&nbsp;Assessement Metrics</button>
+              > Assessement Metrics</button>
               
 
               <button
@@ -93,7 +93,7 @@
                   @click="showInterviewAssessmentDialog(interview)"
                   data-bs-toggle="modal"
                   data-bs-target="#interviewAssessmentModal"
-              > <i class="bi bi-plus textColor"></i>&nbsp; Add Interview Assessment</button>
+              >  Add Interview Assessment</button>
 
 
             </div>

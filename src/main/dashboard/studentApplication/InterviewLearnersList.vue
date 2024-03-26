@@ -190,7 +190,7 @@
                   :to="{name:'interview-learners-details', query:{st_id:student.Student.number,interview_id:interviewNumber,applicationN:student.Application.number}}">
                   <button type="button"
                     class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
-                > Offer Admission </button>
+                >view Details</button>
 
               </router-link>
 

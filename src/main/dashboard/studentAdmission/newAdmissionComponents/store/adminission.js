@@ -89,7 +89,7 @@ export const useAdmissionStore = defineStore("admission", () => {
     }
 
     async function fetchAdmissionByFilters(study_period,interview_number,stream_number,campus_number,class_number) {
-        return await api.get("main/admissions?study_period_number="+study_period+"&interview_number="+interview_number+"&stream_number="+stream_number+"&campus_number="+campus_number+"&class_number="+class_number)
+        return await api.get("main/admissions?study_period_number="+study_period+"&interview_number="+interview_number+"&stream_number="+stream_number+"&campus_number="+campus_number+"&campus_class_number="+class_number)
             .then((response) => {
                 admissionByFiltersResponse.value = response.data
             })

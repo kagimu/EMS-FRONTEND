@@ -88,7 +88,7 @@ watch(
       <select class="form-control form-select form-control-sm shadow-none" v-model="assessment_metric_number" aria-label="Default select example">
         <option disabled value="">--Select Assessment--</option>
         <option v-for="(list, index) in assessmentMetricList" :key="index" :value="list.number">
-          {{list.description + " [ " +list.number + " ] " + " ( "+ list.assessment_area.name+" ) "}}</option>
+          {{list.name }}</option>
       </select>
     </div>
 
