@@ -21,6 +21,7 @@ watch(
     () => reportSetupStore.reportSettingsResponse,
     async (data) => {
       if(data){
+        await reportSetupStore.fetchReportSettings()
         notificationStore.successToast("Success",data.message)
       }
     }
