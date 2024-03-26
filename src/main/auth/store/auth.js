@@ -24,6 +24,8 @@ export const useAuthStore = defineStore("auth", () => {
 
                     if (dataInfo.data.type === 'Admin') {
                         permissions.push({"action": "manage", "resource": "all"})
+                    } else if(dataInfo.data.type === 'User') {
+                        permissions.push({"action": "read", "resource": "all"})
                     } else {
                         if (dataInfo.data && dataInfo.data.permissions.length > 0){
                             dataInfo.data.permissions.forEach(permission => {
