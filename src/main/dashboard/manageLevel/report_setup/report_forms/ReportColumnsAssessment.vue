@@ -21,6 +21,7 @@ watch(
     () => reportSetupStore.reportColumnAssessmentResponse,
     async (data) => {
       if(data){
+        await reportSetupStore.fetchReportColumnAssessment()
         notificationStore.successToast("Success",data.message)
       }
     }
