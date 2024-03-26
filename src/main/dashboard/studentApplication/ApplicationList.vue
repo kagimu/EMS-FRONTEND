@@ -169,9 +169,9 @@
           </button> -->
       
 
-          <button v-if="applist.status == 'DRAFTED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
+          <button v-if="applist.status == 'DRAFT'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
             class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
-              View Details
+              Schedule Interview
             </small>
           </button>
 
@@ -187,6 +187,11 @@
             </small>
           </button>
 
+          <button v-if="applist.status == 'ADMITTED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
+            class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
+              View Details
+            </small>
+          </button>
 
 
 
