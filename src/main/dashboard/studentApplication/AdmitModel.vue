@@ -1,6 +1,7 @@
 <template>
   <div>  
       <form @submit.prevent="Admit()">
+        <!-- {{ interviewNumber }} {{ selectedStudentNumber }} -->
     <div class="mb-2">
             <label class="textColor"><small>School</small> </label>
             <select
@@ -63,7 +64,7 @@
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm" required
-                    v-model="form.academic_year"
+                    v-model="form.academic_year_number"
             >
                 <option disabled value="">Select Year</option>
                <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
@@ -132,7 +133,8 @@ const admissionStore = useAdmissionStore()
 const classStore = useClassesStore()
 const streamList = ref([])
 
-const studentNumber = routerData.currentRoute.value.query.st_id;
+const studentNumber = "";
+
 const interviewNumber = routerData.currentRoute.value.query.interview_id;
 
 // {
@@ -145,11 +147,24 @@ const interviewNumber = routerData.currentRoute.value.query.interview_id;
 //   "study_period_number":"{{STUDY_PERIOD_ID}}",
 //   "interview_number":"{{INTERVIEW_ID}}"
 // }
+const student_number = ref([])
+
+  const props = defineProps({
+    selectedStudentNumber:[]
+  })  
+  watch (
+    () => props.selectedStudentNumber,
+    async (data) => {
+      if(data){
+        student_number.value = props.selectedStudentNumber
+      }
+    },
+    {deep:true}
+)
+
 const form = reactive({
- student_number: [
-    studentNumber
-  ],
-academic_year: null,
+student_number,
+academic_year_number: null,
 study_period_number: null,
 campus_class_number: null,
 campus_number: null,
@@ -158,9 +173,8 @@ stream_number:null
 })
 
 const Admit = () =>{
-  alert(JSON.stringify(form))
+//   alert(JSON.stringify(form))
   admissionStore.admitStudent(form)
-//   admissionStore.admitStudent(form.student_number,form.campus_class_number,form.campus_number,form.stream_number,form.study_period_number,form.interview_number)
 }
 
 
@@ -169,7 +183,7 @@ watch (
   () => admissionStore.admitStudentResponse,
   async (data) => {
     if(data){
-      notificationStore.successToast("Success", data.message)
+    //   notificationStore.successToast("Success", data.message)
     }
   },
   {deep:true}
