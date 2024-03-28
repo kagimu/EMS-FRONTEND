@@ -20,7 +20,7 @@
                 v-if="can('add_grade_scale','general')"
                  style="float: right; margin-right: 5px;" data-bs-toggle="modal"
                   data-bs-target="#addAccount"  type="button"  aria-controls="rolesDialog" 
-                  class="btn btn-primary btn-sm"><i class="bi bi-plus"></i> New Assessment Scale </button>
+                  class="btn btn-primary btn-sm"><i class="bi bi-plus"></i> New Assessment Grade </button>
  
                 <!-- <button  class="btn btn-outline-secondary  btn-sm mt-1" style="float: right;border: none;">
                 <small><i class="bi bi-printer">&nbsp;Print</i></small></button>  -->
