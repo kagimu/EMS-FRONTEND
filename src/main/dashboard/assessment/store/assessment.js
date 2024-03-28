@@ -22,6 +22,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const metricResponse = ref(null)
     const newAssessmentScaleResponse = ref(null)
     const assessmentScaleResponse = ref(null)
+    const updateAssessmentScaleResponse = ref(null)
 
     async function createAssesmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -229,7 +230,7 @@ async function createMetric(data) {
 
     // assessmentscale
     async function createAssessmentScale(data) {
-        return await api.post("main/assessments/aggregate-scales/alternative",data)
+        return await api.post("main/assessments/aggregate-grades",data)
             .then((response) => {
              newAssessmentScaleResponse.value = response.data
             })
@@ -241,7 +242,7 @@ async function createMetric(data) {
     }
     
     async function fetchAssessmentScale() {
-        return await api.get("main/assessments/aggregate-scales")
+        return await api.get("main/assessments/aggregate-grades")
             .then((response) => {
                 assessmentScaleResponse.value = response.data
             })
@@ -252,6 +253,18 @@ async function createMetric(data) {
             })
     }
 
+    // /assessments/assessment-grades/{{ASSESSMENT_GRADE_ID}}
+    async function updateAssessmentScale(data,assessment_grade_id) {
+        return await api.put("main/assessments/assessment-grades/"+assessment_grade_id,data)
+            .then((response) => {
+             updateAssessmentScaleResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
 
     return {
@@ -291,6 +304,8 @@ async function createMetric(data) {
         newAssessmentScaleResponse,
         createAssessmentScale,
         fetchAssessmentScale,
-        assessmentScaleResponse
+        assessmentScaleResponse,
+        updateAssessmentScale,
+        updateAssessmentScaleResponse
     }
 })

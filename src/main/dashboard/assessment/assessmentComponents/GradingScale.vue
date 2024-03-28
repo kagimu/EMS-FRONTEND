@@ -193,6 +193,7 @@
     // window.alert(class_number)
     fetchScaleGrade(constent.cmp,constent.sch,constent.cla)
   }
+
   
   const fetchScaleGrade = (a,b,c) =>{
     assessmentStore.fetchAggregateScale(a,b,c)

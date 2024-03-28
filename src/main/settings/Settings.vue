@@ -31,9 +31,9 @@
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
 
-                <!-- <div v-if="selectedPage === 'role'">
-                  <roles></roles>
-                </div> -->
+                <div v-if="selectedPage === 'profile'">
+                  <Profile></Profile>
+                </div>
                 <div v-if="selectedPage === 'level'">
                   <level-setup></level-setup>
                 </div>
@@ -76,6 +76,7 @@ import SosInfo from "@/main/settings/sosinfo/SosInfo.vue";
 import Services from "../dashboard/servicesAndProducts/Services.vue";
 import Conditions from "@/main/settings/conditions/Conditions.vue";
 import Products from "../dashboard/servicesAndProducts/Products.vue";
+import Profile from "@/main/settings/Profile.vue"
 
 import { useAbility } from '@casl/vue';
 

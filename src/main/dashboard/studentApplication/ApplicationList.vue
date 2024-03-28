@@ -146,7 +146,7 @@
           <th>APN</th>
           <th>Student</th>
           <th>Gender</th>
-          <th>DOB</th>
+          <!-- <th>DOB</th> -->
           <th>Status</th>
           <th>Payment</th>
           <th>Action</th>
@@ -155,10 +155,14 @@
       <tbody>
         <tr v-for="(applist, index) in applicationInfoList" :key="index">
           <td>{{ applist.Student.apn }}</td>
-          <td>{{ applist.Student.surname+ " "+ applist.Student.second_name+ " "+ applist.Student.other_name  }} </td>
+          <td style="text-transform: capitalize;">{{ applist.Student.surname+ " "+ applist.Student.second_name+ " "+ applist.Student.other_name  }} </td>
           <td>{{ applist.Student.gender }}</td>
-          <td>{{ applist.Student.date_of_birth }}</td>
-          <td>{{ applist.status}} </td>
+          <!-- <td>{{ applist.Student.date_of_birth }}</td> -->
+          <td><span v-if="applist.status == 'INTERVIEW_SCHEDULED'">INTERVIEW SCHEDULED</span>
+            <span v-if="applist.status == 'DRAFT'" style="font-size: 12px;">DRAFT</span>
+            <span v-if="applist.status == 'ADMITTED'" style="font-size: 12px;">ADMITTED</span>
+            <span v-if="applist.status == 'ENROLLED'" style="font-size: 12px;">ENROLLED</span>
+             </td>
           <td>{{ applist.application_fee_payment === false ? 'pending' : 'completed' }}</td>
           <td>
             <!-- <button  data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
@@ -216,8 +220,9 @@
 
 
   <div>
+    <!-- :class="{ show: interviewAssessmentDialog }" -->
     <!-- modal for viewing more details -->
-    <div class="modal fade" tabindex="-1"   id="infoModal" aria-hidden="true" :class="{ show: showDialog }">
+    <div class="modal fade" tabindex="-1" id="infoModal"   aria-hidden="true" :class="{ show: shDialog }">
       <div class="modal-dialog modal-xl">
         <application-details :application-number="applications"></application-details>
       </div>
@@ -245,7 +250,7 @@ const applicationInfoList = ref( [])
 let errorMessage = ref(null)
 const buttonLoader = ref(false)
 const searchQuery = ref('')
-const showDialog = ref(false)
+let shDialog = ref(false)
 const applications= ref(null)
 
 const applicationStore= useApplicationStore()
@@ -281,7 +286,6 @@ const fetchCampuses = (school_number) => {
 
 const fetchClasses = (campus_number) => {
   campusStore.fetchClassesByCampus(campus_number)
-  admissionStore.fetchAdmissionByFilters(form.study_period_number,form.interview_number,form.stream_number,form.campus_number,form.campus_class_number)
 }
 
 
@@ -290,7 +294,6 @@ const fetchAcademicYear = (campusN) =>{
 // alert(campusN)
 academicYearStore.fetchAcademicYearByCampus(campusN)
 classStore.fetchClassStreams(campusN)
-admissionStore.fetchAdmissionByFilters(form.study_period_number,form.interview_number,form.stream_number,form.campus_number,form.campus_class_number)
 }
 watch(
   () => academicYearStore.academicYearByCampusResponse,
@@ -311,11 +314,9 @@ watch(
 
 
 const filterByStream = () => {
-  admissionStore.fetchAdmissionByFilters(form.study_period_number,form.interview_number,form.stream_number,form.campus_number,form.campus_class_number)
 }
 
 const filterByStudyPeriod = () => {
-  admissionStore.fetchAdmissionByFilters(form.study_period_number,form.interview_number,form.stream_number,form.campus_number,form.campus_class_number)
 }
 watch(
   () => classStore.classStreams,
@@ -379,8 +380,10 @@ watch(
 
 
 const setApplicationNumber = (ap) =>{
+  shDialog.value = true
   applications.value = ap
-  showDialog.value = true
+  
+  // alert(shDialog.value)
 }
 
 
@@ -393,6 +396,7 @@ onMounted(
     () => applicationStore.applicationListResponse,
     async (data) => {
       if(data){
+        shDialog.value = false,
         applicationInfoList.value = data.data
        
       }
@@ -404,7 +408,7 @@ onMounted(
     () => applicationStore.errorMessage,
     async (data) => {
       if(data){
-        showDialog.value = false
+        shDialog.value = false
         buttonLoader.value = false
         errorMessage.value = data.message
         notificationStore.errorToast("Error",data.message)
@@ -421,7 +425,7 @@ watch(
           if (data) {
             formData.value = ''
               buttonLoader.value = false
-              showDialog.value = false,
+              shDialog.value = false,
               applicationStore.fetchApplicationList()
               notificationStore.successToast("Success", data.message)
               

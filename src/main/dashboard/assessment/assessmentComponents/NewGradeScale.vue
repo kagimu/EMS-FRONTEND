@@ -95,7 +95,7 @@
 
             <div class="col-lg-4">
                 <label class="textColor"><small>Weight</small></label>
-             <input v-model="form.weight" type="text" class="form-control" placeholder="1">
+             <input v-model="form.weight" type="number" class="form-control" placeholder="1">
             </div>
         </div>
       </div>
@@ -153,7 +153,6 @@ max_value: null,
 level_number: null,
 weight: null,
 description: null,
-study_period_number: null,
 class_number: null,
 school_number: null,
 campus_number: null,

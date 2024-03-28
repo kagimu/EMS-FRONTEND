@@ -5,7 +5,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-8 mt-2 mb-2">Assessment Metrics</h6>
+            <h6 class="modal-title ml-8 mt-2 mb-2">Assessment</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -55,9 +55,10 @@
       <thead>
         <tr>
           <th>Name</th>
-          <th>Scheduled_on</th>
+          <th>Scheduled On</th>
           <th>Venue</th>
-          <th>Message</th>
+          <th>Comment</th>
+          
           <th>#</th>
         </tr>
 
@@ -72,7 +73,7 @@
             <div class="mb-1">
               <router-link style=""
                   class="text-decoration-none"
-                  :to="{name:'interview-learners-list', query:{interview_id:interview.number}}">
+                  :to="{name:'interview-learners-list', query:{interview_id:interview.number, interview:interview.name}}">
                 <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
                 <small>View Applicants</small>
                 </button>
@@ -85,7 +86,7 @@
                   @click="showAssesssmentMetricsDialog(interview)"
                   data-bs-toggle="modal"
                   data-bs-target="#assesssmentMetricsModal"
-              > Assessement Metrics</button>
+              > Assessement</button>
               
 
               <button
@@ -152,13 +153,15 @@ import useNotificationStore from "@/composables/useNotification.js";
 import NewSchool from "@/main/dashboard/manageSchool/NewSchool.vue";
 import InterviewAssessment from "@/main/dashboard/studentApplication/InterviewAssessment.vue";
 import InterviewAssessmentMetricsList from "@/main/dashboard/studentApplication/InterviewAssessmentMetricsList.vue"
+import {useStudentApplicationStore} from "@/main/dashboard/studentApplication/store/student_application.js";
+
 
 const interviewList = ref( [])
 let errorMessage = ref(null)
 
 const buttonLoader = ref(false)
 const interviewNumber = ref(null)
-
+const studentApplicationStore = useStudentApplicationStore()
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
 const interviewAssessmentDialog = ref(false)
@@ -224,7 +227,6 @@ watch(
       {deep: true}
   )
 
-
   const showAssesssmentMetricsDialog = (interview) =>{
  
   interviewNumber.value = interview.number
@@ -232,6 +234,7 @@ watch(
   assesssmentMetricsDialog.value = true
 
 }
+
 
  
   </script>

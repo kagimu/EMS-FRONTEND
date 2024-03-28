@@ -202,7 +202,7 @@
           </td>
           <td>{{ adm.Student.adn }}</td>
           <!-- <td>{{ adm.AcademicYear.academic_year_name }}</td> -->
-          <td>{{ adm.Student.surname }}</td>
+          <td style="text-transform: capitalize !important;">{{ adm.Student.surname }}</td>
           <td>{{ adm.Campus.name }}</td>
           <td>{{ adm.Stream.class_name }}</td>
           <td>{{ adm.Stream.name }}</td>
@@ -210,7 +210,8 @@
           <!-- <td>{{ adm.status }}</td> -->
           <!-- <span v-if="adm.status == 'Enrolled'" class="link link-primary"><i>{{ adm.status }}</i></span> -->
           <td>
-            <button v-if="adm.status != 'Enrolled'" @click="showDialog(adm.Student.number)" data-bs-toggle="modal" data-bs-target="#admitMainModal" type="submit" class="btn btn-sm btn-primary mb-2 mr-4 "
+            <button v-if="adm.status != 'Enrolled'" @click="showDialog(adm.Student.number)" 
+            data-bs-toggle="modal" data-bs-target="#admitMainModal" type="submit" class="btn btn-sm btn-primary mb-2 mr-4 "
                style="color: white;">
                <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  
         <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
@@ -220,12 +221,12 @@
 
       <router-link style=""
                   class="text-decoration-none"
-                  :to="{name:'interview-learners-details', query:{ad_st_id:adm.Student.number}}">
+                  :to="{name:'interview-learners-details', query:{st_id:adm.Student.number}}">
                   <button type="button"
                     class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
                 >view Details</button>
 
-              </router-link>
+      </router-link>
 
 
       <button v-if="adm.status == 'Enrolled'">

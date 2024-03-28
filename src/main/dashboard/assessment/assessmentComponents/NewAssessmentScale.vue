@@ -2,15 +2,27 @@
     <div>
         <div class="modal-content">
       <div class="modal-header text-sm p-0">
-        <h6 class="modal-title ml-3 mt-2 mb-2"><small>Add Assessment Scale</small></h6>
+        <!-- {{ scaleD }} -->
+        <h6 class="modal-title ml-3 mt-2 mb-2"><small>{{ title }}</small></h6>
         <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form @submit.prevent="createScale()">
-      <div class="mb-2">
-        <label class="textColor"><small>Name</small></label>
-       <input v-model="form.name" placeholder="D2" type="text" class="form-control">
-      </div>
+            <div class="row">
+                <div class="col-8">
+                <div class="mb-2">
+                <label class="textColor"><small>Name</small></label>
+                <input v-model="form.name" placeholder="First Class, Second Class, Third Class, Pass" type="text" class="form-control">
+                </div>
+                </div>
+                <div class="col-4">
+                <div class="mb-2">
+                <label class="textColor"><small>Abbreviation</small></label>
+                <input v-model="form.abbreviation" placeholder="F1,F2,Pass, Fail" type="text" class="form-control">
+                </div>
+                </div>
+            </div>
+
       <div class="mb-2">
               <label class="textColor"><small>School</small> <span class="star">*</span></label>
               <select
@@ -46,15 +58,15 @@
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm" required
-                      v-model="form.class_number"
+                      v-model="form.campus_class_number"
               >
                   <option disabled value="">Select class</option>
-                  <option v-for="(list, index) in classList" :key="index" :value="list.class_number">{{ list.class_name }}
+                  <option v-for="(list, index) in classList" :key="index" :value="list.number">{{ list.class_name }}
                   </option>
               </select>
           </div>
 
-
+<!-- 
           <div class="mb-2">
               <label class="textColor"><small>Level</small> <span class="star">*</span></label>
               <select
@@ -66,23 +78,23 @@
                  <option v-for="(levelList,index) in levelData" :key="index" :value="levelList.number">{{ levelList.name }}</option>
                  <option></option>
               </select>
-          </div>
+          </div> -->
 
           
       <div class="mb-2">
         <div class="row">
             <div class="col-lg-4">
                 <label class="textColor"><small>Minimum Value</small></label>
-               <input v-model="form.min_value" type="number" class="form-control">
+               <input v-model="form.minimum_points" type="number" class="form-control">
             </div>
             <div class="col-lg-4">
                 <label class="textColor"><small>Maximum Value</small></label>
-             <input v-model="form.max_value" type="number" class="form-control">
+             <input v-model="form.maximum_points" type="number" class="form-control">
             </div>
 
             <div class="col-lg-4">
-                <label class="textColor"><small>scale</small></label>
-             <input v-model="form.scale" type="text" class="form-control" placeholder="1">
+                <label class="textColor"><small>Grade</small></label>
+             <input v-model="form.grade" type="text" class="form-control" placeholder="1">
             </div>
         </div>
       </div>
@@ -90,8 +102,12 @@
       <div class="mb-2">
         <label class="textColor"><small>Description</small></label>
         <textarea v-model="form.description" class="form-control">
-
-
+        </textarea>
+      </div>
+      
+      <div class="mb-2">
+        <label class="textColor"><small>Remarks</small></label>
+        <textarea v-model="form.remarks" class="form-control">
         </textarea>
       </div>
      <div class="flex justify-content-end mt-2" style="width: 100%;">
@@ -130,39 +146,61 @@ const assessmentStore = useAssessmentStore()
 const errorMessage = ref(null)
 const levelData = ref([])
 const levelStore = useLevelStore()
+let title = ref("Add Assessment Scale")
 
 
 const form = reactive({
 name : null,
-min_value: null,
-max_value: null,
-level_number: null,
-scale: null,
+maximum_points: null,
+minimum_points: null,
+campus_class_number: null,
+grade: null,
 description: null,
-study_period_number: null,
-class_number: null,
-school_number: null,
-campus_number: null,
+abbreviation: null,
+remarks:null
 })
 
-// {
-//     "name": "Name",
-//     "min_value": 0,
-//     "max_value": 10,
-//     "level_number": "{{LEVEL_ID}}",
-//     "scale": "Division 1",
-//     "description": "this is a description",
-//     "study_period_number": "{{STUDY_PERIOD}}",
-//     "class_number": "{{CLASS_ID}}",
-//     "school_number": "{{SCHOOL_ID}}",
-//     "campus_number": "{{CAMPUS_ID}}"
-// }
+const scaleDataList = ref(null)
 
+const props = defineProps({
+    scaleD:String
+  })
+
+  
+  watch (
+    () => props.scaleD,
+    async (data) => {
+      if(data){
+        title.value = "UPDATE ASSESSMENT GRADE SCALE"
+        scaleDataList.value =props.scaleD
+        form.name = props.scaleD.name
+        form.maximum_points=props.scaleD.maximum_points,
+        form.minimum_points=props.scaleD.minimum_points,
+        form.campus_class_number=props.scaleD.campus_class_number,
+        form.grade=props.scaleD.Grade,
+        form.description=props.scaleD.description,
+        form.abbreviation=props.scaleD.abbreviation,
+        form.remarks=props.scaleD.remarks
+      }
+    },
+    {deep:true}
+)
 const createScale = () =>{
     // alert(JSON.stringify(form))
-    assessmentStore.createAssessmentScale(form)
+    if(props.scaleD.name !=""){
+        assessmentStore.updateAssessmentScale(form,props.scaleD.number)
+    }else{
+        assessmentStore.createAssessmentScale(form)
+    }
+
 }
 
+
+
+onMounted(() => {
+          assessmentStore.fetchAssessmentScale()
+      }
+  ) 
 
 
 watch (
@@ -172,10 +210,41 @@ watch (
         assessmentStore.fetchAssessmentScale()
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
+        form.name = null,
+        form.maximum_points=null,
+        form.minimum_points=null,
+        form.campus_class_number=null,
+        form.grade=null,
+        form.description=null,
+        form.abbreviation=null,
+        form.remarks=null
       }
     },
     {deep:true}
 )
+
+
+
+watch (
+    () => assessmentStore.updateAssessmentScaleResponse,
+    async (data) => {
+      if(data){
+        assessmentStore.fetchAssessmentScale()
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+        form.name = null,
+        form.maximum_points=null,
+        form.minimum_points=null,
+        form.campus_class_number=null,
+        form.grade=null,
+        form.description=null,
+        form.abbreviation=null,
+        form.remarks=null
+      }
+    },
+    {deep:true}
+)
+
 
 watch (
     () => assessmentStore.errorMessage,
@@ -258,6 +327,8 @@ const fetchCampuses = (school_number) => {
       {deep: true}
   )
   
+
+
 
 </script>
 
