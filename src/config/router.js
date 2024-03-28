@@ -59,6 +59,8 @@ import AssessmentMetrics from "@/main/dashboard/assessment/assessmentComponents/
 import InterviewAssessmentResults from '../main/dashboard/studentApplication/InterviewAssessmentResults.vue';
 import InterviewLearnersList from "@/main/dashboard/studentApplication/InterviewLearnersList.vue";
 import InterviewLearnersDetails from '@/main/dashboard/studentApplication/InterviewLearnersDetails.vue';
+import AdmissionList from '@/main/dashboard/studentAdmission/AdmissionList.vue';
+import Enrollment from '@/main/dashboard/enrollment/Enrollment.vue';
 
 
 const router = createRouter({
@@ -121,6 +123,12 @@ const router = createRouter({
                     action: "view_student-admission",
                       
                 }},
+                {path: 'admission-list', component: AdmissionList, name: "admission-list",
+                meta: {
+                    resource: "admission-list",
+                    action: "view-admission-list",
+                      
+                }},
                 {path: 'student-application', component: StudentApplication, name: "student-application",
                 meta: {
                     resource: "student-application",
@@ -149,7 +157,6 @@ const router = createRouter({
                 meta: {
                     resource: "settings",
                     action: "view_settings",
-                      
                 }},
                 {path: 'curriculum', component: Curriculum, name: "curriculum",
                 meta: {
@@ -396,6 +403,13 @@ const router = createRouter({
                 meta: {
                     resource: "interview-learners-details",
                     action: "interview-learners-details",
+                      
+                }},
+
+                {path: 'enrolment', component: Enrollment, name: "enrolment",
+                meta: {
+                    resource: "enrolment",
+                    action: "view-enrolment",
                       
                 }},
 

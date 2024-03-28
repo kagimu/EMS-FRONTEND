@@ -67,7 +67,7 @@
                   <div class="mb-2">
                 <label class="textColor"><small>Gender</small></label>
               <select class="form-control form-select form-control-sm" v-model="form.gender" aria-label="Default select example">
-                <option disabled value="">Select Gender</option>
+                <option disabled value="">--Select Gender--</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>

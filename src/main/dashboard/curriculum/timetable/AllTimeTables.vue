@@ -46,7 +46,7 @@
                             v-model="school"
                             @click="filterSchool(school)"
                     >
-                        <option disabled value="">Filter by School</option>
+                        <option disabled value="">--Filter by School--</option>
                         <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
                     </select>
                 </div>

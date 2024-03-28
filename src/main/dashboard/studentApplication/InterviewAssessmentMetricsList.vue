@@ -124,8 +124,7 @@ watch(
   <li class="list-group-item d-flex justify-content-between align-items-start">
     
     <div class="ms-2 me-auto">
-      <div class="fw-bold">{{list.AssessmentMetric.assessment_area_name}}</div>
-    {{  list.AssessmentMetric.description }}
+      <div class="">{{list.AssessmentMetric.name + "(" +list.AssessmentMetric.CampusClass.class_name+" )"}}</div>
     </div>
     <router-link
     class="btn btn-outline-primary btn-sm"

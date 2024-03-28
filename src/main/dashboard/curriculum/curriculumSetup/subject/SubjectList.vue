@@ -42,7 +42,7 @@
                   v-model="learning_area_number"
                   @click="selectSubjectCluster(learning_area_number)"
                   >
-                <option disabled value="">Filter by Learning Area</option>
+                <option disabled value="">--Filter by Learning Area--</option>
                 <option value="">All</option>
                 <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
@@ -55,7 +55,7 @@
                   v-model="subject_cluster_number"
                   @click="filterSubjectCluster()"
                   >
-                <option disabled value="">Filter by Subject Cluster</option>
+                <option disabled value="">--Filter by Subject Cluster--</option>
                 <option value="">All</option>
                 <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>

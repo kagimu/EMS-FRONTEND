@@ -48,6 +48,9 @@
                   <div v-if="selectedPage === 'grade-scale'">
                     <GradingScale></GradingScale>
                   </div>
+                  <div v-if="selectedPage === 'assessment-scale'">
+                   <AssessmentScale></AssessmentScale>
+                  </div>
                 
                   
               </div>
@@ -66,16 +69,17 @@
   
   import {reactive, ref} from "vue";
   import {useRouter} from "vue-router";
-  import InterviewAssesmentAreas from "../assessment/assessmentComponents/AssesmentAreas.vue";
-  import AssessmentList from "./assessmentComponents/AssessmentList.vue";
-  import ExamType from "./assessmentComponents/ExamType.vue"
-  import GradingScale from "./assessmentComponents/GradingScale.vue";
-  import GradingStandards from "./assessmentComponents/GradingStandards.vue";
+  import InterviewAssesmentAreas from "@/main/dashboard/assessment/assessmentComponents/AssesmentAreas.vue";
+  import AssessmentList from "@/main/dashboard/assessment/assessmentComponents/AssessmentList.vue";
+  import ExamType from "@/main/dashboard/assessment/assessmentComponents/ExamType.vue"
+  import GradingScale from "@/main/dashboard/assessment/assessmentComponents/GradingScale.vue";
+  import GradingStandards from "@/main/dashboard/assessment/assessmentComponents/GradingStandards.vue";
+  import AssessmentScale from "@/main/dashboard/assessment/assessmentComponents/AssessmentScale.vue";
 
   const routerData = useRouter()
   
   const route = routerData.currentRoute.value.query.s
-  const selectedPage = route ? route : "assessments"
+  const selectedPage = route ? route : "examtype"
   
   const assess = ref([
     // {
@@ -98,6 +102,10 @@
     {
       name:"Aggregate Scale",
       id:"grade-scale"
+    },
+    {
+      name:"Assessment Grades",
+      id:"assessment-scale"
     },
    
   ])

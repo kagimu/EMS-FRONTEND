@@ -174,7 +174,7 @@ const { can } = useAbility()
 
     onMounted(
     async () => {
-      await assessmentStore.fetchAssesmentArea()
+      await assessmentStore.fetchAssessmentArea()
     } )
 
     
@@ -249,7 +249,7 @@ const showInterviewDialog = () => {
 
     const addAssesmentArea = () => {
 
-    alert(JSON.stringify(form))
+    // alert(JSON.stringify(form))
     interviewDialog.value = true;
      buttonLoader.value = true
      assessmentStore.createAssesmentAreas(form)
@@ -260,7 +260,7 @@ const showInterviewDialog = () => {
     async (data) => {
       if(data){
         buttonLoader.value = false
-        assessmentStore.fetchAssesmentArea()
+        await assessmentStore.fetchAssessmentArea()
         notificationStore.successToast("Success", data.message)
         form.name=null,
       form.curriculum_class_number=null,

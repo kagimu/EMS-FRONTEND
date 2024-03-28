@@ -20,6 +20,9 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const assessmentMetricsResponse = ref(null)
     const newMetricResponse = ref(null)
     const metricResponse = ref(null)
+    const newAssessmentScaleResponse = ref(null)
+    const assessmentScaleResponse = ref(null)
+    const updateAssessmentScaleResponse = ref(null)
 
     async function createAssesmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -34,7 +37,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     }
 
 
-    async function fetchAssesmentArea(data) {
+    async function fetchAssessmentArea() {
         return await api.get("main/assessment-areas")
             .then((response) => {
                assesmentAreaResponse.value = response.data
@@ -225,12 +228,51 @@ async function createMetric(data) {
             })
     }
 
+    // assessmentscale
+    async function createAssessmentScale(data) {
+        return await api.post("main/assessments/aggregate-grades",data)
+            .then((response) => {
+             newAssessmentScaleResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+    
+    async function fetchAssessmentScale() {
+        return await api.get("main/assessments/assessment-grades")
+            .then((response) => {
+                assessmentScaleResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
+    // main/assessments/assessment-grades/53d9cee8-0419-45ae-b89d-252910b92d2c
+    async function updateAssessmentScale(data,assessment_grade_id) {
+        return await api.put("main/assessments/assessment-grades/update/"+assessment_grade_id,data)
+            .then((response) => {
+             updateAssessmentScaleResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
     return {
         createAssesmentAreas,
         newAssesmentAreasResponse,
         assesmentAreaResponse,
-        fetchAssesmentArea,
+        fetchAssessmentArea,
         newAssessmentResponse,
         createNewAssessment,
         fetchAssessments,
@@ -259,6 +301,12 @@ async function createMetric(data) {
         createMetric,
         newMetricResponse,
         metricResponse,
-        fetchMetrics
+        fetchMetrics,
+        newAssessmentScaleResponse,
+        createAssessmentScale,
+        fetchAssessmentScale,
+        assessmentScaleResponse,
+        updateAssessmentScale,
+        updateAssessmentScaleResponse
     }
 })

@@ -110,7 +110,7 @@
 
 import router from "@/config/router.js";
 
-import {getCurrentInstance, ref,onMounted} from 'vue'
+import {ref,onMounted} from 'vue'
 import {useAuthStore} from "@/main/auth/store/auth.js";
 import {useRouter} from "vue-router";
 import { useAbility } from '@casl/vue';
@@ -130,7 +130,8 @@ const menuList = ref([
   {title:"Time table", name:"timetable", icon:"bi-pen",action:"view_timetable"},
   {title:"Assessment", name:"assessment", icon:"bi-book",action:"view_assessment"},
   {title:"Student Application", name:"student-application", icon:"bi-person-plus",action:"view_student-application"},
-  {title:"Student Admission", name:"student-admission", icon:"bi-database-down",action:"view_student-admission"},
+  {title:"Student Admission", name:"admission-list", icon:"bi-database-down",action:"view_student-admission"},
+  {title:"Student Enrolment", name:"enrolment", icon:"bi-database-down",action:"view_enrolment"},
   {title:"Invoices", name:"invoices", icon:"bi-receipt-cutoff",action:"view_invoices"},
   // {title:"Profiles", name:"profiles", icon:"bi-people",action:"view_profiles"},
   // {title:"Accounting", name:"accounting", icon:"bi-receipt"},

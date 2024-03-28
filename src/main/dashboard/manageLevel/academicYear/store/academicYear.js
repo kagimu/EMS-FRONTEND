@@ -5,9 +5,11 @@ import api from "@/config/api.js";
 export const useAcademicYearStore = defineStore("academicYear", () => {
     let newAcademicYearResponse = ref(null)
     let academicYearByLevelResponse = ref(null)
+    let campusClassByLevelResponse = ref(null)
     const errorMessage = ref(null)
     const academicYearResponse = ref(null)
     const deleteAcademicYearResponse = ref(null)
+    const academicYearByCampusResponse = ref(null)
 
 
 
@@ -29,6 +31,18 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
         return await api.get("main/academic-year/by-level?campus_level_number="+campus_level_number)
             .then((response) => {
                 academicYearByLevelResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchCampusClassByLevel(campus_level_number) {
+        return await api.get("main/class/campus-class-by-level?campus_level_number="+campus_level_number)
+            .then((response) => {
+                campusClassByLevelResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -65,15 +79,32 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
 
 
 
+    async function fetchAcademicYearByCampus(campus_class_number) {
+        return await api.get("main/academic-year/by-campus-class?campus_class_number="+campus_class_number)
+            .then((response) => {
+                academicYearByCampusResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
     return {
         newAcademicYearResponse,
         academicYearResponse,
         deleteAcademicYearResponse,
         academicYearByLevelResponse,
         errorMessage,
+        academicYearByCampusResponse,
+        campusClassByLevelResponse,
         newAcademicYear,
         fetchAcademicYear,
         deleteAcademicYear,
-        fetchAcademicYearByLevel
+        fetchAcademicYearByLevel,
+        fetchAcademicYearByCampus,
+        fetchCampusClassByLevel
     }
 })

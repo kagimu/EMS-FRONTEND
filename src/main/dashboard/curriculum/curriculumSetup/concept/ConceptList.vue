@@ -43,7 +43,7 @@
                   v-model="learning_area_number"
                   @click="selectSubjectCluster(learning_area_number)"
                   >
-                <option disabled value="">Filter by Learning Area</option>
+                <option disabled value="">--Filter by Learning Area--</option>
                 <option value="">All</option>
                 <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
@@ -56,7 +56,7 @@
                   v-model="subject_cluster_number"
                   @click="selectSubject(subject_cluster_number)"
                   >
-                <option disabled value="">Filter by Subject Cluster</option>
+                <option disabled value="">--Filter by Subject Cluster--</option>
                 <option value="">All</option>
                 <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
@@ -69,7 +69,7 @@
                   v-model="subject_number"
                   @click="selectStrand(subject_number)"
                   >
-                <option disabled value="">Filter by Subject</option>
+                <option disabled value="">--Filter by Subject--</option>
                 <option value="">All</option>
                 <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
@@ -83,7 +83,7 @@
                   v-model="strand_number"
                   @click="selectTopic(strand_number)"
               >
-                <option disabled value="">Filter by Strand</option>
+                <option disabled value="">--Filter by Strand--</option>
                 <option value="">All</option>
                 <option v-for="(list, index) in strandList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
@@ -97,7 +97,7 @@
                   v-model="topic_number"
                   @click="selectSubTopic(topic_number)"
               >
-                <option disabled value="">Select Topic</option>
+                <option disabled value="">--Select Topic--</option>
                 <option value="">All</option>
                 <option v-for="(list, index) in topicList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
@@ -111,7 +111,7 @@
                   v-model="sub_topic_number"
                   @click="fetchConceptsList()"
               >
-                <option disabled value="">Select Sub Topic</option>
+                <option disabled value="">--Select Sub Topic--</option>
                 <option value="">All</option>
                 <option v-for="(list, index) in subtopicList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
@@ -124,7 +124,7 @@
                   v-model="class_number"
                   @click="fetchConceptsList()"
               >
-                <option disabled value="">Filter by Class</option>
+                <option disabled value="">--Filter by Class--</option>
                 <option value="">All</option>
                 <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
 <!--                <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>-->

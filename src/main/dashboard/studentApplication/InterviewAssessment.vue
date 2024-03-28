@@ -43,22 +43,24 @@ watch (
     {deep:true}
 )
 
-watch (
-    () => studentApplicationStore.interviewAssessmentResponse,
-    async (data) => {
-      if(data){
-        loader.value = false
-      }
-    },
-    {deep:true}
-)
+// watch (
+//     () => studentApplicationStore.interviewAssessmentResponse,
+//     async (data) => {
+//       if(data){
+//         loader.value = false
+        
+//       }
+//     },
+//     {deep:true}
+// )
 
 
 watch(
       () => studentApplicationStore.interviewAssessmentResponse,
       async (data) => {
           if (data) {
-              notificationStore.successToast("Success", data.message)
+            loader.value = false
+              // notificationStore.successToast("Success", data.message)
           }
       },
       {deep: true}
@@ -70,7 +72,7 @@ watch(
     async (data) => {
       if(data){
         errorMessage.value = data.message
-        notificationStore.errorToast("Error",data.message)
+        // notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}
@@ -84,10 +86,11 @@ watch(
 
 
     <div class="mb-2">
-      <label class="textColor"><small>Assessment Metric</small></label>
+      <label class="textColor"><small>Assessment</small></label>
       <select class="form-control form-select form-control-sm shadow-none" v-model="assessment_metric_number" aria-label="Default select example">
         <option disabled value="">--Select Assessment--</option>
-        <option v-for="(list, index) in assessmentMetricList" :key="index" :value="list.number">{{list.description}}</option>
+        <option v-for="(list, index) in assessmentMetricList" :key="index" :value="list.number">
+          {{list.name }}</option>
       </select>
     </div>
 

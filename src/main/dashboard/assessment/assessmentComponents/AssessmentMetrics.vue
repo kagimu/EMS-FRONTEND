@@ -30,12 +30,14 @@
           <tr>
             <!-- <th>Interview</th> -->
             <th>Name</th>
+            <th>Decription</th>
             <th>#</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(metricsData, index) in AsessmentMetricsData " :key="index">
-            <td>{{ metricsData.assessment_area.name}}</td>
+            <td>{{ metricsData.name + " - " + metricsData.CampusClass.class_name}}</td>
+            <td>{{ metricsData.description }}</td>
             <td>
             <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
               <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
@@ -58,11 +60,7 @@
             </div>
             <div class="offcanvas-body">
               <form @submit.prevent="addInterviewAssesmentMetrics">
-                <div class="mb-2">
-                  <label class="textColor"><small>Name</small></label>
-                  <input type="text" v-model="form.name" class="form-control">
-                </div>
-
+        
                 <div class="mb-2">
         <label class="textColor"><small>Level</small></label>
         <select
@@ -248,6 +246,7 @@
   
     const classStore = useClassesStore()
     const assessmentStore= useAssessmentStore()
+    const studyPeriodStore = useStudyPeriodStore()
     const  notificationStore  = useNotificationStore()
     const campusList = ref([])
     const assessmentMetricsList = ref([])
@@ -262,7 +261,6 @@
     const preferred_campus_number = ref(null)
     const metricListData = ref([])
     const academicYearList = ref([])
-    const studyPeriodStore = useStudyPeriodStore()
     const studyPeriodList = ref([])
     const campus_level_number = ref(null)
     const academic_year_number = ref(null)
@@ -353,7 +351,7 @@ onMounted(
 
       onMounted(
     async () => {
-      await assessmentStore.fetchAssesmentArea()
+      await assessmentStore.fetchAssessmentArea()
     } )
 
    //working on dialog

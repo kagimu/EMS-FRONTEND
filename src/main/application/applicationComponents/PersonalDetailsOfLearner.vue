@@ -75,10 +75,10 @@
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm" required
-                      v-model="form.class_number"
+                      v-model="form.campus_class_number"
               >
                   <option disabled value="">Select class</option>
-                  <option v-for="(list, index) in classList" :key="index" :value="list.class_number">{{ list.class_name }}
+                  <option v-for="(list, index) in classList" :key="index" :value="list.number">{{ list.class_name }}
                   </option>
               </select>
           </div>
@@ -167,7 +167,7 @@ const  notificationStore  = useNotificationStore()
   preferred_campus_number: null,
   source_of_school_info: null,
   application_number: localStorage.getItem("applicationId"),
-  class_number: null,
+  campus_class_number: null,
 })
 
 const goBack = () =>{

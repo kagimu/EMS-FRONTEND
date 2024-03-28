@@ -13,7 +13,7 @@
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="level_number">
-          <option disabled value="">Select Class</option>
+          <option disabled value="">--Select Class--</option>
           <option v-for="(list, index) in campusLevelInfo" :key="index" :value="list.number">{{list.name}}</option>
         </select>
       </div>
@@ -25,7 +25,7 @@
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="form.class_number">
-          <option disabled value="">Select Class</option>
+          <option disabled value="">--Select Class--</option>
           <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.name}}</option>
         </select>
       </div>
@@ -39,7 +39,7 @@
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="form.subject_number">
-          <option disabled value="">Select Subject</option>
+          <option disabled value="">--Select Subject--</option>
           <option v-for="(list,idx) in subjectList" :key="idx" :value="list.number">{{list.name}}</option>
         </select>
       </div>

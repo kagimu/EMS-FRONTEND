@@ -57,7 +57,7 @@
         </div>
 
         <div class="mb-2">
-          <span class="textColor text-sm"> <small>Prefered Class: <span class="details">{{ appDatails.preferred_type_of_enrollment }}</span> </small></span>
+          <span class="textColor text-sm"> <small>Prefered Class: <span class="details">{{ appDatails.preferred_campus_number  }}</span> </small></span>
         </div>
 
       
@@ -105,7 +105,13 @@
       <button class="btn btn-primary btn-sm"><i class="bi bi-printer"></i> Print</button>
     </div>
 
-    <div class="col-3" v-if="appDatails.status != 'INTERVIEW_SCHEDULED'" > 
+    <div class="col-3" v-if="appDatails.status == 'ADMITTED'" > 
+      <p> STUDENT HASBEEN OFFERED AN ADMISSION</p>
+
+      <button class="btn btn-primary btn-sm">View Admission Details</button>
+    </div>
+
+    <div class="col-3" v-if="appDatails.status == 'DRAFT'" > 
       <!-- {{ appDatails.status }} -->
   <form @submit.prevent="scheduleInterview" >
               <label> <span style="text-align: center;font-size: 12px;"><small>Select Interview</small></span></label>
@@ -236,7 +242,7 @@ watch (
         appDatails.StudentGender= data.Student.gender,
         appDatails.StudentDate_of_birth=data.Student.date_of_birth,
         appDatails.preferred_type_of_enrollment=data.preferred_type_of_enrollment,
-        appDatails.preferred_campus_number=data.Student.preferred_campus_number,
+        appDatails.preferred_campus_number=data.Student.CampusClass.class_name,
         appDatails.reason=data.Student.reason_for_choosing_school,
         appDatails.status=data.status
         appDatails.previousSchools=data.PreviousSchools
@@ -248,6 +254,10 @@ watch (
     {deep:true}
 )
 
+onMounted(
+    async () => {
+      await applicationStore.fetchApplicationList()
+    } )
 
 const formData = reactive({
   interview_number:null
@@ -266,10 +276,10 @@ function scheduleInterview(){
       () => applicationStore.addStudentToInterviewResponse,
       async (data) => {
           if (data) {
-            formData.value = ''
+            formData.interview_number = null
               buttonLoader.value = false
-              notificationStore.successToast("Success", data.message)
-              
+              applicationStore.fetchApplicationList()
+              notificationStore.successToast("Success", data.message)       
           }
       },
       {deep: true}
@@ -279,7 +289,7 @@ function scheduleInterview(){
     () => applicationStore.errorMessage,
     async (data) => {
       if(data){
-        formData.value = ''
+        formData.interview_number = null
         errorMessage.value = data.message
         buttonLoader.value = false
       
@@ -303,6 +313,9 @@ function scheduleInterview(){
     },
     {deep:true}
 )
+
+
+
 
   </script>
 

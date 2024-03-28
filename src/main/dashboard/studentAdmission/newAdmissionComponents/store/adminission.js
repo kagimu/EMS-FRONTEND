@@ -10,7 +10,9 @@ export const useAdmissionStore = defineStore("admission", () => {
     const admissionOfferByStudentIdResponse = ref(null)
     const admissionOfferByAdmissionIdResponse = ref(null)
     const studentAssessmentResultsResponse = ref(null)
-    const admissionByClassResponse = ref(null)
+    const admissionByFiltersResponse = ref(null)
+    const admitStudentResponse = ref(null)
+    const admissionByStudentResponse = ref(null)
 
     async function newStudentDetailsAdmission(data) {
         return await api.post("main/new-student-details-admission", data)
@@ -87,10 +89,22 @@ export const useAdmissionStore = defineStore("admission", () => {
             })
     }
 
-    async function fetchAdmissionByClass(class_number) {
-        return await api.get("main/admissions?class_number="+class_number)
+    async function fetchAdmissionByFilters(study_period,interview_number,stream_number,campus_number,class_number) {
+        return await api.get("main/admissions?study_period_number="+study_period+"&interview_number="+interview_number+"&stream_number="+stream_number+"&campus_number="+campus_number+"&campus_class_number="+class_number)
             .then((response) => {
-                admissionByClassResponse.value = response.data
+                admissionByFiltersResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function admitStudent(data) {
+        return await api.post("main/admissions",data)
+            .then((response) => {
+                admitStudentResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -100,6 +114,17 @@ export const useAdmissionStore = defineStore("admission", () => {
     }
 
 
+    async function fetchAdmissionByStudentId(student_number) {
+        return await api.get("main/admissions/"+student_number)
+            .then((response) => {
+                admissionByStudentResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
 
 
@@ -117,8 +142,11 @@ export const useAdmissionStore = defineStore("admission", () => {
         fetchAdmissionOfferByAdmissionId,
         studentAssessmentResultsResponse,
         fetchStudentInterviewAssessmentResults,
-        admissionByClassResponse,
-        fetchAdmissionByClass,
-        
+        admissionByFiltersResponse,
+        fetchAdmissionByFilters,
+        admitStudentResponse,
+        admitStudent,
+        admissionByStudentResponse,
+        fetchAdmissionByStudentId        
     }
 })
