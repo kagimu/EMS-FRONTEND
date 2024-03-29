@@ -18,7 +18,7 @@ let reportSettingsQuery = routerData.currentRoute.value.query.rp
   <report-settings v-if="reportSettingsQuery === 'report-setting'"></report-settings>
   <report-columns v-if="reportSettingsQuery === 'report-columns'"></report-columns>
   <report-columns-assessment v-if="reportSettingsQuery === 'report-columns-assessment'"></report-columns-assessment>
-  <report-summary v-if="reportSettingsQuery === 'report-summary'"></report-summary>
+  <report-summary v-if="reportSettingsQuery === 'report-card'"></report-summary>
   <report-score v-if="reportSettingsQuery === 'report-score'"></report-score>
   <report-score-summary v-if="reportSettingsQuery === 'report-score-summary'"></report-score-summary>
 </div>

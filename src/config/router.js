@@ -63,6 +63,7 @@ import AdmissionList from '@/main/dashboard/studentAdmission/AdmissionList.vue';
 import Enrollment from '@/main/dashboard/enrollment/Enrollment.vue';
 import SetPassword from "@/main/auth/SetPassword.vue";
 import ResetPassword from "@/main/auth/ResetPassword.vue";
+import ReportSummary from "@/main/dashboard/report-card/ReportSummary.vue";
 
 
 const router = createRouter({
@@ -95,6 +96,7 @@ const router = createRouter({
             },
             children:[
                 {path: 'home', component: Home, name: "home"},
+                {path: 'report-card', component: ReportSummary, name: "report-card"},
                 {path: 'school', component: ManageSchool, name: "school",
                 meta: {
                     resource: "school",

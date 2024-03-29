@@ -4,9 +4,10 @@
 <div class="mx-auto h-screen flex justify-center items-center">
 
 <div class="bg-white p-4 w-[40%] rounded-md border">
+  <div v-if="showSuccessPage" class="text-center text-[25px]">WholesomeEd</div>
   <hr v-if="showSuccessPage" class="mt-4" />
   <div v-if="showSuccessPage" class="text-center mt-8" style="font-size: 15px; color: #757575;">
-    <p style="color: green; font-size: 30px; font-weight: bold;" class="mb-9">Success</p>
+    <div class="text-[green] text-[30px]">Success</div>
     <p>You have successfully submitted to reset your password,<br />
       We have sent an emil on : <span class="text-decoration-none" style="color: green; font-weight: bold;">{{email}}</span> with instructions on how to reset your password. </p>
     <p>Please login to your email, find the reset password link, click on it and set password </p>
@@ -15,23 +16,19 @@
     <div style="padding-bottom: 15px;" class="mb-2">
 
 
-      <router-link :to="{ name: 'tv-home' }">
-        <button
-            style="background-color: green;"
-            type="submit"
-            class="btn btn-primary float-start border-0">
-          Go to Home
-        </button>
-      </router-link>
 
-      <router-link  :to="{ name: 'login' }">
-        <button
-            style="background-color: #1d2b36;"
-            type="submit"
-            class="btn btn-primary float-end border-0">
-          Login
-        </button>
-      </router-link>
+<div class="flex justify-between">
+  &nbsp;
+
+  <router-link  :to="{ name: 'login' }">
+    <button
+        type="submit"
+        class="btn btn-primary border-0 px-4 bg-[#0d6efd]">
+      Login
+    </button>
+  </router-link>
+</div>
+
 
 
     </div>
@@ -132,12 +129,6 @@ const  notificationStore  = useNotificationStore()
 const authStore = useAuthStore()
 
 
-const title = "Reset Password | TutorView"
-const description = "Reset Password - TutorView"
-
-onMounted(() => {
-  // commons.tutorViewMetaTags(title, description)
-})
 
 function doReset(){
   resetSpinner.value = true

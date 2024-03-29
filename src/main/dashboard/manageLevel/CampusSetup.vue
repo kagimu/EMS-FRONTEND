@@ -118,7 +118,7 @@ const reportSettingsMenu = ref([
   },
   {
     name:"Report Summary",
-    router_name:"report-summary"
+    router_name:"report-card"
   },
   {
     name:"Report Score",
