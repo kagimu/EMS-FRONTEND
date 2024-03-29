@@ -4,6 +4,7 @@ import api from "@/config/api.js";
 
 export const useReportCardStore = defineStore("ReportCard", () => {
     const reportSummaryResponse = ref(null)
+    const generateReportResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -19,11 +20,25 @@ export const useReportCardStore = defineStore("ReportCard", () => {
             })
     }
 
+    async function generateReport(data) {
+        return await api.post("main/report-settings/generate-report", data)
+            .then((response) => {
+                generateReportResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
 
     return {
         reportSummaryResponse,
+        generateReportResponse,
         errorMessage,
         fetchReportSummary,
+        generateReport,
     }
 })

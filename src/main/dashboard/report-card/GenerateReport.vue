@@ -6,11 +6,13 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
+import useNotificationStore from "@/composables/useNotification.js";
 const reportStore = useReportCardStore()
 const levelStore = useLevelStore()
 const classStore = useClassesStore()
 const studyPeriodStore = useStudyPeriodStore()
 const academicYearStore = useAcademicYearStore()
+const notificationStore  = useNotificationStore()
 
 
 const campusCurriculumDataInfo = ref(null)
@@ -23,6 +25,8 @@ const campusLevelList = ref(null)
 const academicYearList = ref(null)
 const studyPeriodList = ref(null)
 const campusClassList = ref(null)
+const studentReportList = ref(null)
+const loader = ref(undefined)
 
 onMounted(
     async () => {
@@ -46,7 +50,7 @@ watch(
     () => reportStore.reportSummaryResponse,
     async (data) => {
       if(data){
-        // alert(JSON.stringify(data))
+        studentReportList.value = data.data
       }
     },
     {deep:true}
@@ -114,6 +118,39 @@ watch(
       }
     }
 )
+
+const doGenerate = (studentInfo) => {
+  loader.value = studentInfo.enrollment_number
+  let data = {
+    study_period_number:study_period_number.value,
+    campus_class_number:studentInfo.campus_class_number,
+    student_number:studentInfo.student_number
+  }
+  reportStore.generateReport(data)
+}
+
+
+watch(
+    () => reportStore.generateReportResponse,
+    async (data) => {
+      if(data){
+        loader.value = undefined
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
+watch(
+    () => reportStore.errorMessage,
+    async (data) => {
+      if(data){
+        loader.value = undefined
+        notificationStore.errorToast("Error", data.message)
+      }
+    }
+)
+
+
 
 </script>
 
@@ -213,28 +250,38 @@ watch(
       <table class="table table-hover caption-top mt-4 table-sm" style="font-size: 14px;">
         <thead>
         <tr>
-          <th scope="col" style="width: 30%;">Code</th>
-          <th scope="col">Name</th>
-          <th scope="col">Action</th>
+          <th scope="col" style="width: 10%;">#</th>
+          <th scope="col" class="w-[30%]">Student Name</th>
+          <th scope="col">Grade</th>
+          <th scope="col">Aggregate</th>
+          <th scope="col">Class</th>
+          <th scope="col" class="w-[20%]">Action</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(levelInfo, index) in levelList" :key="index">
-          <td> {{levelInfo.code}}</td>
-          <td> {{levelInfo.name}}</td>
+        <tr v-for="(studentInfo, index) in studentReportList" :key="index">
+          <td> {{(index + 1)}}</td>
+          <td> {{studentInfo.student}}</td>
+          <td> {{studentInfo.grade}}</td>
+          <td> {{studentInfo.aggregate}}</td>
+          <td> {{studentInfo.class}}</td>
           <td>
             <div>
-              <i
-                  v-if="can('edit_level','general')"
-                  style="font-size: 13px;"
-                  data-bs-toggle="modal" data-bs-target="#levelModal"
-                  class="bi-pencil mr-2 cursor-pointer" @click="editLevel(levelInfo)"></i>
-              <i
-                  v-if="can('delete_level','general')"
-                  style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLevel(levelInfo, index)"></i>
-              <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
-                <span class="visually-hidden">Loading...</span>
-              </div>
+
+              <button
+                  class="bg-[#0d6efd] text-white text-sm rounded-sm px-2 py-[1px]"
+                  @click="doGenerate(studentInfo)" >
+                <small>
+                  <i class="fa fa-refresh" aria-hidden="true"></i>
+                  Generate Report
+
+                  <div class="spinner-border spinner-border-sm" role="status" v-if="loader === studentInfo.enrollment_number">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </small>
+              </button>
+
+
             </div>
           </td>
         </tr>
