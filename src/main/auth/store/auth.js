@@ -9,6 +9,8 @@ export const useAuthStore = defineStore("auth", () => {
     const token = ref(null)
     const userNumber = ref(null)
     const profile = ref(null)
+    const resetPasswordResponse = ref(null)
+    const setUserPasswordResponse = ref(null)
 
 
     async function userLogin(data) {
@@ -48,6 +50,19 @@ export const useAuthStore = defineStore("auth", () => {
                 if(error && error.response){
                     localStorage.removeItem("token")
                     errorMessage.value = error.response.data
+                }
+            })
+    }
+
+
+    async function resetPassword(data) {
+        return await api.post("auth/reset-password", data)
+            .then((response) => {
+                resetPasswordResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
                 }
             })
     }
@@ -93,6 +108,18 @@ export const useAuthStore = defineStore("auth", () => {
         }
     }
 
+    async function setUserPassword(data) {
+        return await api.post("auth/set-password", data)
+            .then((response) => {
+                setUserPasswordResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     return {
         loginResponse,
         registrationResponse,
@@ -100,10 +127,14 @@ export const useAuthStore = defineStore("auth", () => {
         token,
         profile,
         userNumber,
+        resetPasswordResponse,
+        setUserPasswordResponse,
         userLogin,
         userRegistration,
         userProfile,
         updateToken,
         updateProfile,
+        resetPassword,
+        setUserPassword,
     }
 })
