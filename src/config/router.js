@@ -61,6 +61,8 @@ import InterviewLearnersList from "@/main/dashboard/studentApplication/Interview
 import InterviewLearnersDetails from '@/main/dashboard/studentApplication/InterviewLearnersDetails.vue';
 import AdmissionList from '@/main/dashboard/studentAdmission/AdmissionList.vue';
 import Enrollment from '@/main/dashboard/enrollment/Enrollment.vue';
+import SetPassword from "@/main/auth/SetPassword.vue";
+import ResetPassword from "@/main/auth/ResetPassword.vue";
 
 
 const router = createRouter({
@@ -75,7 +77,9 @@ const router = createRouter({
                 {path: 'register', component: Register, name:'register'},
                 {path: 'welcome', component: Welcome, name:'welcome'},
                 {path: 'userdashboard', component: UserDashboard, name:'userdashboard'},
-                {path: 'applicationguide', component: ApplicationGuide, name:'applicationguide'}
+                {path: 'applicationguide', component: ApplicationGuide, name:'applicationguide'},
+                { path: 'set-password/:id', component: SetPassword, name:'set-password'},
+                { path: 'reset-password', component: ResetPassword, name:'reset-password'},
             ]
         },
         {

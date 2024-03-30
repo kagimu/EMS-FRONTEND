@@ -8,6 +8,7 @@ import ReportSummary from "@/main/dashboard/manageLevel/report_setup/report_form
 import ReportScore from "@/main/dashboard/manageLevel/report_setup/report_forms/ReportScore.vue";
 import ReportScoreSummary from "@/main/dashboard/manageLevel/report_setup/report_forms/ReportScoreSummary.vue";
 import {useRouter} from "vue-router";
+import GenerateReport from "@/main/dashboard/report-card/GenerateReport.vue";
 const routerData = useRouter()
 let reportSettingsQuery = routerData.currentRoute.value.query.rp
 
@@ -18,9 +19,10 @@ let reportSettingsQuery = routerData.currentRoute.value.query.rp
   <report-settings v-if="reportSettingsQuery === 'report-setting'"></report-settings>
   <report-columns v-if="reportSettingsQuery === 'report-columns'"></report-columns>
   <report-columns-assessment v-if="reportSettingsQuery === 'report-columns-assessment'"></report-columns-assessment>
-  <report-summary v-if="reportSettingsQuery === 'report-summary'"></report-summary>
+  <report-summary v-if="reportSettingsQuery === 'report-card'"></report-summary>
   <report-score v-if="reportSettingsQuery === 'report-score'"></report-score>
   <report-score-summary v-if="reportSettingsQuery === 'report-score-summary'"></report-score-summary>
+  <generate-report v-if="reportSettingsQuery === 'generate-report'"></generate-report>
 </div>
 </template>
 
