@@ -10,6 +10,7 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
     const academicYearResponse = ref(null)
     const deleteAcademicYearResponse = ref(null)
     const academicYearByCampusResponse = ref(null)
+    const academicYearDataResponse = ref(null)
 
 
 
@@ -92,6 +93,20 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
     }
 
 
+
+    async function fetchAcademicYearData(data) {
+        return await api.get("main/academic-year/info?academic_year_number="+data)
+            .then((response) => {
+                academicYearDataResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
     return {
         newAcademicYearResponse,
         academicYearResponse,
@@ -100,11 +115,13 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
         errorMessage,
         academicYearByCampusResponse,
         campusClassByLevelResponse,
+        academicYearDataResponse,
         newAcademicYear,
         fetchAcademicYear,
         deleteAcademicYear,
         fetchAcademicYearByLevel,
         fetchAcademicYearByCampus,
-        fetchCampusClassByLevel
+        fetchCampusClassByLevel,
+        fetchAcademicYearData
     }
 })

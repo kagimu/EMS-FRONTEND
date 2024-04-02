@@ -20,7 +20,12 @@
 
     <div class="flex justify-content-between mt-10 mb-4 mr-3">
       &nbsp;
-      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addAcademicYear" data-bs-toggle="modal" data-bs-target="#newAcademicYearModal">
+      <button
+          type="button"
+          class="btn btn-sm buttonStyle btn-primary mr-2"
+          @click="addAcademicYear"
+          data-bs-toggle="modal"
+          data-bs-target="#newAcademicYearModal">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
         Add Academic Year
       </button>
@@ -30,13 +35,9 @@
     <table class="table table-hover caption-top" style="font-size: 13px;">
       <thead>
       <tr>
-<!--        <th scope="col">#</th>-->
         <th scope="col">Code</th>
         <th scope="col">Level</th>
         <th scope="col">Academic Year</th>
-<!--        <th scope="col">Number of Study Periods</th>-->
-<!--        <th scope="col">Date Period</th>-->
-<!--                <th scope="col">Action</th>-->
       </tr>
       </thead>
       <tbody>
@@ -59,9 +60,9 @@
               <td>
                 <div>
                   <i
-                      style="font-size: 13px;"
-                      data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                      class="bi-pencil mr-2 cursor-pointer" @click="editAcademicYear(list)"></i>
+                      data-bs-toggle="modal"
+                      data-bs-target="#newAcademicYearModal"
+                      class="bi-pencil mr-2 cursor-pointer text-[13px]" @click="editAcademicYear(list)"></i>
                   <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteAcademicYear(list, idx)"></i>
                   <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === idx">
                     <span class="visually-hidden">Loading...</span>
@@ -73,23 +74,7 @@
           </table>
 
         </td>
-<!--        <td> {{academicYre.no_of_study_period}}</td>-->
-<!--        <td>
-          <b>Start Date:</b>   {{academicYre.academic_year_start_date}}  <br />
-           <b>End Date:</b>  {{academicYre.academic_year_end_date}}
-        </td>-->
-<!--                <td>
-                  <div>
-                    <i
-                        style="font-size: 13px;"
-                        data-bs-toggle="offcanvas" data-bs-target="#editClass" aria-controls="offcanvasRight"
-                        class="bi-pencil mr-2 cursor-pointer" @click="editAcademicYear(academicYre)"></i>
-                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteAcademicYear(academicYre, index)"></i>
-                    <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
-                      <span class="visually-hidden">Loading...</span>
-                    </div>
-                  </div>
-                </td>-->
+
       </tr>
       </tbody>
     </table>
@@ -122,7 +107,10 @@ const addAcademicYear = (item) => {
 
 
 const editAcademicYear = (academicYre)  => {
-
+  if(academicYre) {
+    newAcademicYearDialog.value = true
+    academicYearStore.fetchAcademicYearData(academicYre.number)
+  }
 }
 
 const deleteAcademicYear = (academicYre, idx) => {

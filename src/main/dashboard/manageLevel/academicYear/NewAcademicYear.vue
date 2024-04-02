@@ -218,6 +218,16 @@ watch(
     {deep:true}
 )
 
+watch(
+    () => academicYearStore.academicYearDataResponse,
+    async (data) => {
+      if(data){
+         alert(JSON.stringify(data))
+      }
+    },
+    {deep:true}
+)
+
 </script>
 
 <style scoped>
