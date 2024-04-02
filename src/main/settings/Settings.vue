@@ -55,6 +55,9 @@
                 <div v-if="selectedPage === 'conditions'">
                     <Conditions></Conditions>
                 </div>
+                <div v-if="selectedPage === 'promotion-settings'">
+                    <PromotionSettings></PromotionSettings>
+                </div>
           </div>
         </div>
       </div>
@@ -77,6 +80,7 @@ import Services from "../dashboard/servicesAndProducts/Services.vue";
 import Conditions from "@/main/settings/conditions/Conditions.vue";
 import Products from "../dashboard/servicesAndProducts/Products.vue";
 import Profile from "@/main/settings/Profile.vue"
+import PromotionSettings from "./promotion/PromotionSettings.vue";
 
 import { useAbility } from '@casl/vue';
 
@@ -132,6 +136,12 @@ const settingsList = ref([
         name:"Conditions",
         id:"conditions",
         action:"view_conditions"
+    }
+    ,
+    {
+        name:"Promotion Settings",
+        id:"promotion-settings",
+        action:"view_settings"
     }
 ])
 const form = reactive({

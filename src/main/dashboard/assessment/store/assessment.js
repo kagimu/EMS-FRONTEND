@@ -230,7 +230,7 @@ async function createMetric(data) {
 
     // assessmentscale
     async function createAssessmentScale(data) {
-        return await api.post("main/assessments/aggregate-grades",data)
+        return await api.post("main/assessments/assessment-grades",data)
             .then((response) => {
              newAssessmentScaleResponse.value = response.data
             })

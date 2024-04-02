@@ -39,9 +39,9 @@
                   <!-- <div v-if="selectedPage === 'assessment-areas'">
                     <interview-assesment-areas></interview-assesment-areas>
                   </div> -->
-                  <div v-if="selectedPage === 'examtype'">
+                  <!-- <div v-if="selectedPage === 'examtype'">
                     <ExamType></ExamType>
-                  </div>
+                  </div> -->
                   <div v-if="selectedPage === 'grade-standards'">
                  <GradingStandards></GradingStandards>
                   </div>
@@ -79,7 +79,7 @@
   const routerData = useRouter()
   
   const route = routerData.currentRoute.value.query.s
-  const selectedPage = route ? route : "examtype"
+  const selectedPage = route ? route : "grade-standards"
   
   const assess = ref([
     // {
@@ -91,10 +91,10 @@
     //   name:"Assessment Areas",
     //   id:"assessment-areas"
     // },
-    {
-      name:"Exam Type",
-      id:"examtype"
-    },
+    // {
+    //   name:"Exam Type",
+    //   id:"examtype"
+    // },
     {
       name:"Grade Standards",
       id:"grade-standards"

@@ -63,6 +63,7 @@ import AdmissionList from '@/main/dashboard/studentAdmission/AdmissionList.vue';
 import Enrollment from '@/main/dashboard/enrollment/Enrollment.vue';
 
 
+
 const router = createRouter({
     history: createWebHistory(),
     routes:[

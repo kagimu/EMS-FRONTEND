@@ -16,7 +16,7 @@
                   <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">  
             </div>
             <div class="col-lg-6">
-                <button 
+                <button  @click="openAddModal()"
                 v-if="can('add_grade_scale','general')"
                  style="float: right; margin-right: 5px;" data-bs-toggle="modal"
                   data-bs-target="#addAccount"  type="button"  aria-controls="rolesDialog" 
@@ -175,7 +175,9 @@ const openEditModal = (a) =>{
   scaleD.value=a
   showDialog.value = true
 }
-
+const openAddModal = () =>{
+  
+}
 
 watch (
   () => assessmentStore.errorMessage,
