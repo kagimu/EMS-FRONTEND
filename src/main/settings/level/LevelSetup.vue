@@ -13,7 +13,7 @@
           </div>
           <div class="modal-body">
             <div class="mt-2 mb-2">
-             <new-level></new-level>
+             <new-level ref="levelRef"></new-level>
             </div>
           </div>
         </div>
@@ -34,7 +34,7 @@
               v-if="can('add_level','general')"
                type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addLevel" data-bs-toggle="modal" data-bs-target="#levelModal">
                 <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-                Add Level
+                Add Study Level
               </button>
             </div>
 
@@ -97,6 +97,7 @@ const levelStore = useLevelStore()
 const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
 
+const levelRef = ref( null)
 const level = ref( "")
 const levelDialog = ref( false)
 const levelEditMode = ref( false)
@@ -109,6 +110,7 @@ let  curriculumNumber = routerData.currentRoute.value.query.id
 const addLevel = () => {
   levelEditMode.value = false
   levelDialog.value = true
+  levelRef.value.clearLevelForm()
 }
 
 const editLevel = (data) => {

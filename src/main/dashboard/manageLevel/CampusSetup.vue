@@ -17,8 +17,11 @@
 
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;" v-if="campusCurriculumDataInfo">
-            <div class="mb-2 ml-3 mt-2 text-[14px]">Campus Curriculum</div>
-            <hr />
+
+            <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
+              <div class="ml-3 mb-2">Campus Curriculum</div>
+            </div>
+
             <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
               <router-link
                   v-for="(item, idx) in  campusCurriculumDataInfo" :key="idx"
@@ -33,8 +36,9 @@
 
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;" v-if="campusCurriculumDataInfo">
-            <div class="mb-2 ml-3 mt-2 text-[14px]">Report Card Settings</div>
-            <hr />
+            <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
+              <div class="ml-3 mb-2">Report Card Settings</div>
+            </div>
             <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
               <router-link
                   v-for="(item, idx) in  reportSettingsMenu" :key="idx"

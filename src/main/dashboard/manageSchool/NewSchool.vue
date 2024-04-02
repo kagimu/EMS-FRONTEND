@@ -87,6 +87,16 @@ const form = reactive({
   curriculum:[],
 })
 
+const clearSchoolForm = () => {
+  form.name = null
+  form.commencement_date = null
+  form.curriculum = []
+  school_number.value = null
+}
+
+defineExpose({
+  clearSchoolForm
+});
 
 const addSchool = () =>{
   loader.value = true

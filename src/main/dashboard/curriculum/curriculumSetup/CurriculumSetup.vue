@@ -44,25 +44,6 @@
           </div>
 
 
-          <div class="card mt-3">
-            <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Assessment Setup</div>
-       <hr />
-
-            <div class="card-body" style="padding: 0;">
-              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-                <div
-                    v-for="(item, idx) in  assessmentMenu"
-                    :key="idx"
-                    class="list-group-item list-group-item-action cursor-pointer"
-                    :class="item.value === menuSelected ? 'active' : ''"
-                    @click="changeMenu(item.value)"
-                >
-                  <small style="font-size:12px;">{{item.text}}</small>
-                </div>
-              </div>
-            </div>
-          </div>
-     
 
           <div class="card mt-3">
             <div class="card-body" style="padding: 0;">
@@ -96,6 +77,24 @@
           </div>
 
 
+          <div class="card mt-3">
+            <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Assessment Setup</div>
+            <hr />
+
+            <div class="card-body" style="padding: 0;">
+              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+                <div
+                    v-for="(item, idx) in  assessmentMenu"
+                    :key="idx"
+                    class="list-group-item list-group-item-action cursor-pointer"
+                    :class="item.value === menuSelected ? 'active' : ''"
+                    @click="changeMenu(item.value)"
+                >
+                  <small style="font-size:12px;">{{item.text}}</small>
+                </div>
+              </div>
+            </div>
+          </div>
 
 
       </div>
@@ -117,9 +116,9 @@
             <curriculum-level v-if="menuSelected==='level'"></curriculum-level>
 <!--            manage classes-->
             <curriculum-class-set-up v-if="menuSelected==='classes'"></curriculum-class-set-up>
-            <assesment-areas v-if="menuSelected === 'assessmentarea'"></assesment-areas>
+            <assesment-areas v-if="menuSelected === 'assessmentArea'"></assesment-areas>
             <!-- <assessment-metrics v-if="menuSelected == 'assessmentmetric'"></assessment-metrics> -->
-            <metric v-if="menuSelected == 'metric'"></metric>
+            <metric v-if="menuSelected === 'metric'"></metric>
 
           </div>
         </div>
@@ -141,7 +140,6 @@ import StrandList from "@/main/dashboard/curriculum/curriculumSetup/strands/Stra
 import TopicList from "@/main/dashboard/curriculum/curriculumSetup/topic/TopicList.vue";
 import SubTopicList from "@/main/dashboard/curriculum/curriculumSetup/subTopic/SubTopicList.vue";
 import ConceptList from "@/main/dashboard/curriculum/curriculumSetup/concept/ConceptList.vue";
-import ClassSetupList from "@/main/dashboard/manageLevel/class/ClassSetupList.vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 import ManageCurriculum from "@/main/dashboard/curriculum/curriculumSetup/ManageCurriculum.vue";
@@ -166,8 +164,7 @@ const curriculumMenu = ref( [
 ])
 
 const assessmentMenu = ref( [
-  {text:"Assessment Area", value:"assessmentarea"},
-  // {text:"Assessment Metric", value:"assessmentmetric"},
+  {text:"Assessment Area", value:"assessmentArea"},
   {text:"Metric", value:"metric"},
 ])
 

@@ -10,7 +10,7 @@
           </div>
           <div class="modal-body">
             <div class="mt-2 mb-2">
-              <new-school></new-school>
+              <new-school ref="schoolRef"></new-school>
             </div>
           </div>
 
@@ -115,6 +115,7 @@ const { can } = useAbility()
 
 const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
+const schoolRef = ref(null)
 
 
 const schoolDialog = ref( false)
@@ -123,6 +124,7 @@ const schoolsList = ref( [])
 
 const addSchool = () => {
   schoolDialog.value = false
+  schoolRef.value.clearSchoolForm()
 }
 
 const editSchool = (school) => {

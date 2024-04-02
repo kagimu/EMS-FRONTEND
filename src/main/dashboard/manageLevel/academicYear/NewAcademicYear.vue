@@ -41,7 +41,7 @@
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="form.level_number">
-          <option disabled value="">--Select Class--</option>
+          <option disabled value="">--Select Level--</option>
           <option v-for="(list, index) in campusLevelInfo" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
         </select>
       </div>
