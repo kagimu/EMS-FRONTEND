@@ -13,8 +13,8 @@
               v-if="can('add_assessment_area','general')"
                style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
       data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="showInterviewDialog">
-     <b><i class="bi bi-plus"></i></b> <small>
-      Add Assessment Area</small></button>
+                <b><i class="bi bi-plus"></i></b>
+                <small> Add Assessment Area</small></button>
             </div>
     
            </div>
@@ -189,7 +189,7 @@ const subject_n = ref(null)
 //fetching class
 const fetchSubject = (a) =>{
   subject_n.value = a
-  classStore.fetchCurriculumClassesByID(subject_n.value )
+  classStore.fetchCurriculumClassesByID(subject_n.value)
 }
 
     watch(
