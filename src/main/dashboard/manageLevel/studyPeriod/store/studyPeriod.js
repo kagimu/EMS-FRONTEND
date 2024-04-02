@@ -8,6 +8,7 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
     const newStudyPeriodResponse = ref(null)
     const studyPeriodResponse = ref(null)
     const deleteStudyPeriodResponse = ref(null)
+    const studyPeriodDataResponse = ref(null)
     const studyPeriodByAcademicYearResponse = ref(null)
 
 
@@ -65,6 +66,18 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
     }
 
 
+    async function fetchStudyPeriodData(data) {
+        return await api.get("main/study-period/info?study_period_number="+data)
+            .then((response) => {
+                studyPeriodDataResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
     return {
         newStudyPeriodResponse,
@@ -72,10 +85,12 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
         studyPeriodResponse,
         deleteStudyPeriodResponse,
         studyPeriodByAcademicYearResponse,
+        studyPeriodDataResponse,
         errorMessage,
         newStudyPeriod,
         fetchStudyPeriod,
         deleteStudyPeriod,
         fetchStudyPeriodByAcademicYear,
+        fetchStudyPeriodData,
     }
 })

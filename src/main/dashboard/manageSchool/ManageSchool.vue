@@ -5,7 +5,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">New School</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">{{editMode ? "Edit" : "New"}} School</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -116,6 +116,7 @@ const { can } = useAbility()
 const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
 const schoolRef = ref(null)
+const editMode = ref(false)
 
 
 const schoolDialog = ref( false)
@@ -123,6 +124,7 @@ const schoolsList = ref( [])
 
 
 const addSchool = () => {
+  editMode.value = false
   schoolDialog.value = false
   schoolRef.value.clearSchoolForm()
 }
@@ -130,6 +132,7 @@ const addSchool = () => {
 const editSchool = (school) => {
   if(school) {
     schoolDialog.value = true
+    editMode.value = true
     schoolStore.fetchSchoolData(school.number)
   }
 }

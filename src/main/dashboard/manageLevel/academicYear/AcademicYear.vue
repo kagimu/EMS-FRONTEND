@@ -4,12 +4,12 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Add Academic Year</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">{{editMode ? "Edit" : "Add"}} Academic Year</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <div class="mt-2 mb-2">
-              <new-academic-year></new-academic-year>
+              <new-academic-year ref="academicYearRef"></new-academic-year>
             </div>
           </div>
         </div>
@@ -98,16 +98,21 @@ const newAcademicYearDialog = ref( false)
 const deletionLoader = ref( undefined)
 const campusCurriculumNumber = routerData.currentRoute.value.query.crr
 const academicYearList = ref( [])
+const academicYearRef = ref( null)
+const editMode = ref( null)
 const  notificationStore  = useNotificationStore()
 
 const addAcademicYear = (item) => {
   // classNumber.value = item.number
   newAcademicYearDialog.value = true
+  editMode.value = false
+  academicYearRef.value.clearAcademicYear()
 }
 
 
 const editAcademicYear = (academicYre)  => {
   if(academicYre) {
+    editMode.value = true
     newAcademicYearDialog.value = true
     academicYearStore.fetchAcademicYearData(academicYre.number)
   }
