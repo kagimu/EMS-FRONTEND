@@ -104,7 +104,7 @@
       id:"grade-scale"
     },
     {
-      name:"Assessment Scale",
+      name:"Assessment Grades",
       id:"assessment-scale"
     },
    
