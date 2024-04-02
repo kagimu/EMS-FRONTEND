@@ -259,6 +259,16 @@ watch(
     {deep:true}
 )
 
+watch(
+    () => studyPeriodStore.editStudyPeriodResponse,
+    async (data) => {
+      if(data){
+        await studyPeriodStore.fetchStudyPeriod({level: campusCurriculumNumber, academic_year_number: academicYearNumber.value})
+      }
+    },
+    {deep:true}
+)
+
 </script>
 
 <style scoped>

@@ -189,7 +189,7 @@ const addStudyPeriod = () => {
 
   if(study_period_number.value){
     form.study_period_number = study_period_number.value
-
+    studyPeriodStore.editStudyPeriod(form)
   }else {
     studyPeriodStore.newStudyPeriod(form)
   }

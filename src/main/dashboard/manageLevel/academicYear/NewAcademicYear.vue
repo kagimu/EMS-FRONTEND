@@ -166,7 +166,7 @@ const addAcademicYear = () => {
   loader.value = true
   if(academic_year_number.value){
     form.academic_year_number = academic_year_number.value
-
+    academicYearStore.editAcademicYear(form)
   }else {
     academicYearStore.newAcademicYear(form)
   }

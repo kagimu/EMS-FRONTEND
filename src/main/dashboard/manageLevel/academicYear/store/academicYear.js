@@ -4,6 +4,7 @@ import api from "@/config/api.js";
 
 export const useAcademicYearStore = defineStore("academicYear", () => {
     let newAcademicYearResponse = ref(null)
+    let editAcademicYearResponse = ref(null)
     let academicYearByLevelResponse = ref(null)
     let campusClassByLevelResponse = ref(null)
     const errorMessage = ref(null)
@@ -18,6 +19,19 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
         return await api.post("main/academic-year/new", data)
             .then((response) => {
                 newAcademicYearResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
+    async function editAcademicYear(data) {
+        return await api.post("main/academic-year/edit", data)
+            .then((response) => {
+                editAcademicYearResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -116,12 +130,14 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
         academicYearByCampusResponse,
         campusClassByLevelResponse,
         academicYearDataResponse,
+        editAcademicYearResponse,
         newAcademicYear,
         fetchAcademicYear,
         deleteAcademicYear,
         fetchAcademicYearByLevel,
         fetchAcademicYearByCampus,
         fetchCampusClassByLevel,
-        fetchAcademicYearData
+        fetchAcademicYearData,
+        editAcademicYear
     }
 })

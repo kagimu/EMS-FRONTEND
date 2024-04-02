@@ -173,6 +173,18 @@ watch(
     {deep:true}
 )
 
+
+watch(
+    () => academicYearStore.editAcademicYearResponse,
+    async (data) => {
+      if(data){
+        await academicYearStore.fetchAcademicYear(campusCurriculumNumber)
+      }
+    },
+    {deep:true}
+)
+
+
 watch(
     () => academicYearStore.errorMessage,
     async (data) => {
