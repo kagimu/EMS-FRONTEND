@@ -61,6 +61,11 @@ import InterviewLearnersList from "@/main/dashboard/studentApplication/Interview
 import InterviewLearnersDetails from '@/main/dashboard/studentApplication/InterviewLearnersDetails.vue';
 import AdmissionList from '@/main/dashboard/studentAdmission/AdmissionList.vue';
 import Enrollment from '@/main/dashboard/enrollment/Enrollment.vue';
+import SetPassword from "@/main/auth/SetPassword.vue";
+import ResetPassword from "@/main/auth/ResetPassword.vue";
+import SchoolInfo from "@/main/dashboard/manageSchool/SchoolInfo.vue";
+import CampusInfo from "@/main/dashboard/manageCampus/CampusInfo.vue";
+import CampusDetailsTeacher from "@/main/dashboard/manageLevel/CampusDetailsTeacher.vue";
 
 
 const router = createRouter({
@@ -75,7 +80,9 @@ const router = createRouter({
                 {path: 'register', component: Register, name:'register'},
                 {path: 'welcome', component: Welcome, name:'welcome'},
                 {path: 'userdashboard', component: UserDashboard, name:'userdashboard'},
-                {path: 'applicationguide', component: ApplicationGuide, name:'applicationguide'}
+                {path: 'applicationguide', component: ApplicationGuide, name:'applicationguide'},
+                { path: 'set-password/:id', component: SetPassword, name:'set-password'},
+                { path: 'reset-password', component: ResetPassword, name:'reset-password'},
             ]
         },
         {
@@ -98,6 +105,13 @@ const router = createRouter({
                       
                 }
             },
+            {path: 'school-list', component: SchoolInfo, name: "schools-teacher",
+            meta: {
+                resource: "school",
+                action: "view_schools",
+
+            }
+            },
                 {path: 'campus', component: ManageCampus, name: "campus",
                 meta: {
                     resource: "campus",
@@ -105,11 +119,24 @@ const router = createRouter({
                       
                 }
             },
+                {path: 'campus-list', component: CampusInfo, name: "campus-teacher",
+                meta: {
+                    resource: "campus",
+                    action: "view_campuses",
+
+                }
+            },
                 {path: 'campus-setup', component: CampusSetup, name: "campus-setup",
                 meta: {
                     resource: "campus-setup",
                     action: "view_campus-setup",
                       
+                }},
+                {path: 'campus-details-teacher', component: CampusDetailsTeacher, name: "campus-details-teacher",
+                meta: {
+                    resource: "campus-setup",
+                    action: "view_campus-setup",
+
                 }},
                 {path: 'reports', component: ManageCampus, name: "reports",
                 meta: {

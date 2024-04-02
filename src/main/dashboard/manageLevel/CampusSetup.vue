@@ -91,6 +91,7 @@ import {useRouter} from "vue-router";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 import CampusSettings from "@/main/dashboard/manageLevel/CampusSettings.vue";
 import ReportSetup from "@/main/dashboard/manageLevel/report_setup/ReportSetup.vue";
+
 const levelStore = useLevelStore()
 const campusCurriculumDataInfo = ref(null)
 
@@ -118,7 +119,7 @@ const reportSettingsMenu = ref([
   },
   {
     name:"Report Summary",
-    router_name:"report-summary"
+    router_name:"report-card"
   },
   {
     name:"Report Score",
@@ -128,13 +129,16 @@ const reportSettingsMenu = ref([
     name:"Report Score Summary",
     router_name:"report-score-summary"
   },
+  {
+    name:"Generate Report",
+    router_name:"generate-report"
+  },
 ])
 
 
 
 onMounted(
     () => {
-      // levelStore.fetchCampusLevelList(campusNumber)
       levelStore.fetchCampusCurriculum(campusNumber)
     }
 )
@@ -153,9 +157,7 @@ watch(
     () => levelStore.campusCurriculumResponse,
     async (data) => {
       if(data){
-        let curriculumInfo = data.data
-
-        campusCurriculumDataInfo.value = curriculumInfo
+        campusCurriculumDataInfo.value = data.data
         if(!campusCurriculumNumber){
           // campusCurriculumNumber = curriculumInfo[0].number
         }
