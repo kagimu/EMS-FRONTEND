@@ -45,8 +45,6 @@
 
 
 
-     
-
           <div class="card mt-3">
             <div class="card-body" style="padding: 0;">
               <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
@@ -142,7 +140,6 @@ import StrandList from "@/main/dashboard/curriculum/curriculumSetup/strands/Stra
 import TopicList from "@/main/dashboard/curriculum/curriculumSetup/topic/TopicList.vue";
 import SubTopicList from "@/main/dashboard/curriculum/curriculumSetup/subTopic/SubTopicList.vue";
 import ConceptList from "@/main/dashboard/curriculum/curriculumSetup/concept/ConceptList.vue";
-import ClassSetupList from "@/main/dashboard/manageLevel/class/ClassSetupList.vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 import ManageCurriculum from "@/main/dashboard/curriculum/curriculumSetup/ManageCurriculum.vue";
@@ -168,7 +165,6 @@ const curriculumMenu = ref( [
 
 const assessmentMenu = ref( [
   {text:"Assessment Area", value:"assessmentArea"},
-  // {text:"Assessment Metric", value:"assessmentmetric"},
   {text:"Metric", value:"metric"},
 ])
 
