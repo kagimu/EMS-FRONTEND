@@ -33,8 +33,10 @@
 
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;" v-if="campusCurriculumDataInfo">
-            <div class="mb-2 ml-3 mt-2 text-[14px]">Student Score</div>
-            <hr />
+            <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
+              <div class="ml-3 mb-2">Student Score</div>
+            </div>
+
             <div class="list-group list-group-flush mb-1 rounded-0" >
               <router-link
                   v-for="(item, idx) in  reportSettingsMenu" :key="idx"

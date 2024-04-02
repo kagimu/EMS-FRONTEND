@@ -126,6 +126,17 @@ onMounted(
     }
 )
 
+const clearClassForm = () => {
+      form.code = null
+      form.name = null
+      form.abbreviation = null
+      form.level = ""
+      classNumber.value = null
+}
+
+defineExpose({
+  clearClassForm
+});
 
 watch(
     () => classStore.classResponse,

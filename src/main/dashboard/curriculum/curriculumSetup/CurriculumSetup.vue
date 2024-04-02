@@ -44,24 +44,7 @@
           </div>
 
 
-          <div class="card mt-3">
-            <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Assessment Setup</div>
-       <hr />
 
-            <div class="card-body" style="padding: 0;">
-              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-                <div
-                    v-for="(item, idx) in  assessmentMenu"
-                    :key="idx"
-                    class="list-group-item list-group-item-action cursor-pointer"
-                    :class="item.value === menuSelected ? 'active' : ''"
-                    @click="changeMenu(item.value)"
-                >
-                  <small style="font-size:12px;">{{item.text}}</small>
-                </div>
-              </div>
-            </div>
-          </div>
      
 
           <div class="card mt-3">
@@ -96,6 +79,24 @@
           </div>
 
 
+          <div class="card mt-3">
+            <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Assessment Setup</div>
+            <hr />
+
+            <div class="card-body" style="padding: 0;">
+              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+                <div
+                    v-for="(item, idx) in  assessmentMenu"
+                    :key="idx"
+                    class="list-group-item list-group-item-action cursor-pointer"
+                    :class="item.value === menuSelected ? 'active' : ''"
+                    @click="changeMenu(item.value)"
+                >
+                  <small style="font-size:12px;">{{item.text}}</small>
+                </div>
+              </div>
+            </div>
+          </div>
 
 
       </div>
@@ -117,9 +118,9 @@
             <curriculum-level v-if="menuSelected==='level'"></curriculum-level>
 <!--            manage classes-->
             <curriculum-class-set-up v-if="menuSelected==='classes'"></curriculum-class-set-up>
-            <assesment-areas v-if="menuSelected === 'assessmentarea'"></assesment-areas>
+            <assesment-areas v-if="menuSelected === 'assessmentArea'"></assesment-areas>
             <!-- <assessment-metrics v-if="menuSelected == 'assessmentmetric'"></assessment-metrics> -->
-            <metric v-if="menuSelected == 'metric'"></metric>
+            <metric v-if="menuSelected === 'metric'"></metric>
 
           </div>
         </div>
@@ -166,7 +167,7 @@ const curriculumMenu = ref( [
 ])
 
 const assessmentMenu = ref( [
-  {text:"Assessment Area", value:"assessmentarea"},
+  {text:"Assessment Area", value:"assessmentArea"},
   // {text:"Assessment Metric", value:"assessmentmetric"},
   {text:"Metric", value:"metric"},
 ])

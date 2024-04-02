@@ -1,7 +1,7 @@
 <script setup>
 
-import ReportSettings from "@/main/dashboard/manageLevel/report_setup/report_forms/ReportSettings.vue";
 import {useRouter} from "vue-router";
+import StudentScore from "@/main/dashboard/manageLevel/report_setup/report_forms/StudentScore.vue";
 const routerData = useRouter()
 let reportSettingsQuery = routerData.currentRoute.value.query.rp
 
@@ -9,7 +9,7 @@ let reportSettingsQuery = routerData.currentRoute.value.query.rp
 
 <template>
 <div>
-  <report-settings v-if="reportSettingsQuery === 'student-score'"></report-settings>
+  <student-score v-if="reportSettingsQuery === 'student-score'"></student-score>
 </div>
 </template>
 
