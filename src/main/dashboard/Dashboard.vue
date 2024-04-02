@@ -126,7 +126,7 @@ const menuList = ref([
   {title:"Curriculum", name:"curriculum", icon:"bi-pen", action:"view_curriculum"},
   {title:"Classes", name:"classes", icon:"bi-person-lines-fill",  action: "view_classes"},
   // {title:"Classes", name:"class", icon:"bi-pen"},
-  // {title:"Scheme Of Work", name:"scheme-of-work", icon:"bi-receipt"},
+  {title:"Schools Teacher", name:"schools-teacher", icon:"bi-house-add"},
   {title:"Time table", name:"timetable", icon:"bi-pen",action:"view_timetable"},
   {title:"Assessment", name:"assessment", icon:"bi-book",action:"view_assessment"},
   {title:"Student Application", name:"student-application", icon:"bi-person-plus",action:"view_student-application"},
