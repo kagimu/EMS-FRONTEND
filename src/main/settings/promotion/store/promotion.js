@@ -3,17 +3,17 @@ import { ref } from "vue"
 import api from "@/config/api.js";
 
 export const usePromotionStore = defineStore("promotion", () => {
-    let newPromotionResponse = ref(null)
-    let  promotionResponse= ref(null)
-    let  deletePromotionResponse= ref(null)
-    let updatePromotionResponse = ref(null)
+    let newPromotionSettingResponse = ref(null)
+    let  PromotionSettingResponse= ref(null)
+    let  deletePromotionSettingResponse= ref(null)
+    let updatePromotionSettingResponse = ref(null)
     
     const errorMessage = ref(null)
 
-    async function newPromotion(data) {
-        return await api.post("main/promotion", data)
+    async function newPromotionSetting(data) {
+        return await api.post("main/promotions/settings", data)
             .then((response) => {
-                newPromotionResponse.value = response.data
+                newPromotionSettingResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -22,10 +22,10 @@ export const usePromotionStore = defineStore("promotion", () => {
             })
     }
 
-    async function fetchPromotionByCampusClass(campus_class_number) {
-        return await api.get("main/promotions?campus_class_number="+campus_class_number)
+    async function fetchPromotionSettingByCampusClass() {
+        return await api.get("main/promotions/settings")
             .then((response) => {
-                promotionResponse.value = response.data
+                PromotionSettingResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -33,10 +33,10 @@ export const usePromotionStore = defineStore("promotion", () => {
                 }
             })
     }
-    async function deletePromotion() {
+    async function deletePromotionSetting() {
         return await api.delete("main")
             .then((response) => {
-                deletePromotionResponse.value = response.data
+                deletePromotionSettingResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -44,10 +44,10 @@ export const usePromotionStore = defineStore("promotion", () => {
                 }
             })
     }
-    async function updatePromotion(promotionId,data) {
-        return await api.put("main/"+promotionId,data)
+    async function updatePromotionSetting(PromotionSettingId,data) {
+        return await api.put("main/"+PromotionSettingId,data)
             .then((response) => {
-                updatePromotionResponse.value = response.data
+                updatePromotionSettingResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -57,14 +57,14 @@ export const usePromotionStore = defineStore("promotion", () => {
     }
 
     return {
-        newPromotionResponse,
+        newPromotionSettingResponse,
         errorMessage,
-        updatePromotion,
-        fetchPromotionByCampusClass,
-        deletePromotion,
-        promotionResponse,
-        updatePromotionResponse,
-        deletePromotionResponse,
-        newPromotion
+        updatePromotionSetting,
+        fetchPromotionSettingByCampusClass,
+        deletePromotionSetting,
+        PromotionSettingResponse,
+        updatePromotionSettingResponse,
+        deletePromotionSettingResponse,
+        newPromotionSetting
     }
 } )

@@ -53,8 +53,8 @@
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm" required
-                    v-model="form.campus_class_number"
-                    @change="fetchAcademicYear(form.campus_class_number)"
+                    v-model="form.previous_class_number"
+                    @change="fetchAcademicYear(form.previous_class_number)"
             >
                 <option disabled value="">Select class</option>
                 <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}
@@ -143,24 +143,19 @@
   import useCommonsStore from "@/composables/useCommons.js";
   import useNotificationStore from "@/composables/useNotification.js";
 
-  import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
+import {usePromotionStore} from "./store/promotion.js"
 
 const emit = defineEmits();
-
   const classError = ref(null)
-
   const loader = ref(false)
-
   const commons = useCommonsStore()
   const  notificationStore  = useNotificationStore()
-  
   const levelNumber = ref("")
-  
-
+  const promotionStore = usePromotionStore()
 
 const campusList = ref([])
 const schoolList = ref([])
@@ -173,16 +168,20 @@ const classStore = useClassesStore()
 
 
   const form = reactive({
-    code:null,
     name:null,
+    status:"STATUS",
+    "type":"Promotion",
+    next_class_number:null,
+    previous_class_number:null
   })
   
   
   const addPromotionSetting = () =>{
     loader.value = true
-
+    promotionStore.newPromotionSetting(form)
   } 
   
+
 
   
   const fetchCampuses = (school_number) => {
@@ -277,6 +276,27 @@ const removeCriteria = (index) => {
   formData.criteria.splice(index, 1); 
 }
 
+
+
+watch(
+    () => promotionStore.newPromotionSettingResponse,
+    async (data) => {
+        if (data) {
+          notificationStore.successToast("Success application submitted", data.message)
+        }
+    },
+    {deep: true}
+)
+
+watch(
+    () => promotionStore.errorMessage,
+    async (data) => {
+          if (data) {
+              notificationStore.errorToast("Error", data.message)
+          }
+    },
+    {deep: true}
+)
 
 
 

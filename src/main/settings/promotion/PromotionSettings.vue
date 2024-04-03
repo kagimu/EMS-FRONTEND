@@ -38,34 +38,19 @@
                   <th scope="col">Name</th>
                   <th>Current Class</th>
                   <th>Next Class</th>
-                  <th>Value</th>
+                  <th>Type</th>
                   <th>Status</th>
                   <th scope="col">Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                <td>Promoted</td>
-                 <td>P1</td>
-                 <td>P2</td>
-                 <td>90</td>
-                 <td>Activate</td>
-                 <td>Delete</td>
-                </tr>
-                <tr>
-                <td>Admitted</td>
-                 <td>P1</td>
-                 <td>P2</td>
-                 <td>90</td>
-                 <td>Activate</td>
-                 <td>#X</td>
-                </tr>
-                <tr>
-                <td>Promoted</td>
-                 <td>P1</td>
-                 <td>P2</td>
-                 <td>90</td>
-                 <td>Activate</td>
+              
+                <tr v-for="(prom,index) in promotionData" :key="index">
+                <td>{{ prom.name }}</td>
+                 <td>{{prom.name}}</td>
+                 <td>{{ prom.name }}</td>
+                 <td>{{ prom.type }}</td>
+                 <td>{{ prom.status }}</td>
                  <td>Delete</td>
                 </tr>
                 </tbody>
@@ -86,9 +71,39 @@
   import useCommonsStore from "@/composables/useCommons.js";
   import NewLevel from "@/main/settings/level/NewLevel.vue";
   import PromotionSetupModal from "./PromotionSetupModal.vue";
-    
+  import {usePromotionStore} from "./store/promotion.js"
 
-  
+
+  const promotionStore = usePromotionStore()
+  const notificationStore = useNotificationStore()
+  const promotionData = ref([])
+
+  onMounted(() => {
+    promotionStore.fetchPromotionSettingByCampusClass()
+    }
+)
+
+watch(
+    () => promotionStore.PromotionSettingResponse,
+    async (data) => {
+        if (data) {
+          promotionData.value = data.data
+          notificationStore.successToast("Success application submitted", data.message)
+        }
+    },
+    {deep: true}
+)
+
+watch(
+    () => promotionStore.errorMessage,
+    async (data) => {
+          if (data) {
+              notificationStore.errorToast("Error", data.message)
+          }
+    },
+    {deep: true}
+)
+
   </script>
   
   <style scoped>

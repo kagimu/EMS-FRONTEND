@@ -9,7 +9,7 @@
             <div class="col-lg-2"></div>
             <div class="col-lg-8">
               <table style="width: 100%;">
-                <tr v-for="(subject, index) in formData.assessmentArea" :key="index">
+                <tr v-for="(subject, index) in formD.assessmentArea" :key="index">
                   <td>
                     <select v-model="subject.subjectName" class="form-select form-select-sm">
                       <option v-for="option in AsessmentListData" :key="option" :value="option.number">{{ option.name }}</option>
@@ -32,7 +32,14 @@
               </table>
               <p class="mt-3">
                 <label class="textColor">Attach Latest School Report</label>
-                <input ref="fileInput" type="file" class="form-control" @change="onFileChange">
+                <!-- <input ref="fileInput" type="file" class="form-control" @change="onFileChange"
+                accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel, application/pdf"> -->
+          <input
+            ref="file"
+            class="form-control form-control-sm noFocus"
+            id="formFileSm"
+            accept="application/pdf"
+            type="file" @change="onFileChange">
 
               </p>
             </div>
@@ -67,35 +74,34 @@
   const  notificationStore  = useNotificationStore()
   const applicationStore =  useApplicationStore()
   const buttonLoader = ref(false)
+  const file = ref(null)
 
   onMounted(
     async () => {
       await assessmentStore.fetchAssesmentArea()
     } )
 
-
   watch(
     () => assessmentStore.assesmentAreaResponse,
     async (data) => {
       if(data){
         AsessmentListData.value = data.data
-       // notificationStore.successToast("Success", data.message)
       }
     },
     {deep:true}
 )
 
-  const formData = reactive({
+  const formD = reactive({
     assessmentArea: [] 
   })
   
   
   const addSubject = () => {
-    formData.assessmentArea.push({ subjectName: '', score: '' })
+    formD.assessmentArea.push({ subjectName: '', score: '' })
   }
   
   const removeSubject = (index) => {
-    formData.assessmentArea.splice(index, 1)
+    formD.assessmentArea.splice(index, 1)
   }
 
 
@@ -112,22 +118,16 @@ const onFileChange = (event) => {
 
 
   const addSchoolResults = () => {
-    let application_id = localStorage.getItem('applicationId')
-  if (!selectedFile.value) {
-    notificationStore.errorToast("Error","Attach Your Previous School Report Please !")
-      
-    return;
-  }
+  let student_number = localStorage.getItem('studentNumber')
   buttonLoader.value = true
-  const data = {
-    "assessment_area_number": formData.assessmentArea.map(subject => subject.subjectName),
-    "student_number":application_id,
-    "attachment": fileName.value,
-    "score": formData.assessmentArea.map(subject => parseInt(subject.score))
-  };
 
-    alert(JSON.stringify(data))
-    applicationStore.createPreviousSchoolResults(data)
+  const formData = new FormData();
+  formData.set("file", file.value.files[0]);
+  formData.set("assessment_area_number", formD.assessmentArea.map(subject => subject.subjsectName));
+  formData.set("student_number", student_number);
+  formData.set("score", formD.assessmentArea.map(subject => parseInt(subject.score)));
+
+  applicationStore.createPreviousSchoolResults(formData)
   }
 
   watch (
