@@ -203,6 +203,17 @@ async function fetchAssessmentMetrics() {
         })
 }
 
+    async function fetchMetrics() {
+        return await api.get("main/assessments/metrics")
+            .then((response) => {
+                metricResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
 async function createMetric(data) {
     return await api.post("main/assessments/metrics", data)
@@ -216,17 +227,7 @@ async function createMetric(data) {
         })
 }
 
-    async function fetchMetrics() {
-        return await api.get("main/assessments/metrics")
-            .then((response) => {
-                metricResponse.value = response.data
-            })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
-                }
-            })
-    }
+
 
     // assessmentscale
     async function createAssessmentScale(data) {

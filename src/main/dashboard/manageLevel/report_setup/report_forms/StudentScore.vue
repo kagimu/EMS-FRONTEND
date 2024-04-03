@@ -10,15 +10,17 @@ const notificationStore  = useNotificationStore()
 const assessmentStore= useAssessmentStore()
 const reportSettingsList = ref(null)
 const metricListData = ref(null)
-const metrics = ref(null)
+const metrics = ref("")
 
 
 onMounted(
     async () => {
-      await assessmentStore.fetchMetrics()
+      await assessmentStore.fetchAssessmentMetrics()
       await reportSetupStore.fetchReportSettings()
     }
 )
+
+
 
 const fetchSubjects = (metrics) => {
   if(metrics){
@@ -48,8 +50,11 @@ watch(
 
 
 
+
+
+
 watch(
-    () => assessmentStore.metricResponse,
+    () => assessmentStore.assessmentMetricsResponse,
     async (data) => {
       if(data){
         metricListData.value = data.data
@@ -60,31 +65,30 @@ watch(
 
 
 
-
-
-
 </script>
 
 <template>
 
   <div>
 
-    <div class="row">
-      <div class="col-2">
+    <div class="row mx-auto mt-3">
+      <div class="col-3">
         <div class="mb-2">
-          <label class="textColor"><small>Topic</small></label>
+          <label class="text-sm"><small>Assessment metric</small></label>
           <select
               style="box-shadow: none;"
-              class="form-select form-select-sm"
+              class="form-select py-10"
               v-model="metrics"
               @click="fetchSubjects(metrics)"
           >
-            <option disabled value="">--Select Assessment Metric--</option>
-            <option v-for="(list, index) in metricListData" :key="index" :value="list.number">{{list.name}}</option>
+            <option class="text-[13px]" disabled value="">--Select Assessment Metric--</option>
+            <option class="text-[13px]" v-for="(list, index) in metricListData" :key="index" :value="list.number">{{list.name}}</option>
           </select>
         </div>
       </div>
     </div>
+
+    <hr />
 
     <div class="row">
 
