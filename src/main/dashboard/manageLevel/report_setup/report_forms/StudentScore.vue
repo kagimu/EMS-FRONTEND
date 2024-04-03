@@ -1,20 +1,30 @@
 <script setup>
 
-import NewReportSettings from "@/main/dashboard/manageLevel/report_setup/report_forms/rforms/NewReportSettings.vue";
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
+import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
 
 const reportSetupStore = useReportSetupStore()
 const notificationStore  = useNotificationStore()
+const assessmentStore= useAssessmentStore()
 const reportSettingsList = ref(null)
+const metricListData = ref(null)
+const metrics = ref(null)
 
 
 onMounted(
     async () => {
+      await assessmentStore.fetchMetrics()
       await reportSetupStore.fetchReportSettings()
     }
 )
+
+const fetchSubjects = (metrics) => {
+  if(metrics){
+    alert(JSON.stringify(metrics))
+  }
+}
 
 
 watch(
@@ -38,6 +48,15 @@ watch(
 
 
 
+watch(
+    () => assessmentStore.metricResponse,
+    async (data) => {
+      if(data){
+        metricListData.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 
 
@@ -50,6 +69,22 @@ watch(
 
   <div>
 
+    <div class="row">
+      <div class="col-2">
+        <div class="mb-2">
+          <label class="textColor"><small>Topic</small></label>
+          <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm"
+              v-model="metrics"
+              @click="fetchSubjects(metrics)"
+          >
+            <option disabled value="">--Select Assessment Metric--</option>
+            <option v-for="(list, index) in metricListData" :key="index" :value="list.number">{{list.name}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
 
     <div class="row">
 
