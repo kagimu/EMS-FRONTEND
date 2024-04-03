@@ -32,15 +32,17 @@
               </li>
               <li class="nav-item cursor-pointer">
                 <a style="color: black;" class="nav-link" @click="nextPage(4)" :class="step === 4 ? 'active activeTab' : ''">
+                  <small>PREVIOUS SCHOOL RESULTS</small>
+                </a>
+              </li>            
+
+              <li class="nav-item cursor-pointer">
+                <a style="color: black;" class="nav-link" @click="nextPage(5)" :class="step === 5 ? 'active activeTab' : ''">
                   <small>PAYMENT</small>
                 </a>
               </li>
-              <li class="nav-item cursor-pointer">
-                <a style="color: black;" class="nav-link" @click="nextPage(5)" :class="step === 4 ? 'active activeTab' : ''">
-                  <small>PREVIOUS SCHOOL RESULTS</small>
-                </a>
-              </li>
             </ul>
+           
           </div>
         
   <div v-show="step === 1">
@@ -59,11 +61,11 @@
     ></previous-school-details>
   </div>
   <div v-show="step === 4">
-  <application-payement  v-on:next="nextPage">
-  </application-payement>
+  <PreviousSchoolResults v-on:next="nextPage"></PreviousSchoolResults>
   </div>
   <div v-show="step === 5">
-    <PreviousSchoolResults v-on:next="nextPage"></PreviousSchoolResults>
+    <application-payement  v-on:next="nextPage">
+  </application-payement>
   </div>
  </div>
           </div>

@@ -168,6 +168,7 @@ const  notificationStore  = useNotificationStore()
   source_of_school_info: null,
   application_number: localStorage.getItem("applicationId"),
   campus_class_number: null,
+  learner_number:null
 })
 
 const goBack = () =>{
@@ -188,9 +189,16 @@ const goBack = () =>{
 
 
 const addLearnerDetails = () => {
-  buttonLoader.value = true
+  if(!applicationNumber){
+    buttonLoader.value = true
     form.application_number = localStorage.getItem("applicationId")
   applicationStore.newApplicationLeanerDetails(form)
+  }else{
+    buttonLoader.value = true
+    form.application_number = localStorage.getItem("applicationId")
+  applicationStore.updateLearnerDetails(form.learner_number,form)
+  }
+ 
 }
 
 watch (
@@ -278,6 +286,7 @@ watch (
         form.preferred_campus_number=data.Student.preferred_campus_number,
         form.reason_for_choosing_school=data.Student.reason_for_choosing_school
         form.source_of_school_info = data.Student.source_of_school_info
+        form.learner_number = data.Student.number
       }
     },
     {deep:true}

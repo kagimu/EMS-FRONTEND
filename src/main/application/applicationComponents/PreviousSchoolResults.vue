@@ -9,7 +9,7 @@
             <div class="col-lg-2"></div>
             <div class="col-lg-8">
               <table style="width: 100%;">
-                <tr v-for="(subject, index) in formData.subjects" :key="index">
+                <tr v-for="(subject, index) in formData.assessmentArea" :key="index">
                   <td>
                     <select v-model="subject.subjectName" class="form-select form-select-sm">
                       <option v-for="option in AsessmentListData" :key="option" :value="option.number">{{ option.name }}</option>
@@ -32,17 +32,22 @@
               </table>
               <p class="mt-3">
                 <label class="textColor">Attach Latest School Report</label>
-                <input type="file" class="form-control">
+                <input ref="fileInput" type="file" class="form-control" @change="onFileChange">
+
               </p>
             </div>
             <div class="col-lg-2"></div>
           </div>
           <div class="row">
             <div class="col-lg-2"></div>
-            <div class="col-lg-8">
+            <div class="col-lg-7">
             </div>
-            <div class="col-lg-2">
-              <button type="submit" class="btn btn-primary mb-2 btn-sm" style="color:white !important">Submit</button>
+            <div class="col-lg-3">
+              <button type="submit" class="btn btn-primary mb-2 btn-sm" style="color:white !important">Submit
+                <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </button>
             </div>
           </div>
         </div>
@@ -52,15 +57,16 @@
   
   <script setup>
   import { reactive, ref, defineEmits,onMounted,watch } from 'vue';
-//   import {onMounted,reactive, ref, watch} from "vue";
   import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
   import useNotificationStore from "@/composables/useNotification.js";
+  import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js"
   
   const emit = defineEmits()
   const assessmentStore= useAssessmentStore()
   const AsessmentListData = ref([])
   const  notificationStore  = useNotificationStore()
-
+  const applicationStore =  useApplicationStore()
+  const buttonLoader = ref(false)
 
   onMounted(
     async () => {
@@ -80,24 +86,75 @@
 )
 
   const formData = reactive({
-    subjects: [] 
+    assessmentArea: [] 
   })
   
-  const subjectOptions = ['Mathematics', 'SST', 'Luganda']
   
   const addSubject = () => {
-    formData.subjects.push({ subjectName: '', score: '' })
+    formData.assessmentArea.push({ subjectName: '', score: '' })
   }
   
   const removeSubject = (index) => {
-    formData.subjects.splice(index, 1)
+    formData.assessmentArea.splice(index, 1)
   }
+
+
   
+// Define reactive variables to store the selected file and its name
+const selectedFile = ref(null);
+const fileName = ref(null);
+
+const onFileChange = (event) => {
+  const file = event.target.files[0];
+  selectedFile.value = file;
+  fileName.value = file ? file.name : null;
+};
 
 
   const addSchoolResults = () => {
-    alert(JSON.stringify(formData))
+    let application_id = localStorage.getItem('applicationId')
+  if (!selectedFile.value) {
+    notificationStore.errorToast("Error","Attach Your Previous School Report Please !")
+      
+    return;
   }
+  buttonLoader.value = true
+  const data = {
+    "assessment_area_number": formData.assessmentArea.map(subject => subject.subjectName),
+    "student_number":application_id,
+    "attachment": fileName.value,
+    "score": formData.assessmentArea.map(subject => parseInt(subject.score))
+  };
+
+    alert(JSON.stringify(data))
+    applicationStore.createPreviousSchoolResults(data)
+  }
+
+  watch (
+    () => applicationStore.previousSchoolResultresponse,
+    async (data) => {
+      if(data){
+        buttonLoader.value = false
+        notificationStore.successToast("Success application submitted", data.message)
+        localStorage.removeItem('applicationId')
+      }
+    },
+    {deep:true}
+)
+
+  watch (
+    () => applicationStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        buttonLoader.value = false
+        notificationStore.errorToast("Error",data.message)
+        emit("next", 5 )
+      }
+    },
+    {deep:true}
+)
+
   
 
   </script>
