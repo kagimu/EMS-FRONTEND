@@ -9,43 +9,59 @@ export const useAuthStore = defineStore("auth", () => {
     const token = ref(null)
     const userNumber = ref(null)
     const profile = ref(null)
+    const resetPasswordResponse = ref(null)
+    const setUserPasswordResponse = ref(null)
 
 
     async function userLogin(data) {
         return await api.post("auth/login", data)
             .then((response) => {
+                if(response && response.data) {
+                    let dataInfo = response.data
+                    // localStorage.setItem("token", dataInfo.access_token)
+                    // localStorage.clear()
+                    // alert(JSON.stringify(dataInfo))
+                    localStorage.setItem("token", dataInfo.token)
+                    let permissions = []
 
-                let dataInfo = response.data
-                // localStorage.setItem("token", dataInfo.access_token)
-                localStorage.clear()
-                localStorage.setItem("token", dataInfo.token)
-                let permissions = []
+                    if (dataInfo.data.type === 'Admin') {
+                        permissions.push({"action": "manage", "resource": "all"})
+                    } else if(dataInfo.data.type === 'User') {
+                        permissions.push({"action": "read", "resource": "all"})
+                    } else {
+                        if (dataInfo.data && dataInfo.data.permissions.length > 0){
+                            dataInfo.data.permissions.forEach(permission => {
+                                permissions.push({"action": permission, "resource": "general"})
+                            });
+                        }else {
+                            permissions.push({"action": "read", "resource": "general"})
+                        }
+                    }
+                    localStorage.setItem('abilities', JSON.stringify(permissions))
 
-                if(response.data.data.type === 'Admin'){
-                    permissions.push({"action":"manage","resource":"all"})
+                    // localStorage.setItem("expires_in", dataInfo.expires_in)
+                    loginResponse.value = dataInfo
+                    userNumber.value = dataInfo.data.number
+                    token.value = dataInfo.token
                 }
-                else {
-               
 
-                if (response.data.data.permissions === undefined)
-                    permissions.push({"action":"read","resource":"general"})
-                else
-                response.data.data.permissions.forEach(permission => {
-                        permissions.push({"action":permission,"resource":"general"})
-                    });
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    localStorage.removeItem("token")
+                    errorMessage.value = error.response.data
                 }
-                localStorage.setItem('abilities',JSON.stringify(permissions))
-
-                // localStorage.setItem("expires_in", dataInfo.expires_in)
-                loginResponse.value = dataInfo
-                userNumber.value = dataInfo.data.number
-                token.value = dataInfo.token
+            })
+    }
 
 
+    async function resetPassword(data) {
+        return await api.post("auth/reset-password", data)
+            .then((response) => {
+                resetPasswordResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
-                    localStorage.removeItem("token")
                     errorMessage.value = response.response.data
                 }
             })
@@ -94,6 +110,18 @@ export const useAuthStore = defineStore("auth", () => {
         }
     }
 
+    async function setUserPassword(data) {
+        return await api.post("auth/set-password", data)
+            .then((response) => {
+                setUserPasswordResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     return {
         loginResponse,
         registrationResponse,
@@ -101,10 +129,14 @@ export const useAuthStore = defineStore("auth", () => {
         token,
         profile,
         userNumber,
+        resetPasswordResponse,
+        setUserPasswordResponse,
         userLogin,
         userRegistration,
         userProfile,
         updateToken,
         updateProfile,
+        resetPassword,
+        setUserPassword,
     }
 })

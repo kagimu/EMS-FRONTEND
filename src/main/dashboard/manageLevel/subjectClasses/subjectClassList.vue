@@ -38,7 +38,7 @@
           v-model="classNumber"
           @change="filterClassSubject(classNumber)"
       >
-        <option disabled value="">filter by Class</option>
+        <option disabled value="">--filter by Class--</option>
         <option value="">All</option>
         <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.name}}</option>
       </select>

@@ -65,7 +65,7 @@
                   class="form-select form-select-sm"
                   @click="selectSubjectCluster(learning_area_number)"
                   v-model="learning_area_number">
-                <option disabled value="">Filter by class</option>
+                <option disabled value="">--Filter by class--</option>
                 <option value="">All</option>
                 <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.name}}</option>
               </select>
@@ -76,7 +76,7 @@
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
                         v-model="learning_area_number">
-                    <option disabled value="">Filter by Stream</option>
+                    <option disabled value="">--Filter by Stream--</option>
                     <option value="">All</option>
                     <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.name}}</option>
                 </select>

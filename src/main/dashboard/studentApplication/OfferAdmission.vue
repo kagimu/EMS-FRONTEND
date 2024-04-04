@@ -127,6 +127,9 @@ const studentNumber = routerData.currentRoute.value.query.st_id;
 const appNo = routerData.currentRoute.value.query.applicationN;
 // applicationN
 
+const admitStudent = () => {
+
+}
 
 const applicationStore = useApplicationStore()
 const notificationStore = useNotificationStore()

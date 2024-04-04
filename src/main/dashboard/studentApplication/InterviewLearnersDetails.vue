@@ -62,35 +62,17 @@
             </div>
             </div>
             </div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     </div>
     </template>
     
     <script setup>
     import NewInvoice from "@/main/dashboard/invoice/NewInvoice.vue";
-    import admitStudent from "@/main/dashboard/studentApplication/admitStudent.vue";
     import AttemptedAssessment from "@/main/dashboard/studentAdmission/newAdmissionComponents/AttemptedAssessment.vue";
     import AdmissionDetails from "@/main/dashboard/studentAdmission/newAdmissionComponents/AdmissionDetails.vue";
 
     import {ref} from "vue";
+    import AdmitStudent from "@/main/dashboard/studentApplication/AdmitStudent.vue";
     
     const step = ref(1)
     

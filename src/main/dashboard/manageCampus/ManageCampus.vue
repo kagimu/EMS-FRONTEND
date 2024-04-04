@@ -12,7 +12,7 @@
           </div>
           <div class="modal-body">
             <div class="mt-2 mb-2">
-              <new-campus></new-campus>
+              <new-campus ref="campusRef"></new-campus>
             </div>
           </div>
 
@@ -162,6 +162,7 @@ const campusDialog = ref( false)
 const campusEditMode = ref( false)
 const campusList = ref( [])
 const schoolData = ref( null)
+const campusRef = ref( null)
 
 
 let schoolNumber = routerData.currentRoute.value.query.id
@@ -170,6 +171,7 @@ let schoolNumber = routerData.currentRoute.value.query.id
 const addCampus = () => {
   campusEditMode.value = false
   campusDialog.value = true
+  campusRef.value.clearCampusForm()
 }
 
 

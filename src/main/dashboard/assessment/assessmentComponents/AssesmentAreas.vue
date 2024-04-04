@@ -95,7 +95,7 @@ const areaDialog = ref(false)
 
     onMounted(
     async () => {
-      await assessmentStore.fetchAssesmentArea()
+      await assessmentStore.fetchAssessmentArea()
     } )
 
     

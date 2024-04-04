@@ -29,13 +29,13 @@
             v-model="learning_area_number"
             @click="selectSubjectCluster(learning_area_number)"
         >
-          <option disabled value="">Select Learning Area</option>
+          <option disabled value="">--Select Learning Area--</option>
           <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
         </select>
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Subject Cluster</small></label>
+        <label class="textColor"><small>--Subject Cluster--</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"

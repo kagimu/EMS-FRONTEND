@@ -13,7 +13,7 @@
             v-model="campus_level_number"
             @change="fetchCurriculumClass(campus_level_number)"
         >
-          <option disabled value="">Select Level</option>
+          <option disabled value="">--Select Level--</option>
           <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
         </select>
       </div>

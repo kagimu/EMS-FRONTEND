@@ -21,12 +21,14 @@
 
       <div class="mb-2">
         <label class="textColor text-sm">Commencement Date</label>
-        <input
-            style="outline: none 0 !important; box-shadow: none;"
-            type="date"
+        <VueDatePicker
+            text-input
+            auto-apply
+            style="font-size: 7px;"
             v-model="form.commencement_date"
-            required
-            class="form-control form-control-sm">
+            :preview-format="format"
+            :teleport="true"
+        ></VueDatePicker>
       </div>
 
 
@@ -70,6 +72,7 @@ import {watch, onMounted, reactive, ref} from "vue";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 import useNotificationStore from "@/composables/useNotification.js";
+import VueDatePicker from "@vuepic/vue-datepicker";
 
 const classError = ref(null)
 const name = ref(null)
@@ -87,6 +90,25 @@ const form = reactive({
   curriculum:[],
 })
 
+const clearSchoolForm = () => {
+  form.name = null
+  form.commencement_date = null
+  form.curriculum = []
+  school_number.value = null
+}
+
+defineExpose({
+  clearSchoolForm
+});
+
+
+const format = (date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  return `Selected date is ${day}/${month}/${year}`;
+}
 
 const addSchool = () =>{
   loader.value = true

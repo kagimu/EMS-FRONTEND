@@ -41,7 +41,7 @@
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="form.level_number">
-          <option disabled value="">Select Class</option>
+          <option disabled value="">--Select Level--</option>
           <option v-for="(list, index) in campusLevelInfo" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
         </select>
       </div>
@@ -91,7 +91,7 @@
         <button
             type="submit"
             class="btn btn-primary border-0">
-          Save
+         {{academic_year_number ? "Edit" : "Save"}}
           <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>
@@ -126,6 +126,7 @@ const campusLevel = routerData.currentRoute.value.query.crr
 const campusNumber = routerData.currentRoute.value.query.id
 const errorMessage = ref(null)
 const campusLevelInfo = ref([])
+const academic_year_number = ref(null)
 const loader = ref(false)
 const  notificationStore  = useNotificationStore()
 
@@ -138,11 +139,11 @@ const date = ref();
 
 
 const form = reactive({
-  code:"",
-  academic_year_name:"",
-  no_of_study_period:"",
-  academic_year_start_date:"",
-  academic_year_end_date:"",
+  code:null,
+  academic_year_name:null,
+  no_of_study_period:null,
+  academic_year_start_date:null,
+  academic_year_end_date:null,
   level_number:"",
 })
 
@@ -163,23 +164,28 @@ onMounted(
 
 const addAcademicYear = () => {
   loader.value = true
-  academicYearStore.newAcademicYear(form)
+  if(academic_year_number.value){
+    form.academic_year_number = academic_year_number.value
+    academicYearStore.editAcademicYear(form)
+  }else {
+    academicYearStore.newAcademicYear(form)
+  }
+
 }
-/*
 
-watch(
-    () => campusStore.campusLevelListResponse,
-    async (data) => {
-      if(data){
-        campusLevelInfo.value = data.data
-      }
-    },
-    {deep:true}
-)
+const clearAcademicYear = () => {
+     form.code = null
+      form.academic_year_name = null
+      form.no_of_study_period = null
+      form.academic_year_start_date = null
+      form.academic_year_end_date = null
+      form.level_number = ""
+       academic_year_number.value = null
+}
 
-*/
-
-
+defineExpose({
+  clearAcademicYear
+})
 
 watch(
     () => classStore.campusLevelResponse,
@@ -197,11 +203,11 @@ watch(
     async (data) => {
       if(data){
         loader.value = false
-        form.code = ""
-        form.academic_year_name = ""
-        form.no_of_study_period = ""
-        form.academic_year_start_date = ""
-        form.academic_year_end_date = ""
+        form.code = null
+        form.academic_year_name = null
+        form.no_of_study_period = null
+        form.academic_year_start_date = null
+        form.academic_year_end_date = null
       }
     },
     {deep:true}
@@ -213,6 +219,23 @@ watch(
       if(data){
         loader.value = false
         notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => academicYearStore.academicYearDataResponse,
+    async (data) => {
+      if(data){
+        let info = data.data
+            form.code = info.code
+            form.academic_year_name = info.academic_year_name
+            form.no_of_study_period = info.no_of_study_period
+            form.academic_year_start_date = info.academic_year_start_date
+            form.academic_year_end_date = info.academic_year_end_date
+            form.level_number = info.level_number
+            academic_year_number.value = info.number
       }
     },
     {deep:true}

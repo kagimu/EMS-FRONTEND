@@ -13,7 +13,7 @@
           </div>
           <div class="modal-body">
             <div class="mt-2 mb-2">
-              <new-class-set-up></new-class-set-up>
+              <new-class-set-up ref="classRef"></new-class-set-up>
             </div>
           </div>
         </div>
@@ -39,7 +39,7 @@
               <div class="ml-4">Classes</div>
               <button
               v-if="can('add_class','general')"
-               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#classModal">
+               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addClass" data-bs-toggle="modal" data-bs-target="#classModal">
                 <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
                 Add Class
               </button>
@@ -56,7 +56,7 @@
                       v-model="level"
                       @click="filterClasses()"
                   >
-                    <option disabled value="">Filter by Level</option>
+                    <option disabled value="">--Filter by Level--</option>
                     <option value="">All</option>
                     <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
                   </select>
@@ -145,6 +145,7 @@ const levelStore = useLevelStore()
 const deletionLoader = ref( undefined)
 const  notificationStore  = useNotificationStore()
 
+const classRef = ref( null)
 const level = ref( "")
 const classDialog = ref( false)
 const classEditMode = ref( false)
@@ -153,9 +154,10 @@ const levelList = ref( [])
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
-const addCampus = () => {
+const addClass = () => {
   classEditMode.value = false
   classDialog.value = true
+  classRef.value.clearClassForm()
 }
 
 const editClass = (data) => {

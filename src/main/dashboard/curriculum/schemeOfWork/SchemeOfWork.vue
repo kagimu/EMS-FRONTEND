@@ -166,7 +166,7 @@
                   v-model="scheme_subject_number"
                   @click="filterSchemeSubject"
               >
-                <option disabled value="">filter Subject</option>
+                <option disabled value="">--filter Subject--</option>
                 <option v-for="(list, index) in schemeSubjectList" :key="index" :value="list.number">
                   {{list.code+". "+list.name}}
                 </option>
@@ -184,7 +184,7 @@
                       v-model="academic_year_number"
                       @click="filterSchemeSubject"
                   >
-                    <option disabled value="">Select Class</option>
+                    <option disabled value="">--Select Class--</option>
                     <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
                       {{list.code+". "+list.academic_year_name+" ["+list.level_name+"]"}}
                     </option>

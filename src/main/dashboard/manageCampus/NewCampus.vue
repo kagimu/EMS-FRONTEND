@@ -58,12 +58,14 @@
 
             <div class="mb-2">
               <label class="textColor text-sm">Commencement Date</label>
-              <input
-                  style="outline: none 0 !important; box-shadow: none;"
-                  type="date"
+              <VueDatePicker
+                  text-input
+                  auto-apply
+                  style="font-size: 7px;"
                   v-model="form.commencement_date"
-                  required
-                  class="form-control form-control-sm">
+                  :preview-format="format"
+                  :teleport="true"
+              ></VueDatePicker>
             </div>
 
 
@@ -113,6 +115,7 @@ import {useRouter} from "vue-router";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
+import VueDatePicker from "@vuepic/vue-datepicker";
 
 const routerData = useRouter()
 const errorMessage = ref(null)
@@ -163,6 +166,19 @@ const props = defineProps({
 })
 
 
+const clearCampusForm = () => {
+      form.name = null
+      form.email = null
+      form.phone = null
+      form.location = null
+      form.campus_curriculum = []
+      form.commencement_date = null
+      campus_number.value = null
+}
+
+defineExpose({
+  clearCampusForm
+});
 
 onMounted(
     async () =>{
@@ -171,7 +187,13 @@ onMounted(
     }
 )
 
+const format = (date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
 
+  return `Selected date is ${day}/${month}/${year}`;
+}
 
 watch(
     () => props.school,

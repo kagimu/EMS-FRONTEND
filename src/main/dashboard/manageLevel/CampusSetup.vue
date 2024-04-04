@@ -13,12 +13,15 @@
 
 
     <div class="row">
-      <div :class="campusCurriculumNumber ? 'col-3' : 'col-12 mx-auto'">
+      <div :class="campusCurriculumNumber || reportSettingsQuery ? 'col-3' : 'col-12 mx-auto'">
 
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;" v-if="campusCurriculumDataInfo">
-            <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Campus Curriculum</div>
-            <hr />
+
+            <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
+              <div class="ml-3 mb-2">Campus Curriculum</div>
+            </div>
+
             <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
               <router-link
                   v-for="(item, idx) in  campusCurriculumDataInfo" :key="idx"
@@ -31,7 +34,25 @@
           </div>
         </div>
 
+        <div class="card mt-3">
+          <div class="card-body" style="padding: 0;" v-if="campusCurriculumDataInfo">
+            <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
+              <div class="ml-3 mb-2">Report Card Settings</div>
+            </div>
+            <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+              <router-link
+                  v-for="(item, idx) in  reportSettingsMenu" :key="idx"
+                  class="list-group-item list-group-item-action"
+                  :class="item.router_name === reportSettingsQuery ? 'active' : ''"
+                  :to="{name:'campus-setup', query:{id:campusNumber, rp:item.router_name}}">
+                <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></router-link>
+            </div>
+
+          </div>
+        </div>
+
       </div>
+
 
       <div class="col-9" v-if="campusCurriculumNumber">
 
@@ -51,6 +72,16 @@
 
       </div>
 
+
+      <div class="col-9" v-if="reportSettingsQuery">
+
+        <div class="card mt-3">
+          <div class="card-body" style="padding: 0;">
+           <report-setup></report-setup>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>
@@ -63,8 +94,11 @@ import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
 import {useRouter} from "vue-router";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 import CampusSettings from "@/main/dashboard/manageLevel/CampusSettings.vue";
+import ReportSetup from "@/main/dashboard/manageLevel/report_setup/ReportSetup.vue";
+
 const levelStore = useLevelStore()
 const campusCurriculumDataInfo = ref(null)
+
 const routerData = useRouter()
 
 const school = ref( "")
@@ -72,13 +106,43 @@ const school = ref( "")
 
 const campusNumber = routerData.currentRoute.value.query.id
 let campusCurriculumNumber = routerData.currentRoute.value.query.crr
+let reportSettingsQuery = routerData.currentRoute.value.query.rp
 
+const reportSettingsMenu = ref([
+  {
+    name:"Report Setting",
+    router_name:"report-setting"
+  },
+  {
+    name:"Report Columns",
+    router_name:"report-columns"
+  },
+  {
+    name:"Report Columns Assessment",
+    router_name:"report-columns-assessment"
+  },
+  {
+    name:"Report Summary",
+    router_name:"report-card"
+  },
+  {
+    name:"Report Score",
+    router_name:"report-score"
+  },
+  {
+    name:"Report Score Summary",
+    router_name:"report-score-summary"
+  },
+  {
+    name:"Generate Report",
+    router_name:"generate-report"
+  },
+])
 
 
 
 onMounted(
     () => {
-      // levelStore.fetchCampusLevelList(campusNumber)
       levelStore.fetchCampusCurriculum(campusNumber)
     }
 )
@@ -97,9 +161,7 @@ watch(
     () => levelStore.campusCurriculumResponse,
     async (data) => {
       if(data){
-        let curriculumInfo = data.data
-
-        campusCurriculumDataInfo.value = curriculumInfo
+        campusCurriculumDataInfo.value = data.data
         if(!campusCurriculumNumber){
           // campusCurriculumNumber = curriculumInfo[0].number
         }

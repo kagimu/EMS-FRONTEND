@@ -41,7 +41,7 @@
             v-model="campus_level_number"
             @change="fetchCurriculumClass(campus_level_number)"
         >
-          <option disabled value="">Select Level</option>
+          <option disabled value="">--Select Level--</option>
           <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
         </select>
       </div>
@@ -53,7 +53,7 @@
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="form.academic_year_number">
-          <option disabled value="">Select Class</option>
+          <option disabled value="">--Select Academic Year--</option>
           <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
             {{list.code+". "+list.academic_year_name}}
           </option>
@@ -94,7 +94,7 @@
         <button
             type="submit"
             class="btn btn-primary border-0">
-          Save
+         {{study_period_number ? "Edit" : "Save"}}
           <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>
@@ -128,6 +128,7 @@ const academicYearList = ref([])
 const loader = ref(false)
 const campus_level_number = ref("")
 const campusLevelList = ref([])
+const study_period_number = ref(null)
 
 
 import VueDatePicker from '@vuepic/vue-datepicker';
@@ -142,11 +143,11 @@ const date = ref();
 
 
 const form = reactive({
-  code:"",
-  study_period_name:"",
+  code:null,
+  study_period_name:null,
   academic_year_number:"",
-  study_period_start_date:"",
-  study_period_end_date:"",
+  study_period_start_date:null,
+  study_period_end_date:null,
 })
 
 
@@ -162,6 +163,20 @@ const fetchCurriculumClass = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
 }
 
+const clearStudyPeriod = () => {
+      form.code = null
+      form.study_period_name = null
+      form.academic_year_number = ""
+      form.study_period_start_date = null
+      form.study_period_end_date = null
+      study_period_number.value = null
+}
+
+defineExpose({
+  clearStudyPeriod
+})
+
+
 onMounted(
     () =>{
        //
@@ -171,7 +186,14 @@ onMounted(
 const addStudyPeriod = () => {
   loader.value = true
   errorMessage.value = ""
-  studyPeriodStore.newStudyPeriod(form)
+
+  if(study_period_number.value){
+    form.study_period_number = study_period_number.value
+    studyPeriodStore.editStudyPeriod(form)
+  }else {
+    studyPeriodStore.newStudyPeriod(form)
+  }
+
 }
 
 
@@ -181,10 +203,10 @@ watch(
     async (data) => {
       if(data){
         loader.value = false
-        form.code = ""
-        form.study_period_name = ""
+        form.code = null
+        form.study_period_name = null
         form.academic_year_number = ""
-        form.study_period_date_range = ""
+        form.study_period_date_range = null
       }
     },
     {deep:true}
@@ -218,6 +240,23 @@ watch(
     async (data) => {
       if(data){
         campusLevelList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => studyPeriodStore.studyPeriodDataResponse,
+    async (data) => {
+      if(data){
+        let info = data.data
+            form.code = info.code
+            form.study_period_name = info.study_period_name
+            form.academic_year_number = info.academic_year_number
+            form.study_period_start_date = info.study_period_start_date
+            form.study_period_end_date = info.study_period_end_date
+            study_period_number.value = info.number
       }
     },
     {deep:true}

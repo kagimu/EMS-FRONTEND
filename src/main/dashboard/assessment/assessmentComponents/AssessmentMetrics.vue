@@ -20,7 +20,7 @@
                  </div>
                   <div class="card-body" >
           <div >
-    
+
       <table
         id="datatable"
         class="table table-striped"
@@ -35,8 +35,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(metricsData, index) in AsessmentMetricsData " :key="index">
-            <td>{{ metricsData.name + " - " + metricsData.CampusClass.class_name}}</td>
+          <tr v-for="(metricsData, index) in assessmentMetricsData " :key="index">
+            <td>
+              {{ metricsData.name + " - " + metricsData.CampusClass.class_name}}
+            </td>
             <td>{{ metricsData.description }}</td>
             <td>
             <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
@@ -229,7 +231,6 @@
     import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
     import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
    import { useStudyPeriodStore } from "../../manageLevel/studyPeriod/store/studyPeriod";
-   import VueDatePicker from '@vuepic/vue-datepicker';
     const academicYearStore = useAcademicYearStore()
 
     import {useRouter} from "vue-router";
@@ -241,12 +242,13 @@
   const { can } = useAbility()
   
     const buttonLoader = ref(false)
-    const AsessmentMetricsData = ref([])
+    const assessmentMetricsData = ref([])
     const interviewDialog= ref(false)
     let errorMessage = ref(null)
   
     const classStore = useClassesStore()
     const assessmentStore= useAssessmentStore()
+    const studyPeriodStore = useStudyPeriodStore()
     const  notificationStore  = useNotificationStore()
     const campusList = ref([])
     const assessmentMetricsList = ref([])
@@ -261,7 +263,6 @@
     const preferred_campus_number = ref(null)
     const metricListData = ref([])
     const academicYearList = ref([])
-    const studyPeriodStore = useStudyPeriodStore()
     const studyPeriodList = ref([])
     const campus_level_number = ref(null)
     const academic_year_number = ref(null)
@@ -395,7 +396,7 @@ onMounted(
       () => assessmentStore.assessmentMetricsResponse,
       async (data) => {
         if(data){
-          AsessmentMetricsData.value = data.data
+          assessmentMetricsData.value = data.data
          // notificationStore.successToast("Success", data.message)
         }
       },

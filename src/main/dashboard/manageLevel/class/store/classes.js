@@ -327,6 +327,7 @@ export const useClassesStore = defineStore("classes", () => {
         campusLevelResponse,
         errorMessage,
         classLevelByLevelResponse,
+        curriculumClassByIdResponse,
         newClassData,
         editClassData,
         fetchClasses,
@@ -348,7 +349,11 @@ export const useClassesStore = defineStore("classes", () => {
         newCampusLevel,
         fetchCampusLevel,
         fetchClassByLevel,
+<<<<<<< HEAD
         fetchCurriculumClassesByID,
         curriculumClassByIdResponse
+=======
+        fetchCurriculumClassesByID
+>>>>>>> 4beb42449514ca881f2f5e2651b6c9b8290b9cb5
     }
 })

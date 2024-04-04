@@ -7,7 +7,6 @@
         {{ classError }}
       </div>
 
-
       <div class="mb-2">
         <label class="textColor"><small>Code</small></label>
         <input
@@ -74,6 +73,17 @@ const form = reactive({
   code:null,
   name:null,
 })
+
+
+const clearLevelForm = () => {
+  form.code = null
+  form.name = null
+  levelNumber.value = null
+}
+
+defineExpose({
+  clearLevelForm
+});
 
 
 const addLevel = () =>{

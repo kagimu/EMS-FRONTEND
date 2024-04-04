@@ -16,7 +16,7 @@
                         v-model="school_number"
                         @change="fetchCampuses(school_number)"
                 >
-                    <option disabled value="">Select School</option>
+                    <option disabled value="">--Select School--</option>
                     <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
                     </option>
                 </select>
@@ -31,7 +31,7 @@
                         v-model="form.campus_number"
                         @change="fetchLevelsByCampus(form.campus_number)"
                 >
-                    <option disabled value="">Select campus</option>
+                    <option disabled value="">--Select campus--</option>
                     <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
                     </option>
                 </select>
@@ -46,7 +46,7 @@
                         class="form-select form-select-sm"
                         v-model="level_number"
                 >
-                    <option disabled value="">Select level</option>
+                    <option disabled value="">--Select level--</option>
                     <option v-for="(list, index) in levelList" :key="index" :value="list.number">{{ list.name }}
                     </option>
                 </select>
@@ -62,7 +62,7 @@
                         class="form-select form-select-sm"
                         v-model="academic_year_number"
                 >
-                    <option disabled value="">Select academic year</option>
+                    <option disabled value="">--Select academic year--</option>
                     <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">{{ list.academic_year_name }}
                     </option>
                 </select>
@@ -76,7 +76,7 @@
                         class="form-select form-select-sm"
                         v-model="study_period_number"
                 >
-                    <option disabled value="">Select study period</option>
+                    <option disabled value="">--Select study period--</option>
                     <option v-for="(list, index) in studyPeriodList" :key="index" :value="list.number">{{ list.study_period_name }}
                     </option>
                 </select>
