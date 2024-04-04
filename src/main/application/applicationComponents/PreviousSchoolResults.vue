@@ -35,7 +35,7 @@
                 <!-- <input ref="fileInput" type="file" class="form-control" @change="onFileChange"
                 accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel, application/pdf"> -->
           <input
-            ref="attachment"
+            ref="file"
             class="form-control form-control-sm noFocus"
             id="formFileSm"
             accept="application/pdf"
@@ -74,7 +74,7 @@
   const  notificationStore  = useNotificationStore()
   const applicationStore =  useApplicationStore()
   const buttonLoader = ref(false)
-  const attachment  = ref(null)
+  const file = ref(null)
 
   onMounted(
     async () => {
@@ -111,9 +111,9 @@ const selectedFile = ref(null);
 const fileName = ref(null);
 
 const onFileChange = (event) => {
-  const attachment = event.target.files[0];
-  selectedFile.value = attachment;
-  fileName.value = attachment ? attachment.name : null;
+  const file = event.target.files[0];
+  selectedFile.value = file;
+  fileName.value = file ? file.name : null;
 };
 
 
@@ -121,23 +121,13 @@ const onFileChange = (event) => {
   let student_number = localStorage.getItem('studentNumber')
   buttonLoader.value = true
 
-  let ObjectData = reactive(
-    {
-    assessment_area_number: formD.assessmentArea.map(subject => subject.subjsectName),
-    student_number: student_number,
-    score:formD.assessmentArea.map(subject => parseInt(subject.score))
-  }
-  ) 
-  alert(JSON.stringify(ObjectData))
+  const formData = new FormData();
+  formData.set("file", file.value.files[0]);
+  formData.set("assessment_area_number", formD.assessmentArea.map(subject => subject.subjsectName));
+  formData.set("student_number", student_number);
+  formData.set("score", formD.assessmentArea.map(subject => parseInt(subject.score)));
 
-  // const formData = new FormData();
-  // formData.set("attachment", attachment.value.files[0]);
-  // formData.set("assessment_area_number", formD.assessmentArea.map(subject => subject.subjsectName));
-  // formData.set("student_number", student_number);
-  // formData.set("score", formD.assessmentArea.map(subject => parseInt(subject.score)));
-
-  // applicationStore.createPreviousSchoolResults(formData)
-  
+  applicationStore.createPreviousSchoolResults(formData)
   }
 
   watch (

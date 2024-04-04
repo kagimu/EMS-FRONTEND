@@ -205,7 +205,7 @@ watch (
     () => applicationStore.newApplicationDetailsLearnerResponse,
     async (data) => {
       if(data){
-        localStorage.setItem("studentNumber", data.Student_number)
+        localStorage.setItem("studentNumber", data.student_number)
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
         emit("next", 3 )
