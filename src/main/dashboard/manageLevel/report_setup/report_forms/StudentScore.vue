@@ -13,6 +13,7 @@ const assessmentMetricNumber = ref("")
 const studentsList = ref([])
 
 
+
 onMounted(
     async () => {
       await assessmentStore.fetchAssessmentMetrics()
@@ -68,7 +69,7 @@ const addMarks = (score, comment, number) => {
     let data = {
       student_number:number,
       assessment_metric_number:assessmentMetricNumber.value,
-      actual_score:score,
+      actual_score:parseInt(score),
       comment:comment
     }
     reportSetupStore.addStudentMarks(data)
@@ -84,7 +85,17 @@ watch(
     () => reportSetupStore.studentMarksResponse,
     async (data) => {
       if(data){
-         alert(JSON.stringify(data))
+        notificationStore.successToast("Success",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => reportSetupStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}
