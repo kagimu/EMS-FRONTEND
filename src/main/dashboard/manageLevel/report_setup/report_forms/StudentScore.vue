@@ -9,7 +9,7 @@ const reportSetupStore = useReportSetupStore()
 const notificationStore  = useNotificationStore()
 const assessmentStore= useAssessmentStore()
 const metricListData = ref(null)
-const metrics = ref("")
+const assessmentMetricNumber = ref("")
 const studentsList = ref([])
 
 
@@ -22,9 +22,9 @@ onMounted(
 
 
 
-const fetchStudents = (metrics) => {
-  if(metrics){
-    reportSetupStore.fetchStudentByAssessmentMetric(metrics)
+const fetchStudents = (assessmentMetricNumber) => {
+  if(assessmentMetricNumber){
+    reportSetupStore.fetchStudentByAssessmentMetric(assessmentMetricNumber)
   }
 }
 
@@ -62,11 +62,13 @@ const onlyNumberValidator = (event) => {
   if (!validChars.test(event.key)) return event.preventDefault();
 }
 
-const addMarks = (score, comment) => {
+const addMarks = (score, comment, number) => {
   let data = {
-    score:score,
-    comment:comment
-  }
+            student_number:number,
+            assessment_metric_number:assessmentMetricNumber.value,
+            score:score,
+            comment:comment
+          }
   reportSetupStore.addStudentMarks(data)
 }
 
@@ -97,8 +99,8 @@ watch(
           <select
               style="box-shadow: none;"
               class="form-select py-10"
-              v-model="metrics"
-              @click="fetchStudents(metrics)"
+              v-model="assessmentMetricNumber"
+              @click="fetchStudents(assessmentMetricNumber)"
           >
             <option class="text-[13px]" disabled value="">--Select Assessment Metric--</option>
             <option class="text-[13px]" v-for="(list, index) in metricListData" :key="index" :value="list.number">{{list.name}}</option>
@@ -141,7 +143,7 @@ watch(
                   style="outline: none 0 !important; box-shadow: none;"
                   type="text"
                   v-model="std.score"
-                  v-on:blur="addMarks(std.score, std.comment)"
+                  v-on:blur="addMarks(std.score, std.comment, std.number)"
                   required
                   class="form-control h-[35px]">
             </td>
@@ -150,7 +152,7 @@ watch(
                    style="outline: none 0 !important; box-shadow: none;"
                    type="text"
                    v-model="std.comment"
-                   v-on:blur="addMarks(std.score, std.comment)"
+                   v-on:blur="addMarks(std.score, std.comment, std.number)"
                    required
                    class="form-control form-select-sm h-1"></textarea>
             </td>
