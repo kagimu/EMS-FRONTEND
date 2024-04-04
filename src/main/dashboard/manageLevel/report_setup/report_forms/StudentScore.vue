@@ -24,7 +24,7 @@ onMounted(
 
 const fetchSubjects = (metrics) => {
   if(metrics){
-    alert(JSON.stringify(metrics))
+    reportSetupStore.fetchStudentByAssessmentMetric(metrics)
   }
 }
 
@@ -62,6 +62,19 @@ watch(
     },
     {deep:true}
 )
+
+
+watch(
+    () => reportSetupStore.studentsByAssessmentMetricResponse,
+    async (data) => {
+      if(data){
+       alert(JSON.stringify(data))
+      }
+    },
+    {deep:true}
+)
+
+
 
 
 

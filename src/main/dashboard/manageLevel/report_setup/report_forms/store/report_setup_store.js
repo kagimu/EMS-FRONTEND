@@ -11,6 +11,7 @@ export const useReportSetupStore = defineStore("report_setup", () => {
     const reportScoreResponse = ref(null)
     const reportScoreSummaryResponse = ref(null)
     const reportSettingsListResponse = ref(null)
+    const studentsByAssessmentMetricResponse = ref(null)
     const reportColumnListResponse = ref(null)
     const reportColumnAssessmentListResponse = ref(null)
     const errorMessage = ref(null)
@@ -100,6 +101,18 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             })
     }
 
+    async function fetchStudentByAssessmentMetric(data) {
+        return await api.get("main/students/by-assessment-metric/"+data)
+            .then((response) => {
+                studentsByAssessmentMetricResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
     async function fetchReportColumn() {
         return await api.get("main/report-settings/columns")
@@ -138,6 +151,7 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         reportSettingsListResponse,
         reportColumnListResponse,
         reportColumnAssessmentListResponse,
+        studentsByAssessmentMetricResponse,
         newReportSettings,
         newReportColumn,
         newReportColumnAssessment,
@@ -147,5 +161,6 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         fetchReportSettings,
         fetchReportColumn,
         fetchReportColumnAssessment,
+        fetchStudentByAssessmentMetric,
     }
 })
