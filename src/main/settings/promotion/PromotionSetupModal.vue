@@ -83,41 +83,22 @@
   
         <div class="mb-2">
             <label class="textColor"><small>Type</small>  </label><br>
-          <span class="textColor">Promotion  <input type="radio"> &nbsp; Admission  <input type="radio"></span>
+            <select
+                    style="box-shadow: none;"
+                    class="form-select form-select-sm" required
+                    v-model="form.type"
+                  
+            >
+                <option disabled value="">Select class</option>
+                <option value="promotion">Promotion
+                </option>
+                <option value="promotion">Admission
+                </option>
+            </select>
          
         </div>
 
-        <p class="mt-3">Criteria <button type="button" @click="addCriteria" class="" style="color:white !important;">
-            <b><i class="bi bi-plus" style="color:blue"></i></b></button></p>
-    
-        <div class="row">
-            <div class="col-lg-2"></div>
-          <div class="col-lg-10">
-            <table>
-              <tr v-for="(criteria, index) in formData.criteria" :key="index">
-                <td>
-                  <select v-model="criteria.criteriaName" class="form-select form-select-sm">
-                    <option v-for="option in criteriaOption" :key="option">{{ option }}</option>
-                  </select>
-                </td>
-                <td>
-                  <input v-model="criteria.grade" type="number" class="form-control">
-                </td>
-                <td>
-                  <button @click="removeCriteria(index)" class="">
-                    <b><i class="bi bi-x" style="color:red"></i></b>
-                </button>
-                </td>
-              </tr>
-            </table>
-          </div>
-
-        </div>
-
-
-
-  
-  
+       
   
         <div class="flex justify-content-end mt-2" style="width: 100%;">
           <button
@@ -169,8 +150,8 @@ const classStore = useClassesStore()
 
   const form = reactive({
     name:null,
-    status:"STATUS",
-    "type":"Promotion",
+    status:"ACTIVE",
+    type:null,
     next_class_number:null,
     previous_class_number:null
   })
@@ -263,26 +244,12 @@ watch(
 )
 
 
-const formData = reactive({
-  criteria: [] 
-});
-
-const criteriaOption = ['Score', 'Aggregate', 'Grade']; 
-const addCriteria = () => {
-  formData.criteria.push({ criteriaName: '', grade: '' }); 
-};
-
-const removeCriteria = (index) => {
-  formData.criteria.splice(index, 1); 
-}
-
-
-
 watch(
     () => promotionStore.newPromotionSettingResponse,
     async (data) => {
         if (data) {
           notificationStore.successToast("Success application submitted", data.message)
+          promotionStore.fetchPromotionSettingByCampusClass()
         }
     },
     {deep: true}

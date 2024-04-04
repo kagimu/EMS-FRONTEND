@@ -7,7 +7,10 @@ export const usePromotionStore = defineStore("promotion", () => {
     let  PromotionSettingResponse= ref(null)
     let  deletePromotionSettingResponse= ref(null)
     let updatePromotionSettingResponse = ref(null)
-    
+    let promotionSettingValueResponse = ref(null)
+    let  newPromotionSettingValueResponse = ref(null)  
+    let newPromotionsResponse = ref(null)
+    let promotionByCampusClassNumberResponse = ref(null)
     const errorMessage = ref(null)
 
     async function newPromotionSetting(data) {
@@ -22,7 +25,7 @@ export const usePromotionStore = defineStore("promotion", () => {
             })
     }
 
-    async function fetchPromotionSettingByCampusClass() {
+    async function fetchPromotionSetting() {
         return await api.get("main/promotions/settings")
             .then((response) => {
                 PromotionSettingResponse.value = response.data
@@ -56,15 +59,74 @@ export const usePromotionStore = defineStore("promotion", () => {
             })
     }
 
+    // promotions/settings-values
+    async function newPromotionSettingValue(data) {
+        return await api.post("main/promotions/settings-values", data)
+            .then((response) => {
+                newPromotionSettingValueResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchPromotionSettingValue() {
+        return await api.get("main/promotions/settings-values")
+            .then((response) => {
+                promotionSettingValueResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function newPromotion(data) {
+        return await api.post("main/promotions", data)
+            .then((response) => {
+                newPromotionsResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchPromotionByCampusClassNumber(campus_class_number) {
+        return await api.get("main/promotions?campus_class_number="+campus_class_number)
+            .then((response) => {
+                promotionByCampusClassNumberResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
     return {
         newPromotionSettingResponse,
         errorMessage,
         updatePromotionSetting,
-        fetchPromotionSettingByCampusClass,
         deletePromotionSetting,
         PromotionSettingResponse,
         updatePromotionSettingResponse,
         deletePromotionSettingResponse,
-        newPromotionSetting
+        newPromotionSetting,
+        promotionSettingValueResponse,
+        PromotionSettingResponse,
+        fetchPromotionSetting,
+        fetchPromotionSettingValue,
+        newPromotionSettingValue,
+        newPromotionSettingValueResponse,
+        newPromotionSettingResponse,
+        newPromotion,
+        promotionByCampusClassNumberResponse,
+        fetchPromotionByCampusClassNumber
     }
 } )

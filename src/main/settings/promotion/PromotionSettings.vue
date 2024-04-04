@@ -79,7 +79,7 @@
   const promotionData = ref([])
 
   onMounted(() => {
-    promotionStore.fetchPromotionSettingByCampusClass()
+    promotionStore.fetchPromotionSetting()
     }
 )
 
@@ -88,7 +88,7 @@ watch(
     async (data) => {
         if (data) {
           promotionData.value = data.data
-          notificationStore.successToast("Success application submitted", data.message)
+          // notificationStore.s`uccessToast("Success application submitted", data.message)
         }
     },
     {deep: true}
