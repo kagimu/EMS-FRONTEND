@@ -115,7 +115,7 @@ export const useReportSetupStore = defineStore("report_setup", () => {
     }
 
     async function addStudentMarks(data) {
-        return await api.post("main/students/by-assessment-metric", data)
+        return await api.post("main/assessments", data)
             .then((response) => {
                 studentMarksResponse.value = response.data
             })
