@@ -58,7 +58,7 @@
                     style="box-shadow: none;"
                     class="form-select form-select-sm" required
                     v-model="campus_class_number"
-                    @change="fetchAcademicYear(form.campus_class_number)"
+                    @change="fetchAcademicYear(campus_class_number)"
             >
                 <option disabled value="">Select class</option>
                 <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}
@@ -117,6 +117,8 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
 import {usePromotionStore} from "./store/promotion.js"
+import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
+
 
 
 const emit = defineEmits();
@@ -126,6 +128,7 @@ const emit = defineEmits();
   const  notificationStore  = useNotificationStore()
   const levelNumber = ref("")
   const promotionStore = usePromotionStore()
+  const enrollmentStore = useEnrolmentStore()
   
 const promoSettingList = ref([])
 
@@ -139,7 +142,7 @@ const academicYearStore = useAcademicYearStore()
 const classStore = useClassesStore()
 const student_num = ref(null)
 const campus_class_number = ref(null)
-
+const academicYearList = ref([])
 
 const props = defineProps({
     studentNumber:String
@@ -161,10 +164,7 @@ const props = defineProps({
     promotion_setting_number:null,
     student_number: student_num,
     reason: null
-
   })
-  
-  
   
   const addPromotionStudent = () =>{
     alert(JSON.stringify(form))
@@ -172,6 +172,7 @@ const props = defineProps({
     promotionStore.newPromotion(form)
   } 
   
+
   const fetchCampuses = (school_number) => {
     campusStore.fetchCampuses(school_number)
 }
@@ -183,13 +184,28 @@ const fetchClasses = (campus_number) => {
 
 //fetchacadmicYear
 const fetchAcademicYear = (campusN) =>{
-// alert(campusN)
+alert(campusN)
 academicYearStore.fetchAcademicYearByCampus(campusN)
-classStore.fetchClassStreams(campusN)
 
 }
 
 
+watch(
+    () => academicYearStore.academicYearByCampusResponse,
+    async (data) => {
+        if (data) {
+          academicYearList.value = data.data
+
+          if(data && data.data){
+        let studyData = data.data
+        if(studyData && (studyData.length > 0)){
+          studyPeriodList.value = studyData[0].studyPeriod
+        }
+      }
+        }
+    },
+    {deep: true}
+)
 
 
   watch(
@@ -255,7 +271,9 @@ watch(
     () => promotionStore.newPromotionsResponse,
     async (data) => {
         if (data) {
+          loader.value = false
           notificationStore.successToast("Success application submitted", data.message)
+           enrollmentStore.fetchEnrolment()
         }
     },
     {deep: true}

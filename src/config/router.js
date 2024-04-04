@@ -61,6 +61,7 @@ import InterviewLearnersList from "@/main/dashboard/studentApplication/Interview
 import InterviewLearnersDetails from '@/main/dashboard/studentApplication/InterviewLearnersDetails.vue';
 import AdmissionList from '@/main/dashboard/studentAdmission/AdmissionList.vue';
 import Enrollment from '@/main/dashboard/enrollment/Enrollment.vue';
+import Promotions from '@/main/dashboard/promotions/Promotions.vue';
 
 
 
@@ -415,6 +416,12 @@ const router = createRouter({
                       
                 }},
 
+                {path: 'promotions', component: Promotions, name: "promotions",
+                meta: {
+                    resource: "promotions",
+                    action: "view-promotions",
+                      
+                }},
 
             ]
         },

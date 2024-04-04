@@ -35,7 +35,7 @@
               <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
                 <thead>
                 <tr>
-                  <th scope="col">Promotion Setting</th>
+                  <th>Promotion Setting</th>
                   <th>Score</th>
                   <th>Type</th>
                   <th scope="col">Action</th>
@@ -44,9 +44,9 @@
                 <tbody>
               
                 <tr v-for="(promV,index) in promotionValueData" :key="index">
-                <td>{{ promV.name }}</td>
-                 <td>{{promV.name}}</td>
-                 <td>{{promV.name}}</td>
+                <td>{{ promV.type}}</td>
+                 <td>{{promV.score}}</td>
+                 <td>{{promV.type}}</td>
                  <td>Delete</td>
                 </tr>
                 </tbody>
@@ -82,7 +82,7 @@ watch(
     async (data) => {
         if (data) {
           promotionValueData.value = data.data
-           notificationStore.successToast("Success", data.message)
+        //    notificationStore.successToast("Success", data.message)
         }
     },
     {deep: true}

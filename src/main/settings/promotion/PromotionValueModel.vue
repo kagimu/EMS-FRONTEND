@@ -21,7 +21,7 @@
         </div>
 
         <div class="mb-2">
-          <label class="textColor"><small>Score</small></label>
+          <label class="textColor"><small>Value</small></label>
           <input
               style="outline: none 0 !important; box-shadow: none;"
               type="number" v-model="form.score"
@@ -39,9 +39,11 @@
                   
             >
                 <option disabled value="">Select Type</option>
-                <option value="promotion">Promotion
+                <option value="promotion">Score
                 </option>
-                <option value="promotion">Admission
+                <option value="aggregate">Aggregate
+                </option>
+                <option value="grade">Grade
                 </option>
             </select>
          

@@ -127,6 +127,7 @@ export const usePromotionStore = defineStore("promotion", () => {
         newPromotionSettingResponse,
         newPromotion,
         promotionByCampusClassNumberResponse,
-        fetchPromotionByCampusClassNumber
+        fetchPromotionByCampusClassNumber,
+        newPromotionsResponse
     }
 } )

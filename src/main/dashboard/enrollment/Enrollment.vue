@@ -2,7 +2,7 @@
     <div>
      
 
-      <div class="modal fade" id="promoteModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
+      <div class="modal fade" id="promoteModal" tabindex="-1"  :class="{ show: promDialog }">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header text-sm p-0">
@@ -163,9 +163,14 @@
         
   
   
+  <p style="float: right;">
+    <router-link :to="{name:'promotions'}" class="navbar-brand" style="margin-left:20px;font-size:14px;
+           font-weight:400"><i class="bi bi-list"></i>&nbsp;<b>View Promotions</b>
+  </router-link>
+  </p>
+
   
-  
-  
+ 
       <table
         id="datatable"
         class="table table-striped"
@@ -235,7 +240,7 @@
   import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
   import EnrolModel from "@/main/dashboard/enrollment/EnrolModel.vue"
   import PromoteStudent from "@/main/settings/promotion/PromoteStudent.vue";
-
+  import {usePromotionStore} from "@/main/settings/promotion/store/promotion.js"
   
   const enrollmentList = ref( [])
   let errorMessage = ref(null)
@@ -243,6 +248,7 @@
   const  notificationStore  = useNotificationStore()
   const enrollmentStore = useEnrolmentStore()
   const studentNumber = ref(null)
+  const promotionStore = usePromotionStore()
   
   const campusList = ref([])
   const schoolList = ref([])
@@ -256,6 +262,7 @@
   const studyPeriodList  = ref([])
   const classStore = useClassesStore()
   const streamList = ref([])
+  const promDialog = ref(false)
   
   
   const form = reactive({
@@ -378,6 +385,7 @@
     async (data) => {
       if(data){
         // notificationStore.successToast("Success", data.message)
+        promDialog.value = false;
         enrollmentList.value = data.data
       }
     },
@@ -388,15 +396,27 @@
     () => enrollmentStore.errorMessage,
     async (data) => {
           if (data) {
+             promDialog.value = false;
               notificationStore.errorToast("Error", data.message)
           }
     },
     {deep: true}
   )
 
-  const promModal = (a) =>{
+const promModal = (a) =>{
+promDialog.value = true;
 studentNumber.value = a
+
   }
+  watch(
+    () => promotionStore.newPromotionsResponse,
+    async (data) => {
+        if (data) {
+          promDialog.value = false;
+        }
+    },
+    {deep: true}
+)
     </script>
   
   
