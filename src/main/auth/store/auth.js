@@ -21,7 +21,7 @@ export const useAuthStore = defineStore("auth", () => {
                 localStorage.setItem("token", dataInfo.token)
                 let permissions = []
 
-                if(response.data.data.type === 'User'){
+                if(response.data.data.type === 'Admin'){
                     permissions.push({"action":"manage","resource":"all"})
                 }
                 else {
