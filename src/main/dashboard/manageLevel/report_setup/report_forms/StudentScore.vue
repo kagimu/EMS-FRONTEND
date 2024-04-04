@@ -8,45 +8,26 @@ import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.j
 const reportSetupStore = useReportSetupStore()
 const notificationStore  = useNotificationStore()
 const assessmentStore= useAssessmentStore()
-const reportSettingsList = ref(null)
 const metricListData = ref(null)
 const metrics = ref("")
+const studentsList = ref([])
 
 
 onMounted(
     async () => {
       await assessmentStore.fetchAssessmentMetrics()
-      await reportSetupStore.fetchReportSettings()
+
     }
 )
 
 
 
-const fetchSubjects = (metrics) => {
+const fetchStudents = (metrics) => {
   if(metrics){
     reportSetupStore.fetchStudentByAssessmentMetric(metrics)
   }
 }
 
-
-watch(
-    () => reportSetupStore.reportSettingsResponse,
-    async (data) => {
-      if(data){
-        await reportSetupStore.fetchReportSettings()
-        notificationStore.successToast("Success",data.message)
-      }
-    }
-)
-
-watch(
-    () => reportSetupStore.reportSettingsListResponse,
-    async (data) => {
-      if(data){
-       reportSettingsList.value = data.data
-      }
-    }
-)
 
 
 
@@ -68,12 +49,18 @@ watch(
     () => reportSetupStore.studentsByAssessmentMetricResponse,
     async (data) => {
       if(data){
-       alert(JSON.stringify(data))
+       studentsList.value = data.data
       }
     },
     {deep:true}
 )
 
+
+
+function onlyNumberValidator(event) {
+  const validChars = /^[0-9+\-*/.\s]+$/;
+  if (!validChars.test(event.key)) return event.preventDefault();
+}
 
 
 
@@ -92,7 +79,7 @@ watch(
               style="box-shadow: none;"
               class="form-select py-10"
               v-model="metrics"
-              @click="fetchSubjects(metrics)"
+              @click="fetchStudents(metrics)"
           >
             <option class="text-[13px]" disabled value="">--Select Assessment Metric--</option>
             <option class="text-[13px]" v-for="(list, index) in metricListData" :key="index" :value="list.number">{{list.name}}</option>
@@ -115,32 +102,36 @@ watch(
         <table class="table table-hover caption-top mt-5 table-sm text-sm" style="font-size: 14px;">
           <thead>
           <tr>
-            <th scope="col" style="width: 30%;">Code</th>
-            <th scope="col">Name</th>
-            <th scope="col">Number of Columns</th>
-            <th scope="col">Status</th>
-<!--            <th scope="col">Action</th>-->
+            <th class="w-[10%]">#</th>
+            <th class="w-[30%]">Name</th>
+            <th>Score</th>
+            <th>Comment</th>
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(levelInfo, index) in reportSettingsList" :key="index">
-            <td> {{levelInfo.code}}</td>
-            <td> {{levelInfo.name}}</td>
-            <td> {{levelInfo.columns}}</td>
-            <td> {{levelInfo.status}}</td>
-            <td>
-<!--              <div>
-                <i
-                    style="font-size: 13px;"
-                    data-bs-toggle="modal" data-bs-target="#levelModal"
-                    class="bi-pencil mr-2 cursor-pointer" @click="editLevel(levelInfo)"></i>
-                <i
-                    style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLevel(levelInfo, index)"></i>
-                <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>-->
+          <tr v-for="(std, index) in studentsList" :key="index">
+            <td> {{(index + 1)}}</td>
+            <td class="uppercase text-sm">
+              {{std.student_surname ? std.student_surname : ""}}
+              {{std.student_second_name ? " "+std.student_second_name : ""}}
+              {{std.student_other_name ? " "+std.student_other_name : ""}}
             </td>
+            <td>
+              <input
+                  @keypress="onlyNumberValidator($event)"
+                  style="outline: none 0 !important; box-shadow: none;"
+                  type="text" v-model="std.score"
+                  required
+                  class="form-control form-select-sm h-[35px]">
+            </td>
+            <td>
+               <textarea
+                   style="outline: none 0 !important; box-shadow: none;"
+                   type="text" v-model="std.comment"
+                   required
+                   class="form-control form-select-sm h-1"></textarea>
+            </td>
+
           </tr>
           </tbody>
         </table>
