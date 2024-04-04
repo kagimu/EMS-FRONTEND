@@ -63,13 +63,17 @@ const onlyNumberValidator = (event) => {
 }
 
 const addMarks = (score, comment, number) => {
-  let data = {
-            student_number:number,
-            assessment_metric_number:assessmentMetricNumber.value,
-            score:score,
-            comment:comment
-          }
-  reportSetupStore.addStudentMarks(data)
+
+  if(score && comment){
+    let data = {
+      student_number:number,
+      assessment_metric_number:assessmentMetricNumber.value,
+      actual_score:score,
+      comment:comment
+    }
+    reportSetupStore.addStudentMarks(data)
+  }
+
 }
 
 
