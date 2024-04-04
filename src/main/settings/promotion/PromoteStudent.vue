@@ -6,15 +6,19 @@
         <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
           {{ classError }}
         </div>
-  
         <div class="mb-2">
-          <label class="textColor"><small>Authorizer</small></label>
-          <input
-              style="outline: none 0 !important; box-shadow: none;"
-              type="text" v-model="form.authorizer"
-              required
-              class="form-control form-select-sm">
+            <label class="textColor"><small>Promotion Setting</small>  </label>
+            <select
+                    style="box-shadow: none;"
+                    class="form-select form-select-sm"
+                    v-model="form.promotion_setting_number" required
+            >
+                <option disabled value="">Select Promotion Setting</option>
+                <option v-for="(list, index) in promoSettingList" :key="index" :value="list.number">{{ list.name }}
+                </option>
+            </select>
         </div>
+
 
         <div class="mb-2">
             <label class="textColor"><small>School</small> </label>
@@ -47,14 +51,14 @@
 
 
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-12">
                 <div class="mb-2">
-            <label class="textColor"><small>Current Class</small> </label>
+            <label class="textColor"><small>Class</small> </label>
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm" required
-                    v-model="form.previous_campus_class_number"
-                    @change="fetchAcademicYear(form.previous_campus_class_number)"
+                    v-model="campus_class_number"
+                    @change="fetchAcademicYear(form.campus_class_number)"
             >
                 <option disabled value="">Select class</option>
                 <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}
@@ -62,50 +66,24 @@
             </select>
         </div>
             </div>
-            <div class="col-lg-6">
-                <div class="mb-2">
-            <label class="textColor"><small>Next Class</small> </label>
-            <select
-                    style="box-shadow: none;"
-                    class="form-select form-select-sm" required
-                    v-model="form.next_campus_class_number"
-                    @change="fetchAcademicYear(form.next_campus_class_number)"
-            >
-                <option disabled value="">Select class</option>
-                <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}
-                </option>
-            </select>
-        </div>
-           </div>
-
         </div>
         
-  
         <div class="mb-2">
-            <label class="textColor"><small>Type</small>  </label><br>
+            <label class="textColor"><small>Current Academic Year</small> </label>
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm" required
-                    v-model="form.type"
-                  
+                    v-model="form.current_academic_year_number"
             >
-                <option disabled value="">Select class</option>
-                <option value="promotion">Promotion
-                </option>
-                <option value="promotion">Admission
-                </option>
+                <option disabled value="">Select Year</option>
+               <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
             </select>
-         
         </div>
-        <div class="mb-2">
-            <label class="textColor"><small>Condition</small>  </label><br>
-          <textarea v-model="form.condition" class="form-control"></textarea>
-         
-        </div>
+      
 
         <div class="mb-2">
-            <label class="textColor"><small>Reason for Altering</small>  </label><br>
-          <textarea v-model="form.reason_for_altering" class="form-control"></textarea>
+            <label class="textColor"><small>Reason</small>  </label><br>
+          <textarea v-model="form.reason" class="form-control"></textarea>
          
         </div>
        
@@ -140,6 +118,7 @@ import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/st
 import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
 import {usePromotionStore} from "./store/promotion.js"
 
+
 const emit = defineEmits();
   const classError = ref(null)
   const loader = ref(false)
@@ -147,6 +126,8 @@ const emit = defineEmits();
   const  notificationStore  = useNotificationStore()
   const levelNumber = ref("")
   const promotionStore = usePromotionStore()
+  
+const promoSettingList = ref([])
 
 const campusList = ref([])
 const schoolList = ref([])
@@ -157,6 +138,7 @@ const school_number = ref(null)
 const academicYearStore = useAcademicYearStore()
 const classStore = useClassesStore()
 const student_num = ref(null)
+const campus_class_number = ref(null)
 
 
 const props = defineProps({
@@ -174,17 +156,14 @@ const props = defineProps({
 )
 
   const form = reactive({
-    condition:null,
-    assessment_number:null,
-    reason_for_altering:null,
-    previous_campus_class_number:null,
-    next_campus_class_number:null,
-    student_number:student_num,
-    status:null,
-    type:null,
-    assessment_grade_number:null,
-    authorizer:null,
+    current_academic_year_number:null,
+    status: "STATUS",
+    promotion_setting_number:null,
+    student_number: student_num,
+    reason: null
+
   })
+  
   
   
   const addPromotionStudent = () =>{
@@ -293,6 +272,19 @@ watch(
 )
 
 
+onMounted(() => {
+    promotionStore.fetchPromotionSetting()
+    }
+)
+watch(
+    () => promotionStore.PromotionSettingResponse,
+    async (data) => {
+        if (data) {
+          promoSettingList.value = data.data
+        }
+    },
+    {deep: true}
+)
 
 
   </script>
