@@ -57,13 +57,32 @@ watch(
 
 
 
-function onlyNumberValidator(event) {
+const onlyNumberValidator = (event) => {
   const validChars = /^[0-9+\-*/.\s]+$/;
   if (!validChars.test(event.key)) return event.preventDefault();
 }
 
+const addMarks = (score, comment) => {
+  let data = {
+    score:score,
+    comment:comment
+  }
+  reportSetupStore.addStudentMarks(data)
+}
 
 
+
+
+
+watch(
+    () => reportSetupStore.studentMarksResponse,
+    async (data) => {
+      if(data){
+         alert(JSON.stringify(data))
+      }
+    },
+    {deep:true}
+)
 
 </script>
 
@@ -120,14 +139,18 @@ function onlyNumberValidator(event) {
               <input
                   @keypress="onlyNumberValidator($event)"
                   style="outline: none 0 !important; box-shadow: none;"
-                  type="text" v-model="std.score"
+                  type="text"
+                  v-model="std.score"
+                  v-on:blur="addMarks(std.score, std.comment)"
                   required
-                  class="form-control form-select-sm h-[35px]">
+                  class="form-control h-[35px]">
             </td>
             <td>
                <textarea
                    style="outline: none 0 !important; box-shadow: none;"
-                   type="text" v-model="std.comment"
+                   type="text"
+                   v-model="std.comment"
+                   v-on:blur="addMarks(std.score, std.comment)"
                    required
                    class="form-control form-select-sm h-1"></textarea>
             </td>
