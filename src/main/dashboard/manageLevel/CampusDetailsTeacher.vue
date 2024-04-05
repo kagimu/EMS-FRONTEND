@@ -112,7 +112,11 @@ const reportSettingsMenu = ref([
   {
     name:"Add Score",
     router_name:"student-score"
-  }
+  },
+  {
+    name:"Generate Report",
+    router_name:"generate-report"
+  },
 ])
 
 
