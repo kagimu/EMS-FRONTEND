@@ -4,13 +4,12 @@ import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/rep
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
-import {useReportCardStore} from "@/main/dashboard/report-card/store/report-card.js";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 
-const reportStore = useReportCardStore()
+
 const levelStore = useLevelStore()
 const classStore = useClassesStore()
 const studyPeriodStore = useStudyPeriodStore()

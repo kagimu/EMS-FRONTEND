@@ -40,7 +40,6 @@ const filterReportSummary = () => {
   let data = {
     study_period_number:study_period_number.value,
     campus_class_number:campus_class_number.value,
-    studentNumber:""
   }
   reportStore.fetchReportSummary(data)
 }
