@@ -117,6 +117,10 @@ const reportSettingsMenu = ref([
     name:"Generate Report",
     router_name:"generate-report"
   },
+  {
+    name:"Report Summary",
+    router_name:"report-card"
+  },
 ])
 
 

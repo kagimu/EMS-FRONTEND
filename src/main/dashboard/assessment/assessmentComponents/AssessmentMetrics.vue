@@ -341,6 +341,8 @@ onMounted(
       async () => {
         await assessmentStore.fetchAssessmentMetrics()
       } )
+
+
       watch(
     () => assessmentStore.assesmentAreaResponse,
     async (data) => {

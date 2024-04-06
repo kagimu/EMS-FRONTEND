@@ -37,8 +37,9 @@ export const useAssessmentStore = defineStore("assessment", () => {
     }
 
 
-    async function fetchAssessmentArea() {
-        return await api.get("main/assessment-areas")
+    async function fetchAssessmentArea(campus_class_number) {
+        campus_class_number = campus_class_number ? campus_class_number : ""
+        return await api.get("main/assessment-areas?curriculum_class_number="+campus_class_number)
             .then((response) => {
                assesmentAreaResponse.value = response.data
             })
@@ -191,8 +192,10 @@ async function createAssessmentMetrics(data) {
         })
 }
 
-async function fetchAssessmentMetrics() {
-    return await api.get("main/assessments/assessment-metrics")
+async function fetchAssessmentMetrics(data) {
+      let study_period_number = data.study_period_number ? data.study_period_number : ""
+      let assessment_area_number = data.assessment_area_number ? data.assessment_area_number : ""
+    return await api.get("main/assessments/assessment-metrics?study_period_number="+study_period_number+"&assessment_area_number="+assessment_area_number)
         .then((response) => {
             assessmentMetricsResponse.value = response.data
         })
