@@ -71,8 +71,8 @@ const fetchAssessmentArea = (campus_class_number) =>{
   }
 }
 
-const fetchAssessmentMetrics = (assessment_area_number) =>{
-  if(assessment_area_number) {
+const fetchAssessmentMetrics = () =>{
+  if(study_period_number.value && assessment_area_number.value) {
     let data = {
       study_period_number:study_period_number.value,
       assessment_area_number:assessment_area_number.value
@@ -261,6 +261,7 @@ watch(
             style="box-shadow: none;"
             class="form-select form-select-sm" required
             v-model="study_period_number"
+            @change="fetchAssessmentMetrics"
         >
           <option disabled value="">Select</option>
           <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
@@ -288,7 +289,7 @@ watch(
               style="box-shadow: none;"
               class="form-select form-select-sm"
               v-model="assessment_area_number"
-              @change="fetchAssessmentMetrics(assessment_area_number)"
+              @change="fetchAssessmentMetrics"
           >
             <option disabled value="">Select</option>
             <option v-for="(list, index) in AsessmentListData" :key="index" :value="list.number">{{ list.name }}
