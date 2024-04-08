@@ -1,6 +1,24 @@
 <template>
     <div>
      
+
+      <div class="modal fade" id="promoteModal" tabindex="-1"  :class="{ show: promDialog }">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header text-sm p-0">
+              <h6 class="modal-title ml-3 mt-2 mb-2">Promotion</h6>
+              <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mt-2 mb-2">
+              <PromoteStudent :studentNumber="studentNumber"></PromoteStudent>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
   
       <!-- end  -->
       <div class="row mt-3">
@@ -145,9 +163,14 @@
         
   
   
+  <p style="float: right;">
+    <router-link :to="{name:'promotions'}" class="navbar-brand" style="margin-left:20px;font-size:14px;
+           font-weight:400"><i class="bi bi-list"></i>&nbsp;<b>View Promotions</b>
+  </router-link>
+  </p>
+
   
-  
-  
+ 
       <table
         id="datatable"
         class="table table-striped"
@@ -183,6 +206,10 @@
             <td>
                 <button><i class="bi bi-trash"></i></button> &nbsp;
                 <button><i class="bi bi-pencil"></i></button>
+                <button 
+                 type="button" @click="promModal(enrolData.Student.number)"  class="btn btn-sm buttonStyle btn-primary mr-2"  data-bs-toggle="modal" data-bs-target="#promoteModal">
+                  Promote
+                </button>
             </td>
           
           </tr>  
@@ -212,13 +239,16 @@
   import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
   import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
   import EnrolModel from "@/main/dashboard/enrollment/EnrolModel.vue"
+  import PromoteStudent from "@/main/settings/promotion/PromoteStudent.vue";
+  import {usePromotionStore} from "@/main/settings/promotion/store/promotion.js"
   
   const enrollmentList = ref( [])
   let errorMessage = ref(null)
   const buttonLoader = ref(false)
   const  notificationStore  = useNotificationStore()
-  
   const enrollmentStore = useEnrolmentStore()
+  const studentNumber = ref(null)
+  const promotionStore = usePromotionStore()
   
   const campusList = ref([])
   const schoolList = ref([])
@@ -232,6 +262,7 @@
   const studyPeriodList  = ref([])
   const classStore = useClassesStore()
   const streamList = ref([])
+  const promDialog = ref(false)
   
   
   const form = reactive({
@@ -354,6 +385,7 @@
     async (data) => {
       if(data){
         // notificationStore.successToast("Success", data.message)
+        promDialog.value = false;
         enrollmentList.value = data.data
       }
     },
@@ -364,11 +396,27 @@
     () => enrollmentStore.errorMessage,
     async (data) => {
           if (data) {
+             promDialog.value = false;
               notificationStore.errorToast("Error", data.message)
           }
     },
     {deep: true}
   )
+
+const promModal = (a) =>{
+promDialog.value = true;
+studentNumber.value = a
+
+  }
+  watch(
+    () => promotionStore.newPromotionsResponse,
+    async (data) => {
+        if (data) {
+          promDialog.value = false;
+        }
+    },
+    {deep: true}
+)
     </script>
   
   

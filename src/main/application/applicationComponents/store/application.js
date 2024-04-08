@@ -22,7 +22,10 @@ export const useApplicationStore = defineStore("application", () => {
     let interviewResultsResponse = ref(null)
     let interviewResultesponse  = ref(null)
     let interviewDetails  = ref(null)
-
+    let previousSchoolResultresponse = ref(null)
+    let updateParentPersonalDetailsresponse = ref(null)
+    let updateLearnerPersonalDetailsresponse = ref(null)
+    
     async function newApplicationDetails(data) {
         return await api.post("main/applications/new-parent", data)
             .then((response) => {
@@ -36,6 +39,21 @@ export const useApplicationStore = defineStore("application", () => {
             })
     }
 
+
+    async function updateParentDetails(parentid,data) {
+        return await api.put("main/applications/parents/"+parentid, data)
+            .then((response) => {
+                updateParentPersonalDetailsresponse.value = response.data.data
+
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
     async function newApplicationLeanerDetails(data) {
         return await api.post("main/applications/new-student", data)
             .then((response) => {
@@ -47,6 +65,22 @@ export const useApplicationStore = defineStore("application", () => {
                 }
             })
     }
+
+    // {{baseUrl}}/applications/students/{{STUDENT_APN}}
+    async function updateLearnerDetails(student_apn,data) {
+        return await api.put("main/applications/students/"+student_apn, data)
+            .then((response) => {
+                updateLearnerPersonalDetailsresponse.value = response.data.data
+
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
 
     async function newApplicationPrevSchoolDetails(applicationId,data) {
         return await api.post("main/applications/"+applicationId+"/previous-schools", data)
@@ -258,7 +292,26 @@ export const useApplicationStore = defineStore("application", () => {
         // }
 
               
+
+         async function createPreviousSchoolResults(data) {
+            return await api.post("main/previous-school-results", data,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })
         
+                .then((response) => {
+                    previousSchoolResultresponse.value = response.data
+                })
+                .catch((response) => {
+                    if(response){
+                        errorMessage.value = response.response.data
+                    }
+                })
+        }
+
+     
 
     return {
         newApplicationDetailsResponse ,
@@ -296,5 +349,12 @@ export const useApplicationStore = defineStore("application", () => {
         createInterviewResults ,
         fetchInterviewDetails,
         interviewDetails,
+        previousSchoolResultresponse,
+        createPreviousSchoolResults,
+        updateParentDetails,
+        updateParentPersonalDetailsresponse,
+        updateLearnerPersonalDetailsresponse,
+        updateLearnerDetails
+
     }
 })

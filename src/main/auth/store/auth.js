@@ -94,6 +94,8 @@ export const useAuthStore = defineStore("auth", () => {
             })
     }
 
+    
+
     function updateToken(data){
         if(data){
            token.value = data
