@@ -62,6 +62,11 @@ import InterviewLearnersDetails from '@/main/dashboard/studentApplication/Interv
 import AdmissionList from '@/main/dashboard/studentAdmission/AdmissionList.vue';
 import Enrollment from '@/main/dashboard/enrollment/Enrollment.vue';
 import Promotions from '@/main/dashboard/promotions/Promotions.vue';
+import SetPassword from "@/main/auth/SetPassword.vue";
+import ResetPassword from "@/main/auth/ResetPassword.vue";
+import SchoolInfo from "@/main/dashboard/manageSchool/SchoolInfo.vue";
+import CampusInfo from "@/main/dashboard/manageCampus/CampusInfo.vue";
+import CampusDetailsTeacher from "@/main/dashboard/manageLevel/CampusDetailsTeacher.vue";
 
 
 
