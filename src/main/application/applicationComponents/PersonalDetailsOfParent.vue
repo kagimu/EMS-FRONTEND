@@ -8,6 +8,7 @@
   <div class="row mx-auto">
     <div class="col-12">
         <div class="mb-8">
+          <input type="text"  v-model="formData.parent_number">
           <label class="textColor text-sm"><small>Surname/Family name</small> <span class="star">*</span></label>
           <input type="text" style="outline: none 0 !important; box-shadow: none; font-size: 10px;;" v-model="form.surname" required class="form-control form-control-sm">
         </div>
@@ -81,6 +82,7 @@ const buttonLoader = ref(false)
 let errorMessage = ref(null)
 const emit = defineEmits()
 
+
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
 
@@ -91,13 +93,16 @@ const form = reactive({
   main_telephone_number:null,
   email:null,
   alternative_email:null,
-  alternative_telephone_number:null,
+  alternative_telephone_number:null
 })
 
-const addParentPersonalDetails = () => {
-  buttonLoader.value = true
-  applicationStore.newApplicationDetails(form)
-}
+const formData = reactive ({
+  parent_number:null
+})
+
+
+
+
 
 watch (
     () => applicationStore.newApplicationDetailsResponse,
@@ -106,6 +111,22 @@ watch (
           localStorage.setItem("applicationId", data.application_number)
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
+
+        emit("next", 2 )
+      }
+    },
+    {deep:true}
+)
+
+
+watch (
+    () => applicationStore.updateParentPersonalDetailsresponse,
+    async (data) => {
+      if(data){
+        localStorage.setItem("applicationId", data.application_number)
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+
         emit("next", 2 )
       }
     },
@@ -143,6 +164,8 @@ watch(
     { deep: true } 
 )
 
+
+
 watch (
     () => applicationStore.applicationByIdResponse,
     async (data) => {
@@ -154,12 +177,28 @@ watch (
         form.alternative_telephone_number= data.Parent.alternative_telephone_number
         form.email= data.Parent.email
         form.alternative_email=data.Parent.alternative_email
+        formData.parent_number= data.Parent.number
         // alert(JSON.stringify(data))
         // notificationStore.successToast("Success", data.message)
       }
     },
     {deep:true}
 )
+
+const addParentPersonalDetails = () => {
+  buttonLoader.value = true
+  if(!formData.parent_number){
+    applicationStore.newApplicationDetails(form)
+  }else {
+    applicationStore.updateParentDetails(formData.parent_number,form)
+ nextGo()
+  }
+
+}
+
+const nextGo = () =>{
+  emit("next", 2 )
+}
 
 </script>
 

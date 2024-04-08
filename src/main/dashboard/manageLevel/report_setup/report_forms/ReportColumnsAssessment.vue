@@ -83,15 +83,19 @@ watch(
         <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
           <thead>
           <tr>
-            <th scope="col" style="width: 30%;">Code</th>
-            <th scope="col">Name</th>
+            <th class="w-[10%]" scope="col">Code</th>
+            <th scope="col">Assessment Area</th>
+            <th scope="col">Assessment Metric</th>
+            <th scope="col">Report Column</th>
             <th scope="col">Action</th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="(levelInfo, index) in reportColumnAssessmentList" :key="index">
             <td> {{levelInfo.code}}</td>
-            <td> {{levelInfo.name}}</td>
+            <td> {{levelInfo.assessment_area}}</td>
+            <td> {{levelInfo.assessment_metric}}</td>
+            <td> {{levelInfo.report_column}}</td>
             <td>
               <div>
                 <i

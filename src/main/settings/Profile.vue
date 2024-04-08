@@ -10,9 +10,9 @@
           </div>
           <div class="card-body">
             <img :src="user.avatar" class="rounded-circle img-fluid mb-3" alt="User Avatar">
-            <h5 class="card-title">{{ user.name }}</h5>
-            <p class="card-text">{{ user.email }}</p>
-            <p class="card-text">{{ user.Role }}</p>
+            <h5 class="card-title">{{ name }}</h5>
+            <p class="card-text">{{ email }}</p>
+            <p class="card-text">{{ username }}</p>
           </div>
         </div>
       </div>
@@ -38,6 +38,20 @@
 
 <script setup>
 import {reactive, ref} from "vue";
+import {useAuthStore} from "@/main/auth/store/auth.js";
+const authStore = useAuthStore()
+
+const name = ref(null)
+const email = ref(null)
+const role = ref(null)
+const username = ref(null)
+let p = authStore.profile
+
+name.value = p.first_name+" "+p.second_name+" "+p.last_name
+email.value = p.email
+role.value = p.role
+username.value = p.email
+
 const  user = reactive( {
           name: 'Collins Mpiima',
           username: 'collins',
@@ -47,4 +61,7 @@ const  user = reactive( {
           Role: 'Admin',
           joined: 'January 1, 2022'
         } )
+
+
+
 </script>

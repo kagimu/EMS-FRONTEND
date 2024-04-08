@@ -40,7 +40,6 @@ const filterReportSummary = () => {
   let data = {
     study_period_number:study_period_number.value,
     campus_class_number:campus_class_number.value,
-    studentNumber:""
   }
   reportStore.fetchReportSummary(data)
 }
@@ -172,13 +171,11 @@ watch(
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="campus_curriculum_number"
-            @change="fetchCampusLevel(campus_curriculum_number)"
-        >
+            @change="fetchCampusLevel(campus_curriculum_number)">
           <option disabled value="">--Select Curriculum--</option>
           <option v-for="(list, index) in campusCurriculumDataInfo" :key="index" :value="list.number">{{list.name}}</option>
         </select>
     </div>
-
 
     <div class="col-3">
       <label class="textColor"><small>Level</small></label>
@@ -207,6 +204,7 @@ watch(
         </option>
       </select>
     </div>
+
     <div class="col-3">
       <label class="textColor"><small>Study Period</small>
       </label>
@@ -234,7 +232,6 @@ watch(
         <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
       </select>
     </div>
-
 
   </div>
 

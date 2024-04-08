@@ -82,7 +82,7 @@ watch(
         <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
           <thead>
           <tr>
-            <th scope="col" style="width: 30%;">Code</th>
+            <th class="w-[10%]" scope="col">Code</th>
             <th scope="col">Name</th>
             <th scope="col">Percentage Share (%)</th>
             <th scope="col">Report settings</th>
@@ -94,7 +94,7 @@ watch(
             <td> {{levelInfo.code}}</td>
             <td> {{levelInfo.name}}</td>
             <td> {{levelInfo.percentage_share}}</td>
-            <td>  </td>
+            <td> {{levelInfo.report_setting_name}}</td>
             <td>
 <!--              <div>
                 <i

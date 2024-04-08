@@ -121,7 +121,7 @@ const reportSettingsMenu = ref([
     name:"Report Columns Assessment",
     router_name:"report-columns-assessment"
   },
-  {
+/*  {
     name:"Report Summary",
     router_name:"report-card"
   },
@@ -136,7 +136,7 @@ const reportSettingsMenu = ref([
   {
     name:"Generate Report",
     router_name:"generate-report"
-  },
+  },*/
 ])
 
 

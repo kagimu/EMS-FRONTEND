@@ -32,10 +32,17 @@
               </li>
               <li class="nav-item cursor-pointer">
                 <a style="color: black;" class="nav-link" @click="nextPage(4)" :class="step === 4 ? 'active activeTab' : ''">
+                  <small>PREVIOUS SCHOOL RESULTS</small>
+                </a>
+              </li>            
+
+              <li class="nav-item cursor-pointer">
+                <a style="color: black;" class="nav-link" @click="nextPage(5)" :class="step === 5 ? 'active activeTab' : ''">
                   <small>PAYMENT</small>
                 </a>
               </li>
             </ul>
+           
           </div>
         
   <div v-show="step === 1">
@@ -54,7 +61,10 @@
     ></previous-school-details>
   </div>
   <div v-show="step === 4">
-  <application-payement  v-on:next="nextPage">
+  <PreviousSchoolResults v-on:next="nextPage"></PreviousSchoolResults>
+  </div>
+  <div v-show="step === 5">
+    <application-payement  v-on:next="nextPage">
   </application-payement>
   </div>
  </div>
@@ -170,6 +180,7 @@ import PersonalDetailsOfStudent from "@/main/application/applicationComponents/P
 import PersonalDetailsOfLearner from "@/main/application/applicationComponents/PersonalDetailsOfLearner.vue";
 import PreviousSchoolDetails from "@/main/application/applicationComponents/PreviousSchoolDetails.vue";
 import ApplicationPayement from "./applicationComponents/ApplicationPayement.vue";
+import PreviousSchoolResults from "./applicationComponents/PreviousSchoolResults.vue";
 
 const step = ref(1)
 

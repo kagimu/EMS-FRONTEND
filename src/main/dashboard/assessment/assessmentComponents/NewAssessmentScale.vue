@@ -2,7 +2,7 @@
     <div>
         <div class="modal-content">
       <div class="modal-header text-sm p-0">
-        <!-- {{ scaleD }} -->
+     {{ scaleD }}
         <h6 class="modal-title ml-3 mt-2 mb-2"><small>{{ title }}</small></h6>
         <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -94,20 +94,20 @@
 
             <div class="col-lg-4">
                 <label class="textColor"><small>Grade</small></label>
-             <input v-model="form.grade" type="text" class="form-control" placeholder="1">
+             <input v-model="form.grade" type="text" class="form-control" placeholder="1,2,3,4">
             </div>
         </div>
       </div>
 
       <div class="mb-2">
         <label class="textColor"><small>Description</small></label>
-        <textarea v-model="form.description" class="form-control">
+        <textarea v-model="form.description" class="form-control textColor">
         </textarea>
       </div>
       
       <div class="mb-2">
         <label class="textColor"><small>Remarks</small></label>
-        <textarea v-model="form.remarks" class="form-control">
+        <textarea v-model="form.remarks" class="form-control textColor">
         </textarea>
       </div>
      <div class="flex justify-content-end mt-2" style="width: 100%;">
@@ -187,8 +187,9 @@ const props = defineProps({
 )
 const createScale = () =>{
     // alert(JSON.stringify(form))
-    if(props.scaleD.name !=""){
+    if(props.scaleD.number){
         assessmentStore.updateAssessmentScale(form,props.scaleD.number)
+
     }else{
         assessmentStore.createAssessmentScale(form)
     }
@@ -239,7 +240,8 @@ watch (
         form.grade=null,
         form.description=null,
         form.abbreviation=null,
-        form.remarks=null
+        form.remarks=null,
+        form.school_number=null
       }
     },
     {deep:true}

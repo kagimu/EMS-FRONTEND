@@ -91,10 +91,10 @@ watch(
         <table class="table table-hover caption-top mt-5 table-sm text-sm" style="font-size: 14px;">
           <thead>
           <tr>
-            <th scope="col" style="width: 30%;">Code</th>
-            <th scope="col">Name</th>
-            <th scope="col">Number of Columns</th>
-            <th scope="col">Status</th>
+            <th class="w-[10%]" scope="col">Code</th>
+            <th>Name</th>
+            <th>Number of Columns</th>
+            <th>Status</th>
 <!--            <th scope="col">Action</th>-->
           </tr>
           </thead>

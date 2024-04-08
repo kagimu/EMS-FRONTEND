@@ -9,7 +9,7 @@ export const useReportCardStore = defineStore("ReportCard", () => {
 
 
     async function fetchReportSummary(data) {
-        return await api.get("main/report-settings/report-settings-by-student?study_period_number="+data.study_period_number+"&campus_class_number="+data.campus_class_number+"&studentNumber="+data.studentNumber)
+        return await api.get("main/report-settings/report-settings-by-student?study_period_number="+data.study_period_number+"&campus_class_number="+data.campus_class_number)
             .then((response) => {
                 reportSummaryResponse.value = response.data
             })

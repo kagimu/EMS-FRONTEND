@@ -210,7 +210,7 @@
           <!-- <td>{{ adm.status }}</td> -->
           <!-- <span v-if="adm.status == 'Enrolled'" class="link link-primary"><i>{{ adm.status }}</i></span> -->
           <td>
-            <button v-if="adm.status != 'Enrolled'" @click="showDialog(adm.Student.number)" 
+            <button v-if="adm.status != 'Enrolled'" @click="showDialog(adm)" 
             data-bs-toggle="modal" data-bs-target="#admitMainModal" type="submit" class="btn btn-sm btn-primary mb-2 mr-4 "
                style="color: white;">
                <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  

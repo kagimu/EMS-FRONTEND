@@ -20,7 +20,7 @@
                  </div>
                   <div class="card-body" >
           <div >
-    
+
       <table
         id="datatable"
         class="table table-striped"
@@ -35,8 +35,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(metricsData, index) in AsessmentMetricsData " :key="index">
-            <td>{{ metricsData.name + " - " + metricsData.CampusClass.class_name}}</td>
+          <tr v-for="(metricsData, index) in assessmentMetricsData " :key="index">
+            <td>
+              {{ metricsData.name + " - " + metricsData.CampusClass.class_name}}
+            </td>
             <td>{{ metricsData.description }}</td>
             <td>
             <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
@@ -240,7 +242,7 @@
   const { can } = useAbility()
   
     const buttonLoader = ref(false)
-    const AsessmentMetricsData = ref([])
+    const assessmentMetricsData = ref([])
     const interviewDialog= ref(false)
     let errorMessage = ref(null)
   
@@ -321,6 +323,7 @@ onMounted(
         async () => {
           await assessmentStore.fetchMetrics()
         } )
+
     watch(
         () => assessmentStore.metricResponse,
         async (data) => {
@@ -338,6 +341,8 @@ onMounted(
       async () => {
         await assessmentStore.fetchAssessmentMetrics()
       } )
+
+
       watch(
     () => assessmentStore.assesmentAreaResponse,
     async (data) => {
@@ -398,7 +403,7 @@ onMounted(
       () => assessmentStore.assessmentMetricsResponse,
       async (data) => {
         if(data){
-          AsessmentMetricsData.value = data.data
+          assessmentMetricsData.value = data.data
          // notificationStore.successToast("Success", data.message)
         }
       },

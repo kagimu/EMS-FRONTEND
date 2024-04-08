@@ -91,10 +91,10 @@
     //   name:"Assessment Areas",
     //   id:"assessment-areas"
     // },
-    {
+    /*{
       name:"Exam Type",
       id:"examtype"
-    },
+    },*/
     {
       name:"Grade Standards",
       id:"grade-standards"
