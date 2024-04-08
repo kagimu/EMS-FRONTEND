@@ -84,29 +84,8 @@ export const useAssessmentStore = defineStore("assessment", () => {
                 }
             })
     }
-//exam type ==
-async function createExamType(data) {
-    return await api.post("main/assessments/examination-types", data)
-        .then((response) => {
-            newExamTypeResponse.value = response.data
-        })
-        .catch((response) => {
-            if(response){
-                errorMessage.value = response.response.data
-            }
-        })
-}
-async function fetchExamType() {
-    return await api.get("main/assessments/examination-types")
-        .then((response) => {
-            examTypeResponse.value = response.data
-        })
-        .catch((response) => {
-            if(response){
-                errorMessage.value = response.response.data
-            }
-        })
-}
+
+
 
 async function createAggregateScale(data) {
     return await api.post("main/assessments/aggregate-scales",data)
@@ -283,10 +262,6 @@ async function createMetric(data) {
         fetchAssessmentsByStudentId,
         assessmentResponse,
         errorMessage,
-        newExamTypeResponse,
-        createExamType,
-        examTypeResponse,
-        fetchExamType,
         assessmentByStudentIdResponse,
         newAggregateScaleResponse,
         createAggregateScale,

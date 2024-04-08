@@ -39,6 +39,9 @@
                   <div v-if="selectedPage === 'interviews'">
                     <interviews></interviews>
                   </div>
+                  <div v-if="selectedPage === 'manage-interviews'">
+                    <interview-management></interview-management>
+                  </div>
                   <!-- <div v-if="selectedPage === 'assessment-areas'">
                     <interview-assesment-areas></interview-assesment-areas>
                   </div> -->
@@ -77,6 +80,7 @@
   import StudentAdmission from '@/main/dashboard/studentAdmission/StudentAdmission.vue'
   import AdmissionList from "@/main/dashboard/studentAdmission/AdmissionList.vue";
   import AdmitStudent from "./AdmitStudent.vue";
+  import InterviewManagement from "@/main/dashboard/studentApplication/InterviewManagement.vue"
 
   const { can } = useAbility()
 
@@ -97,6 +101,11 @@
       name:"Interview Schedule",
       id:"interviews",
       action:"view_interviews"
+    },
+    {
+      name:"Interview Schedules",
+      id:"manage-interviews",
+      action:"view_manage-interviews"
     },
     // {
     //   name:"Assessment Areas",

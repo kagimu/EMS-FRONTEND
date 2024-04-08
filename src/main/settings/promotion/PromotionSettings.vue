@@ -2,7 +2,7 @@
     <div>
   
   
-      <div class="modal fade" id="levelModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
+      <div class="modal fade" id="levelModal" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: shDialog }">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header text-sm p-0">
@@ -18,13 +18,14 @@
         </div>
       </div>
   
-  
+      <div class="card">
+  <div class="card-body">
       <div class="row">
   
         <div class="col-12">
               <div class="flex justify-content-between mt-3">
                 <div class="ml-4">Settings</div>
-                <button 
+                <button @click="openModal()"
                  type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  data-bs-toggle="modal" data-bs-target="#levelModal">
                   Promotion/Admission Setup
                 </button>
@@ -47,21 +48,22 @@
               
                 <tr v-for="(prom,index) in promotionData" :key="index">
                 <td>{{ prom.name }}</td>
-                 <td>{{prom.name}}</td>
-                 <td>{{ prom.name }}</td>
+                 <td>{{prom.previous_class.class_name}}</td>
+                 <td>{{ prom.next_class.class_name }}</td>
                  <td>{{ prom.type }}</td>
                  <td>{{ prom.status }}</td>
-                 <td>Delete</td>
+                 <td> <button><i class="bi bi-trash"></i></button> &nbsp;
+                <button><i class="bi bi-pencil"></i></button></td>
                 </tr>
                 </tbody>
               </table>
   
             </div>
           </div>
+        </div>
   
-  
-  
-    </div>
+      </div>
+  </div>
   </template>
   
   <script setup>
@@ -77,16 +79,22 @@
   const promotionStore = usePromotionStore()
   const notificationStore = useNotificationStore()
   const promotionData = ref([])
+  const  shDialog = ref(false)
 
   onMounted(() => {
     promotionStore.fetchPromotionSetting()
     }
 )
 
+const openModal = () =>{
+  shDialog.value = true
+}
+
 watch(
     () => promotionStore.PromotionSettingResponse,
     async (data) => {
         if (data) {
+          shDialog.value = false
           promotionData.value = data.data
           // notificationStore.s`uccessToast("Success application submitted", data.message)
         }
@@ -98,6 +106,7 @@ watch(
     () => promotionStore.errorMessage,
     async (data) => {
           if (data) {
+            shDialog.value = false
               notificationStore.errorToast("Error", data.message)
           }
     },

@@ -204,8 +204,8 @@
             <td>{{ enrolData.Campus.name }}</td>
             <td>{{ enrolData.enrollment_date }}</td>
             <td>
-                <button><i class="bi bi-trash"></i></button> &nbsp;
-                <button><i class="bi bi-pencil"></i></button>
+                <!-- <button><i class="bi bi-trash"></i></button> &nbsp;
+                <button><i class="bi bi-pencil"></i></button> -->
                 <button 
                  type="button" @click="promModal(enrolData.Student.number)"  class="btn btn-sm buttonStyle btn-primary mr-2"  data-bs-toggle="modal" data-bs-target="#promoteModal">
                   Promote

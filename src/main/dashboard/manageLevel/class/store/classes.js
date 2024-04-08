@@ -349,6 +349,6 @@ export const useClassesStore = defineStore("classes", () => {
         newCampusLevel,
         fetchCampusLevel,
         fetchClassByLevel,
-        fetchCurriculumClassesByID,
- }
+        fetchCurriculumClassesByID
+    }
 })
