@@ -53,16 +53,20 @@
     >
     <thead >
         <tr>
-        <th style="width: 2px;">#</th>
-        <th>code</th>
         <th>Name</th>
+        <th>Status</th>
+        <th>Campus</th>
         </tr>
-    <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+    <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
     {{errorMessage}}
-    </div> -->
+    </div>
     </thead>
     <tbody>
-    
+      <tr v-for="(list, index) in feedingGroupData" :key="index">
+      <td>{{ list.name }}</td>
+      <td>{{ list.status }}</td>
+      <td>Kaku Primary(Main Campus)</td>
+      </tr>
                 
     </tbody>
     </table>
@@ -80,8 +84,11 @@
     import {onMounted,reactive, ref, watch} from "vue";
     import useNotificationStore from "@/composables/useNotification.js";
     import NewFeedingGroup from "@/main/dashboard/catering/cateringComponents/NewFeedingGroup.vue";
-    
+    import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+
+    const cateringStore = useCateringStore()
     const thisDialog = ref(false)
+    const feedingGroupData = ref([])
     const showDialog = () => {
         thisDialog.value = true
     }
@@ -89,6 +96,28 @@
     const closeDialog = () => {
         thisDialog.value = false
     }
+
+    onMounted(() => {
+        cateringStore.fetchFeedingGroup()
+    }
+)
+
+watch(
+    () => cateringStore.feedingGroupInfoResponse,
+    async (data) => {
+        feedingGroupData.value = data.data
+    },
+    {deep: true}
+  )
+  watch(
+    () => cateringStore.errorMessage,
+    async (data) => {
+          if (data) {
+          notificationStore.errorToast("Error", data.message)
+          }
+    },
+    {deep: true}
+  )
     </script>
     
     

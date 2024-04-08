@@ -7,11 +7,16 @@ export const useCateringStore = defineStore("catering", () => {
     let  UnitOfMeasureInfoResponse= ref(null)
     let  deleteUnitOfMeasureInfoResponse= ref(null)
     let updateUnitOfMeasureInfoResponse = ref(null)
-    
+    let newMenuItemInfoResponse = ref(null)
+    let menuItemResponse = ref(null)
+    let feedingGroupInfoResponse = ref(null)
+    let newFeedingGroupInfoResponse = ref(null)
+    let feedingGroupSessionsInfoResponse = ref(null)
+    let newFeedingGroupSessionsInfoResponse = ref(null)
     const errorMessage = ref(null)
 
     async function newUnitOfMeasureInfo(data) {
-        return await api.post("main/catering/unit-of-measure", data)
+        return await api.post("main/catering/units-of-measure", data)
             .then((response) => {
                 newUnitOfMeasureInfoResponse.value = response.data
             })
@@ -23,7 +28,7 @@ export const useCateringStore = defineStore("catering", () => {
     }
 
     async function fetchUnitOfMeasureInfo() {
-        return await api.get("main/catering/unit-of-measure")
+        return await api.get("main/catering/units-of-measure")
             .then((response) => {
                 UnitOfMeasureInfoResponse.value = response.data
             })
@@ -56,6 +61,75 @@ export const useCateringStore = defineStore("catering", () => {
             })
     }
 
+    //==MenuItem catering/menu-items
+    async function newMenuItemInfo(data) {
+        return await api.post("main/catering/menu-items", data)
+            .then((response) => {
+                newMenuItemInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+    async function fetchMenuItem() {
+        return await api.get("main/catering/menu-items")
+            .then((response) => {
+                menuItemResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+//feeding Group
+async function newFeedingGroupInfo(data) {
+    return await api.post("main/catering/feeding-groups", data)
+        .then((response) => {
+            newFeedingGroupInfoResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+async function fetchFeedingGroup() {
+    return await api.get("main/catering/feeding-groups")
+        .then((response) => {
+            feedingGroupInfoResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+//feedingSessions
+async function newFeedingGroupSessionsInfo(data) {
+    return await api.post("main/catering/feeding-sessions", data)
+        .then((response) => {
+            newFeedingGroupSessionsInfoResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+async function fetchFeedingGroupSessions() {
+    return await api.get("main/catering/feeding-sessions")
+        .then((response) => {
+            feedingGroupSessionsInfoResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
     return {
         newUnitOfMeasureInfoResponse,
         errorMessage,
@@ -66,5 +140,18 @@ export const useCateringStore = defineStore("catering", () => {
         deleteUnitOfMeasureInfoResponse,
         updateUnitOfMeasureInfoResponse,
         updateUnitOfMeasure,
+        newMenuItemInfo,
+        newMenuItemInfoResponse,
+        menuItemResponse,
+        fetchMenuItem,
+        newFeedingGroupInfo,
+        fetchFeedingGroup,
+        feedingGroupInfoResponse,
+        newFeedingGroupInfoResponse,
+        feedingGroupSessionsInfoResponse,
+        newFeedingGroupSessionsInfo,
+        newFeedingGroupSessionsInfoResponse,
+        fetchFeedingGroupSessions
+
     }
 } )

@@ -3,7 +3,7 @@
 <form @submit.prevent="unitMeasurement">
 <div class="mb-2">
     <label class="textColor"><small>Code</small></label>
-    <input v-model="form.code"  type="text" required class="form-control">
+    <input v-model="form.code"  type="number" required class="form-control">
 </div>
 <div class="mb-2">
     <label class="textColor"><small>Name</small></label>
@@ -40,7 +40,6 @@ const form = reactive({
 })
 const unitMeasurement = () => {
     buttonLoader.true
-    alert(JSON.stringify(form))
     cateringStore.newUnitOfMeasureInfo(form)
 }
 watch (

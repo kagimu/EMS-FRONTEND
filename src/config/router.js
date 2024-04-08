@@ -457,12 +457,15 @@ const router = createRouter({
                     resource: "manage-interviews",
                     action: "view-manage-interviews",
 
+
                 }},
+
 
                 {path: 'catering', component: Catering, name: "catering",
                 meta: {
                     resource: "manage-catering",
                     action: "view-manage-catering",
+
 
                 }},
 
@@ -470,6 +473,7 @@ const router = createRouter({
                 meta: {
                     resource: "manage-food-menu-items",
                     action: "view-manage-food-menu-items",
+
 
                 }},
 

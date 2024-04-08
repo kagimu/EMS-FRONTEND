@@ -53,15 +53,18 @@
     >
     <thead >
         <tr>
-        <th style="width: 2px;">#</th>
         <th>code</th>
         <th>Name</th>
         </tr>
-    <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+    <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
     {{errorMessage}}
-    </div> -->
+    </div>
     </thead>
     <tbody>
+      <tr v-for="(list, index) in unitMeasurementData" :key="index">
+      <td>{{ list.code }}</td>
+      <td>{{ list.name }}</td>
+      </tr>
     
                 
     </tbody>
@@ -80,8 +83,11 @@
     import {onMounted,reactive, ref, watch} from "vue";
     import useNotificationStore from "@/composables/useNotification.js";
     import NewUnitOfMeasurement from "@/main/dashboard/catering/cateringComponents/NewUnitOfMeasurement.vue";
-    
+    import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+
+    const cateringStore = useCateringStore()
     const thisDialog = ref(false)
+    const unitMeasurementData = ref([])
     const showDialog = () => {
         thisDialog.value = true
     }
@@ -89,6 +95,20 @@
     const closeDialog = () => {
         thisDialog.value = false
     }
+    onMounted(
+    () => {
+      cateringStore.fetchUnitOfMeasureInfo()
+    } )
+
+    watch(
+    () => cateringStore.UnitOfMeasureInfoResponse,
+    async (data) => {
+          unitMeasurementData.value = data.data
+    },
+    {deep: true}
+  )
+
+
     </script>
     
     
