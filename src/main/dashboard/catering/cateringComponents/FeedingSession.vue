@@ -46,6 +46,7 @@
     </div>
     
     
+  
     <table
     id="datatable"
     class="table table-striped"
@@ -53,19 +54,24 @@
     >
     <thead >
         <tr>
-        <th style="width: 2px;">#</th>
-        <th>code</th>
+        <th>Code</th>
         <th>Name</th>
+        <th>Campus</th>
         </tr>
-    <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+    <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
     {{errorMessage}}
-    </div> -->
+    </div>
     </thead>
     <tbody>
-    
+      <tr v-for="(list, index) in feedingSessionGroupData" :key="index">
+      <td>{{ list.name }}</td>
+      <td>{{ list.code }}</td>
+      <td>Kaku Primary(Main Campus)</td>
+      </tr>
                 
     </tbody>
     </table>
+
     </div>
     </div>
     </div>
@@ -75,21 +81,48 @@
     
     </div>
     </template>
-    
-    <script setup>
-    import {onMounted,reactive, ref, watch} from "vue";
-    import useNotificationStore from "@/composables/useNotification.js";
-    import NewFeedingSession from "@/main/dashboard/catering/cateringComponents/NewFeedingSession.vue";
-    
-    const thisDialog = ref(false)
-    const showDialog = () => {
-        thisDialog.value = true
-    }
+  <script setup>
+  import {onMounted,reactive, ref, watch} from "vue";
+  import useNotificationStore from "@/composables/useNotification.js";
+  import NewFeedingGroup from "@/main/dashboard/catering/cateringComponents/NewFeedingGroup.vue";
+  import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 
-    const closeDialog = () => {
-        thisDialog.value = false
-    }
-    </script>
+  const cateringStore = useCateringStore()
+  const thisDialog = ref(false)
+  const feedingSessionGroupData = ref([])
+  const showDialog = () => {
+      thisDialog.value = true
+  }
+
+  const closeDialog = () => {
+      thisDialog.value = false
+  }
+
+  onMounted(() => {
+      cateringStore.fetchFeedingGroupSessions()
+  }
+)
+
+watch(
+  () => cateringStore.feedingGroupSessionsInfoResponse,
+  async (data) => {
+      feedingSessionGroupData.value = data.data
+  },
+  {deep: true}
+)
+watch(
+  () => cateringStore.errorMessage,
+  async (data) => {
+        if (data) {
+        notificationStore.errorToast("Error", data.message)
+        }
+  },
+  {deep: true}
+)
+  </script>
+  
+  
+    
     
     
     
