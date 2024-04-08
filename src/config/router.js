@@ -340,12 +340,12 @@ const router = createRouter({
                     action: "view_let-us-design",
                       
                 }},
-                {path: 'assessment', component: Assessment, name: "assessment",
+              /*  {path: 'assessment', component: Assessment, name: "assessment",
                 meta: {
                     resource: "assessment",
                     action: "view_assessment",
                       
-                }},
+                }},*/
                 {path: 'assessment-list', component: AssessmentList, name: "assessment-list",
                 meta: {
                     resource: "assessment-list",
