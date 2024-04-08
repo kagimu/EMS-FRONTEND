@@ -45,7 +45,7 @@
                  <FeedingGroup></FeedingGroup>
                   </div>
                   <div v-if="selectedPage === 'feeding-session'">
-                 <FeedingSession></FeedingSession>
+                <ManageFeedingSessions></ManageFeedingSessions>
                   </div>
                 
                   
@@ -71,6 +71,7 @@
   import ItemAssembly from "@/main/dashboard/catering/cateringComponents/ItemAssembly.vue";
   import FeedingSession from "@/main/dashboard/catering/cateringComponents/FeedingSession.vue";
   import FeedingGroup from "@/main/dashboard/catering/cateringComponents/FeedingGroup.vue";
+  import ManageFeedingSessions from "@/main/dashboard/catering/cateringComponents/ManageFeedingSessions.vue";
 
 
   const routerData = useRouter()

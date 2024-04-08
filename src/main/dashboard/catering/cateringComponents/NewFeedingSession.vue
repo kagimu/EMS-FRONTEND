@@ -75,7 +75,6 @@ const form = reactive({
 })
 const addFeedingSessionGroup = () => {
     buttonLoader.true
-    alert(JSON.stringify(form))
     cateringStore.newFeedingGroupSessionsInfo(form)
     
 }

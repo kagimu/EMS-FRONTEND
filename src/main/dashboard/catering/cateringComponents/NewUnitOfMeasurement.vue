@@ -40,7 +40,6 @@ const form = reactive({
 })
 const unitMeasurement = () => {
     buttonLoader.true
-    alert(JSON.stringify(form))
     cateringStore.newUnitOfMeasureInfo(form)
 }
 watch (

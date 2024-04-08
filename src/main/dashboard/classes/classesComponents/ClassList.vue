@@ -14,9 +14,7 @@
           <button class="nav-link navColor" id="class-attendance-tab" data-bs-toggle="tab" data-bs-target="#class-attendance" type="button" role="tab" aria-controls="class-attendance" aria-selected="false"><small>Class Attendance</small></button>
           <button class="nav-link navColor" id="subject-attendance-tab" data-bs-toggle="tab" data-bs-target="#subject-attendance" type="button" role="tab" aria-controls="subject-attendance" aria-selected="false"><small>Subject Attendance</small></button>
           <button class="nav-link navColor" id="marks" data-bs-toggle="tab" data-bs-target="#subject-attendance2" type="button" role="tab" aria-controls="subject-attendance2" aria-selected="false"><small>Manage Marks</small></button>
-          <button class="nav-link navColor" id="marks" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="" aria-selected="false"><small>Generate Reports</small></button>
-
-          
+          <button class="nav-link navColor" id="marks" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="" aria-selected="false"><small>Generate Reports</small></button>          
         </div>
       </nav>
       <div class="tab-content" id="nav-tabContent">

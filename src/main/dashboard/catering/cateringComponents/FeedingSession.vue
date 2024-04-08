@@ -25,8 +25,8 @@
          <div class="container mt-4">
            <div class="row">
               <div class="col-lg-12">
-                <div class="card">
-                 <div class="card-body">
+                <div class="">
+                 <div class="">
                     <div class="row">
                     <div class="col-lg-8">
                     <h5 style="font-size: 14px;margin-top: 2px;">Feeding Sessions </h5>
@@ -84,7 +84,7 @@
   <script setup>
   import {onMounted,reactive, ref, watch} from "vue";
   import useNotificationStore from "@/composables/useNotification.js";
-  import NewFeedingGroup from "@/main/dashboard/catering/cateringComponents/NewFeedingGroup.vue";
+  import NewFeedingSession from "@/main/dashboard/catering/cateringComponents/NewFeedingSession.vue";
   import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 
   const cateringStore = useCateringStore()
@@ -122,8 +122,6 @@ watch(
   </script>
   
   
-    
-    
     
     
     <style scoped>
