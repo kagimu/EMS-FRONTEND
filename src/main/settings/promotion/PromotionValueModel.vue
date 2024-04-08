@@ -21,6 +21,26 @@
         </div>
 
         <div class="mb-2">
+            <label class="textColor"><small>Type</small>  </label><br>
+            <select
+                    style="box-shadow: none;"
+                    class="form-select form-select-sm" required
+                    v-model="form.type"
+                    @change="theType()"
+                  
+            >
+                <option disabled value="">Select Type</option>
+                <option value="score">Score
+                </option>
+                <option value="aggregate">Aggregate
+                </option>
+                <option value="grade">Grade
+                </option>
+            </select>
+         
+        </div>
+
+        <div class="mb-2" v-if="isGrade == 'score' || isGrade=='aggregate'">
           <label class="textColor"><small>Value</small></label>
           <input
               style="outline: none 0 !important; box-shadow: none;"
@@ -29,24 +49,18 @@
               class="form-control form-select-sm">
         </div>
 
-  
-        <div class="mb-2">
-            <label class="textColor"><small>Type</small>  </label><br>
+        
+        <div class="mb-2" v-if="isGrade == 'grade'">
+            <label class="textColor"><small>Assessment Grade</small>  </label>
             <select
                     style="box-shadow: none;"
-                    class="form-select form-select-sm" required
-                    v-model="form.type"
-                  
+                    class="form-select form-select-sm"
+                    v-model="form.assessment_grade_number" required
             >
-                <option disabled value="">Select Type</option>
-                <option value="promotion">Score
-                </option>
-                <option value="aggregate">Aggregate
-                </option>
-                <option value="grade">Grade
+                <option disabled value="">Assessment Grade</option>
+                <option v-for="(list, index) in assessmentScaleData" :key="index" :value="list.number">{{ list.name }}
                 </option>
             </select>
-         
         </div>
 
        
@@ -74,29 +88,31 @@
   import {useRouter} from "vue-router";
   import useCommonsStore from "@/composables/useCommons.js";
   import useNotificationStore from "@/composables/useNotification.js";
-
-import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
-import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
 import {usePromotionStore} from "./store/promotion.js"
+import { useAssessmentStore } from "@/main/dashboard/assessment/store/assessment.js";
 
 const emit = defineEmits();
-  const classError = ref(null)
-  const loader = ref(false)
-  const commons = useCommonsStore()
-  const  notificationStore  = useNotificationStore()
-  const promotionStore = usePromotionStore()
+const classError = ref(null)
+const loader = ref(false)
+const commons = useCommonsStore()
+const  notificationStore  = useNotificationStore()
+const promotionStore = usePromotionStore()
+const assessmentStore = useAssessmentStore()
+const isGrade = ref(null)
 
 const promoSettingList = ref([])
-
+const assessmentScaleData = ref([])
 
   const form = reactive({
     type:null,
     score:null,
     promotion_setting_number:null,
+    assessment_grade_number:null
   })
   
+  const theType = () => {
+    isGrade.value = form.type
+  }
   
   const addPromotionValue = () =>{
     loader.value = true
@@ -104,14 +120,35 @@ const promoSettingList = ref([])
   } 
   
 
+  onMounted(() => {
+          assessmentStore.fetchAssessmentScale()
+      }
+  ) 
+  watch(
+    () => assessmentStore.assessmentScaleResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+        // notificationStore.successToast("Success", data.message)
+        assessmentScaleData.value = data.data
+      }
+    },
+    {deep:true}
+)
+ 
 
 
 watch(
     () => promotionStore.newPromotionSettingValueResponse,
     async (data) => {
         if (data) {
-          notificationStore.successToast("Success application submitted", data.message)
+          loader.value = false
+          notificationStore.successToast("Success", data.message)
           promotionStore.fetchPromotionSettingValue()
+          form.type=null,
+          form.score=null,
+          form.promotion_setting_number=null,
+          form.assessment_grade_number=null
         }
     },
     {deep: true}

@@ -322,8 +322,11 @@ watch(
 onMounted(
         async () => {
           await assessmentStore.fetchMetrics()
+        } )
+
+        onMounted(
+        async () => {
           await assessmentStore.fetchAssessmentMetrics()
-          await assessmentStore.fetchAssesmentArea()
         } )
         
     watch(
@@ -338,6 +341,10 @@ onMounted(
 
 
 
+    onMounted(
+        async () => {
+          await assessmentStore.fetchAssessmentArea()
+        } )
 
       watch(
     () => assessmentStore.assesmentAreaResponse,

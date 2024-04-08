@@ -2,7 +2,7 @@
     <div>
 
       <form @submit.prevent="addPromotionStudent">
-  <!-- {{ student_num }} -->
+  {{ student_num }}
         <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
           {{ classError }}
         </div>
