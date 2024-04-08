@@ -1,0 +1,186 @@
+<template>
+    <div>
+
+        <form @submit.prevent="addCalendarEvent">
+
+            <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="error">
+                {{ error }}
+            </div>
+
+            <div class="mb-2">
+                <label class="textColor"><small>Calendar</small></label>
+                <select
+                        style="box-shadow: none;"
+                        class="form-select form-select-sm"
+                        v-model="form.calendar_number">
+                    <option disabled value="">--Select calendar--</option>
+                    <option v-for="(calendar, index) in generalCalendars" :key="index" :value="calendar.number">
+                        {{ calendar.name }}
+                    </option>
+                </select>
+            </div>
+
+
+            <div class="mb-2">
+                <label class="textColor"><small>Event Name</small></label>
+                <input
+                        style="outline: none 0 !important; box-shadow: none;"
+                        type="text" v-model="form.name"
+                        required
+                        class="form-control form-select-sm">
+            </div>
+
+            <div class="mb-2">
+                <label class="textColor"><small>Description</small></label>
+                <textarea
+                        style="outline: none 0 !important; box-shadow: none;"
+                        type="text" v-model="form.description"
+                        required
+                        class="form-control form-select-sm"></textarea>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <label class="textColor"><small>Start date</small></label>
+                    <input class="form-control" type="date" v-model="form.start_date" placeholder="Start date">
+                </div>
+                <div class="col">
+                    <label class="textColor"><small>End date</small></label>
+                    <input class="form-control" type="date" v-model="form.end_date" placeholder="End date">
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-lg-6">
+                    <div class="mb-2">
+                        <label class="textColor"><small>Start Time</small></label>
+                        <input type="time" style="outline: none 0 !important; box-shadow: none;"
+                               v-model="form.start_time"
+                               placeholder="09:00" required class="form-control form-select-sm">
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="mb-2">
+                        <label class="textColor"><small>End Time</small></label>
+                        <input type="time" style="outline: none 0 !important; box-shadow: none;" v-model="form.end_time"
+                               placeholder="15:45" required class="form-control form-select-sm">
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="flex justify-content-end mt-2" style="width: 100%;">
+                <button
+                        type="submit"
+                        class="btn btn-primary border-0">
+                    Save
+                    <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
+                          role="status">
+              <span class="visually-hidden">Loading...</span>
+            </span>
+                </button>
+            </div>
+
+        </form>
+
+
+    </div>
+</template>
+
+<script setup>
+
+import {onMounted, reactive, ref, watch} from "vue";
+import {CalendarStore} from "@/main/dashboard/eos/store/EosStore.js";
+import {useRouter} from "vue-router";
+import useCommonsStore from "@/composables/useCommons.js";
+import useNotificationStore from "@/composables/useNotification.js";
+
+const error = ref(null)
+const name = ref(null)
+const generalCalendars = ref([])
+const loader = ref(false)
+const routerData = useRouter()
+
+const calendarStore = CalendarStore()
+const commons = useCommonsStore()
+const notificationStore = useNotificationStore()
+
+
+const form = reactive({
+    name: null,
+    calendar_number: null,
+    description: null,
+    start_date: null,
+    end_date: null,
+    start_time: null,
+    end_time: null
+})
+
+
+const addCalendarEvent = () => {
+    loader.value = true
+    calendarStore.createCalendarEvent(form)
+}
+
+
+const props = defineProps({
+    calendars: [],
+})
+
+
+onMounted(
+    () => {
+        /* if(props.classNumber){
+           classesStore.classDetails(props.classNumber)
+         }*/
+    }
+)
+
+
+watch(
+    () => calendarStore.calendarEventCreate,
+    async (data) => {
+        if (data) {
+            loader.value = false
+            notificationStore.successToast("Success", data.message)
+
+        }
+
+    },
+    {deep: true}
+)
+
+
+watch(
+    () => calendarStore.calendarError,
+    async (data) => {
+        notificationStore.errorToast("Error", data.message)
+
+    },
+    {deep: true}
+)
+
+watch(
+    () => props.calendars,
+    async (data) => {
+        if (data) {
+            generalCalendars.value = data
+
+        }
+    },
+    {deep: true}
+)
+
+
+</script>
+
+<style scoped>
+.noFocus:focus {
+    outline: none 0 !important;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+</style>

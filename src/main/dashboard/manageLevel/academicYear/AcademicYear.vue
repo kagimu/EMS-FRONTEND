@@ -1,0 +1,202 @@
+<template>
+  <div>
+    <div class="modal fade" id="newAcademicYearModal" tabindex="-1" :class="{ show: newAcademicYearDialog }" aria-labelledby="" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header text-sm p-0">
+            <h6 class="modal-title ml-3 mt-2 mb-2">{{editMode ? "Edit" : "Add"}} Academic Year</h6>
+            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mt-2 mb-2">
+              <new-academic-year ref="academicYearRef"></new-academic-year>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="flex justify-content-between mt-10 mb-4 mr-3">
+      &nbsp;
+      <button
+          type="button"
+          class="btn btn-sm buttonStyle btn-primary mr-2"
+          @click="addAcademicYear"
+          data-bs-toggle="modal"
+          data-bs-target="#newAcademicYearModal">
+        <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+        Add Academic Year
+      </button>
+    </div>
+
+
+    <table class="table table-hover caption-top" style="font-size: 13px;">
+      <thead>
+      <tr>
+        <th scope="col">Code</th>
+        <th scope="col">Level</th>
+        <th scope="col">Academic Year</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="(academicYre, index) in academicYearList" :key="index">
+        <td> {{academicYre.code}}</td>
+        <td class="capitalize"> {{academicYre.name}}</td>
+        <td>
+          <table class="table table-hover caption-top text-sm">
+            <tbody>
+            <tr v-for="(list,idx) in academicYre.academicYear" :key="idx">
+              <td>{{list.code}}</td>
+              <td class="capitalize">
+                <div>{{list.academic_year_name}}</div>
+                <span class="bg-[#0d6efd] px-2 py-[2px] rounded-sm text-white text-xs">{{list.no_of_study_period}} Periods</span>
+              </td>
+              <td class="text-sm">
+                <b>Start Date:</b>   {{list.academic_year_start_date}}  <br />
+                <b>End Date:</b>  {{list.academic_year_end_date}}
+              </td>
+              <td>
+                <div>
+                  <i
+                      data-bs-toggle="modal"
+                      data-bs-target="#newAcademicYearModal"
+                      class="bi-pencil mr-2 cursor-pointer text-[13px]" @click="editAcademicYear(list)"></i>
+                  <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteAcademicYear(list, idx)"></i>
+                  <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === idx">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+        </td>
+
+      </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+  </div>
+</template>
+
+<script setup>
+import {onMounted, ref, watch} from "vue";
+import NewAcademicYear from "@/main/dashboard/manageLevel/academicYear/NewAcademicYear.vue";
+import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import {useRouter} from "vue-router";
+import useNotificationStore from "@/composables/useNotification.js";
+const routerData = useRouter()
+const academicYearStore = useAcademicYearStore()
+const newAcademicYearDialog = ref( false)
+const deletionLoader = ref( undefined)
+const campusCurriculumNumber = routerData.currentRoute.value.query.crr
+const academicYearList = ref( [])
+const academicYearRef = ref( null)
+const editMode = ref( null)
+const  notificationStore  = useNotificationStore()
+
+const addAcademicYear = (item) => {
+  // classNumber.value = item.number
+  newAcademicYearDialog.value = true
+  editMode.value = false
+  academicYearRef.value.clearAcademicYear()
+}
+
+
+const editAcademicYear = (academicYre)  => {
+  if(academicYre) {
+    editMode.value = true
+    newAcademicYearDialog.value = true
+    academicYearStore.fetchAcademicYearData(academicYre.number)
+  }
+}
+
+const deleteAcademicYear = (academicYre, idx) => {
+
+  if(!confirm("Are you sure, you want to delete: "+academicYre.academic_year_name)){
+    return
+  }
+
+  deletionLoader.value = idx
+
+  let data = {
+    number:academicYre.number
+  }
+
+  academicYearStore.deleteAcademicYear(data)
+
+}
+
+onMounted(
+    () => {
+      academicYearStore.fetchAcademicYear(campusCurriculumNumber)
+    }
+)
+
+
+watch(
+    () => academicYearStore.newAcademicYearResponse,
+    async (data) => {
+      if(data){
+        await academicYearStore.fetchAcademicYear(campusCurriculumNumber)
+        notificationStore.successToast("Success","Login successfully")
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => academicYearStore.academicYearResponse,
+    async (data) => {
+      if(data){
+        academicYearList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => academicYearStore.deleteAcademicYearResponse,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
+        await academicYearStore.fetchAcademicYear(campusCurriculumNumber)
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => academicYearStore.editAcademicYearResponse,
+    async (data) => {
+      if(data){
+        await academicYearStore.fetchAcademicYear(campusCurriculumNumber)
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => academicYearStore.errorMessage,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
+      }
+    },
+    {deep:true}
+)
+
+</script>
+
+<style scoped>
+
+</style>

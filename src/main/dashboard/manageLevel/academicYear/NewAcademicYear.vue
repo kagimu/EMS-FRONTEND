@@ -1,0 +1,248 @@
+<template>
+
+  <div>
+    <form @submit.prevent="addAcademicYear">
+
+      <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+
+      <div class="mb-2">
+        <label class="textColor"><small>Code</small></label>
+        <input
+            @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10"
+            type="text"
+            style="outline: none 0 !important;
+            box-shadow: none;"
+            v-model="form.code"
+            required
+            class="form-control form-select-sm">
+      </div>
+
+      <div class="mb-2">
+        <label class="textColor"><small>Academic year name</small></label>
+        <input
+            :placeholder="'Year '+currentYear"
+            maxlength="50"
+            type="text"
+            style="outline: none 0 !important;
+               box-shadow: none;"
+            v-model="form.academic_year_name"
+            required
+            class="form-control form-select-sm">
+      </div>
+
+
+      <div class="mb-2">
+        <label class="textColor"><small>Level</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.level_number">
+          <option disabled value="">--Select Level--</option>
+          <option v-for="(list, index) in campusLevelInfo" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
+      <div class="mb-2">
+        <label class="textColor"><small>Number of study period</small></label>
+        <input
+            @keypress="commons.onlyNumberValidator($event)"
+            maxlength="1"
+            type="text"
+            style="outline: none 0 !important; box-shadow: none;"
+            v-model="form.no_of_study_period"
+            required
+            class="form-control form-select-sm">
+      </div>
+
+
+        <div class="mb-2">
+          <label class="textColor"><small>Academic Year Start Date</small></label>
+          <VueDatePicker
+              text-input
+              auto-apply
+              :teleport="true"
+              style="font-size: 7px;"
+              v-model="form.academic_year_start_date"
+              :preview-format="format"
+              ></VueDatePicker>
+        </div>
+
+      <div class="mb-2">
+          <label class="textColor"><small>Academic Year End Date</small></label>
+          <VueDatePicker
+              text-input
+              auto-apply
+              :teleport="true"
+              style="font-size: 7px;"
+              v-model="form.academic_year_end_date"
+              :preview-format="format"
+              ></VueDatePicker>
+        </div>
+
+
+
+
+
+      <div class="flex justify-content-end mt-4" style="width: 100%;">
+        <button
+            type="submit"
+            class="btn btn-primary border-0">
+         {{academic_year_number ? "Edit" : "Save"}}
+          <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </span>
+        </button>
+      </div>
+
+    </form>
+
+
+  </div>
+
+</template>
+<script setup>
+import {onMounted, reactive, ref, watch} from "vue";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import {useRouter} from "vue-router";
+import useCommonsStore from "@/composables/useCommons.js";
+import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+import useNotificationStore from "@/composables/useNotification.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+
+const commons = useCommonsStore()
+const routerData = useRouter()
+const classStore = useClassesStore()
+const campusStore = useCampusStore()
+const academicYearStore = useAcademicYearStore()
+const levelStore = useLevelStore()
+const campusLevel = routerData.currentRoute.value.query.crr
+const campusNumber = routerData.currentRoute.value.query.id
+const errorMessage = ref(null)
+const campusLevelInfo = ref([])
+const academic_year_number = ref(null)
+const loader = ref(false)
+const  notificationStore  = useNotificationStore()
+
+const currentYear = ref((new Date()).getFullYear());
+
+
+const date = ref();
+
+
+
+
+const form = reactive({
+  code:null,
+  academic_year_name:null,
+  no_of_study_period:null,
+  academic_year_start_date:null,
+  academic_year_end_date:null,
+  level_number:"",
+})
+
+
+const format = (date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  return `Selected date is ${day}/${month}/${year}`;
+}
+
+onMounted(
+    () =>{
+      // campusStore.fetchCampusLevel(campusNumber)
+    }
+)
+
+const addAcademicYear = () => {
+  loader.value = true
+  if(academic_year_number.value){
+    form.academic_year_number = academic_year_number.value
+    academicYearStore.editAcademicYear(form)
+  }else {
+    academicYearStore.newAcademicYear(form)
+  }
+
+}
+
+const clearAcademicYear = () => {
+     form.code = null
+      form.academic_year_name = null
+      form.no_of_study_period = null
+      form.academic_year_start_date = null
+      form.academic_year_end_date = null
+      form.level_number = ""
+       academic_year_number.value = null
+}
+
+defineExpose({
+  clearAcademicYear
+})
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        campusLevelInfo.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => academicYearStore.newAcademicYearResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+        form.code = null
+        form.academic_year_name = null
+        form.no_of_study_period = null
+        form.academic_year_start_date = null
+        form.academic_year_end_date = null
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => academicYearStore.errorMessage,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => academicYearStore.academicYearDataResponse,
+    async (data) => {
+      if(data){
+        let info = data.data
+            form.code = info.code
+            form.academic_year_name = info.academic_year_name
+            form.no_of_study_period = info.no_of_study_period
+            form.academic_year_start_date = info.academic_year_start_date
+            form.academic_year_end_date = info.academic_year_end_date
+            form.level_number = info.level_number
+            academic_year_number.value = info.number
+      }
+    },
+    {deep:true}
+)
+
+</script>
+
+<style scoped>
+
+</style>

@@ -1,0 +1,46 @@
+import axios from "axios"
+import router from "@/config/router.js";
+import {useAuthStore} from "@/main/auth/store/auth.js";
+// import { useAuthStore } from "@/stores/auth"
+
+// import { useCommonsStore } from "@/stores/commons"
+// import router from "@/router"
+
+const api = axios.create({
+    baseURL: `${import.meta.env.VITE_APP_BASE_URL}`,
+    withCredentials: false,
+    headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+    }
+})
+
+
+api.interceptors.request.use((config) => {
+    const auth = useAuthStore()
+
+
+    if (auth.userNumber) {
+        config.withCredentials = false
+        config.headers.Authorization = `Bearer ${auth.token}`
+        config.headers["user-number"] =  auth.userNumber;
+    }
+
+    return config
+})
+
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response.status === 401) {
+            // const commons = useCommonsStore()
+            router.push({ name: "login" })
+            // commons.toggleLoading(false)
+            sessionStorage.clear()
+            localStorage.clear();
+        }
+
+        return Promise.reject(error)
+    }
+)
+export default api

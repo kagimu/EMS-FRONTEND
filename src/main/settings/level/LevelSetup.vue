@@ -1,0 +1,224 @@
+<template>
+  <div>
+
+
+
+
+    <div class="modal fade" id="levelModal" tabindex="-1" :class="{ show: levelDialog }" aria-labelledby="" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header text-sm p-0">
+            <h6 class="modal-title ml-3 mt-2 mb-2"> {{levelEditMode ? "Edit" : "Add"}} Level</h6>
+            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mt-2 mb-2">
+             <new-level ref="levelRef"></new-level>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="row">
+
+      <div class="col-12">
+
+
+
+            <div class="flex justify-content-between mt-3">
+              <div class="ml-4">Level</div>
+              <button
+              v-if="can('add_level','general')"
+               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addLevel" data-bs-toggle="modal" data-bs-target="#levelModal">
+                <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+                Add Study Level
+              </button>
+            </div>
+
+
+
+            <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
+              <thead>
+              <tr>
+                <th scope="col" style="width: 30%;">Code</th>
+                <th scope="col">Name</th>
+                <th scope="col">Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(levelInfo, index) in levelList" :key="index">
+                <td> {{levelInfo.code}}</td>
+                <td> {{levelInfo.name}}</td>
+                <td>
+                  <div>
+                    <i
+                       v-if="can('edit_level','general')"
+                        style="font-size: 13px;"
+                        data-bs-toggle="modal" data-bs-target="#levelModal"
+                        class="bi-pencil mr-2 cursor-pointer" @click="editLevel(levelInfo)"></i>
+                    <i 
+                    v-if="can('delete_level','general')"
+                    style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLevel(levelInfo, index)"></i>
+                    <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+
+
+
+  </div>
+</template>
+
+<script setup>
+
+import {onMounted, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useRouter} from "vue-router";
+import useCommonsStore from "@/composables/useCommons.js";
+import NewLevel from "@/main/settings/level/NewLevel.vue";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+const routerData = useRouter()
+
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
+
+const levelStore = useLevelStore()
+const commons = useCommonsStore()
+const  notificationStore  = useNotificationStore()
+
+const levelRef = ref( null)
+const level = ref( "")
+const levelDialog = ref( false)
+const levelEditMode = ref( false)
+const levelList = ref( [])
+const deletionLoader = ref( undefined)
+let  curriculumNumber = routerData.currentRoute.value.query.id
+
+
+
+const addLevel = () => {
+  levelEditMode.value = false
+  levelDialog.value = true
+  levelRef.value.clearLevelForm()
+}
+
+const editLevel = (data) => {
+  levelEditMode.value = true
+  levelStore.LevelData(data.number)
+}
+const deleteLevel = (data, index) => {
+  deletionLoader.value = index
+
+  if(!confirm("Are you sure, you want to delete: "+data.name)){
+    return
+  }
+
+  let info = {
+    number:data.number
+  }
+
+  levelStore.deleteLevelSetUp(info)
+}
+
+
+onMounted(
+    async () => {
+      await levelStore.fetchLevels()
+    }
+)
+
+watch(
+    () => levelStore.levelResponse,
+    async (data) => {
+      if(data){
+        await levelStore.fetchLevels()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => levelStore.levelEditResponse,
+    async (data) => {
+      if(data){
+        await levelStore.fetchLevels()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => levelStore.levelInfoResponse,
+    async (data) => {
+      if(data){
+        levelList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => levelStore.deleteLevelSetUpResponse,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
+        await  levelStore.fetchLevels()
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => levelStore.errorMessage,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
+      }
+    },
+    {deep:true}
+)
+
+
+</script>
+
+<style scoped>
+
+.linkStyle {
+  text-decoration: none;
+  color: #1867c0;
+  font-size: 16px;
+}
+
+.linkStyle:hover {
+  font-size: 16px;
+  color: green;
+  text-decoration: underline;
+}
+
+.viewButtonStyle{
+  background-color: #2c6fb9;
+  color: #ffffff;
+  border-radius: 0;
+}
+
+.viewButtonStyle:hover {
+  background-color: #0557b4;
+  color: #ffffff;
+}
+
+</style>
