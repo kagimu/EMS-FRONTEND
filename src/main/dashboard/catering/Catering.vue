@@ -11,17 +11,33 @@
   
               <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
   
-                <router-link
+                <div
                     v-for="(item, idx) in menu" :key="idx"
-                    class="list-group-item list-group-item-action"
-                    :class="item.id === selectedPage ? 'active' : ''"
-                    :to="{name:'catering', query:{s:item.id}}">
-                  <small style="font-size:12px;">{{item.name}}</small>
-                </router-link>
+                    class="list-group-item list-group-item-action cursor-pointer"
+                    :class="item.value === menuSelected ? 'active' : ''"
+                    @click="changeMenu(item.value)">
+                  <small style="font-size:12px;">{{item.text}}</small>
+                </div>
               </div>
   
   
+              
   
+            </div>
+          </div>
+
+          <div class="card mt-3">
+            <div class="card-body" style="padding: 0;">
+
+              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+                <div
+                    class="list-group-item list-group-item-action cursor-pointer"
+                    :class="menuSelected === 'manage-stock' ? 'active' : ''"
+                    @click="changeMenu('manage-stock')"
+                >
+                  <small style="font-size:12px;">Manage Stock</small>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -32,20 +48,23 @@
   
               <div>
   
-                  <div v-if="selectedPage === 'menu-items'">
+                  <div v-if="menuSelected === 'menu-items'">
               <FoodMenuItem></FoodMenuItem>
                   </div>
-                  <div v-if="selectedPage === 'units-of-measurement'">
+                  <div v-if="menuSelected === 'units-of-measurement'">
                  <UnitsOfMeasure></UnitsOfMeasure>
                   </div>
-                  <div v-if="selectedPage === 'item-assembly'">
-                   <ItemAssembly></ItemAssembly>
+                  <div v-if="menuSelected === 'item-assembly'">
+                    <ManageItemsAssembly></ManageItemsAssembly>
                   </div>
-                  <div v-if="selectedPage === 'feeding-group'">
+                  <div v-if="menuSelected === 'feeding-group'">
                  <FeedingGroup></FeedingGroup>
                   </div>
-                  <div v-if="selectedPage === 'feeding-session'">
+                  <div v-if="menuSelected === 'feeding-session'">
                 <ManageFeedingSessions></ManageFeedingSessions>
+                  </div>
+                  <div v-if="menuSelected === 'manage-stock'">
+                    <ManageStock></ManageStock>
                   </div>
                 
                   
@@ -72,39 +91,43 @@
   import FeedingSession from "@/main/dashboard/catering/cateringComponents/FeedingSession.vue";
   import FeedingGroup from "@/main/dashboard/catering/cateringComponents/FeedingGroup.vue";
   import ManageFeedingSessions from "@/main/dashboard/catering/cateringComponents/ManageFeedingSessions.vue";
-
+  import ManageItemsAssembly from "@/main/dashboard/catering/cateringComponents/ManageItemsAssembly.vue";
+  import ManageStock from "@/main/dashboard/catering/cateringComponents/ManageStock.vue";
 
   const routerData = useRouter()
   
+  const menuSelected = ref("menu-items")
   const route = routerData.currentRoute.value.query.s
-  const selectedPage = route ? route : "menu-items"
+  // const menuSelected = route ? route : "menu-items"
   
   const menu = ref([
 
     {
-      name:"Menu Items",
-      id:"menu-items"
+      text:"Menu Items",
+      value:"menu-items"
     },
     {
-      name:"Units Of Measure",
-      id:"units-of-measurement"
+      text:"Item Assembly",
+      value:"item-assembly"
     },
     {
-      name:"Item Assembly",
-      id:"item-assembly"
+      text:"Units Of Measure",
+      value:"units-of-measurement"
     },
     {
-  name:"Feeding Group",
-  id:"feeding-group"
+  text:"Feeding Group",
+  value:"feeding-group"
 },
 {
-  name:"Feeding Session",
-  id:"feeding-session"
+  text:"Feeding Session",
+  value:"feeding-session"
 },
    
   ])
 
-
+  const changeMenu = (value) => {
+  menuSelected.value = value
+}
   
   
   </script>
