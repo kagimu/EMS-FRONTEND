@@ -13,6 +13,9 @@ export const useCateringStore = defineStore("catering", () => {
     let newFeedingGroupInfoResponse = ref(null)
     let feedingGroupSessionsInfoResponse = ref(null)
     let newFeedingGroupSessionsInfoResponse = ref(null)
+    let newFeedingGroupSessionsItemsInfoResponse = ref(null)
+    let feedingSessionsItemsInfoResponse = ref(null)
+
     const errorMessage = ref(null)
 
     async function newUnitOfMeasureInfo(data) {
@@ -130,6 +133,30 @@ async function fetchFeedingGroupSessions() {
             }
         })
 }
+//session Items
+async function newFeedingGroupSessionsItemsInfo(data) {
+    return await api.post("main/catering/feeding-sessions-items", data)
+        .then((response) => {
+            newFeedingGroupSessionsItemsInfoResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function fetchFeedingSessionsItems() {
+    return await api.get("main/catering/feeding-sessions-items")
+        .then((response) => {
+            feedingSessionsItemsInfoResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
     return {
         newUnitOfMeasureInfoResponse,
         errorMessage,
@@ -151,7 +178,10 @@ async function fetchFeedingGroupSessions() {
         feedingGroupSessionsInfoResponse,
         newFeedingGroupSessionsInfo,
         newFeedingGroupSessionsInfoResponse,
-        fetchFeedingGroupSessions
-
+        fetchFeedingGroupSessions,
+        feedingSessionsItemsInfoResponse,
+        fetchFeedingSessionsItems,
+        newFeedingGroupSessionsItemsInfoResponse,
+        newFeedingGroupSessionsItemsInfo
     }
 } )
