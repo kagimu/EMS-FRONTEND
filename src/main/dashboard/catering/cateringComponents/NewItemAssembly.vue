@@ -18,20 +18,20 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="(Service, index) in menuItems" :key="index" >
+                          <tr v-for="(menu, index) in menuItems" :key="index" >
                             <td>
-                              <select class="form-select form-select-sm form-control select-no-border" v-model="Service.name" @change="updateService(index)">
+                              <select class="form-select form-select-sm form-control select-no-border" v-model="menu.name" @change="updateService(index)">
                                 <option :value="option.name" v-for="option in availableOptions(index)">{{ option.name }}</option>
                               </select>
                             </td>
                             
                             <td>
-                              <select class="form-select form-select-sm form-control select-no-border" v-model="Service.name" @change="updateService(index)">
+                              <select class="form-select form-select-sm form-control select-no-border" v-model="menu.name" @change="updateService(index)">
                                 <option :value="option.name" v-for="option in availableOptions(index)">{{ option.name }}</option>
                               </select>
                             </td>
 
-                            <td><input type="text" v-model="Service.quantity" placeholder="1.0" class="inp"></td>
+                            <td><input type="text" v-model="menu.quantity" placeholder="1.0" class="inp"></td>
                             <td><button type="button" @click="removeMenuItem(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
                           </tr>
                         </tbody>
@@ -144,7 +144,7 @@
   }
   
   function availableOptions(index) {
-    const selectedNames = menuItems.value.map(Service => Service.name);
+    const selectedNames = menuItems.value.map(menu => menu.name);
     return menuOptions.value.filter(option => !selectedNames.includes(option.name) || option.name === menuItems.value[index].name);
   }
   

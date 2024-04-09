@@ -52,8 +52,8 @@
                   <tbody>
                     <tr v-for="(itemData, index) in Items" :key="index" >
                       <td>
-                        <select class="form-select form-select-sm form-control select-no-border" v-model="itemData.name" @change="updateItem(index)">
-                          <option :value="option.name" v-for="option in availableOptions(index)">{{ option.name }}</option>
+                        <select class="form-select form-select-sm form-control select-no-border" v-model="itemData.menu_item_number" @change="updateItem(index)">
+                          <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
                         </select>
                       </td>
                       <td><input type="text" v-model="itemData.quantity" @input="updateAmount(index)" placeholder="1.0" class="inp"></td>
@@ -217,10 +217,10 @@ watch(
 // Connect invoice store ==========================================
 const createStock = () => {
   const item_price_and_quantity = Items.value.map(itemData => ({
-      name: itemData.name,
+      menu_item_number: itemData.menu_item_number,
       quantity: itemData.quantity,
-      unitPrice: itemData.unitPrice,
-      amount: itemData.amount
+      unit_price: itemData.unitPrice,
+      unit_cost: itemData.amount
     }))
 
   const data = {
