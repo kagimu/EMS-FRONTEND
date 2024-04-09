@@ -88,6 +88,7 @@
   import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 
   const cateringStore = useCateringStore()
+  const notificationStore = useNotificationStore()
   const thisDialog = ref(false)
   const feedingSessionGroupData = ref([])
   const showDialog = () => {
