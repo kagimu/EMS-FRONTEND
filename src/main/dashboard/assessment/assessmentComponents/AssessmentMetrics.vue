@@ -296,8 +296,9 @@ const format = (date) => {
 
   const  fetchAssessmentAreaList = (campus_class_number) => {
     if(campus_class_number) {
-      let campus_class_no = classLevelList.value.find(item => item.campus_class_number === campus_class_number).campus_class_number
-      assessmentStore.fetchAssessmentArea(campus_class_no)
+      alert(JSON.stringify(classLevelList.value))
+      // let campus_class_no = classLevelList.value.find(item => item.campus_class_number === campus_class_number).campus_class_number
+      // assessmentStore.fetchAssessmentArea(campus_class_no)
     }
     }
 
