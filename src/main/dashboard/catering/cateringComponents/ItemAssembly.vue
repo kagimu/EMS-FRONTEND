@@ -25,19 +25,15 @@
          <div class="container mt-4">
            <div class="row">
               <div class="col-lg-12">
-                <div class="card">
-                 <div class="card-body">
+                <div class="">
+                 <div class="">
                     <div class="row">
                     <div class="col-lg-8">
                     <h5 style="font-size: 14px;margin-top: 2px;">Item Assembly</h5>
                     </div>
     
                 <div class="col-lg-4">
-                <button
-                style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
-                data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="showDialog">
-                <small> <b><i class="bi bi-plus"></i></b>
-                Add New</small></button>
+              
                 </div>
             </div>
             </div>
@@ -54,12 +50,13 @@
     <thead >
         <tr>
         <th style="width: 2px;">#</th>
-        <th>code</th>
-        <th>Name</th>
+        <th>Primary Item</th>
+        <th>Secondary Item</th>
+        <th>Quantity</th>
         </tr>
-    <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+    <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
     {{errorMessage}}
-    </div> -->
+    </div>
     </thead>
     <tbody>
     
@@ -80,7 +77,10 @@
     import {onMounted,reactive, ref, watch} from "vue";
     import useNotificationStore from "@/composables/useNotification.js";
     import NewItemAssembly from "@/main/dashboard/catering/cateringComponents/NewItemAssembly.vue";
-    
+    import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+
+    const cateringStore = useCateringStore()
+    const errorMessage = ref(null)
     const thisDialog = ref(false)
     const showDialog = () => {
         thisDialog.value = true
@@ -89,6 +89,29 @@
     const closeDialog = () => {
         thisDialog.value = false
     }
+
+    onMounted(() => {
+        cateringStore.fetchAssemblyItem()
+    }
+  )
+
+  watch(
+    () => cateringStore.assemblyItemResponse,
+    async (data) => {
+        assemblyData.value = data.data
+    },
+    {deep: true}
+  )
+  watch(
+    () => cateringStore.errorMessage,
+    async (data) => {
+          if (data) {
+          notificationStore.errorToast("Error", data.message)
+          }
+    },
+    {deep: true}
+  )
+
     </script>
     
     

@@ -39,9 +39,9 @@
                   <div v-if="selectedPage === 'interviews'">
                     <interviews></interviews>
                   </div>
-                  <div v-if="selectedPage === 'manage-interviews'">
+                  <!-- <div v-if="selectedPage === 'manage-interviews'">
                     <interview-management></interview-management>
-                  </div>
+                  </div> -->
                   <!-- <div v-if="selectedPage === 'assessment-areas'">
                     <interview-assesment-areas></interview-assesment-areas>
                   </div> -->

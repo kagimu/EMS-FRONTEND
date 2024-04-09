@@ -13,6 +13,15 @@ export const useCateringStore = defineStore("catering", () => {
     let newFeedingGroupInfoResponse = ref(null)
     let feedingGroupSessionsInfoResponse = ref(null)
     let newFeedingGroupSessionsInfoResponse = ref(null)
+    let newFeedingGroupSessionsItemsInfoResponse = ref(null)
+    let feedingSessionsItemsInfoResponse = ref(null)
+    let newAssemblyItemResponse = ref(null)
+    let assemblyItemResponse = ref(null)
+    let newDailySessionResponse = ref(null)
+    let dailySessionResponse = ref(null)
+    let newStockResponse = ref(null)
+    let stockResponse = ref(null)
+
     const errorMessage = ref(null)
 
     async function newUnitOfMeasureInfo(data) {
@@ -130,6 +139,104 @@ async function fetchFeedingGroupSessions() {
             }
         })
 }
+//session Items
+async function newFeedingGroupSessionsItemsInfo(data) {
+    return await api.post("main/catering/feeding-sessions-items", data)
+        .then((response) => {
+            newFeedingGroupSessionsItemsInfoResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function fetchFeedingSessionsItems() {
+    return await api.get("main/catering/feeding-sessions-items")
+        .then((response) => {
+            feedingSessionsItemsInfoResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+//assembly Items
+async function newAssemblyItem(data) {
+    return await api.post("main/", data)
+        .then((response) => {
+            newAssemblyItemResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function fetchAssemblyItem() {
+    return await api.get("main/")
+        .then((response) => {
+            assemblyItemResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+//feedingsession Daily
+async function newDailySession(data) {
+    return await api.post("main/catering/feeding-sessions-per-day", data)
+        .then((response) => {
+            newDailySessionResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function fetchDailySession() {
+    return await api.get("main/catering/feeding-sessions-per-day")
+        .then((response) => {
+            dailySessionResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+//Stocking
+async function newStock(data) {
+    return await api.post("main/catering/stocking", data)
+        .then((response) => {
+            newStockResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function fetchStock() {
+    return await api.get("main/catering/stocking")
+        .then((response) => {
+            stockResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
     return {
         newUnitOfMeasureInfoResponse,
         errorMessage,
@@ -151,7 +258,22 @@ async function fetchFeedingGroupSessions() {
         feedingGroupSessionsInfoResponse,
         newFeedingGroupSessionsInfo,
         newFeedingGroupSessionsInfoResponse,
-        fetchFeedingGroupSessions
-
+        fetchFeedingGroupSessions,
+        feedingSessionsItemsInfoResponse,
+        fetchFeedingSessionsItems,
+        newFeedingGroupSessionsItemsInfoResponse,
+        newFeedingGroupSessionsItemsInfo,
+        assemblyItemResponse,
+        newAssemblyItem,
+        fetchAssemblyItem,
+        newAssemblyItemResponse,
+        newDailySession,
+        fetchDailySession,
+        newDailySessionResponse,
+        dailySessionResponse,
+        newStock,
+        fetchStock,
+        newStockResponse,
+        stockResponse
     }
 } )
