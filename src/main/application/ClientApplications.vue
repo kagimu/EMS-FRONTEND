@@ -14,7 +14,7 @@
               <div>
                 <div>
 
-                  <p class="mt-3 ml-3"><b>Application List</b></p>
+                  <p class="mt-3 ml-3"><b>Student Application List</b></p>
 
                   <hr >
                   <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
