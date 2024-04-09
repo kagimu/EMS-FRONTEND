@@ -17,9 +17,9 @@ export const useConceptStore = defineStore("concept", () => {
             .then((response) => {
                 conceptResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -30,9 +30,9 @@ export const useConceptStore = defineStore("concept", () => {
             .then((response) => {
                 conceptEditResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -51,9 +51,9 @@ export const useConceptStore = defineStore("concept", () => {
             .then((response) => {
                 conceptInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -64,9 +64,9 @@ export const useConceptStore = defineStore("concept", () => {
             .then((response) => {
                 deleteConceptResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -77,9 +77,9 @@ export const useConceptStore = defineStore("concept", () => {
             .then((response) => {
                conceptDataInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }

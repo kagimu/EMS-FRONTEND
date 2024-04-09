@@ -18,9 +18,9 @@ export const useTopicStore = defineStore("topic", () => {
             .then((response) => {
                 topicResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -31,9 +31,9 @@ export const useTopicStore = defineStore("topic", () => {
             .then((response) => {
                 topicEditResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -50,9 +50,9 @@ export const useTopicStore = defineStore("topic", () => {
             .then((response) => {
                 topicInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -62,9 +62,9 @@ export const useTopicStore = defineStore("topic", () => {
             .then((response) => {
                 topicListResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -75,9 +75,9 @@ export const useTopicStore = defineStore("topic", () => {
             .then((response) => {
                 deleteTopicResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -88,9 +88,9 @@ export const useTopicStore = defineStore("topic", () => {
             .then((response) => {
                 topicDataInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }

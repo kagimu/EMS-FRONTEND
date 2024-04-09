@@ -2,8 +2,8 @@
     <div>
 
     
-      <div class="row">
-        <div class="col-3">
+<!--      <div class="row">-->
+<!--        <div class="col-3">
           <div class="card mt-3">
             <div class="card-body" style="padding: 0;">
               <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Assessment</div>
@@ -24,10 +24,10 @@
   
             </div>
           </div>
-        </div>
+        </div>-->
   
-        <div class="col-9">
-          <div class="card mt-3">
+<!--        <div class="col-9">-->
+<!--          <div class="card mt-3">-->
             <div class="card-body" style="padding: 0;">
   
               <div>
@@ -39,28 +39,32 @@
                   <!-- <div v-if="selectedPage === 'assessment-areas'">
                     <interview-assesment-areas></interview-assesment-areas>
                   </div> -->
-                  <!-- <div v-if="selectedPage === 'examtype'">
+                  <div v-if="selectedPage === 'examtype'">
                     <ExamType></ExamType>
-                  </div> -->
+                  </div>
                   <div v-if="selectedPage === 'grade-standards'">
                  <GradingStandards></GradingStandards>
                   </div>
                   <div v-if="selectedPage === 'grade-scale'">
                     <GradingScale></GradingScale>
                   </div>
+
                   <div v-if="selectedPage === 'assessment-scale'">
                    <AssessmentScale></AssessmentScale>
                   </div>
-                
+
+                <div v-if="selectedPage === 'assessment-area-grading-standard'">
+                  <assessment-area-grading-standard></assessment-area-grading-standard>
+                </div>
                   
               </div>
   
   
             </div>
-          </div>
-        </div>
+<!--          </div>-->
+<!--        </div>-->
   
-      </div>
+<!--      </div>-->
   
     </div>
   </template>
@@ -75,26 +79,15 @@
   import GradingScale from "@/main/dashboard/assessment/assessmentComponents/GradingScale.vue";
   import GradingStandards from "@/main/dashboard/assessment/assessmentComponents/GradingStandards.vue";
   import AssessmentScale from "@/main/dashboard/assessment/assessmentComponents/AssessmentScale.vue";
+  import AssessmentAreaGradingStandard from "@/main/dashboard/assessment/AssessmentAreaGradingStandard.vue";
 
   const routerData = useRouter()
   
-  const route = routerData.currentRoute.value.query.s
-  const selectedPage = route ? route : "grade-standards"
+  const selectedPage = routerData.currentRoute.value.query.ass
+/*
+  const selectedPage = route ? route : "examtype"
   
   const assess = ref([
-    // {
-    //   name:"Assessment List",
-    //   id:"assessments"
-    // },
-   
-    // {
-    //   name:"Assessment Areas",
-    //   id:"assessment-areas"
-    // },
-    // {
-    //   name:"Exam Type",
-    //   id:"examtype"
-    // },
     {
       name:"Grade Standards",
       id:"grade-standards"
@@ -107,8 +100,13 @@
       name:"Assessment Grades",
       id:"assessment-scale"
     },
+    {
+      name:"Assessment Area Grading Standard",
+      id:"assessment-area-grading-standard"
+    },
    
   ])
+*/
 
   
   

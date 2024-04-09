@@ -4,16 +4,35 @@ import useCommonsStore from "@/composables/useCommons.js";
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
+import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 const commons = useCommonsStore()
 const reportSetupStore = useReportSetupStore()
 const notificationStore  = useNotificationStore()
 const assessmentStore= useAssessmentStore()
+const levelStore = useLevelStore()
+const classStore = useClassesStore()
+const studyPeriodStore = useStudyPeriodStore()
+const academicYearStore = useAcademicYearStore()
 
 const errorMessage = ref("")
 const loader = ref(false)
 const reportColumnList = ref(null)
 const interviewAssessmentListData = ref(null)
 const assessmentMetricList = ref(null)
+const campusCurriculumDataInfo = ref(null)
+const campus_curriculum_number = ref("")
+const campusLevelList = ref(null)
+const campus_level_number = ref("")
+const academic_year_number = ref("")
+const study_period_number = ref("")
+const campus_class_number = ref("")
+const campusClassList = ref(null)
+const academicYearList = ref(null)
+const studyPeriodList = ref(null)
+const assessment_area_number = ref("")
 
 const form = reactive({
   code:null,
@@ -27,11 +46,48 @@ const form = reactive({
 onMounted(
     async () => {
       await reportSetupStore.fetchReportColumn()
-      await assessmentStore.fetchAssessmentArea()
+      // await assessmentStore.fetchAssessmentArea()
       await assessmentStore.fetchAssessmentMetrics()
     }
 )
 
+const fetchCampusLevel = (campus_curriculum_number) => {
+  classStore.fetchCampusLevel(campus_curriculum_number)
+}
+
+const fetchStudyPeriod = (academic_num) =>{
+  studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
+}
+
+const fetchAssessmentMetrics = () =>{
+  if(study_period_number.value && assessment_area_number) {
+    let data = {
+      study_period_number:study_period_number.value,
+      assessment_area_number:form.assessment_area_number
+    }
+    assessmentStore.fetchAssessmentMetrics(data)
+  }
+}
+
+watch(
+    () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+    async (data) => {
+      if(data){
+        studyPeriodList.value = data.data
+      }
+    }
+)
+
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        campusLevelList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 
 const addReportColumnAssessment = () => {
@@ -40,6 +96,11 @@ const addReportColumnAssessment = () => {
   reportSetupStore.newReportColumnAssessment(form)
 }
 
+const fetchAssessmentArea = (campus_class_number) =>{
+  if(campus_class_number) {
+    assessmentStore.fetchAssessmentArea(campus_class_number)
+  }
+}
 
 
 watch(
@@ -63,7 +124,21 @@ watch(
     }
 )
 
+const fetchAcademicYea = (campus_level_number) => {
+  academicYearStore.fetchAcademicYearByLevel(campus_level_number)
+  academicYearStore.fetchCampusClassByLevel(campus_level_number)
+}
 
+
+watch(
+    () => academicYearStore.academicYearByLevelResponse,
+    async (data) => {
+      if(data){
+        academicYearList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 watch(
     () => assessmentStore.assesmentAreaResponse,
@@ -86,12 +161,30 @@ watch (
     {deep:true}
 )
 
+watch(
+    () => levelStore.campusCurriculumResponse,
+    async (data) => {
+      if(data){
+        campusCurriculumDataInfo.value = data.data
+
+      }
+    }
+)
 
 watch(
     () => reportSetupStore.reportColumnAssessmentResponse,
     async (data) => {
       if(data){
         loader.value = false
+      }
+    }
+)
+
+watch(
+    () => academicYearStore.campusClassByLevelResponse,
+    async (data) => {
+      if(data){
+        campusClassList.value = data.data
       }
     }
 )
@@ -133,12 +226,88 @@ watch(
       </div>
 
 
+
+      <div class="mb-2">
+        <label class="textColor"><small>Curriculum</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="campus_curriculum_number"
+            @change="fetchCampusLevel(campus_curriculum_number)">
+          <option disabled value="">--Select Curriculum--</option>
+          <option v-for="(list, index) in campusCurriculumDataInfo" :key="index" :value="list.number">{{list.name}}</option>
+        </select>
+      </div>
+
+      <div class="mb-2">
+        <label class="textColor"><small>Level</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="campus_level_number"
+            @change="fetchAcademicYea(campus_level_number)"
+        >
+          <option disabled value="">--Select Level--</option>
+          <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
+
+      <div class="mb-2">
+        <label class="textColor"><small>Academic Year</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="academic_year_number"
+            @change="fetchStudyPeriod(academic_year_number)"
+        >
+          <option disabled value="">--Select Class--</option>
+          <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
+            {{list.code+". "+list.academic_year_name}}
+          </option>
+        </select>
+      </div>
+
+      <div class="mb-2">
+        <label class="textColor"><small>Study Period</small>
+        </label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm" required
+            v-model="study_period_number"
+            @change="fetchAssessmentMetrics"
+        >
+          <option disabled value="">Select</option>
+          <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
+
+        </select>
+      </div>
+
+
+      <div class="mb-2">
+        <label class="textColor"><small>Class</small>
+        </label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm" required
+            v-model="campus_class_number"
+            @change="fetchAssessmentArea(campus_class_number)"
+        >
+          <option disabled value="">Select</option>
+          <!--          <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>-->
+          <option v-for="(list, index) in campusClassList" :key="index" :value="list.curriculum_class_number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+        </select>
+      </div>
+
+
       <div class="mb-2">
         <label class="textColor"><small>Assessment Area</small></label>
         <select
             required
             class="form-control"
-            v-model="form.assessment_area_number" >
+            v-model="form.assessment_area_number"
+            @change="fetchAssessmentMetrics"
+        >
           <option disabled value=""> - Select Interview - </option>
           <option v-for="(listdata, index) in interviewAssessmentListData" :key="index" :value="listdata.number">
             {{ listdata.name}}

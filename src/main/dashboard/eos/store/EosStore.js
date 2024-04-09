@@ -21,9 +21,9 @@ export  const CalendarStore = defineStore("calendar", () => {
             .then((response) => {
                 calendarCreate.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    calendarError.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
 
@@ -34,9 +34,9 @@ export  const CalendarStore = defineStore("calendar", () => {
             .then((response) => {
                 calendarEventCreate.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    calendarError.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
 
@@ -48,9 +48,9 @@ export  const CalendarStore = defineStore("calendar", () => {
             .then((response) => {
                 companyCreateSuccess.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    calendarError.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
 
@@ -62,9 +62,9 @@ export  const CalendarStore = defineStore("calendar", () => {
             .then((response) => {
                 calendarFetch.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    calendarError.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
 
@@ -75,9 +75,9 @@ export  const CalendarStore = defineStore("calendar", () => {
             .then((response) => {
                 calendarFetchDetails.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    calendarError.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
 

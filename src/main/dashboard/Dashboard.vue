@@ -128,7 +128,7 @@ const menuList = ref([
   // {title:"Classes", name:"class", icon:"bi-pen"},
   {title:"Schools Teacher", name:"schools-teacher", icon:"bi-house-add"},
   {title:"Time table", name:"timetable", icon:"bi-pen",action:"view_timetable"},
-  {title:"Assessment", name:"assessment", icon:"bi-book",action:"view_assessment"},
+  // {title:"Assessment", name:"assessment", icon:"bi-book",action:"view_assessment"},
   {title:"Student Application", name:"student-application", icon:"bi-person-plus",action:"view_student-application"},
   {title:"Student Admission", name:"admission-list", icon:"bi-database-down",action:"view_student-admission"},
   {title:"Student Enrolment", name:"enrolment", icon:"bi-database-down",action:"view_enrolment"},
