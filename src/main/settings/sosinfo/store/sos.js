@@ -15,9 +15,9 @@ export const useSosStore = defineStore("sos", () => {
             .then((response) => {
                 newsosInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -27,9 +27,9 @@ export const useSosStore = defineStore("sos", () => {
             .then((response) => {
                 sosInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -38,9 +38,9 @@ export const useSosStore = defineStore("sos", () => {
             .then((response) => {
                 deletesosInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -49,9 +49,9 @@ export const useSosStore = defineStore("sos", () => {
             .then((response) => {
                 updateSosInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }

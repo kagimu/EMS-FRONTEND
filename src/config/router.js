@@ -340,12 +340,12 @@ const router = createRouter({
                     action: "view_let-us-design",
                       
                 }},
-                {path: 'assessment', component: Assessment, name: "assessment",
+              /*  {path: 'assessment', component: Assessment, name: "assessment",
                 meta: {
                     resource: "assessment",
                     action: "view_assessment",
                       
-                }},
+                }},*/
                 {path: 'assessment-list', component: AssessmentList, name: "assessment-list",
                 meta: {
                     resource: "assessment-list",
@@ -444,6 +444,7 @@ const router = createRouter({
                     action: "view-enrolment",
                       
                 }},
+
                 {path: 'promotions', component: Promotions, name: "promotions",
                 meta: {
                     resource: "promotions",
@@ -455,21 +456,25 @@ const router = createRouter({
                 meta: {
                     resource: "manage-interviews",
                     action: "view-manage-interviews",
-                      
+
+
                 }},
-                
+
+
                 {path: 'catering', component: Catering, name: "catering",
                 meta: {
                     resource: "manage-catering",
                     action: "view-manage-catering",
-                      
+
+
                 }},
 
                 {path: 'food-menu-items', component: FoodMenuItem, name: "food-menu-items",
                 meta: {
                     resource: "manage-food-menu-items",
                     action: "view-manage-food-menu-items",
-                      
+
+
                 }},
 
             ]

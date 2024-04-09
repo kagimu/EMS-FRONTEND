@@ -60,9 +60,10 @@ export const useAuthStore = defineStore("auth", () => {
             .then((response) => {
                 resetPasswordResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    localStorage.removeItem("token")
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -75,9 +76,10 @@ export const useAuthStore = defineStore("auth", () => {
                 localStorage.setItem("userProfile", JSON.stringify(user.data))
                 profile.value = user.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    localStorage.removeItem("token")
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -87,9 +89,10 @@ export const useAuthStore = defineStore("auth", () => {
             .then((response) => {
                 registrationResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    localStorage.removeItem("token")
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -115,9 +118,10 @@ export const useAuthStore = defineStore("auth", () => {
             .then((response) => {
                 setUserPasswordResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    localStorage.removeItem("token")
+                    errorMessage.value = error.response.data
                 }
             })
     }

@@ -21,9 +21,9 @@ export const useLevelStore = defineStore("level", () => {
             .then((response) => {
                 levelResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -33,9 +33,9 @@ export const useLevelStore = defineStore("level", () => {
             .then((response) => {
                 levelEditResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -46,9 +46,9 @@ export const useLevelStore = defineStore("level", () => {
             .then((response) => {
                 curriculumLevelResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -60,9 +60,9 @@ export const useLevelStore = defineStore("level", () => {
             .then((response) => {
                 levelInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -72,9 +72,9 @@ export const useLevelStore = defineStore("level", () => {
             .then((response) => {
                 curriculumLevelInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -87,9 +87,9 @@ export const useLevelStore = defineStore("level", () => {
             .then((response) => {
                 levelResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -112,9 +112,9 @@ export const useLevelStore = defineStore("level", () => {
             .then((response) => {
                 campusCurriculumResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -127,9 +127,9 @@ export const useLevelStore = defineStore("level", () => {
             .then((response) => {
                 levelResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -140,9 +140,9 @@ export const useLevelStore = defineStore("level", () => {
             .then((response) => {
                 deleteLevelSetUpResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -154,9 +154,9 @@ export const useLevelStore = defineStore("level", () => {
             .then((response) => {
                 levelDataInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }

@@ -4,19 +4,40 @@ import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/rep
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
+import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 
+
+const levelStore = useLevelStore()
+const classStore = useClassesStore()
+const studyPeriodStore = useStudyPeriodStore()
+const academicYearStore = useAcademicYearStore()
 const reportSetupStore = useReportSetupStore()
 const notificationStore  = useNotificationStore()
 const assessmentStore= useAssessmentStore()
+const AsessmentListData = ref([])
 const metricListData = ref(null)
 const assessmentMetricNumber = ref("")
 const studentsList = ref([])
+const campusCurriculumDataInfo = ref(null)
+const campus_curriculum_number = ref("")
+const campus_level_number = ref("")
+const academic_year_number = ref("")
+const study_period_number = ref("")
+const campus_class_number = ref("")
+const assessment_area_number = ref("")
+const campusLevelList = ref(null)
+const academicYearList = ref(null)
+const studyPeriodList = ref(null)
+const campusClassList = ref(null)
+
 
 
 onMounted(
     async () => {
-      await assessmentStore.fetchAssessmentMetrics()
-
+      // await assessmentStore.fetchAssessmentMetrics()
     }
 )
 
@@ -29,8 +50,67 @@ const fetchStudents = (assessmentMetricNumber) => {
 }
 
 
+const fetchCampusLevel = (campus_curriculum_number) => {
+  classStore.fetchCampusLevel(campus_curriculum_number)
+}
 
 
+const fetchAcademicYea = (campus_level_number) => {
+  academicYearStore.fetchAcademicYearByLevel(campus_level_number)
+  academicYearStore.fetchCampusClassByLevel(campus_level_number)
+}
+
+const fetchStudyPeriod = (academic_num) =>{
+  studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
+}
+
+const fetchAssessmentArea = (campus_class_number) =>{
+  if(campus_class_number) {
+    assessmentStore.fetchAssessmentArea(campus_class_number)
+  }
+}
+
+const fetchAssessmentMetrics = () =>{
+  if(study_period_number.value && assessment_area_number.value) {
+    let data = {
+      study_period_number:study_period_number.value,
+      assessment_area_number:assessment_area_number.value
+    }
+     assessmentStore.fetchAssessmentMetrics(data)
+  }
+}
+
+
+
+
+watch(
+    () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+    async (data) => {
+      if(data){
+        studyPeriodList.value = data.data
+      }
+    }
+)
+
+watch(
+    () => levelStore.campusCurriculumResponse,
+    async (data) => {
+      if(data){
+        campusCurriculumDataInfo.value = data.data
+
+      }
+    }
+)
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        campusLevelList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 
 
@@ -55,6 +135,15 @@ watch(
     {deep:true}
 )
 
+watch(
+    () => academicYearStore.academicYearByLevelResponse,
+    async (data) => {
+      if(data){
+        academicYearList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 
 const onlyNumberValidator = (event) => {
@@ -68,7 +157,7 @@ const addMarks = (score, comment, number) => {
     let data = {
       student_number:number,
       assessment_metric_number:assessmentMetricNumber.value,
-      actual_score:score,
+      actual_score:parseInt(score),
       comment:comment
     }
     reportSetupStore.addStudentMarks(data)
@@ -76,18 +165,43 @@ const addMarks = (score, comment, number) => {
 
 }
 
-
-
-
+watch(
+    () => assessmentStore.assesmentAreaResponse,
+    async (data) => {
+      if(data){
+        AsessmentListData.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 watch(
     () => reportSetupStore.studentMarksResponse,
     async (data) => {
       if(data){
-         alert(JSON.stringify(data))
+        notificationStore.successToast("Success",data.message)
       }
     },
     {deep:true}
+)
+
+watch(
+    () => reportSetupStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => academicYearStore.campusClassByLevelResponse,
+    async (data) => {
+      if(data){
+        campusClassList.value = data.data
+      }
+    }
 )
 
 </script>
@@ -96,7 +210,92 @@ watch(
 
   <div>
 
-    <div class="row mx-auto mt-3">
+
+    <div class="row bg-white mx-auto mt-2">
+
+      <div class="col-3">
+        <label class="text-sm"><small>Curriculum</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="campus_curriculum_number"
+            @change="fetchCampusLevel(campus_curriculum_number)">
+          <option disabled value="">--Select Curriculum--</option>
+          <option v-for="(list, index) in campusCurriculumDataInfo" :key="index" :value="list.number">{{list.name}}</option>
+        </select>
+      </div>
+
+      <div class="col-3">
+        <label class="text-sm"><small>Level</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="campus_level_number"
+            @change="fetchAcademicYea(campus_level_number)"
+        >
+          <option disabled value="">--Select Level--</option>
+          <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
+      <div class="col-3">
+        <label class="text-sm"><small>Academic Year</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="academic_year_number"
+            @change="fetchStudyPeriod(academic_year_number)"
+        >
+          <option disabled value="">--Select Class--</option>
+          <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
+            {{list.code+". "+list.academic_year_name}}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-3">
+        <label class="text-sm"><small>Study Period</small>
+        </label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm" required
+            v-model="study_period_number"
+            @change="fetchAssessmentMetrics"
+        >
+          <option disabled value="">Select</option>
+          <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
+
+        </select>
+      </div>
+      <div class="col-3">
+        <label class="text-sm"><small>Class</small>
+        </label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm" required
+            v-model="campus_class_number"
+            @change="fetchAssessmentArea(campus_class_number)"
+        >
+          <option disabled value="">Select</option>
+<!--          <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>-->
+          <option v-for="(list, index) in campusClassList" :key="index" :value="list.curriculum_class_number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+        </select>
+      </div>
+
+      <div class="col-3">
+          <label class="text-sm"><small>Assessment Area</small></label>
+          <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm"
+              v-model="assessment_area_number"
+              @change="fetchAssessmentMetrics"
+          >
+            <option disabled value="">Select</option>
+            <option v-for="(list, index) in AsessmentListData" :key="index" :value="list.number">{{ list.name }}
+            </option>
+          </select>
+      </div>
+
       <div class="col-3">
         <div class="mb-2">
           <label class="text-sm"><small>Assessment metric</small></label>
@@ -104,14 +303,18 @@ watch(
               style="box-shadow: none;"
               class="form-select py-10"
               v-model="assessmentMetricNumber"
-              @click="fetchStudents(assessmentMetricNumber)"
-          >
+              @click="fetchStudents(assessmentMetricNumber)">
             <option class="text-[13px]" disabled value="">--Select Assessment Metric--</option>
             <option class="text-[13px]" v-for="(list, index) in metricListData" :key="index" :value="list.number">{{list.name}}</option>
           </select>
         </div>
       </div>
+
     </div>
+
+
+
+
 
     <hr />
 

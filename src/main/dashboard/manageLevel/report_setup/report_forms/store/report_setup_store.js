@@ -15,12 +15,26 @@ export const useReportSetupStore = defineStore("report_setup", () => {
     const reportColumnListResponse = ref(null)
     const reportColumnAssessmentListResponse = ref(null)
     const studentMarksResponse = ref(null)
+    const assessmentAreaGradingStandardResponse = ref(null)
+    const assessmentAreaGradingStandardInfoResponse = ref(null)
     const errorMessage = ref(null)
 
     async function newReportSettings(data) {
         return await api.post("main/report-settings", data)
             .then((response) => {
                 reportSettingsResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function newAssessmentAreaGradingStandard(data) {
+        return await api.post("main/grading-standard/attach-assessment-area", data)
+            .then((response) => {
+                assessmentAreaGradingStandardResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -102,6 +116,18 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             })
     }
 
+    async function fetchAssessmentAreaGradingStandardInfo() {
+        return await api.get("main/grading-standard/assessment-areas")
+            .then((response) => {
+                assessmentAreaGradingStandardInfoResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     async function fetchStudentByAssessmentMetric(data) {
         return await api.get("main/students/by-assessment-metric/"+data)
             .then((response) => {
@@ -166,6 +192,8 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         reportColumnAssessmentListResponse,
         studentsByAssessmentMetricResponse,
         studentMarksResponse,
+        assessmentAreaGradingStandardResponse,
+        assessmentAreaGradingStandardInfoResponse,
         newReportSettings,
         newReportColumn,
         newReportColumnAssessment,
@@ -177,5 +205,7 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         fetchReportColumnAssessment,
         fetchStudentByAssessmentMetric,
         addStudentMarks,
+        newAssessmentAreaGradingStandard,
+        fetchAssessmentAreaGradingStandardInfo
     }
 })

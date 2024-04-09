@@ -6,6 +6,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const newAssessmentResponse = ref(null)
     const errorMessage = ref(null)
     const assessmentResponse = ref(null)
+    const gradingStandardResponse = ref(null)
     const newExamTypeResponse=ref(null)
     const examTypeResponse = ref(null)
     const assessmentByStudentIdResponse = ref(null)
@@ -37,8 +38,9 @@ export const useAssessmentStore = defineStore("assessment", () => {
     }
 
 
-    async function fetchAssessmentArea() {
-        return await api.get("main/assessment-areas")
+    async function fetchAssessmentArea(campus_class_number) {
+        campus_class_number = campus_class_number ? campus_class_number : ""
+        return await api.get("main/assessment-areas?curriculum_class_number="+campus_class_number)
             .then((response) => {
                assesmentAreaResponse.value = response.data
             })
@@ -72,6 +74,19 @@ export const useAssessmentStore = defineStore("assessment", () => {
                 }
             })
     }
+
+    async function fetchGradingStandardData(assessment_area_number) {
+        return await api.get("main/grading-standard")
+            .then((response) => {
+                gradingStandardResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     async function fetchAssessmentsByStudentId(studentid,data) {
         return await api.get("main/assessments?student_number="+studentid,data)
             .then((response) => {
@@ -170,8 +185,10 @@ async function createAssessmentMetrics(data) {
         })
 }
 
-async function fetchAssessmentMetrics() {
-    return await api.get("main/assessments/assessment-metrics")
+async function fetchAssessmentMetrics(data) {
+      let study_period_number = (data && data.study_period_number) ? data.study_period_number : ""
+      let assessment_area_number = (data && data.assessment_area_number) ? data.assessment_area_number : ""
+    return await api.get("main/assessments/assessment-metrics?study_period_number="+study_period_number+"&assessment_area_number="+assessment_area_number)
         .then((response) => {
             assessmentMetricsResponse.value = response.data
         })
@@ -226,9 +243,9 @@ async function createMetric(data) {
             .then((response) => {
                 assessmentScaleResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -252,6 +269,7 @@ async function createMetric(data) {
         createAssesmentAreas,
         newAssesmentAreasResponse,
         assesmentAreaResponse,
+        gradingStandardResponse,
         fetchAssessmentArea,
         newAssessmentResponse,
         createNewAssessment,
@@ -283,6 +301,7 @@ async function createMetric(data) {
         fetchAssessmentScale,
         assessmentScaleResponse,
         updateAssessmentScale,
-        updateAssessmentScaleResponse
+        updateAssessmentScaleResponse,
+        fetchGradingStandardData
     }
 })

@@ -34,9 +34,9 @@ export const useSubjectStore = defineStore("subject", () => {
             .then((response) => {
                 subjectResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -48,9 +48,9 @@ export const useSubjectStore = defineStore("subject", () => {
             .then((response) => {
                 subjectInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -61,9 +61,9 @@ export const useSubjectStore = defineStore("subject", () => {
             .then((response) => {
                 subjectListResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -73,9 +73,9 @@ export const useSubjectStore = defineStore("subject", () => {
             .then((response) => {
                 subjectByClassResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -85,9 +85,9 @@ export const useSubjectStore = defineStore("subject", () => {
             .then((response) => {
                 academicYearByClassResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -97,9 +97,9 @@ export const useSubjectStore = defineStore("subject", () => {
             .then((response) => {
                 schemeSubjectByClassResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -109,9 +109,9 @@ export const useSubjectStore = defineStore("subject", () => {
             .then((response) => {
                 subjectInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -123,9 +123,9 @@ export const useSubjectStore = defineStore("subject", () => {
             .then((response) => {
                 deleteSubjectResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
