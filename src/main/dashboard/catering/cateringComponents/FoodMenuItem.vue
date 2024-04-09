@@ -15,13 +15,13 @@
     <!-- end  -->
     <div class="row mt-3">
     <div class="col-12">
-        <div class="card">
-        <div class="card-body" style="padding: 0;">
+        <div class="">
+        <div class="" style="padding: 0;">
          <div class="container mt-4">
            <div class="row">
               <div class="col-lg-12">
-                <div class="card">
-                 <div class="card-body">
+                <div class="">
+                 <div class="">
                     <div class="row">
                     <div class="col-lg-8">
                     <h5 style="font-size: 14px;margin-top: 2px;">Menu Item </h5>
@@ -50,6 +50,7 @@
         <tr>
         <th>code</th>
         <th>Name</th>
+        <th>Unit Of Measurement</th>
         <th>School-Campus</th>
         </tr>
     <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
@@ -60,7 +61,8 @@
         <tr v-for="(list, index) in menuItemData" :key="index">
       <td>{{ list.code }}</td>
       <td>{{ list.name }}</td>
-      <td>Kaku Primary(Main Campus)</td>
+      <td>{{ list.unit_of_measure_name }}</td>
+      <td>{{ list.campus_name }}</td>
       </tr>
                 
     </tbody>

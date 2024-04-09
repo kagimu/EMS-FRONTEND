@@ -74,6 +74,8 @@ watch (
         notificationStore.successToast("Success", data.message)
         cateringStore.fetchFeedingGroupSessions()
         cateringStore.fetchDailySession()
+        form.day=null,
+        form.feeding_session_number=null
       }
     },
     {deep:true}

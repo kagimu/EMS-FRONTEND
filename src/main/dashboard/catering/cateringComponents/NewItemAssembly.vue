@@ -20,14 +20,14 @@
                         <tbody>
                           <tr v-for="(menu, index) in menuItems" :key="index" >
                             <td>
-                              <select class="form-select form-select-sm form-control select-no-border" v-model="menu.name" @change="updateService(index)">
-                                <option :value="option.name" v-for="option in availableOptions(index)">{{ option.name }}</option>
+                              <select class="form-select form-select-sm form-control select-no-border" v-model="menu.primary_item_number" @change="updateService(index)">
+                                <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
                               </select>
                             </td>
                             
                             <td>
-                              <select class="form-select form-select-sm form-control select-no-border" v-model="menu.name" @change="updateService(index)">
-                                <option :value="option.name" v-for="option in availableOptions(index)">{{ option.name }}</option>
+                              <select class="form-select form-select-sm form-control select-no-border" v-model="menu.secondary_item_number" @change="updateService(index)">
+                                <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
                               </select>
                             </td>
 
@@ -102,7 +102,7 @@
     () => cateringStore.menuItemResponse,
     async (data) => {
         if (data) {
-        menuOptions.value = data.map(option => ({ name: option.Item.name}));
+        menuOptions.value = data.data.map(option => ({ number: option.number,name:option.name}));
       }
     },
     {deep: true}
@@ -117,21 +117,21 @@
 )
 
 
-//   onMounted(
-//     async () => {
-//       await serviceStore.fetchServicesList()
-//     } )
+  onMounted(
+    async () => {
+      await serviceStore.fetchServicesList()
+    } )
   
     
-//   watch(
-//     () => serviceStore.servicesListResponse,
-//     async (data) => {
-//       if (data) {
-//         menuOptions.value = data.map(option => ({ name: option.Item.name}));
-//       }
-//     },
-//     { deep: true }
-//   )
+  watch(
+    () => serviceStore.servicesListResponse,
+    async (data) => {
+      if (data) {
+        // menuOptions.value = data.map(option => ({ name: option.Item.name}));
+      }
+    },
+    { deep: true }
+  )
 
 
   
@@ -155,21 +155,20 @@
   
 
   
-//   const createFeedingSessionItem = () => {
-//     const selectedData = menuItems.value.map(service => ({
-//         name: service.name,
-//         quantity: service.quantity,
-//         unitPrice: service.unitPrice,
-//         amount: service.amount
-//       }))
+  const createFeedingSessionItem = () => {
+    const selectedData = menuItems.value.map(service => ({
+        primary_item_number: service.primary_item_number,
+        secondary_item_number: service.secondary_item_number,
+        quantity: service.quantity,
+      }))
   
-//     const data = {
-//       student_number: 'studentNumber',
-//       selectedData
-//     }
-//     alert(JSON.stringify(data))
+    const data = {
+      quantity: 1,
+      selectedData
+    }
+    alert(JSON.stringify(data))
 
-//   }
+  }
   
   </script>
   

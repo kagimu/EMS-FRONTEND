@@ -48,6 +48,9 @@ watch (
       if(data){
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
+        cateringStore.fetchUnitOfMeasureInfo()
+        form.code=null,
+    form.name=null
       }
     },
     {deep:true}
