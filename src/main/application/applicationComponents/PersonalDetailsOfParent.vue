@@ -102,8 +102,6 @@ const formData = reactive ({
 
 
 
-
-
 watch (
     () => applicationStore.newApplicationDetailsResponse,
     async (data) => {
