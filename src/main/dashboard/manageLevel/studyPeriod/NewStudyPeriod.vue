@@ -39,7 +39,7 @@
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="campus_level_number"
-            @change="fetchCurriculumClass(campus_level_number)"
+            @change="fetchAcademicYear(campus_level_number)"
         >
           <option disabled value="">--Select Level--</option>
           <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
@@ -159,7 +159,7 @@ const format = (date) => {
   return `Selected date is ${day}/${month}/${year}`;
 }
 
-const fetchCurriculumClass = (campus_level_number) => {
+const fetchAcademicYear = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
 }
 
@@ -256,6 +256,8 @@ watch(
             form.academic_year_number = info.academic_year_number
             form.study_period_start_date = info.study_period_start_date
             form.study_period_end_date = info.study_period_end_date
+            campus_level_number.value = info.level_number
+            fetchAcademicYear(info.level_number)
             study_period_number.value = info.number
       }
     },
