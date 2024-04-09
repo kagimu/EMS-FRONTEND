@@ -165,7 +165,7 @@ async function fetchFeedingSessionsItems() {
 }
 //assembly Items
 async function newAssemblyItem(data) {
-    return await api.post("main/", data)
+    return await api.post("main/catering/item-assembly", data)
         .then((response) => {
             newAssemblyItemResponse.value = response.data
         })
@@ -177,7 +177,7 @@ async function newAssemblyItem(data) {
 }
 
 async function fetchAssemblyItem() {
-    return await api.get("main/")
+    return await api.get("main/catering/item-assembly")
         .then((response) => {
             assemblyItemResponse.value = response.data
         })

@@ -5,40 +5,44 @@
             <div class="card-body" style="padding: 0;">
               <div class="mt-5">
                 <form @submit.prevent="createFeedingSessionItem">
+                  <div class="mb-3 mt-4 col-6">
+                    <label>Primary Item</label>
+                  <select class="form-select form-select-sm form-control " v-model="form.primary_item_number" @change="updateService(index)">
+                    <option v-for="(list,index) in menuData" :key="index" :value="list.number" >{{ list.name }}</option>
+                  </select>
+                    </div>
+
                 <div class="row">
                   <div class="col-lg-12">
+                   
                     <!-- New Design -->
                       <table class="table table-striped">
                         <thead>
                           <tr class="" style="padding: 0px;margin: 0px;">
-                            <th>Primary Item</th>
                             <th>Secondary Item</th>
                             <th>Quantity</th>
                             <th></th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="(menu, index) in menuItems" :key="index" >
-                            <td>
-                              <select class="form-select form-select-sm form-control select-no-border" v-model="menu.primary_item_number" @change="updateService(index)">
-                                <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
-                              </select>
-                            </td>
-                            
+                          <tr v-for="(menu, index) in menuItems" :key="index" > 
                             <td>
                               <select class="form-select form-select-sm form-control select-no-border" v-model="menu.secondary_item_number" @change="updateService(index)">
                                 <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
                               </select>
                             </td>
 
-                            <td><input type="text" v-model="menu.quantity" placeholder="1.0" class="inp"></td>
+                            <td><input type="number" v-model="menu.quantity" placeholder="1.0" class="inp"></td>
                             <td><button type="button" @click="removeMenuItem(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
                           </tr>
                         </tbody>
                       </table>
+                   
                       <button class="btn btn-primary btn-sm textColor" @click.prevent="addItem" :disabled="isAddButtonDisabled"><small>ADD ANOTHER ITEM</small></button>
                     
                   </div>
+
+            
                 </div> 
                 <div class="row mt-5">
                
@@ -87,10 +91,13 @@
   const cateringStore = useCateringStore()
   const menuItems = ref([])
   const menuItemOptions = ref([])
+
  
   const form = reactive({
-    feeding_session_number:null
+    primary_item_number:null
   })
+  
+  const menuData = ref([])
 
   onMounted(
     async () => {
@@ -102,6 +109,7 @@
     () => cateringStore.menuItemResponse,
     async (data) => {
         if (data) {
+          menuData.value = data.data
         menuOptions.value = data.data.map(option => ({ number: option.number,name:option.name}));
       }
     },
@@ -117,59 +125,63 @@
 )
 
 
-  onMounted(
-    async () => {
-      await serviceStore.fetchServicesList()
-    } )
-  
-    
-  watch(
-    () => serviceStore.servicesListResponse,
-    async (data) => {
-      if (data) {
-        // menuOptions.value = data.map(option => ({ name: option.Item.name}));
-      }
-    },
-    { deep: true }
-  )
 
-
-  
   function addItem() {
-    menuItems.value.push({ name: '', quantity: 1 });
+    menuItems.value.push({ name: '', quantity: 1 })
   }
   
   function removeMenuItem(index) {
-    menuItems.value.splice(index, 1);
+    menuItems.value.splice(index, 1)
   }
   
   function availableOptions(index) {
     const selectedNames = menuItems.value.map(menu => menu.name);
-    return menuOptions.value.filter(option => !selectedNames.includes(option.name) || option.name === menuItems.value[index].name);
+    return menuOptions.value.filter(option => !selectedNames.includes(option.name) || option.name === menuItems.value[index].name)
   }
-  
-//   const isAddButtonDisabled = ref(false);
-//   watch(Services, (newServices) => {
-//     isAddButtonDisabled.value = newServices.length === menuOptions.value.length;
-//   }, { deep: true });
-  
 
-  
-  const createFeedingSessionItem = () => {
-    const selectedData = menuItems.value.map(service => ({
-        primary_item_number: service.primary_item_number,
-        secondary_item_number: service.secondary_item_number,
-        quantity: service.quantity,
-      }))
-  
-    const data = {
-      quantity: 1,
-      selectedData
+
+const createFeedingSessionItem = () => {
+    const secondaryItemNumbers = menuItems.value.map(menu => {
+        return {
+            secondary_item_number: menu.secondary_item_number,
+            quantity: menu.quantity
+        }
+    })
+
+  const data = {
+        primary_item_number: form.primary_item_number,
+        secondary_item_quantity: secondaryItemNumbers
     }
-    alert(JSON.stringify(data))
+    const formattedData = JSON.stringify(data)
+    alert(formattedData)
+    cateringStore.newAssemblyItem(formattedData)
+}
 
-  }
-  
+watch(
+    () => cateringStore.newAssemblyItemResponse,
+    async (data) => {
+        notificationStore.successToast("Success", data.message)
+        cateringStore.fetchAssemblyItem()
+        clearFormData()
+    },
+    {deep: true}
+  )
+
+  watch(
+    () => cateringStore.errorMessage,
+    async (data) => {
+          if (data) {
+          notificationStore.errorToast("Error", data.message)
+          }
+    },
+    {deep: true}
+  )
+
+  const clearFormData = () => {
+    form.primary_item_number = null
+    menuItems.value = []
+}
+
   </script>
   
   
