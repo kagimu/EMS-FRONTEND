@@ -8,12 +8,12 @@ import NewAssessmentAreaGradingStandard from "@/main/dashboard/assessment/NewAss
 
 const reportSetupStore = useReportSetupStore()
 const notificationStore  = useNotificationStore()
-const reportSettingsList = ref(null)
+const assessmentAreaGradingStandardList = ref(null)
 
 
 onMounted(
     async () => {
-      await reportSetupStore.fetchReportSettings()
+      await reportSetupStore.fetchAssessmentAreaGradingStandardInfo()
     }
 )
 
@@ -29,10 +29,21 @@ watch(
 )
 
 watch(
-    () => reportSetupStore.reportSettingsListResponse,
+    () => reportSetupStore.assessmentAreaGradingStandardInfoResponse,
     async (data) => {
       if(data){
-        reportSettingsList.value = data.data
+        assessmentAreaGradingStandardList.value = data.data
+      }
+    }
+)
+
+
+watch(
+    () => reportSetupStore.assessmentAreaGradingStandardResponse,
+    async (data) => {
+      if(data){
+        await reportSetupStore.fetchAssessmentAreaGradingStandardInfo()
+        notificationStore.successToast("Success",data.message)
       }
     }
 )
@@ -100,7 +111,7 @@ watch(
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(levelInfo, index) in reportSettingsList" :key="index">
+          <tr v-for="(levelInfo, index) in assessmentAreaGradingStandardList" :key="index">
             <td> {{levelInfo.code}}</td>
             <td> {{levelInfo.name}}</td>
             <td> {{levelInfo.columns}}</td>

@@ -58,10 +58,8 @@ const fetchStudyPeriod = (academic_num) =>{
   studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
 }
 
-const fetchGradingStandard = (assessment_area_number) =>{
-  if(assessment_area_number) {
+const fetchGradingStandard = () =>{
     assessmentStore.fetchGradingStandardData(assessment_area_number)
-  }
 }
 
 
@@ -70,7 +68,7 @@ watch(
     () => assessmentStore.gradingStandardResponse,
     async (data) => {
       if(data){
-        alert(JSON.stringify(data))
+        gradingStandardListData.value = data.data
       }
     }
 )
@@ -96,11 +94,14 @@ watch(
 )
 
 
-const addReportColumnAssessment = () => {
+const addAssessmentAreaGradingStandard = () => {
   loader.value = true
   form.code = form.code ? parseInt(form.code) : form.code
-  reportSetupStore.newReportColumnAssessment(form)
+  reportSetupStore.newAssessmentAreaGradingStandard(form)
 }
+
+
+
 
 const fetchAssessmentArea = (campus_class_number) =>{
   if(campus_class_number) {
@@ -181,7 +182,7 @@ watch(
 
 <template>
   <div>
-    <form @submit.prevent="addReportColumnAssessment">
+    <form @submit.prevent="addAssessmentAreaGradingStandard">
 
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
         {{ errorMessage }}
@@ -281,7 +282,7 @@ watch(
             required
             class="form-control"
             v-model="form.assessment_area_number"
-            @change="fetchGradingStandard(form.assessment_area_number)"
+            @change="fetchGradingStandard()"
         >
           <option disabled value=""> - Select Interview - </option>
           <option v-for="(listdata, index) in interviewAssessmentListData" :key="index" :value="listdata.number">
@@ -299,7 +300,7 @@ watch(
             aria-label="Default select example">
           <option disabled value="">--Select Grading Standard--</option>
           <option v-for="(lst, index) in gradingStandardListData" :key="index" :value="lst.number">
-            {{ lst.name}}
+            {{ lst.name + "["+lst.type+"]"}}
           </option>
         </select>
       </div>
