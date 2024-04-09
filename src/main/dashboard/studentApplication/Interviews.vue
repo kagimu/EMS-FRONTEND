@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div class="modal fade" id="assesssmentMetricsModal" tabindex="-1" :class="{ show: assesssmentMetricsDialog }" aria-labelledby="" aria-hidden="true">
+    <div class="modal fade" id="assesssmentMetricsModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
@@ -21,7 +21,7 @@
     
 
 
-    <div class="modal fade" id="interviewAssessmentModal" tabindex="-1" :class="{ show: interviewAssessmentDialog }" aria-labelledby="" aria-hidden="true">
+    <div class="modal fade" id="interviewAssessmentModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
@@ -58,8 +58,7 @@
           <th>Scheduled On</th>
           <th>Venue</th>
           <th>Comment</th>
-          
-          <th>#</th>
+          <th>Actions</th>
         </tr>
 
       </thead>
@@ -96,7 +95,13 @@
                   data-bs-target="#interviewAssessmentModal"
               >  Add Interview Assessment</button>
 
-
+              <router-link style="display: none;"
+                  class="text-decoration-none"
+                  :to="{name:'manage-interviews', query:{interview_id:interview.number, interview:interview.name}}">
+                <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
+                <small>Manage</small>
+                </button>
+              </router-link>
             </div>
 
 
@@ -175,6 +180,7 @@ onMounted(
     () => applicationStore.interviewListResponse,
     async (data) => {
       if(data){
+        assesssmentMetricsDialog.value = false
         interviewList.value = data.data
       }
     },
@@ -185,6 +191,7 @@ watch (
     () => applicationStore.errorMessage,
     async (data) => {
       if(data){
+        assesssmentMetricsDialog.value = false
         errorMessage.value = data.message
         buttonLoader.value = false
         notificationStore.errorToast("Error",data.message)
@@ -219,6 +226,7 @@ watch(
       async (data) => {
           if (data) {
               buttonLoader.value = false
+              assesssmentMetricsDialog.value = false
               notificationStore.successToast("Success", data.message)
               await applicationStore.fetchInterviewList()
 
@@ -228,10 +236,7 @@ watch(
   )
 
   const showAssesssmentMetricsDialog = (interview) =>{
- 
   interviewNumber.value = interview.number
-  // alert(interviewNumber.value)
-  assesssmentMetricsDialog.value = true
 
 }
 

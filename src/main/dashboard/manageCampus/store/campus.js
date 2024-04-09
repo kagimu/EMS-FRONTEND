@@ -79,9 +79,9 @@ export const useCampusStore = defineStore("campus", () => {
             .then((response) => {
                 campusInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }

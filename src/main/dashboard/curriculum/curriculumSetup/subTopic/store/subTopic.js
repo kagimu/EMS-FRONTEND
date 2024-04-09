@@ -21,9 +21,9 @@ export const useSubtopicStore = defineStore("subtopic", () => {
             .then((response) => {
                 subtopicResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -33,9 +33,9 @@ export const useSubtopicStore = defineStore("subtopic", () => {
             .then((response) => {
                 subtopicEditResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -52,9 +52,9 @@ export const useSubtopicStore = defineStore("subtopic", () => {
             .then((response) => {
                 subtopicInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -64,9 +64,9 @@ export const useSubtopicStore = defineStore("subtopic", () => {
             .then((response) => {
                 subtopicListResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -76,9 +76,9 @@ export const useSubtopicStore = defineStore("subtopic", () => {
             .then((response) => {
                 subtopicByClassInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -88,9 +88,9 @@ export const useSubtopicStore = defineStore("subtopic", () => {
             .then((response) => {
                 subtopicByClassTemplateResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -104,9 +104,9 @@ export const useSubtopicStore = defineStore("subtopic", () => {
             .then((response) => {
                 importSchemeResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }

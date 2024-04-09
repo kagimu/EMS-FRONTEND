@@ -104,7 +104,7 @@
           <button
               type="submit"
               class="btn btn-primary border-0">
-              {{levelNumber ? "Edit" : "Save"}}
+              {{promNumber ? "Edit" : "Save"}}
             <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
                 <span class="visually-hidden">Loading...</span>
               </span>
@@ -135,7 +135,7 @@ const emit = defineEmits();
   const loader = ref(false)
   const commons = useCommonsStore()
   const  notificationStore  = useNotificationStore()
-  const levelNumber = ref("")
+  const promNumber = ref("")
   const promotionStore = usePromotionStore()
 
 const campusList = ref([])
@@ -248,8 +248,14 @@ watch(
     () => promotionStore.newPromotionSettingResponse,
     async (data) => {
         if (data) {
+            form.name=null,
+            form.status="ACTIVE",
+            form.type=null,
+            form.next_class_number=null,
+            form.previous_class_number=null
+            loader.value = false
           notificationStore.successToast("Success application submitted", data.message)
-          promotionStore.fetchPromotionSettingByCampusClass()
+          promotionStore.fetchPromotionSetting()
         }
     },
     {deep: true}
@@ -259,6 +265,12 @@ watch(
     () => promotionStore.errorMessage,
     async (data) => {
           if (data) {
+            form.name=null,
+            form.status="ACTIVE",
+            form.type=null,
+            form.next_class_number=null,
+            form.previous_class_number=null
+            loader.value = false
               notificationStore.errorToast("Error", data.message)
           }
     },

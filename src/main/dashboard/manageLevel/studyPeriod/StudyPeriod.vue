@@ -58,12 +58,12 @@
       <thead>
       <tr>
 <!--        <th scope="col">#</th>-->
-        <th scope="col">Code</th>
-        <th scope="col">Level</th>
+        <th class="w-[5%]" scope="col">#Code</th>
+        <th class="w-[20%]"  scope="col">Level</th>
         <th>
           <div class="row" >
-            <div class="col-lg-4">Academic Year</div>
-            <div class="col-lg-8">
+            <div class="col-lg-6">Academic Year</div>
+            <div class="col-lg-6">
              <span class="ml-3">Study Period</span>
             </div>
           </div>
@@ -79,8 +79,8 @@
           <table class="table table-hover caption-top text-sm">
             <tbody>
             <tr v-for="(academicYre,idx) in level.academicYear" :key="idx">
-              <td>{{academicYre.code}}</td>
-              <td class="w-[30%] capitalize">
+              <td class="w-[5%] capitalize">{{academicYre.code}}</td>
+              <td class="w-[40%] capitalize">
                 <div>
                 <div>{{academicYre.academic_year_name}}</div>
                   <span class="bg-[#0d6efd] px-2 py-[2px] rounded-sm text-white text-xs">{{academicYre.no_of_study_period}} Study Periods</span>
@@ -99,12 +99,15 @@
                   <tr v-for="(styPeriod, index) in academicYre.studyPeriod" :key="index">
 
                     <td> {{styPeriod.code}}</td>
-                    <td class="capitalize"> {{styPeriod.study_period_name}}</td>
                     <td>
-                      <small>
-                       <b>From:</b> {{styPeriod.study_period_start_date}}<br />
-                       <b>To:</b> {{styPeriod.study_period_end_date}}
-                      </small>
+                      <div class="capitalize"> {{styPeriod.study_period_name}}</div>
+                      <div class="ml-3">
+                        <small>
+                          <b>From:</b> {{styPeriod.study_period_start_date}}<br />
+                          <b>To:</b> {{styPeriod.study_period_end_date}}
+                        </small>
+                      </div>
+
                     </td>
                     <td>
                       <div>

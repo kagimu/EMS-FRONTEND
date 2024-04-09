@@ -37,11 +37,13 @@ onMounted(
 
 
 const filterReportSummary = () => {
-  let data = {
-    study_period_number:study_period_number.value,
-    campus_class_number:campus_class_number.value,
+  if(study_period_number.value && campus_class_number.value) {
+    let data = {
+      study_period_number: study_period_number.value,
+      campus_class_number: campus_class_number.value,
+    }
+    reportStore.fetchReportSummary(data)
   }
-  reportStore.fetchReportSummary(data)
 }
 
 

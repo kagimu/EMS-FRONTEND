@@ -23,9 +23,9 @@ export const useCurriculumStore = defineStore("curriculum", () => {
             .then((response) => {
                 curriculumResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -35,9 +35,9 @@ export const useCurriculumStore = defineStore("curriculum", () => {
             .then((response) => {
                 curriculumEditResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -48,9 +48,9 @@ export const useCurriculumStore = defineStore("curriculum", () => {
             .then((response) => {
                 curriculumDataResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -60,9 +60,9 @@ export const useCurriculumStore = defineStore("curriculum", () => {
             .then((response) => {
                 curriculumInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -73,9 +73,9 @@ export const useCurriculumStore = defineStore("curriculum", () => {
             .then((response) => {
                 schoolCurriculumResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -85,9 +85,9 @@ export const useCurriculumStore = defineStore("curriculum", () => {
             .then((response) => {
                 campusCurriculumLevelResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -102,9 +102,9 @@ export const useCurriculumStore = defineStore("curriculum", () => {
             .then((response) => {
                 importResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -115,9 +115,9 @@ export const useCurriculumStore = defineStore("curriculum", () => {
             .then((response) => {
                 curriculumExcelResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -129,9 +129,9 @@ export const useCurriculumStore = defineStore("curriculum", () => {
             .then((response) => {
                 deleteCurriculumResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -142,9 +142,9 @@ export const useCurriculumStore = defineStore("curriculum", () => {
             .then((response) => {
                 curriculumDataInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }

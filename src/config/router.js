@@ -61,7 +61,15 @@ import InterviewLearnersList from "@/main/dashboard/studentApplication/Interview
 import InterviewLearnersDetails from '@/main/dashboard/studentApplication/InterviewLearnersDetails.vue';
 import AdmissionList from '@/main/dashboard/studentAdmission/AdmissionList.vue';
 import Enrollment from '@/main/dashboard/enrollment/Enrollment.vue';
-import Promotions from '@/main/dashboard/promotions/Promotions.vue';
+import SetPassword from "@/main/auth/SetPassword.vue";
+import ResetPassword from "@/main/auth/ResetPassword.vue";
+import SchoolInfo from "@/main/dashboard/manageSchool/SchoolInfo.vue";
+import CampusInfo from "@/main/dashboard/manageCampus/CampusInfo.vue";
+import CampusDetailsTeacher from "@/main/dashboard/manageLevel/CampusDetailsTeacher.vue";
+import Promotions from "@/main/dashboard/promotions/Promotions.vue"
+import InterviewManagement from "@/main/dashboard/studentApplication/InterviewManagement.vue"
+import Catering from "@/main/dashboard/catering/Catering.vue"
+import FoodMenuItem  from "@/main/dashboard/catering/cateringComponents/FoodMenuItem.vue"
 
 
 
@@ -332,12 +340,12 @@ const router = createRouter({
                     action: "view_let-us-design",
                       
                 }},
-                {path: 'assessment', component: Assessment, name: "assessment",
+              /*  {path: 'assessment', component: Assessment, name: "assessment",
                 meta: {
                     resource: "assessment",
                     action: "view_assessment",
                       
-                }},
+                }},*/
                 {path: 'assessment-list', component: AssessmentList, name: "assessment-list",
                 meta: {
                     resource: "assessment-list",
@@ -442,6 +450,31 @@ const router = createRouter({
                     resource: "promotions",
                     action: "view-promotions",
                       
+                }},
+
+                {path: 'manage-interviews', component: InterviewManagement, name: "manage-interviews",
+                meta: {
+                    resource: "manage-interviews",
+                    action: "view-manage-interviews",
+
+
+                }},
+
+
+                {path: 'catering', component: Catering, name: "catering",
+                meta: {
+                    resource: "manage-catering",
+                    action: "view-manage-catering",
+
+
+                }},
+
+                {path: 'food-menu-items', component: FoodMenuItem, name: "food-menu-items",
+                meta: {
+                    resource: "manage-food-menu-items",
+                    action: "view-manage-food-menu-items",
+
+
                 }},
 
             ]

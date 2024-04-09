@@ -127,7 +127,7 @@ watch(
       <div class="">{{list.AssessmentMetric.name + "(" +list.AssessmentMetric.CampusClass.class_name+" )"}}</div>
     </div>
     <router-link
-    class="btn btn-outline-primary btn-sm"
+    class="btn btn-outline-primary btn-sm" 
     :to="{ name: 'interview-details', query: { interview_id: props.interviewNumber, assessment_metric_id: list.AssessmentMetric.number, interview_m: list.AssessmentMetric.description  }}">
     ENTER MARKS
     </router-link>

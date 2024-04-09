@@ -27,7 +27,7 @@
         
 
               <div class="row">
-                <div class="col-2">
+                <div class="col-4">
                   <div class="mb-2">
             <label class="textColor"><small>School</small> </label>
             <select
@@ -43,7 +43,7 @@
         </div>
                 </div>
   
-                <div class="col-2">
+                <div class="col-3">
         <div class="mb-2">
             <label class="textColor"><small>Campus</small>  </label>
             <select
@@ -59,7 +59,7 @@
         </div></div>
   
   
-        <div class="col-1">
+        <div class="col-2">
           <div class="mb-2">
             <label class="textColor"><small>Class</small> </label>
             <select
@@ -75,7 +75,7 @@
         </div>
         </div>
   
-        <div class="col-1">
+        <!-- <div class="col-1">
           <div class="mb-2">
             <label class="textColor"><small>Stream</small> </label>
             <select
@@ -83,32 +83,29 @@
                     class="form-select form-select-sm" required
                     v-model="form.stream_number"
                     @change="filterByStream()"
-             >
-                <!-- <option disabled value="">Select Stream</option> -->
+             >  
                 <option v-for="(slist, index) in streamList" :key="index" :value="slist.number">{{ slist.name }}
                 </option>
             </select>
         </div>
-        </div>
+        </div> -->
   
-        <div class="col-1">
+        <div class="col-2">
           <div class="mb-2">
-            <label class="textColor"><small>Year</small> </label>
+            <label class="textColor"><small>Academic Year</small> </label>
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm" required
                     v-model="form.academic_year"
             >
-                <!-- <option disabled value="">Select Year</option> -->
                <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
             </select>
         </div>
         </div>
   
-        <div class="col-2">
+        <!-- <div class="col-2">
           <div class="mb-2">
             <label class="textColor"><small>Study-Period</small> 
-            <!-- {{ studyPeriodList }} -->
             </label>
             <select
                     style="box-shadow: none;"
@@ -116,18 +113,17 @@
                     v-model="form.study_period_number"
                     @change="filterByStudyPeriod()"
             >
-                <!-- <option disabled value="">Select</option> -->
                 <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
   
             </select>
         </div>
-        </div>
+        </div> -->
 
-        <div class="col-3">
+        <!-- <div class="col-3">
             <div class="mt-4">
                 <input type="text" class="form-control mt-1 mb-0" placeholder="Search..."> 
             </div>
-       </div>
+       </div> -->
 
               </div>
     
@@ -149,17 +145,16 @@
           <tr>
             <th style="width: 2px;">#</th>
             <th>ADN</th>
-            <th>Study Period</th>
-            <th>Student</th>
-            <th>School</th>
-            <th>Campus</th>
-            <th>Enrolment Date</th>
-            <!-- <th>Class</th> -->
+            <th>Academic Year</th>
+            <th>Name</th>  
+            <th>Previous Class</th>
+            <th>Next Class</th>
+            <th>Reason</th>
             <th>Action</th>
           </tr>
-    <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+    <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
       {{errorMessage}}
-    </div> -->
+    </div>
         </thead>
         <tbody>
           <tr v-for="(promotiontData,index) in promotiontList" :key="index" >
@@ -168,18 +163,14 @@
                 <input type="checkbox"   class="checkbox-primary">
             </td>
             <td>{{ promotiontData.Student.apn }}</td>
-            <td>{{ promotiontData.StudyPeriod.study_period_name }}</td>
+            <td>{{ promotiontData.CurrentAcademicYear.academic_year_name }}</td>
             <td>{{ promotiontData.Student.surname + " "+ promotiontData.Student.second_name + " "  + promotiontData.Student.other_name}}</td>
-            <td>{{promotiontData.School.name }}</td>
-            <td>{{ promotiontData.Campus.name }}</td>
-            <td>{{ promotiontData.enrollment_date }}</td>
+          
+            <td>{{ promotiontData.PromotionSetting.previous_class.class_name }}</td>
+            <td>{{ promotiontData.PromotionSetting.next_class.class_name }}</td>
+            <td>{{promotiontData.reasons }}</td>
             <td>
-                <button><i class="bi bi-trash"></i></button> &nbsp;
-                <button><i class="bi bi-pencil"></i></button>
-                <button 
-                 type="button" @click="promModal(promotiontData.Student.number)"  class="btn btn-sm buttonStyle btn-primary mr-2"  data-bs-toggle="modal" data-bs-target="#promoteModal">
-                  Promote
-                </button>
+                <button type="button" class="btn btn-primary btn-sm"> <i class="bi bi-eye"></i> View </button>
             </td>
           
           </tr>  
@@ -244,6 +235,13 @@
   interview_number:""
   })
   
+onMounted (
+  () => { 
+    promotionStore.fetchPromotions() 
+  } 
+)
+
+
   
   const fetchCampuses = (school_number) => {
     campusStore.fetchCampuses(school_number)
@@ -253,6 +251,8 @@
     campusStore.fetchClassesByCampus(campus_number)
   }
   
+
+
   
   //fetchacadmicYear
   const fetchAcademicYear = (campusN) =>{
@@ -260,7 +260,6 @@
   academicYearStore.fetchAcademicYearByCampus(campusN)
   classStore.fetchClassStreams(campusN)
   promotionStore.fetchPromotionByCampusClassNumber(campusN)
-  
   }
   watch(
     () => academicYearStore.academicYearByCampusResponse,
@@ -351,12 +350,12 @@
 
 
   watch (
-    () => promotionStore.promotionByCampusClassNumberResponse,
+    () => promotionStore.promotionsResponse,
     async (data) => {
       if(data){
-        notificationStore.successToast("Success", data.message)
+        // notificationStore.successToast("Success", data.message)
         promDialog.value = false;
-        promotiontList.value = data
+        promotiontList.value = data.data
       }
     },
     {deep:true}

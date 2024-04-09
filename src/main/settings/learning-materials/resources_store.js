@@ -18,9 +18,9 @@ export const useLearningMaterialStore = defineStore("learningMaterial", () => {
             .then((response) => {
                 addMaterialResponse.value = response.data
             })
-            .catch((response) => {
-                if (response) {
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -30,9 +30,9 @@ export const useLearningMaterialStore = defineStore("learningMaterial", () => {
             .then((response) => {
                 addMaterialResponse.value = response.data
             })
-            .catch((response) => {
-                if (response) {
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -43,9 +43,9 @@ export const useLearningMaterialStore = defineStore("learningMaterial", () => {
             .then((response) => {
                 curriculumSubtopicReferenceResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -54,19 +54,21 @@ export const useLearningMaterialStore = defineStore("learningMaterial", () => {
     async function fetchLearningMaterials(){
         return await api.get("/main/learning-materials",).then((response)=>{
             learningMaterialsResponse.value = response.data
-        }).catch((error)=>{
-
-            errorMessage.value = error.response.data
-        });
+        }).catch((error) => {
+            if(error && error.response){
+                errorMessage.value = error.response.data
+            }
+        })
     }
 
     async function fetchLearningMaterialSubTypes(category){
         return await api.get("/main/learning-materials/sub-types/"+category,).then((response)=>{
             materialsSubTypeResponse.value = response.data
-        }).catch((error)=>{
-
-            errorMessage.value = error.response.data
-        });
+        }).catch((error) => {
+            if(error && error.response){
+                errorMessage.value = error.response.data
+            }
+        })
     }
 
 

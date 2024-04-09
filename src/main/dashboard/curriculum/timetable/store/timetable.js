@@ -20,19 +20,21 @@ export const useTimetableStore = defineStore("timetable", () => {
             .then((response) => {
                 newPeriodResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
-    }  async function newTimetable(data) {
+    }
+
+    async function newTimetable(data) {
         return await api.post("main/timetable/create-study-timetable", data)
             .then((response) => {
                 newTimetableResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -54,9 +56,9 @@ export const useTimetableStore = defineStore("timetable", () => {
             .then((response) => {
                 editPeriodResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -66,9 +68,9 @@ export const useTimetableStore = defineStore("timetable", () => {
             .then((response) => {
                 PeriodListResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -78,9 +80,9 @@ export const useTimetableStore = defineStore("timetable", () => {
             .then((response) => {
                 DistinctDays.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -91,9 +93,9 @@ export const useTimetableStore = defineStore("timetable", () => {
             .then((response) => {
                 PeriodInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -101,8 +103,10 @@ export const useTimetableStore = defineStore("timetable", () => {
     async function fetchTimetables(){
         return await api.get("main/timetable/all-study-timetables").then((response)=>{
             studyTimetables.value = response.data
-        }).catch(error=>{
-            errorMessage.value = error.response.data
+        }).catch((error) => {
+            if(error && error.response){
+                errorMessage.value = error.response.data
+            }
         })
     }
 

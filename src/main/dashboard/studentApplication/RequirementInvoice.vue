@@ -194,7 +194,7 @@ watch (
       async (data) => {
         if(data){
           errorMessage.value = data.message
-          notificationStore.errorToast("Error",data.message)
+          // notificationStore.errorToast("Error",data.message)
           router.push({ name: 'invoice-details', params: { studentNumber }})
 
         }

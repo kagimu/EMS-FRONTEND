@@ -12,7 +12,7 @@
           </div>
           <div class="modal-body">
             <div class="mt-2 mb-2">
-           <AdmitModel></AdmitModel>
+             <PromoteStudent  :studentNumber="studentNumber"></PromoteStudent>
           </div>
           </div>
 
@@ -24,8 +24,8 @@
           
                  <div class="ant-alert-action mt-3">
                   <button type="submit" class="mb-2 btn btn-outline-primary btn-sm" style="float: right;"><i></i>Preview/Print Report</button>
-                  <button @click="showDialog()" data-bs-toggle="modal" data-bs-target="#admitMainModal" type="submit" class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " style="float: right;"><i></i>Offer Admission</button>
-                  <!-- <button @click="showAdmit()"  type="submit" class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " style="float: right;"><i></i>Admit Student</button> -->
+                  <button @click="showDialog()" data-bs-toggle="modal" data-bs-target="#admitMainModal" type="submit" class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " style="float: right;"><i></i>Promote</button>
+                  <!-- <button @click="showAdmit()"  type="submit" class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " style="float: right;"><i></i>Promote Student</button> -->
 
                 </div>
                 <div class="ant-card-body mt-0 mb-5">
@@ -67,10 +67,10 @@
     <script setup>
     import {onMounted,reactive, ref, watch,watchEffect,computed} from "vue"
     import useNotificationStore from "@/composables/useNotification.js"
-   
     import AdmitModel from "../../studentApplication/AdmitModel.vue";
     import { useAdmissionStore } from "./store/adminission";
     import {useRouter} from "vue-router"
+    import PromoteStudent from "@/main/settings/promotion/PromoteStudent.vue";
   const routerData = useRouter()
   const router = useRouter()
   let errorMessage = ref(null)

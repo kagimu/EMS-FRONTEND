@@ -322,8 +322,10 @@ watch(
 onMounted(
         async () => {
           await assessmentStore.fetchMetrics()
+          await assessmentStore.fetchAssessmentMetrics()
+          await assessmentStore.fetchAssesmentArea()
         } )
-
+        
     watch(
         () => assessmentStore.metricResponse,
         async (data) => {
@@ -337,12 +339,6 @@ onMounted(
 
 
 
-      onMounted(
-      async () => {
-        await assessmentStore.fetchAssessmentMetrics()
-      } )
-
-
       watch(
     () => assessmentStore.assesmentAreaResponse,
     async (data) => {
@@ -354,10 +350,7 @@ onMounted(
 )
   
 
-      onMounted(
-    async () => {
-      await assessmentStore.fetchAssessmentArea()
-    } )
+   
 
    //working on dialog
   const closeDialog = () => {

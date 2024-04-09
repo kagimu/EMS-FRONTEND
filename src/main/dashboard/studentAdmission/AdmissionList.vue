@@ -227,11 +227,6 @@
                 >view Details</button>
 
       </router-link>
-
-
-      <button v-if="adm.status == 'Enrolled'">
-      <i class="bi bi-pencil"></i> 
-      </button>
     
           </td>
         

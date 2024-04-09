@@ -18,7 +18,7 @@
     </div>
 
 
-    <div class="modal fade" id="infoModal" tabindex="-1" :class="{ show: gradeDialog }" aria-labelledby="" aria-hidden="true">
+    <!-- <div class="modal fade" id="infoModal" tabindex="-1" :class="{ show: gradeDialog }" aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
         
@@ -30,7 +30,7 @@
 
         </div>
       </div>
-    </div>
+    </div> -->
 
 <form onsubmit="">
     <!-- end  -->
@@ -51,17 +51,6 @@
                   <div class="row">
                     <div class="col-lg-2">Assessment Metric </div>
                     <div class="col-lg-4">
-                      <!-- <form >
-                    <div class="">
-              <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required 
-                      onchange="getStudentsOnMetrics()">
-                  <option>Select</option>
-                  <option v-for="(metricsList,index) in assessmentMetricsData" :key="index" :value="metricsList.AssessmentMetric.number">{{ metricsList.AssessmentMetric.number }}</option>
-              </select>
-          </div>
-                  </form> -->
                   {{ interviewM}}
 
                     </div>
@@ -74,8 +63,6 @@
 
                 </li>
               </ul>
-
-              <!-- <button style="float: right;" class="btn btn-primary"> Publish </button> -->
             </div>
           </div>
         </div>
@@ -158,7 +145,7 @@ const buttonLoader = ref(false)
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
 const routerData = useRouter()
-const gradeDialog = ref( false)
+
 
 let  interviewNumber = routerData.currentRoute.value.query.interview_id
 let assessmentricsNumber = routerData.currentRoute.value.query.assessment_metric_id
@@ -175,7 +162,6 @@ const scoreDataList = ref([])
 const setStudentOnInterviewID = (id,studa) =>{
   studentOnInterviewId.value = id
   studentData.value=studa
-  
 }
 const ScoreData = reactive ({
   score:null
@@ -193,11 +179,29 @@ onMounted(
     }
 )
 
+
+
 watch(
     () => applicationStore.StudentsOnInterviewResponse,
     async (data) => {
       if(data){
         // notificationStore.successToast("Success", data.message)
+        enterScoreDialog.value = false
+        interviewStudentList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+
+
+watch(
+    () => applicationStore.StudentsOnInterviewResponse,
+    async (data) => {
+      if(data){
+        // notificationStore.successToast("Success", data.message)
+        enterScoreDialog.value = false
         interviewStudentList.value = data.data
       }
     },
@@ -218,7 +222,7 @@ watch (
       () => applicationStore.interviewResultesponse,
       async (data) => {
         if(data){     
-          gradeDialog.value = false
+   
           applicationStore.fetchStudentsOnInterview(interviewNumber)
 
         }
@@ -268,7 +272,7 @@ watch (
     () => studentApplicationStore.assessmentByStudentResponse,
     async (data) => {
       if(data){
-       
+        enterScoreDialog.value = false
           scoreDataList.value = data.data
       
       

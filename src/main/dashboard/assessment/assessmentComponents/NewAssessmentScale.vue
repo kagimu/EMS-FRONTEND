@@ -2,7 +2,7 @@
     <div>
         <div class="modal-content">
       <div class="modal-header text-sm p-0">
-     {{ scaleD }}
+     <!-- {{ scaleD }} -->
         <h6 class="modal-title ml-3 mt-2 mb-2"><small>{{ title }}</small></h6>
         <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -12,13 +12,13 @@
                 <div class="col-8">
                 <div class="mb-2">
                 <label class="textColor"><small>Name</small></label>
-                <input v-model="form.name" placeholder="First Class, Second Class, Third Class, Pass" type="text" class="form-control">
+                <input v-model="form.name" placeholder="First Grade, Second Grade ..." type="text" class="form-control">
                 </div>
                 </div>
                 <div class="col-4">
                 <div class="mb-2">
                 <label class="textColor"><small>Abbreviation</small></label>
-                <input v-model="form.abbreviation" placeholder="F1,F2,Pass, Fail" type="text" class="form-control">
+                <input v-model="form.abbreviation" placeholder="Division 1 / Result 1" type="text" class="form-control">
                 </div>
                 </div>
             </div>
@@ -83,19 +83,15 @@
           
       <div class="mb-2">
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-6">
                 <label class="textColor"><small>Minimum Value</small></label>
                <input v-model="form.minimum_points" type="number" class="form-control">
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-6">
                 <label class="textColor"><small>Maximum Value</small></label>
              <input v-model="form.maximum_points" type="number" class="form-control">
             </div>
 
-            <div class="col-lg-4">
-                <label class="textColor"><small>Grade</small></label>
-             <input v-model="form.grade" type="text" class="form-control" placeholder="1,2,3,4">
-            </div>
         </div>
       </div>
 
@@ -154,7 +150,6 @@ name : null,
 maximum_points: null,
 minimum_points: null,
 campus_class_number: null,
-grade: null,
 description: null,
 abbreviation: null,
 remarks:null
