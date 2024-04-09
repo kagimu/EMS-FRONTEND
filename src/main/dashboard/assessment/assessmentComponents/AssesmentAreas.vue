@@ -51,8 +51,7 @@
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
                     v-model="curriculum_class_number"
-                    @click="fetchAssessmentAreaInfo(curriculum_class_number)"
-                >
+                    @click="fetchAssessmentAreaInfo(curriculum_class_number)">
                   <option disabled value="">--Filter by Class--</option>
                   <option v-for="(list, index) in classList[0]?.class" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
                 </select>
