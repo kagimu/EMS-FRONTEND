@@ -58,15 +58,22 @@ const fetchStudyPeriod = (academic_num) =>{
   studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
 }
 
-const fetchGradingStandard = () =>{
-  if(study_period_number.value && assessment_area_number) {
-    let data = {
-      study_period_number:study_period_number.value,
-      assessment_area_number:form.assessment_area_number
-    }
-    assessmentStore.fetchAssessmentMetrics(data)
+const fetchGradingStandard = (assessment_area_number) =>{
+  if(assessment_area_number) {
+    assessmentStore.fetchGradingStandardData(assessment_area_number)
   }
 }
+
+
+
+watch(
+    () => assessmentStore.gradingStandardResponse,
+    async (data) => {
+      if(data){
+        alert(JSON.stringify(data))
+      }
+    }
+)
 
 watch(
     () => studyPeriodStore.studyPeriodByAcademicYearResponse,
@@ -274,7 +281,7 @@ watch(
             required
             class="form-control"
             v-model="form.assessment_area_number"
-            @change="fetchGradingStandard"
+            @change="fetchGradingStandard(form.assessment_area_number)"
         >
           <option disabled value=""> - Select Interview - </option>
           <option v-for="(listdata, index) in interviewAssessmentListData" :key="index" :value="listdata.number">

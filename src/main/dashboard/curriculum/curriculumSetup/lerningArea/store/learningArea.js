@@ -16,9 +16,9 @@ export const useLearningAreaStore = defineStore("learningArea", () => {
             .then((response) => {
                 learningAreaResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -28,9 +28,9 @@ export const useLearningAreaStore = defineStore("learningArea", () => {
             .then((response) => {
                 learningAreaEditResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -42,9 +42,9 @@ export const useLearningAreaStore = defineStore("learningArea", () => {
             .then((response) => {
                 learningAreaInfResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -55,9 +55,9 @@ export const useLearningAreaStore = defineStore("learningArea", () => {
             .then((response) => {
                 deleteLearningAreaResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -69,9 +69,9 @@ export const useLearningAreaStore = defineStore("learningArea", () => {
             .then((response) => {
                 learningAreaDataInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }

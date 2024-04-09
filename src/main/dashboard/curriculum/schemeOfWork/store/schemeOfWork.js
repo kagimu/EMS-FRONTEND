@@ -20,9 +20,9 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
             .then((response) => {
                 newSchemeOfWorkResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -32,9 +32,9 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
             .then((response) => {
                 updateSchemeOfWorkResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -44,9 +44,9 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
             .then((response) => {
                 newLessonPlanResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -57,9 +57,9 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
             .then((response) => {
                 addReferenceResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -70,9 +70,9 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
             .then((response) => {
                 references.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -85,9 +85,9 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
             .then((response) => {
                 schemeOfWorkByClassResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -115,9 +115,9 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
                         exportPdfResponse.value = response
                     }
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -129,9 +129,9 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
             .then((response) => {
                 conceptsBySubtopicResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -141,9 +141,9 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
             .then((response) => {
                 lessonPlanResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }

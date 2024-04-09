@@ -18,9 +18,9 @@ export const useStrandStore = defineStore("strand", () => {
             .then((response) => {
                 strandResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -30,9 +30,9 @@ export const useStrandStore = defineStore("strand", () => {
             .then((response) => {
                 strandEditResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -47,9 +47,9 @@ export const useStrandStore = defineStore("strand", () => {
             .then((response) => {
                 strandInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -59,9 +59,9 @@ export const useStrandStore = defineStore("strand", () => {
             .then((response) => {
                 strandListResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -72,9 +72,9 @@ export const useStrandStore = defineStore("strand", () => {
             .then((response) => {
                 deleteStrandResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -84,9 +84,9 @@ export const useStrandStore = defineStore("strand", () => {
             .then((response) => {
                 strandDataInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }

@@ -6,6 +6,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const newAssessmentResponse = ref(null)
     const errorMessage = ref(null)
     const assessmentResponse = ref(null)
+    const gradingStandardResponse = ref(null)
     const newExamTypeResponse=ref(null)
     const examTypeResponse = ref(null)
     const assessmentByStudentIdResponse = ref(null)
@@ -73,6 +74,19 @@ export const useAssessmentStore = defineStore("assessment", () => {
                 }
             })
     }
+
+    async function fetchGradingStandardData(assessment_area_number) {
+        return await api.get("main/grading-standard?assessment_area_number="+assessment_area_number)
+            .then((response) => {
+                gradingStandardResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     async function fetchAssessmentsByStudentId(studentid,data) {
         return await api.get("main/assessments?student_number="+studentid,data)
             .then((response) => {
@@ -229,9 +243,9 @@ async function createMetric(data) {
             .then((response) => {
                 assessmentScaleResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -255,6 +269,7 @@ async function createMetric(data) {
         createAssesmentAreas,
         newAssesmentAreasResponse,
         assesmentAreaResponse,
+        gradingStandardResponse,
         fetchAssessmentArea,
         newAssessmentResponse,
         createNewAssessment,
@@ -286,6 +301,7 @@ async function createMetric(data) {
         fetchAssessmentScale,
         assessmentScaleResponse,
         updateAssessmentScale,
-        updateAssessmentScaleResponse
+        updateAssessmentScaleResponse,
+        fetchGradingStandardData
     }
 })

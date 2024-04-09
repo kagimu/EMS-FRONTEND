@@ -16,9 +16,9 @@ export const useSchoolStore = defineStore("school", () => {
             .then((response) => {
                 newSchoolResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -28,9 +28,9 @@ export const useSchoolStore = defineStore("school", () => {
             .then((response) => {
                 deleteSchoolResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -40,9 +40,9 @@ export const useSchoolStore = defineStore("school", () => {
             .then((response) => {
                 editSchoolResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -52,9 +52,9 @@ export const useSchoolStore = defineStore("school", () => {
             .then((response) => {
                 schoolsResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -67,9 +67,9 @@ export const useSchoolStore = defineStore("school", () => {
             .then((response) => {
                 schoolInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
