@@ -23,11 +23,11 @@
             User Details
           </div>
           <div class="card-body">
-            <ul class="list-group">
+            <!-- <ul class="list-group">
               <li class="list-group-item">Username: {{ user.username }}</li>
               <li class="list-group-item">Location: {{ user.location }}</li>
               <li class="list-group-item">Joined: {{ user.joined }}</li>
-            </ul>
+            </ul> -->
           </div>
         </div>
       </div>
@@ -53,13 +53,13 @@ role.value = p.role
 username.value = p.email
 
 const  user = reactive( {
-          name: 'Collins Mpiima',
-          username: 'collins',
-          email: 'collinsmpiima@gmail.com',
+          name: '',
+          username: '',
+          email: '',
           avatar: 'https://via.placeholder.com/150',
-          location: 'Kampala Uganda',
+          location: '',
           Role: 'Admin',
-          joined: 'January 1, 2022'
+          joined: ''
         } )
 
 

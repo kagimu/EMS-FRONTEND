@@ -4,7 +4,7 @@
         <div class="col-12">
             <div class="card-body" style="padding: 0;">
               <div class="mt-5">
-                <form @submit.prevent="createFeedingSessionItem">
+                <form @submit.prevent="createStock">
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="mb-2">
@@ -42,7 +42,7 @@
                 <table class="table bordered">
                   <thead>
                     <tr class="" style="padding: 0px;margin: 0px;">
-                      <th>Service</th>
+                      <th>Item</th>
                       <th>Quantity</th>
                       <th>Unit Price</th>
                       <th>Amount</th>
@@ -50,20 +50,20 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="(Service, index) in Services" :key="index" >
+                    <tr v-for="(itemData, index) in Items" :key="index" >
                       <td>
-                        <select class="form-select form-select-sm form-control select-no-border" v-model="Service.name" @change="updateService(index)">
+                        <select class="form-select form-select-sm form-control select-no-border" v-model="itemData.name" @change="updateItem(index)">
                           <option :value="option.name" v-for="option in availableOptions(index)">{{ option.name }}</option>
                         </select>
                       </td>
-                      <td><input type="text" v-model="Service.quantity" @input="updateAmount(index)" placeholder="1.0" class="inp"></td>
-                      <td><input type="text" v-model="Service.cost" @input="updateAmount(index)" placeholder="Unit Price" class="inp"></td>
-                      <td>{{ Service.amount }}</td>
-                      <td><button type="button" @click="removeService(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
+                      <td><input type="text" v-model="itemData.quantity" @input="updateAmount(index)" placeholder="1.0" class="inp"></td>
+                      <td><input type="text" v-model="itemData.cost" @input="updateAmount(index)" placeholder="Unit Price" class="inp"></td>
+                      <td>{{ itemData.amount }}</td>
+                      <td><button type="button" @click="removeItem(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
                     </tr>
                   </tbody>
                 </table>
-                <button class="btn btn-primary btn-sm textColor" @click.prevent="addService" :disabled="isAddButtonDisabled"><small>ADD ANOTHER SERVICE</small></button>
+                <button class="btn btn-primary btn-sm textColor" @click.prevent="addItem" :disabled="isAddButtonDisabled"><small>ADD ANOTHER ITEM</small></button>
                 <div class="row mt-10">
                   <div class="col-lg-8"></div>
                   <div class="col-lg-4">
@@ -141,8 +141,8 @@ const goBack = () => {
 }
 
 // Creating invoice Logic =========================================================
-const Services = ref([]);
-const ServiceOptions = ref([])
+const Items = ref([]);
+const itemOption = ref([])
 
 
 onMounted(
@@ -162,40 +162,40 @@ onMounted(
     )
 
 
-function updateService(index) {
-  const Service = Services.value[index];
-  const selectedOption = ServiceOptions.value.find(option => option.name === Service.name);
+function updateItem(index) {
+  const item = Items.value[index];
+  const selectedOption = itemOption.value.find(option => option.name === item.name);
   if (selectedOption) {
-    Service.cost = selectedOption.cost;
+    item.cost = selectedOption.cost;
     updateAmount(index);
   }
 }
 
 function updateAmount(index) {
-  const Service = Services.value[index];
-  Service.amount = Service.quantity * Service.cost;
+  const item = Items.value[index];
+  item.amount = item.quantity * item.cost;
 }
 
-function addService() {
-  Services.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
+function addItem() {
+  Items.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
 }
 
-function removeService(index) {
-  Services.value.splice(index, 1);
+function removeItem(index) {
+  Items.value.splice(index, 1);
 }
 
 function calculateTotal() {
-  return Services.value.reduce((total, Service) => total + Service.amount, 0);
+  return Items.value.reduce((total, item) => total + item.amount, 0);
 }
 
 function availableOptions(index) {
-  const selectedNames = Services.value.map(Service => Service.name);
-  return ServiceOptions.value.filter(option => !selectedNames.includes(option.name) || option.name === Services.value[index].name);
+  const selectedNames = Items.value.map(item => item.name);
+  return itemOption.value.filter(option => !selectedNames.includes(option.name) || option.name === Items.value[index].name);
 }
 
 const isAddButtonDisabled = ref(false);
-watch(Services, (newServices) => {
-  isAddButtonDisabled.value = newServices.length === ServiceOptions.value.length;
+watch(Items, (newItems) => {
+  isAddButtonDisabled.value = newItems.length === itemOption.value.length;
 }, { deep: true });
 
 // =
@@ -208,28 +208,27 @@ watch(
   () => serviceStore.servicesListResponse,
   async (data) => {
     if (data) {
-      ServiceOptions.value = data.map(option => ({ name: option.Item.name, cost: option.Item.cost }));
+      itemOption.value = data.map(option => ({ name: option.Item.name, cost: option.Item.cost }));
     }
   },
   { deep: true }
 )
 
 // Connect invoice store ==========================================
-const createInvoice = () => {
-  const selectedData = Services.value.map(service => ({
-      name: service.name,
-      quantity: service.quantity,
-      unitPrice: service.unitPrice,
-      amount: service.amount
+const createStock = () => {
+  const item_price_and_quantity = Items.value.map(itemData => ({
+      name: itemData.name,
+      quantity: itemData.quantity,
+      unitPrice: itemData.unitPrice,
+      amount: itemData.amount
     }))
 
   const data = {
-    student_number: 'studentNumber',
-    selectedData
+    campus_number:form.campus_number,
+    item_price_and_quantity
   }
   alert(JSON.stringify(data))
-  //create Invoice ======================
-  invoiceStore.createNewInvoice(data)
+
 }
 
 
