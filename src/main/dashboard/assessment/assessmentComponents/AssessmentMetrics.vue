@@ -83,6 +83,8 @@
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
                         v-model="form.campus_class_number"
+                        @change="fetchAssessmentAreaList(form.campus_class_number)"
+
                 >
                     <option disabled value="">Select Class</option>
                      <option v-for="(clist, index) in classLevelList" :key="index" :value="clist.number">{{clist.name}}</option>
@@ -193,14 +195,6 @@
             <div class="mb-2">
                 <label class="textColor"><small>Scheduled On</small></label>
                 <input type="date" class="form-control" v-model="form.scheduled_on">
-                <!-- <VueDatePicker
-              text-input
-              auto-apply
-              :teleport="true"
-              style="font-size: 7px;"
-              v-model="form.scheduled_on"
-              :preview-format="format"
-              ></VueDatePicker> -->
             </div>
 
 
@@ -293,24 +287,29 @@ const format = (date) => {
 }
 
   
-const fetchCurriculumClass = (campus_lnumber) =>{
-classStore.fetchClassByLevel(curriculumNumber,campus_lnumber)
-academicYearStore.fetchAcademicYearByLevel(campus_lnumber)
+    const fetchCurriculumClass = (campus_lnumber) =>{
+    classStore.fetchClassByLevel(curriculumNumber,campus_lnumber)
+    academicYearStore.fetchAcademicYearByLevel(campus_lnumber)
 
-}
+    }
+
+
+  const  fetchAssessmentAreaList = (campus_class_number) => {
+    if(campus_class_number) {
+      let campus_class_no = classLevelList.value.find(item => item.campus_class_number === campus_class_number).campus_class_number
+      assessmentStore.fetchAssessmentArea(campus_class_no)
+    }
+    }
 
 watch(
     () => classStore.classLevelByLevelResponse,
     async (data) => {
         if (data) {
-            //notificationStore.successToast("Success", data.message)
-            // alert(JSON.stringify(data.data))
             if(data && data.data){
-        let classData = data.data
-        if(classData && (classData.length > 0)){
-          classLevelList.value = classData[0].classes
-        }
-        
+                let classData = data.data
+                if(classData && (classData.length > 0)){
+                  classLevelList.value = classData[0].classes
+                }
       }
             // classLevelList.value = data
         }
@@ -323,7 +322,6 @@ onMounted(
         async () => {
           await assessmentStore.fetchMetrics()
           await assessmentStore.fetchAssessmentMetrics()
-          await assessmentStore.fetchAssesmentArea()
         } )
         
     watch(
