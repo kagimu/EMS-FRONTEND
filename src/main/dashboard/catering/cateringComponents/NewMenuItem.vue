@@ -100,7 +100,7 @@ watch(
 
   const menuForm = reactive({
     name:null,
-    code:3,
+    code:null,
     type:null,
     unit_of_measure_number:null,
     campus_number:null
@@ -116,6 +116,11 @@ watch(
     async (data) => {
         notificationStore.successToast("Success", data.message)
         cateringStore.fetchMenuItem()
+        menuForm.name=null,
+        menuForm.code=null,
+        menuForm.type=null,
+        menuForm.unit_of_measure_number=null,
+        menuForm.campus_number=null
     },
     {deep: true}
   )
