@@ -8,7 +8,7 @@ import {useAuthStore} from "@/main/auth/store/auth.js";
 import ManageCampus from "@/main/dashboard/manageCampus/ManageCampus.vue";
 import userProfiles from "@/main/dashboard/profiles/userProfiles.vue";
 import settings from "@/main/settings/Settings.vue";
-import ReportCenter from "@/main/dashboard/ReportCenter/ReportCenter.vue";
+import ReportCenter from "@/main/dashboard/ReportCenter/ReportCenter_.vue";
 import StudentAdmission from "@/main/dashboard/studentAdmission/StudentAdmission.vue";
 import ManageSchool from "@/main/dashboard/manageSchool/ManageSchool.vue";
 import Curriculum from "@/main/dashboard/curriculum/curriculumSetup/Curriculum.vue";
