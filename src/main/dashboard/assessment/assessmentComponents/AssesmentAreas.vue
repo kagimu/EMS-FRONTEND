@@ -6,15 +6,19 @@
                 <div class="card-header">
            <div class="row">
             <div class="col-lg-6 "> 
-                  <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">  
+<!--                  <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">  -->
             </div>
             <div class="col-lg-6">
               <button
-              v-if="can('add_assessment_area','general')"
-               style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
-      data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="showAreaDialog">
-     <b><i class="bi bi-plus"></i></b> <small>
-      Add Assessment Area</small></button>
+                  v-if="can('add_assessment_area','general')"
+                  style="float: right" type="button"
+                  class="btn btn-primary btn-sm float-end mb-2 mr-4"
+                  data-bs-toggle="offcanvas"
+                  aria-controls="rolesDialogg"
+                  @click="showAreaDialog">
+                <b><i class="bi bi-plus"></i></b>
+                <small>Add Assessment Area</small>
+              </button>
             </div>
     
            </div>
@@ -24,10 +28,39 @@
 
 
 
+          <div class="row mx-auto mt-5">
 
+            <div class="col-3">
+              <div class="mb-2">
+                <select
+                    style="box-shadow: none;"
+                    class="form-select form-select-sm"
+                    v-model="level"
+                    @click="filterClasses()"
+                >
+                  <option disabled value="">--Filter by Level--</option>
+                  <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.level_number">{{lvl.code+". "+lvl.name}}</option>
+                </select>
+              </div>
 
+            </div>
 
-  
+            <div class="col-3">
+              <div class="mb-2">
+                <select
+                    style="box-shadow: none;"
+                    class="form-select form-select-sm"
+                    v-model="curriculum_class_number"
+                    @click="fetchAssessmentAreaInfo(curriculum_class_number)">
+                  <option disabled value="">--Filter by Class--</option>
+                  <option v-for="(list, index) in classList[0]?.class" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+                </select>
+              </div>
+
+            </div>
+
+          </div>
+
     <table
       id="datatable"
       class="table table-striped"
@@ -83,6 +116,8 @@
   const routerData = useRouter()
   import { useAbility } from '@casl/vue';
   import NewAssessmentArea from "./NewAssessmentArea.vue";
+  import {useLevelStore} from "@/main/settings/level/store/level.js";
+  import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 
 const { can } = useAbility()
 const areaDialog = ref(false)
@@ -91,14 +126,48 @@ const areaDialog = ref(false)
   let errorMessage = ref(null)
   const assessmentStore= useAssessmentStore()
   const  notificationStore  = useNotificationStore()
+  const levelStore = useLevelStore()
+  const classStore = useClassesStore()
+  let  curriculumNumber = routerData.currentRoute.value.query.id
+  const level = ref( "")
+  const curriculum_class_number = ref( "")
+
+  const levelList = ref( [])
+  const classList = ref( [])
 
 
     onMounted(
     async () => {
-      await assessmentStore.fetchAssessmentArea()
+      await levelStore.fetchCurriculumLevels(curriculumNumber)
+
     } )
 
-    
+  const fetchAssessmentAreaInfo = (curriculum_class_number) => {
+  if(curriculum_class_number){
+     assessmentStore.fetchAssessmentArea(curriculum_class_number)
+    }
+  }
+
+
+
+  const filterClasses = () => {
+    let data = {
+      level:level.value,
+      curriculum_number:curriculumNumber,
+    }
+    classStore.fetchCurriculumClasses(data)
+  }
+
+
+  watch(
+      () => classStore.curriculumClassInfoResponse,
+      async (data) => {
+        if(data){
+          classList.value = data.data
+        }
+      },
+      {deep:true}
+  )
 
 watch (
     () => assessmentStore.errorMessage,
@@ -128,6 +197,17 @@ const showAreaDialog = () =>{
 const closeAreaDialog = () =>{
   areaDialog.value = false
 }
+
+  watch(
+      () => levelStore.curriculumLevelInfoResponse,
+      async (data) => {
+        if(data){
+          levelList.value = data.data
+        }
+      },
+      {deep:true}
+  )
+
   </script>
 
 

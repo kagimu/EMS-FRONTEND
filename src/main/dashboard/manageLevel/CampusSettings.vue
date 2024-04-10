@@ -7,10 +7,10 @@
           <button class="nav-link navColor" id="classes-tab" data-bs-toggle="tab" data-bs-target="#classes" type="button" role="tab" aria-controls="classes" aria-selected="false"><small>Class</small></button>
           <button class="nav-link navColor" id="academic-year-tab" data-bs-toggle="tab" data-bs-target="#academic-year" type="button" role="tab" aria-controls="academic-year" aria-selected="false"><small>Academic Year</small></button>
           <button class="nav-link navColor" id="study-period-tab" data-bs-toggle="tab" data-bs-target="#study-period" type="button" role="tab" aria-controls="study-period" aria-selected="false"><small>Study Period</small></button>
-          <button class="nav-link navColor" id="grading-scale-tab" data-bs-toggle="tab" data-bs-target="#grading-scale" type="button" role="tab" aria-controls="grading-scale" aria-selected="true"><small>Grading Scale</small></button>
+<!--          <button class="nav-link navColor" id="grading-scale-tab" data-bs-toggle="tab" data-bs-target="#grading-scale" type="button" role="tab" aria-controls="grading-scale" aria-selected="true"><small>Grading Scale</small></button>-->
           <button class="nav-link navColor" id="assessment-metrics-tab" data-bs-toggle="tab" data-bs-target="#assessment-metrics" type="button" role="tab" aria-controls="assessment-metrics" aria-selected="false"><small>Assessment Metrics</small></button>
-          <button class="nav-link navColor" id="mode-of-assessment-tab" data-bs-toggle="tab" data-bs-target="#mode-of-assessment" type="button" role="tab" aria-controls="mode-of-assessment" aria-selected="false"><small>Mode of Assessment</small></button>
-          <button class="nav-link navColor" id="grading-term-tab" data-bs-toggle="tab" data-bs-target="#grading-term" type="button" role="tab" aria-controls="grading-term" aria-selected="false"><small>Grading Term</small></button>
+<!--          <button class="nav-link navColor" id="mode-of-assessment-tab" data-bs-toggle="tab" data-bs-target="#mode-of-assessment" type="button" role="tab" aria-controls="mode-of-assessment" aria-selected="false"><small>Mode of Assessment</small></button>-->
+<!--          <button class="nav-link navColor" id="grading-term-tab" data-bs-toggle="tab" data-bs-target="#grading-term" type="button" role="tab" aria-controls="grading-term" aria-selected="false"><small>Grading Term</small></button>-->
         </div>
       </nav>
       <div class="tab-content" id="nav-tabContent">
@@ -26,12 +26,12 @@
         <div class="tab-pane fade" id="study-period" role="tabpanel" aria-labelledby="study-period-tab" tabindex="0">
          <study-period></study-period>
         </div>
-        <div class="tab-pane fade" id="grading-scale" role="tabpanel" aria-labelledby="grading-scale-tab" tabindex="0">Grading Scale</div>
+<!--        <div class="tab-pane fade" id="grading-scale" role="tabpanel" aria-labelledby="grading-scale-tab" tabindex="0">Grading Scale</div>-->
         <div class="tab-pane fade" id="assessment-metrics" role="tabpanel" aria-labelledby="assessment-metrics-tab" tabindex="0">
           <assessment-metrics></assessment-metrics>
         </div>
-        <div class="tab-pane fade" id="mode-of-assessment" role="tabpanel" aria-labelledby="mode-of-assessment-tab" tabindex="0">Mode of Assessment</div>
-        <div class="tab-pane fade" id="grading-term" role="tabpanel" aria-labelledby="grading-term-tab" tabindex="0">Grading Term</div>
+<!--        <div class="tab-pane fade" id="mode-of-assessment" role="tabpanel" aria-labelledby="mode-of-assessment-tab" tabindex="0">Mode of Assessment</div>-->
+<!--        <div class="tab-pane fade" id="grading-term" role="tabpanel" aria-labelledby="grading-term-tab" tabindex="0">Grading Term</div>-->
       </div>
 
     </div>
