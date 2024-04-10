@@ -36,7 +36,7 @@ watch(
   </div>
 
   <div class="mb-4 border-r border-l border-t border-b border-[#1062da]">
-    <primary-report></primary-report>
+    <primary-report :reportDetails="reportDetails"></primary-report>
   </div>
 
 </div>

@@ -1,3 +1,19 @@
+<script setup>
+
+import Badge from "@/assets/images/badge.png";
+import StudentImage from "@/assets/images/pic.jpg";
+
+const printReport = () => {
+  alert("Print pdf now man")
+}
+
+const props = defineProps({
+  reportDetails:{}
+})
+
+
+</script>
+
 <template>
   <div>
     <div class="mx-auto mt-10" style="width: 98%">
@@ -14,27 +30,38 @@
         <tr>
           <td>
 
+
+
             <table style="width: 100%;">
               <tr>
                 <td style="width: 20%; text-align: center;">
-                  <img alt="logo" style="width: 150px; margin: 0 auto" src="../../../../public/img/badge.png"/>
+                  <img alt="logo" style="width: 150px; margin: 0 auto" :src="Badge"/>
                 </td>
                 <td style="width: 60%;" class="text-center">
-                  <div style="font-size: 30px;"><b>NOREGRETS LIFE SCHOOL</b></div>
+                  <!--        <div style="font-size: 30px;"><b>NOREGRETS LIFE SCHOOL</b></div>-->
+                  <div style="font-size: 30px;" class="uppercase"><b>{{reportDetails?.school?.name}}</b></div>
 
-                  <div style="font-size: 20px; margin-top: 5px;">BUNAMWAYA CAMPUS</div>
+                  <!--        <div style="font-size: 20px; margin-top: 5px;">BUNAMWAYA CAMPUS</div>-->
+                  <div style="font-size: 20px; margin-top: 5px;" class="uppercase">{{reportDetails?.campus?.name}}</div>
 
-                  <div style="margin-top: 6px; margin-bottom: 10px;"><small>Bunamwaya, P.O.BOX 21671 Kampala | +256752698545 | mwesigwa.noregrets@gmail.com</small></div>
+                  <div style="margin-top: 6px; margin-bottom: 10px;">
+                    <small>
+                      {{reportDetails?.campus?.location}} |
+                      {{reportDetails?.campus?.phone}} |
+                      {{reportDetails?.campus?.email}}
+                      <!--            Bunamwaya, P.O.BOX 21671 Kampala | +256752698545 | mwesigwa.noregrets@gmail.com-->
+                    </small></div>
 
                   <div style="background-color: green; color: #ffffff;">PROGRESS REPORT FOR KINDERGARTEN</div>
                 </td>
                 <td style="width: 20%;">
                   <div style="text-align: center; margin-top: 10px;">
-                    <img alt="logo" style="width: 130px; margin: 0 auto;" src="../../../../public/img/pic.jpg"/>
+                    <img alt="logo" style="width: 130px; margin: 0 auto;" :src="StudentImage"/>
                   </div>
                 </td>
               </tr>
             </table>
+
 
           </td>
         </tr>
@@ -45,28 +72,32 @@
             <table style="width: 100%; font-size: 13px; margin-top: 30px; margin-bottom: 30px;">
               <tr>
                 <td style="width: 15%;">
-                  <div style="padding-left: 5px; padding-bottom: 10px;">Name:</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">Class:</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;"> Days Present:</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">Term:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">Name:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">Class:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;"> Days Present:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">Sex:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">Age:</div>
                 </td>
                 <td style="width: 40%;">
-                  <div style="padding-left: 5px; padding-bottom: 10px;"> NZANZU Titus Garnette</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">Primary 2</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">310</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">Term 1</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;"><span class="capitalize">{{reportDetails?.student?.surname}}</span> <span class="capitalize">{{reportDetails?.student?.second_name}}</span> <span class="capitalize">{{reportDetails?.student?.other_name}}</span></div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;"><span>{{reportDetails?.class_abbreviation}}</span></div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;"><span class="capitalize">{{reportDetails?.student?.gender}}</span></div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">6yrs , 8mth</div>
                 </td>
                 <td style="width: 15%;">
-                  <div style="padding-left: 5px; padding-bottom: 10px;">  Age:</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">School Team:</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">Days Absent:</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">Date:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">Term:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">School Team:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">Days Absent:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">Date:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
                 </td>
                 <td style="width: 30%;">
-                  <div style="padding-left: 5px; padding-bottom: 10px;"> 6yrs , 8mth</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">&nbsp;</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">2</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">30th/Nov/-0001</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">{{reportDetails?.study_period}}</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
                 </td>
               </tr>
             </table>
@@ -386,13 +417,7 @@
   </div>
 </template>
 
-<script setup>
 
-const printReport = () => {
-  alert("Print pdf now man")
-}
-
-</script>
 
 <style scoped>
 

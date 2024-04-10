@@ -93,7 +93,7 @@ watch(
     </div>
 
 
-    <AppModal title="Abandon Reservation" v-model="showStudentsMarks" xl6>
+    <AppModal title="Preview Report" v-model="showStudentsMarks" xl6>
       <manage-report-details></manage-report-details>
     </AppModal>
 
