@@ -112,7 +112,7 @@ watch(
       This Dialog works for now
     </AppModal>
 
-    
+
 
   </div>
 </template>
