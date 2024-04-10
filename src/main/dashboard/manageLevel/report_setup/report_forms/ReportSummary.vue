@@ -4,10 +4,12 @@ import NewReportSummary from "@/main/dashboard/manageLevel/report_setup/report_f
 import {onMounted, ref, watch} from "vue";
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
 import {useReportCardStore} from "@/main/dashboard/report-card/store/report-card.js";
+import AppModal from "@/components/AppModal.vue";
 
 const reportSetupStore = useReportSetupStore()
 const reportStore = useReportCardStore()
 const reportSummaryList = ref(null)
+const showStudentsMarks = ref(true)
 
 onMounted(
     async () => {
@@ -106,6 +108,11 @@ watch(
     </div>
 
 
+    <AppModal title="Abandon Reservation" v-model="showStudentsMarks" xl6>
+      This Dialog works for now
+    </AppModal>
+
+    
 
   </div>
 </template>
