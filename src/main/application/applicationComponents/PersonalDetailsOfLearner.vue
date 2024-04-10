@@ -94,9 +94,10 @@
               <label class="textColor text-sm"><small>gender</small> <span class="star">*</span></label>
             <select class="form-control form-control-sm"
              v-model="form.gender" style="outline: none 0 !important; box-shadow: none;">
-              <option>-select-</option>
-              <option>Male</option>
-              <option>Female</option>
+              <option v-if="!form.gender" disabled>-select-</option>
+              <option v-if="form.gender">{{ form.gender }}</option>
+              <option  v-if="form.gender != 'Male'">Male</option>
+              <option  v-if="form.gender !='Female'">Female</option>
             </select>
             </div>
 
@@ -137,11 +138,11 @@
   import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
   import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
   import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+  import api from "@/config/api.js";
   import {useRouter} from "vue-router";
 
 const routerData = useRouter()
 let  applicationNumber = routerData.currentRoute.value.query.applicationId
-
 
 const buttonLoader = ref(false)
 let errorMessage = ref(null)
@@ -213,6 +214,21 @@ watch (
     },
     {deep:true}
 )
+
+
+watch (
+    () => applicationStore.updateLearnerPersonalDetailsresponse,
+    async (data) => {
+      if(data){
+        localStorage.setItem("applicationId", data.application_number)
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+        emit("next", 3 )
+      }
+    },
+    {deep:true}
+)
+
 
 watch (
     () => applicationStore.errorMessage,
@@ -288,11 +304,39 @@ watch (
         form.reason_for_choosing_school=data.Student.reason_for_choosing_school
         form.source_of_school_info = data.Student.source_of_school_info
         form.learner_number = data.Student.number
+        setSchoolAndCampus(data)
       }
     },
     {deep:true}
 )
 
+async function setSchoolAndCampus(data) {
+         await api.get("main/school/all")
+            .then((response) => {
+                schoolList.value = response.data.data
+                  api.get("main/campus/all")
+            .then((responseData) => {
+                campusList.value = responseData.data.data
+                form.preferred_campus_number = data.Student.preferred_campus_number
+                school_number.value=data.Student.PreferredCampus.school_number
+                campusStore.fetchClassesByCampus(data.Student.preferred_campus_number)
+                form.campus_class_number = data.Student.campus_class_number
+            }).catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    
+           
+    }
+ 
   </script>
   
   <style scoped>

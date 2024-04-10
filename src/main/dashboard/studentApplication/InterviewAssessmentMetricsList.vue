@@ -99,22 +99,6 @@ watch(
 )
 
 
-    // examType
-    onMounted(
-    async () => {
-      await assessmentStore.fetchExamType()
-    } )
-
-    watch(
-    () => assessmentStore.examTypeResponse,
-    async (data) => {
-      if(data){
-        examTypeListData.value = data.data
-      }
-    },
-    {deep:true}
-)
-
 </script>
 
 <template>

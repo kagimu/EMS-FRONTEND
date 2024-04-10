@@ -8,7 +8,7 @@
   <div class="row mx-auto">
     <div class="col-12">
         <div class="mb-8">
-          <input type="text"  v-model="formData.parent_number">
+          <input type="hidden"  v-model="formData.parent_number">
           <label class="textColor text-sm"><small>Surname/Family name</small> <span class="star">*</span></label>
           <input type="text" style="outline: none 0 !important; box-shadow: none; font-size: 10px;;" v-model="form.surname" required class="form-control form-control-sm">
         </div>
@@ -124,7 +124,6 @@ watch (
         localStorage.setItem("applicationId", data.application_number)
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-
         emit("next", 2 )
       }
     },
@@ -189,7 +188,7 @@ const addParentPersonalDetails = () => {
     applicationStore.newApplicationDetails(form)
   }else {
     applicationStore.updateParentDetails(formData.parent_number,form)
- nextGo()
+//  nextGo()
   }
 
 }

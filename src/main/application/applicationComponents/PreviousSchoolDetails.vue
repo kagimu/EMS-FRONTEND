@@ -8,6 +8,7 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="form-group">
+                <!-- {{ applicationNumber }} -->
            <label class="textColor text-sm" ><small>School Name
            <button @click="removeSchool(schoolIndex)" type="button"><i style="color:red;width: 12px;height: 12px;" class="bi bi-x-circle"></i></button></small> </label>
             <input type="text" class="form-control" v-model="school.name"> 
@@ -79,10 +80,14 @@
  
  <script setup>
     
-import {reactive, ref, watch} from "vue";
+import {reactive, ref, watch,onMounted} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import router from "@/config/router.js";
+import {useRouter} from "vue-router";
+
+const routerData = useRouter()
+let  applicationNumber = routerData.currentRoute.value.query.applicationId
 
 const buttonLoader = ref(false)
 let errorMessage = ref(null)
@@ -112,8 +117,6 @@ const addSchoolDetails = () => {
   applicationStore.newApplicationPrevSchoolDetails(application_id,formData.schools)
 }
 
-
-
 const addSchool = () => {
     const lastSchool = formData.schools[formData.schools.length - 1];
     if (lastSchool.name !== '' && lastSchool.classes.some(className => className !== '')) {
@@ -135,10 +138,7 @@ const addClass = (schoolIndex) => {
 const removeClass = (schoolIndex, classIndex) => {
     formData.schools[schoolIndex].classes.splice(classIndex, 1);
 }
-const submitForm = () => {
-    // Handle form submission logic here
-    // console.log('Form submitted:', this.formData);
-}
+
 const canAddSchool = () => {
     const lastSchool = formData.schools[formData.schools.length - 1];
     return lastSchool.name !== '' && lastSchool.classes.some(className => className !== '');
@@ -169,6 +169,30 @@ watch (
         errorMessage.value = data.message
         buttonLoader.value = false
         notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+onMounted(
+    () => {
+      if(applicationNumber !=""){
+      applicationStore.fetchApplicationById(applicationNumber)
+      }
+    }
+)
+
+watch (
+    () => applicationStore.applicationByIdResponse,
+    async (data) => {
+      if(data){
+      data.PreviousSchools.forEach(school => {
+        formData.schools = []
+        formData.schools.push({
+          name: school.name,
+            classes: school.Classes
+        })
+      });
       }
     },
     {deep:true}

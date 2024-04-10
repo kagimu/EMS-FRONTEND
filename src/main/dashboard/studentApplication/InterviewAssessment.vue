@@ -84,7 +84,7 @@ watch(
 <template>
   <div>
 
-{{ interviewNumber }}
+<!-- {{ interviewNumber }} -->
     <div class="mb-2">
       <label class="textColor"><small>Assessment</small></label>
       <select class="form-control form-select form-control-sm shadow-none" v-model="assessment_metric_number" aria-label="Default select example">

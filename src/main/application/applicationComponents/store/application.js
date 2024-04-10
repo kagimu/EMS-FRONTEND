@@ -25,7 +25,7 @@ export const useApplicationStore = defineStore("application", () => {
     let previousSchoolResultresponse = ref(null)
     let updateParentPersonalDetailsresponse = ref(null)
     let updateLearnerPersonalDetailsresponse = ref(null)
-    
+    let updatePreviousSchoolresponse = ref(null)
     async function newApplicationDetails(data) {
         return await api.post("main/applications/new-parent", data)
             .then((response) => {
@@ -67,8 +67,8 @@ export const useApplicationStore = defineStore("application", () => {
     }
 
     // {{baseUrl}}/applications/students/{{STUDENT_APN}}
-    async function updateLearnerDetails(student_apn,data) {
-        return await api.put("main/applications/students/"+student_apn, data)
+    async function updateLearnerDetails(student_id,data) {
+        return await api.put("main/applications/students/"+student_id, data)
             .then((response) => {
                 updateLearnerPersonalDetailsresponse.value = response.data.data
 
@@ -82,10 +82,24 @@ export const useApplicationStore = defineStore("application", () => {
 
 
 
+
     async function newApplicationPrevSchoolDetails(applicationId,data) {
         return await api.post("main/applications/"+applicationId+"/previous-schools", data)
             .then((response) => {
                 newApplicationPreviousSchoolsResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function updatePreviousSchools(id,data) {
+        return await api.put("main/applications/school/"+id, data)
+            .then((response) => {
+                updatePreviousSchoolresponse.value = response.data.data
+
             })
             .catch((response) => {
                 if(response){
@@ -354,7 +368,9 @@ export const useApplicationStore = defineStore("application", () => {
         updateParentDetails,
         updateParentPersonalDetailsresponse,
         updateLearnerPersonalDetailsresponse,
-        updateLearnerDetails
+        updateLearnerDetails,
+        updatePreviousSchoolresponse,
+        updatePreviousSchools
 
     }
 })

@@ -12,7 +12,7 @@
 
 <div class="mb-2">
     <label class="textColor"><small>Day</small></label>
-    <input v-model="form.day"   type="day" required class="form-control">
+    <input v-model="form.day"   type="date" required class="form-control">
     
 </div>
 
