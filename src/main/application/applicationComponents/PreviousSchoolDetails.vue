@@ -93,6 +93,7 @@ const buttonLoader = ref(false)
 let errorMessage = ref(null)
 const emit = defineEmits()
 
+
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
 
@@ -113,9 +114,32 @@ const formData =  reactive({
 
 const addSchoolDetails = () => {
   buttonLoader.value = true
+  
+  if(!applicationNumber){
+    buttonLoader.value = true
     let application_id = localStorage.getItem('applicationId')
   applicationStore.newApplicationPrevSchoolDetails(application_id,formData.schools)
+  }else{
+    buttonLoader.value = true
+  applicationStore.updatePreviousSchools(applicationNumber,formData.schools)
+  }
 }
+
+
+watch (
+    () => applicationStore.updatePreviousSchoolresponse,
+    async (data) => {
+      if(data){
+        localStorage.setItem("applicationId", data.application_number)
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+        emit("next", 4 )
+      }
+    },
+    {deep:true}
+)
+
+
 
 const addSchool = () => {
     const lastSchool = formData.schools[formData.schools.length - 1];
@@ -188,9 +212,14 @@ watch (
       if(data){
       data.PreviousSchools.forEach(school => {
         formData.schools = []
+        let classes = []
+        school.Classes.forEach((classN)=>{
+        classes.push({class:classN.class,year:classN.year})
+        });
+
         formData.schools.push({
           name: school.name,
-            classes: school.Classes
+            classes: classes
         })
       });
       }
