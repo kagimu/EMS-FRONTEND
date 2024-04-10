@@ -30,25 +30,25 @@ const loader = ref(undefined)
 
 onMounted(
     async () => {
-      await filterReportSummary()
+      await filterGeneratedReport()
 
     }
 )
 
 
-const filterReportSummary = () => {
+const filterGeneratedReport = () => {
   if(study_period_number.value && campus_class_number.value) {
     let data = {
       study_period_number: study_period_number.value,
       campus_class_number: campus_class_number.value,
     }
-    reportStore.fetchReportSummary(data)
+    reportStore.fetchGeneratedReport(data)
   }
 }
 
 
 watch(
-    () => reportStore.reportSummaryResponse,
+    () => reportStore.reportGeneratedReportResponse,
     async (data) => {
       if(data){
         studentReportList.value = data.data
@@ -214,7 +214,7 @@ watch(
           style="box-shadow: none;"
           class="form-select form-select-sm" required
           v-model="study_period_number"
-          @change="filterReportSummary"
+          @change="filterGeneratedReport"
       >
         <option disabled value="">Select</option>
         <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
@@ -228,7 +228,7 @@ watch(
           style="box-shadow: none;"
           class="form-select form-select-sm" required
           v-model="campus_class_number"
-          @change="filterReportSummary"
+          @change="filterGeneratedReport"
       >
         <option disabled value="">Select</option>
         <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>

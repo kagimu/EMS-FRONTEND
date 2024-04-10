@@ -5,11 +5,24 @@ import api from "@/config/api.js";
 export const useReportCardStore = defineStore("ReportCard", () => {
     const reportSummaryResponse = ref(null)
     const generateReportResponse = ref(null)
+    const reportGeneratedReportResponse = ref(null)
     const errorMessage = ref(null)
 
 
-    async function fetchReportSummary(data) {
+    async function fetchGeneratedReport(data) {
         return await api.get("main/report-settings/report-settings-by-student?study_period_number="+data.study_period_number+"&campus_class_number="+data.campus_class_number)
+            .then((response) => {
+                reportGeneratedReportResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchReportSummary(data) {
+        return await api.get("main/report-settings/report-summary")
             .then((response) => {
                 reportSummaryResponse.value = response.data
             })
@@ -37,8 +50,10 @@ export const useReportCardStore = defineStore("ReportCard", () => {
     return {
         reportSummaryResponse,
         generateReportResponse,
+        reportGeneratedReportResponse,
         errorMessage,
-        fetchReportSummary,
+        fetchGeneratedReport,
         generateReport,
+        fetchReportSummary,
     }
 })

@@ -1,20 +1,31 @@
 <script setup>
 
 import NewReportSummary from "@/main/dashboard/manageLevel/report_setup/report_forms/rforms/NewReportSummary.vue";
-import {watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
+import {useReportCardStore} from "@/main/dashboard/report-card/store/report-card.js";
 
 const reportSetupStore = useReportSetupStore()
+const reportStore = useReportCardStore()
+const reportSummaryList = ref(null)
+
+onMounted(
+    async () => {
+      await reportStore.fetchReportSummary()
+    }
+)
 
 
 watch(
-    () => reportSetupStore.reportSummaryResponse,
+    () => reportStore.reportSummaryResponse,
     async (data) => {
       if(data){
-        notificationStore.successToast("Success",data.message)
+       reportSummaryList.value = data.data
       }
     }
 )
+
+
 
 </script>
 
@@ -64,16 +75,18 @@ watch(
           <thead>
           <tr>
             <th scope="col" style="width: 30%;">Code</th>
-            <th scope="col">Name</th>
+            <th scope="col">Student Name</th>
+            <th scope="col">Grade</th>
             <th scope="col">Action</th>
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(levelInfo, index) in levelList" :key="index">
-            <td> {{levelInfo.code}}</td>
-            <td> {{levelInfo.name}}</td>
+          <tr v-for="(summary, idx) in reportSummaryList" :key="idx">
+            <td> {{(idx + 1)}}</td>
+            <td> {{summary.StudentName}}</td>
+            <td> {{summary.Grade}}</td>
             <td>
-              <div>
+<!--              <div>
                 <i
                     style="font-size: 13px;"
                     data-bs-toggle="modal" data-bs-target="#levelModal"
@@ -83,7 +96,7 @@ watch(
                 <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
                   <span class="visually-hidden">Loading...</span>
                 </div>
-              </div>
+              </div>-->
             </td>
           </tr>
           </tbody>

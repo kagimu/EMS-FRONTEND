@@ -1,6 +1,5 @@
 <script setup>
 
-import NewReportSettings from "@/main/dashboard/manageLevel/report_setup/report_forms/rforms/NewReportSettings.vue";
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
@@ -69,7 +68,7 @@ watch(
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Add Standard</h6>
+            <h6 class="modal-title ml-3 mt-2 mb-2">Attach Assessment Area to Grading Standard</h6>
             <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -90,7 +89,7 @@ watch(
 
 
         <div class="flex justify-content-between mt-3">
-          <div class="ml-4">Assessment Area Grading Standard</div>
+          <div class="ml-4">Assessment Area On Grading Standard</div>
           <button
               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addLevel" data-bs-toggle="modal" data-bs-target="#levelModal">
             <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
@@ -106,16 +105,14 @@ watch(
             <th class="w-[10%]" scope="col">Code</th>
             <th>Name</th>
             <th>Number of Columns</th>
-            <th>Status</th>
             <!--            <th scope="col">Action</th>-->
           </tr>
           </thead>
           <tbody>
           <tr v-for="(levelInfo, index) in assessmentAreaGradingStandardList" :key="index">
             <td> {{levelInfo.code}}</td>
-            <td> {{levelInfo.name}}</td>
-            <td> {{levelInfo.columns}}</td>
-            <td> {{levelInfo.status}}</td>
+            <td> {{levelInfo.assessment_area_name}}</td>
+            <td> {{levelInfo.grading_standard_name}}</td>
             <td>
               <!--              <div>
                               <i
