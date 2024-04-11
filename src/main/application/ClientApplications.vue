@@ -1,5 +1,13 @@
 <template>
     <div>
+
+          <!-- Loader -->
+          <div v-if="isLoading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
         <!-- modal for viewing more details -->
         <div class="modal fade" id="infoModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
             <div class="modal-dialog modal-xl">
@@ -7,7 +15,7 @@
             </div>
         </div>
 
-      <div class="mt-[60px;] w-[80%] mx-auto">
+      <div class="mt-[60px;] w-[80%] mx-auto" v-if="isLoading==false">
         <div class="row">
           <div class="col-12">
             <div class="card p-0 bg-white">
@@ -84,6 +92,8 @@ const applicationInfoList = ref( [])
 let errorMessage = ref(null)
 
 const applications= ref(null)
+const isLoading = ref(true);
+
 
 
 const applicationStore= useApplicationStore()
@@ -109,6 +119,7 @@ watch(
     () => applicationStore.applicationListResponse,
     async (data) => {
         if(data){
+            isLoading.value = false; 
             applicationInfoList.value = data.data
         }
     },

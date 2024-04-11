@@ -30,11 +30,13 @@
         <div class="col-lg-12">
           <div class="card">
             <div class="card-body">
-             
+              <!-- {{student_number ? '' : 'disabbled'}} -->
                 <h5 style="font-size: 14px;margin-top: 2px;">Learners Scheduled For {{ interviewM }} </h5>
                <div class="col-12">
                 <div class="ant-alert-action mt-3">
-                <button @click="showDialog()" data-bs-toggle="modal" data-bs-target="#admitMainModal" type="submit" class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " style="float: rigt;"><i></i>Offer Admission</button>
+                <button  @click="showDialog" data-bs-toggle="modal" :data-bs-target="selectedStudentNumber.length > 0 ? '#admitMainModal' : ''" type="submit"
+                 class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " 
+                 style="float: rigt;"><i></i>Offer Admission</button>
               </div>
 
                </div>
@@ -451,7 +453,7 @@ const Admit = () => {
       academic_year_number:form.academic_year,
       school_number:form.school_number,
     };
-    alert(JSON.stringify(formData));
+    alert(JSON.stringify(formData))
    //endpoint to submit
   //  admissionStore.admitStudent(formData)
 
@@ -582,7 +584,13 @@ watch(
 
 
 const showDialog = () => {
-  admitshow.value = true
+  // admitshow.value = true
+  if (selectedStudentNumber.value.length === 0) {
+    admitshow.value=false
+    notificationStore.errorToast("Error", "Please select at least one student to offer admission.");
+  } else {
+    admitshow.value = true;
+  }
 }
 
 

@@ -102,11 +102,11 @@
       id:"interviews",
       action:"view_interviews"
     },
-    {
-      name:"Interview Schedules",
-      id:"manage-interviews",
-      action:"view_manage-interviews"
-    },
+    // {
+    //   name:"Interview Schedules",
+    //   id:"manage-interviews",
+    //   action:"view_manage-interviews"
+    // },
     // {
     //   name:"Assessment Areas",
     //   id:"assessment-areas",
