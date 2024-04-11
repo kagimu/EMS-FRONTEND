@@ -155,6 +155,7 @@ watch(
     () => routerData.currentRoute.value.query.applicationId, 
     async (data) => { 
         if (data) {
+          // localStorage.removeItem('applicationId')
             applicationStore.fetchApplicationById(data)  
         }
     },
@@ -196,6 +197,7 @@ const addParentPersonalDetails = () => {
 const nextGo = () =>{
   emit("next", 2 )
 }
+
 
 </script>
 

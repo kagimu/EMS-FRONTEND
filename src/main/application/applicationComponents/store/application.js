@@ -95,8 +95,8 @@ export const useApplicationStore = defineStore("application", () => {
             })
     }
 
-    async function updatePreviousSchools(id,data) {
-        return await api.put("main/applications/school/"+id, data)
+    async function updatePreviousSchools(applicationId,data) {
+        return await api.put("main/applications/"+applicationId+"/previous-schools", data)
             .then((response) => {
                 updatePreviousSchoolresponse.value = response.data.data
 
