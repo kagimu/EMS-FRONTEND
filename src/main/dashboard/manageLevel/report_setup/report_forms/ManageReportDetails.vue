@@ -1,0 +1,47 @@
+<script setup>
+
+import {ref, watch} from "vue";
+import {useReportCardStore} from "@/main/dashboard/report-card/store/report-card.js";
+import BabyClassReport from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/BabyClassReport.vue";
+import PrimaryReport from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/PrimaryReport.vue";
+import TopClassReport from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/TopClassReport.vue";
+const reportStore = useReportCardStore()
+
+const reportDetails = ref(null)
+const showReport = ref(false)
+
+watch(
+    () => reportStore.reportDetailsResponse,
+    async (data) => {
+      if(data){
+         reportDetails.value = data.data
+      }
+    }
+)
+
+</script>
+
+<template>
+<div>
+<!--  {{reportDetails}}-->
+  <div v-if="showReport" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
+    <baby-class-report></baby-class-report>
+    <br />
+  </div>
+
+
+  <div v-if="showReport" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
+    <top-class-report></top-class-report>
+    <br />
+  </div>
+
+  <div class="mb-4 border-r border-l border-t border-b border-[#1062da]">
+    <primary-report></primary-report>
+  </div>
+
+</div>
+</template>
+
+<style scoped>
+
+</style>

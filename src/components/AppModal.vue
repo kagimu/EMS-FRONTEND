@@ -54,7 +54,7 @@ const closeModal = () => {
 <template>
   <TransitionRoot appear :show="modelValue" as="template">
     <div>
-    <div class="fixed inset-0 bg-black opacity-25" @click="closeModal()" />
+    <div class="fixed inset-0 bg-black opacity-30" @click="closeModal()" />
     <Dialog as="div" @close="closeModal" class="relative">
       <TransitionChild as="template" enter="duration-300 ease-out" enter-from="opacity-0" enter-to="opacity-100"
         leave="duration-200 ease-in" leave-from="opacity-100" leave-to="opacity-0">

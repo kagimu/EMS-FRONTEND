@@ -4,6 +4,7 @@ import api from "@/config/api.js";
 
 export const useReportCardStore = defineStore("ReportCard", () => {
     const reportSummaryResponse = ref(null)
+    const reportDetailsResponse = ref(null)
     const generateReportResponse = ref(null)
     const reportGeneratedReportResponse = ref(null)
     const errorMessage = ref(null)
@@ -14,9 +15,9 @@ export const useReportCardStore = defineStore("ReportCard", () => {
             .then((response) => {
                 reportGeneratedReportResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -26,9 +27,21 @@ export const useReportCardStore = defineStore("ReportCard", () => {
             .then((response) => {
                 reportSummaryResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function fetchReportDetailsInfo(report_summary_number) {
+        return await api.get("main/report-settings/report-summary-details/"+report_summary_number)
+            .then((response) => {
+                reportDetailsResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -38,9 +51,9 @@ export const useReportCardStore = defineStore("ReportCard", () => {
             .then((response) => {
                 generateReportResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -51,9 +64,11 @@ export const useReportCardStore = defineStore("ReportCard", () => {
         reportSummaryResponse,
         generateReportResponse,
         reportGeneratedReportResponse,
+        reportDetailsResponse,
         errorMessage,
         fetchGeneratedReport,
         generateReport,
         fetchReportSummary,
+        fetchReportDetailsInfo,
     }
 })
