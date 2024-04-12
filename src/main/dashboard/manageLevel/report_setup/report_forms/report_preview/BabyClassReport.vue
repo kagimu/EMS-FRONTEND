@@ -18,7 +18,7 @@
           <table style="width: 100%;">
             <tr>
               <td style="width: 20%; text-align: center;">
-                <img alt="logo" style="width: 150px; margin: 0 auto" src="../../../../public/img/badge.png"/>
+<!--                <img alt="logo" style="width: 150px; margin: 0 auto" src="../../../../public/img/badge.png"/>-->
               </td>
               <td style="width: 60%;" class="text-center">
                 <div style="font-size: 30px;"><b>NOREGRETS LIFE SCHOOL</b></div>
@@ -31,7 +31,7 @@
               </td>
               <td style="width: 20%;">
                 <div style="text-align: center; margin-top: 10px;">
-                  <img alt="logo" style="width: 130px; margin: 0 auto;" src="../../../../public/img/pic.jpg"/>
+<!--                  <img alt="logo" style="width: 130px; margin: 0 auto;" src="../../../../public/img/pic.jpg"/>-->
                 </div>
               </td>
             </tr>

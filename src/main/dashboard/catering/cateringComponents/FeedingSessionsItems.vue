@@ -34,6 +34,7 @@
     <thead >
         <tr>
         <th>Name</th>
+        <th>Menu Items</th>
         <th>Status</th>
         </tr>
     <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
@@ -42,8 +43,9 @@
     </thead>
     <tbody>
         <tr v-for="(list,index) in feedingSessionItemData" :key="index">
-            <td>{{ list.name }}</td>
-            <td>{{ list.status }}</td>
+            <td>{{ list.feeding_session_name }}</td>
+            <td>{{ list.menu_item_name }}</td>
+            <td>{{ list.feeding_session_status }}</td>
            
         </tr>
      
