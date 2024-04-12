@@ -20,8 +20,8 @@ export const useEnrolmentStore = defineStore("enrolment", () => {
             })
     }
 
-    async function fetchEnrolment() {
-        return await api.get("main/enrollment")
+    async function fetchEnrolment(school_number,campus_class_number,stream_number,campus_number,study_period_number) {
+        return await api.get("main/enrollment?school_number="+school_number+"&campus_number="+campus_number+"&campus_class_number="+campus_class_number+"&stream_number="+stream_number+"&study_period_number="+study_period_number)
             .then((response) => {
                 enrolmentResponse.value = response.data
             })
