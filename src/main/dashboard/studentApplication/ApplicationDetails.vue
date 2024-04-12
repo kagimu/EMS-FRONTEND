@@ -111,7 +111,7 @@
       <button class="btn btn-primary btn-sm">View Admission Details</button>
     </div>
 
-    <div class="col-3" v-if="appDatails.status == 'DRAFT'" > 
+    <div class="col-3" v-if="appDatails.status == 'SUBMITTED'" > 
       <!-- {{ appDatails.status }} -->
   <form @submit.prevent="scheduleInterview" >
               <label> <span style="text-align: center;font-size: 12px;"><small>Select Interview</small></span></label>

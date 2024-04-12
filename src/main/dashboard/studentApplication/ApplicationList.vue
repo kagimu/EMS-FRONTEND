@@ -159,7 +159,7 @@
           <td>{{ applist.Student.gender }}</td>
           <!-- <td>{{ applist.Student.date_of_birth }}</td> -->
           <td><span v-if="applist.status == 'INTERVIEW_SCHEDULED'">INTERVIEW SCHEDULED</span>
-            <span v-if="applist.status == 'DRAFT'" style="font-size: 12px;">DRAFT</span>
+            <span v-if="applist.status == 'SUBMITTED'" style="font-size: 12px;">SUBMITTED</span>
             <span v-if="applist.status == 'ADMITTED'" style="font-size: 12px;">ADMITTED</span>
             <span v-if="applist.status == 'ENROLLED'" style="font-size: 12px;">ENROLLED</span>
              </td>
@@ -173,7 +173,7 @@
           </button> -->
       
 
-          <button v-if="applist.status === 'DRAFT'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)"
+          <button v-if="applist.status === 'SUBMITTED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)"
                   class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
               Schedule Interview
             </small>
