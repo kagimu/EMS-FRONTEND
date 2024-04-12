@@ -42,11 +42,17 @@
             <td><input type="checkbox"  v-model="selectedStudents[index]" class="checkbox-primary"></td>
             <td>{{ index+1 }}</td>
             <td> 
-              {{ student.first_name + " " + student.second_name + " " + student.last_name}} </td>
+                <router-link style=""
+                class="text-decoration-none"
+                :to="{name:'feeding-group-user-details', query:{st_id:student.number}}">
+                 {{ student.first_name + " " + student.second_name + " " + student.last_name}}
+
+            </router-link>
+              
+             </td>
             <td>
               {{  student.gender }}
             </td>
-            
             <td>
                     
             </td>
@@ -90,6 +96,7 @@ style="float: right;"><i></i><small>Submit</small></button>
   import { useUserStore } from "@/main/dashboard/profiles/store/users.js"
   import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
   import { useAccountStore } from "@/main/dashboard/account/store/account.js";
+import { RouterView } from "vue-router";
 
 
 const cateringStore = useCateringStore()
@@ -175,7 +182,7 @@ const accountStore = useAccountStore()
         user_number:selectedStudentNumber,
         status:"ACTIVE"
       })
-      alert(JSON.stringify(data)) 
+    //   alert(JSON.stringify(data)) 
       cateringStore.newFeedingGroupUsers(data)
     }
   }
