@@ -14,7 +14,7 @@
           <div class="col-lg-12">
             <div class="">
               <div class="">
-                  <h5 style="font-size: 14px;margin-top: 2px;">Student List </h5>
+                  <h5 style="font-size: 14px;margin-top: 2px;">Users List </h5>
               </div>
             </div>
           </div>
@@ -29,8 +29,8 @@
       <thead >
           <tr>
             <th style="width: 5px;"><input type="checkbox"   class="checkbox-primary"></th>
-            <th>ADN</th>
-            <th>Student</th>
+            <th>#</th>
+            <th>Name</th>
             <th>Gender</th>     
           </tr>
     <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
@@ -40,11 +40,11 @@
         <tbody>
           <tr v-for="(student, index) in userList" :key="index">
             <td><input type="checkbox"  v-model="selectedStudents[index]" class="checkbox-primary"></td>
-            <td>{{ student.Student.apn }}</td>
+            <td>{{ index+1 }}</td>
             <td> 
-              {{ student.Student.surname + " " + student.Student.second_name + " " + student.Student.other_name}} </td>
+              {{ student.first_name + " " + student.second_name + " " + student.last_name}} </td>
             <td>
-              {{  student.Student.gender }}
+              {{  student.gender }}
             </td>
             
             <td>
@@ -66,7 +66,7 @@
 <div class="mt-2 mb-2">
 <button  @click="addFeedingGroupUsers"  :data-bs-target="selectedStudentNumber.length > 0 ? '#' : ''" type="submit"
 class="btn btn-primary btn-sm mb-2 " 
-style="float: right;"><i></i><small>Register Meal</small></button>
+style="float: right;"><i></i><small>Submit</small></button>
 </div>
                     
                
@@ -87,11 +87,13 @@ style="float: right;"><i></i><small>Register Meal</small></button>
   import useNotificationStore from "@/composables/useNotification.js";
   import AdmitModel from "@/main/dashboard/studentApplication/AdmitModel.vue";
   import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
-
+  import { useUserStore } from "@/main/dashboard/profiles/store/users.js"
   import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+  import { useAccountStore } from "@/main/dashboard/account/store/account.js";
+
 
 const cateringStore = useCateringStore()
-
+const accountStore = useAccountStore()
 
   const feedingGroupData = ref([])
 
@@ -112,11 +114,11 @@ const cateringStore = useCateringStore()
   })
   
 
-  
   onMounted(
       () => {
         enrollmentStore.fetchEnrolment()
         cateringStore.fetchFeedingGroup()
+        accountStore.fetchUsersToAssign()
       }
   )
   
@@ -129,25 +131,34 @@ const cateringStore = useCateringStore()
   )
 
 
-
-
-
-  watch (
-    () => enrollmentStore.enrolmentResponse,
+  watch(
+    () => accountStore.userResponse,
     async (data) => {
       if(data){
         userList.value = data.data
       }
     },
     {deep:true}
-  )
+    )
+
+
+
+//   watch (
+//     () => enrollmentStore.enrolmentResponse,
+//     async (data) => {
+//       if(data){
+//         userList.value = data.data
+//       }
+//     },
+//     {deep:true}
+//   )
 
   
     const selectedStudentNumber = computed(() => {
     const selectedNames = [];
     selectedStudents.value.forEach((isSelected, index) => {
       if (isSelected) {
-        selectedNames.push(userList.value[index].Student.number);
+        selectedNames.push(userList.value[index].number);
       }
     });
     return selectedNames;
