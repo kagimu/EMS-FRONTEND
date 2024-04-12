@@ -76,7 +76,7 @@
   
 
   onMounted(() => {
-    cateringStore.fetchFeedingGroupUserById(userId)
+    cateringStore.fetchFeedingGroupUserById(routerData.currentRoute.value.query.st_id)
         }
     )
 

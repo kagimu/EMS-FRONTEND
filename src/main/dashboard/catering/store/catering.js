@@ -252,7 +252,7 @@ async function newFeedingGroupUsers(data) {
         })
 }
 async function fetchFeedingGroupUserById(userId) {
-    return await api.get("main/catering/feeding-group-users?User-Number=",userId)
+    return await api.get("main/catering/feeding-group-users?User-Number="+userId)
         .then((response) => {
             feedingGroupUsersResponse.value = response.data
         })
