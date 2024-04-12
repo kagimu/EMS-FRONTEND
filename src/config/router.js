@@ -70,6 +70,7 @@ import Promotions from "@/main/dashboard/promotions/Promotions.vue"
 import InterviewManagement from "@/main/dashboard/studentApplication/InterviewManagement.vue"
 import Catering from "@/main/dashboard/catering/Catering.vue"
 import FoodMenuItem  from "@/main/dashboard/catering/cateringComponents/FoodMenuItem.vue"
+import FeedingGroupUserDetails  from "@/main/dashboard/catering/cateringComponents/FeedingGroupUserDetails.vue"
 
 
 
@@ -473,6 +474,13 @@ const router = createRouter({
                 meta: {
                     resource: "manage-food-menu-items",
                     action: "view-manage-food-menu-items",
+
+
+                }},
+                {path: 'feeding-group-user-details', component: FeedingGroupUserDetails, name: "feeding-group-user-details",
+                meta: {
+                    resource: "feeding-group-user-details",
+                    action: "feeding-group-user-details",
 
 
                 }},
