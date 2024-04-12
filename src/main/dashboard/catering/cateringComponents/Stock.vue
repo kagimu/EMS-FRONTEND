@@ -61,10 +61,10 @@
     <tbody>
     <tr v-for="(list, index) in stockData" :key="index">
       <td>{{ index+1 }}</td>
-      <td>{{ list.menu_item_number }}</td>
+      <td>{{ list.menu_item_name }}</td>
      <td> {{ list.quantity }}</td>
      <td>{{ list.unit_cost }}</td>
-     <td>{{ list.Campus.name }}</td>
+     <td>{{ list.campus_name }}</td>
     </tr>
                 
     </tbody>

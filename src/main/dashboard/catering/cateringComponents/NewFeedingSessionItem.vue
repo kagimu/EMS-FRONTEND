@@ -159,7 +159,7 @@ const createFeedingSessionItem = () => {
     feeding_session_number:form.feeding_session_number,
     menu_item_quantity
   }
-  alert(JSON.stringify(data))
+  // alert(JSON.stringify(data))
   cateringStore.newFeedingGroupSessionsItemsInfo(data)
 }
 

@@ -20,7 +20,7 @@
     <!-- end  -->
     <div class="row mt-3">
     <div class="col-12">
-        <div class="card">
+        <div class="">
         <div class="" style="padding: 0;">
          <div class="container mt-4">
            <div class="row">
@@ -43,7 +43,7 @@
     
     
     <table
-    id="datatable"
+    id="table"
     class="table table-striped"
     style="font-size: 14px !important;"
     >
@@ -61,8 +61,8 @@
     <tbody>
       <tr v-for="(list, index) in assemblyData" :key="index">
         <td>{{ index+1 }}</td>
-        <td>{{ list.primary_item_number }}</td>
-        <td>{{ list.secondary_item_number }}</td>
+        <td>{{ list.primary_item_name }}</td>
+        <td>{{ list.secondary_item_name }}</td>
         <td>{{ list.quantity }}</td>
 
       </tr>
