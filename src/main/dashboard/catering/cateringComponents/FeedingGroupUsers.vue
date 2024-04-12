@@ -1,23 +1,7 @@
 <template>
     <div>
   
-      <div class="row">
-        <div class="modal fade" id="admitMainModal" tabindex="-1" :class="{ show: admitshow }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-8 mt-2 mb-2">Submit</h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-           <AdmitModel :selectedStudentNumber="selectedStudentNumber"></AdmitModel>
-          </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
+    
      
   
       <!-- end  -->
@@ -31,18 +15,12 @@
             <div class="">
               <div class="">
                   <h5 style="font-size: 14px;margin-top: 2px;">Student List </h5>
-               
-              
               </div>
             </div>
           </div>
         </div>
-        
-  
-
-
         <div class="row">
-<div class="col-lg-8">
+<div class="col-lg-9">
       <table
         id="datatable"
         class="table table-striped"
@@ -77,22 +55,22 @@
         </tbody>
       </table>
     </div>
-</div>
-<div class="col-lg-4">            
-<label>Feeding Group</label>
-<select class="form-select form-control" v-model="formData.feeding_group_number">
-    <option>-select</option>
+
+<div class="col-lg-3">            
+<label class="mt-4"><small>Feeding Group</small></label>
+<select class="form-select form-control" v-model="formData.feeding_group_number" required>
+    <option value="" disabled>-select</option>
     <option v-for="(list,index) in feedingGroupData" :key="index" :value="list.number">{{list.name  }}</option>
 </select>
 
-<div class="ant-alert-action mt-6">
+<div class="mt-2 mb-2">
 <button  @click="addFeedingGroupUsers"  :data-bs-target="selectedStudentNumber.length > 0 ? '#' : ''" type="submit"
-class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " 
-style="float: rigt;"><i></i>Register Meal</button>
+class="btn btn-primary btn-sm mb-2 " 
+style="float: right;"><i></i><small>Register Meal</small></button>
 </div>
                     
                
-
+</div>
 </div>
     </div>
     </div>
@@ -179,7 +157,6 @@ const cateringStore = useCateringStore()
   const addFeedingGroupUsers = () => {
     // admitshow.value = true
     if (selectedStudentNumber.value.length === 0) {
-      admitshow.value=false
       notificationStore.errorToast("Error", "Please select at least one student to offer admission.");
     } else {
       let data = reactive({
