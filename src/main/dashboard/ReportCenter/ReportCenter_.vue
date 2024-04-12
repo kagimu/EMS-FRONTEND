@@ -89,9 +89,9 @@
 
 <script setup>
 
-import BabyClassReport from "@/main/dashboard/ReportCenter/BabyClassReport.vue";
-import TopClassReport from "@/main/dashboard/ReportCenter/TopClassReport.vue";
-import PrimaryReport from "@/main/dashboard/ReportCenter/PrimaryReport.vue";
+import BabyClassReport from "@/main/dashboard/ReportCenter/BabyClassReport_.vue";
+import TopClassReport from "@/main/dashboard/ReportCenter/TopClassReport_.vue";
+import PrimaryReport from "@/main/dashboard/ReportCenter/PrimaryReport_.vue";
 
 import { useAbility } from '@casl/vue';
 

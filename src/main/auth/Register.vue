@@ -157,7 +157,7 @@ watch(
 
         showSuccessPage.value = true
 
-        notificationStore.successToast("Error",data.message)
+        notificationStore.successToast("Success",data.message)
       }
     },
     {deep:true}

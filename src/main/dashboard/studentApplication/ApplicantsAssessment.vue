@@ -27,6 +27,7 @@
         class="table table-striped">
         <thead>
       <tr>
+        <th>#</th>
         <th scope="col">Adn</th>
         <th>Name</th>
         <th scope="col">Score</th>
@@ -37,13 +38,14 @@
       <tbody>
     
       <tr v-for="(studentList , index) in interviewStudentList" :key="index" >
-        <td scope="col">{{ studentList.Student.adn }}</td>
+        <td>{{ index+1 }}</td>
+        <td scope="col">{{ studentList.Student.apn }}</td>
         <td>{{ studentList.Student.surname + " " + studentList.Student.second_name + " " + studentList.Student.other_name}}</td>
-        <td scope="col">
+        <td scope="col" style="width: 150px;">
             <input type="number" class="form-control" v-model="score">
         </td>
-        <td scope="col">
-            <textarea class="form-control" v-model="comm"></textarea>
+        <td scope="col">  
+            <input type="text" class="form-control" v-model="comm">
         </td>
         <td>
             <button type="button" @click="submitMarks(score,comm,studentList.Student.number)" style="color:#0d6efd;">

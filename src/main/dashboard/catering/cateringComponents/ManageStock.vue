@@ -2,8 +2,8 @@
     <div>
         <div class="row">
         <div class="col-12">
-          <div class="card mt-3 ">
-            <div class="card-body" style="padding: 0;">
+          <div class="mt-3 ">
+            <div class="" style="padding: 0;">
                 <div class="mb-10 ml-3 mt-2" style="float: right; margin-right: 10px;"><i @click="goBack()" class="bi bi-x-lg"></i></div>
 
                 <div>

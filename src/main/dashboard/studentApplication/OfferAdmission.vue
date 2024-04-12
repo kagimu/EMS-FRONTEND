@@ -42,7 +42,7 @@
               </tr>
 
               <tr>
-                <td>APPLICATION ID:</td><td>{{ appNo }}</td></tr>
+                <td>APPLICATION ID:</td><td>{{ appDatails.apn }}</td></tr>
                   <tr><td>PREFERED CLASS:</td><td>P.1</td></tr>
                   <tr><td>SCHOOL:</td><td>Paul Mukasa Primary</td>
                   </tr>
@@ -76,7 +76,7 @@
               <tr>
                       <td style="width: 200px;">Telephone:</td>
                       <td><span class="ant-tag ant-tag-error css-zxymk0"><span role="img" aria-label="stop" class="anticon anticon-stop">  
-                  </span><span>{{ appDatails.alternative_telephone_number }}</span></span>
+                  </span><span>{{ appDatails.main_telephone_number }}</span></span>
                 </td>
               </tr>
               <tr>
@@ -158,6 +158,7 @@ preferred_type_of_enrollment: null,
 preferred_campus_number:null,
 reason:null,
 status:null,
+apn:null,
 previousSchools:[],
     student_number: null,
 })
@@ -181,7 +182,7 @@ watch (
         appDatails.surname = data.Parent.surname
         appDatails.second_name = data.Parent.second_name
         appDatails.other_name = data.Parent.other_name
-        appDatails.main_telephone_number = data.Parent.alternative_telephone_number
+        appDatails.main_telephone_number = data.Parent.main_telephone_number
         appDatails.alternative_telephone_number= data.Parent.alternative_telephone_number
         appDatails.email= data.Parent.email
         appDatails.alternative_email=data.Parent.alternative_email
@@ -196,6 +197,8 @@ watch (
         appDatails.status=data.status
         appDatails.previousSchools=data.PreviousSchools
           appDatails.student_number = data.Student.number
+          appDatails.apn= data.Student.apn
+          
 
         // alert(JSON.stringify(data.Parent.surname))
       }

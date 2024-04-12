@@ -17,7 +17,7 @@
             <router-link :class="[ menuSelected('application_history') ? 'btn  btn-light nav-item nav-link' : 'btn btn-outline-success nav-item nav-link']" :to="{name:'application_history'}" style="border-radius: 0px; color:rgba(16, 54, 135, 0.751)" >
             APPLICATION HISTORY </router-link>
 
-            <router-link :class="[ menuSelected('admission_history') ? 'btn  btn-light nav-item nav-link' : 'btn btn-outline-success nav-item nav-link']" :to="{name:'admission_history'}">ADMISSION HISTORY</router-link>
+            <router-link :class="[ menuSelected('admission_history') ? 'btn  btn-light nav-item nav-link text-red' : 'btn btn-outline-success nav-item nav-link']" :to="{name:'admission_history'}">ADMISSION HISTORY</router-link>
 
             <span class="nav-item dropdown">
 

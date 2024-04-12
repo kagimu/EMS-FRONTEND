@@ -95,7 +95,7 @@
                   data-bs-target="#interviewAssessmentModal"
               >  Add Interview Assessment</button>
 
-              <router-link style="display: none;"
+              <router-link style=""
                   class="text-decoration-none"
                   :to="{name:'manage-interviews', query:{interview_id:interview.number, interview:interview.name}}">
                 <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">

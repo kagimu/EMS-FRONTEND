@@ -56,8 +56,8 @@
                           <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
                         </select>
                       </td>
-                      <td><input type="text" v-model="itemData.quantity" @input="updateAmount(index)" placeholder="1.0" class="inp"></td>
-                      <td><input type="text" v-model="itemData.cost" @input="updateAmount(index)" placeholder="Unit Price" class="inp"></td>
+                      <td><input type="number" v-model="itemData.quantity" @input="updateAmount(index)" placeholder="1.0" class="inp"></td>
+                      <td><input type="number" v-model="itemData.cost" @input="updateAmount(index)" placeholder="Unit Price" class="inp"></td>
                       <td>{{ itemData.amount }}</td>
                       <td><button type="button" @click="removeItem(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
                     </tr>
@@ -109,58 +109,24 @@ import {onMounted, reactive, ref, watch, watchEffect, computed} from "vue"
 import useNotificationStore from "@/composables/useNotification.js"
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
-import {useRouter} from "vue-router"
-
-import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js"
-import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
-import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
-
-
+import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 
 const campusList = ref([])
 const schoolList = ref([])
-const studentInfoList = ref( [])
-const routerData = useRouter()
-const serviceStore= useServiceStore()
-const  invoiceStore  = useInvoiceStore()
-const router = useRouter()
-const applicationStore= useApplicationStore()
-
+const school_number = ref(null)
 let errorMessage = ref(null)
 const emit = defineEmits()
 const  notificationStore  = useNotificationStore()
-const classList = ref([])
 const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
+const cateringStore = useCateringStore()
+
 const form = reactive({
     campus_number:null
 })
 
-const goBack = () => {
-  window.history.back()
-}
-
-// Creating invoice Logic =========================================================
 const Items = ref([]);
 const itemOption = ref([])
-
-
-onMounted(
-    async () => {
-      await applicationStore.fetchApplicationList()
-    } )
-
-    watch(
-    () => applicationStore.applicationListResponse,
-    async (data) => {
-      if(data){
-        studentInfoList.value = data.data
-       
-      }
-    },
-    {deep:true}
-    )
-
 
 function updateItem(index) {
   const item = Items.value[index];
@@ -198,23 +164,25 @@ watch(Items, (newItems) => {
   isAddButtonDisabled.value = newItems.length === itemOption.value.length;
 }, { deep: true });
 
-// =
+
+
+
 onMounted(
-  async () => {
-    await serviceStore.fetchServicesList()
-  } )
+    async () => {
+        cateringStore.fetchMenuItem()
+    } )
 
-watch(
-  () => serviceStore.servicesListResponse,
-  async (data) => {
-    if (data) {
-      itemOption.value = data.map(option => ({ name: option.Item.name, cost: option.Item.cost }));
-    }
-  },
-  { deep: true }
-)
+  watch(
+    () => cateringStore.menuItemResponse,
+    async (data) => {
+        if (data) {
+        itemOption.value = data.data.map(option => ({ name: option.name, number: option.number }));
+      }
+    },
+    {deep: true}
+  )
 
-// Connect invoice store ==========================================
+
 const createStock = () => {
   const item_price_and_quantity = Items.value.map(itemData => ({
       menu_item_number: itemData.menu_item_number,
@@ -227,34 +195,36 @@ const createStock = () => {
     campus_number:form.campus_number,
     item_price_and_quantity
   }
-  alert(JSON.stringify(data))
-
+  // alert(JSON.stringify(data))
+  cateringStore.newStock(data)
 }
 
+watch(
+    () => cateringStore.newStockResponse,
+    async (data) => {
+        notificationStore.successToast("Success", data.message)
+        cateringStore.fetchStock()
+        clearFormData()
+    },
+    {deep: true}
+  )
 
-watch (
-  () => invoiceStore.newInvoiceResponse,
-  async (data) => {
-    if (data) {
-      notificationStore.successToast("Success", data.message)
-      // router.push({ name: 'invoice-details', params: { studentNumber }})
-    }
-  },
-  { deep: true }
-)
+  watch(
+    () => cateringStore.errorMessage,
+    async (data) => {
+          if (data) {
+          notificationStore.errorToast("Error", data.message)
+          }
+    },
+    {deep: true}
+  )
 
-watch (
-  () => invoiceStore.errorMessage,
-  async (data) => {
-    if (data) {
-      errorMessage.value = data.message
-      notificationStore.errorToast("Error",data.message)
-      //redirecting to another page
-      // router.push({ name: 'invoice-details', params: { studentNumber }})
-    }
-  },
-  { deep: true }
-)
+  const clearFormData = () => {
+    school_number.value = null
+    form.campus_number = null
+    Items.value = []
+}
+
 
 onMounted(() => {
         schoolStore.fetchSchools()

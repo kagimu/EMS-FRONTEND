@@ -19,8 +19,8 @@
     <!-- end  -->
     <div class="row mt-3">
     <div class="col-12">
-        <div class="card">
-        <div class="card-body" style="padding: 0;">
+        <div class="">
+        <div class="" style="padding: 0;">
          <div class="container mt-4">
            <div class="row">
               <div class="col-lg-12">
@@ -63,7 +63,7 @@
     <tbody>
       <tr v-for="(list, index) in dailyFeedingSessionGroupData" :key="index">
       <td>{{ list.day }}</td>
-      <td>{{ list.day }}</td>
+      <td>{{ list.feeding_session_name }}</td>
       </tr>
                 
     </tbody>

@@ -12,8 +12,13 @@
 
 <div class="mb-2">
     <label class="textColor"><small>Day</small></label>
-    <input v-model="form.day"   type="day" required class="form-control">
-    
+    <!-- <input v-model="form.day"   type="text" required class="form-control"> -->
+    <select v-model="form.day" class="form-control form-select"> 
+            <option disabled value="">Select</option>
+            <option>Monday</option>
+            <option>Tuesday</option>
+            <option>Wednesday</option>
+ </select>
 </div>
 
 <div class="text-right mt-4">
@@ -74,6 +79,8 @@ watch (
         notificationStore.successToast("Success", data.message)
         cateringStore.fetchFeedingGroupSessions()
         cateringStore.fetchDailySession()
+        form.day=null,
+        form.feeding_session_number=null
       }
     },
     {deep:true}

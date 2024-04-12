@@ -10,8 +10,7 @@
   
   
               <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-  
-                <div
+                  <div
                     v-for="(item, idx) in menu" :key="idx"
                     class="list-group-item list-group-item-action cursor-pointer"
                     :class="item.value === menuSelected ? 'active' : ''"
@@ -19,10 +18,6 @@
                   <small style="font-size:12px;">{{item.text}}</small>
                 </div>
               </div>
-  
-  
-              
-  
             </div>
           </div>
 
@@ -40,6 +35,24 @@
               </div>
             </div>
           </div>
+
+
+
+          <div class="card mt-3">
+            <div class="card-body" style="padding: 0;">
+
+              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+                <div
+                    class="list-group-item list-group-item-action cursor-pointer"
+                    :class="menuSelected === 'manage-feeding-users' ? 'active' : ''"
+                    @click="changeMenu('manage-feeding-users')"
+                >
+                  <small style="font-size:12px;">Feeding Users</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
   
         <div class="col-9">
@@ -65,6 +78,10 @@
                   </div>
                   <div v-if="menuSelected === 'manage-stock'">
                     <ManageStock></ManageStock>
+                  </div>
+
+                  <div v-if="menuSelected === 'manage-users'">
+                  
                   </div>
                 
                   
@@ -93,6 +110,7 @@
   import ManageFeedingSessions from "@/main/dashboard/catering/cateringComponents/ManageFeedingSessions.vue";
   import ManageItemsAssembly from "@/main/dashboard/catering/cateringComponents/ManageItemsAssembly.vue";
   import ManageStock from "@/main/dashboard/catering/cateringComponents/ManageStock.vue";
+  import FeedingGroupUsers from "@/main/dashboard/catering/cateringComponents/FeedingGroupUsers.vue";
 
   const routerData = useRouter()
   

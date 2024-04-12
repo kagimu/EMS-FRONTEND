@@ -13,7 +13,6 @@
             </div>
           </div>
   <!-- wnd  -->
-  
 
 
 
@@ -60,7 +59,13 @@
     </div>
     </thead>
     <tbody>
-    
+    <tr v-for="(list, index) in stockData" :key="index">
+      <td>{{ index+1 }}</td>
+      <td>{{ list.menu_item_name }}</td>
+     <td> {{ list.quantity }}</td>
+     <td>{{ list.unit_cost }}</td>
+     <td>{{ list.campus_name }}</td>
+    </tr>
                 
     </tbody>
     </table>
@@ -77,16 +82,13 @@
     <script setup>
     import {onMounted,reactive, ref, watch} from "vue";
     import useNotificationStore from "@/composables/useNotification.js";
-    import NewStock from "@/main/dashboard/catering/cateringComponents/NewStock.vue";
     import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 
     const notificationStore = useNotificationStore()
     const cateringStore = useCateringStore()
     const errorMessage = ref(null)
-    const thisDialog = ref(false)
-    const showDialog = () => {
-        thisDialog.value = true
-    }
+    const stockData = ref([])
+    
 
     const closeDialog = () => {
         thisDialog.value = false

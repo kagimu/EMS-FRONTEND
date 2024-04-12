@@ -8,6 +8,7 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="form-group">
+                <!-- {{ applicationNumber }} -->
            <label class="textColor text-sm" ><small>School Name
            <button @click="removeSchool(schoolIndex)" type="button"><i style="color:red;width: 12px;height: 12px;" class="bi bi-x-circle"></i></button></small> </label>
             <input type="text" class="form-control" v-model="school.name"> 
@@ -79,14 +80,19 @@
  
  <script setup>
     
-import {reactive, ref, watch} from "vue";
+import {reactive, ref, watch,onMounted} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import router from "@/config/router.js";
+import {useRouter} from "vue-router";
+
+const routerData = useRouter()
+let  applicationNumber = routerData.currentRoute.value.query.applicationId
 
 const buttonLoader = ref(false)
 let errorMessage = ref(null)
 const emit = defineEmits()
+
 
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
@@ -108,9 +114,30 @@ const formData =  reactive({
 
 const addSchoolDetails = () => {
   buttonLoader.value = true
+  
+  if(!applicationNumber){
+    buttonLoader.value = true
     let application_id = localStorage.getItem('applicationId')
   applicationStore.newApplicationPrevSchoolDetails(application_id,formData.schools)
+  }else{
+    buttonLoader.value = true
+  applicationStore.updatePreviousSchools(applicationNumber,formData.schools)
+  }
 }
+
+
+watch (
+    () => applicationStore.updatePreviousSchoolresponse,
+    async (data) => {
+      if(data){
+        localStorage.setItem("applicationId", data.application_number)
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+        emit("next", 4 )
+      }
+    },
+    {deep:true}
+)
 
 
 
@@ -135,10 +162,7 @@ const addClass = (schoolIndex) => {
 const removeClass = (schoolIndex, classIndex) => {
     formData.schools[schoolIndex].classes.splice(classIndex, 1);
 }
-const submitForm = () => {
-    // Handle form submission logic here
-    // console.log('Form submitted:', this.formData);
-}
+
 const canAddSchool = () => {
     const lastSchool = formData.schools[formData.schools.length - 1];
     return lastSchool.name !== '' && lastSchool.classes.some(className => className !== '');
@@ -169,6 +193,35 @@ watch (
         errorMessage.value = data.message
         buttonLoader.value = false
         notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+onMounted(
+    () => {
+      if(applicationNumber !=""){
+      applicationStore.fetchApplicationById(applicationNumber)
+      }
+    }
+)
+
+watch (
+    () => applicationStore.applicationByIdResponse,
+    async (data) => {
+      if(data){
+      data.PreviousSchools.forEach(school => {
+        formData.schools = []
+        let classes = []
+        school.Classes.forEach((classN)=>{
+        classes.push({class:classN.class,year:classN.year})
+        });
+
+        formData.schools.push({
+          name: school.name,
+            classes: classes
+        })
+      });
       }
     },
     {deep:true}

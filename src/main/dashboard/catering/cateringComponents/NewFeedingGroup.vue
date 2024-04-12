@@ -84,6 +84,11 @@ watch (
       if(data){
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
+        cateringStore.fetchFeedingGroup()
+        form.code=null,
+        form.name=null,
+        form.status="ACTIVE",
+        form.campus_number=null
       }
     },
     {deep:true}

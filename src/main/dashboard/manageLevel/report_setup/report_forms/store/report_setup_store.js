@@ -24,9 +24,9 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             .then((response) => {
                 reportSettingsResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -36,9 +36,9 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             .then((response) => {
                 assessmentAreaGradingStandardResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -49,9 +49,9 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             .then((response) => {
                 reportColumnResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -61,9 +61,9 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             .then((response) => {
                 reportColumnAssessmentResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -73,9 +73,9 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             .then((response) => {
                 reportSummaryResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -85,9 +85,9 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             .then((response) => {
                 reportScoreResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -97,9 +97,9 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             .then((response) => {
                 reportScoreSummaryResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -109,9 +109,9 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             .then((response) => {
                 reportSettingsListResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -121,9 +121,9 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             .then((response) => {
                 assessmentAreaGradingStandardInfoResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -133,9 +133,9 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             .then((response) => {
                 studentsByAssessmentMetricResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -145,9 +145,9 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             .then((response) => {
                 studentMarksResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -158,9 +158,9 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             .then((response) => {
                 reportColumnListResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }
@@ -170,9 +170,9 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             .then((response) => {
                 reportColumnAssessmentListResponse.value = response.data
             })
-            .catch((response) => {
-                if(response){
-                    errorMessage.value = response.response.data
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
                 }
             })
     }

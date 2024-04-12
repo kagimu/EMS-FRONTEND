@@ -1,5 +1,13 @@
 <template>
     <div>
+
+          <!-- Loader -->
+          <div v-if="isLoading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
         <!-- modal for viewing more details -->
         <div class="modal fade" id="infoModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
             <div class="modal-dialog modal-xl">
@@ -7,51 +15,68 @@
             </div>
         </div>
 
+      <div class="mt-[60px;] w-[80%] mx-auto" v-if="isLoading==false">
         <div class="row">
-      <div class="col-12">
-        <div class="card mt-3">
-          <div class="card-body" style="padding: 0;">
-        <div class="container mt-4">
-            <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Application List<hr style="width:30px;"></h6>
-            <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-                {{errorMessage}}
-            </div>
-            <table
-                    id="datatable"
-                    class="table table-striped"
-                    style="font-size: 13px !important;"
-            >
-                <thead>
-                <tr>
-                    <th>Parent/Guardian</th>
-                    <th>Status</th>
-                    <th>Payment Status</th>
-                    <th>#</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="(applist, index) in applicationInfoList" :key="index">
-                    <td>{{ applist.Parent.surname+ " "+ applist.Parent.second_name+ " "+ applist.Parent.other_name  }} </td>
-                    <td>{{ applist.status }} </td>
-                    <td>{{ applist.application_fee_payment === false ? 'pending' : 'completed' }}</td>
-                    <td>
-                        <button data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)"
-                                class="link-primary" style="border-width: 0px;text-decoration: none;" title="View Details"><small><i class="bi bi-eye">&nbsp;view more</i></small></button>
-                            <router-link
-                  class="text-decoration-none"
-                  :to="{name:'application', query:{applicationId:applist.number}}"
-              ><button class="btn bg-blu mx-2 rounded-sm text-white" style="border-width: 0px;text-decoration: none;" title="">
-                <small  style = "color:rgb(244, 27, 27)">
-              <i class="bi bi-arrow-right">&nbsp;Resume</i></small></button>   
-            </router-link>  
+          <div class="col-12">
+            <div class="card p-0 bg-white">
+              <div>
+                <div>
 
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                  <p class="mt-3 ml-3"><b>Student Application List</b></p>
+
+                  <hr >
+                  <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+                    {{errorMessage}}
+                  </div>
+                  <table
+                      id="datatable"
+                      class="table table-sm table-striped text-sm"
+                  >
+                    <thead>
+                    <tr>
+                      <th><div class="ml-5">#</div></th>
+                      <th>Parent/Guardian</th>
+                      <th>Status</th>
+                      <th>Payment Status</th>
+                      <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(applist, index) in applicationInfoList" :key="index">
+                      <td><div class="ml-5">{{(index + 1) }}</div> </td>
+                      <td>{{ applist.Parent.surname+ " "+ applist.Parent.second_name+ " "+ applist.Parent.other_name  }} </td>
+                      <td>{{ applist.status }} </td>
+                      <td>{{ applist.application_fee_payment === false ? 'pending' : 'completed' }}</td>
+                      <td>
+                        <button
+                            data-bs-toggle="modal"
+                            data-bs-target="#infoModal"
+                            @click="setApplicationNumber(applist.number)"
+                            class="border-b border-r border-t border-l border-[#0d56c3] rounded-sm px-2 text-[#0d56c3] mr-2"
+                            title="View Details">
+                          <small><i class="bi bi-eye">view Details</i></small>
+                        </button>
+
+                        <router-link
+                            :to="{name:'application', query:{applicationId:applist.number}}"
+                        >
+                          <button
+                              class="border-b border-r border-t border-l border-[red] rounded-sm px-2 text-[red]"
+                              title="">
+                          <small style="color:rgb(244, 27, 27)">
+                            <i class="bi bi-arrow-right">&nbsp;Resume</i>
+                          </small></button>
+                        </router-link>
+
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div></div></div>
         </div>
-        </div></div></div>
-        </div>
+      </div>
+
 
     </div>
 </template>
@@ -67,6 +92,8 @@ const applicationInfoList = ref( [])
 let errorMessage = ref(null)
 
 const applications= ref(null)
+const isLoading = ref(true);
+
 
 
 const applicationStore= useApplicationStore()
@@ -92,6 +119,7 @@ watch(
     () => applicationStore.applicationListResponse,
     async (data) => {
         if(data){
+            isLoading.value = false; 
             applicationInfoList.value = data.data
         }
     },

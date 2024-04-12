@@ -20,8 +20,8 @@
     <!-- end  -->
     <div class="row mt-3">
     <div class="col-12">
-        <div class="card">
-        <div class="card-body" style="padding: 0;">
+        <div class="">
+        <div class="" style="padding: 0;">
          <div class="container mt-4">
            <div class="row">
               <div class="col-lg-12">
@@ -43,7 +43,7 @@
     
     
     <table
-    id="datatable"
+    id="table"
     class="table table-striped"
     style="font-size: 14px !important;"
     >
@@ -59,6 +59,13 @@
     </div>
     </thead>
     <tbody>
+      <tr v-for="(list, index) in assemblyData" :key="index">
+        <td>{{ index+1 }}</td>
+        <td>{{ list.primary_item_name }}</td>
+        <td>{{ list.secondary_item_name }}</td>
+        <td>{{ list.quantity }}</td>
+
+      </tr>
     
                 
     </tbody>
@@ -80,8 +87,10 @@
     import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 
     const cateringStore = useCateringStore()
+    const  notificationStore  = useNotificationStore()
     const errorMessage = ref(null)
     const thisDialog = ref(false)
+    const assemblyData = ref([])
     const showDialog = () => {
         thisDialog.value = true
     }
