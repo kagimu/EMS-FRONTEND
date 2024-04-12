@@ -10,8 +10,7 @@
   
   
               <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-  
-                <div
+                  <div
                     v-for="(item, idx) in menu" :key="idx"
                     class="list-group-item list-group-item-action cursor-pointer"
                     :class="item.value === menuSelected ? 'active' : ''"
@@ -19,10 +18,6 @@
                   <small style="font-size:12px;">{{item.text}}</small>
                 </div>
               </div>
-  
-  
-              
-  
             </div>
           </div>
 
@@ -49,8 +44,8 @@
               <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
                 <div
                     class="list-group-item list-group-item-action cursor-pointer"
-                    :class="menuSelected === 'manage-stock' ? 'active' : ''"
-                    @click="changeMenu('manage-stock')"
+                    :class="menuSelected === 'manage-feeding-users' ? 'active' : ''"
+                    @click="changeMenu('manage-feeding-users')"
                 >
                   <small style="font-size:12px;">Feeding Users</small>
                 </div>
