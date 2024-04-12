@@ -21,6 +21,7 @@ export const useCateringStore = defineStore("catering", () => {
     let dailySessionResponse = ref(null)
     let newStockResponse = ref(null)
     let stockResponse = ref(null)
+    let newFeedingGroupResponse = ref(null)
 
     const errorMessage = ref(null)
 
@@ -237,6 +238,19 @@ async function fetchStock() {
             }
         })
 }
+//feedingGroupUsers
+async function newFeedingGroupUsers(data) {
+    return await api.post("main/catering/feeding-group-users", data)
+        .then((response) => {
+            newFeedingGroupResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
     return {
         newUnitOfMeasureInfoResponse,
         errorMessage,
@@ -274,6 +288,8 @@ async function fetchStock() {
         newStock,
         fetchStock,
         newStockResponse,
-        stockResponse
+        stockResponse,
+        newFeedingGroupResponse, 
+        newFeedingGroupUsers
     }
 } )

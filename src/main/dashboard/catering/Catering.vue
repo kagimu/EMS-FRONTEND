@@ -80,8 +80,8 @@
                     <ManageStock></ManageStock>
                   </div>
 
-                  <div v-if="menuSelected === 'manage-users'">
-                  
+                  <div v-if="menuSelected === 'manage-feeding-users'">
+                <FeedingGroupUsers></FeedingGroupUsers>
                   </div>
                 
                   
