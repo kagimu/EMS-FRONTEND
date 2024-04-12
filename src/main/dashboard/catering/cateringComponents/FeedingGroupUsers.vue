@@ -34,7 +34,7 @@
                   <h5 style="font-size: 14px;margin-top: 2px;">Student List{{ interviewM }} </h5>
                  <div class="col-12">
                   <div class="ant-alert-action mt-3">
-                  <button  @click="showDialog" data-bs-toggle="modal" :data-bs-target="selectedStudentNumber.length > 0 ? '#admitMainModal' : ''" type="submit"
+                  <button  @click="showDialog" data-bs-toggle="modal" :data-bs-target="selectedStudentNumber.length > 0 ? '#' : ''" type="submit"
                    class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " 
                    style="float: rigt;"><i></i>Register Meal</button>
                 </div>
