@@ -196,11 +196,6 @@
               View Details
             </small>
           </button>
-
-
-
-
-            
             <!-- <RouterLink :to="{name : 'admit-student', query:{id:applist.number} }" class="link-danger" style="text-decoration: none;"  >
           <i class="bi bi-eye"></i>  
         </RouterLink>   -->

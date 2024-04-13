@@ -47,28 +47,33 @@
                       <td>{{ applist.Parent.surname+ " "+ applist.Parent.second_name+ " "+ applist.Parent.other_name  }} </td>
                       <td>{{ applist.status }} </td>
                       <td>{{ applist.application_fee_payment === false ? 'pending' : 'completed' }}</td>
-                      <td>
+ 
+                      <td v-if="applist.status == 'DRAFT'">
+                        <router-link
+                            :to="{name:'application', query:{applicationId:applist.number}}"
+                        >
+                          <button 
+                              class="border-b border-r border-t border-l border-[red] rounded-sm px-2 text-[red]"
+                              title="">
+                          <small style="color:rgb(244, 27, 27)">
+                            <i class="bi bi-arrow-right">&nbsp;Resume</i>
+                          </small></button>
+                          
+                        </router-link>
+                      </td>
+
+                      <td v-if="applist.status == 'INTERVIEW_SCHEDULED' || applist.status == 'ADMITTED' || applist.status == 'SUBMITTED'">
                         <button
                             data-bs-toggle="modal"
                             data-bs-target="#infoModal"
                             @click="setApplicationNumber(applist.number)"
                             class="border-b border-r border-t border-l border-[#0d56c3] rounded-sm px-2 text-[#0d56c3] mr-2"
                             title="View Details">
-                          <small><i class="bi bi-eye">view Details</i></small>
+                          <small><i class="bi bi-eye"></i> view Details</small>
                         </button>
-
-                        <router-link
-                            :to="{name:'application', query:{applicationId:applist.number}}"
-                        >
-                          <button
-                              class="border-b border-r border-t border-l border-[red] rounded-sm px-2 text-[red]"
-                              title="">
-                          <small style="color:rgb(244, 27, 27)">
-                            <i class="bi bi-arrow-right">&nbsp;Resume</i>
-                          </small></button>
-                        </router-link>
-
                       </td>
+
+
                     </tr>
                     </tbody>
                   </table>

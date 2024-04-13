@@ -188,7 +188,6 @@ const goBack = () =>{
       }
   )
 
-
 const addLearnerDetails = () => {
   if(!applicationNumber){
     buttonLoader.value = true
@@ -197,7 +196,12 @@ const addLearnerDetails = () => {
   }else{
     buttonLoader.value = true
     form.application_number = localStorage.getItem("applicationId")
-  applicationStore.updateLearnerDetails(form.learner_number,form)
+    if(form.learner_number){
+      applicationStore.updateLearnerDetails(form.learner_number,form)
+    }else{
+      applicationStore.newApplicationLeanerDetails(form)
+    }
+ 
   }
  
 }
@@ -304,11 +308,16 @@ watch (
         form.reason_for_choosing_school=data.Student.reason_for_choosing_school
         form.source_of_school_info = data.Student.source_of_school_info
         form.learner_number = data.Student.number
-        setSchoolAndCampus(data)
+        if(form.learner_number){
+          setSchoolAndCampus(data)
+       }
+        
       }
     },
     {deep:true}
 )
+
+
 
 async function setSchoolAndCampus(data) {
          await api.get("main/school/all")
