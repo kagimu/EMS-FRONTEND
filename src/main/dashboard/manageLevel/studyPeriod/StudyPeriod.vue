@@ -256,7 +256,8 @@ watch(
     async (data) => {
       if(data){
         deletionLoader.value = undefined
-        await studyPeriodStore.fetchStudyPeriod({level: campusCurriculumNumber, academic_year_number: academicYearNumber.value})
+        await studyPeriodData()
+        // await studyPeriodStore.fetchStudyPeriod({level: campusCurriculumNumber, academic_year_number: academicYearNumber.value})
       }
     },
     {deep:true}
@@ -266,11 +267,15 @@ watch(
     () => studyPeriodStore.editStudyPeriodResponse,
     async (data) => {
       if(data){
-        await studyPeriodStore.fetchStudyPeriod({level: campusCurriculumNumber, academic_year_number: academicYearNumber.value})
+        notificationStore.successToast("Success",data.message)
+        await studyPeriodData()
+        // await studyPeriodStore.fetchStudyPeriod({level: campusCurriculumNumber, academic_year_number: academicYearNumber.value})
       }
     },
     {deep:true}
 )
+
+
 
 </script>
 
