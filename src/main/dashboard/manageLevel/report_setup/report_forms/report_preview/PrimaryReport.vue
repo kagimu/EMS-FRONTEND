@@ -142,7 +142,7 @@ const props = defineProps({
                   <tr v-for="(assessment,assessment_index) in learning_area?.assessments" :key="assessment_index" style="border-bottom: 1px solid #f4f4f4;">
                     <td class="p-[5px] w-[30%] bg-amber-100">{{assessment.name}}</td>
                     <td class="p-[5px]" v-for="(report_score,report_score_index) in assessment.report_scores" :key="report_score_index">
-                      {{report_score.score}}
+                      {{report_score.score >= 0 ? report_score.score : '-'}}
                     </td>
                     <td class="p-[5px] w-[10%]">{{assessment.report_score_summary.summation}}</td>
                     <td class="p-[5px] w-[10%]">{{assessment.report_score_summary.grade}}</td>
