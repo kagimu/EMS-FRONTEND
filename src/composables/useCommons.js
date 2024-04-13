@@ -77,6 +77,25 @@ export default function useCommonsStore() {
         return { "html": htmlWithFormatting, "options": options, "fileName": fileName };
     }
 
+
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getUTCFullYear();
+        const month = padZero(date.getUTCMonth() + 1);
+        const day = padZero(date.getUTCDate());
+        const hour = padZero(date.getUTCHours());
+        const minute = padZero(date.getUTCMinutes());
+        const second = padZero(date.getUTCSeconds());
+
+        return `${year}-${month}-${day}T${hour}:${minute}:${second}.000Z`;
+    }
+
+    const padZero = (value) => {
+        return value < 10 ? '0' + value : value;
+    }
+
+
     return {
         loadGoogleAdsScript,
         classLevelList,
@@ -85,6 +104,7 @@ export default function useCommonsStore() {
         getOrdinalDate,
         getAgeFromDateOfBirth,
         initializePdfData,
-
+        formatDate,
+        padZero
     }
 }

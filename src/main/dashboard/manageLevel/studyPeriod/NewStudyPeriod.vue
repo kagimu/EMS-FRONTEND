@@ -189,6 +189,9 @@ const addStudyPeriod = () => {
 
   if(study_period_number.value){
     form.study_period_number = study_period_number.value
+    form.code = String(form.code)
+    form.study_period_start_date = commons.formatDate(form.study_period_start_date)
+    form.study_period_end_date = commons.formatDate(form.study_period_end_date)
     studyPeriodStore.editStudyPeriod(form)
   }else {
     studyPeriodStore.newStudyPeriod(form)
@@ -196,6 +199,18 @@ const addStudyPeriod = () => {
 
 }
 
+
+
+
+watch(
+    () => studyPeriodStore.editStudyPeriodResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
 
 
 watch(
