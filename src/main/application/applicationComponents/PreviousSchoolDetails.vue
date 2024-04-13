@@ -93,7 +93,6 @@ const buttonLoader = ref(false)
 let errorMessage = ref(null)
 const emit = defineEmits()
 
-
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
 
@@ -114,13 +113,12 @@ const formData =  reactive({
 
 const addSchoolDetails = () => {
   buttonLoader.value = true
-  
   if(!applicationNumber){
     buttonLoader.value = true
     let application_id = localStorage.getItem('applicationId')
   applicationStore.newApplicationPrevSchoolDetails(application_id,formData.schools)
   }else{
-    buttonLoader.value = true
+  buttonLoader.value = true
   applicationStore.updatePreviousSchools(applicationNumber,formData.schools)
   }
 }
