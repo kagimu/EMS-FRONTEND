@@ -120,28 +120,31 @@ const props = defineProps({
             <br />
 
 
-            <table  v-for="(learning_area,learning_area_index) in reportDetails?.learning_areas" :key="learning_area_index" class="w-full text-[13px] border">
+            <table class="w-full text-[13px] border">
 
-              <tr>
+              <tr v-for="(learning_area,learning_area_index) in reportDetails?.learning_areas" :key="learning_area_index">
+                <td
+                    :rowspan="learning_area?.assessments.length"
+                    style="
+                    padding: 5px;
+                    width: 10%;"
+                >
+                  <div
+                      style="transform: rotate(270deg); white-space: nowrap; font-size: 12px;"
+                  >
+                {{learning_area.name}}
+                  </div>
+
+                </td>
+
                 <td>
-
-                  <table  v-for="(assessment,assessment_index) in learning_area?.assessments" :key="assessment_index" class="w-full text-[13px] border">
-
-                    <tr v-if="assessment_index === 0" style="border-bottom: 1px solid #f4f4f4;">
-                    <td class="p-[5px] w-[10%] bg-amber-300" :rowspan="learning_area?.assessments.length" style="transform: rotate(270deg); white-space: nowrap;"> <small>{{learning_area.name}}</small></td>
-                    <td class="p-[5px] w-[30%] bg-amber-100">
-                      {{assessment.name}}
-                    </td>
-                    <td class="p-[5px]" v-for="(report_score,report_score_index) in assessment.report_scores" :key="report_score_index">{{report_score}}</td>
-                    <td class="p-[5px] w-[10%]">{{assessment.report_score_summary.grade}}</td>
-                    <td class="p-[5px] w-[20%] bg-blue-400">{{assessment.report_score_summary.comment}}</td>
-                    <td class="p-[5px] w-[10%] bg-amber-200">M.O</td>
-                  </tr>
-
-
-                  <tr v-if="assessment_index > 0" style="border-bottom: 1px solid #f4f4f4;">
+                  <table   class="w-full text-[13px] border">
+                  <tr v-for="(assessment,assessment_index) in learning_area?.assessments" :key="assessment_index" style="border-bottom: 1px solid #f4f4f4;">
                     <td class="p-[5px] w-[30%] bg-amber-100">{{assessment.name}}</td>
-                    <td class="p-[5px]" v-for="(report_score,report_score_index) in assessment.report_scores" :key="report_score_index">{{report_score}}</td>
+                    <td class="p-[5px]" v-for="(report_score,report_score_index) in assessment.report_scores" :key="report_score_index">
+                      {{report_score.score}}
+                    </td>
+                    <td class="p-[5px] w-[10%]">{{assessment.report_score_summary.summation}}</td>
                     <td class="p-[5px] w-[10%]">{{assessment.report_score_summary.grade}}</td>
                     <td class="p-[5px] w-[20%] bg-blue-400">{{assessment.report_score_summary.comment}}</td>
                     <td class="p-[5px] w-[10%] bg-amber-200">M.O</td>
