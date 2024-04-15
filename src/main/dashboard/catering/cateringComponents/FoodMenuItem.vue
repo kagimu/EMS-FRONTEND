@@ -80,7 +80,7 @@
       <td>{{ list.campus_name }}</td>
       <td>{{ list.type }}&nbsp;
        <span  v-if="list.type=='ASSEMBLED'"><button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
-            <i class="bi bi-eye" style="color:rgb(3, 85, 148)" @click="showItems(list.number)"></i>
+            <i  class="bi bi-eye" style="color:rgb(3, 85, 148)" @click="showItems(list.number)"></i>
           </button><button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
             <i class="bi bi-dash" style="color:rgb(3, 85, 148)" @click="hideItems"></i>
           </button>

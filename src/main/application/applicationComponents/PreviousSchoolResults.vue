@@ -50,7 +50,7 @@
             <div class="col-lg-7">
             </div>
             <div class="col-lg-3">
-              <button type="submit" class="btn btn-primary mb-2 btn-sm" style="color:white !important">Submit
+              <button type="submit" class="btn btn-primary mb-2 btn-sm" style="color:white !important">Next
                 <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
               <span class="visually-hidden">Loading...</span>
             </div>
@@ -118,16 +118,17 @@ const onFileChange = (event) => {
 
 
   const addSchoolResults = () => {
-  let student_number = localStorage.getItem('studentNumber')
-  buttonLoader.value = true
+    emit("next", 5 )
+  // let student_number = localStorage.getItem('studentNumber')
+  // buttonLoader.value = true
 
-  const formData = new FormData();
-  formData.set("file", file.value.files[0]);
-  formData.set("assessment_area_number", formD.assessmentArea.map(subject => subject.subjsectName));
-  formData.set("student_number", student_number);
-  formData.set("score", formD.assessmentArea.map(subject => parseInt(subject.score)));
+  // const formData = new FormData();
+  // formData.set("file", file.value.files[0]);
+  // formData.set("assessment_area_number", formD.assessmentArea.map(subject => subject.subjsectName));
+  // formData.set("student_number", student_number);
+  // formData.set("score", formD.assessmentArea.map(subject => parseInt(subject.score)));
 
-  applicationStore.createPreviousSchoolResults(formData)
+  // applicationStore.createPreviousSchoolResults(formData)
   }
 
   watch (
