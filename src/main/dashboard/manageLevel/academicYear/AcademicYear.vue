@@ -146,7 +146,7 @@ watch(
     async (data) => {
       if(data){
         await academicYearStore.fetchAcademicYear(campusCurriculumNumber)
-        notificationStore.successToast("Success","Login successfully")
+        notificationStore.successToast("Success",data.message)
       }
     },
     {deep:true}
@@ -178,6 +178,7 @@ watch(
     () => academicYearStore.editAcademicYearResponse,
     async (data) => {
       if(data){
+        notificationStore.successToast("Success",data.message)
         await academicYearStore.fetchAcademicYear(campusCurriculumNumber)
       }
     },
@@ -194,6 +195,8 @@ watch(
     },
     {deep:true}
 )
+
+
 
 </script>
 

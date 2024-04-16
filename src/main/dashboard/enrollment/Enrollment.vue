@@ -180,10 +180,11 @@
           <tr>
             <th style="width: 2px;">#</th>
             <th>ADN</th>
-            <th>Study Period</th>
+            <th>StudyPeriod</th>
             <th>Student</th>
             <th>School</th>
             <th>Campus</th>
+            <th>Class</th>
             <th>Enrolment Date</th>
             <!-- <th>Class</th> -->
             <th>Action</th>
@@ -197,11 +198,13 @@
             <td>
                 <input type="checkbox"   class="checkbox-primary">
             </td>
-            <td>{{ enrolData.Student.apn }}</td>
-            <td>{{ enrolData.StudyPeriod.study_period_name }}</td>
-            <td>{{ enrolData.Student.surname + " "+ enrolData.Student.second_name + " "  + enrolData.Student.other_name}}</td>
-            <td>{{enrolData.School.name }}</td>
-            <td>{{ enrolData.Campus.name }}</td>
+            <td>{{ enrolData.adn }}</td>
+            <td>{{ enrolData.study_period }}</td>
+            <td>{{ enrolData.student_surname + " "+ enrolData.student_second_name + " "  + enrolData.student_other_name}}</td>
+            <td>{{enrolData.school }}</td>
+            <td>{{ enrolData.campus }}</td>
+            <td>{{ enrolData.class }}</td>
+            
             <td>{{ enrolData.enrollment_date }}</td>
             <td>
                 <!-- <button><i class="bi bi-trash"></i></button> &nbsp;
@@ -277,10 +280,15 @@
   
   const fetchCampuses = (school_number) => {
     campusStore.fetchCampuses(school_number)
+    //addfilter
+    let campusNumber="",campusClass="",StreamNumber="",studyPeriodN="";
+    enrollmentStore.fetchEnrolment(school_number,campusNumber,campusClass,StreamNumber,studyPeriodN)
   }
   
   const fetchClasses = (campus_number) => {
     campusStore.fetchClassesByCampus(campus_number)
+    let campusNumber="",campusClass="",StreamNumber="",studyPeriodN="";
+    // enrollmentStore.fetchEnrolment(school_number,campusNumber,campusClass,StreamNumber,studyPeriodN)
   }
   
   

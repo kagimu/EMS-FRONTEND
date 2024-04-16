@@ -67,9 +67,9 @@
                   <div v-if="menuSelected === 'units-of-measurement'">
                  <UnitsOfMeasure></UnitsOfMeasure>
                   </div>
-                  <div v-if="menuSelected === 'item-assembly'">
+                  <!-- <div v-if="menuSelected === 'item-assembly'">
                     <ManageItemsAssembly></ManageItemsAssembly>
-                  </div>
+                  </div> -->
                   <div v-if="menuSelected === 'feeding-group'">
                  <FeedingGroup></FeedingGroup>
                   </div>
@@ -124,10 +124,10 @@
       text:"Menu Items",
       value:"menu-items"
     },
-    {
-      text:"Item Assembly",
-      value:"item-assembly"
-    },
+    // {
+    //   text:"Item Assembly",
+    //   value:"item-assembly"
+    // },
     {
       text:"Units Of Measure",
       value:"units-of-measurement"

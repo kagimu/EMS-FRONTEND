@@ -130,6 +130,7 @@ const academic_year_number = ref(null)
 const loader = ref(false)
 const  notificationStore  = useNotificationStore()
 
+
 const currentYear = ref((new Date()).getFullYear());
 
 
@@ -166,12 +167,21 @@ const addAcademicYear = () => {
   loader.value = true
   if(academic_year_number.value){
     form.academic_year_number = academic_year_number.value
+    form.code = String(form.code)
+    form.no_of_study_period = String(form.no_of_study_period)
+    form.academic_year_start_date = commons.formatDate(form.academic_year_start_date)
+    form.academic_year_end_date = commons.formatDate(form.academic_year_end_date)
     academicYearStore.editAcademicYear(form)
   }else {
     academicYearStore.newAcademicYear(form)
   }
 
 }
+
+
+
+
+
 
 const clearAcademicYear = () => {
      form.code = null
@@ -186,6 +196,17 @@ const clearAcademicYear = () => {
 defineExpose({
   clearAcademicYear
 })
+
+watch(
+    () => academicYearStore.editAcademicYearResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
+
 
 watch(
     () => classStore.campusLevelResponse,

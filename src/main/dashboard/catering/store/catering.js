@@ -23,6 +23,9 @@ export const useCateringStore = defineStore("catering", () => {
     let stockResponse = ref(null)
     let feedingGroupUsersResponse = ref(null)
     let newFeedingGroupResponse = ref(null)
+    let menuItemDetailsResponse = ref(null)
+    let updateMenuItemResponse = ref(null)
+    let updateItemAssemblyResponse = ref(null)
 
     const errorMessage = ref(null)
 
@@ -263,6 +266,40 @@ async function fetchFeedingGroupUserById(userId) {
         })
 }
 
+async function fetchMenuItemDetails(menuNumber) {
+    return await api.get("main/catering/menu-items/"+menuNumber)
+        .then((response) => {
+            menuItemDetailsResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+async function updateMenuItem(data,menuItemNumber) {
+    return await api.put("main/catering/menu-items/"+menuItemNumber,data)
+        .then((response) => {
+            updateMenuItemResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function updateAssemblyItem(data,menuItemNumber) {
+    return await api.put("main/catering/menu-items/"+menuItemNumber,data)
+        .then((response) => {
+            updateItemAssemblyResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
     return {
         newUnitOfMeasureInfoResponse,
         errorMessage,
@@ -304,6 +341,12 @@ async function fetchFeedingGroupUserById(userId) {
         newFeedingGroupResponse, 
         newFeedingGroupUsers,
         feedingGroupUsersResponse,
-        fetchFeedingGroupUserById
+        fetchFeedingGroupUserById,
+        menuItemDetailsResponse,
+        fetchMenuItemDetails,
+        updateMenuItemResponse,
+        updateMenuItem,
+        updateItemAssemblyResponse,
+        updateAssemblyItem
     }
 } )

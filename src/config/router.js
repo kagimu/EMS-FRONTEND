@@ -71,7 +71,7 @@ import InterviewManagement from "@/main/dashboard/studentApplication/InterviewMa
 import Catering from "@/main/dashboard/catering/Catering.vue"
 import FoodMenuItem  from "@/main/dashboard/catering/cateringComponents/FoodMenuItem.vue"
 import FeedingGroupUserDetails  from "@/main/dashboard/catering/cateringComponents/FeedingGroupUserDetails.vue"
-
+import ApplicationSuccessPage from "@/main/application/applicationComponents/ApplicationSuccessPage.vue"
 
 
 const router = createRouter({
@@ -485,6 +485,8 @@ const router = createRouter({
 
                 }},
 
+              
+
             ]
         },
 
@@ -501,6 +503,7 @@ const router = createRouter({
                 {path: 'start', component: Application, name:'application'},
                 {path: 'admission', component: Application, name:'admission_history'},
                 {path: 'applications', component: ClientApplications, name:'application_history'},
+                {path: 'application-success', component: ApplicationSuccessPage, name: "application-success",},
             ]
         },
         {

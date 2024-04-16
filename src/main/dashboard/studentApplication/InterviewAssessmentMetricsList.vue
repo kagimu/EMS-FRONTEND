@@ -20,10 +20,22 @@ const errorMessage = ref(null)
 const examTypeListData = ref([])
 
 
-onMounted(
-    () => {
-      studentApplicationStore.fetchAssessmentMetricsOnInterview(props.interviewNumber)
-    }
+
+// onMounted(
+//     () => {
+//       studentApplicationStore.fetchAssessmentMetricsOnInterview(props.interviewNumber)
+//     }
+// )
+
+watch(
+    () => props.interviewNumber,
+    async (data) => {
+      if(data){
+        // alert(props.interviewNumber)
+        studentApplicationStore.fetchAssessmentMetricsOnInterview(props.interviewNumber)
+      }
+    },
+    {deep:true}
 )
 
 watch(
@@ -108,7 +120,7 @@ watch(
   <li class="list-group-item d-flex justify-content-between align-items-start">
     
     <div class="ms-2 me-auto">
-      <div class="">{{list.AssessmentMetric.name + "(" +list.AssessmentMetric.CampusClass.class_name+" )"}}</div>
+      <div class="">{{list.AssessmentMetric.name + "(" +list.Interview.name+" )"}}</div>
     </div>
     <router-link
     class="btn btn-outline-primary btn-sm" 

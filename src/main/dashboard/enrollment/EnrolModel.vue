@@ -1,6 +1,6 @@
 <template>
     <div> 
-      {{ studentN }} 
+      <!-- {{ studentN }}  -->
         <form @submit.prevent="Enrol()">
           <div class="mb-2">
             <label class="textColor"><small>School</small> </label>
