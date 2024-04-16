@@ -80,11 +80,11 @@
       <td>{{ list.campus_name }}</td>
       <td>{{ list.type }}&nbsp;
        <span  v-if="list.type=='ASSEMBLED'"><button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
-            <i class="bi bi-eye" style="color:rgb(3, 85, 148)" @click="showItems(list.number)"></i>
+            <i  class="bi bi-eye" style="color:rgb(3, 85, 148)" @click="showItems(list.number)"></i>
           </button><button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
             <i class="bi bi-dash" style="color:rgb(3, 85, 148)" @click="hideItems"></i>
           </button>
-          <ul v-if="sta==1">
+          <ul v-if="sta==list.number">
             <li>Item 1</li>
             <li>Item 2</li>
           </ul>
@@ -152,7 +152,7 @@
 const sta = ref(null)
 
 const showItems = (primaryItemNumber) =>{
-  sta.value=1
+  sta.value=primaryItemNumber
   alert(primaryItemNumber)
   cateringStore.fetchMenuItemDetails(primaryItemNumber)
 }
