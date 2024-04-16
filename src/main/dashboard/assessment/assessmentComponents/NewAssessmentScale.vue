@@ -85,11 +85,22 @@
         <div class="row">
             <div class="col-lg-6">
                 <label class="textColor"><small>Minimum Value</small></label>
-               <input v-model="form.minimum_points" type="number" class="form-control">
+               <input
+                   maxlength="3"
+                   @keypress="commons.numbersOnlyValidator($event)"
+                   v-model="form.minimum_points"
+                   type="text"
+                   class="form-control"
+               >
             </div>
             <div class="col-lg-6">
                 <label class="textColor"><small>Maximum Value</small></label>
-             <input v-model="form.maximum_points" type="number" class="form-control">
+             <input
+                 maxlength="3"
+                 @keypress="commons.numbersOnlyValidator($event)"
+                 v-model="form.maximum_points"
+                 type="text"
+                 class="form-control">
             </div>
 
         </div>
@@ -129,7 +140,8 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import { useAssessmentStore } from "../store/assessment";
 import { useLevelStore } from "../../../settings/level/store/level";
-
+import useCommonsStore from "@/composables/useCommons.js";
+const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
 const campusList = ref([])
 const schoolList = ref([])
