@@ -53,13 +53,22 @@
 
 
       <div class="row mx-auto">
-        <div :class="defaultMenuSize ? 'col-12 col-sm-1 col-md-0.5 col-lg-0.5' : 'col-12 col-sm-1 col-md-2 col-lg-2'" style="background-color: #ffffff; border-right: 1px solid #dedede; padding: 0; height: 90vh;">
-
+        <div
+            :class="defaultMenuSize ? 'col-12 col-sm-1 col-md-0.5 col-lg-0.5' : 'col-12 col-sm-1 col-md-2 col-lg-2'"
+            style="
+            padding-bottom: 50px;
+            background-color: #ffffff;
+            border-right: 1px solid #dedede;
+            padding-left: 0;
+            padding-right: 0;
+            height: 90vh;
+            overflow-y: scroll;
+            scrollbar-width: thin;">
 
           <div
-              class="list-group list-group-flush"
+              class="list-group list-group-flush text-[13px]"
               :class="defaultMenuSize ? 'text-center' : ''"
-              style="font-size: 13px;">
+             >
              <router-link
                  v-for="(lst,idx) in menuList" :key="idx"
                  v-show="can(lst.action, 'general')"
@@ -77,7 +86,8 @@
 
 
         </div>
-        <div :class="defaultMenuSize ? 'col-12 col-sm-11 col-md-11 col-lg-11 mx-auto pb-10' : 'col-12 col-sm-11 col-md-10 col-lg-10 mx-auto pb-10'" style="background-color: #ecf0f5; height: 90vh; overflow-y: scroll; scrollbar-width: thin;">
+        <div :class="defaultMenuSize ? 'col-12 col-sm-11 col-md-11 col-lg-11 mx-auto pb-10' : 'col-12 col-sm-11 col-md-10 col-lg-10 mx-auto pb-10'" class="bg-[#ecf0f5] h-90vh overflow-y-scroll scrollbar-thin" style="background-color: #ecf0f5; height: 90vh; overflow-y: scroll; scrollbar-width: thin;">
+<!--        <div :class="defaultMenuSize ? 'col-12 col-sm-11 col-md-11 col-lg-11 mx-auto pb-10' : 'col-12 col-sm-11 col-md-10 col-lg-10 mx-auto pb-10'" class="bg-[#ecf0f5] h-90vh overflow-y-scroll scrollbar-thin">-->
 
             <router-view></router-view>
 
