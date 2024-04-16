@@ -84,9 +84,6 @@
         </div>
 
 
-
-
-
       <div class="flex justify-content-end mt-4" style="width: 100%;">
         <button
             type="submit"
@@ -190,7 +187,7 @@ const clearAcademicYear = () => {
       form.academic_year_start_date = null
       form.academic_year_end_date = null
       form.level_number = ""
-       academic_year_number.value = null
+      academic_year_number.value = null
 }
 
 defineExpose({
@@ -203,8 +200,7 @@ watch(
       if(data){
         loader.value = false
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -214,8 +210,7 @@ watch(
       if(data){
         campusLevelInfo.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -230,8 +225,7 @@ watch(
         form.academic_year_start_date = null
         form.academic_year_end_date = null
       }
-    },
-    {deep:true}
+    }
 )
 
 watch(
@@ -241,8 +235,7 @@ watch(
         loader.value = false
         notificationStore.errorToast("Error",data.message)
       }
-    },
-    {deep:true}
+    }
 )
 
 watch(
@@ -258,8 +251,7 @@ watch(
             form.level_number = info.level_number
             academic_year_number.value = info.number
       }
-    },
-    {deep:true}
+    }
 )
 
 </script>

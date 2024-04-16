@@ -208,8 +208,7 @@ watch(
       if(data){
         loader.value = false
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -223,8 +222,7 @@ watch(
         form.academic_year_number = ""
         form.study_period_date_range = null
       }
-    },
-    {deep:true}
+    }
 )
 
 watch(
@@ -233,8 +231,7 @@ watch(
       if(data){
         academicYearList.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -246,8 +243,7 @@ watch(
         loader.value = false
         notificationStore.errorToast("Error",data.message)
       }
-    },
-    {deep:true}
+    }
 )
 
 watch(
@@ -256,8 +252,7 @@ watch(
       if(data){
         campusLevelList.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -275,8 +270,7 @@ watch(
             fetchAcademicYear(info.level_number)
             study_period_number.value = info.number
       }
-    },
-    {deep:true}
+    }
 )
 
 </script>

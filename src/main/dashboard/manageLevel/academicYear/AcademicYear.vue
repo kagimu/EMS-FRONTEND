@@ -148,8 +148,7 @@ watch(
         await academicYearStore.fetchAcademicYear(campusCurriculumNumber)
         notificationStore.successToast("Success",data.message)
       }
-    },
-    {deep:true}
+    }
 )
 
 watch(
@@ -158,8 +157,7 @@ watch(
       if(data){
         academicYearList.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
 watch(
@@ -169,8 +167,7 @@ watch(
         deletionLoader.value = undefined
         await academicYearStore.fetchAcademicYear(campusCurriculumNumber)
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -181,8 +178,7 @@ watch(
         notificationStore.successToast("Success",data.message)
         await academicYearStore.fetchAcademicYear(campusCurriculumNumber)
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -192,8 +188,7 @@ watch(
       if(data){
         deletionLoader.value = undefined
       }
-    },
-    {deep:true}
+    }
 )
 
 

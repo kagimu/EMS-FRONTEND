@@ -226,8 +226,7 @@ watch(
       if(data){
         studyPeriodList.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
 watch(
@@ -237,8 +236,7 @@ watch(
         await studyPeriodData()
         notificationStore.successToast("Success","Study Period added successfully")
       }
-    },
-    {deep:true}
+    }
 )
 
 watch(
@@ -247,8 +245,7 @@ watch(
       if(data){
         academicYearList.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
 watch(
@@ -259,8 +256,7 @@ watch(
         await studyPeriodData()
         // await studyPeriodStore.fetchStudyPeriod({level: campusCurriculumNumber, academic_year_number: academicYearNumber.value})
       }
-    },
-    {deep:true}
+    }
 )
 
 watch(
@@ -271,8 +267,7 @@ watch(
         await studyPeriodData()
         // await studyPeriodStore.fetchStudyPeriod({level: campusCurriculumNumber, academic_year_number: academicYearNumber.value})
       }
-    },
-    {deep:true}
+    }
 )
 
 
