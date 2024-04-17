@@ -98,22 +98,21 @@
           style="font-size: 11px !important;" >
         <thead>
         <tr>
+          <th>#</th>
           <th scope="col">Name</th>
           <th scope="col">Class (s)</th>
           <th scope="col">Values(Min - Max)</th>
-          <th scope="col">Score</th>
-          <th scope="col">Grade Standard</th>
-          <th scope="col">School</th>
+          <th scope="col">Weight</th>
           <th>Actions</th>
         </tr>
         </thead>
         <tbody>
             <tr v-for="(aggregateList,index) in aggregateData" :key="index">
-            <td>{{aggregateList.name}}</td>
+            <td>{{ index+1 }}</td>
             <td>{{ aggregateList.name }}</td>
+            <td>Give me Class</td>
             <td>{{  aggregateList.min_value}} - {{  aggregateList.max_value}}</td>
-            <td>{{aggregateList.min_scale}}</td>
-            <td>{{aggregateList.school}}</td>
+            <td>{{aggregateList.weight}}</td>
             <td>
           <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>

@@ -2,7 +2,7 @@
     <div>
 
 
-    <div class="row">
+    <div class="row mt-4">
 <div class="col-lg-3">
     <div class="mb-2">
             <label class="textColor"><small>Assessment</small> 
@@ -40,7 +40,7 @@
       <tr v-for="(studentList , index) in interviewStudentList" :key="index" >
         <td>{{ index+1 }}</td>
         <td scope="col">{{ studentList.Student.apn }}</td>
-        <td>{{ studentList.Student.surname + " " + studentList.Student.second_name + " " + studentList.Student.other_name}}</td>
+        <td style="text-transform: capitalize;">{{ studentList.Student.surname + " " + studentList.Student.second_name + " " + studentList.Student.other_name}}</td>
         <td scope="col" style="width: 150px;">
             <input type="number" class="form-control" v-model="score">
         </td>

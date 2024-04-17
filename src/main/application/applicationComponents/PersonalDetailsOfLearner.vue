@@ -210,9 +210,11 @@ watch (
     () => applicationStore.newApplicationDetailsLearnerResponse,
     async (data) => {
       if(data){
-        localStorage.setItem("studentNumber", data.student_number)
+        localStorage.setItem("CampusClassNumber", form.campus_class_number)
+        localStorage.setItem("studentNumber", data.data.number)
+        // alert(data.apn)
         buttonLoader.value = false
-        notificationStore.successToast("Success", data.message)
+        // notificationStore.successToast("Successs", data.message)
         emit("next", 3 )
       }
     },

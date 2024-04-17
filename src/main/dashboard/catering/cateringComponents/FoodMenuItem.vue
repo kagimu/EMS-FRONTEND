@@ -153,7 +153,7 @@ const sta = ref(null)
 
 const showItems = (primaryItemNumber) =>{
   sta.value=primaryItemNumber
-  alert(primaryItemNumber)
+  // alert(primaryItemNumber)
   cateringStore.fetchMenuItemDetails(primaryItemNumber)
 }
 const hideItems = () =>{
