@@ -80,7 +80,7 @@
             </div>
 
             <div>
-              <button
+              <button style="display: none;"
                   class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
                   @click="showAssesssmentMetricsDialog(interview)"
                   data-bs-toggle="modal"
@@ -88,7 +88,7 @@
               > Assessement</button>
               
 
-              <button
+              <button style="display: none;"
                   class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
                   @click="showInterviewAssessmentDialog(interview)"
                   data-bs-toggle="modal"
