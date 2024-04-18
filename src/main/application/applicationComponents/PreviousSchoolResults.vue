@@ -81,15 +81,17 @@
 
   onMounted(
     async () => {
-      await assessmentStore.fetchAssessmentAreaByClass(campus_class_number)
+      if(campus_class_number){
+        await assessmentStore.fetchAssessmentAreaByClass(campus_class_number)
+      } 
     } )
 //     watch (
-//     () => assessmentStore.errorMessage,
+//     () => localStorage.getItem('CampusClassNumber'),
 //     async (data) => {
 //       if(data){
-//         errorMessage.value = data.message
-        
-//         notificationStore.errorToast("Error",data.message)
+//         if(localStorage.getItem('CampusClassNumber')){
+//           assessmentStore.fetchAssessmentAreaByClass(campus_class_number)
+//         }
 
 //       }
 //     },
@@ -162,7 +164,7 @@ const onFileChange = (event) => {
   formData.set("student_number", student_number);
   formData.set("score", formD.assessmentArea.map(assessmentArea => parseInt(assessmentArea.score)));
 
-  alert(JSON.stringify(formData))
+  //alert(JSON.stringify(formData))
   applicationStore.createPreviousSchoolResults(formData)
   }
 
@@ -187,7 +189,7 @@ const onFileChange = (event) => {
         errorMessage.value = data.message
         buttonLoader.value = false
         notificationStore.errorToast("Error",data.message)
-        emit("next", 5 )
+        // emit("next", 5 )
       }
     },
     {deep:true}
