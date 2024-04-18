@@ -113,31 +113,42 @@ const props = defineProps({
         <tr>
           <td>
 
+
+
+
+
+
+
             <table class="w-full text-[13px]" style="border: 1px solid #eef0f2" cellspacing="0" cellpadding="0">
               <tr>
-                <td style="width: 10%; border-right: 1px solid #eef0f2">&nbsp;</td>
-                <td style="width: 30%; border-right: 1px solid #eef0f2; padding: 4px;"><div style="margin-left: 4px;">SUBJECT UNIT</div></td>
-                <td style="width: 5%; border-right: 1px solid #eef0f2;" v-for="(column,column_index) in reportDetails?.report_columns" :key="column_index"><div style="margin-left: 4px;">{{column}}</div></td>
-                <td style="width: 5%; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">Average</div></td>
-                <td style="width: 5%; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">Aggr</div></td>
-                <td style="width: 25%; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">Remark</div></td>
-                <td style="width: 5%; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">Initial</div></td>
+                <td style="width: 5%; border-right: 1px solid #eef0f2">&nbsp;</td>
+                <td :colspan="(5 + Number(reportDetails?.report_columns.length))">
+                  <table cellspacing="0" cellpadding="0" style="width: 100%; font-size: 13px; border-top: 1px solid #eef0f2;">
+                    <tr>
+                      <td style="width: 30%; padding: 4px; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">SUBJECT UNIT</div></td>
+                      <td style="width: 10%; border-right: 1px solid #eef0f2;" v-for="(column,column_index) in reportDetails?.report_columns" :key="column_index"><div style="margin-left: 4px;">{{column}}</div></td>
+                      <td style="width: 10%; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">Average</div></td>
+                      <td style="width: 5%; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">Aggr</div></td>
+                      <td style="width: 25%; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">Remark</div></td>
+                      <td style="width: 5%; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">Initial</div></td>
+                    </tr>
+                  </table>
+                </td>
+
               </tr>
+
+
 
               <tr v-for="(learning_area,learning_area_index) in reportDetails?.learning_areas" :key="learning_area_index">
                 <td
                     class="border-r border-t"
-                    :rowspan="learning_area?.assessments.length"
-                    style="
-                    padding: 5px;
-                    width: 10%;"
                 >
                   <div
                       style="
-                      margin-bottom: 15px;
+                      padding: 15px;
                       transform: rotate(270deg);
                       white-space: nowrap;
-                      font-size: 12px;"
+                      font-size: 14px;"
                   >
                 {{learning_area.name}}
                   </div>
@@ -148,10 +159,10 @@ const props = defineProps({
                   <table cellspacing="0" cellpadding="0" style="width: 100%; font-size: 13px; border-top: 1px solid #eef0f2;">
                   <tr v-for="(assessment,assessment_index) in learning_area?.assessments" :key="assessment_index" style="border-bottom: 1px solid #f4f4f4;">
                     <td style="width: 30%; padding: 4px; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">{{assessment.name}}</div></td>
-                    <td style="width: 5%; padding: 4px; border-right: 1px solid #eef0f2;" v-for="(report_score,report_score_index) in assessment.report_scores" :key="report_score_index">
+                    <td style="width: 10%; padding: 4px; border-right: 1px solid #eef0f2;" v-for="(report_score,report_score_index) in assessment.report_scores" :key="report_score_index">
                       {{report_score.score >= 0 ? report_score.score : '-'}}
                     </td>
-                    <td style="width: 5%; padding: 4px; border-right: 1px solid #eef0f2;">{{assessment.report_score_summary.summation}}</td>
+                    <td style="width: 10%; padding: 4px; border-right: 1px solid #eef0f2;">{{assessment.report_score_summary.summation}}</td>
                     <td style="width: 5%; padding: 4px; border-right: 1px solid #eef0f2;">{{assessment.report_score_summary.grade}}</td>
                     <td style="width: 25%; padding: 4px; border-right: 1px solid #eef0f2;">{{assessment.report_score_summary.comment}}</td>
                     <td style="width: 5%; padding: 4px; border-right: 1px solid #eef0f2;">M.O</td>
