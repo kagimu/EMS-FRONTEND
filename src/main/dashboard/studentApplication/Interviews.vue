@@ -80,7 +80,7 @@
             </div>
 
             <div>
-              <button
+              <button style="display: none;"
                   class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
                   @click="showAssesssmentMetricsDialog(interview)"
                   data-bs-toggle="modal"
@@ -88,14 +88,14 @@
               > Assessement</button>
               
 
-              <button
+              <button style="display: none;"
                   class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
                   @click="showInterviewAssessmentDialog(interview)"
                   data-bs-toggle="modal"
                   data-bs-target="#interviewAssessmentModal"
               >  Add Interview Assessment</button>
 
-              <router-link style="display:none"
+              <router-link style="display:non"
                   class="text-decoration-none"
                   :to="{name:'manage-interviews', query:{interview_id:interview.number, interview:interview.name}}">
                 <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
