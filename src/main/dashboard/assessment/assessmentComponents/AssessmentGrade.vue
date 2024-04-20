@@ -11,6 +11,7 @@ import {useRouter} from "vue-router";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import useNotificationStore from "@/composables/useNotification.js";
 
 const { can } = useAbility()
 
@@ -19,6 +20,7 @@ const assessmentStore = useAssessmentStore()
 const levelStore = useLevelStore()
 const classStore = useClassesStore()
 const academicYearStore = useAcademicYearStore()
+const notificationStore  = useNotificationStore()
 
 const errorMessage = ref(null)
 const showDialog = ref(null)
@@ -117,6 +119,17 @@ watch (
     },
     {deep:true}
 )
+
+watch (
+    () => assessmentStore.newAssessmentScaleResponse,
+    async (data) => {
+      if(data){
+        showAssessmentScaleModal.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
 </script>
 
 <template>

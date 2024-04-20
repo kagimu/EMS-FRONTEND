@@ -99,16 +99,15 @@ watch (
     () => props.scaleD,
     async (data) => {
       if(data){
-        title.value = "UPDATE ASSESSMENT GRADE SCALE"
         scaleDataList.value =props.scaleD
-        form.name = props.scaleD.name
-        form.maximum_points=props.scaleD.maximum_points,
-            form.minimum_points=props.scaleD.minimum_points,
-            form.campus_class_number=props.scaleD.campus_class_number,
-            form.grade=props.scaleD.Grade,
-            form.description=props.scaleD.description,
-            form.abbreviation=props.scaleD.abbreviation,
-            form.remarks=props.scaleD.remarks
+       form.name = props.scaleD.name
+       form.maximum_points=props.scaleD.maximum_points
+       form.minimum_points=props.scaleD.minimum_points
+       form.campus_class_number=props.scaleD.campus_class_number
+       form.grade=props.scaleD.Grade
+       form.description=props.scaleD.description
+       form.abbreviation=props.scaleD.abbreviation
+       form.remarks=props.scaleD.remarks
       }
     },
     {deep:true}
@@ -134,8 +133,7 @@ watch (
     async (data) => {
       if(data){
         buttonLoader.value = false
-        notificationStore.successToast("Success", data.message)
-        form.name = null
+            form.name = null
             form.maximum_points=null
             form.minimum_points=null
             form.campus_class_number=null
@@ -144,8 +142,7 @@ watch (
             form.abbreviation=null
             form.remarks=null
       }
-    },
-    {deep:true}
+    }
 )
 
 
