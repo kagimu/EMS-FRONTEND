@@ -35,6 +35,7 @@ const campusNumber = routerData.currentRoute.value.query.id
 
 
 const form = reactive({
+  code : null,
   name : null,
   min_value: null,
   max_value: null,
@@ -63,6 +64,7 @@ watch(
 )
 
 const createScale = () =>{
+  form.code = parseInt(form.code)
   assessmentStore.createAggregateScale(form)
 }
 

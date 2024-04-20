@@ -103,7 +103,7 @@
     } )
 
   watch(
-    () => assessmentStore.assesmentAreaByClassResponse,
+    () => assessmentStore.assessmentAreaByClassResponse,
     async (data) => {
       if(data){
         AsessmentListData.value = data.data

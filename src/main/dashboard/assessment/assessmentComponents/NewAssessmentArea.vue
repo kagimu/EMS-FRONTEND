@@ -1,6 +1,6 @@
 <template>
 <div>
-    <form @submit.prevent="addAssesmentArea">
+    <form @submit.prevent="addAssessmentArea">
            
            <div class="mb-2">
              <label class="textColor"><small>Level</small> <span class="star">*</span></label>
@@ -175,27 +175,24 @@ const showInterviewDialog = () => {
 interviewDialog.value = true;
 }
 
-  const addAssesmentArea = () => {
-
-  // alert(JSON.stringify(form))
-  interviewDialog.value = true;
+  const addAssessmentArea = () => {
+   interviewDialog.value = true;
    buttonLoader.value = true
-   assessmentStore.createAssesmentAreas(form)
+   assessmentStore.createAssessmentAreas(form)
   }
 
   watch (
-  () => assessmentStore.newAssesmentAreasResponse,
+  () => assessmentStore.newAssessmentAreasResponse,
   async (data) => {
     if(data){
       buttonLoader.value = false
-      assessmentStore.fetchAssesmentArea()
-      notificationStore.successToast("Success", data.message)
-      form.name=null,
+      // assessmentStore.fetchAssesmentArea()
+      // notificationStore.successToast("Success", data.message)
+    form.name=null,
     form.curriculum_class_number=null,
     form.subject_number=null
     }
-  },
-  {deep:true}
+  }
 )
 
 watch (
