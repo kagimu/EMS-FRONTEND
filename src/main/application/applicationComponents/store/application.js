@@ -313,7 +313,8 @@ export const useApplicationStore = defineStore("application", () => {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
-            })
+            }
+        )
         
                 .then((response) => {
                     previousSchoolResultresponse.value = response.data
@@ -324,6 +325,25 @@ export const useApplicationStore = defineStore("application", () => {
                     }
                 })
         }
+
+        // async function createPreviousSchoolResults(data) {
+        //     return await api.post("main/previous-school-results", data,
+        //     {
+        //         headers: {
+        //             "Content-Type": "multipart/form-data"
+        //         }
+        //     }
+        // )
+        
+        //         .then((response) => {
+        //             previousSchoolResultresponse.value = response.data
+        //         })
+        //         .catch((response) => {
+        //             if(response){
+        //                 errorMessage.value = response.response.data
+        //             }
+        //         })
+        // }
 
      
 

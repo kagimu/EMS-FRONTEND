@@ -181,17 +181,17 @@ async function newAssemblyItem(data) {
         })
 }
 
-async function fetchAssemblyItem() {
-    return await api.get("main/catering/item-assembly")
-        .then((response) => {
-            assemblyItemResponse.value = response.data
-        })
-        .catch((response) => {
-            if(response){
-                errorMessage.value = response.response.data
-            }
-        })
-}
+// async function fetchAssemblyItem() {
+//     return await api.get("main/catering/item-assembly")
+//         .then((response) => {
+//             assemblyItemResponse.value = response.data
+//         })
+//         .catch((response) => {
+//             if(response){
+//                 errorMessage.value = response.response.data
+//             }
+//         })
+// }
 
 //feedingsession Daily
 async function newDailySession(data) {
@@ -326,9 +326,9 @@ async function updateAssemblyItem(data,menuItemNumber) {
         fetchFeedingSessionsItems,
         newFeedingGroupSessionsItemsInfoResponse,
         newFeedingGroupSessionsItemsInfo,
-        assemblyItemResponse,
+        // assemblyItemResponse,
         newAssemblyItem,
-        fetchAssemblyItem,
+        // fetchAssemblyItem,
         newAssemblyItemResponse,
         newDailySession,
         fetchDailySession,
