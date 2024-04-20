@@ -38,7 +38,7 @@
 
 
 
-        <div class="card mt-3">
+<!--        <div class="card mt-3">
           <div class="card-body" style="padding: 0;" v-if="campusCurriculumDataInfo">
             <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
               <div class="ml-3 mb-2">Report Card Settings</div>
@@ -53,7 +53,7 @@
             </div>
 
           </div>
-        </div>
+        </div>-->
 
 
 
@@ -84,14 +84,14 @@
 
 
 
-      <div class="col-9" v-if="reportSettingsQuery">
+<!--      <div class="col-9" v-if="reportSettingsQuery">
 
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
            <report-setup></report-setup>
           </div>
         </div>
-      </div>
+      </div>-->
 
     </div>
 
