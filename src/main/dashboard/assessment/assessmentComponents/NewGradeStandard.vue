@@ -29,7 +29,8 @@ const form = reactive({
   campus_class_number: null,
   type:"",
   name:null,
-  description:null
+  description:null,
+  campus_number:campusNumber
 })
 
 
@@ -45,12 +46,10 @@ watch(
     () => assessmentStore.newGradeStandardResponse,
     async (data) => {
       if(data){
-        // await assessmentStore.fetchGradeStandard()
             form.campus_class_number = null
             form.type = null
             form.name = null
             form.description = null
-        // notificationStore.successToast("Success", data.message)
       }
     }
 )
@@ -101,8 +100,7 @@ watch(
 )
 
 
-const fetchAcademicYea = (campus_level_number) => {
-  // academicYearStore.fetchAcademicYearByLevel(campus_level_number)
+const fetchClass = (campus_level_number) => {
   academicYearStore.fetchCampusClassByLevel(campus_level_number)
 }
 
@@ -155,7 +153,7 @@ watch(
             <select
                 class="form-select form-select-sm shadow-none"
                 v-model="campus_level_number"
-                @change="fetchAcademicYea(campus_level_number)"
+                @change="fetchClass(campus_level_number)"
             >
               <option disabled value="">--Select Level--</option>
               <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>

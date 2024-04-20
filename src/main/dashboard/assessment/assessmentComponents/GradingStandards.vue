@@ -1,3 +1,118 @@
+<script setup>
+import {onMounted,ref, watch} from "vue";
+import NewGradeStandard from "@/main/dashboard/assessment/assessmentComponents/NewGradeStandard.vue"
+import { useAssessmentStore } from "../store/assessment";
+import { useAbility } from '@casl/vue';
+import useNotificationStore from "@/composables/useNotification.js";
+import AppModal from "@/components/AppModal.vue";
+import {useRouter} from "vue-router";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+
+const { can } = useAbility()
+const assessmentStore = useAssessmentStore()
+const levelStore = useLevelStore()
+const classStore = useClassesStore()
+const academicYearStore = useAcademicYearStore()
+
+const gradeStandardData = ref([])
+const errorMessage = ref(null)
+const notificationStore = useNotificationStore()
+const showGradeStandardModal = ref(false)
+const routerData = useRouter()
+const campusNumber = routerData.currentRoute.value.query.id
+const campus_curriculum_number = ref("")
+const campus_level_number = ref("")
+const campus_class_number = ref("")
+const campusCurriculumDataInfo = ref(null)
+const campusLevelList = ref(null)
+const campusClassList = ref(null)
+
+
+
+onMounted(
+    async () => {
+      await doFetchGradingStandard()
+    } )
+
+const doFetchGradingStandard = () => {
+  let data = {
+    campus_number:campusNumber,
+    campus_class_number:campus_class_number.value
+  }
+  assessmentStore.fetchGradeStandard(data)
+}
+
+const addGradingStandard = () => {
+  showGradeStandardModal.value = true
+}
+
+const fetchCampusLevel = (campus_curriculum_number) => {
+  classStore.fetchCampusLevel(campus_curriculum_number)
+}
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        campusLevelList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => levelStore.campusCurriculumResponse,
+    async (data) => {
+      if(data){
+        campusCurriculumDataInfo.value = data.data
+      }
+    }
+)
+
+const fetchClass = (campus_level_number) => {
+  academicYearStore.fetchCampusClassByLevel(campus_level_number)
+}
+
+watch(
+    () => academicYearStore.campusClassByLevelResponse,
+    async (data) => {
+      if(data){
+        campusClassList.value = data.data
+      }
+    }
+)
+
+watch (
+    () => assessmentStore.gradeStandardResponse,
+    async (data) => {
+      if(data){
+        gradeStandardData.value = data.data
+      }
+    }
+)
+watch (
+    () => assessmentStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+      }
+    }
+)
+
+watch(
+    () => assessmentStore.newGradeStandardResponse,
+    async (data) => {
+      if(data){
+        showGradeStandardModal.value = false
+        await doFetchGradingStandard()
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
+</script>
 <template>
     <div>
 
@@ -6,18 +121,13 @@
       </AppModal>
 
     
-<!--        <div class="modal fade" id="addAccount" tabindex="-1"  aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
-       <NewGradeStandard></NewGradeStandard>
-        </div>
-      </div>-->
+
 
 
 
      <div class="px-2 py-2 border-b">
            <div class="row">
-            <div class="col-lg-6 "> 
-                  <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">  
+            <div class="col-lg-6 ">
             </div>
             <div class="col-lg-6">
                 <button
@@ -29,6 +139,49 @@
      </div>
 
 
+      <div class="mt-[50px]">
+        <div class="row mx-auto">
+
+        <div class="col-lg-4  mb-2">
+
+          <select
+              class="form-select form-select-sm shadow-none"
+              v-model="campus_curriculum_number"
+              @change="fetchCampusLevel(campus_curriculum_number)"
+          >
+            <option disabled value="">--Select Curriculum--</option>
+            <option v-for="(list, index) in campusCurriculumDataInfo" :key="index" :value="list.number">{{list.name}}</option>
+          </select>
+        </div>
+
+
+
+        <div class="col-lg-4  mb-2">
+          <select
+              class="form-select form-select-sm shadow-none"
+              v-model="campus_level_number"
+              @change="fetchClass(campus_level_number)"
+          >
+            <option disabled value="">--Select Level--</option>
+            <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+          </select>
+        </div>
+
+
+
+        <div class="col-lg-4  mb-2">
+          <select
+              class="form-select form-select-sm shadow-none" required
+              v-model="campus_class_number"
+              @change="doFetchGradingStandard"
+          >
+            <option disabled value="">Select</option>
+            <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+          </select>
+        </div>
+
+      </div>
+      </div>
 
 
       <div class="mt-10">
@@ -73,72 +226,7 @@
     
     </template>
     
-    <script setup>
-    import {onMounted,ref, watch} from "vue";
-    import NewGradeStandard from "@/main/dashboard/assessment/assessmentComponents/NewGradeStandard.vue"
-    import { useAssessmentStore } from "../store/assessment";
-    import { useAbility } from '@casl/vue';
-    import useNotificationStore from "@/composables/useNotification.js";
-    import AppModal from "@/components/AppModal.vue";
-    import {useRouter} from "vue-router";
 
-    const { can } = useAbility()
-    const assessmentStore = useAssessmentStore()
-    const gradeStandardData = ref([])
-    const errorMessage = ref(null)
-    const notificationStore = useNotificationStore()
-    const showGradeStandardModal = ref(false)
-    const routerData = useRouter()
-    const campusNumber = routerData.currentRoute.value.query.id
-
-    onMounted(
-    async () => {
-      await doFetchGradingStandard()
-    } )
-
-   const doFetchGradingStandard = () => {
-      let data = {
-        campus_number:campusNumber
-      }
-     assessmentStore.fetchGradeStandard(data)
-   }
-
-    const addGradingStandard = () => {
-      showGradeStandardModal.value = true
-    }
-
-    
-watch (
-    () => assessmentStore.gradeStandardResponse,
-    async (data) => {
-      if(data){
-        gradeStandardData.value = data.data
-      }
-    },
-    {deep:true}
-)
-watch (
-    () => assessmentStore.errorMessage,
-    async (data) => {
-      if(data){
-        errorMessage.value = data.message
-        // notificationStore.errorToast("Error",data.message)
-      }
-    }
-)
-
-    watch(
-        () => assessmentStore.newGradeStandardResponse,
-        async (data) => {
-          if(data){
-            showGradeStandardModal.value = false
-            await doFetchGradingStandard()
-            notificationStore.successToast("Success", data.message)
-          }
-        }
-    )
-
-    </script>
     
     <style scoped>
     
