@@ -64,6 +64,9 @@ watch(
 
 const createScale = () =>{
   form.code = parseInt(form.code)
+  form.max_value = parseInt(form.max_value)
+  form.min_value = parseInt(form.min_value)
+  form.weight = parseInt(form.weight)
   assessmentStore.createAggregateScale(form)
 }
 
