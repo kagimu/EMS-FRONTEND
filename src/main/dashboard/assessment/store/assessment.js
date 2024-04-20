@@ -10,8 +10,8 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const newExamTypeResponse=ref(null)
     const examTypeResponse = ref(null)
     const assessmentByStudentIdResponse = ref(null)
-    const newAssesmentAreasResponse = ref(null)
-    const assesmentAreaResponse = ref(null)
+    const newAssessmentAreasResponse = ref(null)
+    const assessmentAreaResponse = ref(null)
     const newAggregateScaleResponse = ref(null)
     const aggregateScaleResponse = ref(null)
     const newGradeStandardResponse = ref(null)
@@ -24,11 +24,13 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const newAssessmentScaleResponse = ref(null)
     const assessmentScaleResponse = ref(null)
     const updateAssessmentScaleResponse = ref(null)
-    const assesmentAreaByClassResponse = ref(null)
-    async function createAssesmentAreas(data) {
+    const assessmentAreaByClassResponse = ref(null)
+
+
+    async function createAssessmentAreas(data) {
         return await api.post("main/assessment-areas",data)
             .then((response) => {
-             newAssesmentAreasResponse.value = response.data
+             newAssessmentAreasResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -37,12 +39,11 @@ export const useAssessmentStore = defineStore("assessment", () => {
             })
     }
 
-
     async function fetchAssessmentArea(campus_class_number) {
         campus_class_number = campus_class_number ? campus_class_number : ""
         return await api.get("main/assessment-areas?curriculum_class_number="+campus_class_number)
             .then((response) => {
-               assesmentAreaResponse.value = response.data
+               assessmentAreaResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -57,7 +58,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
         campus_class_number = campus_class_number ? campus_class_number : ""
         return await api.get("main/assessment-areas/by-campus-class-number/"+campus_class_number)
             .then((response) => {
-               assesmentAreaByClassResponse.value = response.data
+               assessmentAreaByClassResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -278,9 +279,9 @@ async function createMetric(data) {
 
 
     return {
-        createAssesmentAreas,
-        newAssesmentAreasResponse,
-        assesmentAreaResponse,
+        createAssessmentAreas,
+        newAssessmentAreasResponse,
+        assessmentAreaResponse,
         gradingStandardResponse,
         fetchAssessmentArea,
         newAssessmentResponse,
@@ -316,6 +317,6 @@ async function createMetric(data) {
         updateAssessmentScaleResponse,
         fetchGradingStandardData,
         fetchAssessmentAreaByClass,
-        assesmentAreaByClassResponse
+        assessmentAreaByClassResponse
     }
 })
