@@ -7,8 +7,6 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const errorMessage = ref(null)
     const assessmentResponse = ref(null)
     const gradingStandardResponse = ref(null)
-    const newExamTypeResponse=ref(null)
-    const examTypeResponse = ref(null)
     const assessmentByStudentIdResponse = ref(null)
     const newAssessmentAreasResponse = ref(null)
     const assessmentAreaResponse = ref(null)

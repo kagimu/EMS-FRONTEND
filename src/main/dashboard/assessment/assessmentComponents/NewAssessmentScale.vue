@@ -34,6 +34,7 @@ const campusClassList = ref(null)
 
 
 const form = reactive({
+  code:null,
   name : null,
   maximum_points: null,
   minimum_points: null,
@@ -113,6 +114,7 @@ watch (
     {deep:true}
 )
 const createScale = () =>{
+  form.code = parseInt(form.code)
   if(props.scaleD.number){
     assessmentStore.updateAssessmentScale(form,props.scaleD.number)
 
@@ -133,13 +135,13 @@ watch (
       if(data){
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        form.name = null,
-            form.maximum_points=null,
-            form.minimum_points=null,
-            form.campus_class_number=null,
-            form.grade=null,
-            form.description=null,
-            form.abbreviation=null,
+        form.name = null
+            form.maximum_points=null
+            form.minimum_points=null
+            form.campus_class_number=null
+            form.grade=null
+            form.description=null
+            form.abbreviation=null
             form.remarks=null
       }
     },
@@ -154,14 +156,14 @@ watch (
       if(data){
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        form.name = null,
-            form.maximum_points=null,
-            form.minimum_points=null,
-            form.campus_class_number=null,
-            form.grade=null,
-            form.description=null,
-            form.abbreviation=null,
-            form.remarks=null,
+        form.name = null
+            form.maximum_points=null
+            form.minimum_points=null
+            form.campus_class_number=null
+            form.grade=null
+            form.description=null
+            form.abbreviation=null
+            form.remarks=null
             form.school_number=null
       }
     },
