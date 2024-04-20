@@ -54,7 +54,7 @@ const closeModal = () => {
 <template>
   <TransitionRoot appear :show="modelValue" as="template">
     <div>
-    <div class="fixed inset-0 bg-black opacity-30" @click="closeModal()" />
+    <div class="fixed inset-0 bg-black opacity-30 z-10" @click="closeModal()" />
     <Dialog as="div" @close="closeModal" class="relative">
       <TransitionChild as="template" enter="duration-300 ease-out" enter-from="opacity-0" enter-to="opacity-100"
         leave="duration-200 ease-in" leave-from="opacity-100" leave-to="opacity-0">
@@ -69,12 +69,18 @@ const closeModal = () => {
             enter-to="opacity-100 scale-100" leave="duration-200 ease-in" leave-from="opacity-100 scale-100"
             leave-to="opacity-0 scale-95">
             <DialogPanel :class="modalClass">
-              <div class="w-full p-6 py-3 border-b border-neutral-300 flex flex-row justify-between">
+              <div class="w-full p-6 p-0 border-b border-neutral-300 flex flex-row justify-between">
                 <DialogTitle as="h3" class="text-sm flex-grow leading-6 text-neutral-900 capitalize">
-                  <slot name="title">{{title}}</slot>
+                  <slot name="title">
+                   <div class="mt-1 ml-3 text-gray-700">
+                     {{title}}
+                   </div>
+                  </slot>
                 </DialogTitle>
                 <div @click="emit('update:modelValue', false)" class="cursor-pointer flex items-center">
-                  <XMarkIcon class="w-5 h-5 text-neutral-900" aria-hidden="true" />
+                  <div class="mr-3">
+                    <XMarkIcon class="w-5 h-5 text-neutral-900" aria-hidden="true" />
+                  </div>
                 </div>
               </div>
 

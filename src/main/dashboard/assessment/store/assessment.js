@@ -129,17 +129,7 @@ async function createAggregateScale(data) {
         })
 }
 
-// async function fetchAggregateScale() {
-//     return await api.get("main/assessments/aggregate-scales")
-//         .then((response) => {
-//             aggregateScaleResponse.value = response.data
-//         })
-//         .catch((response) => {
-//             if(response){
-//                 errorMessage.value = response.response.data
-//             }
-//         })
-// }
+
 
 async function createGradeStandard(data) {
     return await api.post("main/grading-standard",data)
@@ -153,8 +143,10 @@ async function createGradeStandard(data) {
         })
 }
 
-async function fetchGradeStandard() {
-    return await api.get("main/grading-standard")
+async function fetchGradeStandard(data) {
+        let campus_number = data.campus_number ?? ""
+        let campus_class_number = data.campus_class_number ?? ""
+    return await api.get("main/grading-standard?campus_number="+campus_number+"&campus_class_number="+campus_class_number)
         .then((response) => {
             gradeStandardResponse.value = response.data
         })
@@ -177,8 +169,10 @@ async function createReportCard(data) {
         })
 }
 
-async function fetchAggregateScale(campus_number,school_number,class_number) {
-    return await api.get("main/assessments/aggregate-scales?campus_number="+campus_number+"&school_number="+school_number+"&class_number="+class_number)
+async function fetchAggregateScale(data) {
+       let campus_number = data.campus_number ?? ""
+       let campus_class_number =  data.campus_class_number ?? ""
+    return await api.get("main/assessments/aggregate-scales?campus_number="+campus_number+"&campus_class_number="+campus_class_number)
         .then((response) => {
             aggregateScaleResponse.value = response.data
         })
@@ -254,8 +248,10 @@ async function createMetric(data) {
             })
     }
     
-    async function fetchAssessmentScale() {
-        return await api.get("main/assessments/assessment-grades")
+    async function fetchAssessmentGrades(data) {
+            let campus_number = data.campus_number ?? ""
+            let campus_class_number = data.campus_class_number ?? ""
+        return await api.get("main/assessments/assessment-grades?campus_number="+campus_number+"&campus_class_number="+campus_class_number)
             .then((response) => {
                 assessmentScaleResponse.value = response.data
             })
@@ -314,7 +310,7 @@ async function createMetric(data) {
         fetchMetrics,
         newAssessmentScaleResponse,
         createAssessmentScale,
-        fetchAssessmentScale,
+        fetchAssessmentGrades,
         assessmentScaleResponse,
         updateAssessmentScale,
         updateAssessmentScaleResponse,

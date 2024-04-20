@@ -155,6 +155,7 @@
     const campusStore = useCampusStore()
     const itemtype = ref(null)
     const menuList = ref([])
+    const errorMessage = ref(null)
 
 
     const showDialog = () => {
@@ -293,10 +294,10 @@ const createFeedingSessionItem = () => {
 }
 
 watch(
-    () => cateringStore.newAssemblyItemResponse,
+    () => cateringStore.updateItemAssemblyResponse,
     async (data) => {
         notificationStore.successToast("Success", data.message)
-        cateringStore.fetchAssemblyItem()
+        cateringStore.fetchMenuItem()
         clearFormData()
     },
     {deep: true}

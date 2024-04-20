@@ -5,7 +5,7 @@ import StudentScore from "@/main/dashboard/manageLevel/report_setup/report_forms
 import GenerateReport from "@/main/dashboard/report-card/GenerateReport.vue";
 import ReportSummary from "@/main/dashboard/manageLevel/report_setup/report_forms/ReportSummary.vue";
 const routerData = useRouter()
-let reportSettingsQuery = routerData.currentRoute.value.query.rp
+let reportSettingsQuery = routerData.currentRoute.value.query.ss
 
 </script>
 

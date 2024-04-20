@@ -120,7 +120,9 @@ const addSchoolDetails = () => {
   applicationStore.newApplicationPrevSchoolDetails(application_id,formData.schools)
   }else{
   buttonLoader.value = true
-  applicationStore.updatePreviousSchools(applicationNumber,formData.schools)
+    let application_id = localStorage.getItem('applicationId')
+  // applicationStore.updatePreviousSchools(applicationNumber,formData.schools)
+  applicationStore.newApplicationPrevSchoolDetails(application_id,formData.schools)
   }
 }
 

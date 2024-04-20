@@ -1,33 +1,7 @@
 <template>
     <div>
 
-    
-<!--      <div class="row">-->
-<!--        <div class="col-3">
-          <div class="card mt-3">
-            <div class="card-body" style="padding: 0;">
-              <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Assessment</div>
-  
-  
-              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-  
-                <router-link
-                    v-for="(item, idx) in assess" :key="idx"
-                    class="list-group-item list-group-item-action"
-                    :class="item.id === selectedPage ? 'active' : ''"
-                    :to="{name:'assessment', query:{s:item.id}}">
-                  <small style="font-size:12px;">{{item.name}}</small>
-                </router-link>
-              </div>
-  
-  
-  
-            </div>
-          </div>
-        </div>-->
-  
-<!--        <div class="col-9">-->
-<!--          <div class="card mt-3">-->
+
             <div class="card-body" style="padding: 0;">
   
               <div>
@@ -36,9 +10,7 @@
                     <AssessmentList></AssessmentList>
                   </div>
           
-                  <!-- <div v-if="selectedPage === 'assessment-areas'">
-                    <interview-assesment-areas></interview-assesment-areas>
-                  </div> -->
+
                   <div v-if="selectedPage === 'examtype'">
                     <ExamType></ExamType>
                   </div>
@@ -78,7 +50,7 @@
   import ExamType from "@/main/dashboard/assessment/assessmentComponents/ExamType.vue"
   import GradingScale from "@/main/dashboard/assessment/assessmentComponents/GradingScale.vue";
   import GradingStandards from "@/main/dashboard/assessment/assessmentComponents/GradingStandards.vue";
-  import AssessmentScale from "@/main/dashboard/assessment/assessmentComponents/AssessmentScale.vue";
+  import AssessmentScale from "@/main/dashboard/assessment/assessmentComponents/AssessmentGrade.vue";
   import AssessmentAreaGradingStandard from "@/main/dashboard/assessment/AssessmentAreaGradingStandard.vue";
 
   const routerData = useRouter()

@@ -13,7 +13,7 @@
 
 
     <div class="row">
-      <div :class="campusCurriculumNumber || reportSettingsQuery  || assessmentSettingsQuery ? 'col-3' : 'col-12 mx-auto'">
+      <div :class="campusCurriculumNumber || studentScoreQuery  || assessmentSettingsQuery || reportSettingsQuery ? 'col-3' : 'col-12 mx-auto'">
 
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;" v-if="campusCurriculumDataInfo">
@@ -53,15 +53,32 @@
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;" v-if="campusCurriculumDataInfo">
             <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
-              <div class="ml-3 mb-2">Student Score</div>
+              <div class="ml-3 mb-2">Report Card Settings</div>
             </div>
-
-            <div class="list-group list-group-flush mb-1 rounded-0" >
+            <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
               <router-link
                   v-for="(item, idx) in  reportSettingsMenu" :key="idx"
                   class="list-group-item list-group-item-action"
                   :class="item.router_name === reportSettingsQuery ? 'active' : ''"
                   :to="{name:'campus-details-teacher', query:{id:campusNumber, rp:item.router_name}}">
+                <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></router-link>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card mt-3">
+          <div class="card-body" style="padding: 0;" v-if="campusCurriculumDataInfo">
+            <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
+              <div class="ml-3 mb-2">Student Score</div>
+            </div>
+
+            <div class="list-group list-group-flush mb-1 rounded-0" >
+              <router-link
+                  v-for="(item, idx) in  studentScoreMenu" :key="idx"
+                  class="list-group-item list-group-item-action"
+                  :class="item.router_name === studentScoreQuery ? 'active' : ''"
+                  :to="{name:'campus-details-teacher', query:{id:campusNumber, ss:item.router_name}}">
                 <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></router-link>
             </div>
 
@@ -98,11 +115,19 @@
         </div>
       </div>
 
+      <div class="col-9" v-if="studentScoreQuery">
+        <div class="card mt-3">
+          <div class="card-body" style="padding: 0;">
+           <score-setup></score-setup>
+          </div>
+        </div>
+      </div>
+
       <div class="col-9" v-if="reportSettingsQuery">
 
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
-           <score-setup></score-setup>
+            <report-setup></report-setup>
           </div>
         </div>
       </div>
@@ -121,6 +146,7 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import CampusSettings from "@/main/dashboard/manageLevel/CampusSettings.vue";
 import ScoreSetup from "@/main/dashboard/manageLevel/report_setup/ScoreSetup.vue";
 import Assessment from "@/main/dashboard/assessment/Assessment.vue";
+import ReportSetup from "@/main/dashboard/manageLevel/report_setup/ReportSetup.vue";
 
 const levelStore = useLevelStore()
 const campusCurriculumDataInfo = ref(null)
@@ -132,10 +158,27 @@ const school = ref( "")
 
 const campusNumber = routerData.currentRoute.value.query.id
 let campusCurriculumNumber = routerData.currentRoute.value.query.crr
-let reportSettingsQuery = routerData.currentRoute.value.query.rp
+let studentScoreQuery = routerData.currentRoute.value.query.ss
 let assessmentSettingsQuery = routerData.currentRoute.value.query.ass
+let reportSettingsQuery = routerData.currentRoute.value.query.rp
 
 const reportSettingsMenu = ref([
+  {
+    name:"Report Setting",
+    router_name:"report-setting"
+  },
+  {
+    name:"Report Columns",
+    router_name:"report-columns"
+  },
+  {
+    name:"Report Columns Assessment",
+    router_name:"report-columns-assessment"
+  },
+])
+
+
+const studentScoreMenu = ref([
   {
     name:"Add Score",
     router_name:"student-score"
