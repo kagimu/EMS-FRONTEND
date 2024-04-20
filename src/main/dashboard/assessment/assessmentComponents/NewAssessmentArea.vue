@@ -8,7 +8,7 @@
                      style="box-shadow: none;"
                      class="form-select form-select-sm"
                      v-model="level"
-                     @click="filterClasses()">
+                     @change="filterClasses()">
                    <option disabled value="">Select Level</option>
                    <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.level_number">{{lvl.code+". "+lvl.name}}</option>
                  </select>
@@ -22,7 +22,7 @@
                      style="box-shadow: none;"
                      class="form-select form-select-sm"
                      v-model="form.curriculum_class_number"
-                     @click="fetchSubject(form.curriculum_class_number)">
+                     @change="fetchSubject(form.curriculum_class_number)">
                    <option disabled value="">Select Class</option>
                    <option v-for="(cls, index) in classList" :key="index" :value="cls.number">{{cls.name}}</option>
                  </select>
