@@ -9,7 +9,8 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useRouter} from "vue-router";
-
+import useNotificationStore from "@/composables/useNotification.js";
+const  notificationStore  = useNotificationStore()
 const assessmentStore = useAssessmentStore()
 const levelStore = useLevelStore()
 const classStore = useClassesStore()
@@ -121,6 +122,17 @@ watch (
       }
     },
     {deep:true}
+)
+
+watch (
+    () => assessmentStore.newAggregateScaleResponse,
+    async (data) => {
+      if(data){
+        showAggregateScaleModal.value = false
+        await fetchGradeScale()
+        notificationStore.successToast("Success", data.message)
+      }
+    }
 )
 
 

@@ -39,7 +39,6 @@ const form = reactive({
   name : null,
   min_value: null,
   max_value: null,
-  level_number: null,
   weight: null,
   description: null,
   campus_class_number: null,
@@ -74,12 +73,9 @@ watch (
     () => assessmentStore.newAggregateScaleResponse,
     async (data) => {
       if(data){
-        await assessmentStore.fetchAggregateScale()
         buttonLoader.value = false
-        notificationStore.successToast("Success", data.message)
       }
-    },
-    {deep:true}
+    }
 )
 
 watch (
