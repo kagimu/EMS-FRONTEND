@@ -164,7 +164,7 @@
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="scheme_subject_number"
-                  @click="filterSchemeSubject"
+                  @change="filterSchemeSubject"
               >
                 <option disabled value="">--filter Subject--</option>
                 <option v-for="(list, index) in schemeSubjectList" :key="index" :value="list.number">
@@ -182,7 +182,7 @@
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
                       v-model="academic_year_number"
-                      @click="filterSchemeSubject"
+                      @change="filterSchemeSubject"
                   >
                     <option disabled value="">--Select Class--</option>
                     <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">

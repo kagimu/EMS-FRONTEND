@@ -40,7 +40,7 @@
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="learning_area_number"
-                  @click="selectSubjectCluster(learning_area_number)"
+                  @change="selectSubjectCluster(learning_area_number)"
                   >
                 <option disabled value="">--Filter by Learning Area--</option>
                 <option value="">All</option>
@@ -53,7 +53,7 @@
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="subject_cluster_number"
-                  @click="filterSubjectCluster()"
+                  @change="filterSubjectCluster()"
                   >
                 <option disabled value="">--Filter by Subject Cluster--</option>
                 <option value="">All</option>
