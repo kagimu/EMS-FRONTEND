@@ -86,8 +86,7 @@ watch(
       if(data){
         campusLevelList.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
 watch(

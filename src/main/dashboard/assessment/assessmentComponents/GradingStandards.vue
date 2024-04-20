@@ -15,10 +15,10 @@ const assessmentStore = useAssessmentStore()
 const levelStore = useLevelStore()
 const classStore = useClassesStore()
 const academicYearStore = useAcademicYearStore()
+const notificationStore = useNotificationStore()
 
 const gradeStandardData = ref([])
 const errorMessage = ref(null)
-const notificationStore = useNotificationStore()
 const showGradeStandardModal = ref(false)
 const routerData = useRouter()
 const campusNumber = routerData.currentRoute.value.query.id
@@ -58,8 +58,7 @@ watch(
       if(data){
         campusLevelList.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
 watch(
@@ -132,8 +131,13 @@ watch(
             <div class="col-lg-6">
                 <button
                     @click="addGradingStandard"
-                v-if="can('add_grade_standard','general')"
-                 style="float: right; margin-right: 5px;" data-bs-toggle="modal" data-bs-target="#addAccount"  type="button"  aria-controls="rolesDialog" class="btn btn-primary btn-sm"><i class="bi bi-plus"></i> New Grade-Standard </button>
+                    v-if="can('add_grade_standard','general')"
+                    style="float: right; margin-right: 5px;"
+                    type="button"
+                    class="btn btn-primary btn-sm">
+                  <i class="bi bi-plus"></i>
+                  New Grade-Standard
+                </button>
             </div>
            </div>
      </div>
@@ -143,7 +147,6 @@ watch(
         <div class="row mx-auto">
 
         <div class="col-lg-4  mb-2">
-
           <select
               class="form-select form-select-sm shadow-none"
               v-model="campus_curriculum_number"
@@ -175,7 +178,7 @@ watch(
               v-model="campus_class_number"
               @change="doFetchGradingStandard"
           >
-            <option disabled value="">Select</option>
+            <option disabled value="">--Select Class--</option>
             <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
           </select>
         </div>

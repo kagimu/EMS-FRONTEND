@@ -169,8 +169,10 @@ async function createReportCard(data) {
         })
 }
 
-async function fetchAggregateScale(campus_number,school_number,class_number) {
-    return await api.get("main/assessments/aggregate-scales?campus_number="+campus_number+"&school_number="+school_number+"&class_number="+class_number)
+async function fetchAggregateScale(data) {
+       let campus_number = data.campus_number ?? ""
+       let campus_class_number =  data.campus_class_number ?? ""
+    return await api.get("main/assessments/aggregate-scales?campus_number="+campus_number+"&campus_class_number="+campus_class_number)
         .then((response) => {
             aggregateScaleResponse.value = response.data
         })

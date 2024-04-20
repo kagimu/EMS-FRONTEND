@@ -1,11 +1,133 @@
+<script setup>
+import {onMounted,reactive, ref, watch} from "vue";
+import NewGradeScale from "@/main/dashboard/assessment/assessmentComponents/NewGradeScale.vue"
+import { useAssessmentStore } from "../store/assessment";
+
+import { useAbility } from '@casl/vue';
+import AppModal from "@/components/AppModal.vue";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import {useRouter} from "vue-router";
+
+const assessmentStore = useAssessmentStore()
+const levelStore = useLevelStore()
+const classStore = useClassesStore()
+const academicYearStore = useAcademicYearStore()
+const routerData = useRouter()
+
+const { can } = useAbility()
+const aggregateData = ref([])
+const errorMessage = ref(null)
+const campusList = ref([])
+const schoolList = ref([])
+const classList = ref([])
+const school_number = ref(null)
+const campus_number = ref(null)
+const class_number = ref(null)
+const showDialog = ref(null)
+const showAggregateScaleModal = ref(false)
+const campusNumber = routerData.currentRoute.value.query.id
+const campus_curriculum_number = ref("")
+const campus_level_number = ref("")
+const campus_class_number = ref("")
+const campusCurriculumDataInfo = ref(null)
+const campusLevelList = ref(null)
+const campusClassList = ref(null)
+
+onMounted(() => {
+      fetchGradeScale()
+    }
+)
+
+watch(
+    () => levelStore.campusCurriculumResponse,
+    async (data) => {
+      if(data){
+        campusCurriculumDataInfo.value = data.data
+      }
+    }
+)
+
+const addAggregateScale = () => {
+  showAggregateScaleModal.value = true
+}
+
+const fetchCampusLevel = (campus_curriculum_number) => {
+  classStore.fetchCampusLevel(campus_curriculum_number)
+}
+
+const fetchClass = (campus_level_number) => {
+  academicYearStore.fetchCampusClassByLevel(campus_level_number)
+}
+
+watch(
+    () => academicYearStore.campusClassByLevelResponse,
+    async (data) => {
+      if(data){
+        campusClassList.value = data.data
+      }
+    }
+)
+
+const fetchGradeScale = () =>{
+  let data = {
+    campus_number:campusNumber,
+    campus_class_number:campus_class_number.value
+  }
+  assessmentStore.fetchAggregateScale(data)
+}
+
+
+
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        campusLevelList.value = data.data
+      }
+    }
+)
+
+
+
+
+
+
+// aggregateData
+watch(
+    () => assessmentStore.aggregateScaleResponse,
+    async (data) => {
+      if(data){
+        aggregateData.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => assessmentStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        // notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+</script>
 <template>
     <div>
-    
-        <div class="modal fade" id="addAccount" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: showDialog }">
-      <div class="modal-dialog">
-       <NewGradeScale></NewGradeScale>
-        </div>
-      </div>
+
+      <AppModal title="Add Aggregate Scale" v-model="showAggregateScaleModal" lg>
+        <NewGradeScale></NewGradeScale>
+      </AppModal>
+
+
+
 
       <div class="row">
             <div class="col-12">
@@ -16,14 +138,16 @@
                   <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">  
             </div>
             <div class="col-lg-6">
-                <button 
-                v-if="can('add_grade_scale','general')"
-                 style="float: right; margin-right: 5px;" data-bs-toggle="modal"
-                  data-bs-target="#addAccount"  type="button"  aria-controls="rolesDialog" 
-                  class="btn btn-primary btn-sm"><i class="bi bi-plus"></i> New Grade-Scale </button>
- 
-                <!-- <button  class="btn btn-outline-secondary  btn-sm mt-1" style="float: right;border: none;">
-                <small><i class="bi bi-printer">&nbsp;Print</i></small></button>  -->
+                <button
+                    @click="addAggregateScale"
+                      v-if="can('add_grade_scale','general')"
+                      style="float: right; margin-right: 5px;"
+                      type="button"
+                      class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus"></i>
+                    New Grade-Scale
+                </button>
+
             </div>
     
            </div>
@@ -32,9 +156,54 @@
         <div >
           <div class="row">
       <div class="col-12">
-        <div class="mt-3">
 
+        <div class="mt-[50px]">
           <div class="row mx-auto">
+
+            <div class="col-lg-4  mb-2">
+              <select
+                  class="form-select form-select-sm shadow-none"
+                  v-model="campus_curriculum_number"
+                  @change="fetchCampusLevel(campus_curriculum_number)"
+              >
+                <option disabled value="">--Select Curriculum--</option>
+                <option v-for="(list, index) in campusCurriculumDataInfo" :key="index" :value="list.number">{{list.name}}</option>
+              </select>
+            </div>
+
+
+
+            <div class="col-lg-4  mb-2">
+              <select
+                  class="form-select form-select-sm shadow-none"
+                  v-model="campus_level_number"
+                  @change="fetchClass(campus_level_number)"
+              >
+                <option disabled value="">--Select Level--</option>
+                <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+              </select>
+            </div>
+
+
+
+            <div class="col-lg-4  mb-2">
+              <select
+                  class="form-select form-select-sm shadow-none" required
+                  v-model="campus_class_number"
+                  @change="fetchGradeScale"
+              >
+                <option disabled value="">--Select Class--</option>
+                <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+              </select>
+            </div>
+
+          </div>
+        </div>
+
+
+<!--        <div class="mt-3">-->
+
+<!--          <div class="row mx-auto">
 
             <div class="col-4 mb-5 mt-5">
               <div class="mb-2">
@@ -86,11 +255,12 @@
           </div>
             </div>
 
-          </div>
+          </div>-->
 
         
 
-        </div>
+<!--        </div>-->
+
       </div>
     </div>   
       <table id="data"
@@ -137,137 +307,7 @@
     
     </template>
     
-    <script setup>
-    import {onMounted,reactive, computed,ref, watch} from "vue";
-    import NewGradeScale from "@/main/dashboard/assessment/assessmentComponents/NewGradeScale.vue"
-    import { useAssessmentStore } from "../store/assessment";
-    import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-    import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 
-    import { useAbility } from '@casl/vue';
-
-    const { can } = useAbility()
-    const aggregateData = ref([])
-    const assessmentStore = useAssessmentStore()
-    const errorMessage = ref(null)
-    const campusList = ref([])
-    const schoolList = ref([])
-    const classList = ref([])
-    const schoolStore = useSchoolStore()
-    const campusStore = useCampusStore()
-    const school_number = ref(null)
-    const campus_number = ref(null)
-    const class_number = ref(null)
-    const showDialog = ref(null)
-  
-
-    const constent = reactive({
-        sch:null,
-        cmp:null,
-        cla:null
-    })
-
-    //fetch
-    // onMounted(
-    // async () => {
-    //   await assessmentStore.fetchAggregateScale()
-    // } )
-
-
-  
-    const fetchCampuses = (school_number) => {
-      campusStore.fetchCampuses(school_number)
-      // assessmentStore.fetchAggregateScale(school_number)
-      constent.sch = school_number
-      
-  }
-
-  const fetchClasses = (campus_number) => {
-      campusStore.fetchClassesByCampus(campus_number)
-      constent.cmp = campus_number
-  }
-
-  const fetchGradeScale = (class_number) =>{
-    constent.cla = class_number
-    // window.alert(class_number)
-    fetchScaleGrade(constent.cmp,constent.sch,constent.cla)
-  }
-
-  
-  const fetchScaleGrade = (a,b,c) =>{
-    assessmentStore.fetchAggregateScale(a,b,c)
-  }
-
-  onMounted(() => {
-          schoolStore.fetchSchools()
-      }
-  )
-
-  watch(
-      () => schoolStore.schoolsResponse,
-      async (data) => {
-          if (data) {
-              schoolList.value = data.data
-          }
-      },
-      {deep: true}
-  )
-
-  watch(
-      () => campusStore.campusListResponse,
-      async (data) => {
-          if (data) {
-              campusList.value = data.data
-          }
-      },
-      {deep: true}
-  )
-
-  watch(
-      () => campusStore.campusClassesResponse,
-      async (data) => {
-          if (data) {
-              classList.value = data.data
-          }
-      },
-      {deep: true}
-  )
-
-  watch(
-      () => campusStore.errorMessage,
-      async (data) => {
-            if (data) {
-                notificationStore.errorToast("Error", data.message)
-            }
-      },
-      {deep: true}
-  )
-
-
-// aggregateData
-  watch(
-    () => assessmentStore.aggregateScaleResponse,
-    async (data) => {
-      if(data){
-        aggregateData.value = data.data
-      }
-    },
-    {deep:true}
-    )
-
-    watch (
-    () => assessmentStore.errorMessage,
-    async (data) => {
-      if(data){
-        errorMessage.value = data.message
-        // notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-    )
-
-    
-    </script>
     
     <style scoped>
     
