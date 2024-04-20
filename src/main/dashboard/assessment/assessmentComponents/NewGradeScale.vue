@@ -9,13 +9,12 @@
         <form @submit.prevent="createScale()">
       <div class="mb-2">
         <label class="textColor"><small>Name</small></label>
-       <input v-model="form.name" placeholder="D2" type="text" class="form-control">
+       <input v-model="form.name" placeholder="D2" type="text" class="form-control outline-none shadow-none">
       </div>
       <div class="mb-2">
               <label class="textColor"><small>School</small> <span class="star">*</span></label>
               <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
+                      class="form-select form-select-sm outline-none shadow-none" required
                       v-model="form.school_number"
                       @change="fetchCampuses(form.school_number)"
               >
@@ -29,8 +28,7 @@
           <div class="mb-2">
               <label class="textColor"><small>Campus</small>  <span class="star">*</span></label>
               <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
+                      class="form-select form-select-sm outline-none shadow-none"
                       v-model="form.campus_number" required
                       @change="fetchClasses(form.campus_number)"
               >
@@ -42,10 +40,22 @@
 
 
           <div class="mb-2">
+            <label class="textColor"><small>Level</small> <span class="star">*</span></label>
+            <select
+                class="form-select form-select-sm outline-none shadow-none" required
+                v-model="form.level_number"
+            >
+              <option disabled value="">Select Level</option>
+              <option v-for="(levelList,index) in levelData" :key="index" :value="levelList.number">{{ levelList.name }}</option>
+              <option></option>
+            </select>
+          </div>
+
+
+          <div class="mb-2">
               <label class="textColor"><small>Class</small> <span class="star">*</span></label>
               <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
+                      class="form-select form-select-sm outline-none shadow-none" required
                       v-model="form.class_number"
               >
                   <option disabled value="">Select class</option>
@@ -55,24 +65,13 @@
           </div>
 
 
-          <div class="mb-2">
-              <label class="textColor"><small>Level</small> <span class="star">*</span></label>
-              <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="form.level_number"
-              >
-                  <option disabled value="">Select Level</option>
-                 <option v-for="(levelList,index) in levelData" :key="index" :value="levelList.number">{{ levelList.name }}</option>
-                 <option></option>
-              </select>
-          </div>
+
 
           <div class="mb-2">
               <label class="textColor"><small>Grading Standard</small> <span class="star">*</span></label>
               <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
+                      class="form-select form-select-sm outline-none shadow-none"
+                      required
                       v-model="form.grading_standard_number"
               >
                   <option disabled value="">Select</option>
@@ -86,23 +85,39 @@
         <div class="row">
             <div class="col-lg-4">
                 <label class="textColor"><small>Minimum Value</small></label>
-               <input v-model="form.min_value" type="number" class="form-control">
+               <input
+                   maxlength="3"
+                   @keypress="commons.numbersOnlyValidator($event)"
+                   v-model="form.min_value"
+                   type="text"
+                   class="form-control outline-none shadow-none">
             </div>
             <div class="col-lg-4">
                 <label class="textColor"><small>Maximum Value</small></label>
-             <input v-model="form.max_value" type="number" class="form-control">
+             <input
+                 maxlength="3"
+                 @keypress="commons.numbersOnlyValidator($event)"
+                 v-model="form.max_value"
+                 type="text"
+                 class="form-control outline-none shadow-none">
             </div>
 
             <div class="col-lg-4">
                 <label class="textColor"><small>Weight</small></label>
-             <input v-model="form.weight" type="number" class="form-control" placeholder="1">
+             <input
+                 maxlength="3"
+                 @keypress="commons.numbersOnlyValidator($event)"
+                 v-model="form.weight"
+                 type="text"
+                 class="form-control outline-none shadow-none"
+                 placeholder="1">
             </div>
         </div>
       </div>
 
       <div class="mb-2">
         <label class="textColor"><small>Description</small></label>
-        <textarea v-model="form.description" class="form-control">
+        <textarea v-model="form.description" class="form-control outline-none shadow-none">
 
 
         </textarea>
@@ -130,7 +145,9 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import { useAssessmentStore } from "../store/assessment";
 import { useLevelStore } from "../../../settings/level/store/level";
+import useCommonsStore from "@/composables/useCommons.js";
 
+const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
 const campusList = ref([])
 const schoolList = ref([])
@@ -141,7 +158,6 @@ const school_number = ref(null)
 const buttonLoader = ref(false)
 const assessmentStore = useAssessmentStore()
 const errorMessage = ref(null)
-const aggregateData = ref([])
 const levelData = ref([])
 const levelStore = useLevelStore()
 const gradeData = ref([])

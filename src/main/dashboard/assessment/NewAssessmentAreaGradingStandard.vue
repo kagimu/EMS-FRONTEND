@@ -103,12 +103,22 @@ const addAssessmentAreaGradingStandard = () => {
 
 
 
+
 const fetchAssessmentArea = (campus_class_number) =>{
   if(campus_class_number) {
     assessmentStore.fetchAssessmentArea(campus_class_number)
   }
 }
 
+
+watch(
+    () => reportSetupStore.assessmentAreaGradingStandardResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    }
+)
 
 watch(
     () => reportSetupStore.errorMessage,

@@ -9,15 +9,15 @@
             <div class="col-lg-2"></div>
             <div class="col-lg-8">
               <table style="width: 100%;">
-                <tr v-for="(subject, index) in formD.assessmentArea" :key="index">
+                <tr v-for="(assessmentArea, index) in formD.assessmentArea" :key="index">
                   <td>
-                    <select v-model="subject.subjectName" class="form-select form-select-sm">
+                    <select v-model="assessmentArea.assessmentAreaNumber" class="form-select form-select-sm">
                       <option v-for="option in AsessmentListData" :key="option" :value="option.number">{{ option.name }}</option>
 
                     </select>
                   </td>
                   <td style="width: 26%;">
-                    <input v-model="subject.score" type="number" class="form-control">
+                    <input v-model="assessmentArea.score" type="number" class="form-control">
                   </td>
                   <td style="width: 2%;">
                     <button type="button" @click="removeSubject(index)" class="btn btn-danger btn-sm p-0" ><i class="bi bi-x"></i></button>
@@ -75,14 +75,32 @@
   const applicationStore =  useApplicationStore()
   const buttonLoader = ref(false)
   const file = ref(null)
+  let campus_class_number = localStorage.getItem('CampusClassNumber')
+  const errorMessage = ref(null)
+
 
   onMounted(
     async () => {
-      await assessmentStore.fetchAssesmentArea()
+      if(campus_class_number){
+        await assessmentStore.fetchAssessmentAreaByClass(campus_class_number)
+      } 
     } )
+//     watch (
+//     () => localStorage.getItem('CampusClassNumber'),
+//     async (data) => {
+//       if(data){
+//         if(localStorage.getItem('CampusClassNumber')){
+//           assessmentStore.fetchAssessmentAreaByClass(campus_class_number)
+//         }
+
+//       }
+//     },
+//     {deep:true}
+// )
+
 
   watch(
-    () => assessmentStore.assesmentAreaResponse,
+    () => assessmentStore.assesmentAreaByClassResponse,
     async (data) => {
       if(data){
         AsessmentListData.value = data.data
@@ -91,13 +109,31 @@
     {deep:true}
 )
 
+
+// fetchAssessmentAreaByClass,
+        // assesmentAreaByClassResponse
+
+watch (
+    () => assessmentStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        
+        notificationStore.errorToast("Error",data.message)
+
+      }
+    },
+    {deep:true}
+)
+
+
   const formD = reactive({
     assessmentArea: [] 
   })
   
   
   const addSubject = () => {
-    formD.assessmentArea.push({ subjectName: '', score: '' })
+    formD.assessmentArea.push({ assessmentAreaNumber: '', score: '' })
   }
   
   const removeSubject = (index) => {
@@ -118,17 +154,18 @@ const onFileChange = (event) => {
 
 
   const addSchoolResults = () => {
-    emit("next", 5 )
-  // let student_number = localStorage.getItem('studentNumber')
-  // buttonLoader.value = true
+    // emit("next", 5 )
+  let student_number = localStorage.getItem('studentNumber')
+  buttonLoader.value = true
 
-  // const formData = new FormData();
-  // formData.set("file", file.value.files[0]);
-  // formData.set("assessment_area_number", formD.assessmentArea.map(subject => subject.subjsectName));
-  // formData.set("student_number", student_number);
-  // formData.set("score", formD.assessmentArea.map(subject => parseInt(subject.score)));
+  const formData = new FormData();
+  formData.set("file", file.value.files[0]);
+  formData.set("assessment_area_number", formD.assessmentArea.map(assessmentArea => assessmentArea.assessmentAreaNumber));
+  formData.set("student_number", student_number);
+  formData.set("score", formD.assessmentArea.map(assessmentArea => parseInt(assessmentArea.score)));
 
-  // applicationStore.createPreviousSchoolResults(formData)
+  //alert(JSON.stringify(formData))
+  applicationStore.createPreviousSchoolResults(formData)
   }
 
   watch (
@@ -136,6 +173,8 @@ const onFileChange = (event) => {
     async (data) => {
       if(data){
         buttonLoader.value = false
+       localStorage.removeItem('CampusClassNumber')
+
         notificationStore.successToast("Success application submitted", data.message)
         localStorage.removeItem('applicationId')
       }
@@ -150,7 +189,7 @@ const onFileChange = (event) => {
         errorMessage.value = data.message
         buttonLoader.value = false
         notificationStore.errorToast("Error",data.message)
-        emit("next", 5 )
+        // emit("next", 5 )
       }
     },
     {deep:true}

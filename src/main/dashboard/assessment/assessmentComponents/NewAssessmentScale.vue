@@ -12,13 +12,13 @@
                 <div class="col-8">
                 <div class="mb-2">
                 <label class="textColor"><small>Name</small></label>
-                <input v-model="form.name" placeholder="First Grade, Second Grade ..." type="text" class="form-control">
+                <input v-model="form.name" placeholder="First Grade, Second Grade ..." type="text" class="form-control outline-none shadow-none">
                 </div>
                 </div>
                 <div class="col-4">
                 <div class="mb-2">
                 <label class="textColor"><small>Abbreviation</small></label>
-                <input v-model="form.abbreviation" placeholder="Division 1 / Result 1" type="text" class="form-control">
+                <input v-model="form.abbreviation" placeholder="Division 1 / Result 1" type="text" class="form-control outline-none shadow-none">
                 </div>
                 </div>
             </div>
@@ -41,8 +41,7 @@
           <div class="mb-2">
               <label class="textColor"><small>Campus</small>  <span class="star">*</span></label>
               <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
+                      class="form-select form-select-sm outline-none shadow-none"
                       v-model="form.campus_number" required
                       @change="fetchClasses(form.campus_number)"
               >
@@ -85,11 +84,22 @@
         <div class="row">
             <div class="col-lg-6">
                 <label class="textColor"><small>Minimum Value</small></label>
-               <input v-model="form.minimum_points" type="number" class="form-control">
+               <input
+                   maxlength="3"
+                   @keypress="commons.numbersOnlyValidator($event)"
+                   v-model="form.minimum_points"
+                   type="text"
+                   class="form-control outline-none shadow-none"
+               >
             </div>
             <div class="col-lg-6">
                 <label class="textColor"><small>Maximum Value</small></label>
-             <input v-model="form.maximum_points" type="number" class="form-control">
+             <input
+                 maxlength="3"
+                 @keypress="commons.numbersOnlyValidator($event)"
+                 v-model="form.maximum_points"
+                 type="text"
+                 class="form-control outline-none shadow-none">
             </div>
 
         </div>
@@ -97,13 +107,13 @@
 
       <div class="mb-2">
         <label class="textColor"><small>Description</small></label>
-        <textarea v-model="form.description" class="form-control textColor">
+        <textarea v-model="form.description" class="form-control textColor outline-none shadow-none">
         </textarea>
       </div>
       
       <div class="mb-2">
         <label class="textColor"><small>Remarks</small></label>
-        <textarea v-model="form.remarks" class="form-control textColor">
+        <textarea v-model="form.remarks" class="form-control textColor outline-none shadow-none">
         </textarea>
       </div>
      <div class="flex justify-content-end mt-2" style="width: 100%;">
@@ -129,7 +139,8 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import { useAssessmentStore } from "../store/assessment";
 import { useLevelStore } from "../../../settings/level/store/level";
-
+import useCommonsStore from "@/composables/useCommons.js";
+const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
 const campusList = ref([])
 const schoolList = ref([])

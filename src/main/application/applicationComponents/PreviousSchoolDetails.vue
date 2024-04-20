@@ -86,6 +86,7 @@ import {useApplicationStore} from "@/main/application/applicationComponents/stor
 import router from "@/config/router.js";
 import {useRouter} from "vue-router";
 
+
 const routerData = useRouter()
 let  applicationNumber = routerData.currentRoute.value.query.applicationId
 

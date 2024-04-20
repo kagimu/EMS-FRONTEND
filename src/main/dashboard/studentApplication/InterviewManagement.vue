@@ -17,9 +17,9 @@
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <button class="nav-link navColor active" id="assessment_tab" data-bs-toggle="tab" data-bs-target="#assessment" type="button" role="tab" aria-controls="assessments" aria-selected="false"><small>Assessments</small></button>
-          <button class="nav-link navColor" id="applicants_tab" data-bs-toggle="tab" data-bs-target="#applicants" type="button" role="tab" aria-controls="applicants" aria-selected="false"><small>Appicants Assessment</small></button>
-          <button class="nav-link navColor" id="admission-offer_tab" data-bs-toggle="tab" data-bs-target="#admission-offer" type="button" role="tab" aria-controls="admission-offer" aria-selected="false"><small>Admission Offer</small></button>
-          <button class="nav-link navColor" id="applicant-reports_tab" data-bs-toggle="tab" data-bs-target="#applicant-reports" type="button" role="tab" aria-controls="" aria-selected="false"><small>Applicant Reports</small></button>         
+          <button class="nav-link navColor" id="applicants_tab" data-bs-toggle="tab" data-bs-target="#applicants" type="button" role="tab" aria-controls="applicants" aria-selected="false"><small>Assess Applicants</small></button>
+          <button class="nav-link navColor" id="admission-offer_tab" data-bs-toggle="tab" data-bs-target="#admission-offer" type="button" role="tab" aria-controls="admission-offer" aria-selected="false"><small> Offer Admission</small></button>
+          <!-- <button class="nav-link navColor" id="applicant-reports_tab" data-bs-toggle="tab" data-bs-target="#applicant-reports" type="button" role="tab" aria-controls="" aria-selected="false"><small>Applicant Reports</small></button>          -->
         </div>
       </nav>
       <div class="tab-content" id="nav-tabContent">
@@ -30,7 +30,7 @@
           <ApplicantsAssessment></ApplicantsAssessment>
         </div>
         <div class="tab-pane fade" id="admission-offer" role="tabpanel" aria-labelledby="admission-offer_tab" tabindex="0">
-          <p>Admission Offer</p>
+          <InterviewLearnersList></InterviewLearnersList>
         </div>
       
        <div class="tab-pane fade" id="applicant-reports" role="tabpanel" aria-labelledby="applicant-reports_tab" tabindex="0">
@@ -55,6 +55,7 @@
 import InterviewAssessmentList from './InterviewAssessmentList.vue';
 import {useRouter} from "vue-router";
 import ApplicantsAssessment from "@/main/dashboard/studentApplication/ApplicantsAssessment.vue"
+import InterviewLearnersList from './InterviewLearnersList.vue';
 const routerData = useRouter()
 let  interviewNumber = routerData.currentRoute.value.query.interview_id
 let assessmentricsNumber = routerData.currentRoute.value.query.assessment_metric_id
