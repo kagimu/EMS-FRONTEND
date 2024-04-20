@@ -11,11 +11,12 @@ import {useRouter} from "vue-router";
 const commons = useCommonsStore()
 const classStore = useClassesStore()
 const academicYearStore = useAcademicYearStore()
+const assessmentStore = useAssessmentStore()
+
 const  notificationStore  = useNotificationStore()
 const levelStore = useLevelStore()
 const routerData = useRouter()
 const buttonLoader = ref(false)
-const assessmentStore = useAssessmentStore()
 const campus_curriculum_number = ref("")
 const campusCurriculumDataInfo = ref(null)
 const campusLevelList = ref(null)
@@ -167,7 +168,7 @@ watch(
                 class="form-select form-select-sm shadow-none" required
                 v-model="form.campus_class_number"
             >
-              <option disabled value="">Select</option>
+              <option disabled value="">--Select Class--</option>
               <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
             </select>
           </div>

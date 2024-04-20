@@ -248,8 +248,10 @@ async function createMetric(data) {
             })
     }
     
-    async function fetchAssessmentScale() {
-        return await api.get("main/assessments/assessment-grades")
+    async function fetchAssessmentGrades(data) {
+            let campus_number = data.campus_number ?? ""
+            let campus_class_number = data.campus_class_number ?? ""
+        return await api.get("main/assessments/assessment-grades?campus_number="+campus_number+"&campus_class_number="+campus_class_number)
             .then((response) => {
                 assessmentScaleResponse.value = response.data
             })
@@ -308,7 +310,7 @@ async function createMetric(data) {
         fetchMetrics,
         newAssessmentScaleResponse,
         createAssessmentScale,
-        fetchAssessmentScale,
+        fetchAssessmentGrades,
         assessmentScaleResponse,
         updateAssessmentScale,
         updateAssessmentScaleResponse,

@@ -40,18 +40,18 @@ onMounted(() => {
     }
 )
 
-watch(
-    () => levelStore.campusCurriculumResponse,
-    async (data) => {
-      if(data){
-        campusCurriculumDataInfo.value = data.data
-      }
-    }
-)
+const fetchGradeScale = () =>{
+  let data = {
+    campus_number:campusNumber,
+    campus_class_number:campus_class_number.value
+  }
+  assessmentStore.fetchAggregateScale(data)
+}
 
 const addAggregateScale = () => {
   showAggregateScaleModal.value = true
 }
+
 
 const fetchCampusLevel = (campus_curriculum_number) => {
   classStore.fetchCampusLevel(campus_curriculum_number)
@@ -62,6 +62,18 @@ const fetchClass = (campus_level_number) => {
 }
 
 watch(
+    () => levelStore.campusCurriculumResponse,
+    async (data) => {
+      if(data){
+        campusCurriculumDataInfo.value = data.data
+      }
+    }
+)
+
+
+
+
+watch(
     () => academicYearStore.campusClassByLevelResponse,
     async (data) => {
       if(data){
@@ -70,13 +82,7 @@ watch(
     }
 )
 
-const fetchGradeScale = () =>{
-  let data = {
-    campus_number:campusNumber,
-    campus_class_number:campus_class_number.value
-  }
-  assessmentStore.fetchAggregateScale(data)
-}
+
 
 
 
@@ -201,65 +207,6 @@ watch (
         </div>
 
 
-<!--        <div class="mt-3">-->
-
-<!--          <div class="row mx-auto">
-
-            <div class="col-4 mb-5 mt-5">
-              <div class="mb-2">
-              <label class="textColor"><small>School</small></label>
-              <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="school_number"
-                      @change="fetchCampuses(school_number)"   
-              >
-                  <option disabled value="">Select School</option>
-                  <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-                  </option>
-              </select>
-          </div>
-            </div>
-
-            <div class="col-4 mb-5 mt-5">
-          
-              <div class="mb-2">
-              <label class="textColor"><small>Campus</small> </label>
-              <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
-                      v-model="campus_number" required
-                      @change="fetchClasses(campus_number)"
-              >
-                  <option disabled value="">Select campus</option>
-                  <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-                  </option>
-              </select>
-          </div>
-            </div>
-
-            <div class="col-4 mb-5 mt-5">
-             
-          <div class="mb-2">
-              <label class="textColor"><small>Class</small></label>
-              <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="class_number"
-                      @change="fetchGradeScale(class_number)"
-              >
-                  <option disabled value="">Select class</option>
-                  <option v-for="(list, index) in classList" :key="index" :value="list.class_number">{{ list.class_name }}
-                  </option>
-              </select>
-          </div>
-            </div>
-
-          </div>-->
-
-        
-
-<!--        </div>-->
 
       </div>
     </div>   
