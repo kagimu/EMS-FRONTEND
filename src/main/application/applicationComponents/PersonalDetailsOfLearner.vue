@@ -140,6 +140,9 @@
   import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
   import api from "@/config/api.js";
   import {useRouter} from "vue-router";
+  import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
+  const assessmentStore = useAssessmentStore()
+
 
 const routerData = useRouter()
 let  applicationNumber = routerData.currentRoute.value.query.applicationId
@@ -205,7 +208,6 @@ const addLearnerDetails = () => {
   }
  
 }
-
 watch (
     () => applicationStore.newApplicationDetailsLearnerResponse,
     async (data) => {
@@ -215,6 +217,7 @@ watch (
         // alert(data.apn)
         buttonLoader.value = false
         // notificationStore.successToast("Successs", data.message)
+        assessmentStore.fetchAssessmentAreaByClass(form.campus_class_number)
         emit("next", 3 )
       }
     },
