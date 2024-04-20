@@ -129,17 +129,7 @@ async function createAggregateScale(data) {
         })
 }
 
-// async function fetchAggregateScale() {
-//     return await api.get("main/assessments/aggregate-scales")
-//         .then((response) => {
-//             aggregateScaleResponse.value = response.data
-//         })
-//         .catch((response) => {
-//             if(response){
-//                 errorMessage.value = response.response.data
-//             }
-//         })
-// }
+
 
 async function createGradeStandard(data) {
     return await api.post("main/grading-standard",data)
@@ -153,8 +143,9 @@ async function createGradeStandard(data) {
         })
 }
 
-async function fetchGradeStandard() {
-    return await api.get("main/grading-standard")
+async function fetchGradeStandard(data) {
+        let campus_number = data.campus_number ? data.campus_number : ""
+    return await api.get("main/grading-standard?campus_number="+campus_number)
         .then((response) => {
             gradeStandardResponse.value = response.data
         })
