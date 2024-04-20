@@ -10,7 +10,7 @@
             style="box-shadow: none;"
             class="form-select form-select-sm" required
             v-model="menuForm.type"
-            @change="chooseType()"
+            
     >
         <option disabled value="">Select Type</option>
         <option>ITEM</option>
@@ -107,7 +107,7 @@
                         <tbody>
                           <tr v-for="(menu, index) in menuItems" :key="index" > 
                             <td>
-                              <select class="form-select form-select-sm form-control select-no-border" v-model="menu.secondary_item_number" @change="updateService(index)">
+                              <select class="form-select form-select-sm form-control select-no-border" v-model="menu.secondary_item_number">
                                 <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
                               </select>
                             </td>
@@ -138,7 +138,7 @@
 <script setup>
     import {onMounted,reactive, ref, watch} from "vue";
     import useNotificationStore from "@/composables/useNotification.js";
-    import NewMenuItem from "@/main/dashboard/catering/cateringComponents/NewMenuItem.vue";
+    // import NewMenuItem from "@/main/dashboard/catering/cateringComponents/NewMenuItem.vue";
     import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
     import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
     import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
@@ -151,6 +151,7 @@
     const schoolStore = useSchoolStore()
     const campusStore = useCampusStore()
     const itemtype = ref(null)
+    const errorMessage = ref(null)
 
     const showDialog = () => {
         thisDialog.value = true
@@ -224,6 +225,7 @@ watch(
   watch(
     () => cateringStore.newMenuItemInfoResponse,
     async (data) => {
+  
         notificationStore.successToast("Success", data.message)
         cateringStore.fetchMenuItem()
         menuForm.name=null,
@@ -231,19 +233,12 @@ watch(
         menuForm.type=null,
         menuForm.unit_of_measure_number=null,
         menuForm.campus_number=null
+        buttonLoader.value = false
     },
     {deep: true}
   )
 
-  watch(
-    () => cateringStore.errorMessage,
-    async (data) => {
-          if (data) {
-          notificationStore.errorToast("Error", data.message)
-          }
-    },
-    {deep: true}
-  )
+ 
 
   onMounted(() => {
         schoolStore.fetchSchools()
@@ -351,8 +346,9 @@ watch(
     () => cateringStore.newAssemblyItemResponse,
     async (data) => {
         notificationStore.successToast("Success", data.message)
-        cateringStore.fetchAssemblyItem()
+        cateringStore.fetchMenuItem()
         clearFormData()
+        buttonLoader.value = false;
     },
     {deep: true}
   )

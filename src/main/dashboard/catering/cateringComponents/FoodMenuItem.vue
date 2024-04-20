@@ -125,6 +125,7 @@
     const thisDialog = ref(false)
     const updateMenuDialog = ref(false)
     const menuItemsinfoData = ref(null)
+    const errorMessage = ref(null)
 
     const menuItemData=ref([])
     const showDialog = () => {

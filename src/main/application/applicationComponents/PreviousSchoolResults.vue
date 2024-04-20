@@ -3,7 +3,7 @@
       <p class=" mt-4 mb-10" style="text-align: center !important;">PREVIOUS SCHOOL RESULTS</p>
     </div>
     <div class="mt-0">
-      <form @submit.prevent="addSchoolResults">
+      <form @submit.prevent="savePreviousSchoolResults" enctype="multipart/form-data">
         <div style="background-color: #f8f9fa;">
           <div class="row">
             <div class="col-lg-2"></div>
@@ -32,14 +32,20 @@
               </table>
               <p class="mt-3">
                 <label class="textColor">Attach Latest School Report</label>
-                <!-- <input ref="fileInput" type="file" class="form-control" @change="onFileChange"
-                accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel, application/pdf"> -->
-          <input
+            
+          <!-- <input
             ref="file"
             class="form-control form-control-sm noFocus"
             id="formFileSm"
             accept="application/pdf"
-            type="file" @change="onFileChange">
+            type="file" @change="onFileChange"> -->
+
+            <input
+              ref="file"
+              class="form-control form-control-sm noFocus"
+              id="formFileSm"
+              accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,.pdf"
+              type="file">
 
               </p>
             </div>
@@ -55,11 +61,15 @@
               <span class="visually-hidden">Loading...</span>
             </div>
           </button>
+          <button @click="skipp" type="button" class="btn btn-danger mb-2 ml-1 btn-sm" style="color:white !important">SKIP
+               
+          </button>
             </div>
           </div>
         </div>
       </form>
     </div>
+
   </template>
   
   <script setup>
@@ -67,16 +77,22 @@
   import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
   import useNotificationStore from "@/composables/useNotification.js";
   import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js"
+  import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
   
+  const curriculumStore = useCurriculumStore()
   const emit = defineEmits()
   const assessmentStore= useAssessmentStore()
   const AsessmentListData = ref([])
   const  notificationStore  = useNotificationStore()
   const applicationStore =  useApplicationStore()
   const buttonLoader = ref(false)
-  const file = ref(null)
   let campus_class_number = localStorage.getItem('CampusClassNumber')
+  let application_number= localStorage.getItem("applicationId")
+  let student_number = localStorage.getItem('studentNumber')
   const errorMessage = ref(null)
+  const uploadError = ref(null)
+  const file = ref(null)
+  const loader = ref(false)
 
 
   onMounted(
@@ -85,19 +101,6 @@
         await assessmentStore.fetchAssessmentAreaByClass(campus_class_number)
       } 
     } )
-//     watch (
-//     () => localStorage.getItem('CampusClassNumber'),
-//     async (data) => {
-//       if(data){
-//         if(localStorage.getItem('CampusClassNumber')){
-//           assessmentStore.fetchAssessmentAreaByClass(campus_class_number)
-//         }
-
-//       }
-//     },
-//     {deep:true}
-// )
-
 
   watch(
     () => assessmentStore.assesmentAreaByClassResponse,
@@ -110,8 +113,76 @@
 )
 
 
-// fetchAssessmentAreaByClass,
-        // assesmentAreaByClassResponse
+  const formD = reactive({
+    assessmentArea: [] 
+  })
+  
+  const addSubject = () => {
+    formD.assessmentArea.push({ assessmentAreaNumber: '', score: '' })
+  }
+  
+  const removeSubject = (index) => {
+    formD.assessmentArea.splice(index, 1)
+  }
+
+// const myData = reactive({
+//   assessment_and_score:formD.assessmentArea,
+//   student_number:student_number,
+//   application_number:application_number,
+// })
+
+function savePreviousSchoolResults(){
+  buttonLoader.value = true
+  uploadError.value = null
+  const formData = new FormData();
+  formData.set("file", file.value.files[0]);
+  // formData.set("assessment_and_score", formD.assessmentArea.map(assessmentArea => assessmentArea.assessmentAreaNumber));
+  formData.set("student_number", student_number);
+  formData.set("application_number",application_number)
+  // formData.set("score", formD.assessmentArea.map(assessmentArea => parseInt(assessmentArea.score)));
+
+
+
+  const assessmentAndScore = formD.assessmentArea.map(assessmentArea => ({
+    assessment_area_number: assessmentArea.assessmentAreaNumber,
+    score: parseInt(assessmentArea.score)
+  }));
+  
+  formData.set("assessment_and_score", JSON.stringify(assessmentAndScore));
+
+
+
+  applicationStore.createPreviousSchoolResults(formData)
+}
+
+watch (
+    () => applicationStore.previousSchoolResultresponse,
+    async (data) => {
+      if(data){
+        buttonLoader.value = false
+        localStorage.removeItem('CampusClassNumber')
+        notificationStore.successToast("Success application submitted", data.message)
+        localStorage.removeItem('applicationId')
+        file.value = null
+        const input = document.getElementById('formFileSm');
+        input.value = '';
+      }
+    },
+    {deep:true}
+)
+
+  watch (
+    () => applicationStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        buttonLoader.value = false
+        notificationStore.errorToast("Error",data.message)
+       
+      }
+    },
+    {deep:true}
+)
 
 watch (
     () => assessmentStore.errorMessage,
@@ -126,76 +197,10 @@ watch (
     {deep:true}
 )
 
-
-  const formD = reactive({
-    assessmentArea: [] 
-  })
-  
-  
-  const addSubject = () => {
-    formD.assessmentArea.push({ assessmentAreaNumber: '', score: '' })
-  }
-  
-  const removeSubject = (index) => {
-    formD.assessmentArea.splice(index, 1)
+  const skipp = () =>{
+  emit("next", 5 )
   }
 
-
-  
-// Define reactive variables to store the selected file and its name
-const selectedFile = ref(null);
-const fileName = ref(null);
-
-const onFileChange = (event) => {
-  const file = event.target.files[0];
-  selectedFile.value = file;
-  fileName.value = file ? file.name : null;
-};
-
-
-  const addSchoolResults = () => {
-    // emit("next", 5 )
-  let student_number = localStorage.getItem('studentNumber')
-  buttonLoader.value = true
-
-  const formData = new FormData();
-  formData.set("file", file.value.files[0]);
-  formData.set("assessment_area_number", formD.assessmentArea.map(assessmentArea => assessmentArea.assessmentAreaNumber));
-  formData.set("student_number", student_number);
-  formData.set("score", formD.assessmentArea.map(assessmentArea => parseInt(assessmentArea.score)));
-
-  //alert(JSON.stringify(formData))
-  applicationStore.createPreviousSchoolResults(formData)
-  }
-
-  watch (
-    () => applicationStore.previousSchoolResultresponse,
-    async (data) => {
-      if(data){
-        buttonLoader.value = false
-       localStorage.removeItem('CampusClassNumber')
-
-        notificationStore.successToast("Success application submitted", data.message)
-        localStorage.removeItem('applicationId')
-      }
-    },
-    {deep:true}
-)
-
-  watch (
-    () => applicationStore.errorMessage,
-    async (data) => {
-      if(data){
-        errorMessage.value = data.message
-        buttonLoader.value = false
-        notificationStore.errorToast("Error",data.message)
-        // emit("next", 5 )
-      }
-    },
-    {deep:true}
-)
-
-  
 
   </script>
   
