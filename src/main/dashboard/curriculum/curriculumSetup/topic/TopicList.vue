@@ -43,7 +43,7 @@
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="learning_area_number"
-                  @click="selectSubjectCluster(learning_area_number)"
+                  @change="selectSubjectCluster(learning_area_number)"
                   >
                 <option disabled value="">--Filter by Learning Area--</option>
                 <option value="">All</option>
@@ -56,7 +56,7 @@
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="subject_cluster_number"
-                  @click="selectSubject(subject_cluster_number)"
+                  @change="selectSubject(subject_cluster_number)"
                   >
                 <option disabled value="">--Filter by Subject Cluster--</option>
                 <option value="">All</option>
@@ -69,7 +69,7 @@
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="subject_number"
-                  @click="selectStrand(subject_number)"
+                  @change="selectStrand(subject_number)"
                  >
                 <option disabled value="">--Filter by Subject--</option>
                 <option value="">All</option>
@@ -82,7 +82,7 @@
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="strand_number"
-                  @click="fetchTopicList()"
+                  @change="fetchTopicList()"
               >
                 <option disabled value="">--Filter by Strand--</option>
                 <option value="">All</option>
@@ -95,7 +95,7 @@
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="class_number"
-                  @click="fetchTopicList()"
+                  @change="fetchTopicList()"
               >
                 <option disabled value="">--Filter by Class--</option>
                 <option value="">All</option>

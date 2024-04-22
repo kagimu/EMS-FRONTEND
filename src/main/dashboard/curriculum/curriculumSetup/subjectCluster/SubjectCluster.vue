@@ -38,7 +38,7 @@
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
                 v-model="learning_area_number"
-                @click="fetchSubjectClusterList()"
+                @change="fetchSubjectClusterList()"
                 >
               <option disabled value="">--Filter by Learning Area--</option>
               <option value="">All</option>

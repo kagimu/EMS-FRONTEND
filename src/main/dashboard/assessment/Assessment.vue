@@ -50,7 +50,7 @@
   import ExamType from "@/main/dashboard/assessment/assessmentComponents/ExamType.vue"
   import GradingScale from "@/main/dashboard/assessment/assessmentComponents/GradingScale.vue";
   import GradingStandards from "@/main/dashboard/assessment/assessmentComponents/GradingStandards.vue";
-  import AssessmentScale from "@/main/dashboard/assessment/assessmentComponents/AssessmentScale.vue";
+  import AssessmentScale from "@/main/dashboard/assessment/assessmentComponents/AssessmentGrade.vue";
   import AssessmentAreaGradingStandard from "@/main/dashboard/assessment/AssessmentAreaGradingStandard.vue";
 
   const routerData = useRouter()

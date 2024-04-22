@@ -150,7 +150,7 @@ watch(
 )
 
 watch(
-    () => assessmentStore.assesmentAreaResponse,
+    () => assessmentStore.assessmentAreaResponse,
     async (data) => {
       if(data){
         interviewAssessmentListData.value = data.data

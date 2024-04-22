@@ -44,7 +44,7 @@
                             style="box-shadow: none;"
                             class="form-select form-select-sm"
                             v-model="school"
-                            @click="filterSchool(school)"
+                            @change="filterSchool(school)"
                     >
                         <option disabled value="">--Filter by School--</option>
                         <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>

@@ -64,7 +64,7 @@
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
                 v-model="form.subject_number"
-                @click="filterSubject(form.subject_number)"
+                @change="filterSubject(form.subject_number)"
             >
               <option disabled value="">--Select Subject--</option>
               <option v-for="(list, index) in subjectList" :key="index" :value="list.number">
@@ -81,7 +81,7 @@
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
                 v-model="type"
-                @click="filterByType(type)"
+                @change="filterByType(type)"
             >
               <option disabled value="">--Select type--</option>
               <option v-for="(list, index) in schemeOptions" :key="index" :value="list.value">

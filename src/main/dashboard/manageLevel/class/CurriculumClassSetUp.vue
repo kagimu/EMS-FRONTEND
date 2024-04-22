@@ -47,7 +47,7 @@
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
                       v-model="level"
-                      @click="filterClasses(level)"
+                      @change="filterClasses(level)"
                   >
                     <option disabled value="">--Filter by Level--</option>
                     <option value="">All</option>

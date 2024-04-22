@@ -121,7 +121,7 @@ const assessmentScaleData = ref([])
   
 
   onMounted(() => {
-          assessmentStore.fetchAssessmentScale()
+          assessmentStore.fetchAssessmentGrades()
       }
   ) 
   watch(

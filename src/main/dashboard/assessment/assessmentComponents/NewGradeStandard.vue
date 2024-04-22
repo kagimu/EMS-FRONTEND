@@ -11,11 +11,12 @@ import {useRouter} from "vue-router";
 const commons = useCommonsStore()
 const classStore = useClassesStore()
 const academicYearStore = useAcademicYearStore()
+const assessmentStore = useAssessmentStore()
+
 const  notificationStore  = useNotificationStore()
 const levelStore = useLevelStore()
 const routerData = useRouter()
 const buttonLoader = ref(false)
-const assessmentStore = useAssessmentStore()
 const campus_curriculum_number = ref("")
 const campusCurriculumDataInfo = ref(null)
 const campusLevelList = ref(null)
@@ -29,7 +30,8 @@ const form = reactive({
   campus_class_number: null,
   type:"",
   name:null,
-  description:null
+  description:null,
+  campus_number:campusNumber
 })
 
 
@@ -45,12 +47,10 @@ watch(
     () => assessmentStore.newGradeStandardResponse,
     async (data) => {
       if(data){
-        // await assessmentStore.fetchGradeStandard()
             form.campus_class_number = null
             form.type = null
             form.name = null
             form.description = null
-        // notificationStore.successToast("Success", data.message)
       }
     }
 )
@@ -87,8 +87,7 @@ watch(
       if(data){
         campusLevelList.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
 watch(
@@ -101,8 +100,7 @@ watch(
 )
 
 
-const fetchAcademicYea = (campus_level_number) => {
-  // academicYearStore.fetchAcademicYearByLevel(campus_level_number)
+const fetchClass = (campus_level_number) => {
   academicYearStore.fetchCampusClassByLevel(campus_level_number)
 }
 
@@ -155,7 +153,7 @@ watch(
             <select
                 class="form-select form-select-sm shadow-none"
                 v-model="campus_level_number"
-                @change="fetchAcademicYea(campus_level_number)"
+                @change="fetchClass(campus_level_number)"
             >
               <option disabled value="">--Select Level--</option>
               <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
@@ -170,7 +168,7 @@ watch(
                 class="form-select form-select-sm shadow-none" required
                 v-model="form.campus_class_number"
             >
-              <option disabled value="">Select</option>
+              <option disabled value="">--Select Class--</option>
               <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
             </select>
           </div>

@@ -338,7 +338,7 @@ onMounted(
 
 
       watch(
-    () => assessmentStore.assesmentAreaResponse,
+    () => assessmentStore.assessmentAreaResponse,
     async (data) => {
       if(data){
         AsessmentListData.value = data.data
