@@ -57,7 +57,7 @@
             </td>
             <td>Staff</td>
             <td>
-              <i class="bi bi-x"></i> &nbsp;
+              <i class="bi bi-x" style="color:red"></i> &nbsp;
               <i class="bi bi-check"></i>
             </td>
           </tr>   
