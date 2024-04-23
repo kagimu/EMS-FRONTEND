@@ -65,8 +65,9 @@
     <tbody>
       <tr v-for="(list, index) in feedingSessionGroupData" :key="index">
         <td>{{ index+1 }}</td>
-      <td>{{ list.name }}</td>
+     
       <td>{{ list.code }}</td>
+      <td>{{ list.name }}</td>
       </tr>
                 
     </tbody>
