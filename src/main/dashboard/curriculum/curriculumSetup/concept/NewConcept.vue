@@ -51,12 +51,21 @@ const props = defineProps({
   conceptNo: String,
 })
 
+onMounted(
+    async () => {
+      fetchConceptInfo()
+    }
+)
+
+const fetchConceptInfo = () => {
+  conceptStore.conceptData(props.conceptNo)
+}
 
 watch(
     () => props.conceptNo,
     async (data) => {
       if(data){
-        await conceptStore.conceptData(data)
+        fetchConceptInfo()
       }
     },
     {deep:true}
@@ -229,6 +238,7 @@ watch(
 
 <template>
   <div>
+
     <form @submit.prevent="addConcept">
 
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
