@@ -5,6 +5,21 @@
     <label class="textColor"><small>Code</small></label>
     <input v-model="form.code"  type="number" required class="form-control">
 </div>
+<div class="row">
+    <div class="col-6">
+        <div class="mb-2">
+    <label class="textColor"><small>Code</small></label>
+    <input v-model="form.code"  type="number" required class="form-control">
+</div>
+    </div>
+    <div class="col-6">
+        <div class="mb-2">
+    <label class="textColor"><small>ABBREVIATION</small></label>
+    <input v-model="form.abbreviation"  type="text" required class="form-control">
+</div>
+    </div>
+
+</div>
 <div class="mb-2">
     <label class="textColor"><small>Name</small></label>
     <input v-model="form.name"   type="text" required class="form-control">
@@ -36,7 +51,8 @@ const cateringStore = useCateringStore()
 
 const form = reactive({
     code:null,
-    name:null
+    name:null,
+    abbreviation:null
 })
 const unitMeasurement = () => {
     buttonLoader.true

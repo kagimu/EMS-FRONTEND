@@ -32,13 +32,6 @@
               </table>
               <p class="mt-3">
                 <label class="textColor">Attach Latest School Report</label>
-            
-          <!-- <input
-            ref="file"
-            class="form-control form-control-sm noFocus"
-            id="formFileSm"
-            accept="application/pdf"
-            type="file" @change="onFileChange"> -->
 
             <input
               ref="file"
@@ -94,7 +87,6 @@
   const file = ref(null)
   const loader = ref(false)
 
-
   onMounted(
     async () => {
       if(campus_class_number){
@@ -103,7 +95,7 @@
     } )
 
   watch(
-    () => assessmentStore.assesmentAreaByClassResponse,
+    () => assessmentStore.assessmentAreaByClassResponse,
     async (data) => {
       if(data){
         AsessmentListData.value = data.data
@@ -125,23 +117,13 @@
     formD.assessmentArea.splice(index, 1)
   }
 
-// const myData = reactive({
-//   assessment_and_score:formD.assessmentArea,
-//   student_number:student_number,
-//   application_number:application_number,
-// })
-
 function savePreviousSchoolResults(){
   buttonLoader.value = true
   uploadError.value = null
   const formData = new FormData();
-  formData.set("file", file.value.files[0]);
-  // formData.set("assessment_and_score", formD.assessmentArea.map(assessmentArea => assessmentArea.assessmentAreaNumber));
+  formData.set("attachment", file.value.files[0]);
   formData.set("student_number", student_number);
   formData.set("application_number",application_number)
-  // formData.set("score", formD.assessmentArea.map(assessmentArea => parseInt(assessmentArea.score)));
-
-
 
   const assessmentAndScore = formD.assessmentArea.map(assessmentArea => ({
     assessment_area_number: assessmentArea.assessmentAreaNumber,
@@ -149,9 +131,6 @@ function savePreviousSchoolResults(){
   }));
   
   formData.set("assessment_and_score", JSON.stringify(assessmentAndScore));
-
-
-
   applicationStore.createPreviousSchoolResults(formData)
 }
 
@@ -189,9 +168,7 @@ watch (
     async (data) => {
       if(data){
         errorMessage.value = data.message
-        
         notificationStore.errorToast("Error",data.message)
-
       }
     },
     {deep:true}

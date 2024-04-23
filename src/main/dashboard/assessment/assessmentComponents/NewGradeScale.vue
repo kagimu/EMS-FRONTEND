@@ -35,10 +35,10 @@ const campusNumber = routerData.currentRoute.value.query.id
 
 
 const form = reactive({
+  code : null,
   name : null,
   min_value: null,
   max_value: null,
-  level_number: null,
   weight: null,
   description: null,
   campus_class_number: null,
@@ -63,6 +63,10 @@ watch(
 )
 
 const createScale = () =>{
+  form.code = parseInt(form.code)
+  form.max_value = parseInt(form.max_value)
+  form.min_value = parseInt(form.min_value)
+  form.weight = parseInt(form.weight)
   assessmentStore.createAggregateScale(form)
 }
 
@@ -72,12 +76,9 @@ watch (
     () => assessmentStore.newAggregateScaleResponse,
     async (data) => {
       if(data){
-        await assessmentStore.fetchAggregateScale()
         buttonLoader.value = false
-        notificationStore.successToast("Success", data.message)
       }
-    },
-    {deep:true}
+    }
 )
 
 watch (

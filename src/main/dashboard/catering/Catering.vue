@@ -74,7 +74,7 @@
                  <FeedingGroup></FeedingGroup>
                   </div>
                   <div v-if="menuSelected === 'feeding-session'">
-                <ManageFeedingSessions></ManageFeedingSessions>
+                      <ManageFeedingSessions></ManageFeedingSessions>
                   </div>
                   <div v-if="menuSelected === 'manage-stock'">
                     <ManageStock></ManageStock>

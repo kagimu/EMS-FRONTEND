@@ -51,7 +51,7 @@
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
                     v-model="curriculum_class_number"
-                    @change="fetchAssessmentAreaInfo(curriculum_class_number)">
+                    @change="fetchAssessmentAreaInfo">
                   <option disabled value="">--Filter by Class--</option>
                   <option v-for="(list, index) in classList[0]?.class" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
                 </select>
@@ -74,8 +74,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(assesmentData, index) in AsessmentListData " :key="index">
-          <td>{{ assesmentData.name}}</td>
+        <tr v-for="(assessmentData, index) in assessmentListData " :key="index">
+          <td>{{ assessmentData.name}}</td>
           <td>
           <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
@@ -122,7 +122,7 @@
 const { can } = useAbility()
 const areaDialog = ref(false)
 
-  const AsessmentListData = ref([])
+  const assessmentListData = ref([])
   let errorMessage = ref(null)
   const assessmentStore= useAssessmentStore()
   const  notificationStore  = useNotificationStore()
@@ -139,12 +139,13 @@ const areaDialog = ref(false)
     onMounted(
     async () => {
       await levelStore.fetchCurriculumLevels(curriculumNumber)
-
+      fetchAssessmentAreaInfo()
     } )
 
-  const fetchAssessmentAreaInfo = (curriculum_class_number) => {
-  if(curriculum_class_number){
-     assessmentStore.fetchAssessmentArea(curriculum_class_number)
+
+  const fetchAssessmentAreaInfo = () => {
+  if(curriculum_class_number.value){
+     assessmentStore.fetchAssessmentArea(curriculum_class_number.value)
     }
   }
 
@@ -181,14 +182,13 @@ watch (
 )
 
     watch(
-    () => assessmentStore.assesmentAreaResponse,
+    () => assessmentStore.assessmentAreaResponse,
     async (data) => {
       if(data){
-        AsessmentListData.value = data.data
+        assessmentListData.value = data.data
       //  notificationStore.successToast("Success", data.message)
       }
-    },
-    {deep:true}
+    }
 )
 
 const showAreaDialog = () =>{
@@ -206,6 +206,17 @@ const closeAreaDialog = () =>{
         }
       },
       {deep:true}
+  )
+
+  watch (
+      () => assessmentStore.newAssessmentAreasResponse,
+      async (data) => {
+        if(data){
+          fetchAssessmentAreaInfo()
+          notificationStore.successToast("Success", data.message)
+
+        }
+      }
   )
 
   </script>

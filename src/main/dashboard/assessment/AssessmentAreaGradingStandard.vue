@@ -4,10 +4,12 @@ import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/rep
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import NewAssessmentAreaGradingStandard from "@/main/dashboard/assessment/NewAssessmentAreaGradingStandard.vue";
+import AppModal from "@/components/AppModal.vue";
 
 const reportSetupStore = useReportSetupStore()
 const notificationStore  = useNotificationStore()
 const assessmentAreaGradingStandardList = ref(null)
+const showAssessmentGradingModal = ref(false)
 
 
 onMounted(
@@ -41,17 +43,16 @@ watch(
     () => reportSetupStore.assessmentAreaGradingStandardResponse,
     async (data) => {
       if(data){
+        showAssessmentGradingModal.value = false
         await reportSetupStore.fetchAssessmentAreaGradingStandardInfo()
         notificationStore.successToast("Success",data.message)
       }
     }
 )
 
-
-
-
-
-
+const addAssessmentAreaGradingStandard = () =>{
+  showAssessmentGradingModal.value = true
+}
 
 
 
@@ -61,26 +62,9 @@ watch(
 
   <div>
 
-
-
-
-    <div class="modal fade" id="levelModal" tabindex="-1" :class="{ show: levelDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Attach Assessment Area to Grading Standard</h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-              <new-assessment-area-grading-standard></new-assessment-area-grading-standard>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
+    <AppModal title="Attach Assessment Area to Grading Standard" v-model="showAssessmentGradingModal" lg>
+      <new-assessment-area-grading-standard></new-assessment-area-grading-standard>
+    </AppModal>
 
     <div class="row">
 
@@ -91,7 +75,7 @@ watch(
         <div class="flex justify-content-between mt-3">
           <div class="ml-4">Assessment Area On Grading Standard</div>
           <button
-              type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addLevel" data-bs-toggle="modal" data-bs-target="#levelModal">
+              type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addAssessmentAreaGradingStandard">
             <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
             Add Standard
           </button>

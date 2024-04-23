@@ -63,7 +63,6 @@
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
-                  @click="selectSubjectCluster(learning_area_number)"
                   v-model="learning_area_number">
                 <option disabled value="">--Filter by class--</option>
                 <option value="">All</option>
