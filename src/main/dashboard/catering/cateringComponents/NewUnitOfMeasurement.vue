@@ -1,10 +1,6 @@
 <template>
     <div>
 <form @submit.prevent="unitMeasurement">
-<div class="mb-2">
-    <label class="textColor"><small>Code</small></label>
-    <input v-model="form.code"  type="number" required class="form-control">
-</div>
 <div class="row">
     <div class="col-6">
         <div class="mb-2">
