@@ -110,7 +110,7 @@
         <th style="width: 2px;">#</th>
         <th>Menu Item</th>
         <th>Quantity</th>
-        <th>Unity Price</th>
+        <th>Unit Price</th>
         <th>Campus</th>
         </tr>
     <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">

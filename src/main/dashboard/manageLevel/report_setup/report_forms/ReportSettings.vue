@@ -4,10 +4,12 @@ import NewReportSettings from "@/main/dashboard/manageLevel/report_setup/report_
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
+import AppModal from "@/components/AppModal.vue";
 
 const reportSetupStore = useReportSetupStore()
 const notificationStore  = useNotificationStore()
 const reportSettingsList = ref(null)
+const showReportSettingsModal = ref(false)
 
 
 onMounted(
@@ -21,6 +23,7 @@ watch(
     () => reportSetupStore.reportSettingsResponse,
     async (data) => {
       if(data){
+        showReportSettingsModal.value = false
         await reportSetupStore.fetchReportSettings()
         notificationStore.successToast("Success",data.message)
       }
@@ -38,7 +41,9 @@ watch(
 
 
 
-
+const addReportSettings = () => {
+  showReportSettingsModal.value = true
+}
 
 
 
@@ -50,24 +55,9 @@ watch(
 
   <div>
 
-
-
-
-    <div class="modal fade" id="levelModal" tabindex="-1" :class="{ show: levelDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Add Settings</h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-                <new-report-settings></new-report-settings>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <AppModal title="Add Settings" v-model="showReportSettingsModal" lg>
+      <new-report-settings></new-report-settings>
+    </AppModal>
 
 
 
@@ -80,7 +70,7 @@ watch(
         <div class="flex justify-content-between mt-3">
           <div class="ml-4">Report Settings</div>
           <button
-              type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addLevel" data-bs-toggle="modal" data-bs-target="#levelModal">
+              type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addReportSettings">
             <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
               Add Settings
           </button>
