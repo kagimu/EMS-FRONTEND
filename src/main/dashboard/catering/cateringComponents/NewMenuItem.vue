@@ -2,6 +2,39 @@
     <div>
 <form @submit.prevent="addMenuItem">
 
+  <div class="row">
+<div class="col-lg-6">
+    <div class="mb-2">
+    <label class="textColor"><small>School</small> </label>
+    <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm" required
+            v-model="school_number"
+            @change="fetchCampuses(school_number)"
+    >
+        <option disabled value="">Select School</option>
+        <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+        </option>
+    </select>
+</div>
+</div>
+
+<div class="col-lg-6">
+    <div class="mb-2">
+    <label class="textColor"><small>Campus</small>  </label>
+    <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="menuForm.campus_number" required
+    >
+        <option disabled value="">Select campus</option>
+        <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+        </option>
+    </select>
+</div>
+</div>
+</div>
+
     <div class="row">
         <div class="col-lg-6">
             <div class="mb-2">
@@ -54,38 +87,7 @@
 
 </div>
 
-<div class="row">
-<div class="col-lg-6">
-    <div class="mb-2">
-    <label class="textColor"><small>School</small> </label>
-    <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm" required
-            v-model="school_number"
-            @change="fetchCampuses(school_number)"
-    >
-        <option disabled value="">Select School</option>
-        <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-        </option>
-    </select>
-</div>
-</div>
 
-<div class="col-lg-6">
-    <div class="mb-2">
-    <label class="textColor"><small>Campus</small>  </label>
-    <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="menuForm.campus_number" required
-    >
-        <option disabled value="">Select campus</option>
-        <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-        </option>
-    </select>
-</div>
-</div>
-</div>
 <div>
 </div>
 

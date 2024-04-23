@@ -1,9 +1,20 @@
 <template>
     <div>
 <form @submit.prevent="unitMeasurement">
-<div class="mb-2">
+<div class="row">
+    <div class="col-6">
+        <div class="mb-2">
     <label class="textColor"><small>Code</small></label>
     <input v-model="form.code"  type="number" required class="form-control">
+</div>
+    </div>
+    <div class="col-6">
+        <div class="mb-2">
+    <label class="textColor"><small>ABBREVIATION</small></label>
+    <input v-model="form.abbreviation"  type="text" required class="form-control">
+</div>
+    </div>
+
 </div>
 <div class="mb-2">
     <label class="textColor"><small>Name</small></label>
@@ -29,6 +40,7 @@ import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 import { useAbility } from '@casl/vue';
 
 const { can } = useAbility()
+const errorMessage = ref(null)
 
 const  notificationStore  = useNotificationStore()
 const buttonLoader = ref(false)
@@ -36,7 +48,8 @@ const cateringStore = useCateringStore()
 
 const form = reactive({
     code:null,
-    name:null
+    name:null,
+    abbreviation:null
 })
 const unitMeasurement = () => {
     buttonLoader.true
@@ -60,7 +73,6 @@ watch (
       () => cateringStore.errorMessage,
       async (data) => {
         if(data){
-          thisDialog.value = false
           errorMessage.value = data.message
           notificationStore.errorToast("Error",data.message)
         }
