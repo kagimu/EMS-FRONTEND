@@ -129,7 +129,7 @@
 
     onMounted(
         async () => {
-          await assessmentStore.fetchMetrics()
+          await assessmentStore.fetchMetrics(curriculumNumber)
         } )
     watch(
         () => assessmentStore.metricResponse,
