@@ -219,7 +219,6 @@ watch (
         <tr>
           <th scope="col">Name[ABBREV]</th>
           <th scope="col">Values(Min - Max)</th>
-          <th scope="col">Grade</th>
           <th scope="col">Class</th>
           <th scope="col">Remarks</th>
           <th scope="col">Description</th>
@@ -230,8 +229,7 @@ watch (
       <tr v-for="(scaleData, index) in assessmentScaleData" :key="index">
         <td>{{ scaleData.name + "["+ scaleData.abbreviation +"]" }}</td>
         <td>{{ scaleData.minimum_points + " - " + scaleData.maximum_points }}</td>
-        <td>{{ scaleData.Grade }}</td>
-        <td>{{ scaleData.CampusClass.class_name }}</td>
+        <td>{{ scaleData.campus_class_name }}</td>
         <td>{{ scaleData.remarks }}</td>
         <td>{{ scaleData.description }}</td>
         <td>
