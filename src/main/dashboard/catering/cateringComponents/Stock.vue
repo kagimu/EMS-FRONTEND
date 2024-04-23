@@ -40,6 +40,65 @@
         </div>
     </div>
     
+     <!-- filters -->
+     <div class="row">
+              <div class="col-3">
+                <div class="mb-2">
+          <label class="textColor"><small>School</small> </label>
+          <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm" required
+                  v-model="form.school_number"
+                  @change="fetchCampuses(form.school_number)"
+          >
+              <option disabled value="">Select School</option>
+              <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+              </option>
+          </select>
+      </div>
+              </div>
+
+              <div class="col-3">
+      <div class="mb-2">
+          <label class="textColor"><small>Campus</small>  </label>
+          <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="form.campus_number" required
+                  @change="fetchClasses(form.campus_number)"
+          >
+              <!-- <option disabled value="">Select campus</option> -->
+              <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+              </option>
+          </select>
+      </div></div>
+
+
+      <div class="col-3">
+        <div class="mb-2">
+          <label class="textColor"><small>Class</small> </label>
+          <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm" required
+                  v-model="form.campus_class_number"
+                  @change="fetchAcademicYear(form.campus_class_number)"
+          >
+              <!-- <option disabled value="">Select class</option> -->
+              <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}
+              </option>
+          </select>
+      </div>
+      </div>
+
+  
+   
+      <div class="col-3">
+          <div class="mt-4">
+              <input type="text" class="form-control mt-1 mb-0" placeholder="Search..."> 
+          </div>
+     </div>
+
+            </div>
     
     <table
     id="datatable"
@@ -84,11 +143,29 @@
     import useNotificationStore from "@/composables/useNotification.js";
     import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 
+    import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+    import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+    import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
+
     const notificationStore = useNotificationStore()
     const cateringStore = useCateringStore()
     const errorMessage = ref(null)
     const stockData = ref([])
+
+    const campusList = ref([])
+    const schoolList = ref([])
+    const classList = ref([])
+    const schoolStore = useSchoolStore()
+    const campusStore = useCampusStore()
+    const classStore = useClassesStore()
+    const school_number = ref(null)
     
+    const form = reactive({
+    school_number:null,
+    campus_class_number: null,
+    campus_number: null,
+    })
+
 
     const closeDialog = () => {
         thisDialog.value = false
@@ -116,6 +193,41 @@
     {deep: true}
   )
 
+
+  onMounted(() => {
+      schoolStore.fetchSchools()
+  }
+)
+
+watch(
+  () => schoolStore.schoolsResponse,
+  async (data) => {
+      if (data) {
+          schoolList.value = data.data
+      }
+  },
+  {deep: true}
+)
+
+watch(
+  () => campusStore.campusListResponse,
+  async (data) => {
+      if (data) {
+          campusList.value = data.data
+      }
+  },
+  {deep: true}
+)
+
+watch(
+  () => campusStore.campusClassesResponse,
+  async (data) => {
+      if (data) {
+          classList.value = data.data
+      }
+  },
+  {deep: true}
+)
     </script>
     
     
