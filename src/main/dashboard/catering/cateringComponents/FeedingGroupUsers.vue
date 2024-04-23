@@ -31,7 +31,9 @@
             <th style="width: 5px;"><input type="checkbox"   class="checkbox-primary"></th>
             <th>#</th>
             <th>Name</th>
-            <th>Gender</th>     
+            <th>Gender</th>  
+            <th>Group</th>   
+            <th>Action</th>
           </tr>
     <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
       {{errorMessage}}
@@ -53,8 +55,10 @@
             <td>
               {{  student.gender }}
             </td>
+            <td>Staff</td>
             <td>
-                    
+              <i class="bi bi-x" style="color:red"></i> &nbsp;
+              <i class="bi bi-check"></i>
             </td>
           </tr>   
                     

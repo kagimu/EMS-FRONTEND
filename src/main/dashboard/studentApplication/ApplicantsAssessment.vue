@@ -142,7 +142,7 @@ const submitMarks = (a,b,c) =>{
     actual_score:a
 })
 
-alert(JSON.stringify(form))
+// alert(JSON.stringify(form))
 studentApplicationStore.newInterviewAssessmentResult(form)
 }
 

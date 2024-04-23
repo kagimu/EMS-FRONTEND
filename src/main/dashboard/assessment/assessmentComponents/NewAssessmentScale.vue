@@ -113,7 +113,10 @@ watch (
     {deep:true}
 )
 const createScale = () =>{
+  buttonLoader.value = true
   form.code = parseInt(form.code)
+  form.maximum_points = parseInt(form.maximum_points)
+  form.minimum_points = parseInt(form.minimum_points)
   if(props.scaleD.number){
     assessmentStore.updateAssessmentScale(form,props.scaleD.number)
 
