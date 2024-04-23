@@ -66,10 +66,6 @@ const addAssessmentAreaGradingStandard = () =>{
       <new-assessment-area-grading-standard></new-assessment-area-grading-standard>
     </AppModal>
 
-
-
-
-
     <div class="row">
 
       <div class="col-12">
