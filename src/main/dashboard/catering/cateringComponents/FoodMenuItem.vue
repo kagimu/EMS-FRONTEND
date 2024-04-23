@@ -56,7 +56,7 @@
     <div class="row">
               <div class="col-4">
                 <div class="mb-2">
-          <!-- <label class="textColor"><small>School</small> </label> -->
+          <label class="textColor"><small>School</small> </label>
           <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm" required
