@@ -63,7 +63,7 @@
                   v-model="form.school_number"
                   @change="fetchCampuses(form.school_number)"
           >
-              <option disabled value="">Select School</option>
+              <option  value="">Select School</option>
               <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
               </option>
           </select>
@@ -192,6 +192,8 @@ const filter = (campusN) =>{
    cateringStore.filterMenuItem(campusN)
 }
 
+
+
     const menuItemData=ref([])
     const showDialog = () => {
         thisDialog.value = true
@@ -233,6 +235,15 @@ watch(
     },
     {deep: true}
   )
+
+  watch(
+    () => cateringStore.filterMenuResponse,
+    async (data) => {
+        menuItemData.value = data.data
+    },
+    {deep: true}
+  )
+
   watch(
     () => cateringStore.errorMessage,
     async (data) => {

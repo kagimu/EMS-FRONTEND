@@ -40,6 +40,7 @@ import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 import { useAbility } from '@casl/vue';
 
 const { can } = useAbility()
+const errorMessage = ref(null)
 
 const  notificationStore  = useNotificationStore()
 const buttonLoader = ref(false)
@@ -72,7 +73,6 @@ watch (
       () => cateringStore.errorMessage,
       async (data) => {
         if(data){
-          thisDialog.value = false
           errorMessage.value = data.message
           notificationStore.errorToast("Error",data.message)
         }

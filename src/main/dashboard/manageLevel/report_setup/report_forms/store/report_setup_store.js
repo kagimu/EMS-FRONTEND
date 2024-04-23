@@ -153,8 +153,8 @@ export const useReportSetupStore = defineStore("report_setup", () => {
     }
 
 
-    async function fetchReportColumn() {
-        return await api.get("main/report-settings/columns")
+    async function fetchReportColumn(campus_number) {
+        return await api.get("main/report-settings/columns?campus_number="+campus_number)
             .then((response) => {
                 reportColumnListResponse.value = response.data
             })

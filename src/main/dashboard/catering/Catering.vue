@@ -119,20 +119,16 @@
   // const menuSelected = route ? route : "menu-items"
   
   const menu = ref([
-
-    {
-      text:"Menu Items",
-      value:"menu-items"
-    },
-    // {
-    //   text:"Item Assembly",
-    //   value:"item-assembly"
-    // },
-    {
+   {
       text:"Units Of Measure",
       value:"units-of-measurement"
     },
     {
+      text:"Menu Items",
+      value:"menu-items"
+    },
+
+  {
   text:"Feeding Group",
   value:"feeding-group"
 },

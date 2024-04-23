@@ -4,14 +4,20 @@ import NewReportColumn from "@/main/dashboard/manageLevel/report_setup/report_fo
 import {onMounted, ref, watch} from "vue";
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
 import useNotificationStore from "@/composables/useNotification.js";
+import AppModal from "@/components/AppModal.vue";
+import {useRouter} from "vue-router";
 
 const reportSetupStore = useReportSetupStore()
 const  notificationStore  = useNotificationStore()
+const routerData = useRouter()
+
 const reportColumnList = ref(null)
+const showReportColumnsModal = ref(false)
+const campusNumber = routerData.currentRoute.value.query.id
 
 onMounted(
     async () => {
-      await reportSetupStore.fetchReportColumn()
+      await reportSetupStore.fetchReportColumn(campusNumber)
     }
 )
 
@@ -21,6 +27,7 @@ watch(
     () => reportSetupStore.reportColumnResponse,
     async (data) => {
       if(data){
+        showReportColumnsModal.value = false
         await reportSetupStore.fetchReportColumn()
         notificationStore.successToast("Success",data.message)
       }
@@ -36,29 +43,22 @@ watch(
     }
 )
 
+const addReportColumn = () => {
+  showReportColumnsModal.value = true
+}
+
 </script>
 
 <template>
   <div>
 
 
+    <AppModal title="Add Report Columns" v-model="showReportColumnsModal" lg>
+      <new-report-column></new-report-column>
+    </AppModal>
 
 
-    <div class="modal fade" id="levelModal" tabindex="-1" :class="{ show: levelDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Add Report Columns</h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-             <new-report-column></new-report-column>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
 
 
 
@@ -71,7 +71,7 @@ watch(
         <div class="flex justify-content-between mt-3">
           <div class="ml-4">Report Columns</div>
           <button
-              type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addLevel" data-bs-toggle="modal" data-bs-target="#levelModal">
+              type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addReportColumn">
             <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
             Add Column
           </button>
