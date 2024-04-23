@@ -12,7 +12,7 @@
 
 <div class="mb-2">
     <label class="textColor"><small>Day</small></label>
-    <select v-model="form.day" class="form-control form-select"> 
+    <select v-model="form.day" class="form-control form-select" > 
             <option disabled value="">Select</option>
             <option>Monday</option>
             <option>Tuesday</option>

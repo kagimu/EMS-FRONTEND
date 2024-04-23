@@ -8,7 +8,6 @@
             <div class="card-body" style="padding: 0;">
               <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">CATERING SERVICE</div>
   
-  
               <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
                   <div
                     v-for="(item, idx) in menu" :key="idx"
@@ -40,16 +39,16 @@
 
           <div class="card mt-3">
             <div class="card-body" style="padding: 0;">
-
-              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-                <div
+                <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+                  <div
+                    v-for="(item, idx) in Feedmenu" :key="idx"
                     class="list-group-item list-group-item-action cursor-pointer"
-                    :class="menuSelected === 'manage-feeding-users' ? 'active' : ''"
-                    @click="changeMenu('manage-feeding-users')"
-                >
-                  <small style="font-size:12px;">Feeding Users</small>
+                    :class="item.value === menuSelected ? 'active' : ''"
+                    @click="changeMenu(item.value)">
+                  <small style="font-size:12px;">{{item.text}}</small>
                 </div>
               </div>
+           
             </div>
           </div>
 
@@ -83,6 +82,9 @@
                   <div v-if="menuSelected === 'manage-feeding-users'">
                 <FeedingGroupUsers></FeedingGroupUsers>
                   </div>
+                  <div v-if="menuSelected === 'feeding'">
+                <FeedingUsers></FeedingUsers>
+                  </div>
                 
                   
               </div>
@@ -111,6 +113,7 @@
   import ManageItemsAssembly from "@/main/dashboard/catering/cateringComponents/ManageItemsAssembly.vue";
   import ManageStock from "@/main/dashboard/catering/cateringComponents/ManageStock.vue";
   import FeedingGroupUsers from "@/main/dashboard/catering/cateringComponents/FeedingGroupUsers.vue";
+  import FeedingUsers from "@/main/dashboard/catering/cateringComponents/FeedingUsers.vue";
 
   const routerData = useRouter()
   
@@ -139,9 +142,23 @@
    
   ])
 
+  const Feedmenu = ref([
+   {
+      text:"Feeding User Group",
+      value:"manage-feeding-users"
+    },
+    {
+      text:"Feeding",
+      value:"feeding"
+    },
+
+   
+  ])
+
   const changeMenu = (value) => {
   menuSelected.value = value
 }
+
   
   
   </script>

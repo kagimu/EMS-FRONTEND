@@ -1,5 +1,12 @@
 <template>
     <div>
+
+    
+    <AppModal title="Unit Measurement" v-model="showUnitModal" x12>
+      <NewUnitOfMeasurement></NewUnitOfMeasurement>
+    </AppModal>
+
+
 <form @submit.prevent="addMenuItem">
 
   <div class="row">
@@ -75,12 +82,12 @@
     </div>
     <div class="col-lg-6">
         <div class="mb-2">
-    <label class="textColor"><small>Unit Of Measurement</small></label>
+    <label class="textColor"><small>Unit Of Measurement</small>  <b><i class="bi bi-plus-lg" @click="showUnitMeasurement()"></i></b></label>
     <select v-model="menuForm.unit_of_measure_number" class="form-control form-select"> 
         <option disabled value="">Select</option>
         <option v-for="(list, index) in unitMeasurementData" :key="index" :value="list.number">{{list.name}}</option>
     </select>
-    
+   
 </div>
 
 </div>
@@ -140,11 +147,13 @@
 <script setup>
     import {onMounted,reactive, ref, watch} from "vue";
     import useNotificationStore from "@/composables/useNotification.js";
-    // import NewMenuItem from "@/main/dashboard/catering/cateringComponents/NewMenuItem.vue";
+    import NewUnitOfMeasurement from "@/main/dashboard/catering/cateringComponents/NewUnitOfMeasurement.vue";
     import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
     import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
     import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+    import AppModal from "@/components/AppModal.vue";
 
+    const showUnitModal = ref(false)
     const notificationStore = useNotificationStore()
     const thisDialog = ref(false)
     const buttonLoader = ref(false)
@@ -154,6 +163,11 @@
     const campusStore = useCampusStore()
     const itemtype = ref(null)
     const errorMessage = ref(null)
+
+    const showUnitMeasurement = () => {
+    showUnitModal.value = true
+    thisDialog.value=false
+}
 
     const showDialog = () => {
         thisDialog.value = true
@@ -370,5 +384,18 @@ watch(
     menuItems.value = []
 }
 
+const addUnit = () =>{
+  alert("Gwe")
+}
 
     </script>
+    <style>
+  .bi.bi-plus-lg {
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.bi.bi-plus-lg:hover {
+    color: blue; /* Change color on hover */
+}
+
+</style>
