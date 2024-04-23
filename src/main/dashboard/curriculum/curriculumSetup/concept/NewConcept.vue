@@ -1,131 +1,3 @@
-<template>
-  <div>
-
-    <form @submit.prevent="addConcept">
-
-      <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
-        {{ classError }}
-      </div>
-
-      <div class="mb-2">
-        <label class="textColor"><small>Code</small></label>
-        <input
-            @keypress="commons.numbersOnlyValidator($event)"
-            maxlength="10"
-            ref="nameRef"
-            type="text"
-            style="outline: none 0 !important; box-shadow: none;"
-            v-model="form.code"
-            required
-            class="form-control form-select-sm">
-      </div>
-
-      <div class="mb-2">
-        <label class="textColor"><small>Learning Area</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="learning_area_number"
-            @change="selectSubjectCluster(learning_area_number)"
-        >
-          <option disabled value="">--Select Learning Area--</option>
-          <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-        </select>
-      </div>
-
-      <div class="mb-2">
-        <label class="textColor"><small>Subject Cluster</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="subject_cluster_number"
-            @change="selectSubject(subject_cluster_number)"
-        >
-          <option disabled value="">--Select Subject Cluster--</option>
-          <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-        </select>
-      </div>
-
-
-
-      <div class="mb-2">
-        <label class="textColor"><small>Subject</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="subject_number"
-            @change="selectStrand(subject_number)"
-        >
-          <option disabled value="">--Select Subject--</option>
-          <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-        </select>
-      </div>
-
-
-      <div class="mb-2">
-        <label class="textColor"><small>Strand</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="strand_number"
-            @change="selectTopic(strand_number)"
-        >
-          <option disabled value="">--Select Strand--</option>
-          <option v-for="(list, index) in strandList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-        </select>
-      </div>
-
-
-      <div class="mb-2">
-        <label class="textColor"><small>Topic</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="topic_number"
-            @change="selectSubTopic(topic_number)"
-        >
-          <option disabled value="">--Select Topic--</option>
-          <option v-for="(list, index) in topicList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-        </select>
-      </div>
-
-      <div class="mb-2">
-        <label class="textColor"><small>Sub Topic</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="form.sub_topic_number">
-          <option disabled value="">--Select Sub Topic--</option>
-          <option v-for="(list, index) in subtopicList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-        </select>
-      </div>
-
-
-
-      <div class="mb-2">
-        <label class="textColor"><small>Concept Name</small></label>
-        <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.name" required class="form-control form-select-sm">
-      </div>
-
-
-
-      <div class="flex justify-content-end" style="width: 100%;">
-        <button
-            type="submit"
-            class="btn btn-primary border-0">
-            {{conceptNumber ? "Edit" : "Save"}}
-          <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </span>
-        </button>
-      </div>
-
-    </form>
-
-
-  </div>
-</template>
-
 <script setup>
 
 import {onMounted, reactive, ref, watch} from "vue";
@@ -173,6 +45,22 @@ const strand_number = ref("")
 const topic_number = ref("")
 const conceptNumber = ref("")
 let  curriculumNumber = routerData.currentRoute.value.query.id
+
+
+const props = defineProps({
+  conceptNo: String,
+})
+
+
+watch(
+    () => props.conceptNo,
+    async (data) => {
+      if(data){
+        await conceptStore.conceptData(data)
+      }
+    },
+    {deep:true}
+)
 
 
 const form = reactive({
@@ -338,6 +226,135 @@ watch(
 )
 
 </script>
+
+<template>
+  <div>
+    <form @submit.prevent="addConcept">
+
+      <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
+        {{ classError }}
+      </div>
+
+      <div class="mb-2">
+        <label class="textColor"><small>Code</small></label>
+        <input
+            @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10"
+            ref="nameRef"
+            type="text"
+            style="outline: none 0 !important; box-shadow: none;"
+            v-model="form.code"
+            required
+            class="form-control form-select-sm">
+      </div>
+
+      <div class="mb-2">
+        <label class="textColor"><small>Learning Area</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="learning_area_number"
+            @change="selectSubjectCluster(learning_area_number)"
+        >
+          <option disabled value="">--Select Learning Area--</option>
+          <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
+      <div class="mb-2">
+        <label class="textColor"><small>Subject Cluster</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="subject_cluster_number"
+            @change="selectSubject(subject_cluster_number)"
+        >
+          <option disabled value="">--Select Subject Cluster--</option>
+          <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
+
+
+      <div class="mb-2">
+        <label class="textColor"><small>Subject</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="subject_number"
+            @change="selectStrand(subject_number)"
+        >
+          <option disabled value="">--Select Subject--</option>
+          <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
+
+      <div class="mb-2">
+        <label class="textColor"><small>Strand</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="strand_number"
+            @change="selectTopic(strand_number)"
+        >
+          <option disabled value="">--Select Strand--</option>
+          <option v-for="(list, index) in strandList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
+
+      <div class="mb-2">
+        <label class="textColor"><small>Topic</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="topic_number"
+            @change="selectSubTopic(topic_number)"
+        >
+          <option disabled value="">--Select Topic--</option>
+          <option v-for="(list, index) in topicList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
+      <div class="mb-2">
+        <label class="textColor"><small>Sub Topic</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.sub_topic_number">
+          <option disabled value="">--Select Sub Topic--</option>
+          <option v-for="(list, index) in subtopicList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
+
+
+      <div class="mb-2">
+        <label class="textColor"><small>Concept Name</small></label>
+        <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.name" required class="form-control form-select-sm">
+      </div>
+
+
+
+      <div class="flex justify-content-end" style="width: 100%;">
+        <button
+            type="submit"
+            class="btn btn-primary border-0">
+            {{conceptNumber ? "Edit" : "Save"}}
+          <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </span>
+        </button>
+      </div>
+
+    </form>
+
+
+  </div>
+</template>
+
+
 
 <style scoped>
 .noFocus:focus {

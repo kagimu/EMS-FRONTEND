@@ -26,7 +26,7 @@ const conceptStore = useConceptStore()
 const classStore = useClassesStore()
 const notificationStore  = useNotificationStore()
 const deletionLoader = ref( undefined)
-const conceptDialog = ref( false)
+const editConceptDialog = ref( false)
 const conceptEditMode = ref( false)
 const conceptList = ref( [])
 const subtopicList = ref( [])
@@ -47,17 +47,17 @@ const topic_number = ref("")
 const sub_topic_number = ref("")
 const learning_area_number = ref("")
 const class_number = ref("")
+const conceptNumber = ref("")
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
-const addConcept = () => {
-  conceptEditMode.value = false
-  conceptDialog.value = true
-}
+
 
 const editConcept = (data) => {
+  editConceptDialog.value = true
   conceptEditMode.value = true
-  conceptStore.conceptData(data.number)
+  conceptNumber.value = data.number
+  // conceptStore.conceptData(data.number)
 }
 const deleteConcept = (data) => {
   if(!confirm("Are you sure, you want to delete: "+data.name)){
@@ -307,10 +307,15 @@ watch(
 </script>
 <template>
   <div>
-<!--
-    <AppModal title="Concepts" v-model="showExpandConceptModal">
-      show Expand Concept Modal
-    </AppModal>-->
+
+    <AppModal :title="conceptEditMode ? 'Edit Concept' : 'Add Concept'" v-model="editConceptDialog" lg>
+      <new-concept :conceptNo="conceptNumber"></new-concept>
+    </AppModal>
+
+    <!--
+        <AppModal title="Concepts" v-model="showExpandConceptModal">
+          show Expand Concept Modal
+        </AppModal>-->
 <!--
     <div class="modal fade" id="subjectModal" tabindex="-1" :class="{ show: conceptDialog }" aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog">
@@ -535,7 +540,6 @@ watch(
                                                         <div>
                                                           <i
                                                               style="font-size: 13px;"
-                                                              data-bs-toggle="modal" data-bs-target="#subjectModal"
                                                               class="bi-pencil mr-2 cursor-pointer" @click="editConcept(ccp)"></i>
                                                           <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteConcept(ccp)"></i>
                                                           <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === ccp.number">
