@@ -26,6 +26,7 @@ export const useCateringStore = defineStore("catering", () => {
     let menuItemDetailsResponse = ref(null)
     let updateMenuItemResponse = ref(null)
     let updateItemAssemblyResponse = ref(null)
+    let filterMenuResponse = ref(null)
 
     const errorMessage = ref(null)
 
@@ -300,6 +301,19 @@ async function updateAssemblyItem(data,menuItemNumber) {
             }
         })
 }
+// {{baseUrl}}/catering/menu-items/filter/{{CAMPUS_ID}}
+async function filterMenuItem(campusN) {
+    return await api.get("main/catering/menu-items/filter/"+campusN)
+        .then((response) => {
+            filterMenuResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
     return {
         newUnitOfMeasureInfoResponse,
         errorMessage,
@@ -347,6 +361,8 @@ async function updateAssemblyItem(data,menuItemNumber) {
         updateMenuItemResponse,
         updateMenuItem,
         updateItemAssemblyResponse,
-        updateAssemblyItem
+        updateAssemblyItem,
+        filterMenuResponse, 
+        filterMenuItem
     }
 } )

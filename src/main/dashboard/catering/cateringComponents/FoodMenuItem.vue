@@ -54,7 +54,7 @@
     
     <!-- filters -->
     <div class="row">
-              <div class="col-3">
+              <div class="col-4">
                 <div class="mb-2">
           <label class="textColor"><small>School</small> </label>
           <select
@@ -70,14 +70,14 @@
       </div>
               </div>
 
-              <div class="col-3">
+              <div class="col-4">
       <div class="mb-2">
           <label class="textColor"><small>Campus</small>  </label>
           <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="form.campus_number" required
-                  @change="fetchClasses(form.campus_number)"
+                  @change="filter(form.campus_number)"
           >
               <!-- <option disabled value="">Select campus</option> -->
               <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
@@ -85,26 +85,8 @@
           </select>
       </div></div>
 
-
-      <div class="col-3">
-        <div class="mb-2">
-          <label class="textColor"><small>Class</small> </label>
-          <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm" required
-                  v-model="form.campus_class_number"
-                  @change="fetchAcademicYear(form.campus_class_number)"
-          >
-              <!-- <option disabled value="">Select class</option> -->
-              <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}
-              </option>
-          </select>
-      </div>
-      </div>
-
-  
    
-      <div class="col-3">
+      <div class="col-4">
           <div class="mt-4">
               <input type="text" class="form-control mt-1 mb-0" placeholder="Search..."> 
           </div>
@@ -198,9 +180,17 @@
 
     const form = reactive({
     school_number:null,
-    campus_class_number: null,
     campus_number: null,
     })
+
+    
+  const fetchCampuses = (school_number) => {
+    campusStore.fetchCampuses(school_number)
+}
+
+const filter = (campusN) =>{
+   cateringStore.filterMenuItem(campusN)
+}
 
     const menuItemData=ref([])
     const showDialog = () => {

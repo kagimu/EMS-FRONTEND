@@ -121,7 +121,7 @@ function savePreviousSchoolResults(){
   buttonLoader.value = true
   uploadError.value = null
   const formData = new FormData();
-  formData.set("file", file.value.files[0]);
+  formData.set("attachment", file.value.files[0]);
   formData.set("student_number", student_number);
   formData.set("application_number",application_number)
 
