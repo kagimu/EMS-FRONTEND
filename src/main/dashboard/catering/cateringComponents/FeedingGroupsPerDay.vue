@@ -51,8 +51,7 @@
         <tr>
           <th>#</th>
         <th>Feeding Group</th>
-        <th>Feeding Seesion</th>
-        <th>Status</th>
+        <th>Day</th>
         <th>Action</th>
         </tr>
     <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
@@ -63,8 +62,8 @@
       <tr v-for="(list, index) in feedingPerDayGroupData" :key="index">
         <td>{{ index+1 }}</td>
      
-      <td>{{ list.code }}</td>
-      <td>{{ list.name }}</td>
+      <td>{{ list.feeding_group_number }}</td>
+      <td>{{ list.day }}</td>
       <td>Active</td>
       <td>
         <button data-bs-toggle="offcanvas" aria-controls="rolesDialogg">

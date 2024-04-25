@@ -14,6 +14,9 @@
           </div>
   <!-- wnd  -->
   
+  <AppModal title="Unit Measurement" v-model="showUnitModal" lg>
+    <NewUnitOfMeasurement></NewUnitOfMeasurement>
+    </AppModal>
 
 
 
@@ -34,8 +37,7 @@
     
                 <div class="col-lg-4">
                 <button
-                style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
-                data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="showDialog">
+                style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4" @click="showUnitMeasurement()">
                 <small> <b><i class="bi bi-plus"></i></b>
                 Add New</small></button>
                 </div>
@@ -94,10 +96,19 @@
     import useNotificationStore from "@/composables/useNotification.js";
     import NewUnitOfMeasurement from "@/main/dashboard/catering/cateringComponents/NewUnitOfMeasurement.vue";
     import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+    import AppModal from "@/components/AppModal.vue";
 
+    const showUnitModal = ref(false)
     const cateringStore = useCateringStore()
     const thisDialog = ref(false)
     const unitMeasurementData = ref([])
+
+    const showUnitMeasurement = () => {
+    showUnitModal.value = true
+    thisDialog.value=false
+}
+
+
     const showDialog = () => {
         thisDialog.value = true
     }

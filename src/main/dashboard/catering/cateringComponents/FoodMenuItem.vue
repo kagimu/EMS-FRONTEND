@@ -40,11 +40,11 @@
                     </div>
     
                 <div class="col-lg-4">
-                <button
+                <!-- <button
                 style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
                 data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="showDialog">
                 <small> <b><i class="bi bi-plus"></i></b>
-                Add New</small></button>
+                Add New</small></button> -->
                 </div>
             </div>
             </div>
@@ -62,6 +62,7 @@
                   class="form-select form-select-sm" required
                   v-model="form.school_number"
                   @change="fetchCampuses(form.school_number)"
+                  
           >
               <option  value="">Select School</option>
               <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}

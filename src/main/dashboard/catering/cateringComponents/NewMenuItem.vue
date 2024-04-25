@@ -1,14 +1,13 @@
 <template>
-    <div>
+    <div class="mt-5">
 
     
-    <AppModal title="Unit Measurement" v-model="showUnitModal" x12>
+    <AppModal title="Unit Measurement" v-model="showUnitModal" lg>
       <NewUnitOfMeasurement></NewUnitOfMeasurement>
     </AppModal>
 
 
 <form @submit.prevent="addMenuItem">
-
   <div class="row">
 <div class="col-lg-6">
     <div class="mb-2">
@@ -82,7 +81,7 @@
     </div>
     <div class="col-lg-6">
         <div class="mb-2">
-    <label class="textColor"><small>Unit Of Measurement</small>  <b><i class="bi bi-plus-lg" @click="showUnitMeasurement()"></i></b></label>
+    <label class="textColor"><small>Unit Of Measurement</small>  <b><i class="bi bi-plus-circle-fill" @click="showUnitMeasurement()"></i></b></label>
     <select v-model="menuForm.unit_of_measure_number" class="form-control form-select"> 
         <option disabled value="">Select</option>
         <option v-for="(list, index) in unitMeasurementData" :key="index" :value="list.number">{{list.name}}</option>
