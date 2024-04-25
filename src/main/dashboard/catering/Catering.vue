@@ -70,7 +70,8 @@
                     <ManageItemsAssembly></ManageItemsAssembly>
                   </div> -->
                   <div v-if="menuSelected === 'feeding-group'">
-                 <FeedingGroup></FeedingGroup>
+                 <!-- <FeedingGroup></FeedingGroup> -->
+                 <ManageFeedingGroup></ManageFeedingGroup>
                   </div>
                   <div v-if="menuSelected === 'feeding-session'">
                       <ManageFeedingSessions></ManageFeedingSessions>
@@ -114,6 +115,7 @@
   import ManageStock from "@/main/dashboard/catering/cateringComponents/ManageStock.vue";
   import FeedingGroupUsers from "@/main/dashboard/catering/cateringComponents/FeedingGroupUsers.vue";
   import FeedingUsers from "@/main/dashboard/catering/cateringComponents/FeedingUsers.vue";
+  import ManageFeedingGroup from "@/main/dashboard/catering/cateringComponents/ManageFeedingGroup.vue";
 
   const routerData = useRouter()
   
@@ -148,7 +150,7 @@
       value:"manage-feeding-users"
     },
     {
-      text:"Feeding",
+      text:"Capturing Meals",
       value:"feeding"
     },
 

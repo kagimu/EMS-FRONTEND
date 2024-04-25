@@ -1,11 +1,28 @@
 <template>
     <div>
 
+      <div class="modal fade" id="interviewAssessmentModal"  tabindex="-1"  aria-labelledby="" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header text-sm p-0">
+            <h6 class="modal-title ml-3 mt-2 mb-2">Interview Assessment </h6>
+            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mt-2 mb-2">
+              <interview-assessment :interviewNumber="interviewNumber"></interview-assessment>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
 
     <div class="row mt-4">
 <div class="col-lg-3">
     <div class="mb-2">
-            <label class="textColor"><small>Assessment</small> 
+            <label class="textColor"><small>Assessment </small> 
             </label>
             <select
                     style="box-shadow: none;"
@@ -18,6 +35,11 @@
             </select>
         </div>
 </div>
+<div class="col-lg-1"><b>
+  <i 
+data-bs-toggle="modal"
+data-bs-target="#interviewAssessmentModal"
+  style="margin-left: -20px;" class="bi bi-plus-circle mb-2 mt-10" ></i></b></div>
 <div class="col-lg-8">
 
 </div>
@@ -76,6 +98,8 @@ import {useStudentApplicationStore} from "@/main/dashboard/studentApplication/st
 import useNotificationStore from "@/composables/useNotification.js";
 import {useRouter} from "vue-router";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+import InterviewAssessment from "@/main/dashboard/studentApplication/InterviewAssessment.vue";
+
 
 const assessmentNumber = ref(null)
 const interviewStudentList = ref( [])
