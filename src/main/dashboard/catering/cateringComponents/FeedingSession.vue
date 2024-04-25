@@ -121,15 +121,15 @@ watch(
   },
   {deep: true}
 )
-watch(
-  () => cateringStore.errorMessage,
-  async (data) => {
-        if (data) {
-        notificationStore.errorToast("Error", data.message)
-        }
-  },
-  {deep: true}
-)
+// watch(
+//   () => cateringStore.errorMessage,
+//   async (data) => {
+//         if (data) {
+//         notificationStore.errorToast("Error", data.message)
+//         }
+//   },
+//   {deep: true}
+// )
   </script>
   
   

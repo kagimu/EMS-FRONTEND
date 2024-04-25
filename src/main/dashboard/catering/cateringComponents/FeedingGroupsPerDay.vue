@@ -67,7 +67,7 @@
       <tr v-for="(list, index) in feedingPerDayGroupData" :key="index">
         <td>{{ index+1 }}</td>
      
-      <td>{{ list.feeding_group_number }}</td>
+      <td>{{ list.feeding_group_name }}</td>
       <td>{{ list.day }}</td>
       <td>Active</td>
       <td>

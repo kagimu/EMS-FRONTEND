@@ -64,7 +64,7 @@
               <ManageMenuItem></ManageMenuItem>
                   </div>
                   <div v-if="menuSelected === 'units-of-measurement'">
-                 <UnitsOfMeasure></UnitsOfMeasure>
+                 <ManageUnitOfMeasurement></ManageUnitOfMeasurement>
                   </div>
                   <!-- <div v-if="menuSelected === 'item-assembly'">
                     <ManageItemsAssembly></ManageItemsAssembly>
@@ -117,6 +117,7 @@
   import FeedingUsers from "@/main/dashboard/catering/cateringComponents/FeedingUsers.vue";
   import ManageFeedingGroup from "@/main/dashboard/catering/cateringComponents/ManageFeedingGroup.vue";
   import ManageMenuItem from "@/main/dashboard/catering/cateringComponents/ManageMenuItem.vue";
+  import ManageUnitOfMeasurement from "@/main/dashboard/catering/cateringComponents/ManageUnitOfMeasurement.vue";
 
 
 
@@ -127,10 +128,10 @@
   // const menuSelected = route ? route : "menu-items"
   
   const menu = ref([
-  //  {
-  //     text:"Units Of Measure",
-  //     value:"units-of-measurement"
-  //   },
+   {
+      text:"Units Of Measure",
+      value:"units-of-measurement"
+    },
     {
       text:"Menu Items",
       value:"menu-items"

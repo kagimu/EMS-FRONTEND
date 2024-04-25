@@ -68,15 +68,13 @@
     </div>
   
 
-
-
-
 <div class="row">
     <div class="col-lg-6">
 
         <div class="mb-2">
     <label class="textColor"><small>Code</small></label>
-    <input  v-model="menuForm.code" type="number" required class="form-control">
+    <input @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10" v-model="menuForm.code"  type="text" required class="form-control">
 </div>
     </div>
     <div class="col-lg-6">
@@ -120,7 +118,8 @@
                               </select>
                             </td>
 
-                            <td><input type="number" v-model="menu.quantity" placeholder="1.0" class="inp"></td>
+                            <td><input  @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10" type="text" v-model="menu.quantity" placeholder="1.0" class="inp"></td>
                             <td><button type="button" @click="removeMenuItem(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
                           </tr>
                         </tbody>
@@ -151,6 +150,10 @@
     import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
     import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
     import AppModal from "@/components/AppModal.vue";
+
+    import useCommonsStore from "@/composables/useCommons.js";
+    const commons = useCommonsStore()
+
 
     const showUnitModal = ref(false)
     const notificationStore = useNotificationStore()
@@ -203,9 +206,17 @@ watch(
 
   const addMenuItem = () =>{
     if(menuForm.type == 'ITEM'){
+      
+      let myData = reactive({
+        name:menuForm.name,
+        code:parseInt(menuForm.code),
+        type:menuForm.type,
+        unit_of_measure_number:menuForm.unit_of_measure_number,
+        campus_number:menuForm.campus_number,
+        })
     // alert(JSON.stringify(menuData))
     buttonLoader.value = true,
-    cateringStore.newMenuItemInfo(menuForm)
+    cateringStore.newMenuItemInfo(myData)
     }else{
         //prepare data
         const secondaryItemNumbers = menuItems.value.map(menu => {
@@ -222,7 +233,7 @@ watch(
 
         let myData = reactive({
         name:menuForm.name,
-        code:menuForm.code,
+        code:parseInt(menuForm.code),
         type:menuForm.type,
         unit_of_measure_number:menuForm.unit_of_measure_number,
         campus_number:menuForm.campus_number,

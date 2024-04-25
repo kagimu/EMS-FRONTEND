@@ -2,17 +2,7 @@
     <div>
 
 
-            <!-- schedule interview -->
-          <div class="offcanvas offcanvas-end" tabindex="-1" id="rolesDialogg" :class="{ show:thisDialog }" aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header">
-              <h5 class="offcanvas-title" id="offcanvasRightLabel"><small>Unit Of Measure</small></h5>
-              <button type="button" class="btn-close"  data-bs-dismiss="offcanvas" aria-label="Close" @click="closeDialog"></button>
-            </div>
-            <div class="offcanvas-body">
-             <NewUnitOfMeasurement></NewUnitOfMeasurement>
-            </div>
-          </div>
-  <!-- wnd  -->
+  
   
   <AppModal title="Unit Measurement" v-model="showUnitModal" lg>
     <NewUnitOfMeasurement></NewUnitOfMeasurement>
@@ -25,7 +15,7 @@
     <div class="col-12">
         <div class="">
         <div class="" style="padding: 0;">
-         <div class="container mt-4">
+         <div class="containe mt-4">
            <div class="row">
               <div class="col-lg-12">
                 <div class="">
@@ -36,10 +26,10 @@
                     </div>
     
                 <div class="col-lg-4">
-                <button
+                <!-- <button
                 style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4" @click="showUnitMeasurement()">
                 <small> <b><i class="bi bi-plus"></i></b>
-                Add New</small></button>
+                Add New</small></button> -->
                 </div>
             </div>
             </div>
@@ -51,7 +41,7 @@
     <table
     id="datatable"
     class="table table-striped"
-    style="font-size: 14px !important;"
+    style="font-size: 14px !important; width: 100%;"
     >
     <thead >
         <tr>

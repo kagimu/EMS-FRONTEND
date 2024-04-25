@@ -12,7 +12,6 @@
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <button class="nav-link navColor active" id="class-list-tab" data-bs-toggle="tab" data-bs-target="#class-list" type="button" role="tab" aria-controls="class-list" aria-selected="false"><small>Food MenuItem</small></button>
           <button class="nav-link navColor" id="class-attendance-tab" data-bs-toggle="tab" data-bs-target="#class-attendance" type="button" role="tab" aria-controls="class-attendance" aria-selected="false"><small><i class="bi bi-plus"></i>New MenuItem</small></button>
-          <button class="nav-link navColor" id="unit-tab" data-bs-toggle="tab" data-bs-target="#unit" type="button" role="tab" aria-controls="unit" aria-selected="false"><small><i class="bi bi-plus"></i>Unit Of Measurement</small></button>
         </div>
       </nav>
       <div class="tab-content" id="nav-tabContent">
@@ -22,9 +21,7 @@
         <div class="tab-pane fade" id="class-attendance" role="tabpanel" aria-labelledby="class-attendance-tab" tabindex="0">
        <NewMenuItem></NewMenuItem>
         </div> 
-        <div class="tab-pane fade" id="unit" role="tabpanel" aria-labelledby="unit-tab" tabindex="0">
-    <UnitsOfMeasure></UnitsOfMeasure>
-        </div> 
+      
       </div>
 
     </div>
