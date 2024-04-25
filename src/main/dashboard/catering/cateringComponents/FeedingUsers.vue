@@ -61,57 +61,24 @@
                  {{ user.first_name + " " + user.second_name + " " + user.last_name}}
              </td>
             <td>Staff</td>
-            <td>
-              <ul style="float: left;">
-                <li>Rice<i class="bi bi-x" style="color:red"></i></li>
-                <li>Beans<i class="bi bi-x" style="color:red"></i></li>
-                <li>Water<i class="bi bi-x" style="color:red"></i></li>
-                <li>Soda<i class="bi bi-x" style="color:red"></i></li>
-                <li>Mukene<i class="bi bi-x" style="color:red"></i></li>
-              </ul>
+            <td colspan="2">
+              <div class="table-responsive">
+                  <table class="text-sm table table-sm table-striped table-bordered p-5">
+                    <thead>
+                        <th>Item</th>
+                        <th>Qty</th>
+                    </thead>
+                    <tbody>
+                     <tr><td>Chicken</td><td><input type="number" value="1"></td></tr> 
+                     <tr><td>Pork</td><td><input type="number" value="2"></td></tr> 
+                     <tr><td>Water</td><td><input type="number" value="4"></td></tr> 
+                    </tbody>
+                    </table>
+                   
+  
+                  </div>
             </td>
-            <td>
-              <button style="text-decoration: none" type="button" @click="setStudentN(user.number)" class="btn btn-link mb-2 btn-sm link-primary"><small>Add menu item</small></button>
-              <div class="row" v-if="userN == user.number">
-               <div class="col-lg-10">
-                <form style="margin: 3px;" @submit.prevent="saveMeal">  
-                      <table class="table table-striped mt-2">
-                        <thead>
-                          <tr class="" style="padding: 0px;margin: 0px;font-size: 13px;">
-                            <th>Menu Item</th>
-                            <th>Qty</th>
-                            <th></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr v-for="(menu, index) in menuItems" :key="index" > 
-                            <td>
-                              <select class="form-select form-select-sm form-control select-no-border" v-model="menu.menu_item_number">
-                                <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
-                              </select>
-                            </td>
-
-                            <td><input type="number" v-model="menu.quantity" placeholder="1.0" class="inp" style="width: 20px;"></td>
-                            <td><button type="button" @click="removeMenuItem(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <button type="submit" class="btn btn-primary btn-sm textColor mb-2 mt-2" style="float: right;" >Save
-                        <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader" >
-                      <span class="visually-hidden">Loading...</span>
-                  </div>
-                  </button>
-                    </form>
-                  </div>
-
-                  <div class="col-lg-1">
-                    <button class="btn btn-primary btn-sm textColor mb-2" @click.prevent="addItem" :disabled="isAddButtonDisabled"><small>+</small></button>
-                  </div>
-                </div> 
-
-
-
-            </td>
+       
         
           </tr>   
                     
@@ -157,27 +124,7 @@ const form = reactive({
 // newFeedingsResponse,
 // newFeedings
 
-const saveMeal = () =>{
-  buttonLoader.value = true
-  const menuItemNumbers = menuItems.value.map(menu => {
-        return {
-            menu_item_number: menu.menu_item_number,
-            quantity: menu.quantity
-        }
-    })
 
-     const data1 = {
-        menu_items: menuItemNumbers
-    }
-
-    let myData = reactive({
-       user_number:form.user_number,
-        menu_items:menuItemNumbers
-        })
-
-alert(JSON.stringify(myData))
-cateringStore.newFeedings(myData)
-}
 
   const feedingGroupData = ref([])
   const enrollmentStore = useEnrolmentStore()
@@ -187,10 +134,7 @@ cateringStore.newFeedings(myData)
   let errorMessage = ref(null)
   const buttonLoader = ref(false)
   const  notificationStore  = useNotificationStore()
-
-   
   const selectedStudents = ref([])
-
   
   const formData = reactive ({
     feeding_group_number:null
@@ -205,14 +149,7 @@ cateringStore.newFeedings(myData)
       }
   )
   
-  watch(
-    () => cateringStore.feedingGroupInfoResponse,
-    async (data) => {
-        feedingGroupData.value = data.data
-    },
-    {deep: true}
-  )
-
+ 
 
   watch(
     () => accountStore.userResponse,
@@ -226,53 +163,6 @@ cateringStore.newFeedings(myData)
 
 
 
-//   watch (
-//     () => enrollmentStore.enrolmentResponse,
-//     async (data) => {
-//       if(data){
-//         userList.value = data.data
-//       }
-//     },
-//     {deep:true}
-//   )
-
-  
-    const selectedStudentNumber = computed(() => {
-    const selectedNames = [];
-    selectedStudents.value.forEach((isSelected, index) => {
-      if (isSelected) {
-        selectedNames.push(userList.value[index].number);
-      }
-    });
-    return selectedNames;
-  })
-    
-  
-  const addFeedingGroupUsers = () => {
-    // admitshow.value = true
-    if (selectedStudentNumber.value.length === 0) {
-      notificationStore.errorToast("Error", "Please select at least one user to offer admission.");
-    } else {
-      let data = reactive({
-        feeding_group_number:formData.feeding_group_number,
-        user_number:selectedStudentNumber,
-        status:"ACTIVE"
-      })
-    //   alert(JSON.stringify(data)) 
-      cateringStore.newFeedingGroupUsers(data)
-    }
-  }
-//   newFeedingGroupResponse
-watch (
-  () => cateringStore.newFeedingGroupResponse,
-  async (data) => {
-    if(data){
-      notificationStore.successToast("Success", data.message)
-    }
-  },
-  {deep:true}
-  )
-
   watch(
     () => cateringStore.errorMessage,
     async (data) => {
@@ -282,40 +172,6 @@ watch (
     },
     {deep: true}
   )
-
-  onMounted(
-    async () => {
-        cateringStore.fetchMenuItem()
-    } )
-
-  watch(
-    () => cateringStore.menuItemResponse,
-    async (data) => {
-        if (data) {
-          menuData.value = data.data
-        menuOptions.value = data.data.map(option => ({ number: option.number,name:option.name}));
-      }
-    },
-    {deep: true}
-  )
-
- 
-  const menuOptions = ref([])
-  const menuItems = ref([])
-
-  function addItem() {
-    menuItems.value.push({ name: '', quantity: 1 })
-  }
-  
-  function removeMenuItem(index) {
-    menuItems.value.splice(index, 1)
-  }
-  
-  function availableOptions(index) {
-    const selectedNames = menuItems.value.map(menu => menu.name);
-    return menuOptions.value.filter(option => !selectedNames.includes(option.name) || option.name === menuItems.value[index].name)
-  }
-
 
 
   watch(
