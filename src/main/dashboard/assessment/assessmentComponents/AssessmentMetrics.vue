@@ -230,7 +230,8 @@
     import {useRouter} from "vue-router";
     const routerData = useRouter()
     let  curriculumNumber = routerData.currentRoute.value.query.crr
-  
+    let  curriculumNumberParent = routerData.currentRoute.value.query.cr
+
     import { useAbility } from '@casl/vue';
   
   const { can } = useAbility()
@@ -320,7 +321,7 @@ watch(
 
 onMounted(
         async () => {
-          await assessmentStore.fetchMetrics()
+          await assessmentStore.fetchMetrics(curriculumNumberParent)
           await assessmentStore.fetchAssessmentMetrics()
         } )
         

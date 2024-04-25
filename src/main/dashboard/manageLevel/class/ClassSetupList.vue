@@ -69,9 +69,9 @@
             <table class="table table-hover caption-top" style="font-size: 14px;">
               <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">Level</th>
-                <th scope="col">Class</th>
+                <th class="w-[10%]">#</th>
+                <th class="w-[30%]">Level</th>
+                <th>Class</th>
 <!--                <th scope="col">Action</th>-->
               </tr>
               </thead>
@@ -85,8 +85,8 @@
                   <table class="table table-hover caption-top" style="font-size: 14px;">
                     <tbody>
                     <tr v-for="(cls, idx) in lvl.class" :key="idx">
-                     <td>{{cls.code}}.</td>
-                     <td>{{cls.name+" [ "+cls.abbreviation+" ]"}}</td>
+                     <td class="w-[10%]">{{cls.code}}.</td>
+                     <td class="w-[60%]">{{cls.name+" [ "+cls.abbreviation+" ]"}}</td>
                      <td>
                        <div>
                          <i

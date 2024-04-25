@@ -100,7 +100,6 @@ const router = createRouter({
                 requiresAuth: true,
                 resource: "dashboard",
                 action: "access_dashboard",
-                  
             },
             children:[
                 {path: 'home', component: Home, name: "home"},

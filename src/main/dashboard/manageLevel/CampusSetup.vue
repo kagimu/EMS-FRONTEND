@@ -27,7 +27,7 @@
                   v-for="(item, idx) in  campusCurriculumDataInfo" :key="idx"
                   class="list-group-item list-group-item-action"
                   :class="item.number === campusCurriculumNumber ? 'active' : ''"
-                  :to="{name:'campus-setup', query:{id:campusNumber, crr:item.number}}">
+                  :to="{name:'campus-setup', query:{id:campusNumber, crr:item.number, cr:item.curriculum_number}}">
                 <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></router-link>
             </div>
 

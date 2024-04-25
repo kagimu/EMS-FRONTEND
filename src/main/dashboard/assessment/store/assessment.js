@@ -208,8 +208,8 @@ async function fetchAssessmentMetrics(data) {
         })
 }
 
-    async function fetchMetrics() {
-        return await api.get("main/assessments/metrics")
+    async function fetchMetrics(curriculumNumber) {
+        return await api.get("main/assessments/metrics?curriculum_number="+curriculumNumber)
             .then((response) => {
                 metricResponse.value = response.data
             })

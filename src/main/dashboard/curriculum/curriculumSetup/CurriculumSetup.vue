@@ -12,96 +12,95 @@
 
 
         <div class="col-3">
+            <div class="w-full h-[80vh] overflow-y-scroll scrollbar-thin">
+              <div class="card mt-3">
+                <div class="card-body" style="padding: 0;">
+                    <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Curriculum Setup</div>
+           <hr />
+                  <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+                    <div
+                        class="list-group-item list-group-item-action cursor-pointer"
+                        :class="menuSelected === 'level' ? 'active' : ''"
+                        @click="changeMenu('level')"
+                    >
+                      <small style="font-size:12px;">Curriculum Level</small>
+                    </div>
+                  </div>
 
-          <div class="card mt-3">
-            <div class="card-body" style="padding: 0;">
-                <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Curriculum Setup</div>
-       <hr />
-              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-                <div
-                    class="list-group-item list-group-item-action cursor-pointer"
-                    :class="menuSelected === 'level' ? 'active' : ''"
-                    @click="changeMenu('level')"
-                >
-                  <small style="font-size:12px;">Curriculum Level</small>
+
+
+                  <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+                    <div
+                        class="list-group-item list-group-item-action cursor-pointer"
+                        :class="menuSelected === 'classes' ? 'active' : ''"
+                        @click="changeMenu('classes')"
+                    >
+                      <small style="font-size:12px;">Curriculum Classes</small>
+                    </div>
+                  </div>
+
+
                 </div>
               </div>
-              
 
+              <div class="card mt-3">
+                <div class="card-body" style="padding: 0;">
+                  <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+                    <div
+                        v-for="(item, idx) in  curriculumMenu"
+                        :key="idx"
+                        class="list-group-item list-group-item-action cursor-pointer"
+                        :class="item.value === menuSelected ? 'active' : ''"
+                        @click="changeMenu(item.value)"
+                    >
+                      <small style="font-size:12px;">{{item.text}}</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-                <div
-                    class="list-group-item list-group-item-action cursor-pointer"
-                    :class="menuSelected === 'classes' ? 'active' : ''"
-                    @click="changeMenu('classes')"
-                >
-                  <small style="font-size:12px;">Curriculum Classes</small>
+              <div class="card mt-3">
+                <div class="card-body" style="padding: 0;">
+
+                  <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+                    <div
+                        class="list-group-item list-group-item-action cursor-pointer"
+                        :class="menuSelected === 'import-curriculum' ? 'active' : ''"
+                        @click="changeMenu('import-curriculum')"
+                    >
+                      <small style="font-size:12px;">Import Curriculum</small>
+                    </div>
+                  </div>
                 </div>
               </div>
 
 
-            </div>
+              <div class="card mt-3">
+                <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Assessment Setup</div>
+                <hr />
+
+                <div class="card-body" style="padding: 0;">
+                  <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+                    <div
+                        v-for="(item, idx) in  assessmentMenu"
+                        :key="idx"
+                        class="list-group-item list-group-item-action cursor-pointer"
+                        :class="item.value === menuSelected ? 'active' : ''"
+                        @click="changeMenu(item.value)"
+                    >
+                      <small style="font-size:12px;">{{item.text}}</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
           </div>
-
-
-
-          <div class="card mt-3">
-            <div class="card-body" style="padding: 0;">
-              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-                <div
-                    v-for="(item, idx) in  curriculumMenu"
-                    :key="idx"
-                    class="list-group-item list-group-item-action cursor-pointer"
-                    :class="item.value === menuSelected ? 'active' : ''"
-                    @click="changeMenu(item.value)"
-                >
-                  <small style="font-size:12px;">{{item.text}}</small>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card mt-3">
-            <div class="card-body" style="padding: 0;">
-
-              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-                <div
-                    class="list-group-item list-group-item-action cursor-pointer"
-                    :class="menuSelected === 'import-curriculum' ? 'active' : ''"
-                    @click="changeMenu('import-curriculum')"
-                >
-                  <small style="font-size:12px;">Import Curriculum</small>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="card mt-3">
-            <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Assessment Setup</div>
-            <hr />
-
-            <div class="card-body" style="padding: 0;">
-              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-                <div
-                    v-for="(item, idx) in  assessmentMenu"
-                    :key="idx"
-                    class="list-group-item list-group-item-action cursor-pointer"
-                    :class="item.value === menuSelected ? 'active' : ''"
-                    @click="changeMenu(item.value)"
-                >
-                  <small style="font-size:12px;">{{item.text}}</small>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
       </div>
 
 
       <div class="col-9">
-        <div class="card mt-3">
+        <div class="h-[80vh] overflow-y-scroll scrollbar-thin">
+          <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
             <learning-area-list v-if="menuSelected==='learning-area'"></learning-area-list>
             <subject-cluster v-if="menuSelected==='subject-cluster'"></subject-cluster>
@@ -121,6 +120,7 @@
             <metric v-if="menuSelected === 'metric'"></metric>
 
           </div>
+        </div>
         </div>
       </div>
 
