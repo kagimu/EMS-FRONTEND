@@ -15,6 +15,9 @@
   <!-- wnd  -->
   
 
+  <AppModal title="Feeding Group" v-model="showingModal" lg>
+    <NewFeedingGroup></NewFeedingGroup>
+    </AppModal>
 
 
     <!-- end  -->
@@ -35,7 +38,7 @@
                 <div class="col-lg-4">
                 <button
                 style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
-                data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="showDialog">
+                @click="showModal()">
                 <small> <b><i class="bi bi-plus"></i></b>
                 Add New</small></button>
                 </div>
@@ -132,7 +135,9 @@
     import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
     import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
     import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
+    import AppModal from "@/components/AppModal.vue";
 
+    const showingModal = ref(false)
     const campusList = ref([])
     const schoolList = ref([])
     const classList = ref([])
@@ -141,6 +146,10 @@
     const classStore = useClassesStore()
     const school_number = ref(null)
 
+    const showModal = () => {
+    showingModal.value = true
+    thisDialog.value=false
+}
     
     const form = reactive({
     school_number:null,

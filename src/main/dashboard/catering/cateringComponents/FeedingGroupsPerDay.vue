@@ -11,6 +11,11 @@
             </div>
           </div>
   <!-- wnd  -->
+
+
+  <AppModal title="Feeding Groups Per Day" v-model="showingModal" lg>
+    <NewFeedingGroupsPerDay></NewFeedingGroupsPerDay>
+    </AppModal>
   
     <!-- end  -->
     <div class="row mt-3">
@@ -30,7 +35,7 @@
                 <div class="col-lg-4">
                 <button
                 style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
-                data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="showDialog">
+                 @click="showModal()">
                 <small> <b><i class="bi bi-plus"></i></b>
                 Add New</small></button>
                 </div>
@@ -93,18 +98,20 @@
   import useNotificationStore from "@/composables/useNotification.js";
   import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
   import NewFeedingGroupsPerDay from "@/main/dashboard/catering/cateringComponents/NewFeedingGroupsPerDay.vue";
+  import AppModal from "@/components/AppModal.vue";
+
+  const showingModal = ref(false)
 
   const cateringStore = useCateringStore()
   const notificationStore = useNotificationStore()
   const thisDialog = ref(false)
   const feedingPerDayGroupData = ref([])
-  const showDialog = () => {
-      thisDialog.value = true
-  }
 
-  const closeDialog = () => {
-      thisDialog.value = false
-  }
+  const showModal = () => {
+    showingModal.value = true
+    thisDialog.value=false
+}
+
 
   onMounted(() => {
       cateringStore.fetchFeedGroupsPerDay()
