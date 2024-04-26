@@ -34,7 +34,8 @@
                           <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
                         </select>
                       </td>
-                      <td><input type="number" v-model="itemData.quantity" @input="updateAmount(index)" placeholder="1.0" class="inp"></td>
+                      <td><input  @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10" type="text" v-model="itemData.quantity" @input="updateAmount(index)" placeholder="1.0" class="inp"></td>
                       <td><button type="button" @click="removeItem(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
                     </tr>
                   </tbody>
@@ -75,6 +76,9 @@ import useNotificationStore from "@/composables/useNotification.js"
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
 import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+import useCommonsStore from "@/composables/useCommons.js";
+const commons = useCommonsStore()
+
 
 const campusList = ref([])
 const schoolList = ref([])
@@ -152,7 +156,7 @@ onMounted(
 const createFeedingSessionItem = () => {
   const menu_item_quantity = Items.value.map(itemData => ({
       menu_item_number: itemData.menu_item_number,
-      quantity: itemData.quantity,
+      quantity: parseInt(itemData.quantity),
     }))
 
   const data = {

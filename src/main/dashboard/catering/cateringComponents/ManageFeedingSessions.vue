@@ -14,6 +14,8 @@
           <button class="nav-link navColor" id="class-attendance-tab" data-bs-toggle="tab" data-bs-target="#class-attendance" type="button" role="tab" aria-controls="class-attendance" aria-selected="false"><small><i class="bi bi-plus"></i> New Feeding Sessions Item</small></button>
           <button class="nav-link navColor" id="feeding-item-tab" data-bs-toggle="tab" data-bs-target="#feeding-item" type="button" role="tab" aria-controls="feeding-item" aria-selected="false"><small> Feeding Session Items</small></button>
           <button class="nav-link navColor" id="daily-item-tab" data-bs-toggle="tab" data-bs-target="#daily-item" type="button" role="tab" aria-controls="daily-item" aria-selected="false"><small> Daily Feeding Session</small></button>
+          <button class="nav-link navColor" id="session-tab" data-bs-toggle="tab" data-bs-target="#session" type="button" role="tab" aria-controls="session" aria-selected="false"><small> Feeding Session Group</small></button>
+
         </div>
       </nav>
       <div class="tab-content" id="nav-tabContent">
@@ -28,6 +30,9 @@
         </div>
         <div class="tab-pane fade" id="daily-item" role="tabpanel" aria-labelledby="daily-item-tab" tabindex="0">
        <DailyFeedingSession></DailyFeedingSession>
+        </div>
+        <div class="tab-pane fade" id="session" role="tabpanel" aria-labelledby="session-tab" tabindex="0">
+       <FeedingGroupSession></FeedingGroupSession>
         </div>
         
       </div>
@@ -49,7 +54,7 @@
   import NewFeedingSessionItem from "@/main/dashboard/catering/cateringComponents/NewFeedingSessionItem.vue";
   import FeedingSessionsItems from "@/main/dashboard/catering/cateringComponents/FeedingSessionsItems.vue";
   import DailyFeedingSession from "@/main/dashboard/catering/cateringComponents/DailyFeedingSession.vue";
-
+  import FeedingGroupSession from "@/main/dashboard/catering/cateringComponents/FeedingGroupSession.vue";
 
 const goBack = () => {
   window.history.back()

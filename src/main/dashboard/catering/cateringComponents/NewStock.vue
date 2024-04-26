@@ -56,8 +56,10 @@
                           <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
                         </select>
                       </td>
-                      <td><input type="number" v-model="itemData.quantity" @input="updateAmount(index)" placeholder="1.0" class="inp"></td>
-                      <td><input type="number" v-model="itemData.cost" @input="updateAmount(index)" placeholder="Unit Price" class="inp"></td>
+                      <td><input   @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10" type="text" v-model="itemData.quantity" @input="updateAmount(index)" placeholder="1.0" class="inp"></td>
+                      <td><input  @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10" type="text" v-model="itemData.cost" @input="updateAmount(index)" placeholder="Unit Price" class="inp"></td>
                       <td>{{ itemData.amount }}</td>
                       <td><button type="button" @click="removeItem(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
                     </tr>
@@ -110,6 +112,10 @@ import useNotificationStore from "@/composables/useNotification.js"
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
 import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+
+import useCommonsStore from "@/composables/useCommons.js";
+const commons = useCommonsStore()
+
 
 const campusList = ref([])
 const schoolList = ref([])
@@ -186,9 +192,9 @@ onMounted(
 const createStock = () => {
   const item_price_and_quantity = Items.value.map(itemData => ({
       menu_item_number: itemData.menu_item_number,
-      quantity: itemData.quantity,
-      unit_price: itemData.unitPrice,
-      unit_cost: itemData.amount
+      quantity: parseInt(itemData.quantity),
+      unit_price: parseInt(itemData.unitPrice),
+      unit_cost: parseInt(itemData.amount)
     }))
 
   const data = {

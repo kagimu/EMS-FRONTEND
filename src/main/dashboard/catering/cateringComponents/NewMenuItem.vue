@@ -1,7 +1,13 @@
 <template>
-    <div>
-<form @submit.prevent="addMenuItem">
+    <div class="mt-5">
 
+    
+    <AppModal title="Unit Measurement" v-model="showUnitModal" lg>
+      <NewUnitOfMeasurement></NewUnitOfMeasurement>
+    </AppModal>
+
+
+<form @submit.prevent="addMenuItem">
   <div class="row">
 <div class="col-lg-6">
     <div class="mb-2">
@@ -62,25 +68,23 @@
     </div>
   
 
-
-
-
 <div class="row">
     <div class="col-lg-6">
 
         <div class="mb-2">
     <label class="textColor"><small>Code</small></label>
-    <input  v-model="menuForm.code" type="number" required class="form-control">
+    <input @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10" v-model="menuForm.code"  type="text" required class="form-control">
 </div>
     </div>
     <div class="col-lg-6">
         <div class="mb-2">
-    <label class="textColor"><small>Unit Of Measurement</small></label>
+    <label class="textColor"><small>Unit Of Measurement</small>  <b><i class="bi bi-plus-circle-fill" @click="showUnitMeasurement()"></i></b></label>
     <select v-model="menuForm.unit_of_measure_number" class="form-control form-select"> 
         <option disabled value="">Select</option>
         <option v-for="(list, index) in unitMeasurementData" :key="index" :value="list.number">{{list.name}}</option>
     </select>
-    
+   
 </div>
 
 </div>
@@ -114,7 +118,8 @@
                               </select>
                             </td>
 
-                            <td><input type="number" v-model="menu.quantity" placeholder="1.0" class="inp"></td>
+                            <td><input  @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10" type="text" v-model="menu.quantity" placeholder="1.0" class="inp"></td>
                             <td><button type="button" @click="removeMenuItem(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
                           </tr>
                         </tbody>
@@ -140,11 +145,17 @@
 <script setup>
     import {onMounted,reactive, ref, watch} from "vue";
     import useNotificationStore from "@/composables/useNotification.js";
-    // import NewMenuItem from "@/main/dashboard/catering/cateringComponents/NewMenuItem.vue";
+    import NewUnitOfMeasurement from "@/main/dashboard/catering/cateringComponents/NewUnitOfMeasurement.vue";
     import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
     import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
     import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+    import AppModal from "@/components/AppModal.vue";
 
+    import useCommonsStore from "@/composables/useCommons.js";
+    const commons = useCommonsStore()
+
+
+    const showUnitModal = ref(false)
     const notificationStore = useNotificationStore()
     const thisDialog = ref(false)
     const buttonLoader = ref(false)
@@ -154,6 +165,11 @@
     const campusStore = useCampusStore()
     const itemtype = ref(null)
     const errorMessage = ref(null)
+
+    const showUnitMeasurement = () => {
+    showUnitModal.value = true
+    thisDialog.value=false
+}
 
     const showDialog = () => {
         thisDialog.value = true
@@ -190,9 +206,17 @@ watch(
 
   const addMenuItem = () =>{
     if(menuForm.type == 'ITEM'){
+      
+      let myData = reactive({
+        name:menuForm.name,
+        code:parseInt(menuForm.code),
+        type:menuForm.type,
+        unit_of_measure_number:menuForm.unit_of_measure_number,
+        campus_number:menuForm.campus_number,
+        })
     // alert(JSON.stringify(menuData))
     buttonLoader.value = true,
-    cateringStore.newMenuItemInfo(menuForm)
+    cateringStore.newMenuItemInfo(myData)
     }else{
         //prepare data
         const secondaryItemNumbers = menuItems.value.map(menu => {
@@ -209,7 +233,7 @@ watch(
 
         let myData = reactive({
         name:menuForm.name,
-        code:menuForm.code,
+        code:parseInt(menuForm.code),
         type:menuForm.type,
         unit_of_measure_number:menuForm.unit_of_measure_number,
         campus_number:menuForm.campus_number,
@@ -370,5 +394,18 @@ watch(
     menuItems.value = []
 }
 
+const addUnit = () =>{
+  alert("Gwe")
+}
 
     </script>
+    <style>
+  .bi.bi-plus-lg {
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.bi.bi-plus-lg:hover {
+    color: blue; /* Change color on hover */
+}
+
+</style>

@@ -28,7 +28,8 @@
 </div>
 <div class="mb-2">
     <label class="textColor"><small>Code</small></label>
-    <input v-model="form.code"  type="number" required class="form-control">
+    <input v-model="form.code"   @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10" type="text" required class="form-control">
 </div>
 <div class="mb-2">
     <label class="textColor"><small>Name</small></label>
@@ -54,6 +55,8 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 
 import { useAbility } from '@casl/vue';
+import useCommonsStore from "@/composables/useCommons.js";
+const commons = useCommonsStore()
 
 const { can } = useAbility()
 
@@ -74,8 +77,15 @@ const form = reactive({
     campus_number:null
 })
 const addFeedingSessionGroup = () => {
+    // parseInt
+    let myData = reactive({
+    code:parseInt(form.code),
+    name:form.name,
+    status:"ACTIVE",
+    campus_number:form.campus_number
+})
     buttonLoader.true
-    cateringStore.newFeedingGroupSessionsInfo(form)
+    cateringStore.newFeedingGroupSessionsInfo(myData)
     
 }
 watch (
@@ -96,7 +106,7 @@ watch (
         if(data){
         
           errorMessage.value = data.message
-          notificationStore.errorToast("Error",data.message)
+        //   notificationStore.errorToast("Error",data.message)
         }
       },
       {deep:true}

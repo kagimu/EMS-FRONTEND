@@ -12,17 +12,20 @@
 
 <div class="mb-2">
     <label class="textColor"><small>Day</small></label>
-    <select v-model="form.day" class="form-control form-select"> 
-            <option disabled value="">Select</option>
-            <option>Monday</option>
-            <option>Tuesday</option>
-            <option>Wednesday</option>
-            <option>Thursday</option>
-            <option>Friday</option>
-            <option>Saturday</option>
-            <option>Sunday</option>
- </select>
-</div>
+    <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+        <li v-for="(day, index) in daysOfWeek" :key="index" class="list-group-item">
+            <input
+                style="outline: none 0 !important; box-shadow: none;"
+                class="form-check-input me-1"
+                type="checkbox"
+                :value="day"
+                v-model="form.day">
+            <label class="textColor"><small>{{ day }}</small></label>
+        </li>
+    </ul>
+    </div>
+
+
 
 <div class="text-right mt-4">
     <button  style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
@@ -43,6 +46,7 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 
 import { useAbility } from '@casl/vue';
 
+
 const { can } = useAbility()
 
 const  notificationStore  = useNotificationStore()
@@ -52,7 +56,7 @@ const errorMessage = ref(null)
 const feedingSessionGroupData = ref(null)
 
 const form = reactive({
-    day:null,
+    day:[],
     feeding_session_number:null,
 })
 
@@ -100,4 +104,24 @@ watch (
       {deep:true}
   )
    
+     
+const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+const toggleDay = (selectedDay) => {
+    const index = form.day.indexOf(selectedDay);
+    if (index === -1) {
+        form.day.push(selectedDay);
+    } else {
+        form.day.splice(index, 1);
+    }
+}
+
+const selectAll = () => {
+    form.day = [...daysOfWeek]; 
+}
+
+const deselectAll = () => {
+    form.day = []; 
+}
+
 </script>

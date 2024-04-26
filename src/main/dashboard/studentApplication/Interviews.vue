@@ -69,7 +69,7 @@
           <td>{{ interview.venue }}</td>
           <td class="w-[25%]">{{ interview.message }}</td>
           <td class="w-[35%]">
-            <div class="mb-1">
+            <!-- <div class="mb-1">
               <router-link style=""
                   class="text-decoration-none"
                   :to="{name:'interview-learners-list', query:{interview_id:interview.number, interview:interview.name}}">
@@ -77,29 +77,29 @@
                 <small>View Applicants</small>
                 </button>
               </router-link>
-            </div>
+            </div> -->
 
             <div>
-              <button style="display: none;"
+              <!-- <button style="display: none;"
                   class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
                   @click="showAssesssmentMetricsDialog(interview)"
                   data-bs-toggle="modal"
                   data-bs-target="#assesssmentMetricsModal"
-              > Assessement</button>
+              > Assessement</button> -->
               
 
-              <button style="display: none;"
+              <!-- <button style="display: none;"
                   class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
                   @click="showInterviewAssessmentDialog(interview)"
                   data-bs-toggle="modal"
                   data-bs-target="#interviewAssessmentModal"
-              >  Add Interview Assessment</button>
+              >  Add Interview Assessment</button> -->
 
               <router-link style="display:non"
                   class="text-decoration-none"
                   :to="{name:'manage-interviews', query:{interview_id:interview.number, interview:interview.name}}">
                 <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
-                <small>Manage</small>
+                <small>Manage Applicants</small>
                 </button>
               </router-link>
             </div>
