@@ -57,7 +57,7 @@
                         type="submit"
                         class="btn btn-primary border-0">
                     Save
-                    <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
+                    <span v-if="loader" class="spinner-border text-light spinner-border-sm"
                           role="status">
               <span class="visually-hidden">Loading...</span>
             </span>

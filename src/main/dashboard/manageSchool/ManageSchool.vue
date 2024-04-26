@@ -1,25 +1,10 @@
 <template>
   <div>
 
-    <div class="modal fade" id="infoModal" tabindex="-1" :class="{ show: schoolDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">{{editMode ? "Edit" : "New"}} School</h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-              <new-school ref="schoolRef"></new-school>
-            </div>
-          </div>
 
-        </div>
-      </div>
-    </div>
-
-
-
+    <AppModal :title="editMode ? 'Edit School' : 'New School'" v-model="schoolDialog" lg>
+      <new-school ref="schoolRef"></new-school>
+    </AppModal>
 
 
     <div class="mt-3">
@@ -27,9 +12,7 @@
       v-if="can('add_school','general')"
           type="button"
           class="btn btn-sm buttonStyle btn-primary mr-2"
-          @click="addSchool"
-          data-bs-toggle="modal"
-          data-bs-target="#infoModal">
+          @click="addSchool">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
         Add School
       </button>
@@ -50,10 +33,7 @@
               <div>
               <i
               v-if="can('edit_school','general')"
-                  aria-controls="offcanvasRight"
                   class="bi-pencil ml-2 cursor-pointer"
-                  data-bs-target="#infoModal"
-                  data-bs-toggle="modal"
                   style="font-size: 14px;"
                   @click="editSchool(school)"></i>
 
@@ -109,6 +89,7 @@ import NewSchool from "@/main/dashboard/manageSchool/NewSchool.vue";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
 import { useAbility } from '@casl/vue';
+import AppModal from "@/components/AppModal.vue";
 
 const { can } = useAbility()
 
@@ -125,8 +106,7 @@ const schoolsList = ref( [])
 
 const addSchool = () => {
   editMode.value = false
-  schoolDialog.value = false
-  schoolRef.value.clearSchoolForm()
+  schoolDialog.value = true
 }
 
 const editSchool = (school) => {
