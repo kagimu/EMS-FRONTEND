@@ -27,6 +27,12 @@ export const useCateringStore = defineStore("catering", () => {
     let updateMenuItemResponse = ref(null)
     let updateItemAssemblyResponse = ref(null)
     let filterMenuResponse = ref(null)
+    let newGroupSessionResponse = ref(null)
+    let feedGroupSessionsInfoResponse = ref(null)
+    let newFeedingGroupsPerDayResponse = ref(null)
+    let feedGroupPerDayInfoResponse = ref(null) 
+    let newFeedingsResponse = ref(null)
+ 
 
     const errorMessage = ref(null)
 
@@ -314,6 +320,67 @@ async function filterMenuItem(campusN) {
         })
 }
 
+//feedingGroupUsers
+async function newGroupSession(data) {
+    return await api.post("main/catering/feeding-group-sessions", data)
+        .then((response) => {
+            newGroupSessionResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function fetchFeedGroupSessions() {
+    return await api.get("main/catering/feeding-group-sessions")
+        .then((response) => {
+            feedGroupSessionsInfoResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function newGroupGroupsPerDay(data) {
+    return await api.post("main/catering/feeding-groups-per-day", data)
+        .then((response) => {
+            newFeedingGroupsPerDayResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function fetchFeedGroupsPerDay() {
+    return await api.get("main/catering/feeding-groups-per-day")
+        .then((response) => {
+            feedGroupPerDayInfoResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function newFeedings(data) {
+    return await api.post("main/catering/feedings", data)
+        .then((response) => {
+            newFeedingsResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
     return {
         newUnitOfMeasureInfoResponse,
         errorMessage,
@@ -363,6 +430,17 @@ async function filterMenuItem(campusN) {
         updateItemAssemblyResponse,
         updateAssemblyItem,
         filterMenuResponse, 
-        filterMenuItem
+        filterMenuItem,
+        newGroupSessionResponse,
+        newGroupSession,
+        fetchFeedGroupSessions,
+        feedGroupSessionsInfoResponse,
+        newGroupGroupsPerDay,
+        newFeedingGroupsPerDayResponse,
+        fetchFeedGroupsPerDay,
+        feedGroupPerDayInfoResponse,
+        newFeedingsResponse,
+        newFeedings
+
     }
 } )

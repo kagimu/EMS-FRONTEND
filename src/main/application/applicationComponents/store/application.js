@@ -26,6 +26,9 @@ export const useApplicationStore = defineStore("application", () => {
     let updateParentPersonalDetailsresponse = ref(null)
     let updateLearnerPersonalDetailsresponse = ref(null)
     let updatePreviousSchoolresponse = ref(null)
+    let previousSchoolResultsByStudentResponse = ref(null)
+    let previousSchoolResultsAllResponse = ref(null)
+
     async function newApplicationDetails(data) {
         return await api.post("main/applications/new-parent", data)
             .then((response) => {
@@ -326,26 +329,30 @@ export const useApplicationStore = defineStore("application", () => {
                 })
         }
 
-        // async function createPreviousSchoolResults(data) {
-        //     return await api.post("main/previous-school-results", data,
-        //     {
-        //         headers: {
-        //             "Content-Type": "multipart/form-data"
-        //         }
-        //     }
-        // )
-        
-        //         .then((response) => {
-        //             previousSchoolResultresponse.value = response.data
-        //         })
-        //         .catch((response) => {
-        //             if(response){
-        //                 errorMessage.value = response.response.data
-        //             }
-        //         })
-        // }
-
      
+    async function fetchPreviousSchoolResultsByStudent(studentNumber) {
+        return await api.get("main/previous-school-results?student_number="+studentNumber)
+            .then((response) => {
+                previousSchoolResultsByStudentResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+    // previous-school-results/all
+    async function fetchPreviousSchoolResultsAll() {
+        return await api.get("main/previous-school-results/all")
+            .then((response) => {
+                previousSchoolResultsAllResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
     return {
         newApplicationDetailsResponse ,
@@ -390,7 +397,11 @@ export const useApplicationStore = defineStore("application", () => {
         updateLearnerPersonalDetailsresponse,
         updateLearnerDetails,
         updatePreviousSchoolresponse,
-        updatePreviousSchools
+        updatePreviousSchools,
+        previousSchoolResultsByStudentResponse,
+        fetchPreviousSchoolResultsByStudent,
+        previousSchoolResultsAllResponse,
+        fetchPreviousSchoolResultsAll
 
     }
 })

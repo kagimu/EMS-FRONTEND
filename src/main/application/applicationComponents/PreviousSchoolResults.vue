@@ -145,6 +145,7 @@ watch (
         file.value = null
         const input = document.getElementById('formFileSm');
         input.value = '';
+        emit("next", 5 )
       }
     },
     {deep:true}

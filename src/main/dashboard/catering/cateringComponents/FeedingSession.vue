@@ -14,9 +14,11 @@
           </div>
   <!-- wnd  -->
   
+  <AppModal title="Feeding Session" v-model="showingModal" lg>
+    <NewFeedingSession></NewFeedingSession>
+    </AppModal>
 
-
-
+               
     <!-- end  -->
     <div class="row mt-3">
     <div class="col-12">
@@ -35,7 +37,7 @@
                 <div class="col-lg-4">
                 <button
                 style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
-                data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="showDialog">
+                @click="showModal()">
                 <small> <b><i class="bi bi-plus"></i></b>
                 Add New</small></button>
                 </div>
@@ -54,7 +56,6 @@
     >
     <thead >
         <tr>
-          <th>#</th>
         <th>Code</th>
         <th>Name</th>
         </tr>
@@ -64,8 +65,6 @@
     </thead>
     <tbody>
       <tr v-for="(list, index) in feedingSessionGroupData" :key="index">
-        <td>{{ index+1 }}</td>
-     
       <td>{{ list.code }}</td>
       <td>{{ list.name }}</td>
       </tr>
@@ -87,6 +86,16 @@
   import useNotificationStore from "@/composables/useNotification.js";
   import NewFeedingSession from "@/main/dashboard/catering/cateringComponents/NewFeedingSession.vue";
   import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+
+  import AppModal from "@/components/AppModal.vue";
+
+
+  const showingModal = ref(false)
+
+  const showModal = () => {
+  showingModal.value = true
+  thisDialog.value=false
+  }
 
   const cateringStore = useCateringStore()
   const notificationStore = useNotificationStore()
@@ -112,15 +121,15 @@ watch(
   },
   {deep: true}
 )
-watch(
-  () => cateringStore.errorMessage,
-  async (data) => {
-        if (data) {
-        notificationStore.errorToast("Error", data.message)
-        }
-  },
-  {deep: true}
-)
+// watch(
+//   () => cateringStore.errorMessage,
+//   async (data) => {
+//         if (data) {
+//         notificationStore.errorToast("Error", data.message)
+//         }
+//   },
+//   {deep: true}
+// )
   </script>
   
   

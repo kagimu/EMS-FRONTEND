@@ -99,19 +99,52 @@
       </div>
         
     </div>
-    <div class="col-3" v-if="appDatails.status == 'INTERVIEW_SCHEDULED'" > 
+    <div  class="col-3" v-if="appDatails.status == 'INTERVIEW_SCHEDULED'">
+      <p class="ml-0 mt-2 mb-2" style="text-align: left !important;">PREVIOUS SCHOOL RESULTS</p>
+      <div class="table-responsive">
+                  <table class="text-sm table table-sm table-striped table-bordered">
+                    <thead>
+                        <th>ASSESSMENT</th>
+                        <th>SCORE</th>
+                    </thead>
+                    <tbody>
+                     <tr><td>Math</td><td>90</td></tr> 
+                     <tr><td>SST</td><td>90</td></tr> 
+                     <tr><td>Eng</td><td>90</td></tr> 
+                    </tbody>
+                    </table>
+                    <span>
+                      <a href="" class="btn btn-outline-link"><i class="bi bi-download"></i> Report Attachment </a>
+                    </span>
+  
+                  </div>
+<hr>
+      <div  > 
+      
       <p>Interview Has Been Scheduled</p>
 
       <button class="btn btn-primary btn-sm"><i class="bi bi-printer"></i> Print</button>
     </div>
+    </div>
+ 
 
-    <div class="col-3" v-if="appDatails.status == 'ADMITTED'" > 
+    <div class="col-3"  v-if="appDatails.status == 'ADMITTED'">
+      <p class="ml-0 mt-2 mb-2" style="text-align: left !important;">PREVIOUS SCHOOL RESULTS</p>
+
+<hr>
+      <div  > 
       <p> STUDENT HASBEEN OFFERED AN ADMISSION</p>
 
       <button class="btn btn-primary btn-sm">View Admission Details</button>
     </div>
+    </div>
+ 
 
-    <div class="col-3" v-if="appDatails.status == 'SUBMITTED'" > 
+    <div class="col-3" v-if="appDatails.status == 'SUBMITTED'">
+      <p class="ml-0 mt-2 mb-2" style="text-align: left !important;">PREVIOUS SCHOOL RESULTS</p>
+
+<hr>
+      <div   > 
       <!-- {{ appDatails.status }} -->
   <form @submit.prevent="scheduleInterview" >
               <label> <span style="text-align: center;font-size: 12px;"><small>Select Interview</small></span></label>
@@ -130,6 +163,8 @@
               </div>
             </form>
     </div>
+    </div>
+   
 
            
     </div>   
@@ -180,6 +215,7 @@ const buttonLoader = ref(false)
 const interviewListData = ref([])
 let errorMessage = ref(null)
 const useCommonsStore = useCommons()
+const previousSchoolResultsData=ref([])
 
   const props = defineProps({
     applicationNumber:String
@@ -212,12 +248,13 @@ function getAge(dob){
   return useCommonsStore.getAgeFromDateOfBirth(dob)
 }
 
-
 watch (
     () => props.applicationNumber,
     async (data) => {
       if(data){
         applicationStore.fetchApplicationById(data)
+        // applicationStore.fetchPreviousSchoolResultsByStudent(appDatails.student_number)
+
         //.setvalues
       }
     },
@@ -247,6 +284,7 @@ watch (
         appDatails.status=data.status
         appDatails.previousSchools=data.PreviousSchools
           appDatails.student_number = data.Student.number
+          applicationStore.fetchPreviousSchoolResultsByStudent(appDatails.student_number)
 
         // alert(JSON.stringify(data.Parent.surname))
       }
@@ -257,6 +295,7 @@ watch (
 onMounted(
     async () => {
       await applicationStore.fetchApplicationList()
+      await applicationStore.fetchPreviousSchoolResultsAll()
     } )
 
 const formData = reactive({
@@ -292,7 +331,6 @@ function scheduleInterview(){
         formData.interview_number = null
         errorMessage.value = data.message
         buttonLoader.value = false
-      
       }
     },
     {deep:true}
@@ -314,6 +352,15 @@ function scheduleInterview(){
     {deep:true}
 )
 
+watch(
+    () => applicationStore.previousSchoolResultsByStudentResponse,
+    async (data) => {
+      if(data){
+        previousSchoolResultsData.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 
 

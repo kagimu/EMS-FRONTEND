@@ -22,6 +22,14 @@
     <updateFoodMenuItem :menuItemsinfoData="menuItemsinfoData"></updateFoodMenuItem>
 </div>
 </div>
+
+<AppModal title="Update Menu Item" v-model="showingModal" lg>
+  <updateFoodMenuItem :menuItemsinfoData="menuItemsinfoData"></updateFoodMenuItem>
+    </AppModal>
+
+               
+
+
   <!-- wnd  -->
 
     <!-- end  -->
@@ -40,11 +48,11 @@
                     </div>
     
                 <div class="col-lg-4">
-                <button
+                <!-- <button
                 style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
                 data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="showDialog">
                 <small> <b><i class="bi bi-plus"></i></b>
-                Add New</small></button>
+                Add New</small></button> -->
                 </div>
             </div>
             </div>
@@ -56,14 +64,15 @@
     <div class="row">
               <div class="col-4">
                 <div class="mb-2">
-          <label class="textColor"><small>School</small> </label>
+                  <label class="textColor"><small>School</small>  </label>
+
           <select
                   style="box-shadow: none;"
-                  class="form-select form-select-sm" required
+                  class="form-select form-select-sm"
                   v-model="form.school_number"
-                  @change="fetchCampuses(form.school_number)"
+                  @change="fetchCampuses(form.school_number)"           
           >
-              <option  value="">Select School</option>
+              <option disabled value="">Select School</option>
               <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
               </option>
           </select>
@@ -132,7 +141,7 @@
         </span> 
         </td>
       <td>
-          <button data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="showUpdateDialog(list)" >
+          <button @click="showUpdateDialog(list)" >
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
@@ -164,6 +173,15 @@
     import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
     import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
     import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
+    import AppModal from "@/components/AppModal.vue";
+
+
+const showingModal = ref(false)
+
+const showModal = () => {
+showingModal.value = true
+thisDialog.value=false
+}
     
     const notificationStore = useNotificationStore()
     const thisDialog = ref(false)
@@ -200,8 +218,9 @@ const filter = (campusN) =>{
     }
 
     const showUpdateDialog = (a) => {
-      updateMenuDialog.value = true
       menuItemsinfoData.value = a
+      showingModal.value = true
+      thisDialog.value=false
     }
 
     const cateringStore = useCateringStore()

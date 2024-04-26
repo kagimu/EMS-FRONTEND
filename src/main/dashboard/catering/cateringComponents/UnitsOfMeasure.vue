@@ -2,18 +2,11 @@
     <div>
 
 
-            <!-- schedule interview -->
-          <div class="offcanvas offcanvas-end" tabindex="-1" id="rolesDialogg" :class="{ show:thisDialog }" aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header">
-              <h5 class="offcanvas-title" id="offcanvasRightLabel"><small>Unit Of Measure</small></h5>
-              <button type="button" class="btn-close"  data-bs-dismiss="offcanvas" aria-label="Close" @click="closeDialog"></button>
-            </div>
-            <div class="offcanvas-body">
-             <NewUnitOfMeasurement></NewUnitOfMeasurement>
-            </div>
-          </div>
-  <!-- wnd  -->
   
+  
+  <AppModal title="Unit Measurement" v-model="showUnitModal" lg>
+    <NewUnitOfMeasurement></NewUnitOfMeasurement>
+    </AppModal>
 
 
 
@@ -22,7 +15,7 @@
     <div class="col-12">
         <div class="">
         <div class="" style="padding: 0;">
-         <div class="container mt-4">
+         <div class="containe mt-4">
            <div class="row">
               <div class="col-lg-12">
                 <div class="">
@@ -33,11 +26,10 @@
                     </div>
     
                 <div class="col-lg-4">
-                <button
-                style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
-                data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="showDialog">
+                <!-- <button
+                style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4" @click="showUnitMeasurement()">
                 <small> <b><i class="bi bi-plus"></i></b>
-                Add New</small></button>
+                Add New</small></button> -->
                 </div>
             </div>
             </div>
@@ -49,12 +41,13 @@
     <table
     id="datatable"
     class="table table-striped"
-    style="font-size: 14px !important;"
+    style="font-size: 14px !important; width: 100%;"
     >
     <thead >
         <tr>
         <th>code</th>
         <th>Name</th>
+        <th>Action</th>
         </tr>
     <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
     {{errorMessage}}
@@ -64,6 +57,15 @@
       <tr v-for="(list, index) in unitMeasurementData" :key="index">
       <td>{{ list.code }}</td>
       <td>{{ list.name }}</td>
+      <td>
+        <button data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
+            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+          </button>
+          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
+          <button type="button">
+            <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+          </button>
+      </td>
       </tr>
     
                 
@@ -84,10 +86,19 @@
     import useNotificationStore from "@/composables/useNotification.js";
     import NewUnitOfMeasurement from "@/main/dashboard/catering/cateringComponents/NewUnitOfMeasurement.vue";
     import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+    import AppModal from "@/components/AppModal.vue";
 
+    const showUnitModal = ref(false)
     const cateringStore = useCateringStore()
     const thisDialog = ref(false)
     const unitMeasurementData = ref([])
+
+    const showUnitMeasurement = () => {
+    showUnitModal.value = true
+    thisDialog.value=false
+}
+
+
     const showDialog = () => {
         thisDialog.value = true
     }

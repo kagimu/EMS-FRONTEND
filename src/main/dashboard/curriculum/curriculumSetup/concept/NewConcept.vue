@@ -221,13 +221,36 @@ watch(
       if(data){
         let info = data.data
         form.name = info.name ? info.name : ""
-        form.code = info.code ? String(info.code) : ""
+        form.code = info.code ? String(info.code) : "0"
         form.sub_topic_number = info.sub_topic_number ? info.sub_topic_number : ""
-        topic_number.value = info.topic_number ? info.topic_number : ""
-        subject_number.value = info.subject_number ? info.subject_number : ""
-        learning_area_number.value = info.learning_area_number ? info.learning_area_number : ""
-        subject_cluster_number.value = info.subject_cluster_number ? info.subject_cluster_number : ""
-        strand_number.value = info.strand_number ? info.strand_number : ""
+
+
+
+        if(info.learning_area_number) {
+          learning_area_number.value = info.learning_area_number
+          selectSubjectCluster(info.learning_area_number)
+        }
+
+        if(info.subject_cluster_number) {
+          subject_cluster_number.value = info.subject_cluster_number
+          selectSubject(info.subject_cluster_number)
+        }
+
+        if(info.subject_number) {
+          subject_number.value = info.subject_number
+          selectStrand(info.subject_number)
+        }
+
+        if(info.strand_number) {
+          strand_number.value = info.strand_number
+          selectTopic(info.strand_number)
+        }
+
+        if(info.topic_number) {
+          topic_number.value = info.topic_number
+          selectSubTopic(info.topic_number)
+        }
+
         conceptNumber.value = info.number ? info.number : ""
       }
     },

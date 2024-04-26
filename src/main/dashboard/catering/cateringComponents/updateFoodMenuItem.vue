@@ -1,6 +1,6 @@
 <template>
     <div>
-        {{ menuItemsinfoData }}
+        <!-- {{ menuItemsinfoData }} -->
 <form @submit.prevent="updateMenuItem">
 
     <div class="row">

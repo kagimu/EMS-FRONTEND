@@ -32,7 +32,8 @@
                               </select>
                             </td>
 
-                            <td><input type="number" v-model="menu.quantity" placeholder="1.0" class="inp"></td>
+                            <td><input  @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10" type="text" v-model="menu.quantity" placeholder="1.0" class="inp"></td>
                             <td><button type="button" @click="removeMenuItem(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
                           </tr>
                         </tbody>
@@ -74,6 +75,9 @@
   import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js"
   import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
   import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+  import useCommonsStore from "@/composables/useCommons.js";
+const commons = useCommonsStore()
+
 
 
 
