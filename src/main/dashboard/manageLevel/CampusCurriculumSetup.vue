@@ -91,7 +91,7 @@ watch(
 
 
     <div class="row">
-      <div :class="campusCurriculumNumber || campusSetupQuery ? 'col-3' : 'col-12 mx-auto'">
+      <div :class="campusSetupQuery ? 'col-3' : 'col-12 mx-auto'">
 
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
