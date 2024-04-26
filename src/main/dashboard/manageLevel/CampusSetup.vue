@@ -19,23 +19,6 @@ let campusCurriculumNumber = routerData.currentRoute.value.query.crr
 let reportSettingsQuery = routerData.currentRoute.value.query.rp
 let assessmentSettingsQuery = routerData.currentRoute.value.query.ass
 
-const reportSettingsMenu = ref([
-  {
-    name:"Report Setting",
-    router_name:"report-setting"
-  },
-  {
-    name:"Report Columns",
-    router_name:"report-columns"
-  },
-  {
-    name:"Report Columns Assessment",
-    router_name:"report-columns-assessment"
-  },
-])
-
-
-
 
 onMounted(
     () => {
@@ -83,27 +66,7 @@ watch(
 
 
     <div class="row">
-      <div :class="campusCurriculumNumber || reportSettingsQuery || assessmentSettingsQuery ? 'col-3' : 'col-12 mx-auto'">
-
-        <div class="card mt-3">
-          <div class="card-body" style="padding: 0;" v-if="campusCurriculumDataInfo">
-
-            <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
-              <div class="ml-3 mb-2">Campus Curriculum</div>
-            </div>
-
-            <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-              <router-link
-                  v-for="(item, idx) in  campusCurriculumDataInfo" :key="idx"
-                  class="list-group-item list-group-item-action"
-                  :class="item.number === campusCurriculumNumber ? 'active' : ''"
-                  :to="{name:'campus-setup', query:{id:campusNumber, crr:item.number, cr:item.curriculum_number}}">
-                <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></router-link>
-            </div>
-
-          </div>
-        </div>
-
+      <div :class="reportSettingsQuery || assessmentSettingsQuery ? 'col-3' : 'col-12 mx-auto'">
 
 
         <div class="card mt-3">
@@ -125,29 +88,10 @@ watch(
           </div>
         </div>
 
-
-
-
       </div>
 
 
-      <div class="col-9" v-if="campusCurriculumNumber">
 
-        <div class="card mt-3">
-          <div class="card-body" style="padding: 0;">
-
-            <div class="mt-4">
-
-              <div>
-                <campus-settings></campus-settings>
-              </div>
-
-            </div>
-
-          </div>
-        </div>
-
-      </div>
 
 
     </div>
