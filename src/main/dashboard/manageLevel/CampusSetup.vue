@@ -4,7 +4,6 @@ import {computed, onMounted, ref, watch} from "vue";
 import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
 import {useRouter} from "vue-router";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
-import CampusSettings from "@/main/dashboard/manageLevel/CampusSettings.vue";
 
 const levelStore = useLevelStore()
 const campusCurriculumDataInfo = ref(null)
