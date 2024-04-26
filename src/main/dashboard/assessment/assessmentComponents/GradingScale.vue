@@ -239,7 +239,7 @@ watch (
             <tr v-for="(aggregateList,index) in aggregateData" :key="index">
             <td>{{ index+1 }}</td>
             <td>{{ aggregateList.name }}</td>
-            <td>Give me Class</td>
+            <td>&nbsp;</td>
             <td>{{  aggregateList.min_value}} - {{  aggregateList.max_value}}</td>
             <td>{{aggregateList.weight}}</td>
             <td>
