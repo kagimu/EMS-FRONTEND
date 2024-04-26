@@ -261,6 +261,7 @@
     const studyPeriodList = ref([])
     const campus_level_number = ref(null)
     const academic_year_number = ref(null)
+    const campusNumber = routerData.currentRoute.value.query.id
 
       const form = reactive({ 
         name:null,
@@ -297,6 +298,7 @@ const format = (date) => {
 
   const  fetchAssessmentAreaList = (campus_class_number) => {
     if(campus_class_number) {
+      doFetchGradingStandard()
       let curriculum_class_number = classLevelList.value.find(item => item.number === campus_class_number).curriculum_class_number
       assessmentStore.fetchAssessmentArea(curriculum_class_number)
     }
@@ -318,6 +320,13 @@ watch(
     {deep: true}
 )
 
+   const doFetchGradingStandard = () => {
+     let data = {
+       campus_number:campusNumber,
+       campus_class_number:form.campus_class_number
+     }
+      assessmentStore.fetchGradeStandard(data)
+   }
 
 onMounted(
         async () => {
@@ -456,10 +465,7 @@ onMounted(
         {deep: true}
     )
   
-    onMounted(
-    async () => {
-      await assessmentStore.fetchGradeStandard()
-    } )
+
     
 watch (
     () => assessmentStore.gradeStandardResponse,
