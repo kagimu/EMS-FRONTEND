@@ -133,8 +133,6 @@ const menuList = ref([
   {title:"Home", name:"home", icon:"bi-house",action:"view_dashboard"},
   {title:"School", name:"school", icon:"bi-house-add" , action:"view_school"},
   {title:"Curriculum", name:"curriculum", icon:"bi-pen", action:"view_curriculum"},
-  // {title:"Classes", name:"classes", icon:"bi-person-lines-fill",  action: "view_classes"},
-  {title:"Schools Teacher", name:"schools-teacher", icon:"bi-house-add"},
   {title:"Time table", name:"timetable", icon:"bi-pen",action:"view_timetable"},
   {title:"Student Application", name:"student-application", icon:"bi-person-plus",action:"view_student-application"},
   {title:"Student Admission", name:"admission-list", icon:"bi-database-down",action:"view_student-admission"},

@@ -154,12 +154,14 @@ import NewStudyPeriod from "@/main/dashboard/manageLevel/studyPeriod/NewStudyPer
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 const studyPeriodStore = useStudyPeriodStore()
 const academicYearStore = useAcademicYearStore()
+const classStore = useClassesStore()
 
 const routerData = useRouter()
 const newStudyPeriodDialog = ref( false)
-const campusCurriculumNumber = routerData.currentRoute.value.query.crr
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const studyPeriodList = ref( [])
 const  notificationStore  = useNotificationStore()
 const academicYearNumber = ref( "")
@@ -168,6 +170,11 @@ const studyPeriodRef = ref( null)
 const deletionLoader = ref( undefined)
 const editMode = ref( false)
 
+onMounted(
+    () => {
+      classStore.fetchCampusLevel(campus_curriculum_number)
+    }
+)
 
 
 const addStudyPeriod = (item) => {
@@ -217,7 +224,7 @@ onMounted(
 )
 
 const studyPeriodData = () => {
-  studyPeriodStore.fetchStudyPeriod({campus_curriculum_number:campusCurriculumNumber, academic_year_number:academicYearNumber.value})
+  studyPeriodStore.fetchStudyPeriod({campus_curriculum_number:campus_curriculum_number, academic_year_number:academicYearNumber.value})
 }
 
 watch(

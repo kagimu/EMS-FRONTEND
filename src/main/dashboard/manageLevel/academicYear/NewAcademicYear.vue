@@ -119,8 +119,8 @@ const classStore = useClassesStore()
 const campusStore = useCampusStore()
 const academicYearStore = useAcademicYearStore()
 const levelStore = useLevelStore()
-const campusLevel = routerData.currentRoute.value.query.crr
 const campusNumber = routerData.currentRoute.value.query.id
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const errorMessage = ref(null)
 const campusLevelInfo = ref([])
 const academic_year_number = ref(null)
@@ -154,11 +154,14 @@ const format = (date) => {
   return `Selected date is ${day}/${month}/${year}`;
 }
 
+
 onMounted(
-    () =>{
-      // campusStore.fetchCampusLevel(campusNumber)
+    () => {
+      classStore.fetchCampusLevel(campus_curriculum_number)
     }
 )
+
+
 
 const addAcademicYear = () => {
   loader.value = true

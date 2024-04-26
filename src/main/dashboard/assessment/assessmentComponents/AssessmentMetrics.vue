@@ -231,6 +231,7 @@
     const routerData = useRouter()
     let  curriculumNumber = routerData.currentRoute.value.query.crr
     let  curriculumNumberParent = routerData.currentRoute.value.query.cr
+    const campus_curriculum_number = routerData.currentRoute.value.query.crr
 
     import { useAbility } from '@casl/vue';
   
@@ -330,6 +331,7 @@ watch(
 
 onMounted(
         async () => {
+          await classStore.fetchCampusLevel(campus_curriculum_number)
           await assessmentStore.fetchMetrics(curriculumNumberParent)
           await assessmentStore.fetchAssessmentMetrics()
         } )

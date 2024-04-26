@@ -42,10 +42,8 @@
   </template>
   
   <script setup>
-  
-  import {reactive, ref} from "vue";
+
   import {useRouter} from "vue-router";
-  import InterviewAssesmentAreas from "@/main/dashboard/assessment/assessmentComponents/AssesmentAreas.vue";
   import AssessmentList from "@/main/dashboard/assessment/assessmentComponents/AssessmentList.vue";
   import ExamType from "@/main/dashboard/assessment/assessmentComponents/ExamType.vue"
   import GradingScale from "@/main/dashboard/assessment/assessmentComponents/GradingScale.vue";
@@ -56,29 +54,6 @@
   const routerData = useRouter()
   
   const selectedPage = routerData.currentRoute.value.query.ass
-/*
-  const selectedPage = route ? route : "examtype"
-  
-  const assess = ref([
-    {
-      name:"Grade Standards",
-      id:"grade-standards"
-    },
-    {
-      name:"Aggregate Scale",
-      id:"grade-scale"
-    },
-    {
-      name:"Assessment Grades",
-      id:"assessment-scale"
-    },
-    {
-      name:"Assessment Area Grading Standard",
-      id:"assessment-area-grading-standard"
-    },
-   
-  ])
-*/
 
   
   
@@ -90,12 +65,5 @@
     box-shadow: none;
   }
   
-  .textColor{
-    color: #717375;
-  }
-  
-  .navColor{
-    color: black;
-  }
-  
+
   </style>
