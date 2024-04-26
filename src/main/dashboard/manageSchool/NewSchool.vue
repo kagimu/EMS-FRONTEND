@@ -54,9 +54,9 @@
             type="submit"
             class="btn btn-primary border-0">
             {{school_number ? "Edit":"Save"}}
-          <span v-if="loader" class="spinner-border text-light w-[1.2rem] h-[1.2rem]" role="status">
+          <div v-if="loader" class="spinner-border text-light spinner-border-sm" role="status">
               <span class="visually-hidden">&nbsp;Loading...</span>
-            </span>
+            </div>
         </button>
       </div>
 

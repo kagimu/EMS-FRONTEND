@@ -1,25 +1,124 @@
+<script setup>
+
+import {onMounted, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import NewSchool from "@/main/dashboard/manageSchool/NewSchool.vue";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+
+import { useAbility } from '@casl/vue';
+import AppModal from "@/components/AppModal.vue";
+
+const { can } = useAbility()
+
+
+const schoolStore = useSchoolStore()
+const  notificationStore  = useNotificationStore()
+const schoolRef = ref(null)
+const editMode = ref(false)
+
+
+const schoolDialog = ref( false)
+const schoolsList = ref( [])
+
+
+const addSchool = () => {
+  editMode.value = false
+  schoolDialog.value = true
+}
+
+const editSchool = (school) => {
+  if(school) {
+    schoolDialog.value = true
+    editMode.value = true
+    schoolStore.fetchSchoolData(school.number)
+  }
+}
+
+
+const deleteSchool = (school) => {
+
+  if(!confirm("Are you sure, you want to delete: "+school.name)){
+    return
+  }
+  let data = {
+    school_number:school.number
+  }
+  schoolStore.deleteSchool(data)
+
+}
+
+onMounted(
+    () => {
+      schoolStore.fetchSchools()
+    }
+)
+
+watch(
+    () => schoolStore.newSchoolResponse,
+    async (data) => {
+      if(data){
+        schoolDialog.value = false
+        await schoolStore.fetchSchools()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if(data){
+        schoolsList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch (
+    () => schoolStore.editSchoolResponse,
+    async (data) => {
+      if(data){
+        schoolDialog.value = false
+        await schoolStore.fetchSchools()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => schoolStore.deleteSchoolResponse,
+    async (data) => {
+      if(data){
+        await schoolStore.fetchSchools()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => schoolStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+</script>
+
 <template>
   <div>
 
-    <div class="modal fade" id="infoModal" tabindex="-1" :class="{ show: schoolDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">{{editMode ? "Edit" : "New"}} School</h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-              <new-school ref="schoolRef"></new-school>
-            </div>
-          </div>
 
-        </div>
-      </div>
-    </div>
-
-
-
+    <AppModal :title="editMode ? 'Edit School' : 'New School'" v-model="schoolDialog" lg>
+      <new-school ref="schoolRef"></new-school>
+    </AppModal>
 
 
     <div class="mt-3">
@@ -27,9 +126,7 @@
       v-if="can('add_school','general')"
           type="button"
           class="btn btn-sm buttonStyle btn-primary mr-2"
-          @click="addSchool"
-          data-bs-toggle="modal"
-          data-bs-target="#infoModal">
+          @click="addSchool">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
         Add School
       </button>
@@ -50,10 +147,7 @@
               <div>
               <i
               v-if="can('edit_school','general')"
-                  aria-controls="offcanvasRight"
                   class="bi-pencil ml-2 cursor-pointer"
-                  data-bs-target="#infoModal"
-                  data-bs-toggle="modal"
                   style="font-size: 14px;"
                   @click="editSchool(school)"></i>
 
@@ -101,119 +195,7 @@
   </div>
 </template>
 
-<script setup>
 
-import {onMounted, ref, watch} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import NewSchool from "@/main/dashboard/manageSchool/NewSchool.vue";
-import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-
-import { useAbility } from '@casl/vue';
-
-const { can } = useAbility()
-
-
-const schoolStore = useSchoolStore()
-const  notificationStore  = useNotificationStore()
-const schoolRef = ref(null)
-const editMode = ref(false)
-
-
-const schoolDialog = ref( false)
-const schoolsList = ref( [])
-
-
-const addSchool = () => {
-  editMode.value = false
-  schoolDialog.value = false
-  schoolRef.value.clearSchoolForm()
-}
-
-const editSchool = (school) => {
-  if(school) {
-    schoolDialog.value = true
-    editMode.value = true
-    schoolStore.fetchSchoolData(school.number)
-  }
-}
-
-
-const deleteSchool = (school) => {
-
-  if(!confirm("Are you sure, you want to delete: "+school.name)){
-    return
-  }
-  let data = {
-    school_number:school.number
-  }
-  schoolStore.deleteSchool(data)
-
-}
-
-onMounted(
-    () => {
-      schoolStore.fetchSchools()
-    }
-)
-
-watch(
-    () => schoolStore.newSchoolResponse,
-    async (data) => {
-      if(data){
-        schoolDialog.value = false
-        await schoolStore.fetchSchools()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => schoolStore.schoolsResponse,
-    async (data) => {
-      if(data){
-       schoolsList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-
-watch (
-    () => schoolStore.editSchoolResponse,
-    async (data) => {
-      if(data){
-        schoolDialog.value = false
-        await schoolStore.fetchSchools()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch (
-    () => schoolStore.deleteSchoolResponse,
-    async (data) => {
-      if(data){
-        await schoolStore.fetchSchools()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch (
-    () => schoolStore.errorMessage,
-    async (data) => {
-      if(data){
-        notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-)
-
-
-</script>
 
 <style scoped>
 
