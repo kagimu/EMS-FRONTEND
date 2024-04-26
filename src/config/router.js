@@ -72,6 +72,7 @@ import Catering from "@/main/dashboard/catering/Catering.vue"
 import FoodMenuItem  from "@/main/dashboard/catering/cateringComponents/FoodMenuItem.vue"
 import FeedingGroupUserDetails  from "@/main/dashboard/catering/cateringComponents/FeedingGroupUserDetails.vue"
 import ApplicationSuccessPage from "@/main/application/applicationComponents/ApplicationSuccessPage.vue"
+import CampusCurriculumSetup from "@/main/dashboard/manageLevel/CampusCurriculumSetup.vue";
 
 
 const router = createRouter({
@@ -125,18 +126,26 @@ const router = createRouter({
                 }
             },
                 {path: 'campus-list', component: CampusInfo, name: "campus-teacher",
-                meta: {
-                    resource: "campus",
-                    action: "view_campuses",
+                    meta: {
+                        resource: "campus",
+                        action: "view_campuses",
 
-                }
-            },
+                    }
+                },
                 {path: 'campus-setup', component: CampusSetup, name: "campus-setup",
                 meta: {
                     resource: "campus-setup",
                     action: "view_campus-setup",
                       
-                }},
+                }
+                },
+                {path: 'campus-curriculum-setup', component: CampusCurriculumSetup, name: "campus-curriculum-setup",
+                meta: {
+                    resource: "campus-setup",
+                    action: "view_campus-setup",
+
+                }
+                },
                 {path: 'campus-details-teacher', component: CampusDetailsTeacher, name: "campus-details-teacher",
                 meta: {
                     resource: "campus-setup",
