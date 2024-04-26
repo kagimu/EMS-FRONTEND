@@ -1,3 +1,117 @@
+<script setup>
+
+import {onMounted, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import NewSchool from "@/main/dashboard/manageSchool/NewSchool.vue";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+
+import { useAbility } from '@casl/vue';
+import AppModal from "@/components/AppModal.vue";
+
+const { can } = useAbility()
+
+
+const schoolStore = useSchoolStore()
+const  notificationStore  = useNotificationStore()
+const schoolRef = ref(null)
+const editMode = ref(false)
+
+
+const schoolDialog = ref( false)
+const schoolsList = ref( [])
+
+
+const addSchool = () => {
+  editMode.value = false
+  schoolDialog.value = true
+}
+
+const editSchool = (school) => {
+  if(school) {
+    schoolDialog.value = true
+    editMode.value = true
+    schoolStore.fetchSchoolData(school.number)
+  }
+}
+
+
+const deleteSchool = (school) => {
+
+  if(!confirm("Are you sure, you want to delete: "+school.name)){
+    return
+  }
+  let data = {
+    school_number:school.number
+  }
+  schoolStore.deleteSchool(data)
+
+}
+
+onMounted(
+    () => {
+      schoolStore.fetchSchools()
+    }
+)
+
+watch(
+    () => schoolStore.newSchoolResponse,
+    async (data) => {
+      if(data){
+        schoolDialog.value = false
+        await schoolStore.fetchSchools()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if(data){
+        schoolsList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch (
+    () => schoolStore.editSchoolResponse,
+    async (data) => {
+      if(data){
+        schoolDialog.value = false
+        await schoolStore.fetchSchools()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => schoolStore.deleteSchoolResponse,
+    async (data) => {
+      if(data){
+        await schoolStore.fetchSchools()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => schoolStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+</script>
+
 <template>
   <div>
 
@@ -81,119 +195,7 @@
   </div>
 </template>
 
-<script setup>
 
-import {onMounted, ref, watch} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import NewSchool from "@/main/dashboard/manageSchool/NewSchool.vue";
-import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-
-import { useAbility } from '@casl/vue';
-import AppModal from "@/components/AppModal.vue";
-
-const { can } = useAbility()
-
-
-const schoolStore = useSchoolStore()
-const  notificationStore  = useNotificationStore()
-const schoolRef = ref(null)
-const editMode = ref(false)
-
-
-const schoolDialog = ref( false)
-const schoolsList = ref( [])
-
-
-const addSchool = () => {
-  editMode.value = false
-  schoolDialog.value = true
-}
-
-const editSchool = (school) => {
-  if(school) {
-    schoolDialog.value = true
-    editMode.value = true
-    schoolStore.fetchSchoolData(school.number)
-  }
-}
-
-
-const deleteSchool = (school) => {
-
-  if(!confirm("Are you sure, you want to delete: "+school.name)){
-    return
-  }
-  let data = {
-    school_number:school.number
-  }
-  schoolStore.deleteSchool(data)
-
-}
-
-onMounted(
-    () => {
-      schoolStore.fetchSchools()
-    }
-)
-
-watch(
-    () => schoolStore.newSchoolResponse,
-    async (data) => {
-      if(data){
-        schoolDialog.value = false
-        await schoolStore.fetchSchools()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => schoolStore.schoolsResponse,
-    async (data) => {
-      if(data){
-       schoolsList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-
-watch (
-    () => schoolStore.editSchoolResponse,
-    async (data) => {
-      if(data){
-        schoolDialog.value = false
-        await schoolStore.fetchSchools()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch (
-    () => schoolStore.deleteSchoolResponse,
-    async (data) => {
-      if(data){
-        await schoolStore.fetchSchools()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch (
-    () => schoolStore.errorMessage,
-    async (data) => {
-      if(data){
-        notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-)
-
-
-</script>
 
 <style scoped>
 
