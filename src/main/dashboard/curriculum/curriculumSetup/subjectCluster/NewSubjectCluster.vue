@@ -102,7 +102,7 @@ const addSubjectCluster = () =>{
 
 onMounted(
     () => {
-      //learningAreaStore.fetchLearningArea(curriculumNumber)
+      learningAreaStore.fetchLearningArea(curriculumNumber)
     }
 )
 
@@ -113,8 +113,7 @@ watch(
       if(data){
         loader.value = false
       }
-    },
-    {deep:true}
+    }
 )
 
 

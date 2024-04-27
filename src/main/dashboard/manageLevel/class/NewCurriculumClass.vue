@@ -79,9 +79,6 @@ let  curriculumNumber = routerData.currentRoute.value.query.id
 
 
 const form = reactive({
-  // code:null,
-  // name:null,
-  // abbreviation:null,
   level:"",
 })
 
