@@ -81,29 +81,14 @@ watch(
         <new-campus-level :levelList="levelList"></new-campus-level>
       </AppModal>
 
-<!--        <div class="modal fade" id="campusLevelModel" tabindex="-1" :class="{ show: campusLevelDialog }" aria-labelledby=""
-             aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header text-sm p-0">
-                        <h6 class="modal-title ml-3 mt-2 mb-2">Add Level to Campus</h6>
-                        <button style="margin-right: 5px;" type="button" class="btn-close btn-sm"
-                                data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mt-2 mb-2">
-                          <new-campus-level :levelList="levelList"></new-campus-level>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>-->
-
 
         <div class="flex justify-content-between mt-4 mb-4 mr-3">
             &nbsp;
-            <button type="button" class="btn btn-sm buttonStyle btn-primary mr-2" @click="addCampus"
-                    data-bs-toggle="modal" data-bs-target="#campusLevelModel">
+            <button
+                    type="button"
+                    class="btn btn-sm buttonStyle btn-primary mr-2"
+                    @click="addCampus"
+                   >
                 <i style="font-size: 15px;" class="bi-plus mr-2"></i>
                 Add Level
             </button>
