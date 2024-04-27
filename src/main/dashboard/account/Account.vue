@@ -38,7 +38,7 @@
                  <UserManagement></UserManagement>
                   </div>
                   <div v-if="selectedPage === 'users'">
-                    <userProfiles></userProfiles>
+                    <StaffManager></StaffManager>
                   </div>
                 
             </div>
@@ -56,7 +56,8 @@
   import Roles from "@/main/settings/roles/Roles.vue";
   import {useRouter} from "vue-router";
   import UserManagement from "./accountComponents/UserManagement.vue";
-  import userProfiles from "../profiles/userProfiles.vue";
+  import StaffManager from "../profiles/StaffManager.vue";
+  
 
   import { useAbility } from '@casl/vue';
 
