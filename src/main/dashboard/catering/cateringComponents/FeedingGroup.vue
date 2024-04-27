@@ -1,20 +1,6 @@
 <template>
     <div>
 
-
-            <!-- schedule interview -->
-          <div class="offcanvas offcanvas-end" tabindex="-1" id="rolesDialogg" :class="{ show:thisDialog }" aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header">
-              <h5 class="offcanvas-title" id="offcanvasRightLabel"><small>Feeding Group</small></h5>
-              <button type="button" class="btn-close"  data-bs-dismiss="offcanvas" aria-label="Close" @click="closeDialog"></button>
-            </div>
-            <div class="offcanvas-body">
-            <NewFeedingGroup></NewFeedingGroup>
-            </div>
-          </div>
-  <!-- wnd  -->
-  
-
   <AppModal title="Feeding Group" v-model="showingModal" lg>
     <NewFeedingGroup></NewFeedingGroup>
     </AppModal>

@@ -1,3 +1,312 @@
+<script setup>
+  import {onMounted,reactive, ref, watch} from "vue";
+  import useNotificationStore from "@/composables/useNotification.js";
+  import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+  import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+  import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
+  import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+  import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+  import { useStudyPeriodStore } from "../../manageLevel/studyPeriod/store/studyPeriod";
+  const academicYearStore = useAcademicYearStore()
+  
+  import {useRouter} from "vue-router";
+  const routerData = useRouter()
+  let  curriculumNumber = routerData.currentRoute.value.query.crr
+  let  curriculumNumberParent = routerData.currentRoute.value.query.cr
+  const campus_curriculum_number = routerData.currentRoute.value.query.crr
+  
+  import { useAbility } from '@casl/vue';
+  
+  const { can } = useAbility()
+  
+  const buttonLoader = ref(false)
+  const assessmentMetricsData = ref([])
+  const interviewDialog= ref(false)
+  let errorMessage = ref(null)
+  
+  const classStore = useClassesStore()
+  const assessmentStore= useAssessmentStore()
+  const studyPeriodStore = useStudyPeriodStore()
+  const  notificationStore  = useNotificationStore()
+  const campusList = ref([])
+  const assessmentMetricsList = ref([])
+  const classList = ref([])
+  const schoolStore = useSchoolStore()
+  const campusStore = useCampusStore()
+  const school_number = ref(null)
+  const AsessmentListData = ref([])
+  const gradeData = ref([])
+  const campusLevelList = ref([])
+  const classLevelList = ref([])
+  const preferred_campus_number = ref(null)
+  const metricListData = ref([])
+  const academicYearList = ref([])
+  const studyPeriodList = ref([])
+  const campus_level_number = ref(null)
+  const academic_year_number = ref(null)
+  const campusNumber = routerData.currentRoute.value.query.id
+  
+    const form = reactive({ 
+      name:null,
+      assessment_area_number:null,
+      weight:null,
+      description:null,
+      max_score:null,
+      metric_number:null,
+      campus_class_number:null,
+      grading_standard_number:null,
+      study_period_number:null,
+      scheduled_on:null
+    })
+  
+  
+  const currentYear = ref((new Date()).getFullYear());
+  const date = ref();
+  
+  const format = (date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  
+  return `Selected date is ${day}/${month}/${year}`;
+  }
+  
+  
+  const fetchCurriculumClass = (campus_lnumber) =>{
+  classStore.fetchClassByLevel(curriculumNumber,campus_lnumber)
+  academicYearStore.fetchAcademicYearByLevel(campus_lnumber)
+  
+  }
+  
+  
+  const  fetchAssessmentAreaList = (campus_class_number) => {
+  if(campus_class_number) {
+    doFetchGradingStandard()
+    let curriculum_class_number = classLevelList.value.find(item => item.number === campus_class_number).curriculum_class_number
+    assessmentStore.fetchAssessmentArea(curriculum_class_number)
+  }
+  }
+  
+  watch(
+  () => classStore.classLevelByLevelResponse,
+  async (data) => {
+      if (data) {
+          if(data && data.data){
+              let classData = data.data
+              if(classData && (classData.length > 0)){
+                classLevelList.value = classData[0].classes
+              }
+    }
+          // classLevelList.value = data
+      }
+  },
+  {deep: true}
+  )
+  
+  const doFetchGradingStandard = () => {
+   let data = {
+     campus_number:campusNumber,
+     campus_class_number:form.campus_class_number
+   }
+    assessmentStore.fetchGradeStandard(data)
+  }
+  
+  onMounted(
+      async () => {
+        await classStore.fetchCampusLevel(campus_curriculum_number)
+        await assessmentStore.fetchMetrics(curriculumNumberParent)
+        await assessmentStore.fetchAssessmentMetrics()
+        await schoolStore.fetchSchools()
+      } )
+      
+  watch(
+      () => assessmentStore.metricResponse,
+      async (data) => {
+        if(data){
+          metricListData.value = data.data
+        }
+      },
+      {deep:true}
+  )
+  
+  
+  
+  
+    watch(
+  () => assessmentStore.assessmentAreaResponse,
+  async (data) => {
+    if(data){
+      AsessmentListData.value = data.data
+    }
+  },
+  {deep:true}
+  )
+  
+  
+  
+  
+  //working on dialog
+  const closeDialog = () => {
+  interviewDialog.value = false;
+  };
+  const showDialog = () => {
+  interviewDialog.value = true;
+  }
+    const addInterviewAssesmentMetrics = () => {
+    //  alert(JSON.stringify(form))
+     interviewDialog.value = true;
+     buttonLoader.value = true
+     assessmentStore.createAssessmentMetrics(form)
+    }
+  
+    watch (
+    () => assessmentStore.newAssessmentMetricResponse,
+    async (data) => {
+      if(data){
+        buttonLoader.value = false
+         assessmentStore.fetchAssessmentMetrics()
+        notificationStore.successToast("Success", data.message)
+       form.name= ""
+       form.assessment_area_number=null,
+       form.weight=null,
+       form.description=null,
+       form.max_score=null,
+       form.metric_number=null,
+       form.campus_class_number=null,
+       form.grading_standard_number=null,
+       form.study_period_number=null,
+       form.scheduled_on=null
+      }
+    },
+    {deep:true}
+  )
+  
+  watch (
+    () => assessmentStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        buttonLoader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+  )
+  
+    watch(
+    () => assessmentStore.assessmentMetricsResponse,
+    async (data) => {
+      if(data){
+        assessmentMetricsData.value = data.data
+       // notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+  )
+  
+  
+  const fetchCampuses = (school_number) => {
+      campusStore.fetchCampuses(school_number)
+  }
+  
+  const fetchClasses = (campus_number) => {
+      campusStore.fetchClassesByCampus(campus_number)
+  }
+  
+
+  
+  watch(
+      () => schoolStore.schoolsResponse,
+      async (data) => {
+          if (data) {
+              assessmentMetricsList.value = data.data
+          }
+      },
+      {deep: true}
+  )
+  
+  watch(
+      () => campusStore.campusListResponse,
+      async (data) => {
+          if (data) {
+              campusList.value = data.data
+          }
+      },
+      {deep: true}
+  )
+  
+  watch(
+      () => campusStore.campusClassesResponse,
+      async (data) => {
+          if (data) {
+              classList.value = data.data
+          }
+      },
+      {deep: true}
+  )
+  
+  watch(
+      () => campusStore.errorMessage,
+      async (data) => {
+            if (data) {
+                notificationStore.errorToast("Error", data.message)
+            }
+      },
+      {deep: true}
+  )
+  
+  
+  
+  watch (
+  () => assessmentStore.gradeStandardResponse,
+  async (data) => {
+    if(data){
+      gradeData.value = data.data
+    }
+  },
+  {deep:true}
+  )
+  
+  
+  watch(
+  () => classStore.campusLevelResponse,
+  async (data) => {
+    if(data){
+      campusLevelList.value = data.data
+    }
+  },
+  {deep:true}
+  )
+  
+  
+  watch(
+  () => academicYearStore.academicYearByLevelResponse,
+  async (data) => {
+    if(data){
+      academicYearList.value = data.data
+    }
+  },
+  {deep:true}
+  )
+  
+  const fetchStudyPeriod = (academic_num) =>{
+  studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
+  }
+  
+  
+  watch(
+  () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+  async (data) => {
+    if(data){
+      studyPeriodList.value = data.data
+    }
+  },
+  {deep:true}
+  )
+  
+  
+</script>
+
 <template>
   <div>
      <form @submit.prevent="addInterviewAssesmentMetrics">
@@ -135,316 +444,7 @@
      </form>
   </div>
 </template>
-<script setup>
-  import {onMounted,reactive, ref, watch} from "vue";
-  import useNotificationStore from "@/composables/useNotification.js";
-  import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-  import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-  import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
-  import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
-  import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
-  import { useStudyPeriodStore } from "../../manageLevel/studyPeriod/store/studyPeriod";
-  const academicYearStore = useAcademicYearStore()
-  
-  import {useRouter} from "vue-router";
-  const routerData = useRouter()
-  let  curriculumNumber = routerData.currentRoute.value.query.crr
-  let  curriculumNumberParent = routerData.currentRoute.value.query.cr
-  const campus_curriculum_number = routerData.currentRoute.value.query.crr
-  
-  import { useAbility } from '@casl/vue';
-  
-  const { can } = useAbility()
-  
-  const buttonLoader = ref(false)
-  const assessmentMetricsData = ref([])
-  const interviewDialog= ref(false)
-  let errorMessage = ref(null)
-  
-  const classStore = useClassesStore()
-  const assessmentStore= useAssessmentStore()
-  const studyPeriodStore = useStudyPeriodStore()
-  const  notificationStore  = useNotificationStore()
-  const campusList = ref([])
-  const assessmentMetricsList = ref([])
-  const classList = ref([])
-  const schoolStore = useSchoolStore()
-  const campusStore = useCampusStore()
-  const school_number = ref(null)
-  const AsessmentListData = ref([])
-  const gradeData = ref([])
-  const campusLevelList = ref([])
-  const classLevelList = ref([])
-  const preferred_campus_number = ref(null)
-  const metricListData = ref([])
-  const academicYearList = ref([])
-  const studyPeriodList = ref([])
-  const campus_level_number = ref(null)
-  const academic_year_number = ref(null)
-  const campusNumber = routerData.currentRoute.value.query.id
-  
-    const form = reactive({ 
-      name:null,
-      assessment_area_number:null,
-      weight:null,
-      description:null,
-      max_score:null,
-      metric_number:null,
-      campus_class_number:null,
-      grading_standard_number:null,
-      study_period_number:null,
-      scheduled_on:null
-    })
-  
-  
-  const currentYear = ref((new Date()).getFullYear());
-  const date = ref();
-  
-  const format = (date) => {
-  const day = date.getDate();
-  const month = date.getMonth() + 1;
-  const year = date.getFullYear();
-  
-  return `Selected date is ${day}/${month}/${year}`;
-  }
-  
-  
-  const fetchCurriculumClass = (campus_lnumber) =>{
-  classStore.fetchClassByLevel(curriculumNumber,campus_lnumber)
-  academicYearStore.fetchAcademicYearByLevel(campus_lnumber)
-  
-  }
-  
-  
-  const  fetchAssessmentAreaList = (campus_class_number) => {
-  if(campus_class_number) {
-    doFetchGradingStandard()
-    let curriculum_class_number = classLevelList.value.find(item => item.number === campus_class_number).curriculum_class_number
-    assessmentStore.fetchAssessmentArea(curriculum_class_number)
-  }
-  }
-  
-  watch(
-  () => classStore.classLevelByLevelResponse,
-  async (data) => {
-      if (data) {
-          if(data && data.data){
-              let classData = data.data
-              if(classData && (classData.length > 0)){
-                classLevelList.value = classData[0].classes
-              }
-    }
-          // classLevelList.value = data
-      }
-  },
-  {deep: true}
-  )
-  
-  const doFetchGradingStandard = () => {
-   let data = {
-     campus_number:campusNumber,
-     campus_class_number:form.campus_class_number
-   }
-    assessmentStore.fetchGradeStandard(data)
-  }
-  
-  onMounted(
-      async () => {
-        await classStore.fetchCampusLevel(campus_curriculum_number)
-        await assessmentStore.fetchMetrics(curriculumNumberParent)
-        await assessmentStore.fetchAssessmentMetrics()
-      } )
-      
-  watch(
-      () => assessmentStore.metricResponse,
-      async (data) => {
-        if(data){
-          metricListData.value = data.data
-        }
-      },
-      {deep:true}
-  )
-  
-  
-  
-  
-    watch(
-  () => assessmentStore.assessmentAreaResponse,
-  async (data) => {
-    if(data){
-      AsessmentListData.value = data.data
-    }
-  },
-  {deep:true}
-  )
-  
-  
-  
-  
-  //working on dialog
-  const closeDialog = () => {
-  interviewDialog.value = false;
-  };
-  const showDialog = () => {
-  interviewDialog.value = true;
-  }
-    const addInterviewAssesmentMetrics = () => {
-    //  alert(JSON.stringify(form))
-     interviewDialog.value = true;
-     buttonLoader.value = true
-     assessmentStore.createAssessmentMetrics(form)
-    }
-  
-    watch (
-    () => assessmentStore.newAssessmentMetricResponse,
-    async (data) => {
-      if(data){
-        buttonLoader.value = false
-         assessmentStore.fetchAssessmentMetrics()
-        notificationStore.successToast("Success", data.message)
-       form.name= ""
-       form.assessment_area_number=null,
-       form.weight=null,
-       form.description=null,
-       form.max_score=null,
-       form.metric_number=null,
-       form.campus_class_number=null,
-       form.grading_standard_number=null,
-       form.study_period_number=null,
-       form.scheduled_on=null
-      }
-    },
-    {deep:true}
-  )
-  
-  watch (
-    () => assessmentStore.errorMessage,
-    async (data) => {
-      if(data){
-        errorMessage.value = data.message
-        buttonLoader.value = false
-        notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-  )
-  
-    watch(
-    () => assessmentStore.assessmentMetricsResponse,
-    async (data) => {
-      if(data){
-        assessmentMetricsData.value = data.data
-       // notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-  )
-  
-  
-  const fetchCampuses = (school_number) => {
-      campusStore.fetchCampuses(school_number)
-  }
-  
-  const fetchClasses = (campus_number) => {
-      campusStore.fetchClassesByCampus(campus_number)
-  }
-  
-  onMounted(() => {
-          schoolStore.fetchSchools()
-      }
-  )
-  
-  watch(
-      () => schoolStore.schoolsResponse,
-      async (data) => {
-          if (data) {
-              assessmentMetricsList.value = data.data
-          }
-      },
-      {deep: true}
-  )
-  
-  watch(
-      () => campusStore.campusListResponse,
-      async (data) => {
-          if (data) {
-              campusList.value = data.data
-          }
-      },
-      {deep: true}
-  )
-  
-  watch(
-      () => campusStore.campusClassesResponse,
-      async (data) => {
-          if (data) {
-              classList.value = data.data
-          }
-      },
-      {deep: true}
-  )
-  
-  watch(
-      () => campusStore.errorMessage,
-      async (data) => {
-            if (data) {
-                notificationStore.errorToast("Error", data.message)
-            }
-      },
-      {deep: true}
-  )
-  
-  
-  
-  watch (
-  () => assessmentStore.gradeStandardResponse,
-  async (data) => {
-    if(data){
-      gradeData.value = data.data
-    }
-  },
-  {deep:true}
-  )
-  
-  
-  watch(
-  () => classStore.campusLevelResponse,
-  async (data) => {
-    if(data){
-      campusLevelList.value = data.data
-    }
-  },
-  {deep:true}
-  )
-  
-  
-  watch(
-  () => academicYearStore.academicYearByLevelResponse,
-  async (data) => {
-    if(data){
-      academicYearList.value = data.data
-    }
-  },
-  {deep:true}
-  )
-  
-  const fetchStudyPeriod = (academic_num) =>{
-  studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
-  }
-  
-  
-  watch(
-  () => studyPeriodStore.studyPeriodByAcademicYearResponse,
-  async (data) => {
-    if(data){
-      studyPeriodList.value = data.data
-    }
-  },
-  {deep:true}
-  )
-  
-  
-</script>
+
 <style scoped>
   .textColor{
   font-size: 11px;

@@ -252,9 +252,13 @@ watch(
             </select>
           </div>
 
+      <div class="mb-2">
+        <div class="text-[13px] text-[#505050]">Name</div>
+        <input v-model="form.description" class="form-control outline-none shadow-none" placeholder="Distinction Two">
+      </div>
 
           <div class="mb-2">
-            <div class="text-[13px] text-[#505050]">Name</div>
+            <div class="text-[13px] text-[#505050]">Abbreviation</div>
             <input v-model="form.name" placeholder="D2" type="text" class="form-control outline-none shadow-none">
       </div>
 
@@ -307,13 +311,7 @@ watch(
         </div>
       </div>
 
-      <div class="mb-2">
-        <div class="text-[13px] text-[#505050]">Description</div>
-        <textarea v-model="form.description" class="form-control outline-none shadow-none">
-
-
-        </textarea>
-      </div>
+  
      <div class="flex justify-content-end mt-2" style="width: 100%;">
             <button type="submit" class="btn btn-primary border-0 btn-sm">
                  <small><i class="bi bi-save"></i> submit</small>

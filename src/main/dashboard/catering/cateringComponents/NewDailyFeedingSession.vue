@@ -14,13 +14,22 @@
     <label class="textColor"><small>Day</small></label>
     <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
         <li v-for="(day, index) in daysOfWeek" :key="index" class="list-group-item">
-            <input
+           <div class="row">
+            <div class="col-lg-1">
+                <input
                 style="outline: none 0 !important; box-shadow: none;"
-                class="form-check-input me-1"
+                class="form-check-input"
                 type="checkbox"
                 :value="day"
                 v-model="form.day">
-            <label class="textColor"><small>{{ day }}</small></label>
+            </div>
+            <div class="col-lg-11" style="float: left;">
+                <small>{{ day }}</small>
+            </div>
+
+           </div>
+           
+           
         </li>
     </ul>
     </div>
