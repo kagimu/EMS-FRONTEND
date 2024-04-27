@@ -121,7 +121,7 @@ const props = defineProps({
 
             <table class="w-full text-[13px]" style="border: 1px solid #eef0f2" cellspacing="0" cellpadding="0">
               <tr>
-                <td style="width: 5%; border-right: 1px solid #eef0f2">&nbsp;</td>
+                <td style="width: 5%; border-right: 1px solid #eef0f2;">&nbsp;</td>
                 <td :colspan="(5 + Number(reportDetails?.report_columns.length))">
                   <table cellspacing="0" cellpadding="0" style="width: 100%; font-size: 13px; border-top: 1px solid #eef0f2;">
                     <tr>
@@ -145,7 +145,6 @@ const props = defineProps({
                 >
                   <div
                       style="
-                      padding: 15px;
                       transform: rotate(270deg);
                       white-space: nowrap;
                       font-size: 14px;"
@@ -160,7 +159,7 @@ const props = defineProps({
                   <tr v-for="(assessment,assessment_index) in learning_area?.assessments" :key="assessment_index" style="border-bottom: 1px solid #f4f4f4;">
                     <td style="width: 30%; padding: 4px; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">{{assessment.name}}</div></td>
                     <td style="width: 10%; padding: 4px; border-right: 1px solid #eef0f2;" v-for="(report_score,report_score_index) in assessment.report_scores" :key="report_score_index">
-                      {{report_score.score >= 0 ? report_score.score : '-'}}
+                      {{report_score.score >= 0 ? report_score.score.toFixed(1) : '-'}}
                     </td>
                     <td style="width: 10%; padding: 4px; border-right: 1px solid #eef0f2;">{{assessment.report_score_summary.summation}}</td>
                     <td style="width: 5%; padding: 4px; border-right: 1px solid #eef0f2;">{{assessment.report_score_summary.grade}}</td>
