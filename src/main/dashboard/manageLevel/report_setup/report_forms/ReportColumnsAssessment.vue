@@ -5,9 +5,12 @@ import NewReportColumnsAssessment
 import {onMounted, ref, watch} from "vue";
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
 import useNotificationStore from "@/composables/useNotification.js";
+import AppModal from "@/components/AppModal.vue";
 const reportSetupStore = useReportSetupStore()
 const  notificationStore  = useNotificationStore()
 const reportColumnAssessmentList = ref(null)
+
+const showReportColumn = ref(false)
 
 onMounted(
     async () => {
@@ -15,6 +18,9 @@ onMounted(
     }
 )
 
+const addReportColumn = () => {
+  showReportColumn.value = true
+}
 
 
 watch(
@@ -42,24 +48,12 @@ watch(
   <div>
 
 
+    <AppModal v-model="showReportColumn" title="Add Report Column Assessment" lg>
+      <new-report-columns-assessment></new-report-columns-assessment>
+    </AppModal>
 
 
-    <div class="modal fade" id="levelModal" tabindex="-1" :class="{ show: levelDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2"> Add Report Column Assessment</h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-              <new-report-columns-assessment></new-report-columns-assessment>
-              <!--              <new-level></new-level>-->
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
 
 
 
@@ -72,9 +66,11 @@ watch(
         <div class="flex justify-content-between mt-3">
           <div class="ml-4">Report Column Assessment</div>
           <button
-              type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addLevel" data-bs-toggle="modal" data-bs-target="#levelModal">
-            <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-            Add Column Assessment
+              type="button"
+              class="btn btn-sm buttonStyle btn-primary mr-2"
+              @click="addReportColumn">
+                <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+                Add Column Assessment
           </button>
         </div>
 

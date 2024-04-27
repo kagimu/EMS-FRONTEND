@@ -8,6 +8,8 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import {useRouter} from "vue-router";
+const routerData = useRouter()
 const commons = useCommonsStore()
 const reportSetupStore = useReportSetupStore()
 const notificationStore  = useNotificationStore()
@@ -16,6 +18,7 @@ const levelStore = useLevelStore()
 const classStore = useClassesStore()
 const studyPeriodStore = useStudyPeriodStore()
 const academicYearStore = useAcademicYearStore()
+const campusNumber = routerData.currentRoute.value.query.id
 
 const errorMessage = ref("")
 const loader = ref(false)
@@ -45,8 +48,8 @@ const form = reactive({
 
 onMounted(
     async () => {
+      await levelStore.fetchCampusCurriculum(campusNumber)
       await reportSetupStore.fetchReportColumn()
-      // await assessmentStore.fetchAssessmentArea()
       await assessmentStore.fetchAssessmentMetrics()
     }
 )
