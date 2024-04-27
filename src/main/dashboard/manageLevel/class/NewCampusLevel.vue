@@ -1,29 +1,3 @@
-<template>
-  <div>
-
-
-    <div class="mx-auto" style="width: 95%;">
-      <label class="textColor mt-3 mb-2">Add Level to Campus</label>
-      <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-
-        <li class="list-group-item" v-for="(lvl,idx) in curriculumLevelList" :key="idx">
-          <input
-              v-model="curriculumLevelId"
-              @click="addLevel(lvl)"
-              style="outline: none 0 !important; box-shadow: none;"
-              class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="lvl.number">
-          <label class="form-check-label cursor-pointer ml-2" :for="lvl.number">{{lvl.code+". "+lvl.name}}</label>
-        </li>
-
-      </ul>
-    </div>
-
-
-
-
-  </div>
-</template>
-
 <script setup>
 
 import {onMounted, ref, watch} from "vue";
@@ -60,21 +34,12 @@ const props = defineProps({
 
 onMounted(
     () =>{
-      // classStore.fetchClassLevelToAdd(campusLevel)
+      classStore.fetchCampusLevel(campus_curriculum_number)
       curriculumStore.fetchCampusCurriculumLevelList(campus_curriculum_number)
     }
 )
 
 
-/*watch(
-    () => classStore.classesToAddResponse,
-    async (data) => {
-      if(data){
-        classList.value = data.data
-      }
-    },
-    {deep:true}
-)*/
 
 watch(
     () => curriculumStore.campusCurriculumLevelResponse,
@@ -100,7 +65,7 @@ watch(
     () => props.levelList,
     async (data) => {
       if(data){
-      let arr = []
+        let arr = []
         data.forEach(lst => {
           arr.push(lst.curriculum_level_number)
         })
@@ -112,6 +77,34 @@ watch(
 
 
 </script>
+
+<template>
+  <div>
+
+
+    <div class="mx-auto" style="width: 95%;">
+      <label class="textColor mt-3 mb-2">Add Level to Campus</label>
+      <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+
+        <li class="list-group-item" v-for="(lvl,idx) in curriculumLevelList" :key="idx">
+          <input
+              v-model="curriculumLevelId"
+              @click="addLevel(lvl)"
+              style="outline: none 0 !important; box-shadow: none;"
+              class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="lvl.number">
+          <label class="form-check-label cursor-pointer ml-2" :for="lvl.number">{{lvl.code+". "+lvl.name}}</label>
+        </li>
+
+      </ul>
+    </div>
+
+
+
+
+  </div>
+</template>
+
+
 
 <style scoped>
 .noFocus:focus {

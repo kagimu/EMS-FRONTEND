@@ -188,12 +188,13 @@ watch(
 watch(
     () => subjectStore.subjectDataInfoResponse,
     async (data) => {
-      if(data){
+      if(data &&  data.data){
         let info = data.data
         form.name = info.name ? info.name : ""
         form.code = info.code ? String(info.code) : ""
         form.subject_cluster_number = info.subject_cluster_number ? info.subject_cluster_number : ""
         learning_area_number.value = info.learning_area_number ? info.learning_area_number : ""
+        selectSubjectCluster(info.learning_area_number)
         subjectNumber.value = info.number ? info.number : ""
       }
     },

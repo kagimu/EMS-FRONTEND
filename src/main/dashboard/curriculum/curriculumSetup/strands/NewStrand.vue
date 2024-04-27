@@ -226,8 +226,15 @@ watch(
         form.name = info.name ? info.name : ""
         form.code = info.code ? String(info.code) : ""
         form.subject_number = info.subject_number ? info.subject_number : ""
-        learning_area_number.value = info.learning_area_number ? info.learning_area_number : ""
-        subject_cluster_number.value = info.subject_cluster_number ? info.subject_cluster_number : ""
+
+        if(info.learning_area_number) {
+          learning_area_number.value = info.learning_area_number
+          selectSubjectCluster(info.learning_area_number)
+        }
+        if(info.subject_cluster_number) {
+          subject_cluster_number.value = info.subject_cluster_number ? info.subject_cluster_number : ""
+          selectSubject(info.subject_cluster_number)
+        }
         strandNumber.value = info.number ? info.number : ""
       }
     },

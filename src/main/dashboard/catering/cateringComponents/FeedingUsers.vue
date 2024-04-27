@@ -146,6 +146,7 @@ const form = reactive({
         enrollmentStore.fetchEnrolment()
         cateringStore.fetchFeedingGroup()
         accountStore.fetchUsersToAssign()
+        cateringStore.fetchMeals()
       }
   )
   

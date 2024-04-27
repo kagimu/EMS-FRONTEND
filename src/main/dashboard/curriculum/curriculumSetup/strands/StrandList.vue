@@ -1,22 +1,10 @@
 <template>
   <div>
 
-    <div class="modal fade" id="strandModal" tabindex="-1" :class="{ show: strandDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">{{strandEditMode ? "Edit" : "Add"}} Strand</h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-              <new-strand></new-strand>
-            </div>
-          </div>
+    <AppModal :title="strandEditMode ? 'Edit Strand' : 'Add Strand'" v-model="strandDialog" lg>
+      <new-strand></new-strand>
+    </AppModal>
 
-        </div>
-      </div>
-    </div>
 
 
     <div class="flex justify-content-between mt-3">
@@ -128,7 +116,6 @@
                                     <div>
                                       <i
                                           style="font-size: 13px;"
-                                          data-bs-toggle="modal" data-bs-target="#strandModal"
                                           class="bi-pencil mr-2 cursor-pointer" @click="editStrand(std)"></i>
                                       <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteStrand(std)"></i>
                                       <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === std.number">
@@ -180,6 +167,7 @@ import {useStrandStore} from "@/main/dashboard/curriculum/curriculumSetup/strand
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
 import {useSubjectClusterStore} from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/store/subjectCluster.js";
 import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
+import AppModal from "@/components/AppModal.vue";
 const routerData = useRouter()
 
 
@@ -207,6 +195,7 @@ const addSubject = () => {
 }
 
 const editStrand = (data) => {
+  strandDialog.value = true
   strandEditMode.value = true
   strandStore.strandData(data.number)
 }

@@ -1,3 +1,130 @@
+<script setup>
+
+import {onMounted, reactive, ref, watch} from "vue";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import {useRouter} from "vue-router";
+import useCommonsStore from "@/composables/useCommons.js";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+
+const classError = ref(null)
+const name = ref(null)
+const levelList = ref([])
+const loader = ref(false)
+const levelStore = useLevelStore()
+const routerData = useRouter()
+
+const classStore = useClassesStore()
+const commons = useCommonsStore()
+const  notificationStore  = useNotificationStore()
+let  curriculumNumber = routerData.currentRoute.value.query.id
+
+const classNumber = ref(null)
+
+
+
+const form = reactive({
+  code:null,
+  name:null,
+  abbreviation:null,
+  level:"",
+})
+
+
+const addClass = () =>{
+  loader.value = true
+
+  if(classNumber.value){
+    form.class_number = classNumber.value
+    classStore.editClassData(form)
+  }else {
+    classStore.newClassData(form)
+  }
+
+}
+
+
+
+onMounted(
+    () =>{
+      levelStore.fetchLevels()
+    }
+)
+
+const clearClassForm = () => {
+  form.code = null
+  form.name = null
+  form.abbreviation = null
+  form.level = ""
+  classNumber.value = null
+}
+
+defineExpose({
+  clearClassForm
+});
+
+watch(
+    () => classStore.classResponse,
+    async (data) => {
+      if(data){
+        form.name = null
+        form.abbreviation = null
+        form.level = ""
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => classStore.errorMessage,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => levelStore.levelInfoResponse,
+    async (data) => {
+      if(data){
+        levelList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => classStore.classDataInfoResponse,
+    async (data) => {
+      if(data){
+        let info = data.data
+        form.code = info.code ? String(info.code) : ""
+        form.name  = info.name ? info.name : ""
+        form.abbreviation  = info.abbreviation ? info.abbreviation : ""
+        form.level  = info.level_number ? info.level_number : ""
+        classNumber.value = info.number ? info.number : ""
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => classStore.classEditResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
+
+</script>
 <template>
   <div>
 
@@ -71,135 +198,7 @@
   </div>
 </template>
 
-<script setup>
 
-import {onMounted, reactive, ref, watch} from "vue";
-import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
-import {useRouter} from "vue-router";
-import useCommonsStore from "@/composables/useCommons.js";
-import useNotificationStore from "@/composables/useNotification.js";
-import {useLevelStore} from "@/main/settings/level/store/level.js";
-
-const classError = ref(null)
-const name = ref(null)
-const levelList = ref([])
-const loader = ref(false)
-const levelStore = useLevelStore()
-const routerData = useRouter()
-
-const classStore = useClassesStore()
-const commons = useCommonsStore()
-const  notificationStore  = useNotificationStore()
-let  curriculumNumber = routerData.currentRoute.value.query.id
-
-const classNumber = ref(null)
-
-
-
-const form = reactive({
-  code:null,
-  name:null,
-  abbreviation:null,
-  level:"",
-})
-
-
-const addClass = () =>{
-  loader.value = true
-
-  if(classNumber.value){
-    form.class_number = classNumber.value
-    classStore.editClassData(form)
-  }else {
-    classStore.newClassData(form)
-  }
-
-}
-
-
-
-onMounted(
-    () =>{
-      /* if(props.classNumber){
-         classesStore.classDetails(props.classNumber)
-       }*/
-    }
-)
-
-const clearClassForm = () => {
-      form.code = null
-      form.name = null
-      form.abbreviation = null
-      form.level = ""
-      classNumber.value = null
-}
-
-defineExpose({
-  clearClassForm
-});
-
-watch(
-    () => classStore.classResponse,
-    async (data) => {
-      if(data){
-         form.name = null
-         form.abbreviation = null
-         form.level = ""
-         loader.value = false
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => classStore.errorMessage,
-    async (data) => {
-      if(data){
-        loader.value = false
-        notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => levelStore.levelInfoResponse,
-    async (data) => {
-      if(data){
-        levelList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => classStore.classDataInfoResponse,
-    async (data) => {
-      if(data){
-        let info = data.data
-        form.code = info.code ? String(info.code) : ""
-        form.name  = info.name ? info.name : ""
-        form.abbreviation  = info.abbreviation ? info.abbreviation : ""
-        form.level  = info.level_number ? info.level_number : ""
-        classNumber.value = info.number ? info.number : ""
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => classStore.classEditResponse,
-    async (data) => {
-      if(data){
-        loader.value = false
-      }
-    },
-    {deep:true}
-)
-
-</script>
 
 <style scoped>
 .noFocus:focus {

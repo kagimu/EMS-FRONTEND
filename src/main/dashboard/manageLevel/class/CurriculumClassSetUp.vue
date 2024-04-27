@@ -1,27 +1,111 @@
+<script setup>
+
+import {onMounted, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes";
+import {useRouter} from "vue-router";
+import useCommonsStore from "@/composables/useCommons.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+import NewCurriculumClass from "@/main/dashboard/manageLevel/class/NewCurriculumClass.vue";
+import AppModal from "@/components/AppModal.vue";
+const routerData = useRouter()
+
+
+const classStore = useClassesStore()
+const commons = useCommonsStore()
+const levelStore = useLevelStore()
+const  notificationStore  = useNotificationStore()
+
+const level = ref( "")
+const classDialog = ref( false)
+const classList = ref( [])
+const levelList = ref( [])
+let  curriculumNumber = routerData.currentRoute.value.query.id
+
+
+const addCampus = () => {
+  classDialog.value = true
+}
+
+const editClass = (data) => {
+  alert(JSON.stringify(data))
+}
+const deleteClass = (data) => {
+  alert(JSON.stringify(data))
+}
+
+const filterClasses = (level) => {
+  fetchClassList()
+}
+
+onMounted(
+    async () => {
+      await fetchClassList()
+      await levelStore.fetchCurriculumLevels(curriculumNumber)
+    }
+)
+
+const fetchClassList = () => {
+  let data = {
+    level:level.value,
+    curriculum_number:curriculumNumber,
+  }
+  classStore.fetchCurriculumClasses(data)
+}
+
+watch(
+    () => classStore.classResponse,
+    async (data) => {
+      if(data){
+        await fetchClassList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => classStore.curriculumClassInfoResponse,
+    async (data) => {
+      if(data){
+        classList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => classStore.curriculumClassResponse,
+    async (data) => {
+      if(data){
+        await fetchClassList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+
+watch(
+    () => levelStore.curriculumLevelInfoResponse,
+    async (data) => {
+      if(data){
+        levelList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+</script>
 <template>
   <div>
 
 
-
-
-    <div class="modal fade" id="learningAreaModal" tabindex="-1" :class="{ show: classDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Add Class</h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-              <new-curriculum-class  :curriculumClass="classList"></new-curriculum-class>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
+    <AppModal title="Add Class" v-model="classDialog" lg>
+      <new-curriculum-class  :curriculumClass="classList"></new-curriculum-class>
+    </AppModal>
 
 
     <div class="row">
@@ -32,7 +116,7 @@
 
             <div class="flex justify-content-between mt-3">
               <div class="ml-4">Curriculum Classes</div>
-              <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCampus" data-bs-toggle="modal" data-bs-target="#learningAreaModal">
+              <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCampus">
                 <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
                 Select Class
               </button>
@@ -111,108 +195,7 @@
   </div>
 </template>
 
-<script setup>
 
-import {onMounted, ref, watch} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes";
-import {useRouter} from "vue-router";
-import NewClassSetUp from "@/main/dashboard/manageLevel/class/NewClassSetUp.vue";
-import useCommonsStore from "@/composables/useCommons.js";
-import {useLevelStore} from "@/main/settings/level/store/level.js";
-import NewCurriculumClass from "@/main/dashboard/manageLevel/class/NewCurriculumClass.vue";
-const routerData = useRouter()
-
-
-const classStore = useClassesStore()
-const commons = useCommonsStore()
-const levelStore = useLevelStore()
-const  notificationStore  = useNotificationStore()
-
-const level = ref( "")
-const classDialog = ref( false)
-const classList = ref( [])
-const levelList = ref( [])
-let  curriculumNumber = routerData.currentRoute.value.query.id
-
-
-const addCampus = () => {
-  classDialog.value = true
-}
-
-const editClass = (data) => {
-  alert(JSON.stringify(data))
-}
-const deleteClass = (data) => {
-  alert(JSON.stringify(data))
-}
-
-const filterClasses = (level) => {
-    fetchClassList()
-}
-
-onMounted(
-    async () => {
-      await fetchClassList()
-      // await levelStore.fetchLevels()
-      await levelStore.fetchCurriculumLevels(curriculumNumber)
-    }
-)
-
-const fetchClassList = () => {
-  let data = {
-    level:level.value,
-    curriculum_number:curriculumNumber,
-  }
-  classStore.fetchCurriculumClasses(data)
-}
-
-watch(
-    () => classStore.classResponse,
-    async (data) => {
-      if(data){
-        await fetchClassList()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => classStore.curriculumClassInfoResponse,
-    async (data) => {
-      if(data){
-        classList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => classStore.curriculumClassResponse,
-    async (data) => {
-      if(data){
-        await fetchClassList()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-
-
-watch(
-    () => levelStore.curriculumLevelInfoResponse,
-    async (data) => {
-      if(data){
-        levelList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-</script>
 
 <style scoped>
 

@@ -121,7 +121,7 @@ const campusStore = useCampusStore()
 
 const studyPeriodStore = useStudyPeriodStore()
 const classStore = useClassesStore()
-const campusLevel = routerData.currentRoute.value.query.crr
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const campusNumber = routerData.currentRoute.value.query.id
 const errorMessage = ref(null)
 const academicYearList = ref([])
@@ -179,7 +179,7 @@ defineExpose({
 
 onMounted(
     () =>{
-       //
+      classStore.fetchCampusLevel(campus_curriculum_number)
     }
 )
 

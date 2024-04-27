@@ -1,26 +1,141 @@
+<script setup>
+
+import {onMounted, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes";
+import {useRouter} from "vue-router";
+import NewClassSetUp from "@/main/dashboard/manageLevel/class/NewClassSetUp.vue";
+import useCommonsStore from "@/composables/useCommons.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+const routerData = useRouter()
+
+import { useAbility } from '@casl/vue';
+import AppModal from "@/components/AppModal.vue";
+
+const { can } = useAbility()
+
+const classStore = useClassesStore()
+const commons = useCommonsStore()
+const levelStore = useLevelStore()
+const deletionLoader = ref( undefined)
+const  notificationStore  = useNotificationStore()
+
+const classRef = ref( null)
+const level = ref( "")
+const classDialog = ref( false)
+const classEditMode = ref( false)
+const classList = ref( [])
+const levelList = ref( [])
+let  curriculumNumber = routerData.currentRoute.value.query.id
+
+
+const addClass = () => {
+  classEditMode.value = false
+  classDialog.value = true
+  classRef.value.clearClassForm()
+}
+
+const editClass = (data) => {
+  classDialog.value = true
+  classEditMode.value = true
+  classStore.classData(data.number)
+}
+
+const deleteClass = (data) => {
+
+  if(!confirm("Are you sure, you want to delete: "+data.name)){
+    return
+  }
+
+  deletionLoader.value = data.number
+
+  let info = {
+    number:data.number
+  }
+
+  classStore.deleteClassSetUp(info)
+}
+
+const filterClasses = () => {
+  fetchClassList()
+}
+
+onMounted(
+    async () => {
+      await fetchClassList()
+      await levelStore.fetchLevels()
+    }
+)
+
+const fetchClassList = () => {
+  let data = {
+    level:level.value,
+  }
+  classStore.fetchClasses(data)
+}
+
+watch(
+    () => classStore.classResponse,
+    async (data) => {
+      if(data){
+        await fetchClassList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => classStore.deleteClassSetUpResponse,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
+        await fetchClassList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => classStore.classEditResponse,
+    async (data) => {
+      if(data){
+        await fetchClassList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => classStore.classInfoResponse,
+    async (data) => {
+      if(data){
+        classList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => levelStore.levelInfoResponse,
+    async (data) => {
+      if(data){
+        levelList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+</script>
 <template>
   <div>
 
-
-
-
-    <div class="modal fade" id="classModal" tabindex="-1" :class="{ show: classDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">{{classEditMode ? "Edit" : "Add"}} Class</h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-              <new-class-set-up ref="classRef"></new-class-set-up>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
+    <AppModal :title="classEditMode ? 'Edit Class' : 'Add Class'" v-model="classDialog" lg>
+      <new-class-set-up ref="classRef"></new-class-set-up>
+    </AppModal>
 
 
 
@@ -32,14 +147,12 @@
 
 
         <div class="mt-3">
-<!--          <div class="card-body" style="padding: 0;">-->
-
-
+ 
             <div class="flex justify-content-between mt-3">
               <div class="ml-4">Classes</div>
               <button
               v-if="can('add_class','general')"
-               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addClass" data-bs-toggle="modal" data-bs-target="#classModal">
+               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addClass">
                 <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
                 Add Class
               </button>
@@ -124,136 +237,7 @@
   </div>
 </template>
 
-<script setup>
 
-import {onMounted, ref, watch} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes";
-import {useRouter} from "vue-router";
-import NewClassSetUp from "@/main/dashboard/manageLevel/class/NewClassSetUp.vue";
-import useCommonsStore from "@/composables/useCommons.js";
-import {useLevelStore} from "@/main/settings/level/store/level.js";
-const routerData = useRouter()
-
-import { useAbility } from '@casl/vue';
-
-const { can } = useAbility()
-
-const classStore = useClassesStore()
-const commons = useCommonsStore()
-const levelStore = useLevelStore()
-const deletionLoader = ref( undefined)
-const  notificationStore  = useNotificationStore()
-
-const classRef = ref( null)
-const level = ref( "")
-const classDialog = ref( false)
-const classEditMode = ref( false)
-const classList = ref( [])
-const levelList = ref( [])
-let  curriculumNumber = routerData.currentRoute.value.query.id
-
-
-const addClass = () => {
-  classEditMode.value = false
-  classDialog.value = true
-  classRef.value.clearClassForm()
-}
-
-const editClass = (data) => {
-  classEditMode.value = true
-  classStore.classData(data.number)
-}
-
-const deleteClass = (data) => {
-
-  if(!confirm("Are you sure, you want to delete: "+data.name)){
-    return
-  }
-
-  deletionLoader.value = data.number
-
-  let info = {
-    number:data.number
-  }
-
-  classStore.deleteClassSetUp(info)
-}
-
-const filterClasses = () => {
-    fetchClassList()
-}
-
-onMounted(
-    async () => {
-      await fetchClassList()
-      await levelStore.fetchLevels()
-    }
-)
-
-const fetchClassList = () => {
-  let data = {
-    level:level.value,
-  }
-  classStore.fetchClasses(data)
-}
-
-watch(
-    () => classStore.classResponse,
-    async (data) => {
-      if(data){
-        await fetchClassList()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => classStore.deleteClassSetUpResponse,
-    async (data) => {
-      if(data){
-        deletionLoader.value = undefined
-        await fetchClassList()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => classStore.classEditResponse,
-    async (data) => {
-      if(data){
-        await fetchClassList()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => classStore.classInfoResponse,
-    async (data) => {
-      if(data){
-        classList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => levelStore.levelInfoResponse,
-    async (data) => {
-      if(data){
-        levelList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-
-</script>
 
 <style scoped>
 

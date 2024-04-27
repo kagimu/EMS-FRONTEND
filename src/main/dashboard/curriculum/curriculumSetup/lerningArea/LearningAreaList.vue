@@ -1,7 +1,11 @@
 <template>
 <div>
 
-  <div class="modal fade" id="learningAreaModal" tabindex="-1" :class="{ show: curriculumDialog }" aria-labelledby="" aria-hidden="true">
+  <AppModal :title="learningAreaEditMode ? 'Edit Learning Area' : 'Add Learning Area'" v-model="curriculumDialog" lg>
+    <new-learning-area ref="learningAreaRef"></new-learning-area>
+  </AppModal>
+
+<!--  <div class="modal fade" id="learningAreaModal" tabindex="-1" :class="{ show: curriculumDialog }" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header text-sm p-0">
@@ -16,13 +20,13 @@
 
       </div>
     </div>
-  </div>
+  </div>-->
 
 
 
   <div class="flex justify-content-between mt-3">
     <div class="ml-4">Learning Area</div>
-    <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCurriculum" data-bs-toggle="modal" data-bs-target="#learningAreaModal">
+    <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCurriculum">
       <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
       Add Learning Area
     </button>
@@ -50,7 +54,6 @@
         <div class="float-end mr-2">
           <i
               style="font-size: 13px;"
-              data-bs-toggle="modal" data-bs-target="#learningAreaModal"
               class="bi-pencil mr-2 cursor-pointer" @click="editLearningArea(lst)"></i>
           <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLearningArea(lst)"></i>
           <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === lst.number">
@@ -75,6 +78,7 @@ import NewLearningArea from "@/main/dashboard/curriculum/curriculumSetup/lerning
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useRouter} from "vue-router";
+import AppModal from "@/components/AppModal.vue";
 const routerData = useRouter()
 
 
@@ -93,11 +97,11 @@ const learningAreaRef = ref(null)
 
 const addCurriculum = () => {
   learningAreaEditMode.value = false
-  learningAreaRef.value.autoInputFocusInfo()
   curriculumDialog.value = true
 }
 
 const editLearningArea = (data) => {
+  curriculumDialog.value = true
   learningAreaEditMode.value = true
   learningAreaStore.learningAreaData(data.number)
 }
