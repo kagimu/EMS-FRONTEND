@@ -1,3 +1,228 @@
+<script setup>
+
+import {onMounted, reactive, ref, watch} from "vue";
+import {useRouter} from "vue-router";
+import {useSubtopicStore} from "@/main/dashboard/curriculum/curriculumSetup/subTopic/store/subTopic.js";
+import {useTopicStore} from "@/main/dashboard/curriculum/curriculumSetup/topic/store/topic.js";
+import {useSubjectClusterStore} from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/store/subjectCluster.js";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
+import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
+import {useStrandStore} from "@/main/dashboard/curriculum/curriculumSetup/strands/store/strand.js";
+import useCommonsStore from "@/composables/useCommons.js";
+import useNotificationStore from "@/composables/useNotification.js";
+
+const classError = ref(null)
+const name = ref(null)
+const loader = ref(false)
+const routerData = useRouter()
+const commons = useCommonsStore()
+
+const subtopicStore = useSubtopicStore()
+const notificationStore  = useNotificationStore()
+
+const topicStore = useTopicStore()
+
+const subjectClusterStore = useSubjectClusterStore()
+const learningAreaStore = useLearningAreaStore()
+const subjectStore = useSubjectStore()
+const strandStore = useStrandStore()
+
+
+const learningAreaList = ref([])
+const subjectClusterList = ref([])
+const subjectList = ref([])
+const strandList = ref([])
+const topicList = ref([])
+const learning_area_number = ref("")
+const subject_cluster_number = ref("")
+const subject_number = ref("")
+const strand_number = ref("")
+const subTopicNumber = ref("")
+let  curriculumNumber = routerData.currentRoute.value.query.id
+
+
+const form = reactive({
+  code:null,
+  name:null,
+  topic_number:"",
+  estimated_time:"",
+})
+
+
+const addSubtopic = () =>{
+  loader.value = true
+  form.curriculum_number = curriculumNumber
+  if(subTopicNumber.value){
+    form.sub_topic_number = subTopicNumber.value
+    subtopicStore.editSubtopicData(form)
+  }else {
+    subtopicStore.newSubtopicData(form)
+  }
+
+}
+
+
+
+
+const selectSubjectCluster = (learning_area_number) => {
+  subjectClusterStore.fetchSubjectClusterFilter({learning_area_number:learning_area_number, curriculum_number:curriculumNumber})
+}
+
+const selectSubject = (subject_cluster_number) => {
+  subjectStore.fetchSubjectList({subject_cluster_number:subject_cluster_number, curriculum_number:curriculumNumber})
+}
+
+
+const selectStrand = (subject_number) => {
+  strandStore.fetchStrandList({subject_number:subject_number, curriculum_number:curriculumNumber})
+}
+
+const selectTopic = (strand_number) => {
+  topicStore.fetchTopicList({strand_number:strand_number, curriculum_number:curriculumNumber})
+}
+
+onMounted(
+    () => {
+      learningAreaStore.fetchLearningArea(curriculumNumber)
+    }
+)
+
+function onlyNumberValidator(event) {
+  const validChars = /^[0-9+\-*/.\s]+$/;
+  if (!validChars.test(event.key)) return event.preventDefault();
+}
+
+watch(
+    () => learningAreaStore.learningAreaInfResponse,
+    async (data) => {
+      if(data){
+        learningAreaList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subtopicStore.subtopicEditResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => subjectClusterStore.subjectClusterFilterResponse,
+    async (data) => {
+      if(data){
+        subjectClusterList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => subjectStore.subjectListResponse,
+    async (data) => {
+      if(data){
+        subjectList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => strandStore.strandListResponse,
+    async (data) => {
+      if(data){
+        strandList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => topicStore.topicListResponse,
+    async (data) => {
+      if(data){
+        topicList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subtopicStore.subtopicResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+        form.name = null
+        form.code = null
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => subtopicStore.errorMessage,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subtopicStore.subTopicDataInfoResponse,
+    async (data) => {
+      if(data){
+        let info = data.data
+        form.name = info.name ? info.name : ""
+        form.code = info.code ? String(info.code) : ""
+        form.topic_number = info.topic_number ? info.topic_number : ""
+        form.estimated_time = info.estimated_time ? String(info.estimated_time) : ""
+
+
+        if(info.learning_area_number) {
+          selectSubjectCluster(info.learning_area_number)
+          learning_area_number.value = info.learning_area_number
+        }
+
+        if(info.subject_cluster_number) {
+          selectSubject(info.subject_cluster_number)
+          subject_cluster_number.value = info.subject_cluster_number
+        }
+
+        if(info.subject_number) {
+          selectStrand(info.subject_number)
+          subject_number.value = info.subject_number
+        }
+
+        if(info.strand_number) {
+          selectTopic(info.strand_number)
+          strand_number.value = info.strand_number
+        }
+
+        subTopicNumber.value = info.number ? info.number : ""
+
+
+
+
+
+
+      }
+    },
+    {deep:true}
+)
+
+
+</script>
 <template>
   <div>
 
@@ -127,205 +352,7 @@
   </div>
 </template>
 
-<script setup>
 
-import {onMounted, reactive, ref, watch} from "vue";
-import {useRouter} from "vue-router";
-import {useSubtopicStore} from "@/main/dashboard/curriculum/curriculumSetup/subTopic/store/subTopic.js";
-import {useTopicStore} from "@/main/dashboard/curriculum/curriculumSetup/topic/store/topic.js";
-import {useSubjectClusterStore} from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/store/subjectCluster.js";
-import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
-import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
-import {useStrandStore} from "@/main/dashboard/curriculum/curriculumSetup/strands/store/strand.js";
-import useCommonsStore from "@/composables/useCommons.js";
-import useNotificationStore from "@/composables/useNotification.js";
-
-const classError = ref(null)
-const name = ref(null)
-const loader = ref(false)
-const routerData = useRouter()
-const commons = useCommonsStore()
-
-const subtopicStore = useSubtopicStore()
-const notificationStore  = useNotificationStore()
-
-const topicStore = useTopicStore()
-
-const subjectClusterStore = useSubjectClusterStore()
-const learningAreaStore = useLearningAreaStore()
-const subjectStore = useSubjectStore()
-const strandStore = useStrandStore()
-
-
-const learningAreaList = ref([])
-const subjectClusterList = ref([])
-const subjectList = ref([])
-const strandList = ref([])
-const topicList = ref([])
-const learning_area_number = ref("")
-const subject_cluster_number = ref("")
-const subject_number = ref("")
-const strand_number = ref("")
-const subTopicNumber = ref("")
-let  curriculumNumber = routerData.currentRoute.value.query.id
-
-
-const form = reactive({
-  code:null,
-  name:null,
-  topic_number:"",
-  estimated_time:"",
-})
-
-
-const addSubtopic = () =>{
-  loader.value = true
-  form.curriculum_number = curriculumNumber
-  if(subTopicNumber.value){
-    form.sub_topic_number = subTopicNumber.value
-    subtopicStore.editSubtopicData(form)
-  }else {
-    subtopicStore.newSubtopicData(form)
-  }
-
-}
-
-
-const selectSubjectCluster = (learning_area_number) => {
-  subjectClusterStore.fetchSubjectClusterFilter({learning_area_number:learning_area_number, curriculum_number:curriculumNumber})
-}
-
-const selectSubject = (subject_cluster_number) => {
-  subjectStore.fetchSubjectList({subject_cluster_number:subject_cluster_number, curriculum_number:curriculumNumber})
-}
-
-
-const selectStrand = (subject_number) => {
-  strandStore.fetchStrandList({subject_number:subject_number, curriculum_number:curriculumNumber})
-}
-
-const selectTopic = (strand_number) => {
-  topicStore.fetchTopicList({strand_number:strand_number, curriculum_number:curriculumNumber})
-}
-
-onMounted(
-    () => {
-      learningAreaStore.fetchLearningArea(curriculumNumber)
-    }
-)
-
-function onlyNumberValidator(event) {
-  const validChars = /^[0-9+\-*/.\s]+$/;
-  if (!validChars.test(event.key)) return event.preventDefault();
-}
-
-watch(
-    () => learningAreaStore.learningAreaInfResponse,
-    async (data) => {
-      if(data){
-        learningAreaList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => subtopicStore.subtopicEditResponse,
-    async (data) => {
-      if(data){
-         loader.value = false
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => subjectClusterStore.subjectClusterFilterResponse,
-    async (data) => {
-      if(data){
-        subjectClusterList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => subjectStore.subjectListResponse,
-    async (data) => {
-      if(data){
-        subjectList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => strandStore.strandListResponse,
-    async (data) => {
-      if(data){
-        strandList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => topicStore.topicListResponse,
-    async (data) => {
-      if(data){
-        topicList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => subtopicStore.subtopicResponse,
-    async (data) => {
-      if(data){
-        loader.value = false
-        form.name = null
-        form.code = null
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => subtopicStore.errorMessage,
-    async (data) => {
-      if(data){
-        loader.value = false
-        notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => subtopicStore.subTopicDataInfoResponse,
-    async (data) => {
-      if(data){
-        let info = data.data
-        form.name = info.name ? info.name : ""
-        form.code = info.code ? String(info.code) : ""
-        form.topic_number = info.topic_number ? info.topic_number : ""
-        form.estimated_time = info.estimated_time ? String(info.estimated_time) : ""
-        subject_number.value = info.subject_number ? info.subject_number : ""
-        learning_area_number.value = info.learning_area_number ? info.learning_area_number : ""
-        subject_cluster_number.value = info.subject_cluster_number ? info.subject_cluster_number : ""
-        strand_number.value = info.strand_number ? info.strand_number : ""
-        subTopicNumber.value = info.number ? info.number : ""
-      }
-    },
-    {deep:true}
-)
-
-
-</script>
 
 <style scoped>
 .noFocus:focus {

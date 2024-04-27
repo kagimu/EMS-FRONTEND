@@ -160,24 +160,6 @@ watch(
       <new-subject></new-subject>
     </AppModal>
 
-<!--    <div class="modal fade" id="subjectModal" tabindex="-1" :class="{ show: subjectDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">{{subjectEditMode ? "Edit" : "Add"}} Subject</h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-              <new-subject></new-subject>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>-->
-
-
 
     <div class="flex justify-content-between mt-3">
       <div class="ml-4">Subjects</div>

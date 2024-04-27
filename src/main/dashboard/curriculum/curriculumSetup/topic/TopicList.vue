@@ -1,23 +1,242 @@
+<script setup>
+
+import {onMounted, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useRouter} from "vue-router";
+import NewTopic from "@/main/dashboard/curriculum/curriculumSetup/topic/NewTopic.vue";
+import {useTopicStore} from "@/main/dashboard/curriculum/curriculumSetup/topic/store/topic.js";
+import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
+import {useStrandStore} from "@/main/dashboard/curriculum/curriculumSetup/strands/store/strand.js";
+import {useSubjectClusterStore} from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/store/subjectCluster.js";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import AppModal from "@/components/AppModal.vue";
+const routerData = useRouter()
+
+
+const subjectStore = useSubjectStore()
+const subjectClusterStore = useSubjectClusterStore()
+const topicStore = useTopicStore()
+const learningAreaStore = useLearningAreaStore()
+const strandStore = useStrandStore()
+const classStore = useClassesStore()
+const notificationStore  = useNotificationStore()
+
+const strandDialog = ref( false)
+const topicList = ref( [])
+const deletionLoader = ref( undefined)
+const topicEditMode = ref( false)
+
+
+const learningAreaList = ref([])
+const subjectClusterList = ref([])
+const subjectList = ref([])
+const strandList = ref([])
+const classList = ref([])
+const subject_cluster_number = ref("")
+const subject_number = ref("")
+const strand_number = ref("")
+const learning_area_number = ref("")
+const class_number = ref("")
+let  curriculumNumber = routerData.currentRoute.value.query.id
+
+
+const addSubject = () => {
+  topicEditMode.value = false
+  strandDialog.value = true
+}
+
+const editTopic = (data) => {
+  strandDialog.value = true
+  topicEditMode.value = true
+  topicStore.topicData(data.number)
+}
+const deleteTopic = (data) => {
+  if(!confirm("Are you sure, you want to delete: "+data.name)){
+    return
+  }
+
+  deletionLoader.value = data.number
+
+  let info = {
+    number:data.number
+  }
+
+  topicStore.deleteTopic(info)
+}
+
+
+const selectSubjectCluster = (learning_area_number) => {
+
+  // learning_area_number.value = ""
+  subject_cluster_number.value = ""
+  subject_number.value = ""
+  strand_number.value = ""
+
+  fetchTopicList()
+  subjectClusterStore.fetchSubjectClusterFilter({learning_area_number:learning_area_number, curriculum_number:curriculumNumber})
+}
+
+const selectSubject = (subject_cluster_number) => {
+
+  // learning_area_number.value = ""
+  // subject_cluster_number.value = ""
+  subject_number.value = ""
+  strand_number.value = ""
+
+  fetchTopicList()
+  subjectStore.fetchSubjectList({subject_cluster_number:subject_cluster_number, curriculum_number:curriculumNumber})
+}
+
+
+
+
+
+const selectStrand = (subject_number) => {
+
+  strand_number.value = ""
+
+  fetchTopicList()
+  strandStore.fetchStrandList({subject_number:subject_number, curriculum_number:curriculumNumber})
+}
+
+
+onMounted(
+    () => {
+      fetchTopicList()
+      learningAreaStore.fetchLearningArea(curriculumNumber)
+      selectSubjectCluster("")
+      selectSubject("")
+      selectStrand("")
+      classStore.fetchClassesCurriculum(curriculumNumber)
+    }
+)
+
+const fetchTopicList = () => {
+  let data = {
+    learning_area_number:learning_area_number.value,
+    subject_cluster_number:subject_cluster_number.value,
+    subject_number:subject_number.value,
+    strand_number:strand_number.value,
+    class_number:class_number.value,
+    curriculum_number:curriculumNumber,
+  }
+  topicStore.fetchTopics(data)
+}
+
+watch(
+    () => topicStore.topicResponse,
+    async (data) => {
+      if(data){
+        // strandDialog.value = false
+        await  fetchTopicList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => topicStore.deleteTopicResponse,
+    async (data) => {
+      if(data){
+        await  fetchTopicList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => topicStore.topicEditResponse,
+    async (data) => {
+      if(data){
+        await  fetchTopicList()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => topicStore.errorMessage,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => topicStore.topicInfoResponse,
+    async (data) => {
+      if(data){
+        topicList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => learningAreaStore.learningAreaInfResponse,
+    async (data) => {
+      if(data){
+        learningAreaList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectClusterStore.subjectClusterFilterResponse,
+    async (data) => {
+      if(data){
+        subjectClusterList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectStore.subjectListResponse,
+    async (data) => {
+      if(data){
+        subjectList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => strandStore.strandListResponse,
+    async (data) => {
+      if(data){
+        strandList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => classStore.classCurriculumResponse,
+    async (data) => {
+      if(data){
+        classList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+</script>
 <template>
   <div>
 
-
-    <div class="modal fade" id="topicModal" tabindex="-1" :class="{ show: strandDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">{{topicEditMode ? "Edit" : "Add"}} Topic</h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-               <new-topic></new-topic>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
+    <AppModal :title="topicEditMode ? 'Edit Topic' : 'Add Topic'" v-model="strandDialog" lg>
+      <new-topic></new-topic>
+    </AppModal>
 
 
 
@@ -25,7 +244,7 @@
 
     <div class="flex justify-content-between mt-3">
       <div class="ml-4">Topic</div>
-      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSubject" data-bs-toggle="modal" data-bs-target="#topicModal">
+      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSubject">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
         Add Topic
       </button>
@@ -170,7 +389,6 @@
                                           <div>
                                             <i
                                                 style="font-size: 13px;"
-                                                data-bs-toggle="modal" data-bs-target="#topicModal"
                                                 class="bi-pencil mr-2 cursor-pointer" @click="editTopic(tpc)"></i>
                                             <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteTopic(tpc)"></i>
                                             <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === tpc.number">
@@ -215,240 +433,7 @@
   </div>
 </template>
 
-<script setup>
 
-import {onMounted, ref, watch} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import {useRouter} from "vue-router";
-import NewTopic from "@/main/dashboard/curriculum/curriculumSetup/topic/NewTopic.vue";
-import {useTopicStore} from "@/main/dashboard/curriculum/curriculumSetup/topic/store/topic.js";
-import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
-import {useStrandStore} from "@/main/dashboard/curriculum/curriculumSetup/strands/store/strand.js";
-import {useSubjectClusterStore} from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/store/subjectCluster.js";
-import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
-import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
-const routerData = useRouter()
-
-
-const subjectStore = useSubjectStore()
-const subjectClusterStore = useSubjectClusterStore()
-const topicStore = useTopicStore()
-const learningAreaStore = useLearningAreaStore()
-const strandStore = useStrandStore()
-const classStore = useClassesStore()
-const notificationStore  = useNotificationStore()
-
-const strandDialog = ref( false)
-const topicList = ref( [])
-const deletionLoader = ref( undefined)
-const topicEditMode = ref( false)
-
-
-const learningAreaList = ref([])
-const subjectClusterList = ref([])
-const subjectList = ref([])
-const strandList = ref([])
-const classList = ref([])
-const subject_cluster_number = ref("")
-const subject_number = ref("")
-const strand_number = ref("")
-const learning_area_number = ref("")
-const class_number = ref("")
-let  curriculumNumber = routerData.currentRoute.value.query.id
-
-
-const addSubject = () => {
-  topicEditMode.value = false
-  strandDialog.value = true
-}
-
-const editTopic = (data) => {
-  topicEditMode.value = true
-  topicStore.topicData(data.number)
-}
-const deleteTopic = (data) => {
-  if(!confirm("Are you sure, you want to delete: "+data.name)){
-    return
-  }
-
-  deletionLoader.value = data.number
-
-  let info = {
-    number:data.number
-  }
-
-  topicStore.deleteTopic(info)
-}
-
-
-const selectSubjectCluster = (learning_area_number) => {
-
-  // learning_area_number.value = ""
-  subject_cluster_number.value = ""
-  subject_number.value = ""
-  strand_number.value = ""
-
-  fetchTopicList()
-  subjectClusterStore.fetchSubjectClusterFilter({learning_area_number:learning_area_number, curriculum_number:curriculumNumber})
-}
-
-const selectSubject = (subject_cluster_number) => {
-
-  // learning_area_number.value = ""
-  // subject_cluster_number.value = ""
-  subject_number.value = ""
-  strand_number.value = ""
-
-  fetchTopicList()
-  subjectStore.fetchSubjectList({subject_cluster_number:subject_cluster_number, curriculum_number:curriculumNumber})
-}
-
-
-
-
-
-const selectStrand = (subject_number) => {
-
-  // learning_area_number.value = ""
-  // subject_cluster_number.value = ""
-  // subject_number.value = ""
-  strand_number.value = ""
-
-  fetchTopicList()
-  strandStore.fetchStrandList({subject_number:subject_number, curriculum_number:curriculumNumber})
-}
-
-
-onMounted(
-    () => {
-      fetchTopicList()
-      learningAreaStore.fetchLearningArea(curriculumNumber)
-      selectSubjectCluster("")
-      selectSubject("")
-      selectStrand("")
-      classStore.fetchClassesCurriculum(curriculumNumber)
-    }
-)
-
- const fetchTopicList = () => {
-   let data = {
-     learning_area_number:learning_area_number.value,
-     subject_cluster_number:subject_cluster_number.value,
-     subject_number:subject_number.value,
-     strand_number:strand_number.value,
-     class_number:class_number.value,
-     curriculum_number:curriculumNumber,
-   }
-   topicStore.fetchTopics(data)
- }
-
-watch(
-    () => topicStore.topicResponse,
-    async (data) => {
-      if(data){
-        // strandDialog.value = false
-      await  fetchTopicList()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => topicStore.deleteTopicResponse,
-    async (data) => {
-      if(data){
-      await  fetchTopicList()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => topicStore.topicEditResponse,
-    async (data) => {
-      if(data){
-      await  fetchTopicList()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => topicStore.errorMessage,
-    async (data) => {
-      if(data){
-        deletionLoader.value = undefined
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => topicStore.topicInfoResponse,
-    async (data) => {
-      if(data){
-        topicList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => learningAreaStore.learningAreaInfResponse,
-    async (data) => {
-      if(data){
-        learningAreaList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => subjectClusterStore.subjectClusterFilterResponse,
-    async (data) => {
-      if(data){
-        subjectClusterList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => subjectStore.subjectListResponse,
-    async (data) => {
-      if(data){
-        subjectList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => strandStore.strandListResponse,
-    async (data) => {
-      if(data){
-        strandList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => classStore.classCurriculumResponse,
-    async (data) => {
-      if(data){
-        classList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-
-</script>
 
 <style scoped>
 

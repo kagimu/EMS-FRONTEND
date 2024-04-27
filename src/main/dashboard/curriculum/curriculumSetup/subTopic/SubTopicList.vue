@@ -1,22 +1,284 @@
+<script setup>
+
+import {onMounted, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useRouter} from "vue-router";
+import NewSubTopic from "@/main/dashboard/curriculum/curriculumSetup/subTopic/NewSubTopic.vue";
+import {useSubtopicStore} from "@/main/dashboard/curriculum/curriculumSetup/subTopic/store/subTopic.js";
+import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
+import {useSubjectClusterStore} from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/store/subjectCluster.js";
+import {useTopicStore} from "@/main/dashboard/curriculum/curriculumSetup/topic/store/topic.js";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
+import {useStrandStore} from "@/main/dashboard/curriculum/curriculumSetup/strands/store/strand.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import NewLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPlan.vue";
+import NewSubtopicReference from "@/main/dashboard/curriculum/curriculumSetup/subTopic/NewSubtopicReference.vue";
+import AppModal from "@/components/AppModal.vue";
+import NewSubject from "@/main/dashboard/curriculum/curriculumSetup/subject/NewSubject.vue";
+const routerData = useRouter()
+
+const subjectStore = useSubjectStore()
+const subjectClusterStore = useSubjectClusterStore()
+const topicStore = useTopicStore()
+const classStore = useClassesStore()
+const learningAreaStore = useLearningAreaStore()
+const strandStore = useStrandStore()
+const subtopicStore = useSubtopicStore()
+const notificationStore  = useNotificationStore()
+const deletionLoader = ref( undefined)
+
+const referenceDialog = ref(false)
+const subTopicInfo = ref({})
+const learningAreaList = ref([])
+const subjectClusterList = ref([])
+const subjectList = ref([])
+const strandList = ref([])
+const topicList = ref([])
+const classList = ref([])
+const subject_cluster_number = ref("")
+const subject_number = ref("")
+const strand_number = ref("")
+const topic_number = ref("")
+const learning_area_number = ref("")
+const class_number = ref("")
+const subTopicEditMode = ref("")
+let  curriculumNumber = routerData.currentRoute.value.query.id
+
+
+
+const subtopicDialog = ref( false)
+const subtopicList = ref( [])
+
+
+
+const addSubtopic = () => {
+  subTopicEditMode.value = false
+  subtopicDialog.value = true
+}
+
+const editSubTopic = (data) => {
+  subtopicDialog.value = true
+  subTopicEditMode.value = true
+  subtopicStore.subTopicData(data.number)
+}
+const deleteSubTopic = (data) => {
+  if(!confirm("Are you sure, you want to delete: "+data.name)){
+    return
+  }
+
+  deletionLoader.value = data.number
+
+  let info = {
+    number:data.number
+  }
+
+  subtopicStore.deleteSubTopic(info)
+}
+
+const selectSubjectCluster = (learning_area_number) => {
+
+  // learning_area_number.value = ""
+  subject_cluster_number.value = ""
+  subject_number.value = ""
+  strand_number.value = ""
+  topic_number.value = ""
+
+  fetchSubTopicLIst()
+  subjectClusterStore.fetchSubjectClusterFilter({learning_area_number:learning_area_number, curriculum_number:curriculumNumber})
+}
+
+
+const selectSubject = (subject_cluster_number) => {
+
+  subject_number.value = ""
+  strand_number.value = ""
+  topic_number.value = ""
+
+  fetchSubTopicLIst()
+  subjectStore.fetchSubjectList({subject_cluster_number:subject_cluster_number, curriculum_number:curriculumNumber})
+}
+
+
+const selectStrand = (subject_number) => {
+
+  strand_number.value = ""
+  topic_number.value = ""
+
+  fetchSubTopicLIst()
+  strandStore.fetchStrandList({subject_number:subject_number, curriculum_number:curriculumNumber})
+}
+
+
+const selectTopic = (strand_number) => {
+
+  topic_number.value = ""
+
+  fetchSubTopicLIst()
+  topicStore.fetchTopicList({strand_number:strand_number, curriculum_number:curriculumNumber})
+}
+
+
+const addReference = (referenceData) => {
+  if(referenceData) {
+    subTopicInfo.value = referenceData
+    referenceDialog.value = true
+  }
+}
+
+
+
+
+onMounted(
+    () => {
+      fetchSubTopicLIst()
+      learningAreaStore.fetchLearningArea(curriculumNumber)
+      selectSubjectCluster("")
+      selectSubject("")
+      selectStrand("")
+      selectTopic("")
+      classStore.fetchClassesCurriculum(curriculumNumber)
+    }
+)
+
+const fetchSubTopicLIst = () => {
+  let data = {
+    learning_area_number:learning_area_number.value,
+    subject_cluster_number:subject_cluster_number.value,
+    subject_number:subject_number.value,
+    strand_number:strand_number.value,
+    topic_number:topic_number.value,
+    class_number:class_number.value,
+    curriculum_number:curriculumNumber,
+  }
+  subtopicStore.fetchSubTopics(data)
+}
+
+watch(
+    () => subtopicStore.subtopicResponse,
+    async (data) => {
+      if(data){
+        await fetchSubTopicLIst()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subtopicStore.deleteSubTopicResponse,
+    async (data) => {
+      if(data){
+        await fetchSubTopicLIst()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subtopicStore.subtopicEditResponse,
+    async (data) => {
+      if(data){
+        await fetchSubTopicLIst()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subtopicStore.errorMessage,
+    async (data) => {
+      if(data){
+        deletionLoader.value = false
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subtopicStore.subtopicInfoResponse,
+    async (data) => {
+      if(data){
+        subtopicList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => learningAreaStore.learningAreaInfResponse,
+    async (data) => {
+      if(data){
+        learningAreaList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectClusterStore.subjectClusterFilterResponse,
+    async (data) => {
+      if(data){
+        subjectClusterList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectStore.subjectListResponse,
+    async (data) => {
+      if(data){
+        subjectList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => strandStore.strandListResponse,
+    async (data) => {
+      if(data){
+        strandList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => topicStore.topicListResponse,
+    async (data) => {
+      if(data){
+        topicList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => classStore.classCurriculumResponse,
+    async (data) => {
+      if(data){
+        classList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+</script>
 <template>
   <div>
 
-    <div class="modal fade" id="subTopicModal" tabindex="-1" :class="{ show: subtopicDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">{{subTopicEditMode ? "Edit" : "Add"}} Sub Topic</h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-              <new-sub-topic></new-sub-topic>
-            </div>
-          </div>
+    <AppModal :title="subTopicEditMode ? 'Edit Sub Topic' : 'Add Sub Topic'" v-model="subtopicDialog" lg>
+      <new-sub-topic></new-sub-topic>
+    </AppModal>
 
-        </div>
-      </div>
-    </div>
+
 
 
 
@@ -40,7 +302,7 @@
 
     <div class="flex justify-content-between mt-3">
       <div class="ml-4">Sub Topic</div>
-      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSubtopic" data-bs-toggle="modal" data-bs-target="#subTopicModal">
+      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSubtopic">
         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
         Add Sub Topic
       </button>
@@ -223,7 +485,6 @@
                                                 <div>
                                                   <i
                                                       style="font-size: 13px;"
-                                                      data-bs-toggle="modal" data-bs-target="#subTopicModal"
                                                       class="bi-pencil mr-2 cursor-pointer" @click="editSubTopic(stpc)"></i>
                                                   <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteSubTopic(stpc)"></i>
                                                   <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === stpc.number">
@@ -275,276 +536,7 @@
   </div>
 </template>
 
-<script setup>
 
-import {onMounted, ref, watch} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import {useRouter} from "vue-router";
-import NewSubTopic from "@/main/dashboard/curriculum/curriculumSetup/subTopic/NewSubTopic.vue";
-import {useSubtopicStore} from "@/main/dashboard/curriculum/curriculumSetup/subTopic/store/subTopic.js";
-import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
-import {useSubjectClusterStore} from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/store/subjectCluster.js";
-import {useTopicStore} from "@/main/dashboard/curriculum/curriculumSetup/topic/store/topic.js";
-import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
-import {useStrandStore} from "@/main/dashboard/curriculum/curriculumSetup/strands/store/strand.js";
-import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
-import NewLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPlan.vue";
-import NewSubtopicReference from "@/main/dashboard/curriculum/curriculumSetup/subTopic/NewSubtopicReference.vue";
-const routerData = useRouter()
-
-const subjectStore = useSubjectStore()
-const subjectClusterStore = useSubjectClusterStore()
-const topicStore = useTopicStore()
-const classStore = useClassesStore()
-const learningAreaStore = useLearningAreaStore()
-const strandStore = useStrandStore()
-const subtopicStore = useSubtopicStore()
-const notificationStore  = useNotificationStore()
-const deletionLoader = ref( undefined)
-
-const referenceDialog = ref(false)
-const subTopicInfo = ref({})
-const learningAreaList = ref([])
-const subjectClusterList = ref([])
-const subjectList = ref([])
-const strandList = ref([])
-const topicList = ref([])
-const classList = ref([])
-const subject_cluster_number = ref("")
-const subject_number = ref("")
-const strand_number = ref("")
-const topic_number = ref("")
-const learning_area_number = ref("")
-const class_number = ref("")
-const subTopicEditMode = ref("")
-let  curriculumNumber = routerData.currentRoute.value.query.id
-
-
-
-const subtopicDialog = ref( false)
-const subtopicList = ref( [])
-
-
-
-const addSubtopic = () => {
-  subTopicEditMode.value = false
-  subtopicDialog.value = true
-}
-
-const editSubTopic = (data) => {
-  subTopicEditMode.value = true
-  subtopicStore.subTopicData(data.number)
-}
-const deleteSubTopic = (data) => {
-  if(!confirm("Are you sure, you want to delete: "+data.name)){
-    return
-  }
-
-  deletionLoader.value = data.number
-
-  let info = {
-    number:data.number
-  }
-
-  subtopicStore.deleteSubTopic(info)
-}
-
-const selectSubjectCluster = (learning_area_number) => {
-
-  // learning_area_number.value = ""
-  subject_cluster_number.value = ""
-  subject_number.value = ""
-  strand_number.value = ""
-  topic_number.value = ""
-
-  fetchSubTopicLIst()
-  subjectClusterStore.fetchSubjectClusterFilter({learning_area_number:learning_area_number, curriculum_number:curriculumNumber})
-}
-
-
-const selectSubject = (subject_cluster_number) => {
-
-  subject_number.value = ""
-  strand_number.value = ""
-  topic_number.value = ""
-
-  fetchSubTopicLIst()
-  subjectStore.fetchSubjectList({subject_cluster_number:subject_cluster_number, curriculum_number:curriculumNumber})
-}
-
-
-const selectStrand = (subject_number) => {
-
-  strand_number.value = ""
-  topic_number.value = ""
-
-  fetchSubTopicLIst()
-  strandStore.fetchStrandList({subject_number:subject_number, curriculum_number:curriculumNumber})
-}
-
-
-const selectTopic = (strand_number) => {
-
-  topic_number.value = ""
-
-  fetchSubTopicLIst()
-  topicStore.fetchTopicList({strand_number:strand_number, curriculum_number:curriculumNumber})
-}
-
-
-const addReference = (referenceData) => {
-  if(referenceData) {
-    subTopicInfo.value = referenceData
-    referenceDialog.value = true
-  }
-}
-
-
-
-
-onMounted(
-    () => {
-      fetchSubTopicLIst()
-      learningAreaStore.fetchLearningArea(curriculumNumber)
-      selectSubjectCluster("")
-      selectSubject("")
-      selectStrand("")
-      selectTopic("")
-      classStore.fetchClassesCurriculum(curriculumNumber)
-    }
-)
-
-const fetchSubTopicLIst = () => {
-  let data = {
-    learning_area_number:learning_area_number.value,
-    subject_cluster_number:subject_cluster_number.value,
-    subject_number:subject_number.value,
-    strand_number:strand_number.value,
-    topic_number:topic_number.value,
-    class_number:class_number.value,
-    curriculum_number:curriculumNumber,
-  }
-  subtopicStore.fetchSubTopics(data)
-}
-
-watch(
-    () => subtopicStore.subtopicResponse,
-    async (data) => {
-      if(data){
-        await fetchSubTopicLIst()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => subtopicStore.deleteSubTopicResponse,
-    async (data) => {
-      if(data){
-        await fetchSubTopicLIst()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => subtopicStore.subtopicEditResponse,
-    async (data) => {
-      if(data){
-        await fetchSubTopicLIst()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => subtopicStore.errorMessage,
-    async (data) => {
-      if(data){
-         deletionLoader.value = false
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => subtopicStore.subtopicInfoResponse,
-    async (data) => {
-      if(data){
-        subtopicList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => learningAreaStore.learningAreaInfResponse,
-    async (data) => {
-      if(data){
-        learningAreaList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => subjectClusterStore.subjectClusterFilterResponse,
-    async (data) => {
-      if(data){
-        subjectClusterList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => subjectStore.subjectListResponse,
-    async (data) => {
-      if(data){
-        subjectList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => strandStore.strandListResponse,
-    async (data) => {
-      if(data){
-        strandList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => topicStore.topicListResponse,
-    async (data) => {
-      if(data){
-        topicList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => classStore.classCurriculumResponse,
-    async (data) => {
-      if(data){
-        classList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-
-</script>
 
 <style scoped>
 
