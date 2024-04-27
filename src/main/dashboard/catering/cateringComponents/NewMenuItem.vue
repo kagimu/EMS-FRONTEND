@@ -2,7 +2,7 @@
     <div class="mt-5">
 
     
-    <AppModal title="Unit Measurement" v-model="showUnitModal" lg>
+    <AppModal title="Add Unit of Measure" v-model="showUnitModal" lg>
       <NewUnitOfMeasurement></NewUnitOfMeasurement>
     </AppModal>
 

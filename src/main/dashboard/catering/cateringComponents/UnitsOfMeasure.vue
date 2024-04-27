@@ -4,7 +4,7 @@
 
   
   
-  <AppModal title="Unit Measurement" v-model="showUnitModal" lg>
+  <AppModal title="Add Unit of Measure" v-model="showUnitModal" lg>
     <NewUnitOfMeasurement></NewUnitOfMeasurement>
     </AppModal>
 
@@ -22,7 +22,7 @@
                  <div class="">
                     <div class="row">
                     <div class="col-lg-8">
-                    <h5 style="font-size: 14px;margin-top: 2px;">Units Of Measurement </h5>
+                    <h5 style="font-size: 14px;margin-top: 2px;">Unit of Measure</h5>
                     </div>
     
                 <div class="col-lg-4">
