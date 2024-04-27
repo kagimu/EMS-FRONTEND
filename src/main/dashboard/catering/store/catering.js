@@ -32,6 +32,7 @@ export const useCateringStore = defineStore("catering", () => {
     let newFeedingGroupsPerDayResponse = ref(null)
     let feedGroupPerDayInfoResponse = ref(null) 
     let newFeedingsResponse = ref(null)
+    let mealsResponse = ref(null)
  
 
     const errorMessage = ref(null)
@@ -381,6 +382,19 @@ async function newFeedings(data) {
         })
 }
 
+async function fetchMeals() {
+    return await api.get("main/catering/meals")
+        .then((response) => {
+            mealsResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+
     return {
         newUnitOfMeasureInfoResponse,
         errorMessage,
@@ -440,7 +454,9 @@ async function newFeedings(data) {
         fetchFeedGroupsPerDay,
         feedGroupPerDayInfoResponse,
         newFeedingsResponse,
-        newFeedings
+        newFeedings,
+        mealsResponse,
+        fetchMeals
 
     }
 } )
