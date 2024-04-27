@@ -57,8 +57,8 @@ watch(
 <template>
     <div>
 
-   <AppModal v-model="showingModal" lg title="Add Assessment Metric">
-    <NewAssessmentMetric></NewAssessmentMetric>
+   <AppModal v-model="showingModal" title="Add Assessment Metric" xl6>
+      <NewAssessmentMetric></NewAssessmentMetric>
     </AppModal>
 
       <div class="col-12 mt-2" >
