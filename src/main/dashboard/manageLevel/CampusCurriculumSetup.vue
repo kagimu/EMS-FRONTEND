@@ -151,7 +151,7 @@ watch(
     <div class="row">
       <div :class="campusSetupQuery || studentScoreQuery  || assessmentSettingsQuery || reportSettingsQuery ? 'col-3' : 'col-12 mx-auto'">
 
-
+        <div class="w-full h-[80vh] overflow-y-scroll scrollbar-thin">
 
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
@@ -225,7 +225,7 @@ watch(
           </div>
         </div>
 
-
+        </div>
 
 
       </div>
