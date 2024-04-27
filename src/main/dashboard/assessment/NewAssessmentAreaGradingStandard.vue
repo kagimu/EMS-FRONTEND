@@ -24,7 +24,6 @@ const errorMessage = ref("")
 const loader = ref(false)
 const interviewAssessmentListData = ref(null)
 const gradingStandardListData = ref(null)
-// const assessmentMetricList = ref(null)
 const campusCurriculumDataInfo = ref(null)
 const campus_curriculum_number = ref("")
 const campusLevelList = ref(null)
@@ -61,7 +60,11 @@ const fetchStudyPeriod = (academic_num) =>{
 }
 
 const fetchGradingStandard = () =>{
-    assessmentStore.fetchGradingStandardData(assessment_area_number)
+  let data = {
+    campus_number:campusNumber,
+    campus_class_number:campus_class_number.value
+  }
+    assessmentStore.fetchGradingStandardData(data)
 }
 
 
