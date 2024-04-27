@@ -107,9 +107,8 @@ const fetchCurriculumClasses = (level) => {
 
 onMounted(
     () =>{
-      /* if(props.classNumber){
-         classesStore.classDetails(props.classNumber)
-       }*/
+      levelStore.fetchCurriculumLevels(curriculumNumber)
+     filterLevelInfo()
     }
 )
 
@@ -118,6 +117,18 @@ const props = defineProps({
   curriculumClass: {},
 })
 
+const filterLevelInfo = () => {
+  let data = props.curriculumClass
+  if(data){
+    let arr = []
+    data.forEach(lst => {
+      lst.class.forEach(list => {
+        arr.push(list.class_number)
+      })
+    })
+    classId.value = arr
+  }
+}
 
 watch(
     () => classStore.classResponse,
@@ -179,16 +190,9 @@ watch(
     () => props.curriculumClass,
     async (data) => {
       if(data){
-        let arr = []
-        data.forEach(lst => {
-          lst.class.forEach(list => {
-            arr.push(list.class_number)
-          })
-        })
-        classId.value = arr
+        filterLevelInfo()
       }
-    },
-    {deep:true}
+    }
 )
 
 
