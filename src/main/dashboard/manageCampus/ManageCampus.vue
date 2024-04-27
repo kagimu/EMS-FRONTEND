@@ -6,7 +6,7 @@ import useNotificationStore from "@/composables/useNotification.js";
 import NewCampus from "@/main/dashboard/manageCampus/NewCampus.vue";
 import {useRouter} from "vue-router";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-import NewSchool from "@/main/dashboard/manageSchool/NewSchool.vue";
+
 import AppModal from "@/components/AppModal.vue";
 const routerData = useRouter()
 const campusStore = useCampusStore()
