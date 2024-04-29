@@ -1,28 +1,15 @@
 <template>
     <div>
-
-      <div class="modal fade" id="interviewAssessmentModal"  tabindex="-1"  aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Interview Assessment </h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-              <interview-assessment :interviewNumber="interviewNumber"></interview-assessment>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
+    
+  <AppModal title="Attach Assessment Metrics To An Interview" v-model="showingModal" lg>
+    <interview-assessment :interviewNumber="interviewNumber"></interview-assessment>
+    </AppModal>
 
 
     <div class="row mt-4">
 <div class="col-lg-3">
     <div class="mb-2">
-            <label class="textColor"><small>Assessment </small> 
+            <label class="textColor"><small>Assessment Metric </small> 
             </label>
             <select
                     style="box-shadow: none;"
@@ -36,17 +23,14 @@
         </div>
 </div>
 <div class="col-lg-1"><b>
-  <i 
-data-bs-toggle="modal"
-data-bs-target="#interviewAssessmentModal"
-  style="margin-left: -20px;" class="bi bi-plus-circle mb-2 mt-10" ></i></b></div>
+  <i style="margin-left: -20px;" class="bi bi-plus-circle mb-2 mt-10" @click="showModal()"></i></b></div>
 <div class="col-lg-8">
 
 </div>
     </div>
 
       <table id="data"
-        class="table table-striped">
+        class="table table-striped table-hover caption-top table-sm text-sm">
         <thead>
       <tr>
         <th>#</th>
@@ -54,24 +38,35 @@ data-bs-target="#interviewAssessmentModal"
         <th>Name</th>
         <th scope="col">Score</th>
         <th scope="col">Comment</th>
-        <th>Actions</th>
+        <th></th>
       </tr>
       </thead>
       <tbody>
     
-      <tr v-for="(studentList , index) in interviewStudentList" :key="index" >
+      <tr v-for="(std , index) in studentsList" :key="index" >
         <td>{{ index+1 }}</td>
-        <td scope="col">{{ studentList.Student.apn }}</td>
-        <td style="text-transform: capitalize;">{{ studentList.Student.surname + " " + studentList.Student.second_name + " " + studentList.Student.other_name}}</td>
+        <td style="text-transform: capitalize;">
+          {{std.student_surname ? std.student_surname : ""}}
+              {{std.student_second_name ? " "+std.student_second_name : ""}}
+              {{std.student_other_name ? " "+std.student_other_name : ""}}
+        </td>
         <td scope="col" style="width: 150px;">
-            <input type="number" class="form-control" v-model="score">
+            <input type="text" class="form-control"  v-model="std.score" @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10"   v-on:blur="submitMarks(std.score, std.comment, std.number)">
         </td>
         <td scope="col">  
-            <input type="text" class="form-control" v-model="comm">
+            <!-- <input type="text" class="form-control" v-model="comm" > -->
+            <textarea
+                   style="outline: none 0 !important; box-shadow: none;"
+                   type="text"
+                   v-model="std.comment"
+                   v-on:blur="submitMarks(std.score, std.comment, std.number)"
+                   required
+                   class="form-control form-select-sm h-1"></textarea>
         </td>
         <td>
-            <button type="button" @click="submitMarks(score,comm,studentList.Student.number)" style="color:#0d6efd;">
-            <i class="bi bi-check-lg"></i> save
+            <button type="button" @click="submitMarks(score,comm,std.number)" style="color:#0d6efd;">
+            <i class="bi bi-check-lg"></i>
             <span v-if="buttonLoader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-dark" role="status">
                 <span class="visually-hidden">Loading...</span>
               </span>
@@ -99,6 +94,18 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {useRouter} from "vue-router";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import InterviewAssessment from "@/main/dashboard/studentApplication/InterviewAssessment.vue";
+import AppModal from "@/components/AppModal.vue";
+import useCommonsStore from "@/composables/useCommons.js";
+import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
+
+const reportSetupStore = useReportSetupStore()
+const commons = useCommonsStore()
+const studentsList = ref(null)
+const showingModal = ref(false)
+const showModal = () => {
+    showingModal.value = true
+    thisDialog.value=false
+}
 
 
 const assessmentNumber = ref(null)
@@ -136,9 +143,19 @@ const fetchStudentOnInterview = (a,b) =>{
     assessmentNumber.value = a
     let  interviewNum = b
 
-    applicationStore.fetchStudentsOnInterview(interviewNum)
+    // applicationStore.fetchStudentsOnInterview(interviewNum) 
+    reportSetupStore.fetchStudentByAssessmentMetric(a)
 }
 
+watch(
+    () => reportSetupStore.studentsByAssessmentMetricResponse,
+    async (data) => {
+      if(data){
+       studentsList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 
 watch(
@@ -163,8 +180,9 @@ const submitMarks = (a,b,c) =>{
     comment:b,
     student_number:c,
     assessment_date:null,
-    actual_score:a
+    actual_score:parseInt(a)
 })
+
 
 // alert(JSON.stringify(form))
 studentApplicationStore.newInterviewAssessmentResult(form)

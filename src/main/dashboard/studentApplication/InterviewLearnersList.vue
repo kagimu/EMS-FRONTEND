@@ -36,7 +36,7 @@
                 <div class="ant-alert-action mt-3">
                 <button  @click="showDialog" data-bs-toggle="modal" :data-bs-target="selectedStudentNumber.length > 0 ? '#admitMainModal' : ''" type="submit"
                  class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " 
-                 style="float: rigt;"><i></i>Offer Admission</button>
+                 style="float: rigt;" ><i></i>Offer Admission</button>
               </div>
 
                </div>

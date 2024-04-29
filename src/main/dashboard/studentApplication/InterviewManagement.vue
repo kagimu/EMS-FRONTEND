@@ -16,26 +16,24 @@
 
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-          <button class="nav-link navColor active" id="assessment_tab" data-bs-toggle="tab" data-bs-target="#assessment" type="button" role="tab" aria-controls="assessments" aria-selected="false"><small>Assessments</small></button>
-          <button class="nav-link navColor" id="applicants_tab" data-bs-toggle="tab" data-bs-target="#applicants" type="button" role="tab" aria-controls="applicants" aria-selected="false"><small>Assess Applicants</small></button>
+          <button class="nav-link navColor active" id="applicants_tab" data-bs-toggle="tab" data-bs-target="#applicants" type="button" role="tab" aria-controls="applicants" aria-selected="false"><small>Assess Interview Applicants</small></button>
+          <button class="nav-link navColor" id="assessment_tab" data-bs-toggle="tab" data-bs-target="#assessment" type="button" role="tab" aria-controls="assessments" aria-selected="false"><small>Assessment Metrics On Interview</small></button>
           <button class="nav-link navColor" id="admission-offer_tab" data-bs-toggle="tab" data-bs-target="#admission-offer" type="button" role="tab" aria-controls="admission-offer" aria-selected="false"><small> Offer Admission</small></button>
           <!-- <button class="nav-link navColor" id="applicant-reports_tab" data-bs-toggle="tab" data-bs-target="#applicant-reports" type="button" role="tab" aria-controls="" aria-selected="false"><small>Applicant Reports</small></button>          -->
         </div>
       </nav>
       <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="assessment" role="tabpanel" aria-labelledby="assessment_tab" tabindex="0">
+        <div class="tab-pane fade " id="assessment" role="tabpanel" aria-labelledby="assessment_tab" tabindex="0">
             <InterviewAssessmentList></InterviewAssessmentList>
         </div>
-        <div class="tab-pane fade" id="applicants" role="tabpanel" aria-labelledby="applicants_tab" tabindex="0">
+        <div class="tab-pane fade show active" id="applicants" role="tabpanel" aria-labelledby="applicants_tab" tabindex="0">
           <ApplicantsAssessment></ApplicantsAssessment>
         </div>
         <div class="tab-pane fade" id="admission-offer" role="tabpanel" aria-labelledby="admission-offer_tab" tabindex="0">
           <InterviewLearnersList></InterviewLearnersList>
         </div>
       
-       <div class="tab-pane fade" id="applicant-reports" role="tabpanel" aria-labelledby="applicant-reports_tab" tabindex="0">
-        <p>Reports</p>
-        </div>
+   
         
       </div>
 

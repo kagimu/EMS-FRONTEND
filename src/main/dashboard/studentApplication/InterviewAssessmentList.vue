@@ -5,7 +5,13 @@ import {useStudentApplicationStore} from "@/main/dashboard/studentApplication/st
 import useNotificationStore from "@/composables/useNotification.js";
 import {useRouter} from "vue-router";
 import InterviewAssessment from "@/main/dashboard/studentApplication/InterviewAssessment.vue";
+import AppModal from "@/components/AppModal.vue";
 
+const showingModal = ref(false)
+const showModal = () => {
+    showingModal.value = true
+    thisDialog.value=false
+}
 
 const interviewStudentList = ref( [])
 const assessmentStore = useAssessmentStore()
@@ -48,15 +54,6 @@ onMounted(
     }
 )
 
-const saveInterviewAssessment = () => {
-  
-  let data = {
-    assessment_metric_number:assessment_metric_number.value,
-    interview_number:interviewNumber,
-  }
-  // alert(JSON.stringify(data))
-  studentApplicationStore.newInterviewAssessment(data)
-}
 
 watch (
     () => assessmentStore.assessmentMetricsResponse,
@@ -68,26 +65,26 @@ watch (
     {deep:true}
 )
 
-watch (
-    () => studentApplicationStore.interviewAssessmentResponse,
-    async (data) => {
-      if(data){
-        loader.value = false
-      }
-    },
-    {deep:true}
-)
+// watch (
+//     () => studentApplicationStore.interviewAssessmentResponse,
+//     async (data) => {
+//       if(data){
+//         loader.value = false
+//       }
+//     },
+//     {deep:true}
+// )
 
 
-watch(
-      () => studentApplicationStore.interviewAssessmentResponse,
-      async (data) => {
-          if (data) {
-              notificationStore.successToast("Success", data.message)
-          }
-      },
-      {deep: true}
-  )
+// watch(
+//       () => studentApplicationStore.interviewAssessmentResponse,
+//       async (data) => {
+//           if (data) {
+//               notificationStore.successToast("Success", data.message)
+//           }
+//       },
+//       {deep: true}
+//   )
 
 
   watch (
@@ -107,36 +104,23 @@ watch(
 <template>
   <div>
 
-    <div class="modal fade" id="interviewAssessmentModal"  tabindex="-1"  aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Interview Assessment </h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-              <interview-assessment :interviewNumber="interviewNumber"></interview-assessment>
-            </div>
-          </div>
+        
+  <AppModal title="Attach Assessment Metrics To An Interview" v-model="showingModal" lg>
+    <interview-assessment :interviewNumber="interviewNumber"></interview-assessment>
+    </AppModal>
 
-        </div>
-      </div>
-    </div>
 
 
 
 <div class="row">
-  <div class="col-lg-10">
+  <div class="col-lg-8">
 
   </div>
-  <div class="col-lg-2">
+  <div class="col-lg-4">
     <button
-class="btn btn-primary btn-sm mb-4 mt-4"
-@click="showInterviewAssessmentDialog()"
-data-bs-toggle="modal"
-data-bs-target="#interviewAssessmentModal"
->  Add Assessment</button>
+class="btn btn-primary btn-sm mb-2 mt-4"
+@click="showModal()"
+>  <small>Attach Assessment Metric To this Interview</small></button>
   </div>
 
 </div>
@@ -145,10 +129,9 @@ data-bs-target="#interviewAssessmentModal"
       class="table table-striped" >
     <thead>
     <tr>
-      <th scope="col">Assessment</th>
-      <th>Class</th>
+      <th scope="col">Assessment Metric</th>
+      <!-- <th>Class</th> -->
       <th scope="col">Scheduled On</th>
-      <th scope="col">No.Students</th>
       <th scope="col">Description</th>
       <th>Actions</th>
     </tr>
@@ -157,9 +140,8 @@ data-bs-target="#interviewAssessmentModal"
    
     <tr v-for="(list, index) in assessmentMetricList" :key="index">
         <td>{{ list.AssessmentMetric.name }}</td>
-        <td>{{ list.AssessmentMetric.CampusClass.class_name }}</td>
+        <!-- <td>{{ list.AssessmentMetric.CampusClass.class_name }}</td> -->
         <td>{{ list.AssessmentMetric.scheduled_on }}</td>
-        <td>100</td>
         <td>{{ list.AssessmentMetric.description }}</td>
         
         <td>
