@@ -126,9 +126,10 @@ class="btn btn-primary btn-sm mb-2 mt-4"
 </div>
 
     <table id="data"
-      class="table table-striped" >
+      class="table table-striped  table-hover caption-top table-sm text-sm" style="font-size: 14px;">
     <thead>
     <tr>
+      <th>#</th>
       <th scope="col">Assessment Metric</th>
       <!-- <th>Class</th> -->
       <th scope="col">Scheduled On</th>
@@ -139,6 +140,7 @@ class="btn btn-primary btn-sm mb-2 mt-4"
     <tbody>
    
     <tr v-for="(list, index) in assessmentMetricList" :key="index">
+      <td>{{ index+1 }}</td>
         <td>{{ list.AssessmentMetric.name }}</td>
         <!-- <td>{{ list.AssessmentMetric.CampusClass.class_name }}</td> -->
         <td>{{ list.AssessmentMetric.scheduled_on }}</td>

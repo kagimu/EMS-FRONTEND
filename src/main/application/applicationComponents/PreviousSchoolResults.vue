@@ -80,8 +80,8 @@
   const applicationStore =  useApplicationStore()
   const buttonLoader = ref(false)
   let campus_class_number = localStorage.getItem('CampusClassNumber')
-  let application_number= localStorage.getItem("applicationId")
-  let student_number = localStorage.getItem('studentNumber')
+  let application_number= ref(false)
+  let student_number = ref(false)
   const errorMessage = ref(null)
   const uploadError = ref(null)
   const file = ref(null)
@@ -117,20 +117,36 @@
     formD.assessmentArea.splice(index, 1)
   }
 
+  watch (
+    () => localStorage.getItem("applicationId"),
+    async (data) => {
+      if(data){
+
+      }
+    },
+    {deep:true}
+)
+
+
 function savePreviousSchoolResults(){
+  
+  // application_number.value= localStorage.getItem("applicationId")
+  // student_number.value = localStorage.getItem('studentNumber')
   buttonLoader.value = true
   uploadError.value = null
   const formData = new FormData();
   formData.set("attachment", file.value.files[0]);
-  formData.set("student_number", student_number);
-  formData.set("application_number",application_number)
-
   const assessmentAndScore = formD.assessmentArea.map(assessmentArea => ({
     assessment_area_number: assessmentArea.assessmentAreaNumber,
     score: parseInt(assessmentArea.score)
   }));
+
+  alert(JSON.stringify(localStorage.getItem('studentNumber')))
   
   formData.set("assessment_and_score", JSON.stringify(assessmentAndScore));
+  formData.set("student_number", localStorage.getItem('studentNumber'));
+  formData.set("application_number",localStorage.getItem("applicationId"))
+  
   applicationStore.createPreviousSchoolResults(formData)
 }
 
