@@ -1,19 +1,9 @@
 <template>
     <div>
 
-            <!-- schedule interview -->
-          <div class="offcanvas offcanvas-end" tabindex="-1" id="rolesDialogg" :class="{ show:thisDialog }" aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header">
-              <h5 class="offcanvas-title" id="offcanvasRightLabel"><small>Daily Feeding Sessions</small></h5>
-              <button type="button" class="btn-close"  data-bs-dismiss="offcanvas" aria-label="Close" @click="closeDialog"></button>
-            </div>
-            <div class="offcanvas-body">
-            <NewDailyFeedingSession></NewDailyFeedingSession>
-            </div>
-          </div>
-  <!-- wnd  -->
-  
-
+  <AppModal title="New Daily Feeding Session" v-model="showingModal" lg>
+    <NewDailyFeedingSession></NewDailyFeedingSession>
+    </AppModal>
 
 
     <!-- end  -->
@@ -34,7 +24,7 @@
                 <div class="col-lg-4">
                 <button
                 style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
-                data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="showDialog">
+                data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="showModal">
                 <small> <b><i class="bi bi-plus"></i></b>
                 Add New</small></button>
                 </div>
@@ -83,10 +73,16 @@
   import useNotificationStore from "@/composables/useNotification.js";
   import NewDailyFeedingSession from "@/main/dashboard/catering/cateringComponents/NewDailyFeedingSession.vue";
   import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
-
+  import AppModal from "@/components/AppModal.vue";
+    
+  const showingModal = ref(false)
   const cateringStore = useCateringStore()
   const thisDialog = ref(false)
   const dailyFeedingSessionGroupData = ref([])
+   
+  const showModal = () => {
+    showingModal.value = true
+}
 
   const showDialog = () => {
       thisDialog.value = true
