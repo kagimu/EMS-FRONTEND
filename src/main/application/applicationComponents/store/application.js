@@ -198,8 +198,8 @@ export const useApplicationStore = defineStore("application", () => {
         } )
         }
 
-        async function fetchStudentsOnInterview(data) {
-            return await api.get("main/interviews/"+data+"/students")
+        async function fetchStudentsOnInterview(data,assessmentMetricNumber) {
+            return await api.get("main/interviews/"+data+"/students?assessment_metric_number="+assessmentMetricNumber)
                 .then((response) => {
                     StudentsOnInterviewResponse.value = response.data
                 })

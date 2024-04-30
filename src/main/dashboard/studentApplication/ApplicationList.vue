@@ -173,25 +173,25 @@
           </button> -->
       
 
-          <button v-if="applist.status === 'SUBMITTED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)"
+          <button v-if="applist.status === 'SUBMITTED'" @click="setApplicationNumber(applist.number)"
                   class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
               Schedule Interview
             </small>
           </button>
 
-          <button v-if="applist.status === 'ENROLLED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)"
+          <button v-if="applist.status === 'ENROLLED'"  @click="setApplicationNumber(applist.number)"
                   class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
               View Details
             </small>
           </button>
 
-          <button v-if="applist.status === 'INTERVIEW_SCHEDULED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)"
+          <button v-if="applist.status === 'INTERVIEW_SCHEDULED'"  @click="setApplicationNumber(applist.number)"
                   class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
               View Details
             </small>
           </button>
 
-          <button v-if="applist.status === 'ADMITTED'" data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)"
+          <button v-if="applist.status === 'ADMITTED'" @click="setApplicationNumber(applist.number)"
                   class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
               View Details
             </small>
@@ -215,13 +215,16 @@
 
 
   <div>
-    <!-- :class="{ show: interviewAssessmentDialog }" -->
-    <!-- modal for viewing more details -->
+
     <div class="modal fade" tabindex="-1" id="infoModal"   aria-hidden="true" :class="{ show: shDialog }">
       <div class="modal-dialog modal-xl">
         <application-details :application-number="applications"></application-details>
       </div>
     </div>
+
+    <AppModal title="Application Details" v-model="showingModal" x14>
+      <application-details :application-number="applications"></application-details>
+    </AppModal>
 
 
  
@@ -233,13 +236,15 @@ import {onMounted,reactive, computed,ref, watch} from "vue";
 import ApplicationDetails from './ApplicationDetails.vue';
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import useNotificationStore from "@/composables/useNotification.js";
-
 import { useAdmissionStore } from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
+import AppModal from "@/components/AppModal.vue";
+const showingModal = ref(false)
+
 
 const applicationInfoList = ref( [])
 let errorMessage = ref(null)
@@ -377,6 +382,7 @@ watch(
 const setApplicationNumber = (ap) =>{
   shDialog.value = true
   applications.value = ap
+  showingModal.value = true
   
   // alert(shDialog.value)
 }

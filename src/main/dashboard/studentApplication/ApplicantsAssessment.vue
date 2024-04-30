@@ -1,200 +1,214 @@
 <template>
-    <div>
-
-      <div class="modal fade" id="interviewAssessmentModal"  tabindex="-1"  aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Interview Assessment </h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-              <interview-assessment :interviewNumber="interviewNumber"></interview-assessment>
-            </div>
-          </div>
-
+  <div>
+     <AppModal title="Attach Assessment Metrics To An Interview" v-model="showingModal" lg>
+        <interview-assessment :interviewNumber="interviewNumber"></interview-assessment>
+     </AppModal>
+     <div class="row mt-4">
+        <div class="col-lg-3">
+           <div class="mb-2">
+              <label class="textColor"><small>Assessment Metric </small> 
+              </label>
+              <select
+                 style="box-shadow: none;"
+                 class="form-select form-select-sm" required
+                 v-model="assessmentNumber"
+                 @change="fetchStudentOnInterview(assessmentNumber,interviewNumber)"
+                 >
+                 <option disabled value="">Select</option>
+                 <option v-for="(assessment, index) in assessmentDataList" :key="index" :value="assessment.AssessmentMetric.number">{{assessment.AssessmentMetric.name  }}</option>
+              </select>
+           </div>
         </div>
-      </div>
-    </div>
-
-
-    <div class="row mt-4">
-<div class="col-lg-3">
-    <div class="mb-2">
-            <label class="textColor"><small>Assessment </small> 
-            </label>
-            <select
-                    style="box-shadow: none;"
-                    class="form-select form-select-sm" required
-                    v-model="assessmentNumber"
-                    @change="fetchStudentOnInterview(assessmentNumber,interviewNumber)"
-            >
-                <option disabled value="">Select</option>
-                <option v-for="(assessment, index) in assessmentDataList" :key="index" :value="assessment.AssessmentMetric.number">{{assessment.AssessmentMetric.name  }}</option>
-            </select>
+        <div class="col-lg-1"><b>
+           <i style="margin-left: -20px;" class="bi bi-plus-circle mb-2 mt-10" @click="showModal()"></i></b>
         </div>
-</div>
-<div class="col-lg-1"><b>
-  <i 
-data-bs-toggle="modal"
-data-bs-target="#interviewAssessmentModal"
-  style="margin-left: -20px;" class="bi bi-plus-circle mb-2 mt-10" ></i></b></div>
-<div class="col-lg-8">
-
-</div>
-    </div>
-
-      <table id="data"
-        class="table table-striped">
+        <div class="col-lg-8">
+        </div>
+     </div>
+     <div v-if="interviewStudentList === null" class="text-center mt-4">
+        <div class="spinner-border text-primary" role="status">
+           <span class="visually-hidden">Loading...</span>
+        </div>
+     </div>
+     <table  v-if="interviewStudentList !== null" id="data"
+        class="table table-striped table-hover caption-top table-sm text-sm">
         <thead>
-      <tr>
-        <th>#</th>
-        <th scope="col">Adn</th>
-        <th>Name</th>
-        <th scope="col">Score</th>
-        <th scope="col">Comment</th>
-        <th>Actions</th>
-      </tr>
-      </thead>
-      <tbody>
-    
-      <tr v-for="(studentList , index) in interviewStudentList" :key="index" >
-        <td>{{ index+1 }}</td>
-        <td scope="col">{{ studentList.Student.apn }}</td>
-        <td style="text-transform: capitalize;">{{ studentList.Student.surname + " " + studentList.Student.second_name + " " + studentList.Student.other_name}}</td>
-        <td scope="col" style="width: 150px;">
-            <input type="number" class="form-control" v-model="score">
-        </td>
-        <td scope="col">  
-            <input type="text" class="form-control" v-model="comm">
-        </td>
-        <td>
-            <button type="button" @click="submitMarks(score,comm,studentList.Student.number)" style="color:#0d6efd;">
-            <i class="bi bi-check-lg"></i> save
-            <span v-if="buttonLoader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-dark" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </span>
-          </button>
-        </td>
-      </tr>
-    
-      </tbody>
-      <tbody>
-     
-      <tr>
-         
-      </tr>
-    
-      </tbody>
-    </table>
-    </div>
-  </template>
-
-  <script setup>
-import {onMounted, ref, watch,reactive} from "vue";
-import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
-import {useStudentApplicationStore} from "@/main/dashboard/studentApplication/store/student_application.js";
-import useNotificationStore from "@/composables/useNotification.js";
-import {useRouter} from "vue-router";
-import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
-import InterviewAssessment from "@/main/dashboard/studentApplication/InterviewAssessment.vue";
-
-
-const assessmentNumber = ref(null)
-const interviewStudentList = ref( [])
-const assessmentStore = useAssessmentStore()
-const studentApplicationStore = useStudentApplicationStore()
-const routerData = useRouter()
-let  interviewNumber = routerData.currentRoute.value.query.interview_id
-let interviewM = routerData.currentRoute.value.query.interview_m
-const notificationStore = useNotificationStore()
-const applicationStore= useApplicationStore()
-
-const assessmentDataList = ref([])
-const assessment_metric_number = ref(null)
-const errorMessage = ref(null)
-const buttonLoader = ref(false)
-
-
-onMounted(
-    () => {
-      studentApplicationStore.fetchAssessmentMetricsOnInterview(interviewNumber)
-    }
-)
-watch(
-    () => studentApplicationStore.assessmentMetricsOnInterviewResponse,
-    async (data) => {
-      if(data){
-        assessmentDataList.value = data.data
+           <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th scope="col">Score</th>
+              <th scope="col">Comment <span v-if="buttonLoader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-dark" role="status">
+                 <span class="visually-hidden">Loading...</span>
+                 </span></th>
+              <!-- <th></th> -->
+           </tr>
+        </thead>
+        <tbody>
+           <tr v-for="(std , index) in interviewStudentList" :key="index" >
+              <td>{{ index+1}}</td>
+              <td style="text-transform: capitalize;">
+                 {{std.student_surname ? std.student_surname : ""}}
+                 {{std.student_second_name ? " "+std.student_second_name : ""}}
+                 {{std.student_other_name ? " "+std.student_other_name : ""}}
+              </td>
+              <td scope="col" style="width: 150px;">
+                 <input type="text" class="form-control"  v-model="std.score" @keypress="commons.numbersOnlyValidator($event)"
+                    maxlength="10"   v-on:blur="submitMarks(std.score, std.comment, std.number)">
+              </td>
+              <td scope="col">
+                 <!-- <input type="text" class="form-control" v-model="comm" > -->
+                 <textarea
+                    style="outline: none 0 !important; box-shadow: none;"
+                    type="text"
+                    v-model="std.comment"
+                    v-on:blur="submitMarks(std.score, std.comment, std.number)"
+                    required
+                    class="form-control form-select-sm h-1"></textarea>
+              </td>
+              <!-- <td>
+                 <button type="button" @click="submitMarks(score,comm,std.number)" style="color:#0d6efd;">
+                 <i class="bi bi-check-lg"></i>
+                 <span v-if="buttonLoader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-dark" role="status">
+                 <span class="visually-hidden">Loading...</span>
+                 </span>
+                 </button>
+              </td> -->
+           </tr>
+        </tbody>
+        <tbody>
+           <tr>
+           </tr>
+        </tbody>
+     </table>
+  </div>
+</template>
+<script setup>
+  import {onMounted, ref, watch,reactive} from "vue";
+  import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
+  import {useStudentApplicationStore} from "@/main/dashboard/studentApplication/store/student_application.js";
+  import useNotificationStore from "@/composables/useNotification.js";
+  import {useRouter} from "vue-router";
+  import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+  import InterviewAssessment from "@/main/dashboard/studentApplication/InterviewAssessment.vue";
+  import AppModal from "@/components/AppModal.vue";
+  import useCommonsStore from "@/composables/useCommons.js";
+  import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
+  
+  const reportSetupStore = useReportSetupStore()
+  const commons = useCommonsStore()
+  const studentsList = ref(null)
+  const showingModal = ref(false)
+  const showModal = () => {
+      showingModal.value = true
+      thisDialog.value=false
+  }
+  
+  
+  const assessmentNumber = ref(null)
+  const interviewStudentList = ref( [])
+  const assessmentStore = useAssessmentStore()
+  const studentApplicationStore = useStudentApplicationStore()
+  const routerData = useRouter()
+  let  interviewNumber = routerData.currentRoute.value.query.interview_id
+  let interviewM = routerData.currentRoute.value.query.interview_m
+  const notificationStore = useNotificationStore()
+  const applicationStore= useApplicationStore()
+  
+  const assessmentDataList = ref([])
+  const assessment_metric_number = ref(null)
+  const errorMessage = ref(null)
+  const buttonLoader = ref(false)
+  
+  
+  onMounted(
+      () => {
+        studentApplicationStore.fetchAssessmentMetricsOnInterview(interviewNumber)
       }
-    },
-    {deep:true}
-)
-
-const fetchStudentOnInterview = (a,b) =>{
-    assessmentNumber.value = a
-    let  interviewNum = b
-
-    applicationStore.fetchStudentsOnInterview(interviewNum)
-}
-
-
-
-watch(
-    () => applicationStore.StudentsOnInterviewResponse,
-    async (data) => {
-      if(data){
-        interviewStudentList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-//entering marks
-const comm = ref(null)
-const score = ref(null)
-const studentNumber = ref(null)
-
-const submitMarks = (a,b,c) =>{
-    buttonLoader.value=true
-    const form = reactive({
-    assessment_metric_number:assessmentNumber,
-    comment:b,
-    student_number:c,
-    assessment_date:null,
-    actual_score:a
-})
-
-// alert(JSON.stringify(form))
-studentApplicationStore.newInterviewAssessmentResult(form)
-}
-
-
-
-watch (
-    () => studentApplicationStore.interviewAssessmentResultResponse,
-    async (data) => {
-      if(data){
-    buttonLoader.value = false
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-watch(
-    () => studentApplicationStore.errorMessage,
-    async (data) => {
-      if(data){
-        errorMessage.value = data.message
-        notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-    )
-
-
-
-
+  )
+  watch(
+      () => studentApplicationStore.assessmentMetricsOnInterviewResponse,
+      async (data) => {
+        if(data){
+          assessmentDataList.value = data.data
+        }
+      },
+      {deep:true}
+  )
+  
+  const fetchStudentOnInterview = (assessmentMetricNumber,interviewN) =>{
+      assessmentNumber.value = assessmentMetricNumber
+      let  interviewNum = interviewN
+  
+      applicationStore.fetchStudentsOnInterview(interviewNum,assessmentMetricNumber) 
+      // reportSetupStore.fetchStudentByAssessmentMetric(a)
+  }
+  
+  // watch(
+  //     () => reportSetupStore.studentsByAssessmentMetricResponse,
+  //     async (data) => {
+  //       if(data){
+  //        studentsList.value = data.data
+  //       }
+  //     },
+  //     {deep:true}
+  // )
+  
+  
+  watch(
+      () => applicationStore.StudentsOnInterviewResponse,
+      async (data) => {
+        if(data){
+          interviewStudentList.value = data.data
+        }
+      },
+      {deep:true}
+  )
+  
+  //entering marks
+  const comm = ref(null)
+  const score = ref(null)
+  const studentNumber = ref(null)
+  
+  const submitMarks = (a,b,c) =>{
+      buttonLoader.value=true
+      const form = reactive({
+      assessment_metric_number:assessmentNumber,
+      comment:b,
+      student_number:c,
+      assessment_date:null,
+      actual_score:parseInt(a)
+  })
+  
+  
+  // alert(JSON.stringify(form))
+  studentApplicationStore.newInterviewAssessmentResult(form)
+  }
+  
+  
+  
+  watch (
+      () => studentApplicationStore.interviewAssessmentResultResponse,
+      async (data) => {
+        if(data){
+      buttonLoader.value = false
+          notificationStore.successToast("Success", data.message)
+        }
+      },
+      {deep:true}
+  )
+  watch(
+      () => studentApplicationStore.errorMessage,
+      async (data) => {
+        if(data){
+          errorMessage.value = data.message
+          notificationStore.errorToast("Error",data.message)
+        }
+      },
+      {deep:true}
+      )
+  
+  
+  
+  
 </script>
-  <style></style>
+<style></style>
