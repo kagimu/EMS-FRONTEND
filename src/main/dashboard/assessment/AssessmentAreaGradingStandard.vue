@@ -5,19 +5,39 @@ import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import NewAssessmentAreaGradingStandard from "@/main/dashboard/assessment/NewAssessmentAreaGradingStandard.vue";
 import AppModal from "@/components/AppModal.vue";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import {useRouter} from "vue-router";
+import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
 
 const reportSetupStore = useReportSetupStore()
+const classStore = useClassesStore()
+const academicYearStore = useAcademicYearStore()
+const routerData = useRouter()
 const notificationStore  = useNotificationStore()
+const assessmentStore= useAssessmentStore()
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
+const campusNumber = routerData.currentRoute.value.query.id
 const assessmentAreaGradingStandardList = ref(null)
 const showAssessmentGradingModal = ref(false)
+const campus_level_number = ref("")
+const campusLevelList = ref(null)
+const campusClassList = ref(null)
+const campus_class_number = ref("")
+const gradingStandardListData = ref(null)
+const grading_standard_number = ref("")
 
 
 onMounted(
     async () => {
-      await reportSetupStore.fetchAssessmentAreaGradingStandardInfo()
+      await doFetchAssessmentAreaGradingStandard()
+      await classStore.fetchCampusLevel(campus_curriculum_number)
     }
 )
 
+const doFetchAssessmentAreaGradingStandard = () => {
+  reportSetupStore.fetchAssessmentAreaGradingStandardInfo(grading_standard_number.value ?? "")
+}
 
 watch(
     () => reportSetupStore.reportSettingsResponse,
@@ -54,7 +74,47 @@ const addAssessmentAreaGradingStandard = () =>{
   showAssessmentGradingModal.value = true
 }
 
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        campusLevelList.value = data.data
+      }
+    }
+)
 
+
+const fetchAcademicYear = (campus_level_number) => {
+  academicYearStore.fetchCampusClassByLevel(campus_level_number)
+}
+
+watch(
+    () => academicYearStore.campusClassByLevelResponse,
+    async (data) => {
+      if(data){
+        campusClassList.value = data.data
+      }
+    }
+)
+
+const fetchGradingStandard = () =>{
+  if(campus_class_number.value) {
+    let data = {
+      campus_number:campusNumber,
+      campus_class_number:campus_class_number.value
+    }
+    assessmentStore.fetchGradingStandardData(data)
+  }
+}
+
+watch(
+    () => assessmentStore.gradingStandardResponse,
+    async (data) => {
+      if(data){
+        gradingStandardListData.value = data.data
+      }
+    }
+)
 
 </script>
 
@@ -82,14 +142,69 @@ const addAssessmentAreaGradingStandard = () =>{
         </div>
 
 
+        <div class="mt-[50px]">
+          <div class="row mx-auto">
+
+            <div class="col-lg-4  mb-2">
+              <div>
+                <label class="textColor"><small>Level</small></label>
+                <select
+                    style="box-shadow: none;"
+                    class="form-select form-select-sm"
+                    v-model="campus_level_number"
+                    @change="fetchAcademicYear(campus_level_number)"
+                >
+                  <option disabled value="">--Select Level--</option>
+                  <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+                </select>
+              </div>
+            </div>
+
+
+            <div class="col-lg-4  mb-2">
+              <div>
+                <label class="textColor"><small>Class</small>
+                </label>
+                <select
+                    style="box-shadow: none;"
+                    class="form-select form-select-sm" required
+                    v-model="campus_class_number"
+                    @change="fetchGradingStandard"
+                >
+                  <option disabled value="">--Select Class --</option>
+                  <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+                </select>
+              </div>
+            </div>
+
+
+            <div class="col-lg-4  mb-2">
+              <div>
+                <label class="textColor"><small>Grading Standards</small></label>
+                <select
+                    class="form-control form-select form-control-sm shadow-none"
+                    v-model="grading_standard_number"
+                    @change="doFetchAssessmentAreaGradingStandard"
+                    aria-label="Default select example">
+                  <option disabled value="">--Select Grading Standard--</option>
+                  <option value="">All</option>
+                  <option v-for="(lst, index) in gradingStandardListData" :key="index" :value="lst.number">
+                    {{ lst.name + "["+lst.type+"]"}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
 
         <table class="table table-hover caption-top mt-5 table-sm text-sm" style="font-size: 14px;">
           <thead>
           <tr>
             <th class="w-[10%]" scope="col">Code</th>
             <th>Name</th>
-            <th>Number of Columns</th>
-            <!--            <th scope="col">Action</th>-->
+            <th>Grading Standard Name</th>
           </tr>
           </thead>
           <tbody>
@@ -98,17 +213,6 @@ const addAssessmentAreaGradingStandard = () =>{
             <td> {{levelInfo.assessment_area_name}}</td>
             <td> {{levelInfo.grading_standard_name}}</td>
             <td>
-              <!--              <div>
-                              <i
-                                  style="font-size: 13px;"
-                                  data-bs-toggle="modal" data-bs-target="#levelModal"
-                                  class="bi-pencil mr-2 cursor-pointer" @click="editLevel(levelInfo)"></i>
-                              <i
-                                  style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLevel(levelInfo, index)"></i>
-                              <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
-                                <span class="visually-hidden">Loading...</span>
-                              </div>
-                            </div>-->
             </td>
           </tr>
           </tbody>
