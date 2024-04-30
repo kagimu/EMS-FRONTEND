@@ -136,7 +136,7 @@ watch (
 <template>
     <div>
 
-      <AppModal title="Add Assessment Scale" v-model="showAssessmentScaleModal" lg>
+      <AppModal title="Add Assessment Grade" v-model="showAssessmentScaleModal" lg>
         <NewAssessmentScale :scaleD="scaleD"></NewAssessmentScale>
       </AppModal>
     
