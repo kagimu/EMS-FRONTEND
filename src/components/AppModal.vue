@@ -17,6 +17,7 @@ const props = defineProps({
   xl2: Boolean,
   xl4: Boolean,
   xl6: Boolean,
+  xl8: Boolean,
   title: String
 })
 const emit = defineEmits(["update:modelValue"])
@@ -30,7 +31,8 @@ const modalClass = computed(() => {
       xl: { true: "max-w-xl" },
       xl2: { true: "max-w-2xl" },
       xl4: { true: "max-w-4xl" },
-      xl6: { true: "max-w-6xl" }
+      xl6: { true: "max-w-6xl" },
+      xl8: { true: "max-w-7xl" }
     }
   })({
     xs: props.xs,
@@ -40,7 +42,8 @@ const modalClass = computed(() => {
     xl: props.xl,
     xl2: props.xl2,
     xl4: props.xl4,
-    xl6: props.xl6
+    xl6: props.xl6,
+    xl8: props.xl8
   })
 });
 

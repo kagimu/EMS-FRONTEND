@@ -216,6 +216,7 @@ const classStore = useClassesStore()
 const learningAreaStore = useLearningAreaStore()
 const schemeOfWorkStore = useSchemeOfWorkStore()
 const subjectStore = useSubjectStore()
+let classNo = routerData.currentRoute.value.query.c
 
 const scheme_number = ref(null)
 const academicYearList = ref([])
@@ -289,9 +290,15 @@ const filterSubject = (subjectNumber) => {
 onMounted(
     () =>{
       // subtopicStore.fetchSubTopics(classNumber ? classNumber : "")
+       fetchAcademicYrList(classNo)
     }
 )
 
+
+const fetchAcademicYrList = (classNumber) => {
+  subjectStore.fetchAcademicYearByClass(classNumber)
+  subjectStore.fetchSchemeSubjectByClass(classNumber)
+}
 
 const props = defineProps({
   schemeOfWorkList: [],
