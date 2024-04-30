@@ -11,11 +11,13 @@
   
   import {useRouter} from "vue-router";
   const routerData = useRouter()
+  const commons = useCommonsStore()
   let  curriculumNumber = routerData.currentRoute.value.query.crr
   let  curriculumNumberParent = routerData.currentRoute.value.query.cr
   const campus_curriculum_number = routerData.currentRoute.value.query.crr
   
   import { useAbility } from '@casl/vue';
+  import useCommonsStore from "@/composables/useCommons.js";
   
   const { can } = useAbility()
   
