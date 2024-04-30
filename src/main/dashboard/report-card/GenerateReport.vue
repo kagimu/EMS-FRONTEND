@@ -7,16 +7,17 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import useNotificationStore from "@/composables/useNotification.js";
+import {useRouter} from "vue-router";
 const reportStore = useReportCardStore()
 const levelStore = useLevelStore()
 const classStore = useClassesStore()
 const studyPeriodStore = useStudyPeriodStore()
 const academicYearStore = useAcademicYearStore()
 const notificationStore  = useNotificationStore()
+const routerData = useRouter()
 
-
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const campusCurriculumDataInfo = ref(null)
-const campus_curriculum_number = ref("")
 const campus_level_number = ref("")
 const academic_year_number = ref("")
 const study_period_number = ref("")
@@ -31,7 +32,7 @@ const loader = ref(undefined)
 onMounted(
     async () => {
       await filterGeneratedReport()
-
+      await fetchCampusLevel()
     }
 )
 
@@ -57,7 +58,7 @@ watch(
     {deep:true}
 )
 
-const fetchCampusLevel = (campus_curriculum_number) => {
+const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
 }
 
@@ -167,17 +168,7 @@ watch(
 
   <div class="row bg-white mx-auto mt-2">
 
-    <div class="col-3">
-        <label class="textColor">Curriculum</label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="campus_curriculum_number"
-            @change="fetchCampusLevel(campus_curriculum_number)">
-          <option disabled value="">--Select Curriculum--</option>
-          <option v-for="(list, index) in campusCurriculumDataInfo" :key="index" :value="list.number">{{list.name}}</option>
-        </select>
-    </div>
+
 
     <div class="col-3">
       <label class="textColor"><small>Level</small></label>

@@ -17,12 +17,12 @@ const  notificationStore  = useNotificationStore()
 const levelStore = useLevelStore()
 const routerData = useRouter()
 const buttonLoader = ref(false)
-const campus_curriculum_number = ref("")
 const campusCurriculumDataInfo = ref(null)
 const campusLevelList = ref(null)
 const campus_level_number = ref("")
 const campusClassList = ref(null)
 const campusNumber = routerData.currentRoute.value.query.id
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
 
 
 const form = reactive({
@@ -69,7 +69,8 @@ watch (
 
 onMounted(
     async () => {
-      await levelStore.fetchCampusCurriculum(campusNumber)
+      // await levelStore.fetchCampusCurriculum(campusNumber)
+      await fetchCampusLevel()
     }
 )
 
@@ -77,7 +78,7 @@ onMounted(
 
 
 
-const fetchCampusLevel = (campus_curriculum_number) => {
+const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
 }
 
@@ -134,17 +135,6 @@ watch(
                 class="form-control form-select-sm shadow-none">
           </div>
 
-          <div class="mb-2">
-            <div class="text-[13px] text-[#505050]"> Curriculum</div>
-            <select
-                class="form-select form-select-sm shadow-none"
-                v-model="campus_curriculum_number"
-                @change="fetchCampusLevel(campus_curriculum_number)"
-            >
-              <option disabled value="">--Select Curriculum--</option>
-              <option v-for="(list, index) in campusCurriculumDataInfo" :key="index" :value="list.number">{{list.name}}</option>
-            </select>
-          </div>
 
 
 
