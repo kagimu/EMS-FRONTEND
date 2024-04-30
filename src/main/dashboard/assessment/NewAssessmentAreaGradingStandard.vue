@@ -19,13 +19,14 @@ const studyPeriodStore = useStudyPeriodStore()
 const academicYearStore = useAcademicYearStore()
 const routerData = useRouter()
 const campusNumber = routerData.currentRoute.value.query.id
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
 
 const errorMessage = ref("")
 const loader = ref(false)
 const interviewAssessmentListData = ref(null)
 const gradingStandardListData = ref(null)
 const campusCurriculumDataInfo = ref(null)
-const campus_curriculum_number = ref("")
+// const campus_curriculum_number = ref("")
 const campusLevelList = ref(null)
 const campus_level_number = ref("")
 const academic_year_number = ref("")
@@ -45,13 +46,14 @@ const form = reactive({
 
 onMounted(
     async () => {
-      await levelStore.fetchCampusCurriculum(campusNumber)
+      // await levelStore.fetchCampusCurriculum(campusNumber)
+      await fetchCampusLevel()
     }
 )
 
 
 
-const fetchCampusLevel = (campus_curriculum_number) => {
+const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
 }
 
@@ -104,7 +106,6 @@ const addAssessmentAreaGradingStandard = () => {
   form.code = form.code ? parseInt(form.code) : form.code
   reportSetupStore.newAssessmentAreaGradingStandard(form)
 }
-
 
 
 
@@ -168,16 +169,6 @@ watch(
 
 
 watch(
-    () => levelStore.campusCurriculumResponse,
-    async (data) => {
-      if(data){
-        campusCurriculumDataInfo.value = data.data
-
-      }
-    }
-)
-
-watch(
     () => reportSetupStore.reportColumnAssessmentResponse,
     async (data) => {
       if(data){
@@ -221,17 +212,7 @@ watch(
 
 
 
-      <div class="mb-2">
-        <label class="textColor"><small>Curriculum</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="campus_curriculum_number"
-            @change="fetchCampusLevel(campus_curriculum_number)">
-          <option disabled value="">--Select Curriculum--</option>
-          <option v-for="(list, index) in campusCurriculumDataInfo" :key="index" :value="list.number">{{list.name}}</option>
-        </select>
-      </div>
+
 
       <div class="mb-2">
         <label class="textColor"><small>Level</small></label>
