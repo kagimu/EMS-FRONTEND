@@ -96,8 +96,7 @@ watch(
       if(data){
         campusLevelList.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -141,7 +140,7 @@ watch(
 
 
 
-const fetchAcademicYea = (campus_level_number) => {
+const fetchAcademicYear = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
   academicYearStore.fetchCampusClassByLevel(campus_level_number)
 }
@@ -220,7 +219,7 @@ watch(
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="campus_level_number"
-            @change="fetchAcademicYea(campus_level_number)"
+            @change="fetchAcademicYear(campus_level_number)"
         >
           <option disabled value="">--Select Level--</option>
           <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
