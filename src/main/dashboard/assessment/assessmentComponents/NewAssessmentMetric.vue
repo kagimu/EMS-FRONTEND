@@ -48,6 +48,7 @@
   
     const form = reactive({ 
       name:null,
+      code:null,
       assessment_area_number:null,
       weight:null,
       description:null,
@@ -156,6 +157,7 @@
     //  alert(JSON.stringify(form))
      interviewDialog.value = true;
      buttonLoader.value = true
+      form.code = form.code ? parseInt(form.code) : form.code
      assessmentStore.createAssessmentMetrics(form)
     }
   
@@ -312,6 +314,20 @@
      <form @submit.prevent="addInterviewAssesmentMetrics">
         <div class="row">
            <div class="col-lg-6">
+
+             <div class="mb-2">
+               <label class="textColor"><small>Code</small></label>
+               <input
+                   @keypress="commons.numbersOnlyValidator($event)"
+                   maxlength="10"
+                   type="text"
+                   style="outline: none 0 !important;
+            box-shadow: none;"
+                   v-model="form.code"
+                   required
+                   class="form-control form-select-sm">
+             </div>
+
               <div class="mb-2">
                  <label class="textColor"><small>Level</small></label>
                  <select
@@ -425,11 +441,11 @@
                  <input type="date" class="form-control" v-model="form.scheduled_on">
               </div>
            
-        <div class="mb-2">
-           <label class="textColor"><small>Description</small></label>
-           <textarea class="form-control textColor"  v-model="form.description">
-           </textarea>
-        </div>
+          <div class="mb-2">
+             <label class="textColor"><small>Description</small></label>
+             <textarea class="form-control textColor"  rows="3" v-model="form.description">
+             </textarea>
+          </div>
 
         </div>
         </div>
