@@ -208,7 +208,7 @@ watch (
         <thead>
         <tr>
           <th scope="col">Name[ABBREV]</th>
-          <th scope="col">Values(Min - Max)</th>
+          <th scope="col">Summation(Min - Max)</th>
           <th scope="col">Class</th>
           <th scope="col">Remarks</th>
           <th scope="col">Description</th>
