@@ -292,7 +292,7 @@ watch(
       <div class="mb-2">
         <div class="row">
             <div class="col-lg-6">
-              <div class="text-[13px] text-[#505050]">Minimum Value</div>
+              <div class="text-[13px] text-[#505050]">Minimum sum</div>
                <input
                    maxlength="3"
                    @keypress="commons.numbersOnlyValidator($event)"
@@ -302,7 +302,7 @@ watch(
                >
             </div>
             <div class="col-lg-6">
-              <div class="text-[13px] text-[#505050]">Maximum Value</div>
+              <div class="text-[13px] text-[#505050]">Maximum sum</div>
               <input
                  maxlength="3"
                  @keypress="commons.numbersOnlyValidator($event)"

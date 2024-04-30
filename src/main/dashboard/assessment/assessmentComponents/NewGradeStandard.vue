@@ -27,7 +27,7 @@ const campus_curriculum_number = routerData.currentRoute.value.query.crr
 
 const form = reactive({
   code: null,
-  campus_class_number: null,
+  campus_class_number: "",
   type:"",
   name:null,
   description:null,

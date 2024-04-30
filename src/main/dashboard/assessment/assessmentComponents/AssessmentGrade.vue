@@ -136,7 +136,7 @@ watch (
 <template>
     <div>
 
-      <AppModal title="Add Assessment Scale" v-model="showAssessmentScaleModal" lg>
+      <AppModal title="Add Assessment Grade" v-model="showAssessmentScaleModal" lg>
         <NewAssessmentScale :scaleD="scaleD"></NewAssessmentScale>
       </AppModal>
     
@@ -208,7 +208,7 @@ watch (
         <thead>
         <tr>
           <th scope="col">Name[ABBREV]</th>
-          <th scope="col">Values(Min - Max)</th>
+          <th scope="col">Summation(Min - Max)</th>
           <th scope="col">Class</th>
           <th scope="col">Remarks</th>
           <th scope="col">Description</th>

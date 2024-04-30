@@ -1,23 +1,350 @@
+<script setup>
+
+import {onMounted, ref, watch} from "vue";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
+import useNotificationStore from "@/composables/useNotification.js";
+import NewSchemeOfWork from "@/main/dashboard/curriculum/schemeOfWork/NewSchemeOfWork.vue";
+import useCommonsStore from "@/composables/useCommons.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import router from "@/config/router.js";
+import {useRouter} from "vue-router";
+import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
+import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
+import NewLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPlan.vue";
+import LessonPlanDetails from "@/main/dashboard/curriculum/schemeOfWork/LessonPlanDetails.vue";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
+import SchemeOfWorkPdfTemplate from "@/main/dashboard/curriculum/schemeOfWork/SchemeOfWorkPdfTemplate.vue";
+import AppModal from "@/components/AppModal.vue";
+
+const level = ref( "")
+const curriculumNumber = ref( "")
+const schemeOfWorkRef = ref( null)
+const academic_year_number = ref( "")
+const schemeDataInfo = ref( {})
+const curriculumDialog = ref( false)
+const exportLoader = ref( false)
+const lessonPlanDialog = ref( false)
+const lessonPlanDetailsDialog = ref( false)
+const lessonPlanInfo = ref( "")
+const learningAreaList = ref( [])
+const classList = ref( [])
+const levelList = ref( [])
+const classStore = useClassesStore()
+let selectedClass = ref( "")
+const routerData = useRouter()
+
+
+const learningAreaStore = useLearningAreaStore()
+const  notificationStore  = useNotificationStore()
+
+const scheme_subject_number = ref(null)
+const learningAreaRef = ref(null)
+const schemeOfWorkList = ref([])
+const schemeSubjectList = ref([])
+const academicYearList = ref([])
+const curriculumList = ref([])
+const commons = useCommonsStore()
+const levelStore = useLevelStore()
+const schemeOfWorkStore = useSchemeOfWorkStore()
+const subjectStore = useSubjectStore()
+
+let classNo = routerData.currentRoute.value.query.c
+let campusNumber = routerData.currentRoute.value.query.id
+let curriculumNo = routerData.currentRoute.value.query.crr
+let levelNo = routerData.currentRoute.value.query.lv
+
+if(classNo){
+  selectedClass.value =  classNo
+}
+
+const addLessonPlan = (schemeData) => {
+  schemeDataInfo.value = {...{class_number:selectedClass.value},...{subject_number:scheme_subject_number.value},...schemeData}
+  lessonPlanDialog.value = true
+}
+
+const viewLessonPlan = (lst) => {
+  lessonPlanDetailsDialog.value = true
+  lessonPlanInfo.value = lst
+}
+
+const addSchemeOfWork = () => {
+  curriculumDialog.value = true
+}
+
+const exportSchemeOfWorkPdf = () => {
+
+  if(schemeOfWorkList.value && schemeOfWorkList.value.length < 1){
+    notificationStore.warningToast("Warning", "No details found on scheme of work")
+    return
+  }
+  exportLoader.value = true
+  schemeOfWorkStore.exportPdf(commons.initializePdfData("Scheme Of Work", schemeOfWorkRef.value.innerHTML));
+}
+
+
+const changeMenu = (classNo) => {
+  if(classNo){
+    router.push({name:'scheme-of-work', query:{id:campusNumber,crr:curriculumNo,lv:levelNo,c:classNo}})
+  }
+
+}
+
+
+const filterSchemeSubject = () => {
+  schemeOfWorkList.value = []
+  let data = {
+    academic_year_number:academic_year_number.value,
+    subject_number:scheme_subject_number.value,
+    class_number:selectedClass.value
+  }
+
+  schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
+}
+
+onMounted(
+    async () => {
+
+      //fetch level after selecting curriculum
+      if(curriculumNo) {
+        curriculumNumber.value = curriculumNo
+        await classStore.fetchCampusLevel(curriculumNo)
+      }
+
+      // fetch classes after selecting level
+      if(levelNo){
+        level.value = levelNo
+        await classStore.fetchClassLevel({campusCurriculumNumber: curriculumNumber.value, campusLevelNumber: levelNo})
+        await fetchSchemeClasses(levelNo)
+      }
+
+      await levelStore.fetchCampusCurriculum(campusNumber)
+      // await levelStore.fetchCampusLevelList(campusNumber)
+
+      if(selectedClass.value) {
+        await fetchAcademicYrList(selectedClass.value)
+        await subjectStore.fetchSchemeSubjectByClass(selectedClass.value)
+      }
+    }
+)
+
+const fetchAcademicYrList = (classNumber) => {
+  subjectStore.fetchAcademicYearByClass(classNumber)
+}
+
+const fetchCampusLevel = (curriculumNumber) => {
+  if(curriculumNumber){
+    router.push({name:'scheme-of-work', query:{id:campusNumber,crr:curriculumNumber}})
+  }
+}
+
+const fetchSchemeClasses = (levelNumber) => {
+  if(curriculumNumber.value && levelNumber){
+    if(campusNumber && curriculumNo){
+      router.push({name:'scheme-of-work', query:{id:campusNumber,crr:curriculumNo,lv:levelNumber,c:classNo??''}})
+    }
+  }
+}
+
+watch(
+    // () => classStore.schemeClassInfoResponse,
+    () => classStore.classLevelInfoResponse,
+    async (data) => {
+      if(data){
+        let classInfo = data.data[0].classes
+        classList.value = classInfo
+        if(classInfo && (classInfo.length > 0)){
+          if(!selectedClass.value){
+            let classNo = classInfo[0].number
+            // selectedClass.value = classNo
+            await subjectStore.fetchSchemeSubjectByClass(classNo)
+            // await subjectStore.fetchAcademicYearByClass(classNo)
+            await fetchAcademicYrList(classNo)
+
+            // fetch scheme of work
+            if(academic_year_number.value && scheme_subject_number.value) {
+              let data = {
+                academic_year_number: academic_year_number.value,
+                subject_number: scheme_subject_number.value,
+                class_number: classInfo[0].number
+              }
+              await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
+            }
+          }
+        }
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => schemeOfWorkStore.newSchemeOfWorkResponse,
+    async (data) => {
+      if(data){
+        if(selectedClass.value) {
+          let data = {
+            academic_year_number:academic_year_number.value,
+            subject_number:scheme_subject_number.value,
+            class_number:selectedClass.value
+          }
+          await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
+        }
+        notificationStore.successToast("Success",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => schemeOfWorkStore.schemeOfWorkByClassResponse,
+    async (data) => {
+      if(data){
+        schemeOfWorkList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => subjectStore.academicYearByClassResponse,
+    async (data) => {
+      if(data){
+        let acd = data.data
+
+        academicYearList.value = acd
+
+
+        if(!academic_year_number.value) {
+          let acdYrNo = acd[0].number
+          academic_year_number.value =  acdYrNo
+
+          // fetch scheme of work
+          if(scheme_subject_number.value && selectedClass.value) {
+            let data = {
+              academic_year_number: acdYrNo,
+              subject_number: scheme_subject_number.value,
+              class_number: selectedClass.value
+            }
+            await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
+          }
+
+        }
+
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => schemeOfWorkStore.updateSchemeOfWorkResponse,
+    async (data) => {
+      if(data){
+        if(selectedClass.value) {
+          let data = {
+            academic_year_number:academic_year_number.value,
+            subject_number:scheme_subject_number.value,
+            class_number:selectedClass.value
+          }
+          await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
+        }
+        notificationStore.successToast("Success",data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => subjectStore.schemeSubjectByClassResponse,
+    async (data) => {
+      if(data){
+        let subjectInfo = data.data
+        schemeSubjectList.value = subjectInfo
+        if(!scheme_subject_number.value){
+          let subjectNo = subjectInfo[0].number
+          scheme_subject_number.value = subjectNo
+
+          if(selectedClass.value && academic_year_number.value){
+            let data = {
+              subject_number:subjectNo,
+              class_number:selectedClass.value,
+              academic_year_number:academic_year_number.value,
+            }
+            await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
+          }
+
+
+        }
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => schemeOfWorkStore.newLessonPlanResponse,
+    async (data) => {
+      if (data) {
+        let data = {
+          subject_number:scheme_subject_number.value,
+          class_number:selectedClass.value,
+          academic_year_number:academic_year_number.value,
+        }
+
+        await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
+        notificationStore.successToast("Success",data.message)
+      }
+    },
+    {deep: true}
+)
+
+
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        levelList.value = data.data ///---------------
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => schemeOfWorkStore.exportPdfResponse,
+    async (data) => {
+      if(data){
+        exportLoader.value = false
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => levelStore.campusCurriculumResponse,
+    async (data) => {
+      if(data){
+        curriculumList.value = data.data
+        /* if(!campusCurriculumNumber){
+           campusCurriculumNumber = curriculumInfo[0].number
+         }*/
+      }
+    },
+    {deep:true}
+)
+
+
+</script>
 <template>
   <div>
 
-    <div class="modal fade" id="schemeOfWorkModal" tabindex="-1" :class="{ show: curriculumDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2"> {{(schemeOfWorkList.number && (schemeOfWorkList.status === "Pending")) ? "Edit Scheme of work" : "Add Scheme of work"}}  </h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-              <new-scheme-of-work :schemeOfWorkList="schemeOfWorkList" ref="schemeOfWorkRef"></new-scheme-of-work>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
+    <AppModal :title="(schemeOfWorkList.number && (schemeOfWorkList.status === 'Pending')) ? 'Edit Scheme of work' : 'Add Scheme of work'" v-model="curriculumDialog" xl8>
+      <new-scheme-of-work :schemeOfWorkList="schemeOfWorkList" ref="schemeOfWorkRef"></new-scheme-of-work>
+    </AppModal>
 
 
 
@@ -288,346 +615,7 @@
   </div>
 </template>
 
-<script setup>
 
-import {onMounted, ref, watch} from "vue";
-import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
-import useNotificationStore from "@/composables/useNotification.js";
-import NewSchemeOfWork from "@/main/dashboard/curriculum/schemeOfWork/NewSchemeOfWork.vue";
-import useCommonsStore from "@/composables/useCommons.js";
-import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
-import router from "@/config/router.js";
-import {useRouter} from "vue-router";
-import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
-import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
-import NewLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPlan.vue";
-import LessonPlanDetails from "@/main/dashboard/curriculum/schemeOfWork/LessonPlanDetails.vue";
-import {useLevelStore} from "@/main/settings/level/store/level.js";
-import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
-import SchemeOfWorkPdfTemplate from "@/main/dashboard/curriculum/schemeOfWork/SchemeOfWorkPdfTemplate.vue";
-
-const level = ref( "")
-const curriculumNumber = ref( "")
-const schemeOfWorkRef = ref( null)
-const academic_year_number = ref( "")
-const schemeDataInfo = ref( {})
-const curriculumDialog = ref( false)
-const exportLoader = ref( false)
-const lessonPlanDialog = ref( false)
-const lessonPlanDetailsDialog = ref( false)
-const lessonPlanInfo = ref( "")
-const learningAreaList = ref( [])
-const classList = ref( [])
-const levelList = ref( [])
-const classStore = useClassesStore()
-let selectedClass = ref( "")
-const routerData = useRouter()
-
-
-const learningAreaStore = useLearningAreaStore()
-const  notificationStore  = useNotificationStore()
-
-const scheme_subject_number = ref(null)
-const learningAreaRef = ref(null)
-const schemeOfWorkList = ref([])
-const schemeSubjectList = ref([])
-const academicYearList = ref([])
-const curriculumList = ref([])
-const commons = useCommonsStore()
-const levelStore = useLevelStore()
-const schemeOfWorkStore = useSchemeOfWorkStore()
-const subjectStore = useSubjectStore()
-
-let classNo = routerData.currentRoute.value.query.c
-let campusNumber = routerData.currentRoute.value.query.id
-let curriculumNo = routerData.currentRoute.value.query.crr
-let levelNo = routerData.currentRoute.value.query.lv
-
-if(classNo){
-  selectedClass.value =  classNo
-}
-
-const addLessonPlan = (schemeData) => {
-  schemeDataInfo.value = {...{class_number:selectedClass.value},...{subject_number:scheme_subject_number.value},...schemeData}
-  lessonPlanDialog.value = true
-}
-
-const viewLessonPlan = (lst) => {
-  lessonPlanDetailsDialog.value = true
-  lessonPlanInfo.value = lst
-}
-
-const addSchemeOfWork = () => {
-  curriculumDialog.value = true
-}
-
-const exportSchemeOfWorkPdf = () => {
-
-    if(schemeOfWorkList.value && schemeOfWorkList.value.length < 1){
-      notificationStore.warningToast("Warning", "No details found on scheme of work")
-      return
-    }
-  exportLoader.value = true
-  schemeOfWorkStore.exportPdf(commons.initializePdfData("Scheme Of Work", schemeOfWorkRef.value.innerHTML));
-}
-
-
-const changeMenu = (classNo) => {
-  if(classNo){
-    router.push({name:'scheme-of-work', query:{id:campusNumber,crr:curriculumNo,lv:levelNo,c:classNo}})
-  }
-
-}
-
-
-const filterSchemeSubject = () => {
-  schemeOfWorkList.value = []
-  let data = {
-    academic_year_number:academic_year_number.value,
-    subject_number:scheme_subject_number.value,
-    class_number:selectedClass.value
-  }
-
-  schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
-}
-
-onMounted(
-    async () => {
-
-      //fetch level after selecting curriculum
-      if(curriculumNo) {
-        curriculumNumber.value = curriculumNo
-        await classStore.fetchCampusLevel(curriculumNo)
-      }
-
-      // fetch classes after selecting level
-      if(levelNo){
-        level.value = levelNo
-        await classStore.fetchClassLevel({campusCurriculumNumber: curriculumNumber.value, campusLevelNumber: levelNo})
-        await fetchSchemeClasses(levelNo)
-      }
-
-      await levelStore.fetchCampusCurriculum(campusNumber)
-      // await levelStore.fetchCampusLevelList(campusNumber)
-
-      if(selectedClass.value) {
-        await fetchAcademicYrList(selectedClass.value)
-        await subjectStore.fetchSchemeSubjectByClass(selectedClass.value)
-      }
-    }
-)
-
-const fetchAcademicYrList = (classNumber) => {
-  subjectStore.fetchAcademicYearByClass(classNumber)
-}
-
-const fetchCampusLevel = (curriculumNumber) => {
-  if(curriculumNumber){
-    router.push({name:'scheme-of-work', query:{id:campusNumber,crr:curriculumNumber}})
-  }
-}
-
-const fetchSchemeClasses = (levelNumber) => {
-  if(curriculumNumber.value && levelNumber){
-    if(campusNumber && curriculumNo){
-      router.push({name:'scheme-of-work', query:{id:campusNumber,crr:curriculumNo,lv:levelNumber,c:classNo??''}})
-    }
-  }
-}
-
-watch(
-    // () => classStore.schemeClassInfoResponse,
-    () => classStore.classLevelInfoResponse,
-    async (data) => {
-      if(data){
-        let classInfo = data.data[0].classes
-       classList.value = classInfo
-        if(classInfo && (classInfo.length > 0)){
-          if(!selectedClass.value){
-            let classNo = classInfo[0].number
-            // selectedClass.value = classNo
-            await subjectStore.fetchSchemeSubjectByClass(classNo)
-            // await subjectStore.fetchAcademicYearByClass(classNo)
-            await fetchAcademicYrList(classNo)
-
-              // fetch scheme of work
-              if(academic_year_number.value && scheme_subject_number.value) {
-                let data = {
-                  academic_year_number: academic_year_number.value,
-                  subject_number: scheme_subject_number.value,
-                  class_number: classInfo[0].number
-                }
-                await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
-              }
-          }
-        }
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => schemeOfWorkStore.newSchemeOfWorkResponse,
-    async (data) => {
-      if(data){
-        if(selectedClass.value) {
-          let data = {
-            academic_year_number:academic_year_number.value,
-            subject_number:scheme_subject_number.value,
-            class_number:selectedClass.value
-          }
-          await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
-        }
-        notificationStore.successToast("Success",data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => schemeOfWorkStore.schemeOfWorkByClassResponse,
-    async (data) => {
-      if(data){
-        schemeOfWorkList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => subjectStore.academicYearByClassResponse,
-    async (data) => {
-      if(data){
-        let acd = data.data
-
-        academicYearList.value = acd
-
-
-       if(!academic_year_number.value) {
-         let acdYrNo = acd[0].number
-         academic_year_number.value =  acdYrNo
-
-         // fetch scheme of work
-         if(scheme_subject_number.value && selectedClass.value) {
-           let data = {
-             academic_year_number: acdYrNo,
-             subject_number: scheme_subject_number.value,
-             class_number: selectedClass.value
-           }
-           await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
-         }
-
-       }
-
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => schemeOfWorkStore.updateSchemeOfWorkResponse,
-    async (data) => {
-      if(data){
-        if(selectedClass.value) {
-          let data = {
-            academic_year_number:academic_year_number.value,
-            subject_number:scheme_subject_number.value,
-            class_number:selectedClass.value
-          }
-          await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
-        }
-        notificationStore.successToast("Success",data.message)
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => subjectStore.schemeSubjectByClassResponse,
-    async (data) => {
-      if(data){
-        let subjectInfo = data.data
-        schemeSubjectList.value = subjectInfo
-        if(!scheme_subject_number.value){
-          let subjectNo = subjectInfo[0].number
-          scheme_subject_number.value = subjectNo
-
-         if(selectedClass.value && academic_year_number.value){
-             let data = {
-               subject_number:subjectNo,
-               class_number:selectedClass.value,
-               academic_year_number:academic_year_number.value,
-             }
-             await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
-         }
-
-
-        }
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => schemeOfWorkStore.newLessonPlanResponse,
-    async (data) => {
-      if (data) {
-        let data = {
-          subject_number:scheme_subject_number.value,
-          class_number:selectedClass.value,
-          academic_year_number:academic_year_number.value,
-        }
-
-        await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
-        notificationStore.successToast("Success",data.message)
-      }
-    },
-    {deep: true}
-)
-
-
-
-watch(
-    () => classStore.campusLevelResponse,
-    async (data) => {
-      if(data){
-        levelList.value = data.data ///---------------
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => schemeOfWorkStore.exportPdfResponse,
-    async (data) => {
-      if(data){
-        exportLoader.value = false
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => levelStore.campusCurriculumResponse,
-    async (data) => {
-      if(data){
-        curriculumList.value = data.data
-       /* if(!campusCurriculumNumber){
-          campusCurriculumNumber = curriculumInfo[0].number
-        }*/
-      }
-    },
-    {deep:true}
-)
-
-
-</script>
 
 <style scoped>
 .buttonStyle{
