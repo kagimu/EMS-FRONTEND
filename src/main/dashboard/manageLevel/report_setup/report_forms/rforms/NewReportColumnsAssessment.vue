@@ -19,6 +19,7 @@ const classStore = useClassesStore()
 const studyPeriodStore = useStudyPeriodStore()
 const academicYearStore = useAcademicYearStore()
 const campusNumber = routerData.currentRoute.value.query.id
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
 
 const errorMessage = ref("")
 const loader = ref(false)
@@ -26,7 +27,6 @@ const reportColumnList = ref(null)
 const interviewAssessmentListData = ref(null)
 const assessmentMetricList = ref(null)
 const campusCurriculumDataInfo = ref(null)
-const campus_curriculum_number = ref("")
 const campusLevelList = ref(null)
 const campus_level_number = ref("")
 const academic_year_number = ref("")
@@ -51,10 +51,11 @@ onMounted(
       await levelStore.fetchCampusCurriculum(campusNumber)
       await reportSetupStore.fetchReportColumn()
       await assessmentStore.fetchAssessmentMetrics()
+      await fetchCampusLevel()
     }
 )
 
-const fetchCampusLevel = (campus_curriculum_number) => {
+const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
 }
 
@@ -228,19 +229,6 @@ watch(
         </select>
       </div>
 
-
-
-      <div class="mb-2">
-        <label class="textColor"><small>Curriculum</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="campus_curriculum_number"
-            @change="fetchCampusLevel(campus_curriculum_number)">
-          <option disabled value="">--Select Curriculum--</option>
-          <option v-for="(list, index) in campusCurriculumDataInfo" :key="index" :value="list.number">{{list.name}}</option>
-        </select>
-      </div>
 
       <div class="mb-2">
         <label class="textColor"><small>Level</small></label>

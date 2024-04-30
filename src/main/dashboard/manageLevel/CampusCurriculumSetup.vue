@@ -28,19 +28,19 @@ let reportSettingsQuery = routerData.currentRoute.value.query.rp
 
 const campusSettingsMenu = ref([
   {
-    name:"Campus Level",
+    name:"Levels",
     router_name:"campus-level"
   },
   {
-    name:"Class",
+    name:"Classes",
     router_name:"class-data"
   },
   {
-    name:"Academic Year",
+    name:"Academic Years",
     router_name:"academic-year"
   },
   {
-    name:"Study Period",
+    name:"Study Periods",
     router_name:"study-period"
   },
   {

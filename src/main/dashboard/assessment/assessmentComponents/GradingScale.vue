@@ -29,7 +29,7 @@ const class_number = ref(null)
 const showDialog = ref(null)
 const showAggregateScaleModal = ref(false)
 const campusNumber = routerData.currentRoute.value.query.id
-const campus_curriculum_number = ref("")
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const campus_level_number = ref("")
 const campus_class_number = ref("")
 const campusCurriculumDataInfo = ref(null)
@@ -38,6 +38,7 @@ const campusClassList = ref(null)
 
 onMounted(() => {
       fetchGradeScale()
+      fetchCampusLevel()
     }
 )
 
@@ -54,7 +55,7 @@ const addAggregateScale = () => {
 }
 
 
-const fetchCampusLevel = (campus_curriculum_number) => {
+const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
 }
 
@@ -177,18 +178,6 @@ watch (
 
         <div class="mt-[50px]">
           <div class="row mx-auto">
-
-            <div class="col-lg-4  mb-2">
-              <select
-                  class="form-select form-select-sm shadow-none"
-                  v-model="campus_curriculum_number"
-                  @change="fetchCampusLevel(campus_curriculum_number)"
-              >
-                <option disabled value="">--Select Curriculum--</option>
-                <option v-for="(list, index) in campusCurriculumDataInfo" :key="index" :value="list.number">{{list.name}}</option>
-              </select>
-            </div>
-
 
 
             <div class="col-lg-4  mb-2">
