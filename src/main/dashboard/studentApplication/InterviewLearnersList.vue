@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div class="row">
+
       <div class="modal fade" id="admitMainModal" tabindex="-1" :class="{ show: admitshow }" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -17,7 +17,7 @@
       </div>
     </div>
   </div>
-  </div>
+
    
 
     <!-- end  -->
@@ -25,7 +25,7 @@
       <div class="col-12">
         <div class="">
           <div class="" style="padding: 0;">
-  <div class="container mt-2">
+  <div class="contaner mt-2">
       <div class="row">
         <div class="col-lg-12">
           <div class="">

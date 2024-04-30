@@ -10,33 +10,28 @@
           <div class="">
             <div class="" style="padding: 0;">
     <div class="container mt-4">
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="">
-              <div class="">
-                  <h5 style="font-size: 14px;margin-top: 2px;">Feeding Users</h5>
-              </div>
-            </div>
-          </div>
-        </div>
         <div class="row mt-3">
     <div class="col-lg-12">
-      <div class="mb-2" style="width: 200px;">
-    <!-- <select
-      style="box-shadow: none;"
-      class="form-select form-select-sm"
-      v-model="learning_area_number">
-    <option disabled value="">--Filter by class--</option>
-    <option value="">All</option>
-    <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.name}}</option>
-    </select> -->
-<select   class="form-select form-select-sm" v-model="formData.feeding_group_number"
-      style="box-shadow: none;">
-    <option  disabled value="">-filter By Feeding Group - </option>
-    <option>All</option>
+
+
+
+      <div class="mb-2">
+    <label class="textColor"><small>Feeding Session</small>  </label>
+    <select v-model="form.feeding_session_number" class="form-control form-select" @change="setFeedingSessionNumber(form.feeding_session_number)"> 
+            <option disabled value="">Select</option>
+            <option v-for="(list, index) in feedingSessionGroupData" :key="index" :value="list.number">{{list.name}}</option>
+ </select>
+</div>
+
+<div class="mb-2">
+    <label class="mt-4"><small>Feeding Group</small></label>
+<select class="form-select form-control" v-model="form.feeding_group_number" required @change="setFeedingGroupNumber(form.feeding_group_number)">
+    <option value="" disabled>-select</option>
     <option v-for="(list,index) in feedingGroupData" :key="index" :value="list.number">{{list.name  }}</option>
 </select>
 </div>
+
+      
 <div class="table-responsive">
       <table
         id="datatable"
@@ -48,7 +43,7 @@
             <th>#</th>
             <th>Name</th>
             <th>Group</th>   
-            <th colspan="2">Menu</th>
+            <th colspan="2">Meal</th>
           </tr>
     <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
       {{errorMessage}}
@@ -70,7 +65,7 @@
                     </thead>
                     <tbody>
                      <tr><td>Chicken</td><td><input type="number" value="1"></td></tr> 
-                     <tr><td>Pork</td><td><input type="number" value="2"></td></tr> 
+                     <tr><td>Fish</td><td><input type="number" value="2"></td></tr> 
                      <tr><td>Water</td><td><input type="number" value="4"></td></tr> 
                     </tbody>
                     </table>
@@ -105,31 +100,17 @@
   import { useUserStore } from "@/main/dashboard/profiles/store/users.js"
   import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
   import { useAccountStore } from "@/main/dashboard/account/store/account.js";
-import { RouterView } from "vue-router";
-
 
 const cateringStore = useCateringStore()
 const accountStore = useAccountStore()
 const userN = ref(null)
 const menuData = ref(null)
-
-const setStudentN = (a) =>{
-  userN.value = a
-}
-
+const feedingSessionGroupData = ref(null)
 const form = reactive({
   user_number:userN,
 })
 
-// newFeedingsResponse,
-// newFeedings
-
-
-
   const feedingGroupData = ref([])
-  const enrollmentStore = useEnrolmentStore()
-
-
   const userList = ref( [])
   let errorMessage = ref(null)
   const buttonLoader = ref(false)
@@ -140,17 +121,56 @@ const form = reactive({
     feeding_group_number:null
   })
   
+ 
 
-  onMounted(
+const setStudentN = (a) =>{
+  userN.value = a
+}
+onMounted(
       () => {
-        enrollmentStore.fetchEnrolment()
         cateringStore.fetchFeedingGroup()
         accountStore.fetchUsersToAssign()
-        cateringStore.fetchMeals()
+        // cateringStore.fetchMeals()
+        cateringStore.fetchFeedingGroupSessions()
       }
   )
   
+  const sessionNumber = ref(null)
+  const groupNumber = ref(null)
+
  
+const setFeedingSessionNumber = (sessionN) =>{
+  sessionNumber.value = sessionN
+}
+
+const setFeedingGroupNumber = (groupN) =>{
+  groupNumber.value = groupN 
+  fetchMeals()
+}
+
+
+const fetchMeals = () =>{
+  // alert(groupNumber.value)
+cateringStore.fetchMeals(groupNumber.value,sessionNumber.value)
+}
+
+
+
+  watch(
+    () => cateringStore.feedingGroupInfoResponse,
+    async (data) => {
+        feedingGroupData.value = data.data
+    },
+    {deep: true}
+  )
+
+  watch(
+  () => cateringStore.feedingGroupSessionsInfoResponse,
+  async (data) => {
+      feedingSessionGroupData.value = data.data
+  },
+  {deep: true}
+)
 
   watch(
     () => accountStore.userResponse,
@@ -161,9 +181,6 @@ const form = reactive({
     },
     {deep:true}
     )
-
-
-
   watch(
     () => cateringStore.errorMessage,
     async (data) => {

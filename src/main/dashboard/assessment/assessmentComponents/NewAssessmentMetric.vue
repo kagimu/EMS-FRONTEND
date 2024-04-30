@@ -9,6 +9,9 @@
   import { useStudyPeriodStore } from "../../manageLevel/studyPeriod/store/studyPeriod";
   const academicYearStore = useAcademicYearStore()
   
+  import useCommonsStore from "@/composables/useCommons.js";
+  const commons = useCommonsStore()
+  
   import {useRouter} from "vue-router";
   const routerData = useRouter()
   let  curriculumNumber = routerData.currentRoute.value.query.crr
@@ -153,10 +156,24 @@
   interviewDialog.value = true;
   }
     const addInterviewAssesmentMetrics = () => {
+      // parseInt
     //  alert(JSON.stringify(form))
      interviewDialog.value = true;
      buttonLoader.value = true
-     assessmentStore.createAssessmentMetrics(form)
+     let formData = reactive({ 
+      name:form.name,
+      assessment_area_number:form.assessment_area_number,
+      weight:parseInt(form.weight),
+      description:form.description,
+      max_score:parseInt(form.max_score),
+      metric_number:form.metric_number,
+      campus_class_number:form.campus_class_number,
+      grading_standard_number:form.grading_standard_number,
+      study_period_number:form.study_period_number,
+      scheduled_on:form.scheduled_on
+    })
+
+     assessmentStore.createAssessmentMetrics(formData)
     }
   
     watch (
@@ -399,11 +416,13 @@
            <div class="row">
               <div class="col-lg-6">           
                  <label class="textColor"><small>Weight</small></label>
-                 <input v-model="form.weight"  type="number" required class="form-control">
+                 <input v-model="form.weight"  type="text" required class="form-control"  @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10">
               </div>
               <div class="col-lg-6">
                  <label class="textColor"><small>Max_Score</small></label>
-                 <input v-model="form.max_score"  type="number" required class="form-control">
+                 <input v-model="form.max_score"  type="text" required class="form-control" @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10">
               </div>
            </div>
         </div>
