@@ -111,7 +111,8 @@ const addAssessmentAreaGradingStandard = () => {
 
 const fetchAssessmentArea = (campus_class_number) =>{
   if(campus_class_number) {
-    assessmentStore.fetchAssessmentArea(campus_class_number)
+    let curriculumClassNumber = campusClassList.value.find(list => list.number === campus_class_number).curriculum_class_number
+    assessmentStore.fetchAssessmentArea(curriculumClassNumber)
     fetchGradingStandard()
   }
 }
