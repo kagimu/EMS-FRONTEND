@@ -40,11 +40,9 @@ watch(
 <template>
   <div>
 
-
-
-
-
-
+    <AppModal title="Preview Report" v-model="showStudentsMarks" xl6>
+      <manage-report-details></manage-report-details>
+    </AppModal>
 
 
     <div class="row">
@@ -93,9 +91,6 @@ watch(
     </div>
 
 
-    <AppModal title="Preview Report" v-model="showStudentsMarks" xl6>
-      <manage-report-details></manage-report-details>
-    </AppModal>
 
 
 

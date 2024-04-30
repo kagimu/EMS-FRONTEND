@@ -5,6 +5,7 @@ import {useStudentApplicationStore} from "@/main/dashboard/studentApplication/st
 import useNotificationStore from "@/composables/useNotification.js";
 const assessmentStore = useAssessmentStore()
 const studentApplicationStore = useStudentApplicationStore()
+
 const props = defineProps({
   interviewNumber: String,
 })
@@ -60,7 +61,9 @@ watch(
       async (data) => {
           if (data) {
             loader.value = false
-              // notificationStore.successToast("Success", data.message)
+              notificationStore.successToast("Success", data.message)
+              studentApplicationStore.fetchAssessmentMetricsOnInterview(props.interviewNumber)
+              assessment_metric_number.value = null
           }
       },
       {deep: true}

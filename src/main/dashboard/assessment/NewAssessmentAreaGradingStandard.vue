@@ -24,7 +24,6 @@ const errorMessage = ref("")
 const loader = ref(false)
 const interviewAssessmentListData = ref(null)
 const gradingStandardListData = ref(null)
-// const assessmentMetricList = ref(null)
 const campusCurriculumDataInfo = ref(null)
 const campus_curriculum_number = ref("")
 const campusLevelList = ref(null)
@@ -61,7 +60,11 @@ const fetchStudyPeriod = (academic_num) =>{
 }
 
 const fetchGradingStandard = () =>{
-    assessmentStore.fetchGradingStandardData(assessment_area_number)
+  let data = {
+    campus_number:campusNumber,
+    campus_class_number:campus_class_number.value
+  }
+    assessmentStore.fetchGradingStandardData(data)
 }
 
 
@@ -108,7 +111,9 @@ const addAssessmentAreaGradingStandard = () => {
 
 const fetchAssessmentArea = (campus_class_number) =>{
   if(campus_class_number) {
-    assessmentStore.fetchAssessmentArea(campus_class_number)
+    let curriculumClassNumber = campusClassList.value.find(list => list.number === campus_class_number).curriculum_class_number
+    assessmentStore.fetchAssessmentArea(curriculumClassNumber)
+    fetchGradingStandard()
   }
 }
 
@@ -282,8 +287,8 @@ watch(
             @change="fetchAssessmentArea(campus_class_number)"
         >
           <option disabled value="">Select</option>
-          <!--          <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>-->
-          <option v-for="(list, index) in campusClassList" :key="index" :value="list.curriculum_class_number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+                    <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+<!--          <option v-for="(list, index) in campusClassList" :key="index" :value="list.curriculum_class_number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>-->
         </select>
       </div>
 
@@ -294,7 +299,6 @@ watch(
             required
             class="form-control"
             v-model="form.assessment_area_number"
-            @change="fetchGradingStandard()"
         >
           <option disabled value=""> - Select Interview - </option>
           <option v-for="(listdata, index) in interviewAssessmentListData" :key="index" :value="listdata.number">

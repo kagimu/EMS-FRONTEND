@@ -134,12 +134,16 @@ const success = ref(false)
   }
 
   const submitApplication = () => {
-  loading.value = true; // Show loader
-  // Simulate submission process (you can replace this with actual submission logic)
+  loading.value = true;
+ 
   setTimeout(() => {
-    loading.value = false; // Hide loader
-    success.value = true; // Show success page
-  }, 2000); // Simulate 2 seconds delay
+    loading.value = false; 
+    success.value = true; 
+  }, 2000); 
+
+  //removing application Id and studentNumber from local storage
+  localStorage.removeItem('applicationId')
+  localStorage.removeItem('studentNumber')
 };
 
 const cancelApply = () => {

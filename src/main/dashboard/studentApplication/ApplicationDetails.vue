@@ -1,12 +1,5 @@
 <template>
 
-    <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <!-- {{ applicationNumber }} -->
-            <h6 class="modal-title ml-3 mt-2 mb-2"><small>Application Details</small></h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
             <div class="mt-2 mb-2">
 
   <div class="row mx-auto">
@@ -163,12 +156,8 @@
               </div>
             </form>
     </div>
-    </div>
-   
-
-           
+    </div>        
     </div>   
-</div>
 </div>
 
 <!-- schedule interview this is left out -->
@@ -199,7 +188,6 @@
 <!-- wnd  -->
 
 
-</div>
   </template>
   
   <script setup>

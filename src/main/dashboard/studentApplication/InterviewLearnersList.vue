@@ -32,18 +32,10 @@
             <div class="">
               <!-- {{student_number ? '' : 'disabbled'}} -->
                 <h5 style="font-size: 14px;margin-top: 2px;">Learners Scheduled For {{ interviewM }} </h5>
-               <div class="col-12">
-                <div class="ant-alert-action mt-3">
-                <button  @click="showDialog" data-bs-toggle="modal" :data-bs-target="selectedStudentNumber.length > 0 ? '#admitMainModal' : ''" type="submit"
-                 class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " 
-                 style="float: rigt;"><i></i>Offer Admission</button>
-              </div>
-
-               </div>
-                        
+         
       <div class="row">
     <div class="col-12">
-      <div class="mt-4">
+      <div class="mt-2">
         <div class="row mx-auto">
       
 
@@ -179,6 +171,9 @@
       
 
 <!-- {{ selectedStudentNumber }} -->
+<div class="row">
+
+  <div class="col-lg-10">
     <table
       id="datatable"
       class="table table-striped"
@@ -188,7 +183,6 @@
         <tr>
           <th style="width: 5px;"><input type="checkbox"   class="checkbox-primary"></th>
           <th>Student</th>
-          <th>Gender</th>
           <th>Action</th>
         </tr>
   <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
@@ -199,14 +193,14 @@
         <tr v-for="(student, index) in interviewStudentList" :key="index">
           <td><input type="checkbox"  v-model="selectedStudents[index]" class="checkbox-primary"></td>
           <td> 
-            {{ student.Student.surname + " " + student.Student.second_name + " " + student.Student.other_name}} </td>
-          <td>
-            {{  student.Student.gender }}
-          </td>
+            {{student.student_surname ? student.student_surname : ""}}
+                 {{student.student_second_name ? " "+student.student_second_name : ""}}
+                 {{student.student_other_name ? " "+student.student_other_name : ""}}</td>
+        
           <td>
               <router-link style=""
                 class="text-decoration-none"
-                :to="{name:'interview-learners-details', query:{st_id:student.Student.number,interview_id:interviewNumber,applicationN:student.Application.number}}">
+                :to="{name:'interview-learners-details', query:{st_id:student.number,interview_id:interviewNumber,applicationN:student.number}}">
                 <button type="button"
                   class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
               >view Details</button>
@@ -222,6 +216,18 @@
                   
       </tbody>
     </table>
+  </div>
+  <div class="col-lg-2">
+<div class="ant-alert-action mt-3">
+  <button  @click="showDialog" data-bs-toggle="modal" :data-bs-target="selectedStudentNumber.length > 0 ? '#admitMainModal' : ''" type="submit"
+    class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " 
+    style="float: rigt;" ><i></i>Offer Admission</button>
+</div>
+  </div>
+</div>
+
+
+  
   </div>
   </div>
   </div>
@@ -413,7 +419,7 @@ school_number:null
   const selectedNames = [];
   selectedStudents.value.forEach((isSelected, index) => {
     if (isSelected) {
-      selectedNames.push(interviewStudentList.value[index].Student.number);
+      selectedNames.push(interviewStudentList.value[index].number);
     }
   });
   return selectedNames;

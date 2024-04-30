@@ -382,8 +382,8 @@ async function newFeedings(data) {
         })
 }
 
-async function fetchMeals() {
-    return await api.get("main/catering/meals")
+async function fetchMeals(sessionNumber,feedingGroupNumber) {
+    return await api.get("main/catering/meals?session-number="+sessionNumber+"&feeding-group-number"+feedingGroupNumber)
         .then((response) => {
             mealsResponse.value = response.data
         })
