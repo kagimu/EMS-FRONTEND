@@ -241,15 +241,17 @@ watch(
             </select>
           </div>
 
+          <div class="mb-2">
+            <div class="text-[13px] text-[#505050]">Name</div>
+            <input v-model="form.name" placeholder="D2" type="text" class="form-control outline-none shadow-none">
+          </div>
+
       <div class="mb-2">
-        <div class="text-[13px] text-[#505050]">Name</div>
+        <div class="text-[13px] text-[#505050]">Description</div>
         <input v-model="form.description" class="form-control outline-none shadow-none" placeholder="Distinction Two">
       </div>
 
-          <div class="mb-2">
-            <div class="text-[13px] text-[#505050]">Abbreviation</div>
-            <input v-model="form.name" placeholder="D2" type="text" class="form-control outline-none shadow-none">
-      </div>
+
 
 
 
@@ -269,7 +271,7 @@ watch(
       <div class="mb-2">
         <div class="row">
             <div class="col-lg-4">
-              <div class="text-[13px] text-[#505050]">Minimum Value</div>
+              <div class="text-[13px] text-[#505050]">Minimum Scale</div>
                <input
                    maxlength="3"
                    @keypress="commons.numbersOnlyValidator($event)"
@@ -278,7 +280,7 @@ watch(
                    class="form-control outline-none shadow-none">
             </div>
             <div class="col-lg-4">
-              <div class="text-[13px] text-[#505050]">Maximum Value</div>
+              <div class="text-[13px] text-[#505050]">Maximum Scale</div>
              <input
                  maxlength="3"
                  @keypress="commons.numbersOnlyValidator($event)"
@@ -288,7 +290,7 @@ watch(
             </div>
 
             <div class="col-lg-4">
-              <div class="text-[13px] text-[#505050]">Weight</div>
+              <div class="text-[13px] text-[#505050]">Aggregate Scale</div>
              <input
                  maxlength="3"
                  @keypress="commons.numbersOnlyValidator($event)"
