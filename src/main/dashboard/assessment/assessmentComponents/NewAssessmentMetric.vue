@@ -9,16 +9,15 @@
   import { useStudyPeriodStore } from "../../manageLevel/studyPeriod/store/studyPeriod";
   const academicYearStore = useAcademicYearStore()
   
-  import useCommonsStore from "@/composables/useCommons.js";
-  const commons = useCommonsStore()
-  
   import {useRouter} from "vue-router";
   const routerData = useRouter()
+  const commons = useCommonsStore()
   let  curriculumNumber = routerData.currentRoute.value.query.crr
   let  curriculumNumberParent = routerData.currentRoute.value.query.cr
   const campus_curriculum_number = routerData.currentRoute.value.query.crr
   
   import { useAbility } from '@casl/vue';
+  import useCommonsStore from "@/composables/useCommons.js";
   
   const { can } = useAbility()
   
@@ -51,6 +50,7 @@
   
     const form = reactive({ 
       name:null,
+      code:null,
       assessment_area_number:null,
       weight:null,
       description:null,
@@ -160,20 +160,8 @@
     //  alert(JSON.stringify(form))
      interviewDialog.value = true;
      buttonLoader.value = true
-     let formData = reactive({ 
-      name:form.name,
-      assessment_area_number:form.assessment_area_number,
-      weight:parseInt(form.weight),
-      description:form.description,
-      max_score:parseInt(form.max_score),
-      metric_number:form.metric_number,
-      campus_class_number:form.campus_class_number,
-      grading_standard_number:form.grading_standard_number,
-      study_period_number:form.study_period_number,
-      scheduled_on:form.scheduled_on
-    })
-
-     assessmentStore.createAssessmentMetrics(formData)
+      form.code = form.code ? parseInt(form.code) : form.code
+     assessmentStore.createAssessmentMetrics(form)
     }
   
     watch (
@@ -329,6 +317,20 @@
      <form @submit.prevent="addInterviewAssesmentMetrics">
         <div class="row">
            <div class="col-lg-6">
+
+             <div class="mb-2">
+               <label class="textColor"><small>Code</small></label>
+               <input
+                   @keypress="commons.numbersOnlyValidator($event)"
+                   maxlength="10"
+                   type="text"
+                   style="outline: none 0 !important;
+            box-shadow: none;"
+                   v-model="form.code"
+                   required
+                   class="form-control form-select-sm">
+             </div>
+
               <div class="mb-2">
                  <label class="textColor"><small>Level</small></label>
                  <select
@@ -444,11 +446,11 @@
                  <input type="date" class="form-control" v-model="form.scheduled_on">
               </div>
            
-        <div class="mb-2">
-           <label class="textColor"><small>Description</small></label>
-           <textarea class="form-control textColor"  v-model="form.description">
-           </textarea>
-        </div>
+          <div class="mb-2">
+             <label class="textColor"><small>Description</small></label>
+             <textarea class="form-control textColor"  rows="3" v-model="form.description">
+             </textarea>
+          </div>
 
         </div>
         </div>

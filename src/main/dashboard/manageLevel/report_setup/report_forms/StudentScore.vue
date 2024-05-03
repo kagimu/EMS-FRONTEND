@@ -8,21 +8,23 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import {useRouter} from "vue-router";
 
+const notificationStore  = useNotificationStore()
+const routerData = useRouter()
 
 const levelStore = useLevelStore()
 const classStore = useClassesStore()
 const studyPeriodStore = useStudyPeriodStore()
 const academicYearStore = useAcademicYearStore()
 const reportSetupStore = useReportSetupStore()
-const notificationStore  = useNotificationStore()
 const assessmentStore= useAssessmentStore()
-const AsessmentListData = ref([])
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
+const assessmentListData = ref([])
 const metricListData = ref(null)
 const assessmentMetricNumber = ref("")
 const studentsList = ref([])
 const campusCurriculumDataInfo = ref(null)
-const campus_curriculum_number = ref("")
 const campus_level_number = ref("")
 const academic_year_number = ref("")
 const study_period_number = ref("")
@@ -37,7 +39,7 @@ const campusClassList = ref(null)
 
 onMounted(
     async () => {
-      // await assessmentStore.fetchAssessmentMetrics()
+      fetchCampusLevel()
     }
 )
 
@@ -50,7 +52,7 @@ const fetchStudents = (assessmentMetricNumber) => {
 }
 
 
-const fetchCampusLevel = (campus_curriculum_number) => {
+const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
 }
 
@@ -169,7 +171,7 @@ watch(
     () => assessmentStore.assessmentAreaResponse,
     async (data) => {
       if(data){
-        AsessmentListData.value = data.data
+        assessmentListData.value = data.data
       }
     },
     {deep:true}
@@ -213,17 +215,7 @@ watch(
 
     <div class="row bg-white mx-auto mt-2">
 
-      <div class="col-3">
-        <label class="text-sm"><small>Curriculum</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="campus_curriculum_number"
-            @change="fetchCampusLevel(campus_curriculum_number)">
-          <option disabled value="">--Select Curriculum--</option>
-          <option v-for="(list, index) in campusCurriculumDataInfo" :key="index" :value="list.number">{{list.name}}</option>
-        </select>
-      </div>
+
 
       <div class="col-3">
         <label class="text-sm"><small>Level</small></label>

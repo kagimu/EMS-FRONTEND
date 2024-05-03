@@ -19,13 +19,14 @@ const studyPeriodStore = useStudyPeriodStore()
 const academicYearStore = useAcademicYearStore()
 const routerData = useRouter()
 const campusNumber = routerData.currentRoute.value.query.id
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
 
 const errorMessage = ref("")
 const loader = ref(false)
 const interviewAssessmentListData = ref(null)
 const gradingStandardListData = ref(null)
 const campusCurriculumDataInfo = ref(null)
-const campus_curriculum_number = ref("")
+// const campus_curriculum_number = ref("")
 const campusLevelList = ref(null)
 const campus_level_number = ref("")
 const academic_year_number = ref("")
@@ -45,13 +46,14 @@ const form = reactive({
 
 onMounted(
     async () => {
-      await levelStore.fetchCampusCurriculum(campusNumber)
+      // await levelStore.fetchCampusCurriculum(campusNumber)
+      await fetchCampusLevel()
     }
 )
 
 
 
-const fetchCampusLevel = (campus_curriculum_number) => {
+const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
 }
 
@@ -94,8 +96,7 @@ watch(
       if(data){
         campusLevelList.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -108,10 +109,10 @@ const addAssessmentAreaGradingStandard = () => {
 
 
 
-
 const fetchAssessmentArea = (campus_class_number) =>{
   if(campus_class_number) {
-    assessmentStore.fetchAssessmentArea(campus_class_number)
+    let curriculumClassNumber = campusClassList.value.find(list => list.number === campus_class_number).curriculum_class_number
+    assessmentStore.fetchAssessmentArea(curriculumClassNumber)
     fetchGradingStandard()
   }
 }
@@ -139,7 +140,7 @@ watch(
 
 
 
-const fetchAcademicYea = (campus_level_number) => {
+const fetchAcademicYear = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
   academicYearStore.fetchCampusClassByLevel(campus_level_number)
 }
@@ -165,16 +166,6 @@ watch(
     {deep:true}
 )
 
-
-watch(
-    () => levelStore.campusCurriculumResponse,
-    async (data) => {
-      if(data){
-        campusCurriculumDataInfo.value = data.data
-
-      }
-    }
-)
 
 watch(
     () => reportSetupStore.reportColumnAssessmentResponse,
@@ -220,17 +211,7 @@ watch(
 
 
 
-      <div class="mb-2">
-        <label class="textColor"><small>Curriculum</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="campus_curriculum_number"
-            @change="fetchCampusLevel(campus_curriculum_number)">
-          <option disabled value="">--Select Curriculum--</option>
-          <option v-for="(list, index) in campusCurriculumDataInfo" :key="index" :value="list.number">{{list.name}}</option>
-        </select>
-      </div>
+
 
       <div class="mb-2">
         <label class="textColor"><small>Level</small></label>
@@ -238,7 +219,7 @@ watch(
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="campus_level_number"
-            @change="fetchAcademicYea(campus_level_number)"
+            @change="fetchAcademicYear(campus_level_number)"
         >
           <option disabled value="">--Select Level--</option>
           <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
