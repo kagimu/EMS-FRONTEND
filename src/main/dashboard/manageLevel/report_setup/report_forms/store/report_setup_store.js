@@ -18,7 +18,10 @@ export const useReportSetupStore = defineStore("report_setup", () => {
     const assessmentAreaGradingStandardResponse = ref(null)
     const assessmentAreaGradingStandardInfoResponse = ref(null)
     const errorMessage = ref(null)
-
+    const reportTemplateResponse = ref(null)
+    const reportTemplateListResponse = ref(null)
+    const classToReportTemplateResponse = ref(null)
+    const classesAddedToReportTemplateListResponse = ref(null)
     async function newReportSettings(data) {
         return await api.post("main/report-settings", data)
             .then((response) => {
@@ -177,7 +180,54 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             })
     }
 
+    
+    async function addReportTemplate(data) {
+        return await api.post("main/school/report-templates/new", data)
+            .then((response) => {
+                reportTemplateResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
 
+    async function fetchReportTemplate() {
+        return await api.get("main/school/report-templates/all")
+            .then((response) => {
+                reportTemplateListResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function addClassToReportTemplate(data) {
+        return await api.post("main/school/report-templates/add-to-classes", data)
+            .then((response) => {
+                classToReportTemplateResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function fetchClassesAddedReportTemplate(templateN) {
+        return await api.get("main/school/report-templates/by-class?template_number="+templateN)
+            .then((response) => {
+                classesAddedToReportTemplateListResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
 
     return {
         errorMessage,
@@ -206,6 +256,15 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         fetchStudentByAssessmentMetric,
         addStudentMarks,
         newAssessmentAreaGradingStandard,
-        fetchAssessmentAreaGradingStandardInfo
+        fetchAssessmentAreaGradingStandardInfo,
+        addReportTemplate,
+        reportTemplateListResponse,
+        reportTemplateResponse,
+        fetchReportTemplate,
+        addClassToReportTemplate,
+        classToReportTemplateResponse,
+        fetchClassesAddedReportTemplate,
+        classesAddedToReportTemplateListResponse
+
     }
 })

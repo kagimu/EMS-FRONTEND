@@ -222,7 +222,7 @@
       </div>
     </div>
 
-    <AppModal title="Application Details" v-model="showingModal" x14>
+    <AppModal title="Application Details" v-model="showingModal" xl4>
       <application-details :application-number="applications"></application-details>
     </AppModal>
 

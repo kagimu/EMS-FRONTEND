@@ -64,6 +64,10 @@ const reportSettingsMenu = ref([
     name:"Report Columns Assessment",
     router_name:"report-columns-assessment"
   },
+  {
+    name:"Report Templates",
+    router_name:"report-templates"
+  },
 ])
 
 
