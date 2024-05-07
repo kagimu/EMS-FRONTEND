@@ -92,7 +92,7 @@
       </div>
       </div>
 
-      <div class="row">
+      <div class="row mt-3">
         <div class="col-lg-12">
               <div class="row">
                 <div class="col-lg-12">
@@ -100,10 +100,10 @@
                     <table class="table bordered">
                       <thead>
                         <tr class="" style="padding: 0px;margin: 0px;">
-                          <th>Service</th>
+                          <th class="textColor">Service</th>
                           <!-- <th>Qty</th> -->
                           <!-- <th>Unit Price</th> -->
-                          <th>Amount</th>
+                          <th class="textColor">Amount</th>
                           <th></th>
                         </tr>
                       </thead>
@@ -121,7 +121,7 @@
                         </tr>
                       </tbody>
                     </table>
-                    <button class="btn btn-primary btn-sm textColor" @click.prevent="addService" :disabled="isAddButtonDisabled"><small>ADD ANOTHER SERVICE</small></button>
+                    <button class="btn btn-primary btn-sm textColor" @click.prevent="addService" :disabled="isAddButtonDisabled"><small><i class="bi bi-plus-lg"></i></small></button>
                 </div>
               </div> 
             </div>

@@ -157,22 +157,9 @@ repoId.value = TemplateN
                 <ol>
                     <b><i
                     style="font-size: 10px;"
-                    class="bi-plus-circle cursor-pointer link-primary" @click="assignClass(repoData.reportTemplateId)"></i></b> 
-                    <!-- <i
-                    style="font-size: 10px;"
-                    class="bi-eye cursor-pointer link-danger ml-3 " @click="showClasses(repoData.reportTemplateId)"> view</i>   -->
-                   <!-- <div v-if="repoId == repoData.reportTemplateId">
-                    <div v-for="(listD,index) in classOnTemplateList" :key="index">
-                      <span>{{listD.TemplateName}}</span> 
-
-                <ul v-for="(classInfo, classIndex) in listD.Classes" :key="classIndex=">
-                      <li><span>{{classIndex+1}}</span>.{{classInfo.ClassName}}<i
-                    style="font-size: 13px;" class="bi-x cursor-pointer link-danger"  @click="clearClass(classInfo)"></i> </li>
-                 </ul>     
-                    
-                  </div> -->
-                <!-- </div> -->
-                <ReportTemplateClasses :reportTemplateId="repoData.reportTemplateId"  :school_number="schoolNo"></ReportTemplateClasses>
+                    class="bi-plus-circle cursor-pointer link-primary" @click="assignClass(repoData.report_template_id)"></i></b> 
+           
+                <ReportTemplateClasses :reportTemplateId="repoData.report_template_id"  :school_number="schoolNo"></ReportTemplateClasses>
 
                     
                 </ol>

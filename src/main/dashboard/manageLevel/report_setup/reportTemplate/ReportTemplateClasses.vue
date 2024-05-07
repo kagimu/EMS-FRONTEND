@@ -77,8 +77,8 @@ const clearClass = (classInfo) => {
      <div v-for="(listD,index) in classOnTemplateList" :key="index">
      <!-- {{listD}} -->
 
-    <ul v-for="(classInfo, classIndex) in listD.Classes" :key="classIndex">
-<li><span>{{classIndex+1}}</span>.{{classInfo.ClassName}}<i
+    <ul v-for="(classInfo, classIndex) in listD.classes" :key="classIndex">
+<li><span>{{classIndex+1}}</span>.{{classInfo.class_name}}<i
 style="font-size: 13px;" class="bi-x cursor-pointer link-danger"  @click="clearClass(classInfo)"></i> </li>
 </ul> 
                     
