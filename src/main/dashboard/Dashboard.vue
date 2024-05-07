@@ -2,14 +2,20 @@
 
 import router from "@/config/router.js";
 
-import {ref,onMounted} from 'vue'
+import {ref, onMounted, watch} from 'vue'
 import {useAuthStore} from "@/main/auth/store/auth.js";
 import {useRouter} from "vue-router";
 import { useAbility } from '@casl/vue';
+import {breakpointsTailwind, useBreakpoints} from "@vueuse/core";
 const routerName = useRouter().currentRoute.value.name;
 const authStore = useAuthStore()
 const defaultMenuSize = ref(false)
 const { can } = useAbility();
+
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const xs = breakpoints.smaller('sm')
+const sm = breakpoints.between('sm', 'md')
+const md = breakpoints.between('md', 'lg')
 
 
 
@@ -30,8 +36,43 @@ const menuList = ref([
   {title:"Settings", name:"settings", icon:"bi-gear",action:"view_settings"},
 ])
 
+onMounted(
+    async () => {
+      await  updateOnlineStatus()
+      checkDynamicClass()
+    }
+)
 
+watch(
+    () => xs,
+    async (data) => {
+      if(data){
+        checkDynamicClass()
+      }
+    },
+    {deep:true}
+)
 
+watch(
+    () => breakpoints,
+    async (data) => {
+      if(data){
+        checkDynamicClass()
+      }
+    },
+    {deep:true}
+)
+
+const checkDynamicClass = () => {
+  if(md.value){
+    defaultMenuSize.value = md
+  }
+
+  if(!md.value){
+    defaultMenuSize.value = false
+  }
+
+}
 
 const name = ref(null)
 let p = authStore.profile
@@ -56,11 +97,6 @@ function toggleMenu(){
 }
 
 
-onMounted(
-    async () => {
-      await  updateOnlineStatus()
-    }
-)
 
 const online = ref(navigator.onLine);
 window.addEventListener('online', updateOnlineStatus);
@@ -74,7 +110,8 @@ function updateOnlineStatus() {
 }
 </script>
 <template>
-<!--<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">-->
+
+
 <div class="p-0 h-screen w-screen">
     <div class="row fixed w-screen mx-auto z-50">
       <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #1062da;">
@@ -113,7 +150,7 @@ function updateOnlineStatus() {
     </div>
 
   <div class="flex w-screen h-screen p-0 overflow-hidden bg-white">
-    <div :class="defaultMenuSize ? 'w-[5%] h-screen' : 'w-[16%] h-screen'">
+    <div v-if="!xs && !sm" :class="defaultMenuSize ? 'w-[5%] h-screen' : 'w-[16%] h-screen'">
       <div class="overflow-y-scroll scrollbar-thin bg-white h-screen mt-[56px]">
        <div
           class="list-group list-group-flush text-[13px]"
@@ -135,7 +172,7 @@ function updateOnlineStatus() {
       </div>
       </div>
     </div>
-    <div :class="defaultMenuSize ? 'w-[95%]' : 'w-[84%]'">
+    <div :class="(xs || sm) ? 'w-full' : (defaultMenuSize ? 'w-[95%]' : 'w-[84%]')">
       <div class="px-3 h-screen pb-[120px] mt-[56px]" style="background-color: #ecf0f5; overflow-y: scroll; scrollbar-width: thin;">
         <router-view></router-view>
       </div>
