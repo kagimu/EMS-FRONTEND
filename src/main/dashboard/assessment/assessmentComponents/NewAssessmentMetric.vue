@@ -161,6 +161,7 @@
      interviewDialog.value = true;
      buttonLoader.value = true
       form.code = form.code ? parseInt(form.code) : form.code
+      form.max_score = form.max_score ? parseInt(form.max_score) : form.max_score
      assessmentStore.createAssessmentMetrics(form)
     }
   
