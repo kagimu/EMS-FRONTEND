@@ -10,20 +10,6 @@
             </div>
             <div class="navbar-collapse">
               <ul class="navbar-nav me-auto my-lg-0 navbar-nav-scroll" style="font-size: 13px;">
-<!--                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#" style="color: #ffffff;">Home</a>
-                </li>-->
-<!--                <li class="nav-item dropdown">
-                  <a style="color: #ffffff;" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Link
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                  </ul>
-                </li>-->
               </ul>
               <div class="d-flex">
                 <ul class="navbar-nav me-auto mb-lg-0" style="font-size: 13px;">
@@ -50,6 +36,27 @@
       </div>
 
     </div>
+
+<!--  <div class="flex">
+    <div :class="defaultMenuSize? 'w-[5%] bg-[#0d6efd]' : 'w-[16.64%] bg-[#0d6efd]'">
+      <router-link
+          v-for="(lst,idx) in menuList" :key="idx"
+          v-show="can(lst.action, 'general')"
+          :class="(lst.name === routerName) ? 'active' : ''"
+          class="list-group-item list-group-item-action"
+          :to="{name:lst.name}">
+        <div
+            v-tooltip.right="lst.name"
+        >
+          <i :class="lst.icon" :style="defaultMenuSize ? 'font-size:17px;' : 'font-size:13px;'" class="mr-2"></i>
+          <small v-if="!defaultMenuSize">{{lst.title}}</small>
+        </div>
+      </router-link>
+    </div>
+    <div>
+      <router-view></router-view>
+    </div>
+  </div>-->
 
 
       <div class="row mx-auto">
