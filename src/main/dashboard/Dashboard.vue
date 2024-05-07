@@ -1,3 +1,78 @@
+<script setup>
+
+import router from "@/config/router.js";
+
+import {ref,onMounted} from 'vue'
+import {useAuthStore} from "@/main/auth/store/auth.js";
+import {useRouter} from "vue-router";
+import { useAbility } from '@casl/vue';
+const routerName = useRouter().currentRoute.value.name;
+const authStore = useAuthStore()
+const defaultMenuSize = ref(false)
+const { can } = useAbility();
+
+
+
+const menuList = ref([
+  {title:"Home", name:"home", icon:"bi-house",action:"view_dashboard"},
+  {title:"School", name:"school", icon:"bi-house-add" , action:"view_school"},
+  {title:"Curriculum", name:"curriculum", icon:"bi-pen", action:"view_curriculum"},
+  {title:"Time table", name:"timetable", icon:"bi-pen",action:"view_timetable"},
+  {title:"Student Application", name:"student-application", icon:"bi-person-plus",action:"view_student-application"},
+  {title:"Student Admission", name:"admission-list", icon:"bi-database-down",action:"view_student-admission"},
+  {title:"Student Enrolment", name:"enrolment", icon:"bi-database-down",action:"view_enrolment"},
+  {title:"Student Promotions", name:"promotions", icon:"bi-database-down",action:"view_promotions"},
+  {title:"Invoices", name:"invoices", icon:"bi-receipt-cutoff",action:"view_invoices"},
+  {title:"Catering", name:"catering", icon:"bi-egg-fried",action:"catering"},
+  {title:"Calendar", name:"general-calendar", icon:"bi-calendar3",action:"view_general-calendar"},
+  {title:"Report Center", name:"report-center", icon:"bi-card-heading",action:"view_report-center"},
+  {title:"Account Management", name:"account-management", icon:"bi-people",action:"view_account-management"},
+  {title:"Settings", name:"settings", icon:"bi-gear",action:"view_settings"},
+])
+
+
+
+
+const name = ref(null)
+let p = authStore.profile
+
+name.value = p.first_name+" "+p.second_name+" "+p.last_name
+
+
+
+function userLogout(){
+
+  localStorage.clear();
+
+  let r = router.resolve({
+    name: "login"
+  });
+  window.location.assign(r.href);
+
+}
+
+function toggleMenu(){
+  defaultMenuSize.value = !defaultMenuSize.value
+}
+
+
+onMounted(
+    async () => {
+      await  updateOnlineStatus()
+    }
+)
+
+const online = ref(navigator.onLine);
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+
+function updateOnlineStatus() {
+  online.value = navigator.onLine;
+  if (!online.value) {
+    alert("You are currently offline. Please check your internet connection.");
+  }
+}
+</script>
 <template>
 <!--<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">-->
 <div class="p-0 h-screen w-screen">
@@ -71,14 +146,12 @@
       <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #ffffff; border-top: 1px solid #dfe1e3;">
         <!-- Footer -->
         <footer style="padding: 10px;">
-
           <div class="row" style="font-size: 13px;">
             <div class="col-10 text-center">
               Copyright © 2017 Wholesome ED . All rights reserved.
             </div>
             <div class="col-2 text-end">Powered by Hamsoft</div>
           </div>
-
         </footer>
       </div>
     </div>
@@ -88,79 +161,7 @@
   </div>
 </template>
 
-<script setup>
 
-import router from "@/config/router.js";
-
-import {ref,onMounted} from 'vue'
-import {useAuthStore} from "@/main/auth/store/auth.js";
-import {useRouter} from "vue-router";
-import { useAbility } from '@casl/vue';
-const routerName = useRouter().currentRoute.value.name;
-const authStore = useAuthStore()
-const defaultMenuSize = ref(false)
-const { can } = useAbility();
-
-const menuList = ref([
-  {title:"Home", name:"home", icon:"bi-house",action:"view_dashboard"},
-  {title:"School", name:"school", icon:"bi-house-add" , action:"view_school"},
-  {title:"Curriculum", name:"curriculum", icon:"bi-pen", action:"view_curriculum"},
-  {title:"Time table", name:"timetable", icon:"bi-pen",action:"view_timetable"},
-  {title:"Student Application", name:"student-application", icon:"bi-person-plus",action:"view_student-application"},
-  {title:"Student Admission", name:"admission-list", icon:"bi-database-down",action:"view_student-admission"},
-  {title:"Student Enrolment", name:"enrolment", icon:"bi-database-down",action:"view_enrolment"},
-  {title:"Student Promotions", name:"promotions", icon:"bi-database-down",action:"view_promotions"},
-  {title:"Invoices", name:"invoices", icon:"bi-receipt-cutoff",action:"view_invoices"},
-  {title:"Catering", name:"catering", icon:"bi-egg-fried",action:"catering"},
-  {title:"Calendar", name:"general-calendar", icon:"bi-calendar3",action:"view_general-calendar"},
-  {title:"Report Center", name:"report-center", icon:"bi-card-heading",action:"view_report-center"},
-  {title:"Account Management", name:"account-management", icon:"bi-people",action:"view_account-management"},
-  {title:"Settings", name:"settings", icon:"bi-gear",action:"view_settings"},
-])
-
-
-
-
-const name = ref(null)
-let p = authStore.profile
-
-name.value = p.first_name+" "+p.second_name+" "+p.last_name
-
-
-
-function userLogout(){
-
-  localStorage.clear();
-
-  let r = router.resolve({
-    name: "login"
-  });
-  window.location.assign(r.href);
-
-}
-
-function toggleMenu(){
-  defaultMenuSize.value = !defaultMenuSize.value
-}
-
-
-onMounted(
-    async () => {
-      await  updateOnlineStatus()
-    }
-)
-
-const online = ref(navigator.onLine);
-window.addEventListener('online', updateOnlineStatus);
-window.addEventListener('offline', updateOnlineStatus);
-
-function updateOnlineStatus() {
-  online.value = navigator.onLine;
-  if (!online.value) {
-    alert("You are currently offline. Please check your internet connection.");
-  }
-}
-</script>
 
 <style scoped>
 
