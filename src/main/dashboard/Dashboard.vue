@@ -71,14 +71,12 @@
       <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #ffffff; border-top: 1px solid #dfe1e3;">
         <!-- Footer -->
         <footer style="padding: 10px;">
-
           <div class="row" style="font-size: 13px;">
             <div class="col-10 text-center">
               Copyright © 2017 Wholesome ED . All rights reserved.
             </div>
             <div class="col-2 text-end">Powered by Hamsoft</div>
           </div>
-
         </footer>
       </div>
     </div>
