@@ -1,6 +1,7 @@
 <template>
-<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-    <div class="row">
+<!--<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">-->
+<div class="p-0 h-screen w-screen">
+    <div class="row fixed w-screen mx-auto z-50">
       <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #1062da;">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
           <div class="container-fluid">
@@ -34,12 +35,11 @@
           </div>
         </nav>
       </div>
-
     </div>
 
-  <div class="flex w-screen h-screen p-0">
+  <div class="flex w-screen h-screen p-0 overflow-hidden bg-white">
     <div :class="defaultMenuSize ? 'w-[5%] h-screen' : 'w-[16%] h-screen'">
-      <div class="overflow-y-scroll scrollbar-thin  bg-white h-screen">
+      <div class="overflow-y-scroll scrollbar-thin bg-white h-screen mt-[56px]">
        <div
           class="list-group list-group-flush text-[13px]"
           :class="defaultMenuSize ? 'text-center' : ''"
@@ -61,55 +61,11 @@
       </div>
     </div>
     <div :class="defaultMenuSize ? 'w-[95%]' : 'w-[84%]'">
-      <div class="px-3 h-90vh overflow-y-scroll scrollbar-thin">
+      <div class="px-3 h-screen pb-[120px] mt-[56px]" style="background-color: #ecf0f5; overflow-y: scroll; scrollbar-width: thin;">
         <router-view></router-view>
       </div>
     </div>
   </div>
-
-
-<!--      <div class="row mx-auto">
-        <div
-            :class="defaultMenuSize ? 'col-12 col-sm-1 col-md-0.5 col-lg-0.5' : 'col-12 col-sm-1 col-md-2 col-lg-2'"
-            style="
-            padding-bottom: 50px;
-            background-color: #ffffff;
-            border-right: 1px solid #dedede;
-            padding-left: 0;
-            padding-right: 0;
-            height: 90vh;
-            overflow-y: scroll;
-            scrollbar-width: thin;">
-
-          <div
-              class="list-group list-group-flush text-[13px]"
-              :class="defaultMenuSize ? 'text-center' : ''"
-             >
-             <router-link
-                 v-for="(lst,idx) in menuList" :key="idx"
-                 v-show="can(lst.action, 'general')"
-                 :class="(lst.name === routerName) ? 'active' : ''"
-                 class="list-group-item list-group-item-action"
-                 :to="{name:lst.name}">
-                   <div
-                       v-tooltip.right="lst.name"
-                   >
-                        <i :class="lst.icon" :style="defaultMenuSize ? 'font-size:17px;' : 'font-size:13px;'" class="mr-2"></i>
-                        <small v-if="!defaultMenuSize">{{lst.title}}</small>
-                   </div>
-             </router-link>
-          </div>
-
-
-        </div>
-        <div :class="defaultMenuSize ? 'col-12 col-sm-11 col-md-11 col-lg-11 mx-auto pb-10' : 'col-12 col-sm-11 col-md-10 col-lg-10 mx-auto pb-10'" class="bg-[#ecf0f5] h-90vh overflow-y-scroll scrollbar-thin" style="background-color: #ecf0f5; height: 90vh; overflow-y: scroll; scrollbar-width: thin;">
-&lt;!&ndash;        <div :class="defaultMenuSize ? 'col-12 col-sm-11 col-md-11 col-lg-11 mx-auto pb-10' : 'col-12 col-sm-11 col-md-10 col-lg-10 mx-auto pb-10'" class="bg-[#ecf0f5] h-90vh overflow-y-scroll scrollbar-thin">&ndash;&gt;
-
-            <router-view></router-view>
-
-        </div>
-      </div>-->
-
 
     <div class="row mx-auto" style="position: fixed; width: 100%; bottom: 0; left: 0; right: 0;">
       <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #ffffff; border-top: 1px solid #dfe1e3;">
