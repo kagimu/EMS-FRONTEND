@@ -15,25 +15,67 @@ const campusStore = useCampusStore()
 const campusNumber = routerData.currentRoute.value.query.id
 // const campus_curriculum_number = routerData.currentRoute.value.query.crr
 
+const props = defineProps({
+    reportTemplateNumber:String
+  })
+
+
 const errorMessage = ref("")
 const loader = ref(false)
 const classList = ref([])
 
 const form = reactive({
-  report_template_number:null,
-  campus_class_number:null
+  ReportTemplateNumber:props.reportTemplateNumber,
+  CampusClasses:[]
 })
+
+const toggleClass = (selectedClass) => {
+    const index = form.CampusClasses.indexOf(selectedClass);
+    if (index === -1) {
+        form.CampusClasses.push(selectedClass);
+    } else {
+        form.CampusClasses.splice(index, 1);
+    }
+}
 
 onMounted(() => {
     campusStore.fetchClassesByCampus(campusNumber)
     }
 )
 
-const addReportTemplate = () => {
+const addClassToReportTemplate = () => {
+
   loader.value = true
   form.code = form.code ? parseInt(form.code) : form.code
-  reportSetupStore.newReportSettings(form)
+  // alert(JSON.stringify(form))
+  reportSetupStore.addClassToReportTemplate(form)
 }
+
+
+watch (
+  () => reportSetupStore.classToReportTemplateResponse,
+  async (data) => {
+    if(data){
+      notificationStore.successToast("Success", data.message)
+      reportSetupStore.fetchReportTemplate()
+      loader.value=false
+    }
+  },
+  {deep:true}
+)
+
+watch(
+    () => reportSetupStore.errorMessage,
+    async (data) => {
+          if (data) {
+              notificationStore.errorToast("Error", data.message)
+            //   reportSetupStore.fetchReportTemplate()
+          }
+    },
+    {deep: true}
+)
+
+
 
 watch(
     () => campusStore.campusClassesResponse,
@@ -49,7 +91,8 @@ watch(
 
 <template>
   <div>
-  <form @submit.prevent="addReportTemplate">
+    <!-- {{reportTemplateNumber}} -->
+  <form @submit.prevent="addClassToReportTemplate">
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
       {{ errorMessage }}
     </div>
@@ -61,12 +104,12 @@ watch(
     <div class="row">
             <div class="col-lg-1" style="width: 5px;">
                 <input
-            v-model="form.campus_class_number"
+            v-model="form.CampusClasses"
             style="outline: none 0 !important; box-shadow: none;"
-            class="form-check-input me-1 " type="checkbox" :value="list.class_number" :id="list.class_number">
+            class="form-check-input me-1 " type="checkbox" :value="list.number" :id="list.number">
             </div>
             <div class="col-lg-11" style="float: left;">
-                <label class="textSize" :for="list.class_number"><small>{{list.class_name}} [{{ list.class_abbreviation }}]</small></label>
+                <label class="textSize" :for="list.number"><small>{{list.class_name}} [{{ list.class_abbreviation }}]</small></label>
             </div>
     </div>
                 

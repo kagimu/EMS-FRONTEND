@@ -10,7 +10,6 @@
   
   
               <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-  
                 <router-link
                     v-for="(item, idx) in application" :key="idx"
                     v-show="can(item.action,'general')"
@@ -30,29 +29,15 @@
         <div class="col-9">
           <div class="card mt-3">
             <div class="card-body" style="padding: 0;">
-  
               <div>
-  
                   <div v-if="selectedPage === 'application-list'">
                     <application-list></application-list>
                   </div>
                   <div v-if="selectedPage === 'interviews'">
                     <interviews></interviews>
                   </div>
-                  <!-- <div v-if="selectedPage === 'manage-interviews'">
-                    <interview-management></interview-management>
-                  </div> -->
-                  <!-- <div v-if="selectedPage === 'assessment-areas'">
-                    <interview-assesment-areas></interview-assesment-areas>
-                  </div> -->
-                  <!-- <div v-if="selectedPage === 'assessment-metrics'">
-                    <AssessmentMetrics></AssessmentMetrics>
-                  </div> -->
                   <div v-if="selectedPage === 'interviewquestions'">
                     <interviews-questions></interviews-questions>
-                  </div>
-                  <div v-if="selectedPage === 'offer-admission'">
-            <!-- <AdmitStudent></AdmitStudent> -->
                   </div>
               </div>
   
@@ -73,17 +58,10 @@
   import ApplicationList from "./ApplicationList.vue";
   import Interviews from "./Interviews.vue";
   import InterviewsQuestions from "./InterviewsQuestions.vue";
-  import GradeResults from "./GradeResults.vue";
-  import InterviewAssesmentAreas from "../assessment/assessmentComponents/AssesmentAreas.vue";
   import { useAbility } from '@casl/vue'
-  import AssessmentMetrics from '../assessment/assessmentComponents/AssessmentMetrics.vue'
-  import StudentAdmission from '@/main/dashboard/studentAdmission/StudentAdmission.vue'
-  import AdmissionList from "@/main/dashboard/studentAdmission/AdmissionList.vue";
-  import AdmitStudent from "./AdmitStudent.vue";
-  import InterviewManagement from "@/main/dashboard/studentApplication/InterviewManagement.vue"
+
 
   const { can } = useAbility()
-
 
   const routerData = useRouter()
   const buttonLoader = ref(false)
@@ -102,39 +80,6 @@
       id:"interviews",
       action:"view_interviews"
     },
-    // {
-    //   name:"Interview Schedules",
-    //   id:"manage-interviews",
-    //   action:"view_manage-interviews"
-    // },
-    // {
-    //   name:"Assessment Areas",
-    //   id:"assessment-areas",
-    //   action:"view_assessment_areas"
-    // },
-    // {
-    //   name:"Assessment Metrics",
-    //   id:"assessment-metrics",
-    //   action:"view_assessment_metrics"
-    // },
-    // {
-    //   name:"Interview Questions",
-    //   id:"interviewquestions",
-    //   action:"view_interviewquestions"
-    // },
-    // {
-    //   name:"Interviews",
-    //   id:"grade-results",
-    //   action:"view_grade_results"
-    // },
-
-    // {
-    //   name:"Admission Offer",
-    //   id:"offer-admission",
-    //   action:"view_admision-offer"
-    // },
-   
-
   ])
   const form = reactive({
     name:null

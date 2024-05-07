@@ -7,6 +7,9 @@ import useNotificationStore from "@/composables/useNotification.js";
 import AppModal from "@/components/AppModal.vue";
 import AssignTemplateToClass from "@/main/dashboard/manageLevel/report_setup/reportTemplate/AssignTemplateToClass.vue";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import clearClassModal from "@/main/dashboard/manageLevel/report_setup/reportTemplate/clearClassModal.vue";
+import ReportTemplateClasses from "./ReportTemplateClasses.vue";
+
 
 const schoolStore = useSchoolStore()
 const schoolList = ref([])
@@ -16,34 +19,55 @@ const reportTemplateList = ref(null)
 const showReportTemplateModal = ref(false)
 const showAssignModal = ref(false)
 const school_number = ref(false)
+const reportTemplateNumber = ref(null)
+const showClearClassModal = ref(false)
+const classOnTemplateList = ref([])
+const schoolNo = ref(null)
+const repoId = ref(null)
+const classListData = ref(null)
+
 onMounted(() => {
-    reportSetupStore.fetchReportTemplate()
     schoolStore.fetchSchools()
     }
 )
 
 const filterReportTemplate = (schoolNumber) =>{
-alert(schoolNumber)
-reportSetupStore.fetchReportTemplate()
+reportSetupStore.fetchReportTemplate(schoolNumber)
+schoolNo.value = schoolNumber
 }
 
 watch(
     () => reportSetupStore.reportTemplateListResponse,
     async (data) => {
       if(data){
-       reportTemplateList.value = data.data
-       //get classes added to report Template 
-
+      reportTemplateList.value = data;
       }
     }
 )
+
+watch(
+    () => reportSetupStore.classesAddedToReportTemplateListResponse,
+    async (data) => {
+      if(data){
+      classOnTemplateList.value = data;
+      }
+    }
+)
+
 
 const addReportTemplate = () => {
   showReportTemplateModal.value = true
 }
 
-const assignClass = () => {
+const assignClass = (repId) => {
+  // alert(repId)
+  reportTemplateNumber.value = repId
   showAssignModal.value = true
+}
+
+const clearClass = (classInfo) => {
+  showClearClassModal.value = true
+  classListData.value = classInfo
 }
 
 watch(
@@ -56,6 +80,11 @@ watch(
     {deep: true}
 )
 
+
+const showClasses = (TemplateN) =>{
+reportSetupStore.fetchClassesAddedReportTemplate(TemplateN,schoolNo.value)
+repoId.value = TemplateN
+}
 </script>
 
 <template>
@@ -67,17 +96,17 @@ watch(
     </AppModal>
     
     <AppModal title="Assign Class To Template1" v-model="showAssignModal" lg>
-        <AssignTemplateToClass></AssignTemplateToClass>
+        <AssignTemplateToClass :reportTemplateNumber="reportTemplateNumber"></AssignTemplateToClass>
     </AppModal>
 
+    <AppModal title="Comfirm !" v-model="showClearClassModal" xs>
+        <clearClassModal :classListData="classListData"></clearClassModal>
+    </AppModal>
 
 
     <div class="row">
 
       <div class="col-12">
-
-
-
         <div class="flex justify-content-between mt-3">
           <div class="ml-4">Report Template</div>
           <button
@@ -89,7 +118,7 @@ watch(
 
 
 
-        <div class="row">
+        <div class="row ml-5 mx-auto mb-4">
             <div class="col-lg-6">
                 <div class="mb-2">
             <label class="textSize"><small>School</small> </label>
@@ -99,7 +128,8 @@ watch(
                     v-model="school_number"
                     @change="filterReportTemplate(school_number)"
             >
-                <option disabled value="">Select School</option>
+                <option disabled value="">Filter By School</option>
+                <option value="">All</option>
                 <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
                 </option>
             </select>
@@ -127,11 +157,24 @@ watch(
                 <ol>
                     <b><i
                     style="font-size: 10px;"
-                    class="bi-plus-circle cursor-pointer link-primary" @click="assignClass"></i></b>   
-                    <li>Primary One [P1]<i
-                    style="font-size: 13px;" class="bi-x cursor-pointer link-danger"></i> </li>
-                    <li>Primary Two [P2] <i
-                    style="font-size: 13px;" class="bi-x cursor-pointer link-danger"></i></li>
+                    class="bi-plus-circle cursor-pointer link-primary" @click="assignClass(repoData.reportTemplateId)"></i></b> 
+                    <!-- <i
+                    style="font-size: 10px;"
+                    class="bi-eye cursor-pointer link-danger ml-3 " @click="showClasses(repoData.reportTemplateId)"> view</i>   -->
+                   <!-- <div v-if="repoId == repoData.reportTemplateId">
+                    <div v-for="(listD,index) in classOnTemplateList" :key="index">
+                      <span>{{listD.TemplateName}}</span> 
+
+                <ul v-for="(classInfo, classIndex) in listD.Classes" :key="classIndex=">
+                      <li><span>{{classIndex+1}}</span>.{{classInfo.ClassName}}<i
+                    style="font-size: 13px;" class="bi-x cursor-pointer link-danger"  @click="clearClass(classInfo)"></i> </li>
+                 </ul>     
+                    
+                  </div> -->
+                <!-- </div> -->
+                <ReportTemplateClasses :reportTemplateId="repoData.reportTemplateId"  :school_number="schoolNo"></ReportTemplateClasses>
+
+                    
                 </ol>
                 
             </td>
@@ -145,7 +188,7 @@ watch(
               </div>
             </td>
           </tr>
-          <tr>
+          <!-- <tr>
             <td>1</td>
             <td>Template Name2</td>
             <td>
@@ -169,7 +212,7 @@ watch(
                     style="font-size: 13px;" class="bi-trash cursor-pointer"></i>
               </div>
             </td>
-          </tr>
+          </tr> -->
           </tbody>
         </table>
 
@@ -183,5 +226,7 @@ watch(
 </template>
 
 <style scoped>
-
+.textSize{
+  font-size: 13px;
+}
 </style>
