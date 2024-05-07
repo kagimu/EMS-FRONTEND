@@ -12,11 +12,12 @@ const props = defineProps({
     classListData:String
   })
 const form = reactive ({
-    campusClassNumber:props.classListData.Number
+    campusClassNumber:props.classListData.number
 })
 
 const removeClass = () =>{
-    alert(JSON.stringify(form))
+    // alert(JSON.stringify(form))
+    loader.value = true
     reportSetupStore.removeClassFromReportTemplate(form)
 }
 
@@ -48,7 +49,7 @@ const cancelPlease = () =>{
 </script>
 <template>
     <div>
-        <p style="text-align:center">Are you sure to remove this Class : <b>{{classListData.ClassName}}</b> ?</p>
+        <p style="text-align:center">Are you sure to remove this Class : <b>{{classListData.class_name}}</b> ?</p>
     </div>
     <div class="row">
         <div class="col-6">
