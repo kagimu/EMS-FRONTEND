@@ -156,10 +156,12 @@
   interviewDialog.value = true;
   }
     const addInterviewAssesmentMetrics = () => {
+      // parseInt
     //  alert(JSON.stringify(form))
      interviewDialog.value = true;
      buttonLoader.value = true
       form.code = form.code ? parseInt(form.code) : form.code
+      form.max_score = form.max_score ? parseInt(form.max_score) : form.max_score
      assessmentStore.createAssessmentMetrics(form)
     }
   
@@ -417,11 +419,13 @@
            <div class="row">
               <div class="col-lg-6">           
                  <label class="textColor"><small>Weight</small></label>
-                 <input v-model="form.weight"  type="number" required class="form-control">
+                 <input v-model="form.weight"  type="text" required class="form-control"  @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10">
               </div>
               <div class="col-lg-6">
                  <label class="textColor"><small>Max_Score</small></label>
-                 <input v-model="form.max_score"  type="number" required class="form-control">
+                 <input v-model="form.max_score"  type="text" required class="form-control" @keypress="commons.numbersOnlyValidator($event)"
+            maxlength="10">
               </div>
            </div>
         </div>

@@ -31,7 +31,7 @@ export const useCateringStore = defineStore("catering", () => {
     let feedGroupSessionsInfoResponse = ref(null)
     let newFeedingGroupsPerDayResponse = ref(null)
     let feedGroupPerDayInfoResponse = ref(null) 
-    let newFeedingsResponse = ref(null)
+    let newMealsResponse = ref(null)
     let mealsResponse = ref(null)
  
 
@@ -370,10 +370,10 @@ async function fetchFeedGroupsPerDay() {
         })
 }
 
-async function newFeedings(data) {
-    return await api.post("main/catering/feedings", data)
+async function newMeal(data) {
+    return await api.post("main/catering/meals", data)
         .then((response) => {
-            newFeedingsResponse.value = response.data
+            newMealsResponse.value = response.data
         })
         .catch((response) => {
             if(response){
@@ -382,8 +382,8 @@ async function newFeedings(data) {
         })
 }
 
-async function fetchMeals(sessionNumber,feedingGroupNumber) {
-    return await api.get("main/catering/meals?session-number="+sessionNumber+"&feeding-group-number"+feedingGroupNumber)
+async function fetchMeals(feedingGroupNumber,sessionNumber) {
+    return await api.get("main/catering/meals?feeding_group_number="+feedingGroupNumber+"&feeding_session_number="+sessionNumber)
         .then((response) => {
             mealsResponse.value = response.data
         })
@@ -453,8 +453,8 @@ async function fetchMeals(sessionNumber,feedingGroupNumber) {
         newFeedingGroupsPerDayResponse,
         fetchFeedGroupsPerDay,
         feedGroupPerDayInfoResponse,
-        newFeedingsResponse,
-        newFeedings,
+        newMealsResponse,
+        newMeal,
         mealsResponse,
         fetchMeals
 
