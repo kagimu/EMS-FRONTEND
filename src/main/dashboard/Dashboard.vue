@@ -6,10 +6,10 @@ import {ref, onMounted, watch} from 'vue'
 import {useAuthStore} from "@/main/auth/store/auth.js";
 import {useRouter} from "vue-router";
 import { useAbility } from '@casl/vue';
-import {breakpointsTailwind, useBreakpoints} from "@vueuse/core";
+import {breakpointsTailwind, useBreakpoints, useStorage} from "@vueuse/core";
 const routerName = useRouter().currentRoute.value.name;
 const authStore = useAuthStore()
-const defaultMenuSize = ref(false)
+
 const { can } = useAbility();
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
@@ -17,6 +17,8 @@ const xs = breakpoints.smaller('sm')
 const sm = breakpoints.between('sm', 'md')
 const md = breakpoints.between('md', 'lg')
 
+
+const defaultMenuSize = ref(useStorage("toggle", false))
 
 
 const menuList = ref([
@@ -65,12 +67,9 @@ watch(
 
 const checkDynamicClass = () => {
   if(md.value){
-    defaultMenuSize.value = md
+    defaultMenuSize.value = true
   }
 
-  if(!md.value){
-    defaultMenuSize.value = false
-  }
 
 }
 
@@ -92,9 +91,6 @@ function userLogout(){
 
 }
 
-function toggleMenu(){
-  defaultMenuSize.value = !defaultMenuSize.value
-}
 
 
 
@@ -111,14 +107,18 @@ function updateOnlineStatus() {
 </script>
 <template>
 
-
 <div class="p-0 h-screen w-screen">
     <div class="row fixed w-screen mx-auto z-50">
       <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #1062da;">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
           <div class="container-fluid">
             <div class="flex" style="width: 12%; margin-right: 4%; color: #ffffff;">
-              <i @click="toggleMenu" style="font-size: 27px; cursor: pointer;" class="bi-list mr-2"></i>
+              <i
+                  @click="defaultMenuSize = !defaultMenuSize"
+                  style="font-size: 27px; cursor: pointer;"
+                  class="bi-list mr-2"
+                  :class="defaultMenuSize ? 'transition ease-in-out rotate-0 duration-700' : 'transition ease-in-out -rotate-180 duration-700'"
+              ></i>
               <router-link class="navbar-brand" :to="{name:'home'}" style="color: #ffffff;">Wholesome ED</router-link>
             </div>
             <div class="navbar-collapse">
@@ -150,7 +150,9 @@ function updateOnlineStatus() {
     </div>
 
   <div class="flex w-screen h-screen p-0 overflow-hidden bg-white">
-    <div v-if="!xs && !sm" :class="defaultMenuSize ? 'w-[5%] h-screen' : 'w-[16%] h-screen'">
+    <div
+        v-if="!xs && !sm" :class="defaultMenuSize ? 'w-[5%] h-screen duration-700 flex-none' : 'w-[16%] h-screen duration-700'"
+        class="border-[#dfdfdf] border-r">
       <div class="overflow-y-scroll scrollbar-thin bg-white h-screen mt-[56px]">
        <div
           class="list-group list-group-flush text-[13px]"
@@ -172,7 +174,7 @@ function updateOnlineStatus() {
       </div>
       </div>
     </div>
-    <div :class="(xs || sm) ? 'w-full' : (defaultMenuSize ? 'w-[95%]' : 'w-[84%]')">
+    <div class="grow flex-auto">
       <div class="px-3 h-screen pb-[120px] mt-[56px]" style="background-color: #ecf0f5; overflow-y: scroll; scrollbar-width: thin;">
         <router-view></router-view>
       </div>
