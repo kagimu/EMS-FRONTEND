@@ -1,5 +1,5 @@
 <template>
-  <div class="app container-fluid">
+  <div class="app container-fluid p-0 m-0">
     <notifications position="bottom right" />
     <router-view :key="$route.fullPath"></router-view>
 
