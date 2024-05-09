@@ -154,7 +154,7 @@ function updateOnlineStatus() {
         class="bg-white border-[#dfdfdf] border-r h-screen duration-700">
       <div class="overflow-y-scroll scrollbar-thin bg-white h-screen mt-[56px]">
         <div
-          class="list-group list-group-flush text-[13px]"
+          class="list-group list-group-flush text-[13px] pb-[100px] "
           :class="defaultMenuSize ? 'text-center' : ''"
       >
         <router-link
