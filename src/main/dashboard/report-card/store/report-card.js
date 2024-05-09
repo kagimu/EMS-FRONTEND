@@ -22,10 +22,9 @@ export const useReportCardStore = defineStore("ReportCard", () => {
             })
     }
 
-    // /report-summary?student_number=xx&study_period_number=yy&campus_class_number=dd&stream_number=ss&grade=d1
-    // "main/report-settings/report-summary?student_number="+studentNumber+"&study_period_number="+studyPeriod+"&campus_class_number="+campusClassNumber+"&stream_number="+streamNumber+"&grade="+grade
-    async function fetchReportSummary(studentNumber,studyPeriod,campusClassNumber,streamNumber,grade) {
-        return await api.get("main/report-settings/report-summary?student_number="+studentNumber+"&study_period_number="+studyPeriod+"&campus_class_number="+campusClassNumber+"&stream_number="+streamNumber+"&grade="+grade)
+
+    async function fetchReportSummary(data) {
+        return await api.get("main/report-settings/report-summary?page="+data.page+"&per_page="+ data.per_page+"&student_number="+data.student_number+"&study_period_number="+data.study_period_number+"&campus_class_number="+data.campus_curriculum_number+"&stream_number="+data.stream_number+"&grade="+data.grade)
             .then((response) => {
                 if(response && response.data) {
                     reportSummaryResponse.value = response.data

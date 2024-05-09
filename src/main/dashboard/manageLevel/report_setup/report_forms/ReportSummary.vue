@@ -4,16 +4,18 @@
    import {useReportCardStore} from "@/main/dashboard/report-card/store/report-card.js";
    import AppModal from "@/components/AppModal.vue";
    import ManageReportDetails from "@/main/dashboard/manageLevel/report_setup/report_forms/ManageReportDetails.vue";
-  
+  const routerData = useRouter()
    import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
   import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
   import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
   import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
   import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
-   
+  import {useRouter} from "vue-router";
+
+  const campus_curriculum_number = routerData.currentRoute.value.query.crr
    const reportSetupStore = useReportSetupStore()
    const reportStore = useReportCardStore()
-   const reportSummaryList = ref(null)
+   const reportSummaryList = ref([])
    const showStudentsMarks = ref(false)
    //filter
 
@@ -29,8 +31,10 @@
   const studyPeriodList  = ref([])
   const classStore = useClassesStore()
   const streamList = ref([])
+  const page = ref(1)
+  const per_page = ref(15)
    
-  const form = reactive({
+const form = reactive({
 academic_year: "",
 study_period_number: "",
 campus_class_number: "",
@@ -39,11 +43,14 @@ stream_number:"",
 interview_number:""
 })
 
-  //  onMounted(
-  //      async () => {
-  //        await reportStore.fetchReportSummary()
-  //      }
-  //  )
+   onMounted(
+       async () => {
+         await academicYearStore.fetchAcademicYearByCampus(campus_curriculum_number)
+         await classStore.fetchClassStreams(campus_curriculum_number)
+         // await reportStore.fetchReportSummary()
+         fetchAcademicYear()
+       }
+   )
    
    const showStudentReport = (summary) => {
      if(summary) {
@@ -62,16 +69,24 @@ const fetchClasses = (campus_number) => {
   campusStore.fetchClassesByCampus(campus_number)
 }
 
-const fetchAcademicYear = (campusClassN) =>{
-academicYearStore.fetchAcademicYearByCampus(campusClassN)
-classStore.fetchClassStreams(campusClassN)
-let studentN = ""
-  let study_period_number = ""
-  let stream_number = ""
-  let grade=""
-  reportStore.fetchReportSummary(studentN,study_period_number,campusClassN,stream_number,grade)
+const fetchAcademicYear = () =>{
+
+
+  let options = {
+    page: page.value,
+    per_page: per_page.value,
+    student_number: "",
+    study_period_number: "",
+    stream_number: "",
+    grade: "",
+    campus_curriculum_number: "",
+  }
+
+  reportStore.fetchReportSummary(options)
+  // reportStore.fetchReportSummary(studentN,study_period_number,campusClassN,stream_number,grade)
 
 }
+
 watch(
   () => academicYearStore.academicYearByCampusResponse,
   async (data) => {
@@ -108,14 +123,6 @@ const filterByAcademicYear = (academicN) =>{
   // reportStore.fetchReportSummary(studentN,study_period,form.campus_class_number,form.stream_number,grade)
 }
 
-watch(
-       () => reportStore.reportSummaryResponse,
-       async (data) => {
-         if(data){
-           reportSummaryList.value = data.data
-         }
-       }
-   )
    
 
 watch(
@@ -176,6 +183,46 @@ watch(
   {deep: true}
 )
 
+
+
+
+  const filterSummaryReport = (data) => {
+    if(data) {
+      let current_page = data.page
+      page.value = current_page
+
+      let per_page_item = data.per_page;
+      per_page.value = per_page_item;
+
+      let objArray = data.content
+
+
+      if(objArray && objArray.length > 0){
+        objArray.forEach((list, i) => {
+
+          list.key =  (current_page - 1) * per_page_item + i + 1
+
+          const index = reportSummaryList.value.findIndex(object => object.number === list.number);
+
+          if (index === -1) {
+            reportSummaryList.value.push(list);
+          }
+
+        })
+      }
+
+
+    }
+  }
+
+  watch(
+      () => reportStore.reportSummaryResponse,
+      async (data) => {
+        if(data){
+          filterSummaryReport(data)
+        }
+      }
+  )
 
 
    
@@ -309,8 +356,7 @@ watch(
                </thead>
                <tbody>
                   <tr v-for="(summary, idx) in reportSummaryList" :key="idx">
-                    {{ summary }}
-                     <td> {{(idx + 1)}}</td>
+                     <td> {{summary.key}}</td>
                      <td> {{summary.student_name}}</td>
                      <td> {{summary.grade}}</td>
                      <td>{{ summary.study_period }}</td>
