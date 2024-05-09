@@ -316,8 +316,7 @@ watch(
                         <div class="col-4">
                            <div class="mb-2">
                               <label class="textColor">
-                                 <small>Study Period</small> 
-                                 <!-- {{ studyPeriodList }} -->
+                                 <small>Study Period</small>
                               </label>
                               <select
                                  style="box-shadow: none;"
