@@ -147,13 +147,14 @@ function updateOnlineStatus() {
       </div>
     </div>
 
-  <div class="flex w-screen h-screen p-0 overflow-hidden bg-white">
+  <div class="flex w-screen h-screen overflow-hidden">
     <div
-        v-if="!xs && !sm" :class="defaultMenuSize ? 'w-[5%] h-screen duration-700 flex-none' : 'w-[16%] h-screen duration-700'"
-        class="border-[#dfdfdf] border-r">
+        v-if="!xs && !sm"
+        :class="defaultMenuSize ? 'w-[5%]' : 'w-[16%]'"
+        class="bg-white border-[#dfdfdf] border-r h-screen duration-700">
       <div class="overflow-y-scroll scrollbar-thin bg-white h-screen mt-[56px]">
-       <div
-          class="list-group list-group-flush text-[13px]"
+        <div
+          class="list-group list-group-flush text-[13px] pb-[100px] "
           :class="defaultMenuSize ? 'text-center' : ''"
       >
         <router-link
@@ -172,8 +173,8 @@ function updateOnlineStatus() {
       </div>
       </div>
     </div>
-    <div class="grow flex-auto">
-      <div class="px-3 h-screen pb-[120px] mt-[56px]" style="background-color: #ecf0f5; overflow-y: scroll; scrollbar-width: thin;">
+    <div class="flex-1 h-screen overflow-y-scroll scrollbar-thin pb-[120px] bg-[#ecf0f5]">
+      <div class="px-3 pt-[50px]">
         <router-view></router-view>
       </div>
     </div>
