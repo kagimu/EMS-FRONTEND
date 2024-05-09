@@ -109,6 +109,7 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             })
     }
 
+    
     async function fetchReportSettings() {
         return await api.get("main/report-settings")
             .then((response) => {

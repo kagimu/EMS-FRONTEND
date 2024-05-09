@@ -288,10 +288,7 @@ const fetchClasses = (campus_number) => {
   campusStore.fetchClassesByCampus(campus_number)
 }
 
-
-//fetchacadmicYear
 const fetchAcademicYear = (campusN) =>{
-// alert(campusN)
 academicYearStore.fetchAcademicYearByCampus(campusN)
 classStore.fetchClassStreams(campusN)
 }

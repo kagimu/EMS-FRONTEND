@@ -122,7 +122,7 @@ onMounted(
 
 const addFeedingGroupsPerDay = () => {
     buttonLoader.true
-    alert(JSON.stringify(form))
+   // alert(JSON.stringify(form))
     cateringStore.newGroupGroupsPerDay(form)  
 }
 watch (

@@ -134,6 +134,16 @@ watch(
   },
   {deep: true}
 )
+
+watch (
+    () => cateringStore.newFeedingGroupsPerDayResponse,
+    async (data) => {
+      if(data){
+        showingModal.value = false
+      }
+    },
+    {deep:true}
+)
   </script>
   
   
