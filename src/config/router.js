@@ -168,7 +168,6 @@ const router = createRouter({
                 meta: {
                     resource: "report-center",
                     action: "view_report-center",
-                      
                 }},
                 {path: 'settings', component: settings, name: "settings",
                 meta: {

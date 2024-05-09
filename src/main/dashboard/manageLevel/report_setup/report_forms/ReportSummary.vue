@@ -8,12 +8,18 @@ import ManageReportDetails from "@/main/dashboard/manageLevel/report_setup/repor
 
 const reportSetupStore = useReportSetupStore()
 const reportStore = useReportCardStore()
-const reportSummaryList = ref(null)
+const reportSummaryList = ref([])
 const showStudentsMarks = ref(false)
+const page = ref(1)
+const per_page = ref(15)
 
 onMounted(
     async () => {
-      await reportStore.fetchReportSummary()
+      let options = {
+        page: page.value,
+        per_page: per_page.value,
+      }
+      await reportStore.fetchReportSummary(options)
     }
 )
 
@@ -24,11 +30,42 @@ const showStudentReport = (summary) => {
   }
 }
 
+const filterSummaryReport = (data) => {
+if(data) {
+  let current_page = data.page
+  page.value = current_page
+
+  let per_page_item = data.per_page;
+  per_page.value = per_page_item;
+
+  let objArray = data.content
+
+
+if(objArray && objArray.length > 0){
+  objArray.forEach((list, i) => {
+
+    list.key =  (current_page - 1) * per_page_item + i + 1
+
+    const index = reportSummaryList.value.findIndex(object => object.number === list.number);
+
+    if (index === -1) {
+      reportSummaryList.value.push(list);
+    }
+
+  })
+}
+
+
+
+
+}
+}
+
 watch(
     () => reportStore.reportSummaryResponse,
     async (data) => {
       if(data){
-        reportSummaryList.value = data.data
+        filterSummaryReport(data)
       }
     }
 )
@@ -68,13 +105,11 @@ watch(
           </thead>
           <tbody>
           <tr v-for="(summary, idx) in reportSummaryList" :key="idx">
-            <td> {{(idx + 1)}}</td>
+            <td> {{(summary.key)}}</td>
             <td> {{summary.student_name}}</td>
             <td> {{summary.grade}}</td>
             <td>
               <div>
-
-
                 <button
                     @click="showStudentReport(summary)"
                     type="button"

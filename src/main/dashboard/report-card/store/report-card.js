@@ -23,9 +23,11 @@ export const useReportCardStore = defineStore("ReportCard", () => {
     }
 
     async function fetchReportSummary(data) {
-        return await api.get("main/report-settings/report-summary")
+        return await api.get("main/report-settings/report-summary?page="+data.page+"&per_page="+data.per_page)
             .then((response) => {
-                reportSummaryResponse.value = response.data
+                if(response && response.data) {
+                    reportSummaryResponse.value = response.data
+                }
             })
             .catch((error) => {
                 if(error && error.response){
