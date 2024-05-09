@@ -174,7 +174,7 @@ function updateOnlineStatus() {
       </div>
     </div>
     <div class="flex-1 h-screen overflow-y-scroll scrollbar-thin pb-[120px] bg-[#ecf0f5]">
-      <div class="px-3">
+      <div class="px-3 pt-[50px]">
         <router-view></router-view>
       </div>
     </div>
