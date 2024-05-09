@@ -114,6 +114,7 @@
 
         <th>Name</th>
         <th>Unit</th>
+        <th>Current Quantity</th>
         <th>Campus</th>
         <th>Type</th>
         <th>Action</th>
@@ -127,6 +128,7 @@
           <td>{{ index+1 }}</td>
       <td>{{ list.name }} [{{ list.code }}]</td>
       <td>{{ list.unit_of_measure_name }}</td>
+      <td>{{ list.current_quantity }}</td>
       <td>{{ list.campus_name }}</td>
       <td>{{ list.type }}&nbsp;
        <span  v-if="list.type=='ASSEMBLED'"><button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
