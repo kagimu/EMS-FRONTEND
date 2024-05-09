@@ -81,16 +81,18 @@
               <div class="col-md-12">
                 <div class="card mb-4 mb-md-0">
                   <div class="card-body">
-                    <p class="mb-4"><span class="text-primary font-italic me-1">Financial situation</span> > Invoices</p>
-
-                    <div class="card mt-3">
-            <div class="card-body" style="padding: 0;">
+                    <div class="mt-0">
+            <div  style="padding: 0;">
   
               <div>
 
                  <div v-if="menuSelected === 'financial-situation'">
-               <p>Financial Situation</p>
+
+                  <ManageInvoices></ManageInvoices>
+
                   </div>
+
+
                   <div v-if="menuSelected === 'bio-data'">
                 <h1>Bio data</h1>
                   </div>
@@ -118,12 +120,13 @@
   <script setup> 
   import {reactive, ref} from "vue";
   import {useRouter} from "vue-router";
+  import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
+  import ManageInvoices from "@/main/dashboard/invoice/ManageInvoices.vue"
+
 
   const routerData = useRouter()
-  
   const menuSelected = ref("financial-situation")
   const student_number = routerData.currentRoute.value.query.st_id
-
 
   const itemMenu = ref([
    {

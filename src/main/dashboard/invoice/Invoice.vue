@@ -1,19 +1,21 @@
 <template>
   <div>
-    <div class="row">
-      <div class="col-12">
-        <div class="card mt-3">
-          <div class="card-header">
+
+
+    <AppModal title="Creating New Invoice" v-model="mymodal" xl6>
+    <NewInvoice></NewInvoice>
+    </AppModal>
+
+    <div class="row mt-3"  >
+      <div class="col-12">    
      <div class="row">
       <div class="col-lg-4">
-          <!-- <h6 style="margin-top:20px; text-align: left;font-size: 15px;">4 Invoices<b></b>     </h6> -->
       </div>
       <div class="col-lg-8">
-        <RouterLink :to="{name : 'new-invoice'}" class="btn btn-primary btn-sm" style="float: right;"
-        v-if="can('add_custom_invoice','general')">
-          <small><i class="bi bi-plus"> Add Custom Invoice</i></small></RouterLink></div>
+        <button  @click="showModal()" class="btn btn-primary btn-sm mb-2" style="float: right;" v-if="can('add_custom_invoice','general')">
+        <small><i class="bi bi-plus"> Add New Transaction</i></small></button></div>
      </div>
-         </div>
+       
           <div class="card-body" style="padding: 0;">
   <div class="container mt-4">
     <table
@@ -23,30 +25,17 @@
     >
       <thead>
         <tr>
-          <th>Payer</th>
-          <th>Amount</th>
-          <th>Title</th>
+          <th>Invoice No.</th>
+          <th>CreatedOn</th>
+          <th>Due Date</th>
+          <th>Items</th>
           <th>Status</th>
-          <th>#</th>
+          <th>Actions</th>
         </tr>
    
       </thead>
       <tbody>
-       
-     
-           <tr v-for="(invoiceList, index) in invoiceData" :key="index">
-          <td>{{ invoiceList.surname + invoiceList.firstname }}</td>
-          <td>{{ invoiceList.total }}</td>
-          <td>{{ invoiceList.title }}</td>
-          <td><span class="link-success">{{ invoiceList.status }}</span></td>
-          <td>
-            <router-link
-                class="text-decoration-none"
-                :to="{name:'invoice-details', query:{Invid:invoiceId}}"
-            ><button class="link-primary" style="border-width: 0px;text-decoration: none;" title=""><small>
-            <i class="bi bi-eye">&nbsp;View Details</i></small></button></router-link>  
-            </td>
-        </tr>  
+ 
           
       </tbody>
     </table>
@@ -54,7 +43,7 @@
   </div>
   </div>
   </div>
-  </div>
+
 
   </div>
   </template>
@@ -63,14 +52,20 @@
 import {onMounted, reactive, ref, watch,computed} from "vue";
 import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
 import useNotificationStore from "@/composables/useNotification.js"
+import NewInvoice from "@/main/dashboard/invoice/NewInvoice.vue"
 import { useAbility } from '@casl/vue';
+import AppModal from "@/components/AppModal.vue";
 
 const { can } = useAbility()
-let invoiceId = "sirina-id"
 
 const invoiceData = ref([])
 const invoiceStore = useInvoiceStore()
 const  notificationStore  = useNotificationStore()
+const mymodal = ref(false)
+
+const showModal = () =>{
+  mymodal.value = true
+}
 
 onMounted(
     () => {
@@ -88,15 +83,15 @@ watch(
     {deep:true}
 )
 
-watch (
-    () => invoiceStore.errorMessage,
-    async (data) => {
-      if(data){
-        notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-)
+// watch (
+//     () => invoiceStore.errorMessage,
+//     async (data) => {
+//       if(data){
+//         notificationStore.errorToast("Error",data.message)
+//       }
+//     },
+//     {deep:true}
+// )
 
 </script>
 
