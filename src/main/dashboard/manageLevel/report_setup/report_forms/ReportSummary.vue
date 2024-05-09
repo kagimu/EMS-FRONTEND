@@ -52,6 +52,8 @@ interview_number:""
        }
    )
    
+
+
    const showStudentReport = (summary) => {
      if(summary) {
        showStudentsMarks.value = true
@@ -70,20 +72,17 @@ const fetchClasses = (campus_number) => {
 }
 
 const fetchAcademicYear = () =>{
-
-
   let options = {
     page: page.value,
     per_page: per_page.value,
     student_number: "",
     study_period_number: "",
+    campus_curriculum_number: form.campus_class_number,
     stream_number: "",
     grade: "",
-    campus_curriculum_number: "",
   }
 
   reportStore.fetchReportSummary(options)
-  // reportStore.fetchReportSummary(studentN,study_period_number,campusClassN,stream_number,grade)
 
 }
 

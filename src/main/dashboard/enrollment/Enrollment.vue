@@ -200,7 +200,7 @@
             </td>
             <td>{{ enrolData.adn }}</td>
             <td>{{ enrolData.study_period }}</td>
-            <td>{{ enrolData.student_surname + " "+ enrolData.student_second_name + " "  + enrolData.student_other_name}}</td>
+            <td style="text-transform: capitalize;">{{ enrolData.student_surname + " "+ enrolData.student_second_name + " "  + enrolData.student_other_name}}</td>
             <td>{{enrolData.school }}</td>
             <td>{{ enrolData.campus }}</td>
             <td>{{ enrolData.class }}</td>
@@ -209,10 +209,21 @@
             <td>
                 <!-- <button><i class="bi bi-trash"></i></button> &nbsp;
                 <button><i class="bi bi-pencil"></i></button> -->
-                <button 
+                <!-- <button 
                  type="button" @click="promModal(enrolData.Student.number)"  class="btn btn-sm buttonStyle btn-primary mr-2"  data-bs-toggle="modal" data-bs-target="#promoteModal">
                   Promote
+                </button> -->
+
+         
+                <router-link
+                  class="text-decoration-none"
+                  :to="{name:'student-profile-details', query:{st_id:enrolData.number}}">
+                <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
+                <small><i class="bi bi-person"></i> Student Profile</small>
                 </button>
+              </router-link>
+
+
             </td>
           
           </tr>  
