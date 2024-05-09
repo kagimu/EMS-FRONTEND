@@ -69,8 +69,6 @@ const checkDynamicClass = () => {
   if(md.value){
     defaultMenuSize.value = true
   }
-
-
 }
 
 const name = ref(null)
