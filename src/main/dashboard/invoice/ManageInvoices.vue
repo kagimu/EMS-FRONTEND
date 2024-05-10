@@ -1,3 +1,4 @@
+
 <template>
     <div>
         <div class="row">
@@ -14,10 +15,10 @@
       </nav>
       <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="class-list" role="tabpanel" aria-labelledby="class-list-tab" tabindex="0">
-        <Transactions></Transactions>
+        <transactions></transactions>
         </div>
         <div class="tab-pane fade" id="assembled" role="tabpanel" aria-labelledby="assembled-tab" tabindex="0">
-       <Invoice></Invoice>
+       <invoice></invoice>
         </div>
       </div>
 
