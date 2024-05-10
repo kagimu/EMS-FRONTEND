@@ -9,7 +9,6 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
 import AppModal from "@/components/AppModal.vue";
 import CampusListInfo from "@/main/dashboard/manageCampus/CampusListInfo.vue";
-import ReportTemplates from "@/main/dashboard/manageLevel/report_setup/reportTemplate/ReportTemplates.vue";
 import SchoolReportTemplates from "@/main/dashboard/manageLevel/report_setup/reportTemplate/SchoolReportTemplates.vue";
 const routerData = useRouter()
 const campusStore = useCampusStore()

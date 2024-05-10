@@ -9,8 +9,9 @@ import AssignTemplateToClass from "@/main/dashboard/manageLevel/report_setup/rep
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import clearClassModal from "@/main/dashboard/manageLevel/report_setup/reportTemplate/clearClassModal.vue";
 import ReportTemplateClasses from "./ReportTemplateClasses.vue";
+import {useRouter} from "vue-router";
 
-
+const routerData = useRouter()
 const schoolStore = useSchoolStore()
 const schoolList = ref([])
 const reportSetupStore = useReportSetupStore()
@@ -22,18 +23,17 @@ const school_number = ref(false)
 const reportTemplateNumber = ref(null)
 const showClearClassModal = ref(false)
 const classOnTemplateList = ref([])
-const schoolNo = ref(null)
 const repoId = ref(null)
 const classListData = ref(null)
+const schoolNumber = routerData.currentRoute.value.query.sch
 
 onMounted(() => {
-    schoolStore.fetchSchools()
+  filterReportTemplate()
     }
 )
 
-const filterReportTemplate = (schoolNumber) =>{
+const filterReportTemplate = () =>{
 reportSetupStore.fetchReportTemplate(schoolNumber)
-schoolNo.value = schoolNumber
 }
 
 watch(
@@ -70,19 +70,9 @@ const clearClass = (classInfo) => {
   classListData.value = classInfo
 }
 
-watch(
-    () => schoolStore.schoolsResponse,
-    async (data) => {
-        if (data) {
-            schoolList.value = data.data
-        }
-    },
-    {deep: true}
-)
-
 
 const showClasses = (TemplateN) =>{
-reportSetupStore.fetchClassesAddedReportTemplate(TemplateN,schoolNo.value)
+reportSetupStore.fetchClassesAddedReportTemplate(TemplateN,schoolNumber)
 repoId.value = TemplateN
 }
 </script>
@@ -108,38 +98,12 @@ repoId.value = TemplateN
 
       <div class="col-12">
         <div class="flex justify-content-between mt-3">
-          <div class="ml-4">Report Template</div>
-<!--          <button
-              type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addReportTemplate">
-            <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-              Add Template
-          </button>-->
+          <div class="ml-4">Add Class to Report Template</div>
         </div>
 
 
 
-        <div class="row ml-5 mx-auto mb-4">
-            <div class="col-lg-6">
-                <div class="mb-2">
-            <label class="textSize"><small>School</small> </label>
-            <select
-                    style="box-shadow: none;"
-                    class="form-select form-select-sm" required
-                    v-model="school_number"
-                    @change="filterReportTemplate(school_number)"
-            >
-                <option disabled value="">Filter By School</option>
-                <option value="">All</option>
-                <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-                </option>
-            </select>
-        </div>
-            </div>
-            <div class="col-lg-6">
 
-            </div>
-
-        </div>
         <table class="table table-hover caption-top mt-5 table-sm text-sm" style="font-size: 14px;">
           <thead>
           <tr>
@@ -159,7 +123,7 @@ repoId.value = TemplateN
                     style="font-size: 10px;"
                     class="bi-plus-circle cursor-pointer link-primary" @click="assignClass(repoData.report_template_id)"></i></b> 
            
-                <ReportTemplateClasses :reportTemplateId="repoData.report_template_id"  :school_number="schoolNo"></ReportTemplateClasses>
+                <ReportTemplateClasses :reportTemplateId="repoData.report_template_id"  :school_number="schoolNumber"></ReportTemplateClasses>
 
                     
                 </ol>

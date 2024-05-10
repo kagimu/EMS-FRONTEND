@@ -43,7 +43,6 @@ import Conditions from "@/main/settings/conditions/Conditions.vue"
 import Products from "@/main/dashboard/servicesAndProducts/Products.vue";
 import Designsidework from "../main/dashboard/Designsidework.vue";
 import CampusSetup from "@/main/dashboard/manageLevel/CampusSetup.vue";
-import Assessment from "@/main/dashboard/assessment/Assessment.vue";
 import AssessmentList from "@/main/dashboard/assessment/assessmentComponents/AssessmentList.vue"
 import ExamType from "@/main/dashboard/assessment/assessmentComponents/ExamType.vue"
 import Account from "@/main/dashboard/account/Account.vue"

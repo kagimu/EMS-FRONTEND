@@ -20,6 +20,7 @@ const school = ref( "")
 
 
 const campusNumber = routerData.currentRoute.value.query.id
+const schoolNumber = routerData.currentRoute.value.query.sch
 let campusCurriculumNumber = routerData.currentRoute.value.query.crr
 let curriculumNumberParent = routerData.currentRoute.value.query.cr
 let campusSetupQuery = routerData.currentRoute.value.query.type
@@ -137,7 +138,7 @@ watch(
 )
 
 const switchCurriculum = (curriculum) => {
-  router.push({name: "campus-curriculum-setup", query:{id:campusNumber, crr:curriculum, cr:curriculumNumberParent}})
+  router.push({name: "campus-curriculum-setup", query:{id:campusNumber,sch:schoolNumber, crr:curriculum, cr:curriculumNumberParent}})
 }
 
 
@@ -191,7 +192,7 @@ const switchCurriculum = (curriculum) => {
                   v-for="(item, idx) in  campusSettingsMenu" :key="idx"
                   class="list-group-item list-group-item-action"
                   :class="item.router_name === campusSetupQuery ? 'active' : ''"
-                  :to="{name:'campus-curriculum-setup', query:{id:campusNumber, crr:campusCurriculumNumber, cr:curriculumNumberParent,type:item.router_name}}">
+                  :to="{name:'campus-curriculum-setup', query:{id:campusNumber,sch:schoolNumber, crr:campusCurriculumNumber, cr:curriculumNumberParent,type:item.router_name}}">
                 <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></router-link>
             </div>
 
@@ -210,7 +211,7 @@ const switchCurriculum = (curriculum) => {
                   v-for="(item, idx) in  assess" :key="idx"
                   class="list-group-item list-group-item-action"
                   :class="item.router_name === assessmentSettingsQuery ? 'active' : ''"
-                  :to="{name:'campus-curriculum-setup', query:{id:campusNumber, crr:campusCurriculumNumber, cr:curriculumNumberParent, ass:item.router_name}}">
+                  :to="{name:'campus-curriculum-setup', query:{id:campusNumber,sch:schoolNumber, crr:campusCurriculumNumber, cr:curriculumNumberParent, ass:item.router_name}}">
                 <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></router-link>
             </div>
 
@@ -227,7 +228,7 @@ const switchCurriculum = (curriculum) => {
                   v-for="(item, idx) in  reportSettingsMenu" :key="idx"
                   class="list-group-item list-group-item-action"
                   :class="item.router_name === reportSettingsQuery ? 'active' : ''"
-                  :to="{name:'campus-curriculum-setup', query:{id:campusNumber, crr:campusCurriculumNumber, cr:curriculumNumberParent, rp:item.router_name}}">
+                  :to="{name:'campus-curriculum-setup', query:{id:campusNumber,sch:schoolNumber, crr:campusCurriculumNumber, cr:curriculumNumberParent, rp:item.router_name}}">
                 <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></router-link>
             </div>
 
@@ -245,7 +246,7 @@ const switchCurriculum = (curriculum) => {
                   v-for="(item, idx) in  studentScoreMenu" :key="idx"
                   class="list-group-item list-group-item-action"
                   :class="item.router_name === studentScoreQuery ? 'active' : ''"
-                  :to="{name:'campus-curriculum-setup', query:{id:campusNumber, crr:campusCurriculumNumber, cr:curriculumNumberParent, ss:item.router_name}}">
+                  :to="{name:'campus-curriculum-setup', query:{id:campusNumber,sch:schoolNumber, crr:campusCurriculumNumber, cr:curriculumNumberParent, ss:item.router_name}}">
                 <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></router-link>
             </div>
 

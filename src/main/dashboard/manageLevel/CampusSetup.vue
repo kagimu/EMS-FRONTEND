@@ -17,6 +17,7 @@ const campusNumber = routerData.currentRoute.value.query.id
 let campusCurriculumNumber = routerData.currentRoute.value.query.crr
 let reportSettingsQuery = routerData.currentRoute.value.query.rp
 let assessmentSettingsQuery = routerData.currentRoute.value.query.ass
+let schoolNumber = routerData.currentRoute.value.query.sch
 
 
 onMounted(
@@ -80,7 +81,7 @@ watch(
                   v-for="(item, idx) in  campusCurriculumDataInfo" :key="idx"
                   class="list-group-item list-group-item-action"
                   :class="item.number === campusCurriculumNumber ? 'active' : ''"
-                  :to="{name:'campus-curriculum-setup', query:{id:campusNumber, crr:item.number, cr:item.curriculum_number}}">
+                  :to="{name:'campus-curriculum-setup', query:{id:campusNumber,sch:schoolNumber, crr:item.number, cr:item.curriculum_number}}">
                 <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></router-link>
             </div>
 
