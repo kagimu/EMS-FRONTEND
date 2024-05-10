@@ -189,8 +189,9 @@ const filterSummaryReport = (data) => {
      <AppModal title="Preview Report" v-model="showStudentsMarks" xl6>
        <manage-report-details></manage-report-details>
      </AppModal>
-    
-      <div class="row">
+
+
+     <div class="row">
          <div class="col-12">
             <div class="mt-4">
                <div class="row mx-auto">
