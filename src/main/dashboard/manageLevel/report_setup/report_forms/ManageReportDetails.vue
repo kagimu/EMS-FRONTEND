@@ -9,7 +9,7 @@ import VictoriousReportPrimary from "@/main/dashboard/ReportCenter/victorious/Vi
 const reportStore = useReportCardStore()
 
 const reportDetails = ref(null)
-const showReport = ref(false)
+// const showReport = ref(false)
 
 watch(
     () => reportStore.reportDetailsResponse,
@@ -24,7 +24,7 @@ watch(
 
 <template>
 <div>
-<!--  {{reportDetails}}-->
+
   <div v-if="reportDetails?.report_template_name === 'noregrets-early-learning-report-one'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
     <baby-class-report></baby-class-report>
     <br />

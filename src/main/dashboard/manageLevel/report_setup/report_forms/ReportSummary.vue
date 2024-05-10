@@ -39,13 +39,6 @@ const reportSummaryList = ref([])
 const page = ref(1)
 const per_page = ref(15)
 
-const showStudentReport = (summary) => {
-     if(summary) {
-       showStudentsMarks.value = true
-       reportStore.fetchReportDetailsInfo(summary.number)
-     }
-   }
-   
 
 onMounted(
     async () => {
@@ -53,6 +46,13 @@ onMounted(
       await fetchCampusLevel()
     }
 )
+
+const showStudentReport = (summary) => {
+  if(summary) {
+    showStudentsMarks.value = true
+    reportStore.fetchReportDetailsInfo(summary.number)
+  }
+}
 
 
 // const filterReportSummary = () => {
@@ -191,12 +191,13 @@ const filterSummaryReport = (data) => {
 <template>
    <div>
 
-    
-    <AppModal title="Preview Report" v-model="showStudentsMarks" xl6>
-         <manage-report-details></manage-report-details>
-      </AppModal>
-    
-      <div class="row">
+
+     <AppModal title="Preview Report" v-model="showStudentsMarks" xl6>
+       <manage-report-details></manage-report-details>
+     </AppModal>
+
+
+     <div class="row">
          <div class="col-12">
             <div class="mt-4">
                <div class="row mx-auto">

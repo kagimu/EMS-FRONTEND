@@ -15,7 +15,7 @@ import SchoolReportPreviewTemplate
 
 
 const schoolStore = useSchoolStore()
-// const schoolList = ref([])
+
 const routerData = useRouter()
 const reportSetupStore = useReportSetupStore()
 const notificationStore  = useNotificationStore()
@@ -33,16 +33,29 @@ const classListData = ref(null)
 
 const reportTemplateName = ref(null)
 
+
+const props = defineProps({
+  schoolData:{}
+})
+
 onMounted(() => {
-    schoolStore.fetchSchools()
     filterReportTemplate()
     }
 )
 
 const filterReportTemplate = () =>{
 reportSetupStore.fetchReportTemplate(schoolNumber)
-schoolNo.value = schoolNumber
 }
+
+watch(
+    () => reportSetupStore.reportTemplateResponse,
+    async (data) => {
+      if(data){
+        showReportTemplateModal.value = false
+        filterReportTemplate()
+      }
+    }
+)
 
 watch(
     () => reportSetupStore.reportTemplateListResponse,
@@ -80,7 +93,7 @@ const previewTemplate = (report) => {
 
   <div>
 
-    <AppModal title="Add Report Template" v-model="showReportTemplateModal" lg>
+    <AppModal :title="'Add Report Template for: '+schoolData?.name" v-model="showReportTemplateModal" lg>
       <new-report-template></new-report-template>
     </AppModal>
     
