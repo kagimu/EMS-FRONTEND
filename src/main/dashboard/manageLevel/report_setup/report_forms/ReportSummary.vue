@@ -13,6 +13,8 @@
   import {useRouter} from "vue-router";
 
   const campus_curriculum_number = routerData.currentRoute.value.query.crr
+  const campusNumber = routerData.currentRoute.value.query.id
+
    const reportSetupStore = useReportSetupStore()
    const reportStore = useReportCardStore()
    const reportSummaryList = ref([])
@@ -45,10 +47,12 @@ interview_number:""
 
    onMounted(
        async () => {
-         await academicYearStore.fetchAcademicYearByCampus(campus_curriculum_number)
+         await academicYearStore.fetchAcademicYearByCampus(campusNumber)
          await classStore.fetchClassStreams(campus_curriculum_number)
          // await reportStore.fetchReportSummary()
-         fetchAcademicYear()
+         // fetchAcademicYear()
+
+         campusStore.fetchClassesByCampus(campus_curriculum_number)
        }
    )
    
@@ -68,7 +72,7 @@ interview_number:""
 }
 
 const fetchClasses = (campus_number) => {
-  campusStore.fetchClassesByCampus(campus_number)
+//   campusStore.fetchClassesByCampus(campus_number)
 }
 
 const fetchAcademicYear = () =>{
@@ -237,22 +241,8 @@ watch(
                <div class="row mx-auto">
                   <form @submit.prevent="Admit()">
                      <div class="row">
-                        <div class="col-4">
-                           <div class="mb-2">
-                              <label class="textColor"><small>School</small> </label>
-                              <select
-                                 style="box-shadow: none;"
-                                 class="form-select form-select-sm" required
-                                 v-model="form.school_number"
-                                 @change="fetchCampuses(form.school_number)"
-                                 >
-                                 <option disabled value="">Select School</option>
-                                 <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-                                 </option>
-                              </select>
-                           </div>
-                        </div>
-                        <div class="col-4">
+                     
+                        <!-- <div class="col-4">
                            <div class="mb-2">
                               <label class="textColor"><small>Campus</small>  </label>
                               <select
@@ -266,7 +256,8 @@ watch(
                                  </option>
                               </select>
                            </div>
-                        </div>
+                        </div> -->
+
                         <div class="col-4">
                            <div class="mb-2">
                               <label class="textColor"><small>Class</small> </label>
@@ -335,6 +326,8 @@ watch(
             </div>
          </div>
       </div>
+
+      <hr />
       <div class="row">
          <div class="col-12">
             <div class="flex justify-content-between mt-3">

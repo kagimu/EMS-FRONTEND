@@ -153,7 +153,7 @@
     </div>
     </div>
             <ul v-if="loading==false">
-              <li  v-for="(ldData,idx) in listD.parts" :key="idx">{{ ldData.name }}</li>
+              <li  v-for="(ldData,idx) in listD.parts" :key="idx">[{{ldData.code}}] {{ ldData.name }} - {{ ldData.quantity }}{{ ldData.unit_of_measure }}</li>
             </ul>
           </span>
         </div>
