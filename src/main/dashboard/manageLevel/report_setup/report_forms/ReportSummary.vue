@@ -1,87 +1,61 @@
 <script setup>
-  import {onMounted,reactive, computed,ref, watch} from "vue";
-   import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
-   import {useReportCardStore} from "@/main/dashboard/report-card/store/report-card.js";
-   import AppModal from "@/components/AppModal.vue";
-   import ManageReportDetails from "@/main/dashboard/manageLevel/report_setup/report_forms/ManageReportDetails.vue";
-  const routerData = useRouter()
-   import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-  import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-  import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
-  import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
-  import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
-  import {useRouter} from "vue-router";
 
-  const campus_curriculum_number = routerData.currentRoute.value.query.crr
-  const campusNumber = routerData.currentRoute.value.query.id
+import {onMounted, ref, watch} from "vue";
+import {useReportCardStore} from "@/main/dashboard/report-card/store/report-card.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useRouter} from "vue-router";
+const reportStore = useReportCardStore()    
+const levelStore = useLevelStore()
+const classStore = useClassesStore()
+const studyPeriodStore = useStudyPeriodStore()
+const academicYearStore = useAcademicYearStore()
+const notificationStore  = useNotificationStore()
+const routerData = useRouter()
 
-   const reportSetupStore = useReportSetupStore()
-   const reportStore = useReportCardStore()
-   const reportSummaryList = ref([])
-   const showStudentsMarks = ref(false)
-   //filter
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
+const campusCurriculumDataInfo = ref(null)
+const campus_level_number = ref("")
+const academic_year_number = ref("")
+const study_period_number = ref("")
+const campus_class_number = ref("")
+const campusLevelList = ref(null)
+const academicYearList = ref(null)
+const studyPeriodList = ref(null)
+const campusClassList = ref(null)
+const reportSummaryList = ref([])
+const page = ref(1)
+const per_page = ref(15)
 
-  const campusList = ref([])
-  const schoolList = ref([])
-  const classList = ref([])
-  const schoolStore = useSchoolStore()
-  const campusStore = useCampusStore()
-  const school_number = ref(null)
-  const assessmentStore = useAssessmentStore()
-  const academicYearStore = useAcademicYearStore()
-  const academicYearList = ref([])
-  const studyPeriodList  = ref([])
-  const classStore = useClassesStore()
-  const streamList = ref([])
-  const page = ref(1)
-  const per_page = ref(15)
-   
-const form = reactive({
-academic_year: "",
-study_period_number: "",
-campus_class_number: "",
-campus_number: "",
-stream_number:"",
-interview_number:""
-})
-
-   onMounted(
-       async () => {
-         await academicYearStore.fetchAcademicYearByCampus(campusNumber)
-         await classStore.fetchClassStreams(campus_curriculum_number)
-         // await reportStore.fetchReportSummary()
-         // fetchAcademicYear()
-
-         campusStore.fetchClassesByCampus(campus_curriculum_number)
-       }
-   )
-   
+onMounted(
+    async () => {
+      await doFilterReportSummary()
+      await fetchCampusLevel()
+    }
+)
 
 
-   const showStudentReport = (summary) => {
-     if(summary) {
-       showStudentsMarks.value = true
-       reportStore.fetchReportDetailsInfo(summary.number)
-     }
-   }
-   
+// const filterReportSummary = () => {
+//   if(study_period_number.value && campus_class_number.value) {
+//     let data = {
+//       study_period_number: study_period_number.value,
+//       campus_class_number: campus_class_number.value,
+//     }
+//     alert(JSON.stringify(data))
+//   reportStore.fetchReportSummary(data)
+//   }
+// }
 
-   
-   const fetchCampuses = (school_number) => {
-  campusStore.fetchCampuses(school_number)
-}
-
-const fetchClasses = (campus_number) => {
-//   campusStore.fetchClassesByCampus(campus_number)
-}
-
-const fetchAcademicYear = () =>{
+const doFilterReportSummary = () =>{
   let options = {
     page: page.value,
     per_page: per_page.value,
     student_number: "",
-    study_period_number: "",
-    campus_curriculum_number: form.campus_class_number,
+    study_period_number: study_period_number.value,
+    campus_class_number: campus_class_number.value,
     stream_number: "",
     grade: "",
   }
@@ -90,106 +64,72 @@ const fetchAcademicYear = () =>{
 
 }
 
-watch(
-  () => academicYearStore.academicYearByCampusResponse,
-  async (data) => {
-      if (data) {
-        academicYearList.value = data.data
 
-        if(data && data.data){
-      let studyData = data.data
-      if(studyData && (studyData.length > 0)){
-        studyPeriodList.value = studyData[0].studyPeriod
+const fetchCampusLevel = () => {
+  classStore.fetchCampusLevel(campus_curriculum_number)
+}
+
+const fetchAcademicYea = (campus_level_number) => {
+  academicYearStore.fetchAcademicYearByLevel(campus_level_number)
+  academicYearStore.fetchCampusClassByLevel(campus_level_number)
+}
+
+const fetchStudyPeriod = (academic_num) =>{
+  studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
+}
+
+
+watch(
+    () => levelStore.campusCurriculumResponse,
+    async (data) => {
+      if(data){
+        campusCurriculumDataInfo.value = data.data
+
       }
     }
-      }
-  },
-  {deep: true}
-)
-
-
-const filterByStream = (streamN) => {
-  let studentN = ""
-  let study_period_number = ""
-  let grade=""
-  reportStore.fetchReportSummary(studentN,study_period_number,form.campus_class_number,streamN,grade)
-}
-
-const filterByStudyPeriod = (study_period) => {
-  let studentN = ""
-  let grade=""
-  reportStore.fetchReportSummary(studentN,study_period,form.campus_class_number,form.stream_number,grade)
-}
-const filterByAcademicYear = (academicN) =>{
-  // let studentN = ""
-  // let grade=""
-  // reportStore.fetchReportSummary(studentN,study_period,form.campus_class_number,form.stream_number,grade)
-}
-
-   
-
-watch(
-  () => classStore.classStreams,
-  async (data) => {
-      if (data) {
-        streamList.value = data.data
-      }
-  },
-  {deep: true}
-)
-
-
-
-
-onMounted(() => {
-      schoolStore.fetchSchools()
-  }
 )
 
 watch(
-  () => schoolStore.schoolsResponse,
-  async (data) => {
-      if (data) {
-          schoolList.value = data.data
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        campusLevelList.value = data.data
       }
-  },
-  {deep: true}
+    },
+    {deep:true}
 )
 
 watch(
-  () => campusStore.campusListResponse,
-  async (data) => {
-      if (data) {
-          campusList.value = data.data
+    () => academicYearStore.academicYearByLevelResponse,
+    async (data) => {
+      if(data){
+        academicYearList.value = data.data
       }
-  },
-  {deep: true}
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+    async (data) => {
+      if(data){
+        studyPeriodList.value = data.data
+      }
+    }
 )
 
 watch(
-  () => campusStore.campusClassesResponse,
-  async (data) => {
-      if (data) {
-          classList.value = data.data
+    () => academicYearStore.campusClassByLevelResponse,
+    async (data) => {
+      if(data){
+        campusClassList.value = data.data
       }
-  },
-  {deep: true}
-)
-
-watch(
-  () => campusStore.errorMessage,
-  async (data) => {
-        if (data) {
-            notificationStore.errorToast("Error", data.message)
-        }
-  },
-  {deep: true}
+    }
 )
 
 
-
-
-  const filterSummaryReport = (data) => {
+const filterSummaryReport = (data) => {
     if(data) {
       let current_page = data.page
       page.value = current_page
@@ -228,100 +168,72 @@ watch(
   )
 
 
-   
+
+
 </script>
 <template>
    <div>
-      <AppModal title="Preview Report" v-model="showStudentsMarks" xl6>
-         <manage-report-details></manage-report-details>
-      </AppModal>
+    
       <div class="row">
          <div class="col-12">
             <div class="mt-4">
                <div class="row mx-auto">
-                  <form @submit.prevent="Admit()">
-                     <div class="row">
-                     
-                        <!-- <div class="col-4">
-                           <div class="mb-2">
-                              <label class="textColor"><small>Campus</small>  </label>
-                              <select
-                                 style="box-shadow: none;"
-                                 class="form-select form-select-sm"
-                                 v-model="form.campus_number" required
-                                 @change="fetchClasses(form.campus_number)"
-                                 >
-                                 <option disabled value="">Select campus</option>
-                                 <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-                                 </option>
-                              </select>
-                           </div>
-                        </div> -->
+                 
+    <div class="col-3">
+      <label class="textColor"><small>Level</small></label>
+      <select
+          style="box-shadow: none;"
+          class="form-select form-select-sm"
+          v-model="campus_level_number"
+          @change="fetchAcademicYea(campus_level_number)"
+      >
+        <option disabled value="">--Select Level--</option>
+        <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+      </select>
+    </div>
 
-                        <div class="col-4">
-                           <div class="mb-2">
-                              <label class="textColor"><small>Class</small> </label>
-                              <select
-                                 style="box-shadow: none;"
-                                 class="form-select form-select-sm" required
-                                 v-model="form.campus_class_number"
-                                 @change="fetchAcademicYear(form.campus_class_number)"
-                                 >
-                                 <option disabled value="">Select class</option>
-                                 <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}
-                                 </option>
-                              </select>
-                           </div>
-                        </div>
-                        </div>
-                        <div class="row">
-                        <div class="col-4">
-                           <div class="mb-2">
-                              <label class="textColor"><small>Stream</small> </label>
-                              <select
-                                 style="box-shadow: none;"
-                                 class="form-select form-select-sm" required
-                                 v-model="form.stream_number"
-                                 @change="filterByStream(form.stream_number)"
-                                 >
-                                 <option disabled value="">Select Stream</option>
-                                 <option v-for="(slist, index) in streamList" :key="index" :value="slist.number">{{ slist.name }}
-                                 </option>
-                              </select>
-                           </div>
-                        </div>
-                        <div class="col-4">
-                           <div class="mb-2">
-                              <label class="textColor"><small>Academic Year</small> </label>
-                              <select
-                                 style="box-shadow: none;"
-                                 class="form-select form-select-sm" required
-                                 v-model="form.academic_year"
-                                 onchange="filterByAcademicYear(form.academic_year)"
-                                 >
-                                 <option disabled value="">Select Year</option>
-                                 <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
-                              </select>
-                           </div>
-                        </div>
-                        <div class="col-4">
-                           <div class="mb-2">
-                              <label class="textColor">
-                                 <small>Study Period</small>
-                              </label>
-                              <select
-                                 style="box-shadow: none;"
-                                 class="form-select form-select-sm" required
-                                 v-model="form.study_period_number"
-                                 @change="filterByStudyPeriod(form.study_period_number)"
-                                 >
-                                 <option disabled value="">Select</option>
-                                 <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
-                              </select>
-                           </div>
-                        </div>
-                     </div>
-                  </form>
+    <div class="col-3">
+      <label class="textColor">Academic Year</label>
+      <select
+          style="box-shadow: none;"
+          class="form-select form-select-sm"
+          v-model="academic_year_number"
+          @change="fetchStudyPeriod(academic_year_number)"
+      >
+        <option disabled value="">--Select Academic Year--</option>
+        <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
+          {{list.code+". "+list.academic_year_name}}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-3">
+      <label class="textColor"><small>Study Period</small>
+      </label>
+      <select
+          style="box-shadow: none;"
+          class="form-select form-select-sm" required
+          v-model="study_period_number"
+          @change="doFilterReportSummary"
+      >
+        <option disabled value="">Select</option>
+        <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
+
+      </select>
+    </div>
+    <div class="col-3">
+      <label class="textColor"><small>Class</small>
+      </label>
+      <select
+          style="box-shadow: none;"
+          class="form-select form-select-sm" required
+          v-model="campus_class_number"
+          @change="doFilterReportSummary"
+      >
+        <option disabled value="">Select</option>
+        <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+      </select>
+    </div>
                </div>
             </div>
          </div>

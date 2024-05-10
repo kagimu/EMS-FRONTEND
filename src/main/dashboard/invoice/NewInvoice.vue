@@ -5,7 +5,36 @@
           <div class="card-body" style="padding: 0;">
             <div class="container mt-4">
               <form @submit.prevent="createInvoice">
-              <div class="row">
+                <div class="row">
+                  <div class="col-lg-3">
+                     <div class="mb-2">
+                      <label class="textSize">Due Date</label>
+                      <input
+                      type="date"
+                      style="outline: none 0 !important;
+                      box-shadow: none;"
+                      v-model="form.due_date"
+                      required
+                      class="form-control form-select-sm">
+                   </div>
+
+                  </div>
+                  <div class="col-lg-7">
+                    <div class="mb-2">
+      <label class="textSize">Description</label>
+      <textarea
+            style="outline: none 0 !important;
+               box-shadow: none;"
+          v-model="form.description"
+          required
+          class="form-control form-select-sm"></textarea>
+    </div>
+
+                  </div>
+
+                </div>
+               
+              <div class="row mt-3">
             
                 <div class="col-lg-12">
                   <!-- New Design -->
@@ -22,8 +51,8 @@
                       <tbody>
                         <tr v-for="(Service, index) in Services" :key="index" >
                           <td>
-                            <select class="form-select form-select-sm form-control select-no-border" v-model="Service.name" @change="updateService(index)">
-                              <option :value="option.name" v-for="option in availableOptions(index)">{{ option.name }}</option>
+                            <select class="form-select form-select-sm form-control select-no-border" v-model="Service.number" @change="updateService(index)">
+                              <option :value="option.item_number" v-for="option in availableOptions(index)">{{ option.name }} ({{ option.cost }})</option>
                             </select>
                           </td>
                           <td><input type="text" v-model="Service.quantity" @input="updateAmount(index)" placeholder="1.0" class="inp"></td>
@@ -103,6 +132,11 @@ const studentNumber = routerData.currentRoute.value.query.id;
 const Services = ref([]);
 const ServiceOptions = ref([])
 
+const form = reactive({
+  due_date:null,
+  description:null
+})
+
 
 onMounted(
     async () => {
@@ -123,7 +157,7 @@ onMounted(
 
 function updateService(index) {
   const Service = Services.value[index];
-  const selectedOption = ServiceOptions.value.find(option => option.name === Service.name);
+  const selectedOption = ServiceOptions.value.find(option => option.item_number === Service.number);
   if (selectedOption) {
     Service.cost = selectedOption.cost;
     updateAmount(index);
@@ -148,8 +182,8 @@ function calculateTotal() {
 }
 
 function availableOptions(index) {
-  const selectedNames = Services.value.map(Service => Service.name);
-  return ServiceOptions.value.filter(option => !selectedNames.includes(option.name) || option.name === Services.value[index].name);
+  const selectedNames = Services.value.map(Service => Service.number);
+  return ServiceOptions.value.filter(option => !selectedNames.includes(option.item_number) || option.item_number === Services.value[index].number);
 }
 
 const isAddButtonDisabled = ref(false);
@@ -167,7 +201,7 @@ watch(
   () => serviceStore.servicesListResponse,
   async (data) => {
     if (data) {
-      ServiceOptions.value = data.map(option => ({ name: option.Item.name, cost: option.Item.cost }));
+      ServiceOptions.value = data.map(option => ({ name: option.Item.name, cost: option.Item.cost,item_number:option.Item.number }));
     }
   },
   { deep: true }
@@ -176,19 +210,21 @@ watch(
 // Connect invoice store ==========================================
 const createInvoice = () => {
   const selectedItems = Services.value.map(service => ({
-      name: service.name,
+      item_number: service.number,
       quantity: service.quantity,
       unitPrice: service.unitPrice,
       amount: service.amount
     }))
 
-  const data = {
-    student_number: 'i need student number',
+  let data = {
+    user_number: 'i need student number',
+    due_date : form.due_date,
+    description:form.description,
     selectedItems
   }
-  alert(JSON.stringify(data))
+  // alert(JSON.stringify(data))
  
-  // invoiceStore.createNewInvoice(data)
+  invoiceStore.createNewInvoice(data)
 }
 
 
