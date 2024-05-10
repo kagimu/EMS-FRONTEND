@@ -102,8 +102,8 @@
                   </div>
 
 
-                  <div v-if="menuSelected === 'bio-data'">
-                <h1>Bio data</h1>
+                  <div v-if="menuSelected === 'report-cards'">
+                  <StudentReports></StudentReports>
                   </div>
                   <div v-if="menuSelected === 'bio-data'">
                 <h1>Bio data</h1>
@@ -133,6 +133,7 @@ import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
 import ManageInvoices from "@/main/dashboard/invoice/ManageInvoices.vue"
 import useNotificationStore from "@/composables/useNotification.js"
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+import StudentReports from "@/main/dashboard/report-card/studentReports/StudentReports.vue"
 
   const routerData = useRouter()
   const menuSelected = ref("financial-situation")
@@ -175,8 +176,8 @@ onMounted(
       value:"services"
     },
     {
-      text:"Progress Report",
-      value:"progress-report"
+      text:"Report Cards",
+      value:"report-cards"
     },
     {
       text:"Academic Calendar",

@@ -8,6 +8,7 @@ export const useReportCardStore = defineStore("ReportCard", () => {
     const generateReportResponse = ref(null)
     const reportGeneratedReportResponse = ref(null)
     const errorMessage = ref(null)
+    const studentReportCardResponse = ref(null)
 
 
     async function fetchGeneratedReport(data) {
@@ -61,6 +62,17 @@ export const useReportCardStore = defineStore("ReportCard", () => {
             })
     }
 
+    async function fetchStudentReportCard(studentN) {
+        return await api.get("main/report-settings/report-summary?page=1&per_page=15&student_number="+studentN)
+            .then((response) => {
+                studentReportCardResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
 
 
     return {
@@ -73,5 +85,7 @@ export const useReportCardStore = defineStore("ReportCard", () => {
         generateReport,
         fetchReportSummary,
         fetchReportDetailsInfo,
+        fetchStudentReportCard,
+        studentReportCardResponse
     }
 })
