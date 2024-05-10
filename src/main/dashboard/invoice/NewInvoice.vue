@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="row">
+      {{ userNumber }}
       <div class="col-12">
           <div class="card-body" style="padding: 0;">
             <div class="container mt-4">
@@ -35,7 +36,7 @@
                 </div>
                
               <div class="row mt-3">
-            
+        
                 <div class="col-lg-12">
                   <!-- New Design -->
                     <table class="table bordered">
@@ -118,7 +119,6 @@ const serviceStore= useServiceStore()
 const  invoiceStore  = useInvoiceStore()
 const router = useRouter()
 const applicationStore= useApplicationStore()
-
 let errorMessage = ref(null)
 const emit = defineEmits()
 const  notificationStore  = useNotificationStore()
@@ -126,6 +126,11 @@ const classList = ref([])
 const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
 const studentNumber = routerData.currentRoute.value.query.st_id;
+const user_number = ref(null)
+
+const props = defineProps({
+  userNumber:String
+  })
 
 
 // Creating invoice Logic =========================================================
@@ -136,6 +141,16 @@ const form = reactive({
   due_date:null,
   description:null
 })
+
+watch(
+    () => props.userNumber,
+    async (data) => {
+      if(data){
+        user_number.value = props.userNumber
+      }
+    },
+    {deep:true}
+    )
 
 
 onMounted(
@@ -218,10 +233,11 @@ const createInvoice = () => {
 
   let data = {
     // user_number: 'i need student number',
-    student_number:studentNumber,
+    user_number:props.userNumber,
     due_date : form.due_date,
     description:form.description,
-    items:selectedItems
+    items:selectedItems,
+    student_number:studentNumber
   }
   alert(JSON.stringify(data))
  

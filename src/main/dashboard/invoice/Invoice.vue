@@ -3,7 +3,7 @@
 
 
     <AppModal title="Creating New Invoice" v-model="mymodal" xl6>
-    <NewInvoice></NewInvoice>
+    <NewInvoice :userNumber="userNumber"></NewInvoice>
     </AppModal>
 
     <div class="row mt-3"  >
@@ -55,6 +55,29 @@ import useNotificationStore from "@/composables/useNotification.js"
 import NewInvoice from "@/main/dashboard/invoice/NewInvoice.vue"
 import { useAbility } from '@casl/vue';
 import AppModal from "@/components/AppModal.vue";
+import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+import {useRouter} from "vue-router"
+
+const routerData = useRouter()
+const applicationStore= useApplicationStore()
+const studentNumber = routerData.currentRoute.value.query.st_id;
+const userNumber = ref(null)
+
+
+onMounted(
+    async () => {
+      await applicationStore.fetchStudent(studentNumber)
+    } )
+
+    watch (
+  () => applicationStore.studentDataResponse,
+  async (data) => {
+    if (data) {
+      userNumber.value = data.user_number
+    }
+  },
+  { deep: true }
+)
 
 const { can } = useAbility()
 
