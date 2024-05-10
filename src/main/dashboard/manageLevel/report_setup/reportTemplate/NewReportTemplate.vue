@@ -14,7 +14,7 @@ const routerData = useRouter()
 const schoolStore = useSchoolStore()
 const schoolList = ref([])
 const campusNumber = routerData.currentRoute.value.query.id
-// const campus_curriculum_number = routerData.currentRoute.value.query.crr
+let schoolNumber = routerData.currentRoute.value.query.id
 
 const errorMessage = ref("")
 const loader = ref(false)
@@ -22,39 +22,30 @@ const classList = ref([])
 
 
 onMounted(() => {
-        schoolStore.fetchSchools()
+
     }
 )
 
 const form = reactive({
   status:"ACTIVE",
   name:null,
-  school_number:null
+  school_number:schoolNumber
 })
 
 
 const addReportTemplate = () => {
   loader.value = true
-//   alert(JSON.stringify(form))
   reportSetupStore.addReportTemplate(form)
 }
 
-watch(
-    () => schoolStore.schoolsResponse,
-    async (data) => {
-        if (data) {
-            schoolList.value = data.data
-        }
-    },
-    {deep: true}
-)
+
 
 watch (
   () => reportSetupStore.reportTemplateResponse,
   async (data) => {
     if(data){
       notificationStore.successToast("Success", data.message)
-      reportSetupStore.fetchReportTemplate()
+      await reportSetupStore.fetchReportTemplate()
       loader.value=false
       form.name=null,
   form.school_number=null
@@ -68,7 +59,6 @@ watch(
     async (data) => {
           if (data) {
               notificationStore.errorToast("Error", data.message)
-            //   reportSetupStore.fetchReportTemplate()
           }
     },
     {deep: true}
@@ -82,18 +72,7 @@ watch(
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
       {{ errorMessage }}
     </div>
-    <div class="mb-2">
-            <label class="textSize"><small>School</small> </label>
-            <select
-                    style="box-shadow: none;"
-                    class="form-select form-select-sm" required
-                    v-model="form.school_number"
-            >
-                <option disabled value="">Select School</option>
-                <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-                </option>
-            </select>
-        </div>
+
 
     <div class="mb-2">
       <label class="textSize">Name</label>
