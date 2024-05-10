@@ -248,7 +248,7 @@
   watch(
     () => cateringStore.mealsResponse,
     async (data) => {
-      // notificationStore.successToast("Success", data.message);
+      notificationStore.successToast("Success", data.message);
       userList.value = data.data
     },
     { deep: true }

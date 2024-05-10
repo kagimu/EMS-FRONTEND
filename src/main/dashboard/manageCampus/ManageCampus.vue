@@ -8,6 +8,7 @@ import {useRouter} from "vue-router";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
 import AppModal from "@/components/AppModal.vue";
+import CampusListInfo from "@/main/dashboard/manageCampus/CampusListInfo.vue";
 const routerData = useRouter()
 const campusStore = useCampusStore()
 const schoolStore = useSchoolStore()
@@ -22,30 +23,18 @@ const campusRef = ref( null)
 
 let schoolNumber = routerData.currentRoute.value.query.id
 
-
-const addCampus = () => {
-  campusEditMode.value = false
-  campusDialog.value = true
-  // campusRef.value.clearCampusForm()
-}
-
-
-const editCampus = (campus) => {
-  if(campus) {
-    campusEditMode.value = true
-    campusDialog.value = true
-    campusStore.fetchCampusData(campus.number)
+let campusQuery = routerData.currentRoute.value.query.type ? routerData.currentRoute.value.query.type : "campus"
+const campusMenu = ref([
+  {
+    name:"Campus List",
+    router_name:"campus"
+  },
+  {
+    name:"Report Templates",
+    router_name:"report-template"
   }
-}
-const deleteCampus = (campus) => {
-  if(!confirm("Are you sure, you want to delete: "+campus.name)){
-    return
-  }
-  let data = {
-    campus_number:campus.number
-  }
-  campusStore.deleteCampus(data)
-}
+])
+
 
 
 
@@ -74,49 +63,6 @@ watch(
     {deep:true}
 )
 
-watch(
-    () => campusStore.campusListResponse,
-    async (data) => {
-      if(data){
-        campusList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => campusStore.editCampusResponse,
-    async (data) => {
-      if(data){
-        campusDialog.value = false
-        notificationStore.successToast("Success", data.message)
-        await fetchCampusInfo(schoolNumber)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => campusStore.deleteCampusResponse,
-    async (data) => {
-      if(data){
-        notificationStore.successToast("Success", data.message)
-        await fetchCampusInfo(schoolNumber)
-      }
-    },
-    {deep:true}
-)
-
-
-watch (
-    () => campusStore.errorMessage,
-    async (data) => {
-      if(data){
-        notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-)
 
 
 watch (
@@ -140,8 +86,6 @@ watch (
     <AppModal :title="campusEditMode ? 'Edit Campus' : 'New Campus'" v-model="campusDialog" xl6>
       <new-campus ref="campusRef"></new-campus>
     </AppModal>
-
-
 
 
 
@@ -188,80 +132,41 @@ watch (
     </div>
 
 
-    <div class="mt-3">
-      <button type="button"  class="btn btn-sm buttonStyle btn-primary ml-2"  @click="addCampus">
-        <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-        Add Campus
-      </button>
-    </div>
+
+
+
+
 
 
 
     <div class="row">
-      <div class="col-4" v-for="(campus, index) in campusList" :key="index">
+      <div class="col-2">
+
         <div class="card mt-3">
+          <div class="card-body" style="padding: 0;">
+            <div class="list-group list-group-flush mb-1 rounded-0" >
+              <router-link
+                  v-for="(item, idx) in  campusMenu" :key="idx"
+                  class="list-group-item list-group-item-action"
+                  :class="item.router_name === campusQuery ? 'active' : ''"
+                  :to="{name:'campus', query:{id:schoolNumber,type:item.router_name}}">
+                <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></router-link>
+            </div>
 
-
-              <div class="card-body">
-                <div class="mb-3 flex justify-between" style="font-size: 20px;">
-                    {{campus.name}}
-                  <div>
-                  <i
-                      class="bi-pencil ml-2 cursor-pointer"
-                      style="font-size: 14px;"
-                      @click="editCampus(campus)"></i>
-                  <i style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  @click="deleteCampus(campus)"></i>
-                  </div>
-                </div>
-                <small>
-                  <b>Email:</b> {{campus.email}}<br />
-                  <b>Phone:</b> {{campus.phone}}<br />
-                  <b>Location:</b> {{campus.location}}<br />
-                  <b>Commencement Date:</b> {{campus.commencement_date}}<br />
-                  <b>Curriculum:</b> <br />
-                  <div class="ml-2" v-for="(curr,idx) in campus.curriculum" :key="idx">{{(idx + 1)+". "+curr.name}}</div>
-                </small>
-
-                <div class="flex justify-content-between mt-4">
-                  &nbsp;
-
-                  <div class="flex">
-
-                  <router-link
-                      class="text-decoration-none"
-                      :to="{name:'scheme-of-work', query:{id:campus.number}}"
-                  >
-                    <button
-                        type="button"
-                        class="btn-primary border-0 d-none d-lg-block viewButtonStyle mr-2">
-                      <span class="mx-9 text-sm">
-                        Setup Scheme
-                      </span>
-                    </button>
-                  </router-link>
-
-                    <router-link
-                        class="text-decoration-none"
-                        :to="{name:'campus-setup', query:{id:campus.number}}"
-                    >
-                      <button
-                          type="button"
-                          class="btn-primary border-0 d-none d-lg-block viewButtonStyle">
-                      <span class="mx-9 text-sm">
-                        Setup Campus
-                      </span>
-                      </button>
-                    </router-link>
-
-                  </div>
-
-                </div>
-              </div>
+          </div>
         </div>
+
       </div>
-
-
+      <div class="col-10">
+          <div v-if=" campusQuery==='campus'">
+            <campus-list-info></campus-list-info>
+          </div>
+          <div v-if=" campusQuery==='report-template'">
+            report
+          </div>
+      </div>
     </div>
+
 
   </div>
 </template>
