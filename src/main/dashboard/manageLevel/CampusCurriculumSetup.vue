@@ -11,7 +11,7 @@ import ScoreSetup from "@/main/dashboard/manageLevel/report_setup/ScoreSetup.vue
 
 const levelStore = useLevelStore()
 const campusCurriculumDataInfo = ref(null)
-const curriculum = ref(null)
+const curriculum = ref("")
 const curriculumList = ref(null)
 
 const routerData = useRouter()
@@ -147,15 +147,21 @@ watch(
       {{curriculumName}}
     </div>
 
-    <select
-        style="outline: none 0 !important; box-shadow: none;"
-        type="text"
-        v-model="curriculum"
-        required
-        class="form-control form-select-sm">
-      <option disabled value="">--Select Curriculum--</option>
-      <option v-for="(lst, index) in curriculumList" :key="index" :value="lst.id">{{ lst.name }}</option>
-    </select>
+    <div class="row">
+      <div class="col-lg-3">
+        <select
+            style="outline: none 0 !important; box-shadow: none;"
+            type="text"
+            v-model="curriculum"
+            required
+            class="form-control form-select-sm">
+          <option disabled value="">--Switch Curriculum--</option>
+          <option v-for="(lst, index) in curriculumList" :key="index" :value="lst.id">{{ lst.name }}</option>
+        </select>
+      </div>
+    </div>
+
+
 
 
     <div class="card mt-3">
