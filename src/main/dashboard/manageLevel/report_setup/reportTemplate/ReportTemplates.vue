@@ -109,11 +109,11 @@ repoId.value = TemplateN
       <div class="col-12">
         <div class="flex justify-content-between mt-3">
           <div class="ml-4">Report Template</div>
-          <button
+<!--          <button
               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addReportTemplate">
             <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
               Add Template
-          </button>
+          </button>-->
         </div>
 
 
