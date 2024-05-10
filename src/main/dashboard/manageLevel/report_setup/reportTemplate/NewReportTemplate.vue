@@ -55,6 +55,9 @@ watch (
     if(data){
       notificationStore.successToast("Success", data.message)
       reportSetupStore.fetchReportTemplate()
+      loader.value=false
+      form.name=null,
+  form.school_number=null
     }
   },
   {deep:true}
@@ -65,7 +68,7 @@ watch(
     async (data) => {
           if (data) {
               notificationStore.errorToast("Error", data.message)
-              reportSetupStore.fetchReportTemplate()
+            //   reportSetupStore.fetchReportTemplate()
           }
     },
     {deep: true}
@@ -84,7 +87,7 @@ watch(
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm" required
-                    v-model="form.SchoolNumber"
+                    v-model="form.school_number"
             >
                 <option disabled value="">Select School</option>
                 <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}

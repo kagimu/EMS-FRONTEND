@@ -64,7 +64,9 @@
                 <div class="tab-pane fade" id="assessment-manager" role="tabpanel" aria-labelledby="assessment-manager-tab" tabindex="0">
                   <primary-report></primary-report>
                 </div>
-                <div class="tab-pane fade" id="mode-of-assessment" role="tabpanel" aria-labelledby="mode-of-assessment-tab" tabindex="0">Secondary</div>
+                <div class="tab-pane fade" id="mode-of-assessment" role="tabpanel" aria-labelledby="mode-of-assessment-tab" tabindex="0">
+                  <victorious-report-primary></victorious-report-primary>
+                </div>
                 <div class="tab-pane fade" id="grading-term" role="tabpanel" aria-labelledby="grading-term-tab" tabindex="0">Tertiary</div>
               </div>
 
@@ -94,6 +96,7 @@ import TopClassReport from "@/main/dashboard/ReportCenter/TopClassReport_.vue";
 import PrimaryReport from "@/main/dashboard/ReportCenter/PrimaryReport_.vue";
 
 import { useAbility } from '@casl/vue';
+import VictoriousReportPrimary from "@/main/dashboard/ReportCenter/victorious/VictoriousReportPrimary.vue";
 
 const { can } = useAbility()
 

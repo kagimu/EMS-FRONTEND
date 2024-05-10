@@ -2,6 +2,8 @@
   <div>  
       <form @submit.prevent="Admit()">
         <!-- {{ interviewNumber }} {{ selectedStudentNumber }} -->
+        <div class="row">
+          <div class="col-lg-6">
     <div class="mb-2">
             <label class="textColor"><small>School</small> </label>
             <select
@@ -45,7 +47,9 @@
                 </option>
             </select>
         </div>
-
+        
+      </div>
+     <div class="col-lg-6">
         <div class="mb-2">
             <label class="textColor"><small>Stream</small> </label>
             <select
@@ -85,8 +89,46 @@
 
             </select>
         </div>
+      </div>
+      </div>
 
- 
+      <div class="row mt-3">
+        <div class="col-lg-12">
+              <div class="row">
+                <div class="col-lg-12">
+                  <!-- New Design -->
+                    <table class="table bordered">
+                      <thead>
+                        <tr class="" style="padding: 0px;margin: 0px;">
+                          <th class="textColor">Service</th>
+                          <!-- <th>Qty</th> -->
+                          <!-- <th>Unit Price</th> -->
+                          <th class="textColor">Amount</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(Service, index) in Services" :key="index" >
+                          <td>
+                            <select class="form-select form-select-sm form-control select-no-border" v-model="Service.name" @change="updateService(index)">
+                              <option :value="option.name" v-for="option in availableOptions(index)">{{ option.name }}</option>
+                            </select>
+                          </td>
+                          <!-- <td><input type="text" v-model="Service.quantity" @input="updateAmount(index)" placeholder="1.0" class="inp"></td> -->
+                          <td><input type="text" v-model="Service.cost" @input="updateAmount(index)" placeholder="Unit Price" class="inp"></td>
+                          <!-- <td>{{ Service.amount }}</td> -->
+                          <td><button type="button" @click="removeService(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <button class="btn btn-primary btn-sm textColor" @click.prevent="addService" :disabled="isAddButtonDisabled"><small><i class="bi bi-plus-lg"></i></small></button>
+                </div>
+              </div> 
+            </div>
+
+      </div>
+
+
    <div class="flex justify-content-end mt-2" style="width: 100%;">
           <button type="submit" class="btn btn-primary border-0 btn-sm">
                <small><i class="bi bi-save"></i> submit</small>
@@ -103,7 +145,7 @@
 
 <script setup>
 
-import {onMounted, reactive, ref, watch} from "vue";
+import {onMounted, reactive, ref, watch, watchEffect, computed} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
@@ -111,6 +153,11 @@ import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.j
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import { useAdmissionStore } from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
 import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
+
+import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js"
+import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
+import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+
 
 import {useRouter} from "vue-router"
 const routerData = useRouter()
@@ -134,19 +181,7 @@ const classStore = useClassesStore()
 const streamList = ref([])
 
 const studentNumber = "";
-
 const interviewNumber = routerData.currentRoute.value.query.interview_id;
-
-// {
-//   "student_number": [
-//       "{{STUDENT_ID}}"
-//   ],
-//   "campus_class_number":"{{CLASS_ID}}",
-//   "campus_number":"{{CAMPUS_ID}}",
-//   "stream_number":"{{STREAM_ID}}",
-//   "study_period_number":"{{STUDY_PERIOD_ID}}",
-//   "interview_number":"{{INTERVIEW_ID}}"
-// }
 const student_number = ref([])
 
   const props = defineProps({
@@ -184,8 +219,6 @@ watch (
   async (data) => {
     if(data){
     //   notificationStore.successToast("Success", data.message)
-
-    
     }
   },
   {deep:true}
@@ -295,6 +328,134 @@ watch(
     },
     {deep: true}
 )
+
+const studentInfoList = ref( [])
+const serviceStore= useServiceStore()
+const  invoiceStore  = useInvoiceStore()
+const router = useRouter()
+const applicationStore= useApplicationStore()
+
+
+const goBack = () => {
+  window.history.back()
+}
+
+// Creating invoice Logic =========================================================
+const Services = ref([]);
+const ServiceOptions = ref([])
+
+
+onMounted(
+    async () => {
+      await applicationStore.fetchApplicationList()
+    } )
+
+    watch(
+    () => applicationStore.applicationListResponse,
+    async (data) => {
+      if(data){
+        studentInfoList.value = data.data
+       
+      }
+    },
+    {deep:true}
+    )
+
+
+function updateService(index) {
+  const Service = Services.value[index];
+  const selectedOption = ServiceOptions.value.find(option => option.name === Service.name);
+  if (selectedOption) {
+    Service.cost = selectedOption.cost;
+    updateAmount(index);
+  }
+}
+
+function updateAmount(index) {
+  const Service = Services.value[index];
+  Service.amount = Service.quantity * Service.cost;
+}
+
+function addService() {
+  Services.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
+}
+
+function removeService(index) {
+  Services.value.splice(index, 1);
+}
+
+function calculateTotal() {
+  return Services.value.reduce((total, Service) => total + Service.amount, 0);
+}
+
+function availableOptions(index) {
+  const selectedNames = Services.value.map(Service => Service.name);
+  return ServiceOptions.value.filter(option => !selectedNames.includes(option.name) || option.name === Services.value[index].name);
+}
+
+const isAddButtonDisabled = ref(false);
+watch(Services, (newServices) => {
+  isAddButtonDisabled.value = newServices.length === ServiceOptions.value.length;
+}, { deep: true });
+
+// =
+onMounted(
+  async () => {
+    await serviceStore.fetchServicesList()
+  } )
+
+watch(
+  () => serviceStore.servicesListResponse,
+  async (data) => {
+    if (data) {
+      ServiceOptions.value = data.map(option => ({ name: option.Item.name, cost: option.Item.cost }));
+    }
+  },
+  { deep: true }
+)
+
+// Connect invoice store ==========================================
+const createInvoice = () => {
+  const selectedData = Services.value.map(service => ({
+      name: service.name,
+      quantity: service.quantity,
+      unitPrice: service.unitPrice,
+      amount: service.amount
+    }))
+
+  const data = {
+    student_number: 'studentNumber',
+    selectedData
+  }
+  alert(JSON.stringify(data))
+  //create Invoice ======================
+  invoiceStore.createNewInvoice(data)
+}
+
+
+watch (
+  () => invoiceStore.newInvoiceResponse,
+  async (data) => {
+    if (data) {
+      notificationStore.successToast("Success", data.message)
+    }
+  },
+  { deep: true }
+)
+
+watch (
+  () => invoiceStore.errorMessage,
+  async (data) => {
+    if (data) {
+      errorMessage.value = data.message
+      notificationStore.errorToast("Error",data.message)
+      //redirecting to another page
+      // router.push({ name: 'invoice-details', params: { studentNumber }})
+    }
+  },
+  { deep: true }
+)
+
 
 </script>
 

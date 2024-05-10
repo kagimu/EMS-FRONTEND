@@ -22,10 +22,13 @@ export const useReportCardStore = defineStore("ReportCard", () => {
             })
     }
 
+
     async function fetchReportSummary(data) {
-        return await api.get("main/report-settings/report-summary")
+        return await api.get("main/report-settings/report-summary?page="+data.page+"&per_page="+ data.per_page+"&student_number="+data.student_number+"&study_period_number="+data.study_period_number+"&campus_class_number="+data.campus_curriculum_number+"&stream_number="+data.stream_number+"&grade="+data.grade)
             .then((response) => {
-                reportSummaryResponse.value = response.data
+                if(response && response.data) {
+                    reportSummaryResponse.value = response.data
+                }
             })
             .catch((error) => {
                 if(error && error.response){

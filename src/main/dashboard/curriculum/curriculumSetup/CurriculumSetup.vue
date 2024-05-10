@@ -1,3 +1,87 @@
+<script setup>
+
+import {onMounted, ref, watch} from "vue";
+import LearningAreaList from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/LearningAreaList.vue";
+import SubjectCluster from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/SubjectCluster.vue";
+import SubjectList from "@/main/dashboard/curriculum/curriculumSetup/subject/SubjectList.vue";
+import StrandList from "@/main/dashboard/curriculum/curriculumSetup/strands/StrandList.vue";
+import TopicList from "@/main/dashboard/curriculum/curriculumSetup/topic/TopicList.vue";
+import SubTopicList from "@/main/dashboard/curriculum/curriculumSetup/subTopic/SubTopicList.vue";
+import ConceptList from "@/main/dashboard/curriculum/curriculumSetup/concept/ConceptList.vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
+import ManageCurriculum from "@/main/dashboard/curriculum/curriculumSetup/ManageCurriculum.vue";
+import {useRouter} from "vue-router";
+import CurriculumLevel from "@/main/settings/level/CurriculumLevel.vue";
+import CurriculumClassSetUp from "@/main/dashboard/manageLevel/class/CurriculumClassSetUp.vue";
+import AssesmentAreas from "@/main/dashboard/assessment/assessmentComponents/AssesmentAreas.vue";
+import Metric from "@/main/dashboard/assessment/assessmentComponents/Metric.vue";
+
+
+
+const routerData = useRouter()
+const menuSelected = ref( "level")
+const curriculumMenu = ref( [
+  {text:"Learning Area", value:"learning-area"},
+  {text:"Subject Cluster", value:"subject-cluster"},
+  {text:"Subject", value:"subject"},
+  {text:"Strand", value:"strand"},
+  {text:"Topic", value:"topic"},
+  {text:"Subtopic", value:"subtopic"},
+  {text:"Concept", value:"concept"},
+])
+
+const assessmentMenu = ref( [
+  {text:"Assessment Area", value:"assessmentArea"},
+  {text:"Metric", value:"metric"},
+])
+
+const notificationStore  = useNotificationStore()
+const curriculumStore = useCurriculumStore()
+let  curriculumNumber = routerData.currentRoute.value.query.id
+let curriculumInfo = ref(null)
+
+
+
+
+const changeMenu = (value) => {
+  menuSelected.value = value
+}
+
+const importDialog = ref(false)
+const importFromExcel = () => {
+  importDialog.value = true
+}
+
+onMounted(
+    () => {
+      curriculumStore.fetchCurriculumInfo(curriculumNumber)
+    }
+)
+
+watch(
+    () => curriculumStore.importResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => curriculumStore.curriculumInfoResponse,
+    async (data) => {
+      if(data){
+        curriculumInfo.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+
+</script>
 <template>
   <div>
 
@@ -12,7 +96,7 @@
 
 
         <div class="col-3">
-            <div class="w-full h-[80vh] overflow-y-scroll scrollbar-thin">
+            <div class="w-full h-screen overflow-y-auto scrollbar-thin">
               <div class="card mt-3">
                 <div class="card-body" style="padding: 0;">
                     <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Curriculum Setup</div>
@@ -99,7 +183,7 @@
 
 
       <div class="col-9">
-        <div class="h-[80vh] overflow-y-scroll scrollbar-thin">
+        <div class="h-screen overflow-y-auto scrollbar-thin">
           <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
             <learning-area-list v-if="menuSelected==='learning-area'"></learning-area-list>
@@ -130,90 +214,7 @@
   </div>
 </template>
 
-<script setup>
 
-import {onMounted, ref, watch} from "vue";
-import LearningAreaList from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/LearningAreaList.vue";
-import SubjectCluster from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/SubjectCluster.vue";
-import SubjectList from "@/main/dashboard/curriculum/curriculumSetup/subject/SubjectList.vue";
-import StrandList from "@/main/dashboard/curriculum/curriculumSetup/strands/StrandList.vue";
-import TopicList from "@/main/dashboard/curriculum/curriculumSetup/topic/TopicList.vue";
-import SubTopicList from "@/main/dashboard/curriculum/curriculumSetup/subTopic/SubTopicList.vue";
-import ConceptList from "@/main/dashboard/curriculum/curriculumSetup/concept/ConceptList.vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
-import ManageCurriculum from "@/main/dashboard/curriculum/curriculumSetup/ManageCurriculum.vue";
-import {useRouter} from "vue-router";
-import CurriculumLevel from "@/main/settings/level/CurriculumLevel.vue";
-import CurriculumClassSetUp from "@/main/dashboard/manageLevel/class/CurriculumClassSetUp.vue";
-import AssesmentAreas from "@/main/dashboard/assessment/assessmentComponents/AssesmentAreas.vue";
-import Metric from "@/main/dashboard/assessment/assessmentComponents/Metric.vue";
-
-
-
-const routerData = useRouter()
-const menuSelected = ref( "level")
-const curriculumMenu = ref( [
-  {text:"Learning Area", value:"learning-area"},
-  {text:"Subject Cluster", value:"subject-cluster"},
-  {text:"Subject", value:"subject"},
-  {text:"Strand", value:"strand"},
-  {text:"Topic", value:"topic"},
-  {text:"Subtopic", value:"subtopic"},
-  {text:"Concept", value:"concept"},
-])
-
-const assessmentMenu = ref( [
-  {text:"Assessment Area", value:"assessmentArea"},
-  {text:"Metric", value:"metric"},
-])
-
-const notificationStore  = useNotificationStore()
-const curriculumStore = useCurriculumStore()
-let  curriculumNumber = routerData.currentRoute.value.query.id
-let curriculumInfo = ref(null)
-
-
-
-
-const changeMenu = (value) => {
-  menuSelected.value = value
-}
-
-const importDialog = ref(false)
-const importFromExcel = () => {
-  importDialog.value = true
-}
-
-onMounted(
-    () => {
-      curriculumStore.fetchCurriculumInfo(curriculumNumber)
-    }
-)
-
-watch(
-    () => curriculumStore.importResponse,
-    async (data) => {
-      if(data){
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => curriculumStore.curriculumInfoResponse,
-    async (data) => {
-      if(data){
-         curriculumInfo.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-
-
-</script>
 
 <style scoped>
 

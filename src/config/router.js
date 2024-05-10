@@ -70,6 +70,7 @@ import FoodMenuItem  from "@/main/dashboard/catering/cateringComponents/FoodMenu
 import FeedingGroupUserDetails  from "@/main/dashboard/catering/cateringComponents/FeedingGroupUserDetails.vue"
 import ApplicationSuccessPage from "@/main/application/applicationComponents/ApplicationSuccessPage.vue"
 import CampusCurriculumSetup from "@/main/dashboard/manageLevel/CampusCurriculumSetup.vue";
+import StudentProfileDetails from "@/main/dashboard/profiles/studentProfile/StudentProfileDetails.vue"
 
 
 const router = createRouter({
@@ -168,7 +169,6 @@ const router = createRouter({
                 meta: {
                     resource: "report-center",
                     action: "view_report-center",
-                      
                 }},
                 {path: 'settings', component: settings, name: "settings",
                 meta: {
@@ -465,12 +465,12 @@ const router = createRouter({
                 meta: {
                     resource: "feeding-group-user-details",
                     action: "feeding-group-user-details",
-
-
                 }},
-
-              
-
+                {path: 'student-profile-details', component: StudentProfileDetails, name: "student-profile-details",
+                meta: {
+                    resource: "manage-student-profile-details",
+                    action: "wiew-student-profile-details",
+                }},
             ]
         },
 

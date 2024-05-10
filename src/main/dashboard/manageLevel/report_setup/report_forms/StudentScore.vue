@@ -215,8 +215,6 @@ watch(
 
     <div class="row bg-white mx-auto mt-2">
 
-
-
       <div class="col-3">
         <label class="text-sm"><small>Level</small></label>
         <select
@@ -283,7 +281,7 @@ watch(
               @change="fetchAssessmentMetrics"
           >
             <option disabled value="">Select</option>
-            <option v-for="(list, index) in AsessmentListData" :key="index" :value="list.number">{{ list.name }}
+            <option v-for="(list, index) in assessmentListData" :key="index" :value="list.number">{{ list.name }}
             </option>
           </select>
       </div>

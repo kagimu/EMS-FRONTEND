@@ -222,7 +222,7 @@ watch(
         const secondaryItemNumbers = menuItems.value.map(menu => {
         return {
             secondary_item_number: menu.secondary_item_number,
-            quantity: menu.quantity
+            quantity:parseInt(menu.quantity)
         }
     })
 

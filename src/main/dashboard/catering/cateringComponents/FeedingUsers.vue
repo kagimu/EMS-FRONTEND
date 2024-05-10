@@ -7,7 +7,25 @@
               <div class="" style="padding: 0;">
                  <div class="container mt-4">
                     <div class="row mt-3">
-                       <div class="col-lg-12">
+                       <div class="col-lg-3">
+                        <div class="mb-2">
+                             <label class="textColor"><small>Feeding Session</small>  </label>
+                             <select v-model="form.feeding_session_number" class="form-control form-select" @change="setFeedingSessionNumber(form.feeding_session_number)">
+                                <option disabled value="">Select</option>
+                                <option v-for="(list, index) in feedingSessionGroupData" :key="index" :value="list.number">{{list.name}}</option>
+                             </select>
+                          </div>
+                        </div>
+                          <div class="col-lg-3">
+                          <div class="mb-2">
+                             <label class="textColor"><small>Feeding Group</small></label>
+                             <select class="form-select form-control" v-model="form.feeding_group_number" required @change="setFeedingGroupNumber(form.feeding_group_number)">
+                                <option value="" disabled>-select</option>
+                                <option v-for="(list,index) in feedingGroupData" :key="index" :value="list.number">{{list.name  }}</option>
+                             </select>
+                          </div>
+                        </div>
+                        <div class="col-lg-3">
                           <div class="mb-2">
                              <label class="textColor"><small>School</small> </label>
                              <select
@@ -21,6 +39,8 @@
                                 </option>
                              </select>
                           </div>
+                        </div>
+                        <div class="col-lg-3">
                           <div class="mb-2">
                              <label class="textColor"><small>Campus</small>  </label>
                              <select
@@ -33,20 +53,8 @@
                                 </option>
                              </select>
                           </div>
-                          <div class="mb-2">
-                             <label class="textColor"><small>Feeding Session</small>  </label>
-                             <select v-model="form.feeding_session_number" class="form-control form-select" @change="setFeedingSessionNumber(form.feeding_session_number)">
-                                <option disabled value="">Select</option>
-                                <option v-for="(list, index) in feedingSessionGroupData" :key="index" :value="list.number">{{list.name}}</option>
-                             </select>
-                          </div>
-                          <div class="mb-2">
-                             <label class="mt-4 textColor"><small>Feeding Group</small></label>
-                             <select class="form-select form-control" v-model="form.feeding_group_number" required @change="setFeedingGroupNumber(form.feeding_group_number)">
-                                <option value="" disabled>-select</option>
-                                <option v-for="(list,index) in feedingGroupData" :key="index" :value="list.number">{{list.name  }}</option>
-                             </select>
-                          </div>
+                        </div>
+                         <div class="row">
                           <div class="table-responsive">
                              <table
                                 id="datatable"

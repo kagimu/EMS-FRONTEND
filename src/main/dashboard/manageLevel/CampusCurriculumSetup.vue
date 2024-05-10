@@ -11,6 +11,8 @@ import ScoreSetup from "@/main/dashboard/manageLevel/report_setup/ScoreSetup.vue
 
 const levelStore = useLevelStore()
 const campusCurriculumDataInfo = ref(null)
+const curriculum = ref("")
+const curriculumList = ref(null)
 
 const routerData = useRouter()
 
@@ -141,9 +143,26 @@ watch(
 <template>
   <div>
 
-    <div style="font-size: 25px; color: #262626;" class="mt-3 ml-2" v-if="curriculumName">
+    <div class="mt-3 ml-2 text-[#262626] text-[25px]" v-if="curriculumName">
       {{curriculumName}}
     </div>
+
+    <div class="row">
+      <div class="col-lg-3">
+        <select
+            style="outline: none 0 !important; box-shadow: none;"
+            type="text"
+            v-model="curriculum"
+            required
+            class="form-control form-select-sm">
+          <option disabled value="">--Switch Curriculum--</option>
+          <option v-for="(lst, index) in curriculumList" :key="index" :value="lst.id">{{ lst.name }}</option>
+        </select>
+      </div>
+    </div>
+
+
+
 
     <div class="card mt-3">
       <div class="card-body" style="padding: 0;">
@@ -151,11 +170,12 @@ watch(
       </div>
     </div>
 
-
+<div>
     <div class="row">
+
       <div :class="campusSetupQuery || studentScoreQuery  || assessmentSettingsQuery || reportSettingsQuery ? 'col-3' : 'col-12 mx-auto'">
 
-        <div class="w-full h-[80vh] overflow-y-scroll scrollbar-thin">
+        <div class="w-full h-[70vh] overflow-y-scroll scrollbar-thin mb-10">
 
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
@@ -235,9 +255,6 @@ watch(
       </div>
 
 
-
-
-
       <div class="col-9" v-if="campusSetupQuery">
 
         <div class="card mt-3">
@@ -286,7 +303,7 @@ watch(
 
 
     </div>
-
+</div>
   </div>
 </template>
 

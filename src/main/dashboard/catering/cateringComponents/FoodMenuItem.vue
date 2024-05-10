@@ -103,7 +103,8 @@
 
             </div>
 
-    <table
+<div>
+    <table 
     id="datatable"
     class="table table-striped"
     style="font-size: 14px !important;"
@@ -114,6 +115,7 @@
 
         <th>Name</th>
         <th>Unit</th>
+        <th>Current Quantity</th>
         <th>Campus</th>
         <th>Type</th>
         <th>Action</th>
@@ -123,10 +125,18 @@
     </div>
     </thead>
     <tbody>
-        <tr v-for="(list, index) in menuItemData" :key="index">
+ 
+      <div v-if="isLoading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    </div>
+
+        <tr v-if="isLoading==false" v-for="(list, index) in menuItemData" :key="index">
           <td>{{ index+1 }}</td>
       <td>{{ list.name }} [{{ list.code }}]</td>
       <td>{{ list.unit_of_measure_name }}</td>
+      <td>{{ list.current_quantity }}</td>
       <td>{{ list.campus_name }}</td>
       <td>{{ list.type }}&nbsp;
        <span  v-if="list.type=='ASSEMBLED'"><button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
@@ -134,10 +144,19 @@
           </button><button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
             <i class="bi bi-dash" style="color:rgb(3, 85, 148)" @click="hideItems"></i>
           </button>
-          <ul v-if="sta==list.number">
-            <li>Item 1</li>
-            <li>Item 2</li>
-          </ul>
+          <div  v-if="sta==list.number">
+          <span v-for="(listD,indx) in menuItemDataParts" :key="indx">
+
+    <div v-if="loading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    </div>
+            <ul v-if="loading==false">
+              <li  v-for="(ldData,idx) in listD.parts" :key="idx">[{{ldData.code}}] {{ ldData.name }} - {{ ldData.quantity }}{{ ldData.unit_of_measure }}</li>
+            </ul>
+          </span>
+        </div>
         </span> 
         </td>
       <td>
@@ -153,6 +172,7 @@
                 
     </tbody>
     </table>
+  </div>
     </div>
     </div>
     </div>
@@ -177,6 +197,8 @@
 
 
 const showingModal = ref(false)
+const isLoading = ref(true);
+const loading = ref(true)
 
 const showModal = () => {
 showingModal.value = true
@@ -195,6 +217,7 @@ thisDialog.value=false
     const campusStore = useCampusStore()
     const classStore = useClassesStore()
     const school_number = ref(null)
+    const menuItemDataParts = ref([])
 
     const form = reactive({
     school_number:null,
@@ -251,6 +274,17 @@ watch(
     () => cateringStore.menuItemResponse,
     async (data) => {
         menuItemData.value = data.data
+        isLoading.value = false; 
+    },
+    {deep: true}
+  )
+
+  
+watch(
+    () => cateringStore.menuItemDetailsResponse,
+    async (data) => {
+        menuItemDataParts.value = data
+        loading.value=false;
     },
     {deep: true}
   )

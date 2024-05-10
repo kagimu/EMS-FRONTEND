@@ -22,6 +22,8 @@ export const useReportSetupStore = defineStore("report_setup", () => {
     const reportTemplateListResponse = ref(null)
     const classToReportTemplateResponse = ref(null)
     const classesAddedToReportTemplateListResponse = ref(null)
+    const removeClassFromReportTemplateResponse = ref(null)
+
     async function newReportSettings(data) {
         return await api.post("main/report-settings", data)
             .then((response) => {
@@ -107,6 +109,7 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             })
     }
 
+    
     async function fetchReportSettings() {
         return await api.get("main/report-settings")
             .then((response) => {
@@ -193,8 +196,8 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             })
     }
 
-    async function fetchReportTemplate() {
-        return await api.get("main/school/report-templates/all")
+    async function fetchReportTemplate(schoolN) {
+        return await api.get("main/school/report-templates/all?school_number="+schoolN)
             .then((response) => {
                 reportTemplateListResponse.value = response.data
             })
@@ -217,8 +220,9 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             })
     }
 
-    async function fetchClassesAddedReportTemplate(templateN) {
-        return await api.get("main/school/report-templates/by-class?template_number="+templateN)
+    // /main/school/report-templates/by-class?template_number=xyz&school_number=xyx
+    async function fetchClassesAddedReportTemplate(templateN,schoolN) {
+        return await api.get("main/school/report-templates/by-class?template_number="+templateN+"&school_number="+schoolN)
             .then((response) => {
                 classesAddedToReportTemplateListResponse.value = response.data
             })
@@ -228,6 +232,19 @@ export const useReportSetupStore = defineStore("report_setup", () => {
                 }
             })
     }
+
+    async function removeClassFromReportTemplate(data) {
+        return await api.post("main/school/report-templates/remove-template", data)
+            .then((response) => {
+                removeClassFromReportTemplateResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+    
 
     return {
         errorMessage,
@@ -264,7 +281,9 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         addClassToReportTemplate,
         classToReportTemplateResponse,
         fetchClassesAddedReportTemplate,
-        classesAddedToReportTemplateListResponse
+        classesAddedToReportTemplateListResponse,
+        removeClassFromReportTemplate,
+        removeClassFromReportTemplateResponse
 
     }
 })

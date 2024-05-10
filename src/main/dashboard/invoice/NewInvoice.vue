@@ -12,7 +12,7 @@
                     <table class="table bordered">
                       <thead>
                         <tr class="" style="padding: 0px;margin: 0px;">
-                          <th>Service</th>
+                          <th>Item</th>
                           <th>Quantity</th>
                           <th>Unit Price</th>
                           <th>Amount</th>
@@ -33,7 +33,7 @@
                         </tr>
                       </tbody>
                     </table>
-                    <button class="btn btn-primary btn-sm textColor" @click.prevent="addService" :disabled="isAddButtonDisabled"><small>ADD ANOTHER SERVICE</small></button>
+                    <button class="btn btn-primary btn-sm textColor" @click.prevent="addService" :disabled="isAddButtonDisabled"><small><i class="bi bi-plus-lg" title="Add Item"></i></small></button>
                     <div class="row mt-10">
                       <div class="col-lg-8"></div>
                       <div class="col-lg-4">
@@ -44,19 +44,17 @@
                       </div>
                     </div>
                 
-                  <!-- ends here -->
                 </div>
               </div> 
               <div class="row">
              
              <div class="col-lg-4">
-             <button @click="goBack()" type="button" class="btn btn-sm btn-outline-danger mb-2 mr-4" style="float: left !important;margin-right: 0px;">
-               <i class="bi bi-box-arrow-in-left"></i> back</button>
+            
            </div>
            <div class="col-lg-4"></div>
            <div class="col-lg-4 ">
-             <button type="submit" class="btn btn-sm btn-outline-primary mb-2 mt-1" style="float: right !important;margin-right: 0px;">
-               <small><i class="bi bi-save"></i>Generate</small>
+             <button type="submit" class="btn btn-sm btn-primary mb-2 mt-1" style="float: right !important;margin-right: 0px;">
+               <small>Create Invoice</small>
            <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
              <span class="visually-hidden">Loading...</span>
            </div>
@@ -100,9 +98,6 @@ const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
 const studentNumber = routerData.currentRoute.value.query.id;
 
-const goBack = () => {
-  window.history.back()
-}
 
 // Creating invoice Logic =========================================================
 const Services = ref([]);
@@ -180,7 +175,7 @@ watch(
 
 // Connect invoice store ==========================================
 const createInvoice = () => {
-  const selectedData = Services.value.map(service => ({
+  const selectedItems = Services.value.map(service => ({
       name: service.name,
       quantity: service.quantity,
       unitPrice: service.unitPrice,
@@ -188,12 +183,12 @@ const createInvoice = () => {
     }))
 
   const data = {
-    student_number: 'studentNumber',
-    selectedData
+    student_number: 'i need student number',
+    selectedItems
   }
   alert(JSON.stringify(data))
-  //create Invoice ======================
-  invoiceStore.createNewInvoice(data)
+ 
+  // invoiceStore.createNewInvoice(data)
 }
 
 
@@ -202,7 +197,6 @@ watch (
   async (data) => {
     if (data) {
       notificationStore.successToast("Success", data.message)
-      // router.push({ name: 'invoice-details', params: { studentNumber }})
     }
   },
   { deep: true }
@@ -214,8 +208,6 @@ watch (
     if (data) {
       errorMessage.value = data.message
       notificationStore.errorToast("Error",data.message)
-      //redirecting to another page
-      // router.push({ name: 'invoice-details', params: { studentNumber }})
     }
   },
   { deep: true }
