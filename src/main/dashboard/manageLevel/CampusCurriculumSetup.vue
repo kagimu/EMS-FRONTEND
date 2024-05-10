@@ -8,11 +8,11 @@ import CampusCurriculumSettings from "@/main/dashboard/manageLevel/CampusCurricu
 import Assessment from "@/main/dashboard/assessment/Assessment.vue";
 import ReportSetup from "@/main/dashboard/manageLevel/report_setup/ReportSetup.vue";
 import ScoreSetup from "@/main/dashboard/manageLevel/report_setup/ScoreSetup.vue";
-
+const router = useRouter()
 const levelStore = useLevelStore()
 const campusCurriculumDataInfo = ref(null)
 const curriculum = ref("")
-const curriculumList = ref(null)
+
 
 const routerData = useRouter()
 
@@ -131,12 +131,14 @@ watch(
     async (data) => {
       if(data){
         campusCurriculumDataInfo.value = data.data
-        if(!campusCurriculumNumber){
-        }
       }
     },
     {deep:true}
 )
+
+const switchCurriculum = (curriculum) => {
+  router.push({name: "campus-curriculum-setup", query:{id:campusNumber, crr:curriculum, cr:curriculumNumberParent}})
+}
 
 
 </script>
@@ -152,11 +154,12 @@ watch(
         <select
             style="outline: none 0 !important; box-shadow: none;"
             type="text"
-            v-model="curriculum"
+            v-model="campusCurriculumNumber"
+            @change="switchCurriculum(campusCurriculumNumber)"
             required
             class="form-control form-select-sm">
           <option disabled value="">--Switch Curriculum--</option>
-          <option v-for="(lst, index) in curriculumList" :key="index" :value="lst.id">{{ lst.name }}</option>
+          <option v-for="(lst, index) in campusCurriculumDataInfo" :key="index" :value="lst.number">{{ lst.name }}</option>
         </select>
       </div>
     </div>
