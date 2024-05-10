@@ -217,7 +217,7 @@
          
                 <router-link
                   class="text-decoration-none"
-                  :to="{name:'student-profile-details', query:{st_id:enrolData.number}}">
+                  :to="{name:'student-profile-details', query:{st_id:enrolData.student_number}}">
                 <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
                 <small><i class="bi bi-person"></i> Student Profile</small>
                 </button>

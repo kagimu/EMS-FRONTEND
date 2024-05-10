@@ -9,7 +9,7 @@
             <div class="card mb-4">
               <div class="card-body text-center">
                 <center><img :src="user.avatar" :alt="user.name" class="rounded-circle img-fluid" style="width: 120px;"></center>
-                <h5 class="my-3">{{ user.name }}</h5>
+                <h5 class="my-3">{{ studentName }}</h5>
                 <p class="text-muted mb-1">{{ user.role }}</p>
               </div>
             </div>
@@ -63,14 +63,23 @@
    </div>
 </div>
 
+
             <div class="card mb-4">
               <div class="card-body">
-                <div v-for="(detail, index) in user.details" :key="index" class="row">
-                  <div class="col-sm-3">
-                    <p class="mb-0">{{ detail.label }}</p>
+                <div class="row">
+                  <div class="col-sm-2">
+                    <p class="mb-0">Full Name</p>
                   </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">{{ detail.value }}</p>
+                  <div class="col-sm-9" style="float: left;">
+                    <p class="text-muted mb-0">{{ studentName }}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-2">
+                    <p class="mb-0">DOB</p>
+                  </div>
+                  <div class="col-sm-9" style="float: left;">
+                    <p class="text-muted mb-0">{{ dob }}</p>
                   </div>
                 </div>
               </div>
@@ -118,15 +127,43 @@
   
   
   <script setup> 
-  import {reactive, ref} from "vue";
-  import {useRouter} from "vue-router";
-  import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
-  import ManageInvoices from "@/main/dashboard/invoice/ManageInvoices.vue"
-
+import {onMounted, reactive, ref, watch, watchEffect, computed} from "vue"
+import {useRouter} from "vue-router";
+import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
+import ManageInvoices from "@/main/dashboard/invoice/ManageInvoices.vue"
+import useNotificationStore from "@/composables/useNotification.js"
+import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 
   const routerData = useRouter()
   const menuSelected = ref("financial-situation")
   const student_number = routerData.currentRoute.value.query.st_id
+  const applicationStore = useApplicationStore()
+  const notificationStore = useNotificationStore()
+  const studentName = ref(null)
+  const Sex = ref(null)
+  const School= ref(null)
+  const Campus= ref(null)
+  const Level= ref(null)
+  const Class= ref(null)
+  const dob = ref(null)
+  
+onMounted(
+    async () => {
+      await applicationStore.fetchStudent(student_number)
+    } )
+
+
+    watch (
+  () => applicationStore.studentDataResponse,
+  async (data) => {
+    if (data) {
+      studentName.value = data.surname + " " + data.second_name+" "+ data.other_name
+      dob.value = data.date_of_birth
+    }
+  },
+  { deep: true }
+)
+
 
   const itemMenu = ref([
    {

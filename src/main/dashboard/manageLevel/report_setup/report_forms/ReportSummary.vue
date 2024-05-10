@@ -7,6 +7,8 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import useNotificationStore from "@/composables/useNotification.js";
+
+import AppModal from "@/components/AppModal.vue";
 import {useRouter} from "vue-router";
 const reportStore = useReportCardStore()    
 const levelStore = useLevelStore()
@@ -15,6 +17,7 @@ const studyPeriodStore = useStudyPeriodStore()
 const academicYearStore = useAcademicYearStore()
 const notificationStore  = useNotificationStore()
 const routerData = useRouter()
+const showStudentsMarks = ref(false)
 
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const campusCurriculumDataInfo = ref(null)
@@ -29,6 +32,14 @@ const campusClassList = ref(null)
 const reportSummaryList = ref([])
 const page = ref(1)
 const per_page = ref(15)
+
+const showStudentReport = (summary) => {
+     if(summary) {
+       showStudentsMarks.value = true
+       reportStore.fetchReportDetailsInfo(summary.number)
+     }
+   }
+   
 
 onMounted(
     async () => {
@@ -173,6 +184,11 @@ const filterSummaryReport = (data) => {
 </script>
 <template>
    <div>
+
+    
+    <AppModal title="Preview Report" v-model="showStudentsMarks" xl6>
+         <manage-report-details></manage-report-details>
+      </AppModal>
     
       <div class="row">
          <div class="col-12">

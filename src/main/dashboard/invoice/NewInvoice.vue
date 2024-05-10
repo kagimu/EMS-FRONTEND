@@ -125,7 +125,7 @@ const  notificationStore  = useNotificationStore()
 const classList = ref([])
 const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
-const studentNumber = routerData.currentRoute.value.query.id;
+const studentNumber = routerData.currentRoute.value.query.st_id;
 
 
 // Creating invoice Logic =========================================================
@@ -211,18 +211,19 @@ watch(
 const createInvoice = () => {
   const selectedItems = Services.value.map(service => ({
       item_number: service.number,
-      quantity: service.quantity,
-      unitPrice: service.unitPrice,
-      amount: service.amount
+      // quantity: service.quantity,
+      // unitPrice: service.unitPrice,
+      // amount: service.amount
     }))
 
   let data = {
-    user_number: 'i need student number',
+    // user_number: 'i need student number',
+    student_number:studentNumber,
     due_date : form.due_date,
     description:form.description,
-    selectedItems
+    items:selectedItems
   }
-  // alert(JSON.stringify(data))
+  alert(JSON.stringify(data))
  
   invoiceStore.createNewInvoice(data)
 }
