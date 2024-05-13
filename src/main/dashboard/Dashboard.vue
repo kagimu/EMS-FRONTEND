@@ -150,12 +150,12 @@ function updateOnlineStatus() {
   <div class="flex w-screen h-screen overflow-hidden">
     <div
         v-if="!xs && !sm"
-        :class="defaultMenuSize ? 'w-[5%]' : 'w-[16%]'"
+        :class="defaultMenuSize ? 'w-[4%] group hover:w-[16%]' : 'w-[16%]'"
         class="bg-white border-[#dfdfdf] border-r h-screen duration-700">
       <div class="overflow-y-scroll scrollbar-thin bg-white h-screen mt-[56px]">
         <div
-          class="list-group list-group-flush text-[13px] pb-[100px] "
-          :class="defaultMenuSize ? 'text-center' : ''"
+          class="list-group list-group-flush text-[13px] pb-[100px]"
+          :class="defaultMenuSize ? 'flex justify-center group-hover:text-left' : ''"
       >
         <router-link
             v-for="(lst,idx) in menuList" :key="idx"
@@ -166,8 +166,8 @@ function updateOnlineStatus() {
           <div
               v-tooltip.right="lst.name"
           >
-            <i :class="lst.icon" :style="defaultMenuSize ? 'font-size:17px;' : 'font-size:13px;'" class="mr-2"></i>
-            <small v-if="!defaultMenuSize">{{lst.title}}</small>
+            <i :class="[lst.icon, (defaultMenuSize ? 'text-[17px] group-hover:text-[13px]' : 'text-[13px]')]"  class="mr-2 duration-700 pl-3"></i>
+            <small :class="{'inline-block': !defaultMenuSize, 'hidden group-hover:inline-block':defaultMenuSize}" class="duration-700">{{lst.title}}</small>
           </div>
         </router-link>
       </div>
