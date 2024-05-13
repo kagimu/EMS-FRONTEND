@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row">
-      {{ userNumber }}
+      <!-- {{ userNumber }} -->
       <div class="col-12">
           <div class="card-body" style="padding: 0;">
             <div class="container mt-4">
@@ -224,20 +224,22 @@ watch(
 
 // Connect invoice store ==========================================
 const createInvoice = () => {
-  const selectedItems = Services.value.map(service => ({
+  const selectedItems = Services.value.map(
+    service => ({
       item_number: service.number,
-      // quantity: service.quantity,
+      quantity: service.quantity,
       // unitPrice: service.unitPrice,
       // amount: service.amount
     }))
 
+
+
   let data = {
-    // user_number: 'i need student number',
     user_number:props.userNumber,
     due_date : form.due_date,
     description:form.description,
     items:selectedItems,
-    student_number:studentNumber
+    // student_number:studentNumber
   }
   alert(JSON.stringify(data))
  
@@ -250,6 +252,12 @@ watch (
   async (data) => {
     if (data) {
       notificationStore.successToast("Success", data.message)
+
+        let school_number ="", campus_number="",status=""
+        invoiceStore.fetchInvoice(school_number,campus_number,props.userNumber,status)
+        form.description = null,
+        form.due_date = null
+
     }
   },
   { deep: true }

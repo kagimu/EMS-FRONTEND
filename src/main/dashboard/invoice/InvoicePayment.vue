@@ -1,22 +1,13 @@
 <template>
     <div>
+      <!-- {{ refN }} -->
     <form @submit.prevent="invoicePayment">
-      <div class="mb-2">
-        <label class="textColor text-sm">Payer</label>
-        <input v-model="formData.payer"  style="outline: none 0 !important; box-shadow: none;" type="text" required class="form-control form-control-sm">
-      </div>
-      <div class="mb-2">
-        <label class="textColor text-sm">Payment Reference</label>
-        <input v-model="formData.payment_reference" style="outline: none 0 !important; box-shadow: none;" type="text" required class="form-control form-control-sm">
-      </div>
+      
       <div class="mb-2">
         <label class="textColor text-sm">Amount</label>
         <input v-model="formData.amount"  style="outline: none 0 !important; box-shadow: none;" type="number" required class="form-control form-control-sm">
       </div>
-      <div class="mb-2">
-        <label class="textColor text-sm">Balance</label>
-        <input v-model="formData.balance"  style="outline: none 0 !important; box-shadow: none;" type="number" required class="form-control form-control-sm">
-      </div>
+
       <div class="mb-2">
         <label class="textColor text-sm">Date</label>
         <input v-model="formData.date"  style="outline: none 0 !important; box-shadow: none;" type="date" required class="form-control form-control-sm">
@@ -26,7 +17,7 @@
         <button
             type="submit"
             class="btn btn-primary border-0 btn-sm">
-           <small>  <i class="bi bi-save2"></i>  Save </small>
+           <small> Pay </small>
               <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
                   <span class="visually-hidden">Loading...</span>
                 </span>
@@ -41,22 +32,23 @@
   import {onMounted,reactive, ref, watch,computed} from "vue";
   import useNotificationStore from "@/composables/useNotification.js"
   import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
-  import { useRouter } from 'vue-router'
 
-  const invoiceStore = useInvoiceStore()
+  const props = defineProps({
+  refN:String
+  })
+
+const invoiceStore = useInvoiceStore()
 const notificationStore = useNotificationStore()
   const loader = ref(false)
 
   const formData = reactive({ 
-    payer: null,
-    payment_reference:null,
-    amount: null, 
-    balance:null,
-    date:null,
-    invoice_number:'2328282828919192'
+    invoice_number:props.refN,
+    amount:null,
+    date:null
   })
 
   const invoicePayment = () => {
+    // alert(JSON.stringify(formData))
   invoiceStore.createInvoicePayment(formData)
   }
 

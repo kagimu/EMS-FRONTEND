@@ -141,14 +141,13 @@ watch(
       </div>
     </div>
 
-  <div class="container mt-4">
+  <div class="container mt-1">
     <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Interview List
 
       <button style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
       @click="showModal" >
       <i class="bi bi-plus"></i>&nbsp;<small>Create An Interview</small>
       </button>
-
       <hr style="width:30px;"></h6>
     <table
       id="datatable"
@@ -157,8 +156,9 @@ watch(
     >
       <thead>
         <tr>
+          <th>#</th>
           <th>Name</th>
-          <th>Scheduled On</th>
+          <th>ScheduledOn</th>
           <th>Venue</th>
           <th>Comment</th>
           <th>Actions</th>
@@ -167,11 +167,12 @@ watch(
       </thead>
       <tbody>
         <tr v-for="(interview, index) in interviewList" :key="index">
+          <td>{{ index+1 }}</td>
           <td>{{ interview.name}}</td>
           <td>{{ interview.interview_date }}</td>
           <td>{{ interview.venue }}</td>
           <td class="w-[25%]">{{ interview.message }}</td>
-          <td class="w-[35%]">
+          <td>
             <!-- <div class="mb-1">
               <router-link style=""
                   class="text-decoration-none"

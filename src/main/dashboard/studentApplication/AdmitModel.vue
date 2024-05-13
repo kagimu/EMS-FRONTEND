@@ -1,89 +1,80 @@
 <template>
   <div>
     <form @submit.prevent="Admit()">
-      <!-- {{ interviewNumber }} {{ selectedStudentNumber }} -->
+      <!-- School Selection -->
       <div class="row">
         <div class="col-lg-6">
           <div class="mb-2">
-            <label class="textColor"><small>School</small> </label>
+            <label class="textColor"><small>School</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required
               v-model="form.school_number"
-              @change="fetchCampuses(form.school_number)"
-              >
+              @change="fetchCampuses(form.school_number)">
               <option disabled value="">Select School</option>
-              <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-              </option>
+              <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}</option>
             </select>
           </div>
+          <!-- Campus Selection -->
           <div class="mb-2">
-            <label class="textColor"><small>Campus</small>  </label>
+            <label class="textColor"><small>Campus</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm"
               v-model="form.campus_number" required
-              @change="fetchClasses(form.campus_number)"
-              >
+              @change="fetchClasses(form.campus_number)">
               <option disabled value="">Select campus</option>
-              <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-              </option>
+              <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}</option>
             </select>
           </div>
+          <!-- Class Selection -->
           <div class="mb-2">
-            <label class="textColor"><small>Class</small> </label>
+            <label class="textColor"><small>Class</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required
               v-model="form.campus_class_number"
-              @change="fetchAcademicYear(form.campus_class_number)"
-              >
+              @change="fetchAcademicYear(form.campus_class_number)">
               <option disabled value="">Select class</option>
-              <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}
-              </option>
+              <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}</option>
             </select>
           </div>
         </div>
+        <!-- Stream, Academic Year, and Study Period Selection -->
         <div class="col-lg-6">
           <div class="mb-2">
-            <label class="textColor"><small>Stream</small> </label>
+            <label class="textColor"><small>Stream</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required
-              v-model="form.stream_number"
-              >
+              v-model="form.stream_number">
               <option disabled value="">Select Stream</option>
-              <option v-for="(slist, index) in streamList" :key="index" :value="slist.number">{{ slist.name }}
-              </option>
+              <option v-for="(slist, index) in streamList" :key="index" :value="slist.number">{{ slist.name }}</option>
             </select>
           </div>
           <div class="mb-2">
-            <label class="textColor"><small>Academic Year</small> </label>
+            <label class="textColor"><small>Academic Year</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required
-              v-model="form.academic_year_number"
-              >
+              v-model="form.academic_year_number">
               <option disabled value="">Select Year</option>
               <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
             </select>
           </div>
           <div class="mb-2">
-            <label class="textColor">
-              <small>Study Period</small> 
-              <!-- {{ studyPeriodList }} -->
-            </label>
+            <label class="textColor"><small>Study Period</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required
-              v-model="form.study_period_number"
-              >
+              v-model="form.study_period_number">
               <option disabled value="">Select</option>
               <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
             </select>
           </div>
         </div>
       </div>
+      <!-- Service Selection -->
       <div class="row mt-3">
         <div class="col-lg-12">
           <div class="row">
@@ -93,22 +84,18 @@
                 <thead>
                   <tr class="" style="padding: 0px;margin: 0px;">
                     <th class="textColor">Service</th>
-                    <!-- <th>Qty</th> -->
-                    <!-- <th>Unit Price</th> -->
                     <th class="textColor">Amount</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(Service, index) in Services" :key="index" >
+                  <tr v-for="(Service, index) in Services" :key="index">
                     <td>
                       <select class="form-select form-select-sm form-control select-no-border" v-model="Service.number" @change="updateService(index)">
                         <option :value="option.item_number" v-for="option in availableOptions(index)">{{ option.name }}</option>
                       </select>
                     </td>
-                    <!-- <td><input type="text" v-model="Service.quantity" @input="updateAmount(index)" placeholder="1.0" class="inp"></td> -->
                     <td><input type="text" v-model="Service.cost" @input="updateAmount(index)" placeholder="Unit Price" class="inp"></td>
-                    <!-- <td>{{ Service.amount }}</td> -->
                     <td><button type="button" @click="removeService(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
                   </tr>
                 </tbody>
@@ -118,12 +105,11 @@
           </div>
         </div>
       </div>
+      <!-- Form Submission Button -->
       <div class="flex justify-content-end mt-2" style="width: 100%;">
         <button type="submit" class="btn btn-primary border-0 btn-sm">
-        <small><i class="bi bi-save"></i> submit</small>
-        <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
-          role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span> 
-        </span>
+          <small><i class="bi bi-save"></i> submit</small>
+          <span style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span></span>
         </button>
       </div>
     </form>
@@ -189,7 +175,8 @@
   campus_class_number: null,
   campus_number: null,
   interview_number:interviewNumber,
-  stream_number:null
+  stream_number:null,
+  school_number:null
   })
   
 
@@ -387,59 +374,28 @@
     { deep: true }
   )
   
-  // const createInvoice = () => {
-  //   const selectedData = Services.value.map(service => ({
-  //       item_number: service.item_number,
-  //     }))
-  
-  //   const data = {
-  //     student_number: 'studentNumber',
-  //     items:selectedData
-  //   }
-  //   alert(JSON.stringify(data))
-  //   invoiceStore.createNewInvoice(data)
-  // }
-  
-  
-  // watch (
-  //   () => invoiceStore.newInvoiceResponse,
-  //   async (data) => {
-  //     if (data) {
-  //       notificationStore.successToast("Success", data.message)
-  //     }
-  //   },
-  //   { deep: true }
-  // )
-  
-  // watch (
-  //   () => invoiceStore.errorMessage,
-  //   async (data) => {
-  //     if (data) {
-  //       errorMessage.value = data.message
-  //       notificationStore.errorToast("Error",data.message)
-
-  //     }
-  //   },
-  //   { deep: true }
-  // )
-  
   const Admit = () =>{
-    const selectedData = Services.value.map(service => ({
-        item_number: service.number,
-      }))
+    // const selectedData = Services.value.map(
+    //   service => ({
+    //     item_number: service.number,
+    //   }))
+
+      const itemNumbers = Services.value.map(service => service.number);
+      const items = { item_numbers: itemNumbers };
   
     const data = {
       student_number:props.selectedStudentNumber,
       academic_year_number: form.academic_year_number,
       study_period_number: form.study_period_number,
       campus_class_number: form.campus_class_number,
+      school_number:form.school_number,
       campus_number: form.campus_number,
       interview_number:interviewNumber,
       stream_number:form.stream_number,
-      items:selectedData
+      ...items
     }
    
-    alert(JSON.stringify(data))
+    // alert(JSON.stringify(selectedData))
     admissionStore.admitStudent(data)
   }
   

@@ -2,6 +2,8 @@
     <div> 
       <!-- {{ studentN }}  -->
         <form @submit.prevent="Enrol()">
+          <div class="row">
+            <div class="col-6">
           <div class="mb-2">
             <label class="textColor"><small>School</small> </label>
             <select
@@ -15,7 +17,6 @@
                 </option>
             </select>
         </div>
-
 
         <div class="mb-2">
             <label class="textColor"><small>Campus</small>  </label>
@@ -85,25 +86,35 @@
 
             </select>
         </div>
-
-  
-         
-
           <div class="mb-2">
               <label class="textColor"><small>Enrolment Date</small> 
               </label>
               <input type="date" class="form-control" v-model="form.enrollment_date">
-                <!-- <VueDatePicker
-              text-input
-              auto-apply
-              :teleport="true"
-              style="font-size: 7px;"
-              v-model="form.enrollment_date"
-              :preview-format="format"
-              ></VueDatePicker> -->
-             
           </div>
-  
+        </div>
+
+        <div class="col-6">
+          <p class="textColor" style="text-align: center"><small>Tick <bi class="bi bi-check" > brought Item on the List </bi></small> </p>
+       
+    <div class="mb-2">
+    <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+        <li v-for="(item, index) in items" :key="index" class="list-group-item">
+            <input
+                style="outline: none 0 !important; box-shadow: none;"
+                class="form-check-input me-1"
+                type="checkbox"
+                :value="item">
+           <label class="textColor"><small>{{ item }}</small></label>
+        </li>
+    </ul>
+    </div>
+       
+        </div>
+
+
+        
+          </div>
+          <hr>
    
      <div class="flex justify-content-end mt-2" style="width: 100%;">
             <button type="submit" class="btn btn-primary border-0 btn-sm">
@@ -121,12 +132,12 @@
   
   <script setup>
   
-  import {onMounted, reactive, ref, watch} from "vue";
-  import useNotificationStore from "@/composables/useNotification.js";
-  import {useEnrolmentStore} from "@/main/dashboard/enrollment/store/enrollment.js"
-  import VueDatePicker from '@vuepic/vue-datepicker';
-  import { useAdmissionStore } from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
-  import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {onMounted, reactive, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useEnrolmentStore} from "@/main/dashboard/enrollment/store/enrollment.js"
+import VueDatePicker from '@vuepic/vue-datepicker';
+import { useAdmissionStore } from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
@@ -154,18 +165,15 @@ const studyPeriodList  = ref([])
 const classStore = useClassesStore()
 const streamList = ref([])
 
-
-
 const currentYear = ref((new Date()).getFullYear());
 const date = ref();
 
 const format = (date) => {
-  const day = date.getDate();
+  const item = date.getDate();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
-  return `Selected date is ${day}/${month}/${year}`;
+  return `Selected date is ${item}/${month}/${year}`;
 }
-
 
 const props = defineProps({
   studN: String,
@@ -236,13 +244,11 @@ const formData = reactive ({
 } )
 
 
-
-
   const Enrol = () =>{
     // alert(JSON.stringify(formData))
     enrolmentStore.newEnrolment(form)
   }
-  
+
   
   watch (
     () => enrolmentStore.newsEnrolmentResponse,
@@ -361,6 +367,20 @@ watch(
 )
 
 
+const items = ['Ream Of Paper', 'Toilet Paper', 'Books', 'Broom', 'Jerrycan', 'Brush', 'Mopper'];
+
+const toggleDay = (selectedItem) => {
+    const index = form.item.indexOf(selectedItem);
+    if (index === -1) {
+        form.item.push(selectedItem);
+    } else {
+        form.item.splice(index, 1);
+    }
+}
+
+const selectAll = () => {
+    form.item = [...items]; 
+}
 
   
   </script>

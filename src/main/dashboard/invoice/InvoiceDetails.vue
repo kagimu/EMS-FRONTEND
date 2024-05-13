@@ -18,6 +18,7 @@
       </div>
     </div>
 
+    
      <!-- Item In Kind(Tick off brought Item)-->
      <div class="modal fade" id="itemInKind" tabindex="-1" :class="{ show: showModl }" aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog modal-xl">
@@ -59,42 +60,58 @@
            </div>
             <div class="card-body" style="padding: 0;">
     <div class="container mt-4">
-  
+<!--   
+      "ref_number": "24055279",
+        "date": "2024-05-13T11:18:19.477Z",
+        "due_date": "2024-05-07T00:00:00Z",
+        "total_amount": 0,
+        "paid_amount": 0,
+        "balance": 0,
+        "status": "NOT_PAID", -->
+
       <div class="row">
       <div class="col-12">
       <div class="container mt-4 mb-4">
           <div class="row">
             <div class="col-lg-4">   
               <div class="mb-2">
-              <label class="textColor"><small>Student Name</small></label>
-              <input disabled type="text" class="form-control" value="collins Mpiima">
+              <label class="textColor"><small>Invoice Number</small></label>
+              <input disabled type="text" class="form-control" v-model="myData.ref_number">
             </div>  
             <div class="mb-2">
-              <label class="textColor"><small>School</small> </label>
-              <input disabled type="text" class="form-control" value="Main Campus">
+              <label class="textColor"><small>Created On</small> </label>
+              <input disabled type="text" class="form-control" v-model="myData.date">
             </div>         
             <div class="mb-2">
-              <label class="textColor"><small>Campus</small> </label>
-              <input disabled type="text" class="form-control" value="Main Campus">
+              <label class="textColor"><small>Due Date</small> </label>
+              <input disabled type="text" class="form-control" v-model="myData.due_date">
             </div>
             <div class="mb-2">
-              <label class="textColor"><small>Class</small> </label>
-              <input disabled type="text" class="form-control" value="P1">
+              <label class="textColor"><small>Total Amount</small> </label>
+              <input disabled type="text" class="form-control" v-model="myData.total_amount">
             </div>
             <div class="mb-2">
-              <label class="textColor"><small>Parent/Guardian Email</small></label>
-              <input disabled type="email" class="form-control" value="collinsmppima@gmail.com">
+              <label class="textColor"><small>Paid Amount</small></label>
+              <input disabled  class="form-control" v-model="myData.paid_amount">
+            </div>
+            <div class="mb-2">
+              <label class="textColor"><small>Balance</small></label>
+              <input disabled  class="form-control" v-model="myData.balance">
+            </div>
+            <div class="mb-2">
+              <label class="textColor"><small>Status</small></label>
+              <input disabled  class="form-control" v-model="myData.status">
             </div>
             </div>
             <div class="col-lg-1"></div>
-            <div class="col-lg-7">
+            <div class="col-lg-6">
               <p class="textColor" style="margin-bottom: 4px;text-align: center;">Products/Items</p>
               <div class="row align-services-center">
 
-       <div v-for="(column, columnIndex) in columns" :key="columnIndex" class="col-md-4">
+       <div v-for="(column, columnIndex) in invoiceData" :key="columnIndex" class="col-md-12">
          <ul class="list-group text-sm mb-4" style="border-radius: 0;"> 
-           <li class="list-group-item" v-for="(item, index) in column" :key="index">
-             <label class="form-check-label cursor-pointer textColor" :for="'itemCheckbox' + index">{{ item.description }} - [ ugshs {{ item.price }} ]</label>
+           <li class="list-group-item" v-for="(item, index) in column.items" :key="index">
+             <label class="form-check-label cursor-pointer textColor" :for="'itemCheckbox' + index">{{ item.item_name }} - [ ugshs {{ item.unit_cost }} ]- [ Qty {{ item.quantity }} ]</label> 
            </li>
          </ul>
        </div>
@@ -110,18 +127,7 @@
 
     </div>
 
-    <div class="text-end">
-      <div class="row">
-        <div class="col-lg-7">
 
-        </div>
-        <div class="col-lg-5">
-       TOTAL : {{ total }}
-      </div>
-
-      </div>
-
-    </div>
             </div>
 
           </div>
@@ -145,10 +151,52 @@
 import InvoicePayment from './InvoicePayment.vue';
 import {onMounted, reactive, ref, watch,computed} from "vue";
 import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
-  import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
+import useNotificationStore from "@/composables/useNotification.js"
 
-  const invoiceStore = useInvoiceStore()
+const invoiceStore = useInvoiceStore()
 const showDialog = ref(false)
+const invoiceData = ref([])
+const notificationStore = useNotificationStore()
+
+const routerData = useRouter()
+const invoice_number = routerData.currentRoute.value.query.invoice_id
+
+onMounted(
+    async () => {
+      await invoiceStore.fetchInvoiceId(invoice_number)
+    } 
+  )
+
+
+const myData = reactive ({
+ref_number: invoice_number,
+date :null,
+ due_date: null,
+total_amount:null,
+paid_amount:null,
+ balance: null,
+status:null
+})
+  watch(
+    () => invoiceStore.invoiceResponseById,
+    async (data) => {
+      if(data){
+        // notificationStore.successToast("Success", data.message)
+        invoiceData.value = data,
+
+        myData.ref_number= data.data.ref_number,
+        myData.date= data.data.date,
+        myData.due_date= data.data.due_date,
+        myData.total_amount= data.data.total_amount,
+        myData.paid_amount= data.data.paid_amount,
+        myData.balance= data.data.balance,
+        myData.status=data.data.status
+       
+      }
+    },
+    {deep:true}
+)
 
 const goBack = () => {
      window.history.back()
