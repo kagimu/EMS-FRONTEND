@@ -85,7 +85,7 @@ const userNumber = ref(null)
       userNumber.value = data.user_number
       if(userNumber.value){
         let school_number ="", campus_number=""
-        transactionStore.fetchTransactions(school_number, userNumber.value)
+        await transactionStore.fetchTransactions(school_number, userNumber.value)
       }
     }
   },
