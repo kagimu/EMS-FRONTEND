@@ -75,32 +75,16 @@
             <div class="col-lg-6">
               <p class="textSize" style="margin-bottom: 4px;text-align: left;">Items</p>
               <div class="row align-services-center">
-
-       <div v-for="(column, columnIndex) in invoiceData" :key="columnIndex" class="col-md-12">
-         <ul class="list-group text-sm mb-4" style="border-radius: 0;"> 
-           <li class="list-group-item" v-for="(item, index) in column.items" :key="index">
-             <label class="cursor-pointer textSize" :for="'itemCheckbox' + index">{{ item.item_name }} - [ ugshs {{ item.unit_cost }} ]- [ Qty {{ item.quantity }} ]</label> 
-           </li>
-         </ul>
-       </div>
-
-
-       </div>
-
-              <div>
-
-                <div>
-    
-</div>
-
-    </div>
-
-
+                 <div v-for="(column, columnIndex) in invoiceData" :key="columnIndex" class="col-md-12">
+                   <ul class="list-group text-sm mb-4" style="border-radius: 0;">
+                     <li class="list-group-item" v-for="(item, index) in column.items" :key="index">
+                       <label class="cursor-pointer textSize" :for="'itemCheckbox' + index">{{ item.item_name }} - [ ugshs {{ item.unit_cost }} ]- [ Qty {{ item.quantity }} ]</label>
+                     </li>
+                   </ul>
+                 </div>
+              </div>
             </div>
-
           </div>
-
-
       </div>
   </div>
   </div>
