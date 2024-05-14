@@ -15,11 +15,14 @@
   let errorMessage = ref(null)
   const buttonLoader = ref(false)
   const  notificationStore  = useNotificationStore()
-    const enrolDialog  = ref(null)
-  const showDialog = (stud) => {
-      enrolDialog.value = true
-      studN.value = stud
-    }
+  const enrolDialog  = ref(null)
+  const studentNumber=ref(null)
+
+  const mymodal = ref(false)
+  const showModal = (studentN) =>{
+  studentNumber.value = studentN
+  mymodal.value = true
+   }
   
   const campusList = ref([])
   const schoolList = ref([])
@@ -175,6 +178,12 @@
     
 </script>
 <template>
+
+<AppModal title="Enrol" v-model="mymodal" xl4>
+   <EnrolModel :studentNumber="studentNumber"></EnrolModel>
+</AppModal>
+
+
   <div>
      <div class="modal fade" id="admitMainModal" tabindex="-1" :class="{ show: enrolDialog }" aria-labelledby="" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -355,14 +364,20 @@
                              <!-- <td>{{ adm.status }}</td> -->
                              <!-- <span v-if="adm.status == 'Enrolled'" class="link link-primary"><i>{{ adm.status }}</i></span> -->
                              <td>
-                                <button v-if="adm.status != 'Enrolled'" @click="showDialog(adm)" 
+                                <!-- <button v-if="adm.status != 'Enrolled'" @click="showDialog(adm)" 
                                    data-bs-toggle="modal" data-bs-target="#admitMainModal" type="submit" class="btn btn-sm btn-primary mb-2 mr-4 "
                                    style="color: white;">
                                    <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  
-                                   <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
-                                      <span class="visually-hidden">Loading...</span>
-                                   </div>
+                                </button> -->
+                                
+
+                                <button v-if="adm.status != 'Enrolled'" @click="showModal(adm.Student.number)" 
+                                   type="button" class="btn btn-sm btn-primary mb-2 mr-4 "
+                                   style="color: white;">
+                                   <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  
                                 </button>
+
+
                                 <router-link style="display: none;"
                                    class="text-decoration-none"
                                    :to="{name:'admission-details', query:{st_id:adm.Student.number}}">

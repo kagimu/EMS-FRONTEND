@@ -79,7 +79,7 @@
        <div v-for="(column, columnIndex) in invoiceData" :key="columnIndex" class="col-md-12">
          <ul class="list-group text-sm mb-4" style="border-radius: 0;"> 
            <li class="list-group-item" v-for="(item, index) in column.items" :key="index">
-             <label class="form-check-label cursor-pointer textSize" :for="'itemCheckbox' + index">{{ item.item_name }} - [ ugshs {{ item.unit_cost }} ]- [ Qty {{ item.quantity }} ]</label> 
+             <label class="cursor-pointer textSize" :for="'itemCheckbox' + index">{{ item.item_name }} - [ ugshs {{ item.unit_cost }} ]- [ Qty {{ item.quantity }} ]</label> 
            </li>
          </ul>
        </div>

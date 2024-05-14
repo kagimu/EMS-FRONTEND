@@ -11,6 +11,7 @@
   import EnrolModel from "@/main/dashboard/enrollment/EnrolModel.vue"
   import PromoteStudent from "@/main/settings/promotion/PromoteStudent.vue";
   import {usePromotionStore} from "@/main/settings/promotion/store/promotion.js"
+  import AppModal from "@/components/AppModal.vue";
   
   const enrollmentList = ref( [])
   let errorMessage = ref(null)
@@ -33,7 +34,7 @@
   const classStore = useClassesStore()
   const streamList = ref([])
   const promDialog = ref(false)
-  
+
   
   const form = reactive({
   academic_year: "",

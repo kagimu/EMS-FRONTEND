@@ -1,10 +1,10 @@
 <template>
     <div> 
-      <!-- {{ studentN }}  -->
+    <!-- {{ studentNumber }} -->
         <form @submit.prevent="Enrol()">
-          <div class="row">
-            <div class="col-6">
-          <div class="mb-2">
+       
+            <div class="row">
+          <div class="mb-2 col-2">
             <label class="textColor"><small>School</small> </label>
             <select
                     style="box-shadow: none;"
@@ -18,7 +18,7 @@
             </select>
         </div>
 
-        <div class="mb-2">
+        <div class="mb-2 col-2">
             <label class="textColor"><small>Campus</small>  </label>
             <select
                     style="box-shadow: none;"
@@ -33,7 +33,7 @@
         </div>
 
 
-        <div class="mb-2">
+        <div class="mb-2 col-2">
             <label class="textColor"><small>Class</small> </label>
             <select
                     style="box-shadow: none;"
@@ -47,7 +47,7 @@
             </select>
         </div>
 
-        <div class="mb-2">
+        <div class="mb-2 col-2">
             <label class="textColor"><small>Stream</small> </label>
             <select
                     style="box-shadow: none;"
@@ -60,7 +60,7 @@
             </select>
         </div>
 
-        <div class="mb-2">
+        <div class="mb-2 col-2">
             <label class="textColor"><small>Academic Year</small> </label>
             <select
                     style="box-shadow: none;"
@@ -72,7 +72,7 @@
             </select>
         </div>
 
-        <div class="mb-2">
+        <div class="mb-2 col-2">
             <label class="textColor"><small>Study Period</small> 
             <!-- {{ studyPeriodList }} -->
             </label>
@@ -86,15 +86,16 @@
 
             </select>
         </div>
-          <div class="mb-2">
+          <div class="mb-2 col-2">
               <label class="textColor"><small>Enrolment Date</small> 
               </label>
               <input type="date" class="form-control" v-model="form.enrollment_date">
           </div>
         </div>
-
-        <div class="col-6">
-          <p class="textColor" style="text-align: center"><small>Tick <bi class="bi bi-check" > brought Item on the List </bi></small> </p>
+        
+          <div class="row mt-3">
+        <div class="col-3">
+          <p class="" style=""><small>Tick <i class="bi bi-check" style="color:red"> </i>brought Item on the List </small> </p>
        
     <div class="mb-2">
     <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
@@ -177,6 +178,7 @@ const format = (date) => {
 
 const props = defineProps({
   studN: String,
+  studentNumber:String
 })
 
 
