@@ -168,12 +168,25 @@ watch(
 
 
 watch (
+  () => invoiceStore.newInvoiceResponse,
+  async (data) => {
+    if (data) {
+        let school_number ="", campus_number="",status=""
+        invoiceStore.fetchInvoice(school_number,campus_number,userNumber.value,status)
+        mymodal.value=false
+
+    }
+  },
+  { deep: true }
+)
+
+watch (
     () => invoiceStore.newInvoicePaymentResponse,
     async (data) => {
       if(data){
         loader.value = false
         notificationStore.successToast("Success", data.message)
-        loader.value = false
+        mymodalfinance.value=false
       }
     },
     {deep:true}
