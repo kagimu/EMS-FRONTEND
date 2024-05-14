@@ -135,12 +135,6 @@
       },
       {deep:true}
       )
-  
-  onMounted(
-      async () => {
-        await invoiceStore.fetchFinancialSummary(props.userNumber)
-      } )
-
 
   watch (
       () => applicationStore.studentDataResponse,

@@ -6,9 +6,9 @@
     <NewInvoice :userNumber="userNumber"></NewInvoice>
     </AppModal>
 
-    <AppModal title="Finance Statement" v-model="mymodalfinance" xl6>
+<!--    <AppModal title="Finance Statement" v-model="mymodalfinance" xl6>
      <FinancialStatement :userNumber="userNumber"></FinancialStatement>
-    </AppModal>
+    </AppModal>-->
 
 
     <AppModal title="Pay Invoice" v-model="showPayment" xs>
@@ -21,8 +21,6 @@
       <div class="col-lg-4">
       </div>
       <div class="col-lg-8">
-        <button  @click="showModalFinance()" class="btn btn-outline-danger btn-sm mb-2 ml-4" style="float: right;" v-if="can('add_custom_invoice','general')">
-        <small>View Financial Statement</small></button>
 
         <button  @click="showModal()" class="btn btn-primary btn-sm mb-2" style="float: right;" v-if="can('add_custom_invoice','general')">
         <small><i class="bi bi-plus"> Add New Invoice</i></small></button></div>
@@ -107,7 +105,7 @@ const invoiceData = ref([])
 const invoiceStore = useInvoiceStore()
 const  notificationStore  = useNotificationStore()
 const mymodal = ref(false)
-const mymodalfinance  = ref(false)
+// const mymodalfinance  = ref(false)
 const invoiceNumber = ref("")
 const errorMessage = ref(null)
 const loader  = ref(false)
@@ -116,11 +114,13 @@ const showPayment = ref(false)
 const showModal = () =>{
   mymodal.value = true
 }
+/*
 
 const showModalFinance = () =>{
   mymodalfinance.value = true
 }
 
+*/
 
 
 

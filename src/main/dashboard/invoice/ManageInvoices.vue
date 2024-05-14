@@ -1,27 +1,14 @@
 <script setup>
 import Transactions from "@/main/dashboard/transactions/Transactions.vue";
 import Invoice from "@/main/dashboard/Invoice/Invoice.vue";
-import {ref, watch} from "vue";
-import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import FinancialStatement from "@/main/dashboard/invoice/FinancialStatement.vue";
-const applicationStore= useApplicationStore()
-const userNumber = ref(null)
-watch (
-    () => applicationStore.studentDataResponse,
-    async (data) => {
-      if (data) {
-        userNumber.value = data.user_number
-      }
-    },
-    { deep: true }
-)
 
 </script>
 <template>
     <div>
 
 
-      <FinancialStatement :userNumber="userNumber"></FinancialStatement>
+      <FinancialStatement></FinancialStatement>
 
         <div class="row">
         <div class="col-12">
