@@ -206,9 +206,8 @@
                 <button type="button"
                   class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
               >view Details</button>
-
             </router-link> -->
-            Admitted
+            status
              <span v-for="(listD, index) in scoreDataList " :key="index">
             <span>{{ listD.actual_score }}</span></span>
             
