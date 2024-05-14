@@ -96,9 +96,7 @@
               <div>
 
                  <div v-if="menuSelected === 'financial-situation'">
-
                   <ManageInvoices></ManageInvoices>
-
                   </div>
 
 

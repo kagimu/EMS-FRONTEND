@@ -6,27 +6,21 @@
     <NewInvoice :userNumber="userNumber"></NewInvoice>
     </AppModal>
 
-    <AppModal title="Finance Statement" v-model="mymodalfinance" xl6>
+<!--    <AppModal title="Finance Statement" v-model="mymodalfinance" xl6>
      <FinancialStatement :userNumber="userNumber"></FinancialStatement>
-    </AppModal>
+    </AppModal>-->
 
 
-    <AppModal title="Pay" v-model="mymodalpay" xs>
-    <InvoicePayment :refN="refN"></InvoicePayment>
-    </AppModal>
-
-    <AppModal title="Invoice" v-model="invoiceModel" xl4>
-    <UserInvoice :refN="refN"></UserInvoice>
+    <AppModal title="Pay Invoice" v-model="showPayment" xs>
+    <InvoicePayment :invoiceNumber="invoiceNumber"></InvoicePayment>
     </AppModal>
 
     <div class="rw mt-3"  >
-      <div class="col-">    
+      <div class="">
      <div class="row">
       <div class="col-lg-4">
       </div>
       <div class="col-lg-8">
-        <button  @click="showModalFinance()" class="btn btn-outline-danger btn-sm mb-2 ml-4" style="float: right;" v-if="can('add_custom_invoice','general')">
-        <small>View Financial Statement</small></button>
 
         <button  @click="showModal()" class="btn btn-primary btn-sm mb-2" style="float: right;" v-if="can('add_custom_invoice','general')">
         <small><i class="bi bi-plus"> Add New Invoice</i></small></button></div>
@@ -68,7 +62,7 @@
         <td>{{list.balance}}</td>
         <td>{{ list.status }}</td>
         <td>
-          <button  @click="showModalPay(list.ref_number)" class="btn btn-primary btn-sm mb-2" style="float: right;" v-if="can('add_custom_invoice','general')">
+          <button  @click="paymentModal(list.number)" class="btn btn-primary btn-sm mb-2" style="float: right;" v-if="can('add_custom_invoice','general')">
         <small>Pay</small></button>
          <router-link
               class="text-decoration-none"
@@ -76,9 +70,7 @@
             <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
             <small>View</small>
             </button>
-            
           </router-link>
-          <button @click="viewInvoiceModal(list.ref_number)" class="btn btn-outline-primary">hi</button>
         </td>
         </tr>
  
@@ -105,8 +97,6 @@ import {useApplicationStore} from "@/main/application/applicationComponents/stor
 import {useRouter} from "vue-router"
 import InvoicePayment from "./InvoicePayment.vue";
 import FinancialStatement from "./FinancialStatement.vue";
-import UserInvoice from "./UserInvoice.vue";
-
 const routerData = useRouter()
 const applicationStore= useApplicationStore()
 const studentNumber = routerData.currentRoute.value.query.st_id;
@@ -115,32 +105,28 @@ const invoiceData = ref([])
 const invoiceStore = useInvoiceStore()
 const  notificationStore  = useNotificationStore()
 const mymodal = ref(false)
-const mymodalfinance  = ref(false)
-const refN = ref(null)
+// const mymodalfinance  = ref(false)
+const invoiceNumber = ref("")
 const errorMessage = ref(null)
 const loader  = ref(false)
-const invoiceModel = ref(false)
-
-const viewInvoiceModal = (refNo) =>{
-  invoiceModel.value=true
-  refN.value = refNo
-}
+const showPayment = ref(false)
 
 const showModal = () =>{
   mymodal.value = true
 }
+/*
 
 const showModalFinance = () =>{
   mymodalfinance.value = true
 }
 
+*/
 
-const mymodalpay = ref(false)
 
-const showModalPay = (refNo) =>{
-  mymodalpay.value = true
-  refN.value = refNo
-  // alert(refN.value)
+
+const paymentModal = (number) =>{
+  showPayment.value = true
+  invoiceNumber.value = number
 }
 
 onMounted(
@@ -149,15 +135,17 @@ onMounted(
     } 
   )
 
+const fetchAllInvoices = () => {
+  let school_number ="", campus_number="",status=""
+   invoiceStore.fetchInvoice(school_number, campus_number, userNumber.value, status)
+}
+
     watch (
   () => applicationStore.studentDataResponse,
   async (data) => {
     if (data) {
       userNumber.value = data.user_number
-      if(userNumber.value){
-        let school_number ="", campus_number="",status=""
-        invoiceStore.fetchInvoice(school_number,campus_number, userNumber.value,status)
-      }
+      fetchAllInvoices()
     }
   },
   { deep: true }
@@ -171,7 +159,6 @@ watch(
     () => invoiceStore.invoiceResponse,
     async (data) => {
       if(data){
-        // notificationStore.successToast("Success", data.message)
         invoiceData.value = data
       }
     },
@@ -183,8 +170,9 @@ watch (
   () => invoiceStore.newInvoiceResponse,
   async (data) => {
     if (data) {
-        let school_number ="", campus_number="",status=""
-        invoiceStore.fetchInvoice(school_number,campus_number,userNumber.value,status)
+        // let school_number ="", campus_number="",status=""
+        fetchAllInvoices()
+        // await invoiceStore.fetchInvoice(school_number, campus_number, userNumber.value, status)
         mymodal.value=false
 
     }
@@ -196,12 +184,11 @@ watch (
     () => invoiceStore.newInvoicePaymentResponse,
     async (data) => {
       if(data){
-        loader.value = false
         notificationStore.successToast("Success", data.message)
-        mymodalfinance.value=false
+        showPayment.value = false
+        fetchAllInvoices()
       }
-    },
-    {deep:true}
+    }
 )
 
 watch (

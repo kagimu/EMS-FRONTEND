@@ -1,6 +1,15 @@
+<script setup>
+import Transactions from "@/main/dashboard/transactions/Transactions.vue";
+import Invoice from "@/main/dashboard/Invoice/Invoice.vue";
+import FinancialStatement from "@/main/dashboard/invoice/FinancialStatement.vue";
 
+</script>
 <template>
     <div>
+
+
+      <FinancialStatement></FinancialStatement>
+
         <div class="row">
         <div class="col-12">
           <div class="mt-1 ">
@@ -36,9 +45,3 @@
       </div>
     </div>
 </template>
-<script setup>
-  import Transactions from "@/main/dashboard/transactions/Transactions.vue";
-  import Invoice from "@/main/dashboard/Invoice/Invoice.vue";
-
-
-</script>
