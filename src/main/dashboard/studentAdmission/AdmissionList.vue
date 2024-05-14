@@ -179,7 +179,7 @@
 </script>
 <template>
 
-<AppModal title="Enrol" v-model="mymodal" xl4>
+<AppModal title="Enrol" v-model="mymodal" xl6>
    <EnrolModel :studentNumber="studentNumber"></EnrolModel>
 </AppModal>
 
