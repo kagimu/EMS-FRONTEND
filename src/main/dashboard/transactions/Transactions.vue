@@ -12,31 +12,33 @@
         <div class="col-lg-4">
         </div>
         <div class="col-lg-8">
-          <button  @click="showModal" class="btn btn-primary btn-sm mb-2" style="float: right;" >
-          <small><i class="bi bi-plus"> Add New Transaction</i></small></button></div>
+          <!-- <button  @click="showModal" class="btn btn-primary btn-sm mb-2" style="float: right;" >
+          <small><i class="bi bi-plus"> Add New Transaction</i></small></button> -->
+        </div>
        </div>
          
             <div class="card-body" style="padding: 0;">
-    <div class="container mt-4">
+    <div class="container mt-1">
       <table
         id="datatable"
-        class="table table-striped"
+        class="table table-hover caption-top mt-5 table-sm"
         style="font-size: 13px !important;"
       >
         <thead>
           <tr>
-            <th>Transaction No.</th>
-            <th>Item</th>
-            <th>Qty</th>
+            <th>Invoice Ref_No</th>
             <th>Amount</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th>Recorded By</th>
+            <th>Recorded On</th>
           </tr>
-     
-        </thead>
-        <tbody>
-   
-            
+     </thead>
+     <tbody>
+          <tr v-for="(list,index) in transactionList" :key="index">
+          <td>{{ list.invoice_ref_number }}</td>
+          <td>{{ list.amount }}</td>
+          <td>{{ list.recorded_by }}</td>
+          <td>{{ list.date_time }}</td>
+          </tr>  
         </tbody>
       </table>
     </div>
