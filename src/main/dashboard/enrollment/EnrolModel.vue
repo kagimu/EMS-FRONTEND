@@ -1,6 +1,7 @@
 <template>
   <div>
      <!-- {{ studentNumber }} -->
+     {{ adm }}
      <form @submit.prevent="Enrol()">
         <div class="row">
            <div class="mb-2 col-2">
@@ -177,7 +178,7 @@
     const admissionStore = useAdmissionStore()
   
   
-    const campusList = ref([])
+  const campusList = ref([])
   const schoolList = ref([])
   const classList = ref([])
   const schoolStore = useSchoolStore()
@@ -203,9 +204,16 @@
   
   const props = defineProps({
     studN: String,
-    studentNumber:String
+    studentNumber:String,
+    adm:String
   })
   
+    
+  onMounted(() => {
+          schoolStore.fetchSchools()
+          enrolmentStore.fetchCheckListItems(props.adm)
+      }
+  )
   
   
     const form = reactive({
@@ -347,12 +355,7 @@
   
   
   
-  
-  onMounted(() => {
-          schoolStore.fetchSchools()
-      }
-  )
-  
+
   watch(
       () => schoolStore.schoolsResponse,
       async (data) => {

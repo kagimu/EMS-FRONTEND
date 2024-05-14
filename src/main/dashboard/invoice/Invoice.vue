@@ -15,6 +15,10 @@
     <InvoicePayment :refN="refN"></InvoicePayment>
     </AppModal>
 
+    <AppModal title="Invoice" v-model="invoiceModel" xl4>
+    <UserInvoice :refN="refN"></UserInvoice>
+    </AppModal>
+
     <div class="rw mt-3"  >
       <div class="col-">    
      <div class="row">
@@ -72,7 +76,9 @@
             <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
             <small>View</small>
             </button>
+            
           </router-link>
+          <button @click="viewInvoiceModal(list.ref_number)" class="btn btn-outline-primary">hi</button>
         </td>
         </tr>
  
@@ -99,6 +105,8 @@ import {useApplicationStore} from "@/main/application/applicationComponents/stor
 import {useRouter} from "vue-router"
 import InvoicePayment from "./InvoicePayment.vue";
 import FinancialStatement from "./FinancialStatement.vue";
+import UserInvoice from "./UserInvoice.vue";
+
 const routerData = useRouter()
 const applicationStore= useApplicationStore()
 const studentNumber = routerData.currentRoute.value.query.st_id;
@@ -111,6 +119,12 @@ const mymodalfinance  = ref(false)
 const refN = ref(null)
 const errorMessage = ref(null)
 const loader  = ref(false)
+const invoiceModel = ref(false)
+
+const viewInvoiceModal = (refNo) =>{
+  invoiceModel.value=true
+  refN.value = refNo
+}
 
 const showModal = () =>{
   mymodal.value = true
@@ -132,8 +146,6 @@ const showModalPay = (refNo) =>{
 onMounted(
     async () => {
       await applicationStore.fetchStudent(studentNumber)
-
-     
     } 
   )
 

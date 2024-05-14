@@ -5,6 +5,7 @@ import api from "@/config/api.js";
 export const useEnrolmentStore = defineStore("enrolment", () => {
     let newsEnrolmentResponse = ref(null)
     let  enrolmentResponse= ref(null)
+    let checkListItemsResponse = ref(null)
     
     const errorMessage = ref(null)
 
@@ -31,6 +32,18 @@ export const useEnrolmentStore = defineStore("enrolment", () => {
                 }
             })
     }
+
+    async function fetchCheckListItems(admissionN) {
+        return await api.get("main/admissions/items/"+admissionN)
+            .then((response) => {
+                checkListItemsResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
     
 
     return {
@@ -38,6 +51,8 @@ export const useEnrolmentStore = defineStore("enrolment", () => {
         fetchEnrolment,
         errorMessage,
         newsEnrolmentResponse,
-        enrolmentResponse
+        enrolmentResponse,
+        checkListItemsResponse,
+        fetchCheckListItems
     }
 } )

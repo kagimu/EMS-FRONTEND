@@ -19,8 +19,9 @@
   const studentNumber=ref(null)
 
   const mymodal = ref(false)
-  const showModal = (studentN) =>{
+  const showModal = (studentN,adm) =>{
   studentNumber.value = studentN
+  admissionNumber.value = adm
   mymodal.value = true
    }
   
@@ -39,10 +40,12 @@
   const admissionList = ref([])
   const admissionStore = useAdmissionStore()
   const studN = ref(null)
+  const admissionNumber = ref(null)
   
   onMounted(() => {
     admissionStore.fetchAdmissionByFilters(form.study_period_number,form.interview_number,form.stream_number,form.campus_number,form.campus_class_number)
-    }
+    schoolStore.fetchSchools()
+   }
   )
   
   const form = reactive({
@@ -108,14 +111,7 @@
     {deep: true}
   )
   
-  
-  
-  
-  onMounted(() => {
-        schoolStore.fetchSchools()
-    }
-  )
-  
+
   watch(
     () => schoolStore.schoolsResponse,
     async (data) => {
@@ -180,26 +176,11 @@
 <template>
 
 <AppModal title="Enrol" v-model="mymodal" xl6>
-   <EnrolModel :studentNumber="studentNumber"></EnrolModel>
+   <EnrolModel :studentNumber="studentNumber" :adm="admissionNumber"></EnrolModel>
 </AppModal>
 
-
   <div>
-     <div class="modal fade" id="admitMainModal" tabindex="-1" :class="{ show: enrolDialog }" aria-labelledby="" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-           <div class="modal-content">
-              <div class="modal-header text-sm p-0">
-                 <h6 class="modal-title ml-8 mt-0 mb-2">ENROLMENT</h6>
-                 <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                 <div class="mt-1 mb-2">
-                    <EnrolModel :studN="studN"></EnrolModel>
-                 </div>
-              </div>
-           </div>
-        </div>
-     </div>
+
      <!-- end  -->
      <div class="row mt-4">
         <div class="col-12">
@@ -371,7 +352,7 @@
                                 </button> -->
                                 
 
-                                <button v-if="adm.status != 'Enrolled'" @click="showModal(adm.Student.number)" 
+                                <button v-if="adm.status != 'Enrolled'" @click="showModal(adm.Student.number,adm.number)" 
                                    type="button" class="btn btn-sm btn-primary mb-2 mr-4 "
                                    style="color: white;">
                                    <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  
