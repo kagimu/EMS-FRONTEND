@@ -49,7 +49,7 @@
     </template>
   
   <script setup>
-  import {onMounted, reactive, ref, watch,computed} from "vue";
+  import {onMounted, ref, watch} from "vue";
   import useNotificationStore from "@/composables/useNotification.js"
   import NewTransaction from "@/main/dashboard/transactions/NewTransaction.vue"
   import AppModal from "@/components/AppModal.vue";
