@@ -125,9 +125,8 @@
   
   
   <script setup> 
-import {onMounted, reactive, ref, watch, watchEffect, computed} from "vue"
+import {onMounted, ref, watch} from "vue"
 import {useRouter} from "vue-router";
-import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
 import ManageInvoices from "@/main/dashboard/invoice/ManageInvoices.vue"
 import useNotificationStore from "@/composables/useNotification.js"
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
