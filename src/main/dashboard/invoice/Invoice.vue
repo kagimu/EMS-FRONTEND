@@ -11,8 +11,8 @@
     </AppModal>
 
 
-    <AppModal title="Pay" v-model="mymodalpay" xs>
-    <InvoicePayment :refN="refN"></InvoicePayment>
+    <AppModal title="Pay" v-model="showPayment" xs>
+    <InvoicePayment :refN="invoiceNumber"></InvoicePayment>
     </AppModal>
 
     <div class="rw mt-3"  >
@@ -64,7 +64,7 @@
         <td>{{list.balance}}</td>
         <td>{{ list.status }}</td>
         <td>
-          <button  @click="showModalPay(list.ref_number)" class="btn btn-primary btn-sm mb-2" style="float: right;" v-if="can('add_custom_invoice','general')">
+          <button  @click="paymentModal(list.number)" class="btn btn-primary btn-sm mb-2" style="float: right;" v-if="can('add_custom_invoice','general')">
         <small>Pay</small></button>
          <router-link
               class="text-decoration-none"
@@ -108,9 +108,10 @@ const invoiceStore = useInvoiceStore()
 const  notificationStore  = useNotificationStore()
 const mymodal = ref(false)
 const mymodalfinance  = ref(false)
-const refN = ref(null)
+const invoiceNumber = ref(null)
 const errorMessage = ref(null)
 const loader  = ref(false)
+const showPayment = ref(false)
 
 const showModal = () =>{
   mymodal.value = true
@@ -121,19 +122,16 @@ const showModalFinance = () =>{
 }
 
 
-const mymodalpay = ref(false)
 
-const showModalPay = (refNo) =>{
-  mymodalpay.value = true
-  refN.value = refNo
-  // alert(refN.value)
+
+const paymentModal = (number) =>{
+  showPayment.value = true
+  invoiceNumber.value = number
 }
 
 onMounted(
     async () => {
       await applicationStore.fetchStudent(studentNumber)
-
-     
     } 
   )
 
