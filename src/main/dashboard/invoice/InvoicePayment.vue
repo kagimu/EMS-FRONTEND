@@ -1,6 +1,6 @@
 <template>
     <div>
-      <!-- {{ refN }} -->
+
     <form @submit.prevent="invoicePayment">
       
       <div class="mb-2">
@@ -46,8 +46,9 @@
   import useCommonsStore from "@/composables/useCommons.js";
 
   const commons = useCommonsStore()
+
   const props = defineProps({
-  refN:String
+    invoiceNumber:String
   })
 
 const invoiceStore = useInvoiceStore()
@@ -56,7 +57,7 @@ const errorMessage = ref(null)
 const loader = ref(false)
 
   const formData = reactive({ 
-    invoice_number:props.refN,
+    invoice_number:props.invoiceNumber,
     amount:null,
     date:null
   })
@@ -73,11 +74,11 @@ const format = (date) => {
 
   const invoicePayment = () => {
     let myData = reactive({
-    invoice_number:props.refN,
+    invoice_number:props.invoiceNumber,
     amount:parseInt(formData.amount),
     date:formData.date
     })
-    //  alert(JSON.stringify(myData))
+
   loader.value=true
   invoiceStore.createInvoicePayment(myData)
 

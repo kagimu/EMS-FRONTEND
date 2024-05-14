@@ -97,7 +97,6 @@ export const useInvoiceStore = defineStore("invoice", () => {
        newInvoicePaymentResponse,
        updateInvoice,
        invoiceUpdateResponse,
-       newInvoiceResponse,
        errorMessage,
        financialSummaryResponseById,
        fetchFinancialSummary

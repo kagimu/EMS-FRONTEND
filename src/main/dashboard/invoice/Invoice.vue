@@ -11,12 +11,12 @@
     </AppModal>
 
 
-    <AppModal title="Pay" v-model="showPayment" xs>
-    <InvoicePayment :refN="invoiceNumber"></InvoicePayment>
+    <AppModal title="Pay Invoice" v-model="showPayment" xs>
+    <InvoicePayment :invoiceNumber="invoiceNumber"></InvoicePayment>
     </AppModal>
 
     <div class="rw mt-3"  >
-      <div class="col-">    
+      <div class="">
      <div class="row">
       <div class="col-lg-4">
       </div>
@@ -108,7 +108,7 @@ const invoiceStore = useInvoiceStore()
 const  notificationStore  = useNotificationStore()
 const mymodal = ref(false)
 const mymodalfinance  = ref(false)
-const invoiceNumber = ref(null)
+const invoiceNumber = ref("")
 const errorMessage = ref(null)
 const loader  = ref(false)
 const showPayment = ref(false)
@@ -135,15 +135,17 @@ onMounted(
     } 
   )
 
+const fetchAllInvoices = () => {
+  let school_number ="", campus_number="",status=""
+   invoiceStore.fetchInvoice(school_number, campus_number, userNumber.value, status)
+}
+
     watch (
   () => applicationStore.studentDataResponse,
   async (data) => {
     if (data) {
       userNumber.value = data.user_number
-      if(userNumber.value){
-        let school_number ="", campus_number="",status=""
-        invoiceStore.fetchInvoice(school_number,campus_number, userNumber.value,status)
-      }
+      fetchAllInvoices()
     }
   },
   { deep: true }
@@ -157,7 +159,6 @@ watch(
     () => invoiceStore.invoiceResponse,
     async (data) => {
       if(data){
-        // notificationStore.successToast("Success", data.message)
         invoiceData.value = data
       }
     },
@@ -169,8 +170,9 @@ watch (
   () => invoiceStore.newInvoiceResponse,
   async (data) => {
     if (data) {
-        let school_number ="", campus_number="",status=""
-        invoiceStore.fetchInvoice(school_number,campus_number,userNumber.value,status)
+        // let school_number ="", campus_number="",status=""
+        fetchAllInvoices()
+        // await invoiceStore.fetchInvoice(school_number, campus_number, userNumber.value, status)
         mymodal.value=false
 
     }
@@ -182,12 +184,11 @@ watch (
     () => invoiceStore.newInvoicePaymentResponse,
     async (data) => {
       if(data){
-        loader.value = false
         notificationStore.successToast("Success", data.message)
-        mymodalfinance.value=false
+        showPayment.value = false
+        fetchAllInvoices()
       }
-    },
-    {deep:true}
+    }
 )
 
 watch (
