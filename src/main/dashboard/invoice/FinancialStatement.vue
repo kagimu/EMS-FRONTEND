@@ -1,26 +1,98 @@
 <template>
     <div>
       <div class="row">
-        {{ userNumber }}
-        <div class="col-12">
+<!--        <div class="col-12">
             <div class="card-body" style="padding: 0;">
                 <div class="row">
                     <div class="col-lg-8">
 
                     </div>
-            <div class="col-lg-4">
-            <button   class="btn btn-warning btn-sm mb-2 mr-4" style="float: right;" type="button" >
-            <small><i class="bi bi-download"><small>&nbsp;Download</small></i></small></button>
-            <button  class="btn btn-secondary  btn-sm mb-2 mr-4" style="float: right;">
-            <small><i class="bi bi-printer">&nbsp;Print</i></small></button> 
-        </div>
+                        <div class="col-lg-4">
+                        <button   class="btn btn-warning btn-sm mb-2 mr-4" style="float: right;" type="button" >
+                        <small><i class="bi bi-download"><small>&nbsp;Download</small></i></small></button>
+                        <button  class="btn btn-secondary  btn-sm mb-2 mr-4" style="float: right;">
+                        <small><i class="bi bi-printer">&nbsp;Print</i></small></button>
+                    </div>
                 </div>
-              <div class="container mt-4">
+                  <div class="container mt-4">
                 
               </div>
             </div>
             <hr>
+          </div>-->
+
+        <div class="pb-5">
+<p>Financial Summary</p>
+
+        <div class="row border rounded-md p-3">
+          <div class="col-lg-2">
+            <div class="card-body border rounded-md text-sm">
+             <div>Total Invoice</div>
+              <div>{{financialSummary?.total_invoices}}</div>
+            </div>
           </div>
+
+
+
+        <div class="col-lg-2">
+        <div class="card-body border rounded-md text-sm">
+          <div>Total Invoice Amount:</div>
+          <div>{{financialSummary?.total_invoice_amount}}</div>
+        </div>
+        </div>
+
+        <div class="col-lg-2">
+        <div class="card-body border rounded-md text-sm">
+          <div>Total Payments:</div>
+          <div>{{financialSummary?.total_payments}}</div>
+        </div>
+        </div>
+
+        <div class="col-lg-2">
+        <div class="card-body border rounded-md text-sm">
+          <div>Total Paid Amount </div>
+          <div>{{financialSummary?.total_paid_amount}} </div>
+        </div>
+        </div>
+
+        <div class="col-lg-2">
+        <div class="card-body border rounded-md text-sm">
+          <div>Total Balance Amount:</div>
+          <div>{{financialSummary?.total_balance_amount}}</div>
+        </div>
+        </div>
+
+        <div class="col-lg-2">
+        <div class="card-body border rounded-md text-sm">
+          <div>Invoice Amount: </div>
+          <div>{{financialSummary?.most_recent?.invoice_amount}}</div>
+        </div>
+        </div>
+
+        <div class="col-lg-2">
+        <div class="card-body border rounded-md text-sm">
+          <div>Invoice Date:</div>
+          <div>   {{financialSummary?.most_recent?.invoice_date}}</div>
+        </div>
+        </div>
+
+        <div class="col-lg-2">
+        <div class="card-body border rounded-md text-sm">
+          <div>Paid Amount:</div>
+          <div>{{financialSummary?.most_recent?.paid_amount}}</div>
+        </div>
+        </div>
+
+        <div class="col-lg-2">
+        <div class="card-body border rounded-md text-sm">
+          <div> Paid Date:</div>
+          <div>{{financialSummary?.most_recent?.paid_date}}</div>
+        </div>
+        </div>
+
+</div>
+
+        </div>
         
       </div>
     </div>
@@ -35,6 +107,7 @@
   
   import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js"
   import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
+  import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 
   const routerData = useRouter()
   const serviceStore= useServiceStore()
@@ -45,7 +118,9 @@
   const  notificationStore  = useNotificationStore()
   const studentNumber = routerData.currentRoute.value.query.st_id;
   const user_number = ref(null)
-  
+  const financialSummary = ref(null)
+  const applicationStore= useApplicationStore()
+
   const props = defineProps({
     userNumber:String
     })
@@ -66,15 +141,25 @@
         await invoiceStore.fetchFinancialSummary(props.userNumber)
       } )
 
-  
+
+  watch (
+      () => applicationStore.studentDataResponse,
+      async (data) => {
+        if (data) {
+          await invoiceStore.fetchFinancialSummary(data.user_number)
+        }
+      },
+      { deep: true }
+  )
+
+
   watch (
     () => invoiceStore.financialSummaryResponseById,
     async (data) => {
       if (data) {
-        notificationStore.successToast("Success", data.message)
+       financialSummary.value = data.data
       }
-    },
-    { deep: true }
+    }
   )
   
   watch (
