@@ -1,7 +1,9 @@
 <script setup>
-import Transactions from "@/main/dashboard/transactions/Transactions.vue";
-import Invoice from "@/main/dashboard/Invoice/Invoice.vue";
+
+
 import FinancialStatement from "@/main/dashboard/invoice/FinancialStatement.vue";
+import Invoice from "@/main/dashboard/invoice/Invoice.vue";
+import Transactions from "@/main/dashboard/transactions/Transactions.vue";
 
 </script>
 <template>
@@ -24,11 +26,11 @@ import FinancialStatement from "@/main/dashboard/invoice/FinancialStatement.vue"
       </nav>
       <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="assembled" role="tabpanel" aria-labelledby="assembled-tab" tabindex="0">
-       <invoice></invoice>
+            <Invoice></Invoice>
         </div>
 
         <div class="tab-pane fade " id="class-list" role="tabpanel" aria-labelledby="class-list-tab" tabindex="0">
-        <transactions></transactions>
+       <Transactions></Transactions>
         </div>
     
       </div>
