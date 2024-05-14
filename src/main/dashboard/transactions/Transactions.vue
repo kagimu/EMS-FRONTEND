@@ -49,7 +49,7 @@
     </template>
   
   <script setup>
-  import {onMounted, reactive, ref, watch,computed} from "vue";
+  import {onMounted, ref, watch} from "vue";
   import useNotificationStore from "@/composables/useNotification.js"
   import NewTransaction from "@/main/dashboard/transactions/NewTransaction.vue"
   import AppModal from "@/components/AppModal.vue";
@@ -85,7 +85,7 @@ const userNumber = ref(null)
       userNumber.value = data.user_number
       if(userNumber.value){
         let school_number ="", campus_number=""
-        transactionStore.fetchTransactions(school_number, userNumber.value)
+        await transactionStore.fetchTransactions(school_number, userNumber.value)
       }
     }
   },
