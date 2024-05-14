@@ -9,6 +9,7 @@ export const useInvoiceStore = defineStore("invoice", () => {
     const invoiceResponseById = ref(null)
     const newInvoicePaymentResponse = ref(null)
     const invoiceUpdateResponse = ref(null)
+    const financialSummaryResponseById = ref(null)
 
     async function createNewInvoice(data) {
         return await api.post("main/invoices", data)
@@ -74,7 +75,17 @@ export const useInvoiceStore = defineStore("invoice", () => {
             })
     }
 
-
+    async function fetchFinancialSummary(userN) {
+        return await api.get("main/invoices/financial-summary?user_number="+userN)
+            .then((response) => {
+                financialSummaryResponseById.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
     return {
        invoiceResponse,
        fetchInvoice,
@@ -87,6 +98,8 @@ export const useInvoiceStore = defineStore("invoice", () => {
        updateInvoice,
        invoiceUpdateResponse,
        newInvoiceResponse,
-       errorMessage
+       errorMessage,
+       financialSummaryResponseById,
+       fetchFinancialSummary
     }
 })

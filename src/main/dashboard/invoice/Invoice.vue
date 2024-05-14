@@ -6,6 +6,11 @@
     <NewInvoice :userNumber="userNumber"></NewInvoice>
     </AppModal>
 
+    <AppModal title="Finance Statement" v-model="mymodalfinance" xl6>
+     <FinancialStatement :userNumber="userNumber"></FinancialStatement>
+    </AppModal>
+
+
     <AppModal title="Pay" v-model="mymodalpay" xs>
     <InvoicePayment :refN="refN"></InvoicePayment>
     </AppModal>
@@ -16,6 +21,9 @@
       <div class="col-lg-4">
       </div>
       <div class="col-lg-8">
+        <button  @click="showModalFinance()" class="btn btn-outline-danger btn-sm mb-2 ml-4" style="float: right;" v-if="can('add_custom_invoice','general')">
+        <small>View Financial Statement</small></button>
+
         <button  @click="showModal()" class="btn btn-primary btn-sm mb-2" style="float: right;" v-if="can('add_custom_invoice','general')">
         <small><i class="bi bi-plus"> Add New Invoice</i></small></button></div>
      </div>
@@ -90,7 +98,7 @@ import AppModal from "@/components/AppModal.vue";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import {useRouter} from "vue-router"
 import InvoicePayment from "./InvoicePayment.vue";
-
+import FinancialStatement from "./FinancialStatement.vue";
 const routerData = useRouter()
 const applicationStore= useApplicationStore()
 const studentNumber = routerData.currentRoute.value.query.st_id;
@@ -99,10 +107,17 @@ const invoiceData = ref([])
 const invoiceStore = useInvoiceStore()
 const  notificationStore  = useNotificationStore()
 const mymodal = ref(false)
+const mymodalfinance  = ref(false)
 const refN = ref(null)
+const errorMessage = ref(null)
+const loader  = ref(false)
 
 const showModal = () =>{
   mymodal.value = true
+}
+
+const showModalFinance = () =>{
+  mymodalfinance.value = true
 }
 
 
@@ -117,6 +132,7 @@ const showModalPay = (refNo) =>{
 onMounted(
     async () => {
       await applicationStore.fetchStudent(studentNumber)
+
      
     } 
   )
@@ -150,16 +166,30 @@ watch(
     {deep:true}
 )
 
+
 watch (
-    () => invoiceStore.errorMessage,
+    () => invoiceStore.newInvoicePaymentResponse,
     async (data) => {
       if(data){
-        notificationStore.errorToast("Error",data.message)
+        loader.value = false
+        notificationStore.successToast("Success", data.message)
+        loader.value = false
       }
     },
     {deep:true}
 )
 
+watch (
+    () => invoiceStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        notificationStore.errorToast("Error",data.message)
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
 
 </script>
 
