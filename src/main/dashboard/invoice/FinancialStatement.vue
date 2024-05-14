@@ -22,11 +22,12 @@
           </div>-->
 
         <div class="pb-5">
-<p>Financial Summary</p>
+          <p>Financial Summary</p>
 
         <div class="row border rounded-md p-3">
-          <div class="col-lg-2">
-            <div class="card-body border rounded-md text-sm">
+
+          <div class="col-lg-4 mb-1">
+            <div class="card-body border rounded-md text-xs">
              <div>Total Invoice</div>
               <div>{{financialSummary?.total_invoices}}</div>
             </div>
@@ -34,57 +35,57 @@
 
 
 
-        <div class="col-lg-2">
-        <div class="card-body border rounded-md text-sm">
+        <div class="col-lg-4 mb-1">
+        <div class="card-body border rounded-md text-xs">
           <div>Total Invoice Amount:</div>
           <div>{{financialSummary?.total_invoice_amount}}</div>
         </div>
         </div>
 
-        <div class="col-lg-2">
-        <div class="card-body border rounded-md text-sm">
+        <div class="col-lg-4 mb-1">
+        <div class="card-body border rounded-md text-xs">
           <div>Total Payments:</div>
           <div>{{financialSummary?.total_payments}}</div>
         </div>
         </div>
 
-        <div class="col-lg-2">
-        <div class="card-body border rounded-md text-sm">
+        <div class="col-lg-4 mb-1">
+        <div class="card-body border rounded-md text-xs">
           <div>Total Paid Amount </div>
           <div>{{financialSummary?.total_paid_amount}} </div>
         </div>
         </div>
 
-        <div class="col-lg-2">
-        <div class="card-body border rounded-md text-sm">
+        <div class="col-lg-4 mb-1">
+        <div class="card-body border rounded-md text-xs">
           <div>Total Balance Amount:</div>
           <div>{{financialSummary?.total_balance_amount}}</div>
         </div>
         </div>
 
-        <div class="col-lg-2">
-        <div class="card-body border rounded-md text-sm">
+        <div class="col-lg-4 mb-1">
+        <div class="card-body border rounded-md text-xs">
           <div>Invoice Amount: </div>
           <div>{{financialSummary?.most_recent?.invoice_amount}}</div>
         </div>
         </div>
 
-        <div class="col-lg-2">
-        <div class="card-body border rounded-md text-sm">
+        <div class="col-lg-4 mb-1">
+        <div class="card-body border rounded-md text-xs">
           <div>Invoice Date:</div>
           <div>   {{financialSummary?.most_recent?.invoice_date}}</div>
         </div>
         </div>
 
-        <div class="col-lg-2">
-        <div class="card-body border rounded-md text-sm">
+        <div class="col-lg-4 mb-1">
+        <div class="card-body border rounded-md text-xs">
           <div>Paid Amount:</div>
           <div>{{financialSummary?.most_recent?.paid_amount}}</div>
         </div>
         </div>
 
-        <div class="col-lg-2">
-        <div class="card-body border rounded-md text-sm">
+        <div class="col-lg-4 mb-1">
+        <div class="card-body border rounded-md text-xs">
           <div> Paid Date:</div>
           <div>{{financialSummary?.most_recent?.paid_date}}</div>
         </div>
