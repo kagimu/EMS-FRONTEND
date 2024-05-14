@@ -166,7 +166,7 @@ function updateOnlineStatus() {
           <div
               v-tooltip.right="lst.name"
           >
-            <i :class="[lst.icon, (defaultMenuSize ? 'text-[17px] group-hover:text-[13px]' : 'text-[13px]')]"  class="mr-2 duration-700 pl-3"></i>
+            <i :class="[lst.icon, (defaultMenuSize ? 'text-[17px] group-hover:text-[13px]' : 'text-[13px]')]"  class="mr-2 duration-700 pl-1"></i>
             <small :class="{'inline-block': !defaultMenuSize, 'hidden group-hover:inline-block':defaultMenuSize}" class="duration-700">{{lst.title}}</small>
           </div>
         </router-link>
