@@ -195,7 +195,7 @@ watch (
 
               <router-link
                   class="text-decoration-none"
-                  :to="{name:'campus-setup', query:{id:campus.number}}"
+                  :to="{name:'campus-setup', query:{id:campus.number, sch:schoolNumber}}"
               >
                 <button
                     type="button"

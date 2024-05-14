@@ -6,9 +6,6 @@
         {{ classError }}
       </div>
 
-
-
-
       <div class="mb-2">
         <label class="textColor text-sm">School Name</label>
         <input

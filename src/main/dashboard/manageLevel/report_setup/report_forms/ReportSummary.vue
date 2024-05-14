@@ -7,7 +7,11 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import useNotificationStore from "@/composables/useNotification.js";
+import ManageReportDetails from "@/main/dashboard/manageLevel/report_setup/report_forms/ManageReportDetails.vue";
+import AppModal from "@/components/AppModal.vue";
 import {useRouter} from "vue-router";
+import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
+
 const reportStore = useReportCardStore()    
 const levelStore = useLevelStore()
 const classStore = useClassesStore()
@@ -15,6 +19,11 @@ const studyPeriodStore = useStudyPeriodStore()
 const academicYearStore = useAcademicYearStore()
 const notificationStore  = useNotificationStore()
 const routerData = useRouter()
+const showStudentsMarks = ref(false)
+
+const reportSetupStore = useReportSetupStore()
+
+   //filter
 
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const campusCurriculumDataInfo = ref(null)
@@ -30,12 +39,20 @@ const reportSummaryList = ref([])
 const page = ref(1)
 const per_page = ref(15)
 
+
 onMounted(
     async () => {
       await doFilterReportSummary()
       await fetchCampusLevel()
     }
 )
+
+const showStudentReport = (summary) => {
+  if(summary) {
+    showStudentsMarks.value = true
+    reportStore.fetchReportDetailsInfo(summary.number)
+  }
+}
 
 
 // const filterReportSummary = () => {
@@ -173,8 +190,14 @@ const filterSummaryReport = (data) => {
 </script>
 <template>
    <div>
-    
-      <div class="row">
+
+
+     <AppModal title="Preview Report" v-model="showStudentsMarks" xl6>
+       <manage-report-details></manage-report-details>
+     </AppModal>
+
+
+     <div class="row">
          <div class="col-12">
             <div class="mt-4">
                <div class="row mx-auto">

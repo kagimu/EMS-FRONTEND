@@ -28,6 +28,7 @@ export const useApplicationStore = defineStore("application", () => {
     let updatePreviousSchoolresponse = ref(null)
     let previousSchoolResultsByStudentResponse = ref(null)
     let previousSchoolResultsAllResponse = ref(null)
+    let studentDataResponse = ref(null)
 
     async function newApplicationDetails(data) {
         return await api.post("main/applications/new-parent", data)
@@ -354,6 +355,19 @@ export const useApplicationStore = defineStore("application", () => {
             })
     }
 
+    // main/applications/students/:student_number
+    async function fetchStudent(studentN) {
+        return await api.get("main/applications/students/"+studentN) 
+            .then((response) => {
+                studentDataResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     return {
         newApplicationDetailsResponse ,
         errorMessage,
@@ -401,7 +415,9 @@ export const useApplicationStore = defineStore("application", () => {
         previousSchoolResultsByStudentResponse,
         fetchPreviousSchoolResultsByStudent,
         previousSchoolResultsAllResponse,
-        fetchPreviousSchoolResultsAll
+        fetchPreviousSchoolResultsAll,
+        studentDataResponse,
+        fetchStudent
 
     }
 })

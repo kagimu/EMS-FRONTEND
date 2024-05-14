@@ -43,7 +43,6 @@ import Conditions from "@/main/settings/conditions/Conditions.vue"
 import Products from "@/main/dashboard/servicesAndProducts/Products.vue";
 import Designsidework from "../main/dashboard/Designsidework.vue";
 import CampusSetup from "@/main/dashboard/manageLevel/CampusSetup.vue";
-import Assessment from "@/main/dashboard/assessment/Assessment.vue";
 import AssessmentList from "@/main/dashboard/assessment/assessmentComponents/AssessmentList.vue"
 import ExamType from "@/main/dashboard/assessment/assessmentComponents/ExamType.vue"
 import Account from "@/main/dashboard/account/Account.vue"
@@ -71,7 +70,7 @@ import FeedingGroupUserDetails  from "@/main/dashboard/catering/cateringComponen
 import ApplicationSuccessPage from "@/main/application/applicationComponents/ApplicationSuccessPage.vue"
 import CampusCurriculumSetup from "@/main/dashboard/manageLevel/CampusCurriculumSetup.vue";
 import StudentProfileDetails from "@/main/dashboard/profiles/studentProfile/StudentProfileDetails.vue"
-
+import AdmissionDetails from '@/main/dashboard/studentAdmission/newAdmissionComponents/AdmissionDetails.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -147,6 +146,14 @@ const router = createRouter({
                     action: "view-admission-list",
                       
                 }},
+
+                {path: 'admission-details', component: AdmissionDetails, name: "admission-details",
+                meta: {
+                    resource: "admission-details",
+                    action: "view-admission-detials",
+                      
+                }},
+
                 {path: 'student-application', component: StudentApplication, name: "student-application",
                 meta: {
                     resource: "student-application",

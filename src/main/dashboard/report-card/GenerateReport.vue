@@ -8,7 +8,7 @@ import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/st
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useRouter} from "vue-router";
-const reportStore = useReportCardStore()    
+const reportStore = useReportCardStore()
 const levelStore = useLevelStore()
 const classStore = useClassesStore()
 const studyPeriodStore = useStudyPeriodStore()

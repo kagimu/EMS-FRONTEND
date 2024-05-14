@@ -9,6 +9,7 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
 import AppModal from "@/components/AppModal.vue";
 import CampusListInfo from "@/main/dashboard/manageCampus/CampusListInfo.vue";
+import SchoolReportTemplates from "@/main/dashboard/manageLevel/report_setup/reportTemplate/SchoolReportTemplates.vue";
 const routerData = useRouter()
 const campusStore = useCampusStore()
 const schoolStore = useSchoolStore()
@@ -162,7 +163,10 @@ watch (
             <campus-list-info></campus-list-info>
           </div>
           <div v-if=" campusQuery==='report-template'">
-            report
+            <div class="rounded  border bg-white mt-3">
+
+              <school-report-templates :schoolData="schoolData"></school-report-templates>
+            </div>
           </div>
       </div>
     </div>

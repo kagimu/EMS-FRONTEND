@@ -21,7 +21,7 @@
    
 
     <!-- end  -->
-    <div class="row mt-3">
+    <div class="row mt-1">
       <div class="col-12">
         <div class="">
           <div class="" style="padding: 0;">
@@ -31,7 +31,7 @@
           <div class="">
             <div class="">
               <!-- {{student_number ? '' : 'disabbled'}} -->
-                <h5 style="font-size: 14px;margin-top: 2px;">Learners Scheduled For {{ interviewM }} </h5>
+                <!-- <h5 style="font-size: 14px;margin-top: 2px;">Learners Scheduled For {{ interviewM }} </h5> -->
          
       <div class="row">
     <div class="col-12">
@@ -181,9 +181,10 @@
     >
     <thead >
         <tr>
-          <th style="width: 5px;"><input type="checkbox"   class="checkbox-primary"></th>
+          <th style="width: 1px;">#</th>
+          <th style="width: 1px;"></th>
           <th>Student</th>
-          <th>Action</th>
+          <th>status</th>
         </tr>
   <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
     {{errorMessage}}
@@ -191,6 +192,7 @@
       </thead>
       <tbody>
         <tr v-for="(student, index) in interviewStudentList" :key="index">
+          <td>{{ index+1 }}</td>
           <td><input type="checkbox"  v-model="selectedStudents[index]" class="checkbox-primary"></td>
           <td> 
             {{student.student_surname ? student.student_surname : ""}}
@@ -198,16 +200,15 @@
                  {{student.student_other_name ? " "+student.student_other_name : ""}}</td>
         
           <td>
-              <router-link style=""
+              <!-- <router-link style=""
                 class="text-decoration-none"
                 :to="{name:'interview-learners-details', query:{st_id:student.number,interview_id:interviewNumber,applicationN:student.number}}">
                 <button type="button"
                   class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
               >view Details</button>
 
-            </router-link>
-
-             
+            </router-link> -->
+            Admitted
              <span v-for="(listD, index) in scoreDataList " :key="index">
             <span>{{ listD.actual_score }}</span></span>
             
