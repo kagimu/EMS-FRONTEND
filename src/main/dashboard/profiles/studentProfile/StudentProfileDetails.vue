@@ -10,8 +10,9 @@
               <div class="card-body text-center">
                 <center><img :src="user.avatar" :alt="user.name" class="rounded-circle img-fluid" style="width: 120px;"></center>
                 <h5 class="my-3">{{ studentName }}</h5>
-                <p class="text-muted mb-1">{{ user.role }}</p>
+                <p class="text-muted mb-1"><b>DOB: </b>{{ dob }}</p>
               </div>
+             
             </div>
             
                 <div class="card mt-3">
@@ -64,26 +65,7 @@
 </div>
 
 
-            <div class="card mb-4">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-sm-2">
-                    <p class="mb-0">Full Name</p>
-                  </div>
-                  <div class="col-sm-9" style="float: left;">
-                    <p class="text-muted mb-0">{{ studentName }}</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-2">
-                    <p class="mb-0">DOB</p>
-                  </div>
-                  <div class="col-sm-9" style="float: left;">
-                    <p class="text-muted mb-0">{{ dob }}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+           
             
             <!-- Project Status -->
             <div class="row">
