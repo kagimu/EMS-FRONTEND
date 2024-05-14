@@ -70,7 +70,7 @@ import FeedingGroupUserDetails  from "@/main/dashboard/catering/cateringComponen
 import ApplicationSuccessPage from "@/main/application/applicationComponents/ApplicationSuccessPage.vue"
 import CampusCurriculumSetup from "@/main/dashboard/manageLevel/CampusCurriculumSetup.vue";
 import StudentProfileDetails from "@/main/dashboard/profiles/studentProfile/StudentProfileDetails.vue"
-
+import AdmissionDetails from '@/main/dashboard/studentAdmission/newAdmissionComponents/AdmissionDetails.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -146,6 +146,14 @@ const router = createRouter({
                     action: "view-admission-list",
                       
                 }},
+
+                {path: 'admission-details', component: AdmissionDetails, name: "admission-details",
+                meta: {
+                    resource: "admission-details",
+                    action: "view-admission-detials",
+                      
+                }},
+
                 {path: 'student-application', component: StudentApplication, name: "student-application",
                 meta: {
                     resource: "student-application",

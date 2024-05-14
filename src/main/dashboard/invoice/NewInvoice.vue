@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row">
-      {{ userNumber }}
+      <!-- {{ userNumber }} -->
       <div class="col-12">
           <div class="card-body" style="padding: 0;">
             <div class="container mt-4">
@@ -39,7 +39,7 @@
         
                 <div class="col-lg-12">
                   <!-- New Design -->
-                    <table class="table bordered">
+                    <table class="table table-striped">
                       <thead>
                         <tr class="" style="padding: 0px;margin: 0px;">
                           <th>Item</th>
@@ -50,14 +50,14 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="(Service, index) in Services" :key="index" >
+                        <tr class="" v-for="(Service, index) in Services" :key="index" >
                           <td>
                             <select class="form-select form-select-sm form-control select-no-border" v-model="Service.number" @change="updateService(index)">
                               <option :value="option.item_number" v-for="option in availableOptions(index)">{{ option.name }} ({{ option.cost }})</option>
                             </select>
                           </td>
-                          <td><input type="text" v-model="Service.quantity" @input="updateAmount(index)" placeholder="1.0" class="inp"></td>
-                          <td><input type="text" v-model="Service.cost" @input="updateAmount(index)" placeholder="Unit Price" class="inp"></td>
+                          <td><input type="text" v-model="Service.quantity" @input="updateAmount(index)" placeholder="1.0" ></td>
+                          <td><input type="text" v-model="Service.cost" @input="updateAmount(index)" placeholder="Unit Price" ></td>
                           <td>{{ Service.amount }}</td>
                           <td><button type="button" @click="removeService(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
                         </tr>
@@ -127,6 +127,7 @@ const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
 const studentNumber = routerData.currentRoute.value.query.st_id;
 const user_number = ref(null)
+const buttonLoader = ref(false)
 
 const props = defineProps({
   userNumber:String
@@ -224,22 +225,23 @@ watch(
 
 // Connect invoice store ==========================================
 const createInvoice = () => {
-  const selectedItems = Services.value.map(service => ({
+  buttonLoader.value=true
+  const selectedItems = Services.value.map(
+    service => ({
       item_number: service.number,
-      // quantity: service.quantity,
+      quantity: service.quantity,
       // unitPrice: service.unitPrice,
       // amount: service.amount
     }))
 
+
   let data = {
-    // user_number: 'i need student number',
     user_number:props.userNumber,
     due_date : form.due_date,
     description:form.description,
     items:selectedItems,
-    student_number:studentNumber
+    // student_number:studentNumber
   }
-  alert(JSON.stringify(data))
  
   invoiceStore.createNewInvoice(data)
 }
@@ -250,6 +252,9 @@ watch (
   async (data) => {
     if (data) {
       notificationStore.successToast("Success", data.message)
+      buttonLoader.value=false
+      form.description = null,
+      form.due_date = null
     }
   },
   { deep: true }

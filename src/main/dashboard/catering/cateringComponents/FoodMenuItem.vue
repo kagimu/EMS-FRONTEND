@@ -126,11 +126,11 @@
     </thead>
     <tbody>
  
-      <div v-if="isLoading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+      <!-- <div v-if="isLoading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
     <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
     </div>
-    </div>
+    </div> -->
 
         <tr v-if="isLoading==false" v-for="(list, index) in menuItemData" :key="index">
           <td>{{ index+1 }}</td>

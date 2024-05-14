@@ -1,3 +1,13 @@
+<script setup>
+import { defineEmits } from "vue";
+
+const emit = defineEmits();
+
+const goBack = () => {
+  emit("goBack");
+}
+// router.push('/applications')
+</script>
 <template>
     <div class="container mt-5">
       <div class="row justify-content-center">
@@ -14,19 +24,7 @@
       </div>
     </div>
   </template>
-  
-  <script setup>
-    import { defineEmits } from "vue";
     
-    const emit = defineEmits();
-  
-    const goBack = () => {
-      // You can implement your logic here to navigate back to the previous page
-      emit("goBack");
-    };
-  </script>
-  
   <style scoped>
-    /* Add your custom styles here */
   </style>
   

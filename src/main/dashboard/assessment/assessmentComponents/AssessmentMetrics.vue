@@ -87,7 +87,7 @@ watch(
       >
         <thead>
           <tr>
-             <th class="w-[10%]">#</th>
+             <th>#</th>
             <th>Name</th>
             <th>Decription</th>
             <th>Action</th>
@@ -95,8 +95,10 @@ watch(
         </thead>
         <tbody>
           <tr v-for="(metricsData, index) in assessmentMetricsData " :key="index">
+
             <td>
-               {{metricsData?.code ?? ""}}
+               <!-- {{metricsData?.code ?? ""}} -->
+               {{ index+1 }}
             </td>
             <td>
               {{ metricsData.name + " - " + metricsData.CampusClass.class_name}}

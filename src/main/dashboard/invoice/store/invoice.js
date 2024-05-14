@@ -9,6 +9,7 @@ export const useInvoiceStore = defineStore("invoice", () => {
     const invoiceResponseById = ref(null)
     const newInvoicePaymentResponse = ref(null)
     const invoiceUpdateResponse = ref(null)
+    const financialSummaryResponseById = ref(null)
 
     async function createNewInvoice(data) {
         return await api.post("main/invoices", data)
@@ -24,8 +25,8 @@ export const useInvoiceStore = defineStore("invoice", () => {
 
 
     
-    async function fetchInvoice(data) {
-        return await api.get("main/invoices")
+    async function fetchInvoice(schoolN,campusN,userN,stat) {
+        return await api.get("main/invoices?school_number="+schoolN+"&campus_number="+campusN+"&user_number="+userN+"&status="+stat)
             .then((response) => {
                 invoiceResponse.value = response.data
             })
@@ -37,7 +38,7 @@ export const useInvoiceStore = defineStore("invoice", () => {
     }
 
     async function fetchInvoiceId(invoiceId) {
-        return await api.get("main/admissions/admission-offers/"+invoiceId)
+        return await api.get("main/invoices/details?ref_number="+invoiceId)
             .then((response) => {
                 invoiceResponseById.value = response.data
             })
@@ -51,7 +52,7 @@ export const useInvoiceStore = defineStore("invoice", () => {
 
     
     async function createInvoicePayment(data) {
-        return await api.post("main/invoice-payments", data)
+        return await api.post("main/invoices/pay", data)
             .then((response) => {
                 newInvoicePaymentResponse.value = response.data
             })
@@ -74,7 +75,17 @@ export const useInvoiceStore = defineStore("invoice", () => {
             })
     }
 
-
+    async function fetchFinancialSummary(userN) {
+        return await api.get("main/invoices/financial-summary?user_number="+userN)
+            .then((response) => {
+                financialSummaryResponseById.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
     return {
        invoiceResponse,
        fetchInvoice,
@@ -87,6 +98,8 @@ export const useInvoiceStore = defineStore("invoice", () => {
        updateInvoice,
        invoiceUpdateResponse,
        newInvoiceResponse,
-       errorMessage
+       errorMessage,
+       financialSummaryResponseById,
+       fetchFinancialSummary
     }
 })
