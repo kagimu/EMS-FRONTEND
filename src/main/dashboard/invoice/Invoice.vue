@@ -87,7 +87,7 @@
   </template>
 
 <script setup>
-import {onMounted, reactive, ref, watch,computed} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
 import useNotificationStore from "@/composables/useNotification.js"
 import NewInvoice from "@/main/dashboard/invoice/NewInvoice.vue"
@@ -96,7 +96,6 @@ import AppModal from "@/components/AppModal.vue";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import {useRouter} from "vue-router"
 import InvoicePayment from "./InvoicePayment.vue";
-import FinancialStatement from "./FinancialStatement.vue";
 const routerData = useRouter()
 const applicationStore= useApplicationStore()
 const studentNumber = routerData.currentRoute.value.query.st_id;
@@ -105,7 +104,6 @@ const invoiceData = ref([])
 const invoiceStore = useInvoiceStore()
 const  notificationStore  = useNotificationStore()
 const mymodal = ref(false)
-// const mymodalfinance  = ref(false)
 const invoiceNumber = ref("")
 const errorMessage = ref(null)
 const loader  = ref(false)
@@ -114,13 +112,6 @@ const showPayment = ref(false)
 const showModal = () =>{
   mymodal.value = true
 }
-/*
-
-const showModalFinance = () =>{
-  mymodalfinance.value = true
-}
-
-*/
 
 
 
