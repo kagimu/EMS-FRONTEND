@@ -111,7 +111,6 @@
   import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 
   const routerData = useRouter()
-  const serviceStore= useServiceStore()
   const  invoiceStore  = useInvoiceStore()
   const router = useRouter()
   let errorMessage = ref(null)
