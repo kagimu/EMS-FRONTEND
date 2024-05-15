@@ -1,14 +1,11 @@
 <template>
   <div class="row">
-     <div class="col-12">
-        <div>
-           <div>
-              <div class="row">
+   <h5  class="ml-1" style="font-size: 14px;margin-top: 2px;">APPLICATION LIST 
+      <button @click="applicationModal" style="float: right;" class="btn btn-primary btn-sm ml-2 mb-2 mt-2 mr-2"><small>New Application</small></button></h5>
+
                  <div class="col-lg-12">
                     <div>
                        <div>
-                             <h5 class="ml-1" style="font-size: 14px;margin-top: 2px;">APPLICATION LIST</h5>                     
-                          <hr>
                           <div class="row">
                              <div class="col-12">
                                 <div class="mt-0">
@@ -107,6 +104,26 @@
                                                   </select>
                                                </div>
                                             </div>
+                                            <div class="col-3">
+                                               <div class="mb-2">
+                                                  <label class="textColor">
+                                                     <small>Status</small> 
+                                         
+                                                  </label>
+                                                  <select
+                                                     style="box-shadow: none;"
+                                                     class="form-select form-select-sm"
+                                                     v-model="form.status"
+                                                     @change="filterByStatus()"
+                                                     >
+                                                     <option disabled value="">Status</option>
+                                                    <option>Submitted</option>
+                                                    <option>Scheduled For Interview</option>
+                                                    <option>Admitted</option>
+                                                    <option>Enrolled</option>
+                                                  </select>
+                                               </div>
+                                            </div>
                                          </div>
                                       </form>
                                    </div>
@@ -181,19 +198,22 @@
                     </tr>
                  </tbody>
               </table>
-           </div>
-        </div>
-     </div>
-  </div>
+         
   <div>
      <div class="modal fade" tabindex="-1" id="infoModal"   aria-hidden="true" :class="{ show: shDialog }">
         <div class="modal-dialog modal-xl">
            <application-details :application-number="applications"></application-details>
         </div>
      </div>
+
      <AppModal title="Application Details" v-model="showingModal" xl4>
         <application-details :application-number="applications"></application-details>
      </AppModal>
+
+     <AppModal title="New Application" v-model="showAppmodal" xl>
+      <NewApplication></NewApplication>
+     </AppModal>
+
   </div>
 </template>
 <script setup>
@@ -208,9 +228,16 @@
   import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
   import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
   import AppModal from "@/components/AppModal.vue";
+  import NewApplication from "@/main/dashboard/studentApplication/NewApplication.vue"
+
   const showingModal = ref(false)
+  const showAppmodal = ref(false)
   
-  
+  const applicationModal = () =>{
+   showAppmodal.value = true
+  }
+
+
   const applicationInfoList = ref( [])
   let errorMessage = ref(null)
   const buttonLoader = ref(false)
@@ -241,7 +268,8 @@
   campus_class_number: "",
   campus_number: "",
   stream_number:"",
-  interview_number:""
+  interview_number:"",
+  status:""
   })
   
   
@@ -276,6 +304,9 @@
   
   
   const filterByStream = () => {
+  }
+  
+  const filterByStatus = () => {
   }
   
   const filterByStudyPeriod = () => {
@@ -361,7 +392,7 @@
         if(data){
           shDialog.value = false,
           applicationInfoList.value = data.data
-         
+          showAppmodal.value = false
         }
       },
       {deep:true}

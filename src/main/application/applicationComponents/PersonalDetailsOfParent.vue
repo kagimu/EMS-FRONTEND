@@ -1,10 +1,10 @@
 <template>
 <div>
-<p class="ml-4 mt-4 mb-10" style="text-align: center !important;">GUARDIAN/PARENT DETAILS
+<p class="ml-4 mt-4 mb-1" style="text-align: center !important;">GUARDIAN/PARENT DETAILS
   <!-- {{ applicationNumber }} -->
 </p>
 
-  <form  @submit.prevent="addParentPersonalDetails" style="margin-top: 16px;"> 
+  <form  @submit.prevent="addParentPersonalDetails" style="margin-top: 6px;"> 
   <div class="row mx-auto">
     <div class="col-12">
         <div class="mb-8">
@@ -47,7 +47,7 @@
           </div>
         
     </div>
-        <div class="text- mt-4">
+        <div class="text- mt-2">
           <div class="row">
             <div class="col-lg-8"></div>
             <div class="col-lg-4">

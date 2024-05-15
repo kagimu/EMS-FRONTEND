@@ -56,18 +56,18 @@
       <p>Choose Payment Method</p>
         <div class="mb-2">
           <input selected  v-model="answer" value="offline" class="mt-4" type="radio"   required> &nbsp;Offline<br>
-          <!-- <input  v-model="answer" value="mobile" class="mt-4" type="radio"   required> &nbsp;Mobile Money<br>
-          <input v-model="answer" value="bank" class="mt-4" type="radio"   required> &nbsp;Bank Deposit -->
+          <input  v-model="answer" value="mobile" class="mt-4" type="radio"   required> &nbsp;Mobile Money<br>
+          <input v-model="answer" value="bank" class="mt-4" type="radio"   required> &nbsp;Bank Deposit
         </div>
         </div>
        
         <hr>
         <div class="row" v-if="answer === 'mobile'">
           <div class="col-lg-9">
-            <input type="text" class="form-control" placeholder="Enter Phone Number to Pay">
+           <p>MMO : 07837474723</p>
           </div>
           <div class="col-lg-3">
-            <button type="submit" class="btn btn-primary mb-2 btn-sm" style="color:white !important">Pay</button>
+            <button @click="submitApplication" type="submit" class="btn btn-primary mb-2 btn-sm" style="color:white !important">Submit</button>
           </div>
         </div>
         <div class="row" v-if="answer === 'offline'">
@@ -89,11 +89,11 @@
             </div>
           </div>
 
-          <div class="row" >
+          <div class="row">
             <hr>
             <div class="col-lg-9"></div>
           <div class="col-lg-3">
-            <button type="submit" class="btn btn-primary mb-2 btn-sm" style="color:white !important">Print</button>
+            <button  @click="submitApplication" type="submit" class="btn btn-primary mb-2 btn-sm" style="color:white !important">Submit</button>
           </div>
         </div>
           </div>
@@ -116,6 +116,11 @@
   import {onMounted,reactive, ref, watch,computed} from "vue";
   import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js"
   import { useRouter } from "vue-router";
+  import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+
+const applicationStore= useApplicationStore()
+
+
 
 const router = useRouter();
   
@@ -135,7 +140,7 @@ const success = ref(false)
 
   const submitApplication = () => {
   loading.value = true;
- 
+  applicationStore.fetchApplicationList()
   setTimeout(() => {
     loading.value = false; 
     success.value = true; 

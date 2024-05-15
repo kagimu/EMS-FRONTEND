@@ -66,7 +66,6 @@
   
   const fetchClasses = (campus_number) => {
     campusStore.fetchClassesByCampus(campus_number)
-    admissionStore.fetchAdmissionByFilters(form.study_period_number,form.interview_number,form.stream_number,form.campus_number,form.campus_class_number)
   }
   
   

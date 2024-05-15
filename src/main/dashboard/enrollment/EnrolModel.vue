@@ -79,6 +79,7 @@
                   <option disabled value="">Select</option>
                   <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
                </select>
+               
             </div>
             <div class="mb-2 col-2">
                <label class="textColor"><small>Enrolment Date</small> 
