@@ -9,6 +9,7 @@
   import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
   import EnrolModel from "@/main/dashboard/enrollment/EnrolModel.vue"
   import AppModal from "@/components/AppModal.vue";
+  import {useEnrolmentStore} from "@/main/dashboard/enrollment/store/enrollment.js"
 
 
   const interviewStudentList = ref( [])
@@ -16,11 +17,11 @@
   const buttonLoader = ref(false)
   const  notificationStore  = useNotificationStore()
   const enrolDialog  = ref(null)
-  const studentNumber=ref(null)
-
+  const studentNum=ref(null)
+  const enrolmentStore = useEnrolmentStore()
   const mymodal = ref(false)
   const showModal = (studentN,adm) =>{
-  studentNumber.value = studentN
+  studentNum.value = studentN
   admissionNumber.value = adm
   mymodal.value = true
    }
@@ -172,11 +173,23 @@
     {deep: true}
   )
     
+  watch (
+      () => enrolmentStore.newsEnrolmentResponse,
+      async (data) => {
+        if(data){
+         mymodal.value=false
+         admissionStore.fetchAdmissionByFilters(form.study_period_number,form.interview_number,form.stream_number,form.campus_number,form.campus_class_number)
+
+        }
+      },
+      {deep:true}
+    )
+
 </script>
 <template>
 
 <AppModal title="Enrol" v-model="mymodal" xl6>
-   <EnrolModel :studentNumber="studentNumber" :adm="admissionNumber"></EnrolModel>
+   <EnrolModel :studentNumber="studentNum" :adm="admissionNumber"></EnrolModel>
 </AppModal>
 
   <div>

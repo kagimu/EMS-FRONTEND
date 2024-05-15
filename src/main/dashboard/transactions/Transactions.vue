@@ -6,7 +6,7 @@
       <NewTransaction></NewTransaction>
       </AppModal>
   
-      <div class="row mt-3"  >
+      <div class="row mt-0"  >
         <div class="col-12">    
        <div class="row">
         <div class="col-lg-4">
@@ -21,7 +21,7 @@
     <div class="container mt-1">
       <table
         id="datatable"
-        class="table table-hover caption-top mt-5 table-sm"
+        class="table table-hover caption-top mt-4 table-sm table-striped"
         style="font-size: 13px !important;"
       >
         <thead>

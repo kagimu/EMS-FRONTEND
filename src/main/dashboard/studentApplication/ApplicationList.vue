@@ -398,7 +398,16 @@
     )
   
   
-  
+    watch(
+      () => applicationStore.addStudentToInterviewResponse,
+      async (data) => {
+          if (data) {
+            showingModal.value=false
+            applicationStore.fetchApplicationList()
+          }
+      },
+      {deep: true}
+  )
   
   
     

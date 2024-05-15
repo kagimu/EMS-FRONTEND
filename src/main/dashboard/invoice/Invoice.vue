@@ -29,7 +29,7 @@
           <div class="card-bdy" style="padding: 0;">
   <div class="containr mt-4">
     <table
-      class="table table-striped"
+      class="table table-hover caption-top mt-4 table-sm table-striped"
       style="font-size: 13px !important;width: 100%;"
     >
       <thead>
@@ -54,13 +54,17 @@
         "status": "NOT_PAID" -->
       <tbody>
         <tr v-for="(list,index) in invoiceData"  :key="index">
-        <td>{{ list.ref_number }}</td>
-        <td>{{ list.date }}</td>
-        <td>{{ list.due_date }}</td>
-        <td>{{ list.total_amount }}</td>
-        <td>{{ list.paid_amount }}</td>
-        <td>{{list.balance}}</td>
-        <td>{{ list.status }}</td>
+        <td>{{ list?.ref_number }}</td>
+        <td>{{ list?.date }}</td>
+        <td>{{ list?.due_date }}</td>
+        <td>{{ list?.total_amount }}</td>
+        <td>{{ list?.paid_amount }}</td>
+        <td>{{list?.balance}}</td>
+        <td>
+          <div :class="{'bg-green-700':list?.status==='PAID', 'bg-red-700':list?.status==='NOT_PAID', 'bg-purple-700':list?.status==='PARTIALLY_PAID'}" class="text-center text-white rounded-md px-3">
+            {{ list?.status?.replace("_", " ")?.toLowerCase() }}
+          </div>
+        </td>
         <td>
           <button  @click="paymentModal(list.number)" class="btn btn-primary btn-sm mb-2" style="float: right;" v-if="can('add_custom_invoice','general')">
         <small>Pay</small></button>
