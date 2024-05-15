@@ -2,16 +2,35 @@
 
 import {onMounted, ref, watch} from "vue";
 import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
 const mealCalendarList = ref([])
 const  mealStore  = useMealStore()
+const schoolStore = useSchoolStore()
+const school_number = ref("")
+const schoolsList = ref([])
+
+
 
 onMounted(
     async () => {
-      await mealStore.fetchMealCalendar()
+      doFetchMealCourses()
+      await schoolStore.fetchSchools()
     }
 )
 
+const doFetchMealCourses = (school_number) => {
+  mealStore.fetchMealCalendar(school_number)
+}
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if(data){
+        schoolsList.value = data.data
+      }
+    }
+)
 
 
 watch(
@@ -43,8 +62,24 @@ watch(
         </div>
 
 
+        <div class="row mt-5 mb-2 mx-auto">
+          <div class="col-3">
+            <div class="mb-2">
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="school_number"
+                  @change="doFetchMealCourses(school_number)"
+              >
+                <option disabled value="">--filter by School--</option>
+                <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
-        <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
+
+        <table class="table table-hover caption-top table-sm" style="font-size: 14px;">
           <thead>
           <tr>
             <th scope="col" style="width: 30%;">Code</th>

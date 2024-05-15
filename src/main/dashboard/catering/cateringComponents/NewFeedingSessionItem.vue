@@ -145,7 +145,7 @@ onMounted(
   watch(
     () => cateringStore.menuItemResponse,
     async (data) => {
-        if (data) {
+      if(data && data.data) {
         itemOption.value = data.data.map(option => ({ name: option.name, number: option.number }));
       }
     },

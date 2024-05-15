@@ -127,10 +127,11 @@
    watch(
    () => cateringStore.menuItemResponse,
    async (data) => {
+     if(data && data.data) {
        menuItemData.value = data.data
-       isLoading.value = false; 
-   },
-   {deep: true}
+       isLoading.value = false;
+     }
+   }
    )
    
    
