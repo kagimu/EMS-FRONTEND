@@ -381,7 +381,7 @@
     //   }))
 
       const itemNumbers = Services.value.map(service => service.number);
-      const items = { item_numbers: itemNumbers };
+      const items = { items: itemNumbers };
   
     const data = {
       student_number:props.selectedStudentNumber,
