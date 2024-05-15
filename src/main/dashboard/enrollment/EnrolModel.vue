@@ -104,9 +104,11 @@
                            <input type="text" 
                            @keypress="commons.numbersOnlyValidator($event)"
                             maxlength="10"
-                              class="form-control ml-1" 
-                              style="width: 50px; font-size: 10px;" 
+                              class=" ml-1" 
+                              placeholder="1"
+                              style="width: 30px; font-size: 13px; border: 1px solid black;text-align: center;" 
                               v-model="item.quantity"
+                               
                               @input="updateQuantity(item, $event)">
                         </div>
                      </li>
