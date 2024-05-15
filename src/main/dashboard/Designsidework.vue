@@ -1,133 +1,73 @@
 <template>
-    <section style="background-color: #eee;">
-        
-      <div class="container py-2">
-        <!-- User Profile Information -->
-        <div class="row">
-          <div class="col-lg-3">
-            <!-- User Card -->
-            <div class="card mb-4">
-              <div class="card-body text-center">
-                <center><img :src="user.avatar" :alt="user.name" class="rounded-circle img-fluid" style="width: 150px;"></center>
-                <h5 class="my-3">{{ user.name }}</h5>
-                <p class="text-muted mb-1">{{ user.role }}</p>
-              </div>
-            </div>
-            
+  <div>
   
-            <div class="card mb-4 mb-lg-0">
-              <div class="card-body p-0">
-                
-              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-            <router-link
-            class="list-group-item list-group-item-action" :to="{name:'', query:''}">
-            <small style="font-size:12px;">Bio Data</small>
-            </router-link>
-            <router-link
-            class="list-group-item list-group-item-action" :to="{name:'', query:''}">
-            <small style="font-size:12px;">Bio Data</small>
-            </router-link>
-            <router-link
-            class="list-group-item list-group-item-action" :to="{name:'', query:''}">
-            <small style="font-size:12px;">Bio Data</small>
-            </router-link>
-            <router-link
-            class="list-group-item list-group-item-action" :to="{name:'', query:''}">
-            <small style="font-size:12px;">Bio Data</small>
-            </router-link>
-            </div>
-              </div>
-            </div>
-          </div>
-          
-         
-          <div class="col-lg-9">
-            <div class="py-2 px-3 border border-0 fw-normal bg-light card-header">
-   <div style="color: green;"><span class="text-primary me-1">CLASS:</span>Primary One [P1]
-   <div  style="float: right;"><span class="text-primary">STATUS:</span><span class="badge bg-danger rounded-pill ms-2 fs-6">ENROLLED</span></div>
-
-</div>
-
-</div>
-
-<div class="border border-top-0 border-bottom-0 border-start-0 border-end-0 card">
-   <div class="py-2 px-3 mb-0 card-header border-0">
-      <span>
-         <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status">
-            <button type="button" class="text-sm text-uppercase mb-1 btn btn-dark">Academic YEAR.</button>
-            <button type="button" class="text-sm fw-bold text-white text-uppercase mb-1 btn btn-info">2024</button>
-         </div>
-         <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status">
-            <button type="button" class="text-sm text-uppercase mb-1 btn btn-dark">STUDY PERIOD</button>
-            <button type="button" class="text-sm fw-bold text-white text-uppercase mb-1 btn btn-info">TERM ONE [T1]</button>
-         </div>
-         <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status">
-            <button type="button" class="text-sm text-uppercase mb-1 btn btn-dark">STREAM</button>
-            <button type="button" class="text-sm fw-bold text-white text-uppercase mb-1 btn btn-danger">EAST</button>
-         </div>
-        
-      </span>
-     
-   </div>
-</div>
-
-            <div class="card mb-4">
-              <div class="card-body">
-                <div v-for="(detail, index) in user.details" :key="index" class="row">
-                  <div class="col-sm-3">
-                    <p class="mb-0">{{ detail.label }}</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">{{ detail.value }}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Project Status -->
-            <div class="row">
-              <div class="col-md-12">
-                <div class="card mb-4 mb-md-0">
-                  <div class="card-body">
-                    <p class="mb-4"><span class="text-primary font-italic me-1">Progress</span>Report</p>
-                 
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-          </div>
-        </div>
+  <ul>
+    <li v-for="(item, indx) in items" :key="indx"
+        class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
+      <div class="d-flex align-items-center" style="font-size: 12px;">
+        <input v-model="selectedItems" 
+               class="form-check-input me-2" 
+               type="checkbox" 
+               :value="item.item_number" 
+               @change="toggleSelection(item)"
+               aria-label="..." />
+        {{ item.item_name }} {{ item.cost }}
+        <input type="text" 
+               class="form-control ml-1" 
+               style="width: 50px;" 
+               v-model.number="item.quantity"
+               @input="updateQuantity(item, $event)">
       </div>
-    </section>
-  </template>
-  
-  <script setup> 
-  import {reactive, ref} from "vue";
-  
-  
-  
-  const user = ref({
-    avatar: 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp',
-    name: 'Collins Mpiima',
-    role: 'Student',
-    location: 'Bay Area, San Francisco, CA',
-    socialLinks: [
-      { icon: 'fas fa-globe', color: '#FFC107', url: 'https://mdbootstrap.com' },
-      { icon: 'fab fa-github', color: '#333333', url: 'mdbootstrap' },
-      { icon: 'fab fa-twitter', color: '#55acee', url: '@mdbootstrap' },
-      { icon: 'fab fa-instagram', color: '#ac2bac', url: 'mdbootstrap' },
-      { icon: 'fab fa-facebook-f', color: '#3b5998', url: 'mdbootstrap' }
-    ],
-    details: [
-      { label: 'Full Name', value: 'Mpiima Collins' },
-      { label: 'Sex', value: 'Male' },
-      { label: 'School', value: 'MySChool P/s' },
-      { label: 'Campus', value: 'Main Campus' },
-      { label: 'Level', value: 'Primary' },
-      { label: 'Class', value: 'Primary One [P1] ' }
-    ],
-  
-  });
-  </script>
-  
+    </li>
+  </ul>
+  <button @click="submit">Submit</button>
+
+
+  </div>
+
+</template>
+
+<script setup>
+import { reactive, ref } from 'vue';
+
+const items = reactive([
+  { item_number: "432523523423", item_name: "Item 1", cost: 10, quantity: 1 },
+  { item_number: "098765432109", item_name: "Item 2", cost: 20, quantity: 1 }
+]);
+
+const selectedItems = ref([]);
+
+const toggleSelection = (item) => {
+  const index = selectedItems.value.findIndex(selected => selected.item_number === item.item_number);
+  if (index === -1) {
+    selectedItems.value.push({ ...item, brought: true });
+  } else {
+    selectedItems.value.splice(index, 1);
+  }
+};
+
+const updateQuantity = (item, event) => {
+  const selectedItem = selectedItems.value.find(selected => selected.item_number === item.item_number);
+  if (selectedItem) {
+    selectedItem.quantity = event.target.value;
+  }
+};
+
+const submit = () => {
+  // Prepare the data to exclude item_name and cost and remove empty objects
+  const dataToSubmit = {
+    items: selectedItems.value
+      .map(({ item_number, quantity, brought }) => ({
+        item_number,
+        quantity,
+        brought
+      }))
+      .filter(item => item.item_number && item.quantity !== undefined && item.brought !== undefined)
+  };
+  alert(JSON.stringify(dataToSubmit));
+};
+</script>
+
+
+<style>
+</style>

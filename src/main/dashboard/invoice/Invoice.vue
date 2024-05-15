@@ -29,7 +29,7 @@
           <div class="card-bdy" style="padding: 0;">
   <div class="containr mt-4">
     <table
-      class="table table-striped"
+      class="table table-hover caption-top mt-4 table-sm table-striped"
       style="font-size: 13px !important;width: 100%;"
     >
       <thead>

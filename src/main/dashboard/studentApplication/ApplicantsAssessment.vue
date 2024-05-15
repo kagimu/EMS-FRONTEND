@@ -122,7 +122,7 @@
   
   onMounted(
       () => {
-        studentApplicationStore.fetchAssessmentMetricsOnInterview(interviewNumber)
+      //   studentApplicationStore.fetchAssessmentMetricsOnInterview(interviewNumber)
       }
   )
   watch(
@@ -138,8 +138,8 @@
   const fetchStudentOnInterview = (assessmentMetricNumber,interviewN) =>{
       assessmentNumber.value = assessmentMetricNumber
       let  interviewNum = interviewN
-  
       applicationStore.fetchStudentsOnInterview(interviewNum,assessmentMetricNumber) 
+      
       // reportSetupStore.fetchStudentByAssessmentMetric(a)
   }
   
