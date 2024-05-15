@@ -241,7 +241,7 @@
      ...ItemDataToSubmit
    })
 
-       alert(JSON.stringify(enrollmentData))
+      //  alert(JSON.stringify(enrollmentData))
        enrolmentStore.newEnrolment(enrollmentData)
      }
    
