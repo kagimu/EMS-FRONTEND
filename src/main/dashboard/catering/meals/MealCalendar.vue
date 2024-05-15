@@ -3,24 +3,37 @@
 import {onMounted, ref, watch} from "vue";
 import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 
 const mealCalendarList = ref([])
 const  mealStore  = useMealStore()
+const campusStore = useCampusStore()
 const schoolStore = useSchoolStore()
 const school_number = ref("")
+const campus_number = ref("")
 const schoolsList = ref([])
+const campusList = ref([])
 
 
 
 onMounted(
     async () => {
-      doFetchMealCourses()
       await schoolStore.fetchSchools()
     }
 )
 
-const doFetchMealCourses = (school_number) => {
-  mealStore.fetchMealCalendar(school_number)
+const fetchCampusBySchool = () => {
+  campus_number.value = ""
+  campusStore.fetchCampuses(school_number.value)
+  doFetchMealCourses()
+}
+
+const doFetchMealCourses = () => {
+  let data = {
+    school_number:school_number.value,
+    campus_number:campus_number.value
+  }
+  mealStore.fetchMealCalendar(data)
 }
 
 watch(
@@ -38,6 +51,15 @@ watch(
     async (data) => {
       if(data){
         mealCalendarList.value = data.data
+      }
+    }
+)
+
+watch(
+    () => campusStore.campusListResponse,
+    async (data) => {
+      if (data) {
+        campusList.value = data.data
       }
     }
 )
@@ -69,10 +91,24 @@ watch(
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="school_number"
-                  @change="doFetchMealCourses(school_number)"
+                  @change="fetchCampusBySchool()"
               >
-                <option disabled value="">--filter by School--</option>
+                <option disabled value="">--Filter by School--</option>
                 <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="mb-2">
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="campus_number" required
+                  @change="doFetchMealCourses()"
+              >
+                <option disabled value="">--Filter by campus--</option>
+                <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+                </option>
               </select>
             </div>
           </div>
