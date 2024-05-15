@@ -52,6 +52,23 @@
             </div>
           </div>
 
+
+
+          <div class="card mt-3">
+            <div class="card-body" style="padding: 0;">
+              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+                <div
+                    v-for="(item, idx) in mealMenu" :key="idx"
+                    class="list-group-item list-group-item-action cursor-pointer"
+                    :class="item.value === menuSelected ? 'active' : ''"
+                    @click="changeMenu(item.value)">
+                  <small style="font-size:12px;">{{item.text}}</small>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
         </div>
   
         <div class="col-9">
@@ -83,10 +100,27 @@
                   <div v-if="menuSelected === 'manage-feeding-users'">
                 <FeedingGroupUsers></FeedingGroupUsers>
                   </div>
+
                   <div v-if="menuSelected === 'feeding'">
                 <FeedingUsers></FeedingUsers>
                   </div>
-                
+
+
+<!--                <div v-if="menuSelected === 'meals'">
+                  <Meals></Meals>
+                </div>-->
+
+                <div v-if="menuSelected === 'meal-courses'">
+                  <MealCourses></MealCourses>
+                </div>
+
+                <div v-if="menuSelected === 'meal-calendar'">
+                 <MealCalendar></MealCalendar>
+                </div>
+
+
+
+
                   
               </div>
   
@@ -118,6 +152,9 @@
   import ManageFeedingGroup from "@/main/dashboard/catering/cateringComponents/ManageFeedingGroup.vue";
   import ManageMenuItem from "@/main/dashboard/catering/cateringComponents/ManageMenuItem.vue";
   import ManageUnitOfMeasurement from "@/main/dashboard/catering/cateringComponents/ManageUnitOfMeasurement.vue";
+  import Meals from "@/main/dashboard/catering/meals/Meals.vue";
+  import MealCourses from "@/main/dashboard/catering/meals/MealCourses.vue";
+  import MealCalendar from "@/main/dashboard/catering/meals/MealCalendar.vue";
 
 
 
@@ -157,8 +194,21 @@
       text:"Capturing Meals",
       value:"feeding"
     },
+  ])
 
-   
+  const mealMenu = ref([
+ /*  {
+      text:"Meals",
+      value:"meals"
+    },*/
+    {
+      text:"Meal Courses",
+      value:"meal-courses"
+    },
+    {
+      text:"Meal Calendar",
+      value:"meal-calendar"
+    },
   ])
 
   const changeMenu = (value) => {
