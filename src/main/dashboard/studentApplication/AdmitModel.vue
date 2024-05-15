@@ -1,11 +1,12 @@
 <template>
   <div>
+    <!-- {{ selectedStudentNumber }} -->
     <form @submit.prevent="Admit()">
       <!-- School Selection -->
       <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-3">
           <div class="mb-2">
-            <label class="textColor"><small>School</small></label>
+            <label class="textSize"><small>School</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required
@@ -15,9 +16,12 @@
               <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}</option>
             </select>
           </div>
+        </div>
+
           <!-- Campus Selection -->
+          <div class="col-lg-2">
           <div class="mb-2">
-            <label class="textColor"><small>Campus</small></label>
+            <label class="textSize"><small>Campus</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm"
@@ -27,9 +31,11 @@
               <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}</option>
             </select>
           </div>
+          </div>
           <!-- Class Selection -->
+          <div class="col-lg-2">
           <div class="mb-2">
-            <label class="textColor"><small>Class</small></label>
+            <label class="textSize"><small>Class</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required
@@ -39,11 +45,11 @@
               <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}</option>
             </select>
           </div>
-        </div>
+          </div>
         <!-- Stream, Academic Year, and Study Period Selection -->
-        <div class="col-lg-6">
+        <div class="col-lg-1">
           <div class="mb-2">
-            <label class="textColor"><small>Stream</small></label>
+            <label class="textSize"><small>Stream</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required
@@ -52,8 +58,10 @@
               <option v-for="(slist, index) in streamList" :key="index" :value="slist.number">{{ slist.name }}</option>
             </select>
           </div>
+          </div>
+          <div class="col-lg-2">
           <div class="mb-2">
-            <label class="textColor"><small>Academic Year</small></label>
+            <label class="textSize"><small>Academic Year</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required
@@ -62,8 +70,11 @@
               <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
             </select>
           </div>
+          </div>
+
+          <div class="col-lg-2">
           <div class="mb-2">
-            <label class="textColor"><small>Study Period</small></label>
+            <label class="textSize"><small>Study Period</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required
@@ -74,17 +85,19 @@
           </div>
         </div>
       </div>
+      
+    
       <!-- Service Selection -->
-      <div class="row mt-3">
+      <div class="row mt-1">
         <div class="col-lg-12">
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-6">
               <!-- New Design -->
-              <table class="table bordered">
+              <table class="table table-hover caption-top mt-1 table-sm table-striped">
                 <thead>
                   <tr class="" style="padding: 0px;margin: 0px;">
-                    <th class="textColor">Service</th>
-                    <th class="textColor">Amount</th>
+                    <th class="textSize">Item</th>
+                    <th class="textSize">Cost</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -95,20 +108,20 @@
                         <option :value="option.item_number" v-for="option in availableOptions(index)">{{ option.name }}</option>
                       </select>
                     </td>
-                    <td><input type="text" v-model="Service.cost" @input="updateAmount(index)" placeholder="Unit Price" class="inp"></td>
+                    <td><input disabled type="text" v-model="Service.cost" @input="updateAmount(index)" placeholder="Unit Price"></td>
                     <td><button type="button" @click="removeService(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
                   </tr>
                 </tbody>
               </table>
-              <button class="btn btn-primary btn-sm textColor" @click.prevent="addService" :disabled="isAddButtonDisabled"><small><i class="bi bi-plus-lg"></i></small></button>
+              <button class="btn btn-primary btn-sm textSize" @click.prevent="addService" :disabled="isAddButtonDisabled"><small><i class="bi bi-plus-lg"></i></small></button>
             </div>
           </div>
         </div>
       </div>
       <!-- Form Submission Button -->
       <div class="flex justify-content-end mt-2" style="width: 100%;">
-        <button type="submit" class="btn btn-primary border-0 btn-sm">
-          <small><i class="bi bi-save"></i> submit</small>
+        <button type="submit" class="btn btn-primary border-0 btn-sm mb-2">
+          <small> submit</small>
           <span style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span></span>
         </button>
       </div>
@@ -124,12 +137,9 @@
   import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
   import { useAdmissionStore } from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
   import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
-  
   import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js"
   import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
   import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
-  
-  
   import {useRouter} from "vue-router"
   const routerData = useRouter()
   
@@ -179,15 +189,18 @@
   school_number:null
   })
   
-
-  
-  
-  
   watch (
     () => admissionStore.admitStudentResponse,
     async (data) => {
       if(data){
-      //   notificationStore.successToast("Success", data.message)
+      form.academic_year_number=null,
+      form.study_period_number=null,
+      form.campus_class_number=null,
+      form.campus_number- null,
+      form.interview_number=interviewNumber,
+      form.stream_number=null,
+      form.school_number=null
+      buttonLoader.value=false
       }
     },
     {deep:true}
@@ -375,11 +388,7 @@
   )
   
   const Admit = () =>{
-    // const selectedData = Services.value.map(
-    //   service => ({
-    //     item_number: service.number,
-    //   }))
-
+      buttonLoader.value = true
       const itemNumbers = Services.value.map(service => service.number);
       const items = { items: itemNumbers };
   
@@ -406,5 +415,8 @@
   box-shadow: none;
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
+  }
+  .textSize{
+    font-size: 13px;
   }
 </style>

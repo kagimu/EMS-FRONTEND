@@ -1,8 +1,12 @@
 <template>
   <div>
 
+  <AppModal title="Admit" v-model="myAdmitModal" xl6>
+      <AdmitModel :selectedStudentNumber="selectedStudentNumber"></AdmitModel>
+</AppModal>
 
-      <div class="modal fade" id="admitMainModal" tabindex="-1" :class="{ show: admitshow }" aria-labelledby="" aria-hidden="true">
+
+      <!-- <div class="modal fade" id="admitMainModal" tabindex="-1" :class="{ show: admitshow }" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header text-sm p-0">
@@ -16,7 +20,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
    
 
@@ -219,9 +223,14 @@
   </div>
   <div class="col-lg-2">
 <div class="ant-alert-action mt-3">
-  <button  @click="showDialog" data-bs-toggle="modal" :data-bs-target="selectedStudentNumber.length > 0 ? '#admitMainModal' : ''" type="submit"
+  <!-- @click="showDialog" -->
+  <button @click="showAdmitModal"  type="button"
     class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " 
     style="float: rigt;" ><i></i>Offer Admission</button>
+
+    <!-- <button @click="showDialog"  data-bs-toggle="modal" :data-bs-target="selectedStudentNumber.length > 0 ? '#admitMainModal' : ''" type="submit"
+    class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " 
+    style="float: rigt;" ><i></i>Offer Admission</button> -->
 </div>
   </div>
 </div>
@@ -245,15 +254,24 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {useRouter} from "vue-router";
 import { useStudentApplicationStore } from "./store/student_application"
 import { useAdmissionStore } from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
-
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
-
+import AppModal from "@/components/AppModal.vue";
 import AdmitModel from "@/main/dashboard/studentApplication/AdmitModel.vue";
 
+const myAdmitModal = ref(false)
+const showAdmitModal = () =>{
+  if (selectedStudentNumber.value.length === 0) {
+    myAdmitModal.value = false
+    notificationStore.errorToast("Error", "Please select at least one student to offer admission.");
+  } else {
+    myAdmitModal.value = true
+  }
+
+   }
 
 const interviewStudentList = ref( [])
 let errorMessage = ref(null)
@@ -476,6 +494,7 @@ watch (
 async (data) => {
   if(data){
     notificationStore.successToast("Success", data.message)
+    myAdmitModal.value=false
   }
 },
 {deep:true}
