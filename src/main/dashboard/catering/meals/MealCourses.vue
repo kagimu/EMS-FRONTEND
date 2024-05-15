@@ -4,7 +4,9 @@ import AppModal from "@/components/AppModal.vue";
 import {onMounted, ref, watch} from "vue";
 import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
 import NewMealCourse from "@/main/dashboard/catering/meals/components/NewMealCourse.vue";
+import useNotificationStore from "@/composables/useNotification.js";
 const  mealStore  = useMealStore()
+const  notificationStore  = useNotificationStore()
 
 const mealCourseList = ref([])
 const mealEditMode = ref(false)
@@ -17,9 +19,13 @@ const addCourse = () => {
 
 onMounted(
     async () => {
-      await mealStore.fetchMealCourses()
+      doFetchMealCourses()
     }
 )
+
+const doFetchMealCourses = () => {
+   mealStore.fetchMealCourses()
+}
 
 watch(
     () => mealStore.mealCoursesResponse,
@@ -30,6 +36,15 @@ watch(
     }
 )
 
+watch(
+    () => mealStore.newMealCoursesResponse,
+    async (data) => {
+      if(data){
+        doFetchMealCourses()
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
 
 
 

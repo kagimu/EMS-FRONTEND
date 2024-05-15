@@ -66,12 +66,9 @@ watch(
     () => mealStore.newMealCoursesResponse,
     async (data) => {
       if(data){
-        // form.name = null
-        // form.code = null
         loader.value = false
       }
-    },
-    {deep:true}
+    }
 )
 
 
