@@ -27,67 +27,67 @@
         <div class="row border rounded-md p-3">
 
           <div class="col-lg-4 mb-1">
-            <div class="card-body border rounded-md text-xs">
+            <div class="card-body border rounded-md text-xs text-center">
+              <div class="font-bold text-[#063070] text-[13px]">{{financialSummary?.total_invoices?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</div>
              <div>Total Invoice</div>
-              <div>{{financialSummary?.total_invoices}}</div>
             </div>
           </div>
 
 
 
         <div class="col-lg-4 mb-1">
-        <div class="card-body border rounded-md text-xs">
+        <div class="card-body border rounded-md text-xs text-center">
+          <div class="font-bold text-[#063070] text-[13px]">{{financialSummary?.total_invoice_amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</div>
           <div>Total Invoice Amount:</div>
-          <div>{{financialSummary?.total_invoice_amount}}</div>
         </div>
         </div>
 
         <div class="col-lg-4 mb-1">
-        <div class="card-body border rounded-md text-xs">
+        <div class="card-body border rounded-md text-xs text-center">
+          <div class="font-bold text-[#063070] text-[13px]">{{financialSummary?.total_payments?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</div>
           <div>Total Payments:</div>
-          <div>{{financialSummary?.total_payments}}</div>
         </div>
         </div>
 
         <div class="col-lg-4 mb-1">
-        <div class="card-body border rounded-md text-xs">
+        <div class="card-body border rounded-md text-xs text-center">
+          <div class="font-bold text-[#063070] text-[13px]">{{financialSummary?.total_paid_amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}} </div>
           <div>Total Paid Amount </div>
-          <div>{{financialSummary?.total_paid_amount}} </div>
         </div>
         </div>
 
         <div class="col-lg-4 mb-1">
-        <div class="card-body border rounded-md text-xs">
+        <div class="card-body border rounded-md text-xs text-center">
+          <div class="font-bold text-[#063070] text-[13px]">{{financialSummary?.total_balance_amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</div>
           <div>Total Balance Amount:</div>
-          <div>{{financialSummary?.total_balance_amount}}</div>
         </div>
         </div>
 
         <div class="col-lg-4 mb-1">
-        <div class="card-body border rounded-md text-xs">
+        <div class="card-body border rounded-md text-xs text-center">
+          <div class="font-bold text-[#063070] text-[13px]">{{financialSummary?.most_recent?.invoice_amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</div>
           <div>Invoice Amount: </div>
-          <div>{{financialSummary?.most_recent?.invoice_amount}}</div>
         </div>
         </div>
 
         <div class="col-lg-4 mb-1">
-        <div class="card-body border rounded-md text-xs">
+        <div class="card-body border rounded-md text-xs text-center">
+          <div class="font-bold text-[#063070] text-[13px]">{{financialSummary?.most_recent?.invoice_date}}</div>
           <div>Invoice Date:</div>
-          <div>   {{financialSummary?.most_recent?.invoice_date}}</div>
         </div>
         </div>
 
         <div class="col-lg-4 mb-1">
-        <div class="card-body border rounded-md text-xs">
+        <div class="card-body border rounded-md text-xs text-center">
+          <div class="font-bold text-[#063070] text-[13px]">{{financialSummary?.most_recent?.paid_amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</div>
           <div>Paid Amount:</div>
-          <div>{{financialSummary?.most_recent?.paid_amount}}</div>
         </div>
         </div>
 
         <div class="col-lg-4 mb-1">
-        <div class="card-body border rounded-md text-xs">
+        <div class="card-body border rounded-md text-xs text-center">
+          <div class="font-bold text-[#063070] text-[13px]">{{financialSummary?.most_recent?.paid_date}}</div>
           <div> Paid Date:</div>
-          <div>{{financialSummary?.most_recent?.paid_date}}</div>
         </div>
         </div>
 
