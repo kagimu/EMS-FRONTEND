@@ -20,6 +20,10 @@ const  notificationStore  = useNotificationStore()
 const schoolsList = ref( [])
 
 
+const props = defineProps({
+  mealCourseList:{}
+})
+
 const form = reactive({
   school_number:"",
   count:null,
@@ -30,6 +34,33 @@ const form = reactive({
     }
   ]
 })
+
+
+onMounted(
+    () =>{
+      schoolStore.fetchSchools()
+      filterMealCourseDraft()
+    }
+)
+
+watch(
+    () => props.mealCourseList,
+    async (data) => {
+      if(data){
+        filterMealCourseDraft()
+      }
+    }
+)
+
+const filterMealCourseDraft = () => {
+  if(props.mealCourseList){
+    let draft = props.mealCourseList
+    form.school_number = draft.school_number
+    form.count = draft.count
+    form.courses = draft.courses
+  }
+}
+
 
 
 
@@ -44,11 +75,6 @@ const addMealCourse = () =>{
 
 
 
-onMounted(
-    () =>{
-      schoolStore.fetchSchools()
-    }
-)
 
 
 watch(
@@ -57,8 +83,7 @@ watch(
       if(data){
         schoolsList.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
 

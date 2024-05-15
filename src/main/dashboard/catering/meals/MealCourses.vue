@@ -5,12 +5,16 @@ import {onMounted, ref, watch} from "vue";
 import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
 import NewMealCourse from "@/main/dashboard/catering/meals/components/NewMealCourse.vue";
 import useNotificationStore from "@/composables/useNotification.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 const  mealStore  = useMealStore()
+const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
 
 const mealCourseList = ref([])
 const mealEditMode = ref(false)
 const mealCourseDialog = ref(false)
+const school_number = ref("")
+const schoolsList = ref([])
 
 const addCourse = () => {
   mealCourseDialog.value = true
@@ -20,12 +24,22 @@ const addCourse = () => {
 onMounted(
     async () => {
       doFetchMealCourses()
+      await schoolStore.fetchSchools()
     }
 )
 
-const doFetchMealCourses = () => {
-   mealStore.fetchMealCourses()
+const doFetchMealCourses = (school_number) => {
+   mealStore.fetchMealCourses(school_number)
 }
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if(data){
+        schoolsList.value = data.data
+      }
+    }
+)
 
 watch(
     () => mealStore.mealCoursesResponse,
@@ -55,7 +69,7 @@ watch(
 
 
     <AppModal :title="mealEditMode ? 'Edit Meal' : 'Add Meal Course'" v-model="mealCourseDialog" lg>
-      <new-meal-course></new-meal-course>
+      <new-meal-course :mealCourseList="mealCourseList"></new-meal-course>
     </AppModal>
 
 
@@ -77,21 +91,43 @@ watch(
         </div>
 
 
+        <div class="row mt-5 mb-2 mx-auto">
+          <div class="col-3">
+              <div class="mb-2">
+                <select
+                    style="box-shadow: none;"
+                    class="form-select form-select-sm"
+                    v-model="school_number"
+                    @change="doFetchMealCourses(school_number)"
+                >
+                  <option disabled value="">--filter by School--</option>
+                  <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+                </select>
+              </div>
+          </div>
+        </div>
 
-        <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
+
+    <div class="ml-4 mb-3" v-if="mealCourseList?.count">
+      <small class="text-[18px] bg-[#1a7f37] text-white px-4 py-1  rounded-md">
+        Count: {{mealCourseList?.count}}
+      </small>
+    </div>
+
+        <table class="table table-hover caption-top table-sm text-sm border" style="font-size: 14px;">
           <thead>
           <tr>
-            <th scope="col" style="width: 30%;">Code</th>
-            <th scope="col">Name</th>
-            <th scope="col">Action</th>
+            <th class="w-[30%] text-sm" scope="col">Code</th>
+            <th class="text-sm" scope="col">Name</th>
+<!--            <th class="text-sm" scope="col">Action</th>-->
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(levelInfo, index) in mealCourseList" :key="index">
+          <tr v-for="(levelInfo, index) in mealCourseList?.courses" :key="index">
             <td> {{levelInfo.code}}</td>
             <td> {{levelInfo.name}}</td>
-            <td>
-              <div>
+<!--            <td>-->
+<!--              <div>
                 <i
                     style="font-size: 13px;"
                     data-bs-toggle="modal" data-bs-target="#levelModal"
@@ -101,8 +137,8 @@ watch(
                 <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
                   <span class="visually-hidden">Loading...</span>
                 </div>
-              </div>
-            </td>
+              </div>-->
+<!--            </td>-->
           </tr>
           </tbody>
         </table>
