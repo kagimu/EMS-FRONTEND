@@ -30,7 +30,7 @@ const menuList = ref([
   {title:"Student Admission", name:"admission-list", icon:"bi-database-down",action:"view_student-admission"},
   {title:"Student Enrolment", name:"enrolment", icon:"bi-database-down",action:"view_enrolment"},
   {title:"Student Promotions", name:"promotions", icon:"bi-database-down",action:"view_promotions"},
-  {title:"Invoices", name:"invoices", icon:"bi-receipt-cutoff",action:"view_invoices"},
+  // {title:"Invoices", name:"invoices", icon:"bi-receipt-cutoff",action:"view_invoices"},
   {title:"Catering", name:"catering", icon:"bi-egg-fried",action:"catering"},
   {title:"Calendar", name:"general-calendar", icon:"bi-calendar3",action:"view_general-calendar"},
   {title:"Report Center", name:"report-center", icon:"bi-card-heading",action:"view_report-center"},
