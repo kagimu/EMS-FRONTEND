@@ -195,7 +195,7 @@
   </div> -->
       </thead>
       <tbody>
-        <tr v-for="(student, index) in interviewStudentList" :key="index">
+        <tr style="text-transform: capitalize;" v-for="(student, index) in interviewStudentList" :key="index">
           <td>{{ index+1 }}</td>
           <td><input type="checkbox"  v-model="selectedStudents[index]" class="checkbox-primary"></td>
           <td> 
