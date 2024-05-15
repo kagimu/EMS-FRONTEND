@@ -267,8 +267,7 @@ watch (
           if (data) {
               campusList.value = data.data
           }
-      },
-      {deep: true}
+      }
   )
 
   watch(

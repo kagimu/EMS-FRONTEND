@@ -244,7 +244,7 @@ watch(
   watch(
     () => cateringStore.menuItemResponse,
     async (data) => {
-        if (data) {
+      if(data && data.data) {
           menuData.value = data.data
         menuOptions.value = data.data.map(option => ({ number: option.number,name:option.name}));
       }
