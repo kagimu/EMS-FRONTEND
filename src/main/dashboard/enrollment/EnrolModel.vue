@@ -101,10 +101,12 @@
                               @change="toggleSelection(item)"
                               aria-label="..." />
                            {{ item.item_name }} {{ item.cost }}
-                           <input type="number" 
+                           <input type="text" 
+                           @keypress="commons.numbersOnlyValidator($event)"
+                            maxlength="10"
                               class="form-control ml-1" 
-                              style="width: 50px;" 
-                              v-model.number="item.quantity"
+                              style="width: 50px; font-size: 10px;" 
+                              v-model="item.quantity"
                               @input="updateQuantity(item, $event)">
                         </div>
                      </li>
@@ -136,6 +138,9 @@
    import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
    import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
    import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js"
+   import useCommonsStore from "@/composables/useCommons.js";
+   
+   const commons = useCommonsStore()
      
    const  notificationStore  = useNotificationStore()
    const buttonLoader = ref(false)
@@ -214,7 +219,7 @@
     items: selectedItems.value
       .map(({ item_number, quantity, brought }) => ({
         item_number,
-        quantity,
+        quantity: parseInt(quantity, 10),
         brought
       }))
       .filter(item => item.item_number && item.quantity !== undefined && item.brought !== undefined)
@@ -235,7 +240,7 @@
    })
 
        alert(JSON.stringify(enrollmentData))
-      //  enrolmentStore.newEnrolment(enrollmentData)
+       enrolmentStore.newEnrolment(enrollmentData)
      }
    
      
