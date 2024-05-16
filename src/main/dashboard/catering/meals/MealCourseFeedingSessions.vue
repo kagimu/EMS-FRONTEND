@@ -27,8 +27,9 @@ watch(
     () => mealStore.newMealCourseFeedingSessionsResponse,
     async (data) => {
       if(data){
-        await mealStore.fetchMealCourseFeedingSessions()
+        mealCourseFeedingSessionsDialog.value = false
         notificationStore.successToast("Success", data.message)
+        await mealStore.fetchMealCourseFeedingSessions()
       }
     }
 )

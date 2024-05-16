@@ -63,7 +63,9 @@ watch(
 
 
 const doFetchMealCourses = (school_number) => {
-  mealStore.fetchMealCourses(school_number)
+  if(school_number){
+    mealStore.fetchMealCourses(school_number)
+  }
 }
 
 
