@@ -55,9 +55,11 @@ watch(
 const filterMealCourseDraft = () => {
   if(props.mealCourseList){
     let draft = props.mealCourseList
-    form.school_number = draft.school_number
-    form.count = draft.count
-    form.courses = draft.courses
+   if(draft.courses){
+     form.school_number = draft.school_number
+     form.count = draft.count
+     form.courses = draft.courses
+   }
   }
 }
 
@@ -70,6 +72,9 @@ const filterMealCourseDraft = () => {
 const addMealCourse = () =>{
   loader.value = true
   form.count = parseInt(form.count)
+  form.courses.forEach(lst => {
+    lst.code = parseInt(lst.code)
+  })
   mealStore.createNewMealCourse(form)
 }
 
