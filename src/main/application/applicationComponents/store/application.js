@@ -112,8 +112,8 @@ export const useApplicationStore = defineStore("application", () => {
             })
     }
 
-    async function fetchApplicationList() {
-        return await api.get("main/applications/all?page=1&limit=10")
+    async function fetchApplicationList(data) {
+        return await api.get("main/applications/all?page="+data.page+"&per_page="+data.per_page+"&status="+data.status)
             .then((response) => {
                 applicationListResponse.value = response.data
             })
