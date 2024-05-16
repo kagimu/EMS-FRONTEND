@@ -42,39 +42,43 @@
   const admissionStore = useAdmissionStore()
   const studN = ref(null)
   const admissionNumber = ref(null)
+  const loading = ref(false)
+  const page = ref(1)
+  const per_page = ref(15)
   
   onMounted(() => {
-    admissionStore.fetchAdmissionByFilters(form.study_period_number,form.interview_number,form.stream_number,form.campus_number,form.campus_class_number)
     schoolStore.fetchSchools()
+    doFetchAdmission()
    }
   )
   
   const form = reactive({
-  academic_year: "",
   study_period_number: "",
   campus_class_number: "",
   campus_number: "",
   stream_number:"",
-  interview_number:""
+  school_number:"",
+  academic_year_number:""
   })
   
 
   
   const fetchCampuses = (school_number) => {
     campusStore.fetchCampuses(school_number)
+    doFetchAdmission()
   }
   
   const fetchClasses = (campus_number) => {
     campusStore.fetchClassesByCampus(campus_number)
+    doFetchAdmission()
   }
   
   
   //fetchacadmicYear
   const fetchAcademicYear = (campusN) =>{
-  // alert(campusN)
   academicYearStore.fetchAcademicYearByCampus(campusN)
   classStore.fetchClassStreams(campusN)
-  admissionStore.fetchAdmissionByFilters(form.study_period_number,form.interview_number,form.stream_number,form.campus_number,form.campus_class_number)
+  doFetchAdmission()
   }
   watch(
     () => academicYearStore.academicYearByCampusResponse,
@@ -95,12 +99,79 @@
   
   
   const filterByStream = () => {
-    admissionStore.fetchAdmissionByFilters(form.study_period_number,form.interview_number,form.stream_number,form.campus_number,form.campus_class_number)
+   doFetchAdmission()
   }
   
   const filterByStudyPeriod = () => {
-    admissionStore.fetchAdmissionByFilters(form.study_period_number,form.interview_number,form.stream_number,form.campus_number,form.campus_class_number)
+   doFetchAdmission()
   }
+
+  const doFetchAdmission = () =>{
+   let data = {
+      page: 1,
+      per_page: per_page.value,
+      study_period_number:form.study_period_number,
+      school_number:form.school_number,
+      campus_number: form.campus_number,
+      campus_class_number:form.campus_class_number,
+      stream_number:form.stream_number,
+      academic_year_number:form.academic_year_number
+   }
+   //   alert(JSON.stringify(data))
+   //  admissionStore.fetchAdmissionByFilters(data)
+   loading.value = true;
+   admissionList.value = []
+   admissionStore.fetchAdmissionByFilters(data).finally(() => {
+    loading.value = false; 
+  })
+
+  }
+
+
+  const fetchAdmissions = (data) => {
+    if(data) {
+      let current_page = data.page
+      page.value = current_page
+
+      let per_page_item = data.per_page;
+      per_page.value = per_page_item;
+
+      let objArray = data.content
+
+
+      if(objArray && objArray.length > 0){
+        objArray.forEach((list, i) => {
+
+          list.key =  (current_page - 1) * per_page_item + i + 1
+
+          const index = admissionList.value.findIndex(object => object.number === list.number);
+
+          if (index === -1) {
+            admissionList.value.push(list);
+          }
+
+        })
+      }
+
+
+    }
+  }
+
+
+  watch (
+    () => admissionStore.admissionByFiltersResponse,
+    async (data) => {
+      if(data){
+        
+      //   admissionList.value = data
+        fetchAdmissions(data)
+      }
+    },
+    {deep:true}
+  )
+
+
+
   watch(
     () => classStore.classStreams,
     async (data) => {
@@ -152,15 +223,7 @@
     {deep: true}
   )
   
-  watch (
-    () => admissionStore.admissionByFiltersResponse,
-    async (data) => {
-      if(data){
-        admissionList.value = data.data
-      }
-    },
-    {deep:true}
-  )
+
   
   watch(
     () => admissionStore.errorMessage,
@@ -216,101 +279,95 @@
                                       <div class="mt-4">
                                          <div class="row mx-auto">
                                             <div class="row">
-                                               <div class="col-2">
+                                               <div class="col-3">
                                                   <div class="mb-2">
-                                                     <label class="textColor"><small>School</small> </label>
+                                                     <!-- <label class="textColor"><small>School</small> </label> -->
                                                      <select
                                                         style="box-shadow: none;"
                                                         class="form-select form-select-sm" required
                                                         v-model="form.school_number"
                                                         @change="fetchCampuses(form.school_number)"
                                                         >
-                                                        <option disabled value="">Select School</option>
+                                                        <option disabled  value="">-filter by School-</option>
                                                         <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
                                                         </option>
                                                      </select>
+                                                     
                                                   </div>
                                                </div>
-                                               <div class="col-2">
+                                               <div class="col-3">
                                                   <div class="mb-2">
-                                                     <label class="textColor"><small>Campus</small>  </label>
+                                                     <!-- <label class="textColor"><small>Campus</small>  </label> -->
                                                      <select
                                                         style="box-shadow: none;"
                                                         class="form-select form-select-sm"
                                                         v-model="form.campus_number" required
                                                         @change="fetchClasses(form.campus_number)"
                                                         >
-                                                        <!-- <option disabled value="">Select campus</option> -->
+                                                        <option disabled value="">-filter by Campus-</option>
                                                         <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
                                                         </option>
                                                      </select>
                                                   </div>
                                                </div>
-                                               <div class="col-1">
+                                               <div class="col-3">
                                                   <div class="mb-2">
-                                                     <label class="textColor"><small>Class</small> </label>
+                                                     <!-- <label class="textColor"><small>Class</small> </label> -->
                                                      <select
                                                         style="box-shadow: none;"
                                                         class="form-select form-select-sm" required
                                                         v-model="form.campus_class_number"
                                                         @change="fetchAcademicYear(form.campus_class_number)"
                                                         >
-                                                        <!-- <option disabled value="">Select class</option> -->
+                                                        <option disabled value="">-filter by class -</option>
                                                         <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}
                                                         </option>
                                                      </select>
                                                   </div>
                                                </div>
-                                               <div class="col-1">
+                                               <div class="col-3">
                                                   <div class="mb-2">
-                                                     <label class="textColor"><small>Stream</small> </label>
+                                                     <!-- <label class="textColor"><small>Stream</small> </label> -->
                                                      <select
                                                         style="box-shadow: none;"
                                                         class="form-select form-select-sm" required
                                                         v-model="form.stream_number"
                                                         @change="filterByStream()"
                                                         >
-                                                        <!-- <option disabled value="">Select Stream</option> -->
+                                                        <option disabled value="">-filter by Stream-</option>
                                                         <option v-for="(slist, index) in streamList" :key="index" :value="slist.number">{{ slist.name }}
                                                         </option>
                                                      </select>
                                                   </div>
                                                </div>
-                                               <div class="col-1">
+                                               <div class="col-3">
                                                   <div class="mb-2">
-                                                     <label class="textColor"><small>Year</small> </label>
                                                      <select
                                                         style="box-shadow: none;"
                                                         class="form-select form-select-sm" required
-                                                        v-model="form.academic_year"
+                                                        v-model="form.academic_year_number"
+                                                        @change="doFetchAdmission()"
                                                         >
-                                                        <!-- <option disabled value="">Select Year</option> -->
+                                                        <option disabled value="">-filter AcademicYear-</option>
                                                         <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
                                                      </select>
                                                   </div>
                                                </div>
-                                               <div class="col-2">
+                                               <div class="col-3">
                                                   <div class="mb-2">
-                                                     <label class="textColor">
-                                                        <small>Study-Period</small> 
-                                                        <!-- {{ studyPeriodList }} -->
-                                                     </label>
+   
                                                      <select
                                                         style="box-shadow: none;"
                                                         class="form-select form-select-sm" required
                                                         v-model="form.study_period_number"
                                                         @change="filterByStudyPeriod()"
                                                         >
-                                                        <!-- <option disabled value="">Select</option> -->
+                                                        <option disabled value="">filter by Study period -</option>
                                                         <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
                                                      </select>
                                                   </div>
                                                </div>
-                                               <div class="col-3">
-                                                  <div class="mt-4">
-                                                     <input type="text" class="form-control mt-1 mb-0" placeholder="Search..."> 
-                                                  </div>
-                                               </div>
+                                            
                                             </div>
                                          </div>
                                       </div>
@@ -320,6 +377,18 @@
                           </div>
                        </div>
                     </div>
+
+               <div v-if="loading" class="text-center my-4">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+
+              <div v-else-if="admissionList.length === 0" class="text-center my-4">
+                <p>There is no data found</p>
+              </div>
+
+              <div v-else>
                     <table
                        id="datatable"
                        class="table table-striped"
@@ -383,6 +452,8 @@
                           </tr>
                        </tbody>
                     </table>
+               </div>
+
                  </div>
               </div>
            </div>

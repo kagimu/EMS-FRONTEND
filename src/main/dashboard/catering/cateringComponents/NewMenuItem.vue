@@ -80,7 +80,7 @@
         <div class="mb-2">
     <label class="textColor"><small>Unit Price</small></label>
     <input @keypress="commons.numbersOnlyValidator($event)"
-            maxlength="10" v-model="menuForm.base_unit_price"  type="text" required class="form-control">
+            maxlength="10" v-model="menuForm.base_price"  type="text" required class="form-control">
 </div>
     </div>
     <div class="col-lg-4">
@@ -208,7 +208,7 @@ watch(
     type:null,
     unit_of_measure_number:null,
     campus_number:null,
-    base_unit_price:null
+    base_price:null
   } )
 
   const addMenuItem = () =>{
@@ -217,7 +217,7 @@ watch(
       let myData = reactive({
         name:menuForm.name,
         code:parseInt(menuForm.code),
-        base_unit_price:parseInt(menuForm.base_unit_price),
+        base_price:parseInt(menuForm.base_price),
         type:menuForm.type,
         unit_of_measure_number:menuForm.unit_of_measure_number,
         campus_number:menuForm.campus_number,
