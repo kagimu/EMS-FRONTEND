@@ -158,7 +158,7 @@ watch(
           <tr>
             <th scope="col" style="width: 30%;">Code</th>
             <th scope="col">Name</th>
-            <th scope="col">Action</th>
+<!--            <th scope="col">Action</th>-->
           </tr>
           </thead>
           <tbody>
