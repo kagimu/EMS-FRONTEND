@@ -45,14 +45,7 @@ const addMealCourseFeedingSessionsDialog = () =>{
 }
 
 
-watch(
-    () => schoolStore.schoolsResponse,
-    async (data) => {
-      if(data){
-        schoolsList.value = data.data
-      }
-    }
-)
+
 
 watch(
     () => cateringStore.feedingGroupSessionsInfoResponse,
@@ -68,6 +61,14 @@ const doFetchMealCourses = (school_number) => {
   }
 }
 
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if(data){
+        schoolsList.value = data.data
+      }
+    }
+)
 
 watch(
     () => mealStore.mealCoursesResponse,
@@ -131,7 +132,7 @@ watch(
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="form.meal_course_number">
-          <option disabled value="">--select Meal Course--</option>
+          <option disabled value="">--Select Meal Course--</option>
           <option v-for="(lvl, index) in mealCourseList?.courses" :key="index" :value="lvl.number">{{lvl.name}}</option>
         </select>
       </div>
