@@ -1,3 +1,80 @@
+<script setup>
+
+import {ref} from "vue";
+import {useRouter} from "vue-router";
+import ManageFeedingSessions from "@/main/dashboard/catering/cateringComponents/ManageFeedingSessions.vue";
+import ManageStock from "@/main/dashboard/catering/cateringComponents/ManageStock.vue";
+import FeedingGroupUsers from "@/main/dashboard/catering/cateringComponents/FeedingGroupUsers.vue";
+import FeedingUsers from "@/main/dashboard/catering/cateringComponents/FeedingUsers.vue";
+import ManageFeedingGroup from "@/main/dashboard/catering/cateringComponents/ManageFeedingGroup.vue";
+import ManageMenuItem from "@/main/dashboard/catering/cateringComponents/ManageMenuItem.vue";
+import ManageUnitOfMeasurement from "@/main/dashboard/catering/cateringComponents/ManageUnitOfMeasurement.vue";
+import MealCourses from "@/main/dashboard/catering/meals/MealCourses.vue";
+import MealCalendar from "@/main/dashboard/catering/meals/MealCalendar.vue";
+import MealCourseFeedingSessions from "@/main/dashboard/catering/meals/MealCourseFeedingSessions.vue";
+
+
+
+const routerData = useRouter()
+
+const menuSelected = ref("menu-items")
+const route = routerData.currentRoute.value.query.s
+
+
+const menu = ref([
+  {
+    text:"Units Of Measure",
+    value:"units-of-measurement"
+  },
+  {
+    text:"Menu Items",
+    value:"menu-items"
+  },
+
+  {
+    text:"Feeding Group",
+    value:"feeding-group"
+  },
+  {
+    text:"Feeding Session",
+    value:"feeding-session"
+  },
+
+])
+
+const Feedmenu = ref([
+  {
+    text:"Feeding User Group",
+    value:"manage-feeding-users"
+  },
+  {
+    text:"Capturing Meals",
+    value:"feeding"
+  },
+])
+
+const mealMenu = ref([
+  {
+    text:"Meal Courses",
+    value:"meal-courses"
+  },
+  {
+    text:"Meal Course Feeding Sessions",
+    value:"meal-course-feeding-sessions"
+  },
+  {
+    text:"Meal Calendar",
+    value:"meal-calendar"
+  },
+])
+
+const changeMenu = (value) => {
+  menuSelected.value = value
+}
+
+
+
+</script>
 <template>
     <div>
 
@@ -106,12 +183,12 @@
                   </div>
 
 
-<!--                <div v-if="menuSelected === 'meals'">
-                  <Meals></Meals>
-                </div>-->
-
                 <div v-if="menuSelected === 'meal-courses'">
                   <MealCourses></MealCourses>
+                </div>
+
+                <div v-if="menuSelected === 'meal-course-feeding-sessions'">
+                  <MealCourseFeedingSessions></MealCourseFeedingSessions>
                 </div>
 
                 <div v-if="menuSelected === 'meal-calendar'">
@@ -132,89 +209,7 @@
     </div>
   </template>
   
-  <script setup>
-  
-  import {reactive, ref} from "vue";
-  import {useRouter} from "vue-router";
-  import FoodMenuItem from "@/main/dashboard/catering/cateringComponents/FoodMenuItem.vue";
-  import UnitsOfMeasure from "@/main/dashboard/catering/cateringComponents/UnitsOfMeasure.vue";
-  import ItemAssembly from "@/main/dashboard/catering/cateringComponents/ItemAssembly.vue";
-  import FeedingSession from "@/main/dashboard/catering/cateringComponents/FeedingSession.vue";
-  import FeedingGroup from "@/main/dashboard/catering/cateringComponents/FeedingGroup.vue";
-  import ManageFeedingSessions from "@/main/dashboard/catering/cateringComponents/ManageFeedingSessions.vue";
-  import ManageItemsAssembly from "@/main/dashboard/catering/cateringComponents/ManageItemsAssembly.vue";
-  import ManageStock from "@/main/dashboard/catering/cateringComponents/ManageStock.vue";
-  import FeedingGroupUsers from "@/main/dashboard/catering/cateringComponents/FeedingGroupUsers.vue";
-  import FeedingUsers from "@/main/dashboard/catering/cateringComponents/FeedingUsers.vue";
-  import ManageFeedingGroup from "@/main/dashboard/catering/cateringComponents/ManageFeedingGroup.vue";
-  import ManageMenuItem from "@/main/dashboard/catering/cateringComponents/ManageMenuItem.vue";
-  import ManageUnitOfMeasurement from "@/main/dashboard/catering/cateringComponents/ManageUnitOfMeasurement.vue";
-  import Meals from "@/main/dashboard/catering/meals/Meals.vue";
-  import MealCourses from "@/main/dashboard/catering/meals/MealCourses.vue";
-  import MealCalendar from "@/main/dashboard/catering/meals/MealCalendar.vue";
 
-
-
-  const routerData = useRouter()
-  
-  const menuSelected = ref("menu-items")
-  const route = routerData.currentRoute.value.query.s
-  // const menuSelected = route ? route : "menu-items"
-  
-  const menu = ref([
-   {
-      text:"Units Of Measure",
-      value:"units-of-measurement"
-    },
-    {
-      text:"Menu Items",
-      value:"menu-items"
-    },
-
-  {
-  text:"Feeding Group",
-  value:"feeding-group"
-},
-{
-  text:"Feeding Session",
-  value:"feeding-session"
-},
-   
-  ])
-
-  const Feedmenu = ref([
-   {
-      text:"Feeding User Group",
-      value:"manage-feeding-users"
-    },
-    {
-      text:"Capturing Meals",
-      value:"feeding"
-    },
-  ])
-
-  const mealMenu = ref([
- /*  {
-      text:"Meals",
-      value:"meals"
-    },*/
-    {
-      text:"Meal Courses",
-      value:"meal-courses"
-    },
-    {
-      text:"Meal Calendar",
-      value:"meal-calendar"
-    },
-  ])
-
-  const changeMenu = (value) => {
-  menuSelected.value = value
-}
-
-  
-  
-  </script>
   
   <style scoped>
   

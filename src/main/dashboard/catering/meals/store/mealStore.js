@@ -4,7 +4,7 @@ import api from "@/config/api.js";
 
 export const useMealStore = defineStore("Meal", () => {
     const mealDataResponse = ref(null)
-    const newMealResponse = ref(null)
+    const newMealCourseFeedingSessionsResponse = ref(null)
     const errorMessage = ref(null)
     const newMealCoursesResponse = ref(null)
     const mealCoursesResponse = ref(null)
@@ -12,10 +12,10 @@ export const useMealStore = defineStore("Meal", () => {
 
 
 
-    async function createNewMeal(data) {
-        return await api.post("main/catering/meals", data)
+    async function createMealCourseFeedingSessions(data) {
+        return await api.post("main/catering/meal-course-feeding-sessions", data)
             .then((response) => {
-                newMealResponse.value = response.data
+                newMealCourseFeedingSessionsResponse.value = response.data
             })
             .catch((error) => {
                 if(error && error.response){
@@ -25,8 +25,8 @@ export const useMealStore = defineStore("Meal", () => {
     }
 
     
-    async function fetchMealData() {
-        return await api.get("main/catering/meals")
+    async function fetchMealCourseFeedingSessions(data) {
+        return await api.get("main/catering/meal-course-feeding-sessions?meal_course_number="+data.meal_course_number)
             .then((response) => {
                 mealDataResponse.value = response.data
             })
@@ -79,11 +79,11 @@ export const useMealStore = defineStore("Meal", () => {
        newMealCoursesResponse,
        mealCoursesResponse,
        mealDataResponse,
-       newMealResponse,
+       newMealCourseFeedingSessionsResponse,
        mealCalendarResponse,
        errorMessage,
-       createNewMeal,
-       fetchMealData,
+       createMealCourseFeedingSessions,
+       fetchMealCourseFeedingSessions,
        createNewMealCourse,
        fetchMealCourses,
        fetchMealCalendar

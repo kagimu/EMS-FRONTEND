@@ -25,7 +25,7 @@ onMounted(
 const fetchCampusBySchool = () => {
   campus_number.value = ""
   campusStore.fetchCampuses(school_number.value)
-  doFetchMealCourses()
+  // doFetchMealCourses()
 }
 
 const doFetchMealCourses = () => {
@@ -125,13 +125,22 @@ watch(
           <tr v-for="(calender, index) in mealCalendarList?.calendar_raw_response" :key="index">
             <td class="border-r"> {{calender.course_name}}</td>
             <td class="border-r hover:bg-[#dbdee1] cursor-pointer" v-for="(days, key) in calender?.day_items" :key="key">
+
+              <div v-if="days.active">
                 <div class="text-sm" v-for="(item, key) in days?.items" :key="key">
                   <small>
-<!--                    <i style="font-size: 15px;"  class="bi-dot mr-2"></i>-->
+                    <!--                    <i style="font-size: 15px;"  class="bi-dot mr-2"></i>-->
                     {{(key + 1)}}.
                     {{item}}
                   </small>
                 </div>
+              </div>
+
+              <div v-else >
+                <i v-tooltip.right="days.error"  class="bi-exclamation-triangle mr-2 text-red-700 text-[20px]"></i>
+              </div>
+
+
             </td>
 
           </tr>
