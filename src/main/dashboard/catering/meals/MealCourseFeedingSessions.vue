@@ -2,22 +2,34 @@
 
 import AppModal from "@/components/AppModal.vue";
 import {onMounted, ref, watch} from "vue";
-import NewMeal from "@/main/dashboard/catering/meals/components/NewMeal.vue";
 import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
+import NewMealCourseFeedingSessions from "@/main/dashboard/catering/meals/components/NewMealCourseFeedingSessions.vue";
+import useNotificationStore from "@/composables/useNotification.js";
 const  mealStore  = useMealStore()
+const  notificationStore  = useNotificationStore()
 
 const mealList = ref([])
 const mealEditMode = ref(false)
-const mealDialog = ref(false)
+const mealCourseFeedingSessionsDialog = ref(false)
 
 const addMeal = () => {
-  mealDialog.value = true
+  mealCourseFeedingSessionsDialog.value = true
 }
 
 
 onMounted(
     async () => {
-      await mealStore.fetchMealData()
+      await mealStore.fetchMealCourseFeedingSessions()
+    }
+)
+
+watch(
+    () => mealStore.newMealCourseFeedingSessionsResponse,
+    async (data) => {
+      if(data){
+        await mealStore.fetchMealCourseFeedingSessions()
+        notificationStore.successToast("Success", data.message)
+      }
     }
 )
 
@@ -40,8 +52,8 @@ watch(
   <div>
 
 
-    <AppModal :title="mealEditMode ? 'Edit Meal' : 'Add Meal'" v-model="mealDialog" lg>
-      <new-meal></new-meal>
+    <AppModal :title="mealEditMode ? 'Edit Meal Course Feeding Sessions' : 'Add Meal Course Feeding Sessions'" v-model="mealCourseFeedingSessionsDialog" lg>
+      <NewMealCourseFeedingSessions></NewMealCourseFeedingSessions>
     </AppModal>
 
 
@@ -56,11 +68,11 @@ watch(
 
 
         <div class="flex justify-content-between mt-3">
-          <div class="ml-4">Meals</div>
+          <div class="ml-4">Meal Course Feeding Sessions</div>
           <button
               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addMeal">
             <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-            Add a Meal
+            Add Meal Course Feeding Sessions
           </button>
         </div>
 
