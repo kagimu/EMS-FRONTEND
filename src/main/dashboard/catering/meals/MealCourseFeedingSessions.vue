@@ -143,7 +143,7 @@ watch(
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="meal_course_number"
-                  @change="doCourseFeedingSessionInfo(meal_course_number)"
+                  @change="doCourseFeedingSessionInfo()"
               >
                 <option disabled value="">--Select Meal Course--</option>
                 <option v-for="(lvl, index) in mealCourseList?.courses" :key="index" :value="lvl.number">{{lvl.name}}</option>

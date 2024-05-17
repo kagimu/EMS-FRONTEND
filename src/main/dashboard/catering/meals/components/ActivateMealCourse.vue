@@ -51,12 +51,6 @@ const addMealCourseFeedingSessionsDialog = () => {
 }
 
 
-watch(
-    () => cateringStore.feedingGroupSessionsInfoResponse,
-    async (data) => {
-      feedingSessionGroupList.value = data.data
-    }
-)
 
 
 const doFetchMealCourses = (school_number) => {
@@ -65,6 +59,15 @@ const doFetchMealCourses = (school_number) => {
     campusStore.fetchCampuses(school_number)
   }
 }
+
+const fetchAllMealCourseFeeding = async (meal_course_number) => {
+  let data = {
+    meal_course_number:meal_course_number
+  }
+  await mealStore.fetchMealCourseFeedingSessions(data)
+}
+
+
 
 watch(
     () => schoolStore.schoolsResponse,
@@ -124,6 +127,15 @@ watch(
     }
 )
 
+watch(
+    () => mealStore.mealDataResponse,
+    async (data) => {
+      if(data){
+        feedingSessionGroupList.value = data.data
+      }
+    }
+)
+
 </script>
 <template>
   <div>
@@ -155,7 +167,9 @@ watch(
             <select
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
-                v-model="form.meal_course_number">
+                v-model="form.meal_course_number"
+                @change="fetchAllMealCourseFeeding(form.meal_course_number)"
+            >
               <option disabled value="">--Select Meal Course--</option>
               <option v-for="(lvl, index) in mealCourseList?.courses" :key="index" :value="lvl.number">{{ lvl.name }}
               </option>
