@@ -89,9 +89,9 @@
          </div>
          <div class="row mt-3">
             <p class="" style=""><small>Tick <i class="bi bi-check" style="color:red"> </i>brought Item on the List </small> </p>
-            <div class="col-4">
+            <div class="col-6">
                <div class="mb-2">
-                  <ul>
+                  <ul style="display: none;">
                      <li v-for="(item, indx) in itemsData" :key="indx"
                         class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
                         <div class="d-flex align-items-center" style="font-size: 12px;">
@@ -114,6 +114,42 @@
                         </div>
                      </li>
                   </ul>
+
+                  <table class="table table-hover caption-top mt-1 table-sm table-striped" style="font-size: 13px;">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Item Name</th>
+      <th>Cost</th>
+      <th>Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-for="(item, indx) in itemsData" :key="indx">
+      <td>
+        <input v-model="selectedItems" 
+               class="form-check-input" 
+               type="checkbox" 
+               :value="item.item_number" 
+               @change="toggleSelection(item)"
+               aria-label="..." />
+      </td>
+      <td style="font-size: 12px;">{{ item.item_name }}</td>
+      <td style="font-size: 12px;">{{ item.cost }}</td>
+      <td>
+        <input type="text" 
+               @keypress="commons.numbersOnlyValidator($event)" 
+               maxlength="10"
+               class="form-control" 
+               placeholder="1"
+               style="width: 50px; font-size: 13px; text-align: center;" 
+               v-model="item.quantity" 
+               @input="updateQuantity(item, $event)">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
                </div>
             </div>
          </div>

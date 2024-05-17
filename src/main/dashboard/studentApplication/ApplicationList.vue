@@ -406,7 +406,7 @@
               <table
                  id="datatable"
                  class="table table-striped"
-                 style="font-size: 14px !important;"
+                 style="font-size: 13px !important;"
                  >
                  <thead>
                     <tr>
@@ -417,7 +417,7 @@
                        <!-- <th>DOB</th> -->
                        <th>Status</th>
                        <th>Payment</th>
-                       <th>Action</th>
+                       <th style="width: 20%;">Action</th>
                     </tr>
                  </thead>
                  <tbody>
@@ -441,22 +441,22 @@
                              </small>
                              </button> -->
                           <button v-if="applist.status === 'SUBMITTED'" @click="setApplicationNumber(applist.number)"
-                             class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
+                             class="btn btn-primary btn-sm mb-2" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
                           Schedule Interview
                           </small>
                           </button>
                           <button v-if="applist.status === 'ENROLLED'"  @click="setApplicationNumber(applist.number)"
-                             class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
+                             class="btn btn-primary btn-sm mb-2" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
                           View Details
                           </small>
                           </button>
                           <button v-if="applist.status === 'INTERVIEW_SCHEDULED'"  @click="setApplicationNumber(applist.number)"
-                             class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
+                             class="btn btn-primary btn-sm mb-2" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
                           View Details
                           </small>
                           </button>
                           <button v-if="applist.status === 'ADMITTED'" @click="setApplicationNumber(applist.number)"
-                             class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
+                             class="btn btn-primary btn-sm mb-2" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
                           View Details
                           </small>
                           </button>
