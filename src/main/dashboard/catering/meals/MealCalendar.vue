@@ -4,6 +4,8 @@ import {onMounted, ref, watch} from "vue";
 import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import AppModal from "@/components/AppModal.vue";
+import ActivateMealCourse from "@/main/dashboard/catering/meals/components/ActivateMealCourse.vue";
 
 const mealCalendarList = ref([])
 const  mealStore  = useMealStore()
@@ -13,6 +15,7 @@ const school_number = ref("")
 const campus_number = ref("")
 const schoolsList = ref([])
 const campusList = ref([])
+const mealActivateMealCourseDialog = ref(false)
 
 
 
@@ -55,6 +58,7 @@ watch(
     }
 )
 
+
 watch(
     () => campusStore.campusListResponse,
     async (data) => {
@@ -64,12 +68,29 @@ watch(
     }
 )
 
+const doActivateMealCourse = () => {
+  mealActivateMealCourseDialog.value = true
+}
+
+
+watch(
+    () => mealStore.activateMealCourseResponse,
+    async (data) => {
+      if(data){
+        doFetchMealCourses()
+        // mealCalendarList.value = data.data
+      }
+    }
+)
+
 </script>
 
 <template>
   <div>
 
-
+    <AppModal title="Activate Meal Course" v-model="mealActivateMealCourseDialog" xl4>
+      <ActivateMealCourse></ActivateMealCourse>
+    </AppModal>
 
 
 
@@ -78,9 +99,13 @@ watch(
       <div class="col-12">
 
 
-
         <div class="flex justify-content-between mt-3">
-          <div class="ml-4">Meal Calendar</div>
+          <div class="ml-4">Meal Courses</div>
+          <button
+              type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="doActivateMealCourse">
+            <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+            Activate Meal Course
+          </button>
         </div>
 
 

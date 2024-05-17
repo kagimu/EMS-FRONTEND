@@ -9,6 +9,7 @@ export const useMealStore = defineStore("Meal", () => {
     const newMealCoursesResponse = ref(null)
     const mealCoursesResponse = ref(null)
     const mealCalendarResponse = ref(null)
+    const activateMealCourseResponse = ref(null)
 
 
 
@@ -74,6 +75,17 @@ export const useMealStore = defineStore("Meal", () => {
             })
     }
 
+    async function activateMealCourse(data) {
+        return await api.post("main/catering/activate-meal-course", data)
+            .then((response) => {
+                activateMealCourseResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
 
     return {
        newMealCoursesResponse,
@@ -81,11 +93,13 @@ export const useMealStore = defineStore("Meal", () => {
        mealDataResponse,
        newMealCourseFeedingSessionsResponse,
        mealCalendarResponse,
+       activateMealCourseResponse,
        errorMessage,
        createMealCourseFeedingSessions,
        fetchMealCourseFeedingSessions,
        createNewMealCourse,
        fetchMealCourses,
-       fetchMealCalendar
+       fetchMealCalendar,
+       activateMealCourse
     }
 })
