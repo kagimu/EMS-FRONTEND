@@ -89,9 +89,9 @@
          </div>
          <div class="row mt-3">
             <p class="" style=""><small>Tick <i class="bi bi-check" style="color:red"> </i>brought Item on the List </small> </p>
-            <div class="col-6">
+            <div class="col-12">
                <div class="mb-2">
-                  <ul style="display: none;">
+                  <!-- <ul style="display: none;">
                      <li v-for="(item, indx) in itemsData" :key="indx"
                         class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
                         <div class="d-flex align-items-center" style="font-size: 12px;">
@@ -113,7 +113,7 @@
                               @input="updateQuantity(item, $event)">
                         </div>
                      </li>
-                  </ul>
+                  </ul> -->
 
                   <table class="table table-hover caption-top mt-1 table-sm table-striped" style="font-size: 13px;">
   <thead>
