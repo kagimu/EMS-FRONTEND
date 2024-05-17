@@ -29,6 +29,7 @@ export const useApplicationStore = defineStore("application", () => {
     let previousSchoolResultsByStudentResponse = ref(null)
     let previousSchoolResultsAllResponse = ref(null)
     let studentDataResponse = ref(null)
+    let submitApplicationOnSkipPreviousSchoolResponse = ref(null)
 
     async function newApplicationDetails(data) {
         return await api.post("main/applications/new-parent", data)
@@ -368,6 +369,19 @@ export const useApplicationStore = defineStore("application", () => {
             })
     }
 
+    async function submitApplicationOnSkipPreviousSchool(applicationNumber) {
+        return await api.post("main/applications/submit-application/"+applicationNumber)
+            .then((response) => {
+                submitApplicationOnSkipPreviousSchoolResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
     return {
         newApplicationDetailsResponse ,
         errorMessage,
@@ -417,7 +431,9 @@ export const useApplicationStore = defineStore("application", () => {
         previousSchoolResultsAllResponse,
         fetchPreviousSchoolResultsAll,
         studentDataResponse,
-        fetchStudent
+        fetchStudent,
+        submitApplicationOnSkipPreviousSchool,
+        submitApplicationOnSkipPreviousSchoolResponse
 
     }
 })

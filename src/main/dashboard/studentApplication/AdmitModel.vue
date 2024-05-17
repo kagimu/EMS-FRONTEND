@@ -91,13 +91,14 @@
       <div class="row mt-1">
         <div class="col-lg-12">
           <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-12">
               <!-- New Design -->
-              <table class="table table-hover caption-top mt-1 table-sm table-striped">
+              <table class="table table-hover caption-top mt-1 ">
                 <thead>
-                  <tr class="" style="padding: 0px;margin: 0px;">
+                  <tr class="" style="padding: 0px;margin: 0px;font-size: 13px;">
                     <th class="textSize">Item</th>
                     <th class="textSize">Cost</th>
+                    <th>Quantity</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -105,10 +106,12 @@
                   <tr v-for="(Service, index) in Services" :key="index">
                     <td>
                       <select class="form-select form-select-sm form-control select-no-border" v-model="Service.number" @change="updateService(index)">
-                        <option :value="option.item_number" v-for="option in availableOptions(index)">{{ option.name }}</option>
+                        <!-- <option :value="option.item_number" v-for="option in availableOptions(index)">{{ option.name }}</option> -->
+                        <option :value="option.item_number" v-for="option in availableOptions(index)" :key="option.item_number">{{ option.name }}</option>
                       </select>
                     </td>
-                    <td><input disabled type="text" v-model="Service.cost" @input="updateAmount(index)" placeholder="Unit Price"></td>
+                    <td><input class="form-control" style="border: 0px; background-color: white;" disabled type="text" v-model="Service.cost" @input="updateAmount(index)" placeholder="Unit Price"></td>
+                    <td><input class="form-control"  style="width: 50px; font-size: 14px; text-align: center;"  @keypress="commons.numbersOnlyValidator($event)" maxlength="10" type="text" v-model="Service.quantity"></td>
                     <td><button type="button" @click="removeService(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
                   </tr>
                 </tbody>
@@ -141,6 +144,9 @@
   import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
   import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
   import {useRouter} from "vue-router"
+  import useCommonsStore from "@/composables/useCommons.js";
+  
+  const commons = useCommonsStore()
   const routerData = useRouter()
   
   const  notificationStore  = useNotificationStore()
@@ -366,11 +372,19 @@
     return Services.value.reduce((total, Service) => total + Service.amount, 0);
   }
   
-  function availableOptions(index) {
-    const selectedNames = Services.value.map(Service => Service.number);
-    return ServiceOptions.value.filter(option => !selectedNames.includes(option.name) || option.item_number === Services.value[index].number);
-  }
+  // function availableOptions(index) {
+  //   const selectedNames = Services.value.map(Service => Service.number);
+  //   return ServiceOptions.value.filter(option => !selectedNames.includes(option.name) || option.item_number === Services.value[index].number);
+  // }
   
+  function availableOptions(index) {
+  const selectedNumbers = Services.value.map((Service) => Service.number);
+  return ServiceOptions.value.filter(
+    (option) =>
+      !selectedNumbers.includes(option.item_number) ||
+      option.item_number === Services.value[index].number
+  );
+}
 
   onMounted(
     async () => {
@@ -390,8 +404,13 @@
   const Admit = () =>{
       buttonLoader.value = true
       const itemNumbers = Services.value.map(service => service.number);
-      const items = { items: itemNumbers };
+      // const items = { items: itemNumbers };
   
+      const items = Services.value.map(service => ({
+    item_number: service.number,
+    quantity: parseInt(service.quantity)
+  }));
+
     const data = {
       student_number:props.selectedStudentNumber,
       academic_year_number: form.academic_year_number,
@@ -401,10 +420,10 @@
       campus_number: form.campus_number,
       interview_number:interviewNumber,
       stream_number:form.stream_number,
-      ...items
+      items
     }
    
-    // alert(JSON.stringify(selectedData))
+    // alert(JSON.stringify(data))
     admissionStore.admitStudent(data)
   }
   

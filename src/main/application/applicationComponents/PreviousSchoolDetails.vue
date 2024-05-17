@@ -100,9 +100,26 @@ const  notificationStore  = useNotificationStore()
 const goBack = () =>{
   emit("next", 2 )
 }
+
 const skip = () =>{
+  let applicationN = localStorage.getItem('applicationId')
+  alert(applicationN)
+  applicationStore.submitApplicationOnSkipPreviousSchool(applicationN)
   emit("next",4)
 }
+watch (
+    () => applicationStore.submitApplicationOnSkipPreviousSchoolResponse,
+    async (data) => {
+      if(data){
+        localStorage.setItem("applicationId", data.application_number)
+        buttonLoader.value = false
+        // notificationStore.successToast("Success", data.message)
+        emit("next", 4 )
+      }
+    },
+    {deep:true}
+)
+
 
 
 const formData =  reactive({

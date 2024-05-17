@@ -10,8 +10,9 @@
   import EnrolModel from "@/main/dashboard/enrollment/EnrolModel.vue"
   import AppModal from "@/components/AppModal.vue";
   import {useEnrolmentStore} from "@/main/dashboard/enrollment/store/enrollment.js"
+  import {useLevelStore} from "@/main/settings/level/store/level.js";
 
-
+  const levelStore = useLevelStore()
   const interviewStudentList = ref( [])
   let errorMessage = ref(null)
   const buttonLoader = ref(false)
@@ -45,6 +46,8 @@
   const loading = ref(false)
   const page = ref(1)
   const per_page = ref(15)
+  const curriculumList = ref([])
+  const levelList = ref([])
   
   onMounted(() => {
     schoolStore.fetchSchools()
@@ -58,28 +61,71 @@
   campus_number: "",
   stream_number:"",
   school_number:"",
-  academic_year_number:""
+  academic_year_number:"",
+  curriculumNumber:"",
+  level:""
   })
   
 
-  
   const fetchCampuses = (school_number) => {
     campusStore.fetchCampuses(school_number)
     doFetchAdmission()
   }
   
+
+
+
   const fetchClasses = (campus_number) => {
     campusStore.fetchClassesByCampus(campus_number)
+    levelStore.fetchCampusCurriculum(campus_number)
     doFetchAdmission()
   }
-  
-  
-  //fetchacadmicYear
+
   const fetchAcademicYear = (campusN) =>{
   academicYearStore.fetchAcademicYearByCampus(campusN)
   classStore.fetchClassStreams(campusN)
   doFetchAdmission()
   }
+
+  const fetchCampusLevel = (curriculumNumber) => {
+   classStore.fetchCampusLevel(curriculumNumber)
+}
+
+
+
+const fetchLevelClasses = (levelNumber) => {
+   classStore.fetchClassLevel({campusCurriculumNumber: form.curriculumNumber, campusLevelNumber: levelNumber})
+}
+
+watch(
+    () => classStore.classLevelInfoResponse,
+    async (data) => {
+      if(data){
+        classList.value = data.data
+      }
+    },
+    {deep:true}
+)
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        levelList.value = data.data ///---------------
+      }
+    },
+    {deep:true}
+)
+
+  watch(
+    () => levelStore.campusCurriculumResponse,
+    async (data) => {
+      if(data){
+        curriculumList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
   watch(
     () => academicYearStore.academicYearByCampusResponse,
     async (data) => {
@@ -203,15 +249,15 @@
     {deep: true}
   )
   
-  watch(
-    () => campusStore.campusClassesResponse,
-    async (data) => {
-        if (data) {
-            classList.value = data.data
-        }
-    },
-    {deep: true}
-  )
+//   watch(
+//     () => campusStore.campusClassesResponse,
+//     async (data) => {
+//         if (data) {
+//             classList.value = data.data
+//         }
+//     },
+//     {deep: true}
+//   )
   
   watch(
     () => campusStore.errorMessage,
@@ -310,18 +356,49 @@
                                                      </select>
                                                   </div>
                                                </div>
+                                             <div class="col-3">
+                                                <div class="mb-2">
+                                                <select
+                                                style="box-shadow: none;"
+                                                class="form-select form-select-sm"
+                                                   v-model="form.curriculumNumber"  
+                                                   @change="fetchCampusLevel(form.curriculumNumber)"                                         
+                                                >
+                                                   <option disabled value="" >--Select Curriculum--</option>
+                                                   <option  v-for="(lvl, index) in curriculumList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+                                                </select>
+                                             </div>
+
+                                             </div>
+                                             <div class="col-3" >
+                                                <div class="mb-2">
+                                                   <select
+                                                   style="box-shadow: none;"
+                                                   class="form-select form-select-sm"
+                                                      v-model="form.level"
+                                                      @change="fetchLevelClasses(form.level)"
+                                                   >
+                                                      <option disabled value="">-Filter by level-</option>
+                                                      <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
+                                                   </select>
+                                                   
+                                                </div>
+                                                </div>
                                                <div class="col-3">
                                                   <div class="mb-2">
-                                                     <!-- <label class="textColor"><small>Class</small> </label> -->
+                                                   <!-- {{ classList }} -->
                                                      <select
                                                         style="box-shadow: none;"
                                                         class="form-select form-select-sm" required
                                                         v-model="form.campus_class_number"
                                                         @change="fetchAcademicYear(form.campus_class_number)"
                                                         >
-                                                        <option disabled value="">-filter by class -</option>
-                                                        <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}
-                                                        </option>
+                                                      <option disabled value="">-filter by class-</option>
+                                                      <template v-for="(classItem, index) in classList" :key="index">
+                                                      <option v-for="(classDetail, indx) in classItem.classes" :key="indx" :value="classDetail.number">
+                                                      {{ classDetail.name }}
+                                                      </option>
+                                                      </template>
                                                      </select>
                                                   </div>
                                                </div>
