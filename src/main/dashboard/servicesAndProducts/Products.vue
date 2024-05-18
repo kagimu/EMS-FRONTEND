@@ -104,7 +104,7 @@
   import AppModal from "@/components/AppModal.vue";
 
   import { useAbility } from '@casl/vue';
-   const showActionDialog = ref(null)
+   const showActionDialog = ref(false)
    const { can } = useAbility()
 
 const productsList = ref( [])
