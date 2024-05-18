@@ -13,6 +13,7 @@
   import {usePromotionStore} from "@/main/settings/promotion/store/promotion.js"
   import AppModal from "@/components/AppModal.vue";
   
+
   const enrollmentList = ref( [])
   let errorMessage = ref(null)
   const buttonLoader = ref(false)
@@ -44,7 +45,8 @@
   campus_number: "",
   stream_number:"",
   school_number:"",
-  academic_year_number:""
+  academic_year_number:"",
+  status:""
   })
   
   
@@ -105,7 +107,8 @@
       campus_number: form.campus_number,
       campus_class_number:form.campus_class_number,
       stream_number:form.stream_number,
-      academic_year_number:form.academic_year_number
+      academic_year_number:form.academic_year_number,
+      status:form.status
    }
    loading.value = true;
    enrollmentList.value = []
@@ -236,6 +239,8 @@ studentNumber.value = a
     },
     {deep: true}
 )
+
+
     </script>
   
   
@@ -260,13 +265,15 @@ studentNumber.value = a
       </div>
 
 
+   
+
   
       <!-- end  -->
       <div class="row mt-3">
         <div class="col-12">
           <div class="card">
             <div class="card-body" style="padding: 0;">
-    <div class="container mt-1">
+    <div class="containe mt-1 mx-2">
         <div class="row">
           <div class="col-lg-12">
             <div class="">
@@ -284,6 +291,21 @@ studentNumber.value = a
         
 
               <div class="row">
+                <div class="col-3">
+                  <div class="mb-2">
+            <select
+                    style="box-shadow: none;"
+                    class="form-select form-select-sm" required
+                    v-model="form.status"
+                    @change="doFetchEnrollent()"
+            >
+                <option disabled value="">-Filter By Status-</option>
+                <option value="ACTIVE">Active</option>
+                <option value="TERMINATED">Terminated</option>
+                <option value="SUSPENDED">Suspended</option>
+            </select>
+        </div>
+                </div>
                 <div class="col-3">
                   <div class="mb-2">
             <select
@@ -453,7 +475,7 @@ studentNumber.value = a
                 </button>
               </router-link>
 
-
+         
             </td>
           
           </tr>  
