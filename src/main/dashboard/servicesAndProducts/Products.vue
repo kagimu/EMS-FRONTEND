@@ -1,5 +1,11 @@
 <template>
     <div>
+
+      <AppModal title="New Product" v-model="showActionDialog" xs>
+        <NewProduct></NewProduct>
+    </AppModal>
+
+
         <div class="modal fade" id="serviceModal" tabindex="-1"   aria-hidden="true" :class="{ show: showDialog }">
       <div class="modal-dialog">
         <div class="modal-dialog">
@@ -89,15 +95,16 @@
        
     </template>
     
-    <script setup>
+<script setup>
   import {onMounted,reactive, ref, watch} from "vue";
   import useNotificationStore from "@/composables/useNotification.js";
   import NewProduct from "./NewProduct.vue";
   import UpdateProduct from "./UpdateProduct.vue";
   import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js";
+  import AppModal from "@/components/AppModal.vue";
 
   import { useAbility } from '@casl/vue';
-
+   const showActionDialog = ref(null)
 const { can } = useAbility()
 
 const productsList = ref( [])
