@@ -16,15 +16,6 @@
       <input v-model="formData.cost" style="outline: none 0 !important; box-shadow: none;" type="number"  required  class="form-control form-select-sm">
   </div>
 
-  <div class="mb-2">
-      <label class="textColor"><small>Discount Price</small></label>
-      <input v-model="formData.discount_amount" style="outline: none 0 !important; box-shadow: none;" type="number"  required  class="form-control form-select-sm">
-  </div>
-
-  <div class="mb-2">
-      <label class="textColor"><small>Discount Percentange</small></label>
-      <input v-model="formData.discount_percentage" style="outline: none 0 !important; box-shadow: none;" type="number"  required  class="form-control form-select-sm">
-  </div>
 
   <div class="mb-2">
       <label class="textColor"><small>Description</small></label>

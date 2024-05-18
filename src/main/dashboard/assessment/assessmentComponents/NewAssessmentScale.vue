@@ -38,7 +38,7 @@ const form = reactive({
   name : null,
   maximum_points: null,
   minimum_points: null,
-  campus_class_number: null,
+  campus_class_number: [],
   description: null,
   abbreviation: null,
   remarks:null,
@@ -261,13 +261,25 @@ watch(
 
           <div class="mb-2">
             <div class="text-[13px] text-[#505050]"> Class</div>
-            <select
+            <!-- <select
                 class="form-select form-select-sm shadow-none" required
                 v-model="form.campus_class_number"
             >
               <option disabled value="">--Select Class--</option>
               <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
-            </select>
+            </select> -->
+
+            <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+            <li class="list-group-item" v-for="(list, index) in campusClassList" :key="index" :value="list.number">
+            <input
+              v-model="form.campus_class_number"
+
+              style="outline: none 0 !important; box-shadow: none;"
+              class="form-check-input me-1" type="checkbox" :value="list.number" :id="list.number">
+            <label class="textColor" :for="list.number"><small>{{list.name+" [ "+list.abbreviation+" ]"}}</small></label>
+            </li>
+
+            </ul>
           </div>
 
 
