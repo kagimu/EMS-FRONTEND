@@ -45,6 +45,15 @@ onMounted(
     }
 )
 
+const menu = ref(null);
+
+const handleClickOutside = (event) => {
+  if (menu.value && !menu.value.contains(event.target)) {
+    defaultMenuSize.value = false;
+  }
+};
+
+
 watch(
     () => xs,
     async (data) => {
@@ -195,6 +204,7 @@ function updateOnlineStatus() {
       >
 
         <div
+            ref="menu"
             v-if="defaultMenuSize"
             class="absolute top-0 left-0 h-screen z-50 w-[240px] bg-white border-r border-[#dfdfdf] duration-700"
             style="font-size: 13px;">
