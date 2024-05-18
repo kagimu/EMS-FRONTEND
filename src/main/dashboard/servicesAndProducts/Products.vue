@@ -1,5 +1,11 @@
 <template>
     <div>
+
+      <AppModal title="New Product" v-model="showActionDialog" xs>
+        <NewProduct></NewProduct>
+    </AppModal>
+
+
         <div class="modal fade" id="serviceModal" tabindex="-1"   aria-hidden="true" :class="{ show: showDialog }">
       <div class="modal-dialog">
         <div class="modal-dialog">
@@ -25,10 +31,17 @@
 
     <div class="container mt-4">
       <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Product
-        <button 
+        <!-- <button 
         v-if="can('add_product','general')"
         style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
         data-bs-target="#serviceModal"  data-bs-toggle="modal" @click="openModal()">
+        <i class="bi bi-plus"></i>&nbsp;<small>
+          Add Product</small></button> -->
+
+          <button 
+        v-if="can('add_product','general')"
+        style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
+        @click="openProductModal()">
         <i class="bi bi-plus"></i>&nbsp;<small>
           Add Product</small></button>
           
@@ -89,16 +102,17 @@
        
     </template>
     
-    <script setup>
+<script setup>
   import {onMounted,reactive, ref, watch} from "vue";
   import useNotificationStore from "@/composables/useNotification.js";
   import NewProduct from "./NewProduct.vue";
   import UpdateProduct from "./UpdateProduct.vue";
   import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js";
+  import AppModal from "@/components/AppModal.vue";
 
   import { useAbility } from '@casl/vue';
-
-const { can } = useAbility()
+   const showActionDialog = ref(false)
+   const { can } = useAbility()
 
 const productsList = ref( [])
 let errorMessage = ref(null)
@@ -109,6 +123,9 @@ const showDialog = ref(false)
 
 const openModal = () =>{
   showDialog.value=true
+}
+const openProductModal = () =>{
+  showActionDialog.value=true
 }
 
 function setProductId(sId){

@@ -303,7 +303,7 @@ watch(
         <div class="col-12">
            <div class="card">
               <div class="card-body" style="padding: 0;">
-                 <div class="container">
+                 <div class="">
                     <div class="row">
                        <div class="col-lg-12">
                           <div class="">
@@ -464,12 +464,12 @@ watch(
               <div v-else>
                     <table
                        id="datatable"
-                       class="table table-striped"
+                       class="table table-hover caption-top mt-4 table-sm table-striped"
                        style="font-size: 14px !important;"
                        >
                        <thead >
                           <tr>
-                             <th style="width: 2px;">#</th>
+                             <!-- <th style="width: 2px;">#</th> -->
                              <th>ADN</th>
                              <!-- <th>Year</th>       -->
                              <th>Student</th>
@@ -486,9 +486,9 @@ watch(
                        </thead>
                        <tbody>
                           <tr v-for="(adm , index) in admissionList" :key="index">
-                             <td>
+                             <!-- <td>
                                 {{ index+1 }}
-                             </td>
+                             </td> -->
                              <td>{{ adm.Student.adn }}</td>
                              <!-- <td>{{ adm.AcademicYear.academic_year_name }}</td> -->
                              <td style="text-transform: capitalize !important;">{{ adm.Student.surname }}</td>
