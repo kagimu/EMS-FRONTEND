@@ -7,34 +7,38 @@
   import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
   import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
   import { useStudyPeriodStore } from "../../manageLevel/studyPeriod/store/studyPeriod";
-  const academicYearStore = useAcademicYearStore()
-  
   import {useRouter} from "vue-router";
-  const routerData = useRouter()
-  const commons = useCommonsStore()
-  let  curriculumNumber = routerData.currentRoute.value.query.crr
-  let  curriculumNumberParent = routerData.currentRoute.value.query.cr
-  const campus_curriculum_number = routerData.currentRoute.value.query.crr
-  
   import { useAbility } from '@casl/vue';
   import useCommonsStore from "@/composables/useCommons.js";
-  
+  const routerData = useRouter()
+  const commons = useCommonsStore()
+  const  notificationStore  = useNotificationStore()
   const { can } = useAbility()
-  
-  const buttonLoader = ref(false)
-  const assessmentMetricsData = ref([])
-  const interviewDialog= ref(false)
-  let errorMessage = ref(null)
-  
+
+  let  curriculumNumberParent = routerData.currentRoute.value.query.cr
+  const campus_curriculum_number = routerData.currentRoute.value.query.crr
+
+
+  const academicYearStore = useAcademicYearStore()
   const classStore = useClassesStore()
   const assessmentStore= useAssessmentStore()
   const studyPeriodStore = useStudyPeriodStore()
-  const  notificationStore  = useNotificationStore()
-  const campusList = ref([])
-  const assessmentMetricsList = ref([])
-  const classList = ref([])
   const schoolStore = useSchoolStore()
   const campusStore = useCampusStore()
+
+
+  
+
+  
+  const buttonLoader = ref(false)
+  const interviewDialog= ref(false)
+  let errorMessage = ref(null)
+  
+
+
+  const campusList = ref([])
+  const classList = ref([])
+
   const school_number = ref(null)
   const AsessmentListData = ref([])
   const gradeData = ref([])
@@ -52,7 +56,6 @@
       name:null,
       code:null,
       assessment_area_number:null,
-      weight:null,
       description:null,
       max_score:null,
       metric_number:null,
@@ -61,9 +64,9 @@
       study_period_number:null,
       scheduled_on:null
     })
-  
-  
-  const currentYear = ref((new Date()).getFullYear());
+
+
+
   const date = ref();
   
   const format = (date) => {
@@ -73,12 +76,18 @@
   
   return `Selected date is ${day}/${month}/${year}`;
   }
-  
-  
-  const fetchCurriculumClass = (campus_lnumber) =>{
-  classStore.fetchClassByLevel(curriculumNumber,campus_lnumber)
-  academicYearStore.fetchAcademicYearByLevel(campus_lnumber)
-  
+
+
+  onMounted(
+      async () => {
+        await classStore.fetchCampusLevel(campus_curriculum_number)
+        await assessmentStore.fetchMetrics(curriculumNumberParent)
+      })
+
+
+  const fetchCurriculumClass = () =>{
+  classStore.fetchClassByLevel(campus_curriculum_number,campus_level_number.value)
+  academicYearStore.fetchAcademicYearByLevel(campus_level_number.value)
   }
   
   
@@ -100,11 +109,20 @@
                 classLevelList.value = classData[0].classes
               }
     }
-          // classLevelList.value = data
+
       }
-  },
-  {deep: true}
+  })
+
+  watch(
+      () => assessmentStore.assessmentAreaResponse,
+      async (data) => {
+        if(data){
+          AsessmentListData.value = data.data
+        }
+      }
   )
+
+
   
   const doFetchGradingStandard = () => {
    let data = {
@@ -114,13 +132,7 @@
     assessmentStore.fetchGradeStandard(data)
   }
   
-  onMounted(
-      async () => {
-        await classStore.fetchCampusLevel(campus_curriculum_number)
-        await assessmentStore.fetchMetrics(curriculumNumberParent)
-        await assessmentStore.fetchAssessmentMetrics()
-        await schoolStore.fetchSchools()
-      } )
+
       
   watch(
       () => assessmentStore.metricResponse,
@@ -128,22 +140,13 @@
         if(data){
           metricListData.value = data.data
         }
-      },
-      {deep:true}
+      }
   )
   
   
   
   
-    watch(
-  () => assessmentStore.assessmentAreaResponse,
-  async (data) => {
-    if(data){
-      AsessmentListData.value = data.data
-    }
-  },
-  {deep:true}
-  )
+
   
   
   
@@ -170,11 +173,9 @@
     async (data) => {
       if(data){
         buttonLoader.value = false
-         assessmentStore.fetchAssessmentMetrics()
         notificationStore.successToast("Success", data.message)
        form.name= ""
        form.assessment_area_number=null,
-       form.weight=null,
        form.description=null,
        form.max_score=null,
        form.metric_number=null,
@@ -183,8 +184,7 @@
        form.study_period_number=null,
        form.scheduled_on=null
       }
-    },
-    {deep:true}
+    }
   )
   
   watch (
@@ -195,20 +195,10 @@
         buttonLoader.value = false
         notificationStore.errorToast("Error",data.message)
       }
-    },
-    {deep:true}
+    }
   )
   
-    watch(
-    () => assessmentStore.assessmentMetricsResponse,
-    async (data) => {
-      if(data){
-        assessmentMetricsData.value = data.data
-       // notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-  )
+
   
   
   const fetchCampuses = (school_number) => {
@@ -221,15 +211,7 @@
   
 
   
-  watch(
-      () => schoolStore.schoolsResponse,
-      async (data) => {
-          if (data) {
-              assessmentMetricsList.value = data.data
-          }
-      },
-      {deep: true}
-  )
+
   
   watch(
       () => campusStore.campusListResponse,
@@ -280,8 +262,7 @@
     if(data){
       campusLevelList.value = data.data
     }
-  },
-  {deep:true}
+  }
   )
   
   
@@ -291,12 +272,11 @@
     if(data){
       academicYearList.value = data.data
     }
-  },
-  {deep:true}
+  }
   )
   
-  const fetchStudyPeriod = (academic_num) =>{
-  studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
+  const fetchStudyPeriod = () =>{
+  studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_year_number.value)
   }
   
   
@@ -306,8 +286,7 @@
     if(data){
       studyPeriodList.value = data.data
     }
-  },
-  {deep:true}
+  }
   )
   
   
@@ -338,7 +317,7 @@
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
                     v-model="campus_level_number"
-                    @change="fetchCurriculumClass(campus_level_number)"
+                    @change="fetchCurriculumClass()"
                     >
                     <option disabled value="">Select Level</option>
                     <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
@@ -364,8 +343,8 @@
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
                     v-model="academic_year_number"
-                    @change="fetchStudyPeriod(academic_year_number)" >
-                    <option disabled value="">Select Class</option>
+                    @change="fetchStudyPeriod()" >
+                    <option disabled value="">Select Academic Year</option>
                     <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
                        {{list.code+". "+list.academic_year_name}}
                     </option>
@@ -414,33 +393,31 @@
                     </option>
                  </select>
               </div>
-           
+
+
+             <div class="mb-2">
+               <label class="textColor"><small>Grading Standard</small> <span class="star">*</span></label>
+               <select
+                   style="box-shadow: none;"
+                   class="form-select form-select-sm" required
+                   v-model="form.grading_standard_number"
+               >
+                 <option disabled value="">Select</option>
+                 <option v-for="(gradeList,index) in gradeData" :key="index" :value="gradeList.number">{{ gradeList.name }}</option>
+               </select>
+             </div>
+
         <div class="mb-2">
-           <div class="row">
-              <div class="col-lg-6">           
-                 <label class="textColor"><small>Weight</small></label>
-                 <input v-model="form.weight"  type="text" required class="form-control"  @keypress="commons.numbersOnlyValidator($event)"
-            maxlength="10">
-              </div>
-              <div class="col-lg-6">
-                 <label class="textColor"><small>Max_Score</small></label>
-                 <input v-model="form.max_score"  type="text" required class="form-control" @keypress="commons.numbersOnlyValidator($event)"
-            maxlength="10">
-              </div>
-           </div>
+                 <label class="textColor"><small>Maximum Score</small></label>
+                 <input
+                     v-model="form.max_score"
+                     type="text" required
+                     class="form-control"
+                     @keypress="commons.numbersOnlyValidator($event)"
+                      maxlength="10">
         </div>
       
-              <div class="mb-2">
-                 <label class="textColor"><small>Grading Standard</small> <span class="star">*</span></label>
-                 <select
-                    style="box-shadow: none;"
-                    class="form-select form-select-sm" required
-                    v-model="form.grading_standard_number"
-                    >
-                    <option disabled value="">Select</option>
-                    <option v-for="(gradeList,index) in gradeData" :key="index" :value="gradeList.number">{{ gradeList.name }}</option>
-                 </select>
-              </div>
+
            
               <div class="mb-2">
                  <label class="textColor"><small>Scheduled On</small></label>
@@ -448,8 +425,11 @@
               </div>
            
           <div class="mb-2">
-             <label class="textColor"><small>Description</small></label>
-             <textarea class="form-control textColor"  rows="3" v-model="form.description">
+             <div class="text-sm">Description</div>
+             <textarea
+                 class="form-control shadow-none"
+                 rows="3"
+                 v-model="form.description">
              </textarea>
           </div>
 

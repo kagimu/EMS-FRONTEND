@@ -208,12 +208,9 @@ watch(
     () => admissionStore.admissionByFiltersResponse,
     async (data) => {
       if(data){
-        
-      //   admissionList.value = data
         fetchAdmissions(data)
       }
-    },
-    {deep:true}
+    }
   )
 
 
@@ -224,8 +221,7 @@ watch(
         if (data) {
           streamList.value = data.data
         }
-    },
-    {deep: true}
+    }
   )
   
 

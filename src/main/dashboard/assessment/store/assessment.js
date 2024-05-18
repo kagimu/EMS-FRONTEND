@@ -197,9 +197,23 @@ async function createAssessmentMetrics(data) {
 }
 
 async function fetchAssessmentMetrics(data) {
-      let study_period_number = (data && data.study_period_number) ? data.study_period_number : ""
-      let assessment_area_number = (data && data.assessment_area_number) ? data.assessment_area_number : ""
-    return await api.get("main/assessments/assessment-metrics?study_period_number="+study_period_number+"&assessment_area_number="+assessment_area_number)
+    let  page = data?.page ?? ""
+    let  per_page =  data?.per_page ?? ""
+    let campus_class_number =   data?.campus_class_number ?? ""
+    let  academic_year_number  =  data?.academic_year_number ?? ""
+    let  study_period_number =  data?.study_period_number ?? ""
+    let  metric_number =  data?.metric_number ?? ""
+    let  assessment_area_number  =  data?.assessment_area_number ?? ""
+    let  paginated  =  data?.paginated ?? ""
+    return await api.get("main/assessments/assessment-metrics?study_period_number="+study_period_number+
+            "&page="+page+
+            "&per_page="+per_page+
+            "&assessment_area_number="+assessment_area_number+
+            "&campus_class_number="+campus_class_number+
+            "&academic_year_number="+academic_year_number+
+            "&metric_number="+metric_number+
+            "&paginated="+paginated
+        )
         .then((response) => {
             assessmentMetricsResponse.value = response.data
         })

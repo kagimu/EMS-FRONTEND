@@ -1,3 +1,15 @@
+<script setup>
+
+import {useRouter} from "vue-router";
+import StudyPeriod from "@/main/dashboard/manageLevel/studyPeriod/StudyPeriod.vue";
+import AcademicYear from "@/main/dashboard/manageLevel/academicYear/AcademicYear.vue";
+import CampusLevel from "@/main/dashboard/manageLevel/class/CampusLevel.vue";
+import ClassList from "@/main/dashboard/manageLevel/class/ClassList.vue";
+const routerData = useRouter()
+
+const selectedPage = routerData.currentRoute.value.query.type
+
+</script>
 <template>
   <div>
 
@@ -19,9 +31,7 @@
           <study-period></study-period>
         </div>
 
-        <div v-if="selectedPage === 'assessment-metrics'">
-          <assessment-metrics></assessment-metrics>
-        </div>
+
 
       </div>
 
@@ -50,28 +60,7 @@
   </div>
 </template>
 
-<script setup>
 
-import {useRouter} from "vue-router";
-import AssessmentMetrics from "@/main/dashboard/assessment/assessmentComponents/AssessmentMetrics.vue";
-import StudyPeriod from "@/main/dashboard/manageLevel/studyPeriod/StudyPeriod.vue";
-import AcademicYear from "@/main/dashboard/manageLevel/academicYear/AcademicYear.vue";
-import CampusLevel from "@/main/dashboard/manageLevel/class/CampusLevel.vue";
-import ClassList from "@/main/dashboard/manageLevel/class/ClassList.vue";
-const routerData = useRouter()
-
-const selectedPage = routerData.currentRoute.value.query.type
-
-
-
-
-
-
-
-
-
-
-</script>
 
 <style scoped>
 
