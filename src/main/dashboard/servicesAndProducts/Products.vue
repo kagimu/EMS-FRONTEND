@@ -47,8 +47,8 @@
           
        </h6>
       <table
-   
-        class="table table-striped"
+
+        class="table table-striped table-hover"
         style="font-size: 13px !important;"
       >
         <thead>
