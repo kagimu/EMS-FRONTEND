@@ -63,10 +63,10 @@ watch(
 )
 
 const createScale = () =>{
-  form.code = parseInt(form.code)
-  form.max_value = parseInt(form.max_value)
-  form.min_value = parseInt(form.min_value)
-  form.weight = parseInt(form.weight)
+  form.code =  form.code ? parseInt(form.code) : ""
+  form.max_value = form.max_value ? parseInt(form.max_value) : ""
+  form.min_value = form.min_value ? parseInt(form.min_value) : ""
+  form.weight = form.weight ? parseInt(form.weight) : ""
   assessmentStore.createAggregateScale(form)
 }
 
@@ -243,12 +243,12 @@ watch(
 
           <div class="mb-2">
             <div class="text-[13px] text-[#505050]">Name</div>
-            <input v-model="form.name" placeholder="D2" type="text" class="form-control outline-none shadow-none">
+            <input v-model="form.name" placeholder="eg. D2" type="text" class="form-control outline-none shadow-none">
           </div>
 
       <div class="mb-2">
         <div class="text-[13px] text-[#505050]">Description</div>
-        <input v-model="form.description" class="form-control outline-none shadow-none" placeholder="Distinction Two">
+        <input v-model="form.description" class="form-control outline-none shadow-none" placeholder="eg. Distinction Two">
       </div>
 
 
@@ -276,12 +276,14 @@ watch(
                    maxlength="3"
                    @keypress="commons.numbersOnlyValidator($event)"
                    v-model="form.min_value"
+                   placeholder="eg. 90"
                    type="text"
                    class="form-control outline-none shadow-none">
             </div>
             <div class="col-lg-4">
               <div class="text-[13px] text-[#505050]">Maximum Scale</div>
              <input
+                 placeholder="eg. 100"
                  maxlength="3"
                  @keypress="commons.numbersOnlyValidator($event)"
                  v-model="form.max_value"
@@ -297,7 +299,7 @@ watch(
                  v-model="form.weight"
                  type="text"
                  class="form-control outline-none shadow-none"
-                 placeholder="1">
+                 placeholder="eg. 1">
             </div>
         </div>
       </div>
