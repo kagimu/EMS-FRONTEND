@@ -27,7 +27,19 @@ export const useServiceStore = defineStore("service", () => {
         }
 
         async function fetchServicesList() {
-            return await api.get("main/services?filter=all")
+            return await api.get("main/services")
+                .then((response) => {
+                    servicesListResponse.value = response.data
+                })
+                .catch((response) => {
+                    if(response){
+                        errorMessage.value = response.response.data
+                    }
+                })
+        }
+
+        async function fetchAllItems() {
+            return await api.get("main/items")
                 .then((response) => {
                     servicesListResponse.value = response.data
                 })

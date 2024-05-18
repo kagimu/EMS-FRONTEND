@@ -31,10 +31,17 @@
 
     <div class="container mt-4">
       <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Product
-        <button 
+        <!-- <button 
         v-if="can('add_product','general')"
         style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
         data-bs-target="#serviceModal"  data-bs-toggle="modal" @click="openModal()">
+        <i class="bi bi-plus"></i>&nbsp;<small>
+          Add Product</small></button> -->
+
+          <button 
+        v-if="can('add_product','general')"
+        style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
+        @click="openProductModal()">
         <i class="bi bi-plus"></i>&nbsp;<small>
           Add Product</small></button>
           
@@ -116,6 +123,9 @@ const showDialog = ref(false)
 
 const openModal = () =>{
   showDialog.value=true
+}
+const openProductModal = () =>{
+  showActionDialog.value=true
 }
 
 function setProductId(sId){

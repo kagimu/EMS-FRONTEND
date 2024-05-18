@@ -89,7 +89,7 @@ watch (
            <div class="mb-2">
       <label class="textColor"><small>Actual Price</small></label>
       <input @keypress="commons.numbersOnlyValidator($event)"
-            maxlength="10" v-model="cost" @input="computediscount_percentage" style="outline: none 0 !important; box-shadow: none;" type="text" required class="form-control form-select-sm">
+            maxlength="10" v-model="formData.cost" @input="computediscount_percentage" style="outline: none 0 !important; box-shadow: none;" type="text" required class="form-control form-select-sm">
     </div>
 
 
