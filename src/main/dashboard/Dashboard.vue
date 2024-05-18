@@ -69,6 +69,13 @@ const checkDynamicClass = () => {
   if(md.value){
     defaultMenuSize.value = true
   }
+  if(sm.value){
+    defaultMenuSize.value = false
+  }
+
+  if(xs.value){
+    defaultMenuSize.value = false
+  }
 }
 
 const name = ref(null)
@@ -173,6 +180,60 @@ function updateOnlineStatus() {
       </div>
       </div>
     </div>
+
+
+
+    <div
+        v-else
+        class="bg-white border-[#dfdfdf] border-r h-screen duration-700 flex-none"
+    >
+      <Transition
+          enter-from-class="-translate-x-0"
+          enter-active-class="transition-all duration-100 ease-in-out"
+          leave-to-class="translate-x-0"
+          leave-active-class="transition-all duration-100 ease-in-out"
+      >
+
+        <div
+            v-if="defaultMenuSize"
+            class="absolute top-0 left-0 h-screen z-50 w-[240px] bg-white border-r border-[#dfdfdf] duration-700"
+            style="font-size: 13px;">
+
+          <div class="flex justify-between">
+            &nbsp;
+            <i
+                @click="defaultMenuSize = !defaultMenuSize"
+                style="font-size: 15px; cursor: pointer;"
+                class="fa fa-times mr-2 text-black"
+                :class="!defaultMenuSize ? 'transition ease-in-out rotate-0 duration-700' : 'transition ease-in-out -rotate-180 duration-700'"
+            ></i>
+          </div>
+
+          <div
+              class="list-group list-group-flush text-[13px] pb-[100px]"
+              :class="defaultMenuSize ? 'flex justify-center group-hover:text-left' : ''"
+          >
+          <router-link
+              v-for="(lst,idx) in menuList" :key="idx"
+              v-show="can(lst.action, 'general')"
+              :class="(lst.name === routerName) ? 'active' : ''"
+              class="list-group-item list-group-item-action"
+              :to="{name:lst.name}">
+            <div
+                v-tooltip.right="lst.name"
+            >
+              <i :class="[lst.icon,'text-[13px]']"  class="mr-2 duration-700 pl-1"></i>
+              <small>{{lst.title}}</small>
+            </div>
+          </router-link>
+          </div>
+
+        </div>
+      </Transition>
+    </div>
+
+
+
     <div class="flex-1 h-screen overflow-y-scroll scrollbar-thin pb-[120px] bg-[#ecf0f5]">
       <div class="px-3 pt-[50px]">
         <router-view></router-view>
