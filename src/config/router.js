@@ -80,11 +80,11 @@ const router = createRouter({
             component: AuthMain,
             redirect:{ name: 'welcome' },
             children:[
+                {path: 'welcome', component: Welcome, name:'welcome'},
                 {path: 'login', component: Login, name:'login'},
                 {path: 'register', component: Register, name:'register'},
-                {path: 'welcome', component: Welcome, name:'welcome'},
-                {path: 'userdashboard', component: UserDashboard, name:'userdashboard'},
-                {path: 'applicationguide', component: ApplicationGuide, name:'applicationguide'},
+                {path: 'user-dashboard', component: UserDashboard, name:'userdashboard'},
+                {path: 'application-guide', component: ApplicationGuide, name:'applicationguide'},
                 { path: 'set-password/:id', component: SetPassword, name:'set-password'},
                 { path: 'reset-password', component: ResetPassword, name:'reset-password'},
             ]
