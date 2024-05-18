@@ -37,50 +37,72 @@
       </div>
       <div class="col-lg-2"></div>
     </div>
-    <div class="row"  style="background-color: white;border-top: 1px solid white; height: 350px;padding:60px;">
-      <div class="row" >
 
-        <div class="col-sm-4" >
-          <router-link :to="{name:'register'}" class="nav-item nav-link">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title text-gray"><b>Register</b></h5>
-                <p class="card-text text-gray">With supporting text below as a natural lead-in to additional content.</p>
-              </div>
-            </div>
-          </router-link>
-        </div>
+    <div class="bg-white py-10">
+      <div class="w-[70%] mx-auto">
+        <div class="grid grid-cols-3 gap-4">
 
-        <div class="col-sm-4">
-          <router-link :to="{name:'login'}" class="nav-item nav-link">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title text-gray"><b>Activate Account</b></h5>
-                <p class="card-text text-gray">With supporting text below as a natural lead-in to additional content.</p>
-              </div>
-            </div>
-          </router-link>
-        </div>
-        <div class="col-sm-4">
-          <router-link :to="{name:'application'}" class="nav-item nav-link">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title text-gray"><b>Apply<hr class="hr"></b></h5>
-                <p class="card-text text-gray">With supporting text below as a natural lead-in to additional content.</p>
-              </div>
-            </div>
-          </router-link>
-        </div>
+          <div>
+            <router-link :to="{name:'register'}" class="nav-item nav-link">
+              <div class="mx-auto bg-white border rounded-lg text-center py-3" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                <div>
+                  <div class="pb-2 text-gray-500"><b>Register</b></div>
 
+                  <div class="text-gray py-4 px-3 text-gray-500 border-t border-b">
+                    With supporting text below as a natural lead-in to additional content.
+                  </div>
+                  <div class="text-gray-500 mt-2"><b>More</b></div>
+                </div>
+              </div>
+            </router-link>
+          </div>
+
+
+          <div>
+            <router-link :to="{name:'login'}" class="nav-item nav-link">
+              <div class="mx-auto bg-white border rounded-lg text-center py-3" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                <div>
+                  <div class="pb-2 text-gray-500"><b>Activate Account</b></div>
+
+                  <div class="text-gray py-4 px-3 text-gray-500 border-t border-b">
+                    With supporting text below as a natural lead-in to additional content.
+                  </div>
+                  <div class="text-gray-500 mt-2"><b>More</b></div>
+                </div>
+              </div>
+            </router-link>
+          </div>
+
+
+          <div>
+            <router-link :to="{name:'application-guide'}" class="nav-item nav-link">
+              <div class="mx-auto bg-white border rounded-lg text-center py-3" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                <div>
+                  <div class="pb-2 text-gray-500"><b>Apply</b></div>
+
+                  <div class="text-gray py-4 px-3 text-gray-500 border-t border-b">
+                    With supporting text below as a natural lead-in to additional content.
+                  </div>
+                  <div class="text-gray-500 mt-2"><b>More</b></div>
+                </div>
+              </div>
+            </router-link>
+          </div>
+
+
+        </div>
       </div>
     </div>
-    <footer class="absolute bottom-0 left-0 w-screen bg-[#0d56c3] py-0">
-      <div class="flex justify-between px-3">
-        <p class="text-white">© 2023 WholeSome Ed, All rights reserved.</p>
 
-        <a  class="text-white no-underline" href="#"><span>Powered by</span> <b>Hamsoft</b> </a>
+
+
+    <footer class="absolute bottom-0 left-0 w-screen bg-[#0d56c3] py-0">
+      <div class="flex justify-between px-3 py-1">
+        <div class="text-white text-sm"><small>© 2023 WholeSome Ed, All rights reserved.</small></div>
+        <a  class="text-white no-underline text-sm" href="#"><small><span>Powered by</span> <b>Hamsoft</b></small></a>
       </div>
     </footer>
+
   </div>
 </template>
 

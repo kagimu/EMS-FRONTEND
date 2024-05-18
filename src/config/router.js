@@ -83,8 +83,8 @@ const router = createRouter({
                 {path: 'welcome', component: Welcome, name:'welcome'},
                 {path: 'login', component: Login, name:'login'},
                 {path: 'register', component: Register, name:'register'},
-                {path: 'user-dashboard', component: UserDashboard, name:'userdashboard'},
-                {path: 'application-guide', component: ApplicationGuide, name:'applicationguide'},
+                {path: 'user-dashboard', component: UserDashboard, name:'user-dashboard'},
+                {path: 'application-guide', component: ApplicationGuide, name:'application-guide'},
                 { path: 'set-password/:id', component: SetPassword, name:'set-password'},
                 { path: 'reset-password', component: ResetPassword, name:'reset-password'},
             ]
