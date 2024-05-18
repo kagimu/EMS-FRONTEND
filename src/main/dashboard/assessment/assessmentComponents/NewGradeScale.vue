@@ -41,7 +41,7 @@ const form = reactive({
   max_value: null,
   weight: null,
   description: null,
-  campus_class_number: null,
+  campus_class_number: [],
   campus_number: campusNumber,
   grading_standard_number:null
 })
@@ -67,6 +67,7 @@ const createScale = () =>{
   form.max_value = form.max_value ? parseInt(form.max_value) : ""
   form.min_value = form.min_value ? parseInt(form.min_value) : ""
   form.weight = form.weight ? parseInt(form.weight) : ""
+  alert(JSON.stringify(form))
   assessmentStore.createAggregateScale(form)
 }
 
@@ -231,14 +232,26 @@ watch(
 
           <div class="mb-2">
             <div class="text-[13px] text-[#505050]"> Class</div>
-            <select
+            <!-- <select
                 class="form-select form-select-sm shadow-none" required
                 v-model="form.campus_class_number"
                 @change="doFetchGradingStandard"
             >
               <option disabled value="">Select</option>
               <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
-            </select>
+            </select> -->
+              <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+
+            <li class="list-group-item" v-for="(list, index) in campusClassList" :key="index" :value="list.number">
+            <input
+              v-model="form.campus_class_number"
+
+              style="outline: none 0 !important; box-shadow: none;"
+              class="form-check-input me-1" type="checkbox" :value="list.number" :id="list.number">
+            <label class="textColor" :for="list.number"><small>{{list.name+" [ "+list.abbreviation+" ]"}}</small></label>
+            </li>
+
+            </ul>
           </div>
 
           <div class="mb-2">
@@ -259,7 +272,6 @@ watch(
             <div class="text-[13px] text-[#505050]">Grading Standard</div>
               <select
                       class="form-select form-select-sm outline-none shadow-none"
-                      required
                       v-model="form.grading_standard_number"
               >
                   <option disabled value="">Select</option>
