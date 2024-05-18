@@ -46,10 +46,6 @@ const campusSettingsMenu = ref([
     name:"Study Periods",
     router_name:"study-period"
   },
-  {
-    name:"Assessment Metrics",
-    router_name:"assessment-metrics"
-  },
 ])
 
 
@@ -93,6 +89,10 @@ const assess = ref([
   {
     name:"Grade Standards",
     router_name:"grade-standards"
+  },
+  {
+    name:"Assessment Metrics",
+    router_name:"assessment-metrics"
   },
   {
     name:"Aggregate Scale",
