@@ -388,14 +388,14 @@
 
   onMounted(
     async () => {
-      await serviceStore.fetchServicesList()
+      await serviceStore.fetchAllItems()
     } )
   
   watch(
-    () => serviceStore.servicesListResponse,
+    () => serviceStore.allItemsListResponse,
     async (data) => {
       if (data) {
-        ServiceOptions.value = data.map(option => ({ name: option.Item.name, cost: option.Item.cost,item_number:option.Item.number }));
+        ServiceOptions.value = data.map(option => ({ name: option.name, cost: option.cost,item_number:option.number }));
       }
     },
     { deep: true }
