@@ -27,7 +27,7 @@ export const useServiceStore = defineStore("service", () => {
         }
 
         async function fetchServicesList() {
-            return await api.get("main/services")
+            return await api.get("main/services?filter=all")
                 .then((response) => {
                     servicesListResponse.value = response.data
                 })

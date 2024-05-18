@@ -105,7 +105,7 @@
 
   import { useAbility } from '@casl/vue';
    const showActionDialog = ref(null)
-const { can } = useAbility()
+   const { can } = useAbility()
 
 const productsList = ref( [])
 let errorMessage = ref(null)
