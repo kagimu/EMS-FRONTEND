@@ -25,20 +25,31 @@
       </nav>
     </div>
 
-    <div class="row">
-      <div class="col-lg-2"></div>
-      <div class="col-lg-8" style="height:300px;margin-top: -20px;" >
-        <div class="text-center mt-5">
+    <div class="w-[90%] mx-auto mt-5 mb-5">
+      <div class="grid grid-cols-2 gap-4">
 
-          <h1  style="padding:10px;font-size:45px;font-weight: 900px; word-spacing: -0.1em;">
-            <b>Begin your Online Enrollment<br> Today !</b></h1>
-          <p>Get started in just 3 easy steps </p>
+        <div class="text-center">
+          <div class="text-[45px] mt-5">WholesomeEd</div>
+          <div>Transforming Education</div>
+        </div>
+
+        <div class="text-[15px] border rounded-lg p-4 bg-white">
+          <p class="leading-[1.75]">Welcome to <b>WholesomeEd</b>, the comprehensive education management platform designed to revolutionize how schools operate and students learn. Our integrated suite of modules covers every aspect of the educational experience, ensuring that schools run smoothly and students receive the highest quality education.</p>
+
+          <p class="leading-[1.75]"> At WholesomeEd, we believe that a holistic approach to education is key to fostering growth, wellness, and academic excellence. From nutritious meals to cutting-edge curriculum design, our platform is built to support the diverse needs of the educational community.</p>
+
+          <p class="leading-[1.75]">
+            WholesomeEd is more than just a management system; it’s a partner in creating a nurturing, efficient, and inspiring educational environment. Join us in transforming education and supporting every student’s journey to success.
+          </p>
         </div>
       </div>
-      <div class="col-lg-2"></div>
     </div>
 
-    <div class="bg-white py-10">
+    <div class="bg-white pt-4 pb-5">
+      <div class="text-center mb-3 text-[#6b7280]">
+        <div class="text-[20px]">Begin your Online Enrollment Today !</div>
+        <div class="text-sm">Get started in just 3 easy steps</div>
+      </div>
       <div class="w-[70%] mx-auto">
         <div class="grid grid-cols-3 gap-4">
 
@@ -94,6 +105,38 @@
       </div>
     </div>
 
+    <div class="mb-10 p-10">
+      <div class="grid grid-cols-5 gap-4">
+
+        <div class="border rounded-md bg-white">
+          <div class="text-center  border-b py-2">Curriculum:</div>
+         <div class="p-3 text-sm leading-[1.75]">Empower educators to craft engaging and standards-aligned lesson plans. Our Curriculum module offers customizable tools to design and deliver effective educational content, promoting a dynamic and inclusive learning environment.</div>
+        </div>
+
+        <div class="border rounded-md bg-white">
+          <div class="text-center border-b py-2">Assessments:</div>
+          <div class="p-3 text-sm leading-[1.75]">Accurate and insightful evaluations are crucial for student development. The Assessments module enables teachers to create, administer, and grade a variety of assessments, providing real-time feedback and analytics to track student progress.</div>
+        </div>
+
+        <div class="border rounded-md bg-white">
+          <div class="text-center border-b py-2">Enrollment:</div>
+          <div class="p-3 text-sm leading-[1.75]">Streamline the student registration process with ease. Our Enrollment module simplifies application submission, status tracking, and information management, making it easier for families to enroll and stay informed.</div>
+        </div>
+
+        <div class="border rounded-md bg-white">
+          <div class="text-center border-b py-2">Admission:</div>
+          <div class="p-3 text-sm leading-[1.75]">Select the best candidates efficiently and fairly. The Admission module facilitates application review, interview scheduling, and decision-making workflows, ensuring a transparent and organized admission process.</div>
+        </div>
+
+        <div class="border rounded-md bg-white">
+          <div class="text-center border-b py-2">Catering:</div>
+          <div class="p-3 text-sm leading-[1.75]">Ensuring students are well-nourished is foundational to their success. Our Catering module manages meal planning, accommodates dietary needs, and integrates with local suppliers to provide healthy and delicious meals.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div>&nbsp;</div>
 
 
     <footer class="absolute bottom-0 left-0 w-screen bg-[#0d56c3] py-0">
