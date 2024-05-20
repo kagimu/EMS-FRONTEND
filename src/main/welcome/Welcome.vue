@@ -1,29 +1,6 @@
 <template>
   <div>
-    <div class="text-sm">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
-        <div class="container-fluid">
-          <router-link
-              :to="{name:'welcome'}"
-              class="text-white no-underline ml-5 text-[16px]">
-            Wholesome ED
-          </router-link>
-          <button class="navbar-toggler" data-bs-target="#navbarCollapse" data-bs-toggle="collapse" type="button">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div id="navbarCollapse" class="navbar navbar-collapse">
-            <div class="navbar-nav">
-            </div>
-            <div class="flex py-2">
-              <router-link :to="{name:'welcome'}" class="mr-3 no-underline text-white"><i class="bi bi-house mr-2"></i>Home </router-link>
-              <router-link :to="{name:'application'}" class="mr-3 no-underline text-white"><i class="bi bi-arrow-right-circle mr-2"></i>Apply </router-link>
-              <router-link :to="{name:'login'}" class="mr-3 no-underline text-white"><i class="bi bi-box-arrow-in-right mr-2"></i> Login</router-link>
-              <router-link :to="{name:'register'}" class="mr-3 no-underline text-white"><i class="bi bi-person mr-2"></i>Register </router-link>
-            </div>
-          </div>
-        </div>
-      </nav>
-    </div>
+
 
     <div class="w-[90%] mx-auto mt-5 mb-5">
       <div class="grid grid-cols-2 gap-4">
@@ -109,27 +86,27 @@
       <div class="grid grid-cols-5 gap-4">
 
         <div class="border rounded-md bg-white">
-          <div class="text-center  border-b py-2">Curriculum:</div>
+          <div class="text-center  border-b py-2">Curriculum</div>
          <div class="p-3 text-sm leading-[1.75]">Empower educators to craft engaging and standards-aligned lesson plans. Our Curriculum module offers customizable tools to design and deliver effective educational content, promoting a dynamic and inclusive learning environment.</div>
         </div>
 
         <div class="border rounded-md bg-white">
-          <div class="text-center border-b py-2">Assessments:</div>
+          <div class="text-center border-b py-2">Assessments</div>
           <div class="p-3 text-sm leading-[1.75]">Accurate and insightful evaluations are crucial for student development. The Assessments module enables teachers to create, administer, and grade a variety of assessments, providing real-time feedback and analytics to track student progress.</div>
         </div>
 
         <div class="border rounded-md bg-white">
-          <div class="text-center border-b py-2">Enrollment:</div>
+          <div class="text-center border-b py-2">Enrollment</div>
           <div class="p-3 text-sm leading-[1.75]">Streamline the student registration process with ease. Our Enrollment module simplifies application submission, status tracking, and information management, making it easier for families to enroll and stay informed.</div>
         </div>
 
         <div class="border rounded-md bg-white">
-          <div class="text-center border-b py-2">Admission:</div>
+          <div class="text-center border-b py-2">Admission</div>
           <div class="p-3 text-sm leading-[1.75]">Select the best candidates efficiently and fairly. The Admission module facilitates application review, interview scheduling, and decision-making workflows, ensuring a transparent and organized admission process.</div>
         </div>
 
         <div class="border rounded-md bg-white">
-          <div class="text-center border-b py-2">Catering:</div>
+          <div class="text-center border-b py-2">Catering</div>
           <div class="p-3 text-sm leading-[1.75]">Ensuring students are well-nourished is foundational to their success. Our Catering module manages meal planning, accommodates dietary needs, and integrates with local suppliers to provide healthy and delicious meals.</div>
         </div>
 
@@ -139,12 +116,7 @@
     <div>&nbsp;</div>
 
 
-    <footer class="absolute bottom-0 left-0 w-screen bg-[#0d56c3] py-0">
-      <div class="flex justify-between px-3 py-1">
-        <div class="text-white text-sm"><small>© 2023 WholeSome Ed, All rights reserved.</small></div>
-        <a  class="text-white no-underline text-sm" href="#"><small><span>Powered by</span> <b>Hamsoft</b></small></a>
-      </div>
-    </footer>
+
 
   </div>
 </template>
