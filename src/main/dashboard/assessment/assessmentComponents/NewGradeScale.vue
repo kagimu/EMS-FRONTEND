@@ -41,7 +41,7 @@ const form = reactive({
   max_value: null,
   weight: null,
   description: null,
-  campus_class_number: [],
+  campus_class_number:null,
   campus_number: campusNumber,
   grading_standard_number:null
 })
@@ -232,15 +232,15 @@ watch(
 
           <div class="mb-2">
             <div class="text-[13px] text-[#505050]"> Class</div>
-            <!-- <select
+            <select
                 class="form-select form-select-sm shadow-none" required
                 v-model="form.campus_class_number"
                 @change="doFetchGradingStandard"
             >
               <option disabled value="">Select</option>
               <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
-            </select> -->
-              <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+            </select> 
+              <!-- <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
 
             <li class="list-group-item" v-for="(list, index) in campusClassList" :key="index" :value="list.number">
             <input
@@ -251,7 +251,7 @@ watch(
             <label class="textColor" :for="list.number"><small>{{list.name+" [ "+list.abbreviation+" ]"}}</small></label>
             </li>
 
-            </ul>
+            </ul> -->
           </div>
 
           <div class="mb-2">
