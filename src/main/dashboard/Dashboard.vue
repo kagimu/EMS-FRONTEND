@@ -123,7 +123,7 @@ function updateOnlineStatus() {
 
 <div class="p-0 h-screen w-screen">
     <div class="row fixed w-screen mx-auto z-50">
-      <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #1062da;">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 bg-[#2c2f8c]">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
           <div class="container-fluid">
             <div class="flex" style="width: 12%; margin-right: 4%; color: #ffffff;">
@@ -133,7 +133,7 @@ function updateOnlineStatus() {
                   class="bi-list mr-2"
                   :class="defaultMenuSize ? 'transition ease-in-out rotate-0 duration-700' : 'transition ease-in-out -rotate-180 duration-700'"
               ></i>
-              <router-link class="navbar-brand" :to="{name:'home'}" style="color: #ffffff;">Wholesome ED</router-link>
+              <router-link class="navbar-brand text-white" :to="{name:'home'}"><div class="text-[17px]">Victorious Education Services</div> </router-link>
             </div>
             <div class="navbar-collapse">
               <ul class="navbar-nav me-auto my-lg-0 navbar-nav-scroll" style="font-size: 13px;">
