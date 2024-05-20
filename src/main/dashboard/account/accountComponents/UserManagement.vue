@@ -30,16 +30,14 @@
       <div class="row">
             <div class="col-12">
               <div class="card">
-                <div class="card-header">
+                <div class="mt-3">
            <div class="row">
             <div class="col-lg-6 "> 
-                  <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">  
             </div>
             <div class="col-lg-6">
                 <button 
                 v-if="can('assign_role','general')"
                 @click="openModal()" style="float: right; margin-right: 5px;" data-bs-toggle="modal" data-bs-target="#addAccount"  type="button"  aria-controls="rolesDialog" class="btn btn-primary btn-sm">Assign Role</button>
- 
                 <button  class="btn btn-outline-secondary  btn-sm mt-1" style="float: right;border: none;">
                 <small><i class="bi bi-printer">&nbsp;Print</i></small></button> 
             </div>
@@ -48,15 +46,16 @@
                </div>
                 <div class="card-body" >
         <div >
+
            
       <table id="data"
-          class="table table-striped"
+          class="table table-hover caption-top mt-4 table-sm table-striped"
           style="font-size: 11px !important;" >
         <thead>
         <tr>
           <th scope="col">Name</th>
           <th scope="col">Role (s)</th>
-          <th scope="col">Email</th>
+          <th>Type</th>
           <th scope="col">Gender</th>
           <th scope="col">Status</th>
           <th>Actions</th>
@@ -66,17 +65,21 @@
           <!-- v-for="(roles, index) in rolesData" :key="index" -->
             <tr v-for="(user, index) in userData" :key="index">
             <td>{{ user.first_name + " " +user.last_name + " " + user.second_name }}</td>
-            <td>{{ user.type }}
+            <td>
+              <span v-for="(rol,indx) in user.roles"  :key="indx" >
+               {{ rol }}
+              </span>
+              <!-- {{ user.type }} -->
               <button 
               v-if="can('remove_assigned_role','general')"
                @click="openRemoveRoleConfirmationModal(user.type,user.number)" data-bs-toggle="modal" data-bs-target="#removeRoleConfirmation" type="button" aria-controls="rolesDialog">
             &nbsp;<i class="bi bi-x-circle-fill" style="color:rgb(228, 23, 23)"></i>
           </button>
             </td>
-            <td>{{ user.email }}</td>
+            <td>{{ user.type }}</td>
             <td>{{ user.gender }}</td>
             <td>
-              <span v-if="user.status == 'Active'" style="color:rgb(8, 238, 8)"><b>{{ user.status }}</b>
+              <span v-if="user.status == 'Active'" style="color:green"><b>{{ user.status }}</b>
             </span>
             <span v-if="user.status != 'Active'" style="color:rgb(239, 13, 13)"><b>{{ user.status }}</b>
             </span>
@@ -97,6 +100,7 @@
       
         </tbody>
       </table>
+      
         </div>
         </div>
         </div>
@@ -116,6 +120,10 @@ import { useAccountStore } from "../store/account.js";
 import { useRolesStore } from "@/main/settings/roles/store/roles.js";
 import NewAccount from "./NewAccount.vue";
 import { useUserStore } from "@/main/dashboard/profiles/store/users.js"
+
+const loading = ref(false)
+const page = ref(1)
+const per_page = ref(15)
 
 const userStore = useUserStore()
 
@@ -144,6 +152,8 @@ const rolesData= ref([])
 onMounted(
     async () => {
       await roleStore.fetchRoles()
+      // accountStore.fetchUsersToAssign()
+      doFetchAdmission()
     } )
 
     watch(
@@ -155,10 +165,7 @@ onMounted(
     },
     {deep:true}
     )
-    onMounted(
-    async () => {
-      await accountStore.fetchUsersToAssign()
-    } )
+ 
     
 watch (
     () => accountStore.newAccountResponse,
@@ -172,13 +179,53 @@ watch (
 
 
 //fetch
+const doFetchAdmission = () =>{
+   let data = {
+      page: 1,
+      per_page: per_page.value,
+   }
+  //  loading.value = true;
+   userData.value = []
+   accountStore.fetchUsersToAssign(data)
 
+  }
+
+
+  const fetchUsers = (data) => {
+    if(data) {
+      let current_page = data.page
+      page.value = current_page
+
+      let per_page_item = data.per_page;
+      per_page.value = per_page_item;
+
+      let objArray = data.content
+
+
+      if(objArray && objArray.length > 0){
+        objArray.forEach((list, i) => {
+
+          list.key =  (current_page - 1) * per_page_item + i + 1
+
+          const index = userData.value.findIndex(object => object.number === list.number);
+
+          if (index === -1) {
+            userData.value.push(list);
+          }
+
+        })
+      }
+
+
+    }
+  }
 
     watch(
     () => accountStore.userResponse,
     async (data) => {
       if(data){
-        userData.value = data.data
+        // userData.value = data.data
+        fetchUsers(data)
       }
     },
     {deep:true}

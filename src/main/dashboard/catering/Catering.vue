@@ -12,7 +12,7 @@ import ManageUnitOfMeasurement from "@/main/dashboard/catering/cateringComponent
 import MealCourses from "@/main/dashboard/catering/meals/MealCourses.vue";
 import MealCalendar from "@/main/dashboard/catering/meals/MealCalendar.vue";
 import MealCourseFeedingSessions from "@/main/dashboard/catering/meals/MealCourseFeedingSessions.vue";
-
+import MealCoursesPerDay from "@/main/dashboard/catering/meals/MealCoursesPerDay.vue";
 
 
 const routerData = useRouter()
@@ -57,6 +57,10 @@ const mealMenu = ref([
   {
     text:"Meal Courses",
     value:"meal-courses"
+  },
+  {
+    text:"Meal Courses Per Day",
+    value:"meal-courses-per-day"
   },
   {
     text:"Meal Course Feeding Sessions",
@@ -185,6 +189,9 @@ const changeMenu = (value) => {
 
                 <div v-if="menuSelected === 'meal-courses'">
                   <MealCourses></MealCourses>
+                </div>
+                <div v-if="menuSelected === 'meal-courses-per-day'">
+                  <MealCoursesPerDay></MealCoursesPerDay>
                 </div>
 
                 <div v-if="menuSelected === 'meal-course-feeding-sessions'">

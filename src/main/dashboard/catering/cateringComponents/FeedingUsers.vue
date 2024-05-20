@@ -1,71 +1,67 @@
 <template>
   <div>
      <!-- end  -->
-     <div class="row mt-3">
+     <div class="row mt-2">
         <div class="col-12">
            <div class="">
               <div class="" style="padding: 0;">
-                 <div class="container mt-4">
+                 <div class="container mt-0">
                     <div class="row mt-3">
-                       <div class="col-lg-3">
-                        <div class="mb-2">
-                             <label class="textColor"><small>Feeding Session</small>  </label>
-                             <select v-model="form.feeding_session_number" class="form-control form-select" @change="setFeedingSessionNumber(form.feeding_session_number)">
-                                <option disabled value="">Select</option>
-                                <option v-for="(list, index) in feedingSessionGroupData" :key="index" :value="list.number">{{list.name}}</option>
-                             </select>
-                          </div>
-                        </div>
-                          <div class="col-lg-3">
+            <div class="col-3">
+            <div class="mb-2">
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="school_number"
+                  @change="doFetchMealCourses(school_number)"
+              >
+                <option disabled value="">-- Select School--</option>
+                <option v-for="(lvl, index) in schoolList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-lg-3">
                           <div class="mb-2">
-                             <label class="textColor"><small>Feeding Group</small></label>
-                             <select class="form-select form-control" v-model="form.feeding_group_number" required @change="setFeedingGroupNumber(form.feeding_group_number)">
-                                <option value="" disabled>-select</option>
-                                <option v-for="(list,index) in feedingGroupData" :key="index" :value="list.number">{{list.name  }}</option>
-                             </select>
-                          </div>
-                        </div>
-                        <div class="col-lg-3">
-                          <div class="mb-2">
-                             <label class="textColor"><small>School</small> </label>
-                             <select
-                                style="box-shadow: none;"
-                                class="form-select form-select-sm" required
-                                v-model="school_number"
-                                @change="fetchCampuses(school_number)"
-                                >
-                                <option disabled value="">Select School</option>
-                                <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-                                </option>
-                             </select>
-                          </div>
-                        </div>
-                        <div class="col-lg-3">
-                          <div class="mb-2">
-                             <label class="textColor"><small>Campus</small>  </label>
+   
                              <select
                                 style="box-shadow: none;"
                                 class="form-select form-select-sm"
                                 v-model="form.campus_number" required
                                 >
-                                <option disabled value="">Select campus</option>
+                                <option disabled value="">--Select campus--</option>
                                 <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
                                 </option>
                              </select>
                           </div>
                         </div>
+
+          <div class="col-3">
+            <div class="mb-2">
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="form.meal_course_number"
+                  @change="doGetUsersList()"
+              >
+                <option disabled value="">--Select Meal Course--</option>
+                <option v-for="(lvl, index) in mealCourseList?.courses" :key="index" :value="lvl.number">{{lvl.name}}</option>
+              </select>
+            </div>
+          </div>
+                  
                          <div class="row">
                           <div class="table-responsive">
                              <table
                                 id="datatable"
-                                class="ext-sm table table-sm table-striped table-bordered"
+                                class="ext-sm table table-hover caption-top mt-1 table-sm table-striped"
                                 style="font-size: 14px !important;"
                                 >
                                 <thead >
                                    <tr>
                                       <th>#</th>
                                       <th>Name</th>
-                                      <th>Group</th>
+                                      <th>Meal Course</th>
                                       <th colspan="2">Meal</th>
                                    </tr>
                                 </thead>
@@ -73,7 +69,7 @@
                                    <tr v-for="(user, index) in userList" :key="index">
                                       <td>{{ index + 1 }}</td>
                                       <td>{{ user.name }}</td>
-                                      <td>{{ user.feeding_group_name }}</td>
+                                      <td>Meal Course Name</td>
                                       <td colspan="2">
                                          <div class="table-responsive">
                                             <table class="text-sm table table-sm table-striped table-bordered p-5">
@@ -110,7 +106,9 @@
   import {useAuthStore} from "@/main/auth/store/auth.js";
   import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
   import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
-  
+  import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
+
+  const  mealStore  = useMealStore()
   const authStore = useAuthStore()
   
   let p = authStore.profile
@@ -124,11 +122,10 @@
   const groupNumber = ref(null);
   const currentDate = ref(new Date());
   const currentTime = ref(getCurrentTime());
-  const school_number = ref(null)
-  
+  const school_number = ref("")
+  const mealCourseList = ref([])
   const campusList = ref([])
   const schoolList = ref([])
-  
   const schoolStore = useSchoolStore()
   const campusStore = useCampusStore()
   
@@ -142,8 +139,8 @@
   }
   
   const form = reactive({
-    feeding_group_number: null,
-    campus_number:null
+   meal_course_number: "",
+    campus_number:""
   });
   
   // const userList = reactive([
@@ -176,23 +173,14 @@
   
   const userList = ref([])
   onMounted(() => {
-    cateringStore.fetchFeedingGroup();
-    cateringStore.fetchFeedingGroupSessions();
     schoolStore.fetchSchools()
-  });
+  })
   
-  const setFeedingSessionNumber = (sessionN) => {
-    sessionNumber.value = sessionN;
-  };
-  
-  const setFeedingGroupNumber = (groupN) => {
-    groupNumber.value = groupN;
-    fetchMeals();
-  };
-  
-  const fetchMeals = () => {
-    cateringStore.fetchMeals(groupNumber.value, sessionNumber.value);
-  };
+  const doGetUsersList = () =>{
+   cateringStore.fetchMeals(form.campus_number, form.meal_course_number);
+  }
+
+
   
   //submit Meals
   const submitMeal = (qty,menuItemN,userN) => {
@@ -211,21 +199,7 @@
   cateringStore.newMeal(data)
   }
   
-  watch(
-    () => cateringStore.feedingGroupInfoResponse,
-    async (data) => {
-      feedingGroupData.value = data.data;
-    },
-    { deep: true }
-  );
   
-  watch(
-    () => cateringStore.feedingGroupSessionsInfoResponse,
-    async (data) => {
-      feedingSessionGroupData.value = data.data;
-    },
-    { deep: true }
-  );
   
   watch(
     () => cateringStore.errorMessage,
@@ -279,7 +253,24 @@
       },
       {deep: true}
   )
+
+
+  const doFetchMealCourses = (school_number) => {
+  if(school_number){
+    mealStore.fetchMealCourses(school_number)
+    campusStore.fetchCampuses(school_number)
+  }
+}
+
   
+  watch(
+    () => mealStore.mealCoursesResponse,
+    async (data) => {
+      if(data){
+        mealCourseList.value = data.data
+      }
+    }
+)
   
   
 </script>

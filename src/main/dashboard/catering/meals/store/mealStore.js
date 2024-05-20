@@ -10,6 +10,8 @@ export const useMealStore = defineStore("Meal", () => {
     const mealCoursesResponse = ref(null)
     const mealCalendarResponse = ref(null)
     const activateMealCourseResponse = ref(null)
+    const mealCoursesPerDayResponse  = ref(null)
+    const newMealCoursesPerDayResponse = ref(null)
 
 
 
@@ -87,6 +89,30 @@ export const useMealStore = defineStore("Meal", () => {
             })
     }
 
+    async function fetchMealCoursesPerDay(school_number) {
+        return await api.get("main/catering/meal-courses-per-group?school_number="+school_number)
+            .then((response) => {
+                mealCoursesPerDayResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function createMealCoursesPerDay(data) {
+        return await api.post("main/catering/meal-courses-per-group", data)
+            .then((response) => {
+                newMealCoursesPerDayResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
     return {
        newMealCoursesResponse,
        mealCoursesResponse,
@@ -100,6 +126,11 @@ export const useMealStore = defineStore("Meal", () => {
        createNewMealCourse,
        fetchMealCourses,
        fetchMealCalendar,
-       activateMealCourse
+       activateMealCourse,
+       mealCoursesPerDayResponse,
+       fetchMealCoursesPerDay,
+       createMealCoursesPerDay,
+       newMealCoursesPerDayResponse
+
     }
 })
