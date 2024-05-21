@@ -198,7 +198,7 @@ const fetchCampuses = (school_number) => {
 
   const fetchGradeScale = (class_number) =>{
     constent.cla = class_number
-    window.alert(class_number)
+    // window.alert(class_number)
     fetchScaleGrade(constent.cmp,constent.sch,constent.cla)
   }
   

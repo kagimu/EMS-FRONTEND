@@ -389,7 +389,7 @@
 <script setup>
 
 const printReport = () => {
-  alert("Print pdf now man")
+  // alert("Print pdf now man")
 }
 
 </script>

@@ -167,7 +167,7 @@ const props = defineProps({
   })
   
   const addPromotionStudent = () =>{
-    alert(JSON.stringify(form))
+    // alert(JSON.stringify(form))
     loader.value = true
     promotionStore.newPromotion(form)
   } 
@@ -184,7 +184,7 @@ const fetchClasses = (campus_number) => {
 
 //fetchacadmicYear
 const fetchAcademicYear = (campusN) =>{
-alert(campusN)
+// alert(campusN)
 academicYearStore.fetchAcademicYearByCampus(campusN)
 
 }

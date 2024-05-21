@@ -289,7 +289,7 @@ const createFeedingSessionItem = () => {
         secondary_items: secondaryItemNumbers
     }
     const formattedData = JSON.stringify(data)
-    alert(formattedData)
+    // alert(formattedData)
     cateringStore.newAssemblyItem(formattedData)
 }
 
@@ -346,7 +346,7 @@ watch (
 
 const updateMenuItem = () =>{
     if(menuForm.type == 'ITEM'){
-    alert(props.menuItemsinfoData.number)
+    // alert(props.menuItemsinfoData.number)
     buttonLoader.value = true,
     cateringStore.updateMenuItem(menuForm,props.menuItemsinfoData.number)
     }else{
@@ -371,7 +371,7 @@ const updateMenuItem = () =>{
         campus_number:menuForm.campus_number,
         secondary_items:secondaryItemNumbers
         })
-        alert(JSON.stringify(myData))
+        // alert(JSON.stringify(myData))
         /// update itemAssembly endpoint
         // cateringStore.updateAssemblyItem(myData)
         cateringStore.updateMenuItem(myData,props.menuItemsinfoData.number)

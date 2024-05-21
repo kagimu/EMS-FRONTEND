@@ -73,7 +73,7 @@ watch (
 )
 
 const updateProduct = () =>{
-alert(JSON.stringify(formData))
+// alert(JSON.stringify(formData))
 productStore.updateProduct(props.product.number,formData)
 }
 

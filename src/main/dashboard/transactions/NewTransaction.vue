@@ -187,7 +187,7 @@
       student_number: 'studentNumber',
       selectedData
     }
-    alert(JSON.stringify(data))
+    // alert(JSON.stringify(data))
     //create Invoice ======================
     invoiceStore.createNewInvoice(data)
   }
