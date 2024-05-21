@@ -1,3 +1,91 @@
+<script setup>
+
+import {reactive, ref} from "vue";
+import {useRouter} from "vue-router";
+import LevelSetup from "@/main/settings/level/LevelSetup.vue";
+import ClassSetupList from "@/main/dashboard/manageLevel/class/ClassSetupList.vue";
+import LearningMaterialSetup from "@/main/settings/learning-materials/LearningMaterialSetup.vue";
+import SosInfo from "@/main/settings/sosinfo/SosInfo.vue";
+import Services from "../dashboard/servicesAndProducts/Services.vue";
+import Conditions from "@/main/settings/conditions/Conditions.vue";
+import Products from "../dashboard/servicesAndProducts/Products.vue";
+import Profile from "@/main/settings/Profile.vue"
+import PromotionSettings from "./promotion/PromotionSettings.vue";
+import PromotionValue from "./promotion/PromotionValue.vue";
+
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
+
+const routerData = useRouter()
+const buttonLoader = ref(false)
+
+const route = routerData.currentRoute.value.query.s
+const selectedPage = route ? route : "profile"
+
+const settingsList = ref([
+  {
+    name:"Profile",
+    id:"profile",
+    action:"view_profile"
+  },
+  {
+    name:"Level",
+    id:"level",
+    action:"view_level"
+  },
+  {
+    name:"Classes",
+    id:"classes",
+    action:"view_classes"
+  },
+  {
+    name: "Learning Materials" ,
+    id: "learning-materials",
+    action:"view_learning_materials"
+  },
+  // {
+  //   name:"Roles",
+  //   id:"role"
+  // },
+  {
+    name:"Source of school Info",
+    id:"sosinfos",
+    action:"view_source_of_school_info"
+  },
+  {
+    name:"Services",
+    id:"services",
+    action:"view_services"
+  },
+  {
+    name:"Products",
+    id:"products",
+    action:"view_products"
+  },
+  {
+    name:"Conditions",
+    id:"conditions",
+    action:"view_conditions"
+  }
+  ,
+  {
+    name:"Promotion Settings",
+    id:"promotion-settings",
+    action:"view_settings"
+  },
+  {
+    name:"Promotion Value",
+    id:"promotion-value",
+    action:"view_promotion_value"
+  }
+])
+const form = reactive({
+  name:null
+})
+
+
+</script>
 <template>
   <div>
 
@@ -70,95 +158,7 @@
   </div>
 </template>
 
-<script setup>
 
-import {reactive, ref} from "vue";
-import Roles from "@/main/settings/roles/Roles.vue";
-import {useRouter} from "vue-router";
-import LevelSetup from "@/main/settings/level/LevelSetup.vue";
-import ClassSetupList from "@/main/dashboard/manageLevel/class/ClassSetupList.vue";
-import LearningMaterialSetup from "@/main/settings/learning-materials/LearningMaterialSetup.vue";
-import SosInfo from "@/main/settings/sosinfo/SosInfo.vue";
-import Services from "../dashboard/servicesAndProducts/Services.vue";
-import Conditions from "@/main/settings/conditions/Conditions.vue";
-import Products from "../dashboard/servicesAndProducts/Products.vue";
-import Profile from "@/main/settings/Profile.vue"
-import PromotionSettings from "./promotion/PromotionSettings.vue";
-import PromotionValue from "./promotion/PromotionValue.vue";
-
-import { useAbility } from '@casl/vue';
-
-const { can } = useAbility()
-
-const routerData = useRouter()
-const buttonLoader = ref(false)
-
-const route = routerData.currentRoute.value.query.s
-const selectedPage = route ? route : "profile"
-
-const settingsList = ref([
-  {
-    name:"Profile",
-    id:"profile",
-    action:"view_profile"
-  },
-  {
-    name:"Level",
-    id:"level",
-    action:"view_level"
-  },
-  {
-    name:"Classes",
-    id:"classes",
-    action:"view_classes"
-  },
-    {
-       name: "Learning Materials" ,
-         id: "learning-materials",
-         action:"view_learning_materials"
-    },
-  // {
-  //   name:"Roles",
-  //   id:"role"
-  // },
-    {
-        name:"Source of school Info",
-        id:"sosinfos",
-        action:"view_source_of_school_info"
-    },
-    {
-        name:"Services",
-        id:"services",
-        action:"view_services"
-    },
-    {
-        name:"Products",
-        id:"products",
-        action:"view_products"
-    },
-    {
-        name:"Conditions",
-        id:"conditions",
-        action:"view_conditions"
-    }
-    ,
-    {
-        name:"Promotion Settings",
-        id:"promotion-settings",
-        action:"view_settings"
-    },
-    {
-        name:"Promotion Value",
-        id:"promotion-value",
-        action:"view_promotion_value"
-    }
-])
-const form = reactive({
-  name:null
-})
-
-
-</script>
 
 <style scoped>
 

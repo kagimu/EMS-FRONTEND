@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Login from "../main/auth/Login.vue";
 import Register from "../main/auth/Register.vue";
-import Home from "../main/dashboard/Home.vue";
+import Home from "../main/dashboard/home/Home.vue";
 import AuthMain from "@/main/auth/AuthMain.vue";
 import Dashboard from "@/main/dashboard/Dashboard.vue";
 import {useAuthStore} from "@/main/auth/store/auth.js";
