@@ -55,9 +55,9 @@ watch(
 const menuForm = reactive({
   name:null,
   code:null,
-  type:null,
+  type:"",
   unit_of_measure_number:"",
-  campus_number:null,
+  campus_number:"",
   base_price:null
 } )
 
@@ -93,7 +93,7 @@ const addMenuItem = () =>{
       campus_number:menuForm.campus_number,
       secondary_items:secondaryItemNumbers
     })
-
+    buttonLoader.value = true
     cateringStore.newAssemblyItem(myData)
   }
 
@@ -411,11 +411,17 @@ const addUnit = () =>{
 </div>
 
 
-<div class="text-right mt-4">
-    <button  aria-controls="rolesDialog" class="btn btn-primary btn-sm float-end mb-2 mr-4" data-bs-target="#rolesDialog"  data-bs-toggle="offcanvas" style="float: right" type="submit"><i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
-    <div v-if="buttonLoader" class="spinner-border spinner-border-sm" role="status" >
-        <span class="visually-hidden">Loading...</span>
-    </div></button>
+<div class="mt-4 flex justify-between">
+  &nbsp;
+    <button
+        class="btn btn-primary btn-sm float-end mb-2 mr-4"
+        type="submit">
+            <i class="bi bi-arrow-right-circle mr-2"></i>
+            <small>submit</small>
+            <div v-if="buttonLoader" class="spinner-border spinner-border-sm" role="status" >
+                <span class="visually-hidden">Loading...</span>
+            </div>
+    </button>
 </div>
 </form>
     </div>
