@@ -94,7 +94,7 @@
                                                            maxlength="10"
                                                            type="text"
                                                            v-model="meal.served_quantity"
-                                                           v-on:blur="submitMeal(meal.quantity,meal.menu_item_number,user.user_number,user.feeding_session_number)">
+                                                           v-on:blur="submitMeal(meal.served_quantity,meal.menu_item_number,user.user_number,user.feeding_session_number)">
                                                      </td>
                                                   </tr>
                                             </table>
@@ -173,7 +173,10 @@
   
   //submit Meals
   const submitMeal = (qty,menuItemN,userN,feeding_session_number) => {
-    const now = new Date();
+        if(qty < 1){
+            return
+        }
+      const now = new Date();
   let data = {
       meal_course_number:form.meal_course_number,
       feeding_session_number: feeding_session_number,
