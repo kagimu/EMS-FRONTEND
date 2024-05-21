@@ -10,9 +10,9 @@
     <div class="m-4">
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-          <button class="nav-link navColor active" id="class-list-tab" data-bs-toggle="tab" data-bs-target="#class-list" type="button" role="tab" aria-controls="class-list" aria-selected="false"><small>Food MenuItem</small></button>
-          <button class="nav-link navColor" id="assembled-tab" data-bs-toggle="tab" data-bs-target="#assembled" type="button" role="tab" aria-controls="assembled" aria-selected="false"><small>AssembledItems</small></button>
-          <button class="nav-link navColor" id="class-attendance-tab" data-bs-toggle="tab" data-bs-target="#class-attendance" type="button" role="tab" aria-controls="class-attendance" aria-selected="false"><small><i class="bi bi-plus"></i>New MenuItem</small></button>
+          <button class="nav-link navColor active" id="class-list-tab" data-bs-toggle="tab" data-bs-target="#class-list" type="button" role="tab" aria-controls="class-list" aria-selected="false"><small>Ingredients</small></button>
+          <button class="nav-link navColor" id="assembled-tab" data-bs-toggle="tab" data-bs-target="#assembled" type="button" role="tab" aria-controls="assembled" aria-selected="false"><small>Menu Item</small></button>
+          <button class="nav-link navColor" id="class-attendance-tab" data-bs-toggle="tab" data-bs-target="#class-attendance" type="button" role="tab" aria-controls="class-attendance" aria-selected="false"><small><i class="bi bi-plus"></i>New Item</small></button>
         </div>
       </nav>
       <div class="tab-content" id="nav-tabContent">
