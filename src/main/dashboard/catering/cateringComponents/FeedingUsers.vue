@@ -61,6 +61,7 @@
                   
                          <div class="row">
                           <div class="table-responsive">
+
                              <table
                                 id="datatable"
                                 class="ext-sm table table-hover caption-top mt-1 table-sm table-striped"
@@ -89,7 +90,16 @@
                                                <tbody>
                                                   <tr v-for="(meal, mealIndex) in user.meals" :key="mealIndex">
                                                      <td>{{ meal.menu_item_name }}</td>
-                                                     <td><input class="form-control"  style="width: 50px; font-size: 14px; text-align: center;"  @keypress="commons.numbersOnlyValidator($event)" maxlength="10" type="text"  v-model="user.meals[mealIndex].quantity" v-on:blur="submitMeal(user.meals[mealIndex].quantity,meal.menu_item_number,user.user_number)"></td>
+                                                     <td>
+                                                       <input
+                                                           class="form-control shadow-none"
+                                                           style="width: 50px; font-size: 14px; text-align: center;"
+                                                           @keypress="commons.numbersOnlyValidator($event)"
+                                                           maxlength="10"
+                                                           type="text"
+                                                           v-model="user.meals[mealIndex].quantity"
+                                                           v-on:blur="submitMeal(user.meals[mealIndex].quantity,meal.menu_item_number,user.user_number,user.feeding_session_number)">
+                                                     </td>
                                                   </tr>
                                                </tbody>
                                             </table>
@@ -198,22 +208,34 @@
 
   
   //submit Meals
-  const submitMeal = (qty,menuItemN,userN) => {
-  
-  let data = reactive({
-      feeding_session_number: form.feeding_session_number,
+  const submitMeal = (qty,menuItemN,userN,feeding_session_number) => {
+    const now = new Date();
+  let data = {
+      feeding_session_number: feeding_session_number,
       menu_item_number: menuItemN,
       user_number: userN,
-      time: currentTime,
+      time: now.toLocaleTimeString(),
       campus_number: form.campus_number,
       quantity:parseInt(qty),
       staff_number:p.number,
-      date:currentDate
-  })
-  // alert(JSON.stringify(data))
+      date:currentDateFormat(),
+  }
+
   cateringStore.newMeal(data)
   }
-  
+
+  const currentDateFormat = () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // January is 0!
+    let dd = today.getDate();
+
+// Pad with leading zeros if necessary
+    mm = mm.toString().padStart(2, '0');
+    dd = dd.toString().padStart(2, '0');
+
+   return `${yyyy}-${mm}-${dd}`;
+  }
   
   watch(
   () => cateringStore.feedingGroupSessionsInfoResponse,
