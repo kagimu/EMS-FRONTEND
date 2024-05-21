@@ -55,9 +55,9 @@ watch(
 const menuForm = reactive({
   name:null,
   code:null,
-  type:null,
+  type:"",
   unit_of_measure_number:"",
-  campus_number:null,
+  campus_number:"",
   base_price:null
 } )
 
