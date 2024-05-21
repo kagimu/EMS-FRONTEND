@@ -15,11 +15,11 @@
         </div>
       </nav>
       <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="unit" role="tabpanel" aria-labelledby="unit-tab" tabindex="0">
+        <div v-if="can('view_unit_of_measure','manage')" class="tab-pane fade show active" id="unit" role="tabpanel" aria-labelledby="unit-tab" tabindex="0">
         <UnitsOfMeasure></UnitsOfMeasure>
         </div>
         
-        <div class="tab-pane fade " id="new-unit" role="tabpanel" aria-labelledby="new-unit-tab" tabindex="0">
+        <div v-if="can('create_unit_of_measure','manage')" class="tab-pane fade " id="new-unit" role="tabpanel" aria-labelledby="new-unit-tab" tabindex="0">
             <NewUnitOfMeasurement></NewUnitOfMeasurement>
         </div> 
       </div>
@@ -45,6 +45,9 @@
   import UnitsOfMeasure from "@/main/dashboard/catering/cateringComponents/UnitsOfMeasure.vue";
   import NewUnitOfMeasurement from "@/main/dashboard/catering/cateringComponents/NewUnitOfMeasurement.vue";
 
+  import { useAbility } from '@casl/vue';
+
+  const { can } = useAbility()
 
 
 

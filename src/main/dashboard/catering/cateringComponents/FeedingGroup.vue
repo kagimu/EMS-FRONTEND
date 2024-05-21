@@ -22,7 +22,7 @@
                     </div>
     
                 <div class="col-lg-4">
-                <button
+                <button v-if="can('create_feeding_group','general')"
                 style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
                 @click="showModal()">
                 <small> <b><i class="bi bi-plus"></i></b>
@@ -104,6 +104,10 @@
     import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
     import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
     import AppModal from "@/components/AppModal.vue";
+
+    import { useAbility } from '@casl/vue';
+    const { can } = useAbility()
+    
 
     const showingModal = ref(false)
     const campusList = ref([])

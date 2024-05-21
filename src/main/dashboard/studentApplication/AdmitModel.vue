@@ -4,7 +4,8 @@
     <form @submit.prevent="Admit()">
       <!-- School Selection -->
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-lg-4">
+          <p class="alert alert-danger p-1" style="" ><small>Please ,Choose a class Your admiting this Student !</small> </p>
           <div class="mb-2">
             <label class="textSize"><small>School</small></label>
             <select
@@ -16,10 +17,9 @@
               <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}</option>
             </select>
           </div>
-        </div>
+    
 
-          <!-- Campus Selection -->
-          <div class="col-lg-2">
+   
           <div class="mb-2">
             <label class="textSize"><small>Campus</small></label>
             <select
@@ -31,9 +31,9 @@
               <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}</option>
             </select>
           </div>
-          </div>
+         
           <!-- Class Selection -->
-          <div class="col-lg-2">
+        
           <div class="mb-2">
             <label class="textSize"><small>Class</small></label>
             <select
@@ -45,9 +45,9 @@
               <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}</option>
             </select>
           </div>
-          </div>
+       
         <!-- Stream, Academic Year, and Study Period Selection -->
-        <div class="col-lg-1">
+  
           <div class="mb-2">
             <label class="textSize"><small>Stream</small></label>
             <select
@@ -58,8 +58,8 @@
               <option v-for="(slist, index) in streamList" :key="index" :value="slist.number">{{ slist.name }}</option>
             </select>
           </div>
-          </div>
-          <div class="col-lg-2">
+     
+
           <div class="mb-2">
             <label class="textSize"><small>Academic Year</small></label>
             <select
@@ -70,9 +70,9 @@
               <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
             </select>
           </div>
-          </div>
+        
 
-          <div class="col-lg-2">
+      
           <div class="mb-2">
             <label class="textSize"><small>Study Period</small></label>
             <select
@@ -84,15 +84,17 @@
             </select>
           </div>
         </div>
-      </div>
       
     
+    
       <!-- Service Selection -->
-      <div class="row mt-1">
-        <div class="col-lg-12">
+        <div class="col-lg-8">
+          <p class="alert alert-danger p-1"><small>Select Requirements to be brought by student</small> </p>
           <div class="row">
-            <div class="col-lg-12">
               <!-- New Design -->
+              <label>
+            Requirement/Items
+              </label>
               <table class="table table-hover caption-top mt-1 ">
                 <thead>
                   <tr class="" style="padding: 0px;margin: 0px;font-size: 13px;">
@@ -116,9 +118,9 @@
                   </tr>
                 </tbody>
               </table>
-              <button class="btn btn-primary btn-sm textSize" @click.prevent="addService" :disabled="isAddButtonDisabled"><small><i class="bi bi-plus-lg"></i></small></button>
+              <button style="width: 30px;" class="btn btn-primary btn-sm textSize" @click.prevent="addService" :disabled="isAddButtonDisabled"><small><i class="bi bi-plus-lg"></i></small></button>
             </div>
-          </div>
+         
         </div>
       </div>
       <!-- Form Submission Button -->
@@ -436,6 +438,6 @@
   -webkit-box-shadow: none;
   }
   .textSize{
-    font-size: 13px;
+    font-size: 12px;
   }
 </style>

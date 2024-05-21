@@ -52,7 +52,8 @@ const Feedmenu = ref([
   },
   {
     text:"Capturing Meals",
-    value:"feeding"
+    value:"feeding",
+    action:"record_meals"
   },
 ])
 
@@ -86,7 +87,6 @@ const changeMenu = (value) => {
 <template>
     <div>
 
-    
       <div class="row">
         <div class="col-3">
           <div class="card mt-3">
