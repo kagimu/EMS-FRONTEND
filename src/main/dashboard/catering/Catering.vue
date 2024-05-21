@@ -96,8 +96,8 @@ const changeMenu = (value) => {
               <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
                   <div
                     v-for="(item, idx) in menu" :key="idx"
-                    class="list-group-item list-group-item-action cursor-pointer"
                     :class="item.value === menuSelected ? 'active' : ''"
+                    class="list-group-item list-group-item-action cursor-pointer"
                     @click="changeMenu(item.value)">
                   <small style="font-size:12px;">{{item.text}}</small>
                 </div>
@@ -110,8 +110,8 @@ const changeMenu = (value) => {
 
               <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
                 <div
-                    class="list-group-item list-group-item-action cursor-pointer"
                     :class="menuSelected === 'manage-stock' ? 'active' : ''"
+                    class="list-group-item list-group-item-action cursor-pointer"
                     @click="changeMenu('manage-stock')"
                 >
                   <small style="font-size:12px;">Manage Stock</small>
@@ -127,8 +127,8 @@ const changeMenu = (value) => {
                 <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
                   <div
                     v-for="(item, idx) in Feedmenu" :key="idx"
-                    class="list-group-item list-group-item-action cursor-pointer"
                     :class="item.value === menuSelected ? 'active' : ''"
+                    class="list-group-item list-group-item-action cursor-pointer"
                     @click="changeMenu(item.value)">
                   <small style="font-size:12px;">{{item.text}}</small>
                 </div>
@@ -144,8 +144,8 @@ const changeMenu = (value) => {
               <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
                 <div
                     v-for="(item, idx) in mealMenu" :key="idx"
-                    class="list-group-item list-group-item-action cursor-pointer"
                     :class="item.value === menuSelected ? 'active' : ''"
+                    class="list-group-item list-group-item-action cursor-pointer"
                     @click="changeMenu(item.value)">
                   <small style="font-size:12px;">{{item.text}}</small>
                 </div>
@@ -163,16 +163,12 @@ const changeMenu = (value) => {
               <div>
   
                   <div v-if="menuSelected === 'menu-items'">
-              <ManageMenuItem></ManageMenuItem>
+                    <ManageMenuItem></ManageMenuItem>
                   </div>
                   <div v-if="menuSelected === 'units-of-measurement'">
                  <ManageUnitOfMeasurement></ManageUnitOfMeasurement>
                   </div>
-                  <!-- <div v-if="menuSelected === 'item-assembly'">
-                    <ManageItemsAssembly></ManageItemsAssembly>
-                  </div> -->
                   <div v-if="menuSelected === 'feeding-group'">
-                 <!-- <FeedingGroup></FeedingGroup> -->
                  <ManageFeedingGroup></ManageFeedingGroup>
                   </div>
                   <div v-if="menuSelected === 'feeding-session'">
@@ -205,8 +201,6 @@ const changeMenu = (value) => {
                 <div v-if="menuSelected === 'meal-calendar'">
                  <MealCalendar></MealCalendar>
                 </div>
-
-                  
               </div>
   
   
