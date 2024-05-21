@@ -8,7 +8,7 @@
                 <div class="mb-10 ml-3 mt-2" style="float: right; margin-right: 10px;"><i @click="goBack()" class="bi bi-x-lg"></i></div>
 
                 <div>
-    <div class="m-4">
+    <div class="m-3">
       <div class="card-title mb-4">
               Interview : <b>{{ interviewM }}</b>
               <hr>

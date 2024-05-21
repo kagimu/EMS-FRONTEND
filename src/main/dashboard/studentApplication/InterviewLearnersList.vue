@@ -1,253 +1,4 @@
-<template>
-  <div>
-
-  <AppModal title="Admit" v-model="myAdmitModal" xl6>
-      <AdmitModel :selectedStudentNumber="selectedStudentNumber"></AdmitModel>
-</AppModal>
-
-
-      <!-- <div class="modal fade" id="admitMainModal" tabindex="-1" :class="{ show: admitshow }" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header text-sm p-0">
-          <h6 class="modal-title ml-8 mt-2 mb-2">OFFER ADMISSION</h6>
-          <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mt-2 mb-2">
-         <AdmitModel :selectedStudentNumber="selectedStudentNumber"></AdmitModel>
-        </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
-   
-
-    <!-- end  -->
-    <div class="row mt-1">
-      <div class="col-12">
-        <div class="">
-          <div class="" style="padding: 0;">
-  <div class="contaner mt-2">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="">
-            <div class="">
-              <!-- {{student_number ? '' : 'disabbled'}} -->
-                <!-- <h5 style="font-size: 14px;margin-top: 2px;">Learners Scheduled For {{ interviewM }} </h5> -->
-         
-      <div class="row">
-    <div class="col-12">
-      <div class="mt-2">
-        <div class="row mx-auto">
-      
-
-          <form @submit.prevent="Admit()">
-            <div class="row">
-              <div class="col-3">
-                <div class="mb-2">
-          <label class="textColor"><small>School</small> </label>
-          <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm" required
-                  v-model="form.school_number"
-                  @change="fetchCampuses(form.school_number)"
-          >
-              <option disabled value="">Select School</option>
-              <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-              </option>
-          </select>
-      </div>
-              </div>
-
-              <div class="col-2">
-      <div class="mb-2">
-          <label class="textColor"><small>Campus</small>  </label>
-          <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm"
-                  v-model="form.campus_number" required
-                  @change="fetchClasses(form.campus_number)"
-          >
-              <option disabled value="">Select campus</option>
-              <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-              </option>
-          </select>
-      </div></div>
-
-
-      <div class="col-1">
-        <div class="mb-2">
-          <label class="textColor"><small>Class</small> </label>
-          <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm" required
-                  v-model="form.campus_class_number"
-                  @change="fetchAcademicYear(form.campus_class_number)"
-          >
-              <option disabled value="">Select class</option>
-              <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}
-              </option>
-          </select>
-      </div>
-      </div>
-
-      <div class="col-1">
-        <div class="mb-2">
-          <label class="textColor"><small>Stream</small> </label>
-          <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm" required
-                  v-model="form.stream_number"
-           >
-              <option disabled value="">Select Stream</option>
-              <option v-for="(slist, index) in streamList" :key="index" :value="slist.number">{{ slist.name }}
-              </option>
-          </select>
-      </div>
-
-      </div>
-
-      <div class="col-3">
-        <div class="mb-2">
-          <label class="textColor"><small>Academic Year</small> </label>
-          <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm" required
-                  v-model="form.academic_year"
-          >
-              <option disabled value="">Select Year</option>
-             <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
-          </select>
-      </div>
-      </div>
-
-      <div class="col-2">
-        <div class="mb-2">
-          <label class="textColor"><small>Study Period</small> 
-          <!-- {{ studyPeriodList }} -->
-          </label>
-          <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm" required
-                  v-model="form.study_period_number"
-          >
-              <option disabled value="">Select</option>
-              <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
-
-          </select>
-      </div>
-      </div>
-
-      <!-- <div class="col-1 mt-2">
-        <div class="flex justify-content-end mt-2" style="width: 100%;">
-        <button type="submit" class="btn btn-primary border-0 btn-sm " >
-             <small>Offer Admission</small>
-             <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
-                  role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span> 
-                </span>
-        </button>
-    </div>
-      </div> -->
-
-            </div>
-    
-</form>
-
-</div>
-
-        
-     <!-- <div class="row" >
-          <div class="col-8 mb-1"></div>
-          <div class="col-4 mb-1">
-            <input type="text" v-model="searchQuery" class="form-control mt-1 mb-0" placeholder="Search...">  
-          </div>
-
-        </div> -->
-      </div>
-    </div>
-  </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-
-<!-- {{ selectedStudentNumber }} -->
-<div class="row">
-
-  <div class="col-lg-10">
-    <table
-      id="datatable"
-      class="table table-striped"
-      style="font-size: 14px !important;"
-    >
-    <thead >
-        <tr>
-          <th style="width: 1px;">#</th>
-          <th style="width: 1px;"></th>
-          <th>Student</th>
-          <th>status</th>
-        </tr>
-  <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-    {{errorMessage}}
-  </div> -->
-      </thead>
-      <tbody>
-        <tr style="text-transform: capitalize;" v-for="(student, index) in interviewStudentList" :key="index">
-          <td>{{ index+1 }}</td>
-          <td><input type="checkbox"  v-model="selectedStudents[index]" class="checkbox-primary"></td>
-          <td> 
-            {{student.student_surname ? student.student_surname : ""}}
-                 {{student.student_second_name ? " "+student.student_second_name : ""}}
-                 {{student.student_other_name ? " "+student.student_other_name : ""}}</td>
-        
-          <td>
-              <!-- <router-link style=""
-                class="text-decoration-none"
-                :to="{name:'interview-learners-details', query:{st_id:student.number,interview_id:interviewNumber,applicationN:student.number}}">
-                <button type="button"
-                  class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
-              >view Details</button>
-            </router-link> -->
-            status
-             <span v-for="(listD, index) in scoreDataList " :key="index">
-            <span>{{ listD.actual_score }}</span></span>
-            
-          </td>
-        </tr>   
-                  
-      </tbody>
-    </table>
-  </div>
-  <div class="col-lg-2">
-<div class="ant-alert-action mt-3">
-  <!-- @click="showDialog" -->
-  <button @click="showAdmitModal"  type="button"
-    class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " 
-    style="float: rigt;" ><i></i>Offer Admission</button>
-
-    <!-- <button @click="showDialog"  data-bs-toggle="modal" :data-bs-target="selectedStudentNumber.length > 0 ? '#admitMainModal' : ''" type="submit"
-    class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " 
-    style="float: rigt;" ><i></i>Offer Admission</button> -->
-</div>
-  </div>
-</div>
-
-
-  
-  </div>
-  </div>
-  </div>
-  </div>
-  </div>
-
-
-  </div>
-  </template>
-  
-  <script setup>
+<script setup>
 import {onMounted,reactive, ref,computed, watch} from "vue";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import useNotificationStore from "@/composables/useNotification.js";
@@ -330,20 +81,17 @@ const ScoreData = reactive ({
 onMounted(
     () => {
       applicationStore.fetchStudentsOnInterview(interviewNumber)
+      studentApplicationStore.fetchAssessmentMetricsOnInterview(interviewNumber)
+      schoolStore.fetchSchools()
     }
 )
 
-onMounted(
-    () => {
-      studentApplicationStore.fetchAssessmentMetricsOnInterview(interviewNumber)
-    }
-)
+
 
 watch(
     () => applicationStore.StudentsOnInterviewResponse,
     async (data) => {
       if(data){
-        // notificationStore.successToast("Success", data.message)
         interviewStudentList.value = data.data
       }
     },
@@ -424,12 +172,9 @@ watch (
 )
 
 const form = reactive({
-academic_year: null,
-study_period_number: null,
-campus_class_number: null,
-campus_number: null,
-stream_number:null,
-school_number:null
+campus_class_number: "",
+campus_number: "",
+school_number:""
 })
 
 
@@ -560,13 +305,6 @@ watch(
 )
 
 
-
-
-onMounted(() => {
-      schoolStore.fetchSchools()
-  }
-)
-
 watch(
   () => schoolStore.schoolsResponse,
   async (data) => {
@@ -621,8 +359,177 @@ const showDialog = () => {
 
   </script>
 
+<template>
+  <div>
+
+  <AppModal title="Admit" v-model="myAdmitModal" xl6>
+      <AdmitModel :selectedStudentNumber="selectedStudentNumber"></AdmitModel>
+</AppModal>
+
+
+      <!-- <div class="modal fade" id="admitMainModal" tabindex="-1" :class="{ show: admitshow }" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header text-sm p-0">
+          <h6 class="modal-title ml-8 mt-2 mb-2">OFFER ADMISSION</h6>
+          <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mt-2 mb-2">
+         <AdmitModel :selectedStudentNumber="selectedStudentNumber"></AdmitModel>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+   
+
+    <!-- end  -->
+    <div class="row mt-1">
+  <div class="mt-2">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="">
+            <div class="">    
+      <div class="row">
+    <div class="col-12">
+      <div class="mt-2">
+        <div class="row mx-auto">
+      
+
+          <form @submit.prevent="Admit()">
+            <div class="row">
+              <div class="col-3">
+                <div class="mb-2">
+          <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm" required
+                  v-model="form.school_number"
+                  @change="fetchCampuses(form.school_number)"
+          >
+              <option disabled value="">--filter By School --</option>
+              <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+              </option>
+          </select>
+      </div>
+              </div>
+
+              <div class="col-2">
+      <div class="mb-2">
+          <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="form.campus_number" required
+                  @change="fetchClasses(form.campus_number)"
+          >
+              <option disabled value="">--filter by Campus --</option>
+              <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+              </option>
+          </select>
+      </div></div>
+
+
+      <div class="col-3">
+        <div class="mb-2">
+          <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm" required
+                  v-model="form.campus_class_number"
+                  @change="fetchAcademicYear(form.campus_class_number)"
+          >
+              <option disabled value="">--Filter by class--</option>
+              <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}
+              </option>
+          </select>
+      </div>
+      </div>
+       </div>
+    
+</form>
+
+</div>
+
+      </div>
+    </div>
+  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+<!-- {{ selectedStudentNumber }} -->
+<div class="row">
+
+  <div class="col-lg-10">
+    <table
+      id="datatable"
+      class="table table-hover caption-top mt-2 table-sm table-striped"
+      style="font-size: 14px !important;"
+    >
+    <thead >
+        <tr>
+          <th style="width: 1px;">#</th>
+          <th style="width: 1px;"></th>
+          <th>Student</th>
+          <th>status</th>
+        </tr>
+  <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+    {{errorMessage}}
+  </div> -->
+      </thead>
+      <tbody>
+        <tr style="text-transform: capitalize;" v-for="(student, index) in interviewStudentList" :key="index">
+          <td>{{ index+1 }}</td>
+          <td><input type="checkbox"  v-model="selectedStudents[index]" class="checkbox-primary"></td>
+          <td> 
+            {{student.student_surname ? student.student_surname : ""}}
+                 {{student.student_second_name ? " "+student.student_second_name : ""}}
+                 {{student.student_other_name ? " "+student.student_other_name : ""}}</td>
+        
+          <td>
+              <!-- <router-link style=""
+                class="text-decoration-none"
+                :to="{name:'interview-learners-details', query:{st_id:student.number,interview_id:interviewNumber,applicationN:student.number}}">
+                <button type="button"
+                  class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
+              >view Details</button>
+            </router-link> -->
+            status
+             <span v-for="(listD, index) in scoreDataList " :key="index">
+            <span>{{ listD.actual_score }}</span></span>
+            
+          </td>
+        </tr>   
+                  
+      </tbody>
+    </table>
+  </div>
+  <div class="col-lg-2">
+<div class="ant-alert-action mt-3">
+  <button @click="showAdmitModal"  type="button"
+    class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " 
+    style="float: rigt;" ><i></i>Offer Admission</button>
+
+    <!-- <button @click="showDialog"  data-bs-toggle="modal" :data-bs-target="selectedStudentNumber.length > 0 ? '#admitMainModal' : ''" type="submit"
+    class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " 
+    style="float: rigt;" ><i></i>Offer Admission</button> -->
+</div>
+  </div>
+</div>
+
 
   
+  </div>
+
+  </div>
+
+
+  </div>
+  </template>
+  
+ 
   <style scoped>
 
   </style>
