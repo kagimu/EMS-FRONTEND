@@ -40,26 +40,7 @@
     <input type="email" v-model="form.email" required class="form-control">
 </div>
 
-</div>
-<div class="col-6">
- 
-<div class="mb-2">
-<label class="textColor"><small>Role</small></label>
-<ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-
-<li class="list-group-item" v-for="(list, index) in rolesData" :key="index" :value="list.number">
-<input
-v-model="form.role_numbers"
-
-style="outline: none 0 !important; box-shadow: none;"
-class="form-check-input me-1" type="checkbox" :value="list.number" :id="list.number">
-<label class="textColor" :for="list.number"><small>{{list.name}}</small></label>
-</li>
-
-</ul>
-</div>
-
-    <label class="textColor"><small>Password</small></label>
+<label class="textColor"><small>Password</small></label>
     <div class="input-group mb-3">
         <input
             :type="show ? 'text' : 'password'"
@@ -82,6 +63,26 @@ class="form-check-input me-1" type="checkbox" :value="list.number" :id="list.num
         <i :class="show ? 'bi-eye-slash' : 'bi-eye'"></i>
         </div>
     </div>
+    
+</div>
+<div class="col-6">
+ 
+<div class="mb-2">
+<label class="textColor"><small>Role</small></label>
+<ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+
+<li class="list-group-item" v-for="(list, index) in rolesData" :key="index" :value="list.number">
+<input
+v-model="form.role_numbers"
+
+style="outline: none 0 !important; box-shadow: none;"
+class="form-check-input me-1" type="checkbox" :value="list.number" :id="list.number">
+<label class="textColor" :for="list.number"><small>{{list.name}}</small></label>
+</li>
+
+</ul>
+</div>
+
 
   </div>
 </div>

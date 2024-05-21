@@ -62,6 +62,7 @@
                          <div class="row">
                           <div class="table-responsive">
                              <table
+                             v-if="can('record_meals','manage')"
                                 id="datatable"
                                 class="ext-sm table table-hover caption-top mt-1 table-sm table-striped"
                                 style="font-size: 14px !important;"
@@ -117,6 +118,9 @@
   import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
   import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
   import useCommonsStore from "@/composables/useCommons.js";
+  import { useAbility } from '@casl/vue';
+
+  const { can } = useAbility()
   
   const commons = useCommonsStore()
 
