@@ -463,16 +463,16 @@ const showDialog = () => {
 <div class="row">
 
   <div class="col-lg-10">
+    <p class="alert alert-danger p-1 text-[11px] mt-2" >Select a Student or Students to Offer Admission Please !</p>
     <table
       id="datatable"
-      class="table table-hover caption-top mt-2 table-sm table-striped"
+      class="table table-hover caption-top mt-1 table-sm table-striped"
       style="font-size: 14px !important;"
     >
     <thead >
         <tr>
           <th style="width: 1px;">#</th>
-          <th style="width: 1px;"></th>
-          <th>Student</th>
+          <th>Name</th>
           <th>status</th>
         </tr>
   <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
@@ -481,7 +481,6 @@ const showDialog = () => {
       </thead>
       <tbody>
         <tr style="text-transform: capitalize;" v-for="(student, index) in interviewStudentList" :key="index">
-          <td>{{ index+1 }}</td>
           <td><input type="checkbox"  v-model="selectedStudents[index]" class="checkbox-primary"></td>
           <td> 
             {{student.student_surname ? student.student_surname : ""}}
