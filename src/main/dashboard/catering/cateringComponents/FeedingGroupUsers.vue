@@ -19,6 +19,24 @@
             </div>
           </div>
         </div>
+
+        <div class="row mt-5 mb-2 mx-auto">
+          <div class="col-3">
+            <div class="mb-2">
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="school_number"
+                  @change="doFeedingUsers(school_number)"
+              >
+                <option disabled value="">--filter by School--</option>
+                <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+              </select>
+            </div>
+          </div>
+     
+        </div>
+
         <div class="row">
 <div class="col-lg-9">
       <table
@@ -40,20 +58,20 @@
     </div>
         </thead>
         <tbody>
-          <tr v-for="(student, index) in userList" :key="index">
+          <tr v-for="(user, index) in userList" :key="index">
             <td><input type="checkbox"  v-model="selectedStudents[index]" class="checkbox-primary"></td>
             <td>{{ index+1 }}</td>
             <td> 
                 <router-link style=""
                 class="text-decoration-none"
-                :to="{name:'feeding-group-user-details', query:{st_id:student.number}}">
-                 {{ student.first_name + " " + student.second_name + " " + student.last_name}}
+                :to="{name:'feeding-group-user-details', query:{st_id:user.number}}">
+                 {{ user.first_name + " " + user.second_name + " " + user.last_name}}
 
             </router-link>
               
              </td>
             <td>
-              {{  student.gender }}
+              {{  user.gender }}
             </td>
             <td>Staff</td>
             <td>
@@ -101,10 +119,15 @@ style="float: right;"><i></i><small>Submit</small></button>
   import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
   import { useAccountStore } from "@/main/dashboard/account/store/account.js";
 import { RouterView } from "vue-router";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
-
+const schoolStore = useSchoolStore()
 const cateringStore = useCateringStore()
 const accountStore = useAccountStore()
+const school_number = ref("")
+const schoolsList = ref([])
+const page = ref(1)
+const per_page = ref(15)
 
   const feedingGroupData = ref([])
 
@@ -128,10 +151,16 @@ const accountStore = useAccountStore()
   onMounted(
       () => {
         enrollmentStore.fetchEnrolment()
-        cateringStore.fetchFeedingGroup()
         accountStore.fetchUsersToAssign()
+        schoolStore.fetchSchools()
+        doFetchAdmission()
       }
   )
+
+  const doFeedingUsers = (schoolN) =>{
+    cateringStore.fetchFeedingGroup(schoolN)
+    doFetchAdmission()
+  }
   
   watch(
     () => cateringStore.feedingGroupInfoResponse,
@@ -142,17 +171,68 @@ const accountStore = useAccountStore()
   )
 
 
+
+  //fetch
+const doFetchAdmission = () =>{
+   let data = {
+      page: 1,
+      per_page: per_page.value,
+   }
+  //  loading.value = true;
+   userList.value = []
+   accountStore.fetchUsersToAssign(data)
+
+  }
+
+
+  const fetchUsers = (data) => {
+    if(data) {
+      let current_page = data.page
+      page.value = current_page
+
+      let per_page_item = data.per_page;
+      per_page.value = per_page_item;
+
+      let objArray = data.content
+
+
+      if(objArray && objArray.length > 0){
+        objArray.forEach((list, i) => {
+
+          list.key =  (current_page - 1) * per_page_item + i + 1
+
+          const index = userList.value.findIndex(object => object.number === list.number);
+
+          if (index === -1) {
+            userList.value.push(list);
+          }
+
+        })
+      }
+
+
+    }
+  }
+
   watch(
     () => accountStore.userResponse,
     async (data) => {
       if(data){
-        userList.value = data.data
+        // userList.value = data.data
+        fetchUsers(data)
       }
     },
     {deep:true}
     )
 
-
+    watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if(data){
+        schoolsList.value = data.data
+      }
+    }
+)
 
 //   watch (
 //     () => enrollmentStore.enrolmentResponse,
@@ -179,7 +259,7 @@ const accountStore = useAccountStore()
   const addFeedingGroupUsers = () => {
     // admitshow.value = true
     if (selectedStudentNumber.value.length === 0) {
-      notificationStore.errorToast("Error", "Please select at least one student to offer admission.");
+      notificationStore.errorToast("Error", "Please select at least one user to offer admission.");
     } else {
       let data = reactive({
         feeding_group_number:formData.feeding_group_number,

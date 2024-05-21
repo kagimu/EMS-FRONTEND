@@ -49,6 +49,15 @@
               </select>
             </div>
           </div>
+          
+          <div class="col-3">
+            <div class="mb-2">
+            <select v-model="form.feeding_session_number" class="form-control form-select"> 
+            <option disabled value="">Select</option>
+            <option v-for="(list, index) in feedingSessionGroupData" :key="index" :value="list.number">{{list.name}}</option>
+            </select>
+            </div>
+          </div>
                   
                          <div class="row">
                           <div class="table-responsive">
@@ -61,7 +70,7 @@
                                    <tr>
                                       <th>#</th>
                                       <th>Name</th>
-                                      <th>Meal Course</th>
+                                      <th>Feeding Group</th>
                                       <th colspan="2">Meal</th>
                                    </tr>
                                 </thead>
@@ -69,7 +78,7 @@
                                    <tr v-for="(user, index) in userList" :key="index">
                                       <td>{{ index + 1 }}</td>
                                       <td>{{ user.name }}</td>
-                                      <td>Meal Course Name</td>
+                                      <td>{{ user.feeding_group_name }}</td>
                                       <td colspan="2">
                                          <div class="table-responsive">
                                             <table class="text-sm table table-sm table-striped table-bordered p-5">
@@ -128,6 +137,7 @@
   const schoolList = ref([])
   const schoolStore = useSchoolStore()
   const campusStore = useCampusStore()
+
   
   function getCurrentTime() {
     const date = new Date();
@@ -140,7 +150,8 @@
   
   const form = reactive({
    meal_course_number: "",
-    campus_number:""
+    campus_number:"",
+    feeding_session_number:""
   });
   
   // const userList = reactive([
@@ -174,6 +185,7 @@
   const userList = ref([])
   onMounted(() => {
     schoolStore.fetchSchools()
+    cateringStore.fetchFeedingGroupSessions()
   })
   
   const doGetUsersList = () =>{
@@ -186,7 +198,7 @@
   const submitMeal = (qty,menuItemN,userN) => {
   
   let data = reactive({
-      feeding_session_number: sessionNumber.value,
+      feeding_session_number: form.feeding_session_number,
       menu_item_number: menuItemN,
       user_number: userN,
       time: currentTime,
@@ -200,6 +212,13 @@
   }
   
   
+  watch(
+  () => cateringStore.feedingGroupSessionsInfoResponse,
+  async (data) => {
+      feedingSessionGroupData.value = data.data
+  },
+  {deep: true}
+)
   
   watch(
     () => cateringStore.errorMessage,
