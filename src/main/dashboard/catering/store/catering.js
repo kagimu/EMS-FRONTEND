@@ -43,7 +43,7 @@ export const useCateringStore = defineStore("catering", () => {
                 newUnitOfMeasureInfoResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -55,7 +55,7 @@ export const useCateringStore = defineStore("catering", () => {
                 UnitOfMeasureInfoResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -66,7 +66,7 @@ export const useCateringStore = defineStore("catering", () => {
                 deleteUnitOfMeasureInfoResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -77,7 +77,7 @@ export const useCateringStore = defineStore("catering", () => {
                 updateUnitOfMeasureInfoResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -90,7 +90,7 @@ export const useCateringStore = defineStore("catering", () => {
                 newMenuItemInfoResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -101,7 +101,7 @@ export const useCateringStore = defineStore("catering", () => {
                 menuItemResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -113,7 +113,7 @@ async function newFeedingGroupInfo(data) {
             newFeedingGroupInfoResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -124,7 +124,7 @@ async function fetchFeedingGroup(school) {
             feedingGroupInfoResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -136,7 +136,7 @@ async function newFeedingGroupSessionsInfo(data) {
             newFeedingGroupSessionsInfoResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -147,7 +147,7 @@ async function fetchFeedingGroupSessions() {
             feedingGroupSessionsInfoResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -159,7 +159,7 @@ async function newFeedingGroupSessionsItemsInfo(data) {
             newFeedingGroupSessionsItemsInfoResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -171,11 +171,12 @@ async function fetchFeedingSessionsItems() {
             feedingSessionsItemsInfoResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
 }
+
 //assembly Items
 async function newAssemblyItem(data) {
     return await api.post("main/catering/item-assembly", data)
@@ -183,32 +184,21 @@ async function newAssemblyItem(data) {
             newAssemblyItemResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
 }
 
-// async function fetchAssemblyItem() {
-//     return await api.get("main/catering/item-assembly")
-//         .then((response) => {
-//             assemblyItemResponse.value = response.data
-//         })
-//         .catch((response) => {
-//             if(response){
-//                 errorMessage.value = response.response.data
-//             }
-//         })
-// }
 
-//feedingsession Daily
+
 async function newDailySession(data) {
     return await api.post("main/catering/feeding-sessions-per-day", data)
         .then((response) => {
             newDailySessionResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -220,7 +210,7 @@ async function fetchDailySession() {
             dailySessionResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -233,7 +223,7 @@ async function newStock(data) {
             newStockResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -245,7 +235,7 @@ async function fetchStock() {
             stockResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -257,7 +247,7 @@ async function newFeedingGroupUsers(data) {
             newFeedingGroupResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -268,7 +258,7 @@ async function fetchFeedingGroupUserById(userId) {
             feedingGroupUsersResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -280,7 +270,7 @@ async function fetchMenuItemDetails(menuNumber) {
             menuItemDetailsResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -291,7 +281,7 @@ async function updateMenuItem(data,menuItemNumber) {
             updateMenuItemResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -303,7 +293,7 @@ async function updateAssemblyItem(data,menuItemNumber) {
             updateItemAssemblyResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -315,7 +305,7 @@ async function filterMenuItem(campusN) {
             filterMenuResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -328,7 +318,7 @@ async function newGroupSession(data) {
             newGroupSessionResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -340,7 +330,7 @@ async function fetchFeedGroupSessions() {
             feedGroupSessionsInfoResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -352,7 +342,7 @@ async function newGroupGroupsPerDay(data) {
             newFeedingGroupsPerDayResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -364,7 +354,7 @@ async function fetchFeedGroupsPerDay() {
             feedGroupPerDayInfoResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -376,7 +366,7 @@ async function newMeal(data) {
             newMealsResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -388,7 +378,7 @@ async function fetchMeals(campusNumber,meal_courseNumber) {
             mealsResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })

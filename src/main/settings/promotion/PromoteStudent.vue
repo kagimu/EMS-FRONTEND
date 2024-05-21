@@ -273,7 +273,7 @@ watch(
         if (data) {
           loader.value = false
           notificationStore.successToast("Success application submitted", data.message)
-           enrollmentStore.fetchEnrolment()
+           await enrollmentStore.fetchEnrolment()
         }
     },
     {deep: true}

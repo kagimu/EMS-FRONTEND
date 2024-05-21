@@ -62,12 +62,13 @@ watch(
     }
 )
 
+
 const createScale = () =>{
   form.code =  form.code ? parseInt(form.code) : ""
   form.max_value = form.max_value ? parseInt(form.max_value) : ""
   form.min_value = form.min_value ? parseInt(form.min_value) : ""
   form.weight = form.weight ? parseInt(form.weight) : ""
-  // alert(JSON.stringify(form))
+  buttonLoader.value = true
   assessmentStore.createAggregateScale(form)
 }
 
@@ -86,6 +87,7 @@ watch (
     () => assessmentStore.errorMessage,
     async (data) => {
       if(data){
+        buttonLoader.value = false
         errorMessage.value = data.message
         notificationStore.errorToast("Error",data.message)
       }
@@ -240,18 +242,7 @@ watch(
               <option disabled value="">Select</option>
               <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
             </select> 
-              <!-- <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
 
-            <li class="list-group-item" v-for="(list, index) in campusClassList" :key="index" :value="list.number">
-            <input
-              v-model="form.campus_class_number"
-
-              style="outline: none 0 !important; box-shadow: none;"
-              class="form-check-input me-1" type="checkbox" :value="list.number" :id="list.number">
-            <label class="textColor" :for="list.number"><small>{{list.name+" [ "+list.abbreviation+" ]"}}</small></label>
-            </li>
-
-            </ul> -->
           </div>
 
           <div class="mb-2">

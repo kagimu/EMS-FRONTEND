@@ -19,7 +19,7 @@ export const useAccountStore = defineStore("account", () => {
                     newAccountResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.response.data
                     }
                 })
@@ -31,7 +31,7 @@ export const useAccountStore = defineStore("account", () => {
                 accountListResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.response.data
                     }
                 })
@@ -43,7 +43,7 @@ export const useAccountStore = defineStore("account", () => {
                     deleteAccountResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.data
                     }
                 })
@@ -54,7 +54,7 @@ export const useAccountStore = defineStore("account", () => {
                     updateAccountResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.data
                     }
                 })
@@ -67,7 +67,7 @@ export const useAccountStore = defineStore("account", () => {
                     removeRoleResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.data
                     }
                 })
@@ -75,12 +75,12 @@ export const useAccountStore = defineStore("account", () => {
 
      
         async function fetchUsersToAssign(data) {
-            return await api.get("main/users?page="+data.page+"&per_page="+ data.per_page)
+            return await api.get("main/users?page="+data?.page+"&per_page="+ data?.per_page)
                 .then((response) => {
                 userResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.response.data
                     }
                 })
@@ -92,7 +92,7 @@ export const useAccountStore = defineStore("account", () => {
                 userAllResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.response.data
                     }
                 })
