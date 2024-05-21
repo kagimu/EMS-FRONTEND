@@ -190,6 +190,7 @@ const level_number = ref(null)
 const campus_number = ref(null)
 
 
+
 const form = reactive({
     stream_number: "",
     subject_number: "",
@@ -316,8 +317,7 @@ watch(
         if (data) {
             classList.value = data.data
         }
-    },
-    {deep: true}
+    }
 )
 
 
@@ -327,8 +327,7 @@ watch(
         if (data) {
             campusList.value = data.data
         }
-    },
-    {deep: true}
+    }
 )
 
 watch(

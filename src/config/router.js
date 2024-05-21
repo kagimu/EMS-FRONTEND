@@ -39,7 +39,6 @@ import Invoice from "@/main/dashboard/invoice/Invoice.vue"
 import NewInvoice from "@/main/dashboard/invoice/NewInvoice.vue"
 import InvoiceDetails from "@/main/dashboard/invoice/InvoiceDetails.vue"
 import NewAdmission from "@/main/dashboard/studentAdmission/NewAdmission.vue"
-import Conditions from "@/main/settings/conditions/Conditions.vue"
 import Products from "@/main/dashboard/servicesAndProducts/Products.vue";
 import Designsidework from "../main/dashboard/Designsidework.vue";
 import CampusSetup from "@/main/dashboard/manageLevel/CampusSetup.vue";
@@ -312,12 +311,6 @@ const router = createRouter({
                 meta: {
                     resource: "new-admission",
                     action: "view_new-admission",
-                      
-                }},
-                {path: 'condtions', component:Conditions , name: "conditions",
-                meta: {
-                    resource: "condtions",
-                    action: "view_condtions",
                       
                 }},
                 {path: 'products', component: Products, name: "products",

@@ -257,7 +257,7 @@ function updateOnlineStatus() {
         <footer style="padding: 10px;">
           <div class="row" style="font-size: 13px;">
             <div class="col-10 text-center">
-              Copyright © 2017 Wholesome ED . All rights reserved.
+              Copyright © 2011 Wholesome Education System . All rights reserved.
             </div>
             <div class="col-2 text-end">Powered by Hamsoft</div>
           </div>

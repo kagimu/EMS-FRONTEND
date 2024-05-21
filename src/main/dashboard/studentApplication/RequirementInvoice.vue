@@ -171,7 +171,7 @@ const submitInvoice = () => {
     student_number: studentNumber,
     items: selectedItemsData
   }
-  alert(JSON.stringify(data))
+  // alert(JSON.stringify(data))
   // router.push({ name: 'invoice-details', params: { studentNumber }})
 
   //create Invoice ======================

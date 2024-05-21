@@ -141,7 +141,7 @@ function savePreviousSchoolResults(){
     score: parseInt(assessmentArea.score)
   }));
 
-  alert(JSON.stringify(localStorage.getItem('studentNumber')))
+  // alert(JSON.stringify(localStorage.getItem('studentNumber')))
   
   formData.set("assessment_and_score", JSON.stringify(assessmentAndScore));
   formData.set("student_number", localStorage.getItem('studentNumber'));

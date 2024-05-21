@@ -240,7 +240,7 @@ const formData = reactive({
 })
 
 function scheduleInterview(){
-  alert(JSON.stringify(formData))
+  // alert(JSON.stringify(formData))
   //code to call the endpoint
 }
 

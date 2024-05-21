@@ -103,7 +103,7 @@ const goBack = () =>{
 
 const skip = () =>{
   let applicationN = localStorage.getItem('applicationId')
-  alert(applicationN)
+  // alert(applicationN)
   applicationStore.submitApplicationOnSkipPreviousSchool(applicationN)
   emit("next",4)
 }

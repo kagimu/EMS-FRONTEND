@@ -4,7 +4,7 @@ import Badge from "@/assets/images/badge.png";
 import StudentImage from "@/assets/images/pic.jpg";
 
 const printReport = () => {
-  alert("Print pdf now man")
+  // alert("Print pdf now man")
 }
 
 const props = defineProps({
