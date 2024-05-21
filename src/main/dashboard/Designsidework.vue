@@ -1,73 +1,86 @@
 <template>
   <div>
-  
-  <ul>
-    <li v-for="(item, indx) in items" :key="indx"
-        class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
-      <div class="d-flex align-items-center" style="font-size: 12px;">
-        <input v-model="selectedItems" 
-               class="form-check-input me-2" 
-               type="checkbox" 
-               :value="item.item_number" 
-               @change="toggleSelection(item)"
-               aria-label="..." />
-        {{ item.item_name }} {{ item.cost }}
-        <input type="text" 
-               class="form-control ml-1" 
-               style="width: 50px;" 
-               v-model.number="item.quantity"
-               @input="updateQuantity(item, $event)">
-      </div>
-    </li>
-  </ul>
-  <button @click="submit">Submit</button>
-
-
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col" v-for="header in headers" :key="header">{{ header }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="group in feedingGroups" :key="group.group_name">
+          <th scope="row">{{ group.group_name }}</th>
+          <td v-for="header in headers.slice(1)" :key="header">
+            <div v-if="getMealCourses(group, header)">
+              <div v-for="meal in getMealCourses(group, header)" :key="meal">{{ meal }}</div>
+            </div>
+            <div v-else>{{ getError(group, header) }}</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 
-const items = reactive([
-  { item_number: "432523523423", item_name: "Item 1", cost: 10, quantity: 1 },
-  { item_number: "098765432109", item_name: "Item 2", cost: 20, quantity: 1 }
-]);
-
-const selectedItems = ref([]);
-
-const toggleSelection = (item) => {
-  const index = selectedItems.value.findIndex(selected => selected.item_number === item.item_number);
-  if (index === -1) {
-    selectedItems.value.push({ ...item, brought: true });
-  } else {
-    selectedItems.value.splice(index, 1);
-  }
+const data = {
+  headers: [" ", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+  feeding_group: [
+    {
+      group_name: "Group 1",
+      meal_courses: [
+        { day: "Mon", meal_courses: ["Dinner", "Break"], error: "No meal course(s) set" },
+        { day: "Tue", meal_courses: ["Dinner", "Break"], error: "No meal course(s) set" },
+        { day: "Wed", meal_courses: null, error: "No meal course(s) set" },
+        { day: "Thu", meal_courses: ["Break", "Dinner"], error: "No meal course(s) set" },
+        { day: "Fri", meal_courses: null, error: "No meal course(s) set" },
+        { day: "Sat", meal_courses: null, error: "No meal course(s) set" },
+        { day: "Sun", meal_courses: ["Break", "Dinner"], error: "No meal course(s) set" }
+      ]
+    },
+    {
+      group_name: "Group 2",
+      meal_courses: [
+        { day: "Mon", meal_courses: null, error: "No meal course(s) set" },
+        { day: "Tue", meal_courses: null, error: "No meal course(s) set" },
+        { day: "Wed", meal_courses: ["Break", "Dinner"], error: "No meal course(s) set" },
+        { day: "Thu", meal_courses: null, error: "No meal course(s) set" },
+        { day: "Fri", meal_courses: null, error: "No meal course(s) set" },
+        { day: "Sat", meal_courses: null, error: "No meal course(s) set" },
+        { day: "Sun", meal_courses: null, error: "No meal course(s) set" }
+      ]
+    }
+  ]
 };
 
-const updateQuantity = (item, event) => {
-  const selectedItem = selectedItems.value.find(selected => selected.item_number === item.item_number);
-  if (selectedItem) {
-    selectedItem.quantity = event.target.value;
-  }
+const headers = ref(data.headers);
+const feedingGroups = ref(data.feeding_group);
+
+const getMealCourses = (group, day) => {
+  const mealCourse = group.meal_courses.find(meal => meal.day === day);
+  return mealCourse ? mealCourse.meal_courses : null;
 };
 
-const submit = () => {
-  // Prepare the data to exclude item_name and cost and remove empty objects
-  const dataToSubmit = {
-    items: selectedItems.value
-      .map(({ item_number, quantity, brought }) => ({
-        item_number,
-        quantity,
-        brought
-      }))
-      .filter(item => item.item_number && item.quantity !== undefined && item.brought !== undefined)
-  };
-  alert(JSON.stringify(dataToSubmit));
+const getError = (group, day) => {
+  const mealCourse = group.meal_courses.find(meal => meal.day === day);
+  return mealCourse ? mealCourse.error : "";
 };
 </script>
 
-
-<style>
+<style scoped>
+.table {
+  width: 100%;
+  margin: 20px 0;
+  border-collapse: collapse;
+}
+.table th, .table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+.table th {
+  background-color: #f2f2f2;
+  text-align: center;
+}
 </style>

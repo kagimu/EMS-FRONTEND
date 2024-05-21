@@ -50,7 +50,8 @@
 <script setup>
 import {onMounted, reactive, ref, watch,computed} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
-import { useAccountStore } from "../store/account.js";
+import { useAccountStore } from "@/main/dashboard/account/store/account.js";
+
 import { useRolesStore } from "@/main/settings/roles/store/roles.js";
 
 const roleStore = useRolesStore()

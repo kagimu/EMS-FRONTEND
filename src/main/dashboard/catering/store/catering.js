@@ -118,8 +118,8 @@ async function newFeedingGroupInfo(data) {
             }
         })
 }
-async function fetchFeedingGroup() {
-    return await api.get("main/catering/feeding-groups")
+async function fetchFeedingGroup(school) {
+    return await api.get("main/catering/feeding-groups?school_number="+school)
         .then((response) => {
             feedingGroupInfoResponse.value = response.data
         })
@@ -382,8 +382,8 @@ async function newMeal(data) {
         })
 }
 
-async function fetchMeals(feedingGroupNumber,sessionNumber) {
-    return await api.get("main/catering/meals?feeding_group_number="+feedingGroupNumber+"&feeding_session_number="+sessionNumber)
+async function fetchMeals(campusNumber,meal_courseNumber) {
+    return await api.get("main/catering/meals?campus_number="+campusNumber+"&meal_course_number="+meal_courseNumber)
         .then((response) => {
             mealsResponse.value = response.data
         })

@@ -83,7 +83,8 @@ const addFeedingGroup = () => {
     code:parseInt(form.code),
     name:form.name,
     status:"ACTIVE",
-    campus_number:form.campus_number
+    campus_number:form.campus_number,
+    school_number:school_number.value
 })
 
     buttonLoader.true

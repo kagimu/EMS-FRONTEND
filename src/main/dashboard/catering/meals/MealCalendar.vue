@@ -140,7 +140,7 @@ watch(
         </div>
 
 
-        <table class="table table-hover caption-top table-sm" style="font-size: 14px;">
+        <table class="table table-hover caption-top table-sm text-[14px]">
           <thead>
           <tr>
             <td class="w-[10%] border  border-r" v-for="(header, idx) in mealCalendarList?.headers" :key="idx">{{header}}</td>
