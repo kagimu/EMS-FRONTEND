@@ -136,14 +136,9 @@
   let p = authStore.profile
   const cateringStore = useCateringStore();
   const feedingSessionGroupData = ref(null);
-  const feedingGroupData = ref([]);
   let errorMessage = ref(null);
   const buttonLoader = ref(false);
   const notificationStore = useNotificationStore();
-  const sessionNumber = ref(null);
-  const groupNumber = ref(null);
-  const currentDate = ref(new Date());
-  const currentTime = ref(getCurrentTime());
   const school_number = ref("")
   const mealCourseList = ref([])
   const campusList = ref([])
@@ -152,10 +147,7 @@
   const campusStore = useCampusStore()
 
   
-  function getCurrentTime() {
-    const date = new Date();
-    return `${padZero(date.getHours())}:${padZero(date.getMinutes())}:${padZero(date.getSeconds())}`;
-  }
+
   
   function padZero(number) {
     return number < 10 ? `0${number}` : number;
@@ -166,34 +158,7 @@
     campus_number:"",
     feeding_session_number:""
   });
-  
-  // const userList = reactive([
-  //   {
-  //     user_number: "771fbbec-37df-42bd-afb5-bd7e9ebce916",
-  //     name: "Collins Mark",
-  //     feeding_group_name: "None Staff",
-  //     feeding_group_number: "6c7e1074-a02b-40f8-a49c-1ce58f5568cb",
-  //     meals: [
-  //       {
-  //         menu_item_number: "42c3f7c0-3bc0-4c8c-95a1-d276d4d6aabd",
-  //         menu_item_name: "Bread",
-  //         quantity: 0
-  //       },
-  //       {
-  //         menu_item_number: "fd4dea5d-f5d1-4cec-97d9-0ad103079ce7",
-  //         menu_item_name: "Milk",
-  //         quantity: 0
-  //       },
-  //       {
-  //         menu_item_number: "4491348f-aeb8-40b3-b49b-49b95a49dd60",
-  //         menu_item_name: "Juice",
-  //         quantity: 0
-  //       }
-  //     ]
-  //   }
-  // ]);
-  
-  
+
   
   const userList = ref([])
   onMounted(() => {
@@ -241,8 +206,7 @@
   () => cateringStore.feedingGroupSessionsInfoResponse,
   async (data) => {
       feedingSessionGroupData.value = data.data
-  },
-  {deep: true}
+  }
 )
   
   watch(
@@ -251,16 +215,14 @@
       if (data) {
         notificationStore.errorToast("Error", data.message);
       }
-    },
-    { deep: true }
+    }
   );
   
   watch(
     () => cateringStore.newMealsResponse,
     async (data) => {
       notificationStore.successToast("Success", data.message);
-    },
-    { deep: true }
+    }
   );
   
   watch(
@@ -268,8 +230,7 @@
     async (data) => {
       // notificationStore.successToast("Success", data.message);
       userList.value = data.data
-    },
-    { deep: true }
+    }
   );
   
   
@@ -279,8 +240,7 @@
           if (data) {
               schoolList.value = data.data
           }
-      },
-      {deep: true}
+      }
   )
   
     const fetchCampuses = (school_number) => {
@@ -294,8 +254,7 @@
           if (data) {
               campusList.value = data.data
           }
-      },
-      {deep: true}
+      }
   )
 
 
