@@ -37,9 +37,9 @@
                   <div v-if="selectedPage === 'user-management'">
                  <UserManagement></UserManagement>
                   </div>
-                  <div v-if="selectedPage === 'users'">
+                  <!-- <div v-if="selectedPage === 'users'">
                     <StaffManager></StaffManager>
-                  </div>
+                  </div> -->
                 
             </div>
           </div>
@@ -81,11 +81,11 @@ const { can } = useAbility()
       id:"role",
       action : "view_roles"
     },
-    {
-         name: "Users" ,
-           id: "users",
-           action:"users"
-      },
+    // {
+    //      name: "Users" ,
+    //        id: "users",
+    //        action:"users"
+    //   },
      
   ])
   const form = reactive({
