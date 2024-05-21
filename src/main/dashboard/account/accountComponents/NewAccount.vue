@@ -9,9 +9,10 @@
         <form @submit.prevent="assignRole">
       <div class="mb-2">      
         <label class="textColor"><small>User</small></label>
+        <!-- {{ userData }} -->
               <select  v-model="formData.user_number"  style="box-shadow: none;" class="form-select form-select-sm" required >
                   <option disabled value="">Select User</option>
-                  <option v-for="(list, index) in userData" :key="index" :value="list.number">{{ list.first_name }}
+                  <option v-for="(list, index) in userData" :key="index" :value="list.number">{{ list.first_name }} {{ list.last_name  }}
                   </option>
               </select>
 
@@ -96,6 +97,7 @@ watch (
         notificationStore.successToast("Success", data.message)
         formData.role_number = null
         formData.user_number = null
+
       }
     },
     {deep:true}
@@ -105,14 +107,14 @@ watch (
 //fetch
 onMounted(
     async () => {
-      await accountStore.fetchUsersToAssign()
+       accountStore.fetchAllUsers()
     } )
 
     watch(
-    () => accountStore.userResponse,
+    () => accountStore.userAllResponse,
     async (data) => {
       if(data){
-        userData.value = data.data
+        userData.value = data
       }
     },
     {deep:true}

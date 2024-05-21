@@ -10,6 +10,7 @@ export const useAccountStore = defineStore("account", () => {
     let updateAccountResponse = ref(null)
     let removeRoleResponse = ref(null)
     let userResponse = ref(null)
+    let userAllResponse = ref(null)
 
 
         async function createNewAccount(data) {
@@ -85,6 +86,18 @@ export const useAccountStore = defineStore("account", () => {
                 })
         }
 
+        async function fetchAllUsers(data) {
+            return await api.get("main/users/all")
+                .then((response) => {
+                userAllResponse.value = response.data
+                })
+                .catch((response) => {
+                    if(response){
+                        errorMessage.value = response.response.data
+                    }
+                })
+        }
+
     return {
      errorMessage,
      createNewAccount,
@@ -98,6 +111,8 @@ export const useAccountStore = defineStore("account", () => {
      updateAccount,
      removeAccountRole,
      userResponse,
-     fetchUsersToAssign
+     fetchUsersToAssign,
+     fetchAllUsers,
+     userAllResponse
     }
 })

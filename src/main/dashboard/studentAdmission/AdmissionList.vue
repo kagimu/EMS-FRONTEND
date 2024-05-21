@@ -303,7 +303,7 @@ watch(
         <div class="col-12">
            <div class="card">
               <div class="card-body" style="padding: 0;">
-                 <div class="">
+                 <div class=" mx-3">
                     <div class="row">
                        <div class="col-lg-12">
                           <div class="">

@@ -83,13 +83,13 @@
                                          <div class="table-responsive">
                                             <table class="text-sm table table-sm table-striped table-bordered p-5">
                                                <thead>
-                                                  <th>Item</th>
-                                                  <th>Qty</th>
+                                                  <th></th>
+                                                  <th></th>
                                                </thead>
                                                <tbody>
                                                   <tr v-for="(meal, mealIndex) in user.meals" :key="mealIndex">
                                                      <td>{{ meal.menu_item_name }}</td>
-                                                     <td><input type="number" v-model="user.meals[mealIndex].quantity" v-on:blur="submitMeal(user.meals[mealIndex].quantity,meal.menu_item_number,user.user_number)"></td>
+                                                     <td><input class="form-control"  style="width: 50px; font-size: 14px; text-align: center;"  @keypress="commons.numbersOnlyValidator($event)" maxlength="10" type="text"  v-model="user.meals[mealIndex].quantity" v-on:blur="submitMeal(user.meals[mealIndex].quantity,meal.menu_item_number,user.user_number)"></td>
                                                   </tr>
                                                </tbody>
                                             </table>
@@ -116,6 +116,9 @@
   import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
   import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
   import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
+  import useCommonsStore from "@/composables/useCommons.js";
+  
+  const commons = useCommonsStore()
 
   const  mealStore  = useMealStore()
   const authStore = useAuthStore()
@@ -203,7 +206,7 @@
       user_number: userN,
       time: currentTime,
       campus_number: form.campus_number,
-      quantity:qty,
+      quantity:parseInt(qty),
       staff_number:p.number,
       date:currentDate
   })
@@ -231,7 +234,7 @@
   );
   
   watch(
-    () => cateringStore.newMealsRespons,
+    () => cateringStore.newMealsResponse,
     async (data) => {
       notificationStore.successToast("Success", data.message);
     },
@@ -241,7 +244,7 @@
   watch(
     () => cateringStore.mealsResponse,
     async (data) => {
-      notificationStore.successToast("Success", data.message);
+      // notificationStore.successToast("Success", data.message);
       userList.value = data.data
     },
     { deep: true }

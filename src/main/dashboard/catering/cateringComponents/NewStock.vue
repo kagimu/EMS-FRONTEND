@@ -20,6 +20,8 @@
                                 </option>
                             </select>
                         </div>
+                        </div>
+                        <div class="col-lg-4">
 
                         <div class="mb-2">
                     <label class="textColor"><small>Campus</small>  </label>

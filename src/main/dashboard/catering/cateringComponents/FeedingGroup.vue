@@ -18,7 +18,7 @@
                  <div class="">
                     <div class="row">
                     <div class="col-lg-8">
-                    <h5 style="font-size: 14px;margin-top: 2px;">Feeding Group </h5>
+                   
                     </div>
     
                 <div class="col-lg-4">
@@ -39,47 +39,29 @@
        <div class="row">
               <div class="col-3">
                 <div class="mb-2">
-          <label class="textColor"><small>School</small> </label>
+         
           <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm" required
                   v-model="form.school_number"
-                  @change="fetchCampuses(form.school_number)"
+                  @change="fetchGroup(form.school_number)"
           >
-              <option disabled value="">Select School</option>
+              <option disabled value="">-filter School -</option>
               <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
               </option>
           </select>
       </div>
-              </div>
+              
+              
+</div>
 
-              <div class="col-4">
-      <div class="mb-2">
-          <label class="textColor"><small>Campus</small>  </label>
-          <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm"
-                  v-model="form.campus_number" required
-                  @change="fetchClasses(form.campus_number)"
-          >
-              <!-- <option disabled value="">Select campus</option> -->
-              <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-              </option>
-          </select>
-      </div></div>
 
-   
-      <div class="col-4">
-          <div class="mt-4">
-              <input type="text" class="form-control mt-1 mb-0" placeholder="Search..."> 
-          </div>
-     </div>
 
             </div>
 
     <table
     id="datatable"
-    class="table table-striped"
+    class="table table-striped table table-hover caption-top table-sm"
     style="font-size: 14px !important;"
     >
     <thead >
@@ -130,7 +112,9 @@
     const schoolStore = useSchoolStore()
     const campusStore = useCampusStore()
     const classStore = useClassesStore()
-    const school_number = ref(null)
+    const errorMessage = ref(null)
+    // const school_number = ref(null)
+    const notificationStore = useNotificationStore()
 
     const showModal = () => {
     showingModal.value = true
@@ -138,7 +122,7 @@
 }
     
     const form = reactive({
-    school_number:null,
+    school_number:"",
     campus_class_number: null,
     campus_number: null,
     })
@@ -155,10 +139,13 @@
         thisDialog.value = false
     }
 
-    onMounted(() => {
-        cateringStore.fetchFeedingGroup()
+    const fetchGroup = (school) => {
+        cateringStore.fetchFeedingGroup(school)
     }
-)
+//     onMounted(() => {
+//         cateringStore.fetchFeedingGroup()
+//     }
+// )
 
 watch(
     () => cateringStore.feedingGroupInfoResponse,
