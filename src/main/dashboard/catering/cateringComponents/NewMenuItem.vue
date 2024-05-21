@@ -56,7 +56,7 @@ const menuForm = reactive({
   name:null,
   code:null,
   type:null,
-  unit_of_measure_number:null,
+  unit_of_measure_number:"",
   campus_number:null,
   base_price:null
 } )
@@ -72,9 +72,9 @@ const addMenuItem = () =>{
       unit_of_measure_number:menuForm.unit_of_measure_number,
       campus_number:menuForm.campus_number,
     })
-    // alert(JSON.stringify(menuData))
-    buttonLoader.value = true,
-        cateringStore.newMenuItemInfo(myData)
+
+    buttonLoader.value = true
+    cateringStore.newMenuItemInfo(myData)
   }else{
     //prepare data
     const secondaryItemNumbers = menuItems.value.map(menu => {
@@ -84,10 +84,6 @@ const addMenuItem = () =>{
       }
     })
 
-    const data1 = {
-      secondary_items: secondaryItemNumbers
-    }
-    const formattedData = JSON.stringify(data1)
 
     let myData = reactive({
       name:menuForm.name,
@@ -97,8 +93,7 @@ const addMenuItem = () =>{
       campus_number:menuForm.campus_number,
       secondary_items:secondaryItemNumbers
     })
-    // alert(JSON.stringify(myData))
-    ///connect endpoint
+
     cateringStore.newAssemblyItem(myData)
   }
 
@@ -273,61 +268,84 @@ const addUnit = () =>{
         <input v-model="menuForm.name"   class="form-control shadow-none" required type="text">
       </div>
 
-        <div class="mb-2">
-            <label class="textColor"><small>School</small> </label>
+
+
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="mb-2">
+            <label class="textColor"><small>Code</small></label>
+            <input
+                v-model="menuForm.code"
+                class="form-control shadow-none"
+                maxlength="10"
+                required
+                type="text"
+                @keypress="commons.numbersOnlyValidator($event)">
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="mb-2">
+            <label class="textColor"><small>Unit Of Measurement</small>  <b><i class="bi bi-plus-circle-fill" @click="showUnitMeasurement()"></i></b></label>
             <select
-                    v-model="school_number"
-                    class="form-select form-select-sm" required
-                    style="box-shadow: none;"
-                    @change="fetchCampuses(school_number)"
-            >
-                <option disabled value="">Select School</option>
-                <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-                </option>
+                v-model="menuForm.unit_of_measure_number"
+                class="form-control form-select shadow-none">
+              <option disabled value="">--Select Unit of Measure--</option>
+              <option v-for="(list, index) in unitMeasurementData" :key="index" :value="list.number">{{list.name}}</option>
             </select>
+          </div>
         </div>
+      </div>
 
-        <div class="mb-2">
-            <label class="textColor"><small>Campus</small>  </label>
-            <select
-                v-model="menuForm.campus_number"
-                class="form-select form-select-sm"
-                required style="box-shadow: none;"
-            >
-              <option disabled value="">Select campus</option>
-              <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-              </option>
-            </select>
-        </div>
 
-        <div class="mb-2">
-          <label class="textColor"><small>Type</small> </label>
-          <select
-              v-model="menuForm.type"
-              class="form-select form-select-sm" required
-              style="box-shadow: none;"
 
-          >
-            <option disabled value="">Select Type</option>
-            <option>ITEM</option>
-            <option>ASSEMBLED</option>
-          </select>
-        </div>
+      <div class="mb-2">
+        <label class="textColor"><small>Type</small> </label>
+        <select
+            v-model="menuForm.type"
+            class="form-select form-select-sm" required
+            style="box-shadow: none;"
+
+        >
+          <option disabled value="">Select Type</option>
+          <option>ITEM</option>
+          <option>ASSEMBLED</option>
+        </select>
+      </div>
 
     </div>
     <div class="col-lg-6">
+
       <div class="mb-2">
-        <label class="textColor"><small>Code</small></label>
-        <input
-            v-model="menuForm.code"
-            class="form-control shadow-none"
-            maxlength="10"
-            required
-            type="text"
-            @keypress="commons.numbersOnlyValidator($event)">
+        <label class="textColor"><small>School</small> </label>
+        <select
+            v-model="school_number"
+            class="form-select form-select-sm" required
+            style="box-shadow: none;"
+            @change="fetchCampuses(school_number)"
+        >
+          <option disabled value="">Select School</option>
+          <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+          </option>
+        </select>
       </div>
 
       <div class="mb-2">
+        <label class="textColor"><small>Campus</small>  </label>
+        <select
+            v-model="menuForm.campus_number"
+            class="form-select form-select-sm"
+            required style="box-shadow: none;"
+        >
+          <option disabled value="">Select campus</option>
+          <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+          </option>
+        </select>
+      </div>
+
+
+
+
+      <div class="mb-2" v-if="menuForm.type === 'ITEM'">
         <label class="textColor"><small>Unit Price</small></label>
         <input
             v-model="menuForm.base_price"
@@ -338,16 +356,8 @@ const addUnit = () =>{
             @keypress="commons.numbersOnlyValidator($event)">
       </div>
 
-      <div class="mb-2">
-        <label class="textColor"><small>Unit Of Measurement</small>  <b><i class="bi bi-plus-circle-fill" @click="showUnitMeasurement()"></i></b></label>
-        <select
-            v-model="menuForm.unit_of_measure_number"
-            class="form-control form-select shadow-none">
-          <option disabled value="">Select</option>
-          <option v-for="(list, index) in unitMeasurementData" :key="index" :value="list.number">{{list.name}}</option>
-        </select>
 
-      </div>
+
     </div>
   </div>
 
