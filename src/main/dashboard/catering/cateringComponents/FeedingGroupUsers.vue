@@ -145,6 +145,7 @@ const addFeedingGroupUsers = () => {
     cateringStore.newFeedingGroupUsers(data)
 }
 
+
 watch (
     () => cateringStore.newFeedingGroupResponse,
     async (data) => {
@@ -159,6 +160,7 @@ watch(
     () => cateringStore.errorMessage,
     async (data) => {
       if (data) {
+        buttonLoader.value = false
         notificationStore.errorToast("Error", data.message)
       }
     }
