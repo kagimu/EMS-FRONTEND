@@ -21,9 +21,11 @@
   const studentNum=ref(null)
   const enrolmentStore = useEnrolmentStore()
   const mymodal = ref(false)
-  const showModal = (studentN,adm) =>{
+  const studentData = ref([])
+  const showModal = (studentN,adm,stud) =>{
   studentNum.value = studentN
   admissionNumber.value = adm
+  studentData.value =stud
   mymodal.value = true
    }
   
@@ -293,7 +295,7 @@ watch(
 <template>
 
 <AppModal title="Enrol" v-model="mymodal" xl6>
-   <EnrolModel :studentNumber="studentNum" :adm="admissionNumber"></EnrolModel>
+   <EnrolModel :studentNumber="studentNum" :adm="admissionNumber" :studentDataInfo="studentData"></EnrolModel>
 </AppModal>
 
   <div>
@@ -491,7 +493,7 @@ watch(
                              </td> -->
                              <td>{{ adm.Student.adn }}</td>
                              <!-- <td>{{ adm.AcademicYear.academic_year_name }}</td> -->
-                             <td style="text-transform: capitalize !important;">{{ adm.Student.surname }}</td>
+                             <td style="text-transform: capitalize !important;">{{ adm.Student.surname + " " + adm.Student.second_name }}</td>
                              <td>{{ adm.Campus.name }}</td>
                              <td>{{ adm.Stream.class_name }}</td>
                              <td>{{ adm.Stream.name }}</td>
@@ -506,7 +508,7 @@ watch(
                                 </button> -->
                                 
 
-                                <button v-if="adm.status != 'Enrolled'" @click="showModal(adm.Student.number,adm.number)" 
+                                <button v-if="adm.status != 'Enrolled'" @click="showModal(adm.Student.number,adm.number,adm)" 
                                    type="button" class="btn btn-sm btn-primary mb-2 mr-4 "
                                    style="color: white;">
                                    <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  
