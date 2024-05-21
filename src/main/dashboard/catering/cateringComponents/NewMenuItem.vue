@@ -1,146 +1,419 @@
+<script setup>
+import {onMounted,reactive, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import NewUnitOfMeasurement from "@/main/dashboard/catering/cateringComponents/NewUnitOfMeasurement.vue";
+import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import AppModal from "@/components/AppModal.vue";
+
+import useCommonsStore from "@/composables/useCommons.js";
+const commons = useCommonsStore()
+
+const showUnitModal = ref(false)
+const notificationStore = useNotificationStore()
+const thisDialog = ref(false)
+const buttonLoader = ref(false)
+const campusList = ref([])
+const schoolList = ref([])
+const schoolStore = useSchoolStore()
+const campusStore = useCampusStore()
+const itemtype = ref(null)
+const errorMessage = ref(null)
+const school_number = ref("")
+
+const showUnitMeasurement = () => {
+  showUnitModal.value = true
+  thisDialog.value=false
+}
+
+const showDialog = () => {
+  thisDialog.value = true
+}
+const cateringStore = useCateringStore()
+const unitMeasurementData = ref([])
+
+const closeDialog = () => {
+  thisDialog.value = false
+}
+
+onMounted(
+    () => {
+      cateringStore.fetchUnitOfMeasureInfo()
+
+    }
+)
+
+watch(
+    () => cateringStore.UnitOfMeasureInfoResponse,
+    async (data) => {
+      unitMeasurementData.value = data.data
+    },
+    {deep: true}
+)
+
+const menuForm = reactive({
+  name:null,
+  code:null,
+  type:null,
+  unit_of_measure_number:"",
+  campus_number:null,
+  base_price:null
+} )
+
+const addMenuItem = () =>{
+  if(menuForm.type === 'ITEM'){
+
+    let myData = reactive({
+      name:menuForm.name,
+      code:parseInt(menuForm.code),
+      base_price:parseInt(menuForm.base_price),
+      type:menuForm.type,
+      unit_of_measure_number:menuForm.unit_of_measure_number,
+      campus_number:menuForm.campus_number,
+    })
+
+    buttonLoader.value = true
+    cateringStore.newMenuItemInfo(myData)
+  }else{
+    //prepare data
+    const secondaryItemNumbers = menuItems.value.map(menu => {
+      return {
+        secondary_item_number: menu.secondary_item_number,
+        quantity:parseInt(menu.quantity)
+      }
+    })
+
+
+    let myData = reactive({
+      name:menuForm.name,
+      code:parseInt(menuForm.code),
+      type:menuForm.type,
+      unit_of_measure_number:menuForm.unit_of_measure_number,
+      campus_number:menuForm.campus_number,
+      secondary_items:secondaryItemNumbers
+    })
+
+    cateringStore.newAssemblyItem(myData)
+  }
+
+
+
+}
+
+watch(
+    () => cateringStore.newMenuItemInfoResponse,
+    async (data) => {
+
+      notificationStore.successToast("Success", data.message)
+      await cateringStore.fetchMenuItem()
+      menuForm.name=null,
+          menuForm.code=null,
+          menuForm.type=null,
+          menuForm.unit_of_measure_number=null,
+          menuForm.campus_number=null
+      buttonLoader.value = false
+    },
+    {deep: true}
+)
+
+
+
+onMounted(() => {
+      schoolStore.fetchSchools()
+      cateringStore.fetchMenuItem()
+      cateringStore.fetchFeedingGroupSessions()
+    }
+)
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        schoolList.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+const fetchCampuses = (school_number) => {
+  campusStore.fetchCampuses(school_number)
+}
+
+
+watch(
+    () => campusStore.campusListResponse,
+    async (data) => {
+      if (data) {
+        campusList.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+
+const feedingSessionGroupData = ref([])
+
+const menuOptions = ref([])
+const menuItems = ref([])
+const menuItemOptions = ref([])
+
+
+const form = reactive({
+  primary_item_number:null
+})
+
+const menuData = ref([])
+
+
+
+watch(
+    () => cateringStore.menuItemResponse,
+    async (data) => {
+      if(data && data.data) {
+        menuData.value = data.data
+        menuOptions.value = data.data.map(option => ({ number: option.number,name:option.name}));
+      }
+    },
+    {deep: true}
+)
+
+watch(
+    () => cateringStore.feedingGroupSessionsInfoResponse,
+    async (data) => {
+      feedingSessionGroupData.value = data.data
+    },
+    {deep: true}
+)
+
+
+
+function addItem() {
+  menuItems.value.push({ name: '', quantity: 1 })
+}
+
+function removeMenuItem(index) {
+  menuItems.value.splice(index, 1)
+}
+
+function availableOptions(index) {
+  const selectedNames = menuItems.value.map(menu => menu.name);
+  return menuOptions.value.filter(option => !selectedNames.includes(option.name) || option.name === menuItems.value[index].name)
+}
+
+
+const createFeedingSessionItem = () => {
+  const secondaryItemNumbers = menuItems.value.map(menu => {
+    return {
+      secondary_item_number: menu.secondary_item_number,
+      quantity: menu.quantity
+    }
+  })
+
+  const data = {
+    primary_item_number: form.primary_item_number,
+    secondary_items: secondaryItemNumbers
+  }
+  const formattedData = JSON.stringify(data)
+  // alert(formattedData)
+  cateringStore.newAssemblyItem(formattedData)
+}
+
+watch(
+    () => cateringStore.newAssemblyItemResponse,
+    async (data) => {
+      notificationStore.successToast("Success", data.message)
+      cateringStore.fetchMenuItem()
+      clearFormData()
+      buttonLoader.value = false;
+    },
+    {deep: true}
+)
+
+watch(
+    () => cateringStore.errorMessage,
+    async (data) => {
+      if (data) {
+        notificationStore.errorToast("Error", data.message)
+      }
+    },
+    {deep: true}
+)
+
+const clearFormData = () => {
+  form.primary_item_number = null
+  menuItems.value = []
+}
+
+const addUnit = () =>{
+  // alert("Gwe")
+}
+
+</script>
 <template>
     <div class="mt-5">
 
     
-    <AppModal title="Add Unit of Measure" v-model="showUnitModal" lg>
+    <AppModal v-model="showUnitModal" lg title="Add Unit of Measure">
       <NewUnitOfMeasurement></NewUnitOfMeasurement>
     </AppModal>
 
 
 <form @submit.prevent="addMenuItem">
   <div class="row">
-<div class="col-lg-6">
-    <div class="mb-2">
-    <label class="textColor"><small>School</small> </label>
-    <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm" required
-            v-model="school_number"
-            @change="fetchCampuses(school_number)"
-    >
-        <option disabled value="">Select School</option>
-        <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-        </option>
-    </select>
-</div>
-</div>
+    <div class="col-lg-6">
 
-<div class="col-lg-6">
-    <div class="mb-2">
-    <label class="textColor"><small>Campus</small>  </label>
-    <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="menuForm.campus_number" required
-    >
-        <option disabled value="">Select campus</option>
-        <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-        </option>
-    </select>
-</div>
-</div>
-</div>
+      <div class="mb-2">
+        <label class="textColor"><small>Item Name</small></label>
+        <input v-model="menuForm.name"   class="form-control shadow-none" required type="text">
+      </div>
 
-    <div class="row">
+
+
+      <div class="row">
         <div class="col-lg-6">
-            <div class="mb-2">
-    <label class="textColor"><small>Type</small> </label>
-    <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm" required
+          <div class="mb-2">
+            <label class="textColor"><small>Code</small></label>
+            <input
+                v-model="menuForm.code"
+                class="form-control shadow-none"
+                maxlength="10"
+                required
+                type="text"
+                @keypress="commons.numbersOnlyValidator($event)">
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="mb-2">
+            <label class="textColor"><small>Unit Of Measurement</small>  <b><i class="bi bi-plus-circle-fill" @click="showUnitMeasurement()"></i></b></label>
+            <select
+                v-model="menuForm.unit_of_measure_number"
+                class="form-control form-select shadow-none">
+              <option disabled value="">--Select Unit of Measure--</option>
+              <option v-for="(list, index) in unitMeasurementData" :key="index" :value="list.number">{{list.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="mb-2">
+        <label class="textColor"><small>Type</small> </label>
+        <select
             v-model="menuForm.type"
-            
-    >
-        <option disabled value="">Select Type</option>
-        <option>ITEM</option>
-        <option>ASSEMBLED</option>
-    </select>
-    </div>
-        </div>
+            class="form-select form-select-sm" required
+            style="box-shadow: none;"
 
-        <div class="col-lg-6">
-        <div class="mb-2">
-        <label class="textColor"><small>Name</small></label>
-        <input v-model="menuForm.name"   type="text" required class="form-control">
-        </div>
-        </div>
+        >
+          <option disabled value="">Select Type</option>
+          <option>ITEM</option>
+          <option>ASSEMBLED</option>
+        </select>
+      </div>
 
     </div>
-  
+    <div class="col-lg-6">
 
-<div class="row">
-    <div class="col-lg-4">
-        <div class="mb-2">
-    <label class="textColor"><small>Code</small></label>
-    <input @keypress="commons.numbersOnlyValidator($event)"
-            maxlength="10" v-model="menuForm.code"  type="text" required class="form-control">
-</div>
+      <div class="mb-2">
+        <label class="textColor"><small>School</small> </label>
+        <select
+            v-model="school_number"
+            class="form-select form-select-sm" required
+            style="box-shadow: none;"
+            @change="fetchCampuses(school_number)"
+        >
+          <option disabled value="">Select School</option>
+          <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="mb-2">
+        <label class="textColor"><small>Campus</small>  </label>
+        <select
+            v-model="menuForm.campus_number"
+            class="form-select form-select-sm"
+            required style="box-shadow: none;"
+        >
+          <option disabled value="">Select campus</option>
+          <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+          </option>
+        </select>
+      </div>
+
+
+
+
+      <div class="mb-2" v-if="menuForm.type === 'ITEM'">
+        <label class="textColor"><small>Unit Price</small></label>
+        <input
+            v-model="menuForm.base_price"
+            class="form-control shadow-none"
+            maxlength="10"
+            required
+            type="text"
+            @keypress="commons.numbersOnlyValidator($event)">
+      </div>
+
+
+
     </div>
-    <div class="col-lg-4">
-        <div class="mb-2">
-    <label class="textColor"><small>Unit Price</small></label>
-    <input @keypress="commons.numbersOnlyValidator($event)"
-            maxlength="10" v-model="menuForm.base_price"  type="text" required class="form-control">
-</div>
-    </div>
-    <div class="col-lg-4">
-        <div class="mb-2">
-    <label class="textColor"><small>Unit Of Measurement</small>  <b><i class="bi bi-plus-circle-fill" @click="showUnitMeasurement()"></i></b></label>
-    <select v-model="menuForm.unit_of_measure_number" class="form-control form-select"> 
-        <option disabled value="">Select</option>
-        <option v-for="(list, index) in unitMeasurementData" :key="index" :value="list.number">{{list.name}}</option>
-    </select>
-   
-</div>
+  </div>
 
-</div>
-
-</div>
 
 
 <div>
 </div>
 
 
-<!-- if Assessmbled -->
-<div v-if="menuForm.type=='ASSEMBLED'">
-    <div class="row">
-                  <div class="col-lg-12">
-                   
-                    <!-- New Design -->
-                      <table class="table table-striped mt-2">
-                        <thead>
-                          <tr class="" style="padding: 0px;margin: 0px;font-size: 13px;">
-                            <th>Item</th>
-                            <th>Quantity</th>
-                            <th></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr v-for="(menu, index) in menuItems" :key="index" > 
-                            <td>
-                              <select class="form-select form-select-sm form-control select-no-border" v-model="menu.secondary_item_number">
-                                <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
-                              </select>
-                            </td>
+<div v-if="menuForm.type==='ASSEMBLED'">
+    <div class="mx-auto">
 
-                            <td><input  @keypress="commons.numbersOnlyValidator($event)"
-            maxlength="10" type="text" v-model="menu.quantity" placeholder="1.0" class="inp"></td>
-                            <td><button type="button" @click="removeMenuItem(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                   
-                      <button class="btn btn-primary btn-sm textColor" @click.prevent="addItem" :disabled="isAddButtonDisabled"><small>ADD ANOTHER ITEM</small></button>
-                    
-                  </div>
-                </div> 
+      <div class="mt-5 text-[18px]">Assembled Items</div>
+
+        <!-- New Design -->
+      <table class="table table-hover table-sm border-t">
+          <thead>
+            <tr class="" style="padding: 0px;margin: 0px;font-size: 13px;">
+              <td>#</td>
+              <td>Item</td>
+              <td>Quantity</td>
+              <td></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(menu, index) in menuItems" :key="index" >
+              <td class="text-sm text-[#8a8888]">{{(index + 1)}}</td>
+              <td class="p-0">
+                <select v-model="menu.secondary_item_number" class="form-select form-control select-no-border border">
+                  <option v-for="option in availableOptions(index)" :value="option.number">{{ option.name }}</option>
+                </select>
+              </td>
+
+              <td class="p-0">
+                <input
+                    v-model="menu.quantity"
+                    class="form-control shadow-none"
+                    maxlength="10"
+                    placeholder="1.0"
+                    type="text"
+                    @keypress="commons.numbersOnlyValidator($event)">
+              </td>
+              <td><button v-if="index > 0" type="button" @click="removeMenuItem(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+
+      <button class="btn btn-primary btn-sm textColor" @click.prevent="addItem"><small>ADD ANOTHER ITEM</small></button>
+
+    </div>
 </div>
 
 
 <div class="text-right mt-4">
-    <button  style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
-    <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader" >
+    <button  aria-controls="rolesDialog" class="btn btn-primary btn-sm float-end mb-2 mr-4" data-bs-target="#rolesDialog"  data-bs-toggle="offcanvas" style="float: right" type="submit"><i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
+    <div v-if="buttonLoader" class="spinner-border spinner-border-sm" role="status" >
         <span class="visually-hidden">Loading...</span>
     </div></button>
 </div>
@@ -148,265 +421,7 @@
     </div>
 </template>
  
-<script setup>
-    import {onMounted,reactive, ref, watch} from "vue";
-    import useNotificationStore from "@/composables/useNotification.js";
-    import NewUnitOfMeasurement from "@/main/dashboard/catering/cateringComponents/NewUnitOfMeasurement.vue";
-    import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
-    import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-    import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-    import AppModal from "@/components/AppModal.vue";
 
-    import useCommonsStore from "@/composables/useCommons.js";
-    const commons = useCommonsStore()
-
-
-    const showUnitModal = ref(false)
-    const notificationStore = useNotificationStore()
-    const thisDialog = ref(false)
-    const buttonLoader = ref(false)
-    const campusList = ref([])
-    const schoolList = ref([])
-    const schoolStore = useSchoolStore()
-    const campusStore = useCampusStore()
-    const itemtype = ref(null)
-    const errorMessage = ref(null)
-
-    const showUnitMeasurement = () => {
-    showUnitModal.value = true
-    thisDialog.value=false
-}
-
-    const showDialog = () => {
-        thisDialog.value = true
-    }
-    const cateringStore = useCateringStore()
-    const unitMeasurementData = ref([])
-
-    const closeDialog = () => {
-        thisDialog.value = false
-    }
-
-    onMounted(
-    () => {
-      cateringStore.fetchUnitOfMeasureInfo()
-    
-    }
-)
-
-watch(
-    () => cateringStore.UnitOfMeasureInfoResponse,
-    async (data) => {
-          unitMeasurementData.value = data.data
-    },
-    {deep: true}
-  )
-
-  const menuForm = reactive({
-    name:null,
-    code:null,
-    type:null,
-    unit_of_measure_number:null,
-    campus_number:null,
-    base_price:null
-  } )
-
-  const addMenuItem = () =>{
-    if(menuForm.type == 'ITEM'){
-      
-      let myData = reactive({
-        name:menuForm.name,
-        code:parseInt(menuForm.code),
-        base_price:parseInt(menuForm.base_price),
-        type:menuForm.type,
-        unit_of_measure_number:menuForm.unit_of_measure_number,
-        campus_number:menuForm.campus_number,
-        })
-    // alert(JSON.stringify(menuData))
-    buttonLoader.value = true,
-    cateringStore.newMenuItemInfo(myData)
-    }else{
-        //prepare data
-        const secondaryItemNumbers = menuItems.value.map(menu => {
-        return {
-            secondary_item_number: menu.secondary_item_number,
-            quantity:parseInt(menu.quantity)
-        }
-    })
-
-     const data1 = {
-        secondary_items: secondaryItemNumbers
-    }
-    const formattedData = JSON.stringify(data1)
-
-        let myData = reactive({
-        name:menuForm.name,
-        code:parseInt(menuForm.code),
-        type:menuForm.type,
-        unit_of_measure_number:menuForm.unit_of_measure_number,
-        campus_number:menuForm.campus_number,
-        secondary_items:secondaryItemNumbers
-        })
-        // alert(JSON.stringify(myData))
-        ///connect endpoint
-        cateringStore.newAssemblyItem(myData)
-    }
- 
-
-
-  }
-
-  watch(
-    () => cateringStore.newMenuItemInfoResponse,
-    async (data) => {
-  
-        notificationStore.successToast("Success", data.message)
-        cateringStore.fetchMenuItem()
-        menuForm.name=null,
-        menuForm.code=null,
-        menuForm.type=null,
-        menuForm.unit_of_measure_number=null,
-        menuForm.campus_number=null
-        buttonLoader.value = false
-    },
-    {deep: true}
-  )
-
- 
-
-  onMounted(() => {
-        schoolStore.fetchSchools()
-    }
-)
-
-watch(
-    () => schoolStore.schoolsResponse,
-    async (data) => {
-        if (data) {
-            schoolList.value = data.data
-        }
-    },
-    {deep: true}
-)
-
-  const fetchCampuses = (school_number) => {
-    campusStore.fetchCampuses(school_number)
-}
-
-
-watch(
-    () => campusStore.campusListResponse,
-    async (data) => {
-        if (data) {
-            campusList.value = data.data
-        }
-    },
-    {deep: true}
-)
-
-
-  const feedingSessionGroupData = ref([])
- 
-  const menuOptions = ref([])
-  const menuItems = ref([])
-  const menuItemOptions = ref([])
-
- 
-  const form = reactive({
-    primary_item_number:null
-  })
-  
-  const menuData = ref([])
-
-  onMounted(
-    async () => {
-        cateringStore.fetchMenuItem()
-        cateringStore.fetchFeedingGroupSessions()
-    } )
-
-  watch(
-    () => cateringStore.menuItemResponse,
-    async (data) => {
-      if(data && data.data) {
-          menuData.value = data.data
-        menuOptions.value = data.data.map(option => ({ number: option.number,name:option.name}));
-      }
-    },
-    {deep: true}
-  )
-
-  watch(
-  () => cateringStore.feedingGroupSessionsInfoResponse,
-  async (data) => {
-      feedingSessionGroupData.value = data.data
-  },
-  {deep: true}
-)
-
-
-
-  function addItem() {
-    menuItems.value.push({ name: '', quantity: 1 })
-  }
-  
-  function removeMenuItem(index) {
-    menuItems.value.splice(index, 1)
-  }
-  
-  function availableOptions(index) {
-    const selectedNames = menuItems.value.map(menu => menu.name);
-    return menuOptions.value.filter(option => !selectedNames.includes(option.name) || option.name === menuItems.value[index].name)
-  }
-
-
-const createFeedingSessionItem = () => {
-    const secondaryItemNumbers = menuItems.value.map(menu => {
-        return {
-            secondary_item_number: menu.secondary_item_number,
-            quantity: menu.quantity
-        }
-    })
-
-  const data = {
-        primary_item_number: form.primary_item_number,
-        secondary_items: secondaryItemNumbers
-    }
-    const formattedData = JSON.stringify(data)
-    // alert(formattedData)
-    cateringStore.newAssemblyItem(formattedData)
-}
-
-watch(
-    () => cateringStore.newAssemblyItemResponse,
-    async (data) => {
-        notificationStore.successToast("Success", data.message)
-        cateringStore.fetchMenuItem()
-        clearFormData()
-        buttonLoader.value = false;
-    },
-    {deep: true}
-  )
-
-  watch(
-    () => cateringStore.errorMessage,
-    async (data) => {
-          if (data) {
-          notificationStore.errorToast("Error", data.message)
-          }
-    },
-    {deep: true}
-  )
-
-  const clearFormData = () => {
-    form.primary_item_number = null
-    menuItems.value = []
-}
-
-const addUnit = () =>{
-  // alert("Gwe")
-}
-
-    </script>
     <style>
   .bi.bi-plus-lg {
     cursor: pointer; /* Change cursor to pointer on hover */
