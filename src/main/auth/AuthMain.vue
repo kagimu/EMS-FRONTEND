@@ -27,7 +27,7 @@
 
       <footer class="absolute bottom-0 left-0 w-screen bg-[#2c2f8c] py-0">
         <div class="flex justify-between px-3 py-1">
-          <div class="text-white text-sm"><small>© 2011 Victorious Education Services, All rights reserved.</small></div>
+          <div class="text-white text-sm"><small>© 2011 Wholesome Education System, All rights reserved.</small></div>
           <a  class="text-white no-underline text-sm" href="#"><small><span>Powered by</span> <b>Hamsoft</b></small></a>
         </div>
       </footer>
