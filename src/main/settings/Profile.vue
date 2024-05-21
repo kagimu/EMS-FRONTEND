@@ -7,12 +7,10 @@ const name = ref(null)
 const email = ref(null)
 const role = ref(null)
 const username = ref(null)
-let p = authStore.profile
+let profile = authStore.profile
 
-name.value = p.first_name+" "+p.second_name+" "+p.last_name
-email.value = p.email
-role.value = p.role
-username.value = p.email
+name.value = profile?.first_name+" "+profile?.second_name+" "+profile?.last_name
+
 
 const  user = reactive( {
   name: '',
@@ -35,9 +33,7 @@ const  user = reactive( {
       <div class="col-md-4">
         <!-- User Profile Card -->
         <div class="border rounded-lg mb-10 p-3">
-          <div class="text-center">
-            <p class="text-[#8a8888]">Info</p>
-          </div>
+
           <div>
 
             <div class="text-center">
@@ -45,26 +41,28 @@ const  user = reactive( {
             </div>
 
 <!--            <img :src="user.avatar" class="rounded-circle img-fluid mb-3" alt="User Avatar">-->
-            <p class="card-title text-[#8a8888]">{{ name }}</p>
-            <p class="card-text text-[#8a8888]">{{ email }}</p>
-            <p class="card-text text-[#8a8888]">{{ username }}</p>
+            <div class="text-[#8a8888] text-sm mb-[10px]"><i class="bi-person-circle mr-2"></i>{{ name }}</div>
+            <div class="text-[#8a8888] text-sm mb-[10px]"><i class="bi-person-badge mr-2"></i>{{ profile?.type }}</div>
+            <div class="text-[#8a8888] text-sm mb-[10px]"><i :class="(profile?.gender==='Male')?'bi-gender-male mr-2':'bi-gender-female'"></i>{{ profile?.gender }}</div>
+            <div class="text-[#8a8888] text-sm mb-[10px]"><i class="bi-envelope mr-2"></i>{{ profile?.contacts?.[0].contact }}</div>
+            <div class="text-[#8a8888] text-sm mb-[10px]"><i class="bi-telephone mr-2"></i>{{ profile?.contacts?.[1].contact }}</div>
           </div>
         </div>
       </div>
       <div class="col-md-8">
         <!-- User Details -->
-        <div class="card">
+<!--        <div class="card">
           <div class="card-header">
             User Details
           </div>
           <div class="card-body">
-            <!-- <ul class="list-group">
+            &lt;!&ndash; <ul class="list-group">
               <li class="list-group-item">Username: {{ user.username }}</li>
               <li class="list-group-item">Location: {{ user.location }}</li>
               <li class="list-group-item">Joined: {{ user.joined }}</li>
-            </ul> -->
+            </ul> &ndash;&gt;
           </div>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>
