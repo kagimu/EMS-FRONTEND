@@ -28,8 +28,13 @@ const  user = reactive( {
 
 <template>
 <div id="app">
-  <div class="container">
-    <div class="row mt-4">
+  <div>
+   <div class="text-[#8a8888] mt-1 border-b">
+     <div class="py-1 ml-3">
+       Profile
+     </div>
+   </div>
+    <div class="row mt-4 px-3">
       <div class="col-md-4">
         <!-- User Profile Card -->
         <div class="border rounded-lg mb-10 p-3">
