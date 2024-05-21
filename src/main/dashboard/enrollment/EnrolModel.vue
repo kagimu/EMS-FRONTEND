@@ -4,7 +4,8 @@
       <!-- {{ adm }} -->
       <form @submit.prevent="Enrol()">
          <div class="row">
-            <div class="mb-2 col-2">
+            <div class="col-4">
+            <div class="mb-2 ">
                <label class="textColor"><small>School</small> </label>
                <select
                   style="box-shadow: none;"
@@ -17,7 +18,7 @@
                   </option>
                </select>
             </div>
-            <div class="mb-2 col-2">
+            <div class="mb-2">
                <label class="textColor"><small>Campus</small>  </label>
                <select
                   style="box-shadow: none;"
@@ -30,7 +31,7 @@
                   </option>
                </select>
             </div>
-            <div class="mb-2 col-2">
+            <div class="mb-2">
                <label class="textColor"><small>Class</small> </label>
                <select
                   style="box-shadow: none;"
@@ -43,7 +44,7 @@
                   </option>
                </select>
             </div>
-            <div class="mb-2 col-2">
+            <div class="mb-2">
                <label class="textColor"><small>Stream</small> </label>
                <select
                   style="box-shadow: none;"
@@ -55,7 +56,7 @@
                   </option>
                </select>
             </div>
-            <div class="mb-2 col-2">
+            <div class="mb-2">
                <label class="textColor"><small>Academic Year</small> </label>
                <select
                   style="box-shadow: none;"
@@ -66,7 +67,7 @@
                   <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
                </select>
             </div>
-            <div class="mb-2 col-2">
+            <div class="mb-2">
                <label class="textColor">
                   <small>Study Period</small> 
                   <!-- {{ studyPeriodList }} -->
@@ -81,13 +82,15 @@
                </select>
                
             </div>
-            <div class="mb-2 col-2">
+            <div class="mb-2">
                <label class="textColor"><small>Enrolment Date</small> 
                </label>
                <input type="date" class="form-control" v-model="form.enrollment_date">
             </div>
          </div>
-         <div class="row mt-3">
+         
+
+         <div class="col-8">
             <p class="" style=""><small>Tick <i class="bi bi-check" style="color:red"> </i>brought Item on the List </small> </p>
             <div class="col-12">
                <div class="mb-2">
@@ -153,6 +156,8 @@
                </div>
             </div>
          </div>
+      </div>
+
          <hr>
          <div class="flex justify-content-end mt-2" style="width: 100%;">
             <button type="submit" class="btn btn-primary border-0 btn-sm">
