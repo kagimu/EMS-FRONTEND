@@ -5,10 +5,15 @@ import { useAccountStore } from "../store/account.js";
 import { useRolesStore } from "@/main/settings/roles/store/roles.js";
 import NewAccount from "./NewAccount.vue";
 import { useUserStore } from "@/main/dashboard/profiles/store/users.js"
+import AppModal from "@/components/AppModal.vue";
+import NewStaff from "@/main/dashboard/profiles/NewStaff.vue"
 
 const loading = ref(false)
 const page = ref(1)
 const per_page = ref(15)
+
+const showingModal = ref(false)
+const status = ref("")
 
 const userStore = useUserStore()
 
@@ -25,11 +30,16 @@ const userData = ref([])
 const showDialog = ref(false)
 const assignDialog = ref(false)
 const userAll = ref([])
+const showingModalUser = ref(false)
 
 const openModal = () =>{
   assignDialog.value = true
 }
 
+
+const showModalUser = () => {
+    showingModalUser.value = true
+}
 
 
 const rolesData= ref([])
@@ -181,10 +191,27 @@ watch (
     },
     {deep:true}
 )
+
+
+watch (
+      () => userStore.newUserResponse,
+      async (data) => {
+        if(data){
+          showingModalUser.value = false
+          doFetchAccount()
+        }
+      },
+      {deep:true}
+  )
 </script>
 
 <template>
     <div>
+
+    <AppModal title="New User" v-model="showingModalUser" xl2>
+    <NewStaff></NewStaff>
+    </AppModal>
+
 
           <!-- Popup warning Modal -->
     <div class="modal fade" id="removeRoleConfirmation" :class="{ show: showDialog }" tabindex="-1" aria-labelledby="removeRoleConfirmationLabel" aria-hidden="true">
@@ -215,7 +242,7 @@ watch (
       <div class="row">
             <div class="col-12">
               <div class="card">
-                <div class="mt-3">
+                <div class="mt-2">
            <div class="row">
             <div class="col-lg-6 "> 
             </div>
@@ -223,21 +250,45 @@ watch (
                 <button 
                 v-if="can('assign_role','general')"
                 @click="openModal()" style="float: right; margin-right: 5px;" data-bs-toggle="modal" data-bs-target="#addAccount"  type="button"  aria-controls="rolesDialog" class="btn btn-primary btn-sm">Assign Role</button>
-                <button  class="btn btn-outline-secondary  btn-sm mt-1" style="float: right;border: none;">
-                <small><i class="bi bi-printer">&nbsp;Print</i></small></button> 
+                <button  style="float: right;border: none;"
+                  v-if="can('add_user','general')" 
+                  class="btn btn-primary btn-sm mr-3" type="button"  @click="showModalUser"><i class="bi bi-plus"></i>Add New User</button>
             </div>
     
            </div>
                </div>
                 <div class="card-body" >
         <div >
+<hr>
+           <div class="row">
 
-           
+            <div class="col-3">
+              <select
+                        style="box-shadow: none;"
+                        class="form-select form-select-sm" 
+                        v-model="status"
+                       
+                >
+                    <option disabled value="">--filter by Status -</option>
+                    <option>
+                      Active
+                    </option>
+                    <option>
+                      Innactive
+                    </option>
+                </select>
+
+            </div>
+
+           </div>
+
+
       <table id="data"
-          class="table table-hover caption-top mt-4 table-sm table-striped"
+          class="table table-hover caption-top mt-1 table-sm table-striped"
           style="font-size: 11px !important;" >
         <thead>
         <tr>
+          <th>#</th>
           <th scope="col">Name</th>
           <th>Email</th>
           <th scope="col">Role (s)</th>
@@ -250,6 +301,7 @@ watch (
         <tbody>
           <!-- v-for="(roles, index) in rolesData" :key="index" -->
             <tr v-for="(user, index) in userData" :key="index">
+              <td>{{ index+1 }}</td>
             <td>{{ user.first_name + " " +user.last_name + " " + user.second_name }}</td>
             <td>{{ user.email }}</td>
             <td>

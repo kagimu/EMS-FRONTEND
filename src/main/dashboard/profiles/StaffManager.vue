@@ -18,7 +18,7 @@
       <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="userlist" role="tabpanel" aria-labelledby="userlist-tab" tabindex="0">
         <userProfiles></userProfiles>
-
+        
         </div>
         <div class="tab-pane fade" id="class-list" role="tabpanel" aria-labelledby="class-list-tab" tabindex="0">
         <NewStaff></NewStaff>

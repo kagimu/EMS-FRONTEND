@@ -92,6 +92,9 @@ import AppModal from "@/components/AppModal.vue";
 import Scope from "@/main/dashboard/profiles/Scope.vue"
 import NewStaff from "@/main/dashboard/profiles/NewStaff.vue"
 
+const page = ref(1)
+const per_page = ref(15)
+
 const showingModal = ref(false)
 
 const userStore = useUserStore()
@@ -132,18 +135,64 @@ const form = reactive({
 //fetch
 onMounted(
     async () => {
-      await accountStore.fetchUsersToAssign()
+      doFetchAccount()
     } )
+
+
+
+    //fetch
+const doFetchAccount = () =>{
+   let data = {
+      page: 1,
+      per_page: per_page.value,
+   }
+  //  loading.value = true;
+   userData.value = []
+   accountStore.fetchUsersToAssign(data)
+
+  }
+
+
+  const fetchUsers = (data) => {
+    if(data) {
+      let current_page = data.page
+      page.value = current_page
+
+      let per_page_item = data.per_page;
+      per_page.value = per_page_item;
+
+      let objArray = data.content
+
+
+      if(objArray && objArray.length > 0){
+        objArray.forEach((list, i) => {
+
+          list.key =  (current_page - 1) * per_page_item + i + 1
+
+          const index = userData.value.findIndex(object => object.number === list.number);
+
+          if (index === -1) {
+            userData.value.push(list);
+          }
+
+        })
+      }
+
+
+    }
+  }
 
     watch(
     () => accountStore.userResponse,
     async (data) => {
       if(data){
-        userData.value = data.data
+        // userData.value = data.data
+        fetchUsers(data)
       }
     },
     {deep:true}
     )
+
 
 
 function addCampus(){

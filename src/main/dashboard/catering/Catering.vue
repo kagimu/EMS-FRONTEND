@@ -14,6 +14,8 @@ import MealCalendar from "@/main/dashboard/catering/meals/MealCalendar.vue";
 import MealCourseFeedingSessions from "@/main/dashboard/catering/meals/MealCourseFeedingSessions.vue";
 import MealCoursesPerDay from "@/main/dashboard/catering/meals/MealCoursesPerDay.vue";
 
+import { useAbility } from '@casl/vue';
+const { can } = useAbility()
 
 const routerData = useRouter()
 
@@ -24,7 +26,8 @@ const route = routerData.currentRoute.value.query.s
 const menu = ref([
   {
     text:"Units Of Measure",
-    value:"units-of-measurement"
+    value:"units-of-measurement",
+    action:"view_unit_of_measure"
   },
   {
     text:"Menu Items",
