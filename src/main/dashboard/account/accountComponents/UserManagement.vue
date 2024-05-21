@@ -24,6 +24,7 @@ const errorMessage = ref(null)
 const userData = ref([])
 const showDialog = ref(false)
 const assignDialog = ref(false)
+const userAll = ref([])
 
 const openModal = () =>{
   assignDialog.value = true
@@ -37,8 +38,8 @@ const rolesData= ref([])
 onMounted(
     async () => {
       await roleStore.fetchRoles()
-      // accountStore.fetchUsersToAssign()
-      doFetchAdmission()
+      accountStore.fetchAllUsers()
+      doFetchAccount()
     } )
 
     watch(
@@ -64,7 +65,7 @@ watch (
 
 
 //fetch
-const doFetchAdmission = () =>{
+const doFetchAccount = () =>{
    let data = {
       page: 1,
       per_page: per_page.value,
@@ -117,6 +118,16 @@ const doFetchAdmission = () =>{
     )
 
 
+    watch(
+    () => accountStore.userAllResponse,
+    async (data) => {
+      if(data){
+        userAll.data = data.data
+      }
+    },
+    {deep:true}
+    )
+
 
 const formData = reactive({
   user_number:null,
@@ -160,6 +171,16 @@ watch (
     {deep:true}
 )
 
+watch (
+    () => accountStore.newAccountResponse,
+    async (data) => {
+      if(data){
+
+        doFetchAccount()
+      }
+    },
+    {deep:true}
+)
 </script>
 
 <template>
