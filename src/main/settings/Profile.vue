@@ -1,18 +1,53 @@
+<script setup>
+import {reactive, ref} from "vue";
+import {useAuthStore} from "@/main/auth/store/auth.js";
+const authStore = useAuthStore()
+
+const name = ref(null)
+const email = ref(null)
+const role = ref(null)
+const username = ref(null)
+let p = authStore.profile
+
+name.value = p.first_name+" "+p.second_name+" "+p.last_name
+email.value = p.email
+role.value = p.role
+username.value = p.email
+
+const  user = reactive( {
+  name: '',
+  username: '',
+  email: '',
+  avatar: 'https://via.placeholder.com/150',
+  location: '',
+  Role: 'Admin',
+  joined: ''
+} )
+
+
+
+</script>
+
 <template>
 <div id="app">
   <div class="container">
     <div class="row mt-4">
       <div class="col-md-4">
         <!-- User Profile Card -->
-        <div class="card">
-          <div class="card-header">
-            User Info
+        <div class="border rounded-lg mb-10 p-3">
+          <div class="text-center">
+            <p class="text-[#8a8888]">Info</p>
           </div>
-          <div class="card-body">
-            <img :src="user.avatar" class="rounded-circle img-fluid mb-3" alt="User Avatar">
-            <h5 class="card-title">{{ name }}</h5>
-            <p class="card-text">{{ email }}</p>
-            <p class="card-text">{{ username }}</p>
+          <div>
+
+            <div class="text-center">
+              <i class="bi-person-circle text-[100px] text-[#8a8888]"></i>
+            </div>
+
+<!--            <img :src="user.avatar" class="rounded-circle img-fluid mb-3" alt="User Avatar">-->
+            <p class="card-title text-[#8a8888]">{{ name }}</p>
+            <p class="card-text text-[#8a8888]">{{ email }}</p>
+            <p class="card-text text-[#8a8888]">{{ username }}</p>
           </div>
         </div>
       </div>
@@ -36,32 +71,4 @@
 </div>
 </template>
 
-<script setup>
-import {reactive, ref} from "vue";
-import {useAuthStore} from "@/main/auth/store/auth.js";
-const authStore = useAuthStore()
 
-const name = ref(null)
-const email = ref(null)
-const role = ref(null)
-const username = ref(null)
-let p = authStore.profile
-
-name.value = p.first_name+" "+p.second_name+" "+p.last_name
-email.value = p.email
-role.value = p.role
-username.value = p.email
-
-const  user = reactive( {
-          name: '',
-          username: '',
-          email: '',
-          avatar: 'https://via.placeholder.com/150',
-          location: '',
-          Role: 'Admin',
-          joined: ''
-        } )
-
-
-
-</script>
