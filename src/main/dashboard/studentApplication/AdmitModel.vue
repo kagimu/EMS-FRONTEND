@@ -5,6 +5,7 @@
       <!-- School Selection -->
       <div class="row">
         <div class="col-lg-4">
+          <p class="alert alert-danger p-1" style="" ><small>Please ,Choose a class Your admiting this Student !</small> </p>
           <div class="mb-2">
             <label class="textSize"><small>School</small></label>
             <select
@@ -88,6 +89,7 @@
     
       <!-- Service Selection -->
         <div class="col-lg-8">
+          <p class="alert alert-danger p-1"><small>Select Requirements to be brought by student</small> </p>
           <div class="row">
               <!-- New Design -->
               <label>

@@ -5,6 +5,8 @@
       <form @submit.prevent="Enrol()">
          <div class="row">
             <div class="col-4">
+               <p class="alert alert-danger p-1" style="" ><small>Please , Choose a class to enroll !</small> </p>
+
             <div class="mb-2 ">
                <label class="textColor"><small>School</small> </label>
                <select
@@ -91,7 +93,7 @@
          
 
          <div class="col-8">
-            <p class="" style=""><small>Tick <i class="bi bi-check" style="color:red"> </i>brought Item on the List </small> </p>
+            <p class="alert alert-danger p-1" style="" ><small>Select <i class="bi bi-check" style="color:red"> </i>items  brought by the student </small> </p>
             <div class="col-12">
                <div class="mb-2">
                   <!-- <ul style="display: none;">
