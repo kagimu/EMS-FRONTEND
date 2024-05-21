@@ -109,8 +109,8 @@ watch(
 
 
     <div class="ml-4 mb-3" v-if="mealCourseList?.count">
-      <small class="text-[18px] bg-[#1a7f37] text-white px-4 py-1  rounded-md">
-        Count: {{mealCourseList?.count}}
+      <small class="text-sm bg-[#1a7f37] text-white px-4 py-1  rounded-md">
+        Number of meal courses per day:  {{mealCourseList?.count}}
       </small>
     </div>
 
