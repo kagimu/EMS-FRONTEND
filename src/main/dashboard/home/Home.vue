@@ -1,3 +1,25 @@
+<script setup>
+import { ref } from 'vue'
+import {useAuthStore} from "@/main/auth/store/auth.js";
+import LineGraph from "@/main/graphs/LineGraph.vue";
+import Analytics from "@/main/dashboard/home/Analytics.vue";
+
+const authStore = useAuthStore()
+
+
+
+const userProfile = ref(null)
+const token = ref(null)
+userProfile.value = authStore.profile
+token.value = authStore.token
+
+
+defineProps({
+  msg: String,
+})
+
+const count = ref(0)
+</script>
 <template>
 
  <div>
@@ -21,6 +43,7 @@
    </div>
 
 
+<!--
 
 
    <div class="row mb-8">
@@ -62,6 +85,7 @@
    </div>
 
 
+-->
 
 
 
@@ -70,34 +94,9 @@
 
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import {useAuthStore} from "@/main/auth/store/auth.js";
-import BarGraph from "@/main/graphs/BarGraph.vue";
-import LineGraph from "@/main/graphs/LineGraph.vue";
-import DoughnutGraph from "@/main/graphs/DoughnutGraph.vue";
-import Analytics from "@/main/dashboard/home/Analytics.vue";
 
-const authStore = useAuthStore()
-
-
-
-const userProfile = ref(null)
-const token = ref(null)
-userProfile.value = authStore.profile
-token.value = authStore.token
-
-
-defineProps({
-  msg: String,
-})
-
-const count = ref(0)
-</script>
 
 
 <style scoped>
-.read-the-docs {
-  color: #888;
-}
+
 </style>
