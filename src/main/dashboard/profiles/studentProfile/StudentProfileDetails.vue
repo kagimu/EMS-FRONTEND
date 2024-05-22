@@ -7,18 +7,22 @@
 
     <section style="background-color: #eee;">
         
-      <div class="container py-2">
+      <div class="container py-4">
         <!-- User Profile Information -->
         <div class="row">
           <div class="col-lg-3">
             <!-- User Card -->
-            <div class="card mb-4">
-              <div class="card-body text-center">
-                <center><img :src="user.avatar" :alt="user.name" class="rounded-circle img-fluid" style="width: 120px;"></center>
-                <h5 class="my-3">{{ studentName }}</h5>
-                <p class="text-muted mb-1"><b>DOB: </b>{{ dob }}</p>
+            <div class="border rounded-md bg-white mb-4 px-3">
+
+              <div class="text-center">
+                <i class="bi-person-circle text-[100px] text-[#8a8888]"></i>
               </div>
-             
+
+              <div class="mb-3">
+                <div class="text-[#8a8888] text-sm mb-[10px]"><i class="bi-person-circle mr-2"></i>{{ studentName }}</div>
+                <div class="text-[#8a8888] text-sm mb-[10px]"><i class="bi-calendar-date mr-2"></i>{{ dob }}</div>
+              </div>
+
             </div>
             
                 <div class="card mt-3">
