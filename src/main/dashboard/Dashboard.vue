@@ -33,7 +33,7 @@ const menuList = ref([
   // {title:"Invoices", name:"invoices", icon:"bi-receipt-cutoff",action:"view_invoices"},
   {title:"Catering", name:"catering", icon:"bi-egg-fried",action:"view_catering_menu" },
   {title:"Calendar", name:"general-calendar", icon:"bi-calendar3",action:"view_general-calendar"},
-  {title:"Report Center", name:"report-center", icon:"bi-card-heading",action:"view_report-center"},
+  // {title:"Report Center", name:"report-center", icon:"bi-card-heading",action:"view_report-center"},
   {title:"Account Management", name:"account-management", icon:"bi-people",action:"view_account-management"},
   {title:"Settings", name:"settings", icon:"bi-gear",action:"view_settings"},
 ])

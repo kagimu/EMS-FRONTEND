@@ -6,17 +6,17 @@
       <div class="grid grid-cols-2 gap-4">
 
         <div class="text-center">
-          <div class="text-[45px] mt-5">WholesomeEd</div>
+          <div class="text-[45px] mt-5">Victorious Education Services</div>
           <div>Transforming Education</div>
         </div>
 
         <div class="text-[15px] border rounded-lg p-4 bg-white">
-          <p class="leading-[1.75]">Welcome to <b>WholesomeEd</b>, the comprehensive education management platform designed to revolutionize how schools operate and students learn. Our integrated suite of modules covers every aspect of the educational experience, ensuring that schools run smoothly and students receive the highest quality education.</p>
+          <p class="leading-[1.75]">Welcome to <b>Victorious Education Services</b>, the comprehensive education management platform designed to revolutionize how schools operate and students learn. Our integrated suite of modules covers every aspect of the educational experience, ensuring that schools run smoothly and students receive the highest quality education.</p>
 
-          <p class="leading-[1.75]"> At WholesomeEd, we believe that a holistic approach to education is key to fostering growth, wellness, and academic excellence. From nutritious meals to cutting-edge curriculum design, our platform is built to support the diverse needs of the educational community.</p>
+          <p class="leading-[1.75]"> At Victorious Education Services, we believe that a holistic approach to education is key to fostering growth, wellness, and academic excellence. From nutritious meals to cutting-edge curriculum design, our platform is built to support the diverse needs of the educational community.</p>
 
           <p class="leading-[1.75]">
-            WholesomeEd is more than just a management system; it’s a partner in creating a nurturing, efficient, and inspiring educational environment. Join us in transforming education and supporting every student’s journey to success.
+            Victorious Education Services is more than just a management system; it’s a partner in creating a nurturing, efficient, and inspiring educational environment. Join us in transforming education and supporting every student’s journey to success.
           </p>
         </div>
       </div>

@@ -15,6 +15,7 @@ const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
 const schoolRef = ref(null)
 const editMode = ref(false)
+const showSelected = ref(null)
 
 
 const schoolDialog = ref( false)
@@ -110,6 +111,10 @@ watch (
 )
 
 
+const toggleCurriculum = (number) =>{
+  showSelected.value = (showSelected.value === number) ? undefined : number
+}
+
 </script>
 
 <template>
@@ -136,11 +141,13 @@ watch (
 
 
 
-    <div class="row">
-      <div class="col-4" v-for="(school, index) in schoolsList" :key="index">
 
-          <div class="card mt-3">
-          <div class="card-body">
+    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+      <div v-for="(school, index) in schoolsList" :key="index">
+
+          <div class="border rounded-md bg-white mt-3 p-0">
+
+            <div class="p-3 text-[#7c7b7b]">
             <div class="mb-3 flex justify-between" style="font-size: 20px;">
               {{school.name}}
 
@@ -156,19 +163,37 @@ watch (
               style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  @click="deleteSchool(school)"></i>
               </div>
             </div>
-
-
             <div>
-              <small><b>Commencement Date:</b> &nbsp;&nbsp;&nbsp; {{school.commencement_date}}</small>
-              <div class="mt-2"><b><small>Curriculum:</small></b></div>
-              <div class="ml-2" v-for="(curr, idx) in school.school_curriculum" key="idx">
-               <small>{{idx+1}}. {{curr.name}}</small>
+              <div>
+                <div class="text-[15px]">
+                    Commencement Date:
+                </div>
+                <div class="text-[13px] text-[#575656]">{{school.commencement_date}}</div>
+              </div>
+
+
+
+
+              <div class="mt-3">
+                <div class="cursor-pointer text-[15px]" @click="toggleCurriculum(school.number)" >
+                  Show Curriculum
+                  <i
+                      class="text-[12px]"
+                      :class="showSelected === school.number ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"
+                  ></i>
+                </div>
+              </div>
+
+              <div class="mt-2" v-show="showSelected === school.number">
+                <div class="ml-2" v-for="(curr, idx) in school.school_curriculum" key="idx">
+                  <div class="text-[13px] text-[#575656]">{{idx+1}}. {{curr.name}}</div>
+                </div>
               </div>
             </div>
 
+          </div>
 
-            <div class="flex justify-content-between mt-3">
-              &nbsp;
+            <div class="bg-[#0d6efd] hover:bg-[#0d6efd] rounded-b-md mt-3">
               <router-link
                   class="text-decoration-none"
                   :to="{name:'campus', query:{id:school.number}}"
@@ -176,15 +201,18 @@ watch (
                 <button
                 v-if="can('view_school','general')"
                     type="button"
-                    class="btn-primary border-0 d-none d-lg-block viewButtonStyle">
-                      <span class="mx-9 text-sm">
+                    class="bg-[#0d6efd] hover:bg-[#0c62e1] text-white text-sm text-center w-full rounded-b-md py-2">
+                      <span>
                         View
                       </span>
                 </button>
               </router-link>
+
+
             </div>
 
-          </div>
+
+
         </div>
 
       </div>

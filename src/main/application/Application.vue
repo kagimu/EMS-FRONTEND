@@ -12,7 +12,7 @@
            <div class="row">
             <div class="col-lg-6" style="text-align: center;padding-top:15px;">
               <p class="txt4">You are applying for</p>
-              <h1 class="txt3">Wholesome Services</h1>
+              <h1 class="txt3">Victorious Education Services</h1>
               <p class="txt4">To continue your application, please fill out the form below.</p>
             </div>
             <div class="col-lg-6">

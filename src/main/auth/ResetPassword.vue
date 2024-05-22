@@ -142,7 +142,7 @@ watch(
             </small>
 
             <small class="float-end">
-              New to WholesomeEd ?
+              New to Victorious Education Services ?
               <router-link
                   style="color: #242f7e;"
                   :to="{ name: 'register' }"

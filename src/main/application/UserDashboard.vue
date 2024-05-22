@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-[#2c2f8c] sticky-top"  style="position: absolute; top: 0; left: 0; width: 100%;">
     <div class="container-fluid">
       <router-link :to="{name:'client_dashboard'}" class="navbar-brand" style="margin-left:20px;font-size:14px;
-           font-weight:400"><i class="bi bi-list"></i>&nbsp;<b>Wholesome ED</b>
+           font-weight:400"><i class="bi bi-list"></i>&nbsp;<b>Victorious Education Services</b>
       </router-link>
       <button class="navbar-toggler" data-bs-target="#navbarCollapse" data-bs-toggle="collapse" type="button">
         <span class="navbar-toggler-icon"></span>

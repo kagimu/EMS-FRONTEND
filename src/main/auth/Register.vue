@@ -93,7 +93,7 @@ watch(
           <div class="card-body">
             <div v-if="showSuccessPage" class="text-center mt-8" style="font-size: 16px; color: #757575;">
               <p style="color: green; font-size: 38px; font-weight: bold;" class="mb-9">Success</p>
-              <p>You have successfully created an account with WHolesomeEd,<br />
+              <p>You have successfully created an account with Victorious Education Services,<br />
                 We have sent an emil on : <span class="text-decoration-none" style="color: green; font-weight: bold;">{{form.email}}</span> with instructions on how to activate your account. </p>
               <p>Please login to your email, find the activation link, click on it and set password </p>
               <br />

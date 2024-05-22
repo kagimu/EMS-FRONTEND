@@ -9,7 +9,7 @@
         <div class="mx-auto h-screen flex justify-center items-center">
         <div class="bg-white p-4 w-[40%] rounded-md border">
         <div class="mt-4" style="text-align: center;">
-          <div class="text-[20px] mb-3">WholesomeEd</div>
+          <div class="text-[20px] mb-3">Victorious Education Services</div>
           <small style="color: #4b4b4b;">
             ---- Set Your Password---- <br />
             You can now enter your password below.
