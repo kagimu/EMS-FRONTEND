@@ -7,34 +7,34 @@
               <div class="" style="padding: 0;">
                  <div class="container mt-0">
                     <div class="row mt-3">
-            <div class="col-3">
-            <div class="mb-2">
-              <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm"
-                  v-model="school_number"
-                  @change="doFetchMealCourses(school_number)"
-              >
-                <option disabled value="">-- Select School--</option>
-                <option v-for="(lvl, index) in schoolList" :key="index" :value="lvl.number">{{lvl.name}}</option>
-              </select>
-            </div>
-          </div>
+                    <div class="col-3">
+                    <div class="mb-2">
+                      <select
+                          style="box-shadow: none;"
+                          class="form-select form-select-sm"
+                          v-model="school_number"
+                          @change="doFetchMealCourses(school_number)"
+                      >
+                        <option disabled value="">-- Select School--</option>
+                        <option v-for="(lvl, index) in schoolList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+                      </select>
+                    </div>
+                  </div>
 
-          <div class="col-lg-3">
-                          <div class="mb-2">
-   
-                             <select
-                                style="box-shadow: none;"
-                                class="form-select form-select-sm"
-                                v-model="form.campus_number" required
-                                >
-                                <option disabled value="">--Select campus--</option>
-                                <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-                                </option>
-                             </select>
-                          </div>
-                        </div>
+                  <div class="col-lg-3">
+                  <div class="mb-2">
+
+                     <select
+                        style="box-shadow: none;"
+                        class="form-select form-select-sm"
+                        v-model="form.campus_number" required
+                        >
+                        <option disabled value="">--Select campus--</option>
+                        <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+                        </option>
+                     </select>
+                  </div>
+                </div>
 
           <div class="col-3">
             <div class="mb-2">
@@ -71,8 +71,8 @@
                                 <thead >
                                    <tr>
                                       <th class="w-[10%]">#</th>
-                                      <th class="w-[30%]">Name</th>
-                                      <th class="w-[30%]">Feeding Group</th>
+                                      <th class="w-[20%]">Name</th>
+                                      <th class="w-[20%]">Feeding Group</th>
                                       <th colspan="2">Meal</th>
                                    </tr>
                                 </thead>
@@ -83,10 +83,9 @@
                                       <td>{{ user.feeding_group_name }}</td>
                                       <td colspan="2">
                                          <div class="table-responsive">
-
                                             <table class="text-sm table table-sm table-striped table-bordered p-5">
                                                   <tr v-for="(meal, mealIndex) in user.meals" :key="mealIndex">
-                                                     <td class="w-[30%]">{{ meal.menu_item_name }}</td>
+                                                     <td class="w-[70%]">{{ meal.menu_item_name }} <small>({{meal.quantity+" "+meal.unit_of_measure}})</small></td>
                                                      <td>
                                                        <input
                                                            class="form-control shadow-none border bg-white"
@@ -94,8 +93,8 @@
                                                            @keypress="commons.numbersOnlyValidator($event)"
                                                            maxlength="10"
                                                            type="text"
-                                                           v-model="user.meals[mealIndex].quantity"
-                                                           v-on:blur="submitMeal(user.meals[mealIndex].quantity,meal.menu_item_number,user.user_number,user.feeding_session_number)">
+                                                           v-model="meal.served_quantity"
+                                                           v-on:blur="submitMeal(meal.served_quantity,meal.menu_item_number,user.user_number,user.feeding_session_number)">
                                                      </td>
                                                   </tr>
                                             </table>
@@ -174,7 +173,10 @@
   
   //submit Meals
   const submitMeal = (qty,menuItemN,userN,feeding_session_number) => {
-    const now = new Date();
+        if(qty < 1){
+            return
+        }
+      const now = new Date();
   let data = {
       meal_course_number:form.meal_course_number,
       feeding_session_number: feeding_session_number,

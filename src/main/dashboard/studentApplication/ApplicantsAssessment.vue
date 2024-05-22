@@ -4,25 +4,28 @@
         <interview-assessment :interviewNumber="interviewNumber"></interview-assessment>
      </AppModal>
      <div class="row mt-4">
-        <div class="col-lg-3">
+        <div class="col-lg-4">
            <div class="mb-2">
-              <label class="textColor"><small>Assessment Metric </small> 
-              </label>
-              <select
+            <label style="font-size: 11px;" >* Please Select Assessment Metric to Enter/view Marks</label>
+            <div class="input-group mt-1">
+          <select
                  style="box-shadow: none;"
-                 class="form-select form-select-sm" required
+                 class="form-select form-select-sm"  id="inputGroupSelect02" required
                  v-model="assessmentNumber"
                  @change="fetchStudentOnInterview(assessmentNumber,interviewNumber)"
                  >
-                 <option disabled value="">Select</option>
+                 <option disabled value=""> - Select Assessment Metric - </option>
                  <option v-for="(assessment, index) in assessmentDataList" :key="index" :value="assessment.AssessmentMetric.number">{{assessment.AssessmentMetric.name  }}</option>
               </select>
+  <label class="input-group-text" for="inputGroupSelect02"><i  class="bi bi-plus-circle" @click="showModal()"></i></label>
+</div>
            </div>
         </div>
-        <div class="col-lg-1"><b>
-           <i style="margin-left: -20px;" class="bi bi-plus-circle mb-2 mt-10" @click="showModal()"></i></b>
+        <div class="col-lg-1">
+
         </div>
-        <div class="col-lg-8">
+        <div class="col-lg-7">
+         
         </div>
      </div>
      <div v-if="interviewStudentList === null" class="text-center mt-4">
@@ -104,7 +107,7 @@
   }
   
   
-  const assessmentNumber = ref(null)
+  const assessmentNumber = ref("")
   const interviewStudentList = ref( [])
   const assessmentStore = useAssessmentStore()
   const studentApplicationStore = useStudentApplicationStore()
@@ -158,7 +161,9 @@
       () => applicationStore.StudentsOnInterviewResponse,
       async (data) => {
         if(data){
+         if(assessmentNumber.value != ""){
           interviewStudentList.value = data.data
+         }
         }
       },
       {deep:true}
