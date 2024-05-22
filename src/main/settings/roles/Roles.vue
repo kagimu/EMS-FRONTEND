@@ -64,7 +64,7 @@
         <td>
           <!-- Buttons for actions -->
           <button
-          v-if="can('edit_role','general')"
+          v-if="can('update_permission','general')"
            @click="setEditRolesId(roles.number)" data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>

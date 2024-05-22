@@ -10,6 +10,7 @@
     <div class="flex justify-content-between mt-10 mb-4 mr-3">
       &nbsp;
       <button
+      v-if="can('create_academic-year','manage')"
           type="button"
           class="btn btn-sm buttonStyle btn-primary mr-2"
           @click="addAcademicYear">
@@ -18,8 +19,8 @@
       </button>
     </div>
 
-
-    <table class="table table-hover caption-top" style="font-size: 13px;">
+ <div v-if="can('view_academic-year','manage')">
+    <table class="table table-hover caption-top" style="font-size: 13px;" >
       <thead>
       <tr>
         <th scope="col">Code</th>
@@ -47,6 +48,7 @@
               <td>
                 <div>
                   <i
+                  v-if="can('update_academic-year','manage')"
                       data-bs-toggle="modal"
                       data-bs-target="#newAcademicYearModal"
                       class="bi-pencil mr-2 cursor-pointer text-[13px]" @click="editAcademicYear(list)"></i>
@@ -65,8 +67,7 @@
       </tr>
       </tbody>
     </table>
-
-
+  </div>
 
 
 
@@ -81,6 +82,10 @@ import {useRouter} from "vue-router";
 import useNotificationStore from "@/composables/useNotification.js";
 import AppModal from "@/components/AppModal.vue";
 import NewCampusClass from "@/main/dashboard/manageLevel/class/NewCampusClass.vue";
+import { useAbility } from '@casl/vue';
+const { can } = useAbility()
+
+
 const routerData = useRouter()
 const academicYearStore = useAcademicYearStore()
 const newAcademicYearDialog = ref( false)

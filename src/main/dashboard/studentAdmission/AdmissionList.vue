@@ -12,6 +12,9 @@
   import {useEnrolmentStore} from "@/main/dashboard/enrollment/store/enrollment.js"
   import {useLevelStore} from "@/main/settings/level/store/level.js";
 
+  import { useAbility } from '@casl/vue';
+  const { can } = useAbility()
+
   const levelStore = useLevelStore()
   const interviewStudentList = ref( [])
   let errorMessage = ref(null)
@@ -507,12 +510,16 @@ watch(
                                    <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  
                                 </button> -->
                                 
-
-                                <button v-if="adm.status != 'Enrolled'" @click="showModal(adm.Student.number,adm.number,adm)" 
+ 
+                                <div v-if="can('enroll_student','manage')">
+                                 <button  v-if="adm.status != 'Enrolled'" @click="showModal(adm.Student.number,adm.number,adm)" 
                                    type="button" class="btn btn-sm btn-primary mb-2 mr-4 "
                                    style="color: white;">
                                    <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  
                                 </button>
+
+                                </div>
+
 
 
                                 <router-link style="display: none;"
