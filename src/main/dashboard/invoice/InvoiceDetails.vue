@@ -3,7 +3,7 @@
       <!-- invoice payment -->
 
     <AppModal title="Pay" v-model="mymodalpay" xs>
-    <InvoicePayment :refN="invoice_number"></InvoicePayment>
+    <InvoicePayment :invoiceNumber="thisInvoiceNumber"></InvoicePayment>
     </AppModal>
 
           <div class="row">
@@ -16,7 +16,7 @@
                           <i  @click="goBack()" class="bi bi-x-lg"></i>&nbsp;&nbsp;Invoice Details<b></b>     </h6>
                     </div>
                     <div class="col-lg-4">
-                        <button  @click="showModal()"  class="btn btn-warning btn-sm mb-2 mr-4" style="float: right;" type="button" >
+                        <button  @click="showModal(myData.invoiceN)"  class="btn btn-warning btn-sm mb-2 mr-4" style="float: right;" type="button" >
                         <small><i class="bi bi-check-lg"><small>&nbsp;Make Payment</small></i></small></button>
                         <button  class="btn btn-secondary  btn-sm mb-2 mr-4" style="float: right;">
                         <small><i class="bi bi-printer">&nbsp;Print</i></small></button>
@@ -173,9 +173,11 @@ const notificationStore = useNotificationStore()
 const routerData = useRouter()
 const invoice_number = routerData.currentRoute.value.query.invoice_id
 const mymodalpay = ref(false)
-const  showModal = () =>{
-  mymodalpay.value = true
+const thisInvoiceNumber = ref(null)
 
+const  showModal = (invoice) =>{
+  mymodalpay.value = true
+  thisInvoiceNumber.value = invoice
 }
 
 onMounted(
@@ -192,7 +194,8 @@ const myData = reactive ({
       total_amount:null,
       paid_amount:null,
       balance: null,
-      status:null
+      status:null,
+      invoiceN:null
 })
   watch(
     () => invoiceStore.invoiceResponseById,
@@ -206,6 +209,7 @@ const myData = reactive ({
         myData.paid_amount= data.data.paid_amount
         myData.balance= data.data.balance
         myData.status=data.data.status
+        myData.invoiceN = data.data.number
       }
     },
     {deep:true}
@@ -219,38 +223,13 @@ const openModal = () =>{
   showDialog.value = true
 }
 
-// watch (
-//     () => invoiceStore.newInvoicePaymentResponse,
-//     async (data) => {
-//       if(data){
-//         mymodalpay.value = false
-//       }
-//     },
-//     {deep:true}
-// )
-
-
-
-watch (
-    () => invoiceStore.newInvoicePaymentResponse,
-    async (data) => {
-      if(data){
-        loader.value = false
-        notificationStore.successToast("Success", data.message)
-        loader.value = false
-      }
-    },
-    {deep:true}
-)
 
 watch (
     () => invoiceStore.errorMessage,
     async (data) => {
       if(data){
         errorMessage.value = data.message
-        
         notificationStore.errorToast("Error",data.message)
-        loader.value = false
       }
     },
     {deep:true}
@@ -280,6 +259,17 @@ const columns = computed(() => {
   return columns
 })
 
+
+watch (
+    () => invoiceStore.newInvoicePaymentResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+        mymodalpay.value = false
+        await invoiceStore.fetchInvoiceId(invoice_number)
+      }
+    }
+)
 
 
 
