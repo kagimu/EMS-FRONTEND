@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!-- {{ groupData }} -->
 <form @submit.prevent="addFeedingGroup">
     <div class="mb-2">
     <label class="textColor"><small>School</small> </label>
@@ -78,6 +79,20 @@ const form = reactive({
     status:"ACTIVE",
     campus_number:null
 })
+
+const props = defineProps({
+    groupData:[]
+    })  
+
+    onMounted(() => {
+        schoolStore.fetchSchools()
+          if(props.groupData.number != ""){
+            form.code = props.groupData.code;
+            form.name = props.groupData.name;
+    }
+    }
+)
+
 const addFeedingGroup = () => {
     let myData = reactive({
     code:parseInt(form.code),
@@ -86,9 +101,16 @@ const addFeedingGroup = () => {
     campus_number:form.campus_number,
     school_number:school_number.value
 })
-
     buttonLoader.true
+
+ if(props.groupData.number){
+        if(!confirm("Sure want Edit " + props.groupData.number )){
+    return
+  }
+  alert("Edit Boss !!")
+    }else{
     cateringStore.newFeedingGroupInfo(myData)
+    }
     
 }
 watch (
@@ -119,10 +141,7 @@ watch (
       {deep:true}
   )
    
-  onMounted(() => {
-        schoolStore.fetchSchools()
-    }
-)
+
 
 watch(
     () => schoolStore.schoolsResponse,

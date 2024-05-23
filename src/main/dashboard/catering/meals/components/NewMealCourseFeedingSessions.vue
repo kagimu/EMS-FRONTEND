@@ -24,10 +24,17 @@ const schoolsList = ref([])
 const mealCourseList = ref([])
 const feedingSessionGroupList = ref([])
 
+
 const form = reactive({
   meal_course_number:"",
   feeding_sessions:[]
 })
+
+const props = defineProps({
+  mealListData:{}
+})
+
+
 
 
 onMounted(
@@ -105,6 +112,7 @@ watch(
 </script>
 <template>
   <div>
+    <!-- {{ mealListData }} -->
 
     <form @submit.prevent="addMealCourseFeedingSessionsDialog">
 

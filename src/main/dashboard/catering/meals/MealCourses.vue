@@ -18,6 +18,8 @@ const schoolsList = ref([])
 
 const addCourse = () => {
   mealCourseDialog.value = true
+  mealEditMode.value = false
+  mealCourseList.value=""
 }
 
 
@@ -60,6 +62,26 @@ watch(
     }
 )
 
+//edit
+const dataList = ref([])
+ const namee = ref(null)
+
+  const editThisData = (num) => {
+    mealEditMode.value = true
+    mealCourseDialog.value=true
+    dataList.value = num
+    namee.value = num.name
+    showingModal.value = true
+    mealCourseList.value=num
+  }
+
+
+//delete
+const deleteThisData = (id,name) => {
+if(!confirm("Are you sure, you want to delete: " + name)){
+  return
+}
+}
 
 
 </script>
@@ -68,10 +90,9 @@ watch(
   <div>
 
 
-    <AppModal :title="mealEditMode ? 'Edit Meal' : 'Add Meal Course'" v-model="mealCourseDialog" lg>
+    <AppModal :title="mealEditMode ? 'Edit Meal' + namee : 'Add Meal Course'" v-model="mealCourseDialog" lg>
       <new-meal-course :mealCourseList="mealCourseList"></new-meal-course>
     </AppModal>
-
 
 
 
@@ -119,13 +140,14 @@ watch(
           <tr>
             <th class="w-[30%] text-sm" scope="col">Code</th>
             <th class="text-sm" scope="col">Name</th>
-<!--            <th class="text-sm" scope="col">Action</th>-->
+           <th class="text-sm" scope="col">Action</th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="(levelInfo, index) in mealCourseList?.courses" :key="index">
             <td> {{levelInfo.code}}</td>
             <td> {{levelInfo.name}}</td>
+            
 <!--            <td>-->
 <!--              <div>
                 <i
@@ -139,6 +161,18 @@ watch(
                 </div>
               </div>-->
 <!--            </td>-->
+              <td>
+                <td>
+          <button  @click="editThisData(levelInfo)">
+            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+          </button>
+          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
+          <button type="button" @click="deleteThisData(levelInfo.number,levelInfo.name)">
+            <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+          </button>
+      </td>
+              </td>
+
           </tr>
           </tbody>
         </table>

@@ -65,17 +65,23 @@ const filterMealCourseDraft = () => {
 
 
 
-
-
-
-
 const addMealCourse = () =>{
   loader.value = true
   form.count = parseInt(form.count)
   form.courses.forEach(lst => {
     lst.code = parseInt(lst.code)
   })
-  mealStore.createNewMealCourse(form)
+  if(props.mealCourseList.school_number){
+
+    if(!confirm("Sure want Edit !")){
+    return
+  }
+  alert("Edit Boss !!")
+
+  }else{
+    mealStore.createNewMealCourse(form)
+  }
+ 
 }
 
 
@@ -128,7 +134,7 @@ const removeCourse = (idx) => {
 </script>
 <template>
   <div>
-
+<!-- {{ mealCourseList }} -->
     <form @submit.prevent="addMealCourse">
 
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">

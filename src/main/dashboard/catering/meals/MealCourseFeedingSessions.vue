@@ -21,6 +21,7 @@ const mealCourseList = ref([])
 
 const addMeal = () => {
   mealCourseFeedingSessionsDialog.value = true
+  mealEditMode.value=false
 }
 
 
@@ -89,6 +90,25 @@ watch(
 )
 
 
+//edit
+const dataList = ref([])
+ const namee = ref(null)
+ const mealListData = ref([])
+
+  const editThisData = (num) => {
+    mealEditMode.value = true
+    namee.value = num.name
+    mealCourseFeedingSessionsDialog.value = true
+    mealListData.value = num
+  }
+//delete
+  const deleteThisData = (id,name) => {
+if(!confirm("Are you sure, you want to delete: " + name)){
+  return
+}
+// delete endpoint
+
+}
 
 
 
@@ -99,12 +119,8 @@ watch(
 
 
     <AppModal :title="mealEditMode ? 'Edit Meal Course Feeding Sessions' : 'Add Meal Course Feeding Sessions'" v-model="mealCourseFeedingSessionsDialog" lg>
-      <NewMealCourseFeedingSessions></NewMealCourseFeedingSessions>
+      <NewMealCourseFeedingSessions :mealListData="mealListData"></NewMealCourseFeedingSessions>
     </AppModal>
-
-
-
-
 
 
     <div class="row">
@@ -158,7 +174,7 @@ watch(
           <tr>
             <th scope="col" style="width: 30%;">Code</th>
             <th scope="col">Name</th>
-<!--            <th scope="col">Action</th>-->
+           <th scope="col">Action</th>
           </tr>
           </thead>
           <tbody>
@@ -166,18 +182,14 @@ watch(
             <td> {{levelInfo.code}}</td>
             <td> {{levelInfo.name}}</td>
             <td>
-<!--              <div>
-                <i
-                    style="font-size: 13px;"
-                    data-bs-toggle="modal" data-bs-target="#levelModal"
-                    class="bi-pencil mr-2 cursor-pointer" @click="editLevel(levelInfo)"></i>
-                <i
-                    style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLevel(levelInfo, index)"></i>
-                <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>-->
-            </td>
+        <!-- <button @click="editThisData(levelInfo)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
+            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+          </button> -->
+          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
+          <button type="button" @click="deleteThisData(levelInfo.number,levelInfo.name)">
+            <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+          </button>
+      </td>
           </tr>
           </tbody>
         </table>

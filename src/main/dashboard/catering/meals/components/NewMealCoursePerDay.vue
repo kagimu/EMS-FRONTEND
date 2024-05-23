@@ -34,6 +34,7 @@ const form = reactive({
 })
 
 
+
 onMounted(
     async () =>{
       await schoolStore.fetchSchools()
@@ -129,6 +130,7 @@ watch(
 </script>
 <template>
   <div>
+  
 
     <form @submit.prevent="addMealCoursePerDay">
 

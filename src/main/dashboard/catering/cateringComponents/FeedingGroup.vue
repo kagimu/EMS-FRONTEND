@@ -1,10 +1,9 @@
 <template>
     <div>
 
-  <AppModal title="Feeding Group" v-model="showingModal" lg>
-    <NewFeedingGroup></NewFeedingGroup>
+  <AppModal :title="editModel ? 'Edit ' + namee:'New Feeding Group'" v-model="showingModal" lg>
+    <NewFeedingGroup :groupData="dataList"></NewFeedingGroup>
     </AppModal>
-
 
     <!-- end  -->
     <div class="row mt-3">
@@ -70,6 +69,7 @@
         <th>Name</th>
         <th>Status</th>
         <th>Campus</th>
+        <th>Action</th>
         </tr>
     <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
     {{errorMessage}}
@@ -81,6 +81,15 @@
       <td>{{ list.name }}</td>
       <td>{{ list.status }}</td>
       <td>{{ list.campus_name }}</td>
+      <td>
+        <button @click="editThisData(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
+            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+          </button>
+          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
+          <button type="button" @click="deleteThisData(list.number,list.name)">
+            <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+          </button>
+      </td>
       </tr>
                 
     </tbody>
@@ -119,10 +128,13 @@
     const errorMessage = ref(null)
     // const school_number = ref(null)
     const notificationStore = useNotificationStore()
+    const editModel = ref(false)
 
     const showModal = () => {
     showingModal.value = true
     thisDialog.value=false
+    editModel.value = false
+    dataList.value = ""
 }
     
     const form = reactive({
@@ -202,6 +214,26 @@ watch(
   },
   {deep: true}
 )
+
+//edit
+const dataList = ref([])
+ const namee = ref(null)
+
+  const editThisData = (num) => {
+    editModel.value = true
+    dataList.value = num
+    namee.value = num.name
+    showingModal.value = true
+  }
+//delete
+  const deleteThisData = (id,name) => {
+if(!confirm("Are you sure, you want to delete: " + name)){
+  return
+}
+// delete endpoint
+
+}
+
     </script>
     
     
