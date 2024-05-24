@@ -1,102 +1,3 @@
-<template>
-  <div>
-
-    <div class="modal fade" id="CurriculumModal" tabindex="-1" :class="{ show: CurriculumDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">{{curiculumEditMode ? "Edit" : "New"}} Curriculum</h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-              <new-curriculum></new-curriculum>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-
-
-
-
-    <div class="mt-3">
-      <button 
-         v-if="can('create_curriculum','general')"
-          type="button"
-          class="btn btn-sm buttonStyle btn-primary mr-2"
-          @click="addSchool"
-          data-bs-toggle="modal"
-          data-bs-target="#CurriculumModal">
-        <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-        Add Curriculum
-      </button>
-    </div>
-
-
-
-
-
-    <div class="row">
-      <div class="col-4" v-for="(curr, index) in curriculumList" :key="index">
-
-        <div class="card mt-3">
-          <div class="card-body">
-            <div class="mb-3 flex justify-between" style="font-size: 20px;">
-              {{curr.name}}
-
-              <div>
-                <i 
-                    v-if="can('edit_curriculum','general')"
-                    class="bi-pencil ml-2 cursor-pointer"
-                    data-bs-toggle="modal"
-                    data-bs-target="#CurriculumModal"
-                    style="font-size: 14px;"
-                    @click="editCurriculum(curr)"></i>
-
-                <i style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  
-                v-if="can('delete_curriculum','general')"
-                @click="deleteCurriculum(curr)"></i>
-                <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === curr.number">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="flex justify-content-between">
-              &nbsp;
-              <div class="flex">
-                            <router-link
-                                class="text-decoration-none"
-                                :to="{name:'curriculum-setup', query:{id:curr.number}}"
-                            >
-                              <button
-                              v-if="can('setup_curriculum','general')"
-                                  type="button"
-                                  class="btn-primary border-0 d-none d-lg-block viewButtonStyle mr-2">
-                                    <span class="mx-9 text-sm">
-                                      Setup Curriculum
-                                    </span>
-                              </button>
-                            </router-link>
-
-
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-
-
-    </div>
-
-  </div>
-</template>
-
 <script setup>
 
 import {onMounted, ref, watch} from "vue";
@@ -106,6 +7,7 @@ import NewCurriculum from "@/main/dashboard/curriculum/curriculumSetup/NewCurric
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 
 import { useAbility } from '@casl/vue';
+import AppModal from "@/components/AppModal.vue";
 
 const { can } = useAbility()
 
@@ -119,7 +21,7 @@ const curriculumList = ref( [])
 const deletionLoader = ref( undefined)
 
 
-const addSchool = () => {
+const addCurriculum = () => {
   curiculumEditMode.value = false
   CurriculumDialog.value = true
 }
@@ -148,7 +50,7 @@ const deleteCurriculum = (data) => {
 
 onMounted(
     async () => {
-    await  curriculumStore.fetchCurriculum()
+      await  curriculumStore.fetchCurriculum()
     }
 )
 
@@ -210,6 +112,91 @@ watch(
 )
 
 </script>
+<template>
+  <div>
+
+
+
+    <AppModal :title="curiculumEditMode ? 'Edit Curriculum' : 'New Curriculum'" v-model="CurriculumDialog" lg>
+      <new-curriculum></new-curriculum>
+    </AppModal>
+
+
+
+
+    <div class="mt-3">
+      <button 
+         v-if="can('create_curriculum','general')"
+          type="button"
+          class="btn btn-sm buttonStyle btn-primary mr-2"
+          @click="addCurriculum"
+          >
+        <span class="mx-4">
+         <i style="font-size: 15px;"  class="bi-plus"></i>
+        Add Curriculum
+       </span>
+      </button>
+    </div>
+
+
+
+
+
+    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+      <div v-for="(curr, index) in curriculumList" :key="index">
+        <div class="border rounded-md bg-white mt-3 p-0">
+
+
+          <div class="p-3 text-[#5e5e5e]">
+            <div class="mb-3 flex justify-between" style="font-size: 20px;">
+              {{curr.name}}
+
+              <div>
+                <i 
+                    v-if="can('edit_curriculum','general')"
+                    class="bi-pencil ml-2 cursor-pointer"
+                    data-bs-toggle="modal"
+                    data-bs-target="#CurriculumModal"
+                    style="font-size: 14px;"
+                    @click="editCurriculum(curr)"></i>
+
+                <i style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  
+                v-if="can('delete_curriculum','general')"
+                @click="deleteCurriculum(curr)"></i>
+                <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === curr.number">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="bg-[#0d6efd] hover:bg-[#0d6efd] rounded-b-md mt-3">
+              <router-link
+                  class="text-decoration-none"
+                  :to="{name:'curriculum-setup', query:{id:curr.number}}"
+              >
+                <button
+                v-if="can('setup_curriculum','general')"
+                    type="button"
+                class="bg-[#0d6efd] hover:bg-[#0c62e1] text-white text-sm text-center w-full rounded-b-md py-2">
+                      <span class="mx-9 text-sm">
+                        Setup Curriculum
+                      </span>
+                </button>
+              </router-link>
+            </div>
+
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</template>
+
+
 
 <style scoped>
 
