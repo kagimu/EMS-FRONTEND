@@ -90,28 +90,28 @@ watch (
 
 
 
-    <div class="card mt-3">
-      <div class="card-body">
+    <div class="border rounded-md bg-white mt-3 py-4 px-3" >
 
-    <div class="ml-3 mt-3" >
-      <div class="row">
-        <div class="col-4">
-          <div v-if="schoolData">
-           <small>School:</small> <br />
+      <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+
+          <div>
+           <div>School:</div>
            <div style="font-size: 20px;">
-             {{schoolData.name}}
+             {{schoolData?.name}}
            </div>
           </div>
-        </div>
 
-          <div  v-if="schoolData" class="col-4">
+
+
+          <div>
               <small>Commencement date</small>
-              <div>{{schoolData.commencement_date}}</div>
+              <div>{{schoolData?.commencement_date}}</div>
           </div>
 
 
-        <div class="col-4">
-          <div class="ml-5 mt-1">
+
+          <div>
             <small><b>School Curriculum (s)</b></small>
             <div class="ml-4" v-if="schoolData">
                 <div v-for="(schools, index) in schoolData.school_curriculum" :key="index">
@@ -119,16 +119,9 @@ watch (
                 </div>
             </div>
           </div>
-        </div>
+
+
       </div>
-
-
-</div>
-      </div>
-
-
-
-
 
     </div>
 
