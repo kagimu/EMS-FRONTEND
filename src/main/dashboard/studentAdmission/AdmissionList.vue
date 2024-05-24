@@ -294,6 +294,16 @@ watch(
       {deep:true}
     )
 
+    watch (
+       () => enrolmentStore.newsEnrolmentResponse,
+       async (data) => {
+         if(data){
+            doFetchAdmission()
+         }
+       },
+       {deep:true}
+     )
+
 </script>
 <template>
 
@@ -522,9 +532,9 @@ watch(
 
 
 
-                                <router-link style="display: none;"
+                                <router-link style=""
                                    class="text-decoration-none"
-                                   :to="{name:'admission-details', query:{st_id:adm.Student.number}}">
+                                   :to="{name:'student-profile-details', query:{st_id:adm.Student.number}}">
                                    <button type="button"
                                       class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
                                       >view Details</button>

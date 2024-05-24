@@ -31,6 +31,7 @@ const form = reactive({
     {
       code:1,
       name:null,
+      meal_course_number:null
     }
   ]
 })
@@ -76,8 +77,7 @@ const addMealCourse = () =>{
     if(!confirm("Sure want Edit !")){
     return
   }
-  alert("Edit Boss !!")
-
+  mealStore.updateMealCourse(form)
   }else{
     mealStore.createNewMealCourse(form)
   }
@@ -108,6 +108,7 @@ watch(
 )
 
 
+
 watch(
     () => mealStore.errorMessage,
     async (data) => {
@@ -129,6 +130,16 @@ const removeCourse = (idx) => {
 }
 
 
+
+watch(
+    () => mealStore.updateMealCoursesResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
 
 
 </script>
@@ -198,6 +209,13 @@ const removeCourse = (idx) => {
               <input
                   style="outline: none 0 !important; box-shadow: none;"
                   type="text" v-model="course.name"
+                  required
+                  class="form-control form-select-sm">
+            </div>
+            <div class="mb-1">
+              <input
+                  style="outline: none 0 !important; box-shadow: none;"
+                  type="text" v-model="course.number"
                   required
                   class="form-control form-select-sm">
             </div>

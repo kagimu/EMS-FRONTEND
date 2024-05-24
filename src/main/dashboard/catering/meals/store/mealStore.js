@@ -12,7 +12,7 @@ export const useMealStore = defineStore("Meal", () => {
     const activateMealCourseResponse = ref(null)
     const mealCoursesPerDayResponse  = ref(null)
     const newMealCoursesPerDayResponse = ref(null)
-
+    const updateMealCoursesResponse = ref(null)
 
 
     async function createMealCourseFeedingSessions(data) {
@@ -112,6 +112,18 @@ export const useMealStore = defineStore("Meal", () => {
                 }
             })
     }
+    
+    async function updateMealCourse(data) {
+        return await api.patch("main/catering/meal-courses", data)
+            .then((response) => {
+                updateMealCoursesResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
 
     return {
        newMealCoursesResponse,
@@ -130,7 +142,9 @@ export const useMealStore = defineStore("Meal", () => {
        mealCoursesPerDayResponse,
        fetchMealCoursesPerDay,
        createMealCoursesPerDay,
-       newMealCoursesPerDayResponse
+       newMealCoursesPerDayResponse,
+       updateMealCoursesResponse,
+       updateMealCourse
 
     }
 })
