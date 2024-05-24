@@ -78,12 +78,13 @@
             <button type="button" class="text-sm fw-bold text-white text-uppercase mb-1 btn btn-danger">{{ stream }}</button>
          </div>
          <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status" style="float: right;">
-         <button v-if="status == 'TERMINATED'" class="btn btn-success btn-sm mb-2 mx-1 mb-2" @click="reEnroll(student_number)">
+        
+        <div v-if="can('re-instate_enrollment','manage')"></div>  <button v-if="status == 'TERMINATED'" class="btn btn-success btn-sm mb-2 mx-1 mb-2" @click="reEnroll(student_number)">
                 <small>RE-INSTATE</small>
                 </button>
-                <button v-if="status == 'ACTIVE'" class="btn btn-danger btn-sm mb-2 mx-1" @click="terminateEnrollment(student_number)">
+               <div v-if="can('terminate_enrollment','manage')"><button v-if="status == 'ACTIVE'" class="btn btn-danger btn-sm mb-2 mx-1" @click="terminateEnrollment(student_number)">
                 <small>Terminate</small>
-                </button>
+                </button></div>
               </div>
       </span>
      
@@ -141,6 +142,9 @@ import {useApplicationStore} from "@/main/application/applicationComponents/stor
 import StudentReports from "@/main/dashboard/report-card/studentReports/StudentReports.vue"
 import Comfirm from "@/main/dashboard/enrollment/Comfirm.vue"
 import AppModal from "@/components/AppModal.vue";
+import { useAbility } from '@casl/vue';
+const { can } = useAbility()
+
 
 import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
 const enrollmentStore = useEnrolmentStore()

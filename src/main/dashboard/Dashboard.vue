@@ -27,7 +27,7 @@ const menuList = ref([
   {title:"Curriculum", name:"curriculum", icon:"bi-pen", action:"view_curriculum"},
   {title:"Time table", name:"timetable", icon:"bi-pen",action:"view_timetable"},
   {title:"Student Application", name:"student-application", icon:"bi-person-plus",action:"view_student-application"},
-  {title:"Student Admission", name:"admission-list", icon:"bi-database-down",action:"view_student-admission"},
+  {title:"Student Admission", name:"admission-list", icon:"bi-database-down",action:"view_admissions"},
   {title:"Student Enrolment", name:"enrolment", icon:"bi-database-down",action:"view_enrolment"},
   {title:"Student Promotions", name:"promotions", icon:"bi-database-down",action:"view_promotions"},
   // {title:"Invoices", name:"invoices", icon:"bi-receipt-cutoff",action:"view_invoices"},

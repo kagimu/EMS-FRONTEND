@@ -3,12 +3,14 @@
 
 
   
-  
   <AppModal title="Add Unit of Measure" v-model="showUnitModal" lg>
     <NewUnitOfMeasurement></NewUnitOfMeasurement>
     </AppModal>
 
-
+      
+  <AppModal :title="'Edit' +' '+ namee" v-model="showEditModal" lg>
+    <EditUnitsOfMeasure :unitData="unitOfMeasureList"></EditUnitsOfMeasure>
+    </AppModal>
 
     <!-- end  -->
     <div class="row mt-3">
@@ -37,7 +39,6 @@
         </div>
     </div>
     
-    
     <table
     id="datatable"
     class="table table-striped"
@@ -58,11 +59,11 @@
       <td>{{ list.code }}</td>
       <td>{{ list.name }}</td>
       <td>
-        <button data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
+        <button @click="editUnit(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-          <button type="button">
+          <button type="button" @click="deleteUnitOfMeasure(list.number,list.name)">
             <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
           </button>
       </td>
@@ -87,6 +88,8 @@
     import NewUnitOfMeasurement from "@/main/dashboard/catering/cateringComponents/NewUnitOfMeasurement.vue";
     import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
     import AppModal from "@/components/AppModal.vue";
+    import EditUnitsOfMeasure from "@/main/dashboard/catering/cateringComponents/EditUnitsOfMeasure.vue";
+
 
     const showUnitModal = ref(false)
     const cateringStore = useCateringStore()
@@ -118,6 +121,24 @@
     },
     {deep: true}
   )
+
+  //edit
+  const unitOfMeasureList = ref([])
+  const showEditModal = ref(false)
+ const namee = ref(null)
+  const editUnit = (num) => {
+    unitOfMeasureList.value = num
+    namee.value = num.name
+    showEditModal.value = true
+  }
+//delete
+  const deleteUnitOfMeasure = (id,name) => {
+if(!confirm("Are you sure, you want to delete: " + name)){
+  return
+}
+// delete endpoint
+
+}
 
 
     </script>

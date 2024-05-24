@@ -31,6 +31,7 @@ const form = reactive({
     {
       code:1,
       name:null,
+      meal_course_number:null
     }
   ]
 })
@@ -65,17 +66,22 @@ const filterMealCourseDraft = () => {
 
 
 
-
-
-
-
 const addMealCourse = () =>{
   loader.value = true
   form.count = parseInt(form.count)
   form.courses.forEach(lst => {
     lst.code = parseInt(lst.code)
   })
-  mealStore.createNewMealCourse(form)
+  if(props.mealCourseList.school_number){
+
+    if(!confirm("Sure want Edit !")){
+    return
+  }
+  mealStore.updateMealCourse(form)
+  }else{
+    mealStore.createNewMealCourse(form)
+  }
+ 
 }
 
 
@@ -102,6 +108,7 @@ watch(
 )
 
 
+
 watch(
     () => mealStore.errorMessage,
     async (data) => {
@@ -124,11 +131,21 @@ const removeCourse = (idx) => {
 
 
 
+watch(
+    () => mealStore.updateMealCoursesResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
 
 </script>
 <template>
   <div>
-
+<!-- {{ mealCourseList }} -->
     <form @submit.prevent="addMealCourse">
 
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
@@ -192,6 +209,13 @@ const removeCourse = (idx) => {
               <input
                   style="outline: none 0 !important; box-shadow: none;"
                   type="text" v-model="course.name"
+                  required
+                  class="form-control form-select-sm">
+            </div>
+            <div class="mb-1">
+              <input
+                  style="outline: none 0 !important; box-shadow: none;"
+                  type="text" v-model="course.number"
                   required
                   class="form-control form-select-sm">
             </div>

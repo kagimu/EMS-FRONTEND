@@ -13,6 +13,10 @@ import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classe
 import AppModal from "@/components/AppModal.vue";
 import AdmitModel from "@/main/dashboard/studentApplication/AdmitModel.vue";
 
+import { useAbility } from '@casl/vue';
+const { can } = useAbility()
+
+
 const myAdmitModal = ref(false)
 const showAdmitModal = () =>{
   if (selectedStudentNumber.value.length === 0) {
@@ -457,11 +461,10 @@ const showDialog = () => {
           </div>
         </div>
       </div>
-      
+    
 
 <!-- {{ selectedStudentNumber }} -->
 <div class="row">
-
   <div class="col-lg-10">
     <p class="alert alert-danger p-1 text-[11px] mt-2" >Select a Student or Students to Offer Admission Please !</p>
     <table
@@ -507,7 +510,7 @@ const showDialog = () => {
   </div>
   <div class="col-lg-2">
 <div class="ant-alert-action mt-3">
-  <button @click="showAdmitModal"  type="button"
+  <button @click="showAdmitModal"  v-if="can('admit_student','manage')" type="button"
     class="mb-2 btn btn-primary btn-sm ml-2 mr-2 " 
     style="float: rigt;" ><i></i>Offer Admission</button>
 

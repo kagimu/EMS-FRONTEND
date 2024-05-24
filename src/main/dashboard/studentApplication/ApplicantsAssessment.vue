@@ -6,7 +6,7 @@
      <div class="row mt-4">
         <div class="col-lg-4">
            <div class="mb-2">
-            <label style="font-size: 11px;" >* Please Select Assessment Metric to Enter/view Marks</label>
+            <label style="font-size: 11px;"  class="alert alert-danger p-0">* Please Select Assessment Metric to Enter/view Marks</label>
             <div class="input-group mt-1">
           <select
                  style="box-shadow: none;"

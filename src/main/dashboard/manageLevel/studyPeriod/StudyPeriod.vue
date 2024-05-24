@@ -7,6 +7,10 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import AppModal from "@/components/AppModal.vue";
+import { useAbility } from '@casl/vue';
+const { can } = useAbility()
+
+
 const studyPeriodStore = useStudyPeriodStore()
 const academicYearStore = useAcademicYearStore()
 const classStore = useClassesStore()
@@ -142,7 +146,7 @@ watch(
 
     <div class="flex justify-content-between mt-10 mb-4 mr-3">
       &nbsp;
-      <button
+      <button v-if="can('create_term','manage')"
           type="button"
           class="btn btn-sm buttonStyle btn-primary mr-2"
           @click="addStudyPeriod">
@@ -174,7 +178,7 @@ watch(
     </div>
 
 
-    <table class="table table-hover caption-top text-sm" style="font-size: 14px;">
+    <table class="table table-hover caption-top text-sm" style="font-size: 14px;" v-if="can('view_term','manage')">
       <thead>
       <tr>
 <!--        <th scope="col">#</th>-->
@@ -231,7 +235,7 @@ watch(
                     </td>
                     <td>
                       <div>
-                        <i
+                        <i v-if="can('update_term','manage')"
                             data-bs-toggle="modal"
                             data-bs-target="#newStudyPeriod"
                             class="bi-pencil mr-2 cursor-pointer"

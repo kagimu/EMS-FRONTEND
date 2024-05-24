@@ -7,7 +7,12 @@ import NewCampus from "@/main/dashboard/manageCampus/NewCampus.vue";
 import {useRouter} from "vue-router";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import useNotificationStore from "@/composables/useNotification.js";
+
 const routerData = useRouter()
+import { useAbility } from '@casl/vue';
+const { can } = useAbility()
+
+
 const campusStore = useCampusStore()
 const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
@@ -145,7 +150,7 @@ watch (
 <div>
   <div class="mt-3 flex justify-between bg-white rounded p-3">
     <div>Campus list</div>
-    <button type="button"  class="btn btn-sm buttonStyle btn-primary ml-2"  @click="addCampus">
+    <button v-if="can('create_campus','manage')"  type="button"  class="btn btn-sm buttonStyle btn-primary ml-2"  @click="addCampus">
       <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
       Add Campus
     </button>
@@ -159,11 +164,11 @@ watch (
           <div class="mb-3 flex justify-between" style="font-size: 20px;">
             {{campus.name}}
             <div>
-              <i
+              <i v-if="can('edit_campus','manage')"
                   class="bi-pencil ml-2 cursor-pointer"
                   style="font-size: 14px;"
                   @click="editCampus(campus)"></i>
-              <i style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  @click="deleteCampus(campus)"></i>
+              <i v-if="can('delete_campus','manage')" style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  @click="deleteCampus(campus)"></i>
             </div>
           </div>
           <small>

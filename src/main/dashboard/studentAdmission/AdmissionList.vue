@@ -12,6 +12,9 @@
   import {useEnrolmentStore} from "@/main/dashboard/enrollment/store/enrollment.js"
   import {useLevelStore} from "@/main/settings/level/store/level.js";
 
+  import { useAbility } from '@casl/vue';
+  const { can } = useAbility()
+
   const levelStore = useLevelStore()
   const interviewStudentList = ref( [])
   let errorMessage = ref(null)
@@ -291,6 +294,16 @@ watch(
       {deep:true}
     )
 
+    watch (
+       () => enrolmentStore.newsEnrolmentResponse,
+       async (data) => {
+         if(data){
+            doFetchAdmission()
+         }
+       },
+       {deep:true}
+     )
+
 </script>
 <template>
 
@@ -507,17 +520,21 @@ watch(
                                    <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  
                                 </button> -->
                                 
-
-                                <button v-if="adm.status != 'Enrolled'" @click="showModal(adm.Student.number,adm.number,adm)" 
+ 
+                                <div v-if="can('enroll_student','manage')">
+                                 <button  v-if="adm.status != 'Enrolled'" @click="showModal(adm.Student.number,adm.number,adm)" 
                                    type="button" class="btn btn-sm btn-primary mb-2 mr-4 "
                                    style="color: white;">
                                    <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  
                                 </button>
 
+                                </div>
 
-                                <router-link style="display: none;"
+
+
+                                <router-link style=""
                                    class="text-decoration-none"
-                                   :to="{name:'admission-details', query:{st_id:adm.Student.number}}">
+                                   :to="{name:'student-profile-details', query:{st_id:adm.Student.number}}">
                                    <button type="button"
                                       class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
                                       >view Details</button>

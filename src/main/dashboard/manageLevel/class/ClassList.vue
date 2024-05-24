@@ -8,6 +8,10 @@ import NewCampusClass from "@/main/dashboard/manageLevel/class/NewCampusClass.vu
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 import AppModal from "@/components/AppModal.vue";
 
+import { useAbility } from '@casl/vue';
+const { can } = useAbility()
+
+
 const routerData = useRouter()
 const levelStore = useLevelStore()
 
@@ -155,7 +159,7 @@ watch(
 
         <div class="flex justify-content-between mt-4 mb-4 mr-3">
             &nbsp;
-            <button type="button" class="btn btn-sm buttonStyle btn-primary mr-2" @click="addCampus"
+            <button v-if="can('create_class','manage')" type="button" class="btn btn-sm buttonStyle btn-primary mr-2" @click="addCampus"
                     data-bs-toggle="modal" data-bs-target="#campusClassModal">
                 <i style="font-size: 15px;" class="bi-plus mr-2"></i>
                 Add Class
@@ -163,7 +167,7 @@ watch(
         </div>
 
 
-        <table class="table table-hover caption-top text-sm">
+        <table class="table table-hover caption-top text-sm" v-if="can('view_class','manage')">
             <thead>
             <tr>
                 <th scope="col">#</th>
@@ -192,6 +196,7 @@ watch(
                       </td>
                       <td>
                         <button
+                        v-if="can('create_stream','manage')"
                             type="button"
                             class="bg-[#0d6efd] text-white rounded-md px-2 py-[2px;] text-xs hover:bg-blue-500"
                             data-bs-toggle="modal"
