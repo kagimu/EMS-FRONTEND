@@ -132,8 +132,10 @@ const toggleCurriculum = (number) =>{
           type="button"
           class="btn btn-sm buttonStyle btn-primary mr-2"
           @click="addSchool">
-        <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+       <span class="mx-4">
+         <i style="font-size: 15px;"  class="bi-plus"></i>
         Add School
+       </span>
       </button>
     </div>
 
@@ -147,7 +149,7 @@ const toggleCurriculum = (number) =>{
 
           <div class="border rounded-md bg-white mt-3 p-0">
 
-            <div class="p-3 text-[#7c7b7b]">
+            <div class="p-3 text-[#5e5e5e]">
             <div class="mb-3 flex justify-between" style="font-size: 20px;">
               {{school.name}}
 
