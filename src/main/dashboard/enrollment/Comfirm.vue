@@ -39,12 +39,12 @@
 </template>
 
 <script setup>
-  import {onMounted,reactive, ref, watch,computed} from "vue";
+  import {onMounted,reactive, ref, watch,computed,defineEmits} from "vue";
   import useNotificationStore from "@/composables/useNotification.js"
   import useCommonsStore from "@/composables/useCommons.js";
   import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
 
-  const emit = defineEmits()
+  const emit = defineEmits("nedda")
 
   const commons = useCommonsStore()
   const enrollmentStore = useEnrolmentStore()
@@ -104,8 +104,9 @@ watch(
   )
 
 const cancelAction = () => {
-  emit("next", 1 )
+  emit('nedda',"cancelled");
 }
+
 
 </script>
 <style>
