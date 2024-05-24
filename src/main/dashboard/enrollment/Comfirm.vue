@@ -5,10 +5,12 @@
     
       <div>
         <div class="row">
-            <div class="col-lg-12 mb-3"><p>Are you sure ? {{ action }}</p></div>
+            <div class="col-lg-12 mb-3"><p>Are you sure ? 
+              <!-- {{ action }} -->
+            </p></div>
             <div class="col-lg-6"> 
                 <button style="float: left;"
-            type="submit"
+            type="button" @click="cancelAction()"
             class="btn btn-danger border-0 btn-sm">
            <small> Cancel </small>
               <span v-if="loaderCancel" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
@@ -42,6 +44,7 @@
   import useCommonsStore from "@/composables/useCommons.js";
   import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
 
+  const emit = defineEmits()
 
   const commons = useCommonsStore()
   const enrollmentStore = useEnrolmentStore()
@@ -99,6 +102,10 @@ watch(
     },
     {deep: true}
   )
+
+const cancelAction = () => {
+  emit("next", 1 )
+}
 
 </script>
 <style>

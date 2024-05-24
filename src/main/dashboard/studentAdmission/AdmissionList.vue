@@ -532,7 +532,7 @@ watch(
 
 
 
-                                <router-link style=""
+                                <router-link  v-if="adm.status == 'Enrolled'" style=""
                                    class="text-decoration-none"
                                    :to="{name:'student-profile-details', query:{st_id:adm.Student.number}}">
                                    <button type="button"

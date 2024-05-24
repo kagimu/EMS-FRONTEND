@@ -1,5 +1,5 @@
 <template>
-
+<!-- {{ applicationNumber }} -->
             <div class="mt-2 mb-2">
 
   <div class="row mx-auto">
@@ -236,14 +236,21 @@ function getAge(dob){
   return useCommonsStore.getAgeFromDateOfBirth(dob)
 }
 
+onMounted(
+    async () => {
+      applicationStore.fetchApplicationList()
+      applicationStore.fetchPreviousSchoolResultsAll()
+
+      applicationStore.fetchApplicationById(props.applicationNumber)
+      applicationStore.fetchInterviewList()
+    } )
+
 watch (
     () => props.applicationNumber,
     async (data) => {
       if(data){
         applicationStore.fetchApplicationById(data)
         // applicationStore.fetchPreviousSchoolResultsByStudent(appDatails.student_number)
-
-        //.setvalues
       }
     },
     {deep:true}
@@ -280,11 +287,7 @@ watch (
     {deep:true}
 )
 
-onMounted(
-    async () => {
-      await applicationStore.fetchApplicationList()
-      await applicationStore.fetchPreviousSchoolResultsAll()
-    } )
+
 
 const formData = reactive({
   interview_number:null
@@ -325,10 +328,6 @@ function scheduleInterview(){
 )
 
 
-  onMounted(
-    async () => {
-      await applicationStore.fetchInterviewList()
-    } )
 
     watch(
     () => applicationStore.interviewListResponse,

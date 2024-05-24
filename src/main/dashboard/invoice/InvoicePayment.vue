@@ -78,7 +78,9 @@ const format = (date) => {
     amount:parseInt(formData.amount),
     date:formData.date
     })
-
+    if(!confirm("Sure want Edit !")){
+    return
+  }
   loader.value=true
   invoiceStore.createInvoicePayment(myData)
 
