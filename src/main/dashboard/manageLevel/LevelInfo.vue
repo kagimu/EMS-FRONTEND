@@ -12,28 +12,28 @@
 
 
                     <div>
-                      <div class="text-[16px]">Contacts</div>
-                      <div class="text-[13px] text-[#575656]">Email:<span>{{campusInfo?.email}}</span></div>
-                      <div class="text-[13px] text-[#575656]">Phone:<span>{{campusInfo?.phone}}</span></div>
+                      <div class="text-[16px] mb-[5px]">Contacts</div>
+                      <div class="text-[13px] text-[#575656]"><i class="bi-envelope mr-2"></i><span>{{campusInfo?.email}}</span></div>
+                      <div class="text-[13px] text-[#575656]"><i class="bi-telephone mr-2"></i><span>{{campusInfo?.phone}}</span></div>
                     </div>
 
 
                     <div>
-                      <div class="text-[16px]">Commencement Date</div>
-                      <div class="text-[13px] text-[#575656]">Date:<span>{{campusInfo?.commencement_date}}</span></div>
+                      <div class="text-[16px] mb-[5px]">Commencement Date</div>
+                      <div class="text-[13px] text-[#575656]"><i class="bi-calendar2-date mr-2"></i><span>{{campusInfo?.commencement_date}}</span></div>
                     </div>
 
 
 
                   <div>
-                    <div class="text-[16px]">Address</div>
-                    <div class="text-[13px] text-[#575656]">Location:<span>{{campusInfo?.location}}</span></div>
+                    <div class="text-[16px] mb-[5px]">Address</div>
+                    <div class="text-[13px] text-[#575656]"><i class="bi-pin-map mr-2"></i><span>{{campusInfo?.location}}</span></div>
                   </div>
 
 
                   <div>
                     <div>
-                      <div class="text-[16px]">Curriculum</div>
+                      <div class="text-[16px] mb-[5px]">Curriculum</div>
                        <div class="text-[13px] text-[#575656]" v-for="(item, index) in campusInfo?.curriculum" :key="index">{{(index+1)+". "+item?.name}}</div>
                     </div>
                   </div>
