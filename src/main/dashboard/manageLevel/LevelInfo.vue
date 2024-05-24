@@ -1,62 +1,52 @@
 <template>
-  <div>
+
+    <div class="px-2 py-2 text-[#5e5e5e]">
 
 
-    <div class="row">
-      <div class="col-12">
-        <div class="mt-3" v-if="campusInfo">
-          <div style="padding: 0;">
-            <div class="mb-2 ml-4 mt-2" style="font-size: 20px;">{{campusInfo.name}}</div>
 
-            <div style="width: 95%; font-size: 13px;" class="mx-auto mt-4">
 
-              <div class="row">
-                <div class="col-4">
-                    <div class="mb-4">
-                      <b>Contacts</b><br />
-                      Email:  <span>{{campusInfo.email}}</span> <br />
-                      Phone:  <span>{{campusInfo.phone}}</span><br /><br />
+            <div class="text-[18px] mb-[20px] text-[#34355d]">{{campusInfo?.name}}</div>
 
-                      <b>Commencement Date</b><br />
-                      Phone:  <span>{{campusInfo.commencement_date}}</span><br />
 
+              <div class="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 mb-10">
+
+
+                    <div>
+                      <div class="text-[16px]">Contacts</div>
+                      <div class="text-[13px] text-[#575656]">Email:<span>{{campusInfo?.email}}</span></div>
+                      <div class="text-[13px] text-[#575656]">Phone:<span>{{campusInfo?.phone}}</span></div>
                     </div>
-                </div>
+
+
+                    <div>
+                      <div class="text-[16px]">Commencement Date</div>
+                      <div class="text-[13px] text-[#575656]">Date:<span>{{campusInfo?.commencement_date}}</span></div>
+                    </div>
 
 
 
-                <div class="col-4">
-              <div class="mb-4">
-                <b>Address</b> <br />
-                Location: <span>{{campusInfo.location}}</span>
-              </div>
-                </div>
-
-
-                <div class="col-4">
-                  <div class="mb-4">
-                    <b>Curriculum</b> <br />
-                     <div v-for="(item, index) in campusInfo.curriculum" :key="index">{{(index+1)+". "+item.name}}</div>
-                  </div>
-                </div>
-
-
-
+                  <div>
+                    <div class="text-[16px]">Address</div>
+                    <div class="text-[13px] text-[#575656]">Location:<span>{{campusInfo?.location}}</span></div>
                   </div>
 
-            </div>
+
+                  <div>
+                    <div>
+                      <div class="text-[16px]">Curriculum</div>
+                       <div class="text-[13px] text-[#575656]" v-for="(item, index) in campusInfo?.curriculum" :key="index">{{(index+1)+". "+item?.name}}</div>
+                    </div>
+                  </div>
+
+                  </div>
 
 
 
 
 
-          </div>
-        </div>
-      </div>
+
     </div>
 
-
-  </div>
 </template>
 
 <script setup>

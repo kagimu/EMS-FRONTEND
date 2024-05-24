@@ -150,7 +150,7 @@ const toggleCurriculum = (number) =>{
           <div class="border rounded-md bg-white mt-3 p-0">
 
             <div class="p-3 text-[#5e5e5e]">
-            <div class="mb-3 flex justify-between" style="font-size: 20px;">
+            <div class="mb-3 flex justify-between text-[20px]">
               {{school.name}}
 
               <div>

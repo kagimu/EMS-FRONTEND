@@ -90,14 +90,14 @@ watch (
 
 
 
-    <div class="border rounded-md bg-white mt-3 py-4 px-3" >
+    <div class="border rounded-md bg-white mt-3 py-4 px-3 text-[#5e5e5e]">
 
       <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
 
           <div>
-           <div>School:</div>
-           <div style="font-size: 20px;">
+           <div class="text-[18px]">School:</div>
+           <div class="text-[14px] text-[#575656]">
              {{schoolData?.name}}
            </div>
           </div>
@@ -105,15 +105,15 @@ watch (
 
 
           <div>
-              <small>Commencement date</small>
-              <div>{{schoolData?.commencement_date}}</div>
+              <div class="text-[18px]">Commencement date</div>
+              <div class="text-[14px] text-[#575656]">{{schoolData?.commencement_date}}</div>
           </div>
 
 
 
           <div>
-            <small><b>School Curriculum (s)</b></small>
-            <div class="ml-4" v-if="schoolData">
+            <div class="text-[18px]">School Curriculum (s)</div>
+            <div class="text-[14px] text-[#575656]" v-if="schoolData">
                 <div v-for="(schools, index) in schoolData.school_curriculum" :key="index">
                   <small>{{(index+1)+". "+schools.name}}</small>
                 </div>
