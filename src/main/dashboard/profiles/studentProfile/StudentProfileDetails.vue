@@ -1,7 +1,7 @@
 <template>
 
    <AppModal title="Comfirm" v-model="showActionDialog" xs>
-      <Comfirm :studentNumber="studentNum" :action="actionType"></Comfirm>
+      <Comfirm :studentNumber="studentNum" :action="actionType" @nedda="cancelled"></Comfirm>
     </AppModal>
 
 
@@ -288,5 +288,11 @@ watch (
     ],
   
   });
+
+  const cancelled = (cancelled) => {
+
+   showActionDialog.value=false
+  }
+
   </script>
   

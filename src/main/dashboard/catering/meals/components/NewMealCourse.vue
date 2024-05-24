@@ -1,6 +1,6 @@
 <script setup>
 
-import {onMounted, reactive, ref, watch} from "vue";
+import {onMounted, reactive, ref, watch,defineEmits } from "vue";
 import {useRouter} from "vue-router";
 import useCommonsStore from "@/composables/useCommons.js";
 import useNotificationStore from "@/composables/useNotification.js";
@@ -20,6 +20,8 @@ const  notificationStore  = useNotificationStore()
 const schoolsList = ref( [])
 
 
+const emit = defineEmits(['schoolNumberChanged'])
+
 const props = defineProps({
   mealCourseList:{}
 })
@@ -31,7 +33,6 @@ const form = reactive({
     {
       code:1,
       name:null,
-      meal_course_number:null
     }
   ]
 })
@@ -68,24 +69,39 @@ const filterMealCourseDraft = () => {
 
 const addMealCourse = () =>{
   loader.value = true
+
+  if(props.mealCourseList.school_number){
+
+    const coursesData = form.courses.map(course => ({
+    code:course.code,
+    name: course.name,
+    meal_course_number: course.number
+  }))
+
+  // Prepare data object to be posted
+  const data = {
+    school_number:form.school_number,
+    count:form.count,
+    courses: coursesData
+  }
+    if(!confirm("Sure want Edit !")){
+      loader.value = false
+  }else{
+    // alert(JSON.stringify(data))
+    mealStore.updateMealCourse(data)
+    emit('schoolNumberChanged', form.school_number);
+  }
+  
+  }else{
+
   form.count = parseInt(form.count)
   form.courses.forEach(lst => {
     lst.code = parseInt(lst.code)
   })
-  if(props.mealCourseList.school_number){
-
-    if(!confirm("Sure want Edit !")){
-    return
-  }
-  mealStore.updateMealCourse(form)
-  }else{
     mealStore.createNewMealCourse(form)
   }
  
 }
-
-
-
 
 
 watch(
@@ -215,8 +231,8 @@ watch(
             <div class="mb-1">
               <input
                   style="outline: none 0 !important; box-shadow: none;"
-                  type="text" v-model="course.number"
-                  required
+                  type="hidden" v-model="course.number"
+       
                   class="form-control form-select-sm">
             </div>
           </div>

@@ -4,6 +4,7 @@ import AppModal from "@/components/AppModal.vue";
 import {onMounted, ref, watch} from "vue";
 import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
 import NewMealCourse from "@/main/dashboard/catering/meals/components/NewMealCourse.vue";
+import EditMealCourseItem from "@/main/dashboard/catering/meals/components/EditMealCourseItem.vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 const  mealStore  = useMealStore()
@@ -15,6 +16,7 @@ const mealEditMode = ref(false)
 const mealCourseDialog = ref(false)
 const school_number = ref("")
 const schoolsList = ref([])
+const schoolN = ref(null)
 
 const addCourse = () => {
   mealCourseDialog.value = true
@@ -31,6 +33,7 @@ onMounted(
 )
 
 const doFetchMealCourses = (school_number) => {
+   schoolN.value = school_number
    mealStore.fetchMealCourses(school_number)
 }
 
@@ -83,6 +86,48 @@ if(!confirm("Are you sure, you want to delete: " + name)){
 }
 }
 
+const receivedSchoolNumber = ref('');
+const handleSchoolNumberChanged = (schoolNumber) => {
+  receivedSchoolNumber.value = schoolNumber;
+}
+
+watch(
+    () => mealStore.updateMealCoursesResponse,
+    async (data) => {
+      if(data){
+        mealStore.fetchMealCourses(receivedSchoolNumber.value)
+        mealCourseDialog.value=false
+      }
+    }
+)
+
+const editMealCourseItemDialog = ref(false)
+const courseMealItemData = ref(null)
+
+const showEditCourseItemModal  = (courseMealItem) =>{
+  editMealCourseItemDialog.value = true
+  courseMealItemData.value = courseMealItem
+  namee.value = courseMealItemData.name  
+}
+
+
+
+
+const recievedSchoolNumber = ref('');
+const handleSchoolNumberEmitted = (schoolNumber) => {
+  recievedSchoolNumber.value = schoolNumber;
+}
+
+watch(
+    () => mealStore.updateMealCourseItemResponse,
+    async (data) => {
+      if(data){
+        editMealCourseItemDialog.value = false
+        mealStore.fetchMealCourses(recievedSchoolNumber.value )
+      }
+    }
+)
+
 
 </script>
 
@@ -90,17 +135,19 @@ if(!confirm("Are you sure, you want to delete: " + name)){
   <div>
 
 
-    <AppModal :title="mealEditMode ? 'Edit Meal' + namee : 'Add Meal Course'" v-model="mealCourseDialog" lg>
-      <new-meal-course :mealCourseList="mealCourseList"></new-meal-course>
+    <AppModal :title="mealEditMode ? 'Edit Meal' + namee : 'Add Meal Course'" v-model="mealCourseDialog" lg >
+      <new-meal-course :mealCourseList="mealCourseList" @schoolNumberChanged="handleSchoolNumberChanged"></new-meal-course>
     </AppModal>
 
-
-
+  
+    <AppModal title="Edit Meal Course Item" v-model="editMealCourseItemDialog" lg >
+      <EditMealCourseItem :courseMealItemData="courseMealItemData" :schoolN="schoolN" @schoolNumberEmitted="handleSchoolNumberEmitted"></EditMealCourseItem>
+    </AppModal>
     <div class="row">
 
       <div class="col-12">
 
-
+<!-- {{ receivedSchoolNumber }} -->
 
         <div class="flex justify-content-between mt-3">
           <div class="ml-4">Meal Courses</div>
@@ -109,6 +156,7 @@ if(!confirm("Are you sure, you want to delete: " + name)){
             <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
             Add a Meal Course
           </button>
+
         </div>
 
 
@@ -140,30 +188,20 @@ if(!confirm("Are you sure, you want to delete: " + name)){
           <tr>
             <th class="w-[30%] text-sm" scope="col">Code</th>
             <th class="text-sm" scope="col">Name</th>
-           <th class="text-sm" scope="col">Action</th>
+           <th class="text-sm" scope="col">Action  <button
+              type="button"  class="btn btn-sm buttonStyle btn-warning ml-1 mr-2" @click="editThisData(mealCourseList)">
+            <i style="font-size: 12px;"  class="bi-pencil mr-2"></i>
+           Bulk Edit
+          </button></th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="(levelInfo, index) in mealCourseList?.courses" :key="index">
             <td> {{levelInfo.code}}</td>
             <td> {{levelInfo.name}}</td>
-            
-<!--            <td>-->
-<!--              <div>
-                <i
-                    style="font-size: 13px;"
-                    data-bs-toggle="modal" data-bs-target="#levelModal"
-                    class="bi-pencil mr-2 cursor-pointer" @click="editLevel(levelInfo)"></i>
-                <i
-                    style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLevel(levelInfo, index)"></i>
-                <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>-->
-<!--            </td>-->
               <td>
                 <td>
-          <button  @click="editThisData(levelInfo)">
+          <button  @click="showEditCourseItemModal(levelInfo,levelInfo.name)">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;

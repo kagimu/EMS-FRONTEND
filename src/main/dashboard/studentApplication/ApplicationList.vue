@@ -216,6 +216,7 @@
   
   
   const setApplicationNumber = (ap) =>{
+   alert(ap)
     shDialog.value = true
     applications.value = ap
     showingModal.value = true
@@ -243,12 +244,8 @@
         () => applicationStore.addStudentToInterviewResponse,
         async (data) => {
             if (data) {
-              formData.value = ''
-                buttonLoader.value = false
                 shDialog.value = false,
-                applicationStore.fetchApplicationList()
-                notificationStore.successToast("Success", data.message)
-                
+                applicationStore.fetchApplicationList()   
             }
         },
         {deep: true}
@@ -260,7 +257,7 @@
       async (data) => {
           if (data) {
             showingModal.value=false
-            applicationStore.fetchApplicationList()
+            doFetchApplication()
           }
       },
       {deep: true}
@@ -269,7 +266,7 @@
 </script>
 
 <template>
-  <div class="row">
+  <div class="row ml-2">
    <h5  class="ml-1" style="font-size: 14px;margin-top: 2px;">APPLICATION LIST 
       <button @click="applicationModal" style="float: right;" class="btn btn-primary btn-sm ml-2 mb-2 mt-2 mr-2"><small>New Application</small></button></h5>
 
@@ -470,13 +467,13 @@
             </div>
          
   <div>
-     <div class="modal fade" tabindex="-1" id="infoModal"   aria-hidden="true" :class="{ show: shDialog }">
+     <!-- <div class="modal fade" tabindex="-1" id="infoModal"   aria-hidden="true" :class="{ show: shDialog }">
         <div class="modal-dialog modal-xl">
            <application-details :application-number="applications"></application-details>
         </div>
-     </div>
+     </div> -->
 
-     <AppModal title="Application Details" v-model="showingModal" xl4>
+     <AppModal title="Application Details" v-model="showingModal" xl6>
         <application-details :application-number="applications"></application-details>
      </AppModal>
 
