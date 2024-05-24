@@ -3,8 +3,6 @@
     <div class="px-2 py-2 text-[#5e5e5e]">
 
 
-
-
             <div class="text-[18px] mb-[20px] text-[#34355d]">{{campusInfo?.name}}</div>
 
 
