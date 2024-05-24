@@ -168,11 +168,11 @@ const switchCurriculum = (curriculum) => {
 
 
 
-    <div class="card mt-3">
-      <div class="card-body" style="padding: 0;">
+
+      <div class="mt-3 border bg-white rounded-md px-2 py-2">
         <level-info></level-info>
       </div>
-    </div>
+
 
 <div>
     <div class="row">

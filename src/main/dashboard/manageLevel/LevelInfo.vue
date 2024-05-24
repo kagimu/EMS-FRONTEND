@@ -8,30 +8,30 @@
             <div class="text-[18px] mb-[20px] text-[#34355d]">{{campusInfo?.name}}</div>
 
 
-              <div class="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 mb-10">
+              <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mb-10">
 
 
-                    <div>
+                    <div class="mb-[15px]">
                       <div class="text-[16px] mb-[5px]">Contacts</div>
                       <div class="text-[13px] text-[#575656]"><i class="bi-envelope mr-2"></i><span>{{campusInfo?.email}}</span></div>
                       <div class="text-[13px] text-[#575656]"><i class="bi-telephone mr-2"></i><span>{{campusInfo?.phone}}</span></div>
                     </div>
 
 
-                    <div>
+                    <div class="mb-[15px]">
                       <div class="text-[16px] mb-[5px]">Commencement Date</div>
                       <div class="text-[13px] text-[#575656]"><i class="bi-calendar2-date mr-2"></i><span>{{campusInfo?.commencement_date}}</span></div>
                     </div>
 
 
 
-                  <div>
+                <div class="mb-[15px]">
                     <div class="text-[16px] mb-[5px]">Address</div>
                     <div class="text-[13px] text-[#575656]"><i class="bi-pin-map mr-2"></i><span>{{campusInfo?.location}}</span></div>
                   </div>
 
 
-                  <div>
+                <div class="mb-[15px]">
                     <div>
                       <div class="text-[16px] mb-[5px]">Curriculum</div>
                        <div class="text-[13px] text-[#575656]" v-for="(item, index) in campusInfo?.curriculum" :key="index">{{(index+1)+". "+item?.name}}</div>
