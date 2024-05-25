@@ -5,7 +5,8 @@ import {useReportCardStore} from "@/main/dashboard/report-card/store/report-card
 import BabyClassReport from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/BabyClassReport.vue";
 import PrimaryReport from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/PrimaryReport.vue";
 import TopClassReport from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/TopClassReport.vue";
-import VictoriousReportPrimary from "@/main/dashboard/ReportCenter/victorious/VictoriousReportPrimary.vue";
+import VictoriousReportCard
+  from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/victorious/VictoriousReportCard.vue";
 const reportStore = useReportCardStore()
 
 const reportDetails = ref(null)
@@ -41,7 +42,7 @@ watch(
   </div>
 
   <div v-if="reportDetails?.report_template_name === 'victorious-report-primary'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
-    <victorious-report-primary></victorious-report-primary>
+    <victorious-report-card :reportDetails="reportDetails"></victorious-report-card>
   </div>
 
 

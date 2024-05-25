@@ -39,10 +39,10 @@ const props = defineProps({
                 </td>
                 <td style="width: 60%;" class="text-center">
                   <!--        <div style="font-size: 30px;"><b>NOREGRETS LIFE SCHOOL</b></div>-->
-                  <div style="font-size: 30px;" class="uppercase"><b>{{reportDetails?.school?.name}}</b></div>
+                  <div style="font-size: 30px; text-transform: uppercase;"><b>{{reportDetails?.school?.name}}</b></div>
 
                   <!--        <div style="font-size: 20px; margin-top: 5px;">BUNAMWAYA CAMPUS</div>-->
-                  <div style="font-size: 20px; margin-top: 5px;" class="uppercase">{{reportDetails?.campus?.name}}</div>
+                  <div style="font-size: 20px; margin-top: 5px;text-transform: uppercase;">{{reportDetails?.campus?.name}}</div>
 
                   <div style="margin-top: 6px; margin-bottom: 10px;">
                     <small>

@@ -11,12 +11,10 @@ import ScoreSetup from "@/main/dashboard/manageLevel/report_setup/ScoreSetup.vue
 const router = useRouter()
 const levelStore = useLevelStore()
 const campusCurriculumDataInfo = ref(null)
-const curriculum = ref("")
+
 
 
 const routerData = useRouter()
-
-const school = ref( "")
 
 
 const campusNumber = routerData.currentRoute.value.query.id

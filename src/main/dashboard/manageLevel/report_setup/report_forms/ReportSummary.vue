@@ -17,7 +17,6 @@ const levelStore = useLevelStore()
 const classStore = useClassesStore()
 const studyPeriodStore = useStudyPeriodStore()
 const academicYearStore = useAcademicYearStore()
-const notificationStore  = useNotificationStore()
 const routerData = useRouter()
 const showStudentsMarks = ref(false)
 
@@ -42,8 +41,8 @@ const per_page = ref(15)
 
 onMounted(
     async () => {
-      await doFilterReportSummary()
-      await fetchCampusLevel()
+       doFilterReportSummary()
+       fetchCampusLevel()
     }
 )
 
@@ -55,20 +54,11 @@ const showStudentReport = (summary) => {
 }
 
 
-// const filterReportSummary = () => {
-//   if(study_period_number.value && campus_class_number.value) {
-//     let data = {
-//       study_period_number: study_period_number.value,
-//       campus_class_number: campus_class_number.value,
-//     }
-//     alert(JSON.stringify(data))
-//   reportStore.fetchReportSummary(data)
-//   }
-// }
 
 const doFilterReportSummary = () =>{
+  reportSummaryList.value.splice(0)
   let options = {
-    page: page.value,
+    page: 1,
     per_page: per_page.value,
     student_number: "",
     study_period_number: study_period_number.value,
@@ -78,7 +68,6 @@ const doFilterReportSummary = () =>{
   }
 
   reportStore.fetchReportSummary(options)
-
 }
 
 
