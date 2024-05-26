@@ -171,8 +171,20 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             })
     }
 
-    async function fetchReportColumnAssessment() {
-        return await api.get("main/report-settings/report-column-assessment")
+    async function fetchReportColumnAssessment(data) {
+        let campus_level_number =    data?.campus_level_number ?? ""
+        let academic_year_number =   data?.academic_year_number ?? ""
+        let study_period_number =    data?.study_period_number ?? ""
+        let campus_class_number =   data?.campus_class_number ?? ""
+        let assessment_area_number =   data?.assessment_area_number ?? ""
+        let assessment_metric_number =  data?.assessment_metric_number ?? ""
+        return await api.get("main/report-settings/report-column-assessment?campus_level_number="+campus_level_number+
+                "&academic_year_number="+academic_year_number+
+                "&study_period_number="+study_period_number+
+                "&campus_class_number="+campus_class_number+
+                "&assessment_area_number="+assessment_area_number+
+                "&assessment_metric_number="+assessment_metric_number
+            )
             .then((response) => {
                 reportColumnAssessmentListResponse.value = response.data
             })

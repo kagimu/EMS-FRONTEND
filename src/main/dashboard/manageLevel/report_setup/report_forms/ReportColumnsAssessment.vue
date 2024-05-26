@@ -45,10 +45,23 @@ const assessment_metric_number  = ref("")
 
 onMounted(
     async () => {
-      await reportSetupStore.fetchReportColumnAssessment()
+      doFetchReportColumnAssessment()
       fetchCampusLevel()
     }
 )
+
+const doFetchReportColumnAssessment = () => {
+  let data = {
+    campus_level_number:campus_level_number.value,
+    academic_year_number:academic_year_number.value,
+    study_period_number:study_period_number.value,
+    campus_class_number:campus_class_number.value,
+    assessment_area_number:assessment_area_number.value,
+    assessment_metric_number:assessment_metric_number.value
+  }
+  reportSetupStore.fetchReportColumnAssessment(data)
+}
+
 
 
 const fetchCampusLevel = () => {
@@ -267,11 +280,11 @@ watch (
           </div>
 
 
-
           <div class="mb-2">
             <select
                 class="form-select form-select-sm shadow-none"
                 v-model="assessment_metric_number"
+                @change="doFetchReportColumnAssessment"
                >
               <option disabled value="">--Filter by Assessment Metric--</option>
               <option v-for="(list, index) in assessmentMetricList" :key="index" :value="list.number">
