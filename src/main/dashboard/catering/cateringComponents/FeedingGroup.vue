@@ -1,3 +1,134 @@
+<script setup>
+import {onMounted,reactive, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import NewFeedingGroup from "@/main/dashboard/catering/cateringComponents/NewFeedingGroup.vue";
+import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
+import AppModal from "@/components/AppModal.vue";
+
+import { useAbility } from '@casl/vue';
+const { can } = useAbility()
+
+
+const showingModal = ref(false)
+const campusList = ref([])
+const schoolList = ref([])
+const classList = ref([])
+const schoolStore = useSchoolStore()
+const campusStore = useCampusStore()
+const classStore = useClassesStore()
+const errorMessage = ref(null)
+// const school_number = ref(null)
+const notificationStore = useNotificationStore()
+const editModel = ref(false)
+
+const showModal = () => {
+  showingModal.value = true
+  thisDialog.value=false
+  editModel.value = false
+  dataList.value = ""
+}
+
+const form = reactive({
+  school_number:"",
+  campus_class_number: null,
+  campus_number: null,
+})
+
+
+const cateringStore = useCateringStore()
+const thisDialog = ref(false)
+const feedingGroupData = ref([])
+const showDialog = () => {
+  thisDialog.value = true
+}
+
+const closeDialog = () => {
+  thisDialog.value = false
+}
+
+const fetchGroup = (school) => {
+  cateringStore.fetchFeedingGroup(school)
+}
+//     onMounted(() => {
+//         cateringStore.fetchFeedingGroup()
+//     }
+// )
+
+watch(
+    () => cateringStore.feedingGroupInfoResponse,
+    async (data) => {
+      feedingGroupData.value = data.data
+    },
+    {deep: true}
+)
+watch(
+    () => cateringStore.errorMessage,
+    async (data) => {
+      if (data) {
+        notificationStore.errorToast("Error", data.message)
+      }
+    },
+    {deep: true}
+)
+
+onMounted(() => {
+      schoolStore.fetchSchools()
+    }
+)
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        schoolList.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+watch(
+    () => campusStore.campusListResponse,
+    async (data) => {
+      if (data) {
+        campusList.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+watch(
+    () => campusStore.campusClassesResponse,
+    async (data) => {
+      if (data) {
+        classList.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+//edit
+const dataList = ref([])
+const namee = ref(null)
+
+const editThisData = (num) => {
+  editModel.value = true
+  dataList.value = num
+  namee.value = num.name
+  showingModal.value = true
+}
+//delete
+const deleteThisData = (id,name) => {
+  if(!confirm("Are you sure, you want to delete: " + name)){
+    return
+  }
+// delete endpoint
+
+}
+
+</script>
 <template>
     <div>
 
@@ -104,137 +235,7 @@
     </div>
     </template>
     
-    <script setup>
-    import {onMounted,reactive, ref, watch} from "vue";
-    import useNotificationStore from "@/composables/useNotification.js";
-    import NewFeedingGroup from "@/main/dashboard/catering/cateringComponents/NewFeedingGroup.vue";
-    import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
-    import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-    import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-    import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
-    import AppModal from "@/components/AppModal.vue";
 
-    import { useAbility } from '@casl/vue';
-    const { can } = useAbility()
-    
-
-    const showingModal = ref(false)
-    const campusList = ref([])
-    const schoolList = ref([])
-    const classList = ref([])
-    const schoolStore = useSchoolStore()
-    const campusStore = useCampusStore()
-    const classStore = useClassesStore()
-    const errorMessage = ref(null)
-    // const school_number = ref(null)
-    const notificationStore = useNotificationStore()
-    const editModel = ref(false)
-
-    const showModal = () => {
-    showingModal.value = true
-    thisDialog.value=false
-    editModel.value = false
-    dataList.value = ""
-}
-    
-    const form = reactive({
-    school_number:"",
-    campus_class_number: null,
-    campus_number: null,
-    })
-
-
-    const cateringStore = useCateringStore()
-    const thisDialog = ref(false)
-    const feedingGroupData = ref([])
-    const showDialog = () => {
-        thisDialog.value = true
-    }
-
-    const closeDialog = () => {
-        thisDialog.value = false
-    }
-
-    const fetchGroup = (school) => {
-        cateringStore.fetchFeedingGroup(school)
-    }
-//     onMounted(() => {
-//         cateringStore.fetchFeedingGroup()
-//     }
-// )
-
-watch(
-    () => cateringStore.feedingGroupInfoResponse,
-    async (data) => {
-        feedingGroupData.value = data.data
-    },
-    {deep: true}
-  )
-  watch(
-    () => cateringStore.errorMessage,
-    async (data) => {
-          if (data) {
-          notificationStore.errorToast("Error", data.message)
-          }
-    },
-    {deep: true}
-  )
-
-  onMounted(() => {
-      schoolStore.fetchSchools()
-  }
-)
-
-watch(
-  () => schoolStore.schoolsResponse,
-  async (data) => {
-      if (data) {
-          schoolList.value = data.data
-      }
-  },
-  {deep: true}
-)
-
-watch(
-  () => campusStore.campusListResponse,
-  async (data) => {
-      if (data) {
-          campusList.value = data.data
-      }
-  },
-  {deep: true}
-)
-
-watch(
-  () => campusStore.campusClassesResponse,
-  async (data) => {
-      if (data) {
-          classList.value = data.data
-      }
-  },
-  {deep: true}
-)
-
-//edit
-const dataList = ref([])
- const namee = ref(null)
-
-  const editThisData = (num) => {
-    editModel.value = true
-    dataList.value = num
-    namee.value = num.name
-    showingModal.value = true
-  }
-//delete
-  const deleteThisData = (id,name) => {
-if(!confirm("Are you sure, you want to delete: " + name)){
-  return
-}
-// delete endpoint
-
-}
-
-    </script>
     
     
     
