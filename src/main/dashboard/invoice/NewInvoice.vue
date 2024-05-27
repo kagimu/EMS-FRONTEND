@@ -56,7 +56,11 @@
                               <option :value="option.item_number" v-for="option in availableOptions(index)">{{ option.name }} ({{ option.cost }})</option>
                             </select>
                           </td>
-                          <td><input type="text" v-model="Service.quantity" @input="updateAmount(index)" placeholder="1.0" ></td>
+                          <td><input maxlength="10"  required  type="text"
+                             @keypress="commons.numbersOnlyValidator($event)" 
+                              v-model="Service.quantity" 
+                              @input="updateAmount(index)" placeholder="1.0" >
+                            </td>
                           <td><input type="text" v-model="Service.cost" @input="updateAmount(index)" placeholder="Unit Price" ></td>
                           <td>{{ Service.amount }}</td>
                           <td><button type="button" @click="removeService(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
@@ -108,10 +112,11 @@ import useNotificationStore from "@/composables/useNotification.js"
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
 import {useRouter} from "vue-router"
-
 import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js"
 import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+import useCommonsStore from "@/composables/useCommons.js";
+const commons = useCommonsStore()
 
 const studentInfoList = ref( [])
 const routerData = useRouter()
@@ -132,7 +137,6 @@ const buttonLoader = ref(false)
 const props = defineProps({
   userNumber:String
   })
-
 
 // Creating invoice Logic =========================================================
 const Services = ref([]);
@@ -229,7 +233,7 @@ const createInvoice = () => {
   const selectedItems = Services.value.map(
     service => ({
       item_number: service.number,
-      quantity: service.quantity,
+      quantity: parseInt(service.quantity),
       // unitPrice: service.unitPrice,
       // amount: service.amount
     }))

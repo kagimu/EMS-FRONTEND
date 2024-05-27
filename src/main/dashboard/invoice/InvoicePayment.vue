@@ -78,7 +78,7 @@ const format = (date) => {
     amount:parseInt(formData.amount),
     date:formData.date
     })
-    if(!confirm("Sure want Edit !")){
+    if(!confirm("Are you Sure !")){
     return
   }
   loader.value=true
