@@ -19,6 +19,7 @@ const school_number = ref("")
 const campus_number = ref("")
 const start_date = ref("")
 const end_date = ref("")
+const mealProjections = ref([])
 
 
 
@@ -93,7 +94,7 @@ watch(
     () => cateringStore.mealsCostProjectionResponse,
     async (data) => {
       if(data){
-         alert(JSON.stringify(data))
+        mealProjections.value = data.data
       }
     }
 )
