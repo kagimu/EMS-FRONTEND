@@ -36,17 +36,17 @@ const form = reactive({
     campus_number: "",
 })
 
-onMounted(
-    () => {
-        // doFetchMenuItem()
-    }
 
+onMounted(() => {
+      schoolStore.fetchSchools()
+    }
 )
+
+
 
 
 const filterBySchool = (school_number) => {
     doFetchMenuItem()
-    campusStore.filterBySchool(school_number)
 }
 
 
@@ -126,10 +126,6 @@ watch(
 )
 
 
-onMounted(() => {
-        schoolStore.fetchSchools()
-    }
-)
 
 watch(
     () => schoolStore.schoolsResponse,
