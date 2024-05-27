@@ -62,7 +62,8 @@ const addFeedingGroup = () => {
     let formD = {
       feeding_group_number:props.groupData.number,
       name:form.name,
-      code:parseInt(form.code)
+      code:parseInt(form.code),
+      status:"ACTIVE"
     }
     cateringStore.editFeedingGroupInfo(formD)
   }else{
