@@ -37,6 +37,14 @@ const form = reactive({
 })
 
 
+
+onMounted(() => {
+      schoolStore.fetchSchools()
+      cateringStore.fetchMenuItem()
+    }
+)
+
+
 const fetchCampuses = (school_number) => {
     campusStore.fetchCampuses(school_number)
 }
@@ -63,17 +71,13 @@ const closeDialog = () => {
     updateMenuDialog.value = false
 }
 
-onMounted(
-    () => {
-        cateringStore.fetchMenuItem()
-    }
 
-)
+
+
 const sta = ref(null)
 
 const showItems = (primaryItemNumber) =>{
     sta.value=primaryItemNumber
-    // alert(primaryItemNumber)
     cateringStore.fetchMenuItemDetails(primaryItemNumber)
 }
 const hideItems = () =>{
@@ -119,10 +123,7 @@ watch(
 )
 
 
-onMounted(() => {
-        schoolStore.fetchSchools()
-    }
-)
+
 
 watch(
     () => schoolStore.schoolsResponse,
