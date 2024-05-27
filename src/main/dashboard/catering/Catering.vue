@@ -15,6 +15,7 @@ import MealCourseFeedingSessions from "@/main/dashboard/catering/meals/MealCours
 import MealCoursesPerDay from "@/main/dashboard/catering/meals/MealCoursesPerDay.vue";
 
 import { useAbility } from '@casl/vue';
+import MealsCostProjections from "@/main/dashboard/catering/meals/MealsCostProjections.vue";
 const { can } = useAbility()
 
 const routerData = useRouter()
@@ -74,6 +75,10 @@ const mealMenu = ref([
   {
     text:"Meal Calendar",
     value:"meal-calendar"
+  },
+  {
+    text:"Meals Cost Projections",
+    value:"meals-cost-projections"
   },
 ])
 
@@ -200,6 +205,9 @@ const changeMenu = (value) => {
 
                 <div v-if="menuSelected === 'meal-calendar'">
                  <MealCalendar></MealCalendar>
+                </div>
+                <div v-if="menuSelected === 'meals-cost-projections'">
+                 <meals-cost-projections></meals-cost-projections>
                 </div>
               </div>
   

@@ -32,6 +32,7 @@ export const useCateringStore = defineStore("catering", () => {
     let newFeedingGroupsPerDayResponse = ref(null)
     let feedGroupPerDayInfoResponse = ref(null) 
     let newMealsResponse = ref(null)
+    let mealsCostProjectionResponse = ref(null)
     let mealsResponse = ref(null)
     let editFeedingGroupInfoResponse = ref(null)
  
@@ -386,6 +387,21 @@ async function newMeal(data) {
         })
 }
 
+async function fetchMealsCostProjection(data) {
+      let start_date =  data?.start_date ?? ""
+      let end_date =  data?.end_date ?? ""
+      let campus_number =   data?.campus_number ?? ""
+    return await api.get("main/catering/meal-projections?start_date="+start_date+"&end_date="+end_date+"&campus_number="+campus_number)
+        .then((response) => {
+            mealsCostProjectionResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response && response.response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
 async function fetchMeals(campusNumber,meal_courseNumber) {
     return await api.get("main/catering/meals?campus_number="+campusNumber+"&meal_course_number="+meal_courseNumber)
         .then((response) => {
@@ -402,6 +418,7 @@ async function fetchMeals(campusNumber,meal_courseNumber) {
     return {
         newUnitOfMeasureInfoResponse,
         errorMessage,
+        mealsCostProjectionResponse,
         newUnitOfMeasureInfo,
         fetchUnitOfMeasureInfo,
         deleteUnitOfMeasure,
@@ -461,6 +478,7 @@ async function fetchMeals(campusNumber,meal_courseNumber) {
         newMeal,
         mealsResponse,
         fetchMeals,
+        fetchMealsCostProjection,
         editFeedingGroupInfoResponse,
         editFeedingGroupInfo
 

@@ -28,7 +28,6 @@ onMounted(
 const fetchCampusBySchool = () => {
   campus_number.value = ""
   campusStore.fetchCampuses(school_number.value)
-  // doFetchMealCourses()
 }
 
 const doFetchMealCourses = () => {
@@ -48,17 +47,6 @@ watch(
     }
 )
 
-
-watch(
-    () => mealStore.mealCalendarResponse,
-    async (data) => {
-      if(data){
-        mealCalendarList.value = data.data
-      }
-    }
-)
-
-
 watch(
     () => campusStore.campusListResponse,
     async (data) => {
@@ -68,6 +56,15 @@ watch(
     }
 )
 
+
+watch(
+    () => mealStore.mealCalendarResponse,
+    async (data) => {
+      if(data){
+        mealCalendarList.value = data.data
+      }
+    }
+)
 const doActivateMealCourse = () => {
   mealActivateMealCourseDialog.value = true
 }
