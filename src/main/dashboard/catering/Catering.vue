@@ -184,7 +184,7 @@ const changeMenu = (value) => {
                   </div>
 
                   <div v-if="menuSelected === 'manage-feeding-users'">
-                <FeedingGroupUsers></FeedingGroupUsers>
+                    <FeedingGroupUsers></FeedingGroupUsers>
                   </div>
 
                   <div v-if="menuSelected === 'feeding'">

@@ -129,7 +129,7 @@ watch(
 const addFeedingGroupUsers = () => {
 
   if (selectedStudents.value.length === 0) {
-    notificationStore.errorToast("Error", "Please select at least one user to offer admission.");
+    notificationStore.errorToast("Error", "Please select at least one user on to be added to a feeding group..");
     return
   }
     buttonLoader.value = true
