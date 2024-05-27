@@ -70,8 +70,7 @@ watch(
         buttonLoader.value = false
         notificationStore.errorToast("Error",data.message)
       }
-    },
-    {deep:true}
+    }
 )
 
 </script>
