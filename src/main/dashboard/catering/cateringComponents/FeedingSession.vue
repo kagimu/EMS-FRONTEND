@@ -49,9 +49,39 @@
     
     
   
+        <!-- filters -->
+        <div class="row">
+              <div class="col-4">
+                <div class="mb-2">
+                  <label class="textColor"><small>School</small>  </label>
+
+          <select
+                  v-model="form.school_number"
+                  class="form-select form-select-sm"
+                  style="box-shadow: none;"
+                  @change="filterBySchool(form.school_number)"           
+          >
+              <option disabled value="">--Select School--</option>
+              <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+              </option>
+          </select>
+      </div>
+              </div>
+
+   <div class="col-4">
+
+   </div>
+      <div class="col-4">
+          <div class="mt-4">
+              <input class="form-control mt-1 mb-0" placeholder="Search..." type="text">
+          </div>
+     </div>
+
+            </div>
+
     <table
     id="datatable"
-    class="table table-striped"
+    class="table table-hover caption-top mt-4 table-sm table-striped"
     style="font-size: 14px !important;"
     >
     <thead >
@@ -86,7 +116,7 @@
   import useNotificationStore from "@/composables/useNotification.js";
   import NewFeedingSession from "@/main/dashboard/catering/cateringComponents/NewFeedingSession.vue";
   import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
-
+  import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
   import AppModal from "@/components/AppModal.vue";
 
 
@@ -97,6 +127,12 @@
   thisDialog.value=false
   }
 
+  const form = reactive({
+    school_number:"",
+})
+
+  const schoolList = ref([])
+  const schoolStore = useSchoolStore()
   const cateringStore = useCateringStore()
   const notificationStore = useNotificationStore()
   const thisDialog = ref(false)
@@ -110,9 +146,23 @@
   }
 
   onMounted(() => {
-      cateringStore.fetchFeedingGroupSessions()
+      // cateringStore.fetchFeedingGroupSessions()
+      schoolStore.fetchSchools()
   }
 )
+
+const filterBySchool = (school_number) => {
+    doFetchFeedingSessions()
+}
+
+
+const doFetchFeedingSessions = () => {
+    let data = {
+     school_number:form.school_number
+    }
+    cateringStore.fetchFeedingGroupSessions(data)
+
+}
 
 watch(
   () => cateringStore.feedingGroupSessionsInfoResponse,
@@ -121,15 +171,18 @@ watch(
   },
   {deep: true}
 )
-// watch(
-//   () => cateringStore.errorMessage,
-//   async (data) => {
-//         if (data) {
-//         notificationStore.errorToast("Error", data.message)
-//         }
-//   },
-//   {deep: true}
-// )
+
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+        if (data) {
+            schoolList.value = data.data
+        }
+    },
+    {deep: true}
+)
+
   </script>
   
   

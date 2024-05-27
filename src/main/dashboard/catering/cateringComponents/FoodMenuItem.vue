@@ -36,15 +36,27 @@ const form = reactive({
     campus_number: "",
 })
 
+onMounted(
+    () => {
+        // doFetchMenuItem()
+    }
 
-const fetchCampuses = (school_number) => {
-    campusStore.fetchCampuses(school_number)
+)
+
+
+const filterBySchool = (school_number) => {
+    doFetchMenuItem()
+    campusStore.filterBySchool(school_number)
 }
 
-const filter = (campusN) =>{
-    cateringStore.filterMenuItem(campusN)
-}
 
+const doFetchMenuItem = () => {
+    let data = {
+     school_number:form.school_number
+    }
+    cateringStore.fetchMenuItem(data)
+
+}
 
 
 const menuItemData=ref([])
@@ -63,12 +75,7 @@ const closeDialog = () => {
     updateMenuDialog.value = false
 }
 
-onMounted(
-    () => {
-        cateringStore.fetchMenuItem()
-    }
 
-)
 const sta = ref(null)
 
 const showItems = (primaryItemNumber) =>{
@@ -230,7 +237,7 @@ if(!confirm("Are you sure, you want to delete: " + name)){
                   v-model="form.school_number"
                   class="form-select form-select-sm"
                   style="box-shadow: none;"
-                  @change="fetchCampuses(form.school_number)"           
+                  @change="filterBySchool(form.school_number)"           
           >
               <option disabled value="">--Select School--</option>
               <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
@@ -239,7 +246,7 @@ if(!confirm("Are you sure, you want to delete: " + name)){
       </div>
               </div>
 
-              <div class="col-4">
+              <!-- <div class="col-4">
       <div class="mb-2">
           <label class="textColor"><small>Campus</small>  </label>
           <select
@@ -252,9 +259,11 @@ if(!confirm("Are you sure, you want to delete: " + name)){
               <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
               </option>
           </select>
-      </div></div>
+      </div></div> -->
 
-   
+   <div class="col-4">
+
+   </div>
       <div class="col-4">
           <div class="mt-4">
               <input class="form-control mt-1 mb-0" placeholder="Search..." type="text">

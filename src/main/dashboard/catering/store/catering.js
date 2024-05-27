@@ -33,6 +33,7 @@ export const useCateringStore = defineStore("catering", () => {
     let feedGroupPerDayInfoResponse = ref(null) 
     let newMealsResponse = ref(null)
     let mealsResponse = ref(null)
+    let editFeedingGroupInfoResponse = ref(null)
  
 
     const errorMessage = ref(null)
@@ -95,8 +96,8 @@ export const useCateringStore = defineStore("catering", () => {
                 }
             })
     }
-    async function fetchMenuItem() {
-        return await api.get("main/catering/menu-items")
+    async function fetchMenuItem(data) {
+        return await api.get("main/catering/menu-items?school_number="+data.school_number)
             .then((response) => {
                 menuItemResponse.value = response.data
             })
@@ -118,6 +119,19 @@ async function newFeedingGroupInfo(data) {
             }
         })
 }
+
+async function editFeedingGroupInfo(data) {
+    return await api.post("main/catering/feeding-groups/update", data)
+        .then((response) => {
+            editFeedingGroupInfoResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response && response.response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
 async function fetchFeedingGroup(school) {
     return await api.get("main/catering/feeding-groups?school_number="+school)
         .then((response) => {
@@ -141,8 +155,8 @@ async function newFeedingGroupSessionsInfo(data) {
             }
         })
 }
-async function fetchFeedingGroupSessions() {
-    return await api.get("main/catering/feeding-sessions")
+async function fetchFeedingGroupSessions(data) {
+    return await api.get("main/catering/feeding-sessions?school_number="+data.school_number)
         .then((response) => {
             feedingGroupSessionsInfoResponse.value = response.data
         })
@@ -446,7 +460,9 @@ async function fetchMeals(campusNumber,meal_courseNumber) {
         newMealsResponse,
         newMeal,
         mealsResponse,
-        fetchMeals
+        fetchMeals,
+        editFeedingGroupInfoResponse,
+        editFeedingGroupInfo
 
     }
 } )
