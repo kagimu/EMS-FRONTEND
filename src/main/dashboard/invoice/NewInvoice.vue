@@ -56,12 +56,12 @@
                               <option :value="option.item_number" v-for="option in availableOptions(index)">{{ option.name }} ({{ option.cost }})</option>
                             </select>
                           </td>
-                          <td><input maxlength="10"  required  type="text"
+                          <td><input class="form-control" maxlength="10"  required  type="text" style="width: 80px;text-align: center;"
                              @keypress="commons.numbersOnlyValidator($event)" 
                               v-model="Service.quantity" 
                               @input="updateAmount(index)" placeholder="1.0" >
                             </td>
-                          <td><input type="text" v-model="Service.cost" @input="updateAmount(index)" placeholder="Unit Price" ></td>
+                          <td><input disabled type="text" v-model="Service.cost" @input="updateAmount(index)" placeholder="Unit Price" class="form-control" ></td>
                           <td>{{ Service.amount }}</td>
                           <td><button type="button" @click="removeService(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
                         </tr>
