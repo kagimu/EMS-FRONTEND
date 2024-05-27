@@ -49,13 +49,13 @@ const addFeedingGroup = () => {
     code:parseInt(form.code),
     name:form.name,
     status:"ACTIVE",
-    campus_number:form.campus_number,
+    // campus_number:form.campus_number,
     school_number:school_number.value
   })
   buttonLoader.true
 
   if(props.groupData.number){
-    if(!confirm("Sure want Edit " + props.groupData.number )){
+    if(!confirm("Sure want Edit " + props.groupData.name )){
       return
     }
     // alert("Edit Boss !!")
@@ -144,11 +144,11 @@ watch(
     <div>
         <!-- {{ groupData }} -->
 <form @submit.prevent="addFeedingGroup">
-    <div class="mb-2">
+    <div class="mb-2" v-if="groupData == ''">
     <label class="textColor"><small>School</small> </label>
     <select
             style="box-shadow: none;"
-            class="form-select form-select-sm shadow-none" required
+            class="form-select form-select-sm shadow-none"
             v-model="school_number"
             @change="fetchCampuses(school_number)"
     >
@@ -157,18 +157,18 @@ watch(
         </option>
     </select>
 </div>
-<div class="mb-2">
+<!-- <div class="mb-2" v-if="groupData == ''">
     <label class="textColor"><small>Campus</small>  </label>
     <select
             style="box-shadow: none;"
             class="form-select form-select-sm shadow-none"
-            v-model="form.campus_number" required
+            v-model="form.campus_number"
     >
         <option disabled value="">Select campus</option>
         <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
         </option>
     </select>
-</div>
+</div> -->
 <div class="mb-2">
     <label class="textColor"><small>Code</small></label>
     <input v-model="form.code" @keypress="commons.numbersOnlyValidator($event)"

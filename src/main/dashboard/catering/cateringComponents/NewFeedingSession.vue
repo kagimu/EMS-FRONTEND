@@ -14,7 +14,7 @@
         </option>
     </select>
 </div>
-<div class="mb-2">
+<!-- <div class="mb-2">
     <label class="textColor"><small>Campus</small>  </label>
     <select
             style="box-shadow: none;"
@@ -25,7 +25,7 @@
         <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
         </option>
     </select>
-</div>
+</div> -->
 <div class="mb-2">
     <label class="textColor"><small>Code</small></label>
     <input v-model="form.code"   @keypress="commons.numbersOnlyValidator($event)"
@@ -74,7 +74,7 @@ const form = reactive({
     code:null,
     name:null,
     status:"ACTIVE",
-    campus_number:null,
+    // campus_number:null,
     school_number:null
 })
 const addFeedingSessionGroup = () => {
@@ -83,7 +83,7 @@ const addFeedingSessionGroup = () => {
     code:parseInt(form.code),
     name:form.name,
     status:"ACTIVE",
-    campus_number:form.campus_number,
+    // campus_number:form.campus_number,
     school_number:form.school_number
 })
     buttonLoader.true

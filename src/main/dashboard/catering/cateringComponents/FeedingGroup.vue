@@ -52,10 +52,6 @@ const closeDialog = () => {
 const fetchGroup = (school) => {
   cateringStore.fetchFeedingGroup(school)
 }
-//     onMounted(() => {
-//         cateringStore.fetchFeedingGroup()
-//     }
-// )
 
 watch(
     () => cateringStore.feedingGroupInfoResponse,
@@ -128,6 +124,17 @@ const deleteThisData = (id,name) => {
 
 }
 
+
+watch (
+    () => cateringStore.editFeedingGroupInfoResponse,
+    async (data) => {
+      if(data){
+        showingModal.value = false
+        cateringStore.fetchFeedingGroup(form.school_number)
+      }
+    },
+    {deep:true}
+)
 </script>
 <template>
     <div>
@@ -211,7 +218,7 @@ const deleteThisData = (id,name) => {
         <td>{{ index+1 }}</td>
       <td>{{ list.name }}</td>
       <td>{{ list.status }}</td>
-      <td>{{ list.campus_name }}</td>
+      <td>{{ list.school_name }}</td>
       <td>
         <button @click="editThisData(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
