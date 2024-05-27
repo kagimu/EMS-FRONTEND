@@ -10,6 +10,7 @@ import { useAbility } from '@casl/vue';
 
 const { can } = useAbility()
 import useCommonsStore from "@/composables/useCommons.js";
+import FeedingGroup from "./FeedingGroup.vue";
 const commons = useCommonsStore()
 
 
@@ -57,7 +58,14 @@ const addFeedingGroup = () => {
     if(!confirm("Sure want Edit " + props.groupData.number )){
       return
     }
-    alert("Edit Boss !!")
+    // alert("Edit Boss !!")
+    let formD = {
+      feeding_group_number:props.groupData.number,
+      name:form.name,
+      code:parseInt(form.code),
+      status:"ACTIVE"
+    }
+    cateringStore.editFeedingGroupInfo(formD)
   }else{
     cateringStore.newFeedingGroupInfo(myData)
   }
@@ -74,6 +82,18 @@ watch (
             form.name=null,
             form.status="ACTIVE",
             form.campus_number=null
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => cateringStore.editFeedingGroupInfoResponse,
+    async (data) => {
+      if(data){
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+      
       }
     },
     {deep:true}

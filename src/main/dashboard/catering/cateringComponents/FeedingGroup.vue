@@ -199,7 +199,7 @@ const deleteThisData = (id,name) => {
           <th>#</th>
         <th>Name</th>
         <th>Status</th>
-        <th>Campus</th>
+        <th>School</th>
         <th>Action</th>
         </tr>
     <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">

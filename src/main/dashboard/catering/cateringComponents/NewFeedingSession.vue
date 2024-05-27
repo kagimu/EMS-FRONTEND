@@ -6,8 +6,8 @@
     <select
             style="box-shadow: none;"
             class="form-select form-select-sm" required
-            v-model="school_number"
-            @change="fetchCampuses(school_number)"
+            v-model="form.school_number"
+            @change="fetchCampuses(form.school_number)"
     >
         <option disabled value="">Select School</option>
         <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
@@ -63,7 +63,7 @@ const { can } = useAbility()
 const  notificationStore  = useNotificationStore()
 const buttonLoader = ref(false)
 const cateringStore = useCateringStore()
-const school_number = ref(null)
+// const school_number = ref(null)
 const campusList = ref([])
 const schoolList = ref([])
 const schoolStore = useSchoolStore()
@@ -74,7 +74,8 @@ const form = reactive({
     code:null,
     name:null,
     status:"ACTIVE",
-    campus_number:null
+    campus_number:null,
+    school_number:null
 })
 const addFeedingSessionGroup = () => {
     // parseInt
@@ -82,7 +83,8 @@ const addFeedingSessionGroup = () => {
     code:parseInt(form.code),
     name:form.name,
     status:"ACTIVE",
-    campus_number:form.campus_number
+    campus_number:form.campus_number,
+    school_number:form.school_number
 })
     buttonLoader.true
     cateringStore.newFeedingGroupSessionsInfo(myData)
