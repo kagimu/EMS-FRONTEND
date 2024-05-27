@@ -4,10 +4,13 @@ import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import VueDatePicker from "@vuepic/vue-datepicker";
+import useNotificationStore from "@/composables/useNotification.js";
 
+const notificationStore  = useNotificationStore()
 const cateringStore = useCateringStore()
 const campusStore = useCampusStore()
 const schoolStore = useSchoolStore()
+
 
 const schoolsList = ref([])
 const campusList = ref([])
@@ -53,7 +56,7 @@ const formatDate = (dateString) => {
     const year = date.getFullYear();
 
     // Return the formatted date
-    return `${day}/${month}/${year}`;
+    return `${year}-${month}-${day}`;
   }
 }
 
@@ -94,6 +97,17 @@ watch(
       }
     }
 )
+
+watch(
+    () => cateringStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error",data.message)
+      }
+    }
+)
+
+
 
 
 </script>
