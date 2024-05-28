@@ -62,7 +62,7 @@ watch(
           if (data) {
             loader.value = false
               notificationStore.successToast("Success", data.message)
-              studentApplicationStore.fetchAssessmentMetricsOnInterview(props.interviewNumber)
+              await studentApplicationStore.fetchAssessmentMetricsOnInterview(props.interviewNumber)
               assessment_metric_number.value = null
           }
       },

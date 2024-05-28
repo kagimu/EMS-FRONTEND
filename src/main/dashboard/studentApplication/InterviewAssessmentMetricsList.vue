@@ -32,7 +32,7 @@ watch(
     async (data) => {
       if(data){
         // alert(props.interviewNumber)
-        studentApplicationStore.fetchAssessmentMetricsOnInterview(props.interviewNumber)
+        await studentApplicationStore.fetchAssessmentMetricsOnInterview(props.interviewNumber)
       }
     },
     {deep:true}

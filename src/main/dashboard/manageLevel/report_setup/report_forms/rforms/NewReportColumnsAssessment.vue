@@ -32,9 +32,11 @@ const campus_level_number = ref("")
 const academic_year_number = ref("")
 const study_period_number = ref("")
 const campus_class_number = ref("")
-const campusClassList = ref(null)
-const academicYearList = ref(null)
-const studyPeriodList = ref(null)
+const report_setting_number = ref("")
+const campusClassList = ref([])
+const reportSettingsList = ref([])
+const academicYearList = ref([])
+const studyPeriodList = ref([])
 const assessment_area_number = ref("")
 
 const form = reactive({
@@ -65,6 +67,8 @@ const fetchStudyPeriod = (academic_num) =>{
 const fetchAssessmentMetrics = () =>{
   if(study_period_number.value && assessment_area_number) {
     let data = {
+      campus_class_number:campus_class_number.value,
+      academic_year_number:academic_year_number.value,
       study_period_number:study_period_number.value,
       assessment_area_number:form.assessment_area_number
     }
@@ -100,8 +104,27 @@ const addReportColumnAssessment = () => {
 
 const fetchAssessmentArea = (campus_class_number) =>{
   if(campus_class_number) {
-    assessmentStore.fetchAssessmentArea(campus_class_number)
+
+    doFetchReportSettings(campus_class_number)
+
+    let curriculumClassNumber = campusClassList.value.find(list => list.number === campus_class_number).curriculum_class_number
+    assessmentStore.fetchAssessmentArea(curriculumClassNumber)
+
   }
+}
+
+
+const doFetchReportColumns = async () => {
+  await reportSetupStore.fetchReportColumn(report_setting_number.value)
+}
+
+const doFetchReportSettings = async (campus_class_number) => {
+  let data = {
+    academic_year_number:"",
+    study_period_number:"",
+    campus_class_number:campus_class_number
+  }
+  await reportSetupStore.fetchReportSettings(data)
 }
 
 
@@ -188,6 +211,26 @@ watch(
     }
 )
 
+
+
+watch(
+    () => reportSetupStore.reportSettingsListResponse,
+    async (data) => {
+      if(data){
+        reportSettingsList.value = data.data
+      }
+    }
+)
+
+watch(
+    () => reportSetupStore.reportColumnListResponse,
+    async (data) => {
+      if(data){
+        reportColumnList.value = data.data
+      }
+    }
+)
+
 </script>
 
 <template>
@@ -212,17 +255,7 @@ watch(
             class="form-control form-select-sm">
       </div>
 
-      <div class="mb-2">
-        <label class="textColor"><small>Report Column</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="form.report_column_number"
-        >
-          <option disabled value="">--Select Report Column--</option>
-          <option v-for="(list, index) in reportColumnList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-        </select>
-      </div>
+
 
 
       <div class="mb-2">
@@ -238,6 +271,45 @@ watch(
         </select>
       </div>
 
+      <div class="mb-2">
+        <label class="textColor"><small>Class</small>
+        </label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm" required
+            v-model="campus_class_number"
+            @change="fetchAssessmentArea(campus_class_number)"
+        >
+          <option disabled value="">--Select Class--</option>
+          <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+<!--          <option v-for="(list, index) in campusClassList" :key="index" :value="list.curriculum_class_number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>-->
+        </select>
+      </div>
+
+      <div class="mb-2">
+        <label class="textColor"><small>Report Settings</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="report_setting_number"
+            @change="doFetchReportColumns()"
+        >
+          <option disabled value="">--Filter by report Settings--</option>
+          <option v-for="(list, index) in reportSettingsList" :key="index" :value="list.number">{{list.name}}</option>
+        </select>
+      </div>
+
+      <div class="mb-2">
+        <label class="textColor"><small>Report Column</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.report_column_number"
+        >
+          <option disabled value="">--Select Report Column--</option>
+          <option v-for="(list, index) in reportColumnList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
 
       <div class="mb-2">
         <label class="textColor"><small>Academic Year</small></label>
@@ -270,20 +342,7 @@ watch(
       </div>
 
 
-      <div class="mb-2">
-        <label class="textColor"><small>Class</small>
-        </label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm" required
-            v-model="campus_class_number"
-            @change="fetchAssessmentArea(campus_class_number)"
-        >
-          <option disabled value="">Select</option>
-          <!--          <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>-->
-          <option v-for="(list, index) in campusClassList" :key="index" :value="list.curriculum_class_number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
-        </select>
-      </div>
+
 
 
       <div class="mb-2">
