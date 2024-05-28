@@ -312,7 +312,7 @@ watch (
               <button 
               v-if="can('remove_assigned_role','general')"
                @click="openRemoveRoleConfirmationModal(user.type,user.number)" data-bs-toggle="modal" data-bs-target="#removeRoleConfirmation" type="button" aria-controls="rolesDialog">
-            &nbsp;<i class="bi bi-x-circle-fill" style="color:rgb(228, 23, 23)"></i>
+            &nbsp;<i  class="bi bi-x-circle-fill" style="color:rgb(228, 23, 23)"></i>
           </button>
             </td>
             <td>{{ user.type }}</td>
