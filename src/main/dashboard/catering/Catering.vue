@@ -34,15 +34,15 @@ const menu = ref([
     text:"Menu Items",
     value:"menu-items"
   },
-
-  {
-    text:"Feeding Group",
-    value:"feeding-group"
-  },
   {
     text:"Feeding Session",
     value:"feeding-session"
   },
+  {
+    text:"Feeding Group",
+    value:"feeding-group"
+  },
+
 
 ])
 

@@ -191,16 +191,15 @@ watch(
         <thead>
         <tr>
           <th scope="col" class="w-[5%]">#</th>
-          <th scope="col" class="w-[25%]">Date</th>
-          <th scope="col" class="w-[25%]">Day of the Week</th>
-          <th scope="col" class="w-[45%]">Meals</th>
+          <th scope="col" class="w-[15%]">Date</th>
+          <th scope="col" class="w-[70%]">Meals</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(projection, index) in mealProjections?.calender_items" :key="index">
           <td> {{(index + 1)}}</td>
-          <td> {{projection.date}}</td>
-          <td> {{projection.day}}</td>
+          <td> {{projection.date}}  [ {{projection.day}} ]</td>
+
           <td>
 
             <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">

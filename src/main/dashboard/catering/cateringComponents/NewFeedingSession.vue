@@ -29,11 +29,11 @@
 <div class="mb-2">
     <label class="textColor"><small>Code</small></label>
     <input v-model="form.code"   @keypress="commons.numbersOnlyValidator($event)"
-            maxlength="10" type="text" required class="form-control">
+            maxlength="10" type="text" required class="form-control shadow-none">
 </div>
 <div class="mb-2">
     <label class="textColor"><small>Name</small></label>
-    <input v-model="form.name"   type="text" required class="form-control">
+    <input v-model="form.name"   type="text" required class="form-control shadow-none" placeholder="eg. Break fast 1">
     
 </div>
 

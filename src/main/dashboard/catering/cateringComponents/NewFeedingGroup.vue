@@ -176,7 +176,7 @@ watch(
 </div>
 <div class="mb-2">
     <label class="textColor"><small>Name</small></label>
-    <input v-model="form.name"   type="text" required class="form-control shadow-none">
+    <input v-model="form.name"   type="text" required class="form-control shadow-none" placeholder="eg. Full board">
     
 </div>
 
