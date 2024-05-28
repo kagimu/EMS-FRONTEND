@@ -10,13 +10,15 @@ import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/stor
 import {useRouter} from "vue-router";
 
 const commons = useCommonsStore()
+const notificationStore  = useNotificationStore()
+const routerData = useRouter()
+
 const studyPeriodStore = useStudyPeriodStore()
 const reportSetupStore = useReportSetupStore()
-const notificationStore  = useNotificationStore()
 const levelStore = useLevelStore()
 const academicYearStore = useAcademicYearStore()
-const routerData = useRouter()
-const campusNumber = routerData.currentRoute.value.query.id
+const classStore = useClassesStore()
+
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 
 const errorMessage = ref("")
@@ -27,7 +29,7 @@ const academicYearList = ref(null)
 const studyPeriodList = ref(null)
 const campusClassList = ref(null)
 const campus_level_number = ref("")
-const classStore = useClassesStore()
+
 
 const form = reactive({
   code:null,
@@ -39,8 +41,8 @@ const form = reactive({
 
 onMounted(
     async () => {
-      // await levelStore.fetchCampusCurriculum(campusNumber)
-      await fetchCampusLevel()
+
+       fetchCampusLevel()
     }
 )
 
@@ -111,8 +113,7 @@ watch(
       if(data){
         academicYearList.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
 
