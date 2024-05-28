@@ -14,7 +14,6 @@ const schoolStore = useSchoolStore()
 
 const schoolsList = ref([])
 const campusList = ref([])
-const projectionList = ref([])
 const school_number = ref("")
 const campus_number = ref("")
 const start_date = ref("")
@@ -120,7 +119,6 @@ watch(
     <div class="col-12">
 
 
-
       <div class="flex justify-content-between mt-3">
         <div class="ml-4">Meals Cost Projections</div>
       </div>
@@ -192,29 +190,39 @@ watch(
       <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
         <thead>
         <tr>
-          <th scope="col" style="width: 30%;">Code</th>
-          <th scope="col">Name</th>
-          <th scope="col">Action</th>
+          <th scope="col" class="w-[5%]">#</th>
+          <th scope="col" class="w-[25%]">Date</th>
+          <th scope="col" class="w-[25%]">Day of the Week</th>
+          <th scope="col" class="w-[45%]">Meals</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(levelInfo, index) in projectionList" :key="index">
-          <td> {{levelInfo.code}}</td>
-          <td> {{levelInfo.name}}</td>
+        <tr v-for="(projection, index) in mealProjections?.calender_items" :key="index">
+          <td> {{(index + 1)}}</td>
+          <td> {{projection.date}}</td>
+          <td> {{projection.day}}</td>
           <td>
-            <div>
-              <i
-                  v-if="can('edit_level','general')"
-                  style="font-size: 13px;"
-                  data-bs-toggle="modal" data-bs-target="#levelModal"
-                  class="bi-pencil mr-2 cursor-pointer" @click="editLevel(levelInfo)"></i>
-              <i
-                  v-if="can('delete_level','general')"
-                  style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLevel(levelInfo, index)"></i>
-              <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-            </div>
+
+            <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
+              <thead>
+              <tr>
+                <th scope="col" class="w-[5%]">#</th>
+                <th scope="col" class="w-[20%]">Meal</th>
+                <th scope="col" class="w-[30%]">Number of People</th>
+                <th scope="col" class="w-[45%]">Meals</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(meal, idx) in projection?.meals" :key="idx">
+                <td> {{(idx + 1)}}</td>
+                <td>{{meal.meal_name}}</td>
+                <td>{{meal.number_of_people}}</td>
+                <td>{{meal?.items}}</td>
+
+              </tr>
+              </tbody>
+            </table>
+
           </td>
         </tr>
         </tbody>
