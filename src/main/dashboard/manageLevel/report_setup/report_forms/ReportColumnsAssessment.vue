@@ -35,6 +35,9 @@ const studyPeriodList = ref(null)
 const assessmentMetricList = ref(null)
 const interviewAssessmentListData = ref(null)
 
+const reportColumnList = ref([])
+const reportSettingsList = ref([])
+
 
 const campus_level_number  = ref("")
 const academic_year_number  = ref("")
@@ -42,10 +45,13 @@ const study_period_number  = ref("")
 const campus_class_number  = ref("")
 const assessment_area_number  = ref("")
 const assessment_metric_number  = ref("")
+const report_setting_number  = ref("")
+const report_column_number  = ref("")
+
+
 
 onMounted(
     async () => {
-      doFetchReportColumnAssessment()
       fetchCampusLevel()
     }
 )
@@ -57,7 +63,10 @@ const doFetchReportColumnAssessment = () => {
     study_period_number:study_period_number.value,
     campus_class_number:campus_class_number.value,
     assessment_area_number:assessment_area_number.value,
-    assessment_metric_number:assessment_metric_number.value
+    assessment_metric_number:assessment_metric_number.value,
+    report_setting_number:report_setting_number.value,
+    report_column_number:report_column_number.value,
+
   }
   reportSetupStore.fetchReportColumnAssessment(data)
 }
@@ -76,29 +85,80 @@ const addReportColumn = () => {
 const fetchAcademicYear = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
   academicYearStore.fetchCampusClassByLevel(campus_level_number)
+
+  // fetch report column assessment
+  doFetchReportColumnAssessment()
 }
 
 
 const fetchStudyPeriod = (academic_num) =>{
   studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
+
+  // fetch report column assessment
+  doFetchReportColumnAssessment()
 }
 
 const fetchAssessmentMetrics = () =>{
-  if(study_period_number.value && assessment_area_number.value) {
+
     let data = {
       study_period_number:study_period_number.value,
       assessment_area_number:assessment_area_number.value
     }
     assessmentStore.fetchAssessmentMetrics(data)
-  }
+
+
+    // fetch report column assessment
+    doFetchReportColumnAssessment()
+
 }
 
 
 const fetchAssessmentArea = (campus_class_number) =>{
   if(campus_class_number) {
-    assessmentStore.fetchAssessmentArea(campus_class_number)
+    doFetchReportSettings(campus_class_number)
+
+    let curriculumClassNumber = campusClassList.value.find(list => list.number === campus_class_number).curriculum_class_number
+    assessmentStore.fetchAssessmentArea(curriculumClassNumber)
+
+
+    // fetch report column assessment
+    doFetchReportColumnAssessment()
   }
 }
+
+const doFetchReportColumns = async () => {
+  await reportSetupStore.fetchReportColumn(report_setting_number.value)
+
+  // fetch report column assessment
+  doFetchReportColumnAssessment()
+}
+
+watch(
+    () => reportSetupStore.reportColumnListResponse,
+    async (data) => {
+      if(data){
+        reportColumnList.value = data.data
+      }
+    }
+)
+
+const doFetchReportSettings = async (campus_class_number) => {
+  let data = {
+    academic_year_number:"",
+    study_period_number:"",
+    campus_class_number:campus_class_number
+  }
+  await reportSetupStore.fetchReportSettings(data)
+}
+
+watch(
+    () => reportSetupStore.reportSettingsListResponse,
+    async (data) => {
+      if(data){
+        reportSettingsList.value = data.data
+      }
+    }
+)
 
 watch(
     () => assessmentStore.assessmentAreaResponse,
@@ -219,11 +279,52 @@ watch (
           <div class="mb-2">
             <select
                 style="box-shadow: none;"
+                class="form-select form-select-sm" required
+                v-model="campus_class_number"
+                @change="fetchAssessmentArea(campus_class_number)"
+            >
+              <option disabled value="">Filter by Class</option>
+              <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+              <!--              <option v-for="(list, index) in campusClassList" :key="index" :value="list.curriculum_class_number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>-->
+            </select>
+          </div>
+
+
+
+          <div class="mb-2">
+            <select
+                style="box-shadow: none;"
+                class="form-select form-select-sm"
+                v-model="report_setting_number"
+                @change="doFetchReportColumns()"
+            >
+              <option disabled value="">--Filter by report Settings--</option>
+              <option v-for="(list, index) in reportSettingsList" :key="index" :value="list.number">{{list.name}}</option>
+            </select>
+          </div>
+
+          <div class="mb-2">
+            <select
+                style="box-shadow: none;"
+                class="form-select form-select-sm"
+                v-model="report_column_number"
+                @change="doFetchReportColumnAssessment()"
+            >
+              <option disabled value="">--Filter by Report Column--</option>
+              <option v-for="(list, index) in reportColumnList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+            </select>
+          </div>
+
+
+
+          <div class="mb-2">
+            <select
+                style="box-shadow: none;"
                 class="form-select form-select-sm"
                 v-model="academic_year_number"
                 @change="fetchStudyPeriod(academic_year_number)"
             >
-              <option disabled value="">--Filter by Class--</option>
+              <option disabled value="">--Filter by Academic Year--</option>
               <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
                 {{list.code+". "+list.academic_year_name}}
               </option>
@@ -243,22 +344,6 @@ watch (
 
             </select>
           </div>
-
-
-          <div class="mb-2">
-            <select
-                style="box-shadow: none;"
-                class="form-select form-select-sm" required
-                v-model="campus_class_number"
-                @change="fetchAssessmentArea(campus_class_number)"
-            >
-              <option disabled value="">Filter by Class</option>
-              <!--          <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>-->
-              <option v-for="(list, index) in campusClassList" :key="index" :value="list.curriculum_class_number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
-            </select>
-          </div>
-
-
 
 
           <div class="mb-2">
