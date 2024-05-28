@@ -8,6 +8,9 @@ export const useRolesStore = defineStore("roles", () => {
     const  roleResponse = ref(null)
     const permisionGroupsResponse = ref(null)
     const  roleByIdResponse = ref(null)
+    const deleteRoleResponse = ref(null)
+    const updateRoleResponse = ref(null)
+
 
     async function createNewRole(data) {
         return await api.post("main/settings/roles",data)
@@ -54,6 +57,31 @@ export const useRolesStore = defineStore("roles", () => {
             })
     }
 
+
+    async function updateRole(data) {
+        return await api.post("main/seetings/roles/update/",data)
+            .then((response) => {
+             updateRoleResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function deleteRole(roleN) {
+        return await api.post("main/settings/roles/delete"+roleN)
+            .then((response) => {
+             deleteRoleResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     return {
         errorMessage,
         newRoleResponse,
@@ -63,6 +91,10 @@ export const useRolesStore = defineStore("roles", () => {
         fetchPermissionGroups,
         permisionGroupsResponse,
         roleByIdResponse,
-        fetchRolesById
+        fetchRolesById,
+        deleteRoleResponse,
+        deleteRole,
+        updateRoleResponse,
+        updateRole
     }
 })

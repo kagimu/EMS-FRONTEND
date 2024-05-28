@@ -30,6 +30,9 @@ const classList = ref([])
 const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
 const menuItemDataParts = ref([])
+const cateringStore = useCateringStore()
+const page = ref(1)
+const per_page = ref(15)
 
 const form = reactive({
     school_number:"",
@@ -43,21 +46,70 @@ onMounted(() => {
 )
 
 
-
-
 const filterBySchool = (school_number) => {
-    doFetchMenuItem()
+    // doFetchMenuItem()
+    campusStore.fetchCampuses(school_number)
+
 }
 
 
 const doFetchMenuItem = () => {
     let data = {
-     school_number:form.school_number
+    page: page.value,
+    per_page: per_page.value, 
+     school_number:form.school_number,
+     campus_number:form.campus_number
     }
     cateringStore.fetchMenuItem(data)
 
 }
 
+const fetchFoodMenuItem = (data) => {
+    if(data) {
+      let current_page = data.page
+      page.value = current_page
+
+      let per_page_item = data.per_page;
+      per_page.value = per_page_item;
+
+      let objArray = data.content
+
+
+      if(objArray && objArray.length > 0){
+        objArray.forEach((list, i) => {
+
+          list.key =  (current_page - 1) * per_page_item + i + 1
+
+          const index = menuItemData.value.findIndex(object => object.number === list.number);
+
+          if (index === -1) {
+            menuItemData.value.push(list);
+          }
+
+        })
+      }
+
+
+    }
+  }
+
+  watch(
+    () => cateringStore.menuItemResponse,
+    async (data) => {
+        fetchFoodMenuItem(data)
+            isLoading.value = false;
+        // if(data && data.data) {
+        //      menuItemData.value = data.data
+        //     fetchFoodMenuItem(data)
+        //     isLoading.value = false;
+        // }
+    }
+)
+
+
+const filterByCampus = () =>{
+    doFetchMenuItem()
+}
 
 const menuItemData=ref([])
 
@@ -68,7 +120,6 @@ const showUpdateDialog = (a) => {
     thisDialog.value=false
 }
 
-const cateringStore = useCateringStore()
 
 const closeDialog = () => {
     thisDialog.value = false
@@ -87,15 +138,7 @@ const hideItems = () =>{
     sta.value=""
 }
 
-watch(
-    () => cateringStore.menuItemResponse,
-    async (data) => {
-        if(data && data.data) {
-            menuItemData.value = data.data
-            isLoading.value = false;
-        }
-    }
-)
+
 
 
 watch(
@@ -107,13 +150,13 @@ watch(
     {deep: true}
 )
 
-watch(
-    () => cateringStore.filterMenuResponse,
-    async (data) => {
-        menuItemData.value = data.data
-    },
-    {deep: true}
-)
+// watch(
+//     () => cateringStore.filterMenuResponse,
+//     async (data) => {
+//         menuItemData.value = data.data
+//     },
+//     {deep: true}
+// )
 
 watch(
     () => cateringStore.errorMessage,
@@ -227,7 +270,7 @@ if(!confirm("Are you sure, you want to delete: " + name)){
     <div class="row">
               <div class="col-4">
                 <div class="mb-2">
-                  <label class="textColor"><small>School</small>  </label>
+                
 
           <select
                   v-model="form.school_number"
@@ -242,26 +285,24 @@ if(!confirm("Are you sure, you want to delete: " + name)){
       </div>
               </div>
 
-              <!-- <div class="col-4">
+              <div class="col-4">
       <div class="mb-2">
-          <label class="textColor"><small>Campus</small>  </label>
+        
           <select
                   v-model="form.campus_number"
                   class="form-select form-select-sm"
                   required style="box-shadow: none;"
-                  @change="filter(form.campus_number)"
+                  @change="filterByCampus(form.campus_number)"
           >
               <option disabled value="">--Select Campus--</option>
               <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
               </option>
           </select>
-      </div></div> -->
+      </div></div>
 
-   <div class="col-4">
 
-   </div>
       <div class="col-4">
-          <div class="mt-4">
+          <div class="">
               <input class="form-control mt-1 mb-0" placeholder="Search..." type="text">
           </div>
      </div>
