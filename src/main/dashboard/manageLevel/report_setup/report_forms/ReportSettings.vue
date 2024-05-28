@@ -5,18 +5,114 @@ import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/rep
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import AppModal from "@/components/AppModal.vue";
+import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
+import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import {useRouter} from "vue-router";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 
-const reportSetupStore = useReportSetupStore()
+const routerData = useRouter()
 const notificationStore  = useNotificationStore()
+const reportSetupStore = useReportSetupStore()
+const studyPeriodStore = useStudyPeriodStore()
+const classStore = useClassesStore()
+const academicYearStore = useAcademicYearStore()
+
+
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
+
+
+
+
 const reportSettingsList = ref(null)
 const showReportSettingsModal = ref(false)
+
+const campusLevelList = ref([])
+const academicYearList = ref([])
+const studyPeriodList = ref([])
+const campusClassList = ref([])
+
+
+const campus_level_number = ref("")
+const academic_year_number = ref("")
+const study_period_number = ref("")
+const campus_class_number = ref("")
 
 
 onMounted(
     async () => {
-      await reportSetupStore.fetchReportSettings()
+
+      fetchCampusLevel()
+      await doFetchReportSettings()
     }
 )
+
+ const doFetchReportSettings = async () => {
+  let data = {
+     academic_year_number:academic_year_number.value,
+     study_period_number:study_period_number.value,
+     campus_class_number:campus_class_number.value
+  }
+   await reportSetupStore.fetchReportSettings(data)
+ }
+
+const fetchCampusLevel = () => {
+  classStore.fetchCampusLevel(campus_curriculum_number)
+}
+
+
+const fetchAcademicYea = (campus_level_number) => {
+  academicYearStore.fetchAcademicYearByLevel(campus_level_number)
+  academicYearStore.fetchCampusClassByLevel(campus_level_number)
+}
+
+
+const fetchStudyPeriod = (academic_num) =>{
+  studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
+  doFetchReportSettings()
+}
+
+
+
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        campusLevelList.value = data.data
+      }
+    }
+)
+
+watch(
+    () => academicYearStore.academicYearByLevelResponse,
+    async (data) => {
+      if(data){
+        academicYearList.value = data.data
+      }
+    }
+)
+
+
+watch(
+    () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+    async (data) => {
+      if(data){
+        studyPeriodList.value = data.data
+      }
+    }
+)
+
+watch(
+    () => academicYearStore.campusClassByLevelResponse,
+    async (data) => {
+      if(data){
+        campusClassList.value = data.data
+      }
+    }
+)
+
+
+// -------
 
 
 watch(
@@ -24,7 +120,7 @@ watch(
     async (data) => {
       if(data){
         showReportSettingsModal.value = false
-        await reportSetupStore.fetchReportSettings()
+        await doFetchReportSettings()
         notificationStore.successToast("Success",data.message)
       }
     }
@@ -65,8 +161,6 @@ const addReportSettings = () => {
 
       <div class="col-12">
 
-
-
         <div class="flex justify-content-between mt-3">
           <div class="ml-4">Report Settings</div>
           <button
@@ -77,36 +171,81 @@ const addReportSettings = () => {
         </div>
 
 
+        <div class="grid grid-cols-4 gap-2 px-2 mt-4">
+          <div class="mb-2">
+            <select
+                class="form-select form-select-sm shadow-none"
+                v-model="campus_level_number"
+                @change="fetchAcademicYea(campus_level_number)"
+            >
+              <option disabled value="">--Filter by Level--</option>
+              <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+            </select>
+          </div>
+
+          <div class="mb-2">
+            <select
+                class="form-select form-select-sm shadow-none" required
+                v-model="campus_class_number"
+                @change="doFetchReportSettings()"
+            >
+              <option disabled value="">--Filter by Class--</option>
+              <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+            </select>
+          </div>
+
+          <div class="mb-2">
+            <select
+                class="form-select form-select-sm shadow-none"
+                v-model="academic_year_number"
+                @change="fetchStudyPeriod(academic_year_number)"
+            >
+              <option disabled value="">--Filter by Academic Year--</option>
+              <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
+                {{list.code+". "+list.academic_year_name}}
+              </option>
+            </select>
+          </div>
+
+
+          <div class="mb-2">
+            <select
+                class="form-select form-select-sm shadow-none" required
+                v-model="study_period_number"
+                @change="doFetchReportSettings()"
+            >
+              <option disabled value="">--Filter by Study Period--</option>
+              <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
+
+            </select>
+          </div>
+
+        </div>
+
+
 
         <table class="table table-hover caption-top mt-5 table-sm text-sm" style="font-size: 14px;">
           <thead>
           <tr>
             <th class="w-[10%]" scope="col">Code</th>
-            <th>Name</th>
+            <th>Class</th>
+            <th>Academic Year</th>
+            <th>Study Period</th>
+<!--            <th>Name</th>-->
             <th>Number of Columns</th>
             <th>Status</th>
-<!--            <th scope="col">Action</th>-->
           </tr>
           </thead>
           <tbody>
           <tr v-for="(levelInfo, index) in reportSettingsList" :key="index">
-            <td> {{levelInfo.code}}</td>
-            <td> {{levelInfo.name}}</td>
-            <td> {{levelInfo.columns}}</td>
-            <td> {{levelInfo.status}}</td>
-            <td>
-<!--              <div>
-                <i
-                    style="font-size: 13px;"
-                    data-bs-toggle="modal" data-bs-target="#levelModal"
-                    class="bi-pencil mr-2 cursor-pointer" @click="editLevel(levelInfo)"></i>
-                <i
-                    style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLevel(levelInfo, index)"></i>
-                <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>-->
-            </td>
+            <td class="text-sm"> {{levelInfo.code}}</td>
+            <td class="text-sm"> {{levelInfo.class}}</td>
+            <td class="text-sm"> {{levelInfo.academic_year}}</td>
+            <td class="text-sm"> {{levelInfo.study_period}}</td>
+<!--            <td class="text-sm"> {{levelInfo.name}}</td>-->
+            <td class="text-sm"> {{levelInfo.columns}}</td>
+            <td class="text-sm"> {{levelInfo.status}}</td>
+
           </tr>
           </tbody>
         </table>
