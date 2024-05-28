@@ -111,9 +111,9 @@ export const useReportSetupStore = defineStore("report_setup", () => {
 
     
     async function fetchReportSettings(data) {
-        let academic_year_number = data.academic_year_number
-        let study_period_number = data.study_period_number
-        let campus_class_number = data.campus_class_number
+        let academic_year_number = data?.academic_year_number ?? ""
+        let study_period_number = data?.study_period_number ?? ""
+        let campus_class_number = data?.campus_class_number ?? ""
         return await api.get("main/report-settings?academic_year_number="+academic_year_number+
                 "&study_period_number="+study_period_number+
                 "&campus_class_number="+campus_class_number)
@@ -164,8 +164,8 @@ export const useReportSetupStore = defineStore("report_setup", () => {
     }
 
 
-    async function fetchReportColumn(campus_number) {
-        return await api.get("main/report-settings/columns?campus_number="+campus_number)
+    async function fetchReportColumn(report_setting_number) {
+        return await api.get("main/report-settings/columns?report_setting_number="+report_setting_number)
             .then((response) => {
                 reportColumnListResponse.value = response.data
             })

@@ -60,7 +60,7 @@ const fetchCampusLevel = () => {
 }
 
 
-const fetchAcademicYea = (campus_level_number) => {
+const fetchAcademicYear = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
   academicYearStore.fetchCampusClassByLevel(campus_level_number)
 }
@@ -176,7 +176,7 @@ const addReportSettings = () => {
             <select
                 class="form-select form-select-sm shadow-none"
                 v-model="campus_level_number"
-                @change="fetchAcademicYea(campus_level_number)"
+                @change="fetchAcademicYear(campus_level_number)"
             >
               <option disabled value="">--Filter by Level--</option>
               <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
