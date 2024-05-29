@@ -58,7 +58,6 @@ onMounted(
 
 const doFetchReportColumnAssessment = () => {
   let data = {
-    campus_level_number:campus_level_number.value,
     academic_year_number:academic_year_number.value,
     study_period_number:study_period_number.value,
     campus_class_number:campus_class_number.value,
@@ -85,9 +84,6 @@ const addReportColumn = () => {
 const fetchAcademicYear = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
   academicYearStore.fetchCampusClassByLevel(campus_level_number)
-
-  // fetch report column assessment
-  doFetchReportColumnAssessment()
 }
 
 
