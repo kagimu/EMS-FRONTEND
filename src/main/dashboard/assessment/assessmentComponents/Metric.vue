@@ -63,11 +63,11 @@
                 
                 <div class="mb-2">
                   <label class="textColor"><small>Name</small></label>
-                  <input v-model="form.name"  type="text" required class="form-control">
+                  <input v-model="form.name"  type="text" required class="form-control shadow-none" placeholder="eg. Exam or Group work or Tests">
                 </div>
 
                 <div class="mb-2">
-                <label class="textColor"><small>Exam Type</small> <span class="star">*</span></label>
+                <label class="textColor"><small>Metric Type</small> <span class="star">*</span></label>
                 <select
                         style="box-shadow: none;"
                         class="form-select form-select-sm"

@@ -412,7 +412,7 @@
                  <input
                      v-model="form.max_score"
                      type="text" required
-                     class="form-control"
+                     class="form-control shadow-none"
                      @keypress="commons.numbersOnlyValidator($event)"
                       maxlength="10">
         </div>
@@ -420,14 +420,14 @@
 
            
               <div class="mb-2">
-                 <label class="textColor"><small>Scheduled On</small></label>
-                 <input type="date" class="form-control" v-model="form.scheduled_on">
+                 <label class="textColor">Scheduled On</label>
+                 <input type="date" class="form-control shadow-none" v-model="form.scheduled_on">
               </div>
            
           <div class="mb-2">
-             <div class="text-sm">Description</div>
+            <label class="textColor">Description</label>
              <textarea
-                 class="form-control shadow-none"
+                 class="form-control shadow-none text-sm"
                  rows="3"
                  v-model="form.description">
              </textarea>

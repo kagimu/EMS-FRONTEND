@@ -65,6 +65,7 @@ onMounted(
 
 
 const doFetchAssessmentMetric = async () => {
+  assessmentMetricsData.value.splice(0)
   let data = {
     page: 1,
     per_page: per_page.value,

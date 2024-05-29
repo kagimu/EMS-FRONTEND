@@ -349,7 +349,7 @@ watch(
         <label class="textColor"><small>Assessment Area</small></label>
         <select
             required
-            class="form-control"
+            class="form-control shadow-none"
             v-model="form.assessment_area_number"
             @change="fetchAssessmentMetrics"
         >
