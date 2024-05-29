@@ -35,6 +35,7 @@ export const useCateringStore = defineStore("catering", () => {
     let mealsCostProjectionResponse = ref(null)
     let mealsResponse = ref(null)
     let editFeedingGroupInfoResponse = ref(null)
+    let menuItemPaginatedResponse = ref(null)
  
 
     const errorMessage = ref(null)
@@ -97,8 +98,21 @@ export const useCateringStore = defineStore("catering", () => {
                 }
             })
     }
+    async function fetchMenuItemPaginated(data) {
+        return await api.get("main/catering/menu-items-paginated?page="+data.page+"&per_page="+data.per_page+"&school_number="+data.school_number+"&campus_number="+data.campus_number)
+            .then((response) => {
+                menuItemPaginatedResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
     async function fetchMenuItem(data) {
-        return await api.get("main/catering/menu-items?page="+data.page+"&per_page="+data.per_page+"&school_number="+data.school_number+"&campus_number="+data.campus_number)
+        return await api.get("main/catering/menu-items?school_number="+data.school_number+"&campus_number="+data.campus_number)
             .then((response) => {
                 menuItemResponse.value = response.data
             })
@@ -108,6 +122,7 @@ export const useCateringStore = defineStore("catering", () => {
                 }
             })
     }
+
 //feeding Group
 async function newFeedingGroupInfo(data) {
     return await api.post("main/catering/feeding-groups", data)
@@ -480,7 +495,9 @@ async function fetchMeals(campusNumber,meal_courseNumber) {
         fetchMeals,
         fetchMealsCostProjection,
         editFeedingGroupInfoResponse,
-        editFeedingGroupInfo
+        editFeedingGroupInfo,
+        menuItemPaginatedResponse,
+        fetchMenuItemPaginated
 
     }
 } )

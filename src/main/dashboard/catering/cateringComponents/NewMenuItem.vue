@@ -20,7 +20,7 @@ const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
 const itemtype = ref(null)
 const errorMessage = ref(null)
-const school_number = ref("")
+// const school_number = ref("")
 
 const showUnitMeasurement = () => {
   showUnitModal.value = true
@@ -58,7 +58,8 @@ const menuForm = reactive({
   type:"",
   unit_of_measure_number:"",
   campus_number:"",
-  base_price:null
+  base_price:null,
+  school_number:null
 } )
 
 const addMenuItem = () =>{
@@ -71,6 +72,7 @@ const addMenuItem = () =>{
       type:menuForm.type,
       unit_of_measure_number:menuForm.unit_of_measure_number,
       campus_number:menuForm.campus_number,
+      school_number:menuForm.school_number
     })
 
     buttonLoader.value = true
@@ -318,10 +320,10 @@ const addUnit = () =>{
       <div class="mb-2">
         <label class="textColor"><small>School</small> </label>
         <select
-            v-model="school_number"
+            v-model="menuForm.school_number"
             class="form-select form-select-sm" required
             style="box-shadow: none;"
-            @change="fetchCampuses(school_number)"
+            @change="fetchCampuses(menuForm.school_number)"
         >
           <option disabled value="">Select School</option>
           <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}

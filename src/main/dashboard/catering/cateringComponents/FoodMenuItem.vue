@@ -58,9 +58,9 @@ const doFetchMenuItem = () => {
     page: page.value,
     per_page: per_page.value, 
      school_number:form.school_number,
-     campus_number:form.campus_number
+     campus_number:form.campus_number,
     }
-    cateringStore.fetchMenuItem(data)
+    cateringStore.fetchMenuItemPaginated(data)
 
 }
 
@@ -94,7 +94,7 @@ const fetchFoodMenuItem = (data) => {
   }
 
   watch(
-    () => cateringStore.menuItemResponse,
+    () => cateringStore.menuItemPaginatedResponse,
     async (data) => {
         fetchFoodMenuItem(data)
             isLoading.value = false;

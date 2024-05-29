@@ -18,7 +18,6 @@ const loading = ref(true)
 
 
 
-
 const notificationStore = useNotificationStore()
 const thisDialog = ref(false)
 const updateMenuDialog = ref(false)
@@ -30,6 +29,9 @@ const classList = ref([])
 const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
 const menuItemDataParts = ref([])
+const sta = ref(null)
+const page = ref(1)
+const per_page = ref(15)
 
 const form = reactive({
     school_number:"",
@@ -42,7 +44,8 @@ const fetchCampuses = (school_number) => {
 }
 
 const filter = (campusN) =>{
-    cateringStore.filterMenuItem(campusN)
+    // cateringStore.filterMenuItem(campusN)
+    doFetchMenuItem()
 }
 
 
@@ -67,11 +70,68 @@ const closeDialog = () => {
 
 onMounted(
     () => {
-        cateringStore.fetchMenuItem()
+        // cateringStore.fetchMenuItem()
+        schoolStore.fetchSchools()
     }
 
 )
-const sta = ref(null)
+
+
+
+const doFetchMenuItem = () => {
+    let data = {
+    page: page.value,
+    per_page: per_page.value, 
+     school_number:form.school_number,
+     campus_number:form.campus_number,
+     paginated:"yes"
+    }
+    cateringStore.fetchMenuItem(data)
+
+}
+
+const fetchFoodMenuItem = (data) => {
+    if(data) {
+      let current_page = data.page
+      page.value = current_page
+
+      let per_page_item = data.per_page;
+      per_page.value = per_page_item;
+
+      let objArray = data.content
+
+
+      if(objArray && objArray.length > 0){
+        objArray.forEach((list, i) => {
+
+          list.key =  (current_page - 1) * per_page_item + i + 1
+
+          const index = menuItemData.value.findIndex(object => object.number === list.number);
+
+          if (index === -1) {
+            menuItemData.value.push(list);
+          }
+
+        })
+      }
+
+
+    }
+  }
+
+  watch(
+    () => cateringStore.menuItemResponse,
+    async (data) => {
+        fetchFoodMenuItem(data)
+            isLoading.value = false;
+        // if(data && data.data) {
+        //      menuItemData.value = data.data
+        //     fetchFoodMenuItem(data)
+        //     isLoading.value = false;
+        // }
+    }
+)
+
 
 const showItems = (primaryItemNumber) =>{
     sta.value=primaryItemNumber
@@ -82,15 +142,15 @@ const hideItems = () =>{
     sta.value=""
 }
 
-watch(
-    () => cateringStore.menuItemResponse,
-    async (data) => {
-        if(data && data.data) {
-            menuItemData.value = data.data
-            isLoading.value = false;
-        }
-    }
-)
+// watch(
+//     () => cateringStore.menuItemResponse,
+//     async (data) => {
+//         if(data && data.data) {
+//             menuItemData.value = data.data
+//             isLoading.value = false;
+//         }
+//     }
+// )
 
 
 watch(
@@ -121,10 +181,6 @@ watch(
 )
 
 
-onMounted(() => {
-        schoolStore.fetchSchools()
-    }
-)
 
 watch(
     () => schoolStore.schoolsResponse,

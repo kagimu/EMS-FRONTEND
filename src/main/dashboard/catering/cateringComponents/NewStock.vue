@@ -12,8 +12,8 @@
                             <select
                                     style="box-shadow: none;"
                                     class="form-select form-select-sm" required
-                                    v-model="school_number"
-                                    @change="fetchCampuses(school_number)"
+                                    v-model="form.school_number"
+                                    @change="fetchCampuses(form.school_number)"
                             >
                                 <option disabled value="">Select School</option>
                                 <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
@@ -29,6 +29,7 @@
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
                     v-model="form.campus_number" required
+                    @change="doFetchMenuItem()"
                     >
                     <option disabled value="">Select campus</option>
                     <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
@@ -41,7 +42,7 @@
             
             <div class="col-lg-12">
               <!-- New Design -->
-                <table class="table bordered">
+                <table class="table table-hover caption-top mt-4 table-sm table-striped">
                   <thead>
                     <tr class="" style="padding: 0px;margin: 0px;">
                       <th>Item</th>
@@ -121,7 +122,7 @@ const commons = useCommonsStore()
 
 const campusList = ref([])
 const schoolList = ref([])
-const school_number = ref(null)
+// const school_number = ref(null)
 let errorMessage = ref(null)
 const emit = defineEmits()
 const  notificationStore  = useNotificationStore()
@@ -130,7 +131,8 @@ const campusStore = useCampusStore()
 const cateringStore = useCateringStore()
 
 const form = reactive({
-    campus_number:null
+    campus_number:null,
+    school_number:null
 })
 
 const Items = ref([]);
@@ -173,22 +175,11 @@ watch(Items, (newItems) => {
 }, { deep: true });
 
 
+onMounted(() => {
+        schoolStore.fetchSchools()
+    }
+)
 
-
-onMounted(
-    async () => {
-        cateringStore.fetchMenuItem()
-    } )
-
-  watch(
-    () => cateringStore.menuItemResponse,
-    async (data) => {
-      if(data && data.data) {
-        itemOption.value = data.data.map(option => ({ name: option.name, number: option.number }));
-      }
-    },
-    {deep: true}
-  )
 
 
 const createStock = () => {
@@ -234,12 +225,34 @@ watch(
 }
 
 
-onMounted(() => {
-        schoolStore.fetchSchools()
-    }
-)
+
+  const fetchCampuses = (school_number) => {
+    campusStore.fetchCampuses(school_number)
+}
+
+const doFetchMenuItem = () => {
+  let formD = {
+    school_number:form.school_number,
+    campus_number:form.campus_number
+  }
+  cateringStore.fetchMenuItem(formD)
+}
+
 
 watch(
+    () => cateringStore.menuItemResponse,
+    async (data) => {
+
+      itemOption.value = data.map(option => ({ name: option.name, number: option.number }));
+      
+      // if(data && data.data) {
+      //   itemOption.value = data.data.map(option => ({ name: option.name, number: option.number }));
+      // }
+    },
+    {deep: true}
+  )
+
+  watch(
     () => schoolStore.schoolsResponse,
     async (data) => {
         if (data) {
@@ -248,11 +261,6 @@ watch(
     },
     {deep: true}
 )
-
-  const fetchCampuses = (school_number) => {
-    campusStore.fetchCampuses(school_number)
-}
-
 
 watch(
     () => campusStore.campusListResponse,
