@@ -40,10 +40,17 @@ const props = defineProps({
 onMounted(
     async () =>{
       await schoolStore.fetchSchools()
-      await cateringStore.fetchFeedingGroupSessions()
     }
 )
 
+
+const doFetchFeedingSessions = () => {
+    let data = {
+     school_number:school_number.value
+    }
+    cateringStore.fetchFeedingGroupSessions(data)
+
+}
 
 
 const addMealCourseFeedingSessionsDialog = () =>{
@@ -65,6 +72,7 @@ watch(
 const doFetchMealCourses = (school_number) => {
   if(school_number){
     mealStore.fetchMealCourses(school_number)
+    doFetchFeedingSessions()
   }
 }
 

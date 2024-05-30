@@ -25,6 +25,23 @@
         </div>
     </div>
     
+    <div class="row">
+        <div class="col-4">
+        <div class="mb-2">
+        <select
+            v-model="form.school_number"
+            class="form-select form-select-sm"
+            style="box-shadow: none;"
+            @change="filterBySchool(form.school_number)"           
+        >
+        <option disabled value="">--Select School--</option>
+        <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+        </option>
+        </select>
+        </div>
+        </div>
+
+    </div>
     
     <table
     id="datatable"
@@ -67,11 +84,20 @@
     import useNotificationStore from "@/composables/useNotification.js";
     import NewFeedingGroup from "@/main/dashboard/catering/cateringComponents/NewFeedingGroup.vue";
     import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+    import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
+    const schoolList = ref([])
+    const schoolStore = useSchoolStore()
     const cateringStore = useCateringStore()
     const thisDialog = ref(false)
     const feedingSessionItemData = ref([])
     const notificationStore = useNotificationStore()
+
+    const form = reactive({
+    school_number:"",
+})
+
+
     const showDialog = () => {
         thisDialog.value = true
     }
@@ -82,7 +108,18 @@
 
     onMounted(() => {
         cateringStore.fetchFeedingSessionsItems()
+        schoolStore.fetchSchools()
     }
+)
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+        if (data) {
+            schoolList.value = data.data
+        }
+    },
+    {deep: true}
 )
 
 watch(
