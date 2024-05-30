@@ -98,7 +98,7 @@ watch(
                 <input
                     type="email"
                     v-model.trim="form.email" required
-                    class="form-control">
+                    class="form-control shadow-none">
               </div>
 
 
@@ -114,12 +114,15 @@ watch(
               <div class="input-group mb-10">
                 <input
                     :type="show ? 'text' : 'password'"
-                    v-model.trim="form.password" required
-                    class="form-control" aria-label="Username"
-                    aria-describedby="basic-addon1" style="font-size: 12px;">
-                <div style="cursor: pointer;font-size: 12px;"  @click="show = !show" class="input-group-text px-2 py-0" id="basic-addon1">
-                  <i :class="show ? 'bi-eye-slash' : 'bi-eye'"></i>
-                </div>
+                    v-model.trim="form.password"
+                    required
+                    class="form-control shadow-none"
+                    aria-label="Username"
+                    aria-describedby="basic-addon1"
+                    style="font-size: 12px;">
+                      <div style="cursor: pointer;font-size: 12px;"  @click="show = !show" class="input-group-text px-2 py-0" id="basic-addon1">
+                        <i :class="show ? 'bi-eye-slash' : 'bi-eye'"></i>
+                      </div>
               </div>
 
               <div>
