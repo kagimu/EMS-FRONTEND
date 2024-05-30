@@ -202,13 +202,13 @@ watch(
 
           <td>
 
-            <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
+            <table class="table table-hover caption-top table-sm" style="font-size: 14px;">
               <thead>
               <tr>
                 <th scope="col" class="w-[5%]">#</th>
                 <th scope="col" class="w-[20%]">Meal</th>
                 <th scope="col" class="w-[30%]">Number of People</th>
-                <th scope="col" class="w-[45%]">Meals</th>
+                <th scope="col" class="w-[45%]">Items</th>
               </tr>
               </thead>
               <tbody>
@@ -216,7 +216,31 @@ watch(
                 <td> {{(idx + 1)}}</td>
                 <td>{{meal.meal_name}}</td>
                 <td>{{meal.number_of_people}}</td>
-                <td>{{meal?.items}}</td>
+                <td>
+
+
+                  <table v-if="meal?.items?.length > 0" class="table table-hover caption-top table-sm" style="font-size: 14px;">
+                    <thead>
+                    <tr>
+                      <th scope="col" class="w-[5%]">#</th>
+                      <th scope="col" class="w-[20%]">Name</th>
+                      <th scope="col" class="w-[45%]">Unit</th>
+                      <th scope="col" class="w-[30%]">Quantity</th>
+                      <th scope="col" class="w-[45%]">Cost</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item, item_key) in meal?.items" :key="item_key">
+                      <td>{{(item_key + 1)}}</td>
+                      <td>{{item?.name}}</td>
+                      <td>{{item?.unit_of_measure}}</td>
+                      <td>{{item?.quantity}}</td>
+                      <td>{{item?.total_cost}}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+
+                </td>
 
               </tr>
               </tbody>
