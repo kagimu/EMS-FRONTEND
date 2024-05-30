@@ -84,9 +84,8 @@ const doFetchMenuItem = () => {
     per_page: per_page.value, 
      school_number:form.school_number,
      campus_number:form.campus_number,
-     paginated:"yes"
     }
-    cateringStore.fetchMenuItem(data)
+    cateringStore.fetchMenuItemPaginated(data)
 
 }
 
@@ -120,7 +119,7 @@ const fetchFoodMenuItem = (data) => {
   }
 
   watch(
-    () => cateringStore.menuItemResponse,
+    () => cateringStore.menuItemPaginatedResponse,
     async (data) => {
         fetchFoodMenuItem(data)
             isLoading.value = false;
@@ -331,7 +330,15 @@ watch(
                         <td   v-if="list.type==='ASSEMBLED'">{{ list.campus_name }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">
                           <span  v-if="list.type==='ASSEMBLED'">
-                            <MenuParts :menuNumber="list.number"></MenuParts>
+                            <!-- <MenuParts :menuNumber="list.number"></MenuParts> -->
+                     
+                      
+                        <ul>
+                        <li  v-for="(ldData,idx) in list.parts" :key="idx">[{{ldData.code}}] {{ ldData.name }} - {{ ldData.quantity }} {{ ldData.unit_of_measure }}
+                        <i class="bi bi-x" style="color: red;"></i>
+                        </li>
+                        </ul>
+                   
                           </span>
                         </td>
                         <td   v-if="list.type==='ASSEMBLED'">
