@@ -301,7 +301,7 @@ watch(
                 <div>
                   <table 
                     id="datatable"
-                    class="table table-striped"
+                    class="table table-hover caption-top mt-4 table-sm table-striped"
                     style="font-size: 14px !important;"
                     >
                     <thead >
@@ -309,7 +309,7 @@ watch(
                         <th>Name</th>
                         <th>Unit</th>
                         <th>Qty</th>
-                        <th>Campus</th>
+                        <th>School</th>
                         <th>Parts</th>
                         <th>#</th>
                       </tr>
@@ -327,7 +327,7 @@ watch(
                         <td   v-if="list.type==='ASSEMBLED'">{{ list.name }} [{{ list.code }}]</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list.unit_of_measure_name }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list.current_quantity }}</td>
-                        <td   v-if="list.type==='ASSEMBLED'">{{ list.campus_name }}</td>
+                        <td   v-if="list.type==='ASSEMBLED'">{{ list.school_name }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">
                           <span  v-if="list.type==='ASSEMBLED'">
                             <!-- <MenuParts :menuNumber="list.number"></MenuParts> -->
