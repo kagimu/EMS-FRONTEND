@@ -60,7 +60,7 @@ const doFetchMenuItem = () => {
     per_page: per_page.value, 
      school_number:form.school_number,
      campus_number:form.campus_number,
-     type:form.type
+     type:"ITEM"
     }
     cateringStore.fetchMenuItemPaginated(data)
 
@@ -270,7 +270,7 @@ if(!confirm("Are you sure, you want to delete: " + name)){
     
     <!-- filters -->
     <div class="row">
-              <div class="col-3">
+              <div class="col-4">
                 <div class="mb-2">
                 
 
@@ -287,7 +287,7 @@ if(!confirm("Are you sure, you want to delete: " + name)){
       </div>
               </div>
 
-              <div class="col-3">
+              <div class="col-4">
       <div class="mb-2">
         
           <select
@@ -302,26 +302,13 @@ if(!confirm("Are you sure, you want to delete: " + name)){
           </select>
       </div></div>
 
-      <div class="col-3">
-      <div class="mb-2">
-        
-          <select
-                  v-model="form.type"
-                  class="form-select form-select-sm"
-                  required style="box-shadow: none;"
-                  @change="doFetchMenuItem"
-          >
-              <option disabled value="">--Select Type--</option>
-              <option value="ITEM">Item</option>
-              <option value="ASSEMBLED">Assembled</option>
-          </select>
-      </div></div>
+     
+  
 
 
-
-      <div class="col-3">
-          <div class="">
-              <input class="form-control mt-1 mb-0" placeholder="Search..." type="text">
+      <div class="col-4">
+          <div class="mb-2">
+              <input class="form-control mb-0" placeholder="Search..." type="text">
           </div>
      </div>
 

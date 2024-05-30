@@ -13,9 +13,8 @@ import MenuParts from "@/main/dashboard/catering/cateringComponents/MenuParts.vu
 
 
 const showingModal = ref(false)
-const isLoading = ref(true);
+const isLoading = ref(false);
 const loading = ref(true)
-
 
 
 const notificationStore = useNotificationStore()
@@ -84,7 +83,9 @@ const doFetchMenuItem = () => {
     per_page: per_page.value, 
      school_number:form.school_number,
      campus_number:form.campus_number,
+     type:"ASSEMBLED"
     }
+    isLoading.value = true
     cateringStore.fetchMenuItemPaginated(data)
 
 }
@@ -121,13 +122,10 @@ const fetchFoodMenuItem = (data) => {
   watch(
     () => cateringStore.menuItemPaginatedResponse,
     async (data) => {
-        fetchFoodMenuItem(data)
-            isLoading.value = false;
-        // if(data && data.data) {
-        //      menuItemData.value = data.data
-        //     fetchFoodMenuItem(data)
-        //     isLoading.value = false;
-        // }
+        if(data) {
+          isLoading.value = false;
+          fetchFoodMenuItem(data)
+        }
     }
 )
 
@@ -299,6 +297,7 @@ watch(
                   </div>
                 </div>
                 <div>
+                  
                   <table 
                     id="datatable"
                     class="table table-hover caption-top mt-4 table-sm table-striped"
@@ -318,11 +317,7 @@ watch(
                       </div>
                     </thead>
                     <tbody>
-                      <div v-if="isLoading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
-                        <div class="spinner-border text-primary" role="status">
-                          <span class="visually-hidden">Loading...</span>
-                        </div>
-                      </div>
+                     
                       <tr v-if="isLoading===false" v-for="(list, index) in menuItemData" :key="index">
                         <td   v-if="list.type==='ASSEMBLED'">{{ list.name }} [{{ list.code }}]</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list.unit_of_measure_name }}</td>
@@ -353,6 +348,13 @@ watch(
                       </tr>
                     </tbody>
                   </table>
+
+                  <div v-if="isLoading" class="flex justify-center" >
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                      </div>
+                      
                 </div>
               </div>
             </div>
