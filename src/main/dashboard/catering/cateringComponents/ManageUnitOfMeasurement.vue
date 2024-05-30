@@ -3,11 +3,9 @@
         <div class="row">
         <div class="col-12">
           <div class="mt-3 ">
-            <div class="" style="padding: 0;">
-                <div class="mb-10 ml-3 mt-2" style="float: right; margin-right: 10px;"><i @click="goBack()" class="bi bi-x-lg"></i></div>
-
+            <div  class="ml-3">
                 <div>
-    <div class="m-4">
+    <div>
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <button class="nav-link navColor active" id="unit-tab" data-bs-toggle="tab" data-bs-target="#unit" type="button" role="tab" aria-controls="unit" aria-selected="false"><small>Unit Of Measurement</small></button>

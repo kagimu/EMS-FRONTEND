@@ -99,7 +99,13 @@ export const useCateringStore = defineStore("catering", () => {
             })
     }
     async function fetchMenuItemPaginated(data) {
-        return await api.get("main/catering/menu-items-paginated?page="+data.page+"&per_page="+data.per_page+"&school_number="+data.school_number+"&campus_number="+data.campus_number)
+        let  page = data?.page ?? ""
+        let  per_page =  data?.per_page ?? ""
+        let  school_number =   data?.school_number ?? ""
+        let  campus_number =   data?.campus_number ?? ""
+        let  type =   data?.type ?? ""
+
+        return await api.get("main/catering/menu-items-paginated?page="+page+"&per_page="+per_page+"&school_number="+school_number+"&campus_number="+campus_number+"&type="+type)
             .then((response) => {
                 menuItemPaginatedResponse.value = response.data
             })

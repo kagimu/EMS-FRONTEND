@@ -57,8 +57,11 @@
           </select>
       </div>
               </div>
-
               <div class="col-4">
+
+              </div>
+
+              <!-- <div class="col-4">
       <div class="mb-2">
           <label class="textColor"><small>Campus</small>  </label>
           <select
@@ -67,11 +70,11 @@
                   v-model="form.campus_number" required
                   @change="fetchClasses(form.campus_number)"
           >
-              <!-- <option disabled value="">Select campus</option> -->
+            
               <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
               </option>
           </select>
-      </div></div>
+      </div></div> -->
 
 
      

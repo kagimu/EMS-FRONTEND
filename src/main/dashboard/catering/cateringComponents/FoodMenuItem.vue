@@ -37,6 +37,7 @@ const per_page = ref(15)
 const form = reactive({
     school_number:"",
     campus_number: "",
+    type:""
 })
 
 
@@ -59,6 +60,7 @@ const doFetchMenuItem = () => {
     per_page: per_page.value, 
      school_number:form.school_number,
      campus_number:form.campus_number,
+     type:form.type
     }
     cateringStore.fetchMenuItemPaginated(data)
 
@@ -268,7 +270,7 @@ if(!confirm("Are you sure, you want to delete: " + name)){
     
     <!-- filters -->
     <div class="row">
-              <div class="col-4">
+              <div class="col-3">
                 <div class="mb-2">
                 
 
@@ -285,7 +287,7 @@ if(!confirm("Are you sure, you want to delete: " + name)){
       </div>
               </div>
 
-              <div class="col-4">
+              <div class="col-3">
       <div class="mb-2">
         
           <select
@@ -300,8 +302,24 @@ if(!confirm("Are you sure, you want to delete: " + name)){
           </select>
       </div></div>
 
+      <div class="col-3">
+      <div class="mb-2">
+        
+          <select
+                  v-model="form.type"
+                  class="form-select form-select-sm"
+                  required style="box-shadow: none;"
+                  @change="doFetchMenuItem"
+          >
+              <option disabled value="">--Select Type--</option>
+              <option value="ITEM">Item</option>
+              <option value="ASSEMBLED">Assembled</option>
+          </select>
+      </div></div>
 
-      <div class="col-4">
+
+
+      <div class="col-3">
           <div class="">
               <input class="form-control mt-1 mb-0" placeholder="Search..." type="text">
           </div>
@@ -324,7 +342,7 @@ if(!confirm("Are you sure, you want to delete: " + name)){
                 <th>Name</th>
                 <th>Unit</th>
                 <th>Current Quantity</th>
-                <th>Campus</th>
+                <th>School</th>
                 <th>Type</th>
                 <th>Action</th>
             </tr>
@@ -336,16 +354,17 @@ if(!confirm("Are you sure, you want to delete: " + name)){
       <td>{{ list.name }} [{{ list.code }}]</td>
       <td>{{ list.unit_of_measure_name }}</td>
       <td>{{ list.current_quantity }}</td>
-      <td>{{ list.campus_name }}</td>
+      <td>{{ list.school_name }}</td>
       <td>{{ list.type }}&nbsp;
-       <span  v-if="list.type==='ASSEMBLED'"><button aria-controls="rolesDialog" data-bs-target="#updateRoleModel" data-bs-toggle="modal" type="button">
+       <span  v-if="list.type==='ASSEMBLED'">
+        <!-- <button aria-controls="rolesDialog" data-bs-target="#updateRoleModel" data-bs-toggle="modal" type="button">
             <i  class="bi bi-eye" style="color:rgb(3, 85, 148)" @click="showItems(list.number)"></i>
-          </button><button  aria-controls="rolesDialog" data-bs-target="#updateRoleModel" data-bs-toggle="modal" type="button">
+          </button> -->
+          <!-- <button  aria-controls="rolesDialog" data-bs-target="#updateRoleModel" data-bs-toggle="modal" type="button">
             <i class="bi bi-dash" style="color:rgb(3, 85, 148)" @click="hideItems"></i>
-          </button>
-          <div  v-if="sta===list.number">
+          </button> -->
+          <!-- <div  v-if="sta===list.number">
           <div v-for="(listD,indx) in menuItemDataParts" :key="indx">
-
                 <div v-if="loading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
                 <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Loading...</span>
@@ -355,7 +374,13 @@ if(!confirm("Are you sure, you want to delete: " + name)){
               <li  v-for="(ldData,idx) in listD.parts" :key="idx">[{{ldData.code}}] {{ ldData.name }} - {{ ldData.quantity }}{{ ldData.unit_of_measure }}</li>
             </ul>
           </div>
-        </div>
+        </div> -->
+        <ul class="list-group">
+          <li class="list-group-item"  v-for="(ldData,idx) in list.parts" :key="idx">[{{ldData.code}}] {{ ldData.name }} - {{ ldData.quantity }} {{ ldData.unit_of_measure }}
+                        <i class="bi bi-x" style="color: red;"></i>
+                        </li>
+            </ul>
+       
         </span> 
         </td>
       <td>

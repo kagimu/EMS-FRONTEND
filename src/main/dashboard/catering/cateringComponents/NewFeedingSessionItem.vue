@@ -3,11 +3,43 @@
       <div class="row">
         <div class="col-12">
             <div class="card-body" style="padding: 0;">
-                <div class="row">
-            <div class="col-lg-3 mt-5 mb-4">
-            <label class="textColor"><small>Feeding Session</small></label>
+                <div class="row mt-4">
+
+        <div class="col-4">
+        <div class="mb-2">
+        <select
+            v-model="form.school_number"
+            class="form-select form-select-sm"
+            style="box-shadow: none;"
+            @change="fetchCampuses(form.school_number)"           
+        >
+        <option disabled value="">--Select School--</option>
+        <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+        </option>
+        </select>
+        </div>
+        </div>
+
+        <div class="col-lg-4">
+
+<div class="mb-2">
+
+<select
+style="box-shadow: none;"
+class="form-select form-select-sm"
+v-model="form.campus_number" required
+@change="doFetchMenuItem()"
+>
+<option disabled value="">Select campus</option>
+<option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+</option>
+</select>
+</div>
+</div>
+
+            <div class="col-3"> 
             <select v-model="form.feeding_session_number" class="form-control form-select"> 
-            <option disabled value="">Select</option>
+            <option disabled value="">Select Feeding Sessions</option>
             <option v-for="(list, index) in feedingSessionGroupData" :key="index" :value="list.number">{{list.name}}</option>
             </select>
 
@@ -82,7 +114,7 @@ const commons = useCommonsStore()
 
 const campusList = ref([])
 const schoolList = ref([])
-const school_number = ref(null)
+// const school_number = ref(null)
 let errorMessage = ref(null)
 const emit = defineEmits()
 const  notificationStore  = useNotificationStore()
@@ -92,8 +124,18 @@ const cateringStore = useCateringStore()
 const feedingSessionGroupData = ref([])
 
 const form = reactive({
-    feeding_session_number:null
+    feeding_session_number:"",
+    school_number:"",
+    campus_number:""
 })
+
+const doFetchFeedingSessions = () => {
+    let data = {
+     school_number:form.school_number
+    }
+    cateringStore.fetchFeedingGroupSessions(data)
+
+}
 
 const Items = ref([]);
 const itemOption = ref([])
@@ -139,15 +181,27 @@ watch(Items, (newItems) => {
 
 onMounted(
     async () => {
-        cateringStore.fetchMenuItem()
+        schoolStore.fetchSchools()
     } )
+
+
+
+    const doFetchMenuItem = () => {
+  let formD = {
+    school_number:form.school_number,
+    campus_number:form.campus_number
+  }
+  cateringStore.fetchMenuItem(formD)
+}
 
   watch(
     () => cateringStore.menuItemResponse,
     async (data) => {
-      if(data && data.data) {
-        itemOption.value = data.data.map(option => ({ name: option.name, number: option.number }));
-      }
+      itemOption.value = data.map(option => ({ name: option.name, number: option.number }));
+
+      // if(data && data.data) {
+      //   itemOption.value = data.map(option => ({ name: option.name, number: option.number }));
+      // }
     },
     {deep: true}
   )
@@ -193,10 +247,6 @@ watch(
 }
 
 
-onMounted(() => {
-        schoolStore.fetchSchools()
-    }
-)
 
 watch(
     () => schoolStore.schoolsResponse,
@@ -209,6 +259,7 @@ watch(
 )
 
   const fetchCampuses = (school_number) => {
+    doFetchFeedingSessions()
     campusStore.fetchCampuses(school_number)
 }
 
