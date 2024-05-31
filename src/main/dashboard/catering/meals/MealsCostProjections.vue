@@ -123,38 +123,36 @@ watch(
         <div class="ml-4">Meals Cost Projections</div>
       </div>
 
+      <div class="grid grid-cols-2 gap-2">
 
-      <div class="row mt-5 mb-2 mx-auto">
-        <div class="col-3">
-          <div class="mb-2">
-            <select
-                style="box-shadow: none;"
-                class="form-select form-select-sm"
-                v-model="school_number"
-                @change="fetchCampusBySchool()"
-            >
-              <option disabled value="">--Filter by School--</option>
-              <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
-            </select>
-          </div>
-        </div>
-        <div class="col-3">
-          <div class="mb-2">
-            <select
-                style="box-shadow: none;"
-                class="form-select form-select-sm"
-                v-model="campus_number" required
-                @change="doFetchCostProjections()"
-            >
-              <option disabled value="">--Filter by campus--</option>
-              <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-              </option>
-            </select>
-          </div>
-        </div>
+        <div class="grid grid-cols-2 gap-2">
 
-        <div class="col-3">
-          <div class="mb-2">
+          <div>
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="school_number"
+                  @change="fetchCampusBySchool()"
+              >
+                <option disabled value="">--Filter by School--</option>
+                <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+              </select>
+          </div>
+
+          <div>
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="campus_number" required
+                  @change="doFetchCostProjections()"
+              >
+                <option disabled value="">--Filter by campus--</option>
+                <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+                </option>
+              </select>
+          </div>
+
+          <div>
               <VueDatePicker
                   placeholder="Start date: dd/mm/yyy"
                   text-input
@@ -166,24 +164,27 @@ watch(
                   @update:modelValue="doFetchCostProjections()"
               ></VueDatePicker>
           </div>
-        </div>
 
-        <div class="col-3">
-          <div class="mb-2">
-            <VueDatePicker
-                placeholder="End date: dd/mm/yyy"
-                text-input
-                auto-apply
-                :teleport="true"
-                style="font-size: 7px;"
-                v-model="end_date"
-                :preview-format="format"
-                @update:modelValue="doFetchCostProjections()"
-            ></VueDatePicker>
+          <div>
+              <VueDatePicker
+                  placeholder="End date: dd/mm/yyy"
+                  text-input
+                  auto-apply
+                  :teleport="true"
+                  style="font-size: 7px;"
+                  v-model="end_date"
+                  :preview-format="format"
+                  @update:modelValue="doFetchCostProjections()"
+              ></VueDatePicker>
           </div>
+
         </div>
 
+        <div>Summary</div>
       </div>
+
+
+
 
 
 
@@ -202,13 +203,13 @@ watch(
 
           <td>
 
-            <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
+            <table class="table table-hover caption-top table-sm" style="font-size: 14px;">
               <thead>
               <tr>
                 <th scope="col" class="w-[5%]">#</th>
                 <th scope="col" class="w-[20%]">Meal</th>
                 <th scope="col" class="w-[30%]">Number of People</th>
-                <th scope="col" class="w-[45%]">Meals</th>
+                <th scope="col" class="w-[45%]">Items</th>
               </tr>
               </thead>
               <tbody>
@@ -216,7 +217,31 @@ watch(
                 <td> {{(idx + 1)}}</td>
                 <td>{{meal.meal_name}}</td>
                 <td>{{meal.number_of_people}}</td>
-                <td>{{meal?.items}}</td>
+                <td>
+
+
+                  <table v-if="meal?.items?.length > 0" class="table table-hover caption-top table-sm" style="font-size: 14px;">
+                    <thead>
+                    <tr>
+                      <th scope="col" class="w-[5%]">#</th>
+                      <th scope="col" class="w-[20%]">Name</th>
+                      <th scope="col" class="w-[45%]">Unit</th>
+                      <th scope="col" class="w-[30%]">Quantity</th>
+                      <th scope="col" class="w-[45%]">Cost</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item, item_key) in meal?.items" :key="item_key">
+                      <td>{{(item_key + 1)}}</td>
+                      <td>{{item?.name}}</td>
+                      <td>{{item?.unit_of_measure}}</td>
+                      <td>{{item?.quantity}}</td>
+                      <td>{{item?.total_cost}}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+
+                </td>
 
               </tr>
               </tbody>
