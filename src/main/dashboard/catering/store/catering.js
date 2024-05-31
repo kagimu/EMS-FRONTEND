@@ -37,6 +37,7 @@ export const useCateringStore = defineStore("catering", () => {
     let editFeedingGroupInfoResponse = ref(null)
     let menuItemPaginatedResponse = ref(null)
     let feedingGroupUsersListResponse = ref(null)
+    let feedingGroupUsersAvailableResponse = ref(null)
 
     const errorMessage = ref(null)
 
@@ -454,6 +455,18 @@ async function fetchGroupUsersList(data) {
         })
 }
 
+async function fetchUsersToAssign() {
+
+    return await api.get("main/catering/feeding-group-users/available")
+        .then((response) => {
+            feedingGroupUsersAvailableResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response && response.response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
 
 
     return {
@@ -525,7 +538,9 @@ async function fetchGroupUsersList(data) {
         menuItemPaginatedResponse,
         fetchMenuItemPaginated,
         feedingGroupUsersListResponse,
-        fetchGroupUsersList
+        fetchGroupUsersList,
+        feedingGroupUsersAvailableResponse,
+        fetchUsersToAssign
 
     }
 } )
