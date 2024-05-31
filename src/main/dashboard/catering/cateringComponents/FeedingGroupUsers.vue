@@ -35,23 +35,20 @@ const selectedStudents = ref([])
 
 
 const formData = reactive ({
-  feeding_group_number:null
+  feeding_group_number:""
 })
 
 
 onMounted(
     () => {
-      enrollmentStore.fetchEnrolment()
-      accountStore.fetchUsersToAssign()
+      cateringStore.fetchUsersToAssign()
       schoolStore.fetchSchools()
-      doFetchAdmission()
     }
 )
 
 const doFeedingUsers = (schoolN) =>{
   cateringStore.fetchFeedingGroup(schoolN)
   campusStore.fetchCampuses(schoolN)
-  doFetchAdmission()
 }
 
 watch(
@@ -63,54 +60,11 @@ watch(
 
 
 
-//fetch
-const doFetchAdmission = () =>{
-  let data = {
-    page: 1,
-    per_page: per_page.value,
-  }
-  //  loading.value = true;
-  userList.value = []
-  accountStore.fetchUsersToAssign(data)
-
-}
-
-
-const fetchUsers = (data) => {
-  if(data) {
-    let current_page = data.page
-    page.value = current_page
-
-    let per_page_item = data.per_page;
-    per_page.value = per_page_item;
-
-    let objArray = data.content
-
-
-    if(objArray && objArray.length > 0){
-      objArray.forEach((list, i) => {
-
-        list.key =  (current_page - 1) * per_page_item + i + 1
-
-        const index = userList.value.findIndex(object => object.number === list.number);
-
-        if (index === -1) {
-          userList.value.push(list);
-        }
-
-      })
-    }
-
-
-  }
-}
-
 watch(
-    () => accountStore.userResponse,
+    () => cateringStore.feedingGroupUsersAvailableResponse,
     async (data) => {
       if(data){
-        // userList.value = data.data
-        fetchUsers(data)
+        userList.value = data.data
       }
     },
     {deep:true}
@@ -181,21 +135,11 @@ watch(
   
 
       <!-- end  -->
-      <div class="row mt-3">
+      <div class="row mt-1">
         <div class="col-12">
           <div class="">
             <div class="" style="padding: 0;">
-    <div class="container mt-4">
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="">
-              <div class="">
-                  <h5 style="font-size: 14px;margin-top: 2px;">Users List </h5>
-              </div>
-            </div>
-          </div>
-        </div>
-
+    <div class="container mt-1">
         <div class="row mt-5 mb-2 mx-auto">
           <div class="col-3">
             <div class="mb-2">
@@ -205,7 +149,7 @@ watch(
                   v-model="school_number"
                   @change="doFeedingUsers(school_number)"
               >
-                <option disabled value="">--filter by School--</option>
+                <option disabled value="">-Select School--</option>
                 <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
               </select>
             </div>
@@ -223,16 +167,20 @@ watch(
               </option>
             </select>
           </div>
+          </div>  
+          
+          <div class="col-3">
+            <select @change="addFeedingGroupUsers()" class="form-select form-control shadow-none" v-model="formData.feeding_group_number" required>
+    <option value="" disabled>-select</option>
+    <option v-for="(list,index) in feedingGroupData" :key="index" :value="list.number">{{list.name  }}</option>
+</select>
           </div>
-
-
-     
         </div>
 
 
 
         <div class="row">
-<div class="col-lg-9">
+<div class="col-lg-12">
       <table
         id="datatable"
         class="table table-striped"
@@ -240,7 +188,7 @@ watch(
       >
       <thead >
           <tr>
-            <th style="width: 5px;"><input type="checkbox"   class="checkbox-primary"></th>
+            <th style="width: 5px;"></th>
             <th>#</th>
             <th>Name</th>
             <th>Gender</th>   
@@ -251,6 +199,7 @@ watch(
     </div>
         </thead>
         <tbody>
+          <!-- {{ userList }} -->
           <tr v-for="(user, index) in userList" :key="index">
             <td>
               <input type="checkbox"
@@ -258,14 +207,9 @@ watch(
                      :value="user?.number"
                      class="checkbox-primary"></td>
             <td>{{ index+1 }}</td>
-            <td> 
-                <router-link style=""
-                class="text-decoration-none"
-                :to="{name:'feeding-group-user-details', query:{st_id:user.number}}">
+            <td>      
                  {{ user.first_name + " " + user.second_name + " " + user.last_name}}
 
-            </router-link>
-              
              </td>
             <td>
               {{  user.gender }}
@@ -281,26 +225,7 @@ watch(
       </table>
     </div>
 
-<div class="col-lg-3">            
-<label class="mt-4"><small>Feeding Group</small></label>
-<select class="form-select form-control shadow-none" v-model="formData.feeding_group_number" required>
-    <option value="" disabled>-select</option>
-    <option v-for="(list,index) in feedingGroupData" :key="index" :value="list.number">{{list.name  }}</option>
-</select>
 
-<div class="mt-2 mb-2 flex justify-between">
-  &nbsp;
-<button  @click="addFeedingGroupUsers" type="button"
-class="btn btn-primary btn-sm mb-2">
-  <small>Submit</small>
-  <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-</button>
-</div>
-                    
-               
-</div>
 </div>
     </div>
     </div>

@@ -36,7 +36,8 @@ export const useCateringStore = defineStore("catering", () => {
     let mealsResponse = ref(null)
     let editFeedingGroupInfoResponse = ref(null)
     let menuItemPaginatedResponse = ref(null)
- 
+    let feedingGroupUsersListResponse = ref(null)
+    let feedingGroupUsersAvailableResponse = ref(null)
 
     const errorMessage = ref(null)
 
@@ -436,6 +437,38 @@ async function fetchMeals(campusNumber,meal_courseNumber) {
 }
 
 
+async function fetchGroupUsersList(data) {
+    // let  page = data?.page ?? ""
+    // let  per_page =  data?.per_page ?? ""
+    let  feeding_group_number =   data?.feeding_group_number ?? ""
+    let  school_number =   data?.school_number ?? ""
+    let  campus_number =   data?.campus_number ?? ""
+
+    return await api.get("main/catering/feeding-group-users?school_number="+school_number+"&campus_number="+campus_number+"&feeding-group_number="+feeding_group_number)
+        .then((response) => {
+            feedingGroupUsersListResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response && response.response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function fetchUsersToAssign() {
+
+    return await api.get("main/catering/feeding-group-users/available")
+        .then((response) => {
+            feedingGroupUsersAvailableResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response && response.response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+
     return {
         newUnitOfMeasureInfoResponse,
         errorMessage,
@@ -503,7 +536,11 @@ async function fetchMeals(campusNumber,meal_courseNumber) {
         editFeedingGroupInfoResponse,
         editFeedingGroupInfo,
         menuItemPaginatedResponse,
-        fetchMenuItemPaginated
+        fetchMenuItemPaginated,
+        feedingGroupUsersListResponse,
+        fetchGroupUsersList,
+        feedingGroupUsersAvailableResponse,
+        fetchUsersToAssign
 
     }
 } )

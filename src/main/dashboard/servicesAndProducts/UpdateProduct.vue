@@ -1,109 +1,206 @@
 <template>
-          <form @submit.prevent="updateProduct">
+  <!-- {{ productListData }} -->
+  <form @submit.prevent="createNewProduct">
 
-<div class="mb-2">
-  <label class="textColor"><small>Name</small></label>
-  <input  type="text" style="outline: none 0 !important;box-shadow: none;"
-      required class="form-control form-select-sm" v-model="formData.name">
-</div>
-<div class="mb-2">
-  <label class="textColor"><small>Prefix</small></label>
-  <input  type="text" style="outline: none 0 !important;box-shadow: none;"
-      required class="form-control form-select-sm" v-model="formData.prefix">
-</div>
-  <div class="mb-2">
-      <label class="textColor"><small>Actual Price</small></label>
-      <input v-model="formData.cost" style="outline: none 0 !important; box-shadow: none;" type="number"  required  class="form-control form-select-sm">
-  </div>
+      <div class="mb-2">
+          <label class="textColor"><small>School</small> <span class="star">*</span></label>
+          <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm" required
+                  v-model="school_number"
+                  @change="fetchCampuses(school_number)"
+          >
+              <option disabled value="">Select School</option>
+              <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+              </option>
+          </select>
+      </div>
 
 
-  <div class="mb-2">
-      <label class="textColor"><small>Description</small></label>
-      <textarea v-model="formData.description" class="form-control "></textarea>
-  </div>
-  <div class="flex justify-content-end mt-2" style="width: 100%;">
-      <button type="submit" class="btn btn-primary border-0 btn-sm">
-           <small><i class="bi bi-save"></i> Update</small>
-           <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
-                role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span> 
-              </span>
-      </button>
-  </div>
-</form>
-   
+      <div class="mb-2">
+          <label class="textColor"><small>Campus</small>  <span class="star">*</span></label>
+
+          <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+
+              <li class="list-group-item" v-for="(lvl,idx) in campusList" :key="idx">
+                  <input
+                          v-model="formData.campus_numbers"
+
+                          style="outline: none 0 !important; box-shadow: none;"
+                          class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="lvl.number">
+                  <label class="textColor" :for="lvl.number"><small>{{lvl.name}}</small></label>
+              </li>
+
+          </ul>
+      </div>
+
+
+    <div class="mb-2">
+      <label class="textColor"><small>Name</small></label>
+      <input  type="text" style="outline: none 0 !important;box-shadow: none;"
+          required class="form-control form-select-sm" v-model="formData.name">
+
+          <input  type="hidden" style="outline: none 0 !important;box-shadow: none;"
+          required class="form-control form-select-sm" v-model="formData.product_number">
+    </div>
+    <div class="mb-2">
+      <label class="textColor"><small>Prefix</small></label>
+      <input  type="text" style="outline: none 0 !important;box-shadow: none;"
+          required class="form-control form-select-sm" v-model="formData.prefix">
+    </div>
+    
+      <div class="mb-2">
+          <label class="textColor"><small>Cost</small></label>
+          <input v-model="formData.cost" style="outline: none 0 !important; box-shadow: none;" type="number"  required  class="form-control form-select-sm">
+      </div>
+
+      <div class="mb-2">
+          <label class="textColor"><small>Service is ?</small></label>
+          <br/>
+          <input type="radio" v-model="formData.mandatory" :value="true" >&nbsp; Mandatory  &nbsp;&nbsp;&nbsp;
+          <input type="radio" v-model="formData.mandatory" :value="false">&nbsp; Optional
+      </div>
+
+      <div class="mb-2">
+          <label class="textColor"><small>Addition Info</small></label>
+          <textarea v-model="formData.description" class="form-control ">
+          </textarea>
+      </div>
+      <div class="flex justify-content-end mt-2" style="width: 100%;">
+          <button type="submit" class="btn btn-primary border-0 btn-sm">
+               <i class="bi bi-save"></i> Submit
+              <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" v-if="buttonLoader"
+                    role="status"><span class="visually-hidden">Loading...</span> 
+                  </span>
+          </button>
+      </div>
+  </form>
+
 </template>
 
 <script setup>
 import {onMounted, reactive, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 
 const productStore= useServiceStore()
 const  notificationStore  = useNotificationStore()
+const schoolStore = useSchoolStore()
+const campusStore = useCampusStore()
 const buttonLoader = ref(false)
 let errorMessage = ref(null)
-
-const props = defineProps({
-    product:{}
-})
+const campusList = ref([])
+const schoolList = ref([])
+const school_number = ref(null)
+const showDialog = ref(false)
+// const product_number = ref(null)
 
 
 const formData = reactive({
-    description: null,
-    cost: null,
-    name:null,
-    discount_amount:null,
-    discount_percentage:0,
-    prefix:null
+description: null,
+cost: null,
+name:null,
+mandatory:false,
+campus_numbers:[],
+payment_mode:null,
+product_number:null
+
 })
 
-watch (
-    () => props.product,
-    async (data) => {
-      if(data){
-        formData.description = props.product.description
-        formData.cost = props.product.cost
-        formData.name = props.product.name
-        formData.discount_amount = props.product.discount_amount
-        formData.discount_percentage = props.product.discount_percentage
-        formData.prefix = props.product.prefix
-      }
-    },
-    {deep:true}
+const props = defineProps({
+  productListData:String
+  })
+
+  onMounted(() => {
+  schoolStore.fetchSchools()
+  if(props.productListData){
+    formData.name = props.productListData.Item.name
+    formData.cost = props.productListData.Item.cost
+    formData.description=props.productListData.Item.description
+    formData.prefix=props.productListData.Item.prefix
+    formData.product_number = props.productListData.Item.number
+  }
+}
 )
 
-const updateProduct = () =>{
-// alert(JSON.stringify(formData))
-productStore.updateProduct(props.product.number,formData)
+const fetchCampuses = (school_number) => {
+campusStore.fetchCampuses(school_number)
 }
 
-onMounted(
-    () => {
-      productStore.fetchProductsList()
-      buttonLoader.value = false
-    }
-)
+const fetchClasses = (campus_number) => {
+campusStore.fetchClassesByCampus(campus_number)
+}
 
-watch(
+
+
+
+const createNewProduct = () =>{
+buttonLoader.value=true
+
+productStore.updateProduct(formData)
+}
+
+
+watch (
     () => productStore.updateProductResponse,
     async (data) => {
       if(data){
-       notificationStore.successToast("Success", data.message)
-       buttonLoader.value=false
-       await productStore.fetchProductsList()
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+        await productStore.fetchProductsList()
+        formData.description = null,
+        formData.name = null,
+        formData.prefix = null,
+        formData.cost = null
       }
     },
     {deep:true}
 )
 
+watch (
+() => productStore.errorMessage,
+async (data) => {
+if(data){
+  errorMessage.value = data.message
+  buttonLoader.value = false
+  notificationStore.errorToast("Error",data.message)
+}
+},
+{deep:true}
+)
+
+watch(
+() => schoolStore.schoolsResponse,
+async (data) => {
+  if (data) {
+      schoolList.value = data.data
+  }
+},
+{deep: true}
+)
+
+watch(
+() => campusStore.campusListResponse,
+async (data) => {
+  if (data) {
+      campusList.value = data.data
+  }
+},
+{deep: true}
+)
 
 </script>
 
 <style scoped>
+.textColor{
+font-size: 11px !important;
+}
 .noFocus:focus {
-    outline: none 0 !important;
-    box-shadow: none;
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
+outline: none 0 !important;
+box-shadow: none;
+-moz-box-shadow: none;
+-webkit-box-shadow: none;
 }
 </style>

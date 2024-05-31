@@ -113,8 +113,8 @@ export const useServiceStore = defineStore("service", () => {
                     }
                 })
         }
-        async function updateProduct(productid,data) {
-            return await api.put("main/products/"+productid,data)
+        async function updateProduct(data) {
+            return await api.put("main/products/"+data.product_number,data)
                 .then((response) => {
                     updateProductResponse.value = response.data
                 })
