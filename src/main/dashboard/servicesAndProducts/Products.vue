@@ -1,29 +1,14 @@
 <template>
-    <div>
+ 
 
-      <AppModal title="New Product" v-model="showActionDialog" xs>
+      <AppModal title="New Product" v-model="showActionDialog" xl>
         <NewProduct></NewProduct>
     </AppModal>
 
+    <AppModal title="Update Product" v-model="showUpdateDialog" xl>
+        <UpdateProduct :productListData="productListData"></UpdateProduct>
+    </AppModal>
 
-        <div class="modal fade" id="serviceModal" tabindex="-1"   aria-hidden="true" :class="{ show: showDialog }">
-      <div class="modal-dialog">
-        <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header text-sm p-0">
-                        <h6 class="modal-title ml-3 mt-2 mb-2">Product</h6>
-                        <button aria-label="Close" class="btn-close btn-sm" data-bs-dismiss="modal"
-                                style="margin-right: 5px;" type="button"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mt-2 mb-2">           
-                           <NewProduct></NewProduct>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div></div>
-        </div>
         <div class="row">
       <div class="col-12">
         <div class="cad mt-3">
@@ -31,13 +16,6 @@
 
     <div class="container mt-4">
       <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Product
-        <!-- <button 
-        v-if="can('add_product','general')"
-        style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
-        data-bs-target="#serviceModal"  data-bs-toggle="modal" @click="openModal()">
-        <i class="bi bi-plus"></i>&nbsp;<small>
-          Add Product</small></button> -->
-
           <button 
         v-if="can('add_product','general')"
         style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
@@ -67,11 +45,11 @@
             <td>
               <button 
               v-if="can('edit_product','general')"
-              @click="setProductId(productData)" data-bs-target="#editServiceModal"  data-bs-toggle="modal" class="link-primary"><i class="bi bi-pencil"></i></button>&nbsp;&nbsp;   |
+              @click="showEditModal(productData)"><i class="bi bi-pencil"></i></button>&nbsp;&nbsp;   |
               &nbsp;&nbsp; 
               <button
               v-if="can('delete_product','general')"
-                @click="deleteProduct(productData.number)" class="link-danger"><i class="bi bi-trash"></i></button>        
+                @click="deleteProduct(productData)" class="link-danger"><i class="bi bi-trash"></i></button>        
               </td>
           </tr>      
         </tbody>
@@ -93,7 +71,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="mt-2 mb-2">           
-                           <UpdateProduct :product="productId"></UpdateProduct>
+                           <UpdateProduct :product="productListData"></UpdateProduct>
                         </div>
                     </div>
                 </div>
@@ -113,10 +91,11 @@
   import { useAbility } from '@casl/vue';
    const showActionDialog = ref(false)
    const { can } = useAbility()
+   const showUpdateDialog  = ref(false)
 
 const productsList = ref( [])
 let errorMessage = ref(null)
-const productId = ref(null)
+const productListData = ref(null)
 const productStore= useServiceStore()
 const  notificationStore  = useNotificationStore()
 const showDialog = ref(false)
@@ -128,8 +107,9 @@ const openProductModal = () =>{
   showActionDialog.value=true
 }
 
-function setProductId(sId){
-productId.value = sId
+function showEditModal(product){
+productListData.value = product
+showUpdateDialog.value = true
 }
   
   onMounted(
@@ -151,7 +131,7 @@ productId.value = sId
     () => productStore.newProductResponse,
     async (data) => {
       if(data){
-      /// showDialog.value = false
+        showActionDialog.value = false
         await productStore.fetchProductsList()
       }
     },
