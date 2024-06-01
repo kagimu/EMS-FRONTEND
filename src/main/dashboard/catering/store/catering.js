@@ -119,7 +119,9 @@ export const useCateringStore = defineStore("catering", () => {
 
 
     async function fetchMenuItem(data) {
-        return await api.get("main/catering/menu-items?school_number="+data.school_number+"&campus_number="+data.campus_number)
+       let school_number = data?.school_number ?? ""
+       let campus_number = data?.campus_number ?? ""
+        return await api.get("main/catering/menu-items?school_number="+school_number+"&campus_number="+campus_number)
             .then((response) => {
                 menuItemResponse.value = response.data
             })
@@ -179,7 +181,8 @@ async function newFeedingGroupSessionsInfo(data) {
         })
 }
 async function fetchFeedingGroupSessions(data) {
-    return await api.get("main/catering/feeding-sessions?school_number="+data.school_number)
+    let school_number = data?.school_number ?? ""
+    return await api.get("main/catering/feeding-sessions?school_number="+school_number)
         .then((response) => {
             feedingGroupSessionsInfoResponse.value = response.data
         })

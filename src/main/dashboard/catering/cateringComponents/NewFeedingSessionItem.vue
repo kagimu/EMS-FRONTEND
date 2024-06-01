@@ -181,7 +181,7 @@ watch(Items, (newItems) => {
 
 onMounted(
     async () => {
-        schoolStore.fetchSchools()
+        await schoolStore.fetchSchools()
     } )
 
 
