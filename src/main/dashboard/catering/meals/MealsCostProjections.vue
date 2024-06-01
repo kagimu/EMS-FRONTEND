@@ -119,68 +119,100 @@ watch(
     <div class="col-12">
 
 
-      <div class="flex justify-content-between mt-3">
+      <div class="flex justify-content-between mt-3 mb-4">
         <div class="ml-4">Meals Cost Projections</div>
       </div>
 
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-2 gap-4 mx-3">
+<div>
+  <div class="grid grid-cols-2 gap-2">
 
-        <div class="grid grid-cols-2 gap-2">
+    <div>
+      <select
+          style="box-shadow: none;"
+          class="form-select form-select-sm"
+          v-model="school_number"
+          @change="fetchCampusBySchool()"
+      >
+        <option disabled value="">--Filter by School--</option>
+        <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+      </select>
+    </div>
 
-          <div>
-              <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm"
-                  v-model="school_number"
-                  @change="fetchCampusBySchool()"
-              >
-                <option disabled value="">--Filter by School--</option>
-                <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
-              </select>
+    <div>
+      <select
+          style="box-shadow: none;"
+          class="form-select form-select-sm"
+          v-model="campus_number" required
+          @change="doFetchCostProjections()"
+      >
+        <option disabled value="">--Filter by campus--</option>
+        <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+        </option>
+      </select>
+    </div>
+
+    <div>
+      <VueDatePicker
+          placeholder="Start date: dd/mm/yyy"
+          text-input
+          auto-apply
+          :teleport="true"
+          style="font-size: 7px;"
+          v-model="start_date"
+          :preview-format="format"
+          @update:modelValue="doFetchCostProjections()"
+      ></VueDatePicker>
+    </div>
+
+    <div>
+      <VueDatePicker
+          placeholder="End date: dd/mm/yyy"
+          text-input
+          auto-apply
+          :teleport="true"
+          style="font-size: 7px;"
+          v-model="end_date"
+          :preview-format="format"
+          @update:modelValue="doFetchCostProjections()"
+      ></VueDatePicker>
+    </div>
+
+  </div>
+</div>
+
+
+        <div class="text-sm px-4">
+          <div class="mb-2">Summary</div>
+          <div class="border rounded-md">
+            <table class="table table-hover caption-top table-sm" style="font-size: 14px;">
+              <thead>
+              <tr>
+                <th scope="col" class="w-[10%]">#</th>
+                <th scope="col" class="w-[30%]">Name</th>
+                <th scope="col" class="w-[20%]">Unit</th>
+                <th scope="col" class="w-[20%]">Qty</th>
+                <th scope="col" class="w-[30%]">Cost</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(summary, summary_index) in mealProjections?.items_summary" :key="summary_index">
+                <td> {{(summary_index + 1)}}</td>
+                <td> {{summary.name}}</td>
+                <td> {{summary.unit_of_measure}}</td>
+                <td> {{summary.quantity}}</td>
+                <td> {{summary.total_cost}}</td>
+              </tr>
+              <tr class="font-bold">
+                <td colspan="4">Total</td>
+                <td>{{mealProjections?.total_cost}}</td>
+              </tr>
+              </tbody>
+            </table>
+
           </div>
-
-          <div>
-              <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm"
-                  v-model="campus_number" required
-                  @change="doFetchCostProjections()"
-              >
-                <option disabled value="">--Filter by campus--</option>
-                <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-                </option>
-              </select>
-          </div>
-
-          <div>
-              <VueDatePicker
-                  placeholder="Start date: dd/mm/yyy"
-                  text-input
-                  auto-apply
-                  :teleport="true"
-                  style="font-size: 7px;"
-                  v-model="start_date"
-                  :preview-format="format"
-                  @update:modelValue="doFetchCostProjections()"
-              ></VueDatePicker>
-          </div>
-
-          <div>
-              <VueDatePicker
-                  placeholder="End date: dd/mm/yyy"
-                  text-input
-                  auto-apply
-                  :teleport="true"
-                  style="font-size: 7px;"
-                  v-model="end_date"
-                  :preview-format="format"
-                  @update:modelValue="doFetchCostProjections()"
-              ></VueDatePicker>
-          </div>
-
         </div>
 
-        <div>Summary</div>
       </div>
 
 
@@ -188,7 +220,7 @@ watch(
 
 
 
-      <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
+      <table class="table table-hover caption-top mt-5 table-sm border-t" style="font-size: 14px;">
         <thead>
         <tr>
           <th scope="col" class="w-[5%]">#</th>
@@ -223,11 +255,11 @@ watch(
                   <table v-if="meal?.items?.length > 0" class="table table-hover caption-top table-sm" style="font-size: 14px;">
                     <thead>
                     <tr>
-                      <th scope="col" class="w-[5%]">#</th>
-                      <th scope="col" class="w-[20%]">Name</th>
-                      <th scope="col" class="w-[45%]">Unit</th>
-                      <th scope="col" class="w-[30%]">Quantity</th>
-                      <th scope="col" class="w-[45%]">Cost</th>
+                      <th scope="col" class="w-[10%]">#</th>
+                      <th scope="col" class="w-[30%]">Name</th>
+                      <th scope="col" class="w-[20%]">Unit</th>
+                      <th scope="col" class="w-[20%]">Qty</th>
+                      <th scope="col" class="w-[30%]">Cost</th>
                     </tr>
                     </thead>
                     <tbody>
