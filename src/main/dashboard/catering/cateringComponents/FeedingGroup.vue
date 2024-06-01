@@ -136,6 +136,8 @@ watch (
       if(data){
         // buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
+        cateringStore.fetchFeedingGroup(form.school_number)
+      
       
       }
     },

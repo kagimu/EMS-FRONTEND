@@ -484,7 +484,7 @@ async function updateFeedingSession(data) {
 
 
 async function deleteFeedingSession(data) {
-    return await api.post("main/catering/feeding-sessions/delete/",data)
+    return await api.post("main/catering/feeding-sessions/delete?feeding_session_number="+data.feeding_session_number)
         .then((response) => {
             deleteFeedingSessionResponse.value = response.data
         })
@@ -496,7 +496,7 @@ async function deleteFeedingSession(data) {
 }
 
 async function deleteFeedingGroup(data) {
-    return await api.post("main/catering/feeding-groups/delete/",data)
+    return await api.post("main/catering/feeding-groups/delete?feeding_group_number="+data.feeding_group_number)
         .then((response) => {
             deleteFeedingGroupResponse.value = response.data
         })

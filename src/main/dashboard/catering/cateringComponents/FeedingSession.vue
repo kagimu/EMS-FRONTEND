@@ -219,6 +219,8 @@ watch (
       if(data){
         // buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
+        doFetchFeedingSessions()
+
       
       }
     },
