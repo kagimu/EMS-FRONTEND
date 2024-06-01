@@ -163,7 +163,7 @@
   const userList = ref([])
   onMounted(() => {
     schoolStore.fetchSchools()
-    cateringStore.fetchFeedingGroupSessions()
+    // cateringStore.fetchFeedingGroupSessions()
   })
   
   const doGetUsersList = () =>{

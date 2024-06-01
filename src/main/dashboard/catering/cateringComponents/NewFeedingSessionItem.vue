@@ -275,7 +275,7 @@ watch(
 )
 
 onMounted(() => {
-      cateringStore.fetchFeedingGroupSessions()
+      // cateringStore.fetchFeedingGroupSessions()
   }
 )
 

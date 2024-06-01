@@ -125,7 +125,7 @@ watch (
       if(data){
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        cateringStore.fetchFeedingGroupSessions()
+        // await cateringStore.fetchFeedingGroupSessions()
       }
     },
     {deep:true}

@@ -77,7 +77,7 @@ watch (
       if(data){
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        cateringStore.fetchFeedingGroup()
+        // await cateringStore.fetchFeedingGroup()
         form.code=null,
             form.name=null,
             form.status="ACTIVE",

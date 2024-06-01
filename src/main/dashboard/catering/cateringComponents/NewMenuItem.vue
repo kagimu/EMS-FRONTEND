@@ -57,8 +57,8 @@ const closeDialog = () => {
 
 onMounted(() => {
       schoolStore.fetchSchools()
-      cateringStore.fetchMenuItem()
-      cateringStore.fetchFeedingGroupSessions()
+      // cateringStore.fetchMenuItem()
+      // cateringStore.fetchFeedingGroupSessions()
       cateringStore.fetchUnitOfMeasureInfo()
     }
 )
@@ -221,7 +221,7 @@ watch(
     () => cateringStore.newAssemblyItemResponse,
     async (data) => {
       notificationStore.successToast("Success", data.message)
-      cateringStore.fetchMenuItem()
+      // await cateringStore.fetchMenuItem()
       clearFormData()
       buttonLoader.value = false;
     },
