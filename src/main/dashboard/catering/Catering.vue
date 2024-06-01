@@ -47,15 +47,15 @@ const menu = ref([
 ])
 
 const Feedmenu = ref([
-  {
-    text:"Feeding User Group",
-    value:"manage-feeding-users"
-  },
-  {
-    text:"Capturing Meals",
-    value:"feeding",
-    action:"record_meals"
-  },
+  // {
+  //   text:"Feeding User Group",
+  //   value:"manage-feeding-users"
+  // },
+  // {
+  //   text:"Capturing Meals",
+  //   value:"feeding",
+  //   action:"record_meals"
+  // },
 ])
 
 const mealMenu = ref([
@@ -75,6 +75,11 @@ const mealMenu = ref([
   {
     text:"Meal Calendar",
     value:"meal-calendar"
+  },
+  {
+    text:"Meals Capture",
+    value:"feeding",
+    action:"record_meals"
   },
   {
     text:"Meals Cost Projections",
@@ -127,7 +132,7 @@ const changeMenu = (value) => {
 
 
 
-          <div class="card mt-3">
+          <!-- <div class="card mt-3">
             <div class="card-body" style="padding: 0;">
                 <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
                   <div
@@ -140,7 +145,7 @@ const changeMenu = (value) => {
               </div>
            
             </div>
-          </div>
+          </div> -->
 
 
 
