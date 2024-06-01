@@ -48,9 +48,9 @@ onMounted(() => {
 
 
 const filterBySchool = (school_number) => {
-    // doFetchMenuItem()
-    campusStore.fetchCampuses(school_number)
-
+    if(school_number) {
+      campusStore.fetchCampuses(school_number)
+    }
 }
 
 

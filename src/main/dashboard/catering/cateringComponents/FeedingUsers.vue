@@ -248,7 +248,7 @@
   )
   
     const fetchCampuses = (school_number) => {
-      campusStore.fetchCampuses(school_number)
+      campusStore.fetchCampuses(school_number ?? "")
   }
   
   
@@ -264,8 +264,8 @@
 
   const doFetchMealCourses = (school_number) => {
   if(school_number){
-    mealStore.fetchMealCourses(school_number)
-    campusStore.fetchCampuses(school_number)
+    mealStore.fetchMealCourses(school_number ?? "")
+    campusStore.fetchCampuses(school_number ?? "")
   }
 }
 

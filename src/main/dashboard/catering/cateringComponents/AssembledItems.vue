@@ -39,7 +39,7 @@ const form = reactive({
 
 
 const fetchCampuses = (school_number) => {
-    campusStore.fetchCampuses(school_number)
+    campusStore.fetchCampuses(school_number ?? "")
 }
 
 const filter = (campusN) =>{
