@@ -70,6 +70,20 @@ const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
 const errorMessage = ref(null)
 
+const props = defineProps({
+  groupData:[]
+})
+
+
+onMounted(() => {
+        schoolStore.fetchSchools()
+        if(props.groupData.number != ""){
+        form.code = props.groupData.code;
+        form.name = props.groupData.name;
+      }
+    }
+)
+
 const form = reactive({
     code:null,
     name:null,
@@ -87,9 +101,24 @@ const addFeedingSessionGroup = () => {
     school_number:form.school_number
 })
     buttonLoader.true
+    if(props.groupData.number){
+    if(!confirm("Sure want Edit " + props.groupData.name )){
+      return
+    }
+    let formD = {
+      feeding_session_number:props.groupData.number,
+      name:form.name,
+      code:parseInt(form.code),
+      status:"ACTIVE",
+      school_number:form.school_number
+    }
+    cateringStore.updateFeedingSession(formD)
+}else{
     cateringStore.newFeedingGroupSessionsInfo(myData)
-    
 }
+   
+}
+
 watch (
     () => cateringStore.newFeedingGroupSessionsInfoResponse,
     async (data) => {
@@ -97,6 +126,20 @@ watch (
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
         cateringStore.fetchFeedingGroupSessions()
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => cateringStore.updateFeedingSessionResponse,
+    async (data) => {
+      if(data){
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message) 
+        form.code = ""
+        form.name = ""
+
       }
     },
     {deep:true}
@@ -115,10 +158,7 @@ watch (
   )
    
   
-  onMounted(() => {
-        schoolStore.fetchSchools()
-    }
-)
+ 
 
 watch(
     () => schoolStore.schoolsResponse,

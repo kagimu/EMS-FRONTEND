@@ -38,7 +38,9 @@ export const useCateringStore = defineStore("catering", () => {
     let menuItemPaginatedResponse = ref(null)
     let feedingGroupUsersListResponse = ref(null)
     let feedingGroupUsersAvailableResponse = ref(null)
-
+    let updateFeedingSessionResponse = ref(null)
+    let deleteFeedingSessionResponse = ref(null)
+    let deleteFeedingGroupResponse = ref(null)
     const errorMessage = ref(null)
 
     async function newUnitOfMeasureInfo(data) {
@@ -468,7 +470,42 @@ async function fetchUsersToAssign() {
         })
 }
 
+async function updateFeedingSession(data) {
+    return await api.post("main/catering/feeding-sessions/update", data)
+        .then((response) => {
+            updateFeedingSessionResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response && response.response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
 
+
+async function deleteFeedingSession(data) {
+    return await api.post("main/catering/feeding-sessions/delete/",data)
+        .then((response) => {
+            deleteFeedingSessionResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response && response.response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function deleteFeedingGroup(data) {
+    return await api.post("main/catering/feeding-groups/delete/",data)
+        .then((response) => {
+            deleteFeedingGroupResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response && response.response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
     return {
         newUnitOfMeasureInfoResponse,
         errorMessage,
@@ -540,7 +577,12 @@ async function fetchUsersToAssign() {
         feedingGroupUsersListResponse,
         fetchGroupUsersList,
         feedingGroupUsersAvailableResponse,
-        fetchUsersToAssign
-
+        fetchUsersToAssign,
+        updateFeedingSession,
+        deleteFeedingSessionResponse,
+        deleteFeedingSession,
+        deleteFeedingGroupResponse,
+        deleteFeedingGroup,
+        updateFeedingSessionResponse
     }
 } )

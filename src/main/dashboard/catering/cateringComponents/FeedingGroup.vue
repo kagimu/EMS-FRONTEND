@@ -119,10 +119,28 @@ const editThisData = (num) => {
 const deleteThisData = (id,name) => {
   if(!confirm("Are you sure, you want to delete: " + name)){
     return
+  }else{
+    // delete endpoint
+    let data = {
+     feeding_group_number:id
+    }
+     cateringStore.deleteFeedingGroup(data)
   }
-// delete endpoint
+
 
 }
+
+watch (
+    () => cateringStore.deleteFeedingGroupResponse,
+    async (data) => {
+      if(data){
+        // buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+      
+      }
+    },
+    {deep:true}
+)
 
 
 watch (

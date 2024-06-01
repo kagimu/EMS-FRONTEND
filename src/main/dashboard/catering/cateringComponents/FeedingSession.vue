@@ -2,21 +2,13 @@
     <div>
 
 
-            <!-- schedule interview -->
-          <div class="offcanvas offcanvas-end" tabindex="-1" id="rolesDialogg" :class="{ show:thisDialog }" aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header">
-              <h5 class="offcanvas-title" id="offcanvasRightLabel"><small>Feeding Session</small></h5>
-              <button type="button" class="btn-close"  data-bs-dismiss="offcanvas" aria-label="Close" @click="closeDialog"></button>
-            </div>
-            <div class="offcanvas-body">
-             <NewFeedingSession></NewFeedingSession>
-            </div>
-          </div>
-  <!-- wnd  -->
-  
-  <AppModal title="Feeding Session" v-model="showingModal" lg>
-    <NewFeedingSession></NewFeedingSession>
+  <AppModal :title="editModel ? 'Edit ' + namee:'New Feeding Group'" v-model="showingModal" lg>
+    <NewFeedingSession :groupData="dataList"></NewFeedingSession>
     </AppModal>
+
+    <!-- <AppModal :title="editModel ? 'Edit ' + namee:'New Feeding Group'" v-model="showingModal" lg>
+    <NewFeedingGroup :groupData="dataList"></NewFeedingGroup>
+    </AppModal> -->
 
                
     <!-- end  -->
@@ -88,6 +80,7 @@
         <tr>
         <th>Code</th>
         <th>Name</th>
+        <th>Action</th>
         </tr>
     <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
     {{errorMessage}}
@@ -97,6 +90,15 @@
       <tr v-for="(list, index) in feedingSessionGroupData" :key="index">
       <td>{{ list.code }}</td>
       <td>{{ list.name }}</td>
+      <td>
+        <button @click="editThisData(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
+            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+          </button>
+          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
+          <button type="button" @click="deleteThisData(list.number,list.name)">
+            <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+          </button>
+      </td>
       </tr>
                 
     </tbody>
@@ -119,12 +121,12 @@
   import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
   import AppModal from "@/components/AppModal.vue";
 
-
   const showingModal = ref(false)
 
   const showModal = () => {
   showingModal.value = true
   thisDialog.value=false
+  editModel.value = false
   }
 
   const form = reactive({
@@ -183,6 +185,55 @@ watch(
     {deep: true}
 )
 
+//edit
+const dataList = ref([])
+const namee = ref(null)
+const editModel = ref(false)
+
+const editThisData = (num) => {
+  editModel.value = true
+  dataList.value = num
+  namee.value = num.name
+  showingModal.value = true
+}
+
+
+//delete
+const deleteThisData = (id,name) => {
+  if(!confirm("Are you sure, you want to delete: " + name)){
+    return
+  }else{
+    // delete endpoint
+    let data = {
+      feeding_session_number:id
+    }
+     cateringStore.deleteFeedingSession(data)
+  }
+
+
+}
+
+watch (
+    () => cateringStore.deleteFeedingSessionResponse,
+    async (data) => {
+      if(data){
+        // buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+      
+      }
+    },
+    {deep:true}
+)
+watch (
+    () => cateringStore.updateFeedingSessionResponse,
+    async (data) => {
+      if(data){
+      showingModal.value = false
+      doFetchFeedingSessions()
+      }
+    },
+    {deep:true}
+)
   </script>
   
   
