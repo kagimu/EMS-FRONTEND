@@ -1,3 +1,121 @@
+<script setup>
+import InvoicePayment from './InvoicePayment.vue';
+import {onMounted, reactive, ref, watch,computed} from "vue";
+import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
+import { useRouter } from 'vue-router'
+import useNotificationStore from "@/composables/useNotification.js"
+import AppModal from "@/components/AppModal.vue";
+
+
+const invoiceStore = useInvoiceStore()
+const showDialog = ref(false)
+const invoiceData = ref([])
+const notificationStore = useNotificationStore()
+
+const routerData = useRouter()
+const invoice_number = routerData.currentRoute.value.query.invoice_id
+const mymodalpay = ref(false)
+const thisInvoiceNumber = ref(null)
+
+const  showModal = (invoice) =>{
+  mymodalpay.value = true
+  thisInvoiceNumber.value = invoice
+}
+
+onMounted(
+    async () => {
+      await invoiceStore.fetchInvoiceId(invoice_number)
+    }
+)
+
+
+const myData = reactive ({
+  ref_number: invoice_number,
+  date :null,
+  due_date: null,
+  total_amount:null,
+  paid_amount:null,
+  balance: null,
+  status:null,
+  invoiceN:null
+})
+watch(
+    () => invoiceStore.invoiceResponseById,
+    async (data) => {
+      if(data){
+        invoiceData.value = data.data
+        myData.ref_number= data.data.ref_number
+        myData.date= data.data.date
+        myData.due_date= data.data.due_date
+        myData.total_amount= data.data.total_amount
+        myData.paid_amount= data.data.paid_amount
+        myData.balance= data.data.balance
+        myData.status=data.data.status
+        myData.invoiceN = data.data.number
+      }
+    },
+    {deep:true}
+)
+
+const goBack = () => {
+  window.history.back()
+}
+
+const openModal = () =>{
+  showDialog.value = true
+}
+
+
+watch (
+    () => invoiceStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+
+
+
+const invoice = ref({
+  items: [
+    { description: 'Item 2', price: 20 },
+    { description: 'Item 3', price: 15 },
+
+  ]
+})
+
+const total = 5000000;
+
+const columns = computed(() => {
+  const items = invoice.value.items
+  const numColumns = Math.ceil(items.length / 7)
+  const columns = Array.from({ length: numColumns }, (_, columnIndex) => {
+    const startIndex = columnIndex * 7
+    return items.slice(startIndex, startIndex + 7)
+  })
+  return columns
+})
+
+
+watch (
+    () => invoiceStore.newInvoicePaymentResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+        mymodalpay.value = false
+        await invoiceStore.fetchInvoiceId(invoice_number)
+      }
+    }
+)
+
+
+
+</script>
 <template>
     <div>
       <!-- invoice payment -->
@@ -6,7 +124,7 @@
     <InvoicePayment :invoiceNumber="thisInvoiceNumber"></InvoicePayment>
     </AppModal>
 
-          <div class="row">
+          <div class="row mt-4">
              <div class="col-12">
                 <div class="card mt-0">
                   <div class="card-header">
@@ -156,124 +274,7 @@
       </div>
     </template>
 
-<script setup>
-import InvoicePayment from './InvoicePayment.vue';
-import {onMounted, reactive, ref, watch,computed} from "vue";
-import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
-import { useRouter } from 'vue-router'
-import useNotificationStore from "@/composables/useNotification.js"
-import AppModal from "@/components/AppModal.vue";
 
-const refN = ref(null)
-const invoiceStore = useInvoiceStore()
-const showDialog = ref(false)
-const invoiceData = ref([])
-const notificationStore = useNotificationStore()
-
-const routerData = useRouter()
-const invoice_number = routerData.currentRoute.value.query.invoice_id
-const mymodalpay = ref(false)
-const thisInvoiceNumber = ref(null)
-
-const  showModal = (invoice) =>{
-  mymodalpay.value = true
-  thisInvoiceNumber.value = invoice
-}
-
-onMounted(
-    async () => {
-      await invoiceStore.fetchInvoiceId(invoice_number)
-    } 
-  )
-
-
-const myData = reactive ({
-      ref_number: invoice_number,
-      date :null,
-      due_date: null,
-      total_amount:null,
-      paid_amount:null,
-      balance: null,
-      status:null,
-      invoiceN:null
-})
-  watch(
-    () => invoiceStore.invoiceResponseById,
-    async (data) => {
-      if(data){
-        invoiceData.value = data.data
-        myData.ref_number= data.data.ref_number
-        myData.date= data.data.date
-        myData.due_date= data.data.due_date
-        myData.total_amount= data.data.total_amount
-        myData.paid_amount= data.data.paid_amount
-        myData.balance= data.data.balance
-        myData.status=data.data.status
-        myData.invoiceN = data.data.number
-      }
-    },
-    {deep:true}
-)
-
-const goBack = () => {
-     window.history.back()
-    }
-
-const openModal = () =>{
-  showDialog.value = true
-}
-
-
-watch (
-    () => invoiceStore.errorMessage,
-    async (data) => {
-      if(data){
-        errorMessage.value = data.message
-        notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-)
-
-
-
-
-
-const invoice = ref({
-  items: [
-    { description: 'Item 2', price: 20 },
-    { description: 'Item 3', price: 15 },
-
-  ]
-})
-
-const total = 5000000;
-
-const columns = computed(() => {
-  const items = invoice.value.items
-  const numColumns = Math.ceil(items.length / 7)
-  const columns = Array.from({ length: numColumns }, (_, columnIndex) => {
-    const startIndex = columnIndex * 7
-    return items.slice(startIndex, startIndex + 7)
-  })
-  return columns
-})
-
-
-watch (
-    () => invoiceStore.newInvoicePaymentResponse,
-    async (data) => {
-      if(data){
-        notificationStore.successToast("Success", data.message)
-        mymodalpay.value = false
-        await invoiceStore.fetchInvoiceId(invoice_number)
-      }
-    }
-)
-
-
-
-</script>
 
 <style>
  .mb-8 {
