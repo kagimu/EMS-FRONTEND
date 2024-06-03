@@ -121,7 +121,7 @@ watch (
       <!-- invoice payment -->
 
     <AppModal title="Pay" v-model="mymodalpay" xs>
-    <InvoicePayment :invoiceNumber="thisInvoiceNumber"></InvoicePayment>
+        <InvoicePayment :invoiceNumber="thisInvoiceNumber"></InvoicePayment>
     </AppModal>
 
           <div class="row mt-4">
@@ -144,14 +144,6 @@ watch (
                  </div>
                   <div class="card-body" style="padding: 0;">
           <div class="container mt-1">
-      <!--
-            "ref_number": "24055279",
-              "date": "2024-05-13T11:18:19.477Z",
-              "due_date": "2024-05-07T00:00:00Z",
-              "total_amount": 0,
-              "paid_amount": 0,
-              "balance": 0,
-              "status": "NOT_PAID", -->
 
             <div class="row">
             <div class="col-12">
