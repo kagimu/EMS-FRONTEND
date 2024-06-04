@@ -1,11 +1,116 @@
+<script setup>
+  import { onMounted, reactive, ref, watch } from "vue";
+  import { useRolesStore } from "../store/roles.js";
+  import useNotificationStore from "@/composables/useNotification.js";
+  
+  const roleStore = useRolesStore()
+  const notificationStore = useNotificationStore()
+  const buttonLoader = ref(false)
+  const showDialog = ref(false)
+  const role_number = ref(null)
+  const form = reactive(
+    { 
+      name: null, 
+      description: null
+     })
+  
+  const permissionData = ref([])
+  const permissionSelected = ref([])
+
+  const props = defineProps({
+    roleData:String
+  })
+
+
+onMounted(
+    async () => {
+      await roleStore.fetchPermissionGroups()
+            roleStore.fetchRoles()
+            prefillDraftData()
+    } )
+
+    const prefillDraftData = () => {
+    if(props.roleData){
+      let draft = props.roleData
+      form.name = draft.name
+      form.description = draft.description
+      role_number.value = draft.number   
+      permissionSelected.value = draft.permissions
+     }
+    }
+
+    watch(
+    () => props.roleData,
+    async (data) => {
+      if(data){
+       prefillDraftData()
+      }
+    }
+    )
+
+    watch(
+    () => roleStore.permisionGroupsResponse,
+    async (data) => {
+      if(data){
+        permissionData.value = data.data
+      }
+    },
+    {deep:true}
+    )
+    
+    watch (
+    () => roleStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+const addRoles = () => {
+  buttonLoader.value=true
+    let formData = form
+        formData.permissions = permissionSelected.value
+  if(role_number.value){
+    formData.role_number = role_number.value
+    roleStore.editRole(formData)
+  }else{
+    roleStore.createNewRole(formData)
+  }
+ 
+}
+
+watch (
+    () => roleStore.editRoleResponse,
+    async (data) => {
+      if(data){
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+watch (
+    () => roleStore.newRoleResponse,
+    async (data) => {
+      if(data){
+        showDialog.value = false
+        buttonLoader.value = false
+         roleStore.fetchRoles()
+        form.name = null
+        form.description = null
+        permissionSelected.value = []
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+</script>
 <template>
-    <div class="modal-content">
-      <div class="modal-header text-sm p-0">
-        <h6 class="modal-title ml-3 mt-2 mb-2"><small>Add Role</small></h6>
-        <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        
+  <!-- {{ roleData }} -->
         <form @submit.prevent="addRoles">
           <div class="mb-2 mr-5 ml-5">
             <input placeholder="Role Name" type="text" v-model="form.name" required class="form-control">
@@ -40,78 +145,10 @@
             </button>
           </div>
         </form>
-      </div>
-    </div>
+  
   </template>
   
-  <script setup>
-   import { onMounted, reactive, ref, watch } from "vue";
-  import { useRolesStore } from "../store/roles.js";
-  import useNotificationStore from "@/composables/useNotification.js";
-  
-  const roleStore = useRolesStore()
-  const notificationStore = useNotificationStore()
-  const buttonLoader = ref(false)
-  const showDialog = ref(false)
-  const form = reactive({ name: null, description: null })
-  
-  const permissionData = ref([])
-  const permissionSelected = ref([])
 
-onMounted(
-    async () => {
-      await roleStore.fetchPermissionGroups()
-    } )
-
-    watch(
-    () => roleStore.permisionGroupsResponse,
-    async (data) => {
-      if(data){
-        permissionData.value = data.data
-      }
-    },
-    {deep:true}
-    )
-    
-    watch (
-    () => roleStore.errorMessage,
-    async (data) => {
-      if(data){
-        notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-)
-
-const addRoles = () => {
-    let formData = form
-        formData.permissions = permissionSelected.value
- 
-  // alert(JSON.stringify(formData))
-  roleStore.createNewRole(formData)
-}
-
-onMounted(
-    async () => {
-      await roleStore.fetchRoles()
-    } )
-
-watch (
-    () => roleStore.newRoleResponse,
-    async (data) => {
-      if(data){
-        showDialog.value = false
-        buttonLoader.value = false
-         roleStore.fetchRoles()
-        form.name = null
-        form.description = null
-        permissionSelected.value = []
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-  </script>
   
   <style scoped>
   .mb-2 {

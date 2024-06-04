@@ -10,6 +10,7 @@ export const useRolesStore = defineStore("roles", () => {
     const  roleByIdResponse = ref(null)
     const deleteRoleResponse = ref(null)
     const updateRoleResponse = ref(null)
+    const editRoleResponse = ref(null)
 
 
     async function createNewRole(data) {
@@ -81,6 +82,17 @@ export const useRolesStore = defineStore("roles", () => {
                 }
             })
     }
+    async function editRole(data) {
+        return await api.post("main/settings/roles/update/"+data.role_number,data)
+            .then((response) => {
+             editRoleResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
     return {
         errorMessage,
@@ -95,6 +107,8 @@ export const useRolesStore = defineStore("roles", () => {
         deleteRoleResponse,
         deleteRole,
         updateRoleResponse,
-        updateRole
+        updateRole,
+        editRoleResponse,
+        editRole
     }
 })

@@ -1,17 +1,22 @@
 <template>
   <div>
 
-    <div class="modal fade" id="addRoleModel" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: showDialog }">
+    <!-- <div class="modal fade" id="addRoleModel" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: showDialog }">
       <div class="modal-dialog modal-lg">
      <NewRole></NewRole>
         </div>
-      </div>
+      </div> -->
 
-      <div class="modal fade" id="updateRoleModel" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: showDialog }">
+      <AppModal :title="editMode ? 'Edit Role' : 'Add New Role'" v-model="showModal" xl4>
+        <NewRole :roleData="roleData"></NewRole>
+    </AppModal>
+
+      <!-- <div class="modal fade" id="updateRoleModel" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: showDialog }">
       <div class="modal-dialog modal-lg">
     <update-role :role-number="roles_no"></update-role>
         </div>
-      </div>
+      </div> -->
+
 
 
       <div class="row">
@@ -25,7 +30,7 @@
             <div class="col-lg-6">
                 <button
                 v-if="can('add_role','general')" 
-                style="float: right; margin-right: 5px;" data-bs-toggle="modal" data-bs-target="#addRoleModel"  type="button"  aria-controls="rolesDialog" class="btn btn-primary btn-sm"><i class="bi bi-plus"></i>New Role</button>
+                style="float: right; margin-right: 5px;" @click="showAddModal" type="button"  aria-controls="rolesDialog" class="btn btn-primary btn-sm"><i class="bi bi-plus"></i>New Role</button>
             </div>
     
            </div>
@@ -65,7 +70,7 @@
           <!-- Buttons for actions -->
           <button
           v-if="can('update_permission','general')"
-           @click="setEditRolesId(roles.number)" data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
+           @click="setEditRolesId(roles)"  type="button" aria-controls="rolesDialog">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
@@ -99,6 +104,7 @@ import NewRole from "./roleComponents/NewRole.vue";
 import UpdateRole from "./roleComponents/UpdateRole.vue"
 import { useRolesStore } from "./store/roles";
 import useNotificationStore from "@/composables/useNotification.js";
+import AppModal from "@/components/AppModal.vue";
 
 import { useAbility } from '@casl/vue';
 
@@ -106,15 +112,24 @@ const { can } = useAbility()
 
 const roleStore = useRolesStore()
 const notificationStore = useNotificationStore()
-const rolesList = ref([])
+const roleData = ref([])
 const errorMessage = ref(null)
 const showDialog = ref(false)
 const roles_no = ref ([])
+const showModal = ref(false)
+const editMode=ref(false)
+ const rolesData = ref([])
 
-  const rolesData = ref([])
+ const showAddModal = ()=>{
+  showModal.value = true
+  editMode.value=false
+ }
 
-const setEditRolesId = (roleId) => {
-  roles_no.value = roleId
+const setEditRolesId = (roleD) => {
+  roleData.value = roleD
+  showModal.value = true
+  editMode.value=true
+
 }
 
 const  deleteroles = (roleId) => {
@@ -143,6 +158,17 @@ onMounted(
       if(data){
         notificationStore.errorToast("Error",data.message)
 
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => roleStore.editRoleResponse,
+    async (data) => {
+      if(data){
+        showModal.value = false
+        editMode.value=false
       }
     },
     {deep:true}

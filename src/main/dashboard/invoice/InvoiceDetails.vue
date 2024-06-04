@@ -56,15 +56,15 @@
           </div>
         </div> -->
         <div class="row mb-3">
-          <div class="col-12 col-sm-6 col-md-8" >
+          <div class="col-12 col-sm-6 col-md-8" style="text-transform: capitalize;" >
             <h4>Bill To</h4>
             <address>
               <strong>  {{ studentName }} </strong><br>
               {{ school}}<br>
               {{ campus}}<br>
               {{ className+"("+stream+")"}}<br>
-              Year: {{ academicYear }}<br>
-              StudyPeriod: {{ studyPeriod }}
+              {{ academicYear }} , {{ studyPeriod }}<br>
+            
             
               <!-- {{ userData }} -->
             </address>
