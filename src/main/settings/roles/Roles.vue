@@ -1,3 +1,84 @@
+<script setup>
+ import { onMounted, reactive, ref, watch } from "vue";
+import NewRole from "./roleComponents/NewRole.vue";
+import UpdateRole from "./roleComponents/UpdateRole.vue"
+import { useRolesStore } from "./store/roles";
+import useNotificationStore from "@/composables/useNotification.js";
+import AppModal from "@/components/AppModal.vue";
+
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
+
+const roleStore = useRolesStore()
+const notificationStore = useNotificationStore()
+const roleData = ref([])
+const errorMessage = ref(null)
+const showDialog = ref(false)
+const roles_no = ref ([])
+const showModal = ref(false)
+const editMode=ref(false)
+ const rolesData = ref([])
+ const roleRef = ref(null)
+
+ const showAddModal = ()=>{
+  showModal.value = true
+  editMode.value=false
+  roleRef.value.clearRoleData();
+ }
+
+const setEditRolesId = (roleD) => {
+  roleData.value = roleD
+  showModal.value = true
+  editMode.value=true
+}
+
+const  deleteroles = (roleId) => {
+  
+}
+
+//fetch
+onMounted(
+    async () => {
+      await roleStore.fetchRoles()
+    } )
+
+    watch(
+    () => roleStore.roleResponse,
+    async (data) => {
+      if(data){
+        rolesData.value = data.data
+      }
+    },
+    {deep:true}
+    )
+    
+    watch (
+    () => roleStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error",data.message)
+
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => roleStore.editRoleResponse,
+    async (data) => {
+      if(data){
+        showModal.value = false
+        editMode.value=false
+        roleStore.fetchRoles()
+      }
+    },
+    {deep:true}
+)
+
+</script>
+
+
 <template>
   <div>
 
@@ -8,7 +89,7 @@
       </div> -->
 
       <AppModal :title="editMode ? 'Edit Role' : 'Add New Role'" v-model="showModal" xl4>
-        <NewRole :roleData="roleData"></NewRole>
+        <NewRole ref="roleRef" :roleData="roleData"></NewRole>
     </AppModal>
 
       <!-- <div class="modal fade" id="updateRoleModel" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: showDialog }">
@@ -98,83 +179,6 @@
   </div>
 </template>
 
-<script setup>
- import { onMounted, reactive, ref, watch } from "vue";
-import NewRole from "./roleComponents/NewRole.vue";
-import UpdateRole from "./roleComponents/UpdateRole.vue"
-import { useRolesStore } from "./store/roles";
-import useNotificationStore from "@/composables/useNotification.js";
-import AppModal from "@/components/AppModal.vue";
-
-import { useAbility } from '@casl/vue';
-
-const { can } = useAbility()
-
-const roleStore = useRolesStore()
-const notificationStore = useNotificationStore()
-const roleData = ref([])
-const errorMessage = ref(null)
-const showDialog = ref(false)
-const roles_no = ref ([])
-const showModal = ref(false)
-const editMode=ref(false)
- const rolesData = ref([])
-
- const showAddModal = ()=>{
-  showModal.value = true
-  editMode.value=false
- }
-
-const setEditRolesId = (roleD) => {
-  roleData.value = roleD
-  showModal.value = true
-  editMode.value=true
-
-}
-
-const  deleteroles = (roleId) => {
-  
-}
-
-//fetch
-onMounted(
-    async () => {
-      await roleStore.fetchRoles()
-    } )
-
-    watch(
-    () => roleStore.roleResponse,
-    async (data) => {
-      if(data){
-        rolesData.value = data.data
-      }
-    },
-    {deep:true}
-    )
-    
-    watch (
-    () => roleStore.errorMessage,
-    async (data) => {
-      if(data){
-        notificationStore.errorToast("Error",data.message)
-
-      }
-    },
-    {deep:true}
-)
-
-watch (
-    () => roleStore.editRoleResponse,
-    async (data) => {
-      if(data){
-        showModal.value = false
-        editMode.value=false
-      }
-    },
-    {deep:true}
-)
-
-</script>
 
 <style scoped>
 

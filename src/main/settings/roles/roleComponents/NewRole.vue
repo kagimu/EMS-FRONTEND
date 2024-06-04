@@ -29,6 +29,18 @@ onMounted(
             prefillDraftData()
     } )
 
+    const clearRoleData = () => {
+      alert("I reach here")
+      form.name = ""
+      form.description = ""
+      role_number.value = "" 
+      permissionSelected.value = []
+    }
+
+    defineExpose({
+      clearRoleData
+    }); 
+
     const prefillDraftData = () => {
     if(props.roleData){
       let draft = props.roleData
