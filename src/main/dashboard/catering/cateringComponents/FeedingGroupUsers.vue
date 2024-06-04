@@ -47,8 +47,8 @@ onMounted(
 )
 
 const doFeedingUsers = (schoolN) =>{
-  cateringStore.fetchFeedingGroup(schoolN)
-  campusStore.fetchCampuses(schoolN)
+  cateringStore.fetchFeedingGroup(schoolN ?? "")
+  campusStore.fetchCampuses(schoolN ?? "")
 }
 
 watch(

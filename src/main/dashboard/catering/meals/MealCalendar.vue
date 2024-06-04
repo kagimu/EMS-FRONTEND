@@ -31,6 +31,9 @@ const fetchCampusBySchool = () => {
 }
 
 const doFetchMealCourses = () => {
+  // if(mealCalendarList.value && mealCalendarList.value.length > 0) {
+    mealCalendarList.value = []
+  // }
   let data = {
     school_number:school_number.value,
     campus_number:campus_number.value
@@ -149,7 +152,9 @@ watch(
             <td class="border-r hover:bg-[#dbdee1] cursor-pointer" v-for="(days, key) in calender?.day_items" :key="key">
 
               <div v-if="days.active">
-                <div class="text-sm" v-for="(item, key) in days?.items" :key="key">
+                <div class="italic text-[12px] underline">{{days?.name}}</div>
+
+                <div class="text-sm ml-2" v-for="(item, key) in days?.items" :key="key">
                   <small>
                     <!--                    <i style="font-size: 15px;"  class="bi-dot mr-2"></i>-->
                     {{(key + 1)}}.

@@ -181,7 +181,7 @@ watch(Items, (newItems) => {
 
 onMounted(
     async () => {
-        schoolStore.fetchSchools()
+        await schoolStore.fetchSchools()
     } )
 
 
@@ -275,7 +275,7 @@ watch(
 )
 
 onMounted(() => {
-      cateringStore.fetchFeedingGroupSessions()
+      // cateringStore.fetchFeedingGroupSessions()
   }
 )
 

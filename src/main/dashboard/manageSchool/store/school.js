@@ -48,7 +48,7 @@ export const useSchoolStore = defineStore("school", () => {
     }
 
     async function fetchSchools(userId=null) {
-        return await api.get("main/school/all?by="+userId)
+        return await api.get("main/school/all?by="+(userId ?? ""))
             .then((response) => {
                 schoolsResponse.value = response.data
             })

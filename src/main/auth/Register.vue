@@ -142,13 +142,13 @@ watch(
                 </div>
                 <div class="col-lg-6">
                   <div class="mb-2">
-                <div class="text-[#76787a] text-sm">Gender</div>
-              <select class="form-control form-select shadow-none" v-model="form.gender" aria-label="Default select example">
-                <option disabled value="">--Select Gender--</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-              </div>
+                        <div class="text-[#76787a] text-sm">Gender</div>
+                        <select class="form-control form-select shadow-none" v-model="form.gender" aria-label="Default select example">
+                          <option disabled value="">--Select Gender--</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                        </select>
+                    </div>
                 </div>
               </div>
               <div class="mb-2">

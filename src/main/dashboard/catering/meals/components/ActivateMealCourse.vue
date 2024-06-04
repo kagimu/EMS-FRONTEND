@@ -40,7 +40,7 @@ const form = reactive({
 onMounted(
     async () => {
       await schoolStore.fetchSchools()
-      await cateringStore.fetchFeedingGroupSessions()
+      // await cateringStore.fetchFeedingGroupSessions()
     }
 )
 

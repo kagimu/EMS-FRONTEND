@@ -237,8 +237,8 @@ watch(
 
   onMounted(
     async () => {
-        cateringStore.fetchMenuItem()
-        cateringStore.fetchFeedingGroupSessions()
+        // await cateringStore.fetchMenuItem()
+        // await cateringStore.fetchFeedingGroupSessions()
     } )
 
   watch(
@@ -297,7 +297,7 @@ watch(
     () => cateringStore.updateItemAssemblyResponse,
     async (data) => {
         notificationStore.successToast("Success", data.message)
-        cateringStore.fetchMenuItem()
+        // await cateringStore.fetchMenuItem()
         clearFormData()
     },
     {deep: true}
@@ -384,7 +384,7 @@ const updateMenuItem = () =>{
     () => cateringStore.updateMenuItemResponse,
     async (data) => {
         notificationStore.successToast("Success", data.message)
-        cateringStore.fetchMenuItem()
+        // await cateringStore.fetchMenuItem()
         menuForm.name=null,
         menuForm.code=null,
         menuForm.type=null,
@@ -399,7 +399,7 @@ const updateMenuItem = () =>{
     () => cateringStore.updateItemAssemblyResponse,
     async (data) => {
         notificationStore.successToast("Success", data.message)
-        cateringStore.fetchMenuItem()
+        // await cateringStore.fetchMenuItem()
         menuForm.name=null,
         menuForm.code=null,
         menuForm.type=null,

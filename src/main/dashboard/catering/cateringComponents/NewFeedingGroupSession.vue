@@ -56,8 +56,8 @@ const form = reactive({
   
 onMounted(
     async () => {
-        cateringStore.fetchFeedingGroupSessions()
-        cateringStore.fetchFeedingGroup()
+        // await cateringStore.fetchFeedingGroupSessions()
+        await cateringStore.fetchFeedingGroup()
     } )
 
     watch(
@@ -79,7 +79,7 @@ watch (
       if(data){
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        cateringStore.fetchFeedingGroupSessions()
+        // await cateringStore.fetchFeedingGroupSessions()
         form.feeding_group_number=null,
         form.feeding_session_number=null
       }

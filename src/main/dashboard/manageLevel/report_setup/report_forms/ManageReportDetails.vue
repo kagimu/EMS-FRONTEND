@@ -45,7 +45,6 @@ watch(
     <victorious-report-card :reportDetails="reportDetails"></victorious-report-card>
   </div>
 
-
 </div>
 </template>
 

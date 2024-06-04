@@ -121,7 +121,7 @@ watch (
 
 
 const fetchCampuses = (school_number) => {
-  campusStore.fetchCampuses(school_number)
+  campusStore.fetchCampuses(school_number ?? "")
 }
 
 const fetchClasses = (campus_number) => {

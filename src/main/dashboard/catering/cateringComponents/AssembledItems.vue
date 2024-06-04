@@ -39,7 +39,7 @@ const form = reactive({
 
 
 const fetchCampuses = (school_number) => {
-    campusStore.fetchCampuses(school_number)
+    campusStore.fetchCampuses(school_number ?? "")
 }
 
 const filter = (campusN) =>{
@@ -69,7 +69,7 @@ const closeDialog = () => {
 
 onMounted(
     () => {
-        // cateringStore.fetchMenuItem()
+
         schoolStore.fetchSchools()
     }
 
@@ -132,23 +132,8 @@ const fetchFoodMenuItem = (data) => {
 
 const showItems = (primaryItemNumber) =>{
     sta.value=primaryItemNumber
-    // alert(primaryItemNumber)
     cateringStore.fetchMenuItemDetails(primaryItemNumber)
 }
-const hideItems = () =>{
-    sta.value=""
-}
-
-// watch(
-//     () => cateringStore.menuItemResponse,
-//     async (data) => {
-//         if(data && data.data) {
-//             menuItemData.value = data.data
-//             isLoading.value = false;
-//         }
-//     }
-// )
-
 
 watch(
     () => cateringStore.menuItemDetailsResponse,

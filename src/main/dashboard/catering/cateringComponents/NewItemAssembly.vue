@@ -103,8 +103,8 @@ const commons = useCommonsStore()
 
   onMounted(
     async () => {
-        cateringStore.fetchMenuItem()
-        cateringStore.fetchFeedingGroupSessions()
+        // await cateringStore.fetchMenuItem()
+        // await cateringStore.fetchFeedingGroupSessions()
     } )
 
   watch(

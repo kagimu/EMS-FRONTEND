@@ -67,7 +67,9 @@ export const useMealStore = defineStore("Meal", () => {
     }
 
     async function fetchMealCalendar(data) {
-        return await api.get("main/catering/meal-calendar?school_number="+data.school_number+"&campus_number="+data.campus_number)
+          let  school_number = data?.school_number ?? ""
+          let  campus_number = data?.campus_number ?? ""
+        return await api.get("main/catering/meal-calendar?school_number="+school_number+"&campus_number="+campus_number)
             .then((response) => {
                 mealCalendarResponse.value = response.data
             })

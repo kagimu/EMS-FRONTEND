@@ -20,9 +20,6 @@ const academicYearStore = useAcademicYearStore()
 const routerData = useRouter()
 const showStudentsMarks = ref(false)
 
-const reportSetupStore = useReportSetupStore()
-
-   //filter
 
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const campusCurriculumDataInfo = ref(null)
@@ -49,7 +46,12 @@ onMounted(
 const showStudentReport = (summary) => {
   if(summary) {
     showStudentsMarks.value = true
-    reportStore.fetchReportDetailsInfo(summary.number)
+    let data = {
+      report_summary_number:summary.number,
+      html_report_template:"victorious-report-primary"
+      // html_report_template:" noregrets-report-primary"
+    }
+    reportStore.fetchReportDetailsInfo(data)
   }
 }
 

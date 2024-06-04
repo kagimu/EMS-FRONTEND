@@ -136,7 +136,7 @@ watch (
       if(data){
         // buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        cateringStore.fetchFeedingGroup(form.school_number)
+        await cateringStore.fetchFeedingGroup(form?.school_number)
       
       
       }
@@ -150,7 +150,7 @@ watch (
     async (data) => {
       if(data){
         showingModal.value = false
-        cateringStore.fetchFeedingGroup(form.school_number)
+        await cateringStore.fetchFeedingGroup(form?.school_number)
       }
     },
     {deep:true}

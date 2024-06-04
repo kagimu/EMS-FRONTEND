@@ -159,8 +159,8 @@ const paymentModal = (number) =>{
 onMounted(
     async () => {
       await applicationStore.fetchStudent(studentNumber)
-    } 
-  )
+    }
+)
 
 // const fetchAllInvoices = () => {
 //   let school_number ="", campus_number="",status=""
@@ -194,17 +194,17 @@ watch(
 
 
 watch (
-  () => invoiceStore.newInvoiceResponse,
-  async (data) => {
-    if (data) {
+    () => invoiceStore.newInvoiceResponse,
+    async (data) => {
+      if (data) {
         // let school_number ="", campus_number="",status=""
         // fetchAllInvoices()
         // await invoiceStore.fetchInvoice(school_number, campus_number, userNumber.value, status)
         mymodal.value=false
 
-    }
-  },
-  { deep: true }
+      }
+    },
+    { deep: true }
 )
 
 watch (
@@ -231,6 +231,96 @@ watch (
 )
 
 </script>
+<template>
+  <div>
+
+
+    <AppModal title="Creating New Invoice" v-model="mymodal" xl6>
+    <NewInvoice :userNumber="userNumber"></NewInvoice>
+    </AppModal>
+
+
+
+    <AppModal title="Pay Invoice" v-model="showPayment" xs>
+    <InvoicePayment :invoiceNumber="invoiceNumber"></InvoicePayment>
+    </AppModal>
+
+    <div class="rw mt-3"  >
+      <div class="">
+     <div class="row">
+      <div class="col-lg-4">
+      </div>
+      <div class="col-lg-8">
+
+        <button  @click="showModal()" class="btn btn-primary btn-sm mb-2" style="float: right;" v-if="can('add_custom_invoice','general')">
+        <small><i class="bi bi-plus"> Add New Invoice</i></small></button></div>
+     </div>
+       
+          <div class="card-bdy" style="padding: 0;">
+  <div class="containr mt-4">
+    <table
+      class="table table-hover caption-top mt-4 table-sm table-striped"
+      style="font-size: 13px !important;width: 100%;"
+    >
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>CreatedOn</th>
+          <th>Due Date</th>
+          <th>Total Amount</th>
+          <th>Paid Amount</th>
+          <th>Balance</th>
+          <th>Status</th>
+          <th style="width: 18%;"> Actions</th>
+        </tr>
+      </thead>
+      <!-- "number": "c6ee1dc7-898c-4aaf-8d06-1192323cc5a3",
+        "ref_number": "24055279",
+        "date": "2024-05-13T11:18:19.477Z",
+        "due_date": "2024-05-07T00:00:00Z",
+        "total_amount": 0,
+        "paid_amount": 0,
+        "balance": 0,
+        "status": "NOT_PAID" -->
+      <tbody>
+        <tr v-for="(list,index) in invoiceData"  :key="index">
+        <td>{{ list?.ref_number }}</td>
+        <td>{{ list?.date }}</td>
+        <td>{{ list?.due_date }}</td>
+        <td>{{ list?.total_amount }}</td>
+        <td>{{ list?.paid_amount }}</td>
+        <td>{{list?.balance}}</td>
+        <td>
+          <div :class="{'bg-green-700':list?.status==='PAID', 'bg-red-700':list?.status==='NOT_PAID', 'bg-purple-700':list?.status==='PARTIALLY_PAID'}" class="text-center text-white rounded-md px-3">
+            {{ list?.status?.replace("_", " ")?.toLowerCase() }}
+          </div>
+        </td>
+        <td>
+          <button  @click="paymentModal(list.number)" class="btn btn-primary btn-sm mb-2" style="float: right;" v-if="can('add_custom_invoice','general')">
+        <small>Pay</small></button>
+         <router-link
+              class="text-decoration-none"
+              :to="{name:'invoice-details', query:{invoice_id:list.ref_number}}">
+            <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
+            <small>View</small>
+            </button>
+          </router-link>
+        </td>
+        </tr>
+ 
+          
+      </tbody>
+    </table>
+  </div>
+  </div>
+  </div>
+  </div>
+
+
+  </div>
+  </template>
+
+
 
 
 <style>

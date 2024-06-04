@@ -109,7 +109,7 @@
    
    onMounted(
    () => {
-     cateringStore.fetchMenuItem()
+     // cateringStore.fetchMenuItem()
    }
    
    )

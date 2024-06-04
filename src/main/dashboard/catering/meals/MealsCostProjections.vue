@@ -189,9 +189,8 @@ watch(
               <thead>
               <tr>
                 <th scope="col" class="w-[10%]">#</th>
-                <th scope="col" class="w-[30%]">Name</th>
+                <th scope="col" class="w-[40%]">Name</th>
                 <th scope="col" class="w-[20%]">Unit</th>
-                <th scope="col" class="w-[20%]">Qty</th>
                 <th scope="col" class="w-[30%]">Cost</th>
               </tr>
               </thead>
@@ -199,12 +198,11 @@ watch(
               <tr v-for="(summary, summary_index) in mealProjections?.items_summary" :key="summary_index">
                 <td> {{(summary_index + 1)}}</td>
                 <td> {{summary.name}}</td>
-                <td> {{summary.unit_of_measure}}</td>
-                <td> {{summary.quantity}}</td>
+                <td> {{summary.quantity}} ( {{summary.unit_of_measure}} )</td>
                 <td> {{summary.total_cost}}</td>
               </tr>
               <tr class="font-bold">
-                <td colspan="4">Total</td>
+                <td colspan="3">Total</td>
                 <td>{{mealProjections?.total_cost}}</td>
               </tr>
               </tbody>
@@ -258,7 +256,6 @@ watch(
                       <th scope="col" class="w-[10%]">#</th>
                       <th scope="col" class="w-[30%]">Name</th>
                       <th scope="col" class="w-[20%]">Unit</th>
-                      <th scope="col" class="w-[20%]">Qty</th>
                       <th scope="col" class="w-[30%]">Cost</th>
                     </tr>
                     </thead>
@@ -266,8 +263,7 @@ watch(
                     <tr v-for="(item, item_key) in meal?.items" :key="item_key">
                       <td>{{(item_key + 1)}}</td>
                       <td>{{item?.name}}</td>
-                      <td>{{item?.unit_of_measure}}</td>
-                      <td>{{item?.quantity}}</td>
+                      <td>{{item?.quantity}} ( {{item?.unit_of_measure}} )</td>
                       <td>{{item?.total_cost}}</td>
                     </tr>
                     </tbody>
