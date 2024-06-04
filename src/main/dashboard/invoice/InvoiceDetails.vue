@@ -244,7 +244,15 @@
             </div>
           </div>
       </div>
+
+
+
+
+    <div>
+ 
+      </div>
     </template>
+
 
 <script setup>
 import InvoicePayment from './InvoicePayment.vue';
@@ -295,9 +303,9 @@ watch(
         myData.ref_number= data.data.ref_number
         myData.date= data.data.date
         myData.due_date= data.data.due_date
-        myData.total_amount= data.data.total_amount
-        myData.paid_amount= data.data.paid_amount
-        myData.balance= data.data.balance
+        myData.total_amount=  Intl.NumberFormat('en-US').format(data.data.total_amount)
+        myData.paid_amount= Intl.NumberFormat('en-US').format(data.data.paid_amount)
+        myData.balance= Intl.NumberFormat('en-US').format(data.data.balance)
         myData.status=data.data.status
         myData.invoiceN = data.data.number
       }
@@ -364,156 +372,6 @@ watch (
 
 
 </script>
-<template>
-    <div>
-      <!-- invoice payment -->
-
-
-    <AppModal title="Pay" v-model="mymodalpay" xs>
-        <InvoicePayment :invoiceNumber="thisInvoiceNumber"></InvoicePayment>
-    </AppModal>
-
-          <div class="row mt-4">
-             <div class="col-12">
-                <div class="card mt-0">
-                  <div class="card-header">
-                   <div class="row">
-                    <div class="col-lg-8">
-                        <h6 style="margin-top:20px; text-align: left;font-size: 15px;">
-                          <i  @click="goBack()" class="bi bi-x-lg"></i>&nbsp;&nbsp;Invoice Details<b></b>     </h6>
-                    </div>
-                    <div class="col-lg-4">
-                      <!-- <button type="submit" class="btn btn-primary mb-3">Download Invoice</button> -->
-                        <button  @click="showModal(myData.invoiceN)"  class="btn btn-primary btn-sm mb-2 mr-4" style="float: right;" type="button" >
-                        <small><i class="bi bi-check-lg"><small>&nbsp;Make Payment</small></i></small></button>
-                        <button  class="btn btn-secondary  btn-sm mb-2 mr-4" style="float: right;">
-                        <small><i class="bi bi-printer">&nbsp;Print</i></small></button>
-                    </div>
-
-                   </div>
-                 </div>
-                  <div class="card-body" style="padding: 0;">
-          <div class="container mt-1">
-      <!--
-            "ref_number": "24055279",
-              "date": "2024-05-13T11:18:19.477Z",
-              "due_date": "2024-05-07T00:00:00Z",
-              "total_amount": 0,
-              "paid_amount": 0,
-              "balance": 0,
-              "status": "NOT_PAID", -->
-
-            <div class="row">
-            <div class="col-12">
-
-                <!-- <div class="row">
-                  <div class="col-lg-4">
-                    <div class="mb-2">
-                    <label class="textSize"><small>Invoice Number</small></label>
-                    <input disabled type="text" class="form-control" v-model="myData.ref_number">
-                  </div>
-                  <div class="mb-2">
-                    <label class="textSize"><small>Created On</small> </label>
-                    <input disabled type="text" class="form-control" v-model="myData.date">
-                  </div>
-                  <div class="mb-2">
-                    <label class="textSize"><small>Due Date</small> </label>
-                    <input disabled type="text" class="form-control" v-model="myData.due_date">
-                  </div>
-                  <div class="mb-2">
-                    <label class="textSize"><small>Total Amount</small> </label>
-                    <input disabled type="text" class="form-control" v-model="myData.total_amount">
-                  </div>
-                  <div class="mb-2">
-                    <label class="textSize"><small>Paid Amount</small></label>
-                    <input disabled  class="form-control" v-model="myData.paid_amount">
-                  </div>
-                  <div class="mb-2">
-                    <label class="textSize"><small>Balance</small></label>
-                    <input disabled  class="form-control" v-model="myData.balance">
-                  </div>
-                  <div class="mb-2">
-                    <label class="textSize"><small>Status</small></label>
-                    <input disabled  class="form-control" v-model="myData.status">
-                  </div>
-                  </div>
-                  <div class="col-lg-8">
-                    <p class="textSize" style="margin-bottom: 4px;text-align: left;">Items</p>
-                    <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
-                      <thead>
-                      <tr>
-                        <th scope="col" style="width: 10%;">#</th>
-                        <th scope="col">Item</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Cost</th>
-                        <th scope="col">Total</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr v-for="(payment, index) in invoiceData.items" :key="index">
-                        <td> {{(index + 1)}}</td>
-                        <td> {{payment.item_name}}</td>
-                        <td> {{payment.quantity}}</td>
-                        <td> {{payment.unit_cost}}</td>
-                        <td> {{payment.total_cost}}</td>
-                      </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div> -->
-
-        </div>
-        </div>
-        </div>
-        </div>
-
-
-
-          </div>
-
-
-
-                 <div class="card mt-2">
-                   <div class="card-header">
-                      Payments
-                     <hr />
-
-                     <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
-                       <thead>
-                       <tr>
-                         <th scope="col" style="width: 10%;">#</th>
-                         <th scope="col">Invoice Number</th>
-                         <th scope="col">Date</th>
-                         <th scope="col">By</th>
-                         <th scope="col">Amount</th>
-                         <th scope="col">Action</th>
-                       </tr>
-                       </thead>
-                       <tbody>
-                       <tr v-for="(payment, index) in invoiceData.payments" :key="index">
-                         <td> {{(index + 1)}}</td>
-                         <td> {{payment.invoice_ref_number}}</td>
-                         <td> {{payment.date_time}}</td>
-                         <td> {{payment.recorded_by}}</td>
-                         <td> {{payment.amount}}</td>
-                         <td>
-                         </td>
-                       </tr>
-                       </tbody>
-                     </table>
-
-
-
-                   </div>
-               </div>
-
-
-            </div>
-          </div>
-      </div>
-    </template>
-
-
 
 <style>
  .mb-8 {
