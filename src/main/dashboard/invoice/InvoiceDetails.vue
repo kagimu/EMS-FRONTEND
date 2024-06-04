@@ -2,6 +2,7 @@
     <div>
       <!-- invoice payment -->
 
+
     <AppModal title="Pay" v-model="mymodalpay" xs>
     <InvoicePayment :invoiceNumber="thisInvoiceNumber"></InvoicePayment>
     </AppModal>
@@ -16,7 +17,8 @@
                           <i  @click="goBack()" class="bi bi-x-lg"></i>&nbsp;&nbsp;Invoice Details<b></b>     </h6>
                     </div>
                     <div class="col-lg-4">
-                        <button  @click="showModal(myData.invoiceN)"  class="btn btn-warning btn-sm mb-2 mr-4" style="float: right;" type="button" >
+                      <!-- <button type="submit" class="btn btn-primary mb-3">Download Invoice</button> -->
+                        <button  @click="showModal(myData.invoiceN)"  class="btn btn-primary btn-sm mb-2 mr-4" style="float: right;" type="button" >
                         <small><i class="bi bi-check-lg"><small>&nbsp;Make Payment</small></i></small></button>
                         <button  class="btn btn-secondary  btn-sm mb-2 mr-4" style="float: right;">
                         <small><i class="bi bi-printer">&nbsp;Print</i></small></button>
@@ -26,19 +28,118 @@
                  </div>
                   <div class="card-body" style="padding: 0;">
           <div class="container mt-1">
-      <!--
-            "ref_number": "24055279",
-              "date": "2024-05-13T11:18:19.477Z",
-              "due_date": "2024-05-07T00:00:00Z",
-              "total_amount": 0,
-              "paid_amount": 0,
-              "balance": 0,
-              "status": "NOT_PAID", -->
+
+            <!-- Invoice 1 - Bootstrap Brain Component -->
+<section class="py-3 py-md-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <!-- <div class="row gy-3 mb-3">
+          <div class="col-6">
+            <h2 class="text-uppercase text-endx m-0">Invoice</h2>
+          </div>
+          <div class="col-6">
+            <a class="d-block text-end" href="#!">
+              <img src="./assets/img/bsb-logo.svg" class="img-fluid" alt="BootstrapBrain Logo" width="135" height="44">
+            </a>
+          </div>
+          <div class="col-12">
+            <h4>From</h4>
+            <address>
+              <strong>BootstrapBrain</strong><br>
+              875 N Coast Hwybr<br>
+              Laguna Beach, California, 92651<br>
+              United States<br>
+              Phone: (949) 494-7695<br>
+              Email: email@domain.com
+            </address>
+          </div>
+        </div> -->
+        <div class="row mb-3">
+          <div class="col-12 col-sm-6 col-md-8">
+            <h4>Bill To</h4>
+            <address>
+              <strong>Mason Carter</strong><br>
+              7657 NW Prairie View Rd<br>
+              Kansas City, Mississippi, 64151<br>
+              United States<br>
+              Phone: (816) 741-5790<br>
+              Email: email@client.com
+            </address>
+          </div>
+          <div class="col-12 col-sm-6 col-md-4" >
+            <h4 class="row">
+              <span class="col-6">Invoice #</span>
+              <span class="col-6 text-sm-end ">{{ myData.ref_number }}</span>
+            </h4>
+            <div class="row">
+              
+              <span class="col-6">Invoice Date</span>
+              <span class="col-6 text-sm-end">{{ myData.date }}</span>
+              <span class="col-6">Due Date</span>
+              <span class="col-6 text-sm-end">{{ myData.due_date }}</span>
+              <span class="col-6">Status</span> <span class="col-6 text-sm-end badge bg-warning text-black fw-bold"><b>{{ myData.status }}</b></span>
+
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-12">
+            <div class="table-responsive">
+              <table class="table table-striped table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col" class="text-uppercase">Qty</th>
+                    <th scope="col" class="text-uppercase">Item</th>
+                    <th scope="col" class="text-uppercase text-end">Unit Price</th>
+                    <th scope="col" class="text-uppercase text-end">Amount</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                  <tr v-for="(payment, index) in invoiceData.items" :key="index">
+                    <th scope="row">{{payment.quantity}}</th>
+                       
+                        <td > {{payment.item_name}}</td>
+                        <td class="text-end"> {{payment.unit_cost}}</td>
+                        <td class="text-end"> {{payment.unit_cost}}</td>
+                  </tr>
+
+                  <!-- <tr >
+                    <td colspan="3" class="text-end">Subtotal</td>
+                    <td class="text-end">{{payment.total_cost}}</td>
+                  </tr> -->
+                  <!-- <tr>
+                    <td colspan="3" class="text-end">VAT (5%)</td>
+                    <td class="text-end">18.1</td>
+                  </tr> -->
+               
+                  <tr>
+                    <th scope="row" colspan="3" class="text-uppercase text-end">Total</th>
+                    <td class="text-end">{{myData.total_amount}}</td>
+                  </tr>
+                  <tr >
+                    <th scope="row" colspan="3" class="text-uppercase text-end">Paid</th>
+                    <td class="text-end">{{myData.paid_amount}}</td>
+                  </tr>
+                  <tr >
+                    <th scope="row" colspan="3" class="text-uppercase text-end">Balance</th>
+                    <td class="text-end">{{ myData.balance }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</section>
 
             <div class="row">
             <div class="col-12">
 
-                <div class="row">
+                <!-- <div class="row">
                   <div class="col-lg-4">
                     <div class="mb-2">
                     <label class="textSize"><small>Invoice Number</small></label>
@@ -92,7 +193,7 @@
                       </tbody>
                     </table>
                   </div>
-                </div>
+                </div> -->
 
         </div>
         </div>
@@ -129,23 +230,12 @@
                          <td> {{payment.recorded_by}}</td>
                          <td> {{payment.amount}}</td>
                          <td>
-                           <div>
-<!--                             <i
-                                 v-if="can('edit_level','general')"
-                                 style="font-size: 13px;"
-                                 data-bs-toggle="modal" data-bs-target="#levelModal"
-                                 class="bi-pencil mr-2 cursor-pointer" @click="editLevel(levelInfo)"></i>
-                             <i
-                                 v-if="can('delete_level','general')"
-                                 style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLevel(levelInfo, index)"></i>
-                             <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
-                               <span class="visually-hidden">Loading...</span>
-                             </div>-->
-                           </div>
                          </td>
                        </tr>
                        </tbody>
                      </table>
+
+
 
                    </div>
                </div>

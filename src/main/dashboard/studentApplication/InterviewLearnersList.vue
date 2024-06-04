@@ -117,12 +117,16 @@ watch (
       async (data) => {
         if(data){     
           gradeDialog.value = false
-          applicationStore.fetchStudentsOnInterview(interviewNumber)
+          let data = {
+           interview_number:interviewNumber
+          }
+          applicationStore.fetchStudentsOnInterview(data)
 
         }
       },
       {deep:true}
   )
+
 
 
   watch(

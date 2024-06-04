@@ -20,7 +20,7 @@ import Transactions from "@/main/dashboard/transactions/Transactions.vue";
     <div class="m-0">
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-          <button class="nav-link navColor active" id="assembled-tab" data-bs-toggle="tab" data-bs-target="#assembled" type="button" role="tab" aria-controls="assembled" aria-selected="false"><small>Invoices And Financial Statement</small></button>
+          <button class="nav-link navColor active" id="assembled-tab" data-bs-toggle="tab" data-bs-target="#assembled" type="button" role="tab" aria-controls="assembled" aria-selected="false"><small>Manage Invoices</small></button>
           <button class="nav-link navColor " id="class-list-tab" data-bs-toggle="tab" data-bs-target="#class-list" type="button" role="tab" aria-controls="class-list" aria-selected="false"><small>Transactions</small></button>
         </div>
       </nav>

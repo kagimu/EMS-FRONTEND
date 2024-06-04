@@ -139,9 +139,13 @@
   )
   
   const fetchStudentOnInterview = (assessmentMetricNumber,interviewN) =>{
-      assessmentNumber.value = assessmentMetricNumber
-      let  interviewNum = interviewN
-      applicationStore.fetchStudentsOnInterview(interviewNum,assessmentMetricNumber) 
+   let data = {
+      interview_number:interviewN,
+      assessment_metric_number:assessmentMetricNumber
+   }
+      // assessmentNumber.value = assessmentMetricNumber
+      // let  interviewNum = interviewN
+      applicationStore.fetchStudentsOnInterview(data) 
       
       // reportSetupStore.fetchStudentByAssessmentMetric(a)
   }

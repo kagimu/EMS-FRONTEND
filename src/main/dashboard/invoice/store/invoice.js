@@ -25,8 +25,12 @@ export const useInvoiceStore = defineStore("invoice", () => {
 
 
     
-    async function fetchInvoice(schoolN,campusN,userN,stat) {
-        return await api.get("main/invoices?school_number="+schoolN+"&campus_number="+campusN+"&user_number="+userN+"&status="+stat)
+    async function fetchInvoice(data) {
+        let  school_number =   data?.school_number ?? ""
+        let  campus_number =   data?.campus_number ?? ""
+        let  status =   data?.status ?? ""
+        let  user_number =   data?.user_number ?? ""
+        return await api.get("main/invoices?school_number="+school_number+"&campus_number="+campus_number+"&user_number="+user_number+"&status="+status)
             .then((response) => {
                 invoiceResponse.value = response.data
             })

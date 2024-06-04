@@ -27,7 +27,27 @@
      </div>
        
           <div class="card-bdy" style="padding: 0;">
-  <div class="containr mt-4">
+  <div class="mt-4">
+
+    <div class="row">
+    <div class="col-3">
+          <div class="mb-2">
+            <select
+                style="box-shadow: none;"
+                class="form-select form-select-sm"
+                v-model="form.statusData"
+                @change="doFetchInvoices()"
+                >
+                <option disabled value="">-filter By Status</option>
+              <option value="PAID">PAID</option>
+              <option value="PARTIALLY_PAID">PARTIALY PAID</option>
+              <option value="NOT_PAID" >NOT PAID</option>
+           
+            </select>
+          </div>
+      </div>
+      </div>
+
     <table
       class="table table-hover caption-top mt-4 table-sm table-striped"
       style="font-size: 13px !important;width: 100%;"
@@ -91,7 +111,7 @@
   </template>
 
 <script setup>
-import {onMounted, ref, watch} from "vue";
+import {onMounted, ref, watch,reactive} from "vue";
 import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
 import useNotificationStore from "@/composables/useNotification.js"
 import NewInvoice from "@/main/dashboard/invoice/NewInvoice.vue"
@@ -117,7 +137,19 @@ const showModal = () =>{
   mymodal.value = true
 }
 
+ const form = reactive({
+  statusData:""
+ })
 
+ const doFetchInvoices = () =>{
+  let data = {
+    status:form.statusData,
+    school_number:"",
+    campus_number:"",
+    user_number:userNumber.value
+  }
+   invoiceStore.fetchInvoice(data)
+ }
 
 const paymentModal = (number) =>{
   showPayment.value = true
@@ -130,17 +162,17 @@ onMounted(
     } 
   )
 
-const fetchAllInvoices = () => {
-  let school_number ="", campus_number="",status=""
-   invoiceStore.fetchInvoice(school_number, campus_number, userNumber.value, status)
-}
+// const fetchAllInvoices = () => {
+//   let school_number ="", campus_number="",status=""
+//    invoiceStore.fetchInvoice(school_number, campus_number, userNumber.value, status)
+// }
 
     watch (
   () => applicationStore.studentDataResponse,
   async (data) => {
     if (data) {
       userNumber.value = data.user_number
-      fetchAllInvoices()
+      // fetchAllInvoices()
     }
   },
   { deep: true }
@@ -166,7 +198,7 @@ watch (
   async (data) => {
     if (data) {
         // let school_number ="", campus_number="",status=""
-        fetchAllInvoices()
+        // fetchAllInvoices()
         // await invoiceStore.fetchInvoice(school_number, campus_number, userNumber.value, status)
         mymodal.value=false
 
@@ -177,11 +209,11 @@ watch (
 
 watch (
     () => invoiceStore.newInvoicePaymentResponse,
-    async (data) => {
+    async (data) => {""
       if(data){
         notificationStore.successToast("Success", data.message)
         showPayment.value = false
-        fetchAllInvoices()
+        // fetchAllInvoices()
       }
     }
 )

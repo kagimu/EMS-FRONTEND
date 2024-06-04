@@ -95,6 +95,16 @@ watch(
   interviewNumber.value = interview.number
 
 }
+
+watch(
+          () => applicationStore.newInterviewResponse,
+          async (data) => {
+              if (data) {
+                showingModal.value = false
+              }
+          },
+          {deep: true}
+      )
   </script>
 
 <template>

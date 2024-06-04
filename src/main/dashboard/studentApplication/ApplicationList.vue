@@ -266,8 +266,8 @@
 </script>
 
 <template>
-  <div class="row ml-2">
-   <h5  class="ml-1" style="font-size: 14px;margin-top: 2px;">APPLICATION LIST 
+  <div class="row ml-2 mt-3">
+   <h5  class="ml-1" style="font-size: 14px;margin-top: 2px;">APPLICATIONS 
       <button @click="applicationModal" style="float: right;" class="btn btn-primary btn-sm ml-2 mb-2 mt-2 mr-2"><small>New Application</small></button></h5>
 
                  <div class="col-lg-12">
@@ -338,7 +338,7 @@
                                                   </select>
                                                </div>
                                             </div>
-                                            <div class="col-3">
+                                            <div class="col-3" style="display: none">
                                                <div class="mb-2">
                                                   <select
                                                      style="box-shadow: none;"
@@ -354,7 +354,7 @@
                                             </div>
                                          
                                                 
-                                            <div class="col-3">
+                                            <div class="col-3" style="display: none">
                                                <div class="mb-2">
                                                   <select
                                                      style="box-shadow: none;"
@@ -366,7 +366,7 @@
                                                   </select>
                                                </div>
                                             </div>
-                                            <div class="col-3">
+                                            <div class="col-3" style="display: none">
                                                <div class="mb-2">
                                                   <select
                                                      style="box-shadow: none;"
