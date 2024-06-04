@@ -6,13 +6,9 @@
     <NewInvoice :userNumber="userNumber"></NewInvoice>
     </AppModal>
 
-<!--    <AppModal title="Finance Statement" v-model="mymodalfinance" xl6>
-     <FinancialStatement :userNumber="userNumber"></FinancialStatement>
-    </AppModal>-->
-
 
     <AppModal title="Pay Invoice" v-model="showPayment" xs>
-    <InvoicePayment :invoiceNumber="invoiceNumber"></InvoicePayment>
+    <InvoicePayment :invoiceNumber="invoiceNumber" ></InvoicePayment>
     </AppModal>
 
     <div class="rw mt-3"  >
@@ -90,7 +86,7 @@
         <small>Pay</small></button>
          <router-link
               class="text-decoration-none"
-              :to="{name:'invoice-details', query:{invoice_id:list.ref_number}}">
+              :to="{name:'invoice-details', query:{invoice_id:list.ref_number,st_id:studentNumber}}">
             <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
             <small>View</small>
             </button>
@@ -148,7 +144,7 @@ const invoiceNumber = ref("")
 const errorMessage = ref(null)
 const loader  = ref(false)
 const showPayment = ref(false)
-
+const userList = ref([])
 const showModal = () =>{
   mymodal.value = true
 }
@@ -189,6 +185,7 @@ onMounted(
     if (data) {
       userNumber.value = data.user_number
       // fetchAllInvoices()
+      userList.value = data
     }
   },
   { deep: true }

@@ -56,15 +56,17 @@
           </div>
         </div> -->
         <div class="row mb-3">
-          <div class="col-12 col-sm-6 col-md-8">
+          <div class="col-12 col-sm-6 col-md-8" >
             <h4>Bill To</h4>
             <address>
-              <strong>Mason Carter</strong><br>
-              7657 NW Prairie View Rd<br>
-              Kansas City, Mississippi, 64151<br>
-              United States<br>
-              Phone: (816) 741-5790<br>
-              Email: email@client.com
+              <strong>  {{ studentName }} </strong><br>
+              {{ school}}<br>
+              {{ campus}}<br>
+              {{ className+"("+stream+")"}}<br>
+              Year: {{ academicYear }}<br>
+              StudyPeriod: {{ studyPeriod }}
+            
+              <!-- {{ userData }} -->
             </address>
           </div>
           <div class="col-12 col-sm-6 col-md-4" >
@@ -261,17 +263,33 @@ import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
 import { useRouter } from 'vue-router'
 import useNotificationStore from "@/composables/useNotification.js"
 import AppModal from "@/components/AppModal.vue";
-
+import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 
 const invoiceStore = useInvoiceStore()
 const showDialog = ref(false)
 const invoiceData = ref([])
 const notificationStore = useNotificationStore()
-
+const applicationStore= useApplicationStore()
 const routerData = useRouter()
 const invoice_number = routerData.currentRoute.value.query.invoice_id
+const student_number = routerData.currentRoute.value.query.st_id
+const userData = ref([])
 const mymodalpay = ref(false)
 const thisInvoiceNumber = ref(null)
+const studentName = ref(null)
+  const Sex = ref(null)
+  const School= ref(null)
+  const Campus= ref(null)
+  const Level= ref(null)
+  const className= ref(null)
+  const dob = ref(null)
+  const academicYear = ref(null)
+  const studyPeriod=ref(null)
+  const stream = ref(null)
+  const status = ref(null)
+  const campus = ref(null)
+  const school = ref(null)
+  const actionType = ref(null)
 
 const  showModal = (invoice) =>{
   mymodalpay.value = true
@@ -281,9 +299,29 @@ const  showModal = (invoice) =>{
 onMounted(
     async () => {
       await invoiceStore.fetchInvoiceId(invoice_number)
+      applicationStore.fetchStudent(student_number)
     }
 )
 
+watch (
+  () => applicationStore.studentDataResponse,
+  async (data) => {
+    if (data) {
+      userData.value = data
+      studentName.value = data.surname + " " + data.second_name+" "+ data.other_name
+      dob.value = data.date_of_birth
+      className.value = data.current_enrollment.class
+      studyPeriod.value = data.current_enrollment.study_period
+      stream.value = data.current_enrollment.stream
+      status.value = data.current_enrollment.status
+      campus.value = data.current_enrollment.campus
+      school.value = data.current_enrollment.school
+      academicYear.value = data.current_enrollment.academic_year
+    
+    }
+  },
+  { deep: true }
+)
 
 const myData = reactive ({
   ref_number: invoice_number,
