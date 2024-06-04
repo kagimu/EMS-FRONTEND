@@ -6,29 +6,25 @@ import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import AppModal from "@/components/AppModal.vue";
 import AssignTemplateToClass from "@/main/dashboard/manageLevel/report_setup/reportTemplate/AssignTemplateToClass.vue";
-import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import clearClassModal from "@/main/dashboard/manageLevel/report_setup/reportTemplate/clearClassModal.vue";
-import ReportTemplateClasses from "./ReportTemplateClasses.vue";
+
 import {useRouter} from "vue-router";
 import SchoolReportPreviewTemplate
   from "@/main/dashboard/manageLevel/report_setup/reportTemplate/SchoolReportPreviewTemplate.vue";
 
 
-const schoolStore = useSchoolStore()
+
 
 const routerData = useRouter()
 const reportSetupStore = useReportSetupStore()
-const notificationStore  = useNotificationStore()
 const reportTemplateList = ref(null)
 const showReportTemplateModal = ref(false)
 const showAssignModal = ref(false)
-const school_number = ref(false)
 const reportTemplateNumber = ref(null)
 const showClearClassModal = ref(false)
 const reportTemplatePreviewModal = ref(false)
 const classOnTemplateList = ref([])
 let schoolNumber = routerData.currentRoute.value.query.id
-const schoolNo = ref(null)
 const classListData = ref(null)
 
 const reportTemplateName = ref(null)
