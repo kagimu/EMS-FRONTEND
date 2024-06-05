@@ -2,11 +2,9 @@
 
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
-import {useRouter} from "vue-router";
-import useCommonsStore from "@/composables/useCommons.js";
 import NewLevel from "@/main/settings/level/NewLevel.vue";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
-const routerData = useRouter()
+
 
 import { useAbility } from '@casl/vue';
 import AppModal from "@/components/AppModal.vue";
@@ -14,16 +12,15 @@ import AppModal from "@/components/AppModal.vue";
 const { can } = useAbility()
 
 const levelStore = useLevelStore()
-const commons = useCommonsStore()
+
 const  notificationStore  = useNotificationStore()
 
 const levelRef = ref( null)
-const level = ref( "")
 const levelDialog = ref( false)
 const levelEditMode = ref( false)
 const levelList = ref( [])
 const deletionLoader = ref( undefined)
-let  curriculumNumber = routerData.currentRoute.value.query.id
+
 
 
 

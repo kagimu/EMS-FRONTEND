@@ -139,7 +139,6 @@
 <script setup>
     import {onMounted,reactive, ref, watch} from "vue";
     import useNotificationStore from "@/composables/useNotification.js";
-    import NewMenuItem from "@/main/dashboard/catering/cateringComponents/NewMenuItem.vue";
     import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
     import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
     import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";

@@ -47,12 +47,6 @@ onMounted(
 
 const menu = ref(null);
 
-const handleClickOutside = (event) => {
-  if (menu.value && !menu.value.contains(event.target)) {
-    defaultMenuSize.value = false;
-  }
-};
-
 
 watch(
     () => xs,
@@ -94,7 +88,7 @@ name.value = p.first_name+" "+p.second_name+" "+p.last_name
 
 
 
-function userLogout(){
+const userLogout = () =>{
 
   localStorage.clear();
 
@@ -122,6 +116,7 @@ function updateOnlineStatus() {
 <template>
 
 <div class="p-0 h-screen w-screen">
+
     <div class="row fixed w-screen mx-auto z-50">
       <div class="col-12 col-sm-12 col-md-12 col-lg-12 bg-[#2c2f8c]">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
