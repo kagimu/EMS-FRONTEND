@@ -174,6 +174,7 @@ watch(
     async (data) => {
       if(data){
         notificationStore.successToast("Success", data.message)
+        doFetchAccount()
       }
     },
     {deep:true}
@@ -222,13 +223,16 @@ watch (
     <NewStaff></NewStaff>
     </AppModal>
 
+    <AppModal title="Assign Role" v-model="assignDialog" xl2>
+      <new-account></new-account>
+    </AppModal>
 
     
-        <div class="modal fade" :class="{ show: assignDialog }" id="addAccount" tabindex="-1"  aria-labelledby="" aria-hidden="true" >
+        <!-- <div class="modal fade" :class="{ show: assignDialog }" id="addAccount" tabindex="-1"  aria-labelledby="" aria-hidden="true" >
       <div class="modal-dialog">
         <new-account></new-account>
         </div>
-      </div>
+      </div> -->
 
       <div class="row">
             <div class="col-12">
@@ -240,7 +244,7 @@ watch (
             <div class="col-lg-6">
                 <button 
                 v-if="can('assign_role','general')"
-                @click="openModal()" style="float: right; margin-right: 5px;" data-bs-toggle="modal" data-bs-target="#addAccount"  type="button"  aria-controls="rolesDialog" class="btn btn-primary btn-sm">Assign Role</button>
+                @click="openModal()" style="float: right; margin-right: 5px;"  type="button" class="btn btn-primary btn-sm">Assign Role</button>
                 <button  style="float: right;border: none;"
                   v-if="can('add_user','general')" 
                   class="btn btn-primary btn-sm mr-3" type="button"  @click="showModalUser"><i class="bi bi-plus"></i>Add New User</button>
