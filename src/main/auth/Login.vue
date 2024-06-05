@@ -32,11 +32,9 @@ watch(
     () => authStore.loginResponse,
     async (data) => {
       if(data){
-
-        authStore.userProfile()
+        await authStore.userProfile()
       }
-    },
-    {deep:true}
+    }
 )
 
 watch(
