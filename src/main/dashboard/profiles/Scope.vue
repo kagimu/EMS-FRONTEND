@@ -1,384 +1,251 @@
-<script setup>
-    import {onMounted, reactive, ref, watch,defineEmits} from "vue";
-    import {useRouter} from "vue-router";
-    import useCommonsStore from "@/composables/useCommons.js";
-    import useNotificationStore from "@/composables/useNotification.js";
-    import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-    import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-    import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
-    import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
-    import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
-    import {useLevelStore} from "@/main/settings/level/store/level.js";
-    import {useScopeStore} from "@/main/dashboard/profiles/store/scope.js";
-
-    const props = defineProps({
-    user_number:String
-   })
-
-    const classError = ref(null)
-    const loader = ref(false)
-    const commons = useCommonsStore()
-    const  notificationStore  = useNotificationStore()
-    const levelNumber = ref("")
-    const curriculumList = ref([])
-    const campusList = ref([])
-    const schoolList = ref([])
-    const classList = ref([])
-    const schoolStore = useSchoolStore()
-    const campusStore = useCampusStore()
-    const school_number = ref(null)
-    const academicYearStore = useAcademicYearStore()
-    const classStore = useClassesStore()
-    const student_num = ref(null)
-    const campus_class_number = ref(null)
-    const academicYearList = ref([])
-    const curriculumStore = useCurriculumStore()
-    const curriculum_number = ref(null)
-    const levelList = ref([])
-    const levelStore = useLevelStore()
-    const level = ref(null)
-    const scopeStore = useScopeStore()
-    const campus_number = ref(null)
-    const current_academic_year_number = ref(null)
-
-
-    onMounted(() => {
-          schoolStore.fetchSchools()
-          curriculumStore.fetchCurriculum()
-      }
-    )
-    
-
-    const form = reactive({
-      school_number:null
-       })
-    
-       const fetchLevels = (curriculumNumber) => {
-      levelStore.fetchCurriculumLevels(curriculumNumber)
-      let data = reactive(
-        {
-        added_by_number:props.user_number,
-        curriculum_number:curriculumNumber
-        }
-      )
-      scopeStore.createNewCurriculumScope(data)
-    }
-
-
-    const levelScope = (levelN) =>{
-        let data = reactive(
-        {
-        added_by_number:props.user_number,
-        level_number:levelN
-        }
-      )
-        scopeStore.createNewLevelScope(data)
-    }
-    
-    const fetchCampuses = (school_number) => {
-        let data = reactive(
-        {
-        added_by_number:props.user_number,
-        school_number:school_number
-        }
-      )
-        scopeStore.createNewSchoolScope(data)
-      campusStore.fetchCampuses(school_number)
-    }
-    
-    const fetchClasses = (campus_number) => {
-        let data = reactive(
-        {
-        added_by_number:props.user_number,
-        campus_number:campus_number
-        }
-      )
-      scopeStore.createNewCampusScope(data)
-      campusStore.fetchClassesByCampus(campus_number)
-    }
-
-    const academicYearScope = (current_academic_year_number) => {
-        let data = reactive(
-        {
-        added_by_number:props.user_number,
-        learning_area_number:current_academic_year_number
-        }
-      )
-        scopeStore.createNewAcademicYearScope(data)
-      campusStore.fetchClassesByCampus(campus_number)
-    }
-
-    
-    //fetchacadmicYear
-    const fetchAcademicYear = (classN) =>{
-        let data = reactive(
-        {
-        added_by_number:props.user_number,
-        class_number:classN
-        }
-      )
-        scopeStore.createNewClassScope(data)
-
-    academicYearStore.fetchAcademicYearByCampus(classN)
-    }
-    
-
-    
-    watch(
-      () => academicYearStore.academicYearByCampusResponse,
-      async (data) => {
-          if (data) {
-            academicYearList.value = data.data
-    
-            if(data && data.data){
-          let studyData = data.data
-          if(studyData && (studyData.length > 0)){
-            studyPeriodList.value = studyData[0].studyPeriod
-          }
-        }
-          }
-      },
-      {deep: true}
-    )
-    
-    
-    watch(
-      () => classStore.classStreams,
-      async (data) => {
-          if (data) {
-            streamList.value = data.data
-          }
-      },
-      {deep: true}
-    )
-    
- 
-    watch(
-      () => schoolStore.schoolsResponse,
-      async (data) => {
-          if (data) {
-              schoolList.value = data.data
-          }
-      },
-      {deep: true}
-    )
-    
-    watch(
-      () => campusStore.campusListResponse,
-      async (data) => {
-          if (data) {
-              campusList.value = data.data
-          }
-      },
-      {deep: true}
-    )
-    
-    watch(
-      () => campusStore.campusClassesResponse,
-      async (data) => {
-          if (data) {
-              classList.value = data.data
-          }
-      },
-      {deep: true}
-    )
-    
-    watch(
-      () => campusStore.errorMessage,
-      async (data) => {
-            if (data) {
-                notificationStore.errorToast("Error", data.message)
-            }
-      },
-      {deep: true}
-    )
- 
-    watch(
-    () => curriculumStore.curriculumDataResponse,
-    async (data) => {
-      if(data){
-        curriculumList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-  () => levelStore.curriculumLevelInfoResponse,
-  async (data) => {
-    if(data){
-      levelList.value = data.data
-    }
-  },
-  {deep:true}
-)
-
-watch(
-      () => scopeStore.errorMessage,
-      async (data) => {
-            if (data) {
-                notificationStore.errorToast("Error", data.message)
-            }
-      },
-      {deep: true}
-    )
-
-watch(
-    () => scopeStore.newCurriculumScopeResponse,
-    async (data) => {
-      if(data){
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-    )
-    
-    watch(
-    () => scopeStore.newLevelScopeResponse,
-    async (data) => {
-      if(data){
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-    )
-
-
-    watch(
-    () => scopeStore.newCampusScopeResponse,
-    async (data) => {
-      if(data){
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-    )
-
-    watch(
-    () => scopeStore.newClassScopeResponse,
-    async (data) => {
-      if(data){
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-    )
-    watch(
-    () => scopeStore.newAcademicYearScopeResponse,
-    async (data) => {
-      if(data){
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-    )
-    watch(
-    () => scopeStore.newLevelSchoolResponse,
-    async (data) => {
-      if(data){
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-    )
-
-
- </script>
-
 <template>
-    <div>
-        <!-- {{  user_number }} -->
-       <form @submit.prevent="">
-          <div class="mb-2">
-             <label class="textColor"><small>Curriculum</small> </label>
-             <select
-                style="box-shadow: none;"
-                class="form-select form-select-sm" required
-                v-model="curriculum_number"
-                @change="fetchLevels(curriculum_number)"
-                >
-                <option disabled value="">All</option>
-                <option v-for="(list, index) in curriculumList" :key="index" :value="list.number">{{ list.name }}
-                </option>
-             </select>
-          </div>
+  <div>
 
-          <div class="mb-2">
-             <label class="textColor"><small>Level</small> <span class="star">*</span></label>
-                 <select
-                     style="box-shadow: none;"
-                     class="form-select form-select-sm"
-                     v-model="level"
-                     @change="levelScope(level)">
-                   <option disabled value="">All</option>
-                   <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.level_number">{{lvl.code+". "+lvl.name}}</option>
-                 </select>
-             </div>
+    <AppModal title="Scope" v-model="showingModal" lg>
+    <AssignScope :user_number="user_number"></AssignScope>
+    </AppModal>
 
-          <div class="mb-2">
-             <label class="textColor"><small>School</small> </label>
-             <select
-                style="box-shadow: none;"
-                class="form-select form-select-sm" required
-                v-model="form.school_number"
-                @change="fetchCampuses(form.school_number)"
-                >
-                <option disabled value="">All</option>
-                <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-                </option>
-             </select>
-          </div>
-          <div class="mb-2">
-             <label class="textColor"><small>Campus</small>  </label>
-             <select
-                style="box-shadow: none;"
-                class="form-select form-select-sm"
-                v-model="campus_number" required
-                @change="fetchClasses(campus_number)"
-                >
-                <option disabled value="">All</option>
-                <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-                </option>
-             </select>
-          </div>
-          <div class="row">
-             <div class="col-lg-12">
-                <div class="mb-2">
-                   <label class="textColor"><small>Class</small> </label>
-                   <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="campus_class_number"
-                      @change="fetchAcademicYear(campus_class_number)"
-                      >
-                      <option disabled value="">All</option>
-                      <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}
-                      </option>
-                   </select>
-                </div>
-             </div>
-          </div>
-          <div class="mb-2">
-             <label class="textColor"><small>Current Academic Year</small> </label>
-             <select
-                style="box-shadow: none;"
-                class="form-select form-select-sm" required
-                v-model="current_academic_year_number"
-                @change="academicYearScope(current_academic_year_number)"
-                >
-                <option disabled value="">All</option>
-                <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
-             </select>
-          </div>
-       </form>
+    <AppModal title="New User" v-model="showingModalUser" lg>
+    <NewStaff></NewStaff>
+    </AppModal>
+
+    <div class="row mt-3">
+      <div class="col-12">
+      <table 
+          class="table table-striped"
+          style="font-size: 11px !important;" >
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Scope</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr v-for="(user, index) in userData" :key="index">
+            <td>{{ user.first_name + " " +user.last_name + " " + user.second_name }}</td>
+            <td>{{ user.type }}
+            </td>
+        
+            <td>
+                  
+
+          </td>
+            <td>
+          <button class="btn btn-primary btn-sm mb-2" @click="showModal(user.number)">Scope</button>
+        </td>
+        </tr>
+    
+      
+        </tbody>
+      </table>
+      </div>
+
+
     </div>
- </template>
- 
- <style scoped>
-    .noFocus:focus {
-    outline: none 0 !important;
-    box-shadow: none;
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
+
+  </div>
+</template>
+
+<script setup>
+
+import {onMounted, reactive, ref, watch,computed} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import { useAbility } from '@casl/vue';
+import { useAccountStore } from "@/main/dashboard/account/store/account.js";
+import { useRolesStore } from "@/main/settings/roles/store/roles.js";
+import { useUserStore } from "./store/users.js"
+import AppModal from "@/components/AppModal.vue";
+import AssignScope from "@/main/dashboard/profiles/AssignScope.vue"
+import NewStaff from "@/main/dashboard/profiles/NewStaff.vue"
+import {useScopeStore} from "@/main/dashboard/profiles/store/scope.js";
+
+const page = ref(1)
+const per_page = ref(15)
+
+const showingModal = ref(false)
+
+const userStore = useUserStore()
+const notificationStore = useNotificationStore()
+const roleStore = useRolesStore()
+const accountStore = useAccountStore()
+const rolesData = ref([])
+const { can } = useAbility()
+const errorMessage = ref(null)
+const userData = ref([])
+const buttonLoader = ref(false)
+let show = ref(false)
+let showingModalUser = ref(false)
+const user_number = ref(null)
+const scopeStore = useScopeStore()
+const scopeData = ref([])
+
+const showModal = (a) => {
+    showingModal.value = true
+    user_number.value = a
+    // alert(JSON.stringify(a))
+}
+
+const showModalUser = () => {
+    showingModalUser.value = true
+}
+
+const form = reactive({
+  first_name:null,
+  second_name:null,
+  last_name:null,
+  email:null,
+  phone:null,
+  location:null,
+  level:"",
+  role_numbers:[]
+})
+
+onMounted(
+    async () => {
+      await roleStore.fetchRoles()
+      scopeStore.fetchScope()
+      doFetchAccount()
+    } )
+
+
+
+    //fetch
+const doFetchAccount = () =>{
+   let data = {
+      page: 1,
+      per_page: per_page.value,
+   }
+  //  loading.value = true;
+   userData.value = []
+   accountStore.fetchUsersToAssign(data)
+
+  }
+
+
+  const fetchUsers = (data) => {
+    if(data) {
+      let current_page = data.page
+      page.value = current_page
+
+      let per_page_item = data.per_page;
+      per_page.value = per_page_item;
+
+      let objArray = data.content
+
+
+      if(objArray && objArray.length > 0){
+        objArray.forEach((list, i) => {
+
+          list.key =  (current_page - 1) * per_page_item + i + 1
+
+          const index = userData.value.findIndex(object => object.number === list.number);
+
+          if (index === -1) {
+            userData.value.push(list);
+          }
+
+        })
+      }
+
+
     }
- </style>
+  }
+
+    watch(
+    () => accountStore.userResponse,
+    async (data) => {
+      if(data){
+        // userData.value = data.data
+        fetchUsers(data)
+      }
+    },
+    {deep:true}
+    )
+
+
+
+function addCampus(){
+  buttonLoader.value = true
+  // alert(JSON.stringify(form))
+  userStore.createNewUser(form)
+
+}
+//fetch
+
+watch (
+    () => userStore.newUserResponse,
+    async (data) => {
+      if(data){
+        accountStore.fetchUsersToAssign()
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+        roleStore.fetchRoles()
+        form.first_name = null
+        form.second_name = null
+        form.last_name=null,
+        form.email=null,
+        form. phone=null,
+        form.location=null,
+        form.level=null,
+        form.role_numbers=null
+      }
+    },
+    {deep:true}
+)
+watch (
+    () => userStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+    watch(
+    () => roleStore.roleResponse,
+    async (data) => {
+      if(data){
+        rolesData.value = data.data
+      }
+    },
+    {deep:true}
+    )
+
+    watch (
+      () => scopeStore.newScopeResponse,
+      async (data) => {
+        if(data){
+          showingModal.value=false
+          doFetchAccount()
+          scopeStore.fetchScope()
+        }
+      },
+      {deep:true}
+  )
+
+  watch (
+      () => scopeStore.scopeResponse,
+      async (data) => {
+        if(data){
+         scopeData.value = data
+        }
+      },
+      {deep:true}
+  )
+</script>
+
+<style scoped>
+
+input:focus {
+  box-shadow: none;
+}
+
+.textColor{
+  color: #717375;
+}
+
+</style>

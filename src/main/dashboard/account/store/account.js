@@ -62,13 +62,13 @@ export const useAccountStore = defineStore("account", () => {
 
 
         async function removeAccountRole(data) {
-            return await api.delete("main/settings/roles/remove",data)
+            return await api.post("main/settings/roles/remove",data)
                 .then((response) => {
                     removeRoleResponse.value = response.data
                 })
                 .catch((response) => {
                     if(response && response.response){
-                        errorMessage.value = response.data
+                        errorMessage.value = response.response.data
                     }
                 })
         }

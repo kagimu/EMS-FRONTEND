@@ -72,7 +72,7 @@ export const useRolesStore = defineStore("roles", () => {
     }
 
     async function deleteRole(roleN) {
-        return await api.post("main/settings/roles/delete"+roleN)
+        return await api.delete("main/settings/roles/delete/"+roleN)
             .then((response) => {
              deleteRoleResponse.value = response.data
             })

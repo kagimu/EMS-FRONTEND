@@ -87,7 +87,7 @@ import { useAbility } from '@casl/vue';
 import { useAccountStore } from "@/main/dashboard/account/store/account.js";
 import { useRolesStore } from "@/main/settings/roles/store/roles.js";
 import { useUserStore } from "./store/users.js"
-import StaffManager from "@/main/dashboard/profiles/StaffManager.vue";
+// import StaffManager from "@/main/dashboard/profiles/StaffManager.vue";
 import AppModal from "@/components/AppModal.vue";
 import Scope from "@/main/dashboard/profiles/Scope.vue"
 import NewStaff from "@/main/dashboard/profiles/NewStaff.vue"
