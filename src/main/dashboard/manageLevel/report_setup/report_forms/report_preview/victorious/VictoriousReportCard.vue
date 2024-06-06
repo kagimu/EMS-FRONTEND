@@ -1,13 +1,54 @@
 <script setup>
 
-import StudentImage from "@/assets/images/pic.jpg";
+import StudentImage from "@/assets/images/studentId.png";
 import SchoolBudge from "@/assets/images/victorius-budge.png";
+import {onMounted, ref, watch} from "vue";
 
 const props = defineProps({
   reportDetails:{}
 })
 
+const reportFilteredData = ref([])
 
+onMounted(
+    () => {
+      filterReportData()
+    }
+)
+
+
+watch(
+    () => props.reportDetails,
+    async (data) => {
+      if(data){
+        filterReportData()
+      }
+    }
+)
+
+const filterReportData = () => {
+  let draft = props.reportDetails
+  if(draft && draft?.learning_areas?.length > 0 ){
+    let filterSubject = draft?.learning_areas
+    let arr = []
+
+    filterSubject.forEach(learningArea => {
+      if(learningArea && learningArea?.assessments.length > 0){
+        learningArea?.assessments?.forEach(subject => {
+          arr.push(
+              {
+                subject:subject.name,
+                report_scores:subject.report_scores,
+                report_score_summary:subject.report_score_summary
+              }
+          )
+        })
+      }
+    })
+
+    reportFilteredData.value = arr
+  }
+}
 
 </script>
 
@@ -111,42 +152,57 @@ const props = defineProps({
              </div>
 
 
-<!--              <table style="width: 100%; font-size: 13px; margin-top: 30px; margin-bottom: 30px; margin-left: 35px">
-                <tr>
-                  <td style="width: 15%;">
-                    <div style="padding-left: 5px; padding-bottom: 10px;">Name:</div>
-                    <div style="padding-left: 5px; padding-bottom: 10px;">Class:</div>
-                    <div style="padding-left: 5px; padding-bottom: 10px;"> Days Present:</div>
-                    <div style="padding-left: 5px; padding-bottom: 10px;">Term:</div>
-                  </td>
-                  <td style="width: 40%;">
-                    <div style="padding-left: 5px; padding-bottom: 10px;">Onyango Diego Okello</div>
-                    <div style="padding-left: 5px; padding-bottom: 10px;">Primary 2</div>
-                    <div style="padding-left: 5px; padding-bottom: 10px;">310</div>
-                    <div style="padding-left: 5px; padding-bottom: 10px;">Term 1</div>
-                  </td>
-                  <td style="width: 15%;">
-                    <div style="padding-left: 5px; padding-bottom: 10px;">  Age:</div>
-                    <div style="padding-left: 5px; padding-bottom: 10px;">School Team:</div>
-                    <div style="padding-left: 5px; padding-bottom: 10px;">Days Absent:</div>
-                    <div style="padding-left: 5px; padding-bottom: 10px;">Date:</div>
-                  </td>
-                  <td style="width: 30%;">
-                    <div style="padding-left: 5px; padding-bottom: 10px;"> 6yrs , 8mth</div>
-                    <div style="padding-left: 5px; padding-bottom: 10px;">&nbsp;</div>
-                    <div style="padding-left: 5px; padding-bottom: 10px;">2</div>
-                    <div style="padding-left: 5px; padding-bottom: 10px;">30th/Nov/-0001</div>
-                  </td>
-                </tr>
-              </table>-->
-
             </td>
 
           </tr>
         </table>
 
 
+
+
+
         <table style="width: 100%; border: 1px solid #b8babb; font-size: 13px;">
+
+          <tr style="border-bottom: 1px solid #b8babb;">
+            <td style="width: 30%; padding: 5px;">SUBJECT</td>
+            <td style="width: 10%; padding: 5px;" v-for="(column,column_index) in reportDetails?.report_columns" :key="column_index"><div style="margin-left: 4px;">{{column}}</div></td>
+            <td style="width: 10%;"><div style="margin-left: 4px;">Average</div></td>
+            <td style="width: 5%;"><div style="margin-left: 4px;">Aggr</div></td>
+            <td style="width: 25%;"><div style="margin-left: 4px;">Remark</div></td>
+            <td style="width: 5%;"><div style="margin-left: 4px;">Initial</div></td>
+          </tr>
+
+          <tr style="border-bottom: 1px solid #b8babb;"  v-for="(subject,subject_index) in reportFilteredData" :key="subject_index">
+            <td style="padding: 5px;">{{subject?.subject}}</td>
+            <td style="padding: 5px;" v-for="(score,score_index) in subject?.report_scores" :key="score_index"><div style="margin-left: 4px;">{{score?.average_score}}</div></td>
+            <td style="width: 10%; padding: 4px;"><div style="margin-left: 4px;">{{subject?.report_score_summary?.summation}}</div></td>
+            <td style="width: 5%; padding: 4px;"><div style="margin-left: 4px;">{{subject?.report_score_summary?.grade}}</div></td>
+            <td style="width: 25%; padding: 4px;"><div style="margin-left: 4px;">{{subject?.report_score_summary?.comment}}</div></td>
+            <td style="width: 5%; padding: 4px; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">M.O</div></td>
+          </tr>
+
+
+          <tr style="border-bottom: 1px solid #b8babb;">
+            <td style="padding: 5px;">TOTAL/AGGREGATE</td>
+            <td style="padding: 5px;">324</td>
+            <td style="padding: 5px;">10</td>
+            <td style="padding: 5px;">340</td>
+            <td style="padding: 5px;">9</td>
+            <td style="padding: 5px;" colspan="3" rowspan="2">&nbsp;</td>
+          </tr>
+
+          <tr style="border-bottom: 1px solid #b8babb;">
+            <td style="padding: 5px; ">DIVISION</td>
+            <td style="padding: 5px; text-align: center;" colspan="2">DIVISION1 </td>
+            <td style="padding: 5px; text-align: center;" colspan="2">DIVISION 1</td>
+          </tr>
+
+        </table>
+
+
+
+
+<!--        <table style="width: 100%; border: 1px solid #b8babb; font-size: 13px;">
 
           <tr style="border-bottom: 1px solid #b8babb;">
             <td style="width: 30%; padding: 5px;">SUBJECT</td>
@@ -213,7 +269,7 @@ const props = defineProps({
             <td style="padding: 5px; text-align: center;" colspan="2">DIVISION 1</td>
           </tr>
 
-        </table>
+        </table>-->
 
 
         <table style="width: 100%; border: 1px solid #b8babb; font-size: 13px; margin-top: 10px;">
