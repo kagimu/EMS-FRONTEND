@@ -22,9 +22,11 @@ const editMode=ref(false)
  const roleRef = ref(null)
 
  const showAddModal = ()=>{
+  roleData.value = []
   showModal.value = true
   editMode.value=false
-  roleRef.value.clearRoleData();
+  // roleRef.value.clearRoleData();
+  
  }
 
 const setEditRolesId = (roleD) => {
@@ -33,8 +35,14 @@ const setEditRolesId = (roleD) => {
   editMode.value=true
 }
 
-const  deleteroles = (roleId) => {
-  
+const  deleteRole = (roles) => {
+  if(!confirm("Are you sure, you want to remove: " + roles.name)){
+  // return
+  notificationStore.errorToast("Cancelled","Action Cancelled Successfully !")
+}else{
+  roleStore.deleteRole(roles.number)
+
+}
 }
 
 //fetch
@@ -42,6 +50,17 @@ onMounted(
     async () => {
       await roleStore.fetchRoles()
     } )
+
+    watch(
+    () => roleStore.deleteRoleResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+        roleStore.fetchRoles()
+      }
+    },
+    {deep:true}
+    )
 
     watch(
     () => roleStore.roleResponse,
@@ -66,6 +85,18 @@ onMounted(
 
 watch (
     () => roleStore.editRoleResponse,
+    async (data) => {
+      if(data){
+        showModal.value = false
+        editMode.value=false
+        roleStore.fetchRoles()
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => roleStore.newRoleResponse,
     async (data) => {
       if(data){
         showModal.value = false
@@ -157,7 +188,7 @@ watch (
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
           <button 
           v-if="can('delete_role','general')"
-          @click="deleteroles(index)" type="button">
+          @click="deleteRole(roles)" type="button">
             <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
           </button>
         </td>

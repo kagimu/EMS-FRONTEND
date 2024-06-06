@@ -37,9 +37,9 @@
                   <div v-if="selectedPage === 'user-management'">
                  <UserManagement></UserManagement>
                   </div>
-                  <!-- <div v-if="selectedPage === 'users'">
-                    <StaffManager></StaffManager>
-                  </div> -->
+                  <div v-if="selectedPage === 'scope'">
+                    <ScopeManager></ScopeManager>
+                  </div>
                 
             </div>
           </div>
@@ -56,7 +56,7 @@
   import Roles from "@/main/settings/roles/Roles.vue";
   import {useRouter} from "vue-router";
   import UserManagement from "./accountComponents/UserManagement.vue";
-  import StaffManager from "../profiles/StaffManager.vue";
+  import ScopeManager from "../profiles/ScopeManager.vue";
   
 
   import { useAbility } from '@casl/vue';
@@ -81,11 +81,11 @@ const { can } = useAbility()
       id:"role",
       action : "view_roles"
     },
-    // {
-    //      name: "Users" ,
-    //        id: "users",
-    //        action:"users"
-    //   },
+    {
+         name: "User Scope" ,
+           id: "scope",
+           action:"view_scope"
+      },
      
   ])
   const form = reactive({

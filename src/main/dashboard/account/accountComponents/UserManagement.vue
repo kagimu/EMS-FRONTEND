@@ -144,19 +144,29 @@ const formData = reactive({
   role_number:null
 })
 const selectedIndex = ref(null);
-const openRemoveRoleConfirmationModal = (index,num) => {
-  showDialog.value=true
-  selectedIndex.value = index
-  formData.role_number=index
-  formData.user_number=num
+
+// const openRemoveRoleConfirmationModal = (index,num) => {
+//   showDialog.value=true
+//   selectedIndex.value = index
+//   formData.role_number=index
+//   formData.user_number=num
+// }
+
+const removeRole = (roleN,userN,rolename,userName) => {
+if(!confirm("Are you sure, you want to remove: " + rolename +" role from " + userName)){
+  // return
+  notificationStore.errorToast("Cancelled","Action Cancelled Successfully !")
+}else{
+let data = {
+  role_number:roleN,
+  user_number:userN
+}
+// alert(JSON.stringify(data))
+accountStore.removeAccountRole(data)
 }
 
-
-const confirmRemoveRole = () => {
-  showDialog.value=false
-  //  alert(JSON.stringify(formData))
-   accountStore.removeAccountRole(formData)
 }
+
 
 
 watch(
@@ -164,6 +174,7 @@ watch(
     async (data) => {
       if(data){
         notificationStore.successToast("Success", data.message)
+        doFetchAccount()
       }
     },
     {deep:true}
@@ -212,32 +223,16 @@ watch (
     <NewStaff></NewStaff>
     </AppModal>
 
-
-          <!-- Popup warning Modal -->
-    <div class="modal fade" id="removeRoleConfirmation" :class="{ show: showDialog }" tabindex="-1" aria-labelledby="removeRoleConfirmationLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="removeRoleConfirmationLabel">Please Confirm !</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            Are you sure you want to remove this role?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">NO</button>
-            <button type="button" class="btn btn-danger btn-sm" @click="confirmRemoveRole">YES</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <AppModal title="Assign Role" v-model="assignDialog" xl2>
+      <new-account></new-account>
+    </AppModal>
 
     
-        <div class="modal fade" :class="{ show: assignDialog }" id="addAccount" tabindex="-1"  aria-labelledby="" aria-hidden="true" >
+        <!-- <div class="modal fade" :class="{ show: assignDialog }" id="addAccount" tabindex="-1"  aria-labelledby="" aria-hidden="true" >
       <div class="modal-dialog">
         <new-account></new-account>
         </div>
-      </div>
+      </div> -->
 
       <div class="row">
             <div class="col-12">
@@ -249,7 +244,7 @@ watch (
             <div class="col-lg-6">
                 <button 
                 v-if="can('assign_role','general')"
-                @click="openModal()" style="float: right; margin-right: 5px;" data-bs-toggle="modal" data-bs-target="#addAccount"  type="button"  aria-controls="rolesDialog" class="btn btn-primary btn-sm">Assign Role</button>
+                @click="openModal()" style="float: right; margin-right: 5px;"  type="button" class="btn btn-primary btn-sm">Assign Role</button>
                 <button  style="float: right;border: none;"
                   v-if="can('add_user','general')" 
                   class="btn btn-primary btn-sm mr-3" type="button"  @click="showModalUser"><i class="bi bi-plus"></i>Add New User</button>
@@ -290,7 +285,7 @@ watch (
         <tr>
           <th>#</th>
           <th scope="col">Name</th>
-          <th>Email</th>
+          <!-- <th>Email</th> -->
           <th scope="col">Role (s)</th>
           <th>Type</th>
           <th scope="col">Gender</th>
@@ -303,17 +298,18 @@ watch (
             <tr v-for="(user, index) in userData" :key="index">
               <td>{{ index+1 }}</td>
             <td>{{ user.first_name + " " +user.last_name + " " + user.second_name }}</td>
-            <td>{{ user.email }}</td>
+            <!-- <td>{{ user.email }}</td> -->
             <td>
               <span v-for="(rol,indx) in user.roles"  :key="indx" >
-               {{ rol }}
-              </span>
-              <!-- {{ user.type }} -->
-              <button 
+               {{ rol.role_name }} 
+               <button 
               v-if="can('remove_assigned_role','general')"
-               @click="openRemoveRoleConfirmationModal(user.type,user.number)" data-bs-toggle="modal" data-bs-target="#removeRoleConfirmation" type="button" aria-controls="rolesDialog">
+               @click="removeRole(rol.role_number,user.number,rol.role_name,user.first_name)">
             &nbsp;<i  class="bi bi-x-circle-fill" style="color:rgb(228, 23, 23)"></i>
           </button>
+              </span>
+              <!-- {{ user.type }} -->
+              
             </td>
             <td>{{ user.type }}</td>
             <td>{{ user.gender }}</td>
