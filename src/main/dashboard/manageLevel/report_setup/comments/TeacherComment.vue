@@ -4,7 +4,7 @@ import NewTeacherComment from "@/main/dashboard/manageLevel/report_setup/comment
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import AppModal from "@/components/AppModal.vue";
-import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.vue";
+import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.js";
 
 
 const notificationStore  = useNotificationStore()
