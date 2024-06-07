@@ -12,16 +12,20 @@
                 <div class="card mt-0">
                   <div class="card-header">
                    <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-7">
                         <h6 style="margin-top:20px; text-align: left;font-size: 15px;">
                           <i  @click="goBack()" class="bi bi-x-lg"></i>&nbsp;&nbsp;Invoice Details<b></b>     </h6>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-5">
+                      <button  @click="deleteInvoice()" class="btn btn-danger  btn-sm mb-2 mr-4" style="float: right;">
+                        <small><i class="bi bi-trash">&nbsp;Delete</i></small></button>
                       <!-- <button type="submit" class="btn btn-primary mb-3">Download Invoice</button> -->
                         <button  @click="showModal(myData.invoiceN)"  class="btn btn-primary btn-sm mb-2 mr-4" style="float: right;" type="button" >
                         <small><i class="bi bi-check-lg"><small>&nbsp;Make Payment</small></i></small></button>
                         <button  class="btn btn-secondary  btn-sm mb-2 mr-4" style="float: right;">
                         <small><i class="bi bi-printer">&nbsp;Print</i></small></button>
+                        <button @click="cancelInvoice()"  class="btn btn-danger  btn-sm mb-2 mr-4" style="float: right;">
+                        <small><i class="bi bi-x">&nbsp;cancel</i></small></button>
                     </div>
 
                    </div>
@@ -221,7 +225,7 @@
                          <th scope="col">Date</th>
                          <th scope="col">By</th>
                          <th scope="col">Amount</th>
-                         <th scope="col">Action</th>
+                         <th >Action</th>
                        </tr>
                        </thead>
                        <tbody>
@@ -232,6 +236,10 @@
                          <td> {{payment.recorded_by}}</td>
                          <td> {{payment.amount}}</td>
                          <td>
+                          <button  @click="cancelInvoicePayment(payment.payment_number)" class="btn btn-warning  btn-sm mb-2 mr-2">
+                        <small><i class="bi bi-cancel">&nbsp;cancel</i></small></button>
+                        <button  @click="deleteInvoicePayment(payment.payment_number)" class="btn btn-danger  btn-sm mb-2">
+                        <small><i class="bi bi-trash"></i></small></button>
                          </td>
                        </tr>
                        </tbody>
@@ -290,6 +298,7 @@ const studentName = ref(null)
   const campus = ref(null)
   const school = ref(null)
   const actionType = ref(null)
+  const invoiceNum = ref(null)
 
 const  showModal = (invoice) =>{
   mymodalpay.value = true
@@ -407,8 +416,79 @@ watch (
     }
 )
 
+const  deleteInvoice = (roles) => {
+  if(!confirm("Are you sure, you want to delete this Invoice " )){
+  // return
+  notificationStore.errorToast("Cancelled","Action Cancelled Successfully !")
+}else{
+  invoiceStore.deleteInvoice(myData.invoiceN)
+}
+}
 
+const  cancelInvoice = (roles) => {
+  if(!confirm("Are you sure, you want to cancel this Invoice")){
+  // return
+  notificationStore.errorToast("Cancelled","Action Cancelled Successfully !")
+}else{
+  invoiceStore.cancelInvoice(myData.invoiceN)
+}
+}
+const  cancelInvoicePayment = (payment_number) => {
+  if(!confirm("Are you sure, you want to cancel this Payment")){
+  // return
+  notificationStore.errorToast("Cancelled","Action Cancelled Successfully !")
+}else{
+  invoiceStore.cancelInvoicePayment(payment_number)
+}
+}
 
+const  deleteInvoicePayment = (payment_number) => {
+  if(!confirm("Are you sure, you want to delete this Payment")){
+  // return
+  notificationStore.errorToast("Cancelled","Action Cancelled Successfully !")
+}else{
+  invoiceStore.deleteInvoicePayment(payment_number)
+}
+}
+watch (
+    () => invoiceStore.cancelInvoiceResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+        await invoiceStore.fetchInvoiceId(invoice_number)
+      }
+    }
+)
+
+watch (
+    () => invoiceStore.cancelInvoicePaymentResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+        await invoiceStore.fetchInvoiceId(invoice_number)
+      }
+    }
+)
+
+watch (
+    () => invoiceStore.deleteInvoiceResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+        goBack()
+      }
+    }
+)
+
+watch (
+    () => invoiceStore.deleteInvoicePaymentResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+        await invoiceStore.fetchInvoiceId(invoice_number)
+      }
+    }
+)
 </script>
 
 <style>

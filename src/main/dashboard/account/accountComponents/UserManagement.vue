@@ -7,14 +7,15 @@ import NewAccount from "./NewAccount.vue";
 import { useUserStore } from "@/main/dashboard/profiles/store/users.js"
 import AppModal from "@/components/AppModal.vue";
 import NewStaff from "@/main/dashboard/profiles/NewStaff.vue"
+import AssignUserEntity from "@/main/dashboard/entity/entityComponents/AssignUserEntity.vue"
+import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
 
 const loading = ref(false)
 const page = ref(1)
 const per_page = ref(15)
-
 const showingModal = ref(false)
 const status = ref("")
-
+const entityStore = useEntityStore()
 const userStore = useUserStore()
 
 import { useAbility } from '@casl/vue';
@@ -31,6 +32,8 @@ const showDialog = ref(false)
 const assignDialog = ref(false)
 const userAll = ref([])
 const showingModalUser = ref(false)
+const showingEntity = ref(false)
+const entityList = ref(null)
 
 const openModal = () =>{
   assignDialog.value = true
@@ -41,7 +44,6 @@ const showModalUser = () => {
     showingModalUser.value = true
 }
 
-
 const rolesData= ref([])
 
 //fetch
@@ -50,7 +52,12 @@ onMounted(
       await roleStore.fetchRoles()
       accountStore.fetchAllUsers()
       doFetchAccount()
+      entityStore.fetchEntity()
     } )
+
+    const openEntityModal = (userN) =>{
+      showingEntity.value=true
+    }
 
     watch(
     () => roleStore.roleResponse,
@@ -214,6 +221,16 @@ watch (
       },
       {deep:true}
   )
+
+  watch (
+  () => entityStore.entityResponse,
+  async (data) => {
+    if (data) {
+  entityList.value = data.data
+    }
+  },
+  { deep: true }
+)
 </script>
 
 <template>
@@ -226,13 +243,9 @@ watch (
     <AppModal title="Assign Role" v-model="assignDialog" xl2>
       <new-account></new-account>
     </AppModal>
-
-    
-        <!-- <div class="modal fade" :class="{ show: assignDialog }" id="addAccount" tabindex="-1"  aria-labelledby="" aria-hidden="true" >
-      <div class="modal-dialog">
-        <new-account></new-account>
-        </div>
-      </div> -->
+    <AppModal title="Assign Entity" v-model="showingEntity" xs>
+    <AssignUserEntity></AssignUserEntity>
+    </AppModal>
 
       <div class="row">
             <div class="col-12">
@@ -325,10 +338,10 @@ watch (
            data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
-          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>
-          <!-- <button type="button">
-            <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
-          </button> -->
+          &nbsp;&nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>
+          <button @click="openEntityModal(user.number)" type="button" class="btn btn-outline-primary mb-2 btn-small p-0" style="width: 60%;">
+           <small>assign-entity</small>
+          </button>
         </td>
         </tr>
     

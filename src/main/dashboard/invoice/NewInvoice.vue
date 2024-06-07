@@ -127,7 +127,7 @@ const createInvoice = () => {
         item_number: service.number,
         quantity: parseInt(service.quantity),
         // unitPrice: service.unitPrice,
-        // amount: service.amount
+        unit_cost: parseInt(service.cost)
       }))
 
 
@@ -138,7 +138,7 @@ const createInvoice = () => {
     items:selectedItems,
     // student_number:studentNumber
   }
-
+//  alert(JSON.stringify(data))
   invoiceStore.createNewInvoice(data)
 }
 
@@ -239,6 +239,7 @@ watch (
                                 readonly
                                 type="text"
                                 v-model="Service.cost"
+                                @keypress="commons.numbersOnlyValidator($event)" 
                                 @input="updateAmount(index)"
                                 placeholder="Unit Price"
                                 class="form-control shadow-none py-2" >

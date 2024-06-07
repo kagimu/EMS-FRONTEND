@@ -40,6 +40,9 @@
                   <div v-if="selectedPage === 'scope'">
                     <ScopeManager></ScopeManager>
                   </div>
+                  <div v-if="selectedPage === 'entity'">
+                  <Entity></Entity>
+                  </div>
                 
             </div>
           </div>
@@ -57,7 +60,7 @@
   import {useRouter} from "vue-router";
   import UserManagement from "./accountComponents/UserManagement.vue";
   import ScopeManager from "../profiles/ScopeManager.vue";
-  
+  import Entity from "@/main/dashboard/entity/Entity.vue"  
 
   import { useAbility } from '@casl/vue';
 
@@ -85,6 +88,11 @@ const { can } = useAbility()
          name: "User Scope" ,
            id: "scope",
            action:"view_scope"
+      },
+      {
+         name: "Entity" ,
+           id: "entity",
+           action:"view_entity"
       },
      
   ])

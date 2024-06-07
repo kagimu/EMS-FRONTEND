@@ -10,6 +10,11 @@ export const useInvoiceStore = defineStore("invoice", () => {
     const newInvoicePaymentResponse = ref(null)
     const invoiceUpdateResponse = ref(null)
     const financialSummaryResponseById = ref(null)
+    const editUpdateResponse = ref(null)
+    const deleteInvoiceResponse = ref(null)
+    const cancelInvoiceResponse = ref(null)
+    const cancelInvoicePaymentResponse = ref(null)
+    const deleteInvoicePaymentResponse = ref(null)
 
     async function createNewInvoice(data) {
         return await api.post("main/invoices", data)
@@ -90,6 +95,70 @@ export const useInvoiceStore = defineStore("invoice", () => {
                 }
             })
     }
+
+//     invoices/update [POST]
+// invoices/cancel?invoice_number=xyz [POST]
+// invoices/delete?invoice_number=xyz [POST] 
+
+// invoices/payments/delete?payment_number=xyz [POST]
+// invoices/payments/cancel?payment_number=xyz [POST]
+
+    async function updateInvoiceDetails(data) {
+        return await api.post("main/invoices/update",data)
+            .then((response) => {
+                editUpdateResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+    async function deleteInvoice(invoice_number) {
+        return await api.post("main/invoices/delete?invoice_number="+invoice_number)
+            .then((response) => {
+                deleteInvoiceResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+    async function cancelInvoice(invoice_number) {
+        return await api.post("main/invoices/cancel?invoice_number="+invoice_number)
+            .then((response) => {
+                cancelInvoiceResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+    async function cancelInvoicePayment(payment_number) {
+        return await api.post("main/invoices/payments/cancel?payment_number="+payment_number)
+            .then((response) => {
+                cancelInvoicePaymentResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function deleteInvoicePayment(payment_number) {
+        return await api.post("main/invoices/payments/delete?payment_number="+payment_number)
+            .then((response) => {
+                deleteInvoicePaymentResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
     return {
        invoiceResponse,
        fetchInvoice,
@@ -103,6 +172,16 @@ export const useInvoiceStore = defineStore("invoice", () => {
        invoiceUpdateResponse,
        errorMessage,
        financialSummaryResponseById,
-       fetchFinancialSummary
+       fetchFinancialSummary,
+       editUpdateResponse,
+       updateInvoiceDetails,
+       deleteInvoiceResponse,
+       deleteInvoice,
+       cancelInvoiceResponse,
+       cancelInvoice,
+       cancelInvoicePaymentResponse,
+       cancelInvoicePayment,
+       deleteInvoicePaymentResponse,
+       deleteInvoicePayment
     }
 })
