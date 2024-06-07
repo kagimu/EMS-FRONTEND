@@ -8,6 +8,7 @@ import ReportSummary from "@/main/dashboard/manageLevel/report_setup/report_form
 import ReportScore from "@/main/dashboard/manageLevel/report_setup/report_forms/ReportScore.vue";
 import ReportScoreSummary from "@/main/dashboard/manageLevel/report_setup/report_forms/ReportScoreSummary.vue";
 import ReportTemplates from "@/main/dashboard/manageLevel/report_setup/reportTemplate/ReportTemplates.vue";
+import TeacherComment from "@/main/dashboard/manageLevel/report_setup/comments/TeacherComment.vue";
 
 
 import {useRouter} from "vue-router";
@@ -25,6 +26,7 @@ let reportSettingsQuery = routerData.currentRoute.value.query.rp
   <report-score v-if="reportSettingsQuery === 'report-score'"></report-score>
   <report-score-summary v-if="reportSettingsQuery === 'report-score-summary'"></report-score-summary>
   <report-templates v-if="reportSettingsQuery === 'report-templates'"></report-templates>
+  <teacher-comment v-if="reportSettingsQuery === 'teachers-comments'"></teacher-comment>
 
 </div>
 </template>

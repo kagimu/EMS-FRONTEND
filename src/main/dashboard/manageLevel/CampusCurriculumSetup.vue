@@ -65,6 +65,10 @@ const reportSettingsMenu = ref([
     name:"Report Templates",
     router_name:"report-templates"
   },
+  {
+    name:"HeadTeacher Comments",
+    router_name:"teachers-comments"
+  },
 ])
 
 

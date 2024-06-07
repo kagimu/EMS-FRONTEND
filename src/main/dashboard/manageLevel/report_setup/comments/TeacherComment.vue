@@ -1,0 +1,101 @@
+<script setup>
+
+import NewTeacherComment from "@/main/dashboard/manageLevel/report_setup/comments/NewTeacherComment.vue";
+import {onMounted, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import AppModal from "@/components/AppModal.vue";
+import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.vue";
+
+
+const notificationStore  = useNotificationStore()
+const teacherCommentStore = useReportSetupStore()
+
+const commentsList = ref(null)
+const showCommentModal = ref(false)
+
+
+onMounted(
+    async () => {
+        teacherCommentStore.fetchTeacherComments()
+    }
+)
+
+const addComments = () => {
+  showCommentModal.value = true
+}
+
+
+watch(
+    () => teacherCommentStore.newTeacherCommentResponse,
+    async (data) => {
+      if(data){
+        teacherCommentStore.fetchTeacherComments()
+        // notificationStore.successToast("Success",data.message)
+        showCommentModal.value = false
+      }
+    }
+)
+
+watch(
+    () => teacherCommentStore.teacherCommentResponse,
+    async (data) => {
+      if(data){
+       commentsList.value = data.data
+      }
+    }
+)
+
+
+</script>
+
+<template>
+
+  <div>
+
+    <AppModal title="New Comment" v-model="showCommentModal" lg>
+        <NewTeacherComment></NewTeacherComment>
+    </AppModal>
+
+
+
+    <div class="row">
+
+      <div class="col-12">
+
+        <div class="flex justify-content-between mt-3">
+          <div class="ml-4">Teacher's Comments</div>
+          <button
+              type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addComments">
+            <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+              Add New Comment
+          </button>
+        </div>
+
+        <table class="table table-hover caption-top mt-5 table-sm text-sm" style="font-size: 14px;">
+          <thead>
+          <tr>
+            <th class="w-[10%]" scope="col">#</th>
+            <th>Comment</th>
+            <th>(Min - Max) Aggregate</th>
+          </tr>
+          </thead>
+          <tbody>
+          <!-- <tr v-for="(levelInfo, index) in commentsList" :key="index">
+
+
+          </tr> -->
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+
+
+
+  </div>
+
+</template>
+
+<style scoped>
+
+</style>
