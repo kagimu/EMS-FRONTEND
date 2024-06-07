@@ -16,7 +16,7 @@ const entityStore = useEntityStore()
   })
 
   const addEntity = () =>{
-   alert(JSON.stringify(formData))
+  //  alert(JSON.stringify(formData))
    entityStore.newEntity(formData)
   }
 
