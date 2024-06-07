@@ -3,7 +3,7 @@
         <form @submit.prevent="assignRole">
       <div class="mb-2">      
         <label class="textColor"><small>User</small></label>
-        <!-- {{ userData }} -->
+
               <select  v-model="formData.user_number"  style="box-shadow: none;" class="form-select form-select-sm" required >
                   <option disabled value="">Select User</option>
                   <option v-for="(list, index) in userData" :key="index" :value="list.number">{{ list.first_name }} {{ list.last_name  }}
