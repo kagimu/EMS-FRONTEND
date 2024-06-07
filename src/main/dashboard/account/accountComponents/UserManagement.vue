@@ -34,6 +34,7 @@ const userAll = ref([])
 const showingModalUser = ref(false)
 const showingEntity = ref(false)
 const entityList = ref(null)
+const userNumber = ref(null)
 
 const openModal = () =>{
   assignDialog.value = true
@@ -57,6 +58,7 @@ onMounted(
 
     const openEntityModal = (userN) =>{
       showingEntity.value=true
+      userNumber.value = userN
     }
 
     watch(
@@ -231,6 +233,17 @@ watch (
   },
   { deep: true }
 )
+
+watch (
+    () => entityStore.entityToUserResponse,
+    async (data) => {
+      if(data){
+        showingEntity.value = false
+      }
+    },
+    {deep:true}
+)
+
 </script>
 
 <template>
@@ -244,7 +257,7 @@ watch (
       <new-account></new-account>
     </AppModal>
     <AppModal title="Assign Entity" v-model="showingEntity" xs>
-    <AssignUserEntity></AssignUserEntity>
+    <AssignUserEntity :userNumber="userNumber"></AssignUserEntity>
     </AppModal>
 
       <div class="row">

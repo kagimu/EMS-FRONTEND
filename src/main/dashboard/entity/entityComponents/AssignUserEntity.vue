@@ -9,14 +9,25 @@ const loader = ref(false)
 const entityStore = useEntityStore()
 const entityList = ref([])
 
+const props = defineProps({
+  userNumber:String
+})
+
   const form = reactive({ 
     entity_number:null,
+    user_number:props.userNumber
   })
 
+
   const addEntity = () =>{
-   alert(JSON.stringify(form))
+  //  alert(JSON.stringify(form))
    entityStore.addEntityToUser(form)
   }
+
+  onMounted(() => {
+    entityStore.fetchEntity()
+   }
+  )
 
   watch (
   () => entityStore.entityResponse,
@@ -29,7 +40,7 @@ const entityList = ref([])
 )
 
   watch (
-    () => entityStore.newEntityResponse,
+    () => entityStore.entityToUserResponse,
     async (data) => {
       if(data){
         loader.value = false

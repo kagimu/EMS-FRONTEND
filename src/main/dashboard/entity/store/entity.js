@@ -33,7 +33,7 @@ export const useEntityStore = defineStore("entity", () => {
     }
  
     async function addEntityToUser(data) {
-        return await api.put("main/eos/add-user-to-entity",data)
+        return await api.post("main/eos/add-user-to-entity",data)
             .then((response) => {
                 entityToUserResponse.value = response.data
             })
