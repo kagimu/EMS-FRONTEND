@@ -9,7 +9,7 @@ import useCommonsStore from "@/composables/useCommons.js";
 
 
 const notificationStore  = useNotificationStore()
-const teacherCommentStore = useReportSetupStore()
+const teacherCommentStore = useTeacherCommentStore()
 const commons = useCommonsStore()
 
 const commentsList = ref(null)

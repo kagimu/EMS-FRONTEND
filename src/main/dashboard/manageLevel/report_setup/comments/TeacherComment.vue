@@ -8,7 +8,7 @@ import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/
 
 
 const notificationStore  = useNotificationStore()
-const teacherCommentStore = useReportSetupStore()
+const teacherCommentStore = useTeacherCommentStore()
 
 const commentsList = ref(null)
 const showCommentModal = ref(false)
