@@ -35,6 +35,7 @@ const showingModalUser = ref(false)
 const showingEntity = ref(false)
 const entityList = ref(null)
 const userNumber = ref(null)
+let entityN = localStorage.getItem("entity_number")
 
 const openModal = () =>{
   assignDialog.value = true
@@ -88,6 +89,7 @@ const doFetchAccount = () =>{
    let data = {
       page: 1,
       per_page: per_page.value,
+      entity_number:entityN
    }
   //  loading.value = true;
    userData.value = []

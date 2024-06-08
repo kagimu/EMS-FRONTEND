@@ -143,6 +143,7 @@ watch(
 
 
     <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+      <!-- {{ curriculumList }} -->
       <div v-for="(curr, index) in curriculumList" :key="index">
         <div class="border rounded-md bg-white mt-3 p-0">
 

@@ -16,7 +16,9 @@ const breakpoints = useBreakpoints(breakpointsTailwind)
 const xs = breakpoints.smaller('sm')
 const sm = breakpoints.between('sm', 'md')
 const md = breakpoints.between('md', 'lg')
-
+let entityName = localStorage.getItem("entity_name")
+const schoolName = ref("")
+const campusName = ref("")
 
 const defaultMenuSize = ref(useStorage("toggle", false))
 
@@ -42,10 +44,17 @@ onMounted(
     async () => {
       await  updateOnlineStatus()
       checkDynamicClass()
+      if(localStorage.getItem("schoolName")){
+      schoolName.value = localStorage.getItem("schoolName")
+      }
+      if(localStorage.getItem("campusName")){
+      campusName.value = localStorage.getItem("campusName")
+      }
     }
 )
 
 const menu = ref(null);
+
 
 
 watch(
@@ -112,6 +121,9 @@ function updateOnlineStatus() {
     alert("You are currently offline. Please check your internet connection.");
   }
 }
+const goToEntities = () => {
+  router.push({name:'entity-dashboard'})
+}
 </script>
 <template>
 
@@ -128,7 +140,7 @@ function updateOnlineStatus() {
                   class="bi-list mr-2"
                   :class="defaultMenuSize ? 'transition ease-in-out rotate-0 duration-700' : 'transition ease-in-out -rotate-180 duration-700'"
               ></i>
-              <router-link class="navbar-brand text-white" :to="{name:'home'}"><div class="text-[17px]">Victorious Education Services</div> </router-link>
+              <router-link class="navbar-brand text-white" :to="{name:'home'}"><div class="text-[17px]">{{ entityName }} > {{ schoolName }} > {{ campusName }}</div> </router-link>
             </div>
             <div class="navbar-collapse">
               <ul class="navbar-nav me-auto my-lg-0 navbar-nav-scroll" style="font-size: 13px;">
@@ -144,6 +156,8 @@ function updateOnlineStatus() {
                     </a>
                     <ul class="dropdown-menu" style="font-size: 13px;">
                       <li><a class="dropdown-item" style="cursor: pointer;">Profile</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li @click="goToEntities"><a class="dropdown-item" style="cursor: pointer;" >My Entities</a></li>
                       <li><hr class="dropdown-divider"></li>
                       <li><a class="dropdown-item" style="cursor: pointer;" @click="userLogout">Logout</a></li>
                     </ul>

@@ -70,6 +70,7 @@ import ApplicationSuccessPage from "@/main/application/applicationComponents/App
 import CampusCurriculumSetup from "@/main/dashboard/manageLevel/CampusCurriculumSetup.vue";
 import StudentProfileDetails from "@/main/dashboard/profiles/studentProfile/StudentProfileDetails.vue"
 import AdmissionDetails from '@/main/dashboard/studentAdmission/newAdmissionComponents/AdmissionDetails.vue';
+import EntityDashboard from "@/main/dashboard/EntityDashboard.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -107,6 +108,9 @@ const router = createRouter({
                       
                 }
             },
+           
+              
+
                 {path: 'campus', component: ManageCampus, name: "campus",
                 meta: {
                     resource: "campus",
@@ -472,6 +476,14 @@ const router = createRouter({
                     action: "wiew-student-profile-details",
                 }},
             ]
+        },
+        {path: '/entity-dashboard', component: EntityDashboard, name: "entity-dashboard",
+            meta: {
+                requiresAuth: true,
+                resource: "entity-dashboard",
+                action: "view_entity-dashboard",
+                  
+            }
         },
 
         {

@@ -80,11 +80,13 @@ const curriculumStore = useCurriculumStore()
 
 const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
+let entityN = localStorage.getItem("entity_number")
 
 const form = reactive({
   name:null,
   commencement_date:null,
   curriculum:[],
+  entity_number:entityN
 })
 
 const clearSchoolForm = () => {
@@ -113,6 +115,7 @@ const addSchool = () =>{
     form.school_number = school_number.value
     schoolStore.editSchoolData(form)
   }else {
+    // alert(JSON.stringify(form))
     schoolStore.newSchoolData(form)
   }
 

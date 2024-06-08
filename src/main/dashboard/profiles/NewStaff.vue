@@ -68,16 +68,30 @@
 <div class="col-6">
  
 <div class="mb-2">
-<label class="textColor"><small>Role</small></label>
+<label class="textColor"><small>Role <span class="alert alert-danger p-0">set Account expiry date</span></small></label>
 <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-
-<li class="list-group-item" v-for="(list, index) in rolesData" :key="index" :value="list.number">
-<input
-v-model="form.role_numbers"
-
+{{ rolesData }}
+<li class="list-group-item" v-for="(list, index) in rolesData" :key="index">
+<div class="row">
+  <div class="col-1">
+    <input
+v-model="list.role_number"
 style="outline: none 0 !important; box-shadow: none;"
-class="form-check-input me-1" type="checkbox" :value="list.number" :id="list.number">
-<label class="textColor" :for="list.number"><small>{{list.name}}</small></label>
+class="" type="checkbox" :value="list.number" :id="list.number">
+  </div>
+<div class="col-4">
+<label class="textColor" :for="list.number">{{list.name}}</label>
+</div>
+<div class="col-7">
+  <input
+  v-model="list.date"
+style="outline: none 0 !important; box-shadow: none;"
+class="form-control" type="date" required>
+</div>
+
+</div>
+
+<!-- <label class="textColor" :for="list.number"><small>Expiry Date</small></label> -->
 </li>
 
 </ul>
@@ -121,7 +135,8 @@ class="form-check-input me-1" type="checkbox" :value="list.number" :id="list.num
   const userData = ref([])
   const buttonLoader = ref(false)
   let show = ref(false)
-  
+  let entityN = localStorage.getItem("entity_number")
+
   const form = reactive({
     first_name:null,
     second_name:null,
@@ -130,14 +145,16 @@ class="form-check-input me-1" type="checkbox" :value="list.number" :id="list.num
     phone:null,
     location:null,
     level:"",
-    role_numbers:[]
+    role_numbers:[],
+    entity_number:entityN,
+    date:null
   })
   
   
   //fetch
   onMounted(
       async () => {
-        await accountStore.fetchUsersToAssign()
+        await accountStore.fetchUsersToAssign(entityN)
       } )
   
       watch(
@@ -153,7 +170,7 @@ class="form-check-input me-1" type="checkbox" :value="list.number" :id="list.num
   
   function addCampus(){
     buttonLoader.value = true
-    // alert(JSON.stringify(form))
+    alert(JSON.stringify(form))
     userStore.createNewUser(form)
   
   }
@@ -167,7 +184,7 @@ class="form-check-input me-1" type="checkbox" :value="list.number" :id="list.num
       () => userStore.newUserResponse,
       async (data) => {
         if(data){
-          accountStore.fetchUsersToAssign()
+          accountStore.fetchUsersToAssign(entityN)
           buttonLoader.value = false
           notificationStore.successToast("Success", data.message)
           roleStore.fetchRoles()
@@ -215,7 +232,7 @@ class="form-check-input me-1" type="checkbox" :value="list.number" :id="list.num
   }
   
   .textColor{
-    color: #717375;
+  
   }
   
   </style>

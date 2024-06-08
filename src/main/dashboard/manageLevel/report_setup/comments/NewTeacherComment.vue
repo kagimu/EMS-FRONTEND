@@ -6,11 +6,35 @@ import useNotificationStore from "@/composables/useNotification.js";
 import AppModal from "@/components/AppModal.vue";
 import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.js";
 import useCommonsStore from "@/composables/useCommons.js";
+import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
+import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import {useRouter} from "vue-router";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 
 
 const notificationStore  = useNotificationStore()
 const teacherCommentStore = useTeacherCommentStore()
 const commons = useCommonsStore()
+
+const routerData = useRouter()
+const reportSetupStore = useReportSetupStore()
+const studyPeriodStore = useStudyPeriodStore()
+const classStore = useClassesStore()
+const academicYearStore = useAcademicYearStore()
+
+
+const reportSettingsList = ref(null)
+
+const campusLevelList = ref([])
+const academicYearList = ref([])
+const studyPeriodList = ref([])
+const campusClassList = ref([])
+
+const campus_level_number = ref("")
+const academic_year_number = ref("")
+const study_period_number = ref("")
+const campus_class_number = ref("")
+
 
 const commentsList = ref(null)
 const loader = ref(false)
@@ -25,6 +49,7 @@ report_setting_number:null
 onMounted(
     async () => {
         teacherCommentStore.fetchTeacherComments()
+        await doFetchReportSettings()
     }
 )
 
@@ -33,6 +58,92 @@ const addComments = () => {
  alert(JSON.stringify(form))
  teacherCommentStore.newTeacherComment(form)
 }
+
+const doFetchReportSettings = async () => {
+  let data = {
+     academic_year_number:academic_year_number.value,
+     study_period_number:study_period_number.value,
+     campus_class_number:campus_class_number.value
+  }
+   await reportSetupStore.fetchReportSettings(data)
+ }
+
+const fetchCampusLevel = () => {
+  classStore.fetchCampusLevel(campus_curriculum_number)
+}
+
+
+const fetchAcademicYear = (campus_level_number) => {
+  academicYearStore.fetchAcademicYearByLevel(campus_level_number)
+  academicYearStore.fetchCampusClassByLevel(campus_level_number)
+}
+
+
+const fetchStudyPeriod = (academic_num) =>{
+  studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
+  doFetchReportSettings()
+}
+
+
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        campusLevelList.value = data.data
+      }
+    }
+)
+
+watch(
+    () => academicYearStore.academicYearByLevelResponse,
+    async (data) => {
+      if(data){
+        academicYearList.value = data.data
+      }
+    }
+)
+
+
+watch(
+    () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+    async (data) => {
+      if(data){
+        studyPeriodList.value = data.data
+      }
+    }
+)
+
+watch(
+    () => academicYearStore.campusClassByLevelResponse,
+    async (data) => {
+      if(data){
+        campusClassList.value = data.data
+      }
+    }
+)
+
+
+watch(
+    () => reportSetupStore.reportSettingsResponse,
+    async (data) => {
+      if(data){
+        showReportSettingsModal.value = false
+        await doFetchReportSettings()
+        notificationStore.successToast("Success",data.message)
+      }
+    }
+)
+
+watch(
+    () => reportSetupStore.reportSettingsListResponse,
+    async (data) => {
+      if(data){
+       reportSettingsList.value = data.data
+      }
+    }
+)
+
 
 
 watch(
@@ -74,6 +185,56 @@ watch(
     </div>
 
 <div class="row">
+ 
+          <div class="mb-2">
+            <select
+                class="form-select form-select-sm shadow-none"
+                v-model="campus_level_number"
+                @change="fetchAcademicYear(campus_level_number)"
+            >
+              <option disabled value="">--Filter by Level--</option>
+              <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+            </select>
+          </div>
+
+          <div class="mb-2">
+            <select
+                class="form-select form-select-sm shadow-none" required
+                v-model="campus_class_number"
+                @change="doFetchReportSettings()"
+            >
+              <option disabled value="">--Filter by Class--</option>
+              <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+            </select>
+          </div>
+
+          <div class="mb-2">
+            <select
+                class="form-select form-select-sm shadow-none"
+                v-model="academic_year_number"
+                @change="fetchStudyPeriod(academic_year_number)"
+            >
+              <option disabled value="">--Filter by Academic Year--</option>
+              <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
+                {{list.code+". "+list.academic_year_name}}
+              </option>
+            </select>
+          </div>
+
+
+          <div class="mb-2">
+            <select
+                class="form-select form-select-sm shadow-none" required
+                v-model="study_period_number"
+                @change="doFetchReportSettings()"
+            >
+              <option disabled value="">--Filter by Study Period--</option>
+              <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
+
+            </select>
+          </div>
+
+        </div>
     <div class="col-6">
         <div class="mb-2">
       <label class="textColor">Minimum Aggregate</label>
@@ -104,7 +265,7 @@ watch(
     </div>
     </div>
 
-</div>
+
 
     <div class="mb-2">
       <label class="textColor"><small>Comment</small></label>

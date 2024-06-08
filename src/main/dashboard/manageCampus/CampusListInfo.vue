@@ -66,6 +66,9 @@ const fetchCampusInfo = (schoolNumber) => {
   }
 }
 
+const setCampusName = (campusName) =>{
+  localStorage.setItem('campusName',campusName)
+}
 watch(
     () => campusStore.newCampusResponse,
     async (data) => {
@@ -203,6 +206,7 @@ watch (
                   :to="{name:'campus-setup', query:{id:campus.number, sch:schoolNumber}}"
               >
                 <button
+                  @click="setCampusName(campus.name)"
                     type="button"
                     class="btn-primary border-0 d-none d-lg-block viewButtonStyle">
                       <span class="mx-9 text-sm">

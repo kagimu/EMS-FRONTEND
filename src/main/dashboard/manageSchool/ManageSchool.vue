@@ -16,6 +16,7 @@ const  notificationStore  = useNotificationStore()
 const schoolRef = ref(null)
 const editMode = ref(false)
 const showSelected = ref(null)
+let entityN = localStorage.getItem("entity_number")
 
 
 const schoolDialog = ref( false)
@@ -48,9 +49,13 @@ const deleteSchool = (school) => {
 
 }
 
+const setSchoolName = (school) =>{
+  localStorage.setItem('schoolName',school)
+}
+
 onMounted(
     () => {
-      schoolStore.fetchSchools()
+      schoolStore.fetchSchools(entityN)
     }
 )
 
@@ -59,7 +64,7 @@ watch(
     async (data) => {
       if(data){
         schoolDialog.value = false
-        await schoolStore.fetchSchools()
+        await schoolStore.fetchSchools(entityN)
         notificationStore.successToast("Success", data.message)
       }
     },
@@ -202,6 +207,7 @@ const toggleCurriculum = (number) =>{
               >
                 <button
                 v-if="can('view_school','general')"
+                @click="setSchoolName(school.name)"
                     type="button"
                     class="bg-[#0d6efd] hover:bg-[#0c62e1] text-white text-sm text-center w-full rounded-b-md py-2">
                       <span>
