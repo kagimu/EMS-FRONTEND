@@ -17,7 +17,6 @@ import { useAbility } from '@casl/vue';
 const { can } = useAbility()
 
 const routerData = useRouter()
-const buttonLoader = ref(false)
 
 const route = routerData.currentRoute.value.query.s
 const selectedPage = route ? route : "profile"

@@ -251,13 +251,14 @@ watch (
 <template>
     <div>
 
-    <AppModal title="New User" v-model="showingModalUser" xl2>
+    <AppModal title="New User" v-model="showingModalUser" xl8>
     <NewStaff></NewStaff>
     </AppModal>
 
     <AppModal title="Assign Role" v-model="assignDialog" xl2>
       <new-account></new-account>
     </AppModal>
+
     <AppModal title="Assign Entity" v-model="showingEntity" xs>
     <AssignUserEntity :userNumber="userNumber"></AssignUserEntity>
     </AppModal>

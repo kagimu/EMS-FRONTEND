@@ -16,6 +16,7 @@
    const userData = ref([])
    const buttonLoader = ref(false)
    let show = ref(false)
+   const rolesInfo = ref([])
    let entityN = localStorage.getItem("entity_number")
    
    const form = reactive({
@@ -47,7 +48,10 @@
        },
        {deep:true}
        )
-   
+
+   const addRoleNumber = (number, idx) => {
+     rolesInfo.value[idx].role_number = rolesInfo.value?.[idx]?.role_number === number ? "" : number
+   }
    
    function addCampus(){
      buttonLoader.value = true
@@ -98,12 +102,15 @@
        () => roleStore.roleResponse,
        async (data) => {
          if(data && data.data){
-          let draft = data.data
-          // draft.forEach(lst => {
-          // lst.date = null
-          // lst.role_number=null
-          // })
+           let draft = data.data
            rolesData.value = draft
+
+           let arr = []
+            draft.forEach(lst => {
+              arr.push({date:"", role_number:"",number:lst.number,role_name:lst.name})
+            })
+
+           rolesInfo.value = arr
            
          }
        },
@@ -171,17 +178,38 @@
                <div class="mb-2">
                   <label class="textColor"><small>Role <span class="alert alert-danger p-0">set Account expiry date</span></small></label>
                   <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-                     <!-- {{ rolesData }} -->
+<!--                      {{ rolesData }}-->
+<!--                    {{rolesInfo}}-->
+                    <div class="grid grid-cols-2 gap-2" v-for="(lst, idx) in rolesInfo" :key="idx">
+                      <div>{{lst}}</div>
+                      <div>
+                        <input
+                            @change="addRoleNumber(lst.number, idx)"
+                            :value="lst.number"
+                            :id="lst.number"
+                            class="shadow-none"
+                            type="checkbox">
+                            <label :for="lst.number">{{lst.role_name}}</label>
+                      </div>
+                      <div>
+                        <input
+                            v-model="lst.date"
+                            style="outline: none 0 !important; box-shadow: none;"
+                            class="form-control" type="date" required>
+                      </div>
+                    </div>
+
+
+
                      <li class="list-group-item" v-for="(list, index) in rolesData" :key="index">
                         <div class="row">
                            <div class="col-1">
-                            {{ list }}
                               <input
                                  v-model="list.role_number"
-                                 :value="'yes'"
+                                 :value="list.number"
                                  style="outline: none 0 !important; box-shadow: none;"
-                                 class="" type="checkbox">
-
+                                 class=""
+                                 type="checkbox">
                                
                            </div>
                            <div class="col-4">
@@ -191,7 +219,6 @@
                               <label class="textColor">{{list.name}}</label>
                            </div>
                            <div class="col-7">
-                            {{ list }}
                               <input
                                  v-model="list.date"
                                  style="outline: none 0 !important; box-shadow: none;"
