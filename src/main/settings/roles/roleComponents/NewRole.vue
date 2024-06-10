@@ -8,10 +8,13 @@
   const buttonLoader = ref(false)
   const showDialog = ref(false)
   const role_number = ref(null)
+  let entityN = localStorage.getItem("entity_number")
+
   const form = reactive(
     { 
       name: null, 
-      description: null
+      description: null,
+      entity_number:entityN
      })
   
   const permissionData = ref([])
