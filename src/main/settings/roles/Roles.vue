@@ -45,10 +45,15 @@ const  deleteRole = (roles) => {
 }
 }
 
+
+let myData = reactive({
+    entity_number:localStorage.getItem('entity_number')
+    })
+
 //fetch
 onMounted(
     async () => {
-      await roleStore.fetchRoles()
+      roleStore.fetchRoles(myData)
     } )
 
     watch(
@@ -56,7 +61,7 @@ onMounted(
     async (data) => {
       if(data){
         notificationStore.successToast("Success", data.message)
-        roleStore.fetchRoles()
+        roleStore.fetchRoles(myData)
       }
     },
     {deep:true}
@@ -89,7 +94,7 @@ watch (
       if(data){
         showModal.value = false
         editMode.value=false
-        roleStore.fetchRoles()
+        roleStore.fetchRoles(myData)
       }
     },
     {deep:true}
@@ -101,7 +106,8 @@ watch (
       if(data){
         showModal.value = false
         editMode.value=false
-        roleStore.fetchRoles()
+
+        roleStore.fetchRoles(myData)
       }
     },
     {deep:true}

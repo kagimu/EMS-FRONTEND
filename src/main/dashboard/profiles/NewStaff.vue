@@ -32,7 +32,10 @@
      date:null
    })
    
-   
+   let myData = reactive({
+    entity_number:localStorage.getItem('entity_number')
+    })
+
    //fetch
    onMounted(
        async () => {
@@ -53,7 +56,7 @@
      rolesInfo.value[idx].role_number = rolesInfo.value?.[idx]?.role_number === number ? "" : number
    }
    
-   function addCampus(){
+   function addUser(){
      buttonLoader.value = true
      alert(JSON.stringify(form))
      userStore.createNewUser(form)
@@ -62,7 +65,7 @@
    //fetch
    onMounted(
        async () => {
-         await roleStore.fetchRoles()
+         await roleStore.fetchRoles(myData)
        } )
    
    watch (
@@ -72,7 +75,7 @@
            accountStore.fetchUsersToAssign(entityN)
            buttonLoader.value = false
            notificationStore.successToast("Success", data.message)
-           roleStore.fetchRoles()
+           roleStore.fetchRoles(myData)
            form.first_name = null
            form.second_name = null
            form.last_name=null,
@@ -120,7 +123,7 @@
 </script>
 <template>
    <div>
-      <form @submit.prevent="addCampus">
+      <form @submit.prevent="addUser">
          <div class="row">
             <div class="col-6">
                <div class="mb-2">
@@ -180,9 +183,8 @@
                   <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
 <!--                      {{ rolesData }}-->
 <!--                    {{rolesInfo}}-->
-                    <div class="grid grid-cols-2 gap-2" v-for="(lst, idx) in rolesInfo" :key="idx">
-                      <div>{{lst}}</div>
-                      <div>
+                    <!-- <div class="grid grid-cols-2 gap-2" v-for="(lst, idx) in rolesInfo" :key="idx">
+                      <div >
                         <input
                             @change="addRoleNumber(lst.number, idx)"
                             :value="lst.number"
@@ -197,36 +199,33 @@
                             style="outline: none 0 !important; box-shadow: none;"
                             class="form-control" type="date" required>
                       </div>
-                    </div>
-
-
-
-                     <li class="list-group-item" v-for="(list, index) in rolesData" :key="index">
+                    </div> -->
+                     <li class="list-group-item" v-for="(lst, idx) in rolesInfo" :key="idx">
+                          <!-- <div>{{lst}}</div> -->
                         <div class="row">
-                           <div class="col-1">
-                              <input
-                                 v-model="list.role_number"
-                                 :value="list.number"
-                                 style="outline: none 0 !important; box-shadow: none;"
-                                 class=""
-                                 type="checkbox">
+                           <div class="col-lg-1">
+                             <input
+                            @change="addRoleNumber(lst.number, idx)"
+                            :value="lst.number"
+                            :id="lst.number"
+                            class="shadow-none"
+                            type="checkbox">
                                
                            </div>
-                           <div class="col-4">
-                            <input
-                                 v-model="list.name"
-                                 class="form-control" type="text" >
-                              <label class="textColor">{{list.name}}</label>
+                           <div class="col-lg-4">
+                              <label style="float: left;" class="textColor" :for="lst.number">{{lst.role_name}}</label>
                            </div>
-                           <div class="col-7">
-                              <input
-                                 v-model="list.date"
-                                 style="outline: none 0 !important; box-shadow: none;"
-                                 class="form-control" type="date" required>
+                           <div class="col-lg-6">
+                           <input
+                            v-model="lst.date"
+                            style="outline: none 0 !important; box-shadow: none;"
+                            class="form-control" type="date" required>
                            </div>
                         </div>
-                        <!-- <label class="textColor" :for="list.number"><small>Expiry Date</small></label> -->
+                      
                      </li>
+
+
                   </ul>
                </div>
             </div>

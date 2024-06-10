@@ -27,9 +27,8 @@
 
 onMounted(
     async () => {
-      await roleStore.fetchPermissionGroups()
-            roleStore.fetchRoles()
-            prefillDraftData()
+     roleStore.fetchPermissionGroups()
+     prefillDraftData()
     } )
 
     // const clearRoleData = () => {
@@ -114,7 +113,6 @@ watch (
       if(data){
         showDialog.value = false
         buttonLoader.value = false
-         roleStore.fetchRoles()
         form.name = null
         form.description = null
         permissionSelected.value = []
@@ -128,11 +126,13 @@ watch (
   <!-- {{ roleData }} -->
         <form @submit.prevent="addRoles">
           <div class="mb-2 mr-5 ml-5">
+            <label style="font-size: 14px;">Role Name</label>
             <input placeholder="Role Name" type="text" v-model="form.name" required class="form-control">
           </div>
   
           <div class="mb-2 mr-5 ml-5">
-            <textarea placeholder="Description" v-model="form.description" class="form-control noFocus" id="floatingTextarea2" style="height: 100px"></textarea>
+            <label style="font-size: 14px;">Description</label>
+            <textarea v-model="form.description" class="form-control "  style="height: 100px"></textarea>
           </div>
  
           <table id="datatable" class="table table-sm table-bordered mt-5" style="font-size: 13px !important;">

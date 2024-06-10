@@ -279,6 +279,16 @@
     {deep: true}
   )
 
+  watch (
+    () => entityStore.newEntityResponse,
+    async (data) => {
+      if(data){
+        mymodal.value = false 
+        entityStore.fetchEntity()
+      }
+    },
+    {deep:true}
+)
 
   </script>
   

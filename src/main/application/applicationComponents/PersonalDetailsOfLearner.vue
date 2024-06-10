@@ -185,9 +185,11 @@ const goBack = () =>{
   const fetchClasses = (campus_number) => {
       campusStore.fetchClassesByCampus(campus_number)
   }
+  
+ let entity_number = localStorage.getItem('entity_number')
 
   onMounted(() => {
-          schoolStore.fetchSchools()
+          schoolStore.fetchSchools(entity_number)
       }
   )
 

@@ -42,7 +42,7 @@ watch(
     async (data) => {
       if(data){
         let r = router.resolve({
-          name: "home"
+          name: "entity-dashboard"
         });
 
 

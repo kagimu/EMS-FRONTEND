@@ -251,7 +251,7 @@ watch (
 <template>
     <div>
 
-    <AppModal title="New User" v-model="showingModalUser" xl8>
+    <AppModal title="New User" v-model="showingModalUser" xl>
     <NewStaff></NewStaff>
     </AppModal>
 

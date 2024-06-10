@@ -529,11 +529,15 @@ router.beforeEach((to, from, next) => {
     // let token = localStorage.getItem("token")
 
     const authStore = useAuthStore()
-
+    // alert(JSON.stringify(to.name))
     if (to.matched.some((record) => record.meta.requiresAuth)) {
         // if (profile && token) {
         if (profile) {
             let user = JSON.parse(profile);
+        
+            if(!localStorage.getItem("entity_number") && to.name !== "entity-dashboard" && user.type !== "User"){
+                next({ name: "entity-dashboard" });
+            }
             if (user !== null) {
                 authStore.updateProfile(profile)
                 authStore.updateToken(token)

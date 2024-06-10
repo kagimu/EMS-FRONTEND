@@ -24,8 +24,9 @@ export const useRolesStore = defineStore("roles", () => {
                 }
             })
     }
-    async function fetchRoles() {
-        return await api.get("main/settings/roles")
+    async function fetchRoles(data) {
+           let  entity =  data?.entity_number ?? ""
+        return await api.get("main/settings/roles?entity_number="+entity)
             .then((response) => {
                roleResponse.value = response.data
             })
