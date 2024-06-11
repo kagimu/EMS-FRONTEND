@@ -17,6 +17,7 @@
    const buttonLoader = ref(false)
    let show = ref(false)
    const rolesInfo = ref([])
+   // const role_numbers = ref([])
    let entityN = localStorage.getItem("entity_number")
    
    const form = reactive({
@@ -27,7 +28,6 @@
      phone:null,
      location:null,
      level:"",
-     role_numbers:[],
      entity_number:entityN,
      date:null
    })
@@ -58,7 +58,8 @@
    
    function addUser(){
      buttonLoader.value = true
-     alert(JSON.stringify(form))
+     form.role_numbers=rolesInfo.value
+         // alert(JSON.stringify(form))
      userStore.createNewUser(form)
    
    }

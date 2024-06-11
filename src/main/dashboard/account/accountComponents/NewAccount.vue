@@ -1,27 +1,17 @@
 <template>
     <div>
+      <!-- {{ userInfo }} -->
         <form @submit.prevent="assignRole">
-      <div class="mb-2">      
-        <label class="textColor"><small>User</small></label>
-
-              <select  v-model="formData.user_number"  style="box-shadow: none;" class="form-select form-select-sm" required >
-                  <option disabled value="">Select User</option>
-                  <option v-for="(list, index) in userData" :key="index" :value="list.number">{{ list.first_name }} {{ list.last_name  }}
-                  </option>
-              </select>
-
-      </div>
       <div class="mb-2">
         <label class="textColor"><small>Role</small></label>
         <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-
-<li class="list-group-item" v-for="(list, index) in rolesData" :key="index" :value="list.number">
+       {{  role_numbers }}
+<li class="list-group-item" v-for="(list, index) in rolesData" :key="index">
     <input
-            v-model="formData.role_number"
-
+            v-model="role_numbers"
             style="outline: none 0 !important; box-shadow: none;"
             class="form-check-input me-1" type="checkbox" :value="list.number" :id="list.number">
-    <label class="textColor" :for="list.number"><small>{{list.name}}</small></label>
+    <label  :for="list.number"><small>{{list.name}}</small></label>
 </li>
 
 </ul>
@@ -45,8 +35,11 @@
 import {onMounted, reactive, ref, watch,computed} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import { useAccountStore } from "@/main/dashboard/account/store/account.js";
-
 import { useRolesStore } from "@/main/settings/roles/store/roles.js";
+
+const props = defineProps({
+  userInfo:{}
+})
 
 const roleStore = useRolesStore()
 const accountStore = useAccountStore()
@@ -54,20 +47,42 @@ const notificationStore = useNotificationStore()
 const buttonLoader = ref(false)
 const errorMessage = ref(null)
 const userData = ref([])
+const user_number = ref(null)
+const  role_numbers = ref([])
 
-const formData = reactive({
-  user_number: null,
-    role_number:[],
-})
+// const formData = reactive({
+//     role_number:[],
+// })
 
 
 const rolesData= ref([])
 
+   let myData = reactive({
+    entity_number:localStorage.getItem('entity_number')
+    })
+
 //fetch
 onMounted(
     async () => {
-      await roleStore.fetchRoles()
+      roleStore.fetchRoles(myData)
+      getUserInfo()
     } )
+
+    watch(
+    () => props.userInfo,
+    async (data) => {
+      if(data){
+        getUserInfo()
+      }
+    }
+    )
+
+    const getUserInfo =() =>{
+      let draft = props.userInfo
+      user_number.value = draft?.number
+      role_numbers.value = draft?.roles.map(item => item.role_number).join(',');
+      // alert(JSON.stringify(draft?.roles.map(item => item.role_number).join(',')))
+    }
 
     watch(
     () => roleStore.roleResponse,
