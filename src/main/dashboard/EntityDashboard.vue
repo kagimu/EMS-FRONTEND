@@ -12,7 +12,7 @@ const name = ref(null)
 const  notificationStore  = useNotificationStore()
 const entityStore = useEntityStore()
 const entityList = ref(null)
-const errorMessage = ref("")
+const entityNumber = ref(null)
 const mymodal = ref(false)
 
 const showAddModal = () =>{
@@ -48,9 +48,7 @@ if(entity) {
 
   entityStore.switchEntity(entityNo)
 
-  localStorage.setItem('entity_number', entity.number)
-  localStorage.setItem('entity_name', entity.name)
-  router.push({name: 'dashboard'})
+
 }
 }
 
@@ -59,7 +57,10 @@ watch (
     () => entityStore.currentEntityResponse,
     async (data) => {
       if (data) {
-        alert(JSON.stringify(data))
+        let draft = data.data
+        localStorage.setItem('entity_number', draft.number)
+        localStorage.setItem('entity_name', draft.name)
+        await router.push({name: 'dashboard'})
       }
     }
 )
@@ -69,7 +70,8 @@ watch (
     () => entityStore.currentSelectedEntityResponse,
     async (data) => {
       if (data) {
-        alert(JSON.stringify(data))
+        let draft = data.data
+        entityNumber.value = draft.number
       }
     }
 )
@@ -148,6 +150,7 @@ watch (
     </nav>
 
     <div class="m-5">
+
         <h4 class="mt-6" style="text-align: center;">Entities</h4>
         <button @click="showAddModal" class="btn btn-primary mb-2 ml-3 mr-3 mt-3" style="float: right;">New Entity</button>
         <hr>
@@ -158,7 +161,9 @@ watch (
 
             <div class="p-3 text-[#5e5e5e]">
             <div class="mb-3 flex justify-between text-[20px]">
-             {{ list.name }}
+              <div class="flex">
+             <div>{{ list.name }}  </div> <div v-if="entityNumber === list.number" class="italic text-sm ml-3 px-2 py-1 rounded-md bg-[#186a3b] text-white">{{entityNumber === list.number ? "Active" : ""}}</div>
+              </div>
               <div>
               <i
                   class="bi-pencil ml-2 cursor-pointer"

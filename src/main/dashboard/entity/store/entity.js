@@ -47,7 +47,7 @@ export const useEntityStore = defineStore("entity", () => {
     }
 
     async function switchEntity(number) {
-        return await api.post("main/eos/entity/current?number="+number)
+        return await api.post("main/eos/entity/current?entity_number="+number)
             .then((response) => {
                 currentEntityResponse.value = response.data
             })
