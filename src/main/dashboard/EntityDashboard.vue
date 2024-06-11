@@ -1,3 +1,110 @@
+<script setup>
+import {onMounted, ref, watch} from "vue";
+import router from "@/config/router.js";
+import {useAuthStore} from "@/main/auth/store/auth.js";
+import useNotificationStore from "@/composables/useNotification.js"
+import NewEntity from "@/main/dashboard/entity/entityComponents/NewEntity.vue"
+import AppModal from "@/components/AppModal.vue";
+import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
+
+const  authStore = useAuthStore();
+const name = ref(null)
+const  notificationStore  = useNotificationStore()
+const entityStore = useEntityStore()
+const entityList = ref(null)
+const errorMessage = ref("")
+const mymodal = ref(false)
+
+const showAddModal = () =>{
+  mymodal.value = true
+}
+let p = authStore.profile
+
+name.value = p.first_name+" "+p.second_name+" "+p.last_name
+
+function userLogout(){
+
+  localStorage.clear();
+
+  let r = router.resolve({
+    name: "login"
+  });
+  window.location.assign(r.href);
+
+}
+
+
+
+onMounted(() => {
+      entityStore.fetchEntity()
+      entityStore.currentSelectedEntity()
+
+    }
+)
+
+const GoToDashboard = (entity) =>{
+if(entity) {
+  let entityNo = entity.number
+
+  entityStore.switchEntity(entityNo)
+
+  localStorage.setItem('entity_number', entity.number)
+  localStorage.setItem('entity_name', entity.name)
+  router.push({name: 'dashboard'})
+}
+}
+
+
+watch (
+    () => entityStore.currentEntityResponse,
+    async (data) => {
+      if (data) {
+        alert(JSON.stringify(data))
+      }
+    }
+)
+
+
+watch (
+    () => entityStore.currentSelectedEntityResponse,
+    async (data) => {
+      if (data) {
+        alert(JSON.stringify(data))
+      }
+    }
+)
+
+watch (
+    () => entityStore.entityResponse,
+    async (data) => {
+      if (data) {
+        entityList.value = data
+      }
+    }
+)
+
+watch(
+    () => entityStore.errorMessage,
+    async (data) => {
+      if (data) {
+        notificationStore.errorToast("Error", data.message)
+      }
+    },
+    {deep: true}
+)
+
+watch (
+    () => entityStore.newEntityResponse,
+    async (data) => {
+      if(data){
+        mymodal.value = false
+        await entityStore.fetchEntity()
+      }
+    },
+    {deep:true}
+)
+
+</script>
 <template>
     <AppModal title="Creating New Entity" v-model="mymodal" lg>
       <NewEntity></NewEntity>
@@ -90,7 +197,7 @@
                   :to="{name:'dashboard'}"
               > -->
                 <button
-                    @click="GoToDashboard(list.number,list.name)"
+                    @click="GoToDashboard(list)"
                     type="button"
                     class="bg-[#0d6efd] hover:bg-[#0c62e1] text-white text-sm text-center w-full rounded-b-md py-2">
                       <span>
@@ -210,85 +317,5 @@
   }
   </style>
   
-  <script setup>
-  import {onMounted, ref, watch} from "vue";
-  import router from "@/config/router.js";
-  import {useAuthStore} from "@/main/auth/store/auth.js";
-  import useNotificationStore from "@/composables/useNotification.js"
-  import NewEntity from "@/main/dashboard/entity/entityComponents/NewEntity.vue"
-  import AppModal from "@/components/AppModal.vue";
-  import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
-  
-  const  authStore = useAuthStore();
-  const name = ref(null)
-  const  notificationStore  = useNotificationStore()
-  const entityStore = useEntityStore()
-  const entityList = ref(null)
-  const errorMessage = ref("")
-  const mymodal = ref(false)
-  
-  const showAddModal = () =>{
-    mymodal.value = true 
-  }
-  let p = authStore.profile
-  
-  name.value = p.first_name+" "+p.second_name+" "+p.last_name
-  
-  function userLogout(){
-  
-    localStorage.clear();
-  
-    let r = router.resolve({
-      name: "login"
-    });
-    window.location.assign(r.href);
-  
-  }
-  
-  function  menuSelected(name){
-    return router.currentRoute.value.name === name
-  }
 
-  onMounted(() => {
-    entityStore.fetchEntity()
-   }
-  )
-
-  const GoToDashboard = (entityN,name) =>{
-   localStorage.setItem('entity_number',entityN)
-   localStorage.setItem('entity_name',name)
-   router.push({name:'dashboard'})
-  }
-  watch (
-  () => entityStore.entityResponse,
-  async (data) => {
-    if (data) {
-  entityList.value = data
-    }
-  },
-  { deep: true }
-)
-
-  watch(
-    () => entityStore.errorMessage,
-    async (data) => {
-          if (data) {
-              notificationStore.errorToast("Error", data.message)
-          }
-    },
-    {deep: true}
-  )
-
-  watch (
-    () => entityStore.newEntityResponse,
-    async (data) => {
-      if(data){
-        mymodal.value = false 
-        entityStore.fetchEntity()
-      }
-    },
-    {deep:true}
-)
-
-  </script>
   
