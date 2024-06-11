@@ -34,11 +34,11 @@ const userAll = ref([])
 const showingModalUser = ref(false)
 const showingEntity = ref(false)
 const entityList = ref(null)
-const userNumber = ref(null)
+const userInfo = ref(null)
 let entityN = localStorage.getItem("entity_number")
 
-const openModal = (userN) =>{
-  userNumber.value=userN
+const openModal = (userInf) =>{
+  userInfo.value = userInf
   assignDialog.value = true
 }
 
@@ -257,7 +257,7 @@ watch (
     </AppModal>
 
     <AppModal title="Assign Role" v-model="assignDialog" xl2>
-      <new-account :userNumber="userNumber"></new-account>
+      <new-account :userInfo="userInfo"></new-account>
     </AppModal>
 
     <AppModal title="Assign Entity" v-model="showingEntity" xs>
@@ -360,7 +360,7 @@ watch (
            <small>assign-entity</small>
           </button> -->
 
-          <button @click="openModal(user.number)" type="button" class="btn btn-outline-primary mb-2 btn-small p-0" style="width: 60%;">
+          <button @click="openModal(user)" type="button" class="btn btn-outline-primary mb-2 btn-small p-0" style="width: 60%;">
            <small>Assign Role</small>
           </button>
 
