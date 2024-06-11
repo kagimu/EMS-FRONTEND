@@ -37,7 +37,8 @@ const entityList = ref(null)
 const userNumber = ref(null)
 let entityN = localStorage.getItem("entity_number")
 
-const openModal = () =>{
+const openModal = (userN) =>{
+  userNumber.value=userN
   assignDialog.value = true
 }
 
@@ -256,7 +257,7 @@ watch (
     </AppModal>
 
     <AppModal title="Assign Role" v-model="assignDialog" xl2>
-      <new-account></new-account>
+      <new-account :userNumber="userNumber"></new-account>
     </AppModal>
 
     <AppModal title="Assign Entity" v-model="showingEntity" xs>
@@ -271,9 +272,9 @@ watch (
             <div class="col-lg-6 "> 
             </div>
             <div class="col-lg-6">
-                <button 
+                <!-- <button 
                 v-if="can('assign_role','general')"
-                @click="openModal()" style="float: right; margin-right: 5px;"  type="button" class="btn btn-primary btn-sm">Assign Role</button>
+                @click="openModal()" style="float: right; margin-right: 5px;"  type="button" class="btn btn-primary btn-sm">Assign Role</button> -->
                 <button  style="float: right;border: none;"
                   v-if="can('add_user','general')" 
                   class="btn btn-primary btn-sm mr-3" type="button"  @click="showModalUser"><i class="bi bi-plus"></i>Add New User</button>
@@ -355,9 +356,14 @@ watch (
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;&nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>
-          <button @click="openEntityModal(user.number)" type="button" class="btn btn-outline-primary mb-2 btn-small p-0" style="width: 60%;">
+          <!-- <button @click="openEntityModal(user.number)" type="button" class="btn btn-outline-primary mb-2 btn-small p-0" style="width: 60%;">
            <small>assign-entity</small>
+          </button> -->
+
+          <button @click="openModal(user.number)" type="button" class="btn btn-outline-primary mb-2 btn-small p-0" style="width: 60%;">
+           <small>Assign Role</small>
           </button>
+
         </td>
         </tr>
     

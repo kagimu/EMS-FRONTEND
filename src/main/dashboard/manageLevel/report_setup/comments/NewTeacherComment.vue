@@ -1,22 +1,20 @@
 <script setup>
 
-import NewTeacherComment from "@/main/dashboard/manageLevel/report_setup/comments/NewTeacherComment.vue";
 import {onMounted, ref, watch,reactive} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
-import AppModal from "@/components/AppModal.vue";
 import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.js";
 import useCommonsStore from "@/composables/useCommons.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
-import {useRouter} from "vue-router";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
+
 
 
 const notificationStore  = useNotificationStore()
 const teacherCommentStore = useTeacherCommentStore()
 const commons = useCommonsStore()
 
-const routerData = useRouter()
 const reportSetupStore = useReportSetupStore()
 const studyPeriodStore = useStudyPeriodStore()
 const classStore = useClassesStore()
@@ -43,7 +41,7 @@ const form = reactive({
 min_aggregate: 0,
 max_aggregate : 0,
 message : null,
-report_setting_number:null
+report_setting_number:""
 })
 
 onMounted(
@@ -55,7 +53,7 @@ onMounted(
 
 const addComments = () => {
     loader.value = true
- alert(JSON.stringify(form))
+//  alert(JSON.stringify(form))
  teacherCommentStore.newTeacherComment(form)
 }
 
@@ -192,7 +190,7 @@ watch(
                 v-model="campus_level_number"
                 @change="fetchAcademicYear(campus_level_number)"
             >
-              <option disabled value="">--Filter by Level--</option>
+              <option disabled value="">--Level--</option>
               <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
             </select>
           </div>
@@ -203,7 +201,7 @@ watch(
                 v-model="campus_class_number"
                 @change="doFetchReportSettings()"
             >
-              <option disabled value="">--Filter by Class--</option>
+              <option disabled value="">--Class--</option>
               <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
             </select>
           </div>
@@ -214,7 +212,7 @@ watch(
                 v-model="academic_year_number"
                 @change="fetchStudyPeriod(academic_year_number)"
             >
-              <option disabled value="">--Filter by Academic Year--</option>
+              <option disabled value="">--Academic Year--</option>
               <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
                 {{list.code+". "+list.academic_year_name}}
               </option>
@@ -228,9 +226,19 @@ watch(
                 v-model="study_period_number"
                 @change="doFetchReportSettings()"
             >
-              <option disabled value="">--Filter by Study Period--</option>
+              <option disabled value="">--Study Period--</option>
               <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
 
+            </select>
+          </div>
+
+          <div class="mb-2">
+            <select
+                class="form-select form-select-sm shadow-none"
+                v-model="form.report_setting_number"
+            >
+              <option disabled value="">--ReportSetting--</option>
+              <option v-for="(list, index) in reportSettingsList" :key="index" :value="list.number">{{list.name}}</option>
             </select>
           </div>
 

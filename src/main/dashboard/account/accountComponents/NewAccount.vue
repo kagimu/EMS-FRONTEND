@@ -1,16 +1,6 @@
 <template>
     <div>
         <form @submit.prevent="assignRole">
-      <div class="mb-2">      
-        <label class="textColor"><small>User</small></label>
-
-              <select  v-model="formData.user_number"  style="box-shadow: none;" class="form-select form-select-sm" required >
-                  <option disabled value="">Select User</option>
-                  <option v-for="(list, index) in userData" :key="index" :value="list.number">{{ list.first_name }} {{ list.last_name  }}
-                  </option>
-              </select>
-
-      </div>
       <div class="mb-2">
         <label class="textColor"><small>Role</small></label>
         <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
@@ -45,8 +35,11 @@
 import {onMounted, reactive, ref, watch,computed} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import { useAccountStore } from "@/main/dashboard/account/store/account.js";
-
 import { useRolesStore } from "@/main/settings/roles/store/roles.js";
+
+const props = defineProps({
+  userNumber:String
+})
 
 const roleStore = useRolesStore()
 const accountStore = useAccountStore()
@@ -56,17 +49,21 @@ const errorMessage = ref(null)
 const userData = ref([])
 
 const formData = reactive({
-  user_number: null,
+  user_number: props.userNumber,
     role_number:[],
 })
 
 
 const rolesData= ref([])
 
+   let myData = reactive({
+    entity_number:localStorage.getItem('entity_number')
+    })
+
 //fetch
 onMounted(
     async () => {
-      await roleStore.fetchRoles()
+      roleStore.fetchRoles(myData)
     } )
 
     watch(
