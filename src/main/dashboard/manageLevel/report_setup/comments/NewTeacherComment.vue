@@ -185,34 +185,37 @@ watch(
 <div class="row">
  
           <div class="mb-2">
+            <label class="textColor">Level</label>
             <select
                 class="form-select form-select-sm shadow-none"
                 v-model="campus_level_number"
                 @change="fetchAcademicYear(campus_level_number)"
             >
-              <option disabled value="">--Level--</option>
+              <option disabled value="">--select--</option>
               <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
             </select>
           </div>
 
           <div class="mb-2">
+            <label class="textColor">Class</label>
             <select
                 class="form-select form-select-sm shadow-none" required
                 v-model="campus_class_number"
                 @change="doFetchReportSettings()"
             >
-              <option disabled value="">--Class--</option>
+              <option disabled value="">--select--</option>
               <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
             </select>
           </div>
 
           <div class="mb-2">
+            <label class="textColor">Academic Year</label>
             <select
                 class="form-select form-select-sm shadow-none"
                 v-model="academic_year_number"
                 @change="fetchStudyPeriod(academic_year_number)"
             >
-              <option disabled value="">--Academic Year--</option>
+              <option disabled value="">--select--</option>
               <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
                 {{list.code+". "+list.academic_year_name}}
               </option>
@@ -221,28 +224,31 @@ watch(
 
 
           <div class="mb-2">
+            <label class="textColor">Study Period</label>
             <select
                 class="form-select form-select-sm shadow-none" required
                 v-model="study_period_number"
                 @change="doFetchReportSettings()"
             >
-              <option disabled value="">--Study Period--</option>
+              <option disabled value="">--Select--</option>
               <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
 
             </select>
           </div>
 
           <div class="mb-2">
+            <label class="textColor">ReportSetting</label>
             <select
                 class="form-select form-select-sm shadow-none"
                 v-model="form.report_setting_number"
             >
-              <option disabled value="">--ReportSetting--</option>
+              <option disabled value="">--select--</option>
               <option v-for="(list, index) in reportSettingsList" :key="index" :value="list.number">{{list.name}}</option>
             </select>
           </div>
 
         </div>
+   <div class="row">
     <div class="col-6">
         <div class="mb-2">
       <label class="textColor">Minimum Aggregate</label>
@@ -272,8 +278,7 @@ watch(
           class="form-control form-select-sm">
     </div>
     </div>
-
-
+  </div>
 
     <div class="mb-2">
       <label class="textColor"><small>Comment</small></label>
