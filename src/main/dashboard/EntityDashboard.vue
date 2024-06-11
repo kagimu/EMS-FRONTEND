@@ -15,6 +15,7 @@ const entityList = ref(null)
 const entityNumber = ref(null)
 const draftData = ref(null)
 const mymodal = ref(false)
+const buttonLoader = ref(null)
 
 const showAddModal = () =>{
   mymodal.value = true
@@ -43,13 +44,14 @@ onMounted(() => {
     }
 )
 
-const GoToDashboard = (entity) =>{
+const GoToDashboard = (entity, index) =>{
 if(entity) {
   let entityNo = entity.number
 
   if(draftData.value?.number === entityNo){
     saveStorage(draftData.value)
   }else {
+    buttonLoader.value = index
     entityStore.switchEntity(entityNo)
   }
 
@@ -72,6 +74,7 @@ watch (
 
 
 const saveStorage = (data) => {
+  buttonLoader.value = false
   localStorage.setItem('entity_number', data.number)
   localStorage.setItem('entity_name', data.name)
   router.push({name: 'dashboard'})
@@ -216,7 +219,7 @@ watch (
 
             <div class="bg-[#0d6efd] hover:bg-[#0d6efd] rounded-b-md mt-3">
                 <button
-                    @click="GoToDashboard(list)"
+                    @click="GoToDashboard(list, index)"
                     type="button"
                     class="bg-[#0d6efd]  text-white text-sm text-center w-full rounded-b-md py-2"
                     :class="entityNumber === list.number ? 'bg-[#186a3b]' : 'bg-[#0d6efd] hover:bg-[#0c62e1]'"
@@ -224,6 +227,10 @@ watch (
                       <span>
                          {{entityNumber === list.number ? "Continue" : "Select"}}
                       </span>
+
+                  <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="buttonLoader === index">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
                 </button>
             </div>
 
