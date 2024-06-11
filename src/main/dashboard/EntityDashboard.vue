@@ -13,6 +13,7 @@ const  notificationStore  = useNotificationStore()
 const entityStore = useEntityStore()
 const entityList = ref(null)
 const entityNumber = ref(null)
+const draftData = ref(null)
 const mymodal = ref(false)
 
 const showAddModal = () =>{
@@ -46,7 +47,13 @@ const GoToDashboard = (entity) =>{
 if(entity) {
   let entityNo = entity.number
 
-  entityStore.switchEntity(entityNo)
+  if(draftData.value?.number === entityNo){
+    saveStorage(draftData.value)
+  }else {
+    entityStore.switchEntity(entityNo)
+  }
+
+
 
 
 }
@@ -58,12 +65,17 @@ watch (
     async (data) => {
       if (data) {
         let draft = data.data
-        localStorage.setItem('entity_number', draft.number)
-        localStorage.setItem('entity_name', draft.name)
-        await router.push({name: 'dashboard'})
+        saveStorage(draft)
       }
     }
 )
+
+
+const saveStorage = (data) => {
+  localStorage.setItem('entity_number', data.number)
+  localStorage.setItem('entity_name', data.name)
+  router.push({name: 'dashboard'})
+}
 
 
 watch (
@@ -72,6 +84,7 @@ watch (
       if (data) {
         let draft = data.data
         entityNumber.value = draft.number
+        draftData.value = draft
       }
     }
 )
@@ -111,7 +124,6 @@ watch (
     <AppModal title="Creating New Entity" v-model="mymodal" lg>
       <NewEntity></NewEntity>
       </AppModal>
-
     <nav class="navbar navbar-expand-lg navbar-dark bg-[#2c2f8c] sticky-top"  style="position: absolute; top: 0; left: 0; width: 100%;">
       <div class="container-fluid">
         <button class="navbar-toggler" data-bs-target="#navbarCollapse" data-bs-toggle="collapse" type="button">
@@ -154,6 +166,9 @@ watch (
         <h4 class="mt-6" style="text-align: center;">Entities</h4>
         <button @click="showAddModal" class="btn btn-primary mb-2 ml-3 mr-3 mt-3" style="float: right;">New Entity</button>
         <hr>
+
+
+
         <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
       <div  v-for="(list, index) in entityList" :key="index" >
 
@@ -162,7 +177,10 @@ watch (
             <div class="p-3 text-[#5e5e5e]">
             <div class="mb-3 flex justify-between text-[20px]">
               <div class="flex">
-             <div>{{ list.name }}  </div> <div v-if="entityNumber === list.number" class="italic text-sm ml-3 px-2 py-1 rounded-md bg-[#186a3b] text-white">{{entityNumber === list.number ? "Active" : ""}}</div>
+                  <div>{{ list.name }}  </div>
+                  <span v-if="entityNumber === list.number" class="italic text-sm ml-3 px-2 py-1 rounded-md bg-[#186a3b] text-white">
+                    {{entityNumber === list.number ? "Active" : ""}}
+                  </span>
               </div>
               <div>
               <i
@@ -197,21 +215,16 @@ watch (
           </div>
 
             <div class="bg-[#0d6efd] hover:bg-[#0d6efd] rounded-b-md mt-3">
-              <!-- <router-link
-                  class="text-decoration-none"
-                  :to="{name:'dashboard'}"
-              > -->
                 <button
                     @click="GoToDashboard(list)"
                     type="button"
-                    class="bg-[#0d6efd] hover:bg-[#0c62e1] text-white text-sm text-center w-full rounded-b-md py-2">
+                    class="bg-[#0d6efd]  text-white text-sm text-center w-full rounded-b-md py-2"
+                    :class="entityNumber === list.number ? 'bg-[#186a3b]' : 'bg-[#0d6efd] hover:bg-[#0c62e1]'"
+                >
                       <span>
-                        View
+                         {{entityNumber === list.number ? "Continue" : "Select"}}
                       </span>
                 </button>
-              <!-- </router-link> -->
-
-
             </div>
 
 
