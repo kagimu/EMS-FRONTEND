@@ -178,7 +178,7 @@ watch (
 </script>
 <template>
 
-      <AppModal title="Creating New Entity" v-model="entityDialog" lg>
+      <AppModal :title="(entityData?.number ? 'Edit' : 'Create')+' Entity'" v-model="entityDialog" lg>
         <NewEntity :entityData="entityData"></NewEntity>
       </AppModal>
 
