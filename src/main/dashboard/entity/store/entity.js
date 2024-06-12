@@ -37,7 +37,7 @@ export const useEntityStore = defineStore("entity", () => {
     }
 
     async function deleteEntity(data) {
-        return await api.post("main/eos/entity/delete", data)
+        return await api.post("main/eos/entity/delete?entity_number="+data)
             .then((response) => {
                 deleteEntityResponse.value = response.data
             })

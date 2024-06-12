@@ -146,10 +146,10 @@ watch(
     () => entityStore.errorMessage,
     async (data) => {
       if (data) {
+        deletionLoader.value = false
         notificationStore.errorToast("Error", data.message)
       }
-    },
-    {deep: true}
+    }
 )
 
 watch (

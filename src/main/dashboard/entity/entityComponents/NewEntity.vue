@@ -14,8 +14,8 @@ const props = defineProps({
 
 
 
-  const formData = reactive({ 
-    number:null,
+  const formData = reactive({
+    entity_number:null,
     name:null,
     phone:null,
     address:null,
@@ -39,7 +39,7 @@ const props = defineProps({
   const filterEntityDraft = () => {
     let draft = props.entityData
 
-    formData.number = draft?.number ?? ""
+    formData.entity_number = draft?.number ?? ""
     formData.name = draft?.name ?? ""
     formData.phone = draft?.phone ?? ""
     formData.address = draft?.address ?? ""
@@ -49,7 +49,7 @@ const props = defineProps({
 
   const addEntity = () =>{
     loader.value = true
-    if(formData.number){
+    if(formData.entity_number){
       entityStore.editEntity(formData)
     }else {
       entityStore.newEntity(formData)
