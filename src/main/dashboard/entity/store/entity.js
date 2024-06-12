@@ -4,16 +4,42 @@ import api from "@/config/api.js";
 
 export const useEntityStore = defineStore("entity", () => {
     let newEntityResponse = ref(null)
+    let editEntityResponse = ref(null)
     let  entityResponse= ref(null)
     let entityToUserResponse = ref(null)
     let currentEntityResponse = ref(null)
     let currentSelectedEntityResponse = ref(null)
+    let deleteEntityResponse = ref(null)
     const errorMessage = ref(null)
 
     async function newEntity(data) {
         return await api.post("main/eos/entity/add", data)
             .then((response) => {
                 newEntityResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function editEntity(data) {
+        return await api.post("main/eos/entity/update", data)
+            .then((response) => {
+                editEntityResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function deleteEntity(data) {
+        return await api.post("main/eos/entity/delete", data)
+            .then((response) => {
+                deleteEntityResponse.value = response.data
             })
             .catch((error) => {
                 if(error && error.response){
@@ -76,12 +102,16 @@ export const useEntityStore = defineStore("entity", () => {
         entityResponse,
         entityToUserResponse,
         currentEntityResponse,
+        editEntityResponse,
         currentSelectedEntityResponse,
+        deleteEntityResponse,
         newEntity,
+        editEntity,
         addEntityToUser,
         fetchEntity,
         switchEntity,
-        currentSelectedEntity
+        currentSelectedEntity,
+        deleteEntity
 
     }
 } )

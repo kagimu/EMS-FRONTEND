@@ -1,5 +1,5 @@
 <script setup>
-  import {onMounted,reactive, ref, watch,computed,defineEmits} from "vue";
+  import {onMounted,reactive, ref, watch} from "vue";
   import useNotificationStore from "@/composables/useNotification.js"
   import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
 
@@ -8,17 +8,65 @@ const errorMessage = ref(null)
 const loader = ref(false)
 const entityStore = useEntityStore()
 
+const props = defineProps({
+    entityData:{}
+  })
+
+
+
   const formData = reactive({ 
+    number:null,
     name:null,
     phone:null,
     address:null,
     email:null
   })
 
-  const addEntity = () =>{
-  //  alert(JSON.stringify(formData))
-   entityStore.newEntity(formData)
+  onMounted(() => {
+    filterEntityDraft()
+  })
+
+
+  watch (
+      () => props.entityData,
+      async (data) => {
+        if(data){
+         filterEntityDraft()
+        }
+      }
+  )
+
+  const filterEntityDraft = () => {
+    let draft = props.entityData
+
+    formData.number = draft?.number ?? ""
+    formData.name = draft?.name ?? ""
+    formData.phone = draft?.phone ?? ""
+    formData.address = draft?.address ?? ""
+    formData.email = draft?.email ?? ""
+
   }
+
+  const addEntity = () =>{
+    loader.value = true
+    if(formData.number){
+      entityStore.editEntity(formData)
+    }else {
+      entityStore.newEntity(formData)
+    }
+
+  }
+
+
+  watch (
+      () => entityStore.editEntityResponse,
+      async (data) => {
+        if(data){
+          loader.value = false
+        }
+      }
+  )
+
 
   watch (
     () => entityStore.newEntityResponse,
@@ -27,8 +75,7 @@ const entityStore = useEntityStore()
         loader.value = false
         notificationStore.successToast("Success", data.message)
       }
-    },
-    {deep:true}
+    }
 )
 
 watch (

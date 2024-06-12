@@ -14,15 +14,61 @@ const entityStore = useEntityStore()
 const entityList = ref(null)
 const entityNumber = ref(null)
 const draftData = ref(null)
-const mymodal = ref(false)
+const entityDialog = ref(false)
 const buttonLoader = ref(null)
+const entityData = ref(null)
+const deletionLoader = ref(null)
 
-const showAddModal = () =>{
-  mymodal.value = true
-}
+
 let p = authStore.profile
 
 name.value = p.first_name+" "+p.second_name+" "+p.last_name
+
+onMounted(() => {
+      entityStore.fetchEntity()
+      entityStore.currentSelectedEntity()
+
+    }
+)
+
+
+const showAddModal = () =>{
+  entityData.value = null
+  entityDialog.value = true
+}
+
+const editEntity = (list) => {
+  entityData.value = list
+  entityDialog.value = true
+}
+
+const deleteEntity = (list, index) => {
+  let confirm_delete = confirm(
+      "Are you sure you want to delete this entity."
+  );
+  if (!confirm_delete) {
+    return false;
+  }
+
+  deletionLoader.value = index
+
+  entityStore.deleteEntity(list.number)
+}
+
+
+
+
+watch(
+    () => entityStore.deleteEntityResponse,
+    async (data) => {
+      if(data){
+        await entityStore.fetchEntity()
+        deletionLoader.value = null
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
 
 function userLogout(){
 
@@ -37,12 +83,7 @@ function userLogout(){
 
 
 
-onMounted(() => {
-      entityStore.fetchEntity()
-      entityStore.currentSelectedEntity()
 
-    }
-)
 
 const GoToDashboard = (entity, index) =>{
 if(entity) {
@@ -115,18 +156,32 @@ watch (
     () => entityStore.newEntityResponse,
     async (data) => {
       if(data){
-        mymodal.value = false
+        entityDialog.value = false
         await entityStore.fetchEntity()
       }
     },
     {deep:true}
 )
 
+
+watch (
+    () => entityStore.editEntityResponse,
+    async (data) => {
+      if(data){
+        await entityStore.fetchEntity()
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
+
 </script>
 <template>
-    <AppModal title="Creating New Entity" v-model="mymodal" lg>
-      <NewEntity></NewEntity>
+
+      <AppModal title="Creating New Entity" v-model="entityDialog" lg>
+        <NewEntity :entityData="entityData"></NewEntity>
       </AppModal>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-[#2c2f8c] sticky-top"  style="position: absolute; top: 0; left: 0; width: 100%;">
       <div class="container-fluid">
         <button class="navbar-toggler" data-bs-target="#navbarCollapse" data-bs-toggle="collapse" type="button">
@@ -137,28 +192,26 @@ watch (
           </div>
           <div class="navbar-nav">
         
-            <!-- <router-link :class="[ menuSelected('application_history') ? 'btn  btn-outline-danger nav-item nav-link' : 'btn btn-outline-success nav-item nav-link']" :to="{name:'application_history'}" style="border-radius: 0px; color:rgba(16, 54, 135, 0.751)" >
-              APPLICATION HISTORY </router-link> -->
+
   
             <span class="nav-item dropdown">
-  
-  <a aria-expanded="false"
-     aria-label="Toggle theme (light)" class="btn btn-link nav-link dropdown-toggle d-flex align-items-center" data-bs-display="static"
-     data-bs-toggle="dropdown" style="border: 0px;">
-      {{name}}
-              </a>
-  <ul aria-labelledby="bd-theme-text" class="dropdown-menu dropdown-menu-end">
-  <li class="text-sm2">
-      <i class="bi bi-person-circle"></i> &nbsp;My Profile
-  </li>
-  <li  class="text-sm2">
-      <i class="bi bi-person-fill-lock"></i>&nbsp;Change Password
-  </li>
-  <li  class="text-sm2">
-      <span class="text-sm2" style="cursor: pointer" @click="userLogout"><i class="bi bi-box-arrow-right"></i>&nbsp;Logout</span>
-  </li>
-  </ul>
-  </span>
+                <a aria-expanded="false"
+                   aria-label="Toggle theme (light)" class="btn btn-link nav-link dropdown-toggle d-flex align-items-center" data-bs-display="static"
+                   data-bs-toggle="dropdown" style="border: 0px;">
+                    {{name}}
+                            </a>
+                <ul aria-labelledby="bd-theme-text" class="dropdown-menu dropdown-menu-end">
+                <li class="text-sm2">
+                    <i class="bi bi-person-circle"></i> &nbsp;My Profile
+                </li>
+                <li  class="text-sm2">
+                    <i class="bi bi-person-fill-lock"></i>&nbsp;Change Password
+                </li>
+                <li  class="text-sm2">
+                    <span class="text-sm2" style="cursor: pointer" @click="userLogout"><i class="bi bi-box-arrow-right"></i>&nbsp;Logout</span>
+                </li>
+                </ul>
+                </span>
           </div>
         </div>
       </div>
@@ -187,11 +240,16 @@ watch (
               </div>
               <div>
               <i
+                  @click="editEntity(list)"
                   class="bi-pencil ml-2 cursor-pointer"
                   style="font-size: 14px;"
                ></i>
-              <i 
+              <i
+                  @click="deleteEntity(list, index)"
               style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"></i>
+                <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
               </div>
             </div>
             <div>
