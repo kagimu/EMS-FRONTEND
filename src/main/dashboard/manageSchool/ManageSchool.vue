@@ -196,6 +196,7 @@ const toggleCurriculum = (number) =>{
                   <div class="text-[13px] text-[#575656]">{{idx+1}}. {{curr.name}}</div>
                 </div>
               </div>
+
             </div>
 
           </div>

@@ -22,10 +22,14 @@ const campusEditMode = ref( false)
 const campusList = ref( [])
 const schoolData = ref( null)
 const campusRef = ref( null)
+const showSelected = ref(null)
 
 
 let schoolNumber = routerData.currentRoute.value.query.id
 
+const toggleCurriculum = (number) =>{
+  showSelected.value = (showSelected.value === number) ? undefined : number
+}
 
 
 const addCampus = () => {
@@ -75,7 +79,7 @@ watch(
       if(data){
         campusDialog.value = false
         notificationStore.successToast("Success", data.message)
-        await fetchCampusInfo(schoolNumber)
+         fetchCampusInfo(schoolNumber)
       }
     },
     {deep:true}
@@ -108,7 +112,7 @@ watch(
     async (data) => {
       if(data){
         notificationStore.successToast("Success", data.message)
-        await fetchCampusInfo(schoolNumber)
+         fetchCampusInfo(schoolNumber)
       }
     },
     {deep:true}
@@ -161,9 +165,11 @@ watch (
 
   <div class="row">
     <div class="col-4" v-for="(campus, index) in campusList" :key="index">
-      <div class="card mt-3">
+      <div class="bg-white rounded-md mt-3">
 
-        <div class="card-body">
+        <div class="">
+
+          <div class="p-3 text-[#5e5e5e]">
           <div class="mb-3 flex justify-between" style="font-size: 20px;">
             {{campus.name}}
             <div>
@@ -174,17 +180,37 @@ watch (
               <i v-if="can('delete_campus','manage')" style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"  @click="deleteCampus(campus)"></i>
             </div>
           </div>
+
           <small>
             <b>Email:</b> {{campus.email}}<br />
             <b>Phone:</b> {{campus.phone}}<br />
             <b>Location:</b> {{campus.location}}<br />
             <b>Commencement Date:</b> {{campus.commencement_date}}<br />
-            <b>Curriculum:</b> <br />
-            <div class="ml-2" v-for="(curr,idx) in campus.curriculum" :key="idx">{{(idx + 1)+". "+curr.name}}</div>
+
+
+
+              <div class="mb-3">
+                <div class="mt-3">
+                  <div class="cursor-pointer text-[15px]" @click="toggleCurriculum(campus.number)" >
+                    Show Curriculum
+                    <i
+                        class="text-[12px]"
+                        :class="showSelected === campus.number ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"
+                    ></i>
+                  </div>
+                </div>
+
+                <div class="mt-2" v-show="showSelected === campus.number">
+                  <div class="ml-2" v-for="(curr, idx) in campus.curriculum" key="idx">
+                    <div class="text-[13px] text-[#575656]">{{idx+1}}. {{curr.name}}</div>
+                  </div>
+                </div>
+              </div>
+
+
           </small>
 
-          <div class="flex justify-content-between mt-4">
-            &nbsp;
+          </div>
 
             <div class="flex">
 
@@ -194,7 +220,7 @@ watch (
               >
                 <button
                     type="button"
-                    class="btn-primary border-0 d-none d-lg-block viewButtonStyle mr-2">
+                    class="bg-[#2c2f8c] hover:bg-[#0c62e1] text-white text-sm text-center w-full rounded-bl-md py-2">
                       <span class="mx-9 text-sm">
                         Setup Scheme
                       </span>
@@ -208,7 +234,7 @@ watch (
                 <button
                   @click="setCampusName(campus.name)"
                     type="button"
-                    class="btn-primary border-0 d-none d-lg-block viewButtonStyle">
+                    class="bg-[#0d6efd] hover:bg-[#0c62e1] text-white text-sm text-center w-full rounded-br-md py-2">
                       <span class="mx-9 text-sm">
                         Setup Campus
                       </span>
@@ -217,7 +243,7 @@ watch (
 
             </div>
 
-          </div>
+
         </div>
       </div>
     </div>

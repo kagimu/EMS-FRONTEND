@@ -216,7 +216,7 @@ watch(
 <template>
   <div>
 
-    <AppModal v-model="showingModal" title="Add Assessment Metric" xl6>
+    <AppModal v-model="showingModal" title="Add Assessment Schedule" xl6>
       <NewAssessmentMetric></NewAssessmentMetric>
     </AppModal>
 
@@ -230,7 +230,7 @@ watch(
                   v-if="can('add_assessment_area','general')"
                   class="btn btn-primary btn-sm float-end mb-0 mr-4" style="float: right" type="button"  @click="showModal">
                 <b><i class="bi bi-plus"></i></b> <small>
-                Add Assessment Metrics</small></button>
+                Add Assessment Schedule</small></button>
           </div>
 
 
