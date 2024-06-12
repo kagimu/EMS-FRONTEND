@@ -191,9 +191,7 @@ watch (
           <div class="navbar-nav">
           </div>
           <div class="navbar-nav">
-        
 
-  
             <span class="nav-item dropdown">
                 <a aria-expanded="false"
                    aria-label="Toggle theme (light)" class="btn btn-link nav-link dropdown-toggle d-flex align-items-center" data-bs-display="static"
@@ -219,11 +217,12 @@ watch (
 
     <div class="m-5">
 
-        <h4 class="mt-6" style="text-align: center;">Entities</h4>
-        <button @click="showAddModal" class="btn btn-primary mb-2 ml-3 mr-3 mt-3" style="float: right;">New Entity</button>
+      <div class="flex justify-between">
+        <h4 class="mt-6">Entities</h4>
+        <button @click="showAddModal" class="bg-[#0d6efd] py-0 text-sm">New Entity</button>
+      </div>
+
         <hr>
-
-
 
         <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
       <div  v-for="(list, index) in entityList" :key="index" >
