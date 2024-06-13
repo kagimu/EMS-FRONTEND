@@ -147,14 +147,13 @@ watch(
           <div class="col-3">
             <label class="textColor"><small>Code</small></label>
             <input
-                  @keypress="commons.numbersOnlyValidator($event)"
+                  @keypress="commons.codeValidator($event)"
                   maxlength="10"
                   type="text"
-                  style="outline: none 0 !important;
-               box-shadow: none;"
+                  @paste.prevent
                   v-model="form.code"
                   required
-                  class="form-control form-select-sm">
+                  class="form-control form-select-sm shadow-none">
           </div>
           <div class="col-8">
             <label class="textColor"><small>Name</small></label>

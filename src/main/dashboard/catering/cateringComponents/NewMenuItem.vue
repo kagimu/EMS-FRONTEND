@@ -264,7 +264,7 @@ const clearFormData = () => {
                 required
                 type="text"
                 @paste.prevent
-                @keypress="commons.numbersOnlyValidator($event)">
+                @keypress="commons.codeValidator($event)">
           </div>
         </div>
         <div class="col-lg-6">

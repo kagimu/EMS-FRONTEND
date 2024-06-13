@@ -11,10 +11,11 @@
           <div class="mb-2">
             <label class="textColor"><small>Code</small></label>
             <input
-                @keypress="commons.numbersOnlyValidator($event)"
+                @keypress="commons.codeValidator($event)"
                 maxlength="10"
                 type="text"
                 v-model="form.code"
+                @paste.prevent
                 required
                 class="form-control form-select-sm shadow-none">
           </div>

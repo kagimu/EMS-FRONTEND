@@ -27,10 +27,15 @@ export default function useCommonsStore() {
     }
 
     function numbersOnlyValidator(event) {
-        const validChars = /^[0-9\s]+$/;
+        const validChars = /^[0-9.\s]+$/;
         if (!validChars.test(event.key)) return event.preventDefault();
     }
 
+
+    function codeValidator(event) {
+        const validChars = /^[0-9\s]+$/;
+        if (!validChars.test(event.key)) return event.preventDefault();
+    }
 
 
     function getOrdinalDate(date = null, split = true) {
@@ -101,6 +106,7 @@ export default function useCommonsStore() {
         classLevelList,
         onlyNumberValidator,
         numbersOnlyValidator,
+        codeValidator,
         getOrdinalDate,
         getAgeFromDateOfBirth,
         initializePdfData,

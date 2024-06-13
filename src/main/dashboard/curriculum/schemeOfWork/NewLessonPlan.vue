@@ -49,7 +49,7 @@
               <div class="mb-2">
 
                 <input
-                    @keypress="commons.numbersOnlyValidator($event)"
+                    @keypress="commons.codeValidator($event)"
                     maxlength="10"
                     type="text"
                     v-model="list.code"
@@ -98,13 +98,13 @@
               <div class="row">
                 <div class="col-lg-3 content">
                   <input
-                      @keypress="commons.numbersOnlyValidator($event)"
+                      @keypress="commons.codeValidator($event)"
                       maxlength="10"
-                      style="outline: none 0 !important; box-shadow: none;"
                       type="text"
                       v-model="lst.code"
+                      @paste.prevent
                       required
-                      class="form-control form-control-sm">
+                      class="form-control form-control-sm shadow-none">
                 </div>
                 <div class="col-lg-8 content">
                   <input

@@ -8,7 +8,7 @@
     <label class="textColor"><small>Code</small></label>
     <input 
     v-model="form.code"
-    @keypress="commons.numbersOnlyValidator($event)"
+    @keypress="commons.codeValidator($event)"
     maxlength="10" 
     type="text"
     required class="form-control">

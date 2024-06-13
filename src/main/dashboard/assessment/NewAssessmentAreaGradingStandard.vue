@@ -199,7 +199,7 @@ watch(
       <div class="mb-2">
         <label class="textColor"><small>Code</small></label>
         <input
-            @keypress="commons.numbersOnlyValidator($event)"
+            @keypress="commons.codeValidator($event)"
             maxlength="10"
             type="text"
             v-model="form.code"

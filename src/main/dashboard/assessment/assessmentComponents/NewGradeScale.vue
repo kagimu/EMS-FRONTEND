@@ -209,7 +209,7 @@ watch(
           <div class="mb-2">
             <div class="text-[13px] text-[#505050]"> Code</div>
             <input
-                @keypress="commons.numbersOnlyValidator($event)"
+                @keypress="commons.codeValidator($event)"
                 maxlength="10"
                 v-model="form.code"
                 @paste.prevent

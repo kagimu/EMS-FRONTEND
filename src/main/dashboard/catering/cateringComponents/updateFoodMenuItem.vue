@@ -38,7 +38,14 @@
 
         <div class="mb-2">
     <label class="textColor"><small>Code</small></label>
-    <input  v-model="menuForm.code" type="number" required class="form-control">
+    <input
+        @keypress="commons.codeValidator($event)"
+        maxlength="10"
+        @paste.prevent
+        v-model="menuForm.code"
+        type="number"
+        required
+        class="form-control shadow-none">
 </div>
     </div>
     <div class="col-lg-6">
@@ -143,6 +150,7 @@
     import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
     import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
     import api from "@/config/api.js";
+    import useCommonsStore from "@/composables/useCommons.js";
 
 
     const notificationStore = useNotificationStore()
@@ -155,7 +163,7 @@
     const itemtype = ref(null)
     const menuList = ref([])
     const errorMessage = ref(null)
-
+    const commons = useCommonsStore()
 
     const showDialog = () => {
         thisDialog.value = true

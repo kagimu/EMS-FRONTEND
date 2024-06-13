@@ -210,14 +210,13 @@ watch(
           <div class="col-3">
             <div class="mb-1">
               <input
-                  @keypress="commons.numbersOnlyValidator($event)"
+                  @keypress="commons.codeValidator($event)"
                   maxlength="10"
                   type="text"
-                  style="outline: none 0 !important;
-               box-shadow: none;"
                   v-model="course.code"
+                  @paste.prevent
                   required
-                  class="form-control form-select-sm">
+                  class="form-control form-select-sm shadow-none">
             </div>
           </div>
           <div class="col-8">
