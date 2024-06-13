@@ -217,9 +217,10 @@ watch (
 
     <div class="m-5">
 
+
       <div class="flex justify-between">
-        <h4 class="mt-6">Entities</h4>
-        <button @click="showAddModal" class="bg-[#0d6efd] py-0 text-sm">New Entity</button>
+        <span class="text-[20px]">Entities</span>
+        <button @click="showAddModal" class="btn btn-sm btn-primary">New Entity</button>
       </div>
 
         <hr>
