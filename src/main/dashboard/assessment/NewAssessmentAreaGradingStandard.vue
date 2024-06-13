@@ -202,11 +202,10 @@ watch(
             @keypress="commons.numbersOnlyValidator($event)"
             maxlength="10"
             type="text"
-            style="outline: none 0 !important;
-               box-shadow: none;"
             v-model="form.code"
+            @paste.prevent
             required
-            class="form-control form-select-sm">
+            class="form-control form-select-sm shadow-none">
       </div>
 
 

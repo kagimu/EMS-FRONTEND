@@ -27,7 +27,7 @@ export default function useCommonsStore() {
     }
 
     function numbersOnlyValidator(event) {
-        const validChars = /^[0-9+\-*/.\s]+$/;
+        const validChars = /^[0-9\s]+$/;
         if (!validChars.test(event.key)) return event.preventDefault();
     }
 

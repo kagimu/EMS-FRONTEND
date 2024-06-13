@@ -8,7 +8,8 @@
     <input 
     v-model="form.code" 
     @keypress="commons.numbersOnlyValidator($event)"
-    maxlength="10" 
+    maxlength="10"
+    @paste.prevent
     type="text"
     required class="form-control">
 </div>

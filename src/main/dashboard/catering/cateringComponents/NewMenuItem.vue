@@ -17,13 +17,10 @@ const campusList = ref([])
 const schoolList = ref([])
 const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
-const itemtype = ref(null)
-const errorMessage = ref(null)
 
 const feedingSessionGroupData = ref([])
 const menuOptions = ref([])
 const menuItems = ref([])
-const menuItemOptions = ref([])
 const form = reactive({
   primary_item_number:null
 })
@@ -77,7 +74,7 @@ const addMenuItem = () =>{
 
 
     menuForm.code = parseInt(menuForm.code)
-    menuForm.base_price = parseInt(menuForm.base_price)
+    menuForm.base_price = parseFloat(menuForm.base_price)
 
     buttonLoader.value = true
     cateringStore.newMenuItemInfo(menuForm)
@@ -162,10 +159,6 @@ watch(
     () => cateringStore.menuItemResponse,
     async (data) => {
       menuOptions.value = data.map(option => ({ number: option.number,name:option.name}));
-      // if(data && data.data) {
-      //   menuData.value = data.data
-      //   menuOptions.value = data.data.map(option => ({ number: option.number,name:option.name}));
-      // }
     },
     {deep: true}
 )
@@ -270,6 +263,7 @@ const clearFormData = () => {
                 maxlength="10"
                 required
                 type="text"
+                @paste.prevent
                 @keypress="commons.numbersOnlyValidator($event)">
           </div>
         </div>

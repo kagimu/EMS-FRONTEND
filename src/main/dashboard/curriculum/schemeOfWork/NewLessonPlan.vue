@@ -51,11 +51,11 @@
                 <input
                     @keypress="commons.numbersOnlyValidator($event)"
                     maxlength="10"
-                    style="outline: none 0 !important; box-shadow: none;"
                     type="text"
                     v-model="list.code"
+                    @paste.prevent
                     required
-                    class="form-control form-control-sm">
+                    class="form-control form-control-sm shadow-none">
               </div>
             </div>
             <div class="col-lg-8">
