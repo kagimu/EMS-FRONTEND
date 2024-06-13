@@ -28,7 +28,7 @@ const form = reactive({
   primary_item_number:null
 })
 
-const menuData = ref([])
+
 
 const menuForm = reactive({
   name:null,
@@ -75,18 +75,12 @@ watch(
 const addMenuItem = () =>{
   if(menuForm.type === 'ITEM'){
 
-    let myData = reactive({
-      name:menuForm.name,
-      code:parseInt(menuForm.code),
-      base_price:parseInt(menuForm.base_price),
-      type:menuForm.type,
-      unit_of_measure_number:menuForm.unit_of_measure_number,
-      campus_number:menuForm.campus_number,
-      school_number:menuForm.school_number
-    })
+
+    menuForm.code = parseInt(menuForm.code)
+    menuForm.base_price = parseInt(menuForm.base_price)
 
     buttonLoader.value = true
-    cateringStore.newMenuItemInfo(myData)
+    cateringStore.newMenuItemInfo(menuForm)
   }else{
     //prepare data
     const secondaryItemNumbers = menuItems.value.map(menu => {
@@ -252,6 +246,7 @@ const clearFormData = () => {
     <AppModal v-model="showUnitModal" lg title="Add Unit of Measure">
       <NewUnitOfMeasurement></NewUnitOfMeasurement>
     </AppModal>
+
 
 
 <form @submit.prevent="addMenuItem">
