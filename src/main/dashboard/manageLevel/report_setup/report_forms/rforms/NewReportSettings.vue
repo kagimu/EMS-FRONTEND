@@ -165,7 +165,7 @@ watch(
           v-model="form.code"
           @paste.prevent
           required
-          class="form-control form-select-sm shadow-none>
+          class="form-control form-select-sm shadow-none">
     </div>
 
 
