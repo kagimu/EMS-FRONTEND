@@ -89,15 +89,12 @@ const GoToDashboard = (entity, index) =>{
 if(entity) {
   let entityNo = entity.number
 
-  if(draftData.value?.number === entityNo){
+ /* if(draftData.value?.number === entityNo){
     saveStorage(draftData.value)
-  }else {
+  }else {*/
     buttonLoader.value = index
     entityStore.switchEntity(entityNo)
-  }
-
-
-
+  // }
 
 }
 }
