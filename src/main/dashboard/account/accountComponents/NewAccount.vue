@@ -1,103 +1,85 @@
-<template>
-    <div>
-      <!-- {{ userInfo }} -->
-        <form @submit.prevent="assignRole">
-      <div class="mb-2">
-        <label class="textColor"><small>Role</small></label>
-        <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-       {{  role_numbers }}
-<li class="list-group-item" v-for="(list, index) in rolesData" :key="index">
-    <input
-            v-model="role_numbers"
-            style="outline: none 0 !important; box-shadow: none;"
-            class="form-check-input me-1" type="checkbox" :value="list.number" :id="list.number">
-    <label  :for="list.number"><small>{{list.name}}</small></label>
-</li>
-
-</ul>
-      </div>
-
-     <div class="flex justify-content-end mt-2" style="width: 100%;">
-            <button type="submit" class="btn btn-primary border-0 btn-sm">
-                 <small><i class="bi bi-save"></i> submit</small>
-                 <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
-                      role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span> 
-                    </span>
-            </button>
-        </div>
-    </form>
-    
-    </div>
-
-</template>
-
 <script setup>
-import {onMounted, reactive, ref, watch,computed} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import { useAccountStore } from "@/main/dashboard/account/store/account.js";
-import { useRolesStore } from "@/main/settings/roles/store/roles.js";
+   import {onMounted, reactive, ref, watch,computed} from "vue";
+   import useNotificationStore from "@/composables/useNotification.js";
+   import { useAbility } from '@casl/vue';
+   import { useAccountStore } from "@/main/dashboard/account/store/account.js";
+   import { useRolesStore } from "@/main/settings/roles/store/roles.js";
+   import { useUserStore } from "@/main/dashboard/profiles/store/users.js"
+   
+   const userStore = useUserStore()
+   const notificationStore = useNotificationStore()
+   const roleStore = useRolesStore()
+   const accountStore = useAccountStore()
+   const rolesData = ref([])
+   const { can } = useAbility()
+   const errorMessage = ref(null)
+   const userData = ref([])
+   const buttonLoader = ref(false)
+   let show = ref(false)
+   const rolesInfo = ref([])
+   // const role_numbers = ref([])
+   let entityN = localStorage.getItem("entity_number")
 
 const props = defineProps({
-  userInfo:{}
+  userInfo:String
 })
 
-const roleStore = useRolesStore()
-const accountStore = useAccountStore()
-const notificationStore = useNotificationStore()
-const buttonLoader = ref(false)
-const errorMessage = ref(null)
-const userData = ref([])
-const user_number = ref(null)
-const  role_numbers = ref([])
+   
+   const form = reactive({
+     user_number:null,
+     expiry_date:null,
+     role_numbers:null
+   })
 
-// const formData = reactive({
-//     role_number:[],
-// })
-
-
-const rolesData= ref([])
-
+   onMounted(
+       async () => {
+         await accountStore.fetchUsersToAssign(entityN)
+         roleStore.fetchRoles(myData)
+       } )
+   
    let myData = reactive({
     entity_number:localStorage.getItem('entity_number')
-    })
+    })  
+   
+       watch(
+       () => accountStore.userResponse,
+       async (data) => {
+         if(data){
+           userData.value = data.data
+         }
+       },
+       {deep:true}
+       )
 
-//fetch
-onMounted(
-    async () => {
-      roleStore.fetchRoles(myData)
-      getUserInfo()
-    } )
+   const addRoleNumber = (number, idx) => {
+     rolesInfo.value[idx].role_number = rolesInfo.value?.[idx]?.role_number === number ? "" : number
+   }
+   
+   function addUser(){
+     buttonLoader.value = true
+     form.user_number=props.userInfo
+     form.roles=rolesInfo.value
+        //  alert(JSON.stringify(form))
+    accountStore.createNewAccount(form)
+   
+   }
 
-    watch(
-    () => props.userInfo,
+
+watch (
+    () => accountStore.newAccountResponse,
     async (data) => {
       if(data){
-        getUserInfo()
-      }
-    }
-    )
+        // buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+        formData.role_number = null
+        formData.user_number = null
 
-    const getUserInfo =() =>{
-      let draft = props.userInfo
-      user_number.value = draft?.number
-      role_numbers.value = draft?.roles.map(item => item.role_number).join(',');
-      // alert(JSON.stringify(draft?.roles.map(item => item.role_number).join(',')))
-    }
-
-    watch(
-    () => roleStore.roleResponse,
-    async (data) => {
-      if(data){
-        rolesData.value = data.data
       }
     },
     {deep:true}
-    )
-const assignRole = () =>{
-  // alert(JSON.stringify(formData))
-  accountStore.createNewAccount(formData)
-}
-watch (
+)
+   
+       watch (
     () => accountStore.newAccountResponse,
     async (data) => {
       if(data){
@@ -118,16 +100,6 @@ onMounted(
        accountStore.fetchAllUsers()
     } )
 
-    watch(
-    () => accountStore.userAllResponse,
-    async (data) => {
-      if(data){
-        userData.value = data
-      }
-    },
-    {deep:true}
-    )
-
 
 watch (
     () => accountStore.errorMessage,
@@ -139,13 +111,82 @@ watch (
     },
     {deep:true}
 )
-</script>
 
+   
+       watch(
+       () => roleStore.roleResponse,
+       async (data) => {
+         if(data && data.data){
+           let draft = data.data
+           rolesData.value = draft
+
+           let arr = []
+            draft.forEach(lst => {
+              arr.push({expiry_date:"", role_number:"",number:lst.number,role_name:lst.name})
+            })
+
+           rolesInfo.value = arr
+           
+         }
+       },
+       {deep:true}
+       )
+   
+</script>
+<template>
+   <div>
+    <!-- {{ userInfo }} -->
+      <form @submit.prevent="addUser">
+         <div class="row">
+            <div class="col-12">
+               <div class="mb-2">
+                  <label class="textColor"><small>Role <span class="alert alert-danger p-0">set Account expiry date</span></small></label>
+                  <ul class="list-group text-sm mb-1" style="border-radius: 0 0 0 0;">
+                     <li class="list-group-item" v-for="(lst, idx) in rolesInfo" :key="idx">
+                          <!-- <div>{{lst}}</div> -->
+                        <div class="row">
+                           <div class="col-lg-1">
+                             <input
+                            @change="addRoleNumber(lst.number, idx)"
+                            :value="lst.number"
+                            :id="lst.number"
+                            class="shadow-none"
+                            type="checkbox">
+                               
+                           </div>
+                           <div class="col-lg-4">
+                              <label style="float: left;" class="textColor" :for="lst.number">{{lst.role_name}}</label>
+                           </div>
+                           <div class="col-lg-6">
+                           <input
+                            v-model="lst.expiry_date"
+                            style="outline: none 0 !important; box-shadow: none;"
+                            class="form-control" type="date" required>
+                           </div>
+                        </div>
+                      
+                     </li>
+
+
+                  </ul>
+               </div>
+            </div>
+         </div>
+         <div class="text-right mt-1">
+            <button type="submit" class="btn btn-primary mb-2 btn-sm">
+               Submit
+               <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
+                  <span class="visually-hidden">Loading...</span>
+               </div>
+            </button>
+         </div>
+      </form>
+   </div>
+</template>
 <style scoped>
-.noFocus:focus {
-outline: none 0 !important;
-box-shadow: none;
--moz-box-shadow: none;
--webkit-box-shadow: none;
-}
+   input:focus {
+   box-shadow: none;
+   }
+   .textColor{
+   }
 </style>

@@ -212,7 +212,7 @@ watch(
               <router-link style="display:non"
                   class="text-decoration-none"
                   :to="{name:'manage-interviews', query:{interview_id:interview.number, interview:interview.name}}">
-                <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
+                <button class="text-[#0d6efd] border border-primary p-1 rounded-sm hover:bg-[#0d6efd] hover:text-white">
                 <small>Manage Applicants</small>
                 </button>
               </router-link>

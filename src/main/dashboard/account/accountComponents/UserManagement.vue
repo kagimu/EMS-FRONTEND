@@ -256,7 +256,7 @@ watch (
     <NewStaff></NewStaff>
     </AppModal>
 
-    <AppModal title="Assign Role" v-model="assignDialog" xl2>
+    <AppModal title="Assign Role" v-model="assignDialog" md>
       <new-account :userInfo="userInfo"></new-account>
     </AppModal>
 
@@ -360,7 +360,7 @@ watch (
            <small>assign-entity</small>
           </button> -->
 
-          <button @click="openModal(user)" type="button" class="btn btn-outline-primary mb-2 btn-small p-0" style="width: 60%;">
+          <button @click="openModal(user.number)" type="button" class="btn btn-outline-primary mb-2 btn-small p-0" style="width: 60%;">
            <small>Assign Role</small>
           </button>
 

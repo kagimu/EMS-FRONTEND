@@ -106,7 +106,7 @@ watch(
                     type="button"
                     class="btn btn-primary btn-sm">
                   <i class="bi bi-plus"></i>
-                  New Grade
+                  New Measure Of Assessment
                 </button>
             </div>
            </div>

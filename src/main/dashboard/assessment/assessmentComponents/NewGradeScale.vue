@@ -258,14 +258,14 @@ watch(
           </div>
 
           <div class="mb-2">
-            <div class="text-[13px] text-[#505050]">Grade</div>
+            <div class="text-[13px] text-[#505050]">Measures Of Assessment</div>
             <!-- <input v-model="form.name" placeholder="eg. D2" type="text" class="form-control outline-none shadow-none">
             <br> -->
             <select
                 class="form-select form-select-sm shadow-none" required
                 v-model="form.grade_number"
             >
-              <option disabled value="">-Select Grade</option>
+              <option disabled value="">-Select-</option>
               <option v-for="(list, index) in gradeDataInfo" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
             </select> 
 

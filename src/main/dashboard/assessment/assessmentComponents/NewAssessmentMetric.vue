@@ -62,7 +62,8 @@
       campus_class_number:null,
       grading_standard_number:null,
       study_period_number:null,
-      scheduled_on:null
+      scheduled_on:null,
+      comment_status:null
     })
 
 
@@ -375,10 +376,6 @@
                  </select>
               </div>
 
-        </div>
-           <div class="col-lg-6">
-          
-          
               <div class="mb-2">
                  <label class="textColor"><small>Assessment Area</small> <span class="star">*</span></label>
                  <select
@@ -389,6 +386,23 @@
                     <option disabled value="">Select</option>
                     <option v-for="(list, index) in AsessmentListData" :key="index" :value="list.number">{{ list.name }}
                     </option>
+                 </select>
+              </div>
+
+        </div>
+           <div class="col-lg-6">
+          
+          
+              <div class="mb-2">
+                 <label class="textColor"><small>Requires A comment ?</small> <span class="star">*</span></label>
+                 <select
+                    style="box-shadow: none;"
+                    class="form-select form-select-sm"
+                    v-model="form.comment_status"
+                    >
+                    <option value="Mandatory">Mandatory</option>
+                    <option value="Optional">Optional</option>
+                    
                  </select>
               </div>
 

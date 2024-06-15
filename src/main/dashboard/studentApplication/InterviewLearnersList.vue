@@ -15,6 +15,7 @@ import AdmitModel from "@/main/dashboard/studentApplication/AdmitModel.vue";
 
 import { useAbility } from '@casl/vue';
 const { can } = useAbility()
+const assessmentDataList = ref([])
 
 
 const myAdmitModal = ref(false)
@@ -39,6 +40,7 @@ const admissionStore = useAdmissionStore()
 
 let  interviewNumber = routerData.currentRoute.value.query.interview_id
 let assessmentricsNumber = routerData.currentRoute.value.query.assessment_metric_id
+let assessmentNumber = routerData.currentRoute.value.query.assessment_metric_id
 let interviewM = routerData.currentRoute.value.query.interview
 const studentOnInterviewId= ref(null)
 const studentData=ref(null)
@@ -90,7 +92,26 @@ onMounted(
     }
 )
 
+const fetchStudentOnInterview = (assessmentMetricNumber,interviewN) =>{
+   let data = {
+      interview_number:interviewN,
+      assessment_metric_number:assessmentMetricNumber
+   }
+      applicationStore.fetchStudentsOnInterview(data) 
+      
+  }
 
+
+
+watch(
+      () => studentApplicationStore.assessmentMetricsOnInterviewResponse,
+      async (data) => {
+        if(data){
+          assessmentDataList.value = data.data
+        }
+      },
+      {deep:true}
+  )
 
 watch(
     () => applicationStore.StudentsOnInterviewResponse,
@@ -375,24 +396,6 @@ const showDialog = () => {
 </AppModal>
 
 
-      <!-- <div class="modal fade" id="admitMainModal" tabindex="-1" :class="{ show: admitshow }" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header text-sm p-0">
-          <h6 class="modal-title ml-8 mt-2 mb-2">OFFER ADMISSION</h6>
-          <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mt-2 mb-2">
-         <AdmitModel :selectedStudentNumber="selectedStudentNumber"></AdmitModel>
-        </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
-   
-
     <!-- end  -->
     <div class="row mt-1">
   <div class="mt-2">
@@ -404,9 +407,11 @@ const showDialog = () => {
     <div class="col-12">
       <div class="mt-2">
         <div class="row mx-auto">
+
+          
       
 
-          <form @submit.prevent="Admit()">
+          <!-- <form @submit.prevent="Admit()">
             <div class="row">
               <div class="col-3">
                 <div class="mb-2">
@@ -454,7 +459,36 @@ const showDialog = () => {
       </div>
        </div>
     
-</form>
+</form> -->
+
+
+
+<div class="row mt-4">
+        <div class="col-lg-4">
+           <div class="mb-2">
+            <label style="font-size: 11px;"  class="alert alert-danger p-0">* Please Select Assessment Metric to View Applicants</label>
+            <div class="input-group mt-1">
+          <select
+                 style="box-shadow: none;"
+                 class="form-select form-select-sm"  id="inputGroupSelect02" required
+                 v-model="assessmentNumber"
+                 @change="fetchStudentOnInterview(assessmentNumber,interviewNumber)"
+                 >
+                 <option disabled value=""> - Select Assessment Metric - </option>
+                 <option v-for="(assessment, index) in assessmentDataList" :key="index" :value="assessment.AssessmentMetric.number">{{assessment.AssessmentMetric.name  }}</option>
+              </select>
+
+</div>
+           </div>
+        </div>
+        <div class="col-lg-1">
+
+        </div>
+        <div class="col-lg-7">
+         
+        </div>
+     </div>
+
 
 </div>
 
@@ -470,7 +504,8 @@ const showDialog = () => {
 <!-- {{ selectedStudentNumber }} -->
 <div class="row">
   <div class="col-lg-10">
-    <p class="alert alert-danger p-1 text-[11px] mt-2" >Select a Student or Students to Offer Admission Please !</p>
+    <!-- <p class="alert alert-danger p-1 text-[11px] mt-2" >Select a Student or Students to Offer Admission Please !</p>
+    {{ interviewStudentList }} -->
     <table
       id="datatable"
       class="table table-hover caption-top mt-1 table-sm table-striped"
@@ -482,27 +517,27 @@ const showDialog = () => {
           <th>Name</th>
           <th>status</th>
         </tr>
-  <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-    {{errorMessage}}
-  </div> -->
+
       </thead>
       <tbody>
         <tr style="text-transform: capitalize;" v-for="(student, index) in interviewStudentList" :key="index">
-          <td><input type="checkbox"  v-model="selectedStudents[index]" class="checkbox-primary"></td>
+          <td>
+            <input v-if="student.status != 'ADMITTED'" type="checkbox"  v-model="selectedStudents[index]" class="checkbox-primary">
+          </td>
           <td> 
             {{student.student_surname ? student.student_surname : ""}}
                  {{student.student_second_name ? " "+student.student_second_name : ""}}
                  {{student.student_other_name ? " "+student.student_other_name : ""}}</td>
         
           <td>
-              <!-- <router-link style=""
-                class="text-decoration-none"
-                :to="{name:'interview-learners-details', query:{st_id:student.number,interview_id:interviewNumber,applicationN:student.number}}">
-                <button type="button"
-                  class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
-              >view Details</button>
-            </router-link> -->
-            status
+          <span style="color:green;font-style: italic;font-size: 13px;" v-if="student.status == 'ADMITTED'">
+             
+                <RouterLink :to="{name : 'admission-list' }" class="link-success"  style="text-decoration: none;">
+                  {{ student.status }}
+                </RouterLink>  
+            </span>
+          <span style="color:red;font-style: italic;font-size: 13px;" v-if="student.status == 'Active'">  {{ student.status }}</span>
+          <span v-if="student.status == 'ENROLLED'">  {{ student.status }}</span>
              <span v-for="(listD, index) in scoreDataList " :key="index">
             <span>{{ listD.actual_score }}</span></span>
             

@@ -7,7 +7,6 @@ import AppModal from "@/components/AppModal.vue";
 import NewAssessmentMetric from "@/main/dashboard/assessment/assessmentComponents/NewAssessmentMetric.vue"
 const routerData = useRouter()
 
-
 const academicYearStore = useAcademicYearStore()
 const classStore = useClassesStore()
 const studyPeriodStore = useStudyPeriodStore()
