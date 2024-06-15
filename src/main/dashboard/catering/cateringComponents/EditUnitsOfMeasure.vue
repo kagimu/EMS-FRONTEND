@@ -1,5 +1,6 @@
 <template>
     <div>
+    {{ unitData }}
        
 <form @submit.prevent="editUnitMeasurement">
 <div class="row mt-5">
@@ -79,14 +80,16 @@ const cateringStore = useCateringStore()
 const commons = useCommonsStore()
 
 
-const editUnitMeasurement = () => {
+const editUnitMeasurement = (number) => {
     let myData = reactive({
     code:parseInt(form.code),
     name:form.name,
-    abbreviation:form.abbreviation
+    abbreviation:form.abbreviation,
+    menu_number:props.unitData.number
     })
-    buttonLoader.true
-    // cateringStore.newUnitOfMeasureInfo(myData)
+    alert(JSON.stringify(myData))
+    buttonLoader.value=true
+    cateringStore.updateUnitOfMeasure(myData)
 }
 watch (
     () => cateringStore.newUnitOfMeasureInfoResponse,

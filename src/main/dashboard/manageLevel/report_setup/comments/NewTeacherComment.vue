@@ -8,18 +8,18 @@ import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/stor
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
-
+import {useRouter} from "vue-router";
 
 
 const notificationStore  = useNotificationStore()
 const teacherCommentStore = useTeacherCommentStore()
 const commons = useCommonsStore()
-
+const routerData = useRouter()
 const reportSetupStore = useReportSetupStore()
 const studyPeriodStore = useStudyPeriodStore()
 const classStore = useClassesStore()
 const academicYearStore = useAcademicYearStore()
-
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
 
 const reportSettingsList = ref(null)
 
@@ -40,7 +40,7 @@ const loader = ref(false)
 const form = reactive({
 min_aggregate: 0,
 max_aggregate : 0,
-message : null,
+comment : null,
 report_setting_number:""
 })
 
@@ -48,13 +48,20 @@ onMounted(
     async () => {
         teacherCommentStore.fetchTeacherComments()
         await doFetchReportSettings()
+        fetchCampusLevel()
     }
 )
 
 const addComments = () => {
     loader.value = true
 //  alert(JSON.stringify(form))
- teacherCommentStore.newTeacherComment(form)
+let formData = {
+min_aggregate : parseInt(form.min_aggregate),
+max_aggregate : parseInt(form.max_aggregate),
+comment : form.comment,
+report_setting_number : form.report_setting_number
+ }
+ teacherCommentStore.newTeacherComment(formData)
 }
 
 const doFetchReportSettings = async () => {
@@ -208,7 +215,7 @@ watch(
             </select>
           </div>
 
-          <div class="mb-2">
+          <!-- <div class="mb-2">
             <label class="textColor">Academic Year</label>
             <select
                 class="form-select form-select-sm shadow-none"
@@ -220,10 +227,10 @@ watch(
                 {{list.code+". "+list.academic_year_name}}
               </option>
             </select>
-          </div>
+          </div> -->
 
 
-          <div class="mb-2">
+          <!-- <div class="mb-2">
             <label class="textColor">Study Period</label>
             <select
                 class="form-select form-select-sm shadow-none" required
@@ -234,7 +241,7 @@ watch(
               <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
 
             </select>
-          </div>
+          </div> -->
 
           <div class="mb-2">
             <label class="textColor">ReportSetting</label>
@@ -273,7 +280,7 @@ watch(
           type="text"
           style="outline: none 0 !important;
                box-shadow: none;"
-               v-model="form.min_aggregate"
+               v-model="form.max_aggregate"
           required
           class="form-control form-select-sm">
     </div>
@@ -282,7 +289,7 @@ watch(
 
     <div class="mb-2">
       <label class="textColor"><small>Comment</small></label>
-    <textarea class="form-control" v-model="form.message"></textarea>
+    <textarea class="form-control" v-model="form.comment"></textarea>
     </div>
 
 

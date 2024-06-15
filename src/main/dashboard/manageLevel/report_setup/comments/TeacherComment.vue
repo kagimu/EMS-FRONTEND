@@ -29,9 +29,8 @@ watch(
     () => teacherCommentStore.newTeacherCommentResponse,
     async (data) => {
       if(data){
-        teacherCommentStore.fetchTeacherComments()
-        // notificationStore.successToast("Success",data.message)
         showCommentModal.value = false
+        teacherCommentStore.fetchTeacherComments()
       }
     }
 )
@@ -44,6 +43,8 @@ watch(
       }
     }
 )
+
+
 
 
 </script>
@@ -80,10 +81,10 @@ watch(
           </tr>
           </thead>
           <tbody>
-          <!-- <tr v-for="(levelInfo, index) in commentsList" :key="index">
+          <tr v-for="(com, index) in commentsList" :key="index">
+          {{ com }}
 
-
-          </tr> -->
+          </tr>
           </tbody>
         </table>
 

@@ -8,6 +8,7 @@ import GradingStandards from "@/main/dashboard/assessment/assessmentComponents/G
 import AssessmentScale from "@/main/dashboard/assessment/assessmentComponents/AssessmentGrade.vue";
 import AssessmentAreaGradingStandard from "@/main/dashboard/assessment/AssessmentAreaGradingStandard.vue";
 import AssessmentMetrics from "@/main/dashboard/assessment/assessmentComponents/AssessmentMetrics.vue";
+import Grades from "@/main/dashboard/assessment/assessmentComponents/Grades.vue";
 
 const routerData = useRouter()
 const selectedPage = routerData.currentRoute.value.query.ass
@@ -40,6 +41,10 @@ const selectedPage = routerData.currentRoute.value.query.ass
 
                   <div v-if="selectedPage === 'grade-scale'">
                     <GradingScale></GradingScale>
+                  </div>
+
+                  <div v-if="selectedPage === 'grades'">
+                    <Grades></Grades>
                   </div>
 
                   <div v-if="selectedPage === 'assessment-scale'">

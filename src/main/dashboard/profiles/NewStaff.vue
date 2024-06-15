@@ -29,7 +29,7 @@
      location:null,
      level:"",
      entity_number:entityN,
-     date:null
+     expiry_date:null
    })
    
    let myData = reactive({
@@ -58,7 +58,7 @@
    
    function addUser(){
      buttonLoader.value = true
-     form.role_numbers=rolesInfo.value
+     form.roles=rolesInfo.value
          // alert(JSON.stringify(form))
      userStore.createNewUser(form)
    
@@ -84,7 +84,7 @@
            form. phone=null,
            form.location=null,
            form.level=null,
-           form.role_numbers=null
+           form.roles=null
          }
        },
        {deep:true}
@@ -111,7 +111,7 @@
 
            let arr = []
             draft.forEach(lst => {
-              arr.push({date:"", role_number:"",number:lst.number,role_name:lst.name})
+              arr.push({expiry_date:"", role_number:"",number:lst.number,role_name:lst.name})
             })
 
            rolesInfo.value = arr
@@ -218,7 +218,7 @@
                            </div>
                            <div class="col-lg-6">
                            <input
-                            v-model="lst.date"
+                            v-model="lst.expiry_date"
                             style="outline: none 0 !important; box-shadow: none;"
                             class="form-control" type="date" required>
                            </div>

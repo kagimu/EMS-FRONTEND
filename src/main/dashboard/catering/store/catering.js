@@ -66,8 +66,8 @@ export const useCateringStore = defineStore("catering", () => {
                 }
             })
     }
-    async function deleteUnitOfMeasure() {
-        return await api.delete("main/")
+    async function deleteUnitOfMeasure(id) {
+        return await api.delete("main/catering/units-of-measure/"+id)
             .then((response) => {
                 deleteUnitOfMeasureInfoResponse.value = response.data
             })
@@ -77,8 +77,9 @@ export const useCateringStore = defineStore("catering", () => {
                 }
             })
     }
-    async function updateUnitOfMeasure() {
-        return await api.put("main/")
+    // Main/catering/units-of-measure/3434
+    async function updateUnitOfMeasure(data) {
+        return await api.put("main/catering/units-of-measure/"+data.menu_number)
             .then((response) => {
                 updateUnitOfMeasureInfoResponse.value = response.data
             })

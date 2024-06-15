@@ -95,6 +95,7 @@
     const cateringStore = useCateringStore()
     const thisDialog = ref(false)
     const unitMeasurementData = ref([])
+    const notificationStore = useCateringStore()
 
     const showUnitMeasurement = () => {
     showUnitModal.value = true
@@ -137,9 +138,16 @@ if(!confirm("Are you sure, you want to delete: " + name)){
   return
 }
 // delete endpoint
-
+cateringStore.deleteUnitOfMeasure(id)
 }
 
+watch(
+    () => cateringStore.deleteUnitOfMeasureInfoResponse,
+    async (data) => {
+      notificationStore.successToast("Success", data.message)
+    },
+    {deep: true}
+  )
 
     </script>
     

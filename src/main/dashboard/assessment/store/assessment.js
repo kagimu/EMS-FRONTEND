@@ -23,7 +23,10 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const assessmentScaleResponse = ref(null)
     const updateAssessmentScaleResponse = ref(null)
     const assessmentAreaByClassResponse = ref(null)
-
+    const gradeResponse = ref(null)
+    const newGradeResponse = ref(null)
+    const updateGradeResponse = ref(null)
+    const deleteGradeResponse = ref(null)
 
     async function createAssessmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -291,7 +294,55 @@ async function createMetric(data) {
             })
     }
 
+    // assessmentscale
+    async function createGrade(data) {
+        return await api.post("main/assessments/grades",data)
+            .then((response) => {
+             newGradeResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
+    async function updateGrade(data) {
+        return await api.put("main/assessments/grades",data)
+            .then((response) => {
+             updateGradeResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchGrades() {
+        return await api.get("main/assessments/grades")
+            .then((response) => {
+                gradeResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function deleteGrade(gradeNumber) {
+        return await api.delete("main/assessments/grade"+gradeNumber)
+            .then((response) => {
+             deleteGradeResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+    
     return {
         createAssessmentAreas,
         newAssessmentAreasResponse,
@@ -331,6 +382,14 @@ async function createMetric(data) {
         updateAssessmentScaleResponse,
         fetchGradingStandardData,
         fetchAssessmentAreaByClass,
-        assessmentAreaByClassResponse
+        assessmentAreaByClassResponse,
+        newGradeResponse,
+        gradeResponse,
+        createGrade,
+        fetchGrades,
+        updateGradeResponse,
+        updateGrade,
+        deleteGradeResponse,
+        deleteGrade
     }
 })
