@@ -1,6 +1,6 @@
 <template>
     <div>
-    {{ unitData }}
+    <!-- {{ unitData }} -->
        
 <form @submit.prevent="editUnitMeasurement">
 <div class="row mt-5">
