@@ -39,8 +39,6 @@ const form = reactive({
   name : null,
   min_value: null,
   max_value: null,
-  weight: null,
-  description: null,
   campus_class_number:null,
   campus_number: campusNumber,
   grading_standard_number:null,
@@ -78,7 +76,6 @@ const createScale = () =>{
   form.code =  form.code ? parseInt(form.code) : ""
   form.max_value = form.max_value ? parseInt(form.max_value) : ""
   form.min_value = form.min_value ? parseInt(form.min_value) : ""
-  form.weight = form.weight ? parseInt(form.weight) : ""
   buttonLoader.value = true
   assessmentStore.createAggregateScale(form)
 }
@@ -251,45 +248,27 @@ watch(
                 v-model="form.campus_class_number"
                 @change="doFetchGradingStandard"
             >
-              <option disabled value="">Select</option>
+              <option disabled :value="null">Select</option>
               <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
-            </select> 
-
+            </select>
           </div>
-
-          <div class="mb-2">
-            <div class="text-[13px] text-[#505050]">Measures Of Assessment</div>
-            <!-- <input v-model="form.name" placeholder="eg. D2" type="text" class="form-control outline-none shadow-none">
-            <br> -->
-            <select
-                class="form-select form-select-sm shadow-none" required
-                v-model="form.grade_number"
-            >
-              <option disabled value="">-Select-</option>
-              <option v-for="(list, index) in gradeDataInfo" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-            </select> 
-
-          </div>
-
-      <div class="mb-2">
-        <div class="text-[13px] text-[#505050]">Description</div>
-        <input v-model="form.description" class="form-control outline-none shadow-none" placeholder="eg. Distinction Two">
-      </div>
-
-
-
 
 
           <div class="mb-2">
             <div class="text-[13px] text-[#505050]">Grading Standard</div>
-              <select
-                      class="form-select form-select-sm outline-none shadow-none"
-                      v-model="form.grading_standard_number"
-              >
-                  <option disabled value="">Select</option>
-                 <option v-for="(gradeList,index) in gradeData" :key="index" :value="gradeList.number">{{ gradeList.name }}</option>
-              </select>
+            <select
+                class="form-select form-select-sm outline-none shadow-none"
+                v-model="form.grading_standard_number"
+            >
+              <option disabled :value="null">Select</option>
+              <option v-for="(gradeList,index) in gradeData" :key="index" :value="gradeList.number">{{ gradeList.name }}</option>
+            </select>
           </div>
+
+
+
+
+
 
           
       <div class="mb-2">
@@ -315,16 +294,19 @@ watch(
                  class="form-control outline-none shadow-none">
             </div>
 
-            <div class="col-lg-4">
-              <div class="text-[13px] text-[#505050]">Aggregate Scale</div>
-             <input
-                 maxlength="3"
-                 @keypress="commons.numbersOnlyValidator($event)"
-                 v-model="form.weight"
-                 type="text"
-                 class="form-control outline-none shadow-none"
-                 placeholder="eg. 1">
+          <div class="col-lg-4">
+            <div>
+              <div class="text-[13px] text-[#505050]">Measures Of Assessment</div>
+              <select
+                  class="form-select form-select-sm shadow-none" required
+                  v-model="form.grade_number"
+              >
+                <option disabled value="">-Select-</option>
+                <option v-for="(list, index) in gradeDataInfo" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+              </select>
             </div>
+          </div>
+
         </div>
       </div>
 

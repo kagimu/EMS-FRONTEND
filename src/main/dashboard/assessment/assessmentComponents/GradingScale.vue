@@ -141,7 +141,7 @@ watch (
 <template>
     <div>
 
-      <AppModal title="Add Aggregate Scale" v-model="showAggregateScaleModal" lg>
+      <AppModal title="Add Aggregate Scale" v-model="showAggregateScaleModal" xl2>
         <NewGradeScale></NewGradeScale>
       </AppModal>
 
