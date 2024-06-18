@@ -8,6 +8,7 @@ import {useRouter} from "vue-router";
 
 const commons = useCommonsStore()
 const assessmentStore = useAssessmentStore()
+const requiresAttachment = ref(false)
 
 const  notificationStore  = useNotificationStore()
 const routerData = useRouter()

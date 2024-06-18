@@ -233,7 +233,7 @@ const clearFormData = () => {
 
 </script>
 <template>
-    <div class="mt-5">
+    <div class="mt-1">
 
     
     <AppModal v-model="showUnitModal" lg title="Add Unit of Measure">
@@ -254,7 +254,7 @@ const clearFormData = () => {
 
 
       <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-4">
           <div class="mb-2">
             <label class="textColor"><small>Code</small></label>
             <input
@@ -267,16 +267,20 @@ const clearFormData = () => {
                 @keypress="commons.codeValidator($event)">
           </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-8">
+
           <div class="mb-2">
-            <label class="textColor"><small>Unit Of Measurement</small>  <b><i class="bi bi-plus-circle-fill" @click="showUnitMeasurement()"></i></b></label>
+            <label class="textColor"><small>Unit Of Measurement</small></label>
+            <div class="input-group">
             <select
                 v-model="menuForm.unit_of_measure_number"
-                class="form-control form-select shadow-none">
+                class="form-control form-select shadow-none" id="inputGroupSelect02">
               <option disabled value="">--Select Unit of Measure--</option>
               <option v-for="(list, index) in unitMeasurementData" :key="index" :value="list.number">{{list.name}}</option>
             </select>
+            <span class="input-group-text p-0 px-1"  ><i  class="bi bi-plus-circle" @click="showUnitMeasurement()"></i></span>
           </div>
+        </div>
         </div>
       </div>
 
