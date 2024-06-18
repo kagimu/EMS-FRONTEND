@@ -41,10 +41,6 @@ const switchTabs = (data) => {
       </div>
 
 
-
-
-
-
    <div v-if="selectedTab === 'ingredients'">
      <FoodMenuItem></FoodMenuItem>
    </div>
