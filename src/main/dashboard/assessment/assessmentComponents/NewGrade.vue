@@ -13,14 +13,8 @@ const requiresAttachment = ref(false)
 const  notificationStore  = useNotificationStore()
 const routerData = useRouter()
 const buttonLoader = ref(false)
-const campusNumber = routerData.currentRoute.value.query.id
-const campus_curriculum_number = routerData.currentRoute.value.query.crr
-const yesd = ref(null)
-onMounted(
-    () =>{
-      getGradeDataInfo()
-    }
-)
+let schoolNumber = routerData.currentRoute.value.query.sch
+
 
 const props = defineProps({
   gradeDataInfo:{}
@@ -29,40 +23,61 @@ const props = defineProps({
 const form = reactive({
   code: null,
   name:null,
+  short_name:null,
+  weight:null,
+  description:null,
 })
 
-const chan = () => {
-  yesd.value = "yes"
+
+onMounted(
+    () =>{
+      getGradeDataInfo()
+    }
+)
+
+
+watch(
+    () => props.gradeDataInfo,
+    async (data) => {
+      if(data){
+        getGradeDataInfo()
+      }
+    }
+)
+
+
+const getGradeDataInfo = () => {
+  if(props.gradeDataInfo){
+    let draft = props.gradeDataInfo
+        form.code = draft?.code ?? ""
+        form.name  = draft?.name ?? ""
+        form.short_name  = draft?.short_name ?? ""
+        form.weight  = draft?.weight ?? ""
+        form.description  = draft?.description ?? ""
+  }
 }
+
+
+
+
+
 
 const addGrade = () => {
   buttonLoader.value = true
+
+  form.code = parseInt(form.code)
+  form.weight = parseInt(form.weight)
+  form.school_number = schoolNumber
   if(props.gradeDataInfo.number){
-    let formData = {
-    name: form.name,
-    code :parseInt(form.code),
-    number:props.gradeDataInfo.number
-    }
-    // alert(JSON.stringify(formData))
+    form.number = props.gradeDataInfo.number
     assessmentStore.updateGrade(formData)
   }else{
-  form.code = parseInt(form.code)
   buttonLoader.value = true
   assessmentStore.createGrade(form)
   }
- 
-  // form.code = parseInt(form.code)
-  // buttonLoader.value = true
-  // assessmentStore.createGrade(form)
 }
 
-const getGradeDataInfo= () => {
-  if(props.gradeDataInfo){
-    let draft = props.gradeDataInfo
-     form.name = draft.name
-     form.code = draft.code   
-  }
-}
+
 
 watch(
     () => assessmentStore.newGradeResponse,
@@ -103,7 +118,7 @@ watch(
 
 
           <div class="mb-2">
-            <div class="text-[13px] text-[#505050]"> Code</div>
+            <div class="text-[13px] text-[#505050]"> Sorting Code</div>
             <input
                 @keypress="commons.codeValidator($event)"
                 maxlength="10"
@@ -115,19 +130,29 @@ watch(
 
         <div class="mb-2">
           <div class="text-[13px] text-[#505050]"> Name</div>
-         <input v-model="form.name" type="text" class="form-control shadow-none" placeholder="F9, D1">
+         <input v-model="form.name" type="text" class="form-control shadow-none" placeholder="Distinction 1, Fail 9">
         </div>
 
-        <div class="mb-2">
-    <div class="text-[13px] text-[#505050]">
-      <input v-model="requiresAttachment" type="checkbox"> &nbsp; Requires Attachment
-    </div>
-  </div>
+          <div class="mb-2">
+          <div class="text-[13px] text-[#505050]"> Short Name</div>
+         <input v-model="form.short_name" type="text" class="form-control shadow-none" placeholder="D1, F9">
+        </div>
 
-  <div class="mb-2" v-if="requiresAttachment">
-    <div class="text-[13px] text-[#505050]">Upload Attachment</div>
-    <input class="form-control" type="file">
-  </div>
+          <div class="mb-2">
+          <div class="text-[13px] text-[#505050]"> Weight</div>
+         <input v-model="form.weight" type="text" class="form-control shadow-none" placeholder="1,9">
+        </div>
+
+          <div class="mb-2">
+            <label class="textColor"><small>Description</small></label>
+            <textarea
+                placeholder="Very Good"
+                style="outline: none 0 !important; box-shadow: none;"
+                type="text" v-model="form.description"
+                required
+                class="form-control form-select-sm"></textarea>
+          </div>
+
 
      <div class="flex justify-content-end mt-4" style="width: 100%;">
             <button type="submit" class="btn btn-primary border-0 btn-sm">

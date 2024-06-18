@@ -208,17 +208,10 @@ watch(
       </div>
       <!-- wnd  -->
       <!-- schedule interview -->
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="updateMenuDialog" :class="{ show:updateMenuDialog }" aria-labelledby="offcanvasRightLabel">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasRightLabel"><small>Update Menu Item</small></h5>
-          <button type="button" class="btn-close"  data-bs-dismiss="offcanvas" aria-label="Close" @click="closeDialog"></button>
-        </div>
-        <div class="offcanvas-body">
-          <updateFoodMenuItem :menuItemsinfoData="menuItemsinfoData"></updateFoodMenuItem>
-        </div>
-      </div>
+   
       <AppModal title="Update Menu Item" v-model="showingModal" lg>
-        <updateFoodMenuItem :menuItemsinfoData="menuItemsinfoData"></updateFoodMenuItem>
+        <NewMenuItem></NewMenuItem>
+        <!-- <updateFoodMenuItem :menuItemsinfoData="menuItemsinfoData"></updateFoodMenuItem> -->
       </AppModal>
       <!-- wnd  -->
       <!-- end  -->
@@ -295,7 +288,7 @@ watch(
                         <th>Qty</th>
                         <th>School</th>
                         <th>Parts</th>
-                        <!-- <th>#</th> -->
+                        <th>#</th>
                       </tr>
                       <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
                         {{errorMessage}}
@@ -322,13 +315,13 @@ watch(
                           </span>
                         </td>
                         <td   v-if="list.type==='ASSEMBLED'">
-                          <!-- <button @click="showUpdateDialog(list)" >
+                          <button @click="showUpdateDialog(list)" >
                           <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
                           </button>
                           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
                           <button type="button">
                           <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
-                          </button> -->
+                          </button>
                         </td>
                       </tr>
                     </tbody>

@@ -151,8 +151,8 @@ watch(
             <td class="border-r"> {{calender.course_name}}</td>
             <td class="border-r hover:bg-[#dbdee1] cursor-pointer" v-for="(days, key) in calender?.day_items" :key="key">
 
-              <div v-if="days.active">
-                <div class="italic text-[12px] underline">{{days?.name}}</div>
+              <div v-if="days.active" v-tooltip.right="days?.name">
+<!--                <div class="italic text-[12px] underline">{{days?.name}}</div>-->
 
                 <div class="text-sm ml-2" v-for="(item, key) in days?.items" :key="key">
                   <small>

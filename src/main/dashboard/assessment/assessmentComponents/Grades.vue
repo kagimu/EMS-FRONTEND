@@ -20,6 +20,7 @@ const namee = ref(null)
 const addGrade  = () => {
     showGradeModal.value = true
     editModel.value = false
+    gradeDataInfo.value = []
 }
 
 onMounted(
@@ -118,13 +119,21 @@ watch(
           style="font-size: 11px !important;" >
         <thead>
         <tr>
+          <th scope="col">#</th>
           <th scope="col">Name</th>
+          <th scope="col">Short Name</th>
+          <th scope="col">Weight</th>
+          <th scope="col">Description</th>
           <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(gradeList, index) in gradeData " :key="index">
+          <td>{{ gradeList.code }}</td>
           <td>{{ gradeList.name }}</td>
+          <td>{{ gradeList.short_name }}</td>
+          <td>{{ gradeList.weight }}</td>
+          <td>{{ gradeList.description }}</td>
           <td>
             <button @click="showEditModal(gradeList)"   type="button">
               <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
