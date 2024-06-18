@@ -15,6 +15,7 @@ const mealCourseList = ref([])
 const mealEditMode = ref(false)
 const mealCourseDialog = ref(false)
 const school_number = ref("")
+const status = ref("")
 const schoolsList = ref([])
 const schoolN = ref(null)
 
@@ -32,9 +33,14 @@ onMounted(
     }
 )
 
-const doFetchMealCourses = (school_number) => {
-   schoolN.value = school_number
-   mealStore.fetchMealCourses(school_number)
+const doFetchMealCourses = () => {
+ let data = {
+   school_number:school_number.value,
+   status:status.value
+ }
+
+
+   mealStore.fetchMealCourses(data)
 }
 
 watch(
@@ -95,7 +101,7 @@ watch(
     () => mealStore.updateMealCoursesResponse,
     async (data) => {
       if(data){
-        mealStore.fetchMealCourses(receivedSchoolNumber.value)
+        await mealStore.fetchMealCourses({school_number:receivedSchoolNumber.value,status:'ACTIVE'})
         mealCourseDialog.value=false
       }
     }
@@ -123,7 +129,7 @@ watch(
     async (data) => {
       if(data){
         editMealCourseItemDialog.value = false
-        await mealStore.fetchMealCourses(recievedSchoolNumber.value)
+        await mealStore.fetchMealCourses({school_number:receivedSchoolNumber.value,status:'ACTIVE'})
       }
     }
 )
@@ -147,14 +153,14 @@ watch(
 
       <div class="col-12">
 
-<!-- {{ receivedSchoolNumber }} -->
+
 
         <div class="flex justify-content-between mt-3">
           <div class="ml-4">Meal Courses</div>
           <button
               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCourse">
-            <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-            Add a Meal Course
+              <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+              Add a Meal Course
           </button>
 
         </div>
@@ -167,35 +173,58 @@ watch(
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
                     v-model="school_number"
-                    @change="doFetchMealCourses(school_number)"
+                    @change="doFetchMealCourses()"
                 >
                   <option disabled value="">--filter by School--</option>
                   <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
                 </select>
               </div>
           </div>
+          <div class="col-3">
+            <div class="mb-2">
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="status"
+                  @change="doFetchMealCourses()"
+              >
+                <option disabled value="">--filter by Status--</option>
+                <option  value="ACTIVE">Active</option>
+                <option  value="INACTIVE">Inactive</option>
+              </select>
+            </div>
+          </div>
         </div>
 
 
-    <div class="ml-4 mb-3" v-if="mealCourseList?.count">
-      <small class="text-sm bg-[#1a7f37] text-white px-4 py-1  rounded-md">
-        Number of meal courses per day:  {{mealCourseList?.count}}
-      </small>
-    </div>
+        <div class="flex flex-grow justify-between">
+
+          <div class="ml-4 mb-3" v-if="mealCourseList?.count">
+            <small class="text-sm bg-[#1a7f37] text-white px-4 py-1  rounded-md">
+              Number of meal courses per day:  {{mealCourseList?.count}}
+            </small>
+          </div>
+
+          <div>
+            <button
+                v-if="school_number"
+                type="button"  class="btn btn-sm buttonStyle btn-warning ml-1 mr-4" @click="editThisData(mealCourseList)">
+              <i style="font-size: 12px;"  class="bi-pencil mr-2"></i>
+              Bulk Edit
+            </button>
+          </div>
+
+        </div>
+
 
         <table class="table table-hover caption-top table-sm text-sm border" style="font-size: 14px;">
           <thead>
           <tr>
             <th class="w-[30%] text-sm" scope="col">Code</th>
             <th class="text-sm" scope="col">Name</th>
+            <th class="text-sm" scope="col">Status</th>
            <th class="text-sm" scope="col">
              Action
-                <button
-                    v-if="school_number"
-                   type="button"  class="btn btn-sm buttonStyle btn-warning ml-1 mr-2" @click="editThisData(mealCourseList)">
-                  <i style="font-size: 12px;"  class="bi-pencil mr-2"></i>
-                    Bulk Edit
-                </button>
            </th>
           </tr>
           </thead>
@@ -203,17 +232,18 @@ watch(
           <tr v-for="(levelInfo, index) in mealCourseList?.courses" :key="index">
             <td> {{levelInfo.code}}</td>
             <td> {{levelInfo.name}}</td>
-              <td>
-                <td>
-          <button  @click="showEditCourseItemModal(levelInfo,levelInfo.name)">
-            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
-          </button>
-          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-          <button type="button" @click="deleteThisData(levelInfo.number,levelInfo.name)">
-            <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
-          </button>
-      </td>
-              </td>
+            <td>
+              <small class="text-white px-3 rounded-md py-[1px]" :class="levelInfo.status === 'ACTIVE' ? 'bg-green-800' : 'bg-red-800'">{{levelInfo.status === 'ACTIVE' ? 'Active' : 'Inactive'}}</small>
+            </td>
+            <td>
+                <button class="mr-2"  @click="showEditCourseItemModal(levelInfo)">
+                  <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+                </button>
+
+                <button type="button" @click="deleteThisData(levelInfo.number,levelInfo.name)">
+                  <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+                </button>
+            </td>
 
           </tr>
           </tbody>

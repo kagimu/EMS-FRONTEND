@@ -54,8 +54,10 @@ export const useMealStore = defineStore("Meal", () => {
             })
     }
 
-    async function fetchMealCourses(school_number) {
-        return await api.get("main/catering/meal-courses?school_number="+school_number)
+    async function fetchMealCourses(data) {
+            let school_number =     data?.school_number ?? ""
+            let status =    data?.status  ?? ""
+        return await api.get("main/catering/meal-courses?school_number="+school_number+"&status="+status)
             .then((response) => {
                 mealCoursesResponse.value = response.data
             })
