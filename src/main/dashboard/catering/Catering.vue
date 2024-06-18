@@ -16,12 +16,14 @@ import MealCoursesPerDay from "@/main/dashboard/catering/meals/MealCoursesPerDay
 
 import { useAbility } from '@casl/vue';
 import MealsCostProjections from "@/main/dashboard/catering/meals/MealsCostProjections.vue";
+import router from "@/config/router.js";
+
 const { can } = useAbility()
 
 const routerData = useRouter()
 
-const menuSelected = ref("menu-items")
-const route = routerData.currentRoute.value.query.s
+
+const menuSelected = routerData.currentRoute.value.query.m ?? 'units-of-measurement'
 
 
 const menu = ref([
@@ -88,7 +90,7 @@ const mealMenu = ref([
 ])
 
 const changeMenu = (value) => {
-  menuSelected.value = value
+  router.push({ name: "catering", query:{m:value} })
 }
 
 
@@ -130,22 +132,6 @@ const changeMenu = (value) => {
             </div>
           </div>
 
-
-
-          <!-- <div class="card mt-3">
-            <div class="card-body" style="padding: 0;">
-                <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-                  <div
-                    v-for="(item, idx) in Feedmenu" :key="idx"
-                    :class="item.value === menuSelected ? 'active' : ''"
-                    class="list-group-item list-group-item-action cursor-pointer"
-                    @click="changeMenu(item.value)">
-                  <small style="font-size:12px;">{{item.text}}</small>
-                </div>
-              </div>
-           
-            </div>
-          </div> -->
 
 
 

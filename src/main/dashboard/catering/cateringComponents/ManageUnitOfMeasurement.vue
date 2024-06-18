@@ -1,55 +1,52 @@
+<script setup>
+import UnitsOfMeasure from "@/main/dashboard/catering/cateringComponents/UnitsOfMeasure.vue";
+import NewUnitOfMeasurement from "@/main/dashboard/catering/cateringComponents/NewUnitOfMeasurement.vue";
+import router from "@/config/router.js";
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
+
+const selectedTab = router.currentRoute.value.query.type ?? 'unit'
+const menu = router.currentRoute.value.query.m
+
+const switchTabs = (data) => {
+  router.push({name: "catering", query: {m:menu,type: data}});
+}
+
+</script>
 <template>
     <div>
-        <div class="row">
-        <div class="col-12">
-          <div class="mt-3 ">
-            <div  class="ml-3">
-                <div>
-    <div>
-      <nav>
-        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <button class="nav-link navColor active" id="unit-tab" data-bs-toggle="tab" data-bs-target="#unit" type="button" role="tab" aria-controls="unit" aria-selected="false"><small>Unit Of Measurement</small></button>
-          <button class="nav-link navColor " id="new-unit-tab" data-bs-toggle="tab" data-bs-target="#new-unit" type="button" role="tab" aria-controls="new-unit" aria-selected="false"><small><i class="bi bi-plus"></i> New Unit Of Measure</small></button>
-        </div>
-      </nav>
-      <div class="tab-content" id="nav-tabContent">
-        <div v-if="can('view_unit_of_measure','manage')" class="tab-pane fade show active" id="unit" role="tabpanel" aria-labelledby="unit-tab" tabindex="0">
-        <UnitsOfMeasure></UnitsOfMeasure>
-        </div>
-        
-        <div v-if="can('create_unit_of_measure','manage')" class="tab-pane fade " id="new-unit" role="tabpanel" aria-labelledby="new-unit-tab" tabindex="0">
-            <NewUnitOfMeasurement></NewUnitOfMeasurement>
-        </div> 
-      </div>
 
-    </div>
-  </div>
-  
-  
-            </div>
+
+      <div class="flex border-b">
+        <div class="cursor-pointer text-sm" :class="selectedTab === 'unit' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('unit')">
+          <div class="py-2 px-3">
+            <i class="bi bi-box-arrow-in-right mr-1"></i>
+            Unit Of Measurement
           </div>
         </div>
-  
-  
+        <div class="cursor-pointer text-sm" :class="selectedTab === 'new-unit' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('new-unit')">
+          <div class="py-2 px-3">
+            <i class="bi bi-box-arrow-in-right mr-1"></i>
+            New Unit Of Measure
+          </div>
+        </div>
       </div>
+
+
+      <div v-if="selectedTab === 'unit'">
+        <div v-if="can('view_unit_of_measure','manage')">
+          <UnitsOfMeasure></UnitsOfMeasure>
+        </div>
+      </div>
+
+      <div v-if="selectedTab === 'new-unit'">
+       <div v-if="can('create_unit_of_measure','manage')">
+         <NewUnitOfMeasurement></NewUnitOfMeasurement>
+       </div>
+      </div>
+
+
+
     </div>
 </template>
-<script setup>
-  import FeedingSession from "@/main/dashboard/catering/cateringComponents/FeedingSession.vue";
-  import NewStock from "@/main/dashboard/catering/cateringComponents/NewStock.vue";
-  import FeedingSessionsItems from "@/main/dashboard/catering/cateringComponents/FeedingSessionsItems.vue";
-  import FoodMenuItem from "@/main/dashboard/catering/cateringComponents/FoodMenuItem.vue";
-  import NewMenuItem from "@/main/dashboard/catering/cateringComponents/NewMenuItem.vue";
-  import UnitsOfMeasure from "@/main/dashboard/catering/cateringComponents/UnitsOfMeasure.vue";
-  import NewUnitOfMeasurement from "@/main/dashboard/catering/cateringComponents/NewUnitOfMeasurement.vue";
-
-  import { useAbility } from '@casl/vue';
-
-  const { can } = useAbility()
-
-
-
-const goBack = () => {
-  window.history.back()
-}
-</script>
