@@ -73,7 +73,7 @@ const addMealCourse = () =>{
   if(props.mealCourseList.school_number){
 
     const coursesData = form.courses.map(course => ({
-    code:course.code,
+    code: parseInt(course.code),
     name: course.name,
     meal_course_number: course.number
   }))
@@ -81,16 +81,12 @@ const addMealCourse = () =>{
   // Prepare data object to be posted
   const data = {
     school_number:form.school_number,
-    count:form.count,
+    count: parseFloat(form.count),
     courses: coursesData
   }
-    if(!confirm("Sure want Edit !")){
-      loader.value = false
-  }else{
-    // alert(JSON.stringify(data))
+
     mealStore.updateMealCourse(data)
-    emit('schoolNumberChanged', form.school_number);
-  }
+    // emit('schoolNumberChanged', form.school_number);
   
   }else{
 

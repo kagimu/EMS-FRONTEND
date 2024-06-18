@@ -67,7 +67,7 @@ watch(
 
 //edit
 const dataList = ref([])
- const namee = ref(null)
+
 
   const editThisData = (num) => {
     mealEditMode.value = true
@@ -123,7 +123,7 @@ watch(
     async (data) => {
       if(data){
         editMealCourseItemDialog.value = false
-        mealStore.fetchMealCourses(recievedSchoolNumber.value )
+        await mealStore.fetchMealCourses(recievedSchoolNumber.value)
       }
     }
 )
@@ -135,7 +135,7 @@ watch(
   <div>
 
 
-    <AppModal :title="mealEditMode ? 'Edit Meal' + namee : 'Add Meal Course'" v-model="mealCourseDialog" lg >
+    <AppModal :title="mealEditMode ? 'Edit Meal' : 'Add Meal Course'" v-model="mealCourseDialog" lg >
       <new-meal-course :mealCourseList="mealCourseList" @schoolNumberChanged="handleSchoolNumberChanged"></new-meal-course>
     </AppModal>
 
@@ -188,11 +188,15 @@ watch(
           <tr>
             <th class="w-[30%] text-sm" scope="col">Code</th>
             <th class="text-sm" scope="col">Name</th>
-           <th class="text-sm" scope="col">Action  <button
-              type="button"  class="btn btn-sm buttonStyle btn-warning ml-1 mr-2" @click="editThisData(mealCourseList)">
-            <i style="font-size: 12px;"  class="bi-pencil mr-2"></i>
-           Bulk Edit
-          </button></th>
+           <th class="text-sm" scope="col">
+             Action
+                <button
+                    v-if="school_number"
+                   type="button"  class="btn btn-sm buttonStyle btn-warning ml-1 mr-2" @click="editThisData(mealCourseList)">
+                  <i style="font-size: 12px;"  class="bi-pencil mr-2"></i>
+                    Bulk Edit
+                </button>
+           </th>
           </tr>
           </thead>
           <tbody>
