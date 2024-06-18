@@ -38,7 +38,7 @@ const addGrade = () => {
     code :parseInt(form.code),
     number:props.gradeDataInfo.number
     }
-    alert(JSON.stringify(formData))
+    // alert(JSON.stringify(formData))
     assessmentStore.updateGrade(formData)
   }else{
   form.code = parseInt(form.code)
@@ -92,7 +92,7 @@ watch(
 <template>
     <div>
         <div class="modal-content">
-{{ gradeDataInfo.number }}
+<!-- {{ gradeDataInfo.number }} -->
       <div class="modal-body">
         <form @submit.prevent="addGrade()">
 
