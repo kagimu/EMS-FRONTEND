@@ -14,7 +14,7 @@ const routerData = useRouter()
 const buttonLoader = ref(false)
 const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
-
+const yesd = ref(null)
 onMounted(
     () =>{
       getGradeDataInfo()
@@ -29,6 +29,10 @@ const form = reactive({
   code: null,
   name:null,
 })
+
+const chan = () => {
+  yesd.value = "yes"
+}
 
 const addGrade = () => {
   buttonLoader.value = true
@@ -112,6 +116,16 @@ watch(
           <div class="text-[13px] text-[#505050]"> Name</div>
          <input v-model="form.name" type="text" class="form-control shadow-none" placeholder="F9, D1">
         </div>
+
+        <div class="mb-2">
+          <div class="text-[13px] text-[#505050]">   <input @change="chan" v-model="yesd" type="checkbox"> &nbsp; Requires Attachment    </div>
+        </div>
+
+        <div class="mb-2" v-if="yesd == 'yes'">
+          <div class="text-[13px] text-[#505050]">   Upload Attachment    </div>
+          <input  class="form-control" type="file">
+        </div>
+
      <div class="flex justify-content-end mt-4" style="width: 100%;">
             <button type="submit" class="btn btn-primary border-0 btn-sm">
                  <small><i class="bi bi-save"></i> submit</small>
