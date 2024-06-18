@@ -352,7 +352,7 @@ const clearFormData = () => {
 </div>
 
 
-<div v-if="menuForm.type==='ASSEMBLED'">
+<div v-if="(menuForm.type==='ASSEMBLED') && menuForm.campus_number">
     <div class="mx-auto">
 
       <div class="mt-5 text-[18px]">Assembled Items</div>
@@ -360,33 +360,42 @@ const clearFormData = () => {
         <!-- New Design -->
       <table class="table table-hover caption-top mt-4 table-sm table-striped">
           <thead>
-            <tr class="" style="padding: 0px;margin: 0px;font-size: 13px;">
+            <tr>
               <td>#</td>
               <td>Item</td>
-              <td>Quantity</td>
-              <td></td>
+              <td><div class="pl-4">Quantity</div></td>
+              <td><div class="pl-4">Action</div></td>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(menu, index) in menuItems" :key="index" >
               <td class="text-sm text-[#8a8888]">{{(index + 1)}}</td>
-              <td class="p-2">
+              <td>
                 <select v-model="menu.secondary_item_number" class="form-select form-control select-no-border border">
                   <option v-for="option in availableOptions(index)" :value="option.number">{{ option.name }}</option>
                 </select>
               </td>
 
-              <td class="p-2">
+              <td>
                 <input
                     v-model="menu.quantity"
                     class="form-control shadow-none ml-5"
                     maxlength="10"
                     placeholder="1.0"
                     type="text"
-                    style="width: 80px;"
                     @keypress="commons.numbersOnlyValidator($event)">
               </td>
-              <td><button v-if="index > 0" type="button" @click="removeMenuItem(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
+              <td>
+                <div  class="ml-5">
+                  <button
+                      v-if="index > 0"
+                      type="button"
+                      @click="removeMenuItem(index)">
+                    <i class="bi bi-x-lg" style="color:red"></i>
+                  </button>
+                </div>
+
+              </td>
             </tr>
           </tbody>
         </table>
