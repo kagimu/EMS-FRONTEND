@@ -8,6 +8,7 @@ import {useRouter} from "vue-router";
 
 const commons = useCommonsStore()
 const assessmentStore = useAssessmentStore()
+const requiresAttachment = ref(false)
 
 const  notificationStore  = useNotificationStore()
 const routerData = useRouter()
@@ -118,13 +119,15 @@ watch(
         </div>
 
         <div class="mb-2">
-          <div class="text-[13px] text-[#505050]">   <input @change="chan" v-model="yesd" type="checkbox"> &nbsp; Requires Attachment    </div>
-        </div>
+    <div class="text-[13px] text-[#505050]">
+      <input v-model="requiresAttachment" type="checkbox"> &nbsp; Requires Attachment
+    </div>
+  </div>
 
-        <div class="mb-2" v-if="yesd == 'yes'">
-          <div class="text-[13px] text-[#505050]">   Upload Attachment    </div>
-          <input  class="form-control" type="file">
-        </div>
+  <div class="mb-2" v-if="requiresAttachment">
+    <div class="text-[13px] text-[#505050]">Upload Attachment</div>
+    <input class="form-control" type="file">
+  </div>
 
      <div class="flex justify-content-end mt-4" style="width: 100%;">
             <button type="submit" class="btn btn-primary border-0 btn-sm">
