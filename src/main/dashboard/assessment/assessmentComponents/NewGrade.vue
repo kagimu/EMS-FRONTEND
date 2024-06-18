@@ -98,7 +98,7 @@ watch(
 
 
           <div class="mb-2">
-            <div class="text-[13px] text-[#505050]"> Code</div>
+            <div class="text-[13px] text-[#505050]"> Sorting Code</div>
             <input
                 @keypress="commons.codeValidator($event)"
                 maxlength="10"

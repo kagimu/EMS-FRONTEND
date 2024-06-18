@@ -20,6 +20,7 @@ const namee = ref(null)
 const addGrade  = () => {
     showGradeModal.value = true
     editModel.value = false
+  gradeDataInfo.value = []
 }
 
 onMounted(
