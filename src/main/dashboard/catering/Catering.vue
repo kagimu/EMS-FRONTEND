@@ -147,17 +147,20 @@ const changeMenu = (value) => {
   
               <div>
   
+
+                  <div v-if="menuSelected === 'units-of-measurement'">
+                    <ManageUnitOfMeasurement></ManageUnitOfMeasurement>
+                  </div>
+
                   <div v-if="menuSelected === 'menu-items'">
                     <ManageMenuItem></ManageMenuItem>
                   </div>
-                  <div v-if="menuSelected === 'units-of-measurement'">
-                 <ManageUnitOfMeasurement></ManageUnitOfMeasurement>
-                  </div>
+
                   <div v-if="menuSelected === 'feeding-group'">
-                 <ManageFeedingGroup></ManageFeedingGroup>
+                    <ManageFeedingGroup></ManageFeedingGroup>
                   </div>
                   <div v-if="menuSelected === 'feeding-session'">
-                      <ManageFeedingSessions></ManageFeedingSessions>
+                    <ManageFeedingSessions></ManageFeedingSessions>
                   </div>
                   <div v-if="menuSelected === 'manage-stock'">
                     <ManageStock></ManageStock>
@@ -168,7 +171,7 @@ const changeMenu = (value) => {
                   </div>
 
                   <div v-if="menuSelected === 'feeding'">
-                <FeedingUsers></FeedingUsers>
+                    <FeedingUsers></FeedingUsers>
                   </div>
 
 
@@ -186,8 +189,9 @@ const changeMenu = (value) => {
                 <div v-if="menuSelected === 'meal-calendar'">
                  <MealCalendar></MealCalendar>
                 </div>
+
                 <div v-if="menuSelected === 'meals-cost-projections'">
-                 <meals-cost-projections></meals-cost-projections>
+                    <meals-cost-projections></meals-cost-projections>
                 </div>
               </div>
   

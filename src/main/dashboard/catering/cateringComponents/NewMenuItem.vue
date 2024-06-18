@@ -243,7 +243,9 @@ const clearFormData = () => {
 
 
 <form @submit.prevent="addMenuItem">
-  <div class="row">
+  <div>
+
+  <div class="row px-3 mt-5">
     <div class="col-lg-6">
 
       <div class="mb-2">
@@ -352,17 +354,13 @@ const clearFormData = () => {
 
 
 
-<div>
-</div>
-
-
 <div v-if="(menuForm.type==='ASSEMBLED') && menuForm.campus_number">
     <div class="mx-auto">
 
-      <div class="mt-5 text-[18px]">Assembled Items</div>
+      <div class="mt-4 text-[15px] ml-3">Assembled Items</div>
 
         <!-- New Design -->
-      <table class="table table-hover caption-top mt-4 table-sm table-striped">
+      <table class="table table-hover caption-top  border-t table-sm table-striped">
           <thead>
             <tr>
               <td>#</td>
@@ -404,13 +402,20 @@ const clearFormData = () => {
           </tbody>
         </table>
 
-      <button class="btn btn-primary btn-sm textColor" @click.prevent="addItem"><small>ADD ANOTHER ITEM</small></button>
+          <div>
+            <button
+                class="btn btn-primary btn-sm textColor ml-3"
+                @click.prevent="addItem">
+              <small>ADD ANOTHER ITEM</small>
+            </button>
+          </div>
+
 
     </div>
 </div>
 
 
-<div class="mt-4 flex justify-between">
+<div class="mt-4 mb-5 flex justify-between">
   &nbsp;
     <button
         class="btn btn-primary btn-sm float-end mb-2 mr-4"
@@ -422,6 +427,9 @@ const clearFormData = () => {
             </div>
     </button>
 </div>
+
+  </div>
+
 </form>
     </div>
 </template>
