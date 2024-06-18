@@ -11,6 +11,7 @@ const  mealStore  = useMealStore()
 const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
 
+const mealCourseData = ref({})
 const mealCourseList = ref([])
 const mealEditMode = ref(false)
 const mealCourseDialog = ref(false)
@@ -71,17 +72,13 @@ watch(
     }
 )
 
-//edit
-const dataList = ref([])
 
 
-  const editThisData = (num) => {
+
+  const editThisData = () => {
     mealEditMode.value = true
-    mealCourseDialog.value=true
-    dataList.value = num
-    namee.value = num.name
-    showingModal.value = true
-    mealCourseList.value=num
+    mealCourseDialog.value = true
+    mealCourseData.value = {...mealCourseList.value}
   }
 
 
@@ -93,6 +90,7 @@ if(!confirm("Are you sure, you want to delete: " + name)){
 }
 
 const receivedSchoolNumber = ref('');
+
 const handleSchoolNumberChanged = (schoolNumber) => {
   receivedSchoolNumber.value = schoolNumber;
 }
@@ -142,7 +140,7 @@ watch(
 
 
     <AppModal :title="mealEditMode ? 'Edit Meal' : 'Add Meal Course'" v-model="mealCourseDialog" lg >
-      <new-meal-course :mealCourseList="mealCourseList" @schoolNumberChanged="handleSchoolNumberChanged"></new-meal-course>
+      <new-meal-course :mealCourseData="mealCourseData" @schoolNumberChanged="handleSchoolNumberChanged"></new-meal-course>
     </AppModal>
 
   
@@ -208,7 +206,7 @@ watch(
           <div>
             <button
                 v-if="school_number"
-                type="button"  class="btn btn-sm buttonStyle btn-warning ml-1 mr-4" @click="editThisData(mealCourseList)">
+                type="button"  class="btn btn-sm buttonStyle btn-warning ml-1 mr-4" @click="editThisData()">
               <i style="font-size: 12px;"  class="bi-pencil mr-2"></i>
               Bulk Edit
             </button>

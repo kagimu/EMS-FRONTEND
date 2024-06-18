@@ -1,17 +1,15 @@
 <script setup>
 
-import {onMounted, reactive, ref, watch,defineEmits } from "vue";
-import {useRouter} from "vue-router";
+import {onMounted, reactive, ref, watch } from "vue";
 import useCommonsStore from "@/composables/useCommons.js";
 import useNotificationStore from "@/composables/useNotification.js";
-import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
 const classError = ref(null)
-const name = ref(null)
+
 const loader = ref(false)
-const routerData = useRouter()
+
 
 const  mealStore  = useMealStore()
 const schoolStore = useSchoolStore()
@@ -20,10 +18,10 @@ const  notificationStore  = useNotificationStore()
 const schoolsList = ref( [])
 
 
-const emit = defineEmits(['schoolNumberChanged'])
+
 
 const props = defineProps({
-  mealCourseList:{}
+  mealCourseData:{}
 })
 
 const form = reactive({
@@ -46,7 +44,7 @@ onMounted(
 )
 
 watch(
-    () => props.mealCourseList,
+    () => props.mealCourseData,
     async (data) => {
       if(data){
         filterMealCourseDraft()
@@ -55,8 +53,8 @@ watch(
 )
 
 const filterMealCourseDraft = () => {
-  if(props.mealCourseList){
-    let draft = props.mealCourseList
+  if(props.mealCourseData){
+    let draft = {...props.mealCourseData}
    if(draft.courses){
      form.school_number = draft.school_number
      form.count = draft.count
@@ -70,24 +68,22 @@ const filterMealCourseDraft = () => {
 const addMealCourse = () =>{
   loader.value = true
 
-  if(props.mealCourseList.school_number){
+  if(form.school_number){
 
-    const coursesData = form.courses.map(course => ({
-    code: parseInt(course.code),
-    name: course.name,
-    meal_course_number: course.number
-  }))
+  form.courses.forEach(course => {
+    course.code = parseInt(course.code)
+    course.meal_course_number = course.number
+  })
 
-  // Prepare data object to be posted
+
   const data = {
     school_number:form.school_number,
     count: parseFloat(form.count),
-    courses: coursesData
+    courses: form.courses
   }
 
     mealStore.updateMealCourse(data)
-    // emit('schoolNumberChanged', form.school_number);
-  
+
   }else{
 
   form.count = parseInt(form.count)
@@ -128,8 +124,7 @@ watch(
         loader.value = false
         notificationStore.errorToast("Error",data.message)
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -157,7 +152,7 @@ watch(
 </script>
 <template>
   <div>
-<!-- {{ mealCourseList }} -->
+
     <form @submit.prevent="addMealCourse">
 
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
