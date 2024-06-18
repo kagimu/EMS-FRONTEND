@@ -6,9 +6,7 @@
     <NewFeedingSession :groupData="dataList"></NewFeedingSession>
     </AppModal>
 
-    <!-- <AppModal :title="editModel ? 'Edit ' + namee:'New Feeding Group'" v-model="showingModal" lg>
-    <NewFeedingGroup :groupData="dataList"></NewFeedingGroup>
-    </AppModal> -->
+
 
                
     <!-- end  -->
@@ -23,7 +21,7 @@
                  <div class="">
                     <div class="row">
                     <div class="col-lg-8">
-                    <h5 style="font-size: 14px;margin-top: 2px;">Feeding Sessions </h5>
+                    <h5 style="font-size: 14px;margin-top: 2px;">Feeding Packs </h5>
                     </div>
     
                 <div class="col-lg-4">

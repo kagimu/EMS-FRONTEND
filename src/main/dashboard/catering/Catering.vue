@@ -37,7 +37,7 @@ const menu = ref([
     value:"menu-items"
   },
   {
-    text:"Feeding Session",
+    text:"Feeding Packs",
     value:"feeding-session"
   },
   {
@@ -48,17 +48,6 @@ const menu = ref([
 
 ])
 
-const Feedmenu = ref([
-  // {
-  //   text:"Feeding User Group",
-  //   value:"manage-feeding-users"
-  // },
-  // {
-  //   text:"Capturing Meals",
-  //   value:"feeding",
-  //   action:"record_meals"
-  // },
-])
 
 const mealMenu = ref([
   {
