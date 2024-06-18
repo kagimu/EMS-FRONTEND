@@ -63,7 +63,7 @@
       grading_standard_number:null,
       study_period_number:null,
       scheduled_on:null,
-      comment_status:null
+      require_comment:null
     })
 
 
@@ -398,11 +398,10 @@
                  <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
-                    v-model="form.comment_status"
+                    v-model="form.require_comment"
                     >
-                    <option value="Mandatory">Mandatory</option>
-                    <option value="Optional">Optional</option>
-                    
+                    <option value="YES">Mandatory</option>
+                    <option value="NO">Optional</option>
                  </select>
               </div>
 
