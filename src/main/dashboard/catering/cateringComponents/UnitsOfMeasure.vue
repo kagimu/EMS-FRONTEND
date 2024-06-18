@@ -3,13 +3,13 @@
 
 
   
-  <AppModal title="Add Unit of Measure" v-model="showUnitModal" lg>
-    <NewUnitOfMeasurement></NewUnitOfMeasurement>
+    <AppModal title="Add Unit of Measure" v-model="showUnitModal" lg>
+      <NewUnitOfMeasurement></NewUnitOfMeasurement>
     </AppModal>
 
       
-  <AppModal :title="'Edit' +' '+ namee" v-model="showEditModal" lg>
-    <EditUnitsOfMeasure :unitData="unitOfMeasureList"></EditUnitsOfMeasure>
+    <AppModal :title="'Edit' +' '+ namee" v-model="showEditModal" lg>
+      <EditUnitsOfMeasure :unitData="unitOfMeasureList"></EditUnitsOfMeasure>
     </AppModal>
 
     <!-- end  -->
@@ -48,16 +48,15 @@
         <tr>
         <th>code</th>
         <th>Name</th>
+        <th>Abbreviation</th>
         <th>Action</th>
         </tr>
-    <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-    {{errorMessage}}
-    </div>
     </thead>
     <tbody>
       <tr v-for="(list, index) in unitMeasurementData" :key="index">
-      <td>{{ list.code }}</td>
-      <td>{{ list.name }}</td>
+      <td>{{ list?.code }}</td>
+      <td>{{ list?.name }}</td>
+      <td>{{ list?.abbreviation }}</td>
       <td>
         <button @click="editUnit(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>

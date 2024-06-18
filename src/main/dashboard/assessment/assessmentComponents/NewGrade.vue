@@ -70,7 +70,7 @@ const addGrade = () => {
   form.school_number = schoolNumber
   if(props.gradeDataInfo.number){
     form.number = props.gradeDataInfo.number
-    assessmentStore.updateGrade(formData)
+    assessmentStore.updateGrade(form)
   }else{
   buttonLoader.value = true
   assessmentStore.createGrade(form)

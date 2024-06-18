@@ -93,7 +93,7 @@ const assess = ref([
     router_name:"grade-standards"
   },
   {
-    name:"Measures Of Assessment",
+    name:"Formats Of Assessment",
     router_name:"grades"
   },
   {

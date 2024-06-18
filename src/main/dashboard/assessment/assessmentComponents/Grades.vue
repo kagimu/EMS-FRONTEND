@@ -91,7 +91,7 @@ watch(
 <template>
     <div>
 
-      <AppModal :title="editModel ? 'Edit Grade ' + namee : 'Add Grade'  " v-model="showGradeModal" lg>
+      <AppModal :title="editModel ? 'Edit Format Of Assessment ' : 'Add Format Of Assessment'  " v-model="showGradeModal" lg>
         <NewGrade :gradeDataInfo="gradeDataInfo"></NewGrade>
       </AppModal>
 
@@ -107,7 +107,7 @@ watch(
                     type="button"
                     class="btn btn-primary btn-sm">
                   <i class="bi bi-plus"></i>
-                  New Measure Of Assessment
+                  New Format Of Assessment
                 </button>
             </div>
            </div>
