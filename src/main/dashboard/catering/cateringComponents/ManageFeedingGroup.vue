@@ -1,15 +1,66 @@
+<script setup>
+import FeedingGroup from "@/main/dashboard/catering/cateringComponents/FeedingGroup.vue";
+import FeedingGroupUsersList from "@/main/dashboard/catering/cateringComponents/FeedingGroupUsersList.vue";
+import FeedingGroupUsers from "@/main/dashboard/catering/cateringComponents/FeedingGroupUsers.vue";
+import router from "@/config/router.js";
+
+const selectedTab = router.currentRoute.value.query.type ?? 'feeding-group'
+const menu = router.currentRoute.value.query.m
+
+const switchTabs = (data) => {
+  router.push({name: "catering", query: {m:menu,type: data}});
+}
+
+
+
+</script>
 <template>
     <div>
-        
-   
+
+
+      <div class="flex border-b">
+        <div class="cursor-pointer text-sm" :class="selectedTab === 'feeding-group' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('feeding-group')">
+          <div class="py-2 px-3">
+            <i class="bi bi-box-arrow-in-right mr-1"></i>
+            Feeding Group
+          </div>
+        </div>
+        <div class="cursor-pointer text-sm" :class="selectedTab === 'add-users-to-feeding-group' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('add-users-to-feeding-group')">
+          <div class="py-2 px-3">
+            <i class="bi bi-box-arrow-in-right mr-1"></i>
+            Add Users To Feeding Group
+          </div>
+        </div>
+
+        <div class="cursor-pointer text-sm" :class="selectedTab === 'group-user-list' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('group-user-list')">
+          <div class="py-2 px-3">
+            <i class="bi bi-box-arrow-in-right mr-1"></i>
+            Group User List
+          </div>
+        </div>
+      </div>
+
+
+      <div v-if="selectedTab === 'feeding-group'">
+        <FeedingGroup></FeedingGroup>
+      </div>
+
+      <div v-if="selectedTab === 'add-users-to-feeding-group'">
+        <FeedingGroupUsers></FeedingGroupUsers>
+      </div>
+
+      <div v-if="selectedTab === 'group-user-list'">
+        <FeedingGroupUsersList></FeedingGroupUsersList>
+      </div>
+
                 
 
-                <div>
+<!--                <div>
     <div class="m-1">
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <button class="nav-link navColor active" id="class-list-tab" data-bs-toggle="tab" data-bs-target="#class-list" type="button" role="tab" aria-controls="class-list" aria-selected="false"><small>Feeding Group</small></button>
-          <!-- <button class="nav-link navColor" id="class-attendance-tab" data-bs-toggle="tab" data-bs-target="#class-attendance" type="button" role="tab" aria-controls="class-attendance" aria-selected="false"><small><i class="bi bi-plus"></i>Feeding Groups Per Day</small></button> -->
+          &lt;!&ndash; <button class="nav-link navColor" id="class-attendance-tab" data-bs-toggle="tab" data-bs-target="#class-attendance" type="button" role="tab" aria-controls="class-attendance" aria-selected="false"><small><i class="bi bi-plus"></i>Feeding Groups Per Day</small></button> &ndash;&gt;
           <button class="nav-link navColor" id="feedg-tab" data-bs-toggle="tab" data-bs-target="#feedg" type="button" role="tab" aria-controls="feedg" aria-selected="false"><small>Add Users To Feeding Group</small></button>
           <button class="nav-link navColor" id="user-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="false"><small>Group User List</small></button>
 
@@ -32,24 +83,9 @@
 
     </div>
   </div>
-  
+  -->
   
             </div>
         
     
 </template>
-<script setup>
-  import FeedingSession from "@/main/dashboard/catering/cateringComponents/FeedingSession.vue";
-  import NewStock from "@/main/dashboard/catering/cateringComponents/NewStock.vue";
-  import FeedingSessionsItems from "@/main/dashboard/catering/cateringComponents/FeedingSessionsItems.vue";
-  import FeedingGroup from "@/main/dashboard/catering/cateringComponents/FeedingGroup.vue";
-  import FeedingGroupsPerDay from "@/main/dashboard/catering/cateringComponents/FeedingGroupsPerDay.vue";
-  import FeedingGroupUsersList from "@/main/dashboard/catering/cateringComponents/FeedingGroupUsersList.vue";
-  import FeedingGroupUsers from "@/main/dashboard/catering/cateringComponents/FeedingGroupUsers.vue";
-
-
-
-const goBack = () => {
-  window.history.back()
-}
-</script>

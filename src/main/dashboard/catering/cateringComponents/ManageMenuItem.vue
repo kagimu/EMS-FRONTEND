@@ -37,7 +37,6 @@ const switchTabs = (data) => {
               New Item
           </div>
         </div>
-
       </div>
 
 

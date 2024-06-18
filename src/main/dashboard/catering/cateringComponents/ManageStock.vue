@@ -1,6 +1,48 @@
+<script setup>
+import NewStock from "@/main/dashboard/catering/cateringComponents/NewStock.vue";
+import Stock from "@/main/dashboard/catering/cateringComponents/Stock.vue";
+import router from "@/config/router.js";
+
+
+const selectedTab = router.currentRoute.value.query.type ?? 'stock'
+const menu = router.currentRoute.value.query.m
+
+const switchTabs = (data) => {
+  router.push({name: "catering", query: {m:menu,type: data}});
+}
+
+
+</script>
 <template>
     <div>
-        <div class="row">
+
+
+      <div class="flex border-b">
+        <div class="cursor-pointer text-sm" :class="selectedTab === 'stock' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('stock')">
+          <div class="py-2 px-3">
+            <i class="bi bi-box-arrow-in-right mr-1"></i>
+            Stock
+          </div>
+        </div>
+        <div class="cursor-pointer text-sm" :class="selectedTab === 'new-stock' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('new-stock')">
+          <div class="py-2 px-3">
+            <i class="bi bi-box-arrow-in-right mr-1"></i>
+            New Stock
+          </div>
+        </div>
+      </div>
+
+
+      <div v-if="selectedTab === 'stock'">
+        <Stock></Stock>
+      </div>
+
+      <div v-if="selectedTab === 'new-stock'">
+        <NewStock></NewStock>
+      </div>
+
+
+<!--        <div class="row">
         <div class="col-12">
           <div class="mt-3 ">
             <div class="" style="padding: 0;">
@@ -21,7 +63,7 @@
         </div>
         <div class="tab-pane fade" id="class-attendance" role="tabpanel" aria-labelledby="class-attendance-tab" tabindex="0">
        <NewStock></NewStock>
-        </div> 
+        </div>
       </div>
 
     </div>
@@ -33,17 +75,6 @@
         </div>
   
   
-      </div>
+      </div>-->
     </div>
 </template>
-<script setup>
-  import FeedingSession from "@/main/dashboard/catering/cateringComponents/FeedingSession.vue";
-  import NewStock from "@/main/dashboard/catering/cateringComponents/NewStock.vue";
-  import FeedingSessionsItems from "@/main/dashboard/catering/cateringComponents/FeedingSessionsItems.vue";
-  import Stock from "@/main/dashboard/catering/cateringComponents/Stock.vue";
-
-
-const goBack = () => {
-  window.history.back()
-}
-</script>
