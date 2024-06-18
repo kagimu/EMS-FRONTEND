@@ -295,7 +295,7 @@ watch(
                         <th>Qty</th>
                         <th>School</th>
                         <th>Parts</th>
-                        <th>#</th>
+                        <!-- <th>#</th> -->
                       </tr>
                       <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
                         {{errorMessage}}
@@ -322,13 +322,13 @@ watch(
                           </span>
                         </td>
                         <td   v-if="list.type==='ASSEMBLED'">
-                          <button @click="showUpdateDialog(list)" >
+                          <!-- <button @click="showUpdateDialog(list)" >
                           <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
                           </button>
                           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
                           <button type="button">
                           <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
-                          </button>
+                          </button> -->
                         </td>
                       </tr>
                     </tbody>
