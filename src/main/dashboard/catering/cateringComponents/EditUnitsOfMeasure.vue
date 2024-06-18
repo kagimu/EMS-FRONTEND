@@ -87,7 +87,7 @@ const editUnitMeasurement = (number) => {
     abbreviation:form.abbreviation,
     menu_number:props.unitData.number
     })
-    alert(JSON.stringify(myData))
+   // alert(JSON.stringify(myData))
     buttonLoader.value=true
     cateringStore.updateUnitOfMeasure(myData)
 }
