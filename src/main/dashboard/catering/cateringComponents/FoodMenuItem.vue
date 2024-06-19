@@ -13,6 +13,7 @@ import AppModal from "@/components/AppModal.vue";
 const showingModal = ref(false)
 const isLoading = ref(true);
 const loading = ref(true)
+const editModal = ref(true)
 
 const showModal = () => {
     showingModal.value = true
@@ -100,11 +101,6 @@ const fetchFoodMenuItem = (data) => {
     async (data) => {
         fetchFoodMenuItem(data)
             isLoading.value = false;
-        // if(data && data.data) {
-        //      menuItemData.value = data.data
-        //     fetchFoodMenuItem(data)
-        //     isLoading.value = false;
-        // }
     }
 )
 
@@ -116,8 +112,8 @@ const filterByCampus = () =>{
 const menuItemData=ref([])
 
 
-const showUpdateDialog = (a) => {
-    menuItemsinfoData.value = a
+const showUpdateDialog = (menuList) => {
+    menuItemsinfoData.value = menuList
     showingModal.value = true
     thisDialog.value=false
 }
@@ -152,13 +148,6 @@ watch(
     {deep: true}
 )
 
-// watch(
-//     () => cateringStore.filterMenuResponse,
-//     async (data) => {
-//         menuItemData.value = data.data
-//     },
-//     {deep: true}
-// )
 
 watch(
     () => cateringStore.errorMessage,
@@ -212,34 +201,10 @@ if(!confirm("Are you sure, you want to delete: " + name)){
 </script>
 <template>
     <div>
- <!-- schedule interview -->
-<div id="rolesDialogg" :class="{ show:thisDialog }" aria-labelledby="offcanvasRightLabel" class="offcanvas offcanvas-end" tabindex="-1">
-<div class="offcanvas-header">
-    <h5 id="offcanvasRightLabel" class="offcanvas-title"><small>Menu Item</small></h5>
-    <button aria-label="Close" class="btn-close"  data-bs-dismiss="offcanvas" type="button" @click="closeDialog"></button>
-</div>
-<div class="offcanvas-body">
-    <NewMenuItem></NewMenuItem>
-</div>
-</div>
-  <!-- wnd  -->
-
-   <!-- schedule interview -->
-<div id="updateMenuDialog" :class="{ show:updateMenuDialog }" aria-labelledby="offcanvasRightLabel" class="offcanvas offcanvas-end" tabindex="-1">
-<div class="offcanvas-header">
-    <h5 id="offcanvasRightLabel" class="offcanvas-title"><small>Update Menu Item</small></h5>
-    <button aria-label="Close" class="btn-close"  data-bs-dismiss="offcanvas" type="button" @click="closeDialog"></button>
-</div>
-<div class="offcanvas-body">
-    <updateFoodMenuItem :menuItemsinfoData="menuItemsinfoData"></updateFoodMenuItem>
-</div>
-</div>
 
 <AppModal v-model="showingModal" lg title="Update Menu Item">
-  <updateFoodMenuItem :menuItemsinfoData="menuItemsinfoData"></updateFoodMenuItem>
+    <NewMenuItem :menuItemsinfoData="menuItemsinfoData"></NewMenuItem>
 </AppModal>
-
-               
 
 
   <!-- wnd  -->
@@ -344,24 +309,6 @@ if(!confirm("Are you sure, you want to delete: " + name)){
       <td>{{ list.school_name }}</td>
       <td>{{ list.type }}&nbsp;
        <span  v-if="list.type==='ASSEMBLED'">
-        <!-- <button aria-controls="rolesDialog" data-bs-target="#updateRoleModel" data-bs-toggle="modal" type="button">
-            <i  class="bi bi-eye" style="color:rgb(3, 85, 148)" @click="showItems(list.number)"></i>
-          </button> -->
-          <!-- <button  aria-controls="rolesDialog" data-bs-target="#updateRoleModel" data-bs-toggle="modal" type="button">
-            <i class="bi bi-dash" style="color:rgb(3, 85, 148)" @click="hideItems"></i>
-          </button> -->
-          <!-- <div  v-if="sta===list.number">
-          <div v-for="(listD,indx) in menuItemDataParts" :key="indx">
-                <div v-if="loading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-                </div>
-            <ul v-if="loading===false">
-              <li  v-for="(ldData,idx) in listD.parts" :key="idx">[{{ldData.code}}] {{ ldData.name }} - {{ ldData.quantity }}{{ ldData.unit_of_measure }}</li>
-            </ul>
-          </div>
-        </div> -->
         <ul class="list-group">
           <li class="list-group-item"  v-for="(ldData,idx) in list.parts" :key="idx">[{{ldData.code}}] {{ ldData.name }} - {{ ldData.quantity }} {{ ldData.unit_of_measure }}
                         <i class="bi bi-x" style="color: red;"></i>

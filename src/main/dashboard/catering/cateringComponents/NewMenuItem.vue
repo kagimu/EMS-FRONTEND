@@ -21,6 +21,12 @@ const campusStore = useCampusStore()
 const feedingSessionGroupData = ref([])
 const menuOptions = ref([])
 const menuItems = ref([])
+
+const props = defineProps({
+  menuItemsinfoData:{}
+})
+
+
 const form = reactive({
   primary_item_number:null
 })
@@ -243,6 +249,7 @@ const clearFormData = () => {
 
 
 <form @submit.prevent="addMenuItem">
+  {{ menuItemsinfoData }}
   <div class="row">
     <div class="col-lg-6">
 

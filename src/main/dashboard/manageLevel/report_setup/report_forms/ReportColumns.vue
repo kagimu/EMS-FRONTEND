@@ -33,6 +33,9 @@ const campusClassList  = ref([])
 const reportSettingsList  = ref([])
 
 
+const namee = ref(null)
+const reportColumnsListD = ref([])
+const editModel = ref(false)
 
 onMounted(
     async () => {
@@ -93,6 +96,7 @@ watch(
 )
 
 const addReportColumn = () => {
+  editModel.value = ref(false)
   showReportColumnsModal.value = true
 }
 
@@ -115,14 +119,32 @@ watch(
       }
     }
 )
+
+
+const editThisData = (List) => {
+  editModel.value = true
+  reportColumnsListD.value = List
+  namee.value = List.name
+  showReportColumnsModal.value = true
+}
+
+const deleteThisData = (id,name) => {
+  if(!confirm("Are you sure, you want to delete: " + name)){
+    return
+  }else{
+
+  }
+
+}
+
 </script>
 
 <template>
   <div>
 
 
-    <AppModal title="Add Report Columns" v-model="showReportColumnsModal" lg>
-      <new-report-column></new-report-column>
+    <AppModal :title="editModel ? 'Edit ' + namee:'Add Report Columns'"   v-model="showReportColumnsModal" lg>
+      <new-report-column :reportColumnsListD="reportColumnsListD"></new-report-column>
     </AppModal>
 
 
@@ -199,17 +221,8 @@ watch(
             <td> {{levelInfo.percentage_share}}</td>
             <td> {{levelInfo.report_setting_name}}</td>
             <td>
-<!--              <div>
-                <i
-                    style="font-size: 13px;"
-                    data-bs-toggle="modal" data-bs-target="#levelModal"
-                    class="bi-pencil mr-2 cursor-pointer" @click="editLevel(levelInfo)"></i>
-                <i
-                    style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLevel(levelInfo, index)"></i>
-                <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>-->
+              <button  class="link-primary" style="border-width: 0px;text-decoration: none;" @click="editThisData(levelInfo)"><small><i  style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small></button>
+              <button @click="deleteThisData(levelInfo.number,levelInfo.name)"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>
             </td>
           </tr>
           </tbody>

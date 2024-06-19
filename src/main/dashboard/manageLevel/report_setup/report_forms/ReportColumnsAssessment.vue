@@ -231,6 +231,15 @@ watch (
     }
 )
 
+const deleteThisData = (id,assesmentArea,assesmentMet,rcolumn) => {
+  if(!confirm("Are you sure, you want to delete: " + assesmentArea + " - " + assesmentMet + " - " + rcolumn)){
+    return
+  }else{
+
+  }
+
+}
+
 </script>
 
 <template>
@@ -392,17 +401,7 @@ watch (
             <td> {{levelInfo.assessment_metric}}</td>
             <td> {{levelInfo.report_column}}</td>
             <td>
-              <div>
-                <i
-                    style="font-size: 13px;"
-                    data-bs-toggle="modal" data-bs-target="#levelModal"
-                    class="bi-pencil mr-2 cursor-pointer" @click="editLevel(levelInfo)"></i>
-                <i
-                    style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLevel(levelInfo, index)"></i>
-                <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>
+              <button @click="deleteThisData(levelInfo.number,levelInfo.assessment_area,levelInfo.report_column,levelInfo.assessment_area)"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>
             </td>
           </tr>
           </tbody>

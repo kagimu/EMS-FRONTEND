@@ -140,54 +140,14 @@ watch(
         <div class="col-12">
           <div class="">
             <div class="" style="padding: 0;">
-    <div class="container mt-1">
-        <div class="row mt-3 mb-2 mx-auto">
-          <div class="alert alert-danger p-1 mt-3 ml-2 mr-2 "  style="font-size:13px">Select a User or Users and Feeding Group  Please ! ..</div>
-
-          <div class="col-3">
-            <div class="mb-2">
-              <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm"
-                  v-model="school_number"
-                  @change="doFeedingUsers(school_number)"
-              >
-                <option disabled value="">-Select School--</option>
-                <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col-3">
-          <div class="mb-2">
-            <select
-                style="box-shadow: none;"
-                class="form-select form-select-sm"
-                v-model="campus_number"
-            >
-              <option disabled value="">--Select campus--</option>
-              <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-              </option>
-            </select>
-          </div>
-          </div>  
-          
-          <div class="col-3">
-            <select @change="addFeedingGroupUsers()" class="form-select form-control shadow-none" v-model="formData.feeding_group_number" required>
-    <option value="" disabled>-select Feeding Group</option>
-    <option v-for="(list,index) in feedingGroupData" :key="index" :value="list.number">{{list.name  }}</option>
-</select>
-          </div>
-        </div>
-
-
-
+    <div class="container mt-3">
+      <div class="alert alert-primary p-1 mt-3 ml-2 mr-2 "  style="font-size:13px">Select a User or Users and Feeding Group  Please ! ..</div>
         <div class="row">
-<div class="col-lg-12">
+<div class="col-lg-8">
       <table
         id="datatable"
         class="table table-striped"
-        style="font-size: 14px !important;"
+        style="font-size: 13px !important;"
       >
       <thead >
           <tr>
@@ -195,7 +155,7 @@ watch(
             <th>#</th>
             <th>Name</th>
             <th>Gender</th>   
-            <th>Action</th>
+            <th>#</th>
           </tr>
     <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
       {{errorMessage}}
@@ -228,6 +188,58 @@ watch(
       </table>
     </div>
 
+    <div class="col-lg-4">
+      <div class="row mt-3 mb-2 mx-auto">
+          <form @submit.prevent="addFeedingGroupUsers">
+    
+            <div class="mb-2">
+              <label class="textColor">School</label>
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="school_number"
+                  @change="doFeedingUsers(school_number)"
+              >
+                <option disabled value="">-Select</option>
+                <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+              </select>
+            </div>
+         
+       
+          <div class="mb-2">
+            <label  class="textColor">Campus</label>
+            <select
+                style="box-shadow: none;"
+                class="form-select form-select-sm"
+                v-model="campus_number"
+            >
+              <option disabled value="">-Select</option>
+              <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+              </option>
+            </select>
+          </div>
+         
+          
+          <div class="mb-2">
+            <label  class="textColor">Feeding Group</label>
+            <select @change="" class="form-select form-control shadow-none" v-model="formData.feeding_group_number" required>
+    <option value="" disabled>-select </option>
+    <option v-for="(list,index) in feedingGroupData" :key="index" :value="list.number">{{list.name  }}</option>
+</select>
+          </div>
+
+          <div class="mb-2">
+            <button style="float: right;" type="submit" class="btn btn-primary btn-sm mb-2"><small>Submit</small>
+              <div v-if="buttonLoader" class="spinner-border spinner-border-sm" role="status" >
+                <span class="visually-hidden">Loading...</span>
+            </div></button>
+            
+          </div>
+
+        </form>
+        </div>
+    </div>
+
 
 </div>
     </div>
@@ -240,10 +252,3 @@ watch(
     </div>
     </template>
     
-
-  
-  
-    
-    <style scoped>
-  
-    </style>

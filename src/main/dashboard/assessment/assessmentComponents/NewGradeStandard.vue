@@ -24,6 +24,9 @@ const campusClassList = ref(null)
 const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 
+const props = defineProps({
+  gradeDataList:{}
+})
 
 const form = reactive({
   code: null,
@@ -122,6 +125,7 @@ watch(
         <div class="modal-content">
 
       <div class="modal-body">
+        {{ gradeDataList }}
         <form @submit.prevent="addGradeStandard()">
 
 

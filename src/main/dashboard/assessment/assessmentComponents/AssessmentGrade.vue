@@ -2,8 +2,6 @@
 import {onMounted,reactive, computed,ref, watch} from "vue";
 import NewAssessmentScale from "@/main/dashboard/assessment/assessmentComponents/NewAssessmentScale.vue"
 import { useAssessmentStore } from "../store/assessment";
-
-
 import { useAbility } from '@casl/vue';
 import AppModal from "@/components/AppModal.vue";
 import NewGradeScale from "@/main/dashboard/assessment/assessmentComponents/NewGradeScale.vue";
@@ -34,8 +32,11 @@ const campus_class_number = ref("")
 const campusCurriculumDataInfo = ref(null)
 const campusLevelList = ref(null)
 const campusClassList = ref(null)
-
 const showAssessmentScaleModal = ref(false)
+
+const namee = ref(null)
+const assessmentGradeListD = ref([])
+const editModel = ref(false)
 
 onMounted(() => {
     filterAssessmentGrades()
@@ -55,6 +56,7 @@ const filterAssessmentGrades = () =>{
 
 const addAssessmentScale = () =>{
   showAssessmentScaleModal.value = true
+  editModel.value = false
 }
 
 
@@ -131,13 +133,30 @@ watch (
     }
 )
 
+
+const editThisData = (List) => {
+  editModel.value = true
+  assessmentGradeListD.value = List
+  namee.value = List.name
+  showAssessmentScaleModal.value = true
+}
+
+const deleteThisData = (id,name) => {
+  if(!confirm("Are you sure, you want to delete: " + name)){
+    return
+  }else{
+
+  }
+
+}
+
 </script>
 
 <template>
     <div>
 
-      <AppModal title="Add Assessment Grade" v-model="showAssessmentScaleModal" lg>
-        <NewAssessmentScale :scaleD="scaleD"></NewAssessmentScale>
+      <AppModal :title="editModel ? 'Edit ' + namee:'Add Assessment Grade'"  v-model="showAssessmentScaleModal" lg>
+        <NewAssessmentScale :scaleD="scaleD" :assessmentGradeListD="assessmentGradeListD"></NewAssessmentScale>
       </AppModal>
     
 
@@ -223,11 +242,8 @@ watch (
         <td>{{ scaleData.remarks }}</td>
         <td>{{ scaleData.description }}</td>
         <td>
-          <button 
-                    data-bs-toggle="modal" data-bs-target="#addAccount"
-                    class="link-primary" style="border-width: 0px;text-decoration: none;" @click="openEditModal(scaleData)"><small> 
-                    <i  style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small></button>
-                    <i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i>
+          <button  class="link-primary" style="border-width: 0px;text-decoration: none;" @click="editThisData(scaleData)"><small><i  style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small></button>
+          <button @click="deleteThisData(scaleData.number,scaleData.name )"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>
         </td>
       </tr>
     

@@ -18,6 +18,7 @@ const loading = ref(true)
 
 
 const notificationStore = useNotificationStore()
+const cateringStore = useCateringStore()
 const thisDialog = ref(false)
 const updateMenuDialog = ref(false)
 const menuItemsinfoData = ref(null)
@@ -31,6 +32,7 @@ const menuItemDataParts = ref([])
 const sta = ref(null)
 const page = ref(1)
 const per_page = ref(15)
+const menuItemData=ref([])
 
 const form = reactive({
     school_number:"",
@@ -43,29 +45,16 @@ const fetchCampuses = (school_number) => {
 }
 
 const filter = (campusN) =>{
-    // cateringStore.filterMenuItem(campusN)
     doFetchMenuItem()
 }
 
-
-
-const menuItemData=ref([])
-const showDialog = () => {
-    thisDialog.value = true
-}
-
-const showUpdateDialog = (a) => {
-    menuItemsinfoData.value = a
+const showUpdateDialog = (menuList) => {
+    menuItemsinfoData.value = menuList
     showingModal.value = true
     thisDialog.value=false
 }
 
-const cateringStore = useCateringStore()
 
-const closeDialog = () => {
-    thisDialog.value = false
-    updateMenuDialog.value = false
-}
 
 onMounted(
     () => {
@@ -195,26 +184,13 @@ watch(
 )
 </script>
 <template>
-    <div>
-      <!-- schedule interview -->
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="rolesDialogg" :class="{ show:thisDialog }" aria-labelledby="offcanvasRightLabel">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasRightLabel"><small>Menu Item</small></h5>
-          <button type="button" class="btn-close"  data-bs-dismiss="offcanvas" aria-label="Close" @click="closeDialog"></button>
-        </div>
-        <div class="offcanvas-body">
-          <NewMenuItem></NewMenuItem>
-        </div>
-      </div>
-      <!-- wnd  -->
-      <!-- schedule interview -->
-   
+    <div>  
+
       <AppModal title="Update Menu Item" v-model="showingModal" lg>
-        <NewMenuItem></NewMenuItem>
-        <!-- <updateFoodMenuItem :menuItemsinfoData="menuItemsinfoData"></updateFoodMenuItem> -->
+        <NewMenuItem :menuItemsinfoData="menuItemsinfoData"></NewMenuItem>
       </AppModal>
-      <!-- wnd  -->
-      <!-- end  -->
+ 
+      
       <div class="row mt-3">
         <div class="col-12">
           <div class="">

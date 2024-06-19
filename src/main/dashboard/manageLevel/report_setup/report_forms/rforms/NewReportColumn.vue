@@ -27,6 +27,10 @@ const campusClassList = ref([])
 const campus_level_number = ref("")
 const campus_class_number = ref("")
 
+const props = defineProps({
+  reportColumnsListD:{}
+})
+
 const form = reactive({
   code:null,
   report_setting_number:null,
@@ -121,6 +125,7 @@ watch(
 
 <template>
   <div>
+    {{ reportColumnsListD }}
     <form @submit.prevent="addReportColumn">
 
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">

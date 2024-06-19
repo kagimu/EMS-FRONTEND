@@ -1,7 +1,7 @@
 <template>
   <div>
      <!-- end  -->
-     <div class="alert alert-danger p-1 mt-3 ml-2 mr-2 "  style="font-size:13px">Select A meal Course for you to register A Meal Please ! ..</div>
+     <div class="alert alert-primary p-1 mt-3 ml-2 mr-2 "  style="font-size:13px">Select A meal Course for you to register A Meal Please ! ..</div>
      <div class="row mt-2">
         <div class="col-12">
            <div class="">

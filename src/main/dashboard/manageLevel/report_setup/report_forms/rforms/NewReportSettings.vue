@@ -30,6 +30,9 @@ const studyPeriodList = ref(null)
 const campusClassList = ref(null)
 const campus_level_number = ref("")
 
+const props = defineProps({
+  reportSettingsD:{}
+})
 
 const form = reactive({
   code:null,
@@ -149,6 +152,7 @@ watch(
 
 <template>
   <div>
+    {{ reportSettingsD }}
   <form @submit.prevent="addReportSettings">
 
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">

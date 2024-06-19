@@ -11,14 +11,18 @@ import ManageReportDetails from "@/main/dashboard/manageLevel/report_setup/repor
 import AppModal from "@/components/AppModal.vue";
 import {useRouter} from "vue-router";
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
+import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.js";
+import NewCommentFromTeacher from "@/main/dashboard/manageLevel/report_setup/comments/NewCommentFromTeacher.vue";
 
 const reportStore = useReportCardStore()    
 const levelStore = useLevelStore()
 const classStore = useClassesStore()
 const studyPeriodStore = useStudyPeriodStore()
 const academicYearStore = useAcademicYearStore()
+const teacherCommentStore = useTeacherCommentStore()
 const routerData = useRouter()
 const showStudentsMarks = ref(false)
+const reportSummaryNumber = ref(null)
 
 
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
@@ -174,9 +178,12 @@ const filterSummaryReport = (data) => {
         }
       }
   )
+const showAddCommentModal = ref(false)
 
-
-
+const showAddComment = (num) =>{
+  reportSummaryNumber.value = num
+  showAddCommentModal.value = true
+}
 
 </script>
 <template>
@@ -186,6 +193,11 @@ const filterSummaryReport = (data) => {
      <AppModal title="Preview Report" v-model="showStudentsMarks" xl6>
        <manage-report-details></manage-report-details>
      </AppModal>
+
+     <AppModal title="New Comment" v-model="showAddCommentModal" lg>
+        <NewCommentFromTeacher :reportSummaryNumber="reportSummaryNumber"></NewCommentFromTeacher>
+    </AppModal>
+
 
 
      <div class="row">
@@ -281,12 +293,21 @@ const filterSummaryReport = (data) => {
                      <td>{{ summary.class }}</td>
                      <td>
                         <div>
+
+                          <button
+                              @click="showAddComment(summary.number)"
+                              type="button"
+                              class="bg-[#1062da] text-white rounded-sm px-3 py-1 text-[12px] mb-2 mr-1">
+                             add Comment
+                           </button>
+
                            <button
                               @click="showStudentReport(summary)"
                               type="button"
                               class="bg-[#1062da] text-white rounded-sm px-3 py-1 text-[12px]">
                            View Details
                            </button>
+
                         </div>
                      </td>
                   </tr>

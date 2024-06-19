@@ -5,7 +5,7 @@
       <form @submit.prevent="Enrol()">
          <div class="row">
             <div class="col-4">
-               <p class="alert alert-danger p-1" style="" ><small>Please , Choose a class to enroll
+               <p class="alert alert-primary p-1" style="" ><small>Please , Choose a class to enroll
                    <span style="text-transform: capitalize; color:#0d6efd;">
                   <b>{{ studentDataInfo.Student.surname +" "+ studentDataInfo.Student.second_name }}</b>
                </span> !</small> </p>

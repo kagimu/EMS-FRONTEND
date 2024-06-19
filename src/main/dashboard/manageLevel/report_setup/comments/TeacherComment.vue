@@ -39,10 +39,11 @@ watch(
     () => teacherCommentStore.teacherCommentResponse,
     async (data) => {
       if(data){
-       commentsList.value = data.data
+       commentsList.value = data
       }
     }
 )
+
 
 
 
@@ -76,13 +77,19 @@ watch(
           <thead>
           <tr>
             <th class="w-[10%]" scope="col">#</th>
-            <th>Comment</th>
             <th>(Min - Max) Aggregate</th>
+            <th>Comment</th>
+            <th>Accademic Year</th>
+            <td>Study Period</td>
           </tr>
           </thead>
           <tbody>
           <tr v-for="(com, index) in commentsList" :key="index">
-          {{ com }}
+            <td>{{ index+1 }}</td>
+          <td>{{ "("+com.min_aggregate + " - " + com.max_aggregate+")"}}</td>
+          <td>{{ com.comment }}</td>
+          <td>{{ com.academic_year }}</td>
+          <td>{{ com.study_period  }}</td>
 
           </tr>
           </tbody>

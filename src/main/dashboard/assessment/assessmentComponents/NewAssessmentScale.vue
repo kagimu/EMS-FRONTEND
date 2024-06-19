@@ -17,7 +17,6 @@ const classStore = useClassesStore()
 const academicYearStore = useAcademicYearStore()
 const assessmentStore = useAssessmentStore()
 
-
 const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
 const school_number = ref(null)
@@ -48,7 +47,8 @@ const form = reactive({
 const scaleDataList = ref(null)
 
 const props = defineProps({
-  scaleD:String
+  scaleD:String,
+  assessmentGradeListD:{}
 })
 
 
@@ -223,17 +223,12 @@ watch(
 
 
 
-
 </script>
 
 <template>
     <div>
-        <div class="modal-content">
-      <div class="modal-body">
-        <form @submit.prevent="createScale()">
-
-
-
+ {{ assessmentGradeListD }}
+    <form @submit.prevent="createScale()">
           <div class="mb-2">
             <div class="text-[13px] text-[#505050]"> Code</div>
             <input
@@ -347,8 +342,6 @@ watch(
             </button>
         </div>
     </form>
-    </div>
-    </div>
     </div>
 
 </template>

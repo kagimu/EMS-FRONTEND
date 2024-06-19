@@ -6,6 +6,8 @@ export const useTeacherCommentStore = defineStore("teacherComment", () => {
     let newTeacherCommentResponse = ref(null)
     let  teacherCommentResponse= ref(null)
     const errorMessage = ref(null)
+    const newCommentFromTeacherResponse = ref(null)
+    const commentFromTeachersResponse = ref(null)
 
     async function newTeacherComment(data) {
         return await api.post("main/report-settings/add-head-teachers-comment/"+data.report_setting_number, data)
@@ -20,7 +22,7 @@ export const useTeacherCommentStore = defineStore("teacherComment", () => {
     }
 
     async function fetchTeacherComments() {
-        return await api.get("main/report-settings/head-teachers-comment")
+        return await api.get("main/report-settings/head-teachers-comments")
             .then((response) => {
                 teacherCommentResponse.value = response.data
             })
@@ -31,6 +33,29 @@ export const useTeacherCommentStore = defineStore("teacherComment", () => {
             })
     }
  
+    async function newCommentFromTeacher(data) {
+        return await api.post("main/report-settings/add-teacher-comment", data)
+            .then((response) => {
+                newCommentFromTeacherResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function fetchCommentsFromTeachers() {
+        return await api.get("main/report-settings/teachers-comments")
+            .then((response) => {
+                commentFromTeachersResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
 
 
     return {
@@ -38,7 +63,11 @@ export const useTeacherCommentStore = defineStore("teacherComment", () => {
         fetchTeacherComments,
         newTeacherComment,
         teacherCommentResponse,
-        newTeacherCommentResponse
+        newTeacherCommentResponse,
+        newCommentFromTeacherResponse,
+        newCommentFromTeacher,
+        fetchCommentsFromTeachers,
+        commentFromTeachersResponse
       
     }
 } )

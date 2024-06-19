@@ -28,13 +28,16 @@ const campus_class_number = ref("")
 const campusCurriculumDataInfo = ref(null)
 const campusLevelList = ref(null)
 const campusClassList = ref(null)
+const namee = ref(null)
+const gradeDataList = ref([])
+const editModel = ref(false)
 
 
 
 onMounted(
     async () => {
-      await doFetchGradingStandard()
-      await fetchCampusLevel()
+        doFetchGradingStandard()
+       fetchCampusLevel()
     } )
 
 const doFetchGradingStandard = () => {
@@ -46,6 +49,7 @@ const doFetchGradingStandard = () => {
 }
 
 const addGradingStandard = () => {
+  editModel.value = false
   showGradeStandardModal.value = true
 }
 
@@ -106,24 +110,38 @@ watch(
     async (data) => {
       if(data){
         showGradeStandardModal.value = false
-        await doFetchGradingStandard()
+         doFetchGradingStandard()
         notificationStore.successToast("Success", data.message)
       }
     }
 )
 
+
+const editThisData = (gradeList) => {
+  editModel.value = true
+  gradeDataList.value = gradeList
+  namee.value = gradeList.name
+  showGradeStandardModal.value = true
+}
+
+const deleteThisData = (id,name) => {
+  if(!confirm("Are you sure, you want to delete: " + name)){
+    return
+  }else{
+    let data = {
+     grade_standard_number:id
+    }
+     cateringStore.deleteGradeStandard(data)
+  }
+
+}
 </script>
 <template>
     <div>
 
-      <AppModal title="Add Grade Standard" v-model="showGradeStandardModal" lg>
-        <NewGradeStandard></NewGradeStandard>
+      <AppModal  :title="editModel ? 'Edit ' + namee:'New Grade Standard'" v-model="showGradeStandardModal" lg>
+        <NewGradeStandard :gradeDataList="gradeDataList"></NewGradeStandard>
       </AppModal>
-
-    
-
-
-
 
      <div class="px-2 py-2 border-b">
            <div class="row">
@@ -198,13 +216,14 @@ watch(
           <td>{{ gradeList.class }}</td>
 
           <td>
-            <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
-              <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
-            </button>
-            &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
-            <button type="button">
-              <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
-            </button></td>
+            <button @click="editThisData(gradeList)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
+            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+          </button>
+          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
+          <button type="button" @click="deleteThisData(gradeList.number,gradeList.name)">
+            <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+          </button>
+          </td>
         </tr>
 
 

@@ -32,11 +32,15 @@ const campusLevelList = ref([])
 const classLevelList = ref([])
 const AsessmentListData = ref([])
 
+const namee = ref(null)
+const assessmentMetricList = ref([])
+const editModel = ref(false)
 
 
 const showModal = () => {
   showingModal.value = true
   thisDialog.value=false
+  editModel.value = false
 }
 
 import { useAbility } from '@casl/vue';
@@ -53,7 +57,6 @@ let errorMessage = ref(null)
 
 const assessmentStore= useAssessmentStore()
 const  notificationStore  = useNotificationStore()
-ref([]);
 
 onMounted(
     async () => {
@@ -211,12 +214,32 @@ watch(
     }
 )
 
+const editThisData = (List) => {
+  editModel.value = true
+  assessmentMetricList.value = List
+  namee.value = List.name
+  showingModal.value = true
+}
+
+const deleteThisData = (id,name) => {
+  if(!confirm("Are you sure, you want to delete: " + name)){
+    return
+  }else{
+    // let data = {
+    //  assessment_metric_number:id
+    // }
+
+     
+  }
+
+}
+
 </script>
 <template>
   <div>
 
-    <AppModal v-model="showingModal" title="Add Assessment Schedule" xl6>
-      <NewAssessmentMetric></NewAssessmentMetric>
+    <AppModal  :title="editModel ? 'Edit ' + namee:'Add Assessment Schedule'" v-model="showingModal" xl2>
+      <NewAssessmentMetric :assessmentMetricList="assessmentMetricList"></NewAssessmentMetric>
     </AppModal>
 
     <div class="col-12 mt-2" >
@@ -342,7 +365,6 @@ watch(
               </thead>
               <tbody>
               <tr v-for="(metricsData, index) in assessmentMetricsData " :key="index">
-
                 <td>
                   <!-- {{metricsData?.code ?? ""}} -->
                   {{ index+1 }}
@@ -352,11 +374,11 @@ watch(
                 </td>
                 <td>{{ metricsData.description }}</td>
                 <td>
-                  <button  aria-controls="rolesDialog" data-bs-target="#updateRoleModel" data-bs-toggle="modal" type="button">
+                  <button  @click="editThisData(metricsData)" type="button">
                     <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
                   </button>
                   &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
-                  <button type="button">
+                  <button type="button" @click="deleteThisData(metricsData.number,metricsData.name)">
                     <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
                   </button></td>
               </tr>

@@ -37,6 +37,10 @@ const academic_year_number = ref("")
 const study_period_number = ref("")
 const campus_class_number = ref("")
 
+const namee = ref(null)
+const reportSettingsD = ref([])
+const editModel = ref(false)
+
 
 onMounted(
     async () => {
@@ -136,6 +140,23 @@ watch(
 )
 
 
+const editThisData = (List) => {
+  editModel.value = true
+  reportSettingsD.value = List
+  namee.value = List.name
+  showReportSettingsModal.value = true
+}
+
+const deleteThisData = (id,name) => {
+  if(!confirm("Are you sure, you want to delete: " + name)){
+    return
+  }else{
+
+  }
+
+}
+
+
 
 const addReportSettings = () => {
   showReportSettingsModal.value = true
@@ -151,8 +172,8 @@ const addReportSettings = () => {
 
   <div>
 
-    <AppModal title="Add Settings" v-model="showReportSettingsModal" lg>
-      <new-report-settings></new-report-settings>
+    <AppModal :title="editModel ? 'Edit ' + namee:'Add Settings'"  v-model="showReportSettingsModal" lg>
+      <new-report-settings :reportSettingsD="reportSettingsD"></new-report-settings>
     </AppModal>
 
 
@@ -234,6 +255,7 @@ const addReportSettings = () => {
 <!--            <th>Name</th>-->
             <th>Number of Columns</th>
             <th>Status</th>
+            <th>#</th>
           </tr>
           </thead>
           <tbody>
@@ -245,6 +267,10 @@ const addReportSettings = () => {
 <!--            <td class="text-sm"> {{levelInfo.name}}</td>-->
             <td class="text-sm"> {{levelInfo.columns}}</td>
             <td class="text-sm"> {{levelInfo.status}}</td>
+            <td>
+              <button  class="link-primary" style="border-width: 0px;text-decoration: none;" @click="editThisData(levelInfo)"><small><i  style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small></button>
+              <button @click="deleteThisData(levelInfo.number,levelInfo.columns)"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>
+            </td>
 
           </tr>
           </tbody>
