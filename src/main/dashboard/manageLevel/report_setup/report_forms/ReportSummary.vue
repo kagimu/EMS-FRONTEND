@@ -14,6 +14,7 @@ import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/rep
 import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.js";
 import NewCommentFromTeacher from "@/main/dashboard/manageLevel/report_setup/comments/NewCommentFromTeacher.vue";
 
+
 const reportStore = useReportCardStore()    
 const levelStore = useLevelStore()
 const classStore = useClassesStore()
@@ -184,6 +185,15 @@ const showAddComment = (num) =>{
   reportSummaryNumber.value = num
   showAddCommentModal.value = true
 }
+
+watch(
+    () => teacherCommentStore.newCommentFromTeacherResponse,
+    async (data) => {
+      if(data){
+        showAddCommentModal.value = false
+      }
+    }
+)
 
 </script>
 <template>

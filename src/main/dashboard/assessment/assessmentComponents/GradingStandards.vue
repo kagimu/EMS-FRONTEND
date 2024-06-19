@@ -49,6 +49,7 @@ const doFetchGradingStandard = () => {
 }
 
 const addGradingStandard = () => {
+  gradeDataList.value = ""
   editModel.value = false
   showGradeStandardModal.value = true
 }

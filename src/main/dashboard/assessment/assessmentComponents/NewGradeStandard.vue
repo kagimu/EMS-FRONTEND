@@ -24,6 +24,13 @@ const campusClassList = ref(null)
 const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 
+onMounted(
+    async () => {
+      await fetchCampusLevel()
+      getGradeInfo()
+    }
+)
+
 const props = defineProps({
   gradeDataList:{}
 })
@@ -37,13 +44,27 @@ const form = reactive({
   campus_number:campusNumber
 })
 
-
+const getGradeInfo = () => {
+  if(props.gradeDataList){
+    form.code = props.gradeDataList.code
+    form.type = props.gradeDataList.type
+    form.name = props.gradeDataList.name
+    form.description = props.gradeDataList.description
+  }
+}
 
 
 const addGradeStandard = () => {
   form.code = parseInt(form.code)
   buttonLoader.value = true
-  assessmentStore.createGradeStandard(form)
+  if(props.gradeDataList.number){
+    form.grade_standard_number = props.gradeDataList.number
+    // alert(JSON.stringify(form))
+    assessmentStore.updateGradeStandard(form)
+  }else{
+    assessmentStore.createGradeStandard(form)
+  }
+ 
 }
 
 watch(
@@ -68,17 +89,6 @@ watch (
     },
     {deep:true}
 )
-
-
-onMounted(
-    async () => {
-      // await levelStore.fetchCampusCurriculum(campusNumber)
-      await fetchCampusLevel()
-    }
-)
-
-
-
 
 
 const fetchCampusLevel = () => {
@@ -125,7 +135,7 @@ watch(
         <div class="modal-content">
 
       <div class="modal-body">
-        {{ gradeDataList }}
+        <!-- {{ gradeDataList }} -->
         <form @submit.prevent="addGradeStandard()">
 
 
@@ -198,12 +208,9 @@ watch(
 
           <div class="mb-2">
             <div class="text-[13px] text-[#505050]"> Description</div>
-            <textarea class="form-control shadow-none" v-model="form.description"></textarea>
+            <textarea class="form-control shadow-none text-[13px] text-[#505050] textColor" v-model="form.description"></textarea>
           </div>
-
-
           
-
      <div class="flex justify-content-end mt-4" style="width: 100%;">
             <button type="submit" class="btn btn-primary border-0 btn-sm">
                  <small><i class="bi bi-save"></i> submit</small>

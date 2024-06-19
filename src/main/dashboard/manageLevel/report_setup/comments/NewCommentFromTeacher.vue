@@ -38,7 +38,6 @@ watch(
       if(data){
         notificationStore.successToast("Success",data.message)
         loader.value=false
-        teacherCommentStore.fetchCommentsFromTeachers()
       }
     }
 )
@@ -65,9 +64,9 @@ watch(
     </div>
     <!-- {{ reportSummaryNumber }} -->
 
-    <div class="mb-2">
-      <label class="textColor"><small>Comment</small></label>
-    <textarea class="form-control" v-model="form.comment"></textarea>
+    <div class="mb-2 ">
+      <label><small>Comment</small></label>
+    <textarea class="form-control mt-2" v-model="form.comment"></textarea>
     </div>
 
     <div class="flex justify-content-end mt-4" style="width: 100%;">

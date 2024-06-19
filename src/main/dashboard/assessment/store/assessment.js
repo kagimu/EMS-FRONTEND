@@ -27,6 +27,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const newGradeResponse = ref(null)
     const updateGradeResponse = ref(null)
     const deleteGradeResponse = ref(null)
+    const  updateGradeStandardResponse = ref(null)
 
     async function createAssessmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -343,6 +344,17 @@ async function createMetric(data) {
             })
     }
     
+    async function updateGradeStandard(data) {
+        return await api.put("main/grading-standard",data)
+            .then((response) => {
+             updateGradeStandardResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
     return {
         createAssessmentAreas,
         newAssessmentAreasResponse,
@@ -390,6 +402,8 @@ async function createMetric(data) {
         updateGradeResponse,
         updateGrade,
         deleteGradeResponse,
-        deleteGrade
+        deleteGrade,
+        updateGradeStandardResponse,
+        updateGradeStandard
     }
 })
