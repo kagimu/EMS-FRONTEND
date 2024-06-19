@@ -450,7 +450,10 @@ const router = createRouter({
                 }},
 
 
-                {path: 'catering', component: Catering, name: "catering",
+                {
+                    path: 'catering',
+                    component: Catering,
+                    name: "catering",
                 meta: {
                     resource: "manage-catering",
                     action: "view_catering_menu",

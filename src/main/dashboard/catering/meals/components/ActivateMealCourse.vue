@@ -53,11 +53,9 @@ const addMealCourseFeedingSessionsDialog = () => {
 
 
 
-const doFetchMealCourses = (school_number) => {
-  if (school_number) {
-    mealStore.fetchMealCourses(school_number)
-    campusStore.fetchCampuses(school_number)
-  }
+const doFetchMealCourses = () => {
+    mealStore.fetchMealCourses({school_number:school_number.value,status:'ACTIVE'})
+    campusStore.fetchCampuses(school_number.value)
 }
 
 const fetchAllMealCourseFeeding = async (meal_course_number) => {
@@ -155,7 +153,7 @@ watch(
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
                 v-model="school_number"
-                @change="doFetchMealCourses(school_number)"
+                @change="doFetchMealCourses()"
             >
               <option disabled value="">--filter by School--</option>
               <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{ lvl.name }}</option>

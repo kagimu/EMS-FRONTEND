@@ -16,12 +16,14 @@ import MealCoursesPerDay from "@/main/dashboard/catering/meals/MealCoursesPerDay
 
 import { useAbility } from '@casl/vue';
 import MealsCostProjections from "@/main/dashboard/catering/meals/MealsCostProjections.vue";
+import router from "@/config/router.js";
+
 const { can } = useAbility()
 
 const routerData = useRouter()
 
-const menuSelected = ref("menu-items")
-const route = routerData.currentRoute.value.query.s
+
+const menuSelected = routerData.currentRoute.value.query.m ?? 'units-of-measurement'
 
 
 const menu = ref([
@@ -35,7 +37,7 @@ const menu = ref([
     value:"menu-items"
   },
   {
-    text:"Feeding Session",
+    text:"Feeding Packs",
     value:"feeding-session"
   },
   {
@@ -46,17 +48,6 @@ const menu = ref([
 
 ])
 
-const Feedmenu = ref([
-  // {
-  //   text:"Feeding User Group",
-  //   value:"manage-feeding-users"
-  // },
-  // {
-  //   text:"Capturing Meals",
-  //   value:"feeding",
-  //   action:"record_meals"
-  // },
-])
 
 const mealMenu = ref([
   {
@@ -88,7 +79,7 @@ const mealMenu = ref([
 ])
 
 const changeMenu = (value) => {
-  menuSelected.value = value
+  router.push({ name: "catering", query:{m:value} })
 }
 
 
@@ -132,22 +123,6 @@ const changeMenu = (value) => {
 
 
 
-          <!-- <div class="card mt-3">
-            <div class="card-body" style="padding: 0;">
-                <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-                  <div
-                    v-for="(item, idx) in Feedmenu" :key="idx"
-                    :class="item.value === menuSelected ? 'active' : ''"
-                    class="list-group-item list-group-item-action cursor-pointer"
-                    @click="changeMenu(item.value)">
-                  <small style="font-size:12px;">{{item.text}}</small>
-                </div>
-              </div>
-           
-            </div>
-          </div> -->
-
-
 
           <div class="card mt-3">
             <div class="card-body" style="padding: 0;">
@@ -172,17 +147,20 @@ const changeMenu = (value) => {
   
               <div>
   
+
+                  <div v-if="menuSelected === 'units-of-measurement'">
+                    <ManageUnitOfMeasurement></ManageUnitOfMeasurement>
+                  </div>
+
                   <div v-if="menuSelected === 'menu-items'">
                     <ManageMenuItem></ManageMenuItem>
                   </div>
-                  <div v-if="menuSelected === 'units-of-measurement'">
-                 <ManageUnitOfMeasurement></ManageUnitOfMeasurement>
-                  </div>
+
                   <div v-if="menuSelected === 'feeding-group'">
-                 <ManageFeedingGroup></ManageFeedingGroup>
+                    <ManageFeedingGroup></ManageFeedingGroup>
                   </div>
                   <div v-if="menuSelected === 'feeding-session'">
-                      <ManageFeedingSessions></ManageFeedingSessions>
+                    <ManageFeedingSessions></ManageFeedingSessions>
                   </div>
                   <div v-if="menuSelected === 'manage-stock'">
                     <ManageStock></ManageStock>
@@ -193,7 +171,7 @@ const changeMenu = (value) => {
                   </div>
 
                   <div v-if="menuSelected === 'feeding'">
-                <FeedingUsers></FeedingUsers>
+                    <FeedingUsers></FeedingUsers>
                   </div>
 
 
@@ -211,8 +189,9 @@ const changeMenu = (value) => {
                 <div v-if="menuSelected === 'meal-calendar'">
                  <MealCalendar></MealCalendar>
                 </div>
+
                 <div v-if="menuSelected === 'meals-cost-projections'">
-                 <meals-cost-projections></meals-cost-projections>
+                    <meals-cost-projections></meals-cost-projections>
                 </div>
               </div>
   

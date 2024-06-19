@@ -14,7 +14,7 @@
                           style="box-shadow: none;"
                           class="form-select form-select-sm"
                           v-model="school_number"
-                          @change="doFetchMealCourses(school_number)"
+                          @change="doFetchMealCourses()"
                       >
                         <option disabled value="">-- Select School--</option>
                         <option v-for="(lvl, index) in schoolList" :key="index" :value="lvl.number">{{lvl.name}}</option>
@@ -262,11 +262,11 @@
   )
 
 
-  const doFetchMealCourses = (school_number) => {
-  if(school_number){
-    mealStore.fetchMealCourses(school_number ?? "")
-    campusStore.fetchCampuses(school_number ?? "")
-  }
+  const doFetchMealCourses = () => {
+
+    mealStore.fetchMealCourses({school_number:school_number.value,status:'ACTIVE'})
+    campusStore.fetchCampuses(school_number.value ?? "")
+
 }
 
   

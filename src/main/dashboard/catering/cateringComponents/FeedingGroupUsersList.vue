@@ -131,7 +131,7 @@ watch(
 <template>
     <div>
   
-        <div class="row mt-5 mb-2 ">
+        <div class="row mt-5 mb-2 mx-auto ">
           <div class="col-3">
             <div class="mb-2">
               <select

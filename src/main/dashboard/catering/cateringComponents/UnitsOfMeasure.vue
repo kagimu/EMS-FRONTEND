@@ -24,7 +24,7 @@
                  <div class="">
                     <div class="row">
                     <div class="col-lg-8">
-                    <h5 style="font-size: 14px;margin-top: 2px;">Unit of Measure</h5>
+                        <p style="font-size: 14px;margin-top: 2px;" class="ml-4">Unit of Measure</p>
                     </div>
     
                 <div class="col-lg-4">

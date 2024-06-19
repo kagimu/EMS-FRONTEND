@@ -1,42 +1,53 @@
 <template>
     <div>
 <form @submit.prevent="unitMeasurement">
-<div class="row mt-5">
-    <div class="col-3">
-        <div class="mb-2">
-    <label class="textColor"><small>Code</small></label>
-    <input 
-    v-model="form.code" 
-    @keypress="commons.codeValidator($event)"
-    maxlength="10"
-    @paste.prevent
-    type="text"
-    required class="form-control">
-</div>
-    </div>
-    <div class="col-4">
-        <div class="mb-2">
-    <label class="textColor"><small>ABBREVIATION</small></label>
-    <input v-model="form.abbreviation"  type="text" required class="form-control">
-</div>
-    </div>
-    <div class="col-lg-5">
-        <div class="mb-2">
-    <label class="textColor"><small>Name</small></label>
-    <input v-model="form.name"   type="text" required class="form-control">
-    
-</div>
-    </div>
-
-</div>
+<div class="w-[50%] pl-5 pt-10">
 
 
-<div class="text-right mt-4">
-    <button  style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
+  <p>New Unit Of Measure</p>
+
+         <div class="mb-2">
+            <label class="textColor"><small>Code</small></label>
+            <input
+            v-model="form.code"
+            @keypress="commons.codeValidator($event)"
+            maxlength="10"
+            @paste.prevent
+            type="text"
+            required class="form-control shadow-none">
+        </div>
+
+
+
+
+        <div class="mb-2">
+            <label class="textColor"><small>ABBREVIATION</small></label>
+            <input v-model="form.abbreviation"  type="text" required class="form-control shadow-none">
+        </div>
+
+
+
+
+            <div class="mb-2">
+            <label class="textColor"><small>Name</small></label>
+            <input v-model="form.name"   type="text" required class="form-control shadow-none">
+
+
+    </div>
+
+
+
+
+<div class="flex flex-grow justify-between mt-4">
+  &nbsp;
+    <button  style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-10"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
     <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader" >
         <span class="visually-hidden">Loading...</span>
     </div></button>
 </div>
+
+</div>
+
 </form>
     </div>
 </template>

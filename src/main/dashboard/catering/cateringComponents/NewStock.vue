@@ -1,3 +1,170 @@
+<script setup>
+import {onMounted, reactive, ref, watch, watchEffect, computed} from "vue"
+import useNotificationStore from "@/composables/useNotification.js"
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
+import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+
+import useCommonsStore from "@/composables/useCommons.js";
+const commons = useCommonsStore()
+
+
+const buttonLoader = ref(false)
+const campusList = ref([])
+const schoolList = ref([])
+// const school_number = ref(null)
+let errorMessage = ref(null)
+const emit = defineEmits()
+const  notificationStore  = useNotificationStore()
+const schoolStore = useSchoolStore()
+const campusStore = useCampusStore()
+const cateringStore = useCateringStore()
+
+const form = reactive({
+  campus_number:null,
+  school_number:null
+})
+
+const Items = ref([]);
+const itemOption = ref([])
+
+function updateItem(index) {
+  const item = Items.value[index];
+  const selectedOption = itemOption.value.find(option => option.name === item.name);
+  if (selectedOption) {
+    item.cost = selectedOption.cost;
+    updateAmount(index);
+  }
+}
+
+function updateAmount(index) {
+  const item = Items.value[index];
+  item.amount = item.quantity * item.cost;
+}
+
+function addItem() {
+  Items.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
+}
+
+function removeItem(index) {
+  Items.value.splice(index, 1);
+}
+
+function calculateTotal() {
+  return Items.value.reduce((total, item) => total + item.amount, 0);
+}
+
+function availableOptions(index) {
+  const selectedNames = Items.value.map(item => item.name);
+  return itemOption.value.filter(option => !selectedNames.includes(option.name) || option.name === Items.value[index].name);
+}
+
+const isAddButtonDisabled = ref(false);
+watch(Items, (newItems) => {
+  isAddButtonDisabled.value = newItems.length === itemOption.value.length;
+}, { deep: true });
+
+
+onMounted(() => {
+      schoolStore.fetchSchools()
+    }
+)
+
+
+
+const createStock = () => {
+  const item_price_and_quantity = Items.value.map(itemData => ({
+    menu_item_number: itemData.menu_item_number,
+    quantity: parseInt(itemData.quantity),
+    unit_price: parseInt(itemData.unitPrice),
+    unit_cost: parseInt(itemData.amount)
+  }))
+
+  const data = {
+    campus_number:form.campus_number,
+    item_price_and_quantity
+  }
+  // alert(JSON.stringify(data))
+  cateringStore.newStock(data)
+}
+
+watch(
+    () => cateringStore.newStockResponse,
+    async (data) => {
+      notificationStore.successToast("Success", data.message)
+      cateringStore.fetchStock()
+      clearFormData()
+    },
+    {deep: true}
+)
+
+watch(
+    () => cateringStore.errorMessage,
+    async (data) => {
+      if (data) {
+        notificationStore.errorToast("Error", data.message)
+      }
+    },
+    {deep: true}
+)
+
+const clearFormData = () => {
+  school_number.value = null
+  form.campus_number = null
+  Items.value = []
+}
+
+
+
+const fetchCampuses = (school_number) => {
+  campusStore.fetchCampuses(school_number)
+}
+
+const doFetchMenuItem = () => {
+  let formD = {
+    school_number:form.school_number,
+    campus_number:form.campus_number
+  }
+  cateringStore.fetchMenuItem(formD)
+}
+
+
+watch(
+    () => cateringStore.menuItemResponse,
+    async (data) => {
+
+      itemOption.value = data.map(option => ({ name: option.name, number: option.number }));
+
+      // if(data && data.data) {
+      //   itemOption.value = data.data.map(option => ({ name: option.name, number: option.number }));
+      // }
+    },
+    {deep: true}
+)
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        schoolList.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+watch(
+    () => campusStore.campusListResponse,
+    async (data) => {
+      if (data) {
+        campusList.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+
+
+</script>
 <template>
     <div>
       <div class="row">
@@ -5,7 +172,7 @@
             <div class="card-body" style="padding: 0;">
               <div class="mt-5">
                 <form @submit.prevent="createStock">
-                    <div class="row">
+                    <div class="row mx-auto">
                         <div class="col-lg-4">
                             <div class="mb-2">
                             <label class="textColor"><small>School</small> </label>
@@ -68,8 +235,19 @@
                     </tr>
                   </tbody>
                 </table>
-                <button class="btn btn-primary btn-sm textColor" @click.prevent="addItem" :disabled="isAddButtonDisabled"><small>ADD ANOTHER ITEM</small></button>
-                <div class="row mt-10">
+
+
+              <div>
+                <button
+                    class="btn btn-primary btn-sm textColor ml-3"
+                    @click.prevent="addItem"
+                    :disabled="isAddButtonDisabled">
+                  <small>ADD ANOTHER ITEM</small>
+                </button>
+              </div>
+
+
+              <div class="row mt-10 mx-auto">
                   <div class="col-lg-8"></div>
                   <div class="col-lg-4">
                     <ul style="float: right;">
@@ -82,22 +260,20 @@
               <!-- ends here -->
             </div>
           </div> 
-                <div class="row mt-5">
-               
-            <div class="col-lg-4">
-               
+                <div class="flex flex-grow justify-between">
+                  &nbsp;
+                     <div class="mr-3 mb-10">
+                         <button type="submit" class="btn btn-sm btn-outline-primary mb-2 mt-1" style="float: right !important;margin-right: 0px;">
+                           <small>Submit</small>
+                           <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
+                             <span class="visually-hidden">Loading...</span>
+                           </div>
+                         </button>
+                     </div>
+
              </div>
-             <div class="col-lg-4"></div>
-             <div class="col-lg-4 ">
-               <button type="submit" class="btn btn-sm btn-outline-primary mb-2 mt-1" style="float: right !important;margin-right: 0px;">
-                 <small>Submit</small>
-             <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
-               <span class="visually-hidden">Loading...</span>
-             </div>
-           </button>
-             </div>
-            
-             </div>
+
+
                </form>
               </div>
             </div>
@@ -109,172 +285,7 @@
   </template>
 
 
-<script setup>
-import {onMounted, reactive, ref, watch, watchEffect, computed} from "vue"
-import useNotificationStore from "@/composables/useNotification.js"
-import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
-import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
-import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 
-import useCommonsStore from "@/composables/useCommons.js";
-const commons = useCommonsStore()
-
-
-const campusList = ref([])
-const schoolList = ref([])
-// const school_number = ref(null)
-let errorMessage = ref(null)
-const emit = defineEmits()
-const  notificationStore  = useNotificationStore()
-const schoolStore = useSchoolStore()
-const campusStore = useCampusStore()
-const cateringStore = useCateringStore()
-
-const form = reactive({
-    campus_number:null,
-    school_number:null
-})
-
-const Items = ref([]);
-const itemOption = ref([])
-
-function updateItem(index) {
-  const item = Items.value[index];
-  const selectedOption = itemOption.value.find(option => option.name === item.name);
-  if (selectedOption) {
-    item.cost = selectedOption.cost;
-    updateAmount(index);
-  }
-}
-
-function updateAmount(index) {
-  const item = Items.value[index];
-  item.amount = item.quantity * item.cost;
-}
-
-function addItem() {
-  Items.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
-}
-
-function removeItem(index) {
-  Items.value.splice(index, 1);
-}
-
-function calculateTotal() {
-  return Items.value.reduce((total, item) => total + item.amount, 0);
-}
-
-function availableOptions(index) {
-  const selectedNames = Items.value.map(item => item.name);
-  return itemOption.value.filter(option => !selectedNames.includes(option.name) || option.name === Items.value[index].name);
-}
-
-const isAddButtonDisabled = ref(false);
-watch(Items, (newItems) => {
-  isAddButtonDisabled.value = newItems.length === itemOption.value.length;
-}, { deep: true });
-
-
-onMounted(() => {
-        schoolStore.fetchSchools()
-    }
-)
-
-
-
-const createStock = () => {
-  const item_price_and_quantity = Items.value.map(itemData => ({
-      menu_item_number: itemData.menu_item_number,
-      quantity: parseInt(itemData.quantity),
-      unit_price: parseInt(itemData.unitPrice),
-      unit_cost: parseInt(itemData.amount)
-    }))
-
-  const data = {
-    campus_number:form.campus_number,
-    item_price_and_quantity
-  }
-  // alert(JSON.stringify(data))
-  cateringStore.newStock(data)
-}
-
-watch(
-    () => cateringStore.newStockResponse,
-    async (data) => {
-        notificationStore.successToast("Success", data.message)
-        cateringStore.fetchStock()
-        clearFormData()
-    },
-    {deep: true}
-  )
-
-  watch(
-    () => cateringStore.errorMessage,
-    async (data) => {
-          if (data) {
-          notificationStore.errorToast("Error", data.message)
-          }
-    },
-    {deep: true}
-  )
-
-  const clearFormData = () => {
-    school_number.value = null
-    form.campus_number = null
-    Items.value = []
-}
-
-
-
-  const fetchCampuses = (school_number) => {
-    campusStore.fetchCampuses(school_number)
-}
-
-const doFetchMenuItem = () => {
-  let formD = {
-    school_number:form.school_number,
-    campus_number:form.campus_number
-  }
-  cateringStore.fetchMenuItem(formD)
-}
-
-
-watch(
-    () => cateringStore.menuItemResponse,
-    async (data) => {
-
-      itemOption.value = data.map(option => ({ name: option.name, number: option.number }));
-      
-      // if(data && data.data) {
-      //   itemOption.value = data.data.map(option => ({ name: option.name, number: option.number }));
-      // }
-    },
-    {deep: true}
-  )
-
-  watch(
-    () => schoolStore.schoolsResponse,
-    async (data) => {
-        if (data) {
-            schoolList.value = data.data
-        }
-    },
-    {deep: true}
-)
-
-watch(
-    () => campusStore.campusListResponse,
-    async (data) => {
-        if (data) {
-            campusList.value = data.data
-        }
-    },
-    {deep: true}
-)
-
-  
-
-</script>
   
  
   

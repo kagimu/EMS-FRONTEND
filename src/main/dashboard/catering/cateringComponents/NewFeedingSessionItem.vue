@@ -3,47 +3,44 @@
       <div class="row">
         <div class="col-12">
             <div class="card-body" style="padding: 0;">
-                <div class="row mt-4">
+                <div class="row mt-5 mb-3 mx-auto">
 
-        <div class="col-4">
-        <div class="mb-2">
-        <select
-            v-model="form.school_number"
-            class="form-select form-select-sm"
-            style="box-shadow: none;"
-            @change="fetchCampuses(form.school_number)"           
-        >
-        <option disabled value="">--Select School--</option>
-        <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-        </option>
-        </select>
-        </div>
-        </div>
+                    <div class="col-4">
+                        <div class="mb-2">
+                            <select
+                                v-model="form.school_number"
+                                class="form-select form-select-sm shadow-none"
+                                @change="fetchCampuses(form.school_number)"
+                            >
+                              <option disabled value="">--Select School--</option>
+                              <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+                              </option>
+                            </select>
+                        </div>
+                    </div>
 
         <div class="col-lg-4">
 
-<div class="mb-2">
-
-<select
-style="box-shadow: none;"
-class="form-select form-select-sm"
-v-model="form.campus_number" required
-@change="doFetchMenuItem()"
->
-<option disabled value="">Select campus</option>
-<option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-</option>
-</select>
-</div>
-</div>
+              <div class="mb-2">
+                  <select
+                  class="form-select form-select-sm shadow-none"
+                  v-model="form.campus_number" required
+                  @change="doFetchMenuItem()"
+                  >
+                    <option disabled value="">Select campus</option>
+                    <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+                    </option>
+                  </select>
+              </div>
+          </div>
 
             <div class="col-3"> 
-            <select v-model="form.feeding_session_number" class="form-control form-select"> 
-            <option disabled value="">Select Feeding Sessions</option>
-            <option v-for="(list, index) in feedingSessionGroupData" :key="index" :value="list.number">{{list.name}}</option>
-            </select>
-
+                <select v-model="form.feeding_session_number" class="form-control form-select shadow-none">
+                    <option disabled value="">Select Feeding Sessions</option>
+                    <option v-for="(list, index) in feedingSessionGroupData" :key="index" :value="list.number">{{list.name}}</option>
+                </select>
             </div>
+
                 </div>
               <div class="mt-1">
                 <form @submit.prevent="createFeedingSessionItem">
@@ -51,7 +48,8 @@ v-model="form.campus_number" required
             <div class="row">
             <div class="col-lg-12">
               <!-- New Design -->
-                <table class="table bordered">
+
+                 <table class="table table-hover  text-[14px]">
                   <thead>
                     <tr class="" style="padding: 0px;margin: 0px;">
                       <th>Item</th>
@@ -62,18 +60,44 @@ v-model="form.campus_number" required
                   <tbody>
                     <tr v-for="(itemData, index) in Items" :key="index" >
                       <td>
-                        <select class="form-select form-select-sm form-control select-no-border" v-model="itemData.menu_item_number" @change="updateItem(index)">
+                        <select
+                            class="form-select form-select-sm form-control shadow-none"
+                            v-model="itemData.menu_item_number"
+                            @change="updateItem(index)">
                           <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
                         </select>
                       </td>
-                      <td><input  @keypress="commons.numbersOnlyValidator($event)"
-            maxlength="10" type="text" v-model="itemData.quantity" @input="updateAmount(index)" placeholder="1.0" class="inp"></td>
-                      <td><button type="button" @click="removeItem(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
+                      <td>
+                        <input
+                            @keypress="commons.numbersOnlyValidator($event)"
+                            maxlength="10"
+                            type="text"
+                            v-model="itemData.quantity"
+                            @input="updateAmount(index)"
+                            placeholder=""
+                            class="form-control shadow-none">
+                      </td>
+                      <td>
+                        <button
+                            type="button"
+                            @click="removeItem(index)">
+                          <i class="bi bi-x-circle" style="color:red"></i>
+                        </button>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
-                <button class="btn btn-primary btn-sm textColor" @click.prevent="addItem" :disabled="isAddButtonDisabled"><small>ADD ANOTHER ITEM</small></button>
-              <!-- ends here -->
+
+              <div>
+                <button
+                    class="btn btn-primary btn-sm textColor ml-3"
+                    @click.prevent="addItem"
+                    :disabled="isAddButtonDisabled">
+                  <small>ADD ANOTHER ITEM</small>
+                </button>
+              </div>
+
+
             </div>
           </div> 
                 <div class="row mt-5">
