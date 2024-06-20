@@ -154,12 +154,15 @@ watch(
           </div>
 
 
-     <div class="flex justify-content-end mt-4" style="width: 100%;">
+        <div class="flex justify-content-end mt-4" style="width: 100%;">
             <button type="submit" class="btn btn-primary border-0 btn-sm">
-                 <small><i class="bi bi-save"></i> submit</small>
-                 <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
-                      role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span> 
+              <div class="px-3">
+                <small> {{gradeDataInfo?.number ? "Edit" : "Submit"}} </small>
+                <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
+                       role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span>
                     </span>
+              </div>
+
             </button>
         </div>
     </form>
