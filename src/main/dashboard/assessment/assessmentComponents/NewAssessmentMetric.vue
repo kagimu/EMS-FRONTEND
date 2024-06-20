@@ -25,16 +25,10 @@
   const studyPeriodStore = useStudyPeriodStore()
   const schoolStore = useSchoolStore()
   const campusStore = useCampusStore()
-
-
-  
-
   
   const buttonLoader = ref(false)
   const interviewDialog= ref(false)
   let errorMessage = ref(null)
-  
-
 
   const campusList = ref([])
   const classList = ref([])
@@ -51,6 +45,19 @@
   const campus_level_number = ref(null)
   const academic_year_number = ref(null)
   const campusNumber = routerData.currentRoute.value.query.id
+
+  const props = defineProps({
+    assessmentMetricList:{}
+   })
+
+  const date = ref();
+  
+  onMounted(
+      async () => {
+        await classStore.fetchCampusLevel(campus_curriculum_number)
+        await assessmentStore.fetchMetrics(curriculumNumberParent)
+        getAssessmentScheduleInfo()
+      })
   
     const form = reactive({ 
       name:null,
@@ -66,11 +73,20 @@
       require_comment:null
     })
 
-  const props = defineProps({
-    assessmentMetricList:{}
-   })
-
-  const date = ref();
+    const getAssessmentScheduleInfo = () =>{
+       if(props.assessmentMetricList.number){
+      form.code = props.assessmentMetricList.code,
+      form.assessment_area_number = props.assessmentMetricList.name,
+      form.description = props.assessmentMetricList.description,
+      form.max_score = props.assessmentMetricList.max_score,
+      form.metric_number = props.assessmentMetricList.name,
+      form.campus_class_number = props.assessmentMetricList.name,
+      form.grading_standard_number = props.assessmentMetricList.grading_standard_number,
+      form.study_period_number = props.assessmentMetricList.name,
+      form.scheduled_on = props.assessmentMetricList.scheduled_on,
+      form.require_comment = props.assessmentMetricList.require_comment
+       }
+    }
   
   const format = (date) => {
   const day = date.getDate();
@@ -79,13 +95,6 @@
   
   return `Selected date is ${day}/${month}/${year}`;
   }
-
-
-  onMounted(
-      async () => {
-        await classStore.fetchCampusLevel(campus_curriculum_number)
-        await assessmentStore.fetchMetrics(curriculumNumberParent)
-      })
 
 
   const fetchCurriculumClass = () =>{

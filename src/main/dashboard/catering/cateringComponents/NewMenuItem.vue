@@ -22,9 +22,19 @@ const feedingSessionGroupData = ref([])
 const menuOptions = ref([])
 const menuItems = ref([])
 
+onMounted(() => {
+      schoolStore.fetchSchools()
+      // cateringStore.fetchMenuItem()
+      // cateringStore.fetchFeedingGroupSessions()
+      cateringStore.fetchUnitOfMeasureInfo()
+      getMenuItemInfo()
+    }
+)
+
 const props = defineProps({
   menuItemsinfoData:{}
 })
+
 
 
 const form = reactive({
@@ -42,6 +52,19 @@ const menuForm = reactive({
   base_price:null,
   school_number:null
 } )
+const isEdit = ref(false)
+const getMenuItemInfo = () =>{
+  if (props.menuItemsinfoData?.number){
+    menuForm.name=props.menuItemsinfoData.name,
+    menuForm.code=props.menuItemsinfoData.code,
+    menuForm.type=props.menuItemsinfoData.type,
+    menuForm.unit_of_measure_number=props.menuItemsinfoData.unit_of_measure_number,
+    menuForm.campus_number=props.menuItemsinfoData.number,
+    menuForm.base_price=props.menuItemsinfoData.base_price,
+    menuForm.school_number=props.menuItemsinfoData.school_number
+    isEdit.value = true
+  }
+}
 
 const showUnitMeasurement = () => {
   showUnitModal.value = true
@@ -58,13 +81,7 @@ const closeDialog = () => {
   thisDialog.value = false
 }
 
-onMounted(() => {
-      schoolStore.fetchSchools()
-      // cateringStore.fetchMenuItem()
-      // cateringStore.fetchFeedingGroupSessions()
-      cateringStore.fetchUnitOfMeasureInfo()
-    }
-)
+
 watch(
     () => cateringStore.UnitOfMeasureInfoResponse,
     async (data) => {
@@ -249,9 +266,41 @@ const clearFormData = () => {
 
 
 <form @submit.prevent="addMenuItem">
-  {{ menuItemsinfoData }}
+  <!-- {{ menuItemsinfoData }} -->
   <div class="row">
-    <div class="col-lg-6">
+
+    <div class="col-lg-12" v-if="!isEdit">
+
+<div class="mb-2">
+  <label class="textColor"><small>School</small> </label>
+  <select
+      v-model="menuForm.school_number"
+      class="form-select form-select-sm" required
+      style="box-shadow: none;"
+      @change="fetchCampuses(menuForm.school_number)"
+  >
+    <option disabled value="">Select School</option>
+    <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+    </option>
+  </select>
+</div>
+
+<div class="mb-2">
+  <label class="textColor"><small>Campus</small>  </label>
+  <select
+      v-model="menuForm.campus_number"
+      class="form-select form-select-sm"
+      required style="box-shadow: none;"
+      @change="doFetchMenuItem()"
+  >
+    <option disabled value="">Select campus</option>
+    <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+    </option>
+  </select>
+</div>
+</div>
+
+    <div class="col-lg-12">
 
       <div class="mb-2">
         <label class="textColor"><small>Item Name</small></label>
@@ -291,7 +340,16 @@ const clearFormData = () => {
         </div>
       </div>
 
-
+      <div class="mb-2" v-if="menuForm.type === 'ITEM'">
+        <label class="textColor"><small>Unit Price</small></label>
+        <input
+            v-model="menuForm.base_price"
+            class="form-control shadow-none"
+            maxlength="10"
+            required
+            type="text"
+            @keypress="commons.numbersOnlyValidator($event)">
+      </div>
 
       <div class="mb-2">
         <label class="textColor"><small>Type</small> </label>
@@ -308,53 +366,7 @@ const clearFormData = () => {
       </div>
 
     </div>
-    <div class="col-lg-6">
-
-      <div class="mb-2">
-        <label class="textColor"><small>School</small> </label>
-        <select
-            v-model="menuForm.school_number"
-            class="form-select form-select-sm" required
-            style="box-shadow: none;"
-            @change="fetchCampuses(menuForm.school_number)"
-        >
-          <option disabled value="">Select School</option>
-          <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-          </option>
-        </select>
-      </div>
-
-      <div class="mb-2">
-        <label class="textColor"><small>Campus</small>  </label>
-        <select
-            v-model="menuForm.campus_number"
-            class="form-select form-select-sm"
-            required style="box-shadow: none;"
-            @change="doFetchMenuItem()"
-        >
-          <option disabled value="">Select campus</option>
-          <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-          </option>
-        </select>
-      </div>
-
-
-
-
-      <div class="mb-2" v-if="menuForm.type === 'ITEM'">
-        <label class="textColor"><small>Unit Price</small></label>
-        <input
-            v-model="menuForm.base_price"
-            class="form-control shadow-none"
-            maxlength="10"
-            required
-            type="text"
-            @keypress="commons.numbersOnlyValidator($event)">
-      </div>
-
-
-
-    </div>
+  
   </div>
 
 

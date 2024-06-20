@@ -38,9 +38,10 @@ const editModel = ref(false)
 
 
 const showModal = () => {
-  showingModal.value = true
-  thisDialog.value=false
   editModel.value = false
+  assessmentMetricList.value = ""
+  showingModal.value = true
+ 
 }
 
 import { useAbility } from '@casl/vue';
