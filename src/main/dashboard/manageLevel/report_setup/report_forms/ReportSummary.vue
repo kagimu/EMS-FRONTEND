@@ -23,7 +23,7 @@ const academicYearStore = useAcademicYearStore()
 const teacherCommentStore = useTeacherCommentStore()
 const routerData = useRouter()
 const showStudentsMarks = ref(false)
-const reportSummaryNumber = ref(null)
+const reportSummaryNumber = ref("")
 
 
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
@@ -204,7 +204,7 @@ watch(
        <manage-report-details></manage-report-details>
      </AppModal>
 
-     <AppModal title="New Comment" v-model="showAddCommentModal" lg>
+     <AppModal title="Add Teachers Comment" v-model="showAddCommentModal" lg>
         <NewCommentFromTeacher :reportSummaryNumber="reportSummaryNumber"></NewCommentFromTeacher>
     </AppModal>
 
@@ -283,7 +283,7 @@ watch(
             </div>
             <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
                <thead>
-                  <tr>
+                  <tr class="text-gray-600 text-sm">
                      <th scope="col" style="width: 2%;">#</th>
                      <th scope="col">Student</th>
                      <th scope="col">Grade</th>
@@ -294,9 +294,9 @@ watch(
                   </tr>
                </thead>
                <tbody>
-                  <tr v-for="(summary, idx) in reportSummaryList" :key="idx">
+                  <tr class="text-gray-600 text-sm" v-for="(summary, idx) in reportSummaryList" :key="idx">
                      <td> {{summary.key}}</td>
-                     <td> {{summary.student_name}}</td>
+                     <td class="capitalize"> {{summary.student_name}}</td>
                      <td> {{summary.grade}}</td>
                      <td>{{ summary.study_period }}</td>
                      <td>{{ summary.stream }}</td>
@@ -307,15 +307,15 @@ watch(
                           <button
                               @click="showAddComment(summary.number)"
                               type="button"
-                              class="bg-[#1062da] text-white rounded-sm px-3 py-1 text-[12px] mb-2 mr-1">
-                             add Comment
+                              class="bg-[#1062da] text-white rounded-sm px-3 text-[12px] mb-2 mr-1">
+                             Add Teachers Comment
                            </button>
 
                            <button
                               @click="showStudentReport(summary)"
                               type="button"
-                              class="bg-[#1062da] text-white rounded-sm px-3 py-1 text-[12px]">
-                           View Details
+                              class="bg-green-800 text-white rounded-sm px-3 text-[12px]">
+                           View Report
                            </button>
 
                         </div>

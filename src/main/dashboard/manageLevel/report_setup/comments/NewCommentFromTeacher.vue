@@ -11,6 +11,7 @@ const notificationStore  = useNotificationStore()
 const teacherCommentStore = useTeacherCommentStore()
 const commons = useCommonsStore()
 const loader = ref(false)
+const errorMessage = ref("")
 
 const props = defineProps({
     reportSummaryNumber:String
@@ -62,11 +63,13 @@ watch(
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
       {{ errorMessage }}
     </div>
-    <!-- {{ reportSummaryNumber }} -->
+
 
     <div class="mb-2 ">
-      <label><small>Comment</small></label>
-    <textarea class="form-control mt-2" v-model="form.comment"></textarea>
+      <label class="text-sm text-gray-600">Comment</label>
+      <textarea
+          class="form-control mt-2 shadow-none"
+          v-model="form.comment"></textarea>
     </div>
 
     <div class="flex justify-content-end mt-4" style="width: 100%;">

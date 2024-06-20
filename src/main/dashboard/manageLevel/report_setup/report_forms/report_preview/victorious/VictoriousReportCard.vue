@@ -304,7 +304,7 @@ const filterReportData = () => {
         <table style="width: 100%; font-size: 13px; margin-top: 20px;">
           <tr>
             <td style="width: 20%; padding: 5px;">Class Teacher's Remarks:</td>
-            <td style="padding: 5px; text-align: center;">Diego has shown some improvement in his performance</td>
+            <td style="padding: 5px; text-align: center;">{{reportDetails?.teacher_comment ?? ""}}</td>
           </tr>
           <tr>
             <td style="width: 20%; padding: 5px;"></td>
@@ -316,7 +316,7 @@ const filterReportData = () => {
         <table style="width: 100%; font-size: 13px; margin-top: 20px;">
           <tr>
             <td style="width: 20%; padding: 5px;">Head Teacher's Remarks:</td>
-            <td style="padding: 5px; text-align: center;">Keep up your hard work please.</td>
+            <td style="padding: 5px; text-align: center;">{{reportDetails?.head_teachers_comment ?? ""}}</td>
           </tr>
           <tr>
             <td style="width: 20%; padding: 5px;"></td>
