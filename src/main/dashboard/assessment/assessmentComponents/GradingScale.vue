@@ -154,7 +154,7 @@ watch (
                 <div class="card-header">
            <div class="row">
             <div class="col-lg-6 "> 
-                  <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">  
+                  
             </div>
             <div class="col-lg-6">
                 <button

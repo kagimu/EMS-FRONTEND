@@ -14,7 +14,7 @@ const switchTabs = (data) => {
 
 </script>
 <template>
-    <div>
+    <div >
 
 
       <div class="flex border-b">
@@ -48,7 +48,7 @@ const switchTabs = (data) => {
      <AssembledItems></AssembledItems>
    </div>
 
-   <div v-if="selectedTab === 'new-item'">
+   <div v-if="selectedTab === 'new-item'" class="m-6" >
      <NewMenuItem></NewMenuItem>
    </div>
 
