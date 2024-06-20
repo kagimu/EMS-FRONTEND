@@ -192,7 +192,7 @@ watch(
 <div class="row">
  
           <div class="mb-2">
-            <label class="textColor">Level</label>
+            <label class="text-sm text-gray-600">Level</label>
             <select
                 class="form-select form-select-sm shadow-none"
                 v-model="campus_level_number"
@@ -204,7 +204,7 @@ watch(
           </div>
 
           <div class="mb-2">
-            <label class="textColor">Class</label>
+            <label class="text-sm text-gray-600">Class</label>
             <select
                 class="form-select form-select-sm shadow-none" required
                 v-model="campus_class_number"
@@ -215,36 +215,10 @@ watch(
             </select>
           </div>
 
-          <!-- <div class="mb-2">
-            <label class="textColor">Academic Year</label>
-            <select
-                class="form-select form-select-sm shadow-none"
-                v-model="academic_year_number"
-                @change="fetchStudyPeriod(academic_year_number)"
-            >
-              <option disabled value="">--select--</option>
-              <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
-                {{list.code+". "+list.academic_year_name}}
-              </option>
-            </select>
-          </div> -->
 
-
-          <!-- <div class="mb-2">
-            <label class="textColor">Study Period</label>
-            <select
-                class="form-select form-select-sm shadow-none" required
-                v-model="study_period_number"
-                @change="doFetchReportSettings()"
-            >
-              <option disabled value="">--Select--</option>
-              <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
-
-            </select>
-          </div> -->
 
           <div class="mb-2">
-            <label class="textColor">ReportSetting</label>
+            <label class="text-sm text-gray-600">ReportSetting</label>
             <select
                 class="form-select form-select-sm shadow-none"
                 v-model="form.report_setting_number"
@@ -258,7 +232,7 @@ watch(
    <div class="row">
     <div class="col-6">
         <div class="mb-2">
-      <label class="textColor">Minimum Aggregate</label>
+      <label  class="text-sm text-gray-600">Minimum Aggregate</label>
       <input
           @keypress="commons.numbersOnlyValidator($event)"
           maxlength="10"
@@ -273,7 +247,7 @@ watch(
 
     <div class="col-6">
         <div class="mb-2">
-      <label class="textColor">Maximum Aggregate</label>
+      <label class="text-sm text-gray-600">Maximum Aggregate</label>
       <input
           @keypress="commons.numbersOnlyValidator($event)"
           maxlength="10"
@@ -288,8 +262,10 @@ watch(
   </div>
 
     <div class="mb-2">
-      <label class="textColor"><small>Comment</small></label>
-    <textarea class="form-control" v-model="form.comment"></textarea>
+      <label class="text-sm text-gray-600">Comment</label>
+      <textarea
+        class="form-control shadow-none"
+        v-model="form.comment"></textarea>
     </div>
 
 

@@ -16,7 +16,7 @@ const showCommentModal = ref(false)
 
 onMounted(
     async () => {
-        teacherCommentStore.fetchTeacherComments()
+        await teacherCommentStore.fetchTeacherComments()
     }
 )
 
@@ -30,7 +30,7 @@ watch(
     async (data) => {
       if(data){
         showCommentModal.value = false
-        teacherCommentStore.fetchTeacherComments()
+        await teacherCommentStore.fetchTeacherComments()
       }
     }
 )
@@ -54,7 +54,7 @@ watch(
 
   <div>
 
-    <AppModal title="New Comment" v-model="showCommentModal" lg>
+    <AppModal title="Add Head Teachers Comment" v-model="showCommentModal" lg>
         <NewTeacherComment></NewTeacherComment>
     </AppModal>
 
@@ -65,11 +65,11 @@ watch(
       <div class="col-12">
 
         <div class="flex justify-content-between mt-3">
-          <div class="ml-4">Teacher's Comments</div>
+          <div class="ml-4">Head Teacher's Comments</div>
           <button
               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addComments">
             <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-              Add New Comment
+              Add Head Teachers Comment
           </button>
         </div>
 
@@ -80,7 +80,7 @@ watch(
             <th>(Min - Max) Aggregate</th>
             <th>Comment</th>
             <th>Accademic Year</th>
-            <td>Study Period</td>
+            <th>Study Period</th>
           </tr>
           </thead>
           <tbody>
