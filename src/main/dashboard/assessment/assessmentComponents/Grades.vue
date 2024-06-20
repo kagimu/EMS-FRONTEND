@@ -15,6 +15,7 @@ const errorMessage = ref(null)
 const showGradeModal = ref(false)
 const gradeDataInfo = ref([])
 const editModel = ref(false)
+const deletionLoader = ref(undefined)
 const namee = ref(null)
 
 const addGrade  = () => {
@@ -40,13 +41,14 @@ const showEditModal = (gradeD) => {
     
 }
 
-const deleteGrade = (id,name) => {
-if(!confirm("Are you sure, you want to delete: " + name)){
-  return
-}else {
-assessmentStore.deleteGrade(id)
-}
+const deleteGrade = (data, index) => {
+  if(!confirm("Are you sure, you want to delete: " + data.name)){
+    return
+  }
 
+  deletionLoader.value = index
+
+  assessmentStore.deleteGrade(data.number)
 }
 
 watch (
@@ -87,11 +89,22 @@ watch(
     }
 )
 
+watch(
+    () => assessmentStore.deleteGradeResponse,
+    async (data) => {
+      if(data){
+         deletionLoader.value = false
+         doFetchGrades()
+         notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
 </script>
 <template>
     <div>
 
-      <AppModal :title="editModel ? 'Edit Format Of Assessment ' : 'Add Format Of Assessment'  " v-model="showGradeModal" lg>
+      <AppModal :title="editModel ? 'Edit Format Of Aggregates ' : 'Add Format Of Aggregates'  " v-model="showGradeModal" lg>
         <NewGrade :gradeDataInfo="gradeDataInfo"></NewGrade>
       </AppModal>
 
@@ -107,7 +120,7 @@ watch(
                     type="button"
                     class="btn btn-primary btn-sm">
                   <i class="bi bi-plus"></i>
-                  New Format Of Assessment
+                  New Format Of Aggregates
                 </button>
             </div>
            </div>
@@ -139,8 +152,11 @@ watch(
               <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
             </button>
             &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
-            <button type="button" @click="deleteGrade(gradeList.number,gradeList.name)">
+            <button type="button" @click="deleteGrade(gradeList, index)">
               <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+              <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
+                <span class="visually-hidden">Loading...</span>
+              </div>
             </button></td>
         </tr>
 

@@ -24,16 +24,10 @@ const campusClassList = ref(null)
 const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 
-onMounted(
-    async () => {
-      await fetchCampusLevel()
-      getGradeInfo()
-    }
-)
-
 const props = defineProps({
   gradeDataList:{}
 })
+
 
 const form = reactive({
   code: null,
@@ -44,25 +38,47 @@ const form = reactive({
   campus_number:campusNumber
 })
 
+
+onMounted(
+    async () => {
+        fetchCampusLevel()
+        getGradeInfo()
+    }
+)
+
+
+watch(
+    () => props.gradeDataList,
+    async (data) => {
+      if(data){
+        getGradeInfo()
+      }
+    }
+)
+
+
+
 const getGradeInfo = () => {
-  if(props.gradeDataList){
-    form.code = props.gradeDataList.code
-    form.type = props.gradeDataList.type
-    form.name = props.gradeDataList.name
-    form.description = props.gradeDataList.description
-  }
+    let draft = props.gradeDataList
+    if(draft) {
+      form.code = draft.code
+      form.type = draft.type
+      form.name = draft.name
+      form.description = draft.description
+
+    }
 }
 
 
 const addGradeStandard = () => {
-  form.code = parseInt(form.code)
   buttonLoader.value = true
-  if(props.gradeDataList.number){
-    form.grade_standard_number = props.gradeDataList.number
-    // alert(JSON.stringify(form))
-    assessmentStore.updateGradeStandard(form)
+  form.code = parseInt(form.code)
+  let draft = props.gradeDataList
+  if(draft){
+      form.grade_standard_number = draft.number
+      assessmentStore.updateGradeStandard(form)
   }else{
-    assessmentStore.createGradeStandard(form)
+      assessmentStore.createGradeStandard(form)
   }
  
 }
@@ -213,7 +229,7 @@ watch(
           
      <div class="flex justify-content-end mt-4" style="width: 100%;">
             <button type="submit" class="btn btn-primary border-0 btn-sm">
-                 <small><i class="bi bi-save"></i> submit</small>
+                 <small><i class="bi bi-save"></i> {{gradeDataList ? "Edit" : "submit"}} </small>
                  <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
                       role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span> 
                     </span>

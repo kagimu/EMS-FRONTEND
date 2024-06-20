@@ -27,7 +27,10 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const newGradeResponse = ref(null)
     const updateGradeResponse = ref(null)
     const deleteGradeResponse = ref(null)
+    const deleteGradingScaleResponse = ref(null)
     const  updateGradeStandardResponse = ref(null)
+
+
 
     async function createAssessmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -82,7 +85,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
             })
     }
     
-    async function fetchAssessments(data) {
+    async function fetchAssessments() {
         return await api.get("main/assessments")
             .then((response) => {
                 assessmentResponse.value = response.data
@@ -343,6 +346,19 @@ async function createMetric(data) {
                 }
             })
     }
+
+
+    async function deleteGradeStandard(grade_standard_number) {
+        return await api.delete("main/assessments/grade-standard/"+grade_standard_number)
+            .then((response) => {
+             deleteGradingScaleResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
     
     async function updateGradeStandard(data) {
         return await api.put("main/grading-standard",data)
@@ -356,54 +372,56 @@ async function createMetric(data) {
             })
     }
     return {
-        createAssessmentAreas,
         newAssessmentAreasResponse,
         assessmentAreaResponse,
         gradingStandardResponse,
-        fetchAssessmentArea,
         newAssessmentResponse,
         createNewAssessment,
-        fetchAssessments,
         fetchAssessmentsByStudentId,
         assessmentResponse,
         errorMessage,
         assessmentByStudentIdResponse,
         newAggregateScaleResponse,
-        createAggregateScale,
         aggregateScaleResponse,
-        fetchAggregateScale,
         newGradeStandardResponse,
-        createGradeStandard,
         gradeStandardResponse,
-        fetchGradeStandard,
         createReportCard,
         newReportCardResponse,
         newAssessmentMetricResponse,
         assessmentMetricsResponse,
-        createAssessmentMetrics,
-        fetchAssessmentMetrics,
-        createMetric,
         newMetricResponse,
         metricResponse,
-        fetchMetrics,
         newAssessmentScaleResponse,
-        createAssessmentScale,
-        fetchAssessmentGrades,
         assessmentScaleResponse,
-        updateAssessmentScale,
         updateAssessmentScaleResponse,
-        fetchGradingStandardData,
-        fetchAssessmentAreaByClass,
         assessmentAreaByClassResponse,
         newGradeResponse,
         gradeResponse,
+        updateGradeResponse,
+        deleteGradeResponse,
+        updateGradeStandardResponse,
+        deleteGradingScaleResponse,
+        createAssessmentAreas,
+        fetchAssessmentArea,
+        fetchAssessments,
+        createAggregateScale,
+        fetchAggregateScale,
+        createGradeStandard,
+        fetchGradeStandard,
+        createAssessmentMetrics,
+        fetchAssessmentMetrics,
+        createMetric,
+        fetchMetrics,
+        createAssessmentScale,
+        fetchAssessmentGrades,
+        updateAssessmentScale,
+        fetchGradingStandardData,
+        fetchAssessmentAreaByClass,
         createGrade,
         fetchGrades,
-        updateGradeResponse,
         updateGrade,
-        deleteGradeResponse,
         deleteGrade,
-        updateGradeStandardResponse,
-        updateGradeStandard
+        updateGradeStandard,
+        deleteGradeStandard,
     }
 })

@@ -31,6 +31,7 @@ const campusClassList = ref(null)
 const namee = ref(null)
 const gradeDataList = ref([])
 const editModel = ref(false)
+const deletionLoader = ref(undefined)
 
 
 
@@ -125,17 +126,41 @@ const editThisData = (gradeList) => {
   showGradeStandardModal.value = true
 }
 
-const deleteThisData = (id,name) => {
-  if(!confirm("Are you sure, you want to delete: " + name)){
+const deleteThisData = (info,index) => {
+
+  if(!confirm("Are you sure, you want to delete: " + info.name)){
     return
-  }else{
-    let data = {
-     grade_standard_number:id
-    }
-     cateringStore.deleteGradeStandard(data)
   }
 
+  deletionLoader.value = index
+
+  assessmentStore.deleteGradeStandard(info.number)
+
 }
+
+
+
+watch(
+    () => assessmentStore.deleteGradingScaleResponse,
+    async (data) => {
+      if(data){
+        doFetchGradingStandard()
+        deletionLoader.value = false
+        notificationStore.successToast("Success",data.message)
+      }
+    }
+)
+
+watch(
+    () => assessmentStore.errorMessage,
+    async (data) => {
+      if(data){
+        deletionLoader.value = undefined
+        notificationStore.errorToast("Error",data.message)
+      }
+    })
+
+
 </script>
 <template>
     <div>
@@ -209,25 +234,26 @@ const deleteThisData = (id,name) => {
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(gradeList, index) in gradeStandardData " :key="index">
-          <td>{{ gradeList.code }}</td>
-          <td>{{ gradeList.name }}</td>
-          <td>{{ gradeList.type }}</td>
-          <td>{{ gradeList.description }}</td>
-          <td>{{ gradeList.class }}</td>
+            <tr v-for="(gradeList, index) in gradeStandardData " :key="index">
+              <td>{{ gradeList.code }}</td>
+              <td>{{ gradeList.name }}</td>
+              <td>{{ gradeList.type }}</td>
+              <td>{{ gradeList.description }}</td>
+              <td>{{ gradeList.class }}</td>
 
-          <td>
-            <button @click="editThisData(gradeList)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
-            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
-          </button>
-          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-          <button type="button" @click="deleteThisData(gradeList.number,gradeList.name)">
-            <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
-          </button>
-          </td>
-        </tr>
-
-
+              <td>
+                <button @click="editThisData(gradeList)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
+                <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+              </button>
+              &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
+              <button type="button" @click="deleteThisData(gradeList, index)">
+                <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+                <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </button>
+              </td>
+            </tr>
         </tbody>
       </table>
       </div>
