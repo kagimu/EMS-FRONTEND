@@ -75,6 +75,9 @@ const showClasses = (TemplateN) =>{
 reportSetupStore.fetchClassesAddedReportTemplate(TemplateN,schoolNumber)
 repoId.value = TemplateN
 }
+
+
+
 </script>
 
 <template>
@@ -85,7 +88,7 @@ repoId.value = TemplateN
       <new-report-template></new-report-template>
     </AppModal>
     
-    <AppModal title="Assign Class To Template1" v-model="showAssignModal" lg>
+    <AppModal title="Assign Class To Template" v-model="showAssignModal" lg>
         <AssignTemplateToClass :reportTemplateNumber="reportTemplateNumber"></AssignTemplateToClass>
     </AppModal>
 
@@ -123,9 +126,9 @@ repoId.value = TemplateN
                     style="font-size: 10px;"
                     class="bi-plus-circle cursor-pointer link-primary" @click="assignClass(repoData.report_template_id)"></i></b> 
            
-                <ReportTemplateClasses :reportTemplateId="repoData.report_template_id"  :school_number="schoolNumber"></ReportTemplateClasses>
+                      <ReportTemplateClasses :reportTemplateId="repoData.report_template_id"  :school_number="schoolNumber"></ReportTemplateClasses>
 
-                    
+
                 </ol>
                 
             </td>
@@ -139,31 +142,7 @@ repoId.value = TemplateN
               </div>
             </td>
           </tr>
-          <!-- <tr>
-            <td>1</td>
-            <td>Template Name2</td>
-            <td>
-                <ol>
-                    <b><i
-                    style="font-size: 10px;"
-                    class="bi-plus-circle cursor-pointer link-primary" @click="assignClass"></i></b>   
-                    <li>Primary Seven [P7]<i
-                    style="font-size: 13px;" class="bi-x cursor-pointer link-danger"></i> </li>
-                
-                </ol>
-                
-            </td>
-            <td>
-             <div>
-                <i
-                    style="font-size: 13px;"
-                    data-bs-toggle="modal" data-bs-target="#levelModal"
-                    class="bi-pencil mr-2 cursor-pointer"></i> &nbsp;
-                <i
-                    style="font-size: 13px;" class="bi-trash cursor-pointer"></i>
-              </div>
-            </td>
-          </tr> -->
+
           </tbody>
         </table>
 

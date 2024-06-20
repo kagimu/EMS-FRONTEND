@@ -16,10 +16,10 @@ const form = reactive ({
 })
 
 const removeClass = () =>{
-    // alert(JSON.stringify(form))
     loader.value = true
     reportSetupStore.removeClassFromReportTemplate(form)
 }
+
 
 watch (
   () => reportSetupStore.removeClassFromReportTemplateResponse,
@@ -28,8 +28,7 @@ watch (
       notificationStore.successToast("Success", data.message)
       loader.value=false
     }
-  },
-  {deep:true}
+  }
 )
 
 watch(

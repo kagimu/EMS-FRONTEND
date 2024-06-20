@@ -44,10 +44,8 @@ onMounted(() => {
 )
 
 const addClassToReportTemplate = () => {
-
   loader.value = true
   form.code = form.code ? parseInt(form.code) : form.code
-  // alert(JSON.stringify(form))
   reportSetupStore.addClassToReportTemplate(form)
 }
 
@@ -57,22 +55,19 @@ watch (
   async (data) => {
     if(data){
       notificationStore.successToast("Success", data.message)
-      reportSetupStore.fetchReportTemplate()
       loader.value=false
     }
-  },
-  {deep:true}
+  }
 )
 
 watch(
     () => reportSetupStore.errorMessage,
     async (data) => {
           if (data) {
+              loader.value=false
               notificationStore.errorToast("Error", data.message)
-            //   reportSetupStore.fetchReportTemplate()
           }
-    },
-    {deep: true}
+    }
 )
 
 

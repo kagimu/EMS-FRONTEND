@@ -63,27 +63,50 @@ const clearClass = (classInfo) => {
   classListData.value = classInfo
 }
 
+
+watch (
+    () => reportSetupStore.removeClassFromReportTemplateResponse,
+    async (data) => {
+      if(data){
+        showClearClassModal.value = false
+        fetchTemplateClasses()
+      }
+    }
+)
+
+
+watch (
+    () => reportSetupStore.classToReportTemplateResponse,
+    async (data) => {
+      if(data){
+        fetchTemplateClasses()
+      }
+    }
+)
+
+
 </script>
 
 <template>
 <div>
 
-    <AppModal title="Comfirm !" v-model="showClearClassModal" xs>
+    <AppModal title="Confirm !" v-model="showClearClassModal" xs>
         <clearClassModal :classListData="classListData"></clearClassModal>
     </AppModal>
 
 
-      <div>
-     <div v-for="(listD,index) in classOnTemplateList" :key="index">
-     <!-- {{listD}} -->
+    <div>
+        <div v-for="(listD,index) in classOnTemplateList" :key="index">
 
-    <ul v-for="(classInfo, classIndex) in listD.classes" :key="classIndex">
-<li><span>{{classIndex+1}}</span>.{{classInfo.class_name}}<i
-style="font-size: 13px;" class="bi-x cursor-pointer link-danger"  @click="clearClass(classInfo)"></i> </li>
-</ul> 
-                    
-                  </div> 
-                 </div>
+        <ul v-for="(classInfo, classIndex) in listD.classes" :key="classIndex">
+          <li>
+            <span>{{classIndex+1}}.</span>{{classInfo.class_name}}
+            <i style="font-size: 13px;" class="bi-x cursor-pointer link-danger"  @click="clearClass(classInfo)"></i>
+          </li>
+        </ul>
+
+      </div>
+   </div>
 
 </div>
 

@@ -140,7 +140,7 @@ const goToEntities = () => {
                   class="bi-list mr-2"
                   :class="defaultMenuSize ? 'transition ease-in-out rotate-0 duration-700' : 'transition ease-in-out -rotate-180 duration-700'"
               ></i>
-              <router-link class="navbar-brand text-white" :to="{name:'home'}"><div class="text-[17px]">{{ entityName }} > {{ schoolName }} > {{ campusName }}</div> </router-link>
+              <router-link class="navbar-brand text-white" :to="{name:'home'}"><div class="text-[17px]">{{ entityName }}</div> </router-link>
             </div>
             <div class="navbar-collapse">
               <ul class="navbar-nav me-auto my-lg-0 navbar-nav-scroll" style="font-size: 13px;">
@@ -255,6 +255,13 @@ const goToEntities = () => {
 
     <div class="flex-1 h-screen overflow-y-scroll scrollbar-thin pb-[120px] bg-[#ecf0f5]">
       <div class="px-3 pt-[50px]">
+
+          <div class="text-xs text-gray-600 pt-3">
+            <router-link class="navbar-brand" :to="{name:'home'}">
+              <div>Home / {{ schoolName }} / {{ campusName }}</div>
+            </router-link>
+          </div>
+
         <router-view></router-view>
       </div>
     </div>
