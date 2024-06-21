@@ -17,7 +17,7 @@
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <button class="nav-link navColor active" id="applicants_tab" data-bs-toggle="tab" data-bs-target="#applicants" type="button" role="tab" aria-controls="applicants" aria-selected="false"><small>Assess Interview Applicants</small></button>
-          <button class="nav-link navColor" id="assessment_tab" data-bs-toggle="tab" data-bs-target="#assessment" type="button" role="tab" aria-controls="assessments" aria-selected="false"><small>Assessment Metrics On Interview</small></button>
+          <button class="nav-link navColor" id="assessment_tab" data-bs-toggle="tab" data-bs-target="#assessment" type="button" role="tab" aria-controls="assessments" aria-selected="false"><small>Assessment Schedules On Interview</small></button>
           <button class="nav-link navColor" id="admission-offer_tab" data-bs-toggle="tab" data-bs-target="#admission-offer" type="button" role="tab" aria-controls="admission-offer" aria-selected="false"><small> Offer Admission</small></button>
           <!-- <button class="nav-link navColor" id="applicant-reports_tab" data-bs-toggle="tab" data-bs-target="#applicant-reports" type="button" role="tab" aria-controls="" aria-selected="false"><small>Applicant Reports</small></button>          -->
         </div>

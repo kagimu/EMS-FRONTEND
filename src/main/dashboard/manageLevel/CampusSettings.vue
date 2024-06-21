@@ -7,7 +7,7 @@
           <button class="nav-link navColor" id="classes-tab" data-bs-toggle="tab" data-bs-target="#classes" type="button" role="tab" aria-controls="classes" aria-selected="false"><small>Class</small></button>
           <button class="nav-link navColor" id="academic-year-tab" data-bs-toggle="tab" data-bs-target="#academic-year" type="button" role="tab" aria-controls="academic-year" aria-selected="false"><small>Academic Year</small></button>
           <button class="nav-link navColor" id="study-period-tab" data-bs-toggle="tab" data-bs-target="#study-period" type="button" role="tab" aria-controls="study-period" aria-selected="false"><small>Study Period</small></button>
-          <button class="nav-link navColor" id="assessment-metrics-tab" data-bs-toggle="tab" data-bs-target="#assessment-metrics" type="button" role="tab" aria-controls="assessment-metrics" aria-selected="false"><small>Assessment Metrics</small></button>
+          <button class="nav-link navColor" id="assessment-metrics-tab" data-bs-toggle="tab" data-bs-target="#assessment-metrics" type="button" role="tab" aria-controls="assessment-metrics" aria-selected="false"><small>Assessment Schedule</small></button>
         </div>
       </nav>
       <div class="tab-content" id="nav-tabContent">

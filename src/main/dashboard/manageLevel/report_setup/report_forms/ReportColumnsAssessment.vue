@@ -372,7 +372,7 @@ const deleteThisData = (id,assesmentArea,assesmentMet,rcolumn) => {
                 v-model="assessment_metric_number"
                 @change="doFetchReportColumnAssessment"
                >
-              <option disabled value="">--Filter by Assessment Metric--</option>
+              <option disabled value="">--Filter by Assessment Schedule--</option>
               <option v-for="(list, index) in assessmentMetricList" :key="index" :value="list.number">
                 {{list.description + " [ " +list.name + " ] " + " ( "+ list.assessment_area_name +" ) "}}</option>
             </select>
@@ -389,7 +389,7 @@ const deleteThisData = (id,assesmentArea,assesmentMet,rcolumn) => {
           <tr>
             <th class="w-[10%]" scope="col">Code</th>
             <th scope="col">Assessment Area</th>
-            <th scope="col">Assessment Metric</th>
+            <th scope="col">Assessment Schedule</th>
             <th scope="col">Report Column</th>
             <th scope="col">Action</th>
           </tr>

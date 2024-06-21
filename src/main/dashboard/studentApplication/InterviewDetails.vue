@@ -49,7 +49,7 @@
                 <li>Exam Type: Interview</li>
                 <li>
                   <div class="row">
-                    <div class="col-lg-2">Assessment Metric </div>
+                    <div class="col-lg-2">Assessment Schedule </div>
                     <div class="col-lg-4">
                   {{ interviewM}}
 

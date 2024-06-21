@@ -1,6 +1,6 @@
 <template>
   <div>
-     <AppModal title="Attach Assessment Metrics To An Interview" v-model="showingModal" lg>
+     <AppModal title="Attach Assessment Schedules To An Interview" v-model="showingModal" lg>
         <interview-assessment :interviewNumber="interviewNumber"></interview-assessment>
      </AppModal>
      <div class="row mt-4">
