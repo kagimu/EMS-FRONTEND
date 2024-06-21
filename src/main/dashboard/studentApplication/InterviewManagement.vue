@@ -63,4 +63,6 @@ let interviewM = routerData.currentRoute.value.query.interview
 const goBack = () => {
   window.history.back()
 }
+
+
 </script>

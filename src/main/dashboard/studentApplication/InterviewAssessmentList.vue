@@ -99,6 +99,13 @@ watch (
 )
 
     
+const deleteThisData = (id,name) => {
+
+if(!confirm("Are you sure, you want to remove: " + name)){
+  return
+}
+}
+
 </script>
 
 <template>
@@ -147,7 +154,7 @@ class="btn btn-primary btn-sm mb-2 mt-4"
         <td>{{ list.AssessmentMetric.description }}</td>
         
         <td>
-          <button type="button">
+          <button type="button" @click="deleteThisData(list.number,list.AssessmentMetric.name)"> 
             <i class="bi bi-x" style="color:rgb(201, 10, 10)"></i>
           </button>
     </td>
