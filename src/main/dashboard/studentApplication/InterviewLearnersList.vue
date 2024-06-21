@@ -430,7 +430,28 @@ watch(
       <div class="mt-2">
         <div class="row mx-auto">
        <div class="row">
-              <div class="col-3">
+        <label style="font-size: 11px;"  class="alert alert-primary p-0">* Please Select Assessment schedule to View Applicants</label>
+       </div>
+    
+<div class="row mt-2">
+        <div class="col-lg-4">
+           <div class="mb-2">
+      
+            <div class="input-group mt-1">
+          <select
+                 style="box-shadow: none;"
+                 class="form-select form-select-sm"  id="inputGroupSelect02" required
+                 v-model="assessmentNumber"
+                 @change="fetchStudentOnInterview(assessmentNumber,interviewNumber)"
+                 >
+                 <option disabled value=""> - Select Assessment schedule - </option>
+                 <option v-for="(assessment, index) in assessmentDataList" :key="index" :value="assessment.AssessmentMetric.number">{{assessment.AssessmentMetric.name  }}</option>
+              </select>
+
+</div>
+           </div>
+        </div>
+        <div class="col-3">
                 <div class="mb-2">
           <select
                   style="box-shadow: none;"
@@ -445,6 +466,7 @@ watch(
       </div>
               </div>
 
+              
               <div class="col-2">
       <div class="mb-2">
           <select
@@ -458,7 +480,6 @@ watch(
               </option>
           </select>
       </div></div>
-
 
       <div class="col-3">
         <div class="mb-2">
@@ -474,32 +495,6 @@ watch(
           </select>
       </div>
       </div>
-       </div>
-    
-<div class="row mt-4">
-        <div class="col-lg-4">
-           <div class="mb-2">
-            <label style="font-size: 11px;"  class="alert alert-primary p-0">* Please Select Assessment schedule to View Applicants</label>
-            <div class="input-group mt-1">
-          <select
-                 style="box-shadow: none;"
-                 class="form-select form-select-sm"  id="inputGroupSelect02" required
-                 v-model="assessmentNumber"
-                 @change="fetchStudentOnInterview(assessmentNumber,interviewNumber)"
-                 >
-                 <option disabled value=""> - Select Assessment schedule - </option>
-                 <option v-for="(assessment, index) in assessmentDataList" :key="index" :value="assessment.AssessmentMetric.number">{{assessment.AssessmentMetric.name  }}</option>
-              </select>
-
-</div>
-           </div>
-        </div>
-        <div class="col-lg-1">
-
-        </div>
-        <div class="col-lg-7">
-         
-        </div>
      </div>
 
 
