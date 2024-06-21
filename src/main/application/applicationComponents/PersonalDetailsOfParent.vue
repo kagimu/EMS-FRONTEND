@@ -100,6 +100,8 @@ const formData = reactive ({
   parent_number:null
 })
 
+const page = ref(1)
+const per_page = ref(15)
 
 
 watch (
@@ -109,8 +111,15 @@ watch (
           localStorage.setItem("applicationId", data.application_number)
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-
         emit("next", 2 )
+
+  let dataa = {
+      page: page.value,
+      per_page: per_page.value,   
+      status: "SUBMITTED"
+   }
+    applicationStore.fetchApplicationList(dataa)
+
       }
     },
     {deep:true}

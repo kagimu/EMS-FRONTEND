@@ -102,11 +102,11 @@ watch(
 
 
         <div class="flex justify-content-between mt-3">
-          <div class="ml-4">Meal Courses Per Day</div>
+          <div class="ml-4">Daily group courses</div>
           <button
               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addMealCoursePerDay">
             <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-            Add Meal Course Per Day
+            Add Daily group courses
           </button>
         </div>
 

@@ -1,5 +1,19 @@
 <script setup>
 import { defineEmits } from "vue";
+import {onMounted, reactive, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+
+const applicationStore= useApplicationStore()
+const  notificationStore  = useNotificationStore()
+
+const page = ref(1)
+const per_page = ref(15)
+
+onMounted(() => {
+
+    }
+)
 
 const emit = defineEmits();
 

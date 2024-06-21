@@ -210,17 +210,25 @@ const addLearnerDetails = () => {
   }
  
 }
+const page = ref(1)
+const per_page = ref(15)
+
 watch (
     () => applicationStore.newApplicationDetailsLearnerResponse,
     async (data) => {
       if(data){
         localStorage.setItem("CampusClassNumber", form.campus_class_number)
         localStorage.setItem("studentNumber", data.data.number)
-        // alert(data.apn)
         buttonLoader.value = false
-        // notificationStore.successToast("Successs", data.message)
         assessmentStore.fetchAssessmentAreaByClass(form.campus_class_number)
         emit("next", 3 )
+
+        let dataa = {
+      page: page.value,
+      per_page: per_page.value,   
+      status: "SUBMITTED"
+   }
+    applicationStore.fetchApplicationList(dataa)
       }
     },
     {deep:true}

@@ -60,7 +60,7 @@ const mealMenu = ref([
     value:"meal-course-feeding-sessions"
   },
   {
-    text:"Meal Courses Per Day",
+    text:"Daily group courses",
     value:"meal-courses-per-day"
   },
   {

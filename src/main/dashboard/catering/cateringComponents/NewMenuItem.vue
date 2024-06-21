@@ -271,7 +271,7 @@ const clearFormData = () => {
 
     <div class="col-lg-12" v-if="!isEdit">
 
-<div class="mb-2">
+<!-- <div class="mb-2">
   <label class="textColor"><small>School</small> </label>
   <select
       v-model="menuForm.school_number"
@@ -297,7 +297,7 @@ const clearFormData = () => {
     <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
     </option>
   </select>
-</div>
+</div> -->
 </div>
 
     <div class="col-lg-12">

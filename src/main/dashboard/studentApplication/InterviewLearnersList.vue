@@ -86,19 +86,29 @@ const ScoreData = reactive ({
 
 onMounted(
     () => {
-      applicationStore.fetchStudentsOnInterview(interviewNumber)
+      // applicationStore.fetchStudentsOnInterview(interviewNumber)
       studentApplicationStore.fetchAssessmentMetricsOnInterview(interviewNumber)
       schoolStore.fetchSchools()
     }
 )
-
+const assessN = ref(null)
 const fetchStudentOnInterview = (assessmentMetricNumber,interviewN) =>{
+  assessN.value = assessmentMetricNumber
+
    let data = {
       interview_number:interviewN,
       assessment_metric_number:assessmentMetricNumber
    }
       applicationStore.fetchStudentsOnInterview(data) 
       
+  }
+
+  const refreshStudentOnInterviewList = () => {
+    let data = {
+      interview_number:interviewNumber,
+      assessment_metric_number:assessN.value
+   }
+      applicationStore.fetchStudentsOnInterview(data) 
   }
 
 
@@ -385,6 +395,18 @@ const showDialog = () => {
   }
 }
 
+watch(
+  () => admissionStore.admitStudentResponse,
+  async (data) => {
+      if (data) {
+        // myAdmitModal.value = false
+        showAdmitModal.value = false
+        // notificationStore.successToast("Success", data.message)
+        refreshStudentOnInterviewList()
+      }
+  },
+  {deep: true}
+)
 
   </script>
 
@@ -407,12 +429,7 @@ const showDialog = () => {
     <div class="col-12">
       <div class="mt-2">
         <div class="row mx-auto">
-
-          
-      
-
-          <!-- <form @submit.prevent="Admit()">
-            <div class="row">
+       <div class="row">
               <div class="col-3">
                 <div class="mb-2">
           <select
@@ -459,14 +476,10 @@ const showDialog = () => {
       </div>
        </div>
     
-</form> -->
-
-
-
 <div class="row mt-4">
         <div class="col-lg-4">
            <div class="mb-2">
-            <label style="font-size: 11px;"  class="alert alert-primary p-0">* Please Select Assessment Metric to View Applicants</label>
+            <label style="font-size: 11px;"  class="alert alert-primary p-0">* Please Select Assessment schedule to View Applicants</label>
             <div class="input-group mt-1">
           <select
                  style="box-shadow: none;"
@@ -474,7 +487,7 @@ const showDialog = () => {
                  v-model="assessmentNumber"
                  @change="fetchStudentOnInterview(assessmentNumber,interviewNumber)"
                  >
-                 <option disabled value=""> - Select Assessment Metric - </option>
+                 <option disabled value=""> - Select Assessment schedule - </option>
                  <option v-for="(assessment, index) in assessmentDataList" :key="index" :value="assessment.AssessmentMetric.number">{{assessment.AssessmentMetric.name  }}</option>
               </select>
 

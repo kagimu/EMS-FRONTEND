@@ -116,10 +116,10 @@
       () => applicationStore.applicationListResponse,
       async (data) => {
         if(data){
-          shDialog.value = false,
+          shDialog.value = false
          //  applicationInfoList.value = data.data
           fetchApplications(data)
-          showAppmodal.value = false
+         //  doFetchApplication()
         }
       },
       {deep:true}
@@ -245,24 +245,42 @@
         async (data) => {
             if (data) {
                 shDialog.value = false,
-                applicationStore.fetchApplicationList()   
+                showingModal.value = false,
+                doFetchApplication()
             }
         },
         {deep: true}
     )
+
+    
+watch (
+    () => applicationStore.newApplicationDetailsResponse,
+    async (data) => {
+      if(data){
+        
+         let dataa = {
+      page: page.value,
+      per_page: per_page.value,   
+      status: form.statusData 
+   }
+   applicationStore.fetchApplicationList(dataa)
+}
+    },
+    {deep:true}
+)
+
+
+watch (
+    () => applicationStore.newApplicationDetailsLearnerResponse,
+    async (data) => {
+      if(data){
+         // doFetchApplication()
+      }
+    },
+    {deep:true}
+)
+
   
-  
-    watch(
-      () => applicationStore.addStudentToInterviewResponse,
-      async (data) => {
-          if (data) {
-            showingModal.value=false
-            doFetchApplication()
-          }
-      },
-      {deep: true}
-  )
-     
 </script>
 
 <template>
