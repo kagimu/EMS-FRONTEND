@@ -42,6 +42,7 @@ export const useCateringStore = defineStore("catering", () => {
     let deleteFeedingSessionResponse = ref(null)
     let deleteFeedingGroupResponse = ref(null)
     const errorMessage = ref(null)
+    const deleteMenuItemResponse = ref(null)
 
     async function newUnitOfMeasureInfo(data) {
         return await api.post("main/catering/units-of-measure", data)
@@ -510,6 +511,19 @@ async function deleteFeedingGroup(data) {
             }
         })
 }
+
+async function deleteMenuItem(data) {
+    return await api.post("main/catering"+data)
+        .then((response) => {
+            deleteMenuItemResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response && response.response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
     return {
         newUnitOfMeasureInfoResponse,
         errorMessage,
@@ -587,6 +601,8 @@ async function deleteFeedingGroup(data) {
         deleteFeedingSession,
         deleteFeedingGroupResponse,
         deleteFeedingGroup,
-        updateFeedingSessionResponse
+        updateFeedingSessionResponse,
+        deleteMenuItem,
+        deleteMenuItemResponse
     }
 } )
