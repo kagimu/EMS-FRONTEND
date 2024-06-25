@@ -76,7 +76,7 @@ const getMenuItemInfo = () =>{
         menuForm.type = draft?.type ?? ""
         menuForm.unit_of_measure_number = draft?.unit_of_measure_number ?? ""
         menuForm.campus_number = draft?.number ?? ""
-        menuForm.base_price = draft?.base_price ?? ""
+        menuForm.base_price = draft?.unit_cost ?? ""
         menuForm.school_number = draft?.school_number ?? ""
         if(draft?.parts?.length > 0) {
           let items = draft?.parts
