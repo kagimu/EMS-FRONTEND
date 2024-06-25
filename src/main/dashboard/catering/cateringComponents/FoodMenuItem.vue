@@ -210,6 +210,27 @@ watch(
     }
 )
 
+
+const deleteThisData = (id,name) => {
+  if(!confirm("Are you sure, you want to delete: " + name)){
+    return
+  }else {
+    let data = {
+      menu_item_number:id
+    }
+    cateringStore.deleteMenuItem(data)
+  }
+}
+
+watch(
+    () => cateringStore.deleteMenuItemResponse,
+    async (data) => {
+      doFetchMenuItem()
+      notificationStore.successToast("Success", data.message)
+    },
+    {deep: true}
+)
+
 </script>
 <template>
     <div>
