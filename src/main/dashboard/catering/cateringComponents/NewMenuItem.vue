@@ -7,32 +7,35 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import AppModal from "@/components/AppModal.vue";
 import useCommonsStore from "@/composables/useCommons.js";
+
 const commons = useCommonsStore()
+const schoolStore = useSchoolStore()
+const campusStore = useCampusStore()
+const notificationStore = useNotificationStore()
+const cateringStore = useCateringStore()
+
 
 const showUnitModal = ref(false)
-const notificationStore = useNotificationStore()
 const thisDialog = ref(false)
 const buttonLoader = ref(false)
 const campusList = ref([])
 const schoolList = ref([])
-const schoolStore = useSchoolStore()
-const campusStore = useCampusStore()
-
 const feedingSessionGroupData = ref([])
 const menuOptions = ref([])
 const menuItems = ref([])
+const unitMeasurementData = ref([])
+const item_number = ref(null)
+
 
 onMounted(() => {
       schoolStore.fetchSchools()
-      // cateringStore.fetchMenuItem()
-      // cateringStore.fetchFeedingGroupSessions()
       cateringStore.fetchUnitOfMeasureInfo()
       getMenuItemInfo()
     }
 )
 
 const props = defineProps({
-  menuItemsinfoData:{}
+  menuItemsInfo:{}
 })
 
 
@@ -52,17 +55,37 @@ const menuForm = reactive({
   base_price:null,
   school_number:null
 } )
-const isEdit = ref(false)
+
+watch(
+    () => props.menuItemsInfo,
+    async (data) => {
+      if(data) {
+        getMenuItemInfo()
+      }
+    }
+)
+
+
+
 const getMenuItemInfo = () =>{
-  if (props.menuItemsinfoData?.number){
-    menuForm.name=props.menuItemsinfoData.name,
-    menuForm.code=props.menuItemsinfoData.code,
-    menuForm.type=props.menuItemsinfoData.type,
-    menuForm.unit_of_measure_number=props.menuItemsinfoData.unit_of_measure_number,
-    menuForm.campus_number=props.menuItemsinfoData.number,
-    menuForm.base_price=props.menuItemsinfoData.base_price,
-    menuForm.school_number=props.menuItemsinfoData.school_number
-    isEdit.value = true
+  let draft  = props.menuItemsInfo
+  if (draft?.number){
+        item_number.value = draft?.number ?? ""
+        menuForm.name = draft?.name ?? ""
+        menuForm.code = draft?.code ?? ""
+        menuForm.type = draft?.type ?? ""
+        menuForm.unit_of_measure_number = draft?.unit_of_measure_number ?? ""
+        menuForm.campus_number = draft?.number ?? ""
+        menuForm.base_price = draft?.base_price ?? ""
+        menuForm.school_number = draft?.school_number ?? ""
+        if(draft?.parts?.length > 0) {
+          let items = draft?.parts
+          items.forEach(lst => {
+            lst.secondary_item_number = lst.number
+          })
+          menuItems.value = items
+          doFetchMenuItem(draft.school_number)
+        }
   }
 }
 
@@ -71,15 +94,7 @@ const showUnitMeasurement = () => {
   thisDialog.value=false
 }
 
-const showDialog = () => {
-  thisDialog.value = true
-}
-const cateringStore = useCateringStore()
-const unitMeasurementData = ref([])
 
-const closeDialog = () => {
-  thisDialog.value = false
-}
 
 
 watch(
@@ -100,7 +115,14 @@ const addMenuItem = () =>{
     menuForm.base_price = parseFloat(menuForm.base_price)
 
     buttonLoader.value = true
-    cateringStore.newMenuItemInfo(menuForm)
+
+    if(item_number.value){
+      menuForm.menu_item_number = item_number.value
+      cateringStore.updateMenuItem(menuForm)
+    }else {
+      cateringStore.newMenuItemInfo(menuForm)
+    }
+
   }else{
     //prepare data
     const secondaryItemNumbers = menuItems.value.map(menu => {
@@ -119,9 +141,17 @@ const addMenuItem = () =>{
       campus_number:menuForm.campus_number,
       secondary_items:secondaryItemNumbers,
       school_number:menuForm.school_number
+
     })
     buttonLoader.value = true
-    cateringStore.newAssemblyItem(myData)
+
+    if(item_number.value){
+      myData.menu_item_number = item_number.value
+      cateringStore.updateAssemblyItem(myData)
+    }else {
+      cateringStore.newAssemblyItem(myData)
+    }
+
   }
 }
 
@@ -130,7 +160,7 @@ watch(
     async (data) => {
 
       notificationStore.successToast("Success", data.message)
-      // await cateringStore.fetchMenuItem()
+
           menuForm.name=null,
           menuForm.code=null,
           menuForm.type=null,
@@ -151,14 +181,10 @@ watch(
       if (data) {
         schoolList.value = data.data
       }
-    },
-    {deep: true}
+    }
 )
 
-const fetchCampuses = (school_number) => {
-  // campusStore.fetchCampuses(school_number)
-  doFetchMenuItem(school_number)
-}
+
 
 
 watch(
@@ -167,8 +193,7 @@ watch(
       if (data) {
         campusList.value = data.data
       }
-    },
-    {deep: true}
+    }
 )
 
 const doFetchMenuItem = (school_number) => {
@@ -220,7 +245,7 @@ const createFeedingSessionItem = () => {
     secondary_items: secondaryItemNumbers
   }
   const formattedData = JSON.stringify(data)
-  // alert(formattedData)
+
   cateringStore.newAssemblyItem(formattedData)
 }
 
@@ -228,12 +253,33 @@ watch(
     () => cateringStore.newAssemblyItemResponse,
     async (data) => {
       notificationStore.successToast("Success", data.message)
-      // await cateringStore.fetchMenuItem()
       clearFormData()
       buttonLoader.value = false;
     },
     {deep: true}
 )
+
+watch(
+    () => cateringStore.updateItemAssemblyResponse,
+    async (data) => {
+      if (data) {
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
+watch(
+    () => cateringStore.updateMenuItemResponse,
+    async (data) => {
+      if (data) {
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
+
 
 watch(
     () => cateringStore.errorMessage,
@@ -262,11 +308,12 @@ const clearFormData = () => {
 
 
 
+
 <form @submit.prevent="addMenuItem">
 
   <div class="row">
 
-    <div class="col-lg-12" v-if="!isEdit">
+    <div class="col-lg-12">
 
 <div class="mb-2">
   <label class="textColor"><small>School</small> </label>
@@ -274,7 +321,7 @@ const clearFormData = () => {
       v-model="menuForm.school_number"
       class="form-select form-select-sm" required
       style="box-shadow: none;"
-      @change="fetchCampuses(menuForm.school_number)"
+      @change="doFetchMenuItem(menuForm.school_number)"
   >
     <option disabled :value="null">Select School</option>
     <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
@@ -361,7 +408,6 @@ const clearFormData = () => {
 
       <div class="mt-4 text-[15px] ml-3">Assembled Items</div>
 
-
       <table class="table table-hover caption-top  border-t table-sm table-striped">
           <thead>
             <tr>
@@ -423,7 +469,7 @@ const clearFormData = () => {
         class="btn btn-primary btn-sm float-end mb-2 mr-4"
         type="submit">
             <i class="bi bi-arrow-right-circle mr-2"></i>
-            <small>submit</small>
+            <small>{{menuItemsInfo ? "Edit" : "submit" }}</small>
             <div v-if="buttonLoader" class="spinner-border spinner-border-sm" role="status" >
                 <span class="visually-hidden">Loading...</span>
             </div>

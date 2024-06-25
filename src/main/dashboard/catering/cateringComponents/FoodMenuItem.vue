@@ -198,12 +198,45 @@ if(!confirm("Are you sure, you want to delete: " + name)){
 }
 }
 
+
+watch(
+    () => cateringStore.updateMenuItemResponse,
+    async (data) => {
+      if (data) {
+        showingModal.value = false
+        menuItemData.value = []
+        doFetchMenuItem()
+      }
+    }
+)
+
+
+const deleteThisData = (id,name) => {
+  if(!confirm("Are you sure, you want to delete: " + name)){
+    return
+  }else {
+    let data = {
+      menu_item_number:id
+    }
+    cateringStore.deleteMenuItem(data)
+  }
+}
+
+watch(
+    () => cateringStore.deleteMenuItemResponse,
+    async (data) => {
+      doFetchMenuItem()
+      notificationStore.successToast("Success", data.message)
+    },
+    {deep: true}
+)
+
 </script>
 <template>
     <div>
 
 <AppModal v-model="showingModal" lg title="Update Menu Item">
-    <NewMenuItem :menuItemsinfoData="menuItemsinfoData"></NewMenuItem>
+    <NewMenuItem :menuItemsInfo="menuItemsinfoData"></NewMenuItem>
 </AppModal>
 
 
