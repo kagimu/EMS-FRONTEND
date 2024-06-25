@@ -96,7 +96,8 @@ watch(
 )
 
 const addReportColumn = () => {
-  editModel.value = ref(false)
+  reportColumnsListD.value = ""
+  editModel.value = false
   showReportColumnsModal.value = true
 }
 

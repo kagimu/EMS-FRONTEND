@@ -125,7 +125,7 @@ watch(
 
 <template>
   <div>
-    {{ reportColumnsListD }}
+    <!-- {{ reportColumnsListD }} -->
     <form @submit.prevent="addReportColumn">
 
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
