@@ -1,5 +1,10 @@
 <template>
     <div>
+
+      <AppModal title="New Service"   v-model="showDialog" lg>
+        <NewService></NewService>
+    </AppModal>
+
         <div class="modal fade" id="serviceModal" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: showDialog }">
       <div class="modal-dialog">
         <div class="modal-dialog">
@@ -28,18 +33,19 @@
         <button
         v-if="can('add_service','general')"
         style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
-        data-bs-target="#serviceModal"  data-bs-toggle="modal">
+      @click="openAddServiceModal">
         <i class="bi bi-plus"></i>&nbsp;<small>
           Add Service</small></button>
           
         <hr style="width:30px;"></h6>
       <table
         id="datatable"
-        class="table table-striped"
+        class="table table-hover caption-top mt-4 table-sm table-striped"
         style="font-size: 13px !important;"
       >
         <thead>
           <tr>
+            <th style="width: 5px;">#</th>
             <th>Service Name</th>
             <th>Cost</th>
             <th>Addition Info</th>
@@ -48,6 +54,7 @@
         </thead>
         <tbody>
           <tr v-for="(serviceData, index) in servicesList" :key="index" >
+            <td>{{ index+1 }}</td>
             <td>{{ serviceData.Item.name}}</td>
             <td>{{ serviceData.Item.cost}}</td>
             <td>{{ serviceData.Item.description}}</td>
@@ -110,11 +117,10 @@
   import NewService from "./NewService.vue"
   import UpdateService from "./UpdateService.vue"
   import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js"
-
+  import AppModal from "@/components/AppModal.vue";
   import { useAbility } from '@casl/vue';
 
 const { can } = useAbility()
-
 const servicesList = ref( [])
 let errorMessage = ref(null)
 const serviceId = ref(null)
@@ -128,6 +134,7 @@ const itemsPerPage = 9 // Number of items per page
 const currentPage = ref(1) // Current page
 const totalPages = ref(1) // Total pages
 const paginatedConditionList = ref([]) // Paginated condition list
+const editMode = ref(false)
   
   onMounted(
       async () => {
@@ -135,25 +142,14 @@ const paginatedConditionList = ref([]) // Paginated condition list
       } )
   
 
-  //     watch(
-  //     () => serviceStore.servicesListResponse,
-  //     async (data) => {
-  //       if(data){
-  //         servicesList.value = data
-  //       }
-  //     },
-  //     {deep:true}
-  // )
-
   watch (
     () => serviceStore.newServiceResponse,
     async (data) => {
       if(data){
-        await serviceStore.fetchServicesList()
+        serviceStore.fetchServicesList()
    
       }
-    },
-    {deep:true}
+    }
 )
   
   watch (
@@ -182,6 +178,7 @@ watch (
       if(data){
         notificationStore.successToast("Success", data.message)
         await serviceStore.fetchServicesList()
+        showDialog.value = false
       }
     },
     {deep:true}
@@ -191,10 +188,6 @@ function setServiceId(sId){
 serviceId.value = sId
 }
 
-
-
-//paginantion =============================================
- // Methods to handle pagination
  const prevPage = () => {
   if (currentPage.value > 1) {
     currentPage.value--
@@ -222,6 +215,21 @@ watch(
   { deep: true }
 )
 // ================================================
+
+const openAddServiceModal = () => {
+  showDialog.value = true
+  editMode.value = false
+}
+
+watch (
+    () => serviceStore.newServiceResponse,
+    async (data) => {
+      if(data){
+        showDialog.value = false
+      }
+    }
+)
+
   </script>
   
   

@@ -25,7 +25,6 @@
                     <li class="list-group-item" v-for="(lvl,idx) in campusList" :key="idx">
                         <input
                                 v-model="formData.campus_numbers"
-
                                 style="outline: none 0 !important; box-shadow: none;"
                                 class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="lvl.number">
                         <label class="textColor" :for="lvl.number"><small>{{lvl.name}}</small></label>
