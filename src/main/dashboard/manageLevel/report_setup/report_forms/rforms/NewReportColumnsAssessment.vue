@@ -361,7 +361,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Assessment Metric</small></label>
+        <label class="textColor"><small>Assessment Schedule</small></label>
         <select
             class="form-control form-select form-control-sm shadow-none"
             v-model="form.assessment_metric_number"

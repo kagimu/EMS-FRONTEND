@@ -1,20 +1,20 @@
 <template>
   <div>
-     <AppModal title="Attach Assessment Metrics To An Interview" v-model="showingModal" lg>
+     <AppModal title="Attach Assessment Schedules To An Interview" v-model="showingModal" lg>
         <interview-assessment :interviewNumber="interviewNumber"></interview-assessment>
      </AppModal>
      <div class="row mt-4">
         <div class="col-lg-4">
            <div class="mb-2">
-            <label style="font-size: 11px;"  class="alert alert-primary p-0">* Please Select Assessment Metric to Enter/view Marks</label>
+            <label style="font-size: 11px;"  class="alert alert-primary p-0">* Please Select Assessment Schedule to Enter/view Marks</label>
             <div class="input-group mt-1">
           <select
                  style="box-shadow: none;"
                  class="form-select form-select-sm"  id="inputGroupSelect02" required
                  v-model="assessmentNumber"
-                 @change="fetchStudentOnInterview(assessmentNumber,interviewNumber)"
+                 @change="fetchStudentOnInterview(assessmentNumber)"
                  >
-                 <option disabled value=""> - Select Assessment Metric - </option>
+                 <option disabled value=""> - Select Assessment Schedule- </option>
                  <option v-for="(assessment, index) in assessmentDataList" :key="index" :value="assessment.AssessmentMetric.number">{{assessment.AssessmentMetric.name  }}</option>
               </select>
   <label class="input-group-text" for="inputGroupSelect02"><i  class="bi bi-plus-circle" @click="showModal()"></i></label>
@@ -28,12 +28,15 @@
          
         </div>
      </div>
-     <div v-if="interviewStudentList === null" class="text-center mt-4">
+     <div v-if="interviewStudentListData === null" class="text-center mt-4">
         <div class="spinner-border text-primary" role="status">
            <span class="visually-hidden">Loading...</span>
         </div>
      </div>
-     <table  v-if="interviewStudentList !== null" id="data"
+     <!-- <div class="alert alert-danger">
+       {{ errorMessage }}
+     </div> -->
+     <table  v-if="interviewStudentListData !== null" id="data"
         class="table table-striped table-hover caption-top table-sm text-sm">
         <thead>
            <tr>
@@ -47,7 +50,7 @@
            </tr>
         </thead>
         <tbody>
-           <tr v-for="(std , index) in interviewStudentList" :key="index" >
+           <tr v-for="(std,index) in interviewStudentListData" :key="index" >
               <td>{{ index+1}}</td>
               <td style="text-transform: capitalize;">
                  {{std.student_surname ? std.student_surname : ""}}
@@ -101,14 +104,8 @@
   const commons = useCommonsStore()
   const studentsList = ref(null)
   const showingModal = ref(false)
-  const showModal = () => {
-      showingModal.value = true
-      thisDialog.value=false
-  }
-  
-  
   const assessmentNumber = ref("")
-  const interviewStudentList = ref( [])
+  const interviewStudentListData = ref( [])
   const assessmentStore = useAssessmentStore()
   const studentApplicationStore = useStudentApplicationStore()
   const routerData = useRouter()
@@ -116,18 +113,29 @@
   let interviewM = routerData.currentRoute.value.query.interview_m
   const notificationStore = useNotificationStore()
   const applicationStore= useApplicationStore()
-  
   const assessmentDataList = ref([])
   const assessment_metric_number = ref(null)
   const errorMessage = ref(null)
   const buttonLoader = ref(false)
+  const comm = ref(null)
+  const score = ref(null)
+  const studentNumber = ref(null)
+
+  const showModal = () => {
+      showingModal.value = true
+      thisDialog.value=false
+  }  
+
+  
+  const fetchStudentOnInterview = (assessmentMetricNumber) =>{
+   let data = {
+      interview_number:interviewNumber,
+      assessment_metric_number:assessmentMetricNumber
+   }
+      applicationStore.fetchStudentsOnInterview(data) 
+  }
   
   
-  onMounted(
-      () => {
-      //   studentApplicationStore.fetchAssessmentMetricsOnInterview(interviewNumber)
-      }
-  )
   watch(
       () => studentApplicationStore.assessmentMetricsOnInterviewResponse,
       async (data) => {
@@ -138,46 +146,18 @@
       {deep:true}
   )
   
-  const fetchStudentOnInterview = (assessmentMetricNumber,interviewN) =>{
-   let data = {
-      interview_number:interviewN,
-      assessment_metric_number:assessmentMetricNumber
-   }
-      // assessmentNumber.value = assessmentMetricNumber
-      // let  interviewNum = interviewN
-      applicationStore.fetchStudentsOnInterview(data) 
-      
-      // reportSetupStore.fetchStudentByAssessmentMetric(a)
-  }
-  
-  // watch(
-  //     () => reportSetupStore.studentsByAssessmentMetricResponse,
-  //     async (data) => {
-  //       if(data){
-  //        studentsList.value = data.data
-  //       }
-  //     },
-  //     {deep:true}
-  // )
-  
   
   watch(
       () => applicationStore.StudentsOnInterviewResponse,
       async (data) => {
         if(data){
-         if(assessmentNumber.value != ""){
-          interviewStudentList.value = data.data
-         }
+          interviewStudentListData.value = data.data
         }
       },
       {deep:true}
   )
   
-  //entering marks
-  const comm = ref(null)
-  const score = ref(null)
-  const studentNumber = ref(null)
-  
+
   const submitMarks = (a,b,c) =>{
       buttonLoader.value=true
       const form = reactive({
@@ -187,19 +167,15 @@
       assessment_date:null,
       actual_score:parseInt(a)
   })
-  
-  
-  // alert(JSON.stringify(form))
   studentApplicationStore.newInterviewAssessmentResult(form)
   }
-  
   
   
   watch (
       () => studentApplicationStore.interviewAssessmentResultResponse,
       async (data) => {
         if(data){
-      buttonLoader.value = false
+          buttonLoader.value = false
           notificationStore.successToast("Success", data.message)
         }
       },
@@ -216,8 +192,7 @@
       {deep:true}
       )
   
-  
-  
-  
+
+
 </script>
 <style></style>

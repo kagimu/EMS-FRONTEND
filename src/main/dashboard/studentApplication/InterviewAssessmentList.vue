@@ -99,13 +99,20 @@ watch (
 )
 
     
+const deleteThisData = (id,name) => {
+
+if(!confirm("Are you sure, you want to remove: " + name)){
+  return
+}
+}
+
 </script>
 
 <template>
   <div>
 
         
-  <AppModal title="Attach Assessment Metrics To An Interview" v-model="showingModal" lg>
+  <AppModal title="Attach Assessment Schedule To An Interview" v-model="showingModal" lg>
     <interview-assessment :interviewNumber="interviewNumber"></interview-assessment>
     </AppModal>
 
@@ -120,7 +127,7 @@ watch (
     <button
 class="btn btn-primary btn-sm mb-2 mt-4"
 @click="showModal()"
->  <small>Attach Assessment Metric To this Interview</small></button>
+>  <small>Attach Assessment Schedule To this Interview</small></button>
   </div>
 
 </div>
@@ -130,7 +137,7 @@ class="btn btn-primary btn-sm mb-2 mt-4"
     <thead>
     <tr>
       <th>#</th>
-      <th scope="col">Assessment Metric</th>
+      <th scope="col">Assessment Schedule</th>
       <!-- <th>Class</th> -->
       <th scope="col">Scheduled On</th>
       <th scope="col">Description</th>
@@ -147,7 +154,7 @@ class="btn btn-primary btn-sm mb-2 mt-4"
         <td>{{ list.AssessmentMetric.description }}</td>
         
         <td>
-          <button type="button">
+          <button type="button" @click="deleteThisData(list.number,list.AssessmentMetric.name)"> 
             <i class="bi bi-x" style="color:rgb(201, 10, 10)"></i>
           </button>
     </td>

@@ -84,9 +84,8 @@ watch(
       }
     }
 )
-
 watch(
-    () => mealStore.newMealCourseFeedingSessionsResponse,
+    () => mealStore.activateMealCourseResponse,
     async (data) => {
       if (data) {
         // form.name = null
@@ -95,6 +94,16 @@ watch(
       }
     }
 )
+
+// watch(
+//     () => mealStore.newMealCourseFeedingSessionsResponse,
+//     async (data) => {
+//       if (data) {
+        
+//         loader.value = false
+//       }
+//     }
+// )
 
 
 watch(

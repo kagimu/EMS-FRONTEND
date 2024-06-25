@@ -6,7 +6,9 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import AppModal from "@/components/AppModal.vue";
 import ActivateMealCourse from "@/main/dashboard/catering/meals/components/ActivateMealCourse.vue";
+import useNotificationStore from "@/composables/useNotification.js";
 
+const  notificationStore  = useNotificationStore()
 const mealCalendarList = ref([])
 const  mealStore  = useMealStore()
 const campusStore = useCampusStore()
@@ -79,6 +81,16 @@ watch(
       if(data){
         doFetchMealCourses()
         // mealCalendarList.value = data.data
+      }
+    }
+)
+
+watch(
+    () => mealStore.activateMealCourseResponse,
+    async (data) => {
+      if (data) {
+        notificationStore.successToast("Success", data.message)
+        mealActivateMealCourseDialog.value = false
       }
     }
 )
