@@ -31,6 +31,7 @@ const errorMessage = ref(null)
 
 onMounted(
     () => {
+      assessmentStore.fetchAssessmentMetrics()
       studentApplicationStore.fetchAssessmentMetricsOnInterview(interviewNumber)
     }
 )
@@ -48,11 +49,7 @@ watch(
 
 
 
-onMounted(
-    async () => {
-      await  assessmentStore.fetchAssessmentMetrics()
-    }
-)
+
 
 
 watch (
@@ -100,11 +97,37 @@ watch (
 
     
 const deleteThisData = (id,name) => {
-
 if(!confirm("Are you sure, you want to remove: " + name)){
   return
+}else{
+  let data = {
+    interview_assessment_metric_number:id
+  }
+  assessmentStore.removeInterviewAssessmentSchedule(data)
 }
 }
+
+watch(
+      () => assessmentStore.removeInterviewAssessmentScheduleResponse,
+      async (data) => {
+          if (data) {
+            studentApplicationStore.fetchAssessmentMetricsOnInterview(interviewNumber)
+              notificationStore.successToast("Success", data.message)
+          }
+      },
+      {deep: true}
+  )
+
+  watch (
+    () => assessmentStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
 
 </script>
 
@@ -129,7 +152,6 @@ class="btn btn-primary btn-sm mb-2 mt-4"
 @click="showModal()"
 >  <small>Attach Assessment Schedule To this Interview</small></button>
   </div>
-
 </div>
 
     <table id="data"

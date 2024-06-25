@@ -524,6 +524,7 @@ watch(
           <th style="width: 1px;">#</th>
           <th>Name</th>
           <th>status</th>
+          <th>#</th>
         </tr>
 
       </thead>
@@ -548,7 +549,9 @@ watch(
           <span v-if="student.status == 'ENROLLED'">  {{ student.status }}</span>
              <span v-for="(listD, index) in scoreDataList " :key="index">
             <span>{{ listD.actual_score }}</span></span>
-            
+          </td>
+          <td>
+            <button type="button"><i class="bi bi-trash" style="color: red;" ></i></button>
           </td>
         </tr>   
                   

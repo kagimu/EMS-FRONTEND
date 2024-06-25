@@ -29,7 +29,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const deleteGradeResponse = ref(null)
     const deleteGradingScaleResponse = ref(null)
     const  updateGradeStandardResponse = ref(null)
-
+    const removeInterviewAssessmentScheduleResponse = ref(null)
 
 
     async function createAssessmentAreas(data) {
@@ -371,6 +371,18 @@ async function createMetric(data) {
                 }
             })
     }
+
+    async function removeInterviewAssessmentSchedule(data) {
+        return await api.post("main/interviews/remove-interview-assessment-metric?interview_assessment_metric_number="+data.interview_assessment_metric_number)
+            .then((response) => {
+                removeInterviewAssessmentScheduleResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
     return {
         newAssessmentAreasResponse,
         assessmentAreaResponse,
@@ -423,5 +435,7 @@ async function createMetric(data) {
         deleteGrade,
         updateGradeStandard,
         deleteGradeStandard,
+        removeInterviewAssessmentScheduleResponse,
+        removeInterviewAssessmentSchedule
     }
 })
