@@ -251,7 +251,8 @@ watch(
                   </div>
                 </div>
                 <div>
-                  
+
+
                   <table 
                     id="datatable"
                     class="table table-hover caption-top mt-4 table-sm table-striped"
