@@ -31,15 +31,37 @@
 
              <div class="mb-2">
              <label class="textColor"><small>Subjects</small> <span class="star">*</span></label>
-             <select
+             <!-- <select
                      style="box-shadow: none;"
                      class="form-select form-select-sm" 
                      v-model="form.subject_number"
              >                
                  <option v-for="(sbj, index) in subjectList" :key="index" :value="sbj.number">{{sbj.name}}</option>
                  <option  value="">Other</option>
-             </select>
+             </select> -->
+
+
+
+             <table style="width: 100%;">
+                <tr v-for="(subject_numbers, index) in form.subject_numbers" :key="index">
+                  <td>
+                    <select v-model="subject_numbers.number" class="form-select form-select-sm">
+                      <option v-for="option in subjectList" :key="option" :value="option.number">{{ option.name }}</option>
+                    </select>
+                  </td>
+                  <td style="width: 2%;">
+                   <i @click="removeSubject(index)"  class="bi bi-x" style="color: red;pointer-events:auto;"></i>
+                  </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="button" @click="addSubject" class="btn btn-primary mb-2 btn-sm p-0 mt-1" style="color:white !important"><i class="bi bi-plus"></i></button>
+                    </td>
+                    <td></td>
+                </tr>
+              </table>
          </div>
+        
 
          <div class="mb-2" v-if="form.subject_number === ''">
                <label class="textColor"><small>Specify Name</small></label>
@@ -95,14 +117,15 @@ let  curriculumNumber = routerData.currentRoute.value.query.id
 const preferred_campus_number = ref(null)
 
   const form = reactive({ 
-    name:null,
+    // name:null,
     curriculum_class_number:[],
-    subject_number:null
+    // subject_number:null,
+    subject_numbers:[]
   })
 
   onMounted(
   async () => {
-    await assessmentStore.fetchAssesmentArea()
+    await assessmentStore.fetchAssessmentArea()
   } )
 
   
@@ -167,18 +190,16 @@ watch(
 )
 
 
-//working on dialog
-const closeInterviewDialog = () => {
-interviewDialog.value = false;
-};
-const showInterviewDialog = () => {
-interviewDialog.value = true;
-}
-
-  const addAssessmentArea = () => {
-   interviewDialog.value = true;
+const addAssessmentArea = () => {
    buttonLoader.value = true
-   assessmentStore.createAssessmentAreas(form)
+  const subjectNumbers = form.subject_numbers.map(subject => subject.number);
+  
+  let formData = {
+  curriculum_class_number:form.curriculum_class_number,
+  subjects: subjectNumbers
+  }
+  //  alert(JSON.stringify(formData))
+   assessmentStore.createAssessmentAreas(formData)
   }
 
   watch (
@@ -186,11 +207,7 @@ interviewDialog.value = true;
   async (data) => {
     if(data){
       buttonLoader.value = false
-      // assessmentStore.fetchAssesmentArea()
       // notificationStore.successToast("Success", data.message)
-    form.name=null,
-    form.curriculum_class_number=null,
-    form.subject_number=null
     }
   }
 )
@@ -261,6 +278,17 @@ watch(
     },
     {deep: true}
 )
+
+
+  
+  const addSubject = () => {
+    form.subject_numbers.push({number: ""})
+  }
+  
+  const removeSubject = (index) => {
+    form.subject_numbers.splice(index, 1)
+  }
+
 
 </script>
 
