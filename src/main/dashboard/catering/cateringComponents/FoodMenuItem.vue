@@ -198,12 +198,24 @@ if(!confirm("Are you sure, you want to delete: " + name)){
 }
 }
 
+
+watch(
+    () => cateringStore.updateMenuItemResponse,
+    async (data) => {
+      if (data) {
+        showingModal.value = false
+        menuItemData.value = []
+        doFetchMenuItem()
+      }
+    }
+)
+
 </script>
 <template>
     <div>
 
 <AppModal v-model="showingModal" lg title="Update Menu Item">
-    <NewMenuItem :menuItemsinfoData="menuItemsinfoData"></NewMenuItem>
+    <NewMenuItem :menuItemsInfo="menuItemsinfoData"></NewMenuItem>
 </AppModal>
 
 

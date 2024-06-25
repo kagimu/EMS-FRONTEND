@@ -179,15 +179,27 @@ watch(
         if (data) {
             classList.value = data.data
         }
-    },
-    {deep: true}
+    }
 )
+
+
+watch(
+    () => cateringStore.updateItemAssemblyResponse,
+    async (data) => {
+      if (data) {
+          showingModal.value = false
+          menuItemData.value = []
+         doFetchMenuItem()
+      }
+    }
+)
+
 </script>
 <template>
     <div>  
 
-      <AppModal title="Update Menu Item" v-model="showingModal" lg>
-        <NewMenuItem :menuItemsinfoData="menuItemsinfoData"></NewMenuItem>
+      <AppModal title="Update Menu Item" v-model="showingModal" xl4>
+        <NewMenuItem :menuItemsInfo="menuItemsinfoData"></NewMenuItem>
       </AppModal>
  
       

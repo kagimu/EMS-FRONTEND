@@ -316,8 +316,8 @@ async function fetchMenuItemDetails(menuNumber) {
             }
         })
 }
-async function updateMenuItem(data,menuItemNumber) {
-    return await api.put("main/catering/menu-items/"+menuItemNumber,data)
+async function updateMenuItem(data) {
+    return await api.post("main/catering/menu-items/update",data)
         .then((response) => {
             updateMenuItemResponse.value = response.data
         })
@@ -328,8 +328,9 @@ async function updateMenuItem(data,menuItemNumber) {
         })
 }
 
-async function updateAssemblyItem(data,menuItemNumber) {
-    return await api.put("main/catering/menu-items/"+menuItemNumber,data)
+
+async function updateAssemblyItem(data) {
+    return await api.post("main/catering/item-assembly/update",data)
         .then((response) => {
             updateItemAssemblyResponse.value = response.data
         })
