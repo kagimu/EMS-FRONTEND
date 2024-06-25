@@ -399,10 +399,31 @@ watch(
   () => admissionStore.admitStudentResponse,
   async (data) => {
       if (data) {
-        // myAdmitModal.value = false
         showAdmitModal.value = false
-        // notificationStore.successToast("Success", data.message)
         refreshStudentOnInterviewList()
+      }
+  },
+  {deep: true}
+)
+
+const removeStudentFromInterview = (id,name) => {
+if(!confirm("Are you sure, you want to remove: " + name)){
+  return
+}else{
+  let data = {
+    interview_number:interviewNumber,
+    student_number:id
+  }
+  assessmentStore.removeStudentFromInterview(data)
+}
+}
+
+watch(
+  () => assessmentStore.removeStudentFromInterviewResponse,
+  async (data) => {
+      if (data) {
+        refreshStudentOnInterviewList()
+        notificationStore.successToast("Success", data.message)
       }
   },
   {deep: true}
@@ -551,7 +572,7 @@ watch(
             <span>{{ listD.actual_score }}</span></span>
           </td>
           <td>
-            <button type="button"><i class="bi bi-trash" style="color: red;" ></i></button>
+            <button type="button" @click="removeStudentFromInterview(student.number,student.student_second_name)"><i class="bi bi-trash" style="color: red;" ></i></button>
           </td>
         </tr>   
                   

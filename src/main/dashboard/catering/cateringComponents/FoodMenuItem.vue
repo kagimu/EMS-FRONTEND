@@ -191,13 +191,6 @@ watch(
     {deep: true}
 )
 
-//delete
-const deleteThisData = (id,name) => {
-if(!confirm("Are you sure, you want to delete: " + name)){
-  return
-}
-}
-
 
 watch(
     () => cateringStore.updateMenuItemResponse,
@@ -227,8 +220,7 @@ watch(
     async (data) => {
       doFetchMenuItem()
       notificationStore.successToast("Success", data.message)
-    },
-    {deep: true}
+    }
 )
 
 </script>
