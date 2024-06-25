@@ -156,7 +156,8 @@ watch(
 )
 
 const fetchCampuses = (school_number) => {
-  campusStore.fetchCampuses(school_number)
+  // campusStore.fetchCampuses(school_number)
+  doFetchMenuItem(school_number)
 }
 
 
@@ -170,12 +171,8 @@ watch(
     {deep: true}
 )
 
-const doFetchMenuItem = () => {
-  let formD = {
-    school_number:menuForm.school_number,
-    campus_number:menuForm.campus_number
-  }
-  cateringStore.fetchMenuItem(formD)
+const doFetchMenuItem = (school_number) => {
+  cateringStore.fetchMenuItem(school_number)
 }
 
 watch(
@@ -266,7 +263,7 @@ const clearFormData = () => {
 
 
 <form @submit.prevent="addMenuItem">
-  <!-- {{ menuItemsinfoData }} -->
+
   <div class="row">
 
     <div class="col-lg-12" v-if="!isEdit">
@@ -279,25 +276,13 @@ const clearFormData = () => {
       style="box-shadow: none;"
       @change="fetchCampuses(menuForm.school_number)"
   >
-    <option disabled value="">Select School</option>
+    <option disabled :value="null">Select School</option>
     <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
     </option>
   </select>
 </div>
 
-<div class="mb-2">
-  <label class="textColor"><small>Campus</small>  </label>
-  <select
-      v-model="menuForm.campus_number"
-      class="form-select form-select-sm"
-      required style="box-shadow: none;"
-      @change="doFetchMenuItem()"
-  >
-    <option disabled value="">Select campus</option>
-    <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-    </option>
-  </select>
-</div>
+
 </div>
 
     <div class="col-lg-12">
@@ -371,12 +356,12 @@ const clearFormData = () => {
 
 
 
-<div v-if="(menuForm.type==='ASSEMBLED') && menuForm.campus_number">
+<div v-if="(menuForm.type==='ASSEMBLED') && menuForm.school_number">
     <div class="mx-auto">
 
       <div class="mt-4 text-[15px] ml-3">Assembled Items</div>
 
-        <!-- New Design -->
+
       <table class="table table-hover caption-top  border-t table-sm table-striped">
           <thead>
             <tr>
