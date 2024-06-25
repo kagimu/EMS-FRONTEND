@@ -511,7 +511,7 @@ async function deleteFeedingGroup(data) {
 }
 
 async function deleteMenuItem(data) {
-    return await api.post("main/catering"+data)
+    return await api.post("main/catering/menu-items/delete?menu_item_number="+data.menu_item_number)
         .then((response) => {
             deleteMenuItemResponse.value = response.data
         })
