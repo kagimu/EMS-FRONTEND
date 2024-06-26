@@ -20,9 +20,7 @@ const studyPeriodStore = useStudyPeriodStore()
 const classStore = useClassesStore()
 const academicYearStore = useAcademicYearStore()
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
-
 const reportSettingsList = ref(null)
-
 const campusLevelList = ref([])
 const academicYearList = ref([])
 const studyPeriodList = ref([])
@@ -32,10 +30,12 @@ const campus_level_number = ref("")
 const academic_year_number = ref("")
 const study_period_number = ref("")
 const campus_class_number = ref("")
-
-
 const commentsList = ref(null)
 const loader = ref(false)
+
+const props = defineProps({
+  headTeacherCommentList:{}
+})
 
 const form = reactive({
 min_aggregate: 0,
@@ -49,12 +49,24 @@ onMounted(
         teacherCommentStore.fetchTeacherComments()
         await doFetchReportSettings()
         fetchCampusLevel()
+        getCommentInfo()
     }
 )
+
+const getCommentInfo = () =>{
+  if(props.headTeacherCommentList){
+   form.min_aggregate = props.headTeacherCommentList.min_aggregate,
+   form.max_aggregate = props.headTeacherCommentList.max_aggregate,
+   form.comment = props.headTeacherCommentList.comment
+  }
+}
 
 const addComments = () => {
     loader.value = true
 //  alert(JSON.stringify(form))
+if(props.headTeacherCommentList){
+alert("Halleluhah")
+}else{
 let formData = {
 min_aggregate : parseInt(form.min_aggregate),
 max_aggregate : parseInt(form.max_aggregate),
@@ -62,6 +74,7 @@ comment : form.comment,
 report_setting_number : form.report_setting_number
  }
  teacherCommentStore.newTeacherComment(formData)
+}
 }
 
 const doFetchReportSettings = async () => {
@@ -183,6 +196,7 @@ watch(
 
 <template>
   <div>
+    <!-- {{ headTeacherCommentList }} -->
   <form @submit.prevent="addComments">
 
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">

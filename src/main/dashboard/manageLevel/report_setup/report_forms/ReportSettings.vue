@@ -78,7 +78,6 @@ const deleteThisData = (id,name) => {
   }else{
 
   }
-
 }
 
 

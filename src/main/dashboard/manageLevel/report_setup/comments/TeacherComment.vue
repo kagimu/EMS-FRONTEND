@@ -9,9 +9,10 @@ import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/
 
 const notificationStore  = useNotificationStore()
 const teacherCommentStore = useTeacherCommentStore()
-
 const commentsList = ref(null)
 const showCommentModal = ref(false)
+const headTeacherCommentList = ref([])
+const editMode = ref(false)
 
 
 onMounted(
@@ -21,7 +22,23 @@ onMounted(
 )
 
 const addComments = () => {
+  headTeacherCommentList.value = ""
+  editMode.value = false
   showCommentModal.value = true
+}
+
+const editComments = (comm) => {
+  headTeacherCommentList.value = comm
+  editMode.value = true
+  showCommentModal.value = true
+}
+
+const deleteThisData = (id,name) => {
+  if(!confirm("Are you sure, you want to delete: " + name)){
+    return
+  }else{
+
+  }
 }
 
 
@@ -46,16 +63,14 @@ watch(
 
 
 
-
-
 </script>
 
 <template>
 
   <div>
 
-    <AppModal title="Add Head Teachers Comment" v-model="showCommentModal" lg>
-        <NewTeacherComment></NewTeacherComment>
+    <AppModal :title="editMode?'Edit Comment':'Add Head Teachers Comment'" v-model="showCommentModal" lg>
+        <NewTeacherComment :headTeacherCommentList="headTeacherCommentList"></NewTeacherComment>
     </AppModal>
 
 
@@ -81,6 +96,7 @@ watch(
             <th>Comment</th>
             <th>Accademic Year</th>
             <th>Study Period</th>
+            <th>#</th>
           </tr>
           </thead>
           <tbody>
@@ -90,7 +106,10 @@ watch(
           <td>{{ com.comment }}</td>
           <td>{{ com.academic_year }}</td>
           <td>{{ com.study_period  }}</td>
-
+          <td>
+              <button  class="link-primary" style="border-width: 0px;text-decoration: none;" @click="editComments(com)"><small><i  style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small></button>
+              <button @click="deleteThisData(com.number,com.comment)"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>
+            </td>
           </tr>
           </tbody>
         </table>
