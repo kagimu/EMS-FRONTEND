@@ -1,3 +1,169 @@
+<script setup>
+import {onMounted, ref, watch} from "vue"
+import {useRouter} from "vue-router";
+import ManageInvoices from "@/main/dashboard/invoice/ManageInvoices.vue"
+import useNotificationStore from "@/composables/useNotification.js"
+import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+import StudentReports from "@/main/dashboard/report-card/studentReports/StudentReports.vue"
+import Comfirm from "@/main/dashboard/enrollment/Comfirm.vue"
+import AppModal from "@/components/AppModal.vue";
+import { useAbility } from '@casl/vue';
+const { can } = useAbility()
+
+
+import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
+import StudentNarativeReport from "@/main/dashboard/profiles/studentProfile/StudentNarativeReport.vue";
+const enrollmentStore = useEnrolmentStore()
+
+const studentNum = ref(null)
+const routerData = useRouter()
+const menuSelected = ref("financial-situation")
+const student_number = routerData.currentRoute.value.query.st_id
+const applicationStore = useApplicationStore()
+const notificationStore = useNotificationStore()
+const studentName = ref(null)
+const Sex = ref(null)
+const School= ref(null)
+const Campus= ref(null)
+const Level= ref(null)
+const className= ref(null)
+const dob = ref(null)
+const academicYear = ref(null)
+const studyPeriod=ref(null)
+const stream = ref(null)
+const status = ref(null)
+const campus = ref(null)
+const school = ref(null)
+const actionType = ref(null)
+
+
+onMounted(
+    async () => {
+      await applicationStore.fetchStudent(student_number)
+    } )
+
+
+watch (
+    () => applicationStore.studentDataResponse,
+    async (data) => {
+      if (data) {
+        studentName.value = data.surname + " " + data.second_name+" "+ data.other_name
+        dob.value = data.date_of_birth
+        className.value = data.current_enrollment.class
+        studyPeriod.value = data.current_enrollment.study_period
+        stream.value = data.current_enrollment.stream
+        status.value = data.current_enrollment.status
+        campus.value = data.current_enrollment.campus
+        school.value = data.current_enrollment.school
+        academicYear.value = data.current_enrollment.academic_year
+      }
+    },
+    { deep: true }
+)
+
+//terminate
+const showActionDialog = ref(false)
+const terminateEnrollment = (studentNo) =>{
+  studentNum.value = studentNo
+  actionType.value = "terminate"
+  showActionDialog.value=true
+
+}
+
+
+const reEnroll = (studentNo) =>{
+  studentNum.value = studentNo
+  actionType.value="reEnroll"
+  showActionDialog.value=true
+
+}
+
+
+watch (
+    () => enrollmentStore.terminateEnrolmentResponse,
+    async (data) => {
+      if(data){
+        await applicationStore.fetchStudent(student_number)
+        showActionDialog.value=false
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => enrollmentStore.reEnrolmentResponse,
+    async (data) => {
+      if(data){
+        await applicationStore.fetchStudent(student_number)
+        showActionDialog.value=false
+      }
+    },
+    {deep:true}
+)
+
+
+const itemMenu = ref([
+  {
+    text:"Financial Records",
+    value:"financial-situation"
+  },
+  {
+    text:"Services",
+    value:"services"
+  },
+  {
+    text:"Report Cards",
+    value:"report-cards"
+  },
+  {
+    text:"Academic Calendar",
+    value:"academic-year"
+  },
+  {
+    text:"Meals",
+    value:"meals"
+  },
+  {
+    text:"Narrative Report",
+    value:"narrative"
+  },
+
+
+
+])
+
+const changeMenu = (value) => {
+  menuSelected.value = value
+}
+
+const user = ref({
+  avatar: 'https://t4.ftcdn.net/jpg/04/67/16/19/360_F_467161971_7fx4DHsKeaFoxDCKU1I0TCzQx9lJCcrm.jpg',
+  name: 'Collins Mpiima',
+  role: 'Student',
+  location: 'Bay Area, San Francisco, CA',
+  socialLinks: [
+    { icon: 'fas fa-globe', color: '#FFC107', url: 'https://mdbootstrap.com' },
+    { icon: 'fab fa-github', color: '#333333', url: 'mdbootstrap' },
+    { icon: 'fab fa-twitter', color: '#55acee', url: '@mdbootstrap' },
+    { icon: 'fab fa-instagram', color: '#ac2bac', url: 'mdbootstrap' },
+    { icon: 'fab fa-facebook-f', color: '#3b5998', url: 'mdbootstrap' }
+  ],
+  details: [
+    { label: 'Full Name', value: 'Mpiima Collins' },
+    { label: 'Sex', value: 'Male' },
+    { label: 'School', value: 'MySChool P/s' },
+    { label: 'Campus', value: 'Main Campus' },
+    { label: 'Level', value: 'Primary' },
+    { label: 'Class', value: 'Primary One [P1] ' }
+  ],
+
+});
+
+const cancelled = (cancelled) => {
+  showActionDialog.value=false
+}
+
+</script>
 <template>
 
    <AppModal title="Comfirm" v-model="showActionDialog" xs>
@@ -113,7 +279,11 @@
                   <StudentReports></StudentReports>
                   </div>
                   <div v-if="menuSelected === 'bio-data'">
-                <h1>Bio data</h1>
+                    <h1>Bio data</h1>
+                  </div>
+
+                  <div v-if="menuSelected === 'narrative'">
+                    <StudentNarativeReport></StudentNarativeReport>
                   </div>
                 
               </div>
@@ -133,165 +303,5 @@
   </template>
   
   
-  <script setup> 
-import {onMounted, ref, watch} from "vue"
-import {useRouter} from "vue-router";
-import ManageInvoices from "@/main/dashboard/invoice/ManageInvoices.vue"
-import useNotificationStore from "@/composables/useNotification.js"
-import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
-import StudentReports from "@/main/dashboard/report-card/studentReports/StudentReports.vue"
-import Comfirm from "@/main/dashboard/enrollment/Comfirm.vue"
-import AppModal from "@/components/AppModal.vue";
-import { useAbility } from '@casl/vue';
-const { can } = useAbility()
 
-
-import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
-const enrollmentStore = useEnrolmentStore()
-
- const studentNum = ref(null)
-  const routerData = useRouter()
-  const menuSelected = ref("financial-situation")
-  const student_number = routerData.currentRoute.value.query.st_id
-  const applicationStore = useApplicationStore()
-  const notificationStore = useNotificationStore()
-  const studentName = ref(null)
-  const Sex = ref(null)
-  const School= ref(null)
-  const Campus= ref(null)
-  const Level= ref(null)
-  const className= ref(null)
-  const dob = ref(null)
-  const academicYear = ref(null)
-  const studyPeriod=ref(null)
-  const stream = ref(null)
-  const status = ref(null)
-  const campus = ref(null)
-  const school = ref(null)
-  const actionType = ref(null)
-
-  
-onMounted(
-    async () => {
-      await applicationStore.fetchStudent(student_number)
-    } )
-
-
-    watch (
-  () => applicationStore.studentDataResponse,
-  async (data) => {
-    if (data) {
-      studentName.value = data.surname + " " + data.second_name+" "+ data.other_name
-      dob.value = data.date_of_birth
-      className.value = data.current_enrollment.class
-      studyPeriod.value = data.current_enrollment.study_period
-      stream.value = data.current_enrollment.stream
-      status.value = data.current_enrollment.status
-      campus.value = data.current_enrollment.campus
-      school.value = data.current_enrollment.school
-      academicYear.value = data.current_enrollment.academic_year
-    }
-  },
-  { deep: true }
-)
-
-//terminate
-const showActionDialog = ref(false)
-const terminateEnrollment = (studentNo) =>{
-  studentNum.value = studentNo
-  actionType.value = "terminate"
-  showActionDialog.value=true
-
-}
-
-
-const reEnroll = (studentNo) =>{
-  studentNum.value = studentNo
-  actionType.value="reEnroll"
-  showActionDialog.value=true
-
-}
-
-
-watch (
-       () => enrollmentStore.terminateEnrolmentResponse,
-       async (data) => {
-         if(data){
-          await applicationStore.fetchStudent(student_number)
-          showActionDialog.value=false
-         }
-       },
-       {deep:true}
-     )
-
-     watch (
-       () => enrollmentStore.reEnrolmentResponse,
-       async (data) => {
-         if(data){
-          await applicationStore.fetchStudent(student_number)
-          showActionDialog.value=false
-         }
-       },
-       {deep:true}
-     )
-     
-
-  const itemMenu = ref([
-   {
-      text:"Financial Records",
-      value:"financial-situation"
-    },
-    {
-      text:"Services",
-      value:"services"
-    },
-    {
-      text:"Report Cards",
-      value:"report-cards"
-    },
-    {
-      text:"Academic Calendar",
-      value:"academic-year"
-    },
-    {
-      text:"Meals",
-      value:"meals"
-    },
-
-
-   
-  ])
-
-  const changeMenu = (value) => {
-  menuSelected.value = value
-}
-
-  const user = ref({
-    avatar: 'https://t4.ftcdn.net/jpg/04/67/16/19/360_F_467161971_7fx4DHsKeaFoxDCKU1I0TCzQx9lJCcrm.jpg',
-    name: 'Collins Mpiima',
-    role: 'Student',
-    location: 'Bay Area, San Francisco, CA',
-    socialLinks: [
-      { icon: 'fas fa-globe', color: '#FFC107', url: 'https://mdbootstrap.com' },
-      { icon: 'fab fa-github', color: '#333333', url: 'mdbootstrap' },
-      { icon: 'fab fa-twitter', color: '#55acee', url: '@mdbootstrap' },
-      { icon: 'fab fa-instagram', color: '#ac2bac', url: 'mdbootstrap' },
-      { icon: 'fab fa-facebook-f', color: '#3b5998', url: 'mdbootstrap' }
-    ],
-    details: [
-      { label: 'Full Name', value: 'Mpiima Collins' },
-      { label: 'Sex', value: 'Male' },
-      { label: 'School', value: 'MySChool P/s' },
-      { label: 'Campus', value: 'Main Campus' },
-      { label: 'Level', value: 'Primary' },
-      { label: 'Class', value: 'Primary One [P1] ' }
-    ],
-  
-  });
-
-  const cancelled = (cancelled) => {
-   showActionDialog.value=false
-  }
-
-  </script>
   

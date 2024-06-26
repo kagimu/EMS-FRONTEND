@@ -63,8 +63,7 @@ watch(
         await levelStore.fetchLevels()
         notificationStore.successToast("Success", data.message)
       }
-    },
-    {deep:true}
+    }
 )
 
 watch(
