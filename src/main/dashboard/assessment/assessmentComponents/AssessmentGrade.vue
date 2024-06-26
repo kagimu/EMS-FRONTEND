@@ -55,6 +55,7 @@ const filterAssessmentGrades = () =>{
 
 
 const addAssessmentScale = () =>{
+  assessmentGradeListD.value = ""
   showAssessmentScaleModal.value = true
   editModel.value = false
 }

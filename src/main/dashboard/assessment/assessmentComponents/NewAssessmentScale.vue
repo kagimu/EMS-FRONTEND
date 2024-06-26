@@ -55,10 +55,25 @@ const props = defineProps({
 onMounted(
     async () => {
       await levelStore.fetchCampusCurriculum(campusNumber)
-      await fetchCampusLevel()
+       fetchCampusLevel()
+       getAssessmentScaleDataInfo()
     }
 )
 
+
+const getAssessmentScaleDataInfo = () =>{
+  if(props.assessmentGradeListD){
+    form.code = props.assessmentGradeListD.code
+       form.name = props.assessmentGradeListD.name
+       form.maximum_points=props.assessmentGradeListD.maximum_points
+       form.minimum_points=props.assessmentGradeListD.minimum_points
+       form.campus_class_number=props.assessmentGradeListD.campus_class_number
+       form.grade=props.assessmentGradeListD.Grade
+       form.description=props.assessmentGradeListD.description
+       form.abbreviation=props.assessmentGradeListD.abbreviation
+       form.remarks=props.assessmentGradeListD.remarks
+  }
+}
 
 watch(
     () => levelStore.campusCurriculumResponse,
@@ -101,14 +116,14 @@ watch (
     async (data) => {
       if(data){
         scaleDataList.value =props.scaleD
-       form.name = props.scaleD.name
-       form.maximum_points=props.scaleD.maximum_points
-       form.minimum_points=props.scaleD.minimum_points
-       form.campus_class_number=props.scaleD.campus_class_number
-       form.grade=props.scaleD.Grade
-       form.description=props.scaleD.description
-       form.abbreviation=props.scaleD.abbreviation
-       form.remarks=props.scaleD.remarks
+      //  form.name = props.scaleD.name
+      //  form.maximum_points=props.scaleD.maximum_points
+      //  form.minimum_points=props.scaleD.minimum_points
+      //  form.campus_class_number=props.scaleD.campus_class_number
+      //  form.grade=props.scaleD.Grade
+      //  form.description=props.scaleD.description
+      //  form.abbreviation=props.scaleD.abbreviation
+      //  form.remarks=props.scaleD.remarks
       }
     },
     {deep:true}
@@ -227,21 +242,9 @@ watch(
 
 <template>
     <div>
- {{ assessmentGradeListD }}
+ <!-- {{ assessmentGradeListD }} -->
     <form @submit.prevent="createScale()">
-          <div class="mb-2">
-            <div class="text-[13px] text-[#505050]"> Code</div>
-            <input
-                @keypress="commons.codeValidator($event)"
-                maxlength="10"
-                v-model="form.code"
-                required
-                @paste.prevent
-                class="form-control form-select-sm shadow-none">
-          </div>
-
-
-          <div class="mb-2">
+       <div class="mb-2">
             <div class="text-[13px] text-[#505050]"> Level</div>
             <select
                 class="form-select form-select-sm shadow-none"
@@ -252,8 +255,6 @@ watch(
               <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
             </select>
           </div>
-
-
 
           <div class="mb-2">
             <div class="text-[13px] text-[#505050]"> Class</div>
@@ -278,6 +279,17 @@ watch(
             </ul> -->
           </div>
 
+
+          <div class="mb-2">
+            <div class="text-[13px] text-[#505050]"> Code</div>
+            <input
+                @keypress="commons.codeValidator($event)"
+                maxlength="10"
+                v-model="form.code"
+                required
+                @paste.prevent
+                class="form-control form-select-sm shadow-none">
+          </div>
 
 
 
