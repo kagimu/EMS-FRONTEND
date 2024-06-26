@@ -59,6 +59,29 @@ onMounted(
    await reportSetupStore.fetchReportSettings(data)
  }
 
+ const addReportSettings = () => {
+  reportSettingsD.value = ""
+  editModel.value = false
+  showReportSettingsModal.value = true
+}
+
+const editThisData = (List) => {
+  editModel.value = true
+  reportSettingsD.value = List
+  namee.value = List.name
+  showReportSettingsModal.value = true
+}
+
+const deleteThisData = (id,name) => {
+  if(!confirm("Are you sure, you want to delete: " + name)){
+    return
+  }else{
+
+  }
+
+}
+
+
 const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
 }
@@ -138,32 +161,6 @@ watch(
       }
     }
 )
-
-
-const editThisData = (List) => {
-  editModel.value = true
-  reportSettingsD.value = List
-  namee.value = List.name
-  showReportSettingsModal.value = true
-}
-
-const deleteThisData = (id,name) => {
-  if(!confirm("Are you sure, you want to delete: " + name)){
-    return
-  }else{
-
-  }
-
-}
-
-
-
-const addReportSettings = () => {
-  showReportSettingsModal.value = true
-}
-
-
-
 
 
 </script>

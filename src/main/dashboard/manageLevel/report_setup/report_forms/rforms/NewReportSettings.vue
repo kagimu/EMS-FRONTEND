@@ -44,11 +44,17 @@ const form = reactive({
 
 onMounted(
     async () => {
-
        fetchCampusLevel()
+       getReportSettingInfo()
     }
 )
 
+const getReportSettingInfo = () => {
+  if(props.reportSettingsD){
+    form.code = props.reportSettingsD.code,
+    form.columns = props.reportSettingsD.columns
+  }
+}
 
 const addReportSettings = () => {
   loader.value = true

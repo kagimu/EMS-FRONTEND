@@ -117,7 +117,7 @@ watch(
 )
 
 const deleteThisData = (id,name) => {
-  if(!confirm("Are you sure, you want to delete: " + name)){
+  if(!confirm("Are you sure, you want to remove: " + name)){
     return
   }else{
 
@@ -222,7 +222,7 @@ const deleteThisData = (id,name) => {
             <td> {{levelInfo.assessment_area_name}}</td>
             <td> {{levelInfo.grading_standard_name}}</td>
             <td>
-              <button @click="deleteThisData(levelInfo.number,levelInfo.assessment_area_name )"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>
+              <button @click="deleteThisData(levelInfo.number,levelInfo.assessment_area_name )"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-x cursor-pointer"></i></button>
             </td>
           </tr>
           </tbody>
