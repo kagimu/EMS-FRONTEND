@@ -24,7 +24,7 @@ export const useUserStore = defineStore("users", () => {
         }
 
         async function fetchNarrativeReport(data) {
-            return await api.get("main/report-settings/narrative", data)
+            return await api.get("main/report-settings/narrative?student_number="+data)
                 .then((response) => {
                     narrativeReportResponse.value = response.data
                 })

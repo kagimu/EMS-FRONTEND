@@ -1,14 +1,18 @@
 <script setup>
 
-
-import {onMounted, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {useUserStore} from "@/main/dashboard/profiles/store/users.js";
+import {useRouter} from "vue-router";
+const routerData = useRouter()
 
 const userStore = useUserStore()
+const student_number = routerData.currentRoute.value.query.st_id
+
+const narrativeList = ref([])
 
 onMounted(
     async () => {
-      await userStore.fetchNarrativeReport()
+      await userStore.fetchNarrativeReport(student_number)
     }
 )
 
@@ -19,7 +23,7 @@ watch(
     () => userStore.narrativeReportResponse,
     async (data) => {
       if(data){
-      alert(JSON.stringify(data))
+      narrativeList.value = data
       }
     }
 )
@@ -38,16 +42,28 @@ watch(
   <table class="table table-hover caption-top mt-3 table-sm" style="font-size: 14px;">
     <thead>
     <tr>
-      <th scope="col" style="width: 30%;">Code</th>
-      <th scope="col">Name</th>
-      <th scope="col">Action</th>
+      <th scope="col">#</th>
+      <th scope="col">Date</th>
+      <th scope="col">Teacher</th>
+      <th scope="col">Academic Year</th>
+      <th scope="col">Study Period</th>
+      <th scope="col">Class</th>
+      <th scope="col">Narration</th>
+      <th scope="col">Assessment Area</th>
+<!--      <th scope="col">Action</th>-->
     </tr>
     </thead>
     <tbody>
-    <tr v-for="(levelInfo, index) in levelList" :key="index">
-      <td> {{levelInfo.code}}</td>
-      <td> {{levelInfo.name}}</td>
-      <td>
+    <tr v-for="(info, index) in narrativeList" :key="index">
+      <td> {{(index + 1)}}</td>
+      <td> {{info?.date ?? ""}}</td>
+      <td> {{info?.teacher ?? ""}}</td>
+      <td> {{info?.academic_year ?? ""}}</td>
+      <td> {{info?.study_period ?? ""}}</td>
+      <td> {{info?.class ?? ""}}</td>
+      <td> {{info?.narration ?? ""}}</td>
+      <td> {{info?.assessment_area ?? ""}}</td>
+<!--      <td>
         <div>
           <i
               v-if="can('edit_level','general')"
@@ -61,7 +77,7 @@ watch(
             <span class="visually-hidden">Loading...</span>
           </div>
         </div>
-      </td>
+      </td>-->
     </tr>
     </tbody>
   </table>
