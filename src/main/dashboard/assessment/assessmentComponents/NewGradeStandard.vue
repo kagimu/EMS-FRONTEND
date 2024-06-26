@@ -75,7 +75,8 @@ const addGradeStandard = () => {
   form.code = parseInt(form.code)
   let draft = props.gradeDataList
   if(draft){
-      form.grade_standard_number = draft.number
+      form.grading_standard_number = draft.number
+      alert(JSON.stringify(form))
       assessmentStore.updateGradeStandard(form)
   }else{
       assessmentStore.createGradeStandard(form)

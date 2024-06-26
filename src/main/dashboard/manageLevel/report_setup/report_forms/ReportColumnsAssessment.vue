@@ -246,7 +246,7 @@ const deleteThisData = (id,assesmentArea,assesmentMet,rcolumn) => {
   <div>
 
 
-    <AppModal v-model="showReportColumn" title="Add Report Column Assessment" lg>
+    <AppModal v-model="showReportColumn" title="Add Report Column Assessment" xl4>
       <new-report-columns-assessment></new-report-columns-assessment>
     </AppModal>
 

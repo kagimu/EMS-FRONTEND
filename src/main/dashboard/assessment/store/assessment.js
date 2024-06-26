@@ -362,7 +362,7 @@ async function createMetric(data) {
     }
     
     async function updateGradeStandard(data) {
-        return await api.put("main/grading-standard",data)
+        return await api.post("main/grading-standard/update",data)
             .then((response) => {
              updateGradeStandardResponse.value = response.data
             })

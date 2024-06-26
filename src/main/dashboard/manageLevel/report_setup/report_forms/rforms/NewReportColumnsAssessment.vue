@@ -43,7 +43,8 @@ const form = reactive({
   code:null,
   report_column_number:"",
   assessment_area_number:"",
-  assessment_metric_number:"",
+  // assessment_metric_number:"",
+  assessment_schedule:[]
 })
 
 
@@ -99,6 +100,7 @@ watch(
 const addReportColumnAssessment = () => {
   loader.value = true
   form.code = form.code ? parseInt(form.code) : form.code
+  // alert(JSON.stringify(form))
   reportSetupStore.newReportColumnAssessment(form)
 }
 
@@ -241,6 +243,8 @@ watch(
         {{ errorMessage }}
       </div>
 
+      <div class="row">
+        <div class="col-lg-4">
 
       <div class="mb-2">
         <label class="textColor"><small>Code</small></label>
@@ -253,9 +257,6 @@ watch(
             required
             class="form-control form-select-sm shadow-none">
       </div>
-
-
-
 
       <div class="mb-2">
         <label class="textColor"><small>Level</small></label>
@@ -339,9 +340,11 @@ watch(
 
         </select>
       </div>
+    </div>
 
 
-
+    <div class="col-lg-8">
+   
 
 
       <div class="mb-2">
@@ -359,8 +362,23 @@ watch(
         </select>
       </div>
 
-
       <div class="mb-2">
+        <label class="textColor"><small>Assessment Schedule</small></label>
+        <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+          <li class="list-group-item" v-for="(lvl,idx) in assessmentMetricList">
+            <input
+                v-model="form.assessment_schedule"
+                style="outline: none 0 !important; box-shadow: none;"
+                class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="idx">
+            <label class="form-check-label cursor-pointer" :for="idx" style="font-size: 13px;">
+              {{lvl.description + " [ " +lvl.name + " ] " + " ( "+ lvl.assessment_area_name +" ) "}}
+            </label>
+          </li>
+
+        </ul>
+      </div>
+
+      <!-- <div class="mb-2">
         <label class="textColor"><small>Assessment Schedule</small></label>
         <select
             class="form-control form-select form-control-sm shadow-none"
@@ -370,11 +388,10 @@ watch(
           <option v-for="(list, index) in assessmentMetricList" :key="index" :value="list.number">
             {{list.description + " [ " +list.name + " ] " + " ( "+ list.assessment_area_name +" ) "}}</option>
         </select>
+      </div> -->
       </div>
 
-
-
-
+    </div>
 
       <div class="flex justify-content-end mt-4" style="width: 100%;">
         <button

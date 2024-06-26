@@ -118,6 +118,17 @@ watch(
     }
 )
 
+watch(
+    () => assessmentStore.updateGradeStandardResponse,
+    async (data) => {
+      if(data){
+        showGradeStandardModal.value = false
+         doFetchGradingStandard()
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
 
 const editThisData = (gradeList) => {
   editModel.value = true
