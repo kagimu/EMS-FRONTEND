@@ -48,8 +48,8 @@ watch(
       <th scope="col">Academic Year</th>
       <th scope="col">Study Period</th>
       <th scope="col">Class</th>
-      <th scope="col">Narration</th>
       <th scope="col">Assessment Area</th>
+      <th scope="col">Narration</th>
 <!--      <th scope="col">Action</th>-->
     </tr>
     </thead>
@@ -61,8 +61,8 @@ watch(
       <td> {{info?.academic_year ?? ""}}</td>
       <td> {{info?.study_period ?? ""}}</td>
       <td> {{info?.class ?? ""}}</td>
-      <td> {{info?.narration ?? ""}}</td>
       <td> {{info?.assessment_area ?? ""}}</td>
+      <td> {{info?.narration ?? ""}}</td>
 <!--      <td>
         <div>
           <i
