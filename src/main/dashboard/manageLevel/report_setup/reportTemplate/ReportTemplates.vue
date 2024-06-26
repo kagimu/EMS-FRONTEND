@@ -95,6 +95,7 @@ watch (
     if(data){
       showReportTemplateModal.value = false
       reportSetupStore.fetchReportTemplate()
+      filterReportTemplate()
     }
   },
   {deep:true}
