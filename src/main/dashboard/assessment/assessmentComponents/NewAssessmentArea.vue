@@ -41,8 +41,17 @@
              </select> -->
 
 
+          <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+          <li class="list-group-item" v-for="(subject_numbers, index) in subjectList">
+            <input
+                v-model="form.subjects"
+                style="outline: none 0 !important; box-shadow: none;"
+                class="form-check-input me-1" type="checkbox" :value="subject_numbers.number" :id="index">
+            <label class="form-check-label cursor-pointer" :for="index">{{subject_numbers.name}}</label>
+          </li>
+          </ul>
 
-             <table style="width: 100%;">
+             <!-- <table style="width: 100%;">
                 <tr v-for="(subject_numbers, index) in form.subject_numbers" :key="index">
                   <td>
                     <select v-model="subject_numbers.number" class="form-select form-select-sm">
@@ -59,7 +68,7 @@
                     </td>
                     <td></td>
                 </tr>
-              </table>
+              </table> -->
          </div>
         
 
@@ -117,23 +126,30 @@ let  curriculumNumber = routerData.currentRoute.value.query.id
 const preferred_campus_number = ref(null)
 
   const form = reactive({ 
-    // name:null,
     curriculum_class_number:[],
-    // subject_number:null,
-    subject_numbers:[]
+    subjects:[]
   })
+
+  const addAssessmentArea = () => {
+   buttonLoader.value = true
+  // const subjectNumbers = form.subject_numbers.map(subject => subject.number);
+  
+  // let formData = {
+  // curriculum_class_number:form.curriculum_class_number,
+  // subjects: subjectNumbers
+  // }
+  //  alert(JSON.stringify(form))
+   assessmentStore.createAssessmentAreas(form)
+  }
 
   onMounted(
   async () => {
-    await assessmentStore.fetchAssessmentArea()
+    assessmentStore.fetchAssessmentArea()
+    levelStore.fetchCurriculumLevels(curriculumNumber)
+    schoolStore.fetchSchools()
   } )
 
   
-onMounted(
-  async () => {
-    await levelStore.fetchCurriculumLevels(curriculumNumber)
-  }
-)
 
 const subject_n = ref(null)
 
@@ -189,25 +205,11 @@ watch(
   {deep:true}
 )
 
-
-const addAssessmentArea = () => {
-   buttonLoader.value = true
-  const subjectNumbers = form.subject_numbers.map(subject => subject.number);
-  
-  let formData = {
-  curriculum_class_number:form.curriculum_class_number,
-  subjects: subjectNumbers
-  }
-  //  alert(JSON.stringify(formData))
-   assessmentStore.createAssessmentAreas(formData)
-  }
-
   watch (
   () => assessmentStore.newAssessmentAreasResponse,
   async (data) => {
     if(data){
       buttonLoader.value = false
-      // notificationStore.successToast("Success", data.message)
     }
   }
 )
@@ -234,10 +236,7 @@ const fetchClasses = (campus_number) => {
     campusStore.fetchClassesByCampus(campus_number)
 }
 
-onMounted(() => {
-        schoolStore.fetchSchools()
-    }
-)
+
 
 watch(
     () => schoolStore.schoolsResponse,
