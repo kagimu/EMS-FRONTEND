@@ -22,8 +22,8 @@ onMounted(
 watch(
     () => userStore.narrativeReportResponse,
     async (data) => {
-      if(data){
-      narrativeList.value = data
+      if(data && data.data){
+      narrativeList.value = data.data
       }
     }
 )
