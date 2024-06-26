@@ -26,6 +26,9 @@ const classOnTemplateList = ref([])
 const repoId = ref(null)
 const classListData = ref(null)
 const schoolNumber = routerData.currentRoute.value.query.sch
+const reportTemplateDataInfo = ref([])
+const reportName = ref(null)
+const editMode = ref(false)
 
 onMounted(() => {
   filterReportTemplate()
@@ -56,6 +59,15 @@ watch(
 
 
 const addReportTemplate = () => {
+  reportTemplateDataInfo.value = ""
+  editMode.value = false
+  showReportTemplateModal.value = true
+}
+
+const editReportTemplate = (repoData,name) => {
+  reportTemplateDataInfo.value = repoData
+  editMode.value = true
+  reportName.value = name
   showReportTemplateModal.value = true
 }
 
@@ -77,6 +89,25 @@ repoId.value = TemplateN
 }
 
 
+watch (
+  () => reportSetupStore.reportTemplateResponse,
+  async (data) => {
+    if(data){
+      showReportTemplateModal.value = false
+      reportSetupStore.fetchReportTemplate()
+    }
+  },
+  {deep:true}
+)
+
+const deleteThisData = (id,name) => {
+  if(!confirm("Are you sure, you want to delete: " + name)){
+    return
+  }else{
+
+  }
+
+}
 
 </script>
 
@@ -84,8 +115,8 @@ repoId.value = TemplateN
 
   <div>
 
-    <AppModal title="Add Report Template" v-model="showReportTemplateModal" lg>
-      <new-report-template></new-report-template>
+    <AppModal :title="editMode ?'Edit Report Template ' +reportName :'Add Report Template'" v-model="showReportTemplateModal" lg>
+      <new-report-template :reportTemplateDataInfo="reportTemplateDataInfo"></new-report-template>
     </AppModal>
     
     <AppModal title="Assign Class To Template" v-model="showAssignModal" lg>
@@ -105,7 +136,14 @@ repoId.value = TemplateN
         </div>
 
 
-
+        <div class="flex justify-content-between mt-3">
+          <div class="ml-4"></div>
+          <button
+              type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addReportTemplate">
+            <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+              Add Report Column
+          </button>
+        </div>
 
         <table class="table table-hover caption-top mt-5 table-sm text-sm" style="font-size: 14px;">
           <thead>
@@ -136,9 +174,9 @@ repoId.value = TemplateN
              <div>
                 <i
                     style="font-size: 13px;"
-                    class="bi-pencil mr-2 cursor-pointer "></i> &nbsp;
+                    class="bi-pencil mr-2 cursor-pointer " @click="editReportTemplate(repoData,repoData.name)"></i> &nbsp;
                 <i
-                    style="font-size: 13px;" class="bi-trash cursor-pointer"></i>
+                    style="font-size: 13px;" class="bi-trash cursor-pointer" @click="deleteThisData(repoData.number,repoData.name)"></i>
               </div>
             </td>
           </tr>

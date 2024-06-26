@@ -42,8 +42,17 @@ const form = reactive({
 onMounted(
     async () => {
       fetchCampusLevel()
+      getReportColumnInfo()
     }
 )
+
+const getReportColumnInfo = () =>{
+  if(props.reportColumnsListD){
+  form.code=props.reportColumnsListD.code,
+  form.name = props.reportColumnsListD.name
+  form.percentage_share=props.reportColumnsListD.percentage_share
+  }
+}
 
 const doFetchReportSettings = async () => {
   let data = {
@@ -127,12 +136,10 @@ watch(
   <div>
     <!-- {{ reportColumnsListD }} -->
     <form @submit.prevent="addReportColumn">
-
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
         {{ errorMessage }}
       </div>
-
-
+      
       <div class="mb-2">
         <label class="textColor"><small>Code</small></label>
         <input

@@ -20,22 +20,38 @@ const errorMessage = ref("")
 const loader = ref(false)
 const classList = ref([])
 
+const props = defineProps({
+  reportTemplateDataInfo:{}
+})
 
 onMounted(() => {
-
+  schoolStore.fetchSchools()
+  getReportTemplateInfo()
     }
 )
 
 const form = reactive({
   status:"ACTIVE",
   name:null,
-  school_number:schoolNumber
+  school_number:""
 })
 
+const  getReportTemplateInfo = () =>{
+  if(props.reportTemplateDataInfo){
+    form.name = props.reportTemplateDataInfo.name
+    form.school_number = props.reportTemplateDataInfo.school_number
+  }
+}
 
 const addReportTemplate = () => {
   loader.value = true
-  reportSetupStore.addReportTemplate(form)
+  if(props.reportTemplateDataInfo){
+  alert("Halleluyah")
+  }else{
+    reportSetupStore.addReportTemplate(form)
+  }
+  
+
 }
 
 
@@ -48,7 +64,7 @@ watch (
       await reportSetupStore.fetchReportTemplate()
       loader.value=false
       form.name=null,
-  form.school_number=null
+      form.school_number=null
     }
   },
   {deep:true}
@@ -64,14 +80,38 @@ watch(
     {deep: true}
 )
 
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        schoolList.value = data.data
+      }
+    }
+)
 </script>
 
 <template>
   <div>
+    <!-- {{ reportTemplateDataInfo }} -->
   <form @submit.prevent="addReportTemplate">
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
       {{ errorMessage }}
     </div>
+
+    
+<div class="mb-2">
+  <label class="textColor"><small>School</small> </label>
+  <select
+      v-model="form.school_number"
+      class="form-select form-select-sm" required
+      style="box-shadow: none;"
+  >
+    <option disabled :value="null">Select School</option>
+    <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+    </option>
+  </select>
+</div>
 
 
     <div class="mb-2">
