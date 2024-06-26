@@ -8,12 +8,25 @@ export const useUserStore = defineStore("users", () => {
     let userListResponse = ref(null)
     let deleteUserResponse = ref(null)
     let updateUserResponse = ref(null)
+    let narrativeReportResponse = ref(null)
     let userResponse = ref(null)
 
         async function createNewUser(data) {
             return await api.post("main/users", data)
                 .then((response) => {
                     newUserResponse.value = response.data
+                })
+                .catch((response) => {
+                    if(response){
+                        errorMessage.value = response.response.data
+                    }
+                })
+        }
+
+        async function fetchNarrativeReport(data) {
+            return await api.get("main/report-settings/narrative?student_number="+data)
+                .then((response) => {
+                    narrativeReportResponse.value = response.data
                 })
                 .catch((response) => {
                     if(response){
@@ -60,15 +73,17 @@ export const useUserStore = defineStore("users", () => {
 
     return {
      errorMessage,
-     createNewUser,
      userListResponse,
      userResponse,
      newUserResponse,
      deleteUserResponse,
      updateUserResponse,
+     narrativeReportResponse,
+     fetchNarrativeReport,
+     createNewUser,
      fetchUsersList,
-    deleteUser,
-    updateUsers
+     deleteUser,
+     updateUsers
   
     }
 })
