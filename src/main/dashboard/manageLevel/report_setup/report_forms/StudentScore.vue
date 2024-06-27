@@ -110,8 +110,7 @@ watch(
       if(data){
         campusLevelList.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -143,8 +142,7 @@ watch(
       if(data){
         academicYearList.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -173,8 +171,7 @@ watch(
       if(data){
         assessmentListData.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
 watch(
