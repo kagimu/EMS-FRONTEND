@@ -31,6 +31,8 @@ const campus_class_number = ref("")
 const study_period_number = ref("")
 const assessment_area_number = ref("")
 
+
+
 const narrativeList = ref([])
 const schoolsList = ref([])
 const campusList = ref([])
@@ -49,7 +51,15 @@ onMounted(
 )
 
 const fetchNarrativeInfo = () => {
-   userStore.fetchNarrativeReport(student_number)
+  let data = {
+    student_number:student_number,
+    assessment_area_number:assessment_area_number.value,
+    study_period_number:study_period_number.value,
+    campus_class_number:campus_class_number.value,
+    academic_year_number:academic_year_number.value
+  }
+
+   userStore.fetchNarrativeReport(data)
 }
 
 const fetchCampusBySchool = () => {
