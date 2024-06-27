@@ -11,6 +11,8 @@ import {useRouter} from "vue-router";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import SetReportColumns from "@/main/dashboard/manageLevel/report_setup/report_forms/SetReportColumns.vue";
 import NewReportSettings from "@/main/dashboard/manageLevel/report_setup/report_forms/rforms/NewReportSettings.vue";
+import viewReportColumns from "@/main/dashboard/manageLevel/report_setup/report_forms/viewReportColumns.vue";
+
 
 const routerData = useRouter()
 const notificationStore  = useNotificationStore()
@@ -45,6 +47,8 @@ const editModel = ref(false)
 const openSetColumn = ref(false)
 const reportSettingNumber = ref(null)
 const reportColumns = ref(null)
+const viewColumnsModal = ref(false)
+const reportSettingNum = ref(null)
 
 const setReportColumn = (number,column) =>{
   reportSettingNumber.value = number
@@ -80,6 +84,12 @@ const editThisData = (List) => {
   reportSettingsD.value = List
   namee.value = List.name
   showReportSettingsModal.value = true
+}
+
+const viewReportColumn = (number) =>{
+  // alert(number)
+  reportSettingNum.value = number
+  viewColumnsModal.value = true
 }
 
 const deleteThisData = (id,name) => {
@@ -194,6 +204,9 @@ watch(
       <SetReportColumns :reportSettingNumber="reportSettingNumber" :reportColumns="reportColumns"></SetReportColumns>
     </AppModal>
 
+    <AppModal title="Report Columns"  v-model="viewColumnsModal" lg>
+    <viewReportColumns :reportSettingNum="reportSettingNum"></viewReportColumns>
+    </AppModal>
 
     <div class="row">
 
@@ -265,7 +278,7 @@ watch(
         <table class="table table-hover caption-top mt-5 table-sm text-sm" style="font-size: 14px;">
           <thead>
           <tr>
-            <th class="w-[10%]" scope="col">Code</th>
+            <th class="w-[5%]" scope="col">Code</th>
             <th>Class</th>
             <th>Academic Year</th>
             <th>Study Period</th>
@@ -286,6 +299,7 @@ watch(
             <td class="text-sm"> {{levelInfo.status}}</td>
             <td>
               <button  class="btn btn-success btn-sm p-1 mr-1" style="border-width: 0px;text-decoration: none;" @click="setReportColumn(levelInfo.number,levelInfo.columns)"><small>Set Report Column</small></button>
+              <button  class="btn btn-outline-danger btn-sm p-1 mr-1" style="border-width: 0px;text-decoration: none;" @click="viewReportColumn(levelInfo.number)"><small>View</small></button>
               <button  class="link-primary" style="border-width: 0px;text-decoration: none;" @click="editThisData(levelInfo)"><small><i  style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small></button>
               <button @click="deleteThisData(levelInfo.number,levelInfo.columns)"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>
             </td>
