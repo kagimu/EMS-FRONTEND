@@ -123,7 +123,7 @@ export const useCateringStore = defineStore("catering", () => {
 
 
     async function fetchMenuItem(data) {
-        return await api.get("main/catering/menu-items?school_number="+data)
+        return await api.get("main/catering/menu-items?school_number="+data.school_number)
             .then((response) => {
                 menuItemResponse.value = response.data
             })
