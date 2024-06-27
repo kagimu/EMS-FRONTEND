@@ -58,7 +58,7 @@ const settingReportColumn = () => {
     report_setting_number: reportSettingNumber.value,
     column:form
   }
-  reportSetupStore.newReportColumn(form)
+  reportSetupStore.newReportColumn(formData)
   // alert(JSON.stringify(formData));
 }
 

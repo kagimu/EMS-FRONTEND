@@ -51,8 +51,8 @@ const form = reactive({
 
 onMounted(
     async () => {
-      await levelStore.fetchCampusCurriculum(campusNumber)
-      await reportSetupStore.fetchReportColumn()
+     levelStore.fetchCampusCurriculum(campusNumber)
+     reportSetupStore.fetchReportColumn()
       fetchCampusLevel()
     }
 )
