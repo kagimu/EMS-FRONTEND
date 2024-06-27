@@ -9,6 +9,7 @@ import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/stor
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useRouter} from "vue-router";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import setReportColumns from "@/main/dashboard/manageLevel/report_setup/report_forms/setReportColumns.vue";
 
 const routerData = useRouter()
 const notificationStore  = useNotificationStore()
@@ -40,7 +41,15 @@ const campus_class_number = ref("")
 const namee = ref(null)
 const reportSettingsD = ref([])
 const editModel = ref(false)
+const openSetColumn = ref(false)
+const reportSettingNumber = ref(null)
+const reportColumns = ref(null)
 
+const setReportColumn = (number,column) =>{
+  reportSettingNumber.value = number
+  reportColumns.value = column
+  openSetColumn.value = true
+}
 
 onMounted(
     async () => {
@@ -161,6 +170,14 @@ watch(
     }
 )
 
+watch(
+  () => reportSetupStore.reportColumnResponse,
+  async (data) => {
+    if (data) {
+   openSetColumn.value=false
+    }
+  }
+)
 
 </script>
 
@@ -172,6 +189,9 @@ watch(
       <new-report-settings :reportSettingsD="reportSettingsD"></new-report-settings>
     </AppModal>
 
+    <AppModal title="Set ReportColums"  v-model="openSetColumn" lg>
+      <setReportColumns :reportSettingNumber="reportSettingNumber" :reportColumns="reportColumns"></setReportColumns>
+    </AppModal>
 
 
     <div class="row">
@@ -264,6 +284,7 @@ watch(
             <td class="text-sm"> {{levelInfo.columns}}</td>
             <td class="text-sm"> {{levelInfo.status}}</td>
             <td>
+              <button  class="btn btn-success btn-sm p-1 mr-1" style="border-width: 0px;text-decoration: none;" @click="setReportColumn(levelInfo.number,levelInfo.columns)"><small>Set Report Column</small></button>
               <button  class="link-primary" style="border-width: 0px;text-decoration: none;" @click="editThisData(levelInfo)"><small><i  style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small></button>
               <button @click="deleteThisData(levelInfo.number,levelInfo.columns)"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>
             </td>
