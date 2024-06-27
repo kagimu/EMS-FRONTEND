@@ -45,8 +45,7 @@ watch(
           // campusCurriculumNumber = curriculumInfo[0].number
         }
       }
-    },
-    {deep:true}
+    }
 )
 
 

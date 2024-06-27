@@ -24,7 +24,16 @@ export const useUserStore = defineStore("users", () => {
         }
 
         async function fetchNarrativeReport(data) {
-            return await api.get("main/report-settings/narrative?student_number="+data)
+                    let student_number = data?.student_number ?? ""
+                    let assessment_area_number = data?.assessment_area_number ?? ""
+                    let study_period_number = data?.study_period_number ?? ""
+                    let campus_class_number = data?.campus_class_number ?? ""
+                    let academic_year_number = data?.academic_year_number ?? ""
+            return await api.get("main/report-settings/narrative?student_number="+student_number+
+                    "&assessment_area_number="+assessment_area_number+
+                    "&study_period_number="+study_period_number+
+                    "&campus_class_number="+campus_class_number+
+                    "&academic_year_number="+academic_year_number)
                 .then((response) => {
                     narrativeReportResponse.value = response.data
                 })

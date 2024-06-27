@@ -266,7 +266,7 @@ const cancelled = (cancelled) => {
                 <div class="card mb-4 mb-md-0">
                   <div class="card-body">
                     <div class="mt-0">
-            <div  style="padding: 0;">
+            <div>
   
               <div>
 
