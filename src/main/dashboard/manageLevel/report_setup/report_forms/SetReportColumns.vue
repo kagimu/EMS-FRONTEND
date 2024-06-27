@@ -56,7 +56,7 @@ const settingReportColumn = () => {
   convertFormValuesToInt()
   let formData = {
     report_setting_number: reportSettingNumber.value,
-    column:form
+    columns:form
   }
   reportSetupStore.newReportColumn(formData)
   // alert(JSON.stringify(formData));
