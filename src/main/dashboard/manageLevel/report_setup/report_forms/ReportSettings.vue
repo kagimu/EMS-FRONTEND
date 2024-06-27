@@ -1,6 +1,6 @@
 <script setup>
 
-import NewReportSettings from "@/main/dashboard/manageLevel/report_setup/report_forms/rforms/NewReportSettings.vue";
+
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
@@ -9,7 +9,8 @@ import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/stor
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useRouter} from "vue-router";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
-import setReportColumns from "@/main/dashboard/manageLevel/report_setup/report_forms/setReportColumns.vue";
+import SetReportColumns from "@/main/dashboard/manageLevel/report_setup/report_forms/SetReportColumns.vue";
+import NewReportSettings from "@/main/dashboard/manageLevel/report_setup/report_forms/rforms/NewReportSettings.vue";
 
 const routerData = useRouter()
 const notificationStore  = useNotificationStore()
@@ -186,11 +187,11 @@ watch(
   <div>
 
     <AppModal :title="editModel ? 'Edit ' + namee:'Add Settings'"  v-model="showReportSettingsModal" lg>
-      <new-report-settings :reportSettingsD="reportSettingsD"></new-report-settings>
+      <NewReportSettings :reportSettingsD="reportSettingsD"></NewReportSettings>
     </AppModal>
 
     <AppModal title="Set ReportColums"  v-model="openSetColumn" lg>
-      <setReportColumns :reportSettingNumber="reportSettingNumber" :reportColumns="reportColumns"></setReportColumns>
+      <SetReportColumns :reportSettingNumber="reportSettingNumber" :reportColumns="reportColumns"></SetReportColumns>
     </AppModal>
 
 
