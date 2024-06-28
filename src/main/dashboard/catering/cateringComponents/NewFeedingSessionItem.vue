@@ -186,7 +186,12 @@ function updateAmount(index) {
 }
 
 function addItem() {
+if(!form.campus_number){
+  notificationStore.errorToast("Error", "No Campus Selected ! ")
+}else{
   Items.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
+}
+
 }
 
 function removeItem(index) {
