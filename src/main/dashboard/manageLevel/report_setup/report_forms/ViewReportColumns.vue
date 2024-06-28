@@ -60,6 +60,7 @@ watch(
                 <th>Code</th>
                 <th>Column Name</th>
                 <th>Percentage Share</th>
+                <th>Assessment</th>
                 <th>#</th>
             </tr>
         </thead>
@@ -68,6 +69,15 @@ watch(
             <td>{{ list.code }}</td>
             <td>{{ list.name }}</td>
             <td>{{ list.percentage_share }}</td>
+            <td>
+                <!-- {{ list.assessments }} -->
+              
+            <span v-for="(listD, index) in list.assessments" :key="index">
+            {{listD.assessment_area}},
+            </span>
+
+         
+            </td>
             <td>
                 <button><i class="bi bi-x" style="color: red;"></i></button>
             </td>
