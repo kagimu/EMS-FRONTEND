@@ -53,10 +53,10 @@ const reportSettingsMenu = ref([
     name:"Report Setting",
     router_name:"report-setting"
   },
-  {
-    name:"Report Columns",
-    router_name:"report-columns"
-  },
+  // {
+  //   name:"Report Columns",
+  //   router_name:"report-columns"
+  // },
   {
     name:"Report Columns Assessment",
     router_name:"report-columns-assessment"

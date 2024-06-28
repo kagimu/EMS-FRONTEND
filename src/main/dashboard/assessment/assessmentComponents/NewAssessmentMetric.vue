@@ -448,7 +448,7 @@
               </div>
            
           <div class="mb-2">
-            <label class="textColor">Description</label>
+            <label class="textColor">Title</label>
              <textarea
                  class="form-control shadow-none text-sm"
                  rows="3"
