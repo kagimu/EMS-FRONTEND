@@ -109,13 +109,9 @@ watch(
 
 const addMenuItem = () =>{
   if(menuForm.type === 'ITEM'){
-
-
     menuForm.code = parseInt(menuForm.code)
     menuForm.base_price = parseFloat(menuForm.base_price)
-
     buttonLoader.value = true
-
     if(item_number.value){
       menuForm.menu_item_number = item_number.value
       cateringStore.updateMenuItem(menuForm)
@@ -166,7 +162,7 @@ watch(
           menuForm.type=null,
           menuForm.unit_of_measure_number=null,
           menuForm.campus_number=null
-      buttonLoader.value = false
+          buttonLoader.value = false
     },
     {deep: true}
 )
@@ -197,7 +193,10 @@ watch(
 )
 
 const doFetchMenuItem = (school_number) => {
-  cateringStore.fetchMenuItem(school_number)
+  let data = {
+    school_number:school_number
+  }
+  cateringStore.fetchMenuItem(data)
 }
 
 watch(
@@ -358,12 +357,12 @@ const clearFormData = () => {
         <div class="col-lg-8">
 
           <div class="mb-2">
-            <label class="textColor"><small>Unit Of Measurement</small></label>
+            <label class="textColor"><small> Unit of use measurements</small></label>
             <div class="input-group">
             <select
                 v-model="menuForm.unit_of_measure_number"
                 class="form-control form-select shadow-none" id="inputGroupSelect02">
-              <option disabled value="">--Select Unit of Measure--</option>
+              <option disabled value="">--Select Unit of use measurements--</option>
               <option v-for="(list, index) in unitMeasurementData" :key="index" :value="list.number">{{list.name}}</option>
             </select>
             <span class="input-group-text p-0 px-1"  ><i  class="bi bi-plus-circle" @click="showUnitMeasurement()"></i></span>
@@ -384,7 +383,7 @@ const clearFormData = () => {
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Type</small> </label>
+        <label class="textColor"><small>Item Type</small> </label>
         <select
             v-model="menuForm.type"
             class="form-select form-select-sm" required
@@ -392,7 +391,7 @@ const clearFormData = () => {
 
         >
           <option disabled value="">Select Type</option>
-          <option>ITEM</option>
+          <option value="ITEM">Ingredients (ITEM)</option>
           <option>ASSEMBLED</option>
         </select>
       </div>

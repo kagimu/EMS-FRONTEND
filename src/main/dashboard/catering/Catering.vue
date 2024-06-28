@@ -68,7 +68,7 @@ const mealMenu = ref([
     value:"meal-calendar"
   },
   {
-    text:"Meals Capture",
+    text:"Meals Delivery",
     value:"feeding",
     action:"record_meals"
   },
