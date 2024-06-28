@@ -19,6 +19,7 @@ const  notificationStore  = useNotificationStore()
 const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
 const cateringStore = useCateringStore()
+const isSelected = ref(true)
 
 const form = reactive({
   campus_number:null,
@@ -43,7 +44,14 @@ function updateAmount(index) {
 }
 
 function addItem() {
-  Items.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
+  if(!form.campus_number){
+    isSelected.value = false
+    notificationStore.errorToast("Error","No Campus Selected ! ")
+  }else{
+    isSelected.value = true
+    Items.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
+  }
+  
 }
 
 function removeItem(index) {
@@ -91,9 +99,10 @@ const createStock = () => {
 watch(
     () => cateringStore.newStockResponse,
     async (data) => {
+      clearFormData()
       notificationStore.successToast("Success", data.message)
       cateringStore.fetchStock()
-      clearFormData()
+     
     },
     {deep: true}
 )
@@ -109,7 +118,7 @@ watch(
 )
 
 const clearFormData = () => {
-  school_number.value = null
+  form.school_number = null
   form.campus_number = null
   Items.value = []
 }
@@ -187,12 +196,12 @@ watch(
                                 </option>
                             </select>
                         </div>
-                        </div>
-                        <div class="col-lg-4">
-
+                       
+                    
                         <div class="mb-2">
                     <label class="textColor"><small>Campus</small>  </label>
                     <select
+                    :style="!isSelected ? 'border:1px solid red' : '' "
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
                     v-model="form.campus_number" required
@@ -204,16 +213,17 @@ watch(
                     </select>
                     </div>
                         </div>
-                    </div>
-                    <div class="row">
+
+                 
+                   
             
-            <div class="col-lg-12">
+            <div class="col-lg-8">
               <!-- New Design -->
-                <table class="table table-hover caption-top mt-4 table-sm table-striped">
+                <table class="table table-hover caption-top mt-1 table-sm table-striped">
                   <thead>
                     <tr class="" style="padding: 0px;margin: 0px;">
-                      <th>Item</th>
-                      <th>Quantity</th>
+                      <th style="width: 40%;">Item</th>
+                      <th>Qty</th>
                       <th>Unit Price</th>
                       <th>Amount</th>
                       <th></th>
@@ -227,9 +237,9 @@ watch(
                         </select>
                       </td>
                       <td><input   @keypress="commons.numbersOnlyValidator($event)"
-            maxlength="10" type="text" v-model="itemData.quantity" @input="updateAmount(index)" placeholder="1.0" class="inp"></td>
+            maxlength="10" type="text" v-model="itemData.quantity" @input="updateAmount(index)" placeholder="1.0" class="form-control select-no-border"></td>
                       <td><input  @keypress="commons.numbersOnlyValidator($event)"
-            maxlength="10" type="text" v-model="itemData.cost" @input="updateAmount(index)" placeholder="Unit Price" class="inp"></td>
+            maxlength="10" type="text" v-model="itemData.cost" @input="updateAmount(index)" placeholder="Unit Price" class="form-control select-no-border"></td>
                       <td>{{ itemData.amount }}</td>
                       <td><button type="button" @click="removeItem(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
                     </tr>
@@ -242,7 +252,7 @@ watch(
                     class="btn btn-primary btn-sm textColor ml-3"
                     @click.prevent="addItem"
                     :disabled="isAddButtonDisabled">
-                  <small>ADD ANOTHER ITEM</small>
+                  <small><i class="bi bi-plus-lg"></i></small>
                 </button>
               </div>
 
@@ -259,11 +269,13 @@ watch(
             
               <!-- ends here -->
             </div>
-          </div> 
+         
+          </div>
+        
                 <div class="flex flex-grow justify-between">
                   &nbsp;
                      <div class="mr-3 mb-10">
-                         <button type="submit" class="btn btn-sm btn-outline-primary mb-2 mt-1" style="float: right !important;margin-right: 0px;">
+                         <button type="submit" class="btn btn-sm btn-primary mb-2 mt-1" style="float: right !important;margin-right: 0px;">
                            <small>Submit</small>
                            <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
                              <span class="visually-hidden">Loading...</span>
