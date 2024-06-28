@@ -3,10 +3,14 @@
       <div class="row">
         <div class="col-12">
             <div class="card-body" style="padding: 0;">
+              <form @submit.prevent="createFeedingSessionItem">
                 <div class="row mt-5 mb-3 mx-auto">
+            
 
-                    <div class="col-4">
-                        <div class="mb-2">
+<div class="col-lg-5">
+                  
+                        <div class="mb-3">
+                          <label class="textColor">School</label>
                             <select
                                 v-model="form.school_number"
                                 class="form-select form-select-sm shadow-none"
@@ -16,12 +20,13 @@
                               <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
                               </option>
                             </select>
-                        </div>
+                      
                     </div>
 
-        <div class="col-lg-4">
+    
 
-              <div class="mb-2">
+              <div class="mb-3">
+                <label class="textColor">Campus</label>
                   <select
                   class="form-select form-select-sm shadow-none"
                   v-model="form.campus_number" required
@@ -32,28 +37,25 @@
                     </option>
                   </select>
               </div>
-          </div>
+       
 
-            <div class="col-3"> 
+            <div class="mb-3"> 
+
+              <label class="textColor">Feeding Session</label>
                 <select v-model="form.feeding_session_number" class="form-control form-select shadow-none">
                     <option disabled value="">Select Feeding Sessions</option>
                     <option v-for="(list, index) in feedingSessionGroupData" :key="index" :value="list.number">{{list.name}}</option>
                 </select>
             </div>
-
-                </div>
-              <div class="mt-1">
-                <form @submit.prevent="createFeedingSessionItem">
-        
-            <div class="row">
-            <div class="col-lg-12">
-              <!-- New Design -->
-
+          </div>
+            
+          <div class="col-lg-7">
+              <div class="mt-2">
                  <table class="table table-hover  text-[14px]">
                   <thead>
                     <tr class="" style="padding: 0px;margin: 0px;">
                       <th>Item</th>
-                      <th>Quantity</th>                   
+                      <th style="width: 25%;">Qty</th>                   
                       <th></th>
                     </tr>
                   </thead>
@@ -93,31 +95,36 @@
                     class="btn btn-primary btn-sm textColor ml-3"
                     @click.prevent="addItem"
                     :disabled="isAddButtonDisabled">
-                  <small>ADD ANOTHER ITEM</small>
+                  <small><i class="bi bi-plus-lg"></i></small>
                 </button>
               </div>
 
 
             </div>
           </div> 
-                <div class="row mt-5">
+              
                
+              </div>
+            
+
+              <div class="row mt-5">
+            
             <div class="col-lg-4">
                
              </div>
              <div class="col-lg-4"></div>
              <div class="col-lg-4 ">
-               <button type="submit" class="btn btn-sm btn-outline-primary mb-2 mt-1" style="float: right !important;margin-right: 0px;">
-                 <small>Submit</small>
+               <button type="submit" class="btn btn-sm btn-primary mb-2 mt-5 m-2" style="float: right !important;margin-right: 0px;">
+                 <small>Submit Data</small>
              <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
                <span class="visually-hidden">Loading...</span>
              </div>
            </button>
              </div>
             
-             </div>
-               </form>
-              </div>
+        </div>
+          </form>
+
             </div>
             
           </div>

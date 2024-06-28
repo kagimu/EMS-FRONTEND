@@ -204,7 +204,7 @@ watch(
       <SetReportColumns :reportSettingNumber="reportSettingNumber" :reportColumns="reportColumns"></SetReportColumns>
     </AppModal>
 
-    <AppModal title="Report Columns"  v-model="viewColumnsModal" xl2>
+    <AppModal title="Report Columns"  v-model="viewColumnsModal" xl4>
     <viewReportColumns :reportSettingNum="reportSettingNum"></viewReportColumns>
     </AppModal>
 
