@@ -11,7 +11,7 @@ import {useRouter} from "vue-router";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import SetReportColumns from "@/main/dashboard/manageLevel/report_setup/report_forms/SetReportColumns.vue";
 import NewReportSettings from "@/main/dashboard/manageLevel/report_setup/report_forms/rforms/NewReportSettings.vue";
-import viewReportColumns from "@/main/dashboard/manageLevel/report_setup/report_forms/viewReportColumns.vue";
+import ViewReportColumns from "@/main/dashboard/manageLevel/report_setup/report_forms/ViewReportColumns.vue";
 
 
 const routerData = useRouter()
@@ -205,7 +205,7 @@ watch(
     </AppModal>
 
     <AppModal title="Report Columns"  v-model="viewColumnsModal" lg>
-    <viewReportColumns :reportSettingNum="reportSettingNum"></viewReportColumns>
+      <ViewReportColumns :reportSettingNum="reportSettingNum"></ViewReportColumns>
     </AppModal>
 
     <div class="row">
