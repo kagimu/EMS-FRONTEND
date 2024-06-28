@@ -28,7 +28,7 @@
               <div class="mb-3">
                 <label class="textColor">Campus</label>
                   <select
-                  class="form-select form-select-sm shadow-none"
+                  class="form-select form-select-sm shadow-none"  :style="!isSelected ? 'border:1px solid red' : '' "
                   v-model="form.campus_number" required
                   @change="doFetchMenuItem()"
                   >
@@ -153,6 +153,7 @@ const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
 const cateringStore = useCateringStore()
 const feedingSessionGroupData = ref([])
+const isSelected = ref(true)
 
 const form = reactive({
     feeding_session_number:"",
@@ -185,10 +186,13 @@ function updateAmount(index) {
   item.amount = item.quantity * item.cost;
 }
 
+
 function addItem() {
 if(!form.campus_number){
+  isSelected.value = false
   notificationStore.errorToast("Error", "No Campus Selected ! ")
 }else{
+  isSelected.value = true
   Items.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
 }
 
@@ -278,6 +282,8 @@ watch(
   )
 
   const clearFormData = () => {
+    form.school_number = null,
+    form.campus_number = null
     form.feeding_session_number = null
     Items.value = []
 }
