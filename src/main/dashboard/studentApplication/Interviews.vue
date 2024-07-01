@@ -22,6 +22,7 @@ const  notificationStore  = useNotificationStore()
 const interviewAssessmentDialog = ref(false)
 const assesssmentMetricsDialog = ref(false)
 const thisDialog = ref(false)
+const loading = ref(false)
 
 const showModal = () => {
     showingModal.value = true
@@ -31,7 +32,10 @@ const showModal = () => {
 
 onMounted(
     async () => {
-      await applicationStore.fetchInterviewList()
+     loading.value = true
+    applicationStore.fetchInterviewList().finally(() => {
+    loading.value = false; 
+  })
     } )
 
     watch(
@@ -158,7 +162,19 @@ watch(
       @click="showModal" >
       <i class="bi bi-plus"></i>&nbsp;<small>Create An Interview</small>
       </button>
+
       <hr style="width:30px;"></h6>
+      <div v-if="loading" class="text-center my-4">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+        </div>
+
+      <div v-else-if="interviewList.length === 0" class="text-center my-4">
+                <p>There is no data found</p>
+       </div>
+
+ <div v-else>
     <table
       id="datatable"
       class="table table-striped"
@@ -183,32 +199,11 @@ watch(
           <td>{{ interview.venue }}</td>
           <td class="w-[25%]">{{ interview.message }}</td>
           <td>
-            <!-- <div class="mb-1">
-              <router-link style=""
-                  class="text-decoration-none"
-                  :to="{name:'interview-learners-list', query:{interview_id:interview.number, interview:interview.name}}">
-                <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
-                <small>View Applicants</small>
-                </button>
-              </router-link>
-            </div> -->
+        
 
             <div>
-              <!-- <button style="display: none;"
-                  class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
-                  @click="showAssesssmentMetricsDialog(interview)"
-                  data-bs-toggle="modal"
-                  data-bs-target="#assesssmentMetricsModal"
-              > Assessement</button> -->
-              
-
-              <!-- <button style="display: none;"
-                  class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
-                  @click="showInterviewAssessmentDialog(interview)"
-                  data-bs-toggle="modal"
-                  data-bs-target="#interviewAssessmentModal"
-              >  Add Interview Assessment</button> -->
-
+            
+       
               <router-link style="display:non"
                   class="text-decoration-none"
                   :to="{name:'manage-interviews', query:{interview_id:interview.number, interview:interview.name}}">
@@ -224,6 +219,8 @@ watch(
         
       </tbody>
     </table>
+  </div>
+
   </div>
 
   

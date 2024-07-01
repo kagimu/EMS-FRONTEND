@@ -449,12 +449,6 @@ watch (
                        </td>
                        <td>{{ applist.application_fee_payment === false ? 'pending' : 'completed' }}</td>
                        <td>
-                          <!-- <button  data-bs-toggle="modal" data-bs-target="#infoModal" @click="setApplicationNumber(applist.number)" 
-                             class="btn btn-primary btn-sm" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
-                               
-                             {{  applist.status == "INTERVIEW_SCHEDULED"||applist.status == "ENROLLED" || applist.status == "ADMITTED"  ? 'view Details' : 'Schedule Interview' }}
-                             </small>
-                             </button> -->
                           <button v-if="applist.status === 'SUBMITTED'" @click="setApplicationNumber(applist.number)"
                              class="btn btn-primary btn-sm mb-2" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
                           Schedule Interview

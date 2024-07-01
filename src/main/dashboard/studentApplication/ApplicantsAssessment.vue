@@ -1,3 +1,136 @@
+<script setup>
+  import {onMounted, ref, watch,reactive} from "vue";
+  import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
+  import {useStudentApplicationStore} from "@/main/dashboard/studentApplication/store/student_application.js";
+  import useNotificationStore from "@/composables/useNotification.js";
+  import {useRouter} from "vue-router";
+  import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+  import InterviewAssessment from "@/main/dashboard/studentApplication/InterviewAssessment.vue";
+  import AppModal from "@/components/AppModal.vue";
+  import useCommonsStore from "@/composables/useCommons.js";
+  import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
+  
+  const reportSetupStore = useReportSetupStore()
+  const commons = useCommonsStore()
+  const studentsList = ref(null)
+  const showingModal = ref(false)
+  const assessmentNumber = ref("")
+  const interviewStudentListData = ref( [])
+  const assessmentStore = useAssessmentStore()
+  const studentApplicationStore = useStudentApplicationStore()
+  const routerData = useRouter()
+  let  interviewNumber = routerData.currentRoute.value.query.interview_id
+  let interviewM = routerData.currentRoute.value.query.interview_m
+  const notificationStore = useNotificationStore()
+  const applicationStore= useApplicationStore()
+  const assessmentDataData = ref([])
+  const assessment_metric_number = ref(null)
+  const errorMessage = ref(null)
+  const buttonLoader = ref(false)
+  const comm = ref(null)
+  const score = ref(null)
+  const studentNumber = ref(null)
+  const errM = ref(false)
+
+  const showModal = () => {
+      showingModal.value = true
+  }  
+
+  const form = reactive({
+   assessmentN : ""
+  })
+
+  onMounted(
+    () => {
+      studentApplicationStore.fetchAssessmentMetricsOnInterview(interviewNumber)
+    }
+)
+
+  
+  const fetchStudentOnInterview = (assNumber) =>{
+   let data = reactive({
+      interview_number:interviewNumber,
+      assessment_metric_number:assNumber
+   })
+      applicationStore.fetchStudentsOnInterview(data) 
+  }
+  
+  
+  watch(
+      () => studentApplicationStore.assessmentMetricsOnInterviewResponse,
+      async (data) => {
+        if(data){
+          assessmentDataData.value = data.data
+         
+        }
+      },
+      {deep:true}
+  )
+  
+  
+  watch(
+      () => applicationStore.StudentsOnInterviewResponse,
+      async (data) => {
+        if(data){
+         errM.value = false
+          interviewStudentListData.value = data.data
+        }
+      },
+      {deep:true}
+  )
+  
+
+  const submitMarks = (a,b,c) =>{
+      buttonLoader.value=true
+      let formDat = reactive({
+      assessment_metric_number:form.assessmentN,
+      comment:b,
+      student_number:c,
+      assessment_date:null,
+      actual_score:parseInt(a)
+  })
+  studentApplicationStore.newInterviewAssessmentResult(formDat)
+  }
+  
+  
+  watch (
+      () => studentApplicationStore.interviewAssessmentResultResponse,
+      async (data) => {
+        if(data){
+          buttonLoader.value = false
+          notificationStore.successToast("Success", data.message)
+        }
+      },
+      {deep:true}
+  )
+  watch(
+      () => applicationStore.errorMessage,
+      async (data) => {
+        if(data){
+         errM.value = true
+          errorMessage.value = data.message
+          notificationStore.errorToast("Error",data.message)
+        }
+      },
+      {deep:true}
+      )
+  
+      watch(
+      () => studentApplicationStore.errorMessage,
+      async (data) => {
+        if(data){
+          errorMessage.value = data.message
+          notificationStore.errorToast("Error",data.message)
+        }
+      },
+      {deep:true}
+      )
+      
+
+
+</script>
+
+
 <template>
   <div>
      <AppModal title="Attach Assessment Schedules To An Interview" v-model="showingModal" lg>
@@ -11,11 +144,11 @@
           <select
                  style="box-shadow: none;"
                  class="form-select form-select-sm"  id="inputGroupSelect02" required
-                 v-model="assessmentNumber"
-                 @change="fetchStudentOnInterview(assessmentNumber)"
+                 v-model="form.assessmentN"
+                 @change="fetchStudentOnInterview(form.assessmentN)"
                  >
                  <option disabled value=""> - Select Assessment Schedule- </option>
-                 <option v-for="(assessment, index) in assessmentDataList" :key="index" :value="assessment.AssessmentMetric.number">{{assessment.AssessmentMetric.name  }}</option>
+                 <option v-for="(assessment, index) in assessmentDataData" :key="index" :value="assessment.AssessmentMetric.number">{{assessment.AssessmentMetric.name  }}</option>
               </select>
   <label class="input-group-text" for="inputGroupSelect02"><i  class="bi bi-plus-circle" @click="showModal()"></i></label>
 </div>
@@ -28,15 +161,21 @@
          
         </div>
      </div>
-     <div v-if="interviewStudentListData === null" class="text-center mt-4">
+     <!-- <div v-if="interviewStudentListData === null" class="text-center mt-4">
         <div class="spinner-border text-primary" role="status">
            <span class="visually-hidden">Loading...</span>
         </div>
-     </div>
-     <!-- <div class="alert alert-danger">
-       {{ errorMessage }}
      </div> -->
-     <table  v-if="interviewStudentListData !== null" id="data"
+   
+     <div>
+
+      
+     <div class="alert alert-danger p-1 mt-3 mb-3 textColor" v-if="errM" >
+       {{ errorMessage }}
+     </div>
+      
+     <div v-else>
+     <table   id="data"
         class="table table-striped table-hover caption-top table-sm text-sm">
         <thead>
            <tr>
@@ -81,118 +220,11 @@
               </td> -->
            </tr>
         </tbody>
-        <tbody>
-           <tr>
-           </tr>
-        </tbody>
      </table>
+   </div>
+
+   </div>
   </div>
 </template>
-<script setup>
-  import {onMounted, ref, watch,reactive} from "vue";
-  import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
-  import {useStudentApplicationStore} from "@/main/dashboard/studentApplication/store/student_application.js";
-  import useNotificationStore from "@/composables/useNotification.js";
-  import {useRouter} from "vue-router";
-  import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
-  import InterviewAssessment from "@/main/dashboard/studentApplication/InterviewAssessment.vue";
-  import AppModal from "@/components/AppModal.vue";
-  import useCommonsStore from "@/composables/useCommons.js";
-  import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
-  
-  const reportSetupStore = useReportSetupStore()
-  const commons = useCommonsStore()
-  const studentsList = ref(null)
-  const showingModal = ref(false)
-  const assessmentNumber = ref("")
-  const interviewStudentListData = ref( [])
-  const assessmentStore = useAssessmentStore()
-  const studentApplicationStore = useStudentApplicationStore()
-  const routerData = useRouter()
-  let  interviewNumber = routerData.currentRoute.value.query.interview_id
-  let interviewM = routerData.currentRoute.value.query.interview_m
-  const notificationStore = useNotificationStore()
-  const applicationStore= useApplicationStore()
-  const assessmentDataList = ref([])
-  const assessment_metric_number = ref(null)
-  const errorMessage = ref(null)
-  const buttonLoader = ref(false)
-  const comm = ref(null)
-  const score = ref(null)
-  const studentNumber = ref(null)
 
-  const showModal = () => {
-      showingModal.value = true
-      thisDialog.value=false
-  }  
-
-  
-  const fetchStudentOnInterview = (assessmentMetricNumber) =>{
-   let data = {
-      interview_number:interviewNumber,
-      assessment_metric_number:assessmentMetricNumber
-   }
-      applicationStore.fetchStudentsOnInterview(data) 
-  }
-  
-  
-  watch(
-      () => studentApplicationStore.assessmentMetricsOnInterviewResponse,
-      async (data) => {
-        if(data){
-          assessmentDataList.value = data.data
-        }
-      },
-      {deep:true}
-  )
-  
-  
-  watch(
-      () => applicationStore.StudentsOnInterviewResponse,
-      async (data) => {
-        if(data){
-          interviewStudentListData.value = data.data
-        }
-      },
-      {deep:true}
-  )
-  
-
-  const submitMarks = (a,b,c) =>{
-      buttonLoader.value=true
-      const form = reactive({
-      assessment_metric_number:assessmentNumber,
-      comment:b,
-      student_number:c,
-      assessment_date:null,
-      actual_score:parseInt(a)
-  })
-  studentApplicationStore.newInterviewAssessmentResult(form)
-  }
-  
-  
-  watch (
-      () => studentApplicationStore.interviewAssessmentResultResponse,
-      async (data) => {
-        if(data){
-          buttonLoader.value = false
-          notificationStore.successToast("Success", data.message)
-        }
-      },
-      {deep:true}
-  )
-  watch(
-      () => studentApplicationStore.errorMessage,
-      async (data) => {
-        if(data){
-          errorMessage.value = data.message
-          notificationStore.errorToast("Error",data.message)
-        }
-      },
-      {deep:true}
-      )
-  
-
-
-</script>
 <style></style>

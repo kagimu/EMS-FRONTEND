@@ -85,7 +85,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Report Settings</small></label>
+        <label class="textColor"><small>General Report Settings</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
