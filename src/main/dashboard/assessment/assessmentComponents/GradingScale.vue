@@ -73,8 +73,6 @@ watch(
 )
 
 
-
-
 watch(
     () => academicYearStore.campusClassByLevelResponse,
     async (data) => {
@@ -83,10 +81,6 @@ watch(
       }
     }
 )
-
-
-
-
 
 
 watch(
@@ -151,7 +145,6 @@ watch (
       <div class="row">
             <div class="col-12">
               <div class="card">
-                <div class="card-header">
            <div class="row">
             <div class="col-lg-6 "> 
                   
@@ -162,7 +155,7 @@ watch (
                       v-if="can('add_grade_scale','general')"
                       style="float: right; margin-right: 5px;"
                       type="button"
-                      class="btn btn-primary btn-sm">
+                      class="btn btn-primary btn-sm m-4">
                     <i class="bi bi-plus"></i>
                     New Aggregate Scale
                 </button>
@@ -170,7 +163,7 @@ watch (
             </div>
     
            </div>
-               </div>
+              
                 <div class="card-body" >
         <div >
           <div class="row">
