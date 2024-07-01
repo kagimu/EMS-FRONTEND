@@ -185,20 +185,20 @@ watch(
         <div class="text-sm px-4">
           <div class="mb-2">Summary</div>
           <div class="border rounded-md">
-            <table class="table table-hover caption-top table-sm" style="font-size: 14px;">
+            <table class="table table-hover caption-top table-sm text-[10px]">
               <thead>
               <tr>
                 <th scope="col" class="w-[10%]">#</th>
                 <th scope="col" class="w-[40%]">Name</th>
-                <th scope="col" class="w-[20%]">Unit</th>
-                <th scope="col" class="w-[30%]">Cost</th>
+                <th scope="col" class="w-[30%]">Unit</th>
+                <th scope="col" class="w-[20%]">Cost</th>
               </tr>
               </thead>
               <tbody>
               <tr v-for="(summary, summary_index) in mealProjections?.items_summary" :key="summary_index">
                 <td> {{(summary_index + 1)}}</td>
                 <td> {{summary.name}}</td>
-                <td> {{summary.quantity}} ( {{summary.unit_of_measure}} )</td>
+                <td><div class="flex">{{summary.quantity}} ( {{summary.unit_of_measure}} )</div></td>
                 <td> {{summary.total_cost}}</td>
               </tr>
               <tr class="font-bold">
@@ -218,7 +218,7 @@ watch(
 
 
 
-      <table class="table table-hover caption-top mt-5 table-sm border-t" style="font-size: 14px;">
+      <table class="table table-hover caption-top mt-5 table-sm border-t text-[10px]">
         <thead>
         <tr>
           <th scope="col" class="w-[5%]">#</th>
@@ -233,7 +233,7 @@ watch(
 
           <td>
 
-            <table class="table table-hover caption-top table-sm" style="font-size: 14px;">
+            <table class="table table-hover caption-top table-sm text-[10px]">
               <thead>
               <tr>
                 <th scope="col" class="w-[5%]">#</th>
@@ -250,13 +250,13 @@ watch(
                 <td>
 
 
-                  <table v-if="meal?.items?.length > 0" class="table table-hover caption-top table-sm" style="font-size: 14px;">
+                  <table v-if="meal?.items?.length > 0" class="table table-hover caption-top table-sm text-[10px]">
                     <thead>
                     <tr>
                       <th scope="col" class="w-[10%]">#</th>
                       <th scope="col" class="w-[30%]">Name</th>
-                      <th scope="col" class="w-[20%]">Unit</th>
-                      <th scope="col" class="w-[30%]">Cost</th>
+                      <th scope="col" class="w-[30%]">Unit</th>
+                      <th scope="col" class="w-[20%]">Cost</th>
                     </tr>
                     </thead>
                     <tbody>
