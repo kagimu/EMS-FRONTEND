@@ -34,15 +34,11 @@ const campusClassList = ref(null)
 const campusNumber = routerData.currentRoute.value.query.id
 const gradeDataInfo = ref([])
 
+
 const form = reactive({
-  code : null,
-  name : null,
-  min_value: null,
-  max_value: null,
-  campus_class_number:null,
+  campus_class_number:"",
   campus_number: campusNumber,
-  grading_standard_number:null,
-  grade_number:""
+  grading_standard_number:"",
 })
 
 
@@ -53,61 +49,39 @@ onMounted(
     }
 )
 
-watch (
-    () => assessmentStore.gradeResponse,
-    async (data) => {
-      if(data){
-        gradeDataInfo.value = data
-      }
-    }
-)
 
-watch(
-    () => levelStore.campusCurriculumResponse,
-    async (data) => {
-      if(data){
-        campusCurriculumDataInfo.value = data.data
-      }
-    }
-)
+const sectionPart = reactive([]);
 
+const newSectionPart = () => {
+    sectionPart.push({ code: null, grade_number: null,min_value:null,max_value:null})
+}
+
+function removeSectionPart(index) {
+  sectionPart.splice(index, 1);
+}
+
+const convertFormValuesToInt = () => {
+  sectionPart.forEach(field => {
+    if (field.code !== null) {
+      field.code = parseInt(field.code);
+    }
+    if (field.min_value !== null) {
+      field.min_value = parseInt(field.min_value);
+    }
+    if (field.max_value !== null) {
+      field.max_value = parseInt(field.max_value);
+    }
+  })
+}
 
 const createScale = () =>{
-  form.code =  form.code ? parseInt(form.code) : ""
-  form.max_value = form.max_value ? parseInt(form.max_value) : ""
-  form.min_value = form.min_value ? parseInt(form.min_value) : ""
+  convertFormValuesToInt()
   buttonLoader.value = true
+  form.grades = sectionPart
+  // alert(JSON.stringify(form))
   assessmentStore.createAggregateScale(form)
 }
 
-
-
-watch (
-    () => assessmentStore.newAggregateScaleResponse,
-    async (data) => {
-      if(data){
-        buttonLoader.value = false
-      }
-    }
-)
-
-watch (
-    () => assessmentStore.errorMessage,
-    async (data) => {
-      if(data){
-        buttonLoader.value = false
-        errorMessage.value = data.message
-        notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-)
-
-
-/*onMounted(
-    async () => {
-      await assessmentStore.fetchGradeStandard()
-    } )*/
 
 const doFetchGradingStandard = () => {
   let data = {
@@ -116,16 +90,6 @@ const doFetchGradingStandard = () => {
   }
   assessmentStore.fetchGradeStandard(data)
 }
-
-watch (
-    () => assessmentStore.gradeStandardResponse,
-    async (data) => {
-      if(data){
-        gradeData.value = data.data
-      }
-    },
-    {deep:true}
-)
 
 
 const fetchCampuses = (school_number) => {
@@ -150,6 +114,58 @@ const fetchCampusLevel = () => {
 const fetchClass = (campus_level_number) => {
   academicYearStore.fetchCampusClassByLevel(campus_level_number)
 }
+
+
+
+watch (
+    () => assessmentStore.gradeResponse,
+    async (data) => {
+      if(data){
+        gradeDataInfo.value = data
+      }
+    }
+)
+
+watch(
+    () => levelStore.campusCurriculumResponse,
+    async (data) => {
+      if(data){
+        campusCurriculumDataInfo.value = data.data
+      }
+    }
+)
+
+watch (
+    () => assessmentStore.newAggregateScaleResponse,
+    async (data) => {
+      if(data){
+        buttonLoader.value = false
+      }
+    }
+)
+
+watch (
+    () => assessmentStore.errorMessage,
+    async (data) => {
+      if(data){
+        buttonLoader.value = false
+        errorMessage.value = data.message
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+watch (
+    () => assessmentStore.gradeStandardResponse,
+    async (data) => {
+      if(data){
+        gradeData.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 watch(
     () => classStore.campusLevelResponse,
@@ -204,6 +220,8 @@ watch(
 )
 
 
+
+
 </script>
 <template>
     <div>
@@ -211,20 +229,6 @@ watch(
 
       <div class="modal-body">
         <form @submit.prevent="createScale()">
-
-
-
-          <div class="mb-2">
-            <div class="text-[13px] text-[#505050]"> Code</div>
-            <input
-                @keypress="commons.codeValidator($event)"
-                maxlength="10"
-                v-model="form.code"
-                @paste.prevent
-                required
-                class="form-control form-select-sm shadow-none">
-          </div>
-
 
 
           <div class="mb-2">
@@ -264,42 +268,15 @@ watch(
               <option v-for="(gradeList,index) in gradeData" :key="index" :value="gradeList.number">{{ gradeList.name }}</option>
             </select>
           </div>
-
-
-
-
-
-
-          
-      <div class="mb-2">
-        <div class="row">
-            <div class="col-lg-4">
-              <div class="text-[13px] text-[#505050]">Minimum Scale</div>
-               <input
-                   maxlength="3"
-                   @keypress="commons.numbersOnlyValidator($event)"
-                   v-model="form.min_value"
-                   placeholder="eg. 90"
-                   type="text"
-                   class="form-control outline-none shadow-none">
-            </div>
-            <div class="col-lg-4">
-              <div class="text-[13px] text-[#505050]">Maximum Scale</div>
-             <input
-                 placeholder="eg. 100"
-                 maxlength="3"
-                 @keypress="commons.numbersOnlyValidator($event)"
-                 v-model="form.max_value"
-                 type="text"
-                 class="form-control outline-none shadow-none">
-            </div>
-
+        
+    
+        <div v-for="(field, index) in sectionPart" :key="index" class="row">
           <div class="col-lg-4">
             <div>
               <div class="text-[13px] text-[#505050]">Measures Of Assessment</div>
               <select
                   class="form-select form-select-sm shadow-none" required
-                  v-model="form.grade_number"
+                  v-model="field.grade_number"
               >
                 <option disabled value="">-Select-</option>
                 <option v-for="(list, index) in gradeDataInfo" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
@@ -307,11 +284,49 @@ watch(
             </div>
           </div>
 
+          
+          <div class="col-lg-1">
+          <div class="mb-2">
+            <div class="text-[13px] text-[#505050]"> Code</div>
+            <input
+                @keypress="commons.codeValidator($event)"
+                maxlength="10"
+                v-model="field.code"
+                @paste.prevent
+                required
+                class="form-control form-select-sm shadow-none">
+          </div>
         </div>
-      </div>
 
-  
-     <div class="flex justify-content-end mt-2" style="width: 100%;">
+            <div class="col-lg-3">
+              <div class="text-[13px] text-[#505050]">Minimum Scale</div>
+               <input
+                   maxlength="3"
+                   @keypress="commons.numbersOnlyValidator($event)"
+                   v-model="field.min_value"
+                   placeholder="eg. 90"
+                   type="text"
+                   class="form-control outline-none shadow-none">
+            </div>
+            <div class="col-lg-3">
+              <div class="text-[13px] text-[#505050]">Maximum Scale</div>
+             <input
+                 placeholder="eg. 100"
+                 maxlength="3"
+                 @keypress="commons.numbersOnlyValidator($event)"
+                 v-model="field.max_value"
+                 type="text"
+                 class="form-control outline-none shadow-none">
+            </div>
+            <div class="col-lg-1">
+              <i class="bi bi-x-circle p-0" style="color: red;cursor: pointer;float: left;margin-top: 68%; margin-left: -10px;" @click="removeSectionPart(index)"></i>
+            </div>
+        </div>
+
+        <button @click="newSectionPart" type="button" class="btn btn-primary btn-small p-1 mb-2" style="width: 30px;text-align: center;"><i class="bi bi-plus"></i></button>
+      
+
+     <div class="flex justify-content-end mt-4" style="width: 100%;">
             <button type="submit" class="btn btn-primary border-0 btn-sm">
                  <small><i class="bi bi-save"></i> submit</small>
                  <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
