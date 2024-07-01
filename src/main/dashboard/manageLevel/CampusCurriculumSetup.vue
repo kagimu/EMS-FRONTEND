@@ -50,7 +50,7 @@ const campusSettingsMenu = ref([
 
 const reportSettingsMenu = ref([
   {
-    name:"Report Setting",
+    name:"General report settings",
     router_name:"report-setting"
   },
   // {

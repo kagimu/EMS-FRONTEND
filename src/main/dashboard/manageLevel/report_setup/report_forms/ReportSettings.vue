@@ -196,7 +196,7 @@ watch(
 
   <div>
 
-    <AppModal :title="editModel ? 'Edit ' + namee:'Add Settings'"  v-model="showReportSettingsModal" lg>
+    <AppModal :title="editModel ? 'Edit ' + namee:'Add Report General Settings'"  v-model="showReportSettingsModal" lg>
       <NewReportSettings :reportSettingsD="reportSettingsD"></NewReportSettings>
     </AppModal>
 
@@ -213,11 +213,11 @@ watch(
       <div class="col-12">
 
         <div class="flex justify-content-between mt-3">
-          <div class="ml-4">Report Settings</div>
+          <div class="ml-4">General Report Settings</div>
           <button
               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addReportSettings">
             <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-              Add Settings
+              Add General Report Settings
           </button>
         </div>
 
