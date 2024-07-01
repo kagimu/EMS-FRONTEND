@@ -9,6 +9,7 @@ import Comfirm from "@/main/dashboard/enrollment/Comfirm.vue"
 import AppModal from "@/components/AppModal.vue";
 import { useAbility } from '@casl/vue';
 const { can } = useAbility()
+import router from "@/config/router.js";
 
 
 import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
@@ -41,7 +42,6 @@ onMounted(
     async () => {
       await applicationStore.fetchStudent(student_number)
     } )
-
 
 watch (
     () => applicationStore.studentDataResponse,
@@ -128,36 +128,15 @@ const itemMenu = ref([
     value:"narrative"
   },
 
-
-
 ])
 
+
+let studentQuery = routerData.currentRoute.value.query.type ? routerData.currentRoute.value.query.type : "financial-situation"
+
 const changeMenu = (value) => {
-  menuSelected.value = value
+  router.push({ name: "student-profile-details", query:{m:value} })
 }
 
-const user = ref({
-  avatar: 'https://t4.ftcdn.net/jpg/04/67/16/19/360_F_467161971_7fx4DHsKeaFoxDCKU1I0TCzQx9lJCcrm.jpg',
-  name: 'Collins Mpiima',
-  role: 'Student',
-  location: 'Bay Area, San Francisco, CA',
-  socialLinks: [
-    { icon: 'fas fa-globe', color: '#FFC107', url: 'https://mdbootstrap.com' },
-    { icon: 'fab fa-github', color: '#333333', url: 'mdbootstrap' },
-    { icon: 'fab fa-twitter', color: '#55acee', url: '@mdbootstrap' },
-    { icon: 'fab fa-instagram', color: '#ac2bac', url: 'mdbootstrap' },
-    { icon: 'fab fa-facebook-f', color: '#3b5998', url: 'mdbootstrap' }
-  ],
-  details: [
-    { label: 'Full Name', value: 'Mpiima Collins' },
-    { label: 'Sex', value: 'Male' },
-    { label: 'School', value: 'MySChool P/s' },
-    { label: 'Campus', value: 'Main Campus' },
-    { label: 'Level', value: 'Primary' },
-    { label: 'Class', value: 'Primary One [P1] ' }
-  ],
-
-});
 
 const cancelled = (cancelled) => {
   showActionDialog.value=false
@@ -194,15 +173,23 @@ const cancelled = (cancelled) => {
                 <div class="card mt-3">
             <div class="card-body" style="padding: 0;">
                 <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-                  <div
+                  <!-- <div
                     v-for="(item, idx) in itemMenu" :key="idx"
                     class="list-group-item list-group-item-action cursor-pointer"
                     :class="item.value === menuSelected ? 'active' : ''"
                     @click="changeMenu(item.value)">
                   <small style="font-size:12px;">{{item.text}}</small>
-                </div>
+                </div>-->
+            
+              <router-link
+                  v-for="(item, idx) in  itemMenu" :key="idx"
+                  class="list-group-item list-group-item-action"
+                  :class="item.value === studentQuery ? 'active' : ''"
+                  :to="{name:'student-profile-details', query:{st_id:student_number,type:item.value}}">
+                <small style="font-size:12px;">{{item.text}}</small></router-link>
+
+
               </div>
-           
           
          
               </div>
@@ -270,19 +257,19 @@ const cancelled = (cancelled) => {
   
               <div>
 
-                 <div v-if="menuSelected === 'financial-situation'">
+                 <div v-if="studentQuery === 'financial-situation'">
                   <ManageInvoices></ManageInvoices>
                   </div>
 
 
-                  <div v-if="menuSelected === 'report-cards'">
+                  <div v-if="studentQuery === 'report-cards'">
                   <StudentReports></StudentReports>
                   </div>
-                  <div v-if="menuSelected === 'bio-data'">
+                  <div v-if="studentQuery === 'bio-data'">
                     <h1>Bio data</h1>
                   </div>
 
-                  <div v-if="menuSelected === 'narrative'">
+                  <div v-if="studentQuery === 'narrative'">
                     <StudentNarativeReport></StudentNarativeReport>
                   </div>
                 
