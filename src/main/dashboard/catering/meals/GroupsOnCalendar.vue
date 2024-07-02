@@ -74,7 +74,6 @@ watch(
       }
     }
 )
-// groupOnCalendarResponse
 
 
 </script>
@@ -134,6 +133,19 @@ watch(
         </div>
 
 {{ groupCalendarList }}
+<table class="table table-hover caption-top table-sm text-[14px]">
+          <thead>
+          <tr>
+            <td>Calendar</td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(calender, index) in groupCalendarList" :key="index">
+            
+          </tr>
+          </tbody>
+        </table>
+
 
       </div>
     </div>
