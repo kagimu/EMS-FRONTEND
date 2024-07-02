@@ -178,7 +178,7 @@ watch (
             <small
                 class="text-center border-t border-b border-r border-l border-[#024eaf] rounded-md px-4 cursor-pointer text-wrap whitespace-nowrap bg-white hover:text-[#024eaf] hover:text-sm"
                 v-for="(permission, idx) in roles?.permissions" :key="idx">
-                {{permission.replaceAll("_", " ")}} <br v-if="(idx%2)===0" />
+                {{permission.replaceAll("_", " ")}}
           </small>
           </div>
 
