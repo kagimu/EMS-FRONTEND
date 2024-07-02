@@ -123,66 +123,68 @@ watch(
         <div class="ml-4">Meals Cost Projections</div>
       </div>
 
-      <div class="grid grid-cols-2 gap-4 mx-3">
-<div>
-  <div class="grid grid-cols-2 gap-2">
-
-    <div>
-      <select
-          style="box-shadow: none;"
-          class="form-select form-select-sm"
-          v-model="school_number"
-          @change="fetchCampusBySchool()"
-      >
-        <option disabled value="">--Filter by School--</option>
-        <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
-      </select>
-    </div>
-
-    <div>
-      <select
-          style="box-shadow: none;"
-          class="form-select form-select-sm"
-          v-model="campus_number" required
-          @change="doFetchCostProjections()"
-      >
-        <option disabled value="">--Filter by campus--</option>
-        <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-        </option>
-      </select>
-    </div>
-
-    <div>
-      <VueDatePicker
-          placeholder="Start date: dd/mm/yyy"
-          text-input
-          auto-apply
-          :teleport="true"
-          style="font-size: 7px;"
-          v-model="start_date"
-          :preview-format="format"
-          @update:modelValue="doFetchCostProjections()"
-      ></VueDatePicker>
-    </div>
-
-    <div>
-      <VueDatePicker
-          placeholder="End date: dd/mm/yyy"
-          text-input
-          auto-apply
-          :teleport="true"
-          style="font-size: 7px;"
-          v-model="end_date"
-          :preview-format="format"
-          @update:modelValue="doFetchCostProjections()"
-      ></VueDatePicker>
-    </div>
-
-  </div>
-</div>
 
 
-        <div class="text-sm px-4">
+            <div class="grid grid-cols-4 gap-2 px-3">
+
+              <div>
+                <select
+                    style="box-shadow: none;"
+                    class="form-select py-2"
+                    v-model="school_number"
+                    @change="fetchCampusBySchool()"
+                >
+                  <option disabled value="">--Filter by School--</option>
+                  <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+                </select>
+              </div>
+
+              <div>
+                <select
+                    style="box-shadow: none;"
+                    class="form-select py-2"
+                    v-model="campus_number" required
+                    @change="doFetchCostProjections()"
+                >
+                  <option disabled value="">--Filter by campus--</option>
+                  <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+                  </option>
+                </select>
+              </div>
+
+              <div>
+                <VueDatePicker
+                    placeholder="Start date: dd/mm/yyy"
+                    text-input
+                    auto-apply
+                    :teleport="true"
+                    style="font-size: 7px;"
+                    v-model="start_date"
+                    :preview-format="format"
+                    @update:modelValue="doFetchCostProjections()"
+                ></VueDatePicker>
+              </div>
+
+              <div>
+                <VueDatePicker
+                    placeholder="End date: dd/mm/yyy"
+                    text-input
+                    auto-apply
+                    :teleport="true"
+                    style="font-size: 7px;"
+                    v-model="end_date"
+                    :preview-format="format"
+                    @update:modelValue="doFetchCostProjections()"
+                ></VueDatePicker>
+              </div>
+
+            </div>
+
+
+
+
+
+        <div class="text-sm px-3 mt-5 mb-5">
           <div class="mb-2">Summary</div>
           <div class="border rounded-md">
             <table class="table table-hover caption-top table-sm text-[10px]">
@@ -211,74 +213,69 @@ watch(
           </div>
         </div>
 
+
+
+
+
+
+
+      <div class="mt-5 mb-2 ml-3">Projection</div>
+
+
+      <div v-for="(projection, index) in mealProjections?.calender_items" :key="index" class="text-xs border rounded-md mx-3 mb-4">
+        <div class="bg-[#ededed] rounded-t-md">
+          <div class="flex ml-5 py-2">
+            <div class="mr-10">#{{(index + 1)}}</div>
+            <div> {{projection.date}}  [ {{projection.day}} ]</div>
+          </div>
+        </div>
+
+        <table class="table table-hover caption-top table-sm text-[10px]">
+          <thead>
+          <tr>
+            <th scope="col" class="w-[5%]">#</th>
+            <th scope="col" class="w-[30%]">Meal</th>
+            <th scope="col" class="w-[15%]">Number of People</th>
+            <th scope="col" class="w-[50%]">Items</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(meal, idx) in projection?.meals" :key="idx">
+            <td> {{(idx + 1)}}</td>
+            <td>{{meal.meal_name}}</td>
+            <td>{{meal.number_of_people}}</td>
+            <td>
+
+
+              <table v-if="meal?.items?.length > 0" class="table table-hover caption-top table-sm text-[10px]">
+                <thead>
+                <tr>
+                  <th scope="col" class="w-[5%]">#</th>
+                  <th scope="col" class="w-[60%]">Name</th>
+                  <th scope="col" class="w-[20%]">Unit</th>
+                  <th scope="col" class="w-[15%]">Cost</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(item, item_key) in meal?.items" :key="item_key">
+                  <td>{{(item_key + 1)}}</td>
+                  <td>{{item?.name}}</td>
+                  <td>{{item?.quantity}} ( {{item?.unit_of_measure}} )</td>
+                  <td>{{item?.total_cost}}</td>
+                </tr>
+                </tbody>
+              </table>
+
+            </td>
+
+          </tr>
+          </tbody>
+        </table>
+
+
       </div>
 
 
-
-
-
-
-      <table class="table table-hover caption-top mt-5 table-sm border-t text-[10px]">
-        <thead>
-        <tr>
-          <th scope="col" class="w-[5%]">#</th>
-          <th scope="col" class="w-[15%]">Date</th>
-          <th scope="col" class="w-[70%]">Meals</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(projection, index) in mealProjections?.calender_items" :key="index">
-          <td> {{(index + 1)}}</td>
-          <td> {{projection.date}}  [ {{projection.day}} ]</td>
-
-          <td>
-
-            <table class="table table-hover caption-top table-sm text-[10px]">
-              <thead>
-              <tr>
-                <th scope="col" class="w-[5%]">#</th>
-                <th scope="col" class="w-[20%]">Meal</th>
-                <th scope="col" class="w-[30%]">Number of People</th>
-                <th scope="col" class="w-[45%]">Items</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="(meal, idx) in projection?.meals" :key="idx">
-                <td> {{(idx + 1)}}</td>
-                <td>{{meal.meal_name}}</td>
-                <td>{{meal.number_of_people}}</td>
-                <td>
-
-
-                  <table v-if="meal?.items?.length > 0" class="table table-hover caption-top table-sm text-[10px]">
-                    <thead>
-                    <tr>
-                      <th scope="col" class="w-[10%]">#</th>
-                      <th scope="col" class="w-[30%]">Name</th>
-                      <th scope="col" class="w-[30%]">Unit</th>
-                      <th scope="col" class="w-[20%]">Cost</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="(item, item_key) in meal?.items" :key="item_key">
-                      <td>{{(item_key + 1)}}</td>
-                      <td>{{item?.name}}</td>
-                      <td>{{item?.quantity}} ( {{item?.unit_of_measure}} )</td>
-                      <td>{{item?.total_cost}}</td>
-                    </tr>
-                    </tbody>
-                  </table>
-
-                </td>
-
-              </tr>
-              </tbody>
-            </table>
-
-          </td>
-        </tr>
-        </tbody>
-      </table>
 
     </div>
   </div>

@@ -20,8 +20,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
 
 
@@ -65,50 +63,65 @@
             </div>
         </div>
 
-        <div class="my-2" style="display: flex; flex-direction: row; justify-content: flex-end" >
-
-            <div >
+        <div class="flex flex-grow justify-content-end mb-3">
+            <div class="flex">
+              <div>
                 <button
-                v-if="can('add_company','general')" 
-                class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#newCompany" @click="showAddCompanyDialog" >Add Company</button>
-            </div>
-                <div >
+                    v-if="can('add_company','general')"
+                    class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#newCompany" @click="showAddCompanyDialog" >Add Company</button>
+              </div>
+              <div >
                 <button
-                v-if="can('add_calendar','general')" 
-                 class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#newCalendar" @click="showAddCalendarDialog" >Add new Calendar</button>
+                    v-if="can('add_calendar','general')"
+                    class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#newCalendar" @click="showAddCalendarDialog" >Add new Calendar</button>
+              </div>
+              <div >
+                <button
+                    v-if="can('add_events','general')"
+                    class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#newCalendarEvent" @click="showAddCalendarEventDialog" >Add Events</button>
+              </div>
             </div>
-            <div >
-                <button 
-                v-if="can('add_events','general')" 
-                class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#newCalendarEvent" @click="showAddCalendarEventDialog" >Add Events</button>
-            </div>
+
         </div>
 
-        <div class="row">
-            <div v-for="(calendar,idx) in calendars" :key="idx" class="col " >
-                <div class="card border-primary mb-3" style="max-width: 18rem; max-height: 18rem">
-<!--                    <img class="card-img-top" src="..." alt="Card image cap">-->
-                    <div class="card-body ">
-                        <h5 class="card-title">{{calendar.name}}</h5>
-                        <p class="card-text">{{calendar.description}}</p>
-                        <p class="card-text">From : {{dateFormat(calendar.start_date)}}</p>
-                        <p class="card-text">To : {{dateFormat(calendar.end_date)}}</p>
+      <div class="flex w-full mx-auto">
+        <div class="w-[30%] pr-4">
 
-                        <div class="card-footer bg-transparent border-success">
-                            <a
-                            v-if="can('view_calendar','general')"
-                             href="#" @click="goToCalendar(calendar.number)" class="btn btn-primary"> View</a>
-                        </div>
-                    </div>
-                    </div>
+          <div v-for="(calendar,idx) in calendars" :key="idx" >
+            <div class="border-b border-t border-l border-r rounded-md border-[#0d6efd] bg-white p-2 mb-2">
+              <div>
+                <div class="">{{calendar.name}}</div>
+                <div class="text-sm mb-2">{{calendar.description}}</div>
 
+                <div class="flex flex-grow justify-between">
+                  <div class="">
+                    <div class="text-xs mr-5"><b>From</b> : {{dateFormat(calendar.start_date)}}</div>
+                    <div class="text-xs"><b>To</b> : {{dateFormat(calendar.end_date)}}</div>
+                  </div>
+
+                  <div>
+                    <a
+                        v-if="can('view_calendar','general')"
+                          @click="goToCalendar(calendar.number)" class="no-underline bg-[#0d6efd] text-white text-sm px-3 rounded-sm cursor-pointer hover:bg-[#2c2f8c]"> View</a>
+                  </div>
+                </div>
+
+              </div>
             </div>
+          </div>
+
         </div>
-        <div class="row">
-            <div class="col col-11 mx-auto" >
-                <Calendar :rows="3" :columns="4" ></Calendar>
-            </div>
-        </div>
+
+
+          <div class="w-[70%] overflow-y-scroll scrollbar-thin">
+          <div class="mx-auto">
+            <Calendar :rows="4" :columns="3" class="w-100%" ></Calendar>
+          </div>
+          </div>
+
+      </div>
+
+
 
 
 
