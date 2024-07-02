@@ -95,6 +95,7 @@ watch(
     }
 )
 
+
 </script>
 
 <template>
@@ -104,7 +105,7 @@ watch(
       <ActivateMealCourse></ActivateMealCourse>
     </AppModal>
 
-
+  
 
     <div class="row">
 

@@ -13,6 +13,7 @@ import MealCourses from "@/main/dashboard/catering/meals/MealCourses.vue";
 import MealCalendar from "@/main/dashboard/catering/meals/MealCalendar.vue";
 import MealCourseFeedingSessions from "@/main/dashboard/catering/meals/MealCourseFeedingSessions.vue";
 import MealCoursesPerDay from "@/main/dashboard/catering/meals/MealCoursesPerDay.vue";
+import GroupsOnCalendar from "@/main/dashboard/catering/meals/GroupsOnCalendar.vue";
 
 import { useAbility } from '@casl/vue';
 import MealsCostProjections from "@/main/dashboard/catering/meals/MealsCostProjections.vue";
@@ -62,6 +63,10 @@ const mealMenu = ref([
   {
     text:"Daily group courses",
     value:"meal-courses-per-day"
+  },
+  {
+    text:"Groups On Calendar",
+    value:"groups-on-calendar"
   },
   {
     text:"Weekly Meal Items",
@@ -188,6 +193,10 @@ const changeMenu = (value) => {
 
                 <div v-if="menuSelected === 'meal-calendar'">
                  <MealCalendar></MealCalendar>
+                </div>
+
+                <div v-if="menuSelected === 'groups-on-calendar'">
+               <GroupsOnCalendar></GroupsOnCalendar>
                 </div>
 
                 <div v-if="menuSelected === 'meals-cost-projections'">
