@@ -51,18 +51,20 @@ const switchTabs = (data) => {
 
 
         <div class="flex border-b">
-        <div class="cursor-pointer text-sm" :class="selectedTab === 'applicants' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('applicants')">
-          <div class="py-2 px-3">
-            <i class="bi bi-box-arrow-in-right mr-1"></i>
-            Assess Interview Applicants
+
+          <div class="cursor-pointer text-sm" :class="selectedTab === 'assessment' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('assessment')">
+            <div class="py-2 px-3">
+              <i class="bi bi-box-arrow-in-right mr-1"></i>
+              Assessment Schedules On Interview
+            </div>
           </div>
-        </div>
-        <div class="cursor-pointer text-sm" :class="selectedTab === 'assessment' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('assessment')">
-          <div class="py-2 px-3">
-            <i class="bi bi-box-arrow-in-right mr-1"></i>
-            Assessment Schedules On Interview
+
+          <div class="cursor-pointer text-sm" :class="selectedTab === 'applicants' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('applicants')">
+            <div class="py-2 px-3">
+              <i class="bi bi-box-arrow-in-right mr-1"></i>
+              Assess Interview Applicants
+            </div>
           </div>
-        </div>
 
         <div class="cursor-pointer text-sm" :class="selectedTab === 'admission-offer' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('admission-offer')">
           <div class="py-2 px-3">
