@@ -119,21 +119,10 @@ watch (
 <template>
   <div>
 
-    <!-- <div class="modal fade" id="addRoleModel" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: showDialog }">
-      <div class="modal-dialog modal-lg">
-     <NewRole></NewRole>
-        </div>
-      </div> -->
 
       <AppModal :title="editMode ? 'Edit Role' : 'Add New Role'" v-model="showModal" xl4>
         <NewRole ref="roleRef" :roleData="roleData"></NewRole>
-    </AppModal>
-
-      <!-- <div class="modal fade" id="updateRoleModel" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: showDialog }">
-      <div class="modal-dialog modal-lg">
-    <update-role :role-number="roles_no"></update-role>
-        </div>
-      </div> -->
+      </AppModal>
 
 
 
@@ -170,7 +159,7 @@ watch (
     <div class="container mt-4">
             <!-- <div class="mb-3 ml-5 mt-3" style="font-size: 18px;">Roles and Permission</div> -->
 
-            <table class="table table-hover caption-top table-striped" style="font-size: 14px;">
+            <table class="table table-hover caption-top" style="font-size: 14px;">
     <thead>
       <tr>
         <th scope="col">Name</th>
@@ -183,7 +172,17 @@ watch (
       <tr v-for="(roles, index) in rolesData" :key="index">
         <td>{{ roles.name }}</td>
         <td>{{ roles.description }}</td>
-        <td>{{ roles.permissions }}</td>
+        <td class="w-[55]">
+
+          <div class="grid grid-cols-2 gap-3">
+            <small
+                class="text-center border-t border-b border-r border-l border-[#024eaf] rounded-md px-4 cursor-pointer text-wrap whitespace-nowrap bg-white hover:text-[#024eaf] hover:text-sm"
+                v-for="(permission, idx) in roles?.permissions" :key="idx">
+                {{permission.replaceAll("_", " ")}} <br v-if="(idx%2)===0" />
+          </small>
+          </div>
+
+        </td>
         <td>
           <!-- Buttons for actions -->
           <button

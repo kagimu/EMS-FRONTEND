@@ -95,6 +95,7 @@ watch(
     () => cateringStore.errorMessage,
     async (data) => {
       if (data) {
+        doGetUsersList()
         notificationStore.errorToast("Error", data.message);
       }
     }
@@ -103,6 +104,7 @@ watch(
 watch(
     () => cateringStore.newMealsResponse,
     async (data) => {
+      doGetUsersList()
       notificationStore.successToast("Success", data.message);
     }
 );
@@ -233,9 +235,9 @@ watch(
                                    <tr>
                                       <th class="w-[10%]">#</th>
                                       <th class="w-[20%]">Name</th>
-                                      <th class="w-[20%]">Feeding Group</th>
-                                      <th colspan="2">Meal</th>
-                                      <th colspan="2" class="text-center">Took Meal</th>
+                                      <th class="w-[30%]">Feeding Group</th>
+                                      <th class="w-[20%]" >Meal</th>
+                                      <th class="text-center">Took Meal</th>
                                    </tr>
                                 </thead>
                                 <tbody>
@@ -243,7 +245,7 @@ watch(
                                       <td>{{ index + 1 }}</td>
                                       <td>{{ user.name }}</td>
                                       <td>{{ user.feeding_group_name }}</td>
-                                      <td colspan="2">
+                                      <td>
                                          <div class="table-responsive">
                                             <table class="text-sm table table-sm table-striped table-bordered p-5">
                                                   <tr v-for="(meal, mealIndex) in user.meals" :key="mealIndex">
@@ -264,7 +266,7 @@ watch(
                                       </td>
                                      <td class="text-center align-middle">
                                        <input
-                                           v-model="user.user_number"
+                                           v-model="user.served"
                                            @click="submitMeal(user.user_number,user.feeding_session_number)"
                                            class="form-check-input me-1 shadow-none cursor-pointer"
                                            type="checkbox"

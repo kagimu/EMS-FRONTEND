@@ -1,3 +1,52 @@
+<script setup>
+
+import {reactive, ref} from "vue";
+import Roles from "@/main/settings/roles/Roles.vue";
+import {useRouter} from "vue-router";
+import UserManagement from "./accountComponents/UserManagement.vue";
+import ScopeManager from "../profiles/ScopeManager.vue";
+import Entity from "@/main/dashboard/entity/Entity.vue"
+
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
+
+const routerData = useRouter()
+const buttonLoader = ref(false)
+
+const route = routerData.currentRoute.value.query.s
+const selectedPage = route ? route : "user-management"
+
+const accountList = ref([
+
+  {
+    name: "User Management" ,
+    id: "user-management",
+    action:"view_account_management"
+  },
+  {
+    name:"Roles",
+    id:"role",
+    action : "view_roles"
+  },
+  {
+    name: "User Scope" ,
+    id: "scope",
+    action:"view_scope"
+  },
+  {
+    name: "Entity" ,
+    id: "entity",
+    action:"view_entity"
+  },
+
+])
+const form = reactive({
+  name:null
+})
+
+
+</script>
 <template>
     <div>
   
@@ -32,16 +81,16 @@
             <div class="card-body" style="padding: 0;">
   
                   <div v-if="selectedPage === 'role'">
-                    <roles></roles>
+                      <roles></roles>
                   </div>
                   <div v-if="selectedPage === 'user-management'">
-                 <UserManagement></UserManagement>
+                      <UserManagement></UserManagement>
                   </div>
                   <div v-if="selectedPage === 'scope'">
                     <ScopeManager></ScopeManager>
                   </div>
                   <div v-if="selectedPage === 'entity'">
-                  <Entity></Entity>
+                      <Entity></Entity>
                   </div>
                 
             </div>
@@ -53,55 +102,7 @@
     </div>
   </template>
   
-  <script setup>
-  
-  import {reactive, ref} from "vue";
-  import Roles from "@/main/settings/roles/Roles.vue";
-  import {useRouter} from "vue-router";
-  import UserManagement from "./accountComponents/UserManagement.vue";
-  import ScopeManager from "../profiles/ScopeManager.vue";
-  import Entity from "@/main/dashboard/entity/Entity.vue"  
 
-  import { useAbility } from '@casl/vue';
-
-const { can } = useAbility()
-
-  const routerData = useRouter()
-  const buttonLoader = ref(false)
-  
-  const route = routerData.currentRoute.value.query.s
-  const selectedPage = route ? route : "user-management"
-  
-  const accountList = ref([
-   
-      {
-         name: "User Management" ,
-           id: "user-management",
-           action:"view_account_management"
-      },
-    {
-      name:"Roles",
-      id:"role",
-      action : "view_roles"
-    },
-    {
-         name: "User Scope" ,
-           id: "scope",
-           action:"view_scope"
-      },
-      {
-         name: "Entity" ,
-           id: "entity",
-           action:"view_entity"
-      },
-     
-  ])
-  const form = reactive({
-    name:null
-  })
-  
-  
-  </script>
   
   <style scoped>
   
