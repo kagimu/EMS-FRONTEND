@@ -116,36 +116,42 @@ watch(
               </select>
             </div>
           </div>
-          <!-- <div class="col-3">
-            <div class="mb-2">
-              <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm"
-                  v-model="campus_number" required
-                  @change="doFetchGroupCalendarList()"
-              >
-                <option disabled value="">--Filter by campus--</option>
-                <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-                </option>
-              </select>
-            </div>
-          </div> -->
         </div>
 
-{{ groupCalendarList }}
-<table class="table table-hover caption-top table-sm text-[14px]">
+        <div style="width: 100%; overflow-x: auto; white-space: nowrap; scrollbar-width: thin;;">
+            <table class="table table-hover caption-top table-sm text-[14px]">
           <thead>
-          <tr>
-            <td>Calendar</td>
+          <tr class="bg-[#f3f4f4]">
+            <td class="border  border-r" v-for="(header, idx) in groupCalendarList?.calendar_events" :key="idx">
+              <div class="pl-1 pr-10 text-gray-600">{{header?.calendar_name}}</div>
+            </td>
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(calender, index) in groupCalendarList" :key="index">
-            
+          <tr v-for="(calender_group, index) in groupCalendarList?.calendar_groups" :key="index">
+            <td class="border-r">
+                <div class="pl-3 pr-10 py-2">
+                  {{calender_group?.group_name}}
+                </div>
+              </td>
+            <td class="border-r hover:bg-[#dbdee1] cursor-pointer" v-for="(calendar, key) in calender_group?.active_calendars" :key="key">
+
+             <div class="pl-5 pr-10 text-xs">
+               <div v-if="calendar.active" v-tooltip.right="calendar?.calendar_name">
+                 {{calendar?.calendar_name}}.
+               </div>
+
+               <div v-else >
+                 <i v-tooltip.right="calendar.message"  class="bi-exclamation-triangle mr-2 text-red-700 text-[20px]"></i>
+               </div>
+             </div>
+
+            </td>
+
           </tr>
           </tbody>
         </table>
-
+        </div>
 
       </div>
     </div>
