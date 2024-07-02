@@ -45,7 +45,7 @@ const fetchGroup = (school) => {
 
 const activateGroupOnMealCalendar = () =>{
   loader.value = true
-  alert(JSON.stringify(form))
+  // alert(JSON.stringify(form))
   mealStore.activateGroupOnCalendar(form)
 }
 
