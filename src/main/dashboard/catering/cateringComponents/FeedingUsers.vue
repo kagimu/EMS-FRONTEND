@@ -1,3 +1,168 @@
+<script setup>
+import { onMounted, reactive, ref, computed, watch } from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import { useCateringStore } from "@/main/dashboard/catering/store/catering.js";
+import {useAuthStore} from "@/main/auth/store/auth.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
+import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
+import useCommonsStore from "@/composables/useCommons.js";
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
+
+const commons = useCommonsStore()
+
+const  mealStore  = useMealStore()
+const authStore = useAuthStore()
+
+let p = authStore.profile
+const cateringStore = useCateringStore();
+const feedingSessionGroupData = ref(null);
+let errorMessage = ref(null);
+const buttonLoader = ref(false);
+const notificationStore = useNotificationStore();
+const school_number = ref("")
+const mealCourseList = ref([])
+const campusList = ref([])
+const schoolList = ref([])
+const schoolStore = useSchoolStore()
+const campusStore = useCampusStore()
+
+
+
+
+function padZero(number) {
+  return number < 10 ? `0${number}` : number;
+}
+
+const form = reactive({
+  meal_course_number: "",
+  campus_number:"",
+  feeding_session_number:""
+});
+
+
+const userList = ref([])
+onMounted(() => {
+  schoolStore.fetchSchools()
+  // cateringStore.fetchFeedingGroupSessions()
+})
+
+const doGetUsersList = () =>{
+  cateringStore.fetchMeals(form.campus_number, form.meal_course_number);
+}
+
+
+
+//submit Meals
+const submitMeal = (qty,menuItemN,userN,feeding_session_number) => {
+  if(qty < 1){
+    return
+  }
+  const now = new Date();
+  let data = {
+    meal_course_number:form.meal_course_number,
+    feeding_session_number: feeding_session_number,
+    menu_item_number: menuItemN,
+    user_number: userN,
+    time: now.toLocaleTimeString(),
+    campus_number: form.campus_number,
+    quantity:parseInt(qty),
+    staff_number:p.number,
+    date:currentDateFormat(),
+  }
+
+  cateringStore.newMeal(data)
+}
+
+const currentDateFormat = () => {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  let mm = today.getMonth() + 1; // January is 0!
+  let dd = today.getDate();
+
+// Pad with leading zeros if necessary
+  mm = mm.toString().padStart(2, '0');
+  dd = dd.toString().padStart(2, '0');
+
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+watch(
+    () => cateringStore.feedingGroupSessionsInfoResponse,
+    async (data) => {
+      feedingSessionGroupData.value = data.data
+    }
+)
+
+watch(
+    () => cateringStore.errorMessage,
+    async (data) => {
+      if (data) {
+        notificationStore.errorToast("Error", data.message);
+      }
+    }
+);
+
+watch(
+    () => cateringStore.newMealsResponse,
+    async (data) => {
+      notificationStore.successToast("Success", data.message);
+    }
+);
+
+watch(
+    () => cateringStore.mealsResponse,
+    async (data) => {
+      userList.value = data.data
+    }
+);
+
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        schoolList.value = data.data
+      }
+    }
+)
+
+const fetchCampuses = (school_number) => {
+  campusStore.fetchCampuses(school_number ?? "")
+}
+
+
+watch(
+    () => campusStore.campusListResponse,
+    async (data) => {
+      if (data) {
+        campusList.value = data.data
+      }
+    }
+)
+
+
+const doFetchMealCourses = () => {
+
+  mealStore.fetchMealCourses({school_number:school_number.value,status:'ACTIVE'})
+  campusStore.fetchCampuses(school_number.value ?? "")
+
+}
+
+
+watch(
+    () => mealStore.mealCoursesResponse,
+    async (data) => {
+      if(data){
+        mealCourseList.value = data.data
+      }
+    }
+)
+
+
+</script>
 <template>
   <div>
      <!-- end  -->
@@ -75,10 +240,11 @@
                                       <th class="w-[20%]">Name</th>
                                       <th class="w-[20%]">Feeding Group</th>
                                       <th colspan="2">Meal</th>
+                                      <th colspan="2" class="text-center">Took Meal</th>
                                    </tr>
                                 </thead>
                                 <tbody>
-                                   <tr v-for="(user, index) in userList" :key="index">
+                                   <tr class="text-sm" v-for="(user, index) in userList" :key="index">
                                       <td>{{ index + 1 }}</td>
                                       <td>{{ user.name }}</td>
                                       <td>{{ user.feeding_group_name }}</td>
@@ -87,7 +253,7 @@
                                             <table class="text-sm table table-sm table-striped table-bordered p-5">
                                                   <tr v-for="(meal, mealIndex) in user.meals" :key="mealIndex">
                                                      <td class="w-[70%]">{{ meal.menu_item_name }} <small>({{meal.quantity+" "+meal.unit_of_measure}})</small></td>
-                                                     <td>
+<!--                                                     <td>
                                                        <input
                                                            class="form-control shadow-none border bg-white"
                                                            style="font-size: 14px;"
@@ -96,12 +262,22 @@
                                                            type="text"
                                                            v-model="meal.served_quantity"
                                                            v-on:blur="submitMeal(meal.served_quantity,meal.menu_item_number,user.user_number,user.feeding_session_number)">
-                                                     </td>
+                                                     </td>-->
                                                   </tr>
                                             </table>
-
                                          </div>
                                       </td>
+                                     <td class="text-center">
+                                       <input
+                                           v-model="user.user_number"
+                                           @click="submitMeal(user.user_number,user.feeding_session_number)"
+                                           class="form-check-input me-1 shadow-none cursor-pointer"
+                                           type="checkbox"
+                                           style="transform: scale(0.7); width: 1.5rem; height: 1.5rem;"
+                                       >
+<!--                                           class="form-check-input me-1" type="checkbox" :value="user.number" :id="user.number">-->
+<!--                                       <label class="form-check-label cursor-pointer ml-2" :for="user.number">{{lvl.code+". "+lvl.name}}</label>-->
+                                     </td>
                                    </tr>
                                 </tbody>
                              </table>
@@ -115,170 +291,5 @@
      </div>
   </div>
 </template>
-<script setup>
-  import { onMounted, reactive, ref, computed, watch } from "vue";
-  import useNotificationStore from "@/composables/useNotification.js";
-  import { useCateringStore } from "@/main/dashboard/catering/store/catering.js";
-  import {useAuthStore} from "@/main/auth/store/auth.js";
-  import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
-  import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
-  import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
-  import useCommonsStore from "@/composables/useCommons.js";
-  import { useAbility } from '@casl/vue';
 
-  const { can } = useAbility()
-  
-  const commons = useCommonsStore()
-
-  const  mealStore  = useMealStore()
-  const authStore = useAuthStore()
-  
-  let p = authStore.profile
-  const cateringStore = useCateringStore();
-  const feedingSessionGroupData = ref(null);
-  let errorMessage = ref(null);
-  const buttonLoader = ref(false);
-  const notificationStore = useNotificationStore();
-  const school_number = ref("")
-  const mealCourseList = ref([])
-  const campusList = ref([])
-  const schoolList = ref([])
-  const schoolStore = useSchoolStore()
-  const campusStore = useCampusStore()
-
-  
-
-  
-  function padZero(number) {
-    return number < 10 ? `0${number}` : number;
-  }
-  
-  const form = reactive({
-   meal_course_number: "",
-    campus_number:"",
-    feeding_session_number:""
-  });
-
-  
-  const userList = ref([])
-  onMounted(() => {
-    schoolStore.fetchSchools()
-    // cateringStore.fetchFeedingGroupSessions()
-  })
-  
-  const doGetUsersList = () =>{
-   cateringStore.fetchMeals(form.campus_number, form.meal_course_number);
-  }
-
-
-  
-  //submit Meals
-  const submitMeal = (qty,menuItemN,userN,feeding_session_number) => {
-        if(qty < 1){
-            return
-        }
-      const now = new Date();
-  let data = {
-      meal_course_number:form.meal_course_number,
-      feeding_session_number: feeding_session_number,
-      menu_item_number: menuItemN,
-      user_number: userN,
-      time: now.toLocaleTimeString(),
-      campus_number: form.campus_number,
-      quantity:parseInt(qty),
-      staff_number:p.number,
-      date:currentDateFormat(),
-  }
-
-  cateringStore.newMeal(data)
-  }
-
-  const currentDateFormat = () => {
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    let mm = today.getMonth() + 1; // January is 0!
-    let dd = today.getDate();
-
-// Pad with leading zeros if necessary
-    mm = mm.toString().padStart(2, '0');
-    dd = dd.toString().padStart(2, '0');
-
-   return `${yyyy}-${mm}-${dd}`;
-  }
-  
-  watch(
-  () => cateringStore.feedingGroupSessionsInfoResponse,
-  async (data) => {
-      feedingSessionGroupData.value = data.data
-  }
-)
-  
-  watch(
-    () => cateringStore.errorMessage,
-    async (data) => {
-      if (data) {
-        notificationStore.errorToast("Error", data.message);
-      }
-    }
-  );
-  
-  watch(
-    () => cateringStore.newMealsResponse,
-    async (data) => {
-      notificationStore.successToast("Success", data.message);
-    }
-  );
-  
-  watch(
-    () => cateringStore.mealsResponse,
-    async (data) => {
-      // notificationStore.successToast("Success", data.message);
-      userList.value = data.data
-    }
-  );
-  
-  
-  watch(
-      () => schoolStore.schoolsResponse,
-      async (data) => {
-          if (data) {
-              schoolList.value = data.data
-          }
-      }
-  )
-  
-    const fetchCampuses = (school_number) => {
-      campusStore.fetchCampuses(school_number ?? "")
-  }
-  
-  
-  watch(
-      () => campusStore.campusListResponse,
-      async (data) => {
-          if (data) {
-              campusList.value = data.data
-          }
-      }
-  )
-
-
-  const doFetchMealCourses = () => {
-
-    mealStore.fetchMealCourses({school_number:school_number.value,status:'ACTIVE'})
-    campusStore.fetchCampuses(school_number.value ?? "")
-
-}
-
-  
-  watch(
-    () => mealStore.mealCoursesResponse,
-    async (data) => {
-      if(data){
-        mealCourseList.value = data.data
-      }
-    }
-)
-  
-  
-</script>
 <style scoped></style>
