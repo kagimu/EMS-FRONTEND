@@ -35,6 +35,8 @@ const campus_class_number = ref("")
 const campusCurriculumDataInfo = ref(null)
 const campusLevelList = ref(null)
 const campusClassList = ref(null)
+const editMode = ref(false)
+const gradeScaleDatainfo = ref([])
 
 onMounted(() => {
       fetchGradeScale()
@@ -42,19 +44,24 @@ onMounted(() => {
     }
 )
 
-const openEditModal = () =>{
-
+const addAggregateScale = () => {
+  editMode.value = false
+  gradeScaleDatainfo.value = ""
+  showAggregateScaleModal.value = true
 }
+
+const openEditModal = (gradeInf) =>{
+  gradeScaleDatainfo.value = gradeInf
+  editMode.value = true
+  showAggregateScaleModal.value = true
+}
+
 const fetchGradeScale = () =>{
   let data = {
     campus_number:campusNumber,
     campus_class_number:campus_class_number.value
   }
   assessmentStore.fetchAggregateScale(data)
-}
-
-const addAggregateScale = () => {
-  showAggregateScaleModal.value = true
 }
 
 
@@ -138,8 +145,8 @@ watch (
 <template>
     <div>
 
-      <AppModal title="Add Aggregate Scale" v-model="showAggregateScaleModal" xl2>
-        <NewGradeScale></NewGradeScale>
+      <AppModal :title="editMode? 'Edit Aggregate Scale': 'Add Aggregate Scale'" v-model="showAggregateScaleModal" xl2>
+        <NewGradeScale :gradeScaleDatainfo="gradeScaleDatainfo"></NewGradeScale>
       </AppModal>
 
 
@@ -228,7 +235,7 @@ watch (
             <td>{{  aggregateList.min_value}} - {{  aggregateList.max_value}}</td>
             <td>{{aggregateList.weight}}</td>
             <td>
-          <button @click="openEditModal(aggregateList.number,aggregateList.name)">
+          <button @click="openEditModal(aggregateList)">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;

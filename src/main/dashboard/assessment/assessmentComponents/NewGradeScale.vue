@@ -33,7 +33,11 @@ const campus_level_number = ref("")
 const campusClassList = ref(null)
 const campusNumber = routerData.currentRoute.value.query.id
 const gradeDataInfo = ref([])
+const editM = ref(false)
 
+const props = defineProps({
+  gradeScaleDatainfo:{}
+})
 
 const form = reactive({
   campus_class_number:"",
@@ -42,10 +46,14 @@ const form = reactive({
 })
 
 
+
 onMounted(
     async () => {
       await levelStore.fetchCampusCurriculum(campusNumber)
       assessmentStore.fetchGrades()
+      if(props.gradeScaleDatainfo.number){
+        editM.value = true
+      }
     }
 )
 
@@ -78,7 +86,6 @@ const createScale = () =>{
   convertFormValuesToInt()
   buttonLoader.value = true
   form.grades = sectionPart
-  // alert(JSON.stringify(form))
   assessmentStore.createAggregateScale(form)
 }
 
@@ -225,6 +232,7 @@ watch(
 </script>
 <template>
     <div>
+      <!-- {{ gradeScaleDatainfo }} -->
         <div class="modal-content">
 
       <div class="modal-body">
@@ -269,7 +277,7 @@ watch(
             </select>
           </div>
         
-    
+    <div >
         <div v-for="(field, index) in sectionPart" :key="index" class="row">
           <div class="col-lg-4">
             <div>
@@ -322,9 +330,10 @@ watch(
               <i class="bi bi-x-circle p-0" style="color: red;cursor: pointer;float: left;margin-top: 68%; margin-left: -10px;" @click="removeSectionPart(index)"></i>
             </div>
         </div>
-
         <button @click="newSectionPart" type="button" class="btn btn-primary btn-small p-1 mb-2" style="width: 30px;text-align: center;"><i class="bi bi-plus"></i></button>
-      
+      </div>
+
+
 
      <div class="flex justify-content-end mt-4" style="width: 100%;">
             <button type="submit" class="btn btn-primary border-0 btn-sm">

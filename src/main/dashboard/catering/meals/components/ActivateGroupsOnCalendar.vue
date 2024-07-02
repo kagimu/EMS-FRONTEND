@@ -10,9 +10,7 @@ import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 
 const classError = ref(null)
-const name = ref(null)
 const loader = ref(false)
-const routerData = useRouter()
 
 const mealStore = useMealStore()
 const schoolStore = useSchoolStore()
@@ -23,14 +21,10 @@ const cateringStore = useCateringStore()
 
 const school_number = ref("")
 const schoolsList = ref([])
-const mealCourseList = ref([])
 const campusList = ref([])
 const groupEventsData = ref([])
-
-
 const feedingGroupData = ref([])
-
-let entity_number = localStorage.getItem("entity_number")
+// let entity_number = localStorage.getItem("entity_number")
 
 const form = reactive({
 feeding_groups:[],
@@ -49,8 +43,13 @@ const fetchGroup = (school) => {
   cateringStore.fetchFeedingGroup(school)
 }
 
+const activateGroupOnMealCalendar = () =>{
+  loader.value = true
+  alert(JSON.stringify(form))
+  mealStore.activateGroupOnCalendar(form)
+}
 
-
+// activateGroupOnCalendarResponse
 watch(
     () => cateringStore.feedingGroupInfoResponse,
     async (data) => {
@@ -63,6 +62,16 @@ watch(
     () => mealStore.calendarsEventsResponse,
     async (data) => {
       groupEventsData.value = data.data
+    },
+    {deep: true}
+)
+
+
+watch(
+    () => mealStore.activateGroupOnCalendarResponse,
+    async (data) => {
+      loader.value = false
+      notificationStore.successToast("Success", data.message)
     },
     {deep: true}
 )
@@ -120,7 +129,7 @@ watch(
 <template>
   <div>
 
-    <form @submit.prevent="addMealCourseFeedingSessionsDialog">
+    <form @submit.prevent="activateGroupOnMealCalendar">
 
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
         {{ classError }}
@@ -128,9 +137,45 @@ watch(
 
       <div class="row">
         <div class="col-lg-6">
+          <!-- {{ groupEventsData }} -->
 
-            <div class="mb-2">
-            <label class="textColor"><small>School</small></label>
+          <div class="mb-2">
+            <label class=""><small>Calendar Events<span style="color: red;">*</span></small></label>
+        
+            <table class="table table-hover caption-top table-sm"
+                style="font-size: 12px !important;border: 0px;"
+                >
+                <thead >
+                    <tr>
+                    <th style="width: 2%;"></th>
+                    <th></th>
+                    </tr>
+                <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+                {{errorMessage}}
+                </div>
+                </thead>
+                <tbody>
+                <tr v-for="(lst,idx) in groupEventsData" :key="idx">
+                <td><input
+                    v-model="form.calendar_events"
+                    style="outline: none 0 !important; box-shadow: none;" 
+                    class="form-check-input me-1" type="checkbox" :value="lst.number"></td>
+                <td>{{ lst.name }}<br>
+                  <span><b>Start Date:</b> </span>{{ lst.start_date }}<br>
+                  <span><b>End Date:</b> </span>{{ lst.end_date }}<br>
+                </td>
+
+                </tr>
+                            
+                </tbody>
+                </table>
+
+          </div>
+
+        </div>
+        <div class="col-lg-6">
+          <div class="mb-2">
+            <label class=""><small>School</small></label>
             <select
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
@@ -141,25 +186,8 @@ watch(
               <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{ lvl.name }}</option>
             </select>
           </div>
-
-
           <div class="mb-2">
-            <label class="textColor"><small>Calendar Events</small></label>
-            <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-              <li class="list-group-item" v-for="(lst,idx) in groupEventsData">
-                <input
-                    v-model="form.calendar_events"
-                    style="outline: none 0 !important; box-shadow: none;"
-                    class="form-check-input me-1" type="checkbox" :value="lst.number" :id="idx+'-campus'">
-                <label class="form-check-label cursor-pointer" :for="idx+'-campus'">{{ lst.name }}</label>
-              </li>
-            </ul>
-          </div>
-
-        </div>
-        <div class="col-lg-6">
-          <div class="mb-2">
-            <label class="textColor mt-1 mb-2">Feeding Group</label>
+            <label class=" mt-1 mb-2">Feeding Group<span style="color: red;">*</span></label>
             <table
                 id="datatable"
                 class="table table-striped table table-hover caption-top table-sm"
@@ -194,7 +222,7 @@ watch(
         <button
             type="submit"
             class="btn btn-primary border-0">
-          Save
+          Activate 
           <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>
