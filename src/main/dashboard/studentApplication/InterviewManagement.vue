@@ -16,9 +16,7 @@ const goBack = () => {
 const selectedTab = router.currentRoute.value.query.type ?? 'applicants'
 const menu = router.currentRoute.value.query.m
 
-// const switchTabs = (data) => {
-//   router.push({name: "manage-interviews", query: {m:menu,type: data}});
-// }
+
 
 const switchTabs = (data) => {
   router.push({
@@ -74,13 +72,7 @@ const switchTabs = (data) => {
         </div>
       </div>
 
-      <!-- <nav>
-        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-          <button class="nav-link navColor active" id="applicants_tab" data-bs-toggle="tab" data-bs-target="#applicants" type="button" role="tab" aria-controls="applicants" aria-selected="false"><small>Assess Interview Applicants</small></button>
-          <button class="nav-link navColor" id="assessment_tab" data-bs-toggle="tab" data-bs-target="#assessment" type="button" role="tab" aria-controls="assessments" aria-selected="false"><small>Assessment Schedules On Interview</small></button>
-          <button class="nav-link navColor" id="admission-offer_tab" data-bs-toggle="tab" data-bs-target="#admission-offer" type="button" role="tab" aria-controls="admission-offer" aria-selected="false"><small> Offer Admission</small></button>
-        </div>
-      </nav> -->
+
 
 
       <div v-if="selectedTab === 'assessment'">

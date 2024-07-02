@@ -62,26 +62,6 @@ watch (
     {deep:true}
 )
 
-// watch (
-//     () => studentApplicationStore.interviewAssessmentResponse,
-//     async (data) => {
-//       if(data){
-//         loader.value = false
-//       }
-//     },
-//     {deep:true}
-// )
-
-
-// watch(
-//       () => studentApplicationStore.interviewAssessmentResponse,
-//       async (data) => {
-//           if (data) {
-//               notificationStore.successToast("Success", data.message)
-//           }
-//       },
-//       {deep: true}
-//   )
 
 
   watch (
@@ -99,12 +79,13 @@ watch (
 const deleteThisData = (id,name) => {
 if(!confirm("Are you sure, you want to remove: " + name)){
   return
-}else{
+}
+
   let data = {
     interview_assessment_metric_number:id
   }
   assessmentStore.removeInterviewAssessmentSchedule(data)
-}
+
 }
 
 watch(

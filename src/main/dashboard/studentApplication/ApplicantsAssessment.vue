@@ -119,11 +119,11 @@
       () => studentApplicationStore.errorMessage,
       async (data) => {
         if(data){
+          buttonLoader.value = false
           errorMessage.value = data.message
           notificationStore.errorToast("Error",data.message)
         }
-      },
-      {deep:true}
+      }
       )
       
 
@@ -142,8 +142,7 @@
             <label style="font-size: 11px;"  class="alert alert-primary p-0">* Please Select Assessment Schedule to Enter/view Marks</label>
             <div class="input-group mt-1">
           <select
-                 style="box-shadow: none;"
-                 class="form-select form-select-sm"  id="inputGroupSelect02" required
+                 class="form-select form-select-sm shadow-none"  id="inputGroupSelect02" required
                  v-model="form.assessmentN"
                  @change="fetchStudentOnInterview(form.assessmentN)"
                  >
@@ -161,12 +160,7 @@
          
         </div>
      </div>
-     <!-- <div v-if="interviewStudentListData === null" class="text-center mt-4">
-        <div class="spinner-border text-primary" role="status">
-           <span class="visually-hidden">Loading...</span>
-        </div>
-     </div> -->
-   
+
      <div>
 
       
@@ -185,7 +179,6 @@
               <th scope="col">Comment <span v-if="buttonLoader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-dark" role="status">
                  <span class="visually-hidden">Loading...</span>
                  </span></th>
-              <!-- <th></th> -->
            </tr>
         </thead>
         <tbody>
@@ -197,27 +190,22 @@
                  {{std.student_other_name ? " "+std.student_other_name : ""}}
               </td>
               <td scope="col" style="width: 150px;">
-                 <input type="text" class="form-control"  v-model="std.score" @keypress="commons.numbersOnlyValidator($event)"
-                    maxlength="10"   v-on:blur="submitMarks(std.score, std.comment, std.number)">
+                 <input
+                     type="text"
+                     class="form-control shadow-none"
+                     v-model="std.score"
+                     @keypress="commons.numbersOnlyValidator($event)"
+                      maxlength="10"
+                     v-on:blur="submitMarks(std.score, std.comment, std.number)">
               </td>
               <td scope="col">
-                 <!-- <input type="text" class="form-control" v-model="comm" > -->
                  <textarea
-                    style="outline: none 0 !important; box-shadow: none;"
                     type="text"
                     v-model="std.comment"
                     v-on:blur="submitMarks(std.score, std.comment, std.number)"
                     required
-                    class="form-control form-select-sm h-1"></textarea>
+                    class="form-control form-select-sm h-1 shadow-none"></textarea>
               </td>
-              <!-- <td>
-                 <button type="button" @click="submitMarks(score,comm,std.number)" style="color:#0d6efd;">
-                 <i class="bi bi-check-lg"></i>
-                 <span v-if="buttonLoader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-dark" role="status">
-                 <span class="visually-hidden">Loading...</span>
-                 </span>
-                 </button>
-              </td> -->
            </tr>
         </tbody>
      </table>
