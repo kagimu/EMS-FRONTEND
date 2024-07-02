@@ -14,6 +14,8 @@ export const useMealStore = defineStore("Meal", () => {
     const newMealCoursesPerDayResponse = ref(null)
     const updateMealCoursesResponse = ref(null)
     const updateMealCourseItemResponse = ref(null)
+    const calendarsEventsResponse =  ref(null)
+    const createCalendarsEventsResponse = ref(null)
 
 
     async function createMealCourseFeedingSessions(data) {
@@ -141,6 +143,30 @@ export const useMealStore = defineStore("Meal", () => {
             })
     }
 
+    async function fetchCalendarsEvents() {
+        return await api.get("main/eos/calendars/events")
+            .then((response) => {
+                calendarsEventsResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function CreateCalendarsEvents(data) {
+        return await api.post("main/calendars/feeding-group-calendar", data)
+            .then((response) => {
+                createCalendarsEventsResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
     return {
        newMealCoursesResponse,
        mealCoursesResponse,
@@ -162,7 +188,10 @@ export const useMealStore = defineStore("Meal", () => {
        updateMealCoursesResponse,
        updateMealCourse,
        updateMealCourseItemResponse,
-       updateMealCourseItem
-
+       updateMealCourseItem,
+       calendarsEventsResponse,
+       fetchCalendarsEvents,
+       createCalendarsEventsResponse,
+       CreateCalendarsEvents
     }
 })

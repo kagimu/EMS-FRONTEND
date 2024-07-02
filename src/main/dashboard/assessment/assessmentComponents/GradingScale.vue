@@ -42,6 +42,9 @@ onMounted(() => {
     }
 )
 
+const openEditModal = () =>{
+
+}
 const fetchGradeScale = () =>{
   let data = {
     campus_number:campusNumber,
@@ -225,7 +228,7 @@ watch (
             <td>{{  aggregateList.min_value}} - {{  aggregateList.max_value}}</td>
             <td>{{aggregateList.weight}}</td>
             <td>
-          <button  data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
+          <button @click="openEditModal(aggregateList.number,aggregateList.name)">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
