@@ -95,6 +95,7 @@ watch(
     () => cateringStore.errorMessage,
     async (data) => {
       if (data) {
+        doGetUsersList()
         notificationStore.errorToast("Error", data.message);
       }
     }
@@ -103,6 +104,7 @@ watch(
 watch(
     () => cateringStore.newMealsResponse,
     async (data) => {
+      doGetUsersList()
       notificationStore.successToast("Success", data.message);
     }
 );
@@ -264,7 +266,7 @@ watch(
                                       </td>
                                      <td class="text-center align-middle">
                                        <input
-                                           v-model="user.user_number"
+                                           v-model="user.served"
                                            @click="submitMeal(user.user_number,user.feeding_session_number)"
                                            class="form-check-input me-1 shadow-none cursor-pointer"
                                            type="checkbox"
