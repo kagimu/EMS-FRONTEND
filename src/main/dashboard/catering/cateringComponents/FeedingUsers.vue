@@ -56,19 +56,14 @@ const doGetUsersList = () =>{
 
 
 //submit Meals
-const submitMeal = (qty,menuItemN,userN,feeding_session_number) => {
-  if(qty < 1){
-    return
-  }
+const submitMeal = (userN,feeding_session_number) => {
   const now = new Date();
   let data = {
     meal_course_number:form.meal_course_number,
     feeding_session_number: feeding_session_number,
-    menu_item_number: menuItemN,
     user_number: userN,
     time: now.toLocaleTimeString(),
     campus_number: form.campus_number,
-    quantity:parseInt(qty),
     staff_number:p.number,
     date:currentDateFormat(),
   }
@@ -267,7 +262,7 @@ watch(
                                             </table>
                                          </div>
                                       </td>
-                                     <td class="text-center">
+                                     <td class="text-center align-middle">
                                        <input
                                            v-model="user.user_number"
                                            @click="submitMeal(user.user_number,user.feeding_session_number)"
@@ -275,8 +270,6 @@ watch(
                                            type="checkbox"
                                            style="transform: scale(0.7); width: 1.5rem; height: 1.5rem;"
                                        >
-<!--                                           class="form-check-input me-1" type="checkbox" :value="user.number" :id="user.number">-->
-<!--                                       <label class="form-check-label cursor-pointer ml-2" :for="user.number">{{lvl.code+". "+lvl.name}}</label>-->
                                      </td>
                                    </tr>
                                 </tbody>
