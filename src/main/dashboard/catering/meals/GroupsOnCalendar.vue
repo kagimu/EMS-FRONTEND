@@ -90,7 +90,7 @@ watch(
 
 
     <AppModal title="Activate Group On Calendar" v-model="showActivateGroup" xl4>
-  <ActivateGroupsOnCalendar></ActivateGroupsOnCalendar>
+        <ActivateGroupsOnCalendar></ActivateGroupsOnCalendar>
     </AppModal>
 
 
@@ -130,15 +130,14 @@ watch(
             <table class="table table-hover caption-top table-sm text-[14px]">
           <thead>
           <tr class="bg-[#f3f4f4]">
-           
-            <td class="border  border-r" v-for="(header, idx) in groupCalendarList?.calendar_events" :key="idx">
+            <td :class="idx === 0 ? 'sticky left-0  z-20 bg-white custom-border':'border-r'" class="border-t" v-for="(header, idx) in groupCalendarList?.calendar_events" :key="idx">
               <div class="pl-1 pr-10 text-gray-600">{{header?.calendar_name}}</div>
             </td>
           </tr>
           </thead>
           <tbody>
           <tr v-for="(calender_group, index) in groupCalendarList?.calendar_groups" :key="index">
-            <td class="border-r">
+            <td class="sticky left-0  z-20 bg-white custom-border">
                 <div class="pl-3 pr-10 py-2">
                   {{calender_group?.group_name}}
                 </div>
@@ -171,5 +170,13 @@ watch(
 </template>
 
 <style scoped>
-
+.custom-border::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: #e5e7eb;
+}
 </style>
