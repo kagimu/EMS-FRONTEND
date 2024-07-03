@@ -70,11 +70,18 @@ watch(
     () => mealStore.groupOnCalendarResponse,
     async (data) => {
       if(data){
+        doFetchGroupCalendarList()
         groupCalendarList.value = data.data
       }
     }
 )
 
+watch(
+    () => mealStore.activateGroupOnCalendarResponse,
+    async (data) => {
+        showActivateGroup.value = false
+    }
+)
 
 </script>
 
