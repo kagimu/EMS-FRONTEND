@@ -19,6 +19,7 @@ const commons = useCommonsStore()
 const notificationStore = useNotificationStore()
 const cateringStore = useCateringStore()
 
+const errorMessage = ref("")
 const school_number = ref("")
 const schoolsList = ref([])
 const campusList = ref([])
@@ -45,25 +46,22 @@ const fetchGroup = (school) => {
 
 const activateGroupOnMealCalendar = () =>{
   loader.value = true
-  // alert(JSON.stringify(form))
   mealStore.activateGroupOnCalendar(form)
 }
 
-// activateGroupOnCalendarResponse
+
 watch(
     () => cateringStore.feedingGroupInfoResponse,
     async (data) => {
       feedingGroupData.value = data.data
-    },
-    {deep: true}
+    }
 )
 
 watch(
     () => mealStore.calendarsEventsResponse,
     async (data) => {
       groupEventsData.value = data.data
-    },
-    {deep: true}
+    }
 )
 
 
@@ -72,8 +70,7 @@ watch(
     async (data) => {
       loader.value = false
       notificationStore.successToast("Success", data.message)
-    },
-    {deep: true}
+    }
 )
 
 watch(
@@ -82,8 +79,7 @@ watch(
       if (data) {
         notificationStore.errorToast("Error", data.message)
       }
-    },
-    {deep: true}
+    }
 )
 
 
@@ -137,43 +133,6 @@ watch(
 
       <div class="row">
         <div class="col-lg-6">
-          <!-- {{ groupEventsData }} -->
-
-          <div class="mb-2">
-            <label class=""><small>Calendar Events<span style="color: red;">*</span></small></label>
-        
-            <table class="table table-hover caption-top table-sm"
-                style="font-size: 12px !important;border: 0px;"
-                >
-                <thead >
-                    <tr>
-                    <th style="width: 2%;"></th>
-                    <th></th>
-                    </tr>
-                <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-                {{errorMessage}}
-                </div>
-                </thead>
-                <tbody>
-                <tr v-for="(lst,idx) in groupEventsData" :key="idx">
-                <td><input
-                    v-model="form.calendar_events"
-                    style="outline: none 0 !important; box-shadow: none;" 
-                    class="form-check-input me-1" type="checkbox" :value="lst.number"></td>
-                <td>{{ lst.name }}<br>
-                  <span><b>Start Date:</b> </span>{{ lst.start_date }}<br>
-                  <span><b>End Date:</b> </span>{{ lst.end_date }}<br>
-                </td>
-
-                </tr>
-                            
-                </tbody>
-                </table>
-
-          </div>
-
-        </div>
-        <div class="col-lg-6">
           <div class="mb-2">
             <label class=""><small>School</small></label>
             <select
@@ -188,32 +147,65 @@ watch(
           </div>
           <div class="mb-2">
             <label class=" mt-1 mb-2">Feeding Group<span style="color: red;">*</span></label>
+            <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+              {{errorMessage}}
+            </div>
             <table
                 id="datatable"
-                class="table table-striped table table-hover caption-top table-sm"
+                class="table table-striped table-hover caption-top table-sm"
                 style="font-size: 14px !important;"
                 >
-                <thead >
-                    <tr>
-                    <th style="width: 2%;"></th>
-                    <th></th>
-                    </tr>
-                <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-                {{errorMessage}}
-                </div>
-                </thead>
                 <tbody>
                 <tr v-for="(list, index) in feedingGroupData" :key="index">
-                <td><input
-                    v-model="form.feeding_groups"
-                    style="outline: none 0 !important; box-shadow: none;"
-                    class="form-check-input me-1" type="checkbox" :value="list.number"></td>
-                <td>{{ list.name }}</td>
+                <td>
+                  <input
+                      v-model="form.feeding_groups"
+                      class="form-check-input me-1 shadow-none" type="checkbox" :value="list.number" :id="list.number">
+                  <label class="form-check-label cursor-pointer ml-2" :for="list.number">{{ list.name }}</label>
+
+                </td>
+
                 </tr>
                             
                 </tbody>
                 </table>
           </div>
+        </div>
+        <div class="col-lg-6">
+          <!-- {{ groupEventsData }} -->
+
+          <div class="mb-2">
+            <label class=""><small>Calendar Events<span style="color: red;">*</span></small></label>
+
+            <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+              {{errorMessage}}
+            </div>
+
+            <table class="table table-hover caption-top table-sm"
+                   style="font-size: 12px !important;border: 0px;"
+            >
+              <tbody>
+              <tr v-for="(lst,idx) in groupEventsData" :key="idx">
+                <td>
+
+
+                  <input
+                      v-model="form.calendar_events"
+                      class="form-check-input me-1 shadow-none" type="checkbox" :value="lst.number" :id="lst.number">
+                  <label class="form-check-label cursor-pointer ml-2" :for="lst.number">
+                    {{ lst.name }}<br>
+                    <span class="font-bold mr-2">Start Date:</span>{{ lst.start_date }}<br>
+                    <span class="font-bold mr-2">End Date:</span>{{ lst.end_date }}<br>
+                  </label>
+                </td>
+
+              </tr>
+
+              </tbody>
+            </table>
+
+          </div>
+
         </div>
       </div>
 

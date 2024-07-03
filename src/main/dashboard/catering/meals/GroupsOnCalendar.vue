@@ -90,7 +90,7 @@ watch(
 
 
     <AppModal title="Activate Group On Calendar" v-model="showActivateGroup" xl4>
-  <ActivateGroupsOnCalendar></ActivateGroupsOnCalendar>
+        <ActivateGroupsOnCalendar></ActivateGroupsOnCalendar>
     </AppModal>
 
 
