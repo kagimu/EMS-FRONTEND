@@ -126,9 +126,11 @@ watch(
         </div>
 
         <div style="width: 100%; overflow-x: auto; white-space: nowrap; scrollbar-width: thin;;">
+            <!-- <i class="bi bi-fullscreen"></i> -->
             <table class="table table-hover caption-top table-sm text-[14px]">
           <thead>
           <tr class="bg-[#f3f4f4]">
+           
             <td class="border  border-r" v-for="(header, idx) in groupCalendarList?.calendar_events" :key="idx">
               <div class="pl-1 pr-10 text-gray-600">{{header?.calendar_name}}</div>
             </td>
