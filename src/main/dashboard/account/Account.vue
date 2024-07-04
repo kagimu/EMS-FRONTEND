@@ -79,12 +79,11 @@ const form = reactive({
         <div class="col-9">
           <div class="card mt-3">
             <div class="card-body" style="padding: 0;">
-  
+                  <div v-if="selectedPage === 'user-management'">
+                    <UserManagement></UserManagement>
+                  </div>
                   <div v-if="selectedPage === 'role'">
                       <roles></roles>
-                  </div>
-                  <div v-if="selectedPage === 'user-management'">
-                      <UserManagement></UserManagement>
                   </div>
                   <div v-if="selectedPage === 'scope'">
                     <ScopeManager></ScopeManager>
@@ -92,7 +91,6 @@ const form = reactive({
                   <div v-if="selectedPage === 'entity'">
                       <Entity></Entity>
                   </div>
-                
             </div>
           </div>
         </div>

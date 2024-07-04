@@ -69,8 +69,7 @@ onMounted(
       if(data){
         rolesData.value = data.data
       }
-    },
-    {deep:true}
+    }
     )
  
     
@@ -157,39 +156,34 @@ const formData = reactive({
 })
 const selectedIndex = ref(null);
 
-// const openRemoveRoleConfirmationModal = (index,num) => {
-//   showDialog.value=true
-//   selectedIndex.value = index
-//   formData.role_number=index
-//   formData.user_number=num
-// }
+
 
 const removeRole = (roleN,userN,rolename,userName) => {
-if(!confirm("Are you sure, you want to remove: " + rolename +" role from " + userName)){
-  // return
-  notificationStore.errorToast("Cancelled","Action Cancelled Successfully !")
-}else{
-let data = {
-  role_number:roleN,
-  user_number:userN
-}
-// alert(JSON.stringify(data))
-accountStore.removeAccountRole(data)
+    if(!confirm("Are you sure, you want to remove: " + rolename +" role from " + userName)){
+      notificationStore.errorToast("Cancelled","Action Cancelled Successfully !")
+      return
+    }
+
+    let data = {
+      role_number:roleN,
+      user_number:userN
+    }
+
+    accountStore.removeAccountRole(data)
 }
 
-}
+
 
 
 
 watch(
     () => accountStore.removeRoleResponse,
-    async (data) => {
-      if(data){
-        notificationStore.successToast("Success", data.message)
-        doFetchAccount()
+      async (data) => {
+        if(data){
+          notificationStore.successToast("Success", data.message)
+          doFetchAccount()
+        }
       }
-    },
-    {deep:true}
     )
 
     
@@ -200,19 +194,16 @@ watch (
         errorMessage.value = data.message
         notificationStore.errorToast("Error",data.message)
       }
-    },
-    {deep:true}
+    }
 )
 
 watch (
     () => accountStore.newAccountResponse,
     async (data) => {
       if(data){
-
         doFetchAccount()
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -223,8 +214,7 @@ watch (
           showingModalUser.value = false
           doFetchAccount()
         }
-      },
-      {deep:true}
+      }
   )
 
   watch (
@@ -233,8 +223,7 @@ watch (
     if (data) {
   entityList.value = data.data
     }
-  },
-  { deep: true }
+  }
 )
 
 watch (
@@ -243,8 +232,7 @@ watch (
       if(data){
         showingEntity.value = false
       }
-    },
-    {deep:true}
+    }
 )
 
 </script>
@@ -252,16 +240,16 @@ watch (
 <template>
     <div>
 
-    <AppModal title="New User" v-model="showingModalUser" xl>
-    <NewStaff></NewStaff>
+    <AppModal title="New User" v-model="showingModalUser" xl6>
+      <NewStaff></NewStaff>
     </AppModal>
 
-    <AppModal title="Assign Role" v-model="assignDialog" md>
+    <AppModal title="Assign Role" v-model="assignDialog" xl2>
       <new-account :userInfo="userInfo"></new-account>
     </AppModal>
 
     <AppModal title="Assign Entity" v-model="showingEntity" xs>
-    <AssignUserEntity :userNumber="userNumber"></AssignUserEntity>
+      <AssignUserEntity :userNumber="userNumber"></AssignUserEntity>
     </AppModal>
 
       <div class="row">

@@ -24,6 +24,7 @@
      first_name:null,
      second_name:null,
      last_name:null,
+     gender:"",
      email:null,
      phone:null,
      location:null,
@@ -117,8 +118,7 @@
            rolesInfo.value = arr
            
          }
-       },
-       {deep:true}
+       }
        )
    
 </script>
@@ -127,21 +127,26 @@
       <form @submit.prevent="addUser">
          <div class="row">
             <div class="col-6">
-               <div class="mb-2">
+
+              <div class="grid grid-cols-2 gap-4">
+                <div class="mb-2">
                   <label class="textColor"><small>First name</small></label>
                   <input type="text" v-model="form.first_name" required class="form-control">
-               </div>
-               <div class="mb-2">
+                </div>
+                <div class="mb-2">
                   <label class="textColor"><small>Second name</small></label>
                   <input type="text" v-model="form.second_name" required class="form-control">
-               </div>
+                </div>
+              </div>
+
+
                <div class="mb-2">
                   <label class="textColor"><small>Last name</small></label>
                   <input type="text" v-model="form.last_name" required class="form-control">
                </div>
                <div class="mb-2">
                   <label class="textColor"><small>Gender</small></label>
-                  <select class="form-select" v-model="form.gender" aria-label="Default select example">
+                  <select class="form-select shadow-none" v-model="form.gender" aria-label="Default select example">
                      <option value="">Select Gender</option>
                      <option value="male">Male</option>
                      <option value="female">Female</option>
@@ -155,73 +160,69 @@
                   <label class="textColor"><small>Email</small></label>
                   <input type="email" v-model="form.email" required class="form-control">
                </div>
+
+
+              <div class="grid grid-cols-2 gap-4">
+              <div class="mb-2">
                <label class="textColor"><small>Password</small></label>
                <div class="input-group mb-3">
                   <input
                      :type="show ? 'text' : 'password'"
                      v-model="form.password" required
-                     class="form-control" aria-label="Username"
-                     aria-describedby="basic-addon1">
-                  <div style="cursor: pointer;"  @click="show = !show" class="input-group-text" id="basic-addon1">
+                     class="form-control text-sm">
+                  <div style="cursor: pointer;"  @click="show = !show" class="input-group-text py-1">
                      <i :class="show ? 'bi-eye-slash' : 'bi-eye'"></i>
                   </div>
                </div>
+              </div>
+
+
+              <div class="mb-2">
                <label class="textColor"><small>Confirm Password</small></label>
                <div class="input-group mb-3">
                   <input
                      :type="show ? 'text' : 'password'"
                      v-model="form.confirm_password" required
-                     class="form-control" aria-label="Username"
-                     aria-describedby="basic-addon1">
-                  <div style="cursor: pointer;"  @click="show = !show" class="input-group-text" id="basic-addon1">
+                     class="form-control text-sm">
+                  <div style="cursor: pointer;"  @click="show = !show" class="input-group-text py-1">
                      <i :class="show ? 'bi-eye-slash' : 'bi-eye'"></i>
                   </div>
                </div>
+              </div>
+              </div>
+
+
             </div>
             <div class="col-6">
+
+              <div class="text-sm">
+                <div class="mb-2">Role</div>
+                <div class="alert alert-primary py-1 px-3">Set expiry date on each role</div>
+              </div>
+
                <div class="mb-2">
-                  <label class="textColor"><small>Role <span class="alert alert-danger p-0">set Account expiry date</span></small></label>
+
                   <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-<!--                      {{ rolesData }}-->
-<!--                    {{rolesInfo}}-->
-                    <!-- <div class="grid grid-cols-2 gap-2" v-for="(lst, idx) in rolesInfo" :key="idx">
-                      <div >
-                        <input
-                            @change="addRoleNumber(lst.number, idx)"
-                            :value="lst.number"
-                            :id="lst.number"
-                            class="shadow-none"
-                            type="checkbox">
-                            <label :for="lst.number">{{lst.role_name}}</label>
-                      </div>
-                      <div>
-                        <input
-                            v-model="lst.date"
-                            style="outline: none 0 !important; box-shadow: none;"
-                            class="form-control" type="date" required>
-                      </div>
-                    </div> -->
+
                      <li class="list-group-item" v-for="(lst, idx) in rolesInfo" :key="idx">
-                          <!-- <div>{{lst}}</div> -->
+
                         <div class="row">
                            <div class="col-lg-1">
                              <input
-                            @change="addRoleNumber(lst.number, idx)"
-                            :value="lst.number"
-                            :id="lst.number"
-                            class="shadow-none"
-                            type="checkbox">
-                               
+                              @change="addRoleNumber(lst.number, idx)"
+                              :value="lst.number"
+                              :id="lst.number"
+                              class="shadow-none"
+                              type="checkbox">
                            </div>
                            <div class="col-lg-4">
-                              <label style="float: left;" class="textColor" :for="lst.number">{{lst.role_name}}</label>
+                              <label style="float: left;" class="textColor cursor-pointer" :for="lst.number">{{lst.role_name}}</label>
                            </div>
                            <div class="col-lg-6">
-                           <input
-                            v-model="lst.expiry_date"
-                            style="outline: none 0 !important; box-shadow: none;"
-                            class="form-control" type="date" required>
-                           </div>
+                             <input
+                              v-model="lst.expiry_date"
+                              class="form-control shadow-none" type="date">
+                             </div>
                         </div>
                       
                      </li>

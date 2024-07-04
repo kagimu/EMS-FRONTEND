@@ -140,7 +140,12 @@ watch (
          <div class="row">
             <div class="col-12">
                <div class="mb-2">
-                  <label class="textColor"><small>Role <span class="alert alert-danger p-0">set Account expiry date</span></small></label>
+
+                 <div class="text-sm">
+                   <div class="mb-2">Role</div>
+                   <div class="alert alert-primary py-1 px-3">Set expiry date on each role</div>
+                 </div>
+
                   <ul class="list-group text-sm mb-1" style="border-radius: 0 0 0 0;">
                      <li class="list-group-item" v-for="(lst, idx) in rolesInfo" :key="idx">
                           <!-- <div>{{lst}}</div> -->

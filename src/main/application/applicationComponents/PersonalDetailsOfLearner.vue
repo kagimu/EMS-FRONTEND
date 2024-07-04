@@ -1,3 +1,236 @@
+<script setup>
+import {onMounted, reactive, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import api from "@/config/api.js";
+import {useRouter} from "vue-router";
+import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
+const assessmentStore = useAssessmentStore()
+
+
+const routerData = useRouter()
+let  applicationNumber = routerData.currentRoute.value.query.applicationId
+
+const buttonLoader = ref(false)
+let errorMessage = ref(null)
+const emit = defineEmits()
+
+const applicationStore= useApplicationStore()
+const  notificationStore  = useNotificationStore()
+const campusList = ref([])
+const schoolList = ref([])
+const classList = ref([])
+const schoolStore = useSchoolStore()
+const campusStore = useCampusStore()
+const school_number = ref(null)
+
+const form = reactive({
+  surname:null,
+  second_name:null,
+  other_name:null,
+  preferred_type_of_enrollment:null,
+  date_of_birth:null,
+  gender:"",
+  reason_for_choosing_school:null,
+  preferred_campus_number: null,
+  source_of_school_info: null,
+  application_number: localStorage.getItem("applicationId"),
+  campus_class_number: null,
+  learner_number:null
+})
+
+onMounted(() => {
+      schoolStore.fetchSchools(entity_number)
+
+      if(applicationNumber !==""){
+        applicationStore.fetchApplicationById(applicationNumber)
+      }
+    }
+)
+
+const goBack = () =>{
+  emit("next", 1 )
+}
+const fetchCampuses = (school_number) => {
+  campusStore.fetchCampuses(school_number)
+}
+
+const fetchClasses = (campus_number) => {
+  campusStore.fetchClassesByCampus(campus_number)
+}
+
+let entity_number = localStorage.getItem('entity_number')
+
+
+
+
+
+
+const addLearnerDetails = () => {
+  if(!applicationNumber){
+    buttonLoader.value = true
+    form.application_number = localStorage.getItem("applicationId")
+    applicationStore.newApplicationLeanerDetails(form)
+  }else{
+    buttonLoader.value = true
+    form.application_number = localStorage.getItem("applicationId")
+    if(form.learner_number){
+      applicationStore.updateLearnerDetails(form.learner_number,form)
+    }else{
+      applicationStore.newApplicationLeanerDetails(form)
+    }
+
+  }
+
+}
+const page = ref(1)
+const per_page = ref(15)
+
+watch (
+    () => applicationStore.newApplicationDetailsLearnerResponse,
+    async (data) => {
+      if(data){
+        localStorage.setItem("CampusClassNumber", form.campus_class_number)
+        localStorage.setItem("studentNumber", data.data.number)
+        buttonLoader.value = false
+        assessmentStore.fetchAssessmentAreaByClass(form.campus_class_number)
+        emit("next", 3 )
+
+        let dataa = {
+          page: page.value,
+          per_page: per_page.value,
+          status: "SUBMITTED"
+        }
+        applicationStore.fetchApplicationList(dataa)
+      }
+    },
+    {deep:true}
+)
+
+
+watch (
+    () => applicationStore.updateLearnerPersonalDetailsresponse,
+    async (data) => {
+      if(data){
+        localStorage.setItem("applicationId", data.application_number)
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+        emit("next", 3 )
+      }
+    },
+    {deep:true}
+)
+
+
+watch (
+    () => applicationStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        buttonLoader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        schoolList.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+watch(
+    () => campusStore.campusListResponse,
+    async (data) => {
+      if (data) {
+        campusList.value = data.data
+      }
+    }
+)
+
+watch(
+    () => campusStore.campusClassesResponse,
+    async (data) => {
+      if (data) {
+        classList.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+watch(
+    () => campusStore.errorMessage,
+    async (data) => {
+      if (data) {
+        notificationStore.errorToast("Error", data.message)
+      }
+    },
+    {deep: true}
+)
+
+
+
+
+watch (
+    () => applicationStore.applicationByIdResponse,
+    async (data) => {
+      if(data){
+        form.surname= data.Student.surname
+        form.second_name=data.Student.second_name
+        form.other_name=data.Student.other_name
+        form.gender= data.Student.gender
+        form.date_of_birth=data.Student.date_of_birth
+        form.preferred_campus_number=data.Student.preferred_campus_number
+        form.reason_for_choosing_school=data.Student.reason_for_choosing_school
+        form.source_of_school_info = data.Student.source_of_school_info
+        form.learner_number = data.Student.number
+        if(form.learner_number){
+          setSchoolAndCampus(data)
+        }
+
+      }
+    },
+    {deep:true}
+)
+
+
+
+async function setSchoolAndCampus(data) {
+  await api.get("main/school/all")
+      .then((response) => {
+        schoolList.value = response.data.data
+        api.get("main/campus/all")
+            .then((responseData) => {
+              campusList.value = responseData.data.data
+              form.preferred_campus_number = data.Student.preferred_campus_number
+              school_number.value=data.Student.PreferredCampus.school_number
+              campusStore.fetchClassesByCampus(data.Student.preferred_campus_number)
+              form.campus_class_number = data.Student.campus_class_number
+            }).catch((error) => {
+          if(error && error.response){
+            errorMessage.value = error.response.data
+          }
+        })
+
+      })
+      .catch((error) => {
+        if(error && error.response){
+          errorMessage.value = error.response.data
+        }
+      })
+
+
+}
+
+</script>
+
 <template>
   <div>
   <p class="ml-4 mt-4 mb-10" style="text-align: center !important;">DETAILS OF THE LEARNER</p>
@@ -109,9 +342,6 @@
             <div class="col-lg-4">
               <button type="button" @click="goBack()" class="btn btn-sm btn-success mb-2 mr-4" style="color: white;">
            <small><i class="bi bi-box-arrow-in-left"></i> Back</small>
-            <!-- <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
-              <span class="visually-hidden">Loading...</span>
-            </div> -->
           </button>
             </div>
             <div class="col-lg-4"></div>
@@ -132,235 +362,7 @@
   </div>
   </template>
   
-  <script setup>
-  import {onMounted, reactive, ref, watch} from "vue";
-  import useNotificationStore from "@/composables/useNotification.js";
-  import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
-  import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-  import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-  import api from "@/config/api.js";
-  import {useRouter} from "vue-router";
-  import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
-  const assessmentStore = useAssessmentStore()
 
-
-const routerData = useRouter()
-let  applicationNumber = routerData.currentRoute.value.query.applicationId
-
-const buttonLoader = ref(false)
-let errorMessage = ref(null)
-const emit = defineEmits()
-
-const applicationStore= useApplicationStore()
-const  notificationStore  = useNotificationStore()
-  const campusList = ref([])
-  const schoolList = ref([])
-  const classList = ref([])
-  const schoolStore = useSchoolStore()
-  const campusStore = useCampusStore()
-  const school_number = ref(null)
-  
-  const form = reactive({
-  surname:null,
-  second_name:null,
-  other_name:null,
-  preferred_type_of_enrollment:null,
-  date_of_birth:null,
-  gender:null,
-  reason_for_choosing_school:null,
-  preferred_campus_number: null,
-  source_of_school_info: null,
-  application_number: localStorage.getItem("applicationId"),
-  campus_class_number: null,
-  learner_number:null
-})
-
-const goBack = () =>{
-  emit("next", 1 )
-}
-  const fetchCampuses = (school_number) => {
-      campusStore.fetchCampuses(school_number)
-  }
-
-  const fetchClasses = (campus_number) => {
-      campusStore.fetchClassesByCampus(campus_number)
-  }
-  
- let entity_number = localStorage.getItem('entity_number')
-
-  onMounted(() => {
-          schoolStore.fetchSchools(entity_number)
-      }
-  )
-
-const addLearnerDetails = () => {
-  if(!applicationNumber){
-    buttonLoader.value = true
-    form.application_number = localStorage.getItem("applicationId")
-  applicationStore.newApplicationLeanerDetails(form)
-  }else{
-    buttonLoader.value = true
-    form.application_number = localStorage.getItem("applicationId")
-    if(form.learner_number){
-      applicationStore.updateLearnerDetails(form.learner_number,form)
-    }else{
-      applicationStore.newApplicationLeanerDetails(form)
-    }
- 
-  }
- 
-}
-const page = ref(1)
-const per_page = ref(15)
-
-watch (
-    () => applicationStore.newApplicationDetailsLearnerResponse,
-    async (data) => {
-      if(data){
-        localStorage.setItem("CampusClassNumber", form.campus_class_number)
-        localStorage.setItem("studentNumber", data.data.number)
-        buttonLoader.value = false
-        assessmentStore.fetchAssessmentAreaByClass(form.campus_class_number)
-        emit("next", 3 )
-
-        let dataa = {
-      page: page.value,
-      per_page: per_page.value,   
-      status: "SUBMITTED"
-   }
-    applicationStore.fetchApplicationList(dataa)
-      }
-    },
-    {deep:true}
-)
-
-
-watch (
-    () => applicationStore.updateLearnerPersonalDetailsresponse,
-    async (data) => {
-      if(data){
-        localStorage.setItem("applicationId", data.application_number)
-        buttonLoader.value = false
-        notificationStore.successToast("Success", data.message)
-        emit("next", 3 )
-      }
-    },
-    {deep:true}
-)
-
-
-watch (
-    () => applicationStore.errorMessage,
-    async (data) => {
-      if(data){
-        errorMessage.value = data.message
-        buttonLoader.value = false
-        notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-)
-
-  watch(
-      () => schoolStore.schoolsResponse,
-      async (data) => {
-          if (data) {
-              schoolList.value = data.data
-          }
-      },
-      {deep: true}
-  )
-
-  watch(
-      () => campusStore.campusListResponse,
-      async (data) => {
-          if (data) {
-              campusList.value = data.data
-          }
-      }
-  )
-
-  watch(
-      () => campusStore.campusClassesResponse,
-      async (data) => {
-          if (data) {
-              classList.value = data.data
-          }
-      },
-      {deep: true}
-  )
-
-  watch(
-      () => campusStore.errorMessage,
-      async (data) => {
-            if (data) {
-                notificationStore.errorToast("Error", data.message)
-            }
-      },
-      {deep: true}
-  )
-
-  
-  onMounted(
-    () => {
-      if(applicationNumber !=""){
-      applicationStore.fetchApplicationById(applicationNumber)
-      }
-    }
-)
-
-watch (
-    () => applicationStore.applicationByIdResponse,
-    async (data) => {
-      if(data){
-        form.surname= data.Student.surname
-        form.second_name=data.Student.second_name,
-        form.other_name=data.Student.other_name,
-        form.gender= data.Student.gender,
-        form.date_of_birth=data.Student.date_of_birth,
-        form.preferred_campus_number=data.Student.preferred_campus_number,
-        form.reason_for_choosing_school=data.Student.reason_for_choosing_school
-        form.source_of_school_info = data.Student.source_of_school_info
-        form.learner_number = data.Student.number
-        if(form.learner_number){
-          setSchoolAndCampus(data)
-       }
-        
-      }
-    },
-    {deep:true}
-)
-
-
-
-async function setSchoolAndCampus(data) {
-         await api.get("main/school/all")
-            .then((response) => {
-                schoolList.value = response.data.data
-                  api.get("main/campus/all")
-            .then((responseData) => {
-                campusList.value = responseData.data.data
-                form.preferred_campus_number = data.Student.preferred_campus_number
-                school_number.value=data.Student.PreferredCampus.school_number
-                campusStore.fetchClassesByCampus(data.Student.preferred_campus_number)
-                form.campus_class_number = data.Student.campus_class_number
-            }).catch((error) => {
-                if(error && error.response){
-                    errorMessage.value = error.response.data
-                }
-            })
-
-            })
-            .catch((error) => {
-                if(error && error.response){
-                    errorMessage.value = error.response.data
-                }
-            })
-    
-           
-    }
- 
-  </script>
   
   <style scoped>
   .mb-8 {
