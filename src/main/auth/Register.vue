@@ -3,6 +3,7 @@ import {reactive, ref, watch} from 'vue'
 import {useAuthStore} from "@/main/auth/store/auth.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import VictoriousLogo from "@/assets/images/victorious-logo.png";
+import useCommonsStore from "@/composables/useCommons.js";
 
 let errorMessage = ref(null)
 let buttonLoader = ref(false)
@@ -12,18 +13,24 @@ const showSuccessPage = ref(false)
 
 let authStore = useAuthStore()
 const  notificationStore  = useNotificationStore()
+const commons = useCommonsStore()
 
 
 const form = reactive({
   first_name: null,
   second_name: null,
   last_name: null,
-  gender: null,
+  gender: "",
   email: null,
   phone: null,
 })
 
 
+function handleInput() {
+  if (form.phone.value.length > 15) {
+      form.phone.value = form.phone.value.slice(0, 15);
+  }
+}
 
 function doRegister(){
   buttonLoader.value = true
@@ -151,9 +158,22 @@ watch(
                     </div>
                 </div>
               </div>
+
+
               <div class="mb-2">
                 <div class="text-[#76787a] text-sm">Phone</div>
-                <input type="tel" v-model="form.phone" required class="form-control shadow-none">
+                <div class="input-group">
+                  <vue-tel-input
+                      @input="handleInput"
+                      @keypress="commons.onlyNumberValidator($event)"
+                      style="padding:0; outline: none 0 !important; box-shadow: none;"
+                      class="form-control"
+                      :input-options="{placeholder: ''}"
+                      v-model="form.phone"
+                      :dropdown-options="{ showDialCodeInSelection: true, showFlags: true, showDialCodeInList: true}"
+                      :preferredCountries="['UG']"
+                      mode="international"></vue-tel-input>
+                </div>
               </div>
 
               <div class="mb-10">

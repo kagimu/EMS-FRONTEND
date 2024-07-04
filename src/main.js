@@ -15,9 +15,14 @@ import abilities from "@/abilities";
 // main.js
 import  SetupCalendar  from 'v-calendar';
 
+import VueTelInput from 'vue-tel-input';
+import 'vue-tel-input/vue-tel-input.css';
+
 // Use calendar defaults (optional)
 
-
+const globalOptions = {
+    mode: 'auto',
+};
 
 const app = createApp(App);
 app.use(router);
@@ -25,6 +30,7 @@ app.config.globalProperties.$http = axios;
 app.use(abilitiesPlugin, abilities, {
     useGlobalProperties: true,
 });
+app.use(VueTelInput, globalOptions);
 app.use(createPinia());
 app.use(FloatingVue)
 app.use(Notifications)
