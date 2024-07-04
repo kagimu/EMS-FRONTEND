@@ -260,9 +260,6 @@ watch (
             <div class="col-lg-6 "> 
             </div>
             <div class="col-lg-6">
-                <!-- <button 
-                v-if="can('assign_role','general')"
-                @click="openModal()" style="float: right; margin-right: 5px;"  type="button" class="btn btn-primary btn-sm">Assign Role</button> -->
                 <button  style="float: right;border: none;"
                   v-if="can('add_user','general')" 
                   class="btn btn-primary btn-sm mr-3" type="button"  @click="showModalUser"><i class="bi bi-plus"></i>Add New User</button>
@@ -271,24 +268,18 @@ watch (
            </div>
                </div>
                 <div class="card-body" >
-        <div >
+        <div>
 <hr>
            <div class="row">
 
             <div class="col-3">
               <select
-                        style="box-shadow: none;"
-                        class="form-select form-select-sm" 
-                        v-model="status"
-                       
-                >
+                style="box-shadow: none;"
+                class="form-select form-select-sm"
+                v-model="status">
                     <option disabled value="">--filter by Status -</option>
-                    <option>
-                      Active
-                    </option>
-                    <option>
-                      Innactive
-                    </option>
+                    <option>Active</option>
+                    <option>Inactive</option>
                 </select>
 
             </div>
@@ -303,7 +294,6 @@ watch (
         <tr>
           <th>#</th>
           <th scope="col">Name</th>
-          <!-- <th>Email</th> -->
           <th scope="col">Role (s)</th>
           <th>Type</th>
           <th scope="col">Gender</th>
@@ -312,31 +302,24 @@ watch (
         </tr>
         </thead>
         <tbody>
-          <!-- v-for="(roles, index) in rolesData" :key="index" -->
             <tr v-for="(user, index) in userData" :key="index">
-              <td>{{ index+1 }}</td>
+            <td>{{ index+1 }}</td>
             <td>{{ user.first_name + " " +user.last_name + " " + user.second_name }}</td>
-            <!-- <td>{{ user.email }}</td> -->
             <td>
               <span v-for="(rol,indx) in user.roles"  :key="indx" >
                {{ rol.role_name }} 
                <button 
-              v-if="can('remove_assigned_role','general')"
-               @click="removeRole(rol.role_number,user.number,rol.role_name,user.first_name)">
-            &nbsp;<i  class="bi bi-x-circle-fill" style="color:rgb(228, 23, 23)"></i>
-          </button>
+                    v-if="can('remove_assigned_role','general')"
+                     @click="removeRole(rol.role_number,user.number,rol.role_name,user.first_name)">
+                  &nbsp;<i  class="bi bi-x-circle-fill" style="color:rgb(228, 23, 23)"></i>
+                </button>
               </span>
-              <!-- {{ user.type }} -->
-              
             </td>
             <td>{{ user.type }}</td>
             <td>{{ user.gender }}</td>
             <td>
-              <span v-if="user.status == 'Active'" style="color:green"><b>{{ user.status }}</b>
-            </span>
-            <span v-if="user.status != 'Active'" style="color:rgb(239, 13, 13)"><b>{{ user.status }}</b>
-            </span>
-          </td>
+              <span v-if="user.status === 'Active'" :style="user.status === 'Active' ? 'color:green' : 'color:rgb(239, 13, 13)'"><b>{{ user.status }}</b></span>
+            </td>
             <td>
           <button 
           v-if="can('update_assigned_role','general')"
@@ -344,14 +327,9 @@ watch (
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;&nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>
-          <!-- <button @click="openEntityModal(user.number)" type="button" class="btn btn-outline-primary mb-2 btn-small p-0" style="width: 60%;">
-           <small>assign-entity</small>
-          </button> -->
-
-          <button @click="openModal(user.number)" type="button" class="btn btn-outline-primary mb-2 btn-small p-0" style="width: 60%;">
+          <button @click="openModal(user.number)" type="button" class="btn btn-outline-primary mb-2 btn-small py-0 px-3 text-sm">
            <small>Assign Role</small>
           </button>
-
         </td>
         </tr>
     

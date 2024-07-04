@@ -135,7 +135,6 @@ watch (
 </script>
 <template>
    <div>
-    <!-- {{ userInfo }} -->
       <form @submit.prevent="addUser">
          <div class="row">
             <div class="col-12">
@@ -148,7 +147,6 @@ watch (
 
                   <ul class="list-group text-sm mb-1" style="border-radius: 0 0 0 0;">
                      <li class="list-group-item" v-for="(lst, idx) in rolesInfo" :key="idx">
-                          <!-- <div>{{lst}}</div> -->
                         <div class="row">
                            <div class="col-lg-1">
                              <input
@@ -157,10 +155,9 @@ watch (
                             :id="lst.number"
                             class="shadow-none"
                             type="checkbox">
-                               
                            </div>
                            <div class="col-lg-4">
-                              <label style="float: left;" class="textColor" :for="lst.number">{{lst.role_name}}</label>
+                              <label style="float: left;" class="textColor cursor-pointer" :for="lst.number">{{lst.role_name}}</label>
                            </div>
                            <div class="col-lg-6">
                            <input
