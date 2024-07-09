@@ -37,6 +37,7 @@ const campusLevelList = ref(null)
 const campusClassList = ref(null)
 const editMode = ref(false)
 const gradeScaleDatainfo = ref([])
+let schoolNumber = routerData.currentRoute.value.query.sch
 
 onMounted(() => {
       fetchGradeScale()
