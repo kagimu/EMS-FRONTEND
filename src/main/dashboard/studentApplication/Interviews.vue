@@ -73,6 +73,7 @@ name:null,
 interview_date:null,
 venue:null,
 message:null,
+assessment:[]
 })
 
 
@@ -133,7 +134,7 @@ watch(
     </div>
     
     
-   <AppModal title="Create Interview" v-model="showingModal" lg>
+   <AppModal title="Create Interview" v-model="showingModal" xl4>
     <NewInterview></NewInterview>
     </AppModal>
 

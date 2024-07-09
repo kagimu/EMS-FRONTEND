@@ -223,19 +223,43 @@ watch (
         <tr>
           <th>#</th>
           <th scope="col">Name</th>
-          <th scope="col">Class (s)</th>
-          <th scope="col">Values(Min - Max)</th>
-          <th scope="col">Weight</th>
+     
+          <th scope="col">Grades</th>
+         
           <th>Actions</th>
         </tr>
         </thead>
         <tbody>
             <tr v-for="(aggregateList,index) in aggregateData" :key="index">
             <td>{{ index+1 }}</td>
-            <td>{{ aggregateList.name }}</td>
-            <td>{{aggregateList.class_name}}</td>
-            <td>{{  aggregateList.min_value}} - {{  aggregateList.max_value}}</td>
-            <td>{{aggregateList.weight}}</td>
+            <td>{{ aggregateList.scale_name }}</td>
+        
+            <td>
+       
+          <table 
+          class="table  table-hover"
+          style="font-size: 11px !important;" >
+        <thead>
+        <tr>
+          <th scope="col">(Min - Max) Value</th>
+          <th scope="col">weight</th>
+          <th>Remark</th>
+        </tr>
+        <tr v-for="(list,idx) in aggregateList.grades" :key="idx">
+           <td>{{ list.min_value}} - {{ list.max_value }}</td>
+           <td>{{ list.weight }}</td>
+           <td>{{ list.description }}</td>
+        </tr>
+        </thead>
+
+         </table>
+
+
+
+
+
+            </td>
+           
             <td>
           <button @click="openEditModal(aggregateList)">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
