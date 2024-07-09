@@ -262,7 +262,7 @@ watch(
           <table
               id="datatable"
               class="table table-hover text-sm"
-              style="font-size: 13px !important;"
+              style="font-size: 12px !important;"
           >
             <thead>
             <tr>
