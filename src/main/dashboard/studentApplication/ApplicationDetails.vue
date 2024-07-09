@@ -1,3 +1,183 @@
+<script setup>
+import {onMounted,reactive, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import useCommons from "@/composables/useCommons.js";
+import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+
+const applicationStore = useApplicationStore()
+const notificationStore = useNotificationStore()
+const buttonLoader = ref(false)
+const interviewListData = ref([])
+let errorMessage = ref(null)
+const useCommonsStore = useCommons()
+const previousSchoolResultsData=ref([])
+const campusList = ref([])
+const schoolList = ref([])
+const schoolStore = useSchoolStore()
+const campusStore = useCampusStore()
+const school_number = ref(null)
+
+onMounted(
+  async () => {
+    applicationStore.fetchApplicationList()
+    applicationStore.fetchPreviousSchoolResultsAll()
+    applicationStore.fetchApplicationById(props.applicationNumber)
+    applicationStore.fetchInterviewList()
+    schoolStore.fetchSchools()
+  } )
+
+const props = defineProps({
+  applicationNumber:String
+})
+
+const appDatails = reactive({ 
+surname: null,
+second_name: null,
+other_name: null,
+application_number: null,
+main_telephone_number: null,
+alternative_telephone_number: null,
+email: null,
+alternative_email:null,
+studentSurname: null,
+Studentsecond_name: null,
+StudentOther_name:null,
+StudentGender: null,
+StudentDate_of_birth: null,
+preferred_type_of_enrollment: null,
+preferred_campus_number:null,
+reason:null,
+status:null,
+previousSchools:[],
+  student_number: null,
+})
+
+
+function getAge(dob){
+return useCommonsStore.getAgeFromDateOfBirth(dob)
+}
+
+
+watch (
+  () => props.applicationNumber,
+  async (data) => {
+    if(data){
+      applicationStore.fetchApplicationById(data)
+      // applicationStore.fetchPreviousSchoolResultsByStudent(appDatails.student_number)
+    }
+  },
+  {deep:true}
+)
+
+watch (
+  () => applicationStore.applicationByIdResponse,
+  async (data) => {
+    if(data){
+      // alert(JSON.stringify(data))
+      appDatails.surname = data.Parent.surname
+      appDatails.second_name = data.Parent.second_name
+      appDatails.other_name = data.Parent.other_name
+      appDatails.main_telephone_number = data.Parent.alternative_telephone_number
+      appDatails.alternative_telephone_number= data.Parent.alternative_telephone_number
+      appDatails.email= data.Parent.email
+      appDatails.alternative_email=data.Parent.alternative_email
+      appDatails.studentSurname= data.Student.surname
+      appDatails.Studentsecond_name=data.Student.second_name,
+      appDatails.StudentOther_name=data.Student.other_name,
+      appDatails.StudentGender= data.Student.gender,
+      appDatails.StudentDate_of_birth=data.Student.date_of_birth,
+      appDatails.preferred_type_of_enrollment=data.preferred_type_of_enrollment,
+      appDatails.preferred_campus_number=data.Student.CampusClass.class_name,
+      appDatails.reason=data.Student.reason_for_choosing_school,
+      appDatails.status=data.status
+      appDatails.previousSchools=data.PreviousSchools
+        appDatails.student_number = data.Student.number
+        applicationStore.fetchPreviousSchoolResultsByStudent(appDatails.student_number)
+    }
+  },
+  {deep:true}
+)
+
+const formData = reactive({
+interview_number:null,
+})
+
+function scheduleInterview(){
+buttonLoader.value = true
+formData.student_number = appDatails.student_number
+applicationStore. addStudentToInterview(formData)
+}
+
+const fetchCampuses = (school) => {
+      campusStore.fetchCampuses(school)
+  }
+
+watch(
+    () => applicationStore.addStudentToInterviewResponse,
+    async (data) => {
+        if (data) {
+          formData.interview_number = null
+            buttonLoader.value = false
+            applicationStore.fetchApplicationList()
+            notificationStore.successToast("Success", data.message)       
+        }
+    },
+    {deep: true}
+)
+
+watch (
+  () => applicationStore.errorMessage,
+  async (data) => {
+    if(data){
+      formData.interview_number = null
+      errorMessage.value = data.message
+      buttonLoader.value = false
+    }
+  },
+  {deep:true}
+)
+
+  watch(
+  () => applicationStore.interviewListResponse,
+  async (data) => {
+    if(data){
+      interviewListData.value = data.data
+    }
+  },
+  {deep:true}
+)
+watch(
+  () => applicationStore.previousSchoolResultsByStudentResponse,
+  async (data) => {
+    if(data){
+      previousSchoolResultsData.value = data.data
+    }
+  },
+  {deep:true}
+)
+watch(
+      () => campusStore.campusListResponse,
+      async (data) => {
+          if (data) {
+              campusList.value = data.data
+          }
+      },
+      {deep: true}
+  )
+
+  watch(
+      () => schoolStore.schoolsResponse,
+      async (data) => {
+          if (data) {
+              schoolList.value = data.data
+          }
+      },
+      {deep: true}
+  )
+</script>
+
 <template>
 <!-- {{ applicationNumber }} -->
             <div class="mt-2 mb-2">
@@ -141,11 +321,15 @@
       <!-- {{ appDatails.status }} -->
   <form @submit.prevent="scheduleInterview" >
               <label> <span style="text-align: center;font-size: 12px;"><small>Select Interview</small></span></label>
+
+           <div class="mb-2">
               <select required class="form-control" v-model="formData.interview_number" >
                   <option v-for="(list, index) in interviewListData" :key="index" :value="list.number">
                     {{ list.name}} 
                   </option>
                </select>
+            </div>
+
               <div class="text-right mt-1">
                 <button style="margin-right: 0px;float: left;" type="button" class="btn btn-sm btn-danger mb-2 mr-4" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i>&nbsp;<small>Reject</small></button>
                 <button style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2"  ><i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
@@ -185,182 +369,12 @@
             </form>
           </div>
         </div>
-<!-- wnd  -->
-
-
   </template>
-  
-  <script setup>
-  import {onMounted,reactive, ref, watch} from "vue";
-  import useNotificationStore from "@/composables/useNotification.js";
-  import useCommons from "@/composables/useCommons.js";
-  import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
-
-
-const applicationStore = useApplicationStore()
-const notificationStore = useNotificationStore()
-const buttonLoader = ref(false)
-const interviewListData = ref([])
-let errorMessage = ref(null)
-const useCommonsStore = useCommons()
-const previousSchoolResultsData=ref([])
-
-  const props = defineProps({
-    applicationNumber:String
-  })
-
-const appDatails = reactive({ 
-surname: null,
-second_name: null,
-other_name: null,
-application_number: null,
-main_telephone_number: null,
-alternative_telephone_number: null,
-email: null,
-alternative_email:null,
-studentSurname: null,
-Studentsecond_name: null,
-StudentOther_name:null,
-StudentGender: null,
-StudentDate_of_birth: null,
-preferred_type_of_enrollment: null,
-preferred_campus_number:null,
-reason:null,
-status:null,
-previousSchools:[],
-    student_number: null,
-})
-
-
-function getAge(dob){
-  return useCommonsStore.getAgeFromDateOfBirth(dob)
-}
-
-onMounted(
-    async () => {
-      applicationStore.fetchApplicationList()
-      applicationStore.fetchPreviousSchoolResultsAll()
-
-      applicationStore.fetchApplicationById(props.applicationNumber)
-      applicationStore.fetchInterviewList()
-    } )
-
-watch (
-    () => props.applicationNumber,
-    async (data) => {
-      if(data){
-        applicationStore.fetchApplicationById(data)
-        // applicationStore.fetchPreviousSchoolResultsByStudent(appDatails.student_number)
-      }
-    },
-    {deep:true}
-)
-
-watch (
-    () => applicationStore.applicationByIdResponse,
-    async (data) => {
-      if(data){
-        // alert(JSON.stringify(data))
-        appDatails.surname = data.Parent.surname
-        appDatails.second_name = data.Parent.second_name
-        appDatails.other_name = data.Parent.other_name
-        appDatails.main_telephone_number = data.Parent.alternative_telephone_number
-        appDatails.alternative_telephone_number= data.Parent.alternative_telephone_number
-        appDatails.email= data.Parent.email
-        appDatails.alternative_email=data.Parent.alternative_email
-        appDatails.studentSurname= data.Student.surname
-        appDatails.Studentsecond_name=data.Student.second_name,
-        appDatails.StudentOther_name=data.Student.other_name,
-        appDatails.StudentGender= data.Student.gender,
-        appDatails.StudentDate_of_birth=data.Student.date_of_birth,
-        appDatails.preferred_type_of_enrollment=data.preferred_type_of_enrollment,
-        appDatails.preferred_campus_number=data.Student.CampusClass.class_name,
-        appDatails.reason=data.Student.reason_for_choosing_school,
-        appDatails.status=data.status
-        appDatails.previousSchools=data.PreviousSchools
-          appDatails.student_number = data.Student.number
-          applicationStore.fetchPreviousSchoolResultsByStudent(appDatails.student_number)
-
-        // alert(JSON.stringify(data.Parent.surname))
-      }
-    },
-    {deep:true}
-)
-
-
-
-const formData = reactive({
-  interview_number:null
-})
-
-function scheduleInterview(){
-  // alert(JSON.stringify(formData))
-  buttonLoader.value = true
-    // alert(JSON.stringify(appDatails.student_number))
-  formData.student_number = appDatails.student_number
-  applicationStore. addStudentToInterview(formData)
-  
-}
-
-  watch(
-      () => applicationStore.addStudentToInterviewResponse,
-      async (data) => {
-          if (data) {
-            formData.interview_number = null
-              buttonLoader.value = false
-              applicationStore.fetchApplicationList()
-              notificationStore.successToast("Success", data.message)       
-          }
-      },
-      {deep: true}
-  )
-
-  watch (
-    () => applicationStore.errorMessage,
-    async (data) => {
-      if(data){
-        formData.interview_number = null
-        errorMessage.value = data.message
-        buttonLoader.value = false
-      }
-    },
-    {deep:true}
-)
-
-
-
-    watch(
-    () => applicationStore.interviewListResponse,
-    async (data) => {
-      if(data){
-        interviewListData.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => applicationStore.previousSchoolResultsByStudentResponse,
-    async (data) => {
-      if(data){
-        previousSchoolResultsData.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-
-
-  </script>
-
-
   
   <style scoped>
   .mb-2 {
     text-align: left;
-
     font-family: Roboto, sans-serif;
-    /* font-size: 17px; */
     border-radius: 3px !important;
 }
   .details{
