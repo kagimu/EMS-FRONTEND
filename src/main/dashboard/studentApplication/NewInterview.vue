@@ -1,72 +1,4 @@
-<template>
-    <div>
-       <form @submit.prevent="createInterview">
-         <div class="mb-2">
-            <label class="textSize"><small>School</small></label>
-         <select
-                 style="box-shadow: none;"
-                 class="form-select form-select-sm" required
-                 v-model="school_number"
-                 @change="fetchCampuses(school_number)"
-         >
-             <option disabled value="">-filter School -</option>
-             <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-             </option>
-         </select>
-     </div>
-
-     <div class="mb-2">
-            <label class="textSize"><small>Campus</small></label>
-            <select
-              style="box-shadow: none;"
-              class="form-select form-select-sm"
-              v-model="campus_number" required
-              @change="fetchClasses(campus_number)">
-              <option disabled value="">Select campus</option>
-              <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}</option>
-            </select>
-        </div>   
-
-         
-        <div class="mb-2">
-            <label class="textSize"><small>Class</small></label>
-            <select
-              style="box-shadow: none;"
-              class="form-select form-select-sm" required
-              v-model="formData.campus_class_number">
-              <option disabled value="">Select class</option>
-              <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}</option>
-            </select>
-          </div>
-
-          <div class="mb-2">
-             <label class="textColor"><small>Title</small></label>
-             <input v-model="formData.name" type="text" required class="form-control">
-          </div>
-          <div class="mb-2">
-             <label class="textColor"><small>Interview Date</small></label>
-             <input v-model="formData.interview_date"  type="date" required class="form-control">
-          </div>
-          <div class="mb-2">
-             <label class="textColor"><small>Venue</small></label>
-             <input v-model="formData.venue"  type="text" required class="form-control" >
-          </div>
-          <div class="mb-2">
-             <label class="textColor"><small>Description</small></label>
-             <textarea v-model="formData.message"  required class="form-control noFocus" id="floatingTextarea2" style="height: 100px"></textarea>
-          </div>
-          <div class="text-right mt-4">
-             <button style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog">
-                <i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
-                <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader" >
-                   <span class="visually-hidden">Loading...</span>
-                </div>
-             </button>
-          </div>
-       </form>
-    </div>
- </template>
- <script setup>
+<script setup>
     import {onMounted,reactive, ref, watch} from "vue";
     import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
     import useNotificationStore from "@/composables/useNotification.js";
@@ -77,13 +9,14 @@
     import AppModal from "@/components/AppModal.vue";
     import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
     import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-    
+    import { useAssessmentStore } from "@/main/dashboard/assessment/store/assessment.js";
+
     
     const showingModal = ref(false)
     const interviewList = ref( [])
     let errorMessage = ref(null)
-    
-    
+    const assessmentStore = useAssessmentStore()
+    const assessmentMetricList = ref([])
     const buttonLoader = ref(false)
     const interviewNumber = ref(null)
     const studentApplicationStore = useStudentApplicationStore()
@@ -110,6 +43,7 @@
         async () => {
           await applicationStore.fetchInterviewList()
           schoolStore.fetchSchools()
+          assessmentStore.fetchAssessmentMetrics()
         } )
 
 
@@ -182,8 +116,6 @@
     
     }
     
-    
-    
     const formData = reactive({ 
     name:null,
     interview_date:null,
@@ -212,10 +144,153 @@
           {deep: true}
       )
     
-      const showAssesssmentMetricsDialog = (interview) =>{
+    const showAssesssmentMetricsDialog = (interview) =>{
       interviewNumber.value = interview.number
     
-    }  
+    } 
+    
+    
+const sectionPart = reactive([{ assessment_metric_number: null}]);
+
+const newSectionPart = () => {
+    sectionPart.push({ assessment_metric_number: null})
+}
+
+function removeSectionPart(index) {
+  sectionPart.splice(index, 1);
+}
+
+
+watch (
+    () => assessmentStore.assessmentMetricsResponse,
+    async (data) => {
+      if(data && data.data){
+        assessmentMetricList.value = data.data
+      }
+    },
+    {deep:true}
+)
  </script>
+
+<template>
+    <div>
+       <form @submit.prevent="createInterview">
+
+  <div class="row">
+    <div class="col-lg-6">      
+         <div class="mb-2">
+            <label class="textSize"><small>School</small></label>
+         <select
+                 style="box-shadow: none;"
+                 class="form-select form-select-sm" required
+                 v-model="school_number"
+                 @change="fetchCampuses(school_number)"
+         >
+             <option disabled value="">-filter School -</option>
+             <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+             </option>
+         </select>
+     </div>
+
+     <div class="mb-2">
+            <label class="textSize"><small>Campus</small></label>
+            <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm"
+              v-model="campus_number" required
+              @change="fetchClasses(campus_number)">
+              <option disabled value="">Select campus</option>
+              <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}</option>
+            </select>
+        </div>   
+
+         
+        <div class="mb-2">
+            <label class="textSize"><small>Class</small></label>
+            <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm" required
+              v-model="formData.campus_class_number">
+              <option disabled value="">Select class</option>
+              <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}</option>
+            </select>
+          </div>
+
+          <div class="mb-2">
+             <label class="textColor"><small>Title</small></label>
+             <input v-model="formData.name" type="text" required class="form-control">
+          </div>
+          <div class="mb-2">
+             <label class="textColor"><small>Interview Date</small></label>
+             <input v-model="formData.interview_date"  type="date" required class="form-control">
+          </div>
+          <div class="mb-2">
+             <label class="textColor"><small>Venue</small></label>
+             <input v-model="formData.venue"  type="text" required class="form-control" >
+          </div>
+          <div class="mb-2">
+             <label class="textColor"><small>Description</small></label>
+             <textarea v-model="formData.message"  required class="form-control noFocus" id="floatingTextarea2" style="height: 100px"></textarea>
+          </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="mb-2">
+        <table
+              id="datatable"
+              class="table table-hover text-sm"
+              style="font-size: 12px !important;"
+          >
+            <thead>
+            <tr>
+              <td class="">Assessment Metric</td>
+              <td></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(field, index) in sectionPart" :key="index">
+              <td>
+                <div>
+                  <select
+                      class="form-select form-select-sm shadow-none" required
+                      v-model="field.assessment_metric_number"
+                  >
+                    <option disabled value="">-Select-</option>
+                    <option v-for="(list, index) in assessmentMetricList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+                  </select>
+                </div>
+              </td>
+              <td>
+                <div class="mt-1">
+                <i class="bi bi-x-circle cursor-pointer text-[red]" @click="removeSectionPart(index)"></i>
+                </div>
+              </td>
+            </tr>
+
+            </tbody>
+          </table>
+
+          <button  @click="newSectionPart" type="button" class="bg-[#0d6efd] text-white text-sm px-2 rounded-sm" style="text-align: center;"><i class="bi bi-plus"></i></button>
+
+
+      </div>
+
+    </div>
+
+</div>
+
+
+          <div class="text-right mt-4">
+             <button style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog">
+                <i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
+                <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader" >
+                   <span class="visually-hidden">Loading...</span>
+                </div>
+             </button>
+          </div>
+       </form>
+    </div>
+ </template>
+ 
  <style scoped>
  </style>
