@@ -65,7 +65,7 @@
           }
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })

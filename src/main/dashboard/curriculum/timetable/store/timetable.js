@@ -45,7 +45,7 @@ export const useTimetableStore = defineStore("timetable", () => {
                 deletePeriodResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })

@@ -19,7 +19,7 @@ export const useRolesStore = defineStore("roles", () => {
              newRoleResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -31,7 +31,7 @@ export const useRolesStore = defineStore("roles", () => {
                roleResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -42,7 +42,7 @@ export const useRolesStore = defineStore("roles", () => {
                permisionGroupsResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -53,7 +53,7 @@ export const useRolesStore = defineStore("roles", () => {
                 roleByIdResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -66,7 +66,7 @@ export const useRolesStore = defineStore("roles", () => {
              updateRoleResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -78,7 +78,7 @@ export const useRolesStore = defineStore("roles", () => {
              deleteRoleResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -89,7 +89,7 @@ export const useRolesStore = defineStore("roles", () => {
              editRoleResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })

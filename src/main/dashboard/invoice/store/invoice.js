@@ -22,7 +22,7 @@ export const useInvoiceStore = defineStore("invoice", () => {
                 newInvoiceResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -40,7 +40,7 @@ export const useInvoiceStore = defineStore("invoice", () => {
                 invoiceResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -52,7 +52,7 @@ export const useInvoiceStore = defineStore("invoice", () => {
                 invoiceResponseById.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -66,7 +66,7 @@ export const useInvoiceStore = defineStore("invoice", () => {
                 newInvoicePaymentResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -78,7 +78,7 @@ export const useInvoiceStore = defineStore("invoice", () => {
                 invoiceUpdateResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -90,7 +90,7 @@ export const useInvoiceStore = defineStore("invoice", () => {
                 financialSummaryResponseById.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -109,7 +109,7 @@ export const useInvoiceStore = defineStore("invoice", () => {
                 editUpdateResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -120,7 +120,7 @@ export const useInvoiceStore = defineStore("invoice", () => {
                 deleteInvoiceResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -131,7 +131,7 @@ export const useInvoiceStore = defineStore("invoice", () => {
                 cancelInvoiceResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -142,7 +142,7 @@ export const useInvoiceStore = defineStore("invoice", () => {
                 cancelInvoicePaymentResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -154,7 +154,7 @@ export const useInvoiceStore = defineStore("invoice", () => {
                 deleteInvoicePaymentResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })

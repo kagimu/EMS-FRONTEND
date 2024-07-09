@@ -21,7 +21,7 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
                 newAcademicYearResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -34,7 +34,7 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
                 editAcademicYearResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -48,7 +48,7 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
                 academicYearByLevelResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -60,7 +60,7 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
                 campusClassByLevelResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -72,7 +72,7 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
                 academicYearResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -86,7 +86,7 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
                 deleteAcademicYearResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -100,7 +100,7 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
                 academicYearByCampusResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -114,7 +114,7 @@ export const useAcademicYearStore = defineStore("academicYear", () => {
                 academicYearDataResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })

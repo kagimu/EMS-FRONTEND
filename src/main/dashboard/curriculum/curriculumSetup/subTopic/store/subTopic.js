@@ -117,7 +117,7 @@ export const useSubtopicStore = defineStore("subtopic", () => {
                 deleteSubTopicResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -130,7 +130,7 @@ export const useSubtopicStore = defineStore("subtopic", () => {
                 subTopicDataInfoResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })

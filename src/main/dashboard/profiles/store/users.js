@@ -17,7 +17,7 @@ export const useUserStore = defineStore("users", () => {
                     newUserResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.response.data
                     }
                 })
@@ -38,7 +38,7 @@ export const useUserStore = defineStore("users", () => {
                     narrativeReportResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.response.data
                     }
                 })
@@ -50,7 +50,7 @@ export const useUserStore = defineStore("users", () => {
                 userListResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.response.data
                     }
                 })
@@ -62,7 +62,7 @@ export const useUserStore = defineStore("users", () => {
                     deleteUserResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.data
                     }
                 })
@@ -73,7 +73,7 @@ export const useUserStore = defineStore("users", () => {
                     updateUserResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.data
                     }
                 })

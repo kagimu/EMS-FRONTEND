@@ -18,7 +18,7 @@ export const useSubjectClusterStore = defineStore("subjectCluster", () => {
                 subjectClusterResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -32,7 +32,7 @@ export const useSubjectClusterStore = defineStore("subjectCluster", () => {
                 subjectClusterInfoResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -44,7 +44,7 @@ export const useSubjectClusterStore = defineStore("subjectCluster", () => {
                 subjectClusterFilterResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -57,7 +57,7 @@ export const useSubjectClusterStore = defineStore("subjectCluster", () => {
                 deleteSubjectClusterResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -70,7 +70,7 @@ export const useSubjectClusterStore = defineStore("subjectCluster", () => {
                 subjectClusterDataInfoResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -83,7 +83,7 @@ export const useSubjectClusterStore = defineStore("subjectCluster", () => {
                 subjectClusterEditResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })

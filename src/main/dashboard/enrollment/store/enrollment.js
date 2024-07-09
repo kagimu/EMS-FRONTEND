@@ -17,7 +17,7 @@ export const useEnrolmentStore = defineStore("enrolment", () => {
                 newsEnrolmentResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -30,7 +30,7 @@ export const useEnrolmentStore = defineStore("enrolment", () => {
                 enrolmentResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -42,7 +42,7 @@ export const useEnrolmentStore = defineStore("enrolment", () => {
                 checkListItemsResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -54,7 +54,7 @@ export const useEnrolmentStore = defineStore("enrolment", () => {
                 terminateEnrolmentResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -66,7 +66,7 @@ export const useEnrolmentStore = defineStore("enrolment", () => {
                 reEnrolmentResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })

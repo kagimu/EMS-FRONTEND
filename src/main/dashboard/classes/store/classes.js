@@ -15,7 +15,7 @@ export const useManageClassStore = defineStore("classes", () => {
                 newClassAttendanceResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -27,7 +27,7 @@ export const useManageClassStore = defineStore("classes", () => {
                 attendanceRocordByClassResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -39,7 +39,7 @@ export const useManageClassStore = defineStore("classes", () => {
                 attendanceRocordByStudentResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })

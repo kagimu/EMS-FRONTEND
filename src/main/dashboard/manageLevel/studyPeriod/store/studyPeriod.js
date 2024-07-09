@@ -20,7 +20,7 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
                 newStudyPeriodResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -32,7 +32,7 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
                 editStudyPeriodResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -50,7 +50,7 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
                 studyPeriodResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -63,7 +63,7 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
                 studyPeriodByAcademicYearResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -76,7 +76,7 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
                 deleteStudyPeriodResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -89,7 +89,7 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
                 studyPeriodDataResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })

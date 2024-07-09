@@ -136,7 +136,7 @@ export const useSubjectStore = defineStore("subject", () => {
                 subjectDataInfoResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -150,7 +150,7 @@ export const useSubjectStore = defineStore("subject", () => {
                 subjectEditResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
