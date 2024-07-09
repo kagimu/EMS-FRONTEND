@@ -60,7 +60,8 @@ const openEditModal = (gradeInf) =>{
 const fetchGradeScale = () =>{
   let data = {
     campus_number:campusNumber,
-    campus_class_number:campus_class_number.value
+    campus_class_number:campus_class_number.value,
+    school_number:schoolNumber
   }
   assessmentStore.fetchAggregateScale(data)
 }
