@@ -150,6 +150,14 @@ watch(
 )
 
 
+const removeClass = (index) => {
+  form.classes.splice(index, 1);
+}
+
+const newClass = () => {
+  form.classes.push({scale_number:null, campus_class_number:null})
+}
+
 </script>
 
 <template>
@@ -175,17 +183,70 @@ watch(
 
 
 
-          <div class="mb-2">
+<!--          <div class="mb-2">
             <div class="text-[13px] text-[#505050]"> Level</div>
             <select
                 class="form-select form-select-sm shadow-none"
                 v-model="campus_level_number"
                 @change="fetchClass(campus_level_number)"
             >
-              <option disabled value="">--Select Level--</option>
+              <option disabled value="">&#45;&#45;Select Level&#45;&#45;</option>
               <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
             </select>
-          </div>
+          </div>-->
+
+
+          <table
+              id="datatable"
+              class="table table-hover text-sm"
+              style="font-size: 12px !important;"
+          >
+            <thead>
+            <tr>
+              <td class="w-[10%]">#</td>
+              <td class="w-[45%]">Class</td>
+              <td class="w-[40%]">Scale</td>
+              <td></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(classInfo, index) in form?.classes" :key="index">
+              <td>{{index+1}}</td>
+              <td>
+                <div class="">
+<!--                  <div class="text-[13px] text-[#505050]"> Class</div>-->
+                  <select
+                      class="form-select form-select-sm shadow-none" required
+                      v-model="classInfo.campus_class_number"
+                  >
+                    <option disabled value="">--Select Class--</option>
+                    <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+                  </select>
+                </div>
+              </td>
+              <td>
+                <div class="">
+<!--                  <div class="text-[13px] text-[#505050]"> Class</div>-->
+                  <select
+                      class="form-select form-select-sm shadow-none" required
+                      v-model="classInfo.scale_number"
+                  >
+                    <option disabled value="">--Select Class--</option>
+                    <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+                  </select>
+                </div>
+              </td>
+              <td>
+                <div class="mt-1">
+                  <i class="bi bi-x-circle cursor-pointer text-[red]" @click="removeClass(index)"></i>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+
+          <button @click="newClass" type="button" class="bg-[#0d6efd] text-white text-sm px-2 rounded-sm" style="text-align: center;"><i class="bi bi-plus"></i>Add</button>
 
 
 
