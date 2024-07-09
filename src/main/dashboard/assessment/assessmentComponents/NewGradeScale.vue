@@ -35,14 +35,15 @@ const campusNumber = routerData.currentRoute.value.query.id
 const gradeDataInfo = ref([])
 const editM = ref(false)
 
+let schoolNumber = routerData.currentRoute.value.query.sch
+
 const props = defineProps({
   gradeScaleDatainfo:{}
 })
 
 const form = reactive({
-  campus_class_number:"",
-  campus_number: campusNumber,
-  grading_standard_number:"",
+  scale_name:"",
+  count:"",
 })
 
 
@@ -58,10 +59,12 @@ onMounted(
 )
 
 
-const sectionPart = reactive([]);
+
+
+const sectionPart = reactive([{ code: null, grade_number: null,min_value:null,max_value:null,weight:null,remark:null}]);
 
 const newSectionPart = () => {
-    sectionPart.push({ code: null, grade_number: null,min_value:null,max_value:null})
+    sectionPart.push({ code: null, grade_number: null,min_value:null,max_value:null,weight:null,remark:null})
 }
 
 function removeSectionPart(index) {
@@ -79,13 +82,18 @@ const convertFormValuesToInt = () => {
     if (field.max_value !== null) {
       field.max_value = parseInt(field.max_value);
     }
+    if (field.weight !== null) {
+      field.weight = parseFloat(field.weight);
+    }
   })
 }
 
 const createScale = () =>{
   convertFormValuesToInt()
   buttonLoader.value = true
+  form.count =  parseInt(form.count)
   form.grades = sectionPart
+  form.school_number = schoolNumber
   assessmentStore.createAggregateScale(form)
 }
 
@@ -99,13 +107,7 @@ const doFetchGradingStandard = () => {
 }
 
 
-const fetchCampuses = (school_number) => {
-  campusStore.fetchCampuses(school_number ?? "")
-}
 
-const fetchClasses = (campus_number) => {
-  campusStore.fetchClassesByCampus(campus_number)
-}
 
 onMounted(() => {
       schoolStore.fetchSchools()
@@ -232,7 +234,7 @@ watch(
 </script>
 <template>
     <div>
-      <!-- {{ gradeScaleDatainfo }} -->
+
         <div class="modal-content">
 
       <div class="modal-body">
@@ -240,71 +242,135 @@ watch(
 
 
           <div class="mb-2">
-            <div class="text-[13px] text-[#505050]"> Level</div>
-            <select
-                class="form-select form-select-sm shadow-none"
-                v-model="campus_level_number"
-                @change="fetchClass(campus_level_number)"
-            >
-              <option disabled value="">--Select Level--</option>
-              <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-            </select>
-          </div>
-
-
-
-          <div class="mb-2">
-            <div class="text-[13px] text-[#505050]"> Class</div>
-            <select
-                class="form-select form-select-sm shadow-none" required
-                v-model="form.campus_class_number"
-                @change="doFetchGradingStandard"
-            >
-              <option disabled :value="null">Select</option>
-              <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
-            </select>
-          </div>
-
-
-          <div class="mb-2">
-            <div class="text-[13px] text-[#505050]">Grading Standard</div>
-            <select
-                class="form-select form-select-sm outline-none shadow-none"
-                v-model="form.grading_standard_number"
-            >
-              <option disabled :value="null">Select</option>
-              <option v-for="(gradeList,index) in gradeData" :key="index" :value="gradeList.number">{{ gradeList.name }}</option>
-            </select>
-          </div>
-        
-    <div >
-        <div v-for="(field, index) in sectionPart" :key="index" class="row">
-          <div class="col-lg-4">
-            <div>
-              <div class="text-[13px] text-[#505050]">Measures Of Assessment</div>
-              <select
-                  class="form-select form-select-sm shadow-none" required
-                  v-model="field.grade_number"
-              >
-                <option disabled value="">-Select-</option>
-                <option v-for="(list, index) in gradeDataInfo" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-              </select>
-            </div>
-          </div>
-
-          
-          <div class="col-lg-1">
-          <div class="mb-2">
-            <div class="text-[13px] text-[#505050]"> Code</div>
+            <div class="text-[13px] text-[#505050]">Count</div>
             <input
                 @keypress="commons.codeValidator($event)"
                 maxlength="10"
-                v-model="field.code"
-                @paste.prevent
+                v-model="form.count"
                 required
+                @paste.prevent
                 class="form-control form-select-sm shadow-none">
           </div>
-        </div>
+
+
+          <div class="mb-2">
+            <div class="text-[13px] text-[#505050]">Scale Name</div>
+            <input v-model="form.scale_name" type="text" class="form-control shadow-none" placeholder="Scale of 5">
+          </div>
+
+
+          <table
+              id="datatable"
+              class="table table-hover text-sm"
+              style="font-size: 13px !important;"
+          >
+            <thead>
+            <tr>
+              <td class="w-[10%]">#</td>
+              <td class="w-[15%]">Minimum Scale</td>
+              <td class="w-[15%]">Maximum Scale</td>
+              <td class="w-[10%]">Weight</td>
+              <td>Remark</td>
+              <td>Measures Of Assessment</td>
+              <td></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(field, index) in sectionPart" :key="index">
+              <td>
+                <div class="mb-2">
+<!--                  <div class="text-[13px] text-[#505050]"> Code</div>-->
+                  <input
+                      @keypress="commons.codeValidator($event)"
+                      maxlength="10"
+                      v-model="field.code"
+                      @paste.prevent
+                      required
+                      class="form-control form-select-sm shadow-none">
+                </div>
+              </td>
+              <td>
+<!--                <div class="text-[13px] text-[#505050]">Minimum Scale</div>-->
+                <input
+                    maxlength="3"
+                    @keypress="commons.numbersOnlyValidator($event)"
+                    v-model="field.min_value"
+                    placeholder="eg. 90"
+                    type="text"
+                    class="form-control outline-none shadow-none">
+              </td>
+              <td>
+<!--                <div class="text-[13px] text-[#505050]">Maximum Scale</div>-->
+                <input
+                    placeholder="eg. 100"
+                    maxlength="3"
+                    @keypress="commons.numbersOnlyValidator($event)"
+                    v-model="field.max_value"
+                    type="text"
+                    class="form-control outline-none shadow-none">
+              </td>
+              <td>
+<!--                <div class="text-[13px] text-[#505050]">Weight</div>-->
+                <input
+                    placeholder="4"
+                    maxlength="4"
+                    @keypress="commons.numbersOnlyValidator($event)"
+                    v-model="field.weight"
+                    type="text"
+                    class="form-control outline-none shadow-none">
+              </td>
+              <td>
+<!--                <div class="text-[13px] text-[#505050]">Remark</div>-->
+                <textarea
+                    placeholder="Very Good"
+                    v-model="field.remark"
+                    class="form-control noFocus text-xs shadow-none textColor"
+                    id="floatingTextarea2"
+                    style="height: 10px"></textarea>
+              </td>
+              <td>
+                <div>
+<!--                  <div class="text-[13px] text-[#505050]">Measures Of Assessment</div>-->
+                  <select
+                      class="form-select form-select-sm shadow-none" required
+                      v-model="field.grade_number"
+                  >
+                    <option disabled value="">-Select-</option>
+                    <option v-for="(list, index) in gradeDataInfo" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+                  </select>
+                </div>
+              </td>
+              <td>
+                <div class="mt-1">
+                <i class="bi bi-x-circle cursor-pointer text-[red]" @click="removeSectionPart(index)"></i>
+                </div>
+              </td>
+            </tr>
+
+            </tbody>
+          </table>
+
+
+
+        
+<!--    <div>
+        <div v-for="(field, index) in sectionPart" :key="index" class="row">
+
+          <div class="col-lg-2">
+            <div class="mb-2">
+              <div class="text-[13px] text-[#505050]"> Code</div>
+              <input
+                  @keypress="commons.codeValidator($event)"
+                  maxlength="10"
+                  v-model="field.code"
+                  @paste.prevent
+                  required
+                  class="form-control form-select-sm shadow-none">
+            </div>
+          </div>
+
+
+
 
             <div class="col-lg-3">
               <div class="text-[13px] text-[#505050]">Minimum Scale</div>
@@ -326,14 +392,49 @@ watch(
                  type="text"
                  class="form-control outline-none shadow-none">
             </div>
+
+          <div class="col-lg-3">
+            <div class="text-[13px] text-[#505050]">Weight</div>
+            <input
+                placeholder="4"
+                maxlength="4"
+                @keypress="commons.numbersOnlyValidator($event)"
+                v-model="field.weight"
+                type="text"
+                class="form-control outline-none shadow-none">
+          </div>
+
+
+          <div class="col-lg-3">
+            <div class="text-[13px] text-[#505050]">Remark</div>
+            <textarea
+                placeholder="Very Good"
+                v-model="field.remark"
+                class="form-control noFocus text-xs shadow-none textColor"
+                id="floatingTextarea2"
+                style="height: 10px"></textarea>
+          </div>
+
+          <div class="col-lg-3">
+            <div>
+              <div class="text-[13px] text-[#505050]">Measures Of Assessment</div>
+              <select
+                  class="form-select form-select-sm shadow-none" required
+                  v-model="field.grade_number"
+              >
+                <option disabled value="">-Select-</option>
+                <option v-for="(list, index) in gradeDataInfo" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+              </select>
+            </div>
+          </div>
             <div class="col-lg-1">
               <i class="bi bi-x-circle p-0" style="color: red;cursor: pointer;float: left;margin-top: 68%; margin-left: -10px;" @click="removeSectionPart(index)"></i>
             </div>
         </div>
-        <button @click="newSectionPart" type="button" class="btn btn-primary btn-small p-1 mb-2" style="width: 30px;text-align: center;"><i class="bi bi-plus"></i></button>
-      </div>
 
+      </div>-->
 
+     <button v-if="sectionPart.length < form.count" @click="newSectionPart" type="button" class="bg-[#0d6efd] text-white text-sm px-2 rounded-sm" style="text-align: center;"><i class="bi bi-plus"></i>Add</button>
 
      <div class="flex justify-content-end mt-4" style="width: 100%;">
             <button type="submit" class="btn btn-primary border-0 btn-sm">

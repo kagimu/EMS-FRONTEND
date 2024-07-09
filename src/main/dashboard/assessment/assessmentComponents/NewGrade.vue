@@ -24,8 +24,6 @@ const form = reactive({
   code: null,
   name:null,
   short_name:null,
-  weight:null,
-  description:null,
 })
 
 
@@ -52,8 +50,6 @@ const getGradeDataInfo = () => {
         form.code = draft?.code ?? ""
         form.name  = draft?.name ?? ""
         form.short_name  = draft?.short_name ?? ""
-        form.weight  = draft?.weight ?? ""
-        form.description  = draft?.description ?? ""
   }
 }
 
@@ -66,7 +62,6 @@ const addGrade = () => {
   buttonLoader.value = true
 
   form.code = parseInt(form.code)
-  form.weight = parseInt(form.weight)
   form.school_number = schoolNumber
   if(props.gradeDataInfo.number){
     form.number = props.gradeDataInfo.number
@@ -112,13 +107,13 @@ watch(
 <template>
     <div>
         <div class="modal-content">
-<!-- {{ gradeDataInfo.number }} -->
+
       <div class="modal-body">
         <form @submit.prevent="addGrade()">
 
 
           <div class="mb-2">
-            <div class="text-[13px] text-[#505050]"> Sorting Code</div>
+            <div class="text-[13px] text-[#505050]">Code</div>
             <input
                 @keypress="commons.codeValidator($event)"
                 maxlength="10"
@@ -128,30 +123,16 @@ watch(
                 class="form-control form-select-sm shadow-none">
           </div>
 
+          <div class="mb-2">
+            <div class="text-[13px] text-[#505050]"> Short Code</div>
+            <input v-model="form.short_name" type="text" class="form-control shadow-none" placeholder="D1, F9">
+          </div>
+
         <div class="mb-2">
           <div class="text-[13px] text-[#505050]"> Name</div>
          <input v-model="form.name" type="text" class="form-control shadow-none" placeholder="Distinction 1, Fail 9">
         </div>
 
-          <div class="mb-2">
-          <div class="text-[13px] text-[#505050]"> Short Name</div>
-         <input v-model="form.short_name" type="text" class="form-control shadow-none" placeholder="D1, F9">
-        </div>
-
-          <div class="mb-2">
-          <div class="text-[13px] text-[#505050]"> Weight</div>
-         <input v-model="form.weight" type="text" class="form-control shadow-none" placeholder="1,9">
-        </div>
-
-          <div class="mb-2">
-            <label class="textColor"><small>Description</small></label>
-            <textarea
-                placeholder="Very Good"
-                style="outline: none 0 !important; box-shadow: none;"
-                type="text" v-model="form.description"
-                required
-                class="form-control form-select-sm"></textarea>
-          </div>
 
 
         <div class="flex justify-content-end mt-4" style="width: 100%;">

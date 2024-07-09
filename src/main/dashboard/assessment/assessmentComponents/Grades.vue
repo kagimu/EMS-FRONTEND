@@ -135,8 +135,6 @@ watch(
           <th scope="col">#</th>
           <th scope="col">Name</th>
           <th scope="col">Short Name</th>
-          <th scope="col">Weight</th>
-          <th scope="col">Description</th>
           <th>Actions</th>
         </tr>
         </thead>
@@ -145,8 +143,6 @@ watch(
           <td>{{ gradeList.code }}</td>
           <td>{{ gradeList.name }}</td>
           <td>{{ gradeList.short_name }}</td>
-          <td>{{ gradeList.weight }}</td>
-          <td>{{ gradeList.description }}</td>
           <td>
             <button @click="showEditModal(gradeList)"   type="button">
               <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>

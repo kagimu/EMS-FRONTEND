@@ -145,7 +145,7 @@ watch (
 <template>
     <div>
 
-      <AppModal :title="editMode? 'Edit Aggregate Scale': 'Add Aggregate Scale'" v-model="showAggregateScaleModal" xl2>
+      <AppModal :title="editMode? 'Edit Aggregate Scale': 'Add Aggregate Scale'" v-model="showAggregateScaleModal" xl4>
         <NewGradeScale :gradeScaleDatainfo="gradeScaleDatainfo"></NewGradeScale>
       </AppModal>
 
