@@ -20,7 +20,7 @@ export const usePromotionStore = defineStore("promotion", () => {
                 newPromotionSettingResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -32,7 +32,7 @@ export const usePromotionStore = defineStore("promotion", () => {
                 PromotionSettingResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -43,7 +43,7 @@ export const usePromotionStore = defineStore("promotion", () => {
                 deletePromotionSettingResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -54,7 +54,7 @@ export const usePromotionStore = defineStore("promotion", () => {
                 updatePromotionSettingResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -67,7 +67,7 @@ export const usePromotionStore = defineStore("promotion", () => {
                 newPromotionSettingValueResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -79,7 +79,7 @@ export const usePromotionStore = defineStore("promotion", () => {
                 promotionSettingValueResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -91,7 +91,7 @@ export const usePromotionStore = defineStore("promotion", () => {
                 newPromotionsResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -103,7 +103,7 @@ export const usePromotionStore = defineStore("promotion", () => {
                 promotionByCampusClassNumberResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -115,7 +115,7 @@ export const usePromotionStore = defineStore("promotion", () => {
                 promotionsResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })

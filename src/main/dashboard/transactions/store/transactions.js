@@ -12,7 +12,7 @@ export const useTransactionStore = defineStore("transaction", () => {
                 transactionResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })

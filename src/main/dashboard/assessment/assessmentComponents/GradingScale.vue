@@ -59,8 +59,8 @@ const openEditModal = (gradeInf) =>{
 
 const fetchGradeScale = () =>{
   let data = {
-    campus_number:campusNumber,
-    campus_class_number:campus_class_number.value,
+    // campus_number:campusNumber,
+    // campus_class_number:campus_class_number.value,
     school_number:schoolNumber
   }
   assessmentStore.fetchAggregateScale(data)
@@ -136,7 +136,7 @@ watch (
     async (data) => {
       if(data){
         showAggregateScaleModal.value = false
-        await fetchGradeScale()
+         fetchGradeScale()
         notificationStore.successToast("Success", data.message)
       }
     }
@@ -153,15 +153,15 @@ watch (
 
 
 
-
       <div class="row">
             <div class="col-12">
-              <div class="card">
-           <div class="row">
-            <div class="col-lg-6 "> 
-                  
+              <div class="">
+
+           <div class="flex flex-grow justify-between">
+            <div>
+               <p class="mt-3 ml-4 text-gray-600">Aggregate Scale</p>
             </div>
-            <div class="col-lg-6">
+            <div>
                 <button
                     @click="addAggregateScale"
                       v-if="can('add_grade_scale','general')"
@@ -181,7 +181,7 @@ watch (
           <div class="row">
       <div class="col-12">
 
-        <div class="mt-[50px]">
+<!--        <div class="mt-[50px]">
           <div class="row mx-auto">
 
 
@@ -191,7 +191,7 @@ watch (
                   v-model="campus_level_number"
                   @change="fetchClass(campus_level_number)"
               >
-                <option disabled value="">--Select Level--</option>
+                <option disabled value="">&#45;&#45;Select Level&#45;&#45;</option>
                 <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
               </select>
             </div>
@@ -204,13 +204,13 @@ watch (
                   v-model="campus_class_number"
                   @change="fetchGradeScale"
               >
-                <option disabled value="">--Select Class--</option>
+                <option disabled value="">&#45;&#45;Select Class&#45;&#45;</option>
                 <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
               </select>
             </div>
 
           </div>
-        </div>
+        </div>-->
 
 
 

@@ -38,7 +38,7 @@ export const useApplicationStore = defineStore("application", () => {
 
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -52,7 +52,7 @@ export const useApplicationStore = defineStore("application", () => {
 
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -65,7 +65,7 @@ export const useApplicationStore = defineStore("application", () => {
                 newApplicationDetailsLearnerResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -79,7 +79,7 @@ export const useApplicationStore = defineStore("application", () => {
 
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -94,7 +94,7 @@ export const useApplicationStore = defineStore("application", () => {
                 newApplicationPreviousSchoolsResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -107,7 +107,7 @@ export const useApplicationStore = defineStore("application", () => {
 
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -119,7 +119,7 @@ export const useApplicationStore = defineStore("application", () => {
                 applicationListResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -131,7 +131,7 @@ export const useApplicationStore = defineStore("application", () => {
                 interviewListResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -155,7 +155,7 @@ export const useApplicationStore = defineStore("application", () => {
 
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -168,7 +168,7 @@ export const useApplicationStore = defineStore("application", () => {
 
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -182,7 +182,7 @@ export const useApplicationStore = defineStore("application", () => {
 
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -209,7 +209,7 @@ export const useApplicationStore = defineStore("application", () => {
                     StudentsOnInterviewResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.response.data
                     }
                 })
@@ -222,7 +222,7 @@ export const useApplicationStore = defineStore("application", () => {
                     gradeStudentResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.response.data
                     }
                 })

@@ -21,7 +21,7 @@ export const useServiceStore = defineStore("service", () => {
                     newServiceResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.response.data
                     }
                 })
@@ -33,7 +33,7 @@ export const useServiceStore = defineStore("service", () => {
                     servicesListResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.response.data
                     }
                 })
@@ -45,7 +45,7 @@ export const useServiceStore = defineStore("service", () => {
                     allItemsListResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.response.data
                     }
                 })
@@ -58,7 +58,7 @@ export const useServiceStore = defineStore("service", () => {
                     deleteServiceResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.data
                     }
                 })
@@ -69,7 +69,7 @@ export const useServiceStore = defineStore("service", () => {
                     updateServiceResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.data
                     }
                 })
@@ -83,7 +83,7 @@ export const useServiceStore = defineStore("service", () => {
                     newProductResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.response.data
                     }
                 })
@@ -95,7 +95,7 @@ export const useServiceStore = defineStore("service", () => {
                     productListResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.response.data
                     }
                 })
@@ -108,7 +108,7 @@ export const useServiceStore = defineStore("service", () => {
                     deleteProductResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.data
                     }
                 })
@@ -119,7 +119,7 @@ export const useServiceStore = defineStore("service", () => {
                     updateProductResponse.value = response.data
                 })
                 .catch((response) => {
-                    if(response){
+                    if(response && response.response){
                         errorMessage.value = response.data
                     }
                 })

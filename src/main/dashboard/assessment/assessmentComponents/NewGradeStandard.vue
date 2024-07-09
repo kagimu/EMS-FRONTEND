@@ -8,13 +8,16 @@ import useCommonsStore from "@/composables/useCommons.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useRouter} from "vue-router";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 const commons = useCommonsStore()
 const classStore = useClassesStore()
 const academicYearStore = useAcademicYearStore()
 const assessmentStore = useAssessmentStore()
+const levelStore = useLevelStore()
+const campusStore = useCampusStore()
 
 const  notificationStore  = useNotificationStore()
-const levelStore = useLevelStore()
+
 const routerData = useRouter()
 const buttonLoader = ref(false)
 const campusCurriculumDataInfo = ref(null)
@@ -23,6 +26,7 @@ const campus_level_number = ref("")
 const campusClassList = ref(null)
 const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
+let schoolNumber = routerData.currentRoute.value.query.sch
 
 const props = defineProps({
   gradeDataList:{}
@@ -31,16 +35,17 @@ const props = defineProps({
 
 const form = reactive({
   code: null,
-  campus_class_number: "",
+  classes: [{scale_number:null, campus_class_number:null}],
   type:"",
   name:null,
   description:null,
-  campus_number:campusNumber
+  school_number:schoolNumber
 })
 
 
 onMounted(
     async () => {
+        campusStore.fetchClassesByCampus(campusNumber)
         fetchCampusLevel()
         getGradeInfo()
     }
@@ -76,7 +81,7 @@ const addGradeStandard = () => {
   let draft = props.gradeDataList
   if(draft){
       form.grading_standard_number = draft.number
-      // alert(JSON.stringify(form))
+
       assessmentStore.updateGradeStandard(form)
   }else{
       assessmentStore.createGradeStandard(form)
@@ -136,7 +141,7 @@ const fetchClass = (campus_level_number) => {
 }
 
 watch(
-    () => academicYearStore.campusClassByLevelResponse,
+    () => campusStore.campusClassesResponse,
     async (data) => {
       if(data){
         campusClassList.value = data.data

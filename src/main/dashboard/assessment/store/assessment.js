@@ -39,7 +39,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
              newAssessmentAreasResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -52,7 +52,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
                assessmentAreaResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -67,7 +67,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
                assessmentAreaByClassResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -80,7 +80,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
                 newAssessmentResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -92,7 +92,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
                 assessmentResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -106,7 +106,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
                 gradingStandardResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -118,7 +118,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
                 assessmentByStudentIdResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -132,7 +132,7 @@ async function createAggregateScale(data) {
          newAggregateScaleResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -146,7 +146,7 @@ async function createGradeStandard(data) {
          newGradeStandardResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -160,7 +160,7 @@ async function fetchGradeStandard(data) {
             gradeStandardResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -172,22 +172,23 @@ async function createReportCard(data) {
          newReportCardResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
 }
 
 async function fetchAggregateScale(data) {
-       let campus_number = data.campus_number ?? ""
-       let campus_class_number =  data.campus_class_number ?? ""
+       // let campus_number = data.campus_number ?? ""
+       // let campus_class_number =  data.campus_class_number ?? ""
        let school_number =  data.school_number ?? ""
-    return await api.get("main/assessments/aggregate-scales/all?school_number="+school_number+"&campus_number="+campus_number+"&campus_class_number="+campus_class_number)
+    // return await api.get("main/assessments/aggregate-scales/all?school_number="+school_number+"&campus_number="+campus_number+"&campus_class_number="+campus_class_number)
+    return await api.get("main/assessments/aggregate-scales/all?school_number="+school_number)
         .then((response) => {
             aggregateScaleResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -199,7 +200,7 @@ async function createAssessmentMetrics(data) {
          newAssessmentMetricResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -227,7 +228,7 @@ async function fetchAssessmentMetrics(data) {
             assessmentMetricsResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -239,7 +240,7 @@ async function fetchAssessmentMetrics(data) {
                 metricResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -251,7 +252,7 @@ async function createMetric(data) {
             newMetricResponse.value = response.data
         })
         .catch((response) => {
-            if(response){
+            if(response && response.response){
                 errorMessage.value = response.response.data
             }
         })
@@ -266,7 +267,7 @@ async function createMetric(data) {
              newAssessmentScaleResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -294,7 +295,7 @@ async function createMetric(data) {
              updateAssessmentScaleResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -307,7 +308,7 @@ async function createMetric(data) {
              newGradeResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -319,7 +320,7 @@ async function createMetric(data) {
              updateGradeResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -331,7 +332,7 @@ async function createMetric(data) {
                 gradeResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -343,7 +344,7 @@ async function createMetric(data) {
              deleteGradeResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -356,7 +357,7 @@ async function createMetric(data) {
              deleteGradingScaleResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -368,7 +369,7 @@ async function createMetric(data) {
              updateGradeStandardResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -380,7 +381,7 @@ async function createMetric(data) {
                 removeInterviewAssessmentScheduleResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -392,7 +393,7 @@ async function createMetric(data) {
                 removeStudentFromInterviewResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })

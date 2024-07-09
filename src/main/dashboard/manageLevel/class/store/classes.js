@@ -36,7 +36,7 @@ export const useClassesStore = defineStore("classes", () => {
                 classResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -48,7 +48,7 @@ export const useClassesStore = defineStore("classes", () => {
                 classEditResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -60,7 +60,7 @@ export const useClassesStore = defineStore("classes", () => {
                 curriculumClassResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -72,7 +72,7 @@ export const useClassesStore = defineStore("classes", () => {
                 classLevelResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -87,7 +87,7 @@ export const useClassesStore = defineStore("classes", () => {
                 classSubjectResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -100,7 +100,7 @@ export const useClassesStore = defineStore("classes", () => {
                 classInfoResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -113,7 +113,7 @@ export const useClassesStore = defineStore("classes", () => {
                 deleteClassSetUpResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -126,7 +126,7 @@ export const useClassesStore = defineStore("classes", () => {
                 curriculumClassInfoResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -138,7 +138,7 @@ export const useClassesStore = defineStore("classes", () => {
                 schemeClassInfoResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -151,7 +151,7 @@ export const useClassesStore = defineStore("classes", () => {
                 curriculumClassSetResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -163,7 +163,7 @@ export const useClassesStore = defineStore("classes", () => {
                 classCurriculumResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -175,7 +175,7 @@ export const useClassesStore = defineStore("classes", () => {
                 classesToAddResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -188,7 +188,7 @@ export const useClassesStore = defineStore("classes", () => {
                 classLevelInfoResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -200,7 +200,7 @@ export const useClassesStore = defineStore("classes", () => {
                 classSubjectsInfoResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -212,7 +212,7 @@ export const useClassesStore = defineStore("classes", () => {
                 classInfoResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -224,7 +224,7 @@ export const useClassesStore = defineStore("classes", () => {
                 classStreams.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -236,7 +236,7 @@ export const useClassesStore = defineStore("classes", () => {
                 newStreamSuccess.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -248,7 +248,7 @@ export const useClassesStore = defineStore("classes", () => {
                 newCampusLevelResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -262,7 +262,7 @@ export const useClassesStore = defineStore("classes", () => {
                 classDataInfoResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -274,7 +274,7 @@ export const useClassesStore = defineStore("classes", () => {
                 campusLevelResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -288,7 +288,7 @@ export const useClassesStore = defineStore("classes", () => {
                 curriculumClassByIdResponse.value = response.data 
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -300,7 +300,7 @@ export const useClassesStore = defineStore("classes", () => {
                 classLevelByLevelResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })

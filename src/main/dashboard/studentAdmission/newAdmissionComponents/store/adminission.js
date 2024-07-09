@@ -20,7 +20,7 @@ export const useAdmissionStore = defineStore("admission", () => {
                 newStudentDetailsAdmissionResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -32,7 +32,7 @@ export const useAdmissionStore = defineStore("admission", () => {
                 newAdmissionOfferResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -47,7 +47,7 @@ export const useAdmissionStore = defineStore("admission", () => {
                 admissionOffersResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -59,7 +59,7 @@ export const useAdmissionStore = defineStore("admission", () => {
                 admissionOfferByStudentIdResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -71,7 +71,7 @@ export const useAdmissionStore = defineStore("admission", () => {
                 admissionOfferByAdmissionIdResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -83,7 +83,7 @@ export const useAdmissionStore = defineStore("admission", () => {
                 studentAssessmentResultsResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -96,7 +96,7 @@ export const useAdmissionStore = defineStore("admission", () => {
                 admissionByFiltersResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -108,7 +108,7 @@ export const useAdmissionStore = defineStore("admission", () => {
                 admitStudentResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -121,7 +121,7 @@ export const useAdmissionStore = defineStore("admission", () => {
                 admissionByStudentResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })

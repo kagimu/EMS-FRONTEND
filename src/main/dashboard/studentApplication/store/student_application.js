@@ -18,7 +18,7 @@ export const useStudentApplicationStore = defineStore("student-application", () 
                 interviewAssessmentResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -30,7 +30,7 @@ export const useStudentApplicationStore = defineStore("student-application", () 
                 interviewAssessmentResultResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -42,7 +42,7 @@ export const useStudentApplicationStore = defineStore("student-application", () 
                 assessmentMetricsOnInterviewResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -54,7 +54,7 @@ export const useStudentApplicationStore = defineStore("student-application", () 
                 assessmentByStudentResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })

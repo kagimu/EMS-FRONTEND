@@ -20,7 +20,7 @@ export const useCampusStore = defineStore("campus", () => {
                 newCampusResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -32,7 +32,7 @@ export const useCampusStore = defineStore("campus", () => {
                 deleteCampusResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -44,7 +44,7 @@ export const useCampusStore = defineStore("campus", () => {
                 editCampusResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -56,7 +56,7 @@ export const useCampusStore = defineStore("campus", () => {
                 campusListResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -68,7 +68,7 @@ export const useCampusStore = defineStore("campus", () => {
                 campusLevelListResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
@@ -93,7 +93,7 @@ export const useCampusStore = defineStore("campus", () => {
                 campusClassesResponse.value = response.data
             })
             .catch((response) => {
-                if(response){
+                if(response && response.response){
                     errorMessage.value = response.response.data
                 }
             })
