@@ -173,7 +173,6 @@
         class="table table-striped table-hover caption-top table-sm text-sm">
         <thead>
            <tr>
-              <th>#</th>
               <th>Name</th>
               <th scope="col">Score</th>
               <th scope="col">Comment <span v-if="buttonLoader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-dark" role="status">
@@ -182,12 +181,10 @@
            </tr>
         </thead>
         <tbody>
-           <tr v-for="(std,index) in interviewStudentListData" :key="index" >
-              <td>{{ index+1}}</td>
+           <tr v-for="(std,index) in interviewStudentListData.students" :key="index" >
+            <!-- {{ interviewStudentListData.students }} -->
               <td style="text-transform: capitalize;">
-                 {{std.student_surname ? std.student_surname : ""}}
-                 {{std.student_second_name ? " "+std.student_second_name : ""}}
-                 {{std.student_other_name ? " "+std.student_other_name : ""}}
+                 {{std.student_second_name +" " +std.student_second_name + " "+ std.student_other_name}}
               </td>
               <td scope="col" style="width: 150px;">
                  <input
