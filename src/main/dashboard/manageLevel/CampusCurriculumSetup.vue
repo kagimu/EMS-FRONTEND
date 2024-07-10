@@ -89,16 +89,16 @@ const studentScoreMenu = ref([
 
 const assess = ref([
   {
-    name:"Grade Standards",
-    router_name:"grade-standards"
-  },
-  {
     name:"Formats Of Aggregates",
     router_name:"grades"
   },
   {
     name:"Aggregate Scale",
     router_name:"grade-scale"
+  },
+  {
+    name:"Grade Standards",
+    router_name:"grade-standards"
   },
   {
     name:"Assessment Schedule",
