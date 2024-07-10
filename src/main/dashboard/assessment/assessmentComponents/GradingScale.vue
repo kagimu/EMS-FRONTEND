@@ -217,7 +217,7 @@ watch (
         <tr v-for="(list,idx) in aggregateList.grades" :key="idx">
            <td>{{ list?.min_value}} - {{ list?.max_value }}</td>
            <td>{{ list?.weight }}</td>
-           <td>{{ list?.measures_of_assessment }}</td>
+           <td>{{ list?.name }} ( {{ list?.short_name }} )</td>
            <td>{{ list?.description }}</td>
         </tr>
         </thead>
