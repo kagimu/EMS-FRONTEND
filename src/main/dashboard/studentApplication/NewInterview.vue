@@ -256,7 +256,7 @@ watch (
                       v-model="field.assessment_metric_number"
                   >
                     <option disabled value="">-Select-</option>
-                    <option v-for="(list, index) in assessmentMetricList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+                    <option v-for="(list, index) in assessmentMetricList" :key="index" :value="list.number">{{list.name}}</option>
                   </select>
                 </div>
               </td>

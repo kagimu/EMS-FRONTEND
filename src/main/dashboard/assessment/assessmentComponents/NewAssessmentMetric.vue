@@ -45,6 +45,7 @@
   const campus_level_number = ref(null)
   const academic_year_number = ref(null)
   const campusNumber = routerData.currentRoute.value.query.id
+  const schoolN= routerData.currentRoute.value.query.sch
 
   const props = defineProps({
     assessmentMetricList:{}
@@ -139,7 +140,8 @@
   const doFetchGradingStandard = () => {
    let data = {
      campus_number:campusNumber,
-     campus_class_number:form.campus_class_number
+     campus_class_number:form.campus_class_number,
+     school_number:schoolN
    }
     assessmentStore.fetchGradeStandard(data)
   }
@@ -154,13 +156,6 @@
         }
       }
   )
-  
-  
-  
-  
-
-  
-  
   
   
   //working on dialog
@@ -441,7 +436,6 @@
         </div>
       
 
-           
               <div class="mb-2">
                  <label class="textColor">Scheduled On</label>
                  <input type="date" class="form-control shadow-none" v-model="form.scheduled_on">
