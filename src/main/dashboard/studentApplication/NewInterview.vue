@@ -32,24 +32,45 @@
    const school_number = ref(null)
    const classList  = ref(null)
    const campus_number = ref(null)
+
+    const sectionPart = reactive([{ assessment_metric_number: ""}]);
     
     const showModal = () => {
         showingModal.value = true
         thisDialog.value=false
     }
-    
+
+    const formData = reactive({
+      name:null,
+      interview_date:null,
+      venue:null,
+      message:null,
+      campus_class_number:null,
+      assessment_metrics:[]
+    })
+
+
+
     
     onMounted(
         async () => {
           await applicationStore.fetchInterviewList()
           schoolStore.fetchSchools()
-          assessmentStore.fetchAssessmentMetrics()
         } )
 
 
         const fetchCampuses = (school) => {
       campusStore.fetchCampuses(school)
   }
+
+    const createInterview = () => {
+      applicationStore.createNewInterview(formData)
+    }
+
+  const doFetchAssessmentMetrics = (campus_class_number) => {
+    assessmentStore.fetchAssessmentMetrics({campus_class_number:campus_class_number})
+  }
+
 
   const fetchClasses = (campus_number) => {
       campusStore.fetchClassesByCampus(campus_number)
@@ -116,19 +137,7 @@
     
     }
     
-    const formData = reactive({ 
-    name:null,
-    interview_date:null,
-    venue:null,
-    message:null,
-    campus_class_number:null
-    })
-    
-    
-    const createInterview = () => {
-    // alert(JSON.stringify(formData))
-    applicationStore.createNewInterview(formData)
-    }
+
     
     watch(
           () => applicationStore.newInterviewResponse,
@@ -150,7 +159,7 @@
     } 
     
     
-const sectionPart = reactive([{ assessment_metric_number: null}]);
+
 
 const newSectionPart = () => {
     sectionPart.push({ assessment_metric_number: null})
@@ -210,7 +219,9 @@ watch (
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required
-              v-model="formData.campus_class_number">
+              v-model="formData.campus_class_number"
+              @change="doFetchAssessmentMetrics(formData.campus_class_number)"
+            >
               <option disabled value="">Select class</option>
               <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}</option>
             </select>
@@ -236,42 +247,20 @@ watch (
 
     <div class="col-lg-6">
       <div class="mb-2">
-        <table
-              id="datatable"
-              class="table table-hover text-sm"
-              style="font-size: 12px !important;"
-          >
-            <thead>
-            <tr>
-              <td class="">Assessment Metric</td>
-              <td></td>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(field, index) in sectionPart" :key="index">
-              <td>
-                <div>
-                  <select
-                      class="form-select form-select-sm shadow-none" required
-                      v-model="field.assessment_metric_number"
-                  >
-                    <option disabled value="">-Select-</option>
-                    <option v-for="(list, index) in assessmentMetricList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-                  </select>
-                </div>
-              </td>
-              <td>
-                <div class="mt-1">
-                <i class="bi bi-x-circle cursor-pointer text-[red]" @click="removeSectionPart(index)"></i>
-                </div>
-              </td>
-            </tr>
 
-            </tbody>
-          </table>
 
-          <button  @click="newSectionPart" type="button" class="bg-[#0d6efd] text-white text-sm px-2 rounded-sm" style="text-align: center;"><i class="bi bi-plus"></i></button>
+        <div class="mb-2">
+          <label class="textColor mt-3 mb-2" v-if="assessmentMetricList.length > 0"><small>Select Assessment Metric</small></label>
+          <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;" v-if="assessmentMetricList.length > 0">
+            <li class="list-group-item" v-for="(lvl,idx) in assessmentMetricList">
+              <input
+                  v-model="formData.assessment_metrics"
+                  class="form-check-input me-1 shadow-none" type="checkbox" :value="lvl.number" :id="idx">
+              <label class="form-check-label cursor-pointer" :for="idx">{{lvl.name}}</label>
+            </li>
 
+          </ul>
+        </div>
 
       </div>
 

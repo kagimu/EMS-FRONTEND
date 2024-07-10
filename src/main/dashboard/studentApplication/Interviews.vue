@@ -134,8 +134,8 @@ watch(
     </div>
     
     
-   <AppModal title="Create Interview" v-model="showingModal" xl4>
-    <NewInterview></NewInterview>
+    <AppModal title="Create Interview" v-model="showingModal" xl4>
+      <NewInterview></NewInterview>
     </AppModal>
 
 

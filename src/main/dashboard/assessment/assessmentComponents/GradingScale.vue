@@ -181,38 +181,6 @@ watch (
           <div class="row">
       <div class="col-12">
 
-<!--        <div class="mt-[50px]">
-          <div class="row mx-auto">
-
-
-            <div class="col-lg-4  mb-2">
-              <select
-                  class="form-select form-select-sm shadow-none"
-                  v-model="campus_level_number"
-                  @change="fetchClass(campus_level_number)"
-              >
-                <option disabled value="">&#45;&#45;Select Level&#45;&#45;</option>
-                <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-              </select>
-            </div>
-
-
-
-            <div class="col-lg-4  mb-2">
-              <select
-                  class="form-select form-select-sm shadow-none" required
-                  v-model="campus_class_number"
-                  @change="fetchGradeScale"
-              >
-                <option disabled value="">&#45;&#45;Select Class&#45;&#45;</option>
-                <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
-              </select>
-            </div>
-
-          </div>
-        </div>-->
-
-
 
       </div>
     </div>   
@@ -243,12 +211,14 @@ watch (
         <tr>
           <th scope="col">(Min - Max) Value</th>
           <th scope="col">weight</th>
+          <th scope="col">Measures Of Assessment</th>
           <th>Remark</th>
         </tr>
         <tr v-for="(list,idx) in aggregateList.grades" :key="idx">
-           <td>{{ list.min_value}} - {{ list.max_value }}</td>
-           <td>{{ list.weight }}</td>
-           <td>{{ list.description }}</td>
+           <td>{{ list?.min_value}} - {{ list?.max_value }}</td>
+           <td>{{ list?.weight }}</td>
+           <td>{{ list?.measures_of_assessment }}</td>
+           <td>{{ list?.description }}</td>
         </tr>
         </thead>
 
