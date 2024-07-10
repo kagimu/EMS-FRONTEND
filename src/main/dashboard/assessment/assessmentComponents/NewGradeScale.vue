@@ -61,10 +61,10 @@ onMounted(
 
 
 
-const sectionPart = reactive([{ code: null, grade_number: null,min_value:null,max_value:null,weight:null,remark:null}]);
+const sectionPart = reactive([{ code: null, grade_number: "",min_value:null,max_value:null,weight:null,remark:null}]);
 
 const newSectionPart = () => {
-    sectionPart.push({ code: null, grade_number: null,min_value:null,max_value:null,weight:null,remark:null})
+    sectionPart.push({ code: null, grade_number: "",min_value:null,max_value:null,weight:null,remark:null})
 }
 
 function removeSectionPart(index) {
@@ -266,7 +266,7 @@ watch(
           >
             <thead>
             <tr>
-              <td class="w-[10%]">#</td>
+              <td class="w-[10%]">#Code</td>
               <td class="w-[15%]">Minimum Scale</td>
               <td class="w-[15%]">Maximum Scale</td>
               <td class="w-[10%]">Weight</td>
@@ -330,13 +330,12 @@ watch(
               </td>
               <td>
                 <div>
-<!--                  <div class="text-[13px] text-[#505050]">Measures Of Assessment</div>-->
                   <select
                       class="form-select form-select-sm shadow-none" required
                       v-model="field.grade_number"
                   >
-                    <option disabled value="">-Select-</option>
-                    <option v-for="(list, index) in gradeDataInfo" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+                    <option disabled value="">--Select Measures Of Assessment--</option>
+                    <option v-for="(list, index) in gradeDataInfo" :key="index" :value="list?.number">{{list?.code+". "+list?.name}} ( {{list?.short_name}} )</option>
                   </select>
                 </div>
               </td>
