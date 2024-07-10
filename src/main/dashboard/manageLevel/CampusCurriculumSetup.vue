@@ -190,7 +190,7 @@ const switchCurriculum = (curriculum) => {
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
             <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
-              <div class="ml-3 mb-2">Setup</div>
+              <div class="ml-3 mb-2">Campus Settings</div>
             </div>
 
             <div class="list-group list-group-flush mb-1 rounded-0" >
@@ -210,7 +210,7 @@ const switchCurriculum = (curriculum) => {
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
             <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
-              <div class="ml-3 mb-2">Assessments</div>
+              <div class="ml-3 mb-2">Assessments Settings</div>
             </div>
             <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
               <router-link
