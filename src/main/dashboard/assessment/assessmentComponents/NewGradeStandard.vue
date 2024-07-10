@@ -194,20 +194,6 @@ const newClass = () => {
 
 
 
-<!--          <div class="mb-2">
-            <div class="text-[13px] text-[#505050]"> Level</div>
-            <select
-                class="form-select form-select-sm shadow-none"
-                v-model="campus_level_number"
-                @change="fetchClass(campus_level_number)"
-            >
-              <option disabled value="">&#45;&#45;Select Level&#45;&#45;</option>
-              <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-            </select>
-          </div>-->
-
-
-
 
 
         <div class="mb-2">
