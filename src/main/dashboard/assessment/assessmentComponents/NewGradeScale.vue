@@ -97,7 +97,7 @@ const createScale = () =>{
   if(props.gradeScaleDatainfo.scale_number){
     convertFormValuesToInt()
     form.scale_number = props.gradeScaleDatainfo.scale_number
-    alert(JSON.stringify(form))
+    // alert(JSON.stringify(form))
     assessmentStore.updateAggregateScale(form)
 
   }else{
@@ -255,7 +255,7 @@ watch(
     <div>
 
         <div class="modal-content">
-{{ gradeScaleDatainfo }}
+<!-- {{ gradeScaleDatainfo }} -->
       <div class="modal-body">
         <form @submit.prevent="createScale()">
 
