@@ -104,7 +104,7 @@ watch(
 <template>
     <div>
 
-      <AppModal :title="editModel ? 'Edit Format Of Aggregates ' : 'Add Format Of Aggregates'  " v-model="showGradeModal" lg>
+      <AppModal :title="editModel ? 'Edit Name Of Aggregates ' : 'Add Name Of Aggregates'  " v-model="showGradeModal" lg>
         <NewGrade :gradeDataInfo="gradeDataInfo"></NewGrade>
       </AppModal>
 
@@ -120,7 +120,7 @@ watch(
                     type="button"
                     class="btn btn-primary btn-sm">
                   <i class="bi bi-plus"></i>
-                  New Format Of Aggregates
+                  New Name Of Aggregate
                 </button>
             </div>
            </div>
