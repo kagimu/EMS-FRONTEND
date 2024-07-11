@@ -190,17 +190,10 @@ const newClass = () => {
 
 
 
-
-
-
         <div class="mb-2">
           <div class="text-[13px] text-[#505050]"> Name</div>
          <input v-model="form.name" type="text" class="form-control shadow-none" placeholder="UNEB , MOCK">
         </div>
-
-
-
-
 
 
 
