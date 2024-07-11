@@ -49,11 +49,18 @@ onMounted(
     async () => {
       await levelStore.fetchCampusCurriculum(campusNumber)
       assessmentStore.fetchGrades()
-      if(props.gradeScaleDatainfo){
+      let draft = props.gradeScaleDatainfo
+
+      if(draft){
         editM.value = true
-        form.count = props.gradeScaleDatainfo.count,
-        form.scale_name = props.gradeScaleDatainfo.scale_name
-        sectionPart.value = props.gradeScaleDatainfo.grades
+        form.count = draft?.count
+        form.scale_name = draft?.scale_name
+        let gradesInfo = draft?.grades
+        gradesInfo.forEach(lst => {
+          lst.remark = lst.description
+        }) 
+
+        sectionPart.value = gradesInfo
     //  sectionPart.value = [
     // { code: 1, grade_number: "grade1", min_value: 0, max_value: 50, weight: 2, remark: "Good" },
     // { code: 2, grade_number: "grade2", min_value: 51, max_value: 90, weight: 1, remark: "Very Good" }
