@@ -34,9 +34,7 @@ const campusClassList = ref(null)
 const campusNumber = routerData.currentRoute.value.query.id
 const gradeDataInfo = ref([])
 const editM = ref(false)
-
 let schoolNumber = routerData.currentRoute.value.query.sch
-
 const props = defineProps({
   gradeScaleDatainfo:{}
 })
@@ -45,34 +43,43 @@ const form = reactive({
   scale_name:"",
   count:"",
 })
-
-
+const sectionPart = ref([{ code: null, grade_number: "",min_value:null,max_value:null,weight:null,remark:null}])
 
 onMounted(
     async () => {
       await levelStore.fetchCampusCurriculum(campusNumber)
       assessmentStore.fetchGrades()
-      if(props.gradeScaleDatainfo.number){
+      let draft = props.gradeScaleDatainfo
+
+      if(draft){
         editM.value = true
+        form.count = draft?.count
+        form.scale_name = draft?.scale_name
+        let gradesInfo = draft?.grades
+        gradesInfo.forEach(lst => {
+          lst.remark = lst.description
+        }) 
+
+        sectionPart.value = gradesInfo
+    //  sectionPart.value = [
+    // { code: 1, grade_number: "grade1", min_value: 0, max_value: 50, weight: 2, remark: "Good" },
+    // { code: 2, grade_number: "grade2", min_value: 51, max_value: 90, weight: 1, remark: "Very Good" }
+    // ]
       }
     }
 )
 
 
-
-
-const sectionPart = reactive([{ code: null, grade_number: "",min_value:null,max_value:null,weight:null,remark:null}]);
-
 const newSectionPart = () => {
-    sectionPart.push({ code: null, grade_number: "",min_value:null,max_value:null,weight:null,remark:null})
+    sectionPart.value.push({ code: null, grade_number: "",min_value:null,max_value:null,weight:null,remark:null})
 }
 
 function removeSectionPart(index) {
-  sectionPart.splice(index, 1);
+  sectionPart.value.splice(index, 1);
 }
 
 const convertFormValuesToInt = () => {
-  sectionPart.forEach(field => {
+  sectionPart.value.forEach(field => {
     if (field.code !== null) {
       field.code = parseInt(field.code);
     }
@@ -89,12 +96,22 @@ const convertFormValuesToInt = () => {
 }
 
 const createScale = () =>{
-  convertFormValuesToInt()
+ 
   buttonLoader.value = true
   form.count =  parseInt(form.count)
   form.grades = sectionPart
   form.school_number = schoolNumber
-  assessmentStore.createAggregateScale(form)
+  if(props.gradeScaleDatainfo.scale_number){
+    convertFormValuesToInt()
+    form.scale_number = props.gradeScaleDatainfo.scale_number
+    // alert(JSON.stringify(form))
+    assessmentStore.updateAggregateScale(form)
+
+  }else{
+    convertFormValuesToInt()
+    assessmentStore.createAggregateScale(form)
+  }
+  
 }
 
 
@@ -146,6 +163,15 @@ watch(
 
 watch (
     () => assessmentStore.newAggregateScaleResponse,
+    async (data) => {
+      if(data){
+        buttonLoader.value = false
+      }
+    }
+)
+
+watch (
+    () => assessmentStore.updateAggregateScaleResponse,
     async (data) => {
       if(data){
         buttonLoader.value = false
@@ -236,7 +262,7 @@ watch(
     <div>
 
         <div class="modal-content">
-
+<!-- {{ gradeScaleDatainfo }} -->
       <div class="modal-body">
         <form @submit.prevent="createScale()">
 
