@@ -142,6 +142,17 @@ watch (
     }
 )
 
+watch (
+    () => assessmentStore.updateAggregateScaleResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+        fetchGradeScale()
+        showAggregateScaleModal.value = false
+      }
+    }
+  )
+
 
 </script>
 <template>

@@ -31,6 +31,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const  updateGradeStandardResponse = ref(null)
     const removeInterviewAssessmentScheduleResponse = ref(null)
     const removeStudentFromInterviewResponse = ref(null)
+    const updateAggregateScaleResponse = ref(null)
 
 
     async function createAssessmentAreas(data) {
@@ -130,6 +131,18 @@ async function createAggregateScale(data) {
     return await api.post("main/assessments/aggregate-scales",data)
         .then((response) => {
          newAggregateScaleResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response && response.response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function updateAggregateScale(data) {
+    return await api.post("main/assessments/aggregate-scales/update",data)
+        .then((response) => {
+         updateAggregateScaleResponse.value = response.data
         })
         .catch((response) => {
             if(response && response.response){
@@ -456,6 +469,8 @@ async function createMetric(data) {
         removeInterviewAssessmentScheduleResponse,
         removeInterviewAssessmentSchedule,
         removeStudentFromInterviewResponse,
-        removeStudentFromInterview
+        removeStudentFromInterview,
+        updateAggregateScale,
+        updateAggregateScaleResponse
     }
 })
