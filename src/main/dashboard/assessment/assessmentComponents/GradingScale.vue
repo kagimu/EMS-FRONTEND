@@ -222,7 +222,7 @@ watch (
         <tr>
           <th scope="col">(Min - Max) Value</th>
           <th scope="col">weight</th>
-          <th scope="col">Measures Of Assessment</th>
+          <th scope="col">Name Of Aggregate</th>
           <th>Remark</th>
         </tr>
         <tr v-for="(list,idx) in aggregateList.grades" :key="idx">
