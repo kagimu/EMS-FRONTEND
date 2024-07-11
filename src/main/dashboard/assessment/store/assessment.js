@@ -339,7 +339,7 @@ async function createMetric(data) {
     }
 
     async function deleteGrade(gradeNumber) {
-        return await api.delete("main/assessments/grade"+gradeNumber)
+        return await api.post("main/assessments/grades/remove/"+gradeNumber)
             .then((response) => {
              deleteGradeResponse.value = response.data
             })
