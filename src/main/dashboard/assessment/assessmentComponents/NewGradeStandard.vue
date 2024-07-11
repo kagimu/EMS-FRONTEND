@@ -37,7 +37,6 @@ const props = defineProps({
 const form = reactive({
   code: null,
   classes: [{scale_number:"", campus_class_number:""}],
-  type:"",
   name:null,
   description:null,
   school_number:schoolNumber
@@ -69,7 +68,6 @@ const getGradeInfo = () => {
     let draft = props.gradeDataList
     if(draft) {
       form.code = draft.code
-      form.type = draft.type
       form.name = draft.name
       form.description = draft.description
 
@@ -96,7 +94,6 @@ watch(
     async (data) => {
       if(data){
             form.campus_class_number = null
-            form.type = null
             form.name = null
             form.description = null
       }
@@ -206,21 +203,7 @@ const newClass = () => {
 
 
 
-          <div class="mb-2">
-            <div class="text-[13px] text-[#505050]"> Type <!--<i class="bi-asterisk text-[10px] mt-1 ml-1 text-[red]"></i>--></div>
-              <select
 
-                      class="form-select form-select-sm shadow-none" required
-                      v-model="form.type"
-              >
-                  <option disabled value="">Select Type</option>
-                  <option value="internal">Internal
-                  </option>
-                  <option value="external">External
-                  </option>
-                  
-              </select>
-          </div>
 
           <div class="mb-2">
             <div class="text-[13px] text-[#505050]"> Description</div>
