@@ -63,16 +63,12 @@ onMounted(
 )
 
 
-
-
-
-
 const newSectionPart = () => {
-    sectionPart.push({ code: null, grade_number: "",min_value:null,max_value:null,weight:null,remark:null})
+    sectionPart.value.push({ code: null, grade_number: "",min_value:null,max_value:null,weight:null,remark:null})
 }
 
 function removeSectionPart(index) {
-  sectionPart.splice(index, 1);
+  sectionPart.value.splice(index, 1);
 }
 
 const convertFormValuesToInt = () => {
