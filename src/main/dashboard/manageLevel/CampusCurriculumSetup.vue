@@ -89,7 +89,7 @@ const studentScoreMenu = ref([
 
 const assess = ref([
   {
-    name:"Formats Of Aggregates",
+    name:"Name Of Aggregates",
     router_name:"grades"
   },
   {
