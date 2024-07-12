@@ -176,7 +176,7 @@ watch(
 <template>
     <div>
 
-      <AppModal  :title="editModel ? 'Edit Grade Standard' + namee:'New Grade Standard'" v-model="showGradeStandardModal" lg>
+      <AppModal  :title="editModel ? 'Edit Grade Standard ' + namee:'New Grade Standard'" v-model="showGradeStandardModal" lg>
         <NewGradeStandard :gradeDataList="gradeDataList"></NewGradeStandard>
       </AppModal>
 
