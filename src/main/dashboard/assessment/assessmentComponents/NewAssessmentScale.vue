@@ -30,7 +30,8 @@ const campusCurriculumDataInfo = ref(null)
 const campusLevelList = ref(null)
 const campus_level_number = ref("")
 const campusClassList = ref(null)
-
+let schoolNumber = routerData.currentRoute.value.query.sch
+const aggregateData = ref([])
 
 const form = reactive({
   code:null,
@@ -57,8 +58,17 @@ onMounted(
       await levelStore.fetchCampusCurriculum(campusNumber)
        fetchCampusLevel()
        getAssessmentScaleDataInfo()
+       fetchGradeScale()
     }
 )
+
+const fetchGradeScale = () =>{
+  let data = {
+    school_number:schoolNumber
+  }
+  assessmentStore.fetchAggregateScale(data)
+}
+
 
 
 const getAssessmentScaleDataInfo = () =>{
@@ -133,8 +143,11 @@ const createScale = () =>{
   form.code = parseInt(form.code)
   form.maximum_points = parseInt(form.maximum_points)
   form.minimum_points = parseInt(form.minimum_points)
-  if(props.scaleD.number){
-    assessmentStore.updateAssessmentScale(form,props.scaleD.number)
+
+  if(props.assessmentGradeListD.number){
+    form.assessment_grade_number = props.assessmentGradeListD.number
+    alert(JSON.stringify(form))
+    assessmentStore.updateAssessmentScale(form)
 
   }else{
     assessmentStore.createAssessmentScale(form)
@@ -145,6 +158,15 @@ const createScale = () =>{
 
 
 
+watch(
+    () => assessmentStore.aggregateScaleResponse,
+    async (data) => {
+      if(data){
+        aggregateData.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 
 watch (
@@ -242,7 +264,7 @@ watch(
 
 <template>
     <div>
- <!-- {{ assessmentGradeListD }} -->
+ {{ assessmentGradeListD }}
     <form @submit.prevent="createScale()">
        <div class="mb-2">
             <div class="text-[13px] text-[#505050]"> Level</div>
@@ -265,22 +287,23 @@ watch(
               <option disabled value="">--Select Class--</option>
               <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
             </select>
-
-            <!-- <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-            <li class="list-group-item" v-for="(list, index) in campusClassList" :key="index" :value="list.number">
-            <input
-              v-model="form.campus_class_number"
-
-              style="outline: none 0 !important; box-shadow: none;"
-              class="form-check-input me-1" type="checkbox" :value="list.number" :id="list.number">
-            <label class="textColor" :for="list.number"><small>{{list.name+" [ "+list.abbreviation+" ]"}}</small></label>
-            </li>
-
-            </ul> -->
           </div>
 
 
           <div class="mb-2">
+          
+            <div class="text-[13px] text-[#505050]"> Aggregate Scale</div>
+            <select
+                class="form-select form-select-sm shadow-none" required
+                v-model="form.campus_class_number"
+            >
+              <option disabled value="">--Select --</option>
+              <option v-for="(list, index) in aggregateData" :key="index" :value="list.scale_number">{{list.scale_name}}</option>
+            </select>
+          </div>
+
+
+          <!-- <div class="mb-2">
             <div class="text-[13px] text-[#505050]"> Code</div>
             <input
                 @keypress="commons.codeValidator($event)"
@@ -289,12 +312,12 @@ watch(
                 required
                 @paste.prevent
                 class="form-control form-select-sm shadow-none">
-          </div>
+          </div> -->
 
 
 
 
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-6">
                 <div class="mb-2">
                   <div class="text-[13px] text-[#505050]"> Name</div>
@@ -344,7 +367,9 @@ watch(
         <div class="text-[13px] text-[#505050]">Remarks</div>
         <textarea v-model="form.remarks" class="form-control textColor outline-none shadow-none">
         </textarea>
-      </div>
+      </div> -->
+
+
      <div class="flex justify-content-end mt-2" style="width: 100%;">
             <button type="submit" class="btn btn-primary border-0 btn-sm">
                  <small><i class="bi bi-save"></i> submit</small>

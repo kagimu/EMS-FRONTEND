@@ -315,8 +315,8 @@ async function createMetric(data) {
 
 
     // main/assessments/assessment-grades/53d9cee8-0419-45ae-b89d-252910b92d2c
-    async function updateAssessmentScale(data,assessment_grade_id) {
-        return await api.put("main/assessments/assessment-grades/update/"+assessment_grade_id,data)
+    async function updateAssessmentScale(data) {
+        return await api.put("main/assessments/assessment-grades/update/"+data.assessment_grade_number,data)
             .then((response) => {
              updateAssessmentScaleResponse.value = response.data
             })
@@ -500,6 +500,7 @@ async function createMetric(data) {
         removeInterviewAssessmentSchedule,
         removeStudentFromInterview,
         updateAggregateScale,
+        deleteAggregateScale,
         updateAggregateScaleResponse
     }
 })
