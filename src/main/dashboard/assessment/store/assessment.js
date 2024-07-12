@@ -32,7 +32,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const removeInterviewAssessmentScheduleResponse = ref(null)
     const removeStudentFromInterviewResponse = ref(null)
     const updateAggregateScaleResponse = ref(null)
-
+    const deleteAggregateScaleResponse = ref(null)
 
     async function createAssessmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -143,6 +143,18 @@ async function updateAggregateScale(data) {
     return await api.post("main/assessments/aggregate-scales/update",data)
         .then((response) => {
          updateAggregateScaleResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response && response.response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function deleteAggregateScale(scale_number) {
+    return await api.post("main/assessments/aggregate-scales/remove/"+scale_number)
+        .then((response) => {
+         deleteAggregateScaleResponse.value = response.data
         })
         .catch((response) => {
             if(response && response.response){
@@ -365,7 +377,7 @@ async function createMetric(data) {
 
 
     async function deleteGradeStandard(grade_standard_number) {
-        return await api.delete("main/assessments/grade-standard/"+grade_standard_number)
+        return await api.post("main/grading-standard/remove/"+grade_standard_number)
             .then((response) => {
              deleteGradingScaleResponse.value = response.data
             })
@@ -444,6 +456,10 @@ async function createMetric(data) {
         deleteGradeResponse,
         updateGradeStandardResponse,
         deleteGradingScaleResponse,
+        updateAggregateScaleResponse,
+        deleteAggregateScaleResponse,
+        removeStudentFromInterviewResponse,
+        removeInterviewAssessmentScheduleResponse,
         createAssessmentAreas,
         fetchAssessmentArea,
         fetchAssessments,
@@ -466,11 +482,10 @@ async function createMetric(data) {
         deleteGrade,
         updateGradeStandard,
         deleteGradeStandard,
-        removeInterviewAssessmentScheduleResponse,
         removeInterviewAssessmentSchedule,
-        removeStudentFromInterviewResponse,
         removeStudentFromInterview,
         updateAggregateScale,
-        updateAggregateScaleResponse
+        deleteAggregateScale
+     
     }
 })

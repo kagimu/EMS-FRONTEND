@@ -139,7 +139,7 @@ const editThisData = (gradeList) => {
 
 const deleteThisData = (info,index) => {
 
-  if(!confirm("Are you sure, you want to delete: " + info.name)){
+  if(!confirm("Are you sure, you want to delete: " + info.number)){
     return
   }
 
