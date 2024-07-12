@@ -102,8 +102,7 @@ watch(
       if(data){
         levelList.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
 watch (
@@ -124,8 +123,7 @@ watch (
         buttonLoader.value = false
         notificationStore.errorToast("Error",data.message)
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -137,8 +135,7 @@ watch(
       if (data) {
         schoolList.value = data.data
       }
-    },
-    {deep: true}
+    }
 )
 
 watch(
@@ -147,8 +144,7 @@ watch(
       if (data) {
         campusList.value = data.data
       }
-    },
-    {deep: true}
+    }
 )
 
 watch(
@@ -157,8 +153,7 @@ watch(
       if (data) {
         classList.value = data.data
       }
-    },
-    {deep: true}
+    }
 )
 
 watch(
@@ -167,8 +162,7 @@ watch(
       if (data) {
         notificationStore.errorToast("Error", data.message)
       }
-    },
-    {deep: true}
+    }
 )
 
 
