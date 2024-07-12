@@ -1,3 +1,181 @@
+<script setup>
+import {onMounted,reactive, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes";
+
+import {useRouter} from "vue-router";
+const routerData = useRouter()
+import { useAbility } from '@casl/vue';
+
+
+
+const buttonLoader = ref(false)
+let errorMessage = ref(null)
+const levelStore = useLevelStore()
+const classStore = useClassesStore()
+
+const assessmentStore= useAssessmentStore()
+const  notificationStore  = useNotificationStore()
+const campusList = ref([])
+const schoolList = ref([])
+const classList = ref([])
+const schoolStore = useSchoolStore()
+const campusStore = useCampusStore()
+const levelList = ref( [])
+const level = ref( "")
+const subjectList = ref([])
+
+let  curriculumNumber = routerData.currentRoute.value.query.id
+
+
+
+const form = reactive({
+  curriculum_class_number:[],
+  subjects:[]
+})
+
+const addAssessmentArea = () => {
+  buttonLoader.value = true
+  assessmentStore.createAssessmentAreas(form)
+}
+
+onMounted(
+    async () => {
+      assessmentStore.fetchAssessmentArea()
+      levelStore.fetchCurriculumLevels(curriculumNumber)
+      schoolStore.fetchSchools()
+    } )
+
+
+
+const subject_n = ref(null)
+
+//fetching class
+const fetchSubject = (a) =>{
+  subject_n.value = a
+  classStore.fetchCurriculumClassesByID(subject_n.value )
+}
+
+watch(
+    () => classStore.curriculumClassByIdResponse,
+    async (data) => {
+      subjectList.value = data.data
+    },
+    {deep:true}
+)
+
+
+
+const filterClasses = () => {
+  fetchClassList()
+}
+
+const fetchClassList = () => {
+  classList.value = []
+  subjectList.value = []
+  let data = {
+    level:level.value,
+    curriculum_number:curriculumNumber,
+  }
+  classStore.fetchCurriculumClasses(data)
+}
+
+watch(
+    () => classStore.curriculumClassInfoResponse,
+    async (data) => {
+      if(data && data.data){
+        let classData = data.data
+        if(classData && (classData.length > 0)){
+          classList.value = classData[0].class
+        }
+      }
+    }
+)
+
+watch(
+    () => levelStore.curriculumLevelInfoResponse,
+    async (data) => {
+      if(data){
+        levelList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => assessmentStore.newAssessmentAreasResponse,
+    async (data) => {
+      if(data){
+        buttonLoader.value = false
+      }
+    }
+)
+
+watch (
+    () => assessmentStore.errorMessage,
+    async (data) => {
+      if(data){
+        buttonLoader.value = true
+        errorMessage.value = data.message
+        buttonLoader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        schoolList.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+watch(
+    () => campusStore.campusListResponse,
+    async (data) => {
+      if (data) {
+        campusList.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+watch(
+    () => campusStore.campusClassesResponse,
+    async (data) => {
+      if (data) {
+        classList.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+watch(
+    () => campusStore.errorMessage,
+    async (data) => {
+      if (data) {
+        notificationStore.errorToast("Error", data.message)
+      }
+    },
+    {deep: true}
+)
+
+
+
+
+
+</script>
 <template>
 <div>
     <form @submit.prevent="addAssessmentArea">
@@ -31,14 +209,6 @@
 
              <div class="mb-2">
              <label class="textColor"><small>Subjects</small> <span class="star">*</span></label>
-             <!-- <select
-                     style="box-shadow: none;"
-                     class="form-select form-select-sm" 
-                     v-model="form.subject_number"
-             >                
-                 <option v-for="(sbj, index) in subjectList" :key="index" :value="sbj.number">{{sbj.name}}</option>
-                 <option  value="">Other</option>
-             </select> -->
 
 
           <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
@@ -51,24 +221,6 @@
           </li>
           </ul>
 
-             <!-- <table style="width: 100%;">
-                <tr v-for="(subject_numbers, index) in form.subject_numbers" :key="index">
-                  <td>
-                    <select v-model="subject_numbers.number" class="form-select form-select-sm">
-                      <option v-for="option in subjectList" :key="option" :value="option.number">{{ option.name }}</option>
-                    </select>
-                  </td>
-                  <td style="width: 2%;">
-                   <i @click="removeSubject(index)"  class="bi bi-x" style="color: red;pointer-events:auto;"></i>
-                  </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button type="button" @click="addSubject" class="btn btn-primary mb-2 btn-sm p-0 mt-1" style="color:white !important"><i class="bi bi-plus"></i></button>
-                    </td>
-                    <td></td>
-                </tr>
-              </table> -->
          </div>
         
 
@@ -87,209 +239,6 @@
            </form>
 </div>
 </template>
-
-<script setup>
-import {onMounted,reactive, ref, watch} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
-import {useLevelStore} from "@/main/settings/level/store/level.js";
-import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes";
-
-import {useRouter} from "vue-router";
-const routerData = useRouter()
-import { useAbility } from '@casl/vue';
-
-const { can } = useAbility()
-
-const buttonLoader = ref(false)
-const interviewDialog= ref(false)
-let errorMessage = ref(null)
-const levelStore = useLevelStore()
-const classStore = useClassesStore()
-
-const assessmentStore= useAssessmentStore()
-const  notificationStore  = useNotificationStore()
-const campusList = ref([])
-const schoolList = ref([])
-const classList = ref([])
-const schoolStore = useSchoolStore()
-const campusStore = useCampusStore()
-const school_number = ref(null)
-const levelList = ref( [])
-const level = ref( "")
-const subjectList = ref([])
-
-let  curriculumNumber = routerData.currentRoute.value.query.id
-
-const preferred_campus_number = ref(null)
-
-  const form = reactive({ 
-    curriculum_class_number:[],
-    subjects:[]
-  })
-
-  const addAssessmentArea = () => {
-   buttonLoader.value = true
-  // const subjectNumbers = form.subject_numbers.map(subject => subject.number);
-  
-  // let formData = {
-  // curriculum_class_number:form.curriculum_class_number,
-  // subjects: subjectNumbers
-  // }
-  //  alert(JSON.stringify(form))
-   assessmentStore.createAssessmentAreas(form)
-  }
-
-  onMounted(
-  async () => {
-    assessmentStore.fetchAssessmentArea()
-    levelStore.fetchCurriculumLevels(curriculumNumber)
-    schoolStore.fetchSchools()
-  } )
-
-  
-
-const subject_n = ref(null)
-
-//fetching class
-const fetchSubject = (a) =>{
-subject_n.value = a
-classStore.fetchCurriculumClassesByID(subject_n.value )
-}
-
-  watch(
-  () => classStore.curriculumClassByIdResponse,
-  async (data) => {  
-  subjectList.value = data.data
-  },
-  {deep:true}
-)
-  
-
-
-const filterClasses = () => {
-  fetchClassList()
-}
-
-const fetchClassList = () => {
-let data = {
-  level:level.value,
-  curriculum_number:curriculumNumber,
-}
-classStore.fetchCurriculumClasses(data)
-}
-
-watch(
-  () => classStore.curriculumClassInfoResponse,
-  async (data) => {
-    if(data && data.data){
-      let classData = data.data
-      if(classData && (classData.length > 0)){
-        classList.value = classData[0].class
-      }
-      
-    }
-  },
-  {deep:true}
-)
-
-  watch(
-  () => levelStore.curriculumLevelInfoResponse,
-  async (data) => {
-    if(data){
-      levelList.value = data.data
-    }
-  },
-  {deep:true}
-)
-
-  watch (
-  () => assessmentStore.newAssessmentAreasResponse,
-  async (data) => {
-    if(data){
-      buttonLoader.value = false
-    }
-  }
-)
-
-watch (
-  () => assessmentStore.errorMessage,
-  async (data) => {
-    if(data){
-       buttonLoader.value = true
-      errorMessage.value = data.message
-      buttonLoader.value = false
-      notificationStore.errorToast("Error",data.message)
-    }
-  },
-  {deep:true}
-)
-
-
-const fetchCampuses = (school_number) => {
-    campusStore.fetchCampuses(school_number ?? "")
-}
-
-const fetchClasses = (campus_number) => {
-    campusStore.fetchClassesByCampus(campus_number)
-}
-
-
-
-watch(
-    () => schoolStore.schoolsResponse,
-    async (data) => {
-        if (data) {
-            schoolList.value = data.data
-        }
-    },
-    {deep: true}
-)
-
-watch(
-    () => campusStore.campusListResponse,
-    async (data) => {
-        if (data) {
-            campusList.value = data.data
-        }
-    },
-    {deep: true}
-)
-
-watch(
-    () => campusStore.campusClassesResponse,
-    async (data) => {
-        if (data) {
-            classList.value = data.data
-        }
-    },
-    {deep: true}
-)
-
-watch(
-    () => campusStore.errorMessage,
-    async (data) => {
-          if (data) {
-              notificationStore.errorToast("Error", data.message)
-          }
-    },
-    {deep: true}
-)
-
-
-  
-  const addSubject = () => {
-    form.subject_numbers.push({number: ""})
-  }
-  
-  const removeSubject = (index) => {
-    form.subject_numbers.splice(index, 1)
-  }
-
-
-</script>
 
 
 
