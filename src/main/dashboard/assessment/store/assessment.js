@@ -29,6 +29,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const deleteGradeResponse = ref(null)
     const deleteGradingScaleResponse = ref(null)
     const  updateGradeStandardResponse = ref(null)
+    const  updateGradeStandardScaleDetailsResponse = ref(null)
     const removeInterviewAssessmentScheduleResponse = ref(null)
     const removeStudentFromInterviewResponse = ref(null)
     const updateAggregateScaleResponse = ref(null)
@@ -400,6 +401,19 @@ async function createMetric(data) {
             })
     }
 
+
+    async function fetchStandardGradeDetails(grade_standard_number) {
+        return await api.get("main/grading-standard/details?grading_standard_number="+grade_standard_number)
+            .then((response) => {
+             updateGradeStandardScaleDetailsResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     async function removeInterviewAssessmentSchedule(data) {
         return await api.post("main/interviews/remove-interview-assessment-metric?interview_assessment_metric_number="+data.interview_assessment_metric_number)
             .then((response) => {
@@ -460,6 +474,7 @@ async function createMetric(data) {
         deleteAggregateScaleResponse,
         removeStudentFromInterviewResponse,
         removeInterviewAssessmentScheduleResponse,
+        updateGradeStandardScaleDetailsResponse,
         createAssessmentAreas,
         fetchAssessmentArea,
         fetchAssessments,
@@ -485,7 +500,6 @@ async function createMetric(data) {
         removeInterviewAssessmentSchedule,
         removeStudentFromInterview,
         updateAggregateScale,
-        deleteAggregateScale
-     
+        updateAggregateScaleResponse
     }
 })

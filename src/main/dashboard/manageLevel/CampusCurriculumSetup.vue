@@ -12,10 +12,7 @@ const router = useRouter()
 const levelStore = useLevelStore()
 const campusCurriculumDataInfo = ref(null)
 
-
-
 const routerData = useRouter()
-
 
 const campusNumber = routerData.currentRoute.value.query.id
 const schoolNumber = routerData.currentRoute.value.query.sch
@@ -53,10 +50,6 @@ const reportSettingsMenu = ref([
     name:"General report settings",
     router_name:"report-setting"
   },
-  // {
-  //   name:"Report Columns",
-  //   router_name:"report-columns"
-  // },
   {
     name:"Report Columns Assessment",
     router_name:"report-columns-assessment"
