@@ -77,8 +77,15 @@ const getGradeInfo = () => {
 watch(
     () => assessmentStore.updateGradeStandardScaleDetailsResponse,
     async (data) => {
-      if(data){
-        // alert(JSON.stringify(data))
+      if(data && data.data){
+        let arr = []
+        let classesInfo = data.data?.standard_classes
+        if(classesInfo && classesInfo.length) {
+          classesInfo?.forEach(lst => {
+            arr.push({scale_number: lst?.scale?.scale_number, campus_class_number: lst?.class?.number})
+          })
+          form.classes = arr
+        }
       }
     }
 )
@@ -185,7 +192,7 @@ const newClass = () => {
         <div class="modal-content">
 
       <div class="modal-body">
-        <!-- {{ gradeDataList }} -->
+
         <form @submit.prevent="addGradeStandard()">
 
 

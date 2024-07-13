@@ -264,7 +264,6 @@ watch(
 
 <template>
     <div>
- {{ assessmentGradeListD }}
     <form @submit.prevent="createScale()">
        <div class="mb-2">
             <div class="text-[13px] text-[#505050]"> Level</div>
