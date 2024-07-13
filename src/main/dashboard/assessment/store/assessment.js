@@ -18,7 +18,9 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const newAssessmentMetricResponse = ref(null)
     const assessmentMetricsResponse = ref(null)
     const newMetricResponse = ref(null)
+    const updateMetricResponse = ref(null)
     const metricResponse = ref(null)
+    const deleteMetricResponse = ref(null)
     const newAssessmentScaleResponse = ref(null)
     const assessmentScaleResponse = ref(null)
     const updateAssessmentScaleResponse = ref(null)
@@ -272,10 +274,34 @@ async function fetchAssessmentMetrics(data) {
             })
     }
 
+async function deleteMetric(metricNumber) {
+    return await api.delete("main/assessments/metrics/"+metricNumber)
+        .then((response) => {
+            deleteMetricResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response && response.response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
 async function createMetric(data) {
     return await api.post("main/assessments/metrics", data)
         .then((response) => {
             newMetricResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response && response.response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function updateMetric(data,metricNumber) {
+    return await api.put("main/assessments/metrics/"+metricNumber, data)
+        .then((response) => {
+            updateMetricResponse.value = response.data
         })
         .catch((response) => {
             if(response && response.response){
@@ -475,6 +501,8 @@ async function createMetric(data) {
         removeStudentFromInterviewResponse,
         removeInterviewAssessmentScheduleResponse,
         updateGradeStandardScaleDetailsResponse,
+        updateMetricResponse,
+        deleteMetricResponse,
         createAssessmentAreas,
         fetchAssessmentArea,
         fetchAssessments,
@@ -485,7 +513,9 @@ async function createMetric(data) {
         createAssessmentMetrics,
         fetchAssessmentMetrics,
         createMetric,
+        updateMetric,
         fetchMetrics,
+        deleteMetric,
         createAssessmentScale,
         fetchAssessmentGrades,
         updateAssessmentScale,
