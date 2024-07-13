@@ -268,7 +268,7 @@ watch(
 
 
           <div class="mb-2">
-            <div class="text-[13px] text-[#505050]">Count</div>
+            <div class="text-[13px] text-[#505050]">Count of Scale</div>
             <input
                 @keypress="commons.codeValidator($event)"
                 maxlength="10"
@@ -297,7 +297,7 @@ watch(
               <td class="w-[15%]">Maximum Scale</td>
               <td class="w-[10%]">Weight</td>
               <td>Remark</td>
-              <td>Measures Of Assessment</td>
+              <td>Name Of Aggregate</td>
               <td></td>
             </tr>
             </thead>
@@ -318,7 +318,7 @@ watch(
               <td>
 <!--                <div class="text-[13px] text-[#505050]">Minimum Scale</div>-->
                 <input
-                    maxlength="3"
+                    maxlength="4"
                     @keypress="commons.numbersOnlyValidator($event)"
                     v-model="field.min_value"
                     placeholder="eg. 90"
@@ -329,7 +329,7 @@ watch(
 <!--                <div class="text-[13px] text-[#505050]">Maximum Scale</div>-->
                 <input
                     placeholder="eg. 100"
-                    maxlength="3"
+                    maxlength="4"
                     @keypress="commons.numbersOnlyValidator($event)"
                     v-model="field.max_value"
                     type="text"
@@ -360,7 +360,7 @@ watch(
                       class="form-select form-select-sm shadow-none" required
                       v-model="field.grade_number"
                   >
-                    <option disabled value="">--Select Measures Of Assessment--</option>
+                    <option disabled value="">--Select Name Of Aggregate--</option>
                     <option v-for="(list, index) in gradeDataInfo" :key="index" :value="list?.number">{{list?.code+". "+list?.name}} ( {{list?.short_name}} )</option>
                   </select>
                 </div>
