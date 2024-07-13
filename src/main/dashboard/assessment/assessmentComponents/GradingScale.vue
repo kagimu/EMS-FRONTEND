@@ -227,9 +227,7 @@ watch (
         <tr>
           <th>#</th>
           <th scope="col">Name</th>
-     
           <th scope="col">Grades</th>
-         
           <th>Actions</th>
         </tr>
         </thead>
@@ -245,12 +243,14 @@ watch (
           style="font-size: 11px !important;" >
         <thead>
         <tr>
+          <th scope="col">#</th>
           <th scope="col">(Min - Max) Value</th>
           <th scope="col">weight</th>
           <th scope="col">Name Of Aggregate</th>
           <th>Remark</th>
         </tr>
         <tr v-for="(list,idx) in aggregateList.grades" :key="idx">
+          <td>{{ list?.code }}</td>
            <td>{{ list?.min_value}} - {{ list?.max_value }}</td>
            <td>{{ list?.weight }}</td>
            <td>{{ list?.name }} ( {{ list?.short_name }} )</td>
@@ -259,9 +259,6 @@ watch (
         </thead>
 
          </table>
-
-
-
 
 
             </td>

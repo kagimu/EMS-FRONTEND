@@ -78,7 +78,7 @@ watch(
     () => assessmentStore.updateGradeStandardScaleDetailsResponse,
     async (data) => {
       if(data){
-        alert(JSON.stringify(data))
+        // alert(JSON.stringify(data))
       }
     }
 )
