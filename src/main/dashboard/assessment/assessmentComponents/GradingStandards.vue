@@ -139,7 +139,7 @@ const editThisData = (gradeList) => {
 
 const deleteThisData = (info,index) => {
 
-  if(!confirm("Are you sure, you want to delete: " + info.name)){
+  if(!confirm("Are you sure, you want to delete: " + info.number)){
     return
   }
 
@@ -176,7 +176,7 @@ watch(
 <template>
     <div>
 
-      <AppModal  :title="editModel ? 'Edit Grade Standard' + namee:'New Grade Standard'" v-model="showGradeStandardModal" lg>
+      <AppModal  :title="editModel ? 'Edit Grade Standard ' + namee:'New Grade Standard'" v-model="showGradeStandardModal" lg>
         <NewGradeStandard :gradeDataList="gradeDataList"></NewGradeStandard>
       </AppModal>
 

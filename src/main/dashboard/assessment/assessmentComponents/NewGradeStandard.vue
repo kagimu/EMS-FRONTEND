@@ -67,12 +67,21 @@ watch(
 const getGradeInfo = () => {
     let draft = props.gradeDataList
     if(draft) {
-      form.code = draft.code
-      form.name = draft.name
-      form.description = draft.description
-
+      form.code = draft?.code
+      form.name = draft?.name
+      form.description = draft?.description
+      assessmentStore.fetchStandardGradeDetails(draft?.number)
     }
 }
+
+watch(
+    () => assessmentStore.updateGradeStandardScaleDetailsResponse,
+    async (data) => {
+      if(data){
+        alert(JSON.stringify(data))
+      }
+    }
+)
 
 
 const addGradeStandard = () => {
@@ -81,7 +90,6 @@ const addGradeStandard = () => {
   let draft = props.gradeDataList
   if(draft){
       form.grading_standard_number = draft.number
-
       assessmentStore.updateGradeStandard(form)
   }else{
       assessmentStore.createGradeStandard(form)
@@ -99,6 +107,9 @@ watch(
       }
     }
 )
+
+
+
 
 watch (
     () => assessmentStore.errorMessage,
@@ -170,6 +181,7 @@ const newClass = () => {
 
 <template>
     <div>
+
         <div class="modal-content">
 
       <div class="modal-body">

@@ -38,6 +38,7 @@ const campusClassList = ref(null)
 const editMode = ref(false)
 const gradeScaleDatainfo = ref([])
 let schoolNumber = routerData.currentRoute.value.query.sch
+const deletionLoader = ref(false)
 
 onMounted(() => {
       fetchGradeScale()
@@ -74,6 +75,15 @@ const fetchCampusLevel = () => {
 const fetchClass = (campus_level_number) => {
   academicYearStore.fetchCampusClassByLevel(campus_level_number)
 }
+
+const deleteThisData = (info) => {
+if(!confirm("Are you sure, you want to delete: " + info.scale_name)){
+  return
+}
+deletionLoader.value = true
+assessmentStore.deleteAggregateScale(info.scale_number)
+}
+
 
 watch(
     () => levelStore.campusCurriculumResponse,
@@ -120,16 +130,7 @@ watch(
     {deep:true}
 )
 
-watch (
-    () => assessmentStore.errorMessage,
-    async (data) => {
-      if(data){
-        errorMessage.value = data.message
-        // notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-)
+
 
 watch (
     () => assessmentStore.newAggregateScaleResponse,
@@ -152,6 +153,30 @@ watch (
       }
     }
   )
+
+
+
+watch (
+    () => assessmentStore.deleteAggregateScaleResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+        fetchGradeScale()
+        deletionLoader.value = false
+
+      }
+    }
+  )
+  watch (
+    () => assessmentStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
 
 
 </script>
@@ -246,7 +271,7 @@ watch (
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
-          <button type="button">
+          <button type="button" @click="deleteThisData(aggregateList)">
             <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
           </button></td>
         </tr>
