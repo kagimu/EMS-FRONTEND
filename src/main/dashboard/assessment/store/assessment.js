@@ -501,6 +501,6 @@ async function createMetric(data) {
         removeStudentFromInterview,
         updateAggregateScale,
         deleteAggregateScale,
-        updateAggregateScaleResponse
+        fetchStandardGradeDetails
     }
 })
