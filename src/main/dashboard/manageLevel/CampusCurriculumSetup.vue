@@ -94,16 +94,16 @@ const assess = ref([
     router_name:"grade-standards"
   },
   {
-    name:"Assessment Schedule",
-    router_name:"assessment-metrics"
-  },
-  {
     name:"Assessment Grades",
     router_name:"assessment-scale"
   },
   {
     name:"Assessment Area Grading Standard",
     router_name:"assessment-area-grading-standard"
+  },
+  {
+    name:"Assessment Schedule",
+    router_name:"assessment-metrics"
   },
 
 ])
