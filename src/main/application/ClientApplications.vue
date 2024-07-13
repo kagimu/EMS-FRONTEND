@@ -1,3 +1,56 @@
+<script setup>
+import {onMounted,reactive, ref, watch} from "vue";
+import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+import useNotificationStore from "@/composables/useNotification.js";
+import ClientApplicationDetails from "@/main/application/ClientApplicationDetails.vue";
+import router from "@/config/router.js";
+
+const applicationInfoList = ref( [])
+let errorMessage = ref(null)
+
+const applications= ref(null)
+const isLoading = ref(true);
+
+
+
+const applicationStore= useApplicationStore()
+const  notificationStore  = useNotificationStore()
+
+const setApplicationNumber = (ap) =>{
+  applications.value = ap
+}
+
+
+
+onMounted(
+    async () => {
+      await applicationStore.fetchApplicationList()
+    } )
+
+watch(
+    () => applicationStore.applicationListResponse,
+    async (data) => {
+      if(data){
+        isLoading.value = false;
+        applicationInfoList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => applicationStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        buttonLoader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+</script>
 <template>
     <div>
 
@@ -86,64 +139,7 @@
     </div>
 </template>
 
-<script setup>
-import {onMounted,reactive, ref, watch} from "vue";
-import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
-import useNotificationStore from "@/composables/useNotification.js";
-import ClientApplicationDetails from "@/main/application/ClientApplicationDetails.vue";
-import router from "@/config/router.js";
 
-const applicationInfoList = ref( [])
-let errorMessage = ref(null)
-
-const applications= ref(null)
-const isLoading = ref(true);
-
-
-
-const applicationStore= useApplicationStore()
-const  notificationStore  = useNotificationStore()
-
-const setApplicationNumber = (ap) =>{
-    applications.value = ap
-}
-
-
-const resumeApplication = (ap) =>{
-    localStorage.setItem('applicationId',ap)
-    router.push({name:'application'})
-}
-
-
-onMounted(
-    async () => {
-        await applicationStore.fetchApplicationList()
-    } )
-
-watch(
-    () => applicationStore.applicationListResponse,
-    async (data) => {
-        if(data){
-            isLoading.value = false; 
-            applicationInfoList.value = data.data
-        }
-    },
-    {deep:true}
-)
-
-watch (
-    () => applicationStore.errorMessage,
-    async (data) => {
-        if(data){
-            errorMessage.value = data.message
-            buttonLoader.value = false
-            notificationStore.errorToast("Error",data.message)
-        }
-    },
-    {deep:true}
-)
-
-</script>
 
 
 
