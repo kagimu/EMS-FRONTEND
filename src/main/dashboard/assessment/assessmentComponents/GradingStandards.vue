@@ -129,6 +129,15 @@ watch(
     }
 )
 
+const changeGradingStatus = (gradeList, index) => {
+  if(!confirm("Are you sure, you want to change status of: " + gradeList.name)){
+    return
+  }
+
+  deletionLoader.value = index
+
+  assessmentStore.changeStatusGradeStandard(gradeList.number)
+}
 
 const editThisData = (gradeList) => {
   editModel.value = true
@@ -150,6 +159,17 @@ const deleteThisData = (info,index) => {
 }
 
 
+
+watch(
+    () => assessmentStore.changeStatusGradingScaleResponse,
+    async (data) => {
+      if(data){
+        doFetchGradingStandard()
+        deletionLoader.value = false
+        notificationStore.successToast("Success",data.message)
+      }
+    }
+)
 
 watch(
     () => assessmentStore.deleteGradingScaleResponse,
@@ -240,7 +260,8 @@ watch(
           <th scope="col">Name</th>
           <th scope="col">Type</th>
           <th>Descriptions</th>
-          <th>Class</th>
+          <th>Status</th>
+          <th>Change status</th>
           <th>Actions</th>
         </tr>
         </thead>
@@ -250,8 +271,19 @@ watch(
               <td>{{ gradeList.name }}</td>
               <td>{{ gradeList.type }}</td>
               <td>{{ gradeList.description }}</td>
-              <td>{{ gradeList.class }}</td>
-
+              <td>
+                <span class="border px-2 rounded-sm">
+                  {{ gradeList.status }}
+                </span>
+              </td>
+              <td>
+                <button
+                    @click="changeGradingStatus(gradeList, index)"
+                    type="button"
+                    class="bg-[#0d6efd] text-white text-xs px-2 rounded-sm">
+                  {{ gradeList.status === "ACTIVE" ? "Inactivate" : "Activate" }}
+                </button>
+              </td>
               <td>
                 <button @click="editThisData(gradeList)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
                 <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>

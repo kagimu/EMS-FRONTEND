@@ -30,6 +30,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const updateGradeResponse = ref(null)
     const deleteGradeResponse = ref(null)
     const deleteGradingScaleResponse = ref(null)
+    const changeStatusGradingScaleResponse = ref(null)
     const  updateGradeStandardResponse = ref(null)
     const  updateGradeStandardScaleDetailsResponse = ref(null)
     const removeInterviewAssessmentScheduleResponse = ref(null)
@@ -414,6 +415,18 @@ async function updateMetric(data,metricNumber) {
                 }
             })
     }
+
+    async function changeStatusGradeStandard(grade_standard_number) {
+        return await api.post("main/grading-standard/change-status/"+grade_standard_number)
+            .then((response) => {
+             changeStatusGradingScaleResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
     
     async function updateGradeStandard(data) {
         return await api.post("main/grading-standard/update",data)
@@ -503,6 +516,7 @@ async function updateMetric(data,metricNumber) {
         updateGradeStandardScaleDetailsResponse,
         updateMetricResponse,
         deleteMetricResponse,
+        changeStatusGradingScaleResponse,
         createAssessmentAreas,
         fetchAssessmentArea,
         fetchAssessments,
@@ -527,6 +541,7 @@ async function updateMetric(data,metricNumber) {
         deleteGrade,
         updateGradeStandard,
         deleteGradeStandard,
+        changeStatusGradeStandard,
         removeInterviewAssessmentSchedule,
         removeStudentFromInterview,
         updateAggregateScale,
