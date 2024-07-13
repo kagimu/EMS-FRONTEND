@@ -1,112 +1,3 @@
-<template>
-  <div>
-
-    <form @submit.prevent="addCampus">
-
-      <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
-        {{ errorMessage }}
-      </div>
-
-      <div class="row">
-        <div class="col-6">
-          <div class="mx-auto" style="width: 95%;">
-
-          <div class="mb-2">
-            <label class="textColor"><small>Campus Name</small></label>
-            <input
-                style="outline: none 0 !important; box-shadow: none;"
-                type="text"
-                v-model="form.name"
-                required
-                class="form-control form-select-sm">
-          </div>
-
-          <div class="mb-2">
-            <label class="textColor"><small>Phone</small></label>
-            <input
-                style="outline: none 0 !important; box-shadow: none;"
-                type="tel"
-                v-model="form.phone"
-                required
-                class="form-control form-select-sm">
-          </div>
-
-          <div class="mb-2">
-            <label class="textColor"><small>Email</small></label>
-            <input
-                style="outline: none 0 !important; box-shadow: none;"
-                type="email"
-                v-model="form.email"
-                required
-                class="form-control form-select-sm">
-          </div>
-
-
-          <div class="mb-2">
-            <label class="textColor text-sm">Location</label>
-            <textarea
-                style="outline: none 0 !important; box-shadow: none; height: 60px"
-                class="form-control noFocus form-control-sm"
-                v-model="form.location"
-                id="floatingTextarea2"></textarea>
-          </div>
-          </div>
-        </div>
-        <div   class="col-6">
-          <div class="mx-auto" style="width: 95%;">
-
-
-            <div class="mb-2">
-              <label class="textColor text-sm">Commencement Date</label>
-              <VueDatePicker
-                  text-input
-                  auto-apply
-                  style="font-size: 7px;"
-                  v-model="form.commencement_date"
-                  :preview-format="format"
-                  :teleport="true"
-              ></VueDatePicker>
-            </div>
-
-
-            <div class="mb-2">
-              <label class="textColor mt-3 mb-2"><small>Select Curriculum(s) to adopt to this campus</small></label>
-              <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-                <li class="list-group-item" v-for="(lvl,idx) in curriculumList">
-                  <input
-                      v-model="form.campus_curriculum"
-                      style="outline: none 0 !important; box-shadow: none;"
-                      class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="idx">
-                  <label class="form-check-label cursor-pointer" :for="idx">{{lvl.name}}</label>
-                </li>
-
-              </ul>
-            </div>
-
-
-          </div>
-        </div>
-      </div>
-
-
-
-      <div class="flex justify-content-end" style="width: 100%;">
-        <button
-            type="submit"
-            class="btn btn-primary border-0">
-          {{campus_number ? "Edit":"Save"}}
-          <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </span>
-        </button>
-      </div>
-
-    </form>
-
-
-  </div>
-</template>
-
 <script setup>
 
 import {onMounted, reactive, ref, watch} from "vue";
@@ -116,10 +7,13 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 import VueDatePicker from "@vuepic/vue-datepicker";
+import useCommonsStore from "@/composables/useCommons.js";
 
+const campusStore = useCampusStore()
+const schoolStore = useSchoolStore()
+const commons = useCommonsStore()
 const routerData = useRouter()
 const errorMessage = ref(null)
-const name = ref(null)
 const loader = ref(false)
 const schoolsList = ref( [])
 const school = ref( null)
@@ -128,8 +22,7 @@ const levelList = ref([])
 const curriculumList = ref([])
 
 
-const campusStore = useCampusStore()
-const schoolStore = useSchoolStore()
+
 
 let schoolNumber = routerData.currentRoute.value.query.id
 const curriculumStore = useCurriculumStore()
@@ -167,13 +60,13 @@ const props = defineProps({
 
 
 const clearCampusForm = () => {
-      form.name = null
-      form.email = null
-      form.phone = null
-      form.location = null
-      form.campus_curriculum = []
-      form.commencement_date = null
-      campus_number.value = null
+  form.name = null
+  form.email = null
+  form.phone = null
+  form.location = null
+  form.campus_curriculum = []
+  form.commencement_date = null
+  campus_number.value = null
 }
 
 defineExpose({
@@ -186,6 +79,12 @@ onMounted(
       await curriculumStore.fetchSchoolCurriculum(schoolNumber)
     }
 )
+
+function handleInput() {
+  if (form.phone.value.length > 15) {
+    form.phone.value = form.phone.value.slice(0, 15);
+  }
+}
 
 const format = (date) => {
   const day = date.getDate();
@@ -274,6 +173,120 @@ watch(
 
 
 </script>
+<template>
+  <div>
+
+    <form @submit.prevent="addCampus">
+
+      <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <div class="mx-auto" style="width: 95%;">
+
+          <div class="mb-2">
+            <label class="textColor"><small>Campus Name</small></label>
+            <input
+                style="outline: none 0 !important; box-shadow: none;"
+                type="text"
+                v-model="form.name"
+                required
+                class="form-control form-select-sm">
+          </div>
+
+          <div class="mb-2">
+            <label class="textColor"><small>Phone</small></label>
+            <vue-tel-input
+                @input="handleInput"
+                @keypress="commons.onlyNumberValidator($event)"
+                style="padding:0; outline: none 0 !important; box-shadow: none;"
+                class="form-control"
+                :input-options="{placeholder: ''}"
+                v-model="form.phone"
+                :dropdown-options="{ showDialCodeInSelection: true, showFlags: true, showDialCodeInList: true}"
+                :preferredCountries="['UG']"
+                mode="international"></vue-tel-input>
+          </div>
+
+          <div class="mb-2">
+            <label class="textColor"><small>Email</small></label>
+            <input
+                style="outline: none 0 !important; box-shadow: none;"
+                type="email"
+                v-model="form.email"
+                required
+                class="form-control form-select-sm">
+          </div>
+
+
+          <div class="mb-2">
+            <label class="textColor text-sm">Location</label>
+            <textarea
+                style="outline: none 0 !important; box-shadow: none; height: 60px"
+                class="form-control noFocus form-control-sm"
+                v-model="form.location"
+                id="floatingTextarea2"></textarea>
+          </div>
+          </div>
+        </div>
+        <div   class="col-6">
+          <div class="mx-auto" style="width: 95%;">
+
+
+            <div class="mb-2">
+              <label class="textColor text-sm">Commencement Date</label>
+              <VueDatePicker
+                  text-input
+                  auto-apply
+                  style="font-size: 7px;"
+                  v-model="form.commencement_date"
+                  :preview-format="format"
+                  :teleport="true"
+              ></VueDatePicker>
+            </div>
+
+
+            <div class="mb-2">
+              <label class="textColor mt-3 mb-2"><small>Select Curriculum(s) to adopt to this campus</small></label>
+              <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+                <li class="list-group-item" v-for="(lvl,idx) in curriculumList">
+                  <input
+                      v-model="form.campus_curriculum"
+                      style="outline: none 0 !important; box-shadow: none;"
+                      class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="idx">
+                  <label class="form-check-label cursor-pointer" :for="idx">{{lvl.name}}</label>
+                </li>
+
+              </ul>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="flex justify-content-end" style="width: 100%;">
+        <button
+            type="submit"
+            class="btn btn-primary border-0">
+          {{campus_number ? "Edit":"Save"}}
+          <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </span>
+        </button>
+      </div>
+
+    </form>
+
+
+  </div>
+</template>
+
+
 
 <style scoped>
 .noFocus:focus {

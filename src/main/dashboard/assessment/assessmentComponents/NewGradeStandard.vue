@@ -45,12 +45,14 @@ const form = reactive({
 
 onMounted(
     async () => {
+        campusStore.fetchClassesBySchool()
         campusStore.fetchClassesByCampus(campusNumber)
         campusStore.fetchAggregateScales(schoolNumber)
         fetchCampusLevel()
         getGradeInfo()
     }
 )
+
 
 
 watch(
@@ -162,6 +164,16 @@ watch(
     async (data) => {
       if(data){
         campusClassList.value = data.data
+      }
+    }
+)
+
+watch(
+    () => campusStore.schoolClassesResponse,
+    async (data) => {
+      if(data){
+        alert(JSON.stringify(data))
+        // campusClassList.value = data.data
       }
     }
 )

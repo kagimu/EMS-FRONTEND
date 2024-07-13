@@ -11,6 +11,7 @@ export const useCampusStore = defineStore("campus", () => {
     let campusClassesResponse = ref(null)
     let campusLevelListResponse = ref(null)
     let aggregateScaleResponse = ref(null)
+    let schoolClassesResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -100,6 +101,18 @@ export const useCampusStore = defineStore("campus", () => {
             })
     }
 
+    async function fetchClassesBySchool() {
+        return await api.get("main/class/school")
+            .then((response) => {
+                schoolClassesResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     async function fetchAggregateScales(school_number) {
         return await api.get("main/assessments/aggregate-scales?school_number="+school_number)
             .then((response) => {
@@ -127,6 +140,7 @@ export const useCampusStore = defineStore("campus", () => {
         campusLevelListResponse,
         campusClassesResponse,
         aggregateScaleResponse,
+        schoolClassesResponse,
         newCampusData,
         fetchCampuses,
         fetchCampusData,
@@ -134,6 +148,7 @@ export const useCampusStore = defineStore("campus", () => {
         deleteCampus,
         fetchCampusLevel,
         fetchClassesByCampus,
+        fetchClassesBySchool,
         fetchAggregateScales
     }
 })
