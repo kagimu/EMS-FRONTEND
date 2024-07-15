@@ -283,11 +283,7 @@ const newClass = () => {
               </tr>
               </tbody>
             </table>
-
-
             <button @click="newClass" type="button" class="bg-[#0d6efd] text-white text-sm px-2 rounded-sm" style="text-align: center;"><i class="bi bi-plus"></i>Add</button>
-
-
 
           </div>
           

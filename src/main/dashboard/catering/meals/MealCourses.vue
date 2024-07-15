@@ -99,7 +99,7 @@ watch(
     () => mealStore.updateMealCoursesResponse,
     async (data) => {
       if(data){
-        await mealStore.fetchMealCourses({school_number:receivedSchoolNumber.value,status:'ACTIVE'})
+        // await mealStore.fetchMealCourses({school_number:receivedSchoolNumber.value,status:'ACTIVE'})
         mealCourseDialog.value=false
       }
     }

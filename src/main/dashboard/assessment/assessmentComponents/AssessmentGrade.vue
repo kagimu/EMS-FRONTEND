@@ -156,7 +156,7 @@ const deleteThisData = (id,name) => {
 <template>
     <div>
 
-      <AppModal :title="editModel ? 'Edit ' + namee:'Add Assessment Grade'"  v-model="showAssessmentScaleModal" lg>
+      <AppModal :title="editModel ? 'Edit ' + namee:'Add Assessment Grade'"  v-model="showAssessmentScaleModal" xl6>
         <NewAssessmentScale :scaleD="scaleD" :assessmentGradeListD="assessmentGradeListD"></NewAssessmentScale>
       </AppModal>
     
@@ -165,10 +165,10 @@ const deleteThisData = (id,name) => {
       <div class="row">
             <div class="col-12">
               <div class="card">
-                <div class="card-header">
+                <div class="m-3">
            <div class="row">
             <div class="col-lg-6 "> 
-                  <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">  
+                 
             </div>
             <div class="col-lg-6">
                 <button

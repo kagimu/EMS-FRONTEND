@@ -1,5 +1,4 @@
 <script setup>
-
 import {onMounted, reactive, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
@@ -32,26 +31,7 @@ const campus_level_number = ref("")
 const campusClassList = ref(null)
 let schoolNumber = routerData.currentRoute.value.query.sch
 const aggregateData = ref([])
-
-const form = reactive({
-  code:null,
-  name : null,
-  maximum_points: null,
-  minimum_points: null,
-  campus_class_number:null,
-  description: null,
-  abbreviation: null,
-  remarks:null,
-  campus_number:campusNumber
-})
-
 const scaleDataList = ref(null)
-
-const props = defineProps({
-  scaleD:String,
-  assessmentGradeListD:{}
-})
-
 
 onMounted(
     async () => {
@@ -59,17 +39,27 @@ onMounted(
        fetchCampusLevel()
        getAssessmentScaleDataInfo()
        fetchGradeScale()
+       campusStore.fetchClassesBySchool()
     }
 )
 
+
+const form = reactive({
+  assessment_area_count:null,
+  classes: [{class_number:""}],
+  assessment_grade_items:[{code:"",name:"",minimum_points:"",maximum_points:"",remarks:"",abbreviation:"",description:""}]
+})
+
+const props = defineProps({
+  scaleD:String,
+  assessmentGradeListD:{}
+})
 const fetchGradeScale = () =>{
   let data = {
     school_number:schoolNumber
   }
   assessmentStore.fetchAggregateScale(data)
 }
-
-
 
 const getAssessmentScaleDataInfo = () =>{
   if(props.assessmentGradeListD){
@@ -85,6 +75,72 @@ const getAssessmentScaleDataInfo = () =>{
   }
 }
 
+const fetchCampusLevel = () => {
+  classStore.fetchCampusLevel(campus_curriculum_number)
+}
+
+const fetchClass = (campus_level_number) => {
+  academicYearStore.fetchCampusClassByLevel(campus_level_number)
+}
+
+
+
+const createScale = () =>{
+
+  buttonLoader.value = true
+  if(props.assessmentGradeListD.number){
+    form.assessment_grade_number = props.assessmentGradeListD.number
+    alert(JSON.stringify(form))
+    assessmentStore.updateAssessmentScale(form)
+
+  }else{
+  const transformedClasses = form.classes.map(classInfo => classInfo.class_number);
+
+  const transformedGradeScales = form.assessment_grade_items.map(scale => ({
+    ...scale,
+    code: parseInt(scale.code),
+    minimum_points: parseInt(scale.minimum_points),
+    maximum_points: parseInt(scale.maximum_points)
+  }))
+
+  const finalData = {
+  assessment_area_count:  parseInt(form.assessment_area_count),
+  classes: transformedClasses,
+  assessment_grade_items: transformedGradeScales
+}
+
+    alert(JSON.stringify(finalData))
+    assessmentStore.createAssessmentScale(form)
+  }
+
+}
+
+const fetchCampuses = (school_number) => {
+  campusStore.fetchCampuses(school_number ?? "")
+}
+
+const fetchClasses = (campus_number) => {
+  campusStore.fetchClassesByCampus(campus_number)
+}
+
+const removeClass = (index) => {
+  form.classes.splice(index, 1);
+}
+
+const newClass = () => {
+ form.classes.push({class_number:""})
+}
+
+
+const removeGradeScale = (index) => {
+  form.assessment_grade_items.splice(index, 1);
+}
+
+const newGradeScale = () => {
+  form.assessment_grade_items.push({code:null, name:null,abbreviation:null,minimum_points:null,maximum_points:null,remarks:null,description:null})
+}
+
+
 watch(
     () => levelStore.campusCurriculumResponse,
     async (data) => {
@@ -93,10 +149,6 @@ watch(
       }
     }
 )
-
-const fetchCampusLevel = () => {
-  classStore.fetchCampusLevel(campus_curriculum_number)
-}
 
 watch(
     () => classStore.campusLevelResponse,
@@ -107,12 +159,8 @@ watch(
     }
 )
 
-const fetchClass = (campus_level_number) => {
-  academicYearStore.fetchCampusClassByLevel(campus_level_number)
-}
-
 watch(
-    () => academicYearStore.campusClassByLevelResponse,
+    () => campusStore.schoolClassesResponse,
     async (data) => {
       if(data){
         campusClassList.value = data.data
@@ -126,37 +174,10 @@ watch (
     async (data) => {
       if(data){
         scaleDataList.value =props.scaleD
-      //  form.name = props.scaleD.name
-      //  form.maximum_points=props.scaleD.maximum_points
-      //  form.minimum_points=props.scaleD.minimum_points
-      //  form.campus_class_number=props.scaleD.campus_class_number
-      //  form.grade=props.scaleD.Grade
-      //  form.description=props.scaleD.description
-      //  form.abbreviation=props.scaleD.abbreviation
-      //  form.remarks=props.scaleD.remarks
       }
     },
     {deep:true}
 )
-const createScale = () =>{
-  buttonLoader.value = true
-  form.code = parseInt(form.code)
-  form.maximum_points = parseInt(form.maximum_points)
-  form.minimum_points = parseInt(form.minimum_points)
-
-  if(props.assessmentGradeListD.number){
-    form.assessment_grade_number = props.assessmentGradeListD.number
-    alert(JSON.stringify(form))
-    assessmentStore.updateAssessmentScale(form)
-
-  }else{
-    assessmentStore.createAssessmentScale(form)
-  }
-
-}
-
-
-
 
 watch(
     () => assessmentStore.aggregateScaleResponse,
@@ -220,23 +241,6 @@ watch (
     {deep:true}
 )
 
-
-
-
-const fetchCampuses = (school_number) => {
-  campusStore.fetchCampuses(school_number ?? "")
-}
-
-const fetchClasses = (campus_number) => {
-  campusStore.fetchClassesByCampus(campus_number)
-}
-
-
-
-
-
-
-
 watch(
     () => campusStore.errorMessage,
     async (data) => {
@@ -258,118 +262,141 @@ watch(
     {deep: true}
 )
 
-
-
 </script>
 
 <template>
     <div>
     <form @submit.prevent="createScale()">
+  <div>
+    <div class="mb-2">
+      <label>Count</label>
+        <input
+      maxlength="3"
+      @keypress="commons.numbersOnlyValidator($event)"
+      v-model="form.assessment_area_count"
+      type="text"
+      class="form-control outline-none shadow-none"
+    >
+     
+      </div>
+<table
+
+    class="table table-hover caption-top mt-1 table-sm table-striped"
+    style="font-size: 12px !important;"
+>
+  <thead>
+  <tr>
+    <td class="">Class</td>
+    <td class="w-[8%]"></td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr v-for="(classInfo, index) in form?.classes" :key="index">
+    <td>
+      <div class="">
+        <select
+            class="form-select form-select-sm shadow-none" required
+            v-model="classInfo.class_number"
+        >
+          <option disabled value="">--Select Class--</option>
+          <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
+        </select>
+      </div>
+    </td>
+  
+    <td>
+      <div class="mt-1">
+        <i class="bi bi-x-circle cursor-pointer text-[red]" @click="removeClass(index)"></i>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<button @click="newClass" type="button" class="bg-[#0d6efd] text-white text-sm px-2 rounded-sm" style="text-align: center;"><i class="bi bi-plus"></i></button>
+</div>
+<div>
+
+  <label class="mt-6"><small>GradeScale</small></label>
+<table
+    class="table table-hover caption-top table-sm table-striped"
+    style="font-size: 12px !important;"
+>
+  <thead>
+  <tr>
+    <td class="w-[5%]">code</td>
+    <td >Name</td>
+    <td>Abbrev</td>
+    <td>Minimum Point</td>
+    <td >Maximum Point</td>
+    <td>Remark</td>
+    <td>Description</td>
+    <td></td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr v-for="(gradeScaleInfo, index) in form?.assessment_grade_items" :key="index">
+    <td> 
        <div class="mb-2">
-            <div class="text-[13px] text-[#505050]"> Level</div>
-            <select
-                class="form-select form-select-sm shadow-none"
-                v-model="campus_level_number"
-                @change="fetchClass(campus_level_number)"
-            >
-              <option disabled value="">--Select Level--</option>
-              <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-            </select>
-          </div>
-
-          <div class="mb-2">
-            <div class="text-[13px] text-[#505050]"> Class</div>
-            <select
-                class="form-select form-select-sm shadow-none" required
-                v-model="form.campus_class_number"
-            >
-              <option disabled value="">--Select Class--</option>
-              <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
-            </select>
-          </div>
-
-
-          <div class="mb-2">
-          
-            <div class="text-[13px] text-[#505050]"> Aggregate Scale</div>
-            <select
-                class="form-select form-select-sm shadow-none" required
-                v-model="form.campus_class_number"
-            >
-              <option disabled value="">--Select --</option>
-              <option v-for="(list, index) in aggregateData" :key="index" :value="list.scale_number">{{list.scale_name}}</option>
-            </select>
-          </div>
-
-
-          <!-- <div class="mb-2">
-            <div class="text-[13px] text-[#505050]"> Code</div>
             <input
                 @keypress="commons.codeValidator($event)"
                 maxlength="10"
-                v-model="form.code"
+                v-model="gradeScaleInfo.code"
                 required
                 @paste.prevent
                 class="form-control form-select-sm shadow-none">
-          </div> -->
-
-
-
-
-            <!-- <div class="row">
-                <div class="col-6">
-                <div class="mb-2">
-                  <div class="text-[13px] text-[#505050]"> Name</div>
-                <input v-model="form.name" placeholder="First Grade, Second Grade ..." type="text" class="form-control outline-none shadow-none">
-                </div>
-                </div>
-                <div class="col-6">
-                <div class="mb-2">
-                  <div class="text-[13px] text-[#505050]"> Abbreviation</div>
-                <input v-model="form.abbreviation" placeholder="Division 1 / Result 1" type="text" class="form-control outline-none shadow-none">
-                </div>
-                </div>
-            </div>
-          
+          </div>
+      </td>
+    <td>   
       <div class="mb-2">
-        <div class="row">
-            <div class="col-lg-6">
-              <div class="text-[13px] text-[#505050]">Minimum aggregate sum</div>
-               <input
-                   maxlength="3"
-                   @keypress="commons.numbersOnlyValidator($event)"
-                   v-model="form.minimum_points"
-                   type="text"
-                   class="form-control outline-none shadow-none"
-               >
-            </div>
-            <div class="col-lg-6">
-              <div class="text-[13px] text-[#505050]">Maximum aggregate sum</div>
-              <input
-                 maxlength="3"
-                 @keypress="commons.numbersOnlyValidator($event)"
-                 v-model="form.maximum_points"
-                 type="text"
-                 class="form-control outline-none shadow-none">
-            </div>
-
+         <input v-model="gradeScaleInfo.name" placeholder="First Grade, Second Grade ..." type="text" class="form-control outline-none shadow-none">
         </div>
-      </div>
-
+    </td>
+    <td>
       <div class="mb-2">
-        <div class="text-[13px] text-[#505050]">Description</div>
-        <textarea v-model="form.description" class="form-control textColor outline-none shadow-none">
-        </textarea>
+      <input v-model="gradeScaleInfo.abbreviation" placeholder="Division 1 / Result 1" type="text" class="form-control outline-none shadow-none">
       </div>
-      
-      <div class="mb-2">
-        <div class="text-[13px] text-[#505050]">Remarks</div>
-        <textarea v-model="form.remarks" class="form-control textColor outline-none shadow-none">
-        </textarea>
-      </div> -->
+    </td>
+    <td>
+    <input
+      maxlength="3"
+      @keypress="commons.numbersOnlyValidator($event)"
+      v-model="gradeScaleInfo.minimum_points"
+      type="text"
+      class="form-control outline-none shadow-none"
+    >
+    </td>
 
+    <td>
+    <input
+      maxlength="3"
+      @keypress="commons.numbersOnlyValidator($event)"
+      v-model="gradeScaleInfo.maximum_points"
+      type="text"
+      class="form-control outline-none shadow-none">    
+    </td>
 
-     <div class="flex justify-content-end mt-2" style="width: 100%;">
+    <td>
+      <textarea v-model="gradeScaleInfo.remarks" class="form-control textColor outline-none shadow-none">
+      </textarea>
+    </td>
+
+    <td>
+      <textarea v-model="gradeScaleInfo.description" class="form-control textColor outline-none shadow-none">
+      </textarea>
+    </td>
+
+    <td>
+      <div class="mt-1">
+        <i class="bi bi-x-circle cursor-pointer text-[red]" @click="removeGradeScale(index)"></i>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<button @click="newGradeScale" type="button" class="bg-[#0d6efd] text-white text-sm px-2 rounded-sm" style="text-align: center;"><i class="bi bi-plus"></i>Add</button>
+</div>
+
+<div class="flex justify-content-end mt-2" style="width: 100%;">
             <button type="submit" class="btn btn-primary border-0 btn-sm">
                  <small><i class="bi bi-save"></i> submit</small>
                  <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
