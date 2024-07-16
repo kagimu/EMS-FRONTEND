@@ -99,8 +99,8 @@ const createScale = () =>{
   const transformedGradeScales = form.assessment_grade_items.map(scale => ({
     ...scale,
     code: parseInt(scale.code),
-    minimum_points: parseInt(scale.minimum_points),
-    maximum_points: parseInt(scale.maximum_points)
+    minimum_points: parseFloat(scale.minimum_points),
+    maximum_points: parseFloat(scale.maximum_points)
   }))
 
   const finalData = {
