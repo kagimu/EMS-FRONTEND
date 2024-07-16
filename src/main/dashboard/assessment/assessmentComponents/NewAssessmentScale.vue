@@ -109,8 +109,8 @@ const createScale = () =>{
   assessment_grade_items: transformedGradeScales
 }
 
-    alert(JSON.stringify(finalData))
-    assessmentStore.createAssessmentScale(form)
+    // alert(JSON.stringify(finalData))
+    assessmentStore.createAssessmentScale(finalData)
   }
 
 }

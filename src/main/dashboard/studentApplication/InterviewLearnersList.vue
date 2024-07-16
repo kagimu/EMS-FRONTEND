@@ -65,6 +65,7 @@
        () => {
          studentApplicationStore.fetchAssessmentMetricsOnInterview(interviewNumber)
          schoolStore.fetchSchools()
+         fetchStudentOnInterview()
        }
    )
    
@@ -82,7 +83,7 @@
      assessN.value = assessmentMetricNumber
    
       let data = {
-         interview_number:interviewN,
+         interview_number:interviewNumber,
          assessment_metric_number:assessmentMetricNumber
       }
          applicationStore.fetchStudentsOnInterview(data) 
@@ -336,10 +337,10 @@
                               <div class="mt-2">
                                  <div class="row mx-auto">
                                     <div class="row">
-                                       <label style="font-size: 11px;"  class="alert alert-primary p-0">* Please Select Assessment schedule to View Applicants</label>
+                                       <!-- <label style="font-size: 11px;"  class="alert alert-primary p-0">* Please Select Assessment schedule to View Applicants</label> -->
                                     </div>
                                     <div class="row mt-2">
-                                       <div class="col-lg-4">
+                                       <!-- <div class="col-lg-4">
                                           <div class="mb-2">
                                              <div class="input-group mt-1">
                                                 <select
@@ -353,7 +354,7 @@
                                                 </select>
                                              </div>
                                           </div>
-                                       </div>
+                                       </div> -->
                                        <div class="col-3">
                                           <div class="mb-2">
                                              <select
@@ -448,7 +449,7 @@
                                  </thead>
                                  <tbody>
                                     <tr v-for="(listD,idx) in student.Assessments" :key="idx">
-                                       <td>{{ listD.assessment_metric_number }}</td>
+                                       <td>{{ listD.assessment_area_name }}</td>
                                        <td>{{ listD.score }}</td>
                                        <td>{{ listD.actual_score }}</td>
                                        <td>{{ listD.comment }}</td>
