@@ -74,9 +74,13 @@ const fetchAssessmentArea = (campus_class_number) =>{
 
 const fetchAssessmentMetrics = () =>{
   if(study_period_number.value && assessment_area_number.value) {
+
+    let result = campusClassList.value?.find(item => item.curriculum_class_number === campus_class_number.value);
+
     let data = {
       study_period_number:study_period_number.value,
-      assessment_area_number:assessment_area_number.value
+      assessment_area_number:assessment_area_number.value,
+      campus_class_number:result?.number
     }
      assessmentStore.fetchAssessmentMetrics(data)
   }

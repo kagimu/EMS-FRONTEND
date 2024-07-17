@@ -319,9 +319,10 @@ watch(
                 <th>#</th>
                 <th>Name</th>
                 <th>Unit</th>
+                <th>Purchase Unit</th>
                 <th>Current Quantity</th>
-                <th>School</th>
-                <th>Type</th>
+
+<!--                <th>Type</th>-->
                 <th>Action</th>
             </tr>
         </thead>
@@ -329,20 +330,19 @@ watch(
 
         <tr v-for="(list, index) in menuItemData" v-if="isLoading===false" :key="index">
           <td>{{ index+1 }}</td>
-      <td>{{ list.name }} [{{ list.code }}]</td>
-      <td>{{ list.unit_of_measure_name }}</td>
-      <td>{{ list.current_quantity }}</td>
-      <td>{{ list.school_name }}</td>
-      <td>{{ list.type }}&nbsp;
+      <td>{{ list?.name }} [{{ list?.code }}]</td>
+      <td>{{ list?.unit_of_measure_name }}</td>
+      <td>{{ list?.purchase_unit_of_measure_name }}</td>
+      <td>{{ list?.current_quantity }}</td>
+<!--      <td>{{ list?.type }}&nbsp;
        <span  v-if="list.type==='ASSEMBLED'">
         <ul class="list-group">
           <li class="list-group-item"  v-for="(ldData,idx) in list.parts" :key="idx">[{{ldData.code}}] {{ ldData.name }} - {{ ldData.quantity }} {{ ldData.unit_of_measure }}
                         <i class="bi bi-x" style="color: red;"></i>
                         </li>
             </ul>
-       
-        </span> 
-        </td>
+        </span>
+        </td>-->
       <td>
           <button @click="showUpdateDialog(list)" >
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>

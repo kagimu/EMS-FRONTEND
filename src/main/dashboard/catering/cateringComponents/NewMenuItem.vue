@@ -53,7 +53,9 @@ const menuForm = reactive({
   unit_of_measure_number:"",
   campus_number:"",
   base_price:null,
-  school_number:null
+  school_number:null,
+  purchase_unit_of_measure_number:"",
+  conversion_to_purchase_unit :null
 } )
 
 watch(
@@ -78,6 +80,7 @@ const getMenuItemInfo = () =>{
         menuForm.campus_number = draft?.number ?? ""
         menuForm.base_price = draft?.unit_cost ?? ""
         menuForm.school_number = draft?.school_number ?? ""
+        menuForm.purchase_unit_of_measure_number = draft?.purchase_unit_of_measure_number
         if(draft?.parts?.length > 0) {
           let items = draft?.parts
           items.forEach(lst => {
@@ -108,9 +111,11 @@ watch(
 
 
 const addMenuItem = () =>{
+
   if(menuForm.type === 'ITEM'){
     menuForm.code = parseInt(menuForm.code)
     menuForm.base_price = parseFloat(menuForm.base_price)
+    menuForm.conversion_to_purchase_unit = parseFloat(menuForm.conversion_to_purchase_unit.toString().replace(/,/g, ""))
     buttonLoader.value = true
     if(item_number.value){
       menuForm.menu_item_number = item_number.value
@@ -162,6 +167,8 @@ watch(
           menuForm.type=null,
           menuForm.unit_of_measure_number=null,
           menuForm.campus_number=null
+          menuForm.conversion_to_purchase_unit=null,
+          menuForm.purchase_unit_of_measure_number=""
           buttonLoader.value = false
     },
     {deep: true}
@@ -230,6 +237,13 @@ function availableOptions(index) {
   return menuOptions.value.filter(option => !selectedNames.includes(option.name) || option.name === menuItems.value[index].name)
 }
 
+const compute = (value) => {
+  value = value.toString().replace(/,/g, "")
+  if (!isNaN(value)) {
+    value = value - 0;
+  }
+  menuForm.conversion_to_purchase_unit = eval(value) >= 0 ? eval(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null;
+}
 
 const createFeedingSessionItem = () => {
   const secondaryItemNumbers = menuItems.value.map(menu => {
@@ -312,8 +326,7 @@ const clearFormData = () => {
 
   <div class="row">
 
-    <div class="col-lg-12">
-
+    <div class="col-lg-6">
 <div class="mb-2">
   <label class="textColor"><small>School</small> </label>
   <select
@@ -329,20 +342,12 @@ const clearFormData = () => {
 </div>
 
 
-</div>
-
-    <div class="col-lg-12">
-
-      <div class="mb-2">
+<div class="mb-2">
         <label class="textColor"><small>Item Name</small></label>
         <input v-model="menuForm.name"   class="form-control shadow-none" required type="text">
       </div>
 
-
-
-      <div class="row">
-        <div class="col-lg-4">
-          <div class="mb-2">
+      <div class="mb-2">
             <label class="textColor"><small>Code</small></label>
             <input
                 v-model="menuForm.code"
@@ -353,23 +358,59 @@ const clearFormData = () => {
                 @paste.prevent
                 @keypress="commons.codeValidator($event)">
           </div>
-        </div>
-        <div class="col-lg-8">
+ 
+</div>
 
+
+
+
+
+    
+       
+        <div class="col-lg-6">
+
+          
           <div class="mb-2">
-            <label class="textColor"><small> Unit of use measurements</small></label>
+            <label class="textColor"><small> Unit of use</small></label>
             <div class="input-group">
             <select
                 v-model="menuForm.unit_of_measure_number"
                 class="form-control form-select shadow-none" id="inputGroupSelect02">
-              <option disabled value="">--Select Unit of use measurements--</option>
+              <option disabled value="">--Select Unit of use--</option>
               <option v-for="(list, index) in unitMeasurementData" :key="index" :value="list.number">{{list.name}}</option>
             </select>
             <span class="input-group-text p-0 px-1"  ><i  class="bi bi-plus-circle" @click="showUnitMeasurement()"></i></span>
           </div>
         </div>
+
+          <div class="mb-2">
+        <label class="textColor"><small>Conversion Purchase Unit</small></label>
+            <input
+                v-model="menuForm.conversion_to_purchase_unit"
+                @keypress="commons.onlyNumberValidator($event)"
+                v-on:blur="compute(menuForm.conversion_to_purchase_unit)"
+                class="form-control shadow-none"
+                maxlength="20"
+                required
+                type="text"
+                @paste.prevent>
+          </div>
+
+          <div class="mb-2">
+            <label class="textColor"><small>Purchase Unit of measure</small></label>
+            <div class="input-group">
+            <select
+                v-model="menuForm.purchase_unit_of_measure_number"
+                class="form-control form-select shadow-none" id="inputGroupSelect02">
+              <option disabled value="">--Select Purchase Unit of measure--</option>
+              <option v-for="(list, index) in unitMeasurementData" :key="index" :value="list.number">{{list.name}}</option>
+            </select>
+            <span class="input-group-text p-0 px-1"  ><i  class="bi bi-plus-circle" @click="showUnitMeasurement()"></i></span>
+          </div>
         </div>
-      </div>
+       
+     
+      
 
       <div class="mb-2" v-if="menuForm.type === 'ITEM'">
         <label class="textColor"><small>Unit Price</small></label>
@@ -395,10 +436,11 @@ const clearFormData = () => {
           <option>ASSEMBLED</option>
         </select>
       </div>
-
     </div>
-  
   </div>
+  
+  
+ 
 
 
 

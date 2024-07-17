@@ -27,8 +27,8 @@ const form = reactive({
 
 
 function handleInput() {
-  if (form.phone.value.length > 15) {
-      form.phone.value = form.phone.value.slice(0, 15);
+  if (form.phone.length > 15) {
+      form.phone = form.phone.slice(0, 15);
   }
 }
 

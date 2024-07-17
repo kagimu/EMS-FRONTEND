@@ -36,7 +36,7 @@ const props = defineProps({
 
 const form = reactive({
   code: null,
-  classes: [{scale_number:"", campus_class_number:""}],
+  classes: [{scale_number:"", class_number:""}],
   name:null,
   description:null,
   school_number:schoolNumber
@@ -45,12 +45,14 @@ const form = reactive({
 
 onMounted(
     async () => {
-        campusStore.fetchClassesByCampus(campusNumber)
+        campusStore.fetchClassesBySchool()
+        // campusStore.fetchClassesByCampus(campusNumber)
         campusStore.fetchAggregateScales(schoolNumber)
         fetchCampusLevel()
         getGradeInfo()
     }
 )
+
 
 
 watch(
@@ -77,8 +79,15 @@ const getGradeInfo = () => {
 watch(
     () => assessmentStore.updateGradeStandardScaleDetailsResponse,
     async (data) => {
-      if(data){
-        // alert(JSON.stringify(data))
+      if(data && data.data){
+        let arr = []
+        let classesInfo = data.data?.standard_classes
+        if(classesInfo && classesInfo.length) {
+          classesInfo?.forEach(lst => {
+            arr.push({scale_number: lst?.scale?.scale_number, class_number: lst?.class?.number})
+          })
+          form.classes = arr
+        }
       }
     }
 )
@@ -101,7 +110,7 @@ watch(
     () => assessmentStore.newGradeStandardResponse,
     async (data) => {
       if(data){
-            form.campus_class_number = null
+            form.class_number = null
             form.name = null
             form.description = null
       }
@@ -118,8 +127,7 @@ watch (
         buttonLoader.value = false
         notificationStore.errorToast("Error",data.message)
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -150,8 +158,17 @@ const fetchClass = (campus_level_number) => {
   academicYearStore.fetchCampusClassByLevel(campus_level_number)
 }
 
-watch(
+/*watch(
     () => campusStore.campusClassesResponse,
+    async (data) => {
+      if(data){
+        campusClassList.value = data.data
+      }
+    }
+)*/
+
+watch(
+    () => campusStore.schoolClassesResponse,
     async (data) => {
       if(data){
         campusClassList.value = data.data
@@ -174,7 +191,7 @@ const removeClass = (index) => {
 }
 
 const newClass = () => {
-  form.classes.push({scale_number:null, campus_class_number:null})
+  form.classes.push({scale_number:null, class_number:null})
 }
 
 </script>
@@ -185,7 +202,7 @@ const newClass = () => {
         <div class="modal-content">
 
       <div class="modal-body">
-        <!-- {{ gradeDataList }} -->
+
         <form @submit.prevent="addGradeStandard()">
 
 
@@ -239,10 +256,10 @@ const newClass = () => {
                   <div class="">
                     <select
                         class="form-select form-select-sm shadow-none" required
-                        v-model="classInfo.campus_class_number"
+                        v-model="classInfo.class_number"
                     >
                       <option disabled value="">--Select Class--</option>
-                      <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.code+". "+list?.class_name+" [ "+list?.class_abbreviation+" ]"}}</option>
+                      <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
                     </select>
                   </div>
                 </td>
@@ -266,11 +283,7 @@ const newClass = () => {
               </tr>
               </tbody>
             </table>
-
-
             <button @click="newClass" type="button" class="bg-[#0d6efd] text-white text-sm px-2 rounded-sm" style="text-align: center;"><i class="bi bi-plus"></i>Add</button>
-
-
 
           </div>
           

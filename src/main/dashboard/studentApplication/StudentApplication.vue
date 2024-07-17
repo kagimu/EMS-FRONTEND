@@ -76,7 +76,7 @@
       action:"view_application_list"
     },
     {
-      name:"Interview Schedule",
+      name:"Create Interview",
       id:"interviews",
       action:"view_interviews"
     },

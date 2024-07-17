@@ -99,7 +99,7 @@ watch(
     () => mealStore.updateMealCoursesResponse,
     async (data) => {
       if(data){
-        await mealStore.fetchMealCourses({school_number:receivedSchoolNumber.value,status:'ACTIVE'})
+        // await mealStore.fetchMealCourses({school_number:receivedSchoolNumber.value,status:'ACTIVE'})
         mealCourseDialog.value=false
       }
     }
@@ -153,7 +153,7 @@ watch(
 
 
 
-        <div class="flex justify-content-between mt-3">
+        <div class="flex justify-content-between mt-3" v-if="!mealCourseList?.count">
           <div class="ml-4">Meal Courses</div>
           <button
               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCourse">

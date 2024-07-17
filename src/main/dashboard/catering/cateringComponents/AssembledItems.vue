@@ -274,8 +274,8 @@ watch(
                       <tr>
                         <th>Name</th>
                         <th>Unit</th>
+                        <th>Purchase Unit</th>
                         <th>Qty</th>
-                        <th>School</th>
                         <th>Parts</th>
                         <th>#</th>
                       </tr>
@@ -286,22 +286,20 @@ watch(
                     <tbody>
                      
                       <tr v-if="isLoading===false" v-for="(list, index) in menuItemData" :key="index">
-                        <td   v-if="list.type==='ASSEMBLED'">{{ list.name }} [{{ list.code }}]</td>
-                        <td   v-if="list.type==='ASSEMBLED'">{{ list.unit_of_measure_name }}</td>
-                        <td   v-if="list.type==='ASSEMBLED'">{{ list.current_quantity }}</td>
-                        <td   v-if="list.type==='ASSEMBLED'">{{ list.school_name }}</td>
+                        <td   v-if="list.type==='ASSEMBLED'">{{ list?.name }} [{{ list?.code }}]</td>
+                        <td   v-if="list.type==='ASSEMBLED'">{{ list?.unit_of_measure_name }}</td>
+                        <td   v-if="list.type==='ASSEMBLED'">{{ list?.purchase_unit_of_measure_name }}</td>
+                        <td   v-if="list.type==='ASSEMBLED'">{{ list?.current_quantity }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">
-                          <span  v-if="list.type==='ASSEMBLED'">
-                            <!-- <MenuParts :menuNumber="list.number"></MenuParts> -->
-                     
-                      
+                          <div  v-if="list.type==='ASSEMBLED'">
+
                         <ul>
                         <li  v-for="(ldData,idx) in list.parts" :key="idx">[{{ldData.code}}] {{ ldData.name }} - {{ ldData.quantity }} {{ ldData.unit_of_measure }}
                         <i class="bi bi-x" style="color: red;"></i>
                         </li>
                         </ul>
                    
-                          </span>
+                          </div>
                         </td>
                         <td   v-if="list.type==='ASSEMBLED'">
                           <button @click="showUpdateDialog(list)" >

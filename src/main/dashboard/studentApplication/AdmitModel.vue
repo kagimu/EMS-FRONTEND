@@ -1,138 +1,3 @@
-<template>
-  <div>
-    <!-- {{ selectedStudentNumber }} -->
-    <form @submit.prevent="Admit()">
-      <!-- School Selection -->
-      <div class="row">
-        <div class="col-lg-4">
-          <p class="alert alert-primary p-1" style="" ><small>Please ,Choose a class Your admiting this Student !</small> </p>
-          <div class="mb-2">
-            <label class="textSize"><small>School</small></label>
-            <select
-              style="box-shadow: none;"
-              class="form-select form-select-sm" required
-              v-model="form.school_number"
-              @change="fetchCampuses(form.school_number)">
-              <option disabled value="">Select School</option>
-              <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}</option>
-            </select>
-          </div>
-    
-
-   
-          <div class="mb-2">
-            <label class="textSize"><small>Campus</small></label>
-            <select
-              style="box-shadow: none;"
-              class="form-select form-select-sm"
-              v-model="form.campus_number" required
-              @change="fetchClasses(form.campus_number)">
-              <option disabled value="">Select campus</option>
-              <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}</option>
-            </select>
-          </div>
-         
-          <!-- Class Selection -->
-        
-          <div class="mb-2">
-            <label class="textSize"><small>Class</small></label>
-            <select
-              style="box-shadow: none;"
-              class="form-select form-select-sm" required
-              v-model="form.campus_class_number"
-              @change="fetchAcademicYear(form.campus_class_number)">
-              <option disabled value="">Select class</option>
-              <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}</option>
-            </select>
-          </div>
-       
-        <!-- Stream, Academic Year, and Study Period Selection -->
-  
-          <div class="mb-2">
-            <label class="textSize"><small>Stream</small></label>
-            <select
-              style="box-shadow: none;"
-              class="form-select form-select-sm" required
-              v-model="form.stream_number">
-              <option disabled value="">Select Stream</option>
-              <option v-for="(slist, index) in streamList" :key="index" :value="slist.number">{{ slist.name }}</option>
-            </select>
-          </div>
-     
-
-          <div class="mb-2">
-            <label class="textSize"><small>Academic Year</small></label>
-            <select
-              style="box-shadow: none;"
-              class="form-select form-select-sm" required
-              v-model="form.academic_year_number">
-              <option disabled value="">Select Year</option>
-              <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
-            </select>
-          </div>
-        
-
-      
-          <div class="mb-2">
-            <label class="textSize"><small>Study Period</small></label>
-            <select
-              style="box-shadow: none;"
-              class="form-select form-select-sm" required
-              v-model="form.study_period_number">
-              <option disabled value="">Select</option>
-              <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
-            </select>
-          </div>
-        </div>
-      
-    
-    
-      <!-- Service Selection -->
-        <div class="col-lg-8">
-          <p class="alert alert-danger p-1"><small>Select Requirements to be brought by student</small> </p>
-          <div class="row">
-              <!-- New Design -->
-              <label>
-            Requirement/Items
-              </label>
-              <table class="table table-hover caption-top mt-1 ">
-                <thead>
-                  <tr class="" style="padding: 0px;margin: 0px;font-size: 13px;">
-                    <th class="textSize">Item</th>
-                    <th class="textSize">Cost</th>
-                    <th>Quantity</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(Service, index) in Services" :key="index">
-                    <td>
-                      <select class="form-select form-select-sm form-control select-no-border" v-model="Service.number" @change="updateService(index)">
-                        <!-- <option :value="option.item_number" v-for="option in availableOptions(index)">{{ option.name }}</option> -->
-                        <option :value="option.item_number" v-for="option in availableOptions(index)" :key="option.item_number">{{ option.name }}</option>
-                      </select>
-                    </td>
-                    <td><input class="form-control" style="border: 0px; background-color: white;" disabled type="text" v-model="Service.cost" @input="updateAmount(index)" placeholder="Unit Price"></td>
-                    <td><input class="form-control"  style="width: 50px; font-size: 14px; text-align: center;"  @keypress="commons.numbersOnlyValidator($event)" maxlength="10" type="text" v-model="Service.quantity"></td>
-                    <td><button type="button" @click="removeService(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
-                  </tr>
-                </tbody>
-              </table>
-              <button style="width: 30px;" class="btn btn-primary btn-sm textSize" @click.prevent="addService" :disabled="isAddButtonDisabled"><small><i class="bi bi-plus-lg"></i></small></button>
-            </div>
-         
-        </div>
-      </div>
-      <!-- Form Submission Button -->
-      <div class="flex justify-content-end mt-2" style="width: 100%;">
-        <button type="submit" class="btn btn-primary border-0 btn-sm mb-2">
-          <small> submit</small>
-          <span style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span></span>
-        </button>
-      </div>
-    </form>
-  </div>
-</template>
 <script setup>
   import {onMounted, reactive, ref, watch, watchEffect, computed} from "vue";
   import useNotificationStore from "@/composables/useNotification.js";
@@ -374,10 +239,6 @@
     return Services.value.reduce((total, Service) => total + Service.amount, 0);
   }
   
-  // function availableOptions(index) {
-  //   const selectedNames = Services.value.map(Service => Service.number);
-  //   return ServiceOptions.value.filter(option => !selectedNames.includes(option.name) || option.item_number === Services.value[index].number);
-  // }
   
   function availableOptions(index) {
   const selectedNumbers = Services.value.map((Service) => Service.number);
@@ -430,6 +291,131 @@
   }
   
 </script>
+
+<template>
+  <div>
+    <!-- {{ selectedStudentNumber }} -->
+    <form @submit.prevent="Admit()">
+      <div class="row">
+        <div class="col-lg-4">
+          <p class="alert alert-primary p-1" style="" ><small>Please ,Choose a class Your admiting this Student !</small> </p>
+          <div class="mb-2">
+            <label class="textSize"><small>School</small></label>
+            <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm" required
+              v-model="form.school_number"
+              @change="fetchCampuses(form.school_number)">
+              <option disabled value="">Select School</option>
+              <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}</option>
+            </select>
+          </div>
+    
+   
+          <div class="mb-2">
+            <label class="textSize"><small>Campus</small></label>
+            <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm"
+              v-model="form.campus_number" required
+              @change="fetchClasses(form.campus_number)">
+              <option disabled value="">Select campus</option>
+              <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}</option>
+            </select>
+          </div>
+        
+          <div class="mb-2">
+            <label class="textSize"><small>Class</small></label>
+            <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm" required
+              v-model="form.campus_class_number"
+              @change="fetchAcademicYear(form.campus_class_number)">
+              <option disabled value="">Select class</option>
+              <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}</option>
+            </select>
+          </div>
+  
+          <div class="mb-2">
+            <label class="textSize"><small>Stream</small></label>
+            <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm" required
+              v-model="form.stream_number">
+              <option disabled value="">Select Stream</option>
+              <option v-for="(slist, index) in streamList" :key="index" :value="slist.number">{{ slist.name }}</option>
+            </select>
+          </div>
+     
+
+          <div class="mb-2">
+            <label class="textSize"><small>Academic Year</small></label>
+            <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm" required
+              v-model="form.academic_year_number">
+              <option disabled value="">Select Year</option>
+              <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
+            </select>
+          </div>
+        
+
+      
+          <div class="mb-2">
+            <label class="textSize"><small>Study Period</small></label>
+            <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm" required
+              v-model="form.study_period_number">
+              <option disabled value="">Select</option>
+              <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
+            </select>
+          </div>
+        </div>
+      
+    
+        <div class="col-lg-8">
+          <p class="alert alert-primary p-1"><small>Select Requirements to be brought by student</small> </p>
+          <div class="row">
+              <label>
+            Requirement/Items
+              </label>
+              <table class="table table-hover caption-top mt-1 ">
+                <thead>
+                  <tr class="" style="padding: 0px;margin: 0px;font-size: 13px;">
+                    <th class="textSize">Item</th>
+                    <th class="textSize">Cost</th>
+                    <th>Quantity</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(Service, index) in Services" :key="index">
+                    <td>
+                      <select class="form-select form-select-sm form-control select-no-border" v-model="Service.number" @change="updateService(index)">
+                        <option :value="option.item_number" v-for="option in availableOptions(index)" :key="option.item_number">{{ option.name }}</option>
+                      </select>
+                    </td>
+                    <td><input class="form-control" style="border: 0px; background-color: white;" disabled type="text" v-model="Service.cost" @input="updateAmount(index)" placeholder="Unit Price"></td>
+                    <td><input class="form-control"  style="width: 50px; font-size: 14px; text-align: center;"  @keypress="commons.numbersOnlyValidator($event)" maxlength="10" type="text" v-model="Service.quantity"></td>
+                    <td><button type="button" @click="removeService(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+              <button style="width: 30px;" class="btn btn-primary btn-sm textSize" @click.prevent="addService" :disabled="isAddButtonDisabled"><small><i class="bi bi-plus-lg"></i></small></button>
+            </div>
+         
+        </div>
+      </div>
+      <div class="flex justify-content-end mt-2" style="width: 100%;">
+        <button type="submit" class="btn btn-primary border-0 btn-sm mb-2">
+          <small> submit</small>
+          <span style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</template>
 <style scoped>
   .noFocus:focus {
   outline: none 0 !important;

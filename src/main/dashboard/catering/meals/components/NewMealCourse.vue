@@ -67,8 +67,9 @@ const filterMealCourseDraft = () => {
 
 const addMealCourse = () =>{
   loader.value = true
+  // form.school_number
 
-  if(form.school_number){
+  if(props.mealCourseData.school_number){
 
   form.courses.forEach(course => {
     course.code = parseInt(course.code)
@@ -111,9 +112,11 @@ watch(
     async (data) => {
       if(data){
         loader.value = false
+
       }
     }
 )
+
 
 
 
@@ -144,6 +147,12 @@ watch(
       if(data){
         loader.value = false
         notificationStore.successToast("Success", data.message)
+
+        let data = {
+   school_number:form.school_number,
+   status:"ACTIVE"
+ }
+   mealStore.fetchMealCourses(data)
       }
     }
 )
@@ -152,7 +161,7 @@ watch(
 </script>
 <template>
   <div>
-
+<!-- {{ mealCourseData }} -->
     <form @submit.prevent="addMealCourse">
 
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
