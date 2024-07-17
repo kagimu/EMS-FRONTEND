@@ -238,11 +238,11 @@ const deleteThisData = (id,name) => {
           <tr>
             <th scope="col" class="w-[2%]">#</th>
             <th scope="col" class="w-[15%]">Summation(Min - Max)</th>
-            <th scope="col" class="w-[15%]">Name</th>
+            <th scope="col" class="w-[10%]">Name</th>
             <th scope="col" class="w-[5%]">Abbreviation</th>
             <th scope="col" class="w-[25%]">Remarks</th>
             <th scope="col" class="w-[25%]">Description</th>
-            <th  scope="col" class="w-[13%]">Classes</th>
+            <th  scope="col" class="w-[25%]">Classes</th>
           </tr>
           </thead>
           <tbody>
@@ -254,7 +254,7 @@ const deleteThisData = (id,name) => {
             <td>{{scaleData.remarks}}</td>
             <td>{{scaleData.description}}</td>
             <td>
-              <ul class="list-group text-sm mb-1" style="border-radius: 0 0 0 0;" >
+              <ul class="list-group text-sm" style="border-radius: 0 0 0 0;" >
                 <li class="list-group-item" v-for="(cl, idx) in scaleD.classes" :key="idx">{{ cl.name }} [{{ cl.abbreviation }}]</li>
               </ul>
             </td>
