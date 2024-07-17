@@ -111,10 +111,11 @@ watch(
 
 
 const addMenuItem = () =>{
+
   if(menuForm.type === 'ITEM'){
     menuForm.code = parseInt(menuForm.code)
     menuForm.base_price = parseFloat(menuForm.base_price)
-    menuForm.conversion_to_purchase_unit = parseInt(menuForm.conversion_to_purchase_unit)
+    menuForm.conversion_to_purchase_unit = parseFloat(menuForm.conversion_to_purchase_unit.toString().replace(/,/g, ""))
     buttonLoader.value = true
     if(item_number.value){
       menuForm.menu_item_number = item_number.value
@@ -236,6 +237,13 @@ function availableOptions(index) {
   return menuOptions.value.filter(option => !selectedNames.includes(option.name) || option.name === menuItems.value[index].name)
 }
 
+const compute = (value) => {
+  value = value.toString().replace(/,/g, "")
+  if (!isNaN(value)) {
+    value = value - 0;
+  }
+  menuForm.conversion_to_purchase_unit = eval(value) >= 0 ? eval(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null;
+}
 
 const createFeedingSessionItem = () => {
   const secondaryItemNumbers = menuItems.value.map(menu => {
@@ -313,7 +321,7 @@ const clearFormData = () => {
 
 
 
-{{ menuItemsInfo }}
+
 <form @submit.prevent="addMenuItem">
 
   <div class="row">
@@ -363,12 +371,12 @@ const clearFormData = () => {
 
           
           <div class="mb-2">
-            <label class="textColor"><small> Unit of use measurements</small></label>
+            <label class="textColor"><small> Unit of use</small></label>
             <div class="input-group">
             <select
                 v-model="menuForm.unit_of_measure_number"
                 class="form-control form-select shadow-none" id="inputGroupSelect02">
-              <option disabled value="">--Select Unit of use measurements--</option>
+              <option disabled value="">--Select Unit of use--</option>
               <option v-for="(list, index) in unitMeasurementData" :key="index" :value="list.number">{{list.name}}</option>
             </select>
             <span class="input-group-text p-0 px-1"  ><i  class="bi bi-plus-circle" @click="showUnitMeasurement()"></i></span>
@@ -379,12 +387,13 @@ const clearFormData = () => {
         <label class="textColor"><small>Conversion Purchase Unit</small></label>
             <input
                 v-model="menuForm.conversion_to_purchase_unit"
+                @keypress="commons.onlyNumberValidator($event)"
+                v-on:blur="compute(menuForm.conversion_to_purchase_unit)"
                 class="form-control shadow-none"
-                maxlength="10"
+                maxlength="20"
                 required
                 type="text"
-                @paste.prevent
-                @keypress="commons.codeValidator($event)">
+                @paste.prevent>
           </div>
 
           <div class="mb-2">
