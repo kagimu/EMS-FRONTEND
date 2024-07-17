@@ -230,7 +230,7 @@ const deleteThisData = (id,name) => {
           <div class="flex ml-5 py-2">
             <div class="mr-10">
              
-                <span  v-for="(cl, idx) in scaleD.classes" :key="idx">{{ cl.name }} [{{ cl.abbreviation }}],{{ " " }}</span>
+               <b>Classess:</b>  <span  v-for="(cl, idx) in scaleD.classes" :key="idx">{{ cl.name }} [{{ cl.abbreviation }}],{{ " " }}</span>
               
             </div>
             <!-- <div> None</div> -->
@@ -246,7 +246,7 @@ const deleteThisData = (id,name) => {
             <th scope="col" class="w-[5%]">Abbreviation</th>
             <th scope="col" class="w-[25%]">Remarks</th>
             <th scope="col" class="w-[25%]">Description</th>
-            <th  scope="col" class="w-[25%]">Classes</th>
+          
           </tr>
           </thead>
           <tbody>
@@ -257,9 +257,7 @@ const deleteThisData = (id,name) => {
             <td>{{scaleData.abbreviation}}</td>
             <td>{{scaleData.remarks}}</td>
             <td>{{scaleData.description}}</td>
-         
-            <td>
-            </td>
+      
 
           </tr>
           </tbody>
