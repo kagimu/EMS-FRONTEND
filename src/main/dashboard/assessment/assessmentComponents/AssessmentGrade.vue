@@ -229,7 +229,7 @@ const deleteThisData = (id,name) => {
         <div class="bg-[#ededed] rounded-t-md">
           <div class="flex ml-5 py-2">
             <div class="mr-10">#{{scaleD.assessment_area_count}}</div>
-            <div> None</div>
+            <!-- <div> None</div> -->
           </div>
         </div>
 
