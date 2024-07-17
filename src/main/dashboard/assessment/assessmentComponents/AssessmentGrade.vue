@@ -230,7 +230,7 @@ const deleteThisData = (id,name) => {
           <div class="flex ml-5 py-2">
             <div class="mr-10">
              
-               <b>Classess:</b>  <span  v-for="(cl, idx) in scaleD.classes" :key="idx">{{ cl.name }} [{{ cl.abbreviation }}],{{ " " }}</span>
+               classes:  <span  v-for="(cl, idx) in scaleD.classes" :key="idx">{{ cl.name }} [{{ cl.abbreviation }}],{{ " " }}</span>
               
             </div>
             <!-- <div> None</div> -->
