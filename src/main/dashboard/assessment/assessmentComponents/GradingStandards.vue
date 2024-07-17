@@ -134,9 +134,10 @@ const changeGradingStatus = (gradeList, index) => {
     return
   }
 
-  deletionLoader.value = index
 
-  assessmentStore.changeStatusGradeStandard(gradeList.number)
+  deletionLoader.value = index
+ let data = {grading_standard_number:gradeList.number, status:gradeList.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'}
+  assessmentStore.changeStatusGradeStandard(data)
 }
 
 const editThisData = (gradeList) => {
@@ -280,7 +281,8 @@ watch(
                 <button
                     @click="changeGradingStatus(gradeList, index)"
                     type="button"
-                    class="bg-[#0d6efd] text-white text-xs px-2 rounded-sm">
+                    :class="gradeList.status === 'ACTIVE' ? 'bg-[red]' : 'bg-[#0d6efd]'"
+                    class="text-white text-xs px-2 rounded-sm">
                   {{ gradeList.status === "ACTIVE" ? "Inactivate" : "Activate" }}
                 </button>
               </td>

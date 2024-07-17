@@ -416,8 +416,8 @@ async function updateMetric(data,metricNumber) {
             })
     }
 
-    async function changeStatusGradeStandard(grade_standard_number) {
-        return await api.post("main/grading-standard/change-status/"+grade_standard_number)
+    async function changeStatusGradeStandard(data) {
+        return await api.post("main/grading-standard/status",data)
             .then((response) => {
              changeStatusGradingScaleResponse.value = response.data
             })
