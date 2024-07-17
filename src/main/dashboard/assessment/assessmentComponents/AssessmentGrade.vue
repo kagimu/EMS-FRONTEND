@@ -228,7 +228,11 @@ const deleteThisData = (id,name) => {
     <div  v-for="(scaleD, index) in assessmentScaleData" :key="index" class="text-xs border rounded-md mx-3 mb-4">
         <div class="bg-[#ededed] rounded-t-md">
           <div class="flex ml-5 py-2">
-            <div class="mr-10">#{{scaleD.assessment_area_count}}</div>
+            <div class="mr-10">
+             
+                <span  v-for="(cl, idx) in scaleD.classes" :key="idx">{{ cl.name }} [{{ cl.abbreviation }}],{{ " " }}</span>
+              
+            </div>
             <!-- <div> None</div> -->
           </div>
         </div>
@@ -253,11 +257,7 @@ const deleteThisData = (id,name) => {
             <td>{{scaleData.abbreviation}}</td>
             <td>{{scaleData.remarks}}</td>
             <td>{{scaleData.description}}</td>
-            <td>
-              <ul class="list-group text-sm" style="border-radius: 0 0 0 0;" >
-                <li class="list-group-item" v-for="(cl, idx) in scaleD.classes" :key="idx">{{ cl.name }} [{{ cl.abbreviation }}]</li>
-              </ul>
-            </td>
+         
             <td>
             </td>
 
