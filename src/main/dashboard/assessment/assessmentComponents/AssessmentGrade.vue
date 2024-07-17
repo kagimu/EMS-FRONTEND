@@ -103,7 +103,7 @@ watch(
     () => assessmentStore.assessmentScaleResponse,
     async (data) => {
       if(data){
-        assessmentScaleData.value = data.data
+        assessmentScaleData.value = data.data   
       }
     },
     {deep:true}
@@ -221,36 +221,49 @@ const deleteThisData = (id,name) => {
 
         </div>
       </div>
-    </div>   
-      <table id="data"
-          class="table table-striped"
-          style="font-size: 11px !important;" >
-        <thead>
-        <tr>
-          <th scope="col">Name[ABBREV]</th>
-          <th scope="col">Summation(Min - Max)</th>
-          <th scope="col">Class</th>
-          <th scope="col">Remarks</th>
-          <th scope="col">Description</th>
-          <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-      <tr v-for="(scaleData, index) in assessmentScaleData" :key="index">
-        <td>{{ scaleData.name + "["+ scaleData.abbreviation +"]" }}</td>
-        <td>{{ scaleData.minimum_points + " - " + scaleData.maximum_points }}</td>
-        <td>{{ scaleData.campus_class_name }}</td>
-        <td>{{ scaleData.remarks }}</td>
-        <td>{{ scaleData.description }}</td>
-        <td>
-          <button  class="link-primary" style="border-width: 0px;text-decoration: none;" @click="editThisData(scaleData)"><small><i  style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small></button>
-          <button @click="deleteThisData(scaleData.number,scaleData.name )"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>
-        </td>
-      </tr>
+    </div>  
+    <!-- {{assessmentScaleData}}  -->
+
+
+    <div  v-for="(scaleD, index) in assessmentScaleData" :key="index" class="text-xs border rounded-md mx-3 mb-4">
+        <div class="bg-[#ededed] rounded-t-md">
+          <div class="flex ml-5 py-2">
+            <div class="mr-10">#{{scaleD.assessment_area_count}}</div>
+            <!-- <div> None</div> -->
+          </div>
+        </div>
+
+        <table class="table table-hover caption-top table-sm text-[10px]">
+          <thead>
+          <tr>
+            <th scope="col" class="w-[5%]">#</th>
+            <th scope="col" class="w-[15%]">Summation(Min - Max)</th>
+            <th scope="col" class="w-[15%]">Name</th>
+            <th scope="col" class="w-[15%]">Abbreviation</th>
+            <th scope="col" class="w-[25%]">Remarks</th>
+            <th scope="col" class="w-[25%]">Description</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(scaleData, idx) in scaleD.assessment_grade_items" :key="idx">
+            <td> {{(idx + 1)}}</td>
+            <td>{{ scaleData.minimum_points + " - " + scaleData.maximum_points }}</td>
+            <td>{{scaleData.name}}</td>
+            <td>{{scaleData.abbreviation}}</td>
+            <td>{{scaleData.remarks}}</td>
+            <td>{{scaleData.description}}</td>
+            <td>
+
+            </td>
+
+          </tr>
+          </tbody>
+        </table>
+
+
+      </div>
+
     
-      
-        </tbody>
-      </table>
         </div>
         </div>
         </div>
