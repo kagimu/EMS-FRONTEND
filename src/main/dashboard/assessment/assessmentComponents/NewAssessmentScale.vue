@@ -16,9 +16,7 @@ const classStore = useClassesStore()
 const academicYearStore = useAcademicYearStore()
 const assessmentStore = useAssessmentStore()
 
-const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
-const school_number = ref(null)
 const buttonLoader = ref(false)
 const errorMessage = ref(null)
 const levelData = ref([])
@@ -27,9 +25,8 @@ const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const campusCurriculumDataInfo = ref(null)
 const campusLevelList = ref(null)
-const campus_level_number = ref("")
 const campusClassList = ref(null)
-let schoolNumber = routerData.currentRoute.value.query.sch
+let   schoolNumber = routerData.currentRoute.value.query.sch
 const aggregateData = ref([])
 const scaleDataList = ref(null)
 
@@ -46,7 +43,7 @@ onMounted(
 
 const form = reactive({
   assessment_area_count:null,
-  classes: [{class_number:""}],
+  classes: [],
   assessment_grade_items:[{code:"",name:"",minimum_points:"",maximum_points:"",remarks:"",abbreviation:"",description:""}]
 })
 
@@ -88,29 +85,26 @@ const fetchClass = (campus_level_number) => {
 const createScale = () =>{
 
   buttonLoader.value = true
-  if(props.assessmentGradeListD.number){
-    form.assessment_grade_number = props.assessmentGradeListD.number
-    alert(JSON.stringify(form))
+
+  form.assessment_grade_items.forEach(scale => {
+    scale.code = scale.code ? parseInt(scale.code) : null
+    scale.minimum_points = scale.minimum_points ? parseFloat(scale.minimum_points) : null
+    scale.maximum_points = scale.maximum_points ? parseFloat(scale.maximum_points) : null
+  })
+
+  form.assessment_area_count = form.assessment_area_count ? parseInt(form.assessment_area_count) : null
+
+  form.school_number = schoolNumber
+
+  // Edit
+  if(props.assessmentGradeListD?.number){
+    form.assessment_grade_number = props.assessmentGradeListD?.number
+
     assessmentStore.updateAssessmentScale(form)
 
   }else{
-  const transformedClasses = form.classes.map(classInfo => classInfo.class_number);
 
-  const transformedGradeScales = form.assessment_grade_items.map(scale => ({
-    ...scale,
-    code: parseInt(scale.code),
-    minimum_points: parseFloat(scale.minimum_points),
-    maximum_points: parseFloat(scale.maximum_points)
-  }))
-
-  const finalData = {
-  assessment_area_count:  parseInt(form.assessment_area_count),
-  classes: transformedClasses,
-  assessment_grade_items: transformedGradeScales
-}
-
-    // alert(JSON.stringify(finalData))
-    assessmentStore.createAssessmentScale(finalData)
+    assessmentStore.createAssessmentScale(form)
   }
 
 }
@@ -138,6 +132,14 @@ const removeGradeScale = (index) => {
 
 const newGradeScale = () => {
   form.assessment_grade_items.push({code:null, name:null,abbreviation:null,minimum_points:null,maximum_points:null,remarks:null,description:null})
+}
+
+const addRequirements = (class_number) => {
+  if (form.classes.includes(class_number)) {
+    form.classes = form.classes.filter(item => item !== class_number);
+  } else {
+    form.classes.push(class_number);
+  }
 }
 
 
@@ -214,16 +216,16 @@ watch (
     async (data) => {
       if(data){
         buttonLoader.value = false
-        notificationStore.successToast("Success", data.message)
+        notificationStore.successToast("Success", data?.message)
         form.name = null
-            form.maximum_points=null
-            form.minimum_points=null
-            form.campus_class_number=null
-            form.grade=null
-            form.description=null
-            form.abbreviation=null
-            form.remarks=null
-            form.school_number=null
+        form.maximum_points=null
+        form.minimum_points=null
+        form.campus_class_number=null
+        form.grade=null
+        form.description=null
+        form.abbreviation=null
+        form.remarks=null
+        form.school_number=null
       }
     },
     {deep:true}
@@ -234,11 +236,11 @@ watch (
     () => assessmentStore.errorMessage,
     async (data) => {
       if(data){
-        errorMessage.value = data.message
-        notificationStore.errorToast("Error",data.message)
+        buttonLoader.value = false
+        errorMessage.value = data?.message
+        notificationStore.errorToast("Error",data?.message)
       }
-    },
-    {deep:true}
+    }
 )
 
 watch(
@@ -247,8 +249,7 @@ watch(
       if (data) {
         notificationStore.errorToast("Error", data.message)
       }
-    },
-    {deep: true}
+    }
 )
 
 
@@ -258,8 +259,7 @@ watch(
       if (data) {
         levelData.value = data.data
       }
-    },
-    {deep: true}
+    }
 )
 
 </script>
@@ -279,40 +279,32 @@ watch(
     >
      
       </div>
-<table
 
-    class="table table-hover caption-top mt-1 table-sm table-striped"
-    style="font-size: 12px !important;"
->
-  <thead>
-  <tr>
-    <td class="">Class</td>
-    <td class="w-[8%]"></td>
-  </tr>
-  </thead>
-  <tbody>
-  <tr v-for="(classInfo, index) in form?.classes" :key="index">
-    <td>
-      <div class="">
-        <select
-            class="form-select form-select-sm shadow-none" required
-            v-model="classInfo.class_number"
-        >
-          <option disabled value="">--Select Class--</option>
-          <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
-        </select>
+
+
+
+    <div class="mb-2 mt-3">
+      <label class="text-xs font-bold">Select Class(es)</label>
+      <div class="border p-3 rounded-md">
+        <div class="grid grid-cols-4 gap-2 text-sm" style="border-radius: 0 0 0 0;">
+          <div class="list-group-item mb-2 hover:bg-[#e3e0e0] hover:rounded-md cursor-pointer py-1" v-for="(classInfo) in campusClassList" @click="addRequirements(classInfo?.number)">
+            <div class="px-3">
+              <input
+                  v-model="form.classes"
+                  style="outline: none 0 !important; box-shadow: none;"
+                  class="w-[15px] h-[15px] text-indigo-600 cursor-pointer"
+                  type="checkbox"
+                  :value="classInfo.number"  :id="classInfo.number">
+              <label @click="addRequirements(classInfo.number)" class="form-check-label cursor-pointer capitalize ml-3" :for="classInfo.number">{{classInfo?.name+" [ "+classInfo?.abbreviation+" ]"}}</label>
+            </div>
+          </div>
+        </div>
       </div>
-    </td>
-  
-    <td>
-      <div class="mt-1">
-        <i class="bi bi-x-circle cursor-pointer text-[red]" @click="removeClass(index)"></i>
-      </div>
-    </td>
-  </tr>
-  </tbody>
-</table>
-<button @click="newClass" type="button" class="bg-[#0d6efd] text-white text-sm px-2 rounded-sm" style="text-align: center;"><i class="bi bi-plus"></i></button>
+
+    </div>
+
+
+
 </div>
 <div>
 
