@@ -77,7 +77,7 @@ const deleteGrade = (data, index) => {
 
   deletionLoader.value = index
 
-  assessmentStore.deleteAssessmentGrade(data.number)
+  assessmentStore.deleteAssessmentGrade(data?.assessment_grade_number)
 }
 
 watch(
@@ -86,7 +86,7 @@ watch(
       if(data){
         filterAssessmentGrades()
         deletionLoader.value = undefined
-        notificationStore.errorToast("Error", data.message)
+        notificationStore.successToast("Success", data.message)
       }
     }
 )
@@ -97,7 +97,6 @@ watch(
       if(data){
         showAssessmentScaleModal.value = false
         filterAssessmentGrades()
-        notificationStore.errorToast("Error", data.message)
       }
     }
 )
