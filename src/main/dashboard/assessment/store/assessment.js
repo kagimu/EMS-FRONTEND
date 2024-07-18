@@ -37,6 +37,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const removeStudentFromInterviewResponse = ref(null)
     const updateAggregateScaleResponse = ref(null)
     const deleteAggregateScaleResponse = ref(null)
+    const deleteAssessmentGradeResponse = ref(null)
 
     async function createAssessmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -314,7 +315,7 @@ async function updateMetric(data,metricNumber) {
 
 
     // assessmentscale
-    async function createAssessmentScale(data) {
+    async function createAssessmentGrade(data) {
         return await api.post("main/assessments/assessment-grades",data)
             .then((response) => {
              newAssessmentScaleResponse.value = response.data
@@ -342,8 +343,8 @@ async function updateMetric(data,metricNumber) {
 
 
     // main/assessments/assessment-grades/53d9cee8-0419-45ae-b89d-252910b92d2c
-    async function updateAssessmentScale(data) {
-        return await api.put("main/assessments/assessment-grades/update/"+data.assessment_grade_number,data)
+    async function updateAssessmentGrade(data) {
+        return await api.put("main/assessments/assessment-grades/update", data)
             .then((response) => {
              updateAssessmentScaleResponse.value = response.data
             })
@@ -390,6 +391,20 @@ async function updateMetric(data,metricNumber) {
                 }
             })
     }
+
+
+    async function deleteAssessmentGrade(assessmentGradeNumber) {
+        return await api.delete("main/assessments/assessment-grades/delete/"+assessmentGradeNumber)
+            .then((response) => {
+                deleteAssessmentGradeResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
     async function deleteGrade(gradeNumber) {
         return await api.post("main/assessments/grades/remove/"+gradeNumber)
@@ -484,7 +499,7 @@ async function updateMetric(data,metricNumber) {
         assessmentAreaResponse,
         gradingStandardResponse,
         newAssessmentResponse,
-        createNewAssessment,
+        deleteAssessmentGradeResponse,
         fetchAssessmentsByStudentId,
         assessmentResponse,
         errorMessage,
@@ -530,9 +545,9 @@ async function updateMetric(data,metricNumber) {
         updateMetric,
         fetchMetrics,
         deleteMetric,
-        createAssessmentScale,
+        createAssessmentGrade,
         fetchAssessmentGrades,
-        updateAssessmentScale,
+        updateAssessmentGrade,
         fetchGradingStandardData,
         fetchAssessmentAreaByClass,
         createGrade,
@@ -546,6 +561,7 @@ async function updateMetric(data,metricNumber) {
         removeStudentFromInterview,
         updateAggregateScale,
         deleteAggregateScale,
-        fetchStandardGradeDetails
+        fetchStandardGradeDetails,
+        deleteAssessmentGrade
     }
 })

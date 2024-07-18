@@ -155,7 +155,8 @@ watch(
               <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
                 <span class="visually-hidden">Loading...</span>
               </div>
-            </button></td>
+            </button>
+          </td>
         </tr>
 
 

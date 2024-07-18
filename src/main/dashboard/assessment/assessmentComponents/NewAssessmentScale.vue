@@ -13,7 +13,6 @@ const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
 const routerData = useRouter()
 const classStore = useClassesStore()
-const academicYearStore = useAcademicYearStore()
 const assessmentStore = useAssessmentStore()
 
 const campusStore = useCampusStore()
@@ -28,13 +27,17 @@ const campusLevelList = ref(null)
 const campusClassList = ref(null)
 let   schoolNumber = routerData.currentRoute.value.query.sch
 const aggregateData = ref([])
-const scaleDataList = ref(null)
+
+
+const props = defineProps({
+  scaleD:{},
+})
 
 onMounted(
     async () => {
+      filterAssessmentGrade()
       await levelStore.fetchCampusCurriculum(campusNumber)
        fetchCampusLevel()
-       getAssessmentScaleDataInfo()
        fetchGradeScale()
        campusStore.fetchClassesBySchool()
     }
@@ -42,15 +45,13 @@ onMounted(
 
 
 const form = reactive({
+  assessment_grade_number:null,
   assessment_area_count:null,
   classes: [],
   assessment_grade_items:[{code:"",name:"",minimum_points:"",maximum_points:"",remarks:"",abbreviation:"",description:""}]
 })
 
-const props = defineProps({
-  scaleD:String,
-  assessmentGradeListD:{}
-})
+
 const fetchGradeScale = () =>{
   let data = {
     school_number:schoolNumber
@@ -58,28 +59,28 @@ const fetchGradeScale = () =>{
   assessmentStore.fetchAggregateScale(data)
 }
 
-const getAssessmentScaleDataInfo = () =>{
-  if(props.assessmentGradeListD){
-    form.code = props.assessmentGradeListD.code
-       form.name = props.assessmentGradeListD.name
-       form.maximum_points=props.assessmentGradeListD.maximum_points
-       form.minimum_points=props.assessmentGradeListD.minimum_points
-       form.campus_class_number=props.assessmentGradeListD.campus_class_number
-       form.grade=props.assessmentGradeListD.Grade
-       form.description=props.assessmentGradeListD.description
-       form.abbreviation=props.assessmentGradeListD.abbreviation
-       form.remarks=props.assessmentGradeListD.remarks
+watch (
+    () => props.scaleD,
+    async (data) => {
+      if(data){
+        filterAssessmentGrade()
+      }
+    }
+)
+
+const filterAssessmentGrade = () =>{
+  let draft = props.scaleD
+  if(draft){
+    form.assessment_area_count = draft?.assessment_area_count
+    form.classes = draft?.classes?.map(item => item.number);
+    form.assessment_grade_items = draft?.assessment_grade_items
+    form.assessment_grade_number = draft?.assessment_grade_number
   }
 }
 
 const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
 }
-
-const fetchClass = (campus_level_number) => {
-  academicYearStore.fetchCampusClassByLevel(campus_level_number)
-}
-
 
 
 const createScale = () =>{
@@ -97,32 +98,12 @@ const createScale = () =>{
   form.school_number = schoolNumber
 
   // Edit
-  if(props.assessmentGradeListD?.number){
-    form.assessment_grade_number = props.assessmentGradeListD?.number
-
-    assessmentStore.updateAssessmentScale(form)
-
+  if(form.assessment_grade_number){
+    assessmentStore.updateAssessmentGrade(form)
   }else{
-
-    assessmentStore.createAssessmentScale(form)
+    assessmentStore.createAssessmentGrade(form)
   }
 
-}
-
-const fetchCampuses = (school_number) => {
-  campusStore.fetchCampuses(school_number ?? "")
-}
-
-const fetchClasses = (campus_number) => {
-  campusStore.fetchClassesByCampus(campus_number)
-}
-
-const removeClass = (index) => {
-  form.classes.splice(index, 1);
-}
-
-const newClass = () => {
- form.classes.push({class_number:""})
 }
 
 
@@ -171,15 +152,7 @@ watch(
 )
 
 
-watch (
-    () => props.scaleD,
-    async (data) => {
-      if(data){
-        scaleDataList.value =props.scaleD
-      }
-    },
-    {deep:true}
-)
+
 
 watch(
     () => assessmentStore.aggregateScaleResponse,
@@ -187,8 +160,7 @@ watch(
       if(data){
         aggregateData.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -197,14 +169,6 @@ watch (
     async (data) => {
       if(data){
         buttonLoader.value = false
-            form.name = null
-            form.maximum_points=null
-            form.minimum_points=null
-            form.campus_class_number=null
-            form.grade=null
-            form.description=null
-            form.abbreviation=null
-            form.remarks=null
       }
     }
 )
@@ -217,18 +181,9 @@ watch (
       if(data){
         buttonLoader.value = false
         notificationStore.successToast("Success", data?.message)
-        form.name = null
-        form.maximum_points=null
-        form.minimum_points=null
-        form.campus_class_number=null
-        form.grade=null
-        form.description=null
-        form.abbreviation=null
-        form.remarks=null
-        form.school_number=null
+
       }
-    },
-    {deep:true}
+    }
 )
 
 

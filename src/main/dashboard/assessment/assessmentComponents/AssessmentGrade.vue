@@ -20,10 +20,11 @@ const classStore = useClassesStore()
 const academicYearStore = useAcademicYearStore()
 const notificationStore  = useNotificationStore()
 
-const errorMessage = ref(null)
-const showDialog = ref(null)
+
+
 const assessmentScaleData = ref([])
-const scaleD = ref([])
+const scaleD = ref({})
+const deletionLoader = ref(undefined)
 
 const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
@@ -34,9 +35,7 @@ const campusLevelList = ref(null)
 const campusClassList = ref(null)
 const showAssessmentScaleModal = ref(false)
 
-const namee = ref(null)
-const assessmentGradeListD = ref([])
-const editModel = ref(false)
+
 
 onMounted(() => {
     filterAssessmentGrades()
@@ -55,9 +54,9 @@ const filterAssessmentGrades = () =>{
 
 
 const addAssessmentScale = () =>{
-  assessmentGradeListD.value = ""
+  scaleD.value = null
   showAssessmentScaleModal.value = true
-  editModel.value = false
+
 }
 
 
@@ -68,6 +67,40 @@ const fetchCampusLevel = () => {
 const fetchClass = (campus_level_number) => {
   academicYearStore.fetchCampusClassByLevel(campus_level_number)
 }
+
+
+
+const deleteGrade = (data, index) => {
+  if(!confirm("Are you sure, you want to delete this aggregate scale")){
+    return
+  }
+
+  deletionLoader.value = index
+
+  assessmentStore.deleteAssessmentGrade(data.number)
+}
+
+watch(
+    () => assessmentStore.deleteAssessmentGradeResponse,
+    async (data) => {
+      if(data){
+        filterAssessmentGrades()
+        deletionLoader.value = undefined
+        notificationStore.errorToast("Error", data.message)
+      }
+    }
+)
+
+watch(
+    () => assessmentStore.updateAssessmentScaleResponse,
+    async (data) => {
+      if(data){
+        showAssessmentScaleModal.value = false
+        filterAssessmentGrades()
+        notificationStore.errorToast("Error", data.message)
+      }
+    }
+)
 
 watch(
     () => levelStore.campusCurriculumResponse,
@@ -109,9 +142,9 @@ watch(
     {deep:true}
 )
 
-const openEditModal = (a) =>{
-  scaleD.value=a
-  showDialog.value = true
+const showEditModal = (scaleInfo) =>{
+  scaleD.value = scaleInfo
+  showAssessmentScaleModal.value = true
 }
 
 watch (
@@ -135,29 +168,14 @@ watch (
 )
 
 
-const editThisData = (List) => {
-  editModel.value = true
-  assessmentGradeListD.value = List
-  namee.value = List.name
-  showAssessmentScaleModal.value = true
-}
-
-const deleteThisData = (id,name) => {
-  if(!confirm("Are you sure, you want to delete: " + name)){
-    return
-  }else{
-
-  }
-
-}
 
 </script>
 
 <template>
     <div>
 
-      <AppModal :title="editModel ? 'Edit ' + namee:'Add Assessment Grade'"  v-model="showAssessmentScaleModal" xl6>
-        <NewAssessmentScale :scaleD="scaleD" :assessmentGradeListD="assessmentGradeListD"></NewAssessmentScale>
+      <AppModal :title="scaleD ? 'Edit Assessment Grade' : 'Add Assessment Grade'"  v-model="showAssessmentScaleModal" xl6>
+        <NewAssessmentScale :scaleD="scaleD"></NewAssessmentScale>
       </AppModal>
     
 
@@ -222,16 +240,28 @@ const deleteThisData = (id,name) => {
         </div>
       </div>
     </div>  
-    <!-- {{assessmentScaleData}}  -->
+
 
 
     <div  v-for="(scaleD, index) in assessmentScaleData" :key="index" class="text-xs border rounded-md mx-3 mb-4">
         <div class="bg-[#ededed] rounded-t-md">
           <div class="flex ml-5 py-2">
-            <div class="mr-10">
-             
+            <div class="mr-2 flex flex-grow justify-between">
+             <div>
                <span>CLASSES</span>:  <span  v-for="(cl, idx) in scaleD.classes" :key="idx">{{ cl.name }} [{{ cl.abbreviation }}],{{ " " }}</span>
-              
+             </div>
+              <div>
+                <button @click="showEditModal(scaleD)"   type="button">
+                  <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+                </button>
+                &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
+                <button type="button" @click="deleteGrade(scaleD, index)">
+                  <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+                  <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </button>
+              </div>
             </div>
             <!-- <div> None</div> -->
           </div>
