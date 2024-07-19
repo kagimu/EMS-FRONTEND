@@ -74,6 +74,9 @@
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
           <button type="button" @click="deleteUnitOfMeasure(list.unit_of_measure_number,list.name)">
             <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+            <div class="spinner-border spinner-border-sm" role="status" v-if="deleteLoader" >
+        <span class="visually-hidden">Loading...</span>
+    </div>
           </button>
       </td>
       </tr>
@@ -109,7 +112,7 @@
     const unitMeasurementData = ref([])
     const notificationStore = useCateringStore()
     const schoolNumber = ref("")
-
+    const deleteLoader = ref(false)
     const showUnitMeasurement = () => {
     showUnitModal.value = true
     thisDialog.value=false
@@ -155,7 +158,8 @@ onMounted(
   }
 //delete
   const deleteUnitOfMeasure = (id,name) => {
-if(!confirm("Are you sure, you want to delete: " + id)){
+deleteLoader.value = true;
+if(!confirm("Are you sure, you want to delete: " + name)){
   return
 }
 // delete endpoint
@@ -165,6 +169,7 @@ cateringStore.deleteUnitOfMeasure(id)
 watch(
     () => cateringStore.deleteUnitOfMeasureInfoResponse,
     async (data) => {
+      deleteLoader.value = false
       notificationStore.successToast("Success", data.message)
       getMenuItemInfo()
     },
