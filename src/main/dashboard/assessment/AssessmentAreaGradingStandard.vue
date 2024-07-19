@@ -9,6 +9,7 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.
 import {useRouter} from "vue-router";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
 const reportSetupStore = useReportSetupStore()
 const classStore = useClassesStore()
@@ -21,22 +22,24 @@ const campusNumber = routerData.currentRoute.value.query.id
 const assessmentAreaGradingStandardList = ref(null)
 const showAssessmentGradingModal = ref(false)
 const campus_level_number = ref("")
+let   schoolNumber = routerData.currentRoute.value.query.sch
 const campusLevelList = ref(null)
 const campusClassList = ref(null)
 const campus_class_number = ref("")
 const gradingStandardListData = ref(null)
 const grading_standard_number = ref("")
+const deletionLoader = ref(undefined)
 
 
 onMounted(
     async () => {
-      await doFetchAssessmentAreaGradingStandard()
+       doFetchAssessmentAreaGradingStandard()
       await classStore.fetchCampusLevel(campus_curriculum_number)
     }
 )
 
 const doFetchAssessmentAreaGradingStandard = () => {
-  reportSetupStore.fetchAssessmentAreaGradingStandardInfo(grading_standard_number.value ?? "")
+  reportSetupStore.fetchAssessmentAreaGradingStandardInfo(grading_standard_number.value ?? "", schoolNumber)
 }
 
 watch(
@@ -116,14 +119,38 @@ watch(
     }
 )
 
-const deleteThisData = (id,name) => {
-  if(!confirm("Are you sure, you want to remove: " + name)){
+const deleteAssessmentArea = (data, index) => {
+  if(!confirm("Are you sure, you want to delete this assessment area grading standard")){
     return
-  }else{
-
   }
 
+  deletionLoader.value = index
+
+  assessmentStore.deleteAssessmentAreaGradingStandard(data.number)
 }
+
+watch(
+    () => assessmentStore.deleteAssessmentAreaGradingStandardResponse,
+    async (data) => {
+      if (data) {
+        deletionLoader.value = undefined
+        notificationStore.successToast("Success",data.message)
+      }
+    }
+)
+
+watch(
+    () => assessmentStore.errorMessage,
+    async (data) => {
+      if (data) {
+        deletionLoader.value = undefined
+        notificationStore.errorToast("Error", data.message)
+      }
+    }
+)
+
+
+
 
 </script>
 
@@ -152,9 +179,10 @@ const deleteThisData = (id,name) => {
 
 
         <div class="mt-[50px]">
-          <div class="row mx-auto">
+          <div class="grid grid-cols-3 gap-2 px-2">
 
-            <div class="col-lg-4  mb-2">
+
+            <div class="mb-2">
               <div>
                 <label class="textColor"><small>Level</small></label>
                 <select
@@ -170,7 +198,7 @@ const deleteThisData = (id,name) => {
             </div>
 
 
-            <div class="col-lg-4  mb-2">
+            <div class="mb-2">
               <div>
                 <label class="textColor"><small>Class</small>
                 </label>
@@ -187,7 +215,7 @@ const deleteThisData = (id,name) => {
             </div>
 
 
-            <div class="col-lg-4  mb-2">
+            <div class="mb-2">
               <div>
                 <label class="textColor"><small>Grading Standards</small></label>
                 <select
@@ -198,7 +226,7 @@ const deleteThisData = (id,name) => {
                   <option disabled value="">--Select Grading Standard--</option>
                   <option value="">All</option>
                   <option v-for="(lst, index) in gradingStandardListData" :key="index" :value="lst.number">
-                    {{ lst.name + "["+lst.type+"]"}}
+                    {{ lst.code +". "+ lst.name}}
                   </option>
                 </select>
               </div>
@@ -214,15 +242,23 @@ const deleteThisData = (id,name) => {
             <th class="w-[10%]" scope="col">Code</th>
             <th>Name</th>
             <th>Grading Standard Name</th>
+            <th>Action</th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="(levelInfo, index) in assessmentAreaGradingStandardList" :key="index">
-            <td> {{levelInfo.code}}</td>
-            <td> {{levelInfo.assessment_area_name}}</td>
-            <td> {{levelInfo.grading_standard_name}}</td>
+            <td> {{levelInfo?.code}}</td>
+            <td> {{levelInfo?.assessment_area_name}}</td>
+            <td> {{levelInfo?.grading_standard_name}}</td>
             <td>
-              <button @click="deleteThisData(levelInfo.number,levelInfo.assessment_area_name )"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-x cursor-pointer"></i></button>
+
+              <button type="button" @click="deleteAssessmentArea(levelInfo, index)">
+                <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+                <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </button>
+
             </td>
           </tr>
           </tbody>

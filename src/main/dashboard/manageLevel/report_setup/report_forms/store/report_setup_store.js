@@ -128,8 +128,8 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             })
     }
 
-    async function fetchAssessmentAreaGradingStandardInfo(grading_standard_number) {
-        return await api.get("main/grading-standard/assessment-areas?grading_standard_number="+grading_standard_number)
+    async function fetchAssessmentAreaGradingStandardInfo(grading_standard_number, school_number) {
+        return await api.get("main/grading-standard/assessment-areas?grading_standard_number="+grading_standard_number+"&school_number="+school_number)
             .then((response) => {
                 assessmentAreaGradingStandardInfoResponse.value = response.data
             })
