@@ -6,6 +6,18 @@
 
   <p>New Unit Of Measure</p>
 
+  <div class="mb-2">
+  <label class="textColor"><small>School</small> </label>
+  <select
+      v-model="form.school_number"
+      class="form-select form-select-sm" required
+      style="box-shadow: none;"
+  >
+    <option disabled :value="null">Select School</option>
+    <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+    </option>
+  </select>
+</div>
          <div class="mb-2">
             <label class="textColor"><small>Code</small></label>
             <input
@@ -58,6 +70,7 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 import { useAbility } from '@casl/vue';
 import useCommonsStore from "@/composables/useCommons.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
 const { can } = useAbility()
 const errorMessage = ref(null)
@@ -66,17 +79,27 @@ const  notificationStore  = useNotificationStore()
 const buttonLoader = ref(false)
 const cateringStore = useCateringStore()
 const commons = useCommonsStore()
+const schoolStore = useSchoolStore()
+const schoolList = ref([])
+
+onMounted(() => {
+      schoolStore.fetchSchools()
+    }
+)
 
 const form = reactive({
     code:null,
     name:null,
-    abbreviation:null
+    abbreviation:null,
+    school_number:""
 })
 const unitMeasurement = () => {
     let myData = reactive({
     code:parseInt(form.code),
     name:form.name,
-    abbreviation:form.abbreviation
+    abbreviation:form.abbreviation,
+    school_number:form.school_number
+
     })
     buttonLoader.true
     cateringStore.newUnitOfMeasureInfo(myData)
@@ -112,5 +135,15 @@ watch(() => form.code, (newValue, oldValue) => {
         notificationStore.errorToast("Warning", "Code must be a number.")
     }
 })
+
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        schoolList.value = data.data
+      }
+    }
+)
 
 </script>
