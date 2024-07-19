@@ -72,7 +72,7 @@
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-          <button type="button" @click="deleteUnitOfMeasure(list.unit_of_measure_number,list.name)">
+          <button type="button" @click="deleteUnitOfMeasurer(list.unit_of_measure_number,list.name)">
             <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
             <div class="spinner-border spinner-border-sm" role="status" v-if="deleteLoader" >
         <span class="visually-hidden">Loading...</span>
@@ -110,12 +110,13 @@
     const cateringStore = useCateringStore()
     const thisDialog = ref(false)
     const unitMeasurementData = ref([])
-    const notificationStore = useCateringStore()
+    const notificationStore = useNotificationStore()
     const schoolNumber = ref("")
     const deleteLoader = ref(false)
     const showUnitMeasurement = () => {
     showUnitModal.value = true
     thisDialog.value=false
+
 }
 
 onMounted(
@@ -157,7 +158,7 @@ onMounted(
     showEditModal.value = true
   }
 //delete
-  const deleteUnitOfMeasure = (id,name) => {
+  const deleteUnitOfMeasurer = (id,name) => {
 deleteLoader.value = true;
 if(!confirm("Are you sure, you want to delete: " + name)){
   return
