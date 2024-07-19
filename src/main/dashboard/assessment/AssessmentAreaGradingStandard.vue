@@ -17,15 +17,13 @@ const academicYearStore = useAcademicYearStore()
 const routerData = useRouter()
 const notificationStore  = useNotificationStore()
 const assessmentStore= useAssessmentStore()
-const schoolStore = useSchoolStore()
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const campusNumber = routerData.currentRoute.value.query.id
 const assessmentAreaGradingStandardList = ref(null)
 const showAssessmentGradingModal = ref(false)
 const campus_level_number = ref("")
-const school_number = ref("")
+let   schoolNumber = routerData.currentRoute.value.query.sch
 const campusLevelList = ref(null)
-const schoolList = ref(null)
 const campusClassList = ref(null)
 const campus_class_number = ref("")
 const gradingStandardListData = ref(null)
@@ -35,14 +33,13 @@ const deletionLoader = ref(undefined)
 
 onMounted(
     async () => {
-       schoolStore.fetchSchools()
        doFetchAssessmentAreaGradingStandard()
       await classStore.fetchCampusLevel(campus_curriculum_number)
     }
 )
 
 const doFetchAssessmentAreaGradingStandard = () => {
-  reportSetupStore.fetchAssessmentAreaGradingStandardInfo(grading_standard_number.value ?? "", school_number.value ?? "")
+  reportSetupStore.fetchAssessmentAreaGradingStandardInfo(grading_standard_number.value ?? "", schoolNumber)
 }
 
 watch(
@@ -152,14 +149,7 @@ watch(
     }
 )
 
-watch(
-    () => schoolStore.schoolsResponse,
-    async (data) => {
-      if (data) {
-        schoolList.value = data.data
-      }
-    }
-)
+
 
 
 </script>
@@ -189,22 +179,8 @@ watch(
 
 
         <div class="mt-[50px]">
-          <div class="grid grid-cols-4 gap-2 px-2">
+          <div class="grid grid-cols-3 gap-2 px-2">
 
-            <div class="mb-2">
-              <div>
-                <label class="textColor"><small>School</small></label>
-                <select
-                    style="box-shadow: none;"
-                    class="form-select form-select-sm"
-                    v-model="school_number"
-                    @change="doFetchAssessmentAreaGradingStandard"
-                >
-                  <option disabled value="">--Select School--</option>
-                  <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{list.name}}</option>
-                </select>
-              </div>
-            </div>
 
             <div class="mb-2">
               <div>
