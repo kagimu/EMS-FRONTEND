@@ -81,7 +81,7 @@ export const useCateringStore = defineStore("catering", () => {
     }
     // Main/catering/units-of-measure/3434
     async function updateUnitOfMeasure(data) {
-        return await api.put("main/catering/units-of-measure/",data)
+        return await api.put("main/catering/units-of-measure",data)
             .then((response) => {
                 updateUnitOfMeasureInfoResponse.value = response.data
             })
@@ -91,6 +91,7 @@ export const useCateringStore = defineStore("catering", () => {
                 }
             })
     }
+
 
     //==MenuItem catering/menu-items
     async function newMenuItemInfo(data) {

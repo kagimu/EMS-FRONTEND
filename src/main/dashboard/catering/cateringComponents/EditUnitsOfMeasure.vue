@@ -88,11 +88,26 @@ const editUnitMeasurement = (number) => {
     unit_of_measure_number:props.unitData.unit_of_measure_number
     })
 //    alert(JSON.stringify(myData))
+myData.school_number = props.unitData.school_number
     buttonLoader.value=true
     cateringStore.updateUnitOfMeasure(myData)
 }
 watch (
     () => cateringStore.newUnitOfMeasureInfoResponse,
+    async (data) => {
+      if(data){
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+        cateringStore.fetchUnitOfMeasureInfo()
+        form.code=null,
+    form.name=null
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => cateringStore.updateUnitOfMeasureInfoResponse,
     async (data) => {
       if(data){
         buttonLoader.value = false
