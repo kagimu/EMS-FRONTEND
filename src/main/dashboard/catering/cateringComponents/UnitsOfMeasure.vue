@@ -185,6 +185,16 @@ watch(
     }
 )
 
+watch (
+    () => cateringStore.updateUnitOfMeasureInfoResponse,
+    async (data) => {
+      if(data){
+     getMenuItemInfo()
+     showEditModal.value = false
+      }
+    },
+    {deep:true}
+)
     </script>
     
     
