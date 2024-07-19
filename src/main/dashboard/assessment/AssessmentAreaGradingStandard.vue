@@ -9,6 +9,7 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.
 import {useRouter} from "vue-router";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
 const reportSetupStore = useReportSetupStore()
 const classStore = useClassesStore()
@@ -16,12 +17,15 @@ const academicYearStore = useAcademicYearStore()
 const routerData = useRouter()
 const notificationStore  = useNotificationStore()
 const assessmentStore= useAssessmentStore()
+const schoolStore = useSchoolStore()
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const campusNumber = routerData.currentRoute.value.query.id
 const assessmentAreaGradingStandardList = ref(null)
 const showAssessmentGradingModal = ref(false)
 const campus_level_number = ref("")
+const school_number = ref("")
 const campusLevelList = ref(null)
+const schoolList = ref(null)
 const campusClassList = ref(null)
 const campus_class_number = ref("")
 const gradingStandardListData = ref(null)
@@ -30,13 +34,14 @@ const grading_standard_number = ref("")
 
 onMounted(
     async () => {
-      await doFetchAssessmentAreaGradingStandard()
+       schoolStore.fetchSchools()
+       doFetchAssessmentAreaGradingStandard()
       await classStore.fetchCampusLevel(campus_curriculum_number)
     }
 )
 
 const doFetchAssessmentAreaGradingStandard = () => {
-  reportSetupStore.fetchAssessmentAreaGradingStandardInfo(grading_standard_number.value ?? "")
+  reportSetupStore.fetchAssessmentAreaGradingStandardInfo(grading_standard_number.value ?? "", school_number.value ?? "")
 }
 
 watch(
@@ -125,6 +130,16 @@ const deleteThisData = (id,name) => {
 
 }
 
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        schoolList.value = data.data
+      }
+    }
+)
+
+
 </script>
 
 <template>
@@ -152,9 +167,24 @@ const deleteThisData = (id,name) => {
 
 
         <div class="mt-[50px]">
-          <div class="row mx-auto">
+          <div class="grid grid-cols-4 gap-2 px-2">
 
-            <div class="col-lg-4  mb-2">
+            <div class="mb-2">
+              <div>
+                <label class="textColor"><small>School</small></label>
+                <select
+                    style="box-shadow: none;"
+                    class="form-select form-select-sm"
+                    v-model="school_number"
+                    @change="doFetchAssessmentAreaGradingStandard"
+                >
+                  <option disabled value="">--Select School--</option>
+                  <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{list.name}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-2">
               <div>
                 <label class="textColor"><small>Level</small></label>
                 <select
@@ -170,7 +200,7 @@ const deleteThisData = (id,name) => {
             </div>
 
 
-            <div class="col-lg-4  mb-2">
+            <div class="mb-2">
               <div>
                 <label class="textColor"><small>Class</small>
                 </label>
@@ -187,7 +217,7 @@ const deleteThisData = (id,name) => {
             </div>
 
 
-            <div class="col-lg-4  mb-2">
+            <div class="mb-2">
               <div>
                 <label class="textColor"><small>Grading Standards</small></label>
                 <select
@@ -198,7 +228,7 @@ const deleteThisData = (id,name) => {
                   <option disabled value="">--Select Grading Standard--</option>
                   <option value="">All</option>
                   <option v-for="(lst, index) in gradingStandardListData" :key="index" :value="lst.number">
-                    {{ lst.name + "["+lst.type+"]"}}
+                    {{ lst.code +". "+ lst.name}}
                   </option>
                 </select>
               </div>

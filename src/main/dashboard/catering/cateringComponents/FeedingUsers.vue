@@ -46,7 +46,6 @@ const form = reactive({
 const userList = ref([])
 onMounted(() => {
   schoolStore.fetchSchools()
-  // cateringStore.fetchFeedingGroupSessions()
 })
 
 const doGetUsersList = () =>{

@@ -13,20 +13,18 @@ const commons = useCommonsStore()
 const reportSetupStore = useReportSetupStore()
 const notificationStore  = useNotificationStore()
 const assessmentStore= useAssessmentStore()
-const levelStore = useLevelStore()
 const classStore = useClassesStore()
 const studyPeriodStore = useStudyPeriodStore()
 const academicYearStore = useAcademicYearStore()
 const routerData = useRouter()
 const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
+let   schoolNumber = routerData.currentRoute.value.query.sch
 
 const errorMessage = ref("")
 const loader = ref(false)
 const interviewAssessmentListData = ref(null)
 const gradingStandardListData = ref(null)
-const campusCurriculumDataInfo = ref(null)
-// const campus_curriculum_number = ref("")
 const campusLevelList = ref(null)
 const campus_level_number = ref("")
 const academic_year_number = ref("")
@@ -35,7 +33,6 @@ const campus_class_number = ref("")
 const campusClassList = ref(null)
 const academicYearList = ref(null)
 const studyPeriodList = ref(null)
-const assessment_area_number = ref("")
 
 const form = reactive({
   code:null,
@@ -46,8 +43,7 @@ const form = reactive({
 
 onMounted(
     async () => {
-      // await levelStore.fetchCampusCurriculum(campusNumber)
-      await fetchCampusLevel()
+       fetchCampusLevel()
     }
 )
 
@@ -103,6 +99,7 @@ watch(
 const addAssessmentAreaGradingStandard = () => {
   loader.value = true
   form.code = form.code ? parseInt(form.code) : form.code
+  form.school_number = schoolNumber
   reportSetupStore.newAssessmentAreaGradingStandard(form)
 }
 
@@ -295,7 +292,7 @@ watch(
             aria-label="Default select example">
           <option disabled value="">--Select Grading Standard--</option>
           <option v-for="(lst, index) in gradingStandardListData" :key="index" :value="lst.number">
-            {{ lst.name + "["+lst.type+"]"}}
+            {{ lst.code+". "+lst.name}}
           </option>
         </select>
       </div>
