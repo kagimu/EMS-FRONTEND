@@ -72,7 +72,7 @@
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-          <button type="button" @click="deleteUnitOfMeasure(list.number,list.name)">
+          <button type="button" @click="deleteUnitOfMeasure(list.unit_of_measure_number,list.name)">
             <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
           </button>
       </td>
@@ -155,7 +155,7 @@ onMounted(
   }
 //delete
   const deleteUnitOfMeasure = (id,name) => {
-if(!confirm("Are you sure, you want to delete: " + name)){
+if(!confirm("Are you sure, you want to delete: " + id)){
   return
 }
 // delete endpoint
@@ -166,6 +166,7 @@ watch(
     () => cateringStore.deleteUnitOfMeasureInfoResponse,
     async (data) => {
       notificationStore.successToast("Success", data.message)
+      getMenuItemInfo()
     },
     {deep: true}
   )
