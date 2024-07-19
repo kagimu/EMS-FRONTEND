@@ -30,6 +30,7 @@ const campusClassList = ref(null)
 const campus_class_number = ref("")
 const gradingStandardListData = ref(null)
 const grading_standard_number = ref("")
+const deletionLoader = ref(undefined)
 
 
 onMounted(
@@ -121,14 +122,35 @@ watch(
     }
 )
 
-const deleteThisData = (id,name) => {
-  if(!confirm("Are you sure, you want to remove: " + name)){
+const deleteAssessmentArea = (data, index) => {
+  if(!confirm("Are you sure, you want to delete this assessment area grading standard")){
     return
-  }else{
-
   }
 
+  deletionLoader.value = index
+
+  assessmentStore.deleteAssessmentAreaGradingStandard(data.number)
 }
+
+watch(
+    () => assessmentStore.deleteAssessmentAreaGradingStandardResponse,
+    async (data) => {
+      if (data) {
+        deletionLoader.value = undefined
+        notificationStore.successToast("Success",data.message)
+      }
+    }
+)
+
+watch(
+    () => assessmentStore.errorMessage,
+    async (data) => {
+      if (data) {
+        deletionLoader.value = undefined
+        notificationStore.errorToast("Error", data.message)
+      }
+    }
+)
 
 watch(
     () => schoolStore.schoolsResponse,
@@ -244,15 +266,23 @@ watch(
             <th class="w-[10%]" scope="col">Code</th>
             <th>Name</th>
             <th>Grading Standard Name</th>
+            <th>Action</th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="(levelInfo, index) in assessmentAreaGradingStandardList" :key="index">
-            <td> {{levelInfo.code}}</td>
-            <td> {{levelInfo.assessment_area_name}}</td>
-            <td> {{levelInfo.grading_standard_name}}</td>
+            <td> {{levelInfo?.code}}</td>
+            <td> {{levelInfo?.assessment_area_name}}</td>
+            <td> {{levelInfo?.grading_standard_name}}</td>
             <td>
-              <button @click="deleteThisData(levelInfo.number,levelInfo.assessment_area_name )"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-x cursor-pointer"></i></button>
+
+              <button type="button" @click="deleteAssessmentArea(levelInfo, index)">
+                <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+                <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </button>
+
             </td>
           </tr>
           </tbody>
