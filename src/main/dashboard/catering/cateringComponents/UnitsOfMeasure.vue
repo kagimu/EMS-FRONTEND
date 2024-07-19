@@ -121,7 +121,7 @@
 
 onMounted(
     () => {
-      // getMenuItemInfo()
+      getMenuItemInfo()
       schoolStore.fetchSchools()
     } )
 
