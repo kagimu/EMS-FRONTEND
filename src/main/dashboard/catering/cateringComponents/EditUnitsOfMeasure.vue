@@ -107,6 +107,20 @@ watch (
 )
 
 watch (
+    () => cateringStore.updateUnitOfMeasureInfoResponse,
+    async (data) => {
+      if(data){
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+        cateringStore.fetchUnitOfMeasureInfo()
+        form.code=null,
+    form.name=null
+      }
+    },
+    {deep:true}
+)
+
+watch (
       () => cateringStore.errorMessage,
       async (data) => {
         if(data){
