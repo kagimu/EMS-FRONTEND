@@ -1,6 +1,6 @@
 <template>
     <div>
-    <!-- {{ unitData }} -->
+    {{ unitData }}
        
 <form @submit.prevent="editUnitMeasurement">
 <div class="row mt-5">
@@ -88,6 +88,7 @@ const editUnitMeasurement = (number) => {
     unit_of_measure_number:props.unitData.unit_of_measure_number
     })
 //    alert(JSON.stringify(myData))
+myData.school_number = props.unitData.school_number
     buttonLoader.value=true
     cateringStore.updateUnitOfMeasure(myData)
 }
