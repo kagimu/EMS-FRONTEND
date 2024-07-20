@@ -141,7 +141,7 @@ const fetchAggregateGroup = () =>{
         <tbody>
           <tr>
             <td>1</td>
-            <td>Kindergatten</td>
+            <td>Kindergatten Aggreggate</td>
             <td>  <i
                  
                   class="bi-pencil ml-2 cursor-pointer"
@@ -152,7 +152,7 @@ const fetchAggregateGroup = () =>{
           </tr>
           <tr>
             <td>2</td>
-            <td>Primary</td>
+            <td>Primary Aggreggate</td>
             <td>
               <i
                  
