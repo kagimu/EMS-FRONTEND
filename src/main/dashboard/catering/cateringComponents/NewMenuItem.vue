@@ -29,7 +29,7 @@ const item_number = ref(null)
 
 onMounted(() => {
       schoolStore.fetchSchools()
-      cateringStore.fetchUnitOfMeasureInfo()
+      // cateringStore.fetchUnitOfMeasureInfo()
       getMenuItemInfo()
     }
 )
@@ -204,6 +204,11 @@ const doFetchMenuItem = (school_number) => {
     school_number:school_number
   }
   cateringStore.fetchMenuItem(data)
+
+  let dataa = {
+        school_number:school_number
+      }
+      cateringStore.fetchUnitOfMeasureInfo(dataa)
 }
 
 watch(
