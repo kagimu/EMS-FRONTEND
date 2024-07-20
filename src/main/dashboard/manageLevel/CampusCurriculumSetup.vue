@@ -80,6 +80,10 @@ const studentScoreMenu = ref([
 ])
 
 const assess = ref([
+{
+    name:"Aggregate NameGroup",
+    router_name:"aggregate-name-group"
+  },
   {
     name:"Name Of Aggregates",
     router_name:"grades"

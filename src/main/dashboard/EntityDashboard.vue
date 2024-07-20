@@ -6,6 +6,7 @@ import useNotificationStore from "@/composables/useNotification.js"
 import NewEntity from "@/main/dashboard/entity/entityComponents/NewEntity.vue"
 import AppModal from "@/components/AppModal.vue";
 import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
+import DashboardConfig from "@/main/dashboard/entity/entityComponents/DashboardConfig.vue"
 
 const  authStore = useAuthStore();
 const name = ref(null)
@@ -18,7 +19,7 @@ const entityDialog = ref(false)
 const buttonLoader = ref(null)
 const entityData = ref(null)
 const deletionLoader = ref(null)
-
+const showDashboardModal = ref(false)
 
 let p = authStore.profile
 
@@ -55,6 +56,9 @@ const deleteEntity = (list, index) => {
   entityStore.deleteEntity(list.number)
 }
 
+const configDashboard = () => {
+  showDashboardModal.value = true
+}
 
 
 
@@ -179,6 +183,10 @@ watch (
         <NewEntity :entityData="entityData"></NewEntity>
       </AppModal>
 
+      <AppModal title="Configure Landing Page" v-model="showDashboardModal" lg>
+        <DashboardConfig></DashboardConfig>
+      </AppModal>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-[#2c2f8c] sticky-top"  style="position: absolute; top: 0; left: 0; width: 100%;">
       <div class="container-fluid">
         <button class="navbar-toggler" data-bs-target="#navbarCollapse" data-bs-toggle="collapse" type="button">
@@ -214,10 +222,18 @@ watch (
 
     <div class="m-5">
 
-
       <div class="flex justify-between">
-        <span class="text-[20px]">Entities</span>
-        <button @click="showAddModal" class="btn btn-sm btn-primary">New Entity</button>
+        <span class="text-[16px]">Entities</span>
+        <div class="row">
+          <div class="col-lg-6">
+            <button @click="showAddModal" class="btn btn-sm btn-primary">New Entity</button>
+          </div>
+          <div class="col-lg-6">
+            <button @click="configDashboard" class="btn btn-sm btn-primary">Configure</button>
+           </div>
+
+        </div>
+       
       </div>
 
         <hr>

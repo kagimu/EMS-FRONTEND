@@ -301,6 +301,7 @@
 
 <template>
   <div>
+    {{ assessmentMetricList }}
      <form @submit.prevent="addInterviewAssesmentMetrics">
         <div class="row">
            <div class="col-lg-6">
