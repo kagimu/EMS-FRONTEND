@@ -130,14 +130,13 @@ const createScale = () =>{
   form.count =  parseInt(form.count)
   form.grades = sectionPart
   form.school_number = schoolNumber
+
+  convertFormValuesToInt()
+
   if(props.gradeScaleDatainfo.scale_number){
-    convertFormValuesToInt()
     form.scale_number = props.gradeScaleDatainfo.scale_number
-
     assessmentStore.updateAggregateScale(form)
-
   }else{
-    convertFormValuesToInt()
     assessmentStore.createAggregateScale(form)
   }
   
