@@ -73,7 +73,6 @@ onMounted(
 const newSectionPart = (count) => {
   sectionPart.value = []
   if(count > 0) {
-
     for (let i = 0; i < count; i++) {
       let maxValue = (i === 0) ?  100 : null
       let minValue = ((i+1) === parseInt(count)) ? 0 : null
@@ -83,9 +82,13 @@ const newSectionPart = (count) => {
   }
 }
 
-function removeSectionPart(index) {
-  sectionPart.value.splice(index, 1);
+const autoFillMaxValue = (min_value, index) => {
+  if(((parseInt(index) + 1) < sectionPart.value.length) && min_value) {
+    sectionPart.value[(parseInt(index) + 1)].max_value = (parseInt(min_value) - 0.6)
+  }
 }
+
+
 
 const convertFormValuesToInt = () => {
   sectionPart.value.forEach(field => {
@@ -309,6 +312,7 @@ watch(
                     maxlength="4"
                     @keypress="commons.numbersOnlyValidator($event)"
                     v-model="field.min_value"
+                    v-on:blur="autoFillMaxValue(field.min_value, index)"
                     placeholder="eg. 90"
                     type="text"
                     class="form-control outline-none shadow-none">
