@@ -96,7 +96,6 @@ const convertFormValuesToInt = () => {
 }
 
 const createScale = () =>{
- 
   buttonLoader.value = true
   form.count =  parseInt(form.count)
   form.grades = sectionPart
@@ -305,7 +304,6 @@ watch(
             <tr v-for="(field, index) in sectionPart" :key="index">
               <td>
                 <div class="mb-2">
-<!--                  <div class="text-[13px] text-[#505050]"> Code</div>-->
                   <input
                       @keypress="commons.codeValidator($event)"
                       maxlength="10"
@@ -316,7 +314,6 @@ watch(
                 </div>
               </td>
               <td>
-<!--                <div class="text-[13px] text-[#505050]">Minimum Scale</div>-->
                 <input
                     maxlength="4"
                     @keypress="commons.numbersOnlyValidator($event)"
@@ -326,7 +323,6 @@ watch(
                     class="form-control outline-none shadow-none">
               </td>
               <td>
-<!--                <div class="text-[13px] text-[#505050]">Maximum Scale</div>-->
                 <input
                     placeholder="eg. 100"
                     maxlength="4"
@@ -336,7 +332,6 @@ watch(
                     class="form-control outline-none shadow-none">
               </td>
               <td>
-<!--                <div class="text-[13px] text-[#505050]">Weight</div>-->
                 <input
                     placeholder="4"
                     maxlength="4"

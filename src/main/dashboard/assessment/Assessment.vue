@@ -9,6 +9,7 @@ import AssessmentScale from "@/main/dashboard/assessment/assessmentComponents/As
 import AssessmentAreaGradingStandard from "@/main/dashboard/assessment/AssessmentAreaGradingStandard.vue";
 import AssessmentMetrics from "@/main/dashboard/assessment/assessmentComponents/AssessmentMetrics.vue";
 import Grades from "@/main/dashboard/assessment/assessmentComponents/Grades.vue";
+import AggregateNameGroup from "@/main/dashboard/assessment/assessmentComponents/AggregateNameGroup.vue";
 
 const routerData = useRouter()
 const selectedPage = routerData.currentRoute.value.query.ass
@@ -53,6 +54,10 @@ const selectedPage = routerData.currentRoute.value.query.ass
 
                 <div v-if="selectedPage === 'assessment-area-grading-standard'">
                   <assessment-area-grading-standard></assessment-area-grading-standard>
+                </div>
+                  
+                <div v-if="selectedPage === 'aggregate-name-group'">
+                  <AggregateNameGroup></AggregateNameGroup>
                 </div>
                   
               </div>

@@ -11,6 +11,8 @@ export const useEntityStore = defineStore("entity", () => {
     let currentSelectedEntityResponse = ref(null)
     let deleteEntityResponse = ref(null)
     const errorMessage = ref(null)
+    let newLandingPageResponse = ref(null)
+    let landingPageResponse = ref(null)
 
     async function newEntity(data) {
         return await api.post("main/eos/entity/add", data)
@@ -96,6 +98,30 @@ export const useEntityStore = defineStore("entity", () => {
             })
     }
 
+    async function configureLanding(data) {
+        return await api.post("main/landing-page/new", data)
+            .then((response) => {
+                newLandingPageResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function fetchConfigureLanding(data) {
+        return await api.get("main/landing-page/all", data)
+            .then((response) => {
+                landingPageResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
     return {
         newEntityResponse,
         errorMessage,
@@ -105,13 +131,16 @@ export const useEntityStore = defineStore("entity", () => {
         editEntityResponse,
         currentSelectedEntityResponse,
         deleteEntityResponse,
+        newLandingPageResponse,
+        landingPageResponse,
+        fetchConfigureLanding,
         newEntity,
         editEntity,
         addEntityToUser,
         fetchEntity,
         switchEntity,
         currentSelectedEntity,
-        deleteEntity
-
+        deleteEntity,
+        configureLanding
     }
 } )

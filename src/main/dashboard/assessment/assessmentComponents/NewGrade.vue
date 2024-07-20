@@ -124,6 +124,17 @@ watch(
           </div>
 
           <div class="mb-2">
+            <div class="text-[13px] text-[#505050]">Group Category</div>
+                    <select
+                        class="form-select form-select-sm shadow-none" required
+                        v-model="form.aggregate_group_number"
+                    >
+                      <option disabled value="">--Select Aggregate Group--</option>
+                      <option>Kindergatten</option>
+                    </select>
+                  </div>
+
+          <div class="mb-2">
             <div class="text-[13px] text-[#505050]"> Short Code</div>
             <input v-model="form.short_name" type="text" class="form-control shadow-none" placeholder="D1, F9">
           </div>
