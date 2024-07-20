@@ -331,6 +331,7 @@ watch(
               <td>
                 <div class="mb-2">
                   <input
+                      readonly
                       @keypress="commons.codeValidator($event)"
                       maxlength="10"
                       v-model="field.code"
