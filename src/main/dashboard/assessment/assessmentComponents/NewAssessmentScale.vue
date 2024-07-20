@@ -22,7 +22,7 @@ const levelData = ref([])
 const levelStore = useLevelStore()
 const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
-const campusCurriculumDataInfo = ref(null)
+
 const campusLevelList = ref(null)
 const campusClassList = ref(null)
 let   schoolNumber = routerData.currentRoute.value.query.sch
@@ -36,10 +36,9 @@ const props = defineProps({
 onMounted(
     async () => {
       filterAssessmentGrade()
-      await levelStore.fetchCampusCurriculum(campusNumber)
        fetchCampusLevel()
        fetchGradeScale()
-       campusStore.fetchClassesBySchool()
+       campusStore.fetchClassesBySchool(schoolNumber)
     }
 )
 
@@ -124,14 +123,7 @@ const addRequirements = (class_number) => {
 }
 
 
-watch(
-    () => levelStore.campusCurriculumResponse,
-    async (data) => {
-      if(data){
-        campusCurriculumDataInfo.value = data.data
-      }
-    }
-)
+
 
 watch(
     () => classStore.campusLevelResponse,

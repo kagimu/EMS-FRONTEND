@@ -10,6 +10,7 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import useNotificationStore from "@/composables/useNotification.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 
 const { can } = useAbility()
 
@@ -17,6 +18,7 @@ const routerData = useRouter()
 const assessmentStore = useAssessmentStore()
 const levelStore = useLevelStore()
 const classStore = useClassesStore()
+const campusStore = useCampusStore()
 const academicYearStore = useAcademicYearStore()
 const notificationStore  = useNotificationStore()
 
@@ -28,8 +30,9 @@ const deletionLoader = ref(undefined)
 
 const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
+const schoolNumber = routerData.currentRoute.value.query.sch
 const campus_level_number = ref("")
-const campus_class_number = ref("")
+const class_number = ref("")
 const campusCurriculumDataInfo = ref(null)
 const campusLevelList = ref(null)
 const campusClassList = ref(null)
@@ -38,8 +41,8 @@ const showAssessmentScaleModal = ref(false)
 
 
 onMounted(() => {
+    campusStore.fetchClassesBySchool(schoolNumber)
     filterAssessmentGrades()
-    fetchCampusLevel()
     }
 )
 
@@ -47,7 +50,7 @@ onMounted(() => {
 const filterAssessmentGrades = () =>{
   let data = {
     campus_number:campusNumber,
-    campus_class_number:campus_class_number.value
+    class_number:class_number.value
   }
   assessmentStore.fetchAssessmentGrades(data)
 }
@@ -122,7 +125,7 @@ watch(
 
 
 watch(
-    () => academicYearStore.campusClassByLevelResponse,
+    () => campusStore.schoolClassesResponse,
     async (data) => {
       if(data){
         campusClassList.value = data.data
@@ -209,27 +212,18 @@ watch (
 
 
 
-              <div class="col-lg-4  mb-2">
-                <select
-                    class="form-select form-select-sm shadow-none"
-                    v-model="campus_level_number"
-                    @change="fetchClass(campus_level_number)"
-                >
-                  <option disabled value="">--Select Level--</option>
-                  <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-                </select>
-              </div>
 
 
 
-              <div class="col-lg-4  mb-2">
+
+              <div class="col-lg-4 mb-3">
                 <select
                     class="form-select form-select-sm shadow-none" required
-                    v-model="campus_class_number"
+                    v-model="class_number"
                     @change="filterAssessmentGrades"
                 >
                   <option disabled value="">--Select Class--</option>
-                  <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+                  <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
                 </select>
               </div>
 
