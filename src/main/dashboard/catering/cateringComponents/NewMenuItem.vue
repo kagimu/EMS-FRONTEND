@@ -54,8 +54,8 @@ const menuForm = reactive({
   campus_number:"",
   base_price:null,
   school_number:null,
-  purchase_unit_of_measure_number:"",
-  conversion_to_purchase_unit :null
+  conversion_to_purchase_unit :null,
+  purchase_unit_of_measure_number :null
 } )
 
 watch(
@@ -121,6 +121,7 @@ const addMenuItem = () =>{
       menuForm.menu_item_number = item_number.value
       cateringStore.updateMenuItem(menuForm)
     }else {
+      // alert(JSON.stringify(menuForm))
       cateringStore.newMenuItemInfo(menuForm)
     }
 
@@ -347,10 +348,7 @@ const clearFormData = () => {
 </div>
 
 
-<div class="mb-2">
-        <label class="textColor"><small>Item Name</small></label>
-        <input v-model="menuForm.name"   class="form-control shadow-none" required type="text">
-      </div>
+
 
       <div class="mb-2">
             <label class="textColor"><small>Code</small></label>
@@ -363,6 +361,11 @@ const clearFormData = () => {
                 @paste.prevent
                 @keypress="commons.codeValidator($event)">
           </div>
+
+          <div class="mb-2">
+        <label class="textColor"><small>Item Name</small></label>
+        <input v-model="menuForm.name"   class="form-control shadow-none" required type="text">
+      </div>
  
 </div>
 
@@ -382,7 +385,7 @@ const clearFormData = () => {
                 v-model="menuForm.unit_of_measure_number"
                 class="form-control form-select shadow-none" id="inputGroupSelect02">
               <option disabled value="">--Select Unit of use--</option>
-              <option v-for="(list, index) in unitMeasurementData" :key="index" :value="list.number">{{list.name}}</option>
+              <option v-for="(list, indx) in unitMeasurementData" :key="indx" :value="list.unit_of_measure_number">{{list.name}}</option>
             </select>
             <span class="input-group-text p-0 px-1"  ><i  class="bi bi-plus-circle" @click="showUnitMeasurement()"></i></span>
           </div>
@@ -405,10 +408,10 @@ const clearFormData = () => {
             <label class="textColor"><small>Purchase Unit of measure</small></label>
             <div class="input-group">
             <select
-                v-model="menuForm.purchase_unit_of_measure_number"
+                v-model="menuForm.purchase_unit_of_measure_number "
                 class="form-control form-select shadow-none" id="inputGroupSelect02">
               <option disabled value="">--Select Purchase Unit of measure--</option>
-              <option v-for="(list, index) in unitMeasurementData" :key="index" :value="list.number">{{list.name}}</option>
+              <option v-for="(list, index) in unitMeasurementData" :key="index" :value="list.unit_of_measure_number">{{list.name}}</option>
             </select>
             <span class="input-group-text p-0 px-1"  ><i  class="bi bi-plus-circle" @click="showUnitMeasurement()"></i></span>
           </div>
