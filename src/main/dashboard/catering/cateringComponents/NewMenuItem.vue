@@ -55,7 +55,7 @@ const menuForm = reactive({
   base_price:null,
   school_number:null,
   conversion_to_purchase_unit :null,
-  purchase_unit_of_measure_number :null
+  purchase_unit_of_measure_number :""
 } )
 
 watch(

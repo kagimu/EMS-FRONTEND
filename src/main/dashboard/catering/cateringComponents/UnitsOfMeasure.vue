@@ -74,9 +74,9 @@
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
           <button type="button" @click="deleteUnitOfMeasurer(list.unit_of_measure_number,list.name)">
             <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
-            <div class="spinner-border spinner-border-sm" role="status" v-if="deleteLoader" >
+            <!-- <div class="spinner-border spinner-border-sm" role="status" v-if="deleteLoader" >
         <span class="visually-hidden">Loading...</span>
-    </div>
+    </div> -->
           </button>
       </td>
       </tr>
