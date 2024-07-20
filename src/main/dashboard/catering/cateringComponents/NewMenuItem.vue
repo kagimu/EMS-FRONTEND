@@ -348,10 +348,7 @@ const clearFormData = () => {
 </div>
 
 
-<div class="mb-2">
-        <label class="textColor"><small>Item Name</small></label>
-        <input v-model="menuForm.name"   class="form-control shadow-none" required type="text">
-      </div>
+
 
       <div class="mb-2">
             <label class="textColor"><small>Code</small></label>
@@ -364,6 +361,11 @@ const clearFormData = () => {
                 @paste.prevent
                 @keypress="commons.codeValidator($event)">
           </div>
+
+          <div class="mb-2">
+        <label class="textColor"><small>Item Name</small></label>
+        <input v-model="menuForm.name"   class="form-control shadow-none" required type="text">
+      </div>
  
 </div>
 
