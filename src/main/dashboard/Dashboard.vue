@@ -7,7 +7,11 @@ import {useAuthStore} from "@/main/auth/store/auth.js";
 import {useRouter} from "vue-router";
 import { useAbility } from '@casl/vue';
 import {breakpointsTailwind, useBreakpoints, useStorage} from "@vueuse/core";
+import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
+
+const entityStore = useEntityStore()
 const routerName = useRouter().currentRoute.value.name;
+
 const authStore = useAuthStore()
 
 const { can } = useAbility();
@@ -19,6 +23,7 @@ const md = breakpoints.between('md', 'lg')
 let entityName = localStorage.getItem("entity_name")
 const schoolName = ref("")
 const campusName = ref("")
+const landingPageData = ref([])
 
 const defaultMenuSize = ref(useStorage("toggle", false))
 
@@ -40,10 +45,13 @@ const menuList = ref([
   {title:"Settings", name:"settings", icon:"bi-gear",action:"access_settings_menu"},
 ])
 
+const landingPageTitle = ref(null)
 onMounted(
     async () => {
       await  updateOnlineStatus()
       checkDynamicClass()
+      landingPageTitle.value = localStorage.getItem("landingPageTitle")
+      
       if(localStorage.getItem("schoolName")){
       schoolName.value = localStorage.getItem("schoolName")
       }
@@ -56,6 +64,14 @@ onMounted(
 const menu = ref(null);
 
 
+watch (
+    () => entityStore.landPageResponse,
+    async (data) => {
+      if(data){
+       landingPageData.value = data.data
+      }
+    }
+)
 
 watch(
     () => xs,

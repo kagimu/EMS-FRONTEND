@@ -1,5 +1,5 @@
 <script setup>
-import {reactive, ref, watch} from 'vue'
+import {onMounted,reactive, ref, watch} from 'vue'
 import {useAuthStore} from "@/main/auth/store/auth.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import VictoriousLogo from "@/assets/images/victorious-logo.png";
@@ -10,10 +10,15 @@ let buttonLoader = ref(false)
 let show = ref(false)
 const showSuccessPage = ref(false)
 
-
 let authStore = useAuthStore()
 const  notificationStore  = useNotificationStore()
 const commons = useCommonsStore()
+
+const landingPage = ref(null);
+
+onMounted(() => {
+  landingPage.value =   localStorage.getItem("landingPageTitle")
+  })
 
 
 const form = reactive({
@@ -86,7 +91,7 @@ watch(
 
           <img alt="logo" style="width: 100px; margin: 0 auto" :src="VictoriousLogo"/>
           <div class="text-[#2c2f8c] text-center text-[20px]">
-            Victorious Education Services
+          {{landingPage}}
           </div>
 
 

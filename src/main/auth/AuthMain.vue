@@ -8,7 +8,7 @@
             <router-link
                 :to="{name:'welcome'}"
                 class="text-white no-underline ml-5 text-[16px]">
-              Victorious Education Services
+             {{ landingPage }}
             </router-link>
             <div>
               <div class="flex text-sm">
@@ -36,10 +36,21 @@
 
 </template>
 
-<script>
-export default {
-name: "AuthMain"
-}
+<script setup>
+import {ref, onMounted, watch} from 'vue'
+
+// export default {
+// name: "AuthMain"
+// }
+const landingPage = ref(null);
+
+onMounted(() => {
+  landingPage.value =   localStorage.getItem("landingPageTitle")
+  })
+
+
+
+
 </script>
 
 <style scoped>

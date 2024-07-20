@@ -1,15 +1,23 @@
 <script setup>
-import {reactive, ref, watch} from 'vue'
+import {onMounted,reactive, ref, watch} from 'vue'
 import {useAuthStore} from "@/main/auth/store/auth.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import router from "@/config/router.js";
 import VictoriousLogo from "@/assets/images/victorious-logo.png";
+import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
+
 const  notificationStore  = useNotificationStore()
 const authStore = useAuthStore()
+const entityStore = useEntityStore()
 
 let errorMessage = ref(null)
 let buttonLoader = ref(false)
 let show = ref(false)
+const title  = ref(null)
+
+onMounted(() => {
+  entityStore.getConfigureLanding()
+  })
 
 const form = reactive({
   email:null,
@@ -26,6 +34,15 @@ function doLogin(){
   authStore.userLogin(form)
 }
 
+watch (
+    () => entityStore.landPageResponse,
+    async (data) => {
+      if(data){
+       title.value = data.title  
+       localStorage.setItem("landingPageTitle", title.value)
+      }
+    }
+)
 
 
 watch(
@@ -79,8 +96,8 @@ watch(
       <div class="col-lg-4">
         <div class="align-centre mt-2 h6 font500 text-uppercase mb-2">
           <img alt="logo" style="width: 100px; margin: 0 auto" :src="VictoriousLogo"/>
-          <div class="text-[#2c2f8c] text-center text-[20px]">
-            Victorious Education Services
+          <div class="text-[#2c2f8c] text-center text-[20px]" >
+           {{ title }}
           </div>
           <p style="text-align: center !important;color:#0b5dd7cc;font-size: 14px;;">LOGIN</p></div>
 
