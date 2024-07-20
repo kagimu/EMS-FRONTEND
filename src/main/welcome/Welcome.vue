@@ -6,7 +6,7 @@
       <div class="grid grid-cols-2 gap-4">
 
         <div class="text-center">
-          <div class="text-[45px] mt-5">Victorious Education Services</div>
+          <div class="text-[45px] mt-5">{{ landingPageTitle }}</div>
           <div>Transforming Education</div>
         </div>
 
@@ -166,5 +166,14 @@ div.card {
 </style>
 
 <script setup>
+import {ref, onMounted, watch} from 'vue'
+
+const landingPageTitle = ref(null)
+onMounted(
+    async () => {
+      landingPageTitle.value = localStorage.getItem("landingPageTitle")
+    }
+)
+
 
 </script>

@@ -13,6 +13,12 @@ const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
 const authStore = useAuthStore()
 
+const landingPage = ref(null);
+
+onMounted(() => {
+  landingPage.value =   localStorage.getItem("landingPageTitle")
+  })
+
 
 
 function doReset(){
@@ -58,7 +64,7 @@ watch(
 
   <img  alt="logo" style="width: 100px; margin: 0 auto" :src="VictoriousLogo"/>
   <div class="text-[#2c2f8c] text-center text-[20px]">
-    Victorious Education Services
+   {{landingPage}}
   </div>
 
 
@@ -142,7 +148,7 @@ watch(
             </small>
 
             <small class="float-end">
-              New to Victorious Education Services ?
+              New to {{landingPage}} ?
               <router-link
                   style="color: #242f7e;"
                   :to="{ name: 'register' }"

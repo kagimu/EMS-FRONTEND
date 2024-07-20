@@ -13,10 +13,6 @@ const entityStore = useEntityStore()
     description:null
   })
 
-  onMounted(() => {
-    entityStore.fetchConfigureLanding()
-  })
-
   const dashboardConfig = () =>{
     loader.value = true
     alert(JSON.stringify(formData))
