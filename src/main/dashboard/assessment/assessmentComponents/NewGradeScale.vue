@@ -42,7 +42,8 @@ const form = reactive({
   scale_name:"",
   count:"",
 })
-const sectionPart = ref([{ code: null, grade_number: "",min_value:null,max_value:null,weight:null,remark:null}])
+// const sectionPart = ref([{ code: null, grade_number: "",min_value:null,max_value:null,weight:null,remark:null}])
+const sectionPart = ref([])
 
 onMounted(
     async () => {
@@ -70,9 +71,16 @@ onMounted(
 )
 
 
-const newSectionPart = (count) => {
+const newSectionPart = (checkReset) => {
+
+  if(props.gradeScaleDatainfo?.scale_number && !checkReset){
+    return
+  }
+
+  let count = parseInt(form.count)
+
   sectionPart.value = []
-  if(count > 0) {
+  if(count && (count > 0)) {
     for (let i = 0; i < count; i++) {
       let maxValue = (i === 0) ?  100 : null
       let minValue = ((i+1) === parseInt(count)) ? 0 : null
@@ -83,8 +91,20 @@ const newSectionPart = (count) => {
 }
 
 const autoFillMaxValue = (min_value, index) => {
-  if(((parseInt(index) + 1) < sectionPart.value.length) && min_value) {
-    sectionPart.value[(parseInt(index) + 1)].max_value = (parseInt(min_value) - 0.6)
+
+  if(((parseInt(index) + 1) < sectionPart.value.length)) {
+
+    for (let i = (parseInt(index) + 1); i < sectionPart.value.length; i++) {
+      let maxValue = null
+      let minValue = ((i + 1) === sectionPart.value.length) ? 0 : null
+      sectionPart.value[i].min_value = minValue
+      sectionPart.value[i].max_value = maxValue
+    }
+
+    if (min_value) {
+      sectionPart.value[(parseInt(index) + 1)].max_value = (parseInt(min_value) - 0.6)
+    }
+
   }
 }
 
@@ -252,6 +272,7 @@ watch(
 <template>
     <div>
 
+
         <div class="modal-content">
 
       <div class="modal-body">
@@ -262,7 +283,7 @@ watch(
             <div class="text-[13px] text-[#505050]">Count of Scale</div>
             <input
                 @keypress="commons.codeValidator($event)"
-                v-on:blur="newSectionPart(form.count)"
+                v-on:blur="newSectionPart('')"
                 maxlength="10"
                 v-model="form.count"
                 required
@@ -276,6 +297,19 @@ watch(
             <input v-model="form.scale_name" type="text" class="form-control shadow-none" placeholder="Scale of 5">
           </div>
 
+          <div class="flex justify-end mt-5 mb-4" v-if="gradeScaleDatainfo?.scale_number">
+
+          <div>
+            <button
+                type="button"  class="text-[#2c2f8c]  rounded-md text-xs hover:bg-[#2c2f8c] hover:text-white" style="border: 1px solid #2c2f8c;"  @click="newSectionPart('reset')">
+                  <div class="px-3 py-1">
+                    <i style="font-size: 15px;"  class="bi-reply mr-1"></i>
+                    Reset
+                  </div>
+            </button>
+          </div>
+
+          </div>
 
           <table
               id="datatable"
@@ -290,7 +324,6 @@ watch(
               <td class="w-[10%]">Weight</td>
               <td>Remark</td>
               <td>Name Of Aggregate</td>
-<!--              <td></td>-->
             </tr>
             </thead>
             <tbody>
@@ -354,11 +387,6 @@ watch(
                   </select>
                 </div>
               </td>
-<!--              <td>
-                <div class="mt-1">
-                <i class="bi bi-x-circle cursor-pointer text-[red]" @click="removeSectionPart(index)"></i>
-                </div>
-              </td>-->
             </tr>
 
             </tbody>
@@ -367,11 +395,11 @@ watch(
 
 
 
-<!--     <button v-if="sectionPart.length < form.count" @click="newSectionPart" type="button" class="bg-[#0d6efd] text-white text-sm px-2 rounded-sm" style="text-align: center;"><i class="bi bi-plus"></i>Add</button>-->
-
      <div class="flex justify-content-end mt-4" style="width: 100%;">
             <button type="submit" class="btn btn-primary border-0 btn-sm">
-                 <small><i class="bi bi-save"></i> submit</small>
+                 <small><i class="bi bi-save"></i>
+                  {{gradeScaleDatainfo?.scale_number ? "Edit" : "Submit"}}
+                 </small>
                  <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
                       role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span> 
                     </span>
@@ -387,5 +415,7 @@ watch(
 
 
 <style scoped>
+
+
 
 </style>
