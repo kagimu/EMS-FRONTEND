@@ -20,18 +20,8 @@ const routerData = useRouter()
 const { can } = useAbility()
 const aggregateData = ref([])
 const errorMessage = ref(null)
-const campusList = ref([])
-const schoolList = ref([])
-const classList = ref([])
-const school_number = ref(null)
-const campus_number = ref(null)
-const class_number = ref(null)
-const showDialog = ref(null)
 const showAggregateScaleModal = ref(false)
-const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
-const campus_level_number = ref("")
-const campus_class_number = ref("")
 const campusCurriculumDataInfo = ref(null)
 const campusLevelList = ref(null)
 const campusClassList = ref(null)
@@ -60,8 +50,6 @@ const openEditModal = (gradeInf) =>{
 
 const fetchGradeScale = () =>{
   let data = {
-    // campus_number:campusNumber,
-    // campus_class_number:campus_class_number.value,
     school_number:schoolNumber
   }
   assessmentStore.fetchAggregateScale(data)
@@ -72,9 +60,7 @@ const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
 }
 
-const fetchClass = (campus_level_number) => {
-  academicYearStore.fetchCampusClassByLevel(campus_level_number)
-}
+
 
 const deleteThisData = (info) => {
 if(!confirm("Are you sure, you want to delete: " + info.scale_name)){

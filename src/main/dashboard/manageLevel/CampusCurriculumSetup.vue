@@ -1,5 +1,4 @@
 <script setup>
-
 import {computed, onMounted, ref, watch} from "vue";
 import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
 import {useRouter} from "vue-router";

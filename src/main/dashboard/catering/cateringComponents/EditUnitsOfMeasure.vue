@@ -61,7 +61,7 @@ const props = defineProps({
 
 onMounted(
     () => {
-        if(props.unitData.number){
+        if(props.unitData.unit_of_measure_number){
             form.code = props.unitData.code;
             form.name = props.unitData.name;
             form.abbreviation = props.unitData.abbreviation
@@ -85,14 +85,29 @@ const editUnitMeasurement = (number) => {
     code:parseInt(form.code),
     name:form.name,
     abbreviation:form.abbreviation,
-    menu_number:props.unitData.number
+    unit_of_measure_number:props.unitData.unit_of_measure_number
     })
-   // alert(JSON.stringify(myData))
+//    alert(JSON.stringify(myData))
+myData.school_number = props.unitData.school_number
     buttonLoader.value=true
     cateringStore.updateUnitOfMeasure(myData)
 }
 watch (
     () => cateringStore.newUnitOfMeasureInfoResponse,
+    async (data) => {
+      if(data){
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+        cateringStore.fetchUnitOfMeasureInfo()
+        form.code=null,
+    form.name=null
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => cateringStore.updateUnitOfMeasureInfoResponse,
     async (data) => {
       if(data){
         buttonLoader.value = false

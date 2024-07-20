@@ -29,7 +29,6 @@ const gradeData = ref([])
 const campusCurriculumDataInfo = ref(null)
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const campusLevelList = ref(null)
-const campus_level_number = ref("")
 const campusClassList = ref(null)
 const campusNumber = routerData.currentRoute.value.query.id
 const gradeDataInfo = ref([])
@@ -47,6 +46,10 @@ const sectionPart = ref([{ code: null, grade_number: "",min_value:null,max_value
 
 onMounted(
     async () => {
+
+      schoolStore.fetchSchools()
+      fetchCampusLevel()
+
       await levelStore.fetchCampusCurriculum(campusNumber)
       assessmentStore.fetchGrades()
       let draft = props.gradeScaleDatainfo
@@ -61,22 +64,31 @@ onMounted(
         }) 
 
         sectionPart.value = gradesInfo
-    //  sectionPart.value = [
-    // { code: 1, grade_number: "grade1", min_value: 0, max_value: 50, weight: 2, remark: "Good" },
-    // { code: 2, grade_number: "grade2", min_value: 51, max_value: 90, weight: 1, remark: "Very Good" }
-    // ]
+
       }
     }
 )
 
 
-const newSectionPart = () => {
-    sectionPart.value.push({ code: null, grade_number: "",min_value:null,max_value:null,weight:null,remark:null})
+const newSectionPart = (count) => {
+  sectionPart.value = []
+  if(count > 0) {
+    for (let i = 0; i < count; i++) {
+      let maxValue = (i === 0) ?  100 : null
+      let minValue = ((i+1) === parseInt(count)) ? 0 : null
+      sectionPart.value.push({code: (i+1), grade_number: "", min_value: minValue, max_value: maxValue, weight: (i+1) , remark: null})
+    }
+
+  }
 }
 
-function removeSectionPart(index) {
-  sectionPart.value.splice(index, 1);
+const autoFillMaxValue = (min_value, index) => {
+  if(((parseInt(index) + 1) < sectionPart.value.length) && min_value) {
+    sectionPart.value[(parseInt(index) + 1)].max_value = (parseInt(min_value) - 0.6)
+  }
 }
+
+
 
 const convertFormValuesToInt = () => {
   sectionPart.value.forEach(field => {
@@ -104,7 +116,7 @@ const createScale = () =>{
   if(props.gradeScaleDatainfo.scale_number){
     convertFormValuesToInt()
     form.scale_number = props.gradeScaleDatainfo.scale_number
-    // alert(JSON.stringify(form))
+
     assessmentStore.updateAggregateScale(form)
 
   }else{
@@ -115,30 +127,10 @@ const createScale = () =>{
 }
 
 
-const doFetchGradingStandard = () => {
-  let data = {
-    campus_number:campusNumber,
-    campus_class_number:form.campus_class_number
-  }
-  assessmentStore.fetchGradeStandard(data)
-}
-
-
-
-
-onMounted(() => {
-      schoolStore.fetchSchools()
-      fetchCampusLevel()
-    }
-)
 
 
 const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
-}
-
-const fetchClass = (campus_level_number) => {
-  academicYearStore.fetchCampusClassByLevel(campus_level_number)
 }
 
 
@@ -262,7 +254,7 @@ watch(
     <div>
 
         <div class="modal-content">
-<!-- {{ gradeScaleDatainfo }} -->
+
       <div class="modal-body">
         <form @submit.prevent="createScale()">
 
@@ -271,6 +263,7 @@ watch(
             <div class="text-[13px] text-[#505050]">Count of Scale</div>
             <input
                 @keypress="commons.codeValidator($event)"
+                v-on:blur="newSectionPart(form.count)"
                 maxlength="10"
                 v-model="form.count"
                 required
@@ -298,14 +291,13 @@ watch(
               <td class="w-[10%]">Weight</td>
               <td>Remark</td>
               <td>Name Of Aggregate</td>
-              <td></td>
+<!--              <td></td>-->
             </tr>
             </thead>
             <tbody>
             <tr v-for="(field, index) in sectionPart" :key="index">
               <td>
                 <div class="mb-2">
-<!--                  <div class="text-[13px] text-[#505050]"> Code</div>-->
                   <input
                       @keypress="commons.codeValidator($event)"
                       maxlength="10"
@@ -316,17 +308,16 @@ watch(
                 </div>
               </td>
               <td>
-<!--                <div class="text-[13px] text-[#505050]">Minimum Scale</div>-->
                 <input
                     maxlength="4"
                     @keypress="commons.numbersOnlyValidator($event)"
                     v-model="field.min_value"
+                    v-on:blur="autoFillMaxValue(field.min_value, index)"
                     placeholder="eg. 90"
                     type="text"
                     class="form-control outline-none shadow-none">
               </td>
               <td>
-<!--                <div class="text-[13px] text-[#505050]">Maximum Scale</div>-->
                 <input
                     placeholder="eg. 100"
                     maxlength="4"
@@ -336,8 +327,8 @@ watch(
                     class="form-control outline-none shadow-none">
               </td>
               <td>
-<!--                <div class="text-[13px] text-[#505050]">Weight</div>-->
                 <input
+                    readonly
                     placeholder="4"
                     maxlength="4"
                     @keypress="commons.numbersOnlyValidator($event)"
@@ -346,7 +337,6 @@ watch(
                     class="form-control outline-none shadow-none">
               </td>
               <td>
-<!--                <div class="text-[13px] text-[#505050]">Remark</div>-->
                 <textarea
                     placeholder="Very Good"
                     v-model="field.remark"
@@ -365,11 +355,11 @@ watch(
                   </select>
                 </div>
               </td>
-              <td>
+<!--              <td>
                 <div class="mt-1">
                 <i class="bi bi-x-circle cursor-pointer text-[red]" @click="removeSectionPart(index)"></i>
                 </div>
-              </td>
+              </td>-->
             </tr>
 
             </tbody>
@@ -378,7 +368,7 @@ watch(
 
 
 
-     <button v-if="sectionPart.length < form.count" @click="newSectionPart" type="button" class="bg-[#0d6efd] text-white text-sm px-2 rounded-sm" style="text-align: center;"><i class="bi bi-plus"></i>Add</button>
+<!--     <button v-if="sectionPart.length < form.count" @click="newSectionPart" type="button" class="bg-[#0d6efd] text-white text-sm px-2 rounded-sm" style="text-align: center;"><i class="bi bi-plus"></i>Add</button>-->
 
      <div class="flex justify-content-end mt-4" style="width: 100%;">
             <button type="submit" class="btn btn-primary border-0 btn-sm">

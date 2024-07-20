@@ -56,8 +56,9 @@ export const useCateringStore = defineStore("catering", () => {
             })
     }
 
-    async function fetchUnitOfMeasureInfo() {
-        return await api.get("main/catering/units-of-measure")
+    async function fetchUnitOfMeasureInfo(data) {
+          let school_number = data?.school_number ?? ""
+        return await api.get("main/catering/units-of-measure?school_number="+school_number)
             .then((response) => {
                 UnitOfMeasureInfoResponse.value = response.data
             })
@@ -80,7 +81,7 @@ export const useCateringStore = defineStore("catering", () => {
     }
     // Main/catering/units-of-measure/3434
     async function updateUnitOfMeasure(data) {
-        return await api.put("main/catering/units-of-measure/"+data.menu_number)
+        return await api.put("main/catering/units-of-measure",data)
             .then((response) => {
                 updateUnitOfMeasureInfoResponse.value = response.data
             })
@@ -90,6 +91,7 @@ export const useCateringStore = defineStore("catering", () => {
                 }
             })
     }
+
 
     //==MenuItem catering/menu-items
     async function newMenuItemInfo(data) {

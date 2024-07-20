@@ -23,15 +23,25 @@
                 <div class="">
                  <div class="">
                     <div class="row">
-                    <div class="col-lg-8">
-                        <p style="font-size: 14px;margin-top: 2px;" class="ml-4">Unit of Measure</p>
+                    <div class="col-lg-4">
+                      <div class="mb-2 ml-2">
+                        <p style="font-size: 14px;margin-top: 2px;" class="mb-2">Unit of Measure</p>
+                    <select
+                        v-model="schoolNumber"
+                        class="form-select form-select-sm" required
+                        style="box-shadow: none;"
+                        @change="getMenuItemInfo(schoolNumber)"
+                    >
+                      <option disabled :value="null">Select School</option>
+                      <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+                      </option>
+                    </select>
+                  </div>
+                       
                     </div>
     
                 <div class="col-lg-4">
-                <!-- <button
-                style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4" @click="showUnitMeasurement()">
-                <small> <b><i class="bi bi-plus"></i></b>
-                Add New</small></button> -->
+                 
                 </div>
             </div>
             </div>
@@ -62,8 +72,11 @@
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-          <button type="button" @click="deleteUnitOfMeasure(list.number,list.name)">
+          <button type="button" @click="deleteUnitOfMeasurer(list.unit_of_measure_number,list.name)">
             <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+            <div class="spinner-border spinner-border-sm" role="status" v-if="deleteLoader" >
+        <span class="visually-hidden">Loading...</span>
+    </div>
           </button>
       </td>
       </tr>
@@ -89,18 +102,35 @@
     import AppModal from "@/components/AppModal.vue";
     import EditUnitsOfMeasure from "@/main/dashboard/catering/cateringComponents/EditUnitsOfMeasure.vue";
 
+    import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+    const schoolStore = useSchoolStore()
+    const schoolList = ref([])
 
     const showUnitModal = ref(false)
     const cateringStore = useCateringStore()
     const thisDialog = ref(false)
     const unitMeasurementData = ref([])
-    const notificationStore = useCateringStore()
-
+    const notificationStore = useNotificationStore()
+    const schoolNumber = ref("")
+    const deleteLoader = ref(false)
     const showUnitMeasurement = () => {
     showUnitModal.value = true
     thisDialog.value=false
+
 }
 
+onMounted(
+    () => {
+      getMenuItemInfo()
+      schoolStore.fetchSchools()
+    } )
+
+    const getMenuItemInfo = (unitN) =>{
+      let data = {
+        school_number:unitN
+      }
+      cateringStore.fetchUnitOfMeasureInfo(data)
+    }
 
     const showDialog = () => {
         thisDialog.value = true
@@ -109,11 +139,7 @@
     const closeDialog = () => {
         thisDialog.value = false
     }
-    onMounted(
-    () => {
-      cateringStore.fetchUnitOfMeasureInfo()
-    } )
-
+  
     watch(
     () => cateringStore.UnitOfMeasureInfoResponse,
     async (data) => {
@@ -132,7 +158,8 @@
     showEditModal.value = true
   }
 //delete
-  const deleteUnitOfMeasure = (id,name) => {
+  const deleteUnitOfMeasurer = (id,name) => {
+deleteLoader.value = true;
 if(!confirm("Are you sure, you want to delete: " + name)){
   return
 }
@@ -143,11 +170,31 @@ cateringStore.deleteUnitOfMeasure(id)
 watch(
     () => cateringStore.deleteUnitOfMeasureInfoResponse,
     async (data) => {
+      deleteLoader.value = false
       notificationStore.successToast("Success", data.message)
+      getMenuItemInfo()
     },
     {deep: true}
   )
+  watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        schoolList.value = data.data
+      }
+    }
+)
 
+watch (
+    () => cateringStore.updateUnitOfMeasureInfoResponse,
+    async (data) => {
+      if(data){
+     getMenuItemInfo()
+     showEditModal.value = false
+      }
+    },
+    {deep:true}
+)
     </script>
     
     
