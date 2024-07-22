@@ -329,8 +329,8 @@ watch(
     <tbody>
 
         <tr v-for="(list, index) in menuItemData" v-if="isLoading===false" :key="index">
-          <td>{{ index+1 }}</td>
-      <td>{{ list?.name }} [{{ list?.code }}]</td>
+          <td>{{ list?.code }}</td>
+      <td>{{ list?.name }}</td>
       <td>{{ list?.unit_of_measure_name }}</td>
       <td>{{ list?.purchase_unit_of_measure_name }}</td>
       <td>{{ list?.current_quantity }}</td>

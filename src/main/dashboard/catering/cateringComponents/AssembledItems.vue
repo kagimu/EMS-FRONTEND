@@ -272,12 +272,13 @@ watch(
                     >
                     <thead >
                       <tr>
+                        <th>#</th>
                         <th>Name</th>
                         <th>Unit</th>
                         <th>Purchase Unit</th>
                         <th>Qty</th>
                         <th>Parts</th>
-                        <th>#</th>
+                        <th>Action</th>
                       </tr>
                       <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
                         {{errorMessage}}
@@ -286,7 +287,8 @@ watch(
                     <tbody>
                      
                       <tr v-if="isLoading===false" v-for="(list, index) in menuItemData" :key="index">
-                        <td   v-if="list.type==='ASSEMBLED'">{{ list?.name }} [{{ list?.code }}]</td>
+                        <td   v-if="list.type==='ASSEMBLED'">{{ list?.code }}</td>
+                        <td   v-if="list.type==='ASSEMBLED'">{{ list?.name }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.unit_of_measure_name }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.purchase_unit_of_measure_name }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.current_quantity }}</td>

@@ -53,7 +53,7 @@ const menuForm = reactive({
   unit_of_measure_number:"",
   campus_number:"",
   base_price:null,
-  school_number:null,
+  school_number:"",
   conversion_to_purchase_unit :null,
   purchase_unit_of_measure_number :""
 } )
@@ -341,7 +341,7 @@ const clearFormData = () => {
       style="box-shadow: none;"
       @change="doFetchMenuItem(menuForm.school_number)"
   >
-    <option disabled :value="null">Select School</option>
+    <option disabled value="">--Select School--</option>
     <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
     </option>
   </select>
@@ -371,9 +371,6 @@ const clearFormData = () => {
 
 
 
-
-
-    
        
         <div class="col-lg-6">
 
@@ -416,8 +413,20 @@ const clearFormData = () => {
             <span class="input-group-text p-0 px-1"  ><i  class="bi bi-plus-circle" @click="showUnitMeasurement()"></i></span>
           </div>
         </div>
-       
-     
+
+          <div class="mb-2">
+            <label class="textColor"><small>Item Type</small> </label>
+            <select
+                v-model="menuForm.type"
+                class="form-select form-select-sm" required
+                style="box-shadow: none;"
+
+            >
+              <option disabled value="">--Select Type--</option>
+              <option value="ITEM">Ingredients (ITEM)</option>
+              <option>ASSEMBLED</option>
+            </select>
+          </div>
       
 
       <div class="mb-2" v-if="menuForm.type === 'ITEM'">
@@ -431,19 +440,7 @@ const clearFormData = () => {
             @keypress="commons.numbersOnlyValidator($event)">
       </div>
 
-      <div class="mb-2">
-        <label class="textColor"><small>Item Type</small> </label>
-        <select
-            v-model="menuForm.type"
-            class="form-select form-select-sm" required
-            style="box-shadow: none;"
 
-        >
-          <option disabled value="">Select Type</option>
-          <option value="ITEM">Ingredients (ITEM)</option>
-          <option>ASSEMBLED</option>
-        </select>
-      </div>
     </div>
   </div>
   
