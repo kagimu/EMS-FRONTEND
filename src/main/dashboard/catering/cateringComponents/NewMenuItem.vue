@@ -26,14 +26,6 @@ const menuItems = ref([])
 const unitMeasurementData = ref([])
 const item_number = ref(null)
 
-
-onMounted(() => {
-      schoolStore.fetchSchools()
-      // cateringStore.fetchUnitOfMeasureInfo()
-      getMenuItemInfo()
-    }
-)
-
 const props = defineProps({
   menuItemsInfo:{}
 })
@@ -57,6 +49,14 @@ const menuForm = reactive({
   conversion_to_purchase_unit :null,
   purchase_unit_of_measure_number :""
 } )
+
+
+onMounted(() => {
+      schoolStore.fetchSchools()
+      getMenuItemInfo()
+    }
+)
+
 
 watch(
     () => props.menuItemsInfo,
@@ -89,6 +89,8 @@ const getMenuItemInfo = () =>{
           menuItems.value = items
           doFetchMenuItem(draft.school_number)
         }
+
+        fetchUnit()
   }
 }
 
@@ -104,8 +106,7 @@ watch(
     () => cateringStore.UnitOfMeasureInfoResponse,
     async (data) => {
       unitMeasurementData.value = data.data
-    },
-    {deep: true}
+    }
 )
 
 
@@ -121,12 +122,10 @@ const addMenuItem = () =>{
       menuForm.menu_item_number = item_number.value
       cateringStore.updateMenuItem(menuForm)
     }else {
-      // alert(JSON.stringify(menuForm))
       cateringStore.newMenuItemInfo(menuForm)
     }
 
   }else{
-    //prepare data
     const secondaryItemNumbers = menuItems.value.map(menu => {
       return {
         secondary_item_number: menu.secondary_item_number,
@@ -200,16 +199,14 @@ watch(
     }
 )
 
-const doFetchMenuItem = (school_number) => {
-  let data = {
-    school_number:school_number
-  }
-  cateringStore.fetchMenuItem(data)
+const doFetchMenuItem = () => {
+  cateringStore.fetchMenuItem({school_number:menuForm.school_number})
 
-  let dataa = {
-        school_number:school_number
-      }
-      cateringStore.fetchUnitOfMeasureInfo(dataa)
+  fetchUnit()
+}
+
+const fetchUnit = () => {
+  cateringStore.fetchUnitOfMeasureInfo({school_number:menuForm.school_number})
 }
 
 watch(
@@ -339,7 +336,7 @@ const clearFormData = () => {
       v-model="menuForm.school_number"
       class="form-select form-select-sm" required
       style="box-shadow: none;"
-      @change="doFetchMenuItem(menuForm.school_number)"
+      @change="doFetchMenuItem()"
   >
     <option disabled value="">--Select School--</option>
     <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}

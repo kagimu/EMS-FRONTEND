@@ -267,7 +267,7 @@ watch(
 
                   <table 
                     id="datatable"
-                    class="table table-hover caption-top mt-4 table-sm table-striped"
+                    class="table table-hover caption-top mt-4 table-sm"
                     style="font-size: 14px !important;"
                     >
                     <thead >
