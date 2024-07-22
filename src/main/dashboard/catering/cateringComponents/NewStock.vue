@@ -85,7 +85,7 @@ const createStock = () => {
     menu_item_number: itemData.menu_item_number,
     quantity: parseInt(itemData.quantity),
     unit_price: parseInt(itemData.unitPrice),
-    unit_cost: parseInt(itemData.amount)
+    unit_cost: parseInt(itemData.cost)
   }))
 
   const data = {
