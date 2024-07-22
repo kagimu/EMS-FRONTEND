@@ -50,11 +50,11 @@ const filterBySchool = (school_number) => {
 
 const doFetchMenuItem = () => {
     let data = {
-    page: page.value,
-    per_page: per_page.value, 
-     school_number:form.school_number,
-     campus_number:form.campus_number,
-     type:"ITEM"
+      page: page.value,
+      per_page: per_page.value,
+      school_number:form.school_number,
+      campus_number:form.campus_number,
+      type:"ITEM"
     }
     cateringStore.fetchMenuItemPaginated(data)
 
@@ -281,8 +281,7 @@ watch(
     </div>
     <table 
     id="datatable"
-    class="table table-hover table-sm"
-    style="font-size: 14px !important;"
+    class="table table-hover table-sm text-[12px]"
     >
         <thead>
             <tr>

@@ -24,6 +24,8 @@ let entityName = localStorage.getItem("entity_name")
 const schoolName = ref("")
 const campusName = ref("")
 const landingPageData = ref([])
+const menu = ref(null);
+const landingPageTitle = ref(null)
 
 const defaultMenuSize = ref(useStorage("toggle", false))
 
@@ -36,19 +38,16 @@ const menuList = ref([
   {title:"Student Application", name:"student-application", icon:"bi-person-plus",action:"view_applications"},
   {title:"Student Admission", name:"admission-list", icon:"bi-database-down",action:"view_admissions"},
   {title:"Student Enrolment", name:"enrolment", icon:"bi-database-down",action:"view_enrollments"},
-  // {title:"Student Promotions", name:"promotions", icon:"bi-database-down",action:"view_promotions"},
-  // {title:"Invoices", name:"invoices", icon:"bi-receipt-cutoff",action:"view_invoices"},
   {title:"Catering", name:"catering", icon:"bi-egg-fried",action:"view_catering_menu" },
   {title:"Calendar", name:"general-calendar", icon:"bi-calendar3",action:"view_calendar"},
-  // {title:"Report Center", name:"report-center", icon:"bi-card-heading",action:"view_report-center"},
   {title:"Account Management", name:"account-management", icon:"bi-people",action:"view_account-management"},
   {title:"Settings", name:"settings", icon:"bi-gear",action:"access_settings_menu"},
 ])
 
-const landingPageTitle = ref(null)
+
 onMounted(
     async () => {
-      await  updateOnlineStatus()
+      updateOnlineStatus()
       checkDynamicClass()
       landingPageTitle.value = localStorage.getItem("landingPageTitle")
       
@@ -60,8 +59,6 @@ onMounted(
       }
     }
 )
-
-const menu = ref(null);
 
 
 watch (
