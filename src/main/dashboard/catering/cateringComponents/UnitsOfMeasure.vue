@@ -1,10 +1,112 @@
+<script setup>
+import {onMounted,reactive, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import NewUnitOfMeasurement from "@/main/dashboard/catering/cateringComponents/NewUnitOfMeasurement.vue";
+import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+import AppModal from "@/components/AppModal.vue";
+import EditUnitsOfMeasure from "@/main/dashboard/catering/cateringComponents/EditUnitsOfMeasure.vue";
+
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+const schoolStore = useSchoolStore()
+const schoolList = ref([])
+
+const showUnitModal = ref(false)
+const cateringStore = useCateringStore()
+const thisDialog = ref(false)
+const unitMeasurementData = ref([])
+const notificationStore = useNotificationStore()
+const schoolNumber = ref("")
+const deleteLoader = ref(false)
+
+const unitOfMeasureList = ref([])
+const showEditModal = ref(false)
+const namee = ref(null)
+
+
+const showUnitMeasurement = () => {
+  showUnitModal.value = true
+  thisDialog.value=false
+
+}
+
+onMounted(
+    () => {
+      getMenuItemInfo()
+      schoolStore.fetchSchools()
+    } )
+
+const getMenuItemInfo = () =>{
+  let data = {
+    school_number:schoolNumber.value
+  }
+  cateringStore.fetchUnitOfMeasureInfo(data)
+}
+
+
+
+watch(
+    () => cateringStore.UnitOfMeasureInfoResponse,
+    async (data) => {
+      unitMeasurementData.value = data.data
+    },
+    {deep: true}
+)
+
+//edit
+
+const editUnit = (unitInfo) => {
+  unitOfMeasureList.value = unitInfo
+  namee.value = unitInfo.name
+  // showEditModal.value = true
+  showUnitModal.value = true
+}
+
+
+//delete
+const deleteUnitOfMeasurer = (id,name) => {
+  deleteLoader.value = true;
+  if(!confirm("Are you sure, you want to delete: " + name)){
+    return
+  }
+// delete endpoint
+  cateringStore.deleteUnitOfMeasure(id)
+}
+
+watch(
+    () => cateringStore.deleteUnitOfMeasureInfoResponse,
+    async (data) => {
+      deleteLoader.value = false
+      notificationStore.successToast("Success", data.message)
+      getMenuItemInfo()
+    },
+    {deep: true}
+)
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        schoolList.value = data.data
+      }
+    }
+)
+
+watch (
+    () => cateringStore.updateUnitOfMeasureInfoResponse,
+    async (data) => {
+      if(data){
+        showUnitModal.value = false
+        getMenuItemInfo()
+      }
+    }
+)
+</script>
 <template>
     <div>
 
 
   
-    <AppModal title="Add Unit of Measure" v-model="showUnitModal" lg>
-      <NewUnitOfMeasurement></NewUnitOfMeasurement>
+    <AppModal :title="unitOfMeasureList ? 'Edit Unit of Measure' : 'Add Unit of Measure'" v-model="showUnitModal" lg>
+      <NewUnitOfMeasurement :unitOfMeasureList="unitOfMeasureList"></NewUnitOfMeasurement>
     </AppModal>
 
       
@@ -30,9 +132,9 @@
                         v-model="schoolNumber"
                         class="form-select form-select-sm" required
                         style="box-shadow: none;"
-                        @change="getMenuItemInfo(schoolNumber)"
+                        @change="getMenuItemInfo()"
                     >
-                      <option disabled :value="null">Select School</option>
+                      <option disabled value="">--Select School--</option>
                       <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
                       </option>
                     </select>
@@ -94,109 +196,7 @@
     </div>
     </template>
     
-    <script setup>
-    import {onMounted,reactive, ref, watch} from "vue";
-    import useNotificationStore from "@/composables/useNotification.js";
-    import NewUnitOfMeasurement from "@/main/dashboard/catering/cateringComponents/NewUnitOfMeasurement.vue";
-    import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
-    import AppModal from "@/components/AppModal.vue";
-    import EditUnitsOfMeasure from "@/main/dashboard/catering/cateringComponents/EditUnitsOfMeasure.vue";
 
-    import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-    const schoolStore = useSchoolStore()
-    const schoolList = ref([])
-
-    const showUnitModal = ref(false)
-    const cateringStore = useCateringStore()
-    const thisDialog = ref(false)
-    const unitMeasurementData = ref([])
-    const notificationStore = useNotificationStore()
-    const schoolNumber = ref("")
-    const deleteLoader = ref(false)
-    const showUnitMeasurement = () => {
-    showUnitModal.value = true
-    thisDialog.value=false
-
-}
-
-onMounted(
-    () => {
-      getMenuItemInfo()
-      schoolStore.fetchSchools()
-    } )
-
-    const getMenuItemInfo = (unitN) =>{
-      let data = {
-        school_number:unitN
-      }
-      cateringStore.fetchUnitOfMeasureInfo(data)
-    }
-
-    const showDialog = () => {
-        thisDialog.value = true
-    }
-
-    const closeDialog = () => {
-        thisDialog.value = false
-    }
-  
-    watch(
-    () => cateringStore.UnitOfMeasureInfoResponse,
-    async (data) => {
-          unitMeasurementData.value = data.data
-    },
-    {deep: true}
-  )
-
-  //edit
-  const unitOfMeasureList = ref([])
-  const showEditModal = ref(false)
- const namee = ref(null)
-  const editUnit = (num) => {
-    unitOfMeasureList.value = num
-    namee.value = num.name
-    showEditModal.value = true
-  }
-//delete
-  const deleteUnitOfMeasurer = (id,name) => {
-deleteLoader.value = true;
-if(!confirm("Are you sure, you want to delete: " + name)){
-  return
-}
-// delete endpoint
-cateringStore.deleteUnitOfMeasure(id)
-}
-
-watch(
-    () => cateringStore.deleteUnitOfMeasureInfoResponse,
-    async (data) => {
-      deleteLoader.value = false
-      notificationStore.successToast("Success", data.message)
-      getMenuItemInfo()
-    },
-    {deep: true}
-  )
-  watch(
-    () => schoolStore.schoolsResponse,
-    async (data) => {
-      if (data) {
-        schoolList.value = data.data
-      }
-    }
-)
-
-watch (
-    () => cateringStore.updateUnitOfMeasureInfoResponse,
-    async (data) => {
-      if(data){
-   
-     showEditModal.value = false
-     getMenuItemInfo()
-      }
-    },
-    {deep:true}
-)
-    </script>
     
     
     
