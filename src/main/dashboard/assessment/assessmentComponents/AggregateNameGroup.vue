@@ -92,7 +92,7 @@ const fetchAggregateGroup = () =>{
 <template>
     <div>
 
-      <AppModal title="Add Aggregate NameGroup" v-model="showAggregateGroupModal" xs>
+      <AppModal title="Add Aggregate Group Name" v-model="showAggregateGroupModal" xs>
 <NewAggregateNameGroup></NewAggregateNameGroup>
       </AppModal>
 
@@ -104,7 +104,7 @@ const fetchAggregateGroup = () =>{
 
            <div class="flex flex-grow justify-between">
             <div>
-               <p class="mt-3 ml-4 text-gray-600">Aggregate NameGroups</p>
+               <p class="mt-3 ml-4 text-gray-600">Aggregate Group Name</p>
             </div>
             <div>
                 <button
@@ -113,7 +113,7 @@ const fetchAggregateGroup = () =>{
                       type="button"
                       class="btn btn-primary btn-sm m-4">
                     <i class="bi bi-plus"></i>
-                    New Aggregate NameGroup
+                    New Aggregate Group Name
                 </button>
 
             </div>

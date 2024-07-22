@@ -213,7 +213,7 @@ watch(
                     type="button"
                     class="btn btn-primary btn-sm">
                   <i class="bi bi-plus"></i>
-                  New Grade-Standard
+                  New Grade Standard
                 </button>
             </div>
            </div>
