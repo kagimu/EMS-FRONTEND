@@ -38,7 +38,7 @@ const menu = ref([
     value:"menu-items"
   },
   {
-    text:"Feeding Packs",
+    text:"Menu Packs",
     value:"feeding-session"
   },
   {

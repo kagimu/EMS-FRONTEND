@@ -369,15 +369,7 @@ const clearFormData = () => {
  
 </div>
 
-
-
-
-
-    
-       
         <div class="col-lg-6">
-
-          
           <div class="mb-2">
             <label class="textColor"><small> Unit of use</small></label>
             <div class="input-group">
