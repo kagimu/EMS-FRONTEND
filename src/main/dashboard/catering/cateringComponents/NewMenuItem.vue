@@ -304,19 +304,19 @@ const clearFormData = () => {
   <div class="row">
 
     <div class="col-lg-6">
-<div class="mb-2">
-  <label class="textColor"><small>School</small> </label>
-  <select
-      v-model="menuForm.school_number"
-      class="form-select form-select-sm" required
-      style="box-shadow: none;"
-      @change="doFetchMenuItem()"
-  >
-    <option disabled value="">--Select School--</option>
-    <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-    </option>
-  </select>
-</div>
+      <div class="mb-2">
+          <label class="textColor"><small>School</small> </label>
+          <select
+              v-model="menuForm.school_number"
+              class="form-select form-select-sm" required
+              style="box-shadow: none;"
+              @change="doFetchMenuItem()"
+          >
+            <option disabled value="">--Select School--</option>
+            <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+            </option>
+          </select>
+      </div>
 
 
 
