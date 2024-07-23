@@ -39,6 +39,8 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const updateAggregateScaleResponse = ref(null)
     const deleteAggregateScaleResponse = ref(null)
     const deleteAssessmentGradeResponse = ref(null)
+    const aggregateNameGroupResponse = ref(null)
+    const newAggregateNameGroupResponse = ref(null)
 
     async function createAssessmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -505,10 +507,34 @@ async function updateMetric(data,metricNumber) {
             })
     }
 
+    async function createAggregateGroupName(data) {
+        return await api.post("main/assessments/grade-groups",data)
+            .then((response) => {
+             newAggregateNameGroupResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchAggregateGroupName(data) {
+        return await api.get("main/assessments/grade-groups?school_number="+data.school_number)
+            .then((response) => {
+             aggregateNameGroupResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
   
 
     return {
-        newAssessmentAreasResponse,
+        newAssessmentAreasResponse, 
         assessmentAreaResponse,
         gradingStandardResponse,
         newAssessmentResponse,
@@ -546,6 +572,7 @@ async function updateMetric(data,metricNumber) {
         deleteMetricResponse,
         changeStatusGradingScaleResponse,
         deleteAssessmentAreaGradingStandardResponse,
+        aggregateNameGroupResponse,
         createAssessmentAreas,
         fetchAssessmentArea,
         fetchAssessments,
@@ -578,5 +605,7 @@ async function updateMetric(data,metricNumber) {
         fetchStandardGradeDetails,
         deleteAssessmentGrade,
         deleteAssessmentAreaGradingStandard,
+        createAggregateGroupName,
+        fetchAggregateGroupName
     }
 })

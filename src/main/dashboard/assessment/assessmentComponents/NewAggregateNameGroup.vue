@@ -2,24 +2,69 @@
 import {onMounted, reactive, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import useCommonsStore from "@/composables/useCommons.js";
+import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
 const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
 const buttonLoader = ref(false)
 const errorMessage = ref(null)
+const assessmentStore= useAssessmentStore()
+const schoolList = ref([])
+const schoolStore = useSchoolStore()
 
 const form = reactive({
   name:"",
   code:"",
-  aggregate_group_number:""
+  school_number:""
 })
+
+onMounted(() => {
+      schoolStore.fetchSchools()
+    }
+)
 
 
 const createAggregateGroupName = () =>{
+  let formData = {
+    code:parseInt(form.code),
+    school_number:form.school_number,
+    name:form.name
+  }
   buttonLoader.value = true
-  
+  assessmentStore.createAggregateGroupName(formData)
 }
 
+watch (
+  () => assessmentStore.newAggregateNameGroupResponse,
+  async (data) => {
+    if(data){
+      buttonLoader.value = false
+    }
+  }
+)
+
+watch (
+  () => assessmentStore.errorMessage,
+  async (data) => {
+    if(data){
+      errorMessage.value = data.message
+      buttonLoader.value = false
+      notificationStore.errorToast("Error",data.message)
+    }
+  },
+  {deep:true}
+)
+
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        schoolList.value = data.data
+      }
+    }
+)
 
 </script>
 <template>
@@ -28,6 +73,20 @@ const createAggregateGroupName = () =>{
         <div class="modal-content">
       <div class="modal-body">
         <form @submit.prevent="createAggregateGroupName()">
+
+          <div class="mb-2">
+          <label class="textColor"><small>School</small> </label>
+          <select
+              v-model="form.school_number"
+              class="form-select form-select-sm"
+              style="box-shadow: none;"
+          >
+            <option disabled value="">--Select School--</option>
+            <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+            </option>
+          </select>
+      </div>
+
           <div class="mb-2">
             <div class="text-[13px] text-[#505050]">Code</div>
             <input
