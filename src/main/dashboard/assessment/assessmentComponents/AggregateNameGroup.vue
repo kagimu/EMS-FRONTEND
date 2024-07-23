@@ -49,7 +49,7 @@ watch(
     () => assessmentStore.aggregateNameGroupResponse,
     async (data) => {
       if(data){
-        aggregateGroupData.value = data.data
+        aggregateGroupData.value = data.gradeGroups
       }
     },
     {deep:true}
@@ -130,7 +130,7 @@ watch(
 
       </div>
     </div>  
-    {{ aggregateGroupData }} 
+    <!-- {{ aggregateGroupData }}  -->
       <table id="data"
           class="table table-striped"
           style="font-size: 11px !important;" >
@@ -143,7 +143,6 @@ watch(
         </thead>
         <tbody>
           <tr v-for="(list,index) in aggregateGroupData" :key="index">
-            {{ list }}
             <td>{{ index+1 }}</td>
             <td>{{ list.name }}</td>
             <td>  <i
