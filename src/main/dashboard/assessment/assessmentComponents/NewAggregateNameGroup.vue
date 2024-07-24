@@ -27,7 +27,6 @@ onMounted(() => {
       schoolStore.fetchSchools()
       getAssessmentGroupInfo()
       
-      alert(props.aggregateGroupDataInfo[0].number)
     }
 )
 
