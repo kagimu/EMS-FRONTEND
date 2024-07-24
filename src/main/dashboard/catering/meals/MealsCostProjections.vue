@@ -192,10 +192,9 @@ watch(
               <tr>
                 <th scope="col" class="w-[1%]">#</th>
                 <th scope="col" class="w-[20%]">Name</th>
-                <th scope="col" class="w-[20%]">Unit</th>
+                <th scope="col" class="w-[20%]">Use Quantities</th>
                  <th scope="col" class="w-[20%]">Purchase quantity</th>
-                 <th scope="col" class="w-[19%]">purchase_unit_of_measure</th>
-                <th scope="col" class="w-[20%]">Cost</th>
+                <th scope="col" class="w-[20%]">Unit Purchase cost</th>
                
               </tr>
               </thead>
@@ -204,8 +203,7 @@ watch(
                 <td> {{(summary_index + 1)}}</td>
                 <td> {{summary.name}}</td>
                 <td><div class="flex">{{summary.quantity}} ( {{summary.unit_of_measure}} )</div></td>
-                <td> {{summary.purchase_quantity}}</td>
-                <td> {{summary.rate_to_purchase_unit}} ({{summary.purchase_unit_of_measure}})</td>
+                <td> {{summary.purchase_quantity}} ({{summary.purchase_unit_of_measure}})</td>
                 <td> {{summary.total_cost}}</td>
                
               </tr>
