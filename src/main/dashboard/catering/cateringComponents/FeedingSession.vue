@@ -122,6 +122,7 @@
   const showingModal = ref(false)
 
   const showModal = () => {
+  dataList.value = ""
   showingModal.value = true
   thisDialog.value=false
   editModel.value = false

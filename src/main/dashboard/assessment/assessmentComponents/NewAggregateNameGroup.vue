@@ -19,10 +19,28 @@ const form = reactive({
   school_number:""
 })
 
+const props = defineProps({
+  aggregateGroupDataInfo:{}
+})
+
 onMounted(() => {
       schoolStore.fetchSchools()
+      getAssessmentGroupInfo()
+      
     }
 )
+
+
+
+const getAssessmentGroupInfo = () => {
+  alert(JSON.stringify(props.aggregateGroupDataInfo.data))
+
+  if(props.aggregateGroupDataInfo){
+    form.name = props.aggregateGroupDataInfo.name
+    form.code = props.aggregateGroupDataInfo.code
+  }
+  
+}
 
 
 const createAggregateGroupName = () =>{
@@ -70,6 +88,7 @@ watch(
 <template>
     <div>
 
+      {{ aggregateGroupDataInfo }}
         <div class="modal-content">
       <div class="modal-body">
         <form @submit.prevent="createAggregateGroupName()">

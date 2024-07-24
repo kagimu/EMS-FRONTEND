@@ -15,22 +15,42 @@ const schoolStore = useSchoolStore()
 const { can } = useAbility()
 const aggregateGroupData = ref([])
 const showAggregateGroupModal = ref(false)
+const aggregateGroupDataInfo = ref([])
+  const editMode = ref(false)
 
 const form = reactive({
   school_number:""
 })
+
 
 onMounted(() => {
   schoolStore.fetchSchools()
     }
 )
 
+
+
 const addAggregateNameGroup = () => {
+  aggregateGroupDataInfo.value = ""
   showAggregateGroupModal.value = true
+  editMode.value = false;
 }
 
 const fetchAggregateGroup = () =>{
   assessmentStore.fetchAggregateGroupName(form)
+}
+
+const deleteGrade = (data) => {
+  if(!confirm("Are you sure, you want to delete " + data.name)){
+    return
+  }
+}
+
+
+const showEditModal = (data) =>{
+  aggregateGroupDataInfo.value = data
+  showAggregateGroupModal.value = true
+  editMode.value = true
 }
 
 watch (
@@ -81,8 +101,8 @@ watch(
 <template>
     <div>
 
-      <AppModal title="Add Aggregate Group Name" v-model="showAggregateGroupModal" xs>
-<NewAggregateNameGroup></NewAggregateNameGroup>
+      <AppModal :title= "editMode?'Edit Aggregate Group Name':'Add Aggregate Group Name' " v-model="showAggregateGroupModal" xs>
+<NewAggregateNameGroup :aggregateGroupDataInfo="aggregateGroupDataInfo"></NewAggregateNameGroup>
       </AppModal>
 
 
@@ -145,12 +165,15 @@ watch(
           <tr v-for="(list,index) in aggregateGroupData" :key="index">
             <td>{{ index+1 }}</td>
             <td>{{ list.name }}</td>
-            <td>  <i
-                  class="bi-pencil ml-2 cursor-pointer"
-                  style="font-size: 14px;"
-               ></i>
-              <i
-              style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"></i></td>
+            <td>
+              <button @click="showEditModal(aggregateGroupData)"   type="button">
+                  <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+                </button>
+                &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
+                <button type="button" @click="deleteGrade(aggregateGroupData)">
+                  <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+                </button>
+            </td>
           </tr>
       
     
