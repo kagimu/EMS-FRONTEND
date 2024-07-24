@@ -573,6 +573,7 @@ async function updateMetric(data,metricNumber) {
         changeStatusGradingScaleResponse,
         deleteAssessmentAreaGradingStandardResponse,
         aggregateNameGroupResponse,
+        newAggregateNameGroupResponse,
         createAssessmentAreas,
         fetchAssessmentArea,
         fetchAssessments,

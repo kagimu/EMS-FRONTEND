@@ -58,12 +58,12 @@ watch (
   async (data) => {
     if(data){
       showAggregateGroupModal.value = false
-      notificationStore.successToast("Success", data.message)
       fetchAggregateGroup()
 
     }
   }
 )
+
 
 watch(
     () => assessmentStore.aggregateNameGroupResponse,

@@ -58,6 +58,7 @@ watch (
   async (data) => {
     if(data){
       buttonLoader.value = false
+      notificationStore.successToast("Success", data.message)
     }
   }
 )
