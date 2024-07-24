@@ -5,16 +5,18 @@ import useNotificationStore from "@/composables/useNotification.js";
 import { useAssessmentStore } from "../store/assessment";
 import useCommonsStore from "@/composables/useCommons.js";
 import {useRouter} from "vue-router";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
 const commons = useCommonsStore()
 const assessmentStore = useAssessmentStore()
 const requiresAttachment = ref(false)
-
+const schoolList = ref([])
+const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
 const routerData = useRouter()
 const buttonLoader = ref(false)
 let schoolNumber = routerData.currentRoute.value.query.sch
-
+const aggregateGroupData = ref([])
 
 const props = defineProps({
   gradeDataInfo:{}
@@ -24,15 +26,22 @@ const form = reactive({
   code: null,
   name:null,
   short_name:null,
+  school_number:null,
+  grade_group_number:null
 })
 
 
 onMounted(
     () =>{
+      schoolStore.fetchSchools()
       getGradeDataInfo()
+      fetchAggregateGroup()
     }
 )
 
+const fetchAggregateGroup = () =>{
+  assessmentStore.fetchAggregateGroupName(form)
+}
 
 watch(
     () => props.gradeDataInfo,
@@ -72,6 +81,25 @@ const addGrade = () => {
   }
 }
 
+
+watch(
+    () => assessmentStore.aggregateNameGroupResponse,
+    async (data) => {
+      if(data){
+        aggregateGroupData.value = data.gradeGroups
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        schoolList.value = data.data
+      }
+    }
+)
 
 
 watch(
@@ -122,15 +150,28 @@ watch(
                 @paste.prevent
                 class="form-control form-select-sm shadow-none">
           </div>
-
+<!-- {{ aggregateGroupData }} -->
+<div class="mb-2 ">
+  <div class="text-[13px] text-[#505050]">School</div>
+          <select
+              v-model="form.school_number"
+              class="form-select form-select-sm" required
+              style="box-shadow: none;"
+              @change="fetchAggregateGroup(form.school_number)"
+          >
+            <option disabled value="">--Select School--</option>
+            <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+            </option>
+          </select>
+      </div>
           <div class="mb-2">
-            <div class="text-[13px] text-[#505050]">Group Category</div>
+            <div class="text-[13px] text-[#505050]">Aggregate Group Name</div>
                     <select
                         class="form-select form-select-sm shadow-none" required
-                        v-model="form.aggregate_group_number"
+                        v-model="form.grade_group_number"
                     >
                       <option disabled value="">--Select Aggregate Group--</option>
-                      <option>Kindergatten</option>
+                      <option v-for="(list,index) in aggregateGroupData" :key="index" :value="list.number">{{ list.name }}</option>
                     </select>
                   </div>
 
