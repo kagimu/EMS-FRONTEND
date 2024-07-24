@@ -33,12 +33,12 @@ onMounted(() => {
 
 
 const getAssessmentGroupInfo = () => {
-  alert(JSON.stringify(props.aggregateGroupDataInfo.data))
-
+  
   if(props.aggregateGroupDataInfo){
     form.name = props.aggregateGroupDataInfo.name
     form.code = props.aggregateGroupDataInfo.code
   }
+ 
   
 }
 
@@ -88,7 +88,7 @@ watch(
 <template>
     <div>
 
-      {{ aggregateGroupDataInfo }}
+      <!-- {{ aggregateGroupDataInfo }} -->
         <div class="modal-content">
       <div class="modal-body">
         <form @submit.prevent="createAggregateGroupName()">
