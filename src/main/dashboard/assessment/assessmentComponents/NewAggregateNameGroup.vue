@@ -4,7 +4,10 @@ import useNotificationStore from "@/composables/useNotification.js";
 import useCommonsStore from "@/composables/useCommons.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useRouter} from "vue-router";
 
+const routerData = useRouter()
+let schoolNumber = routerData.currentRoute.value.query.sch
 const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
 const buttonLoader = ref(false)
@@ -16,7 +19,7 @@ const schoolStore = useSchoolStore()
 const form = reactive({
   name:"",
   code:"",
-  school_number:""
+  school_number:schoolNumber
 })
 
 const props = defineProps({
@@ -50,7 +53,14 @@ const createAggregateGroupName = () =>{
     name:form.name
   }
   buttonLoader.value = true
-  assessmentStore.createAggregateGroupName(formData)
+  if(props.aggregateGroupDataInfo.number){
+    formData.grade_group_number = props.aggregateGroupDataInfo.number
+    assessmentStore.updateAggregateGroupName(formData)
+  }
+  else{
+    assessmentStore.createAggregateGroupName(formData)
+  }
+  
 }
 
 watch (
@@ -62,6 +72,17 @@ watch (
     }
   }
 )
+
+watch (
+  () => assessmentStore.updateAggregateNameGroupResponse,
+  async (data) => {
+    if(data){
+      buttonLoader.value = false
+      notificationStore.successToast("Success", data.message)
+    }
+  }
+)
+
 
 watch (
   () => assessmentStore.errorMessage,
@@ -88,13 +109,12 @@ watch(
 </script>
 <template>
     <div>
-
-     {{ aggregateGroupDataInfo }}
+     <!-- {{ aggregateGroupDataInfo }} -->
         <div class="modal-content">
       <div class="modal-body">
         <form @submit.prevent="createAggregateGroupName()">
 
-          <div class="mb-2">
+          <!-- <div class="mb-2">
           <label class="textColor"><small>School</small> </label>
           <select
               v-model="form.school_number"
@@ -105,7 +125,7 @@ watch(
             <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
             </option>
           </select>
-      </div>
+      </div> -->
 
           <div class="mb-2">
             <div class="text-[13px] text-[#505050]">Code</div>

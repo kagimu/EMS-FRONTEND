@@ -6,6 +6,7 @@ import AppModal from "@/components/AppModal.vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useRouter} from "vue-router";
 
 const  notificationStore  = useNotificationStore()
 const assessmentStore = useAssessmentStore()
@@ -16,15 +17,19 @@ const { can } = useAbility()
 const aggregateGroupData = ref([])
 const showAggregateGroupModal = ref(false)
 const aggregateGroupDataInfo = ref([])
-  const editMode = ref(false)
+const editMode = ref(false)
+
+const routerData = useRouter()
+let schoolNumber = routerData.currentRoute.value.query.sch
 
 const form = reactive({
-  school_number:""
+  school_number:schoolNumber
 })
 
 
 onMounted(() => {
   schoolStore.fetchSchools()
+  fetchAggregateGroup()
     }
 )
 
@@ -43,6 +48,11 @@ const fetchAggregateGroup = () =>{
 const deleteGrade = (data) => {
   if(!confirm("Are you sure, you want to delete " + data.name)){
     return
+  }else{
+    let formD = {
+      grade_group_number : data.number
+    }
+    assessmentStore.deleteAggregateGroupName(formD)
   }
 }
 
@@ -60,6 +70,28 @@ watch (
       showAggregateGroupModal.value = false
       fetchAggregateGroup()
 
+    }
+  }
+)
+
+watch (
+  () => assessmentStore.updateAggregateNameGroupResponse,
+  async (data) => {
+    if(data){
+      showAggregateGroupModal.value = 
+      editMode.value = false
+      fetchAggregateGroup()
+
+    }
+  }
+)
+
+watch (
+  () => assessmentStore.deleteAggregateNameGroupResponse,
+  async (data) => {
+    if(data){
+      notificationStore.successToast("Success", data.message)
+      fetchAggregateGroup()
     }
   }
 )
@@ -114,7 +146,7 @@ watch(
             <div>
                <p class="mt-3 ml-4 text-gray-600">Aggregate Group Name</p>
 
-               <div class="mb-2 ml-4">
+               <!-- <div class="mb-2 ml-4">
           <select
               v-model="form.school_number"
               class="form-select form-select-sm" required
@@ -125,7 +157,7 @@ watch(
             <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
             </option>
           </select>
-      </div>
+      </div> -->
             </div>
 
             <div>
@@ -166,11 +198,11 @@ watch(
             <td>{{ index+1 }}</td>
             <td>{{ list.name }}</td>
             <td>
-              <button @click="showEditModal(aggregateGroupData)"   type="button">
+              <button @click="showEditModal(list)"   type="button">
                   <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
                 </button>
                 &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
-                <button type="button" @click="deleteGrade(aggregateGroupData)">
+                <button type="button" @click="deleteGrade(list)">
                   <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
                 </button>
             </td>
