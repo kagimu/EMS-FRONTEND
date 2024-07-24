@@ -34,7 +34,7 @@ onMounted(() => {
 
 const getAssessmentGroupInfo = () => {
   
-  if(props.aggregateGroupDataInfo[0].number){
+  if(props.aggregateGroupDataInfo.number){
     form.name = props.aggregateGroupDataInfo.name
     form.code = props.aggregateGroupDataInfo.code
   }
