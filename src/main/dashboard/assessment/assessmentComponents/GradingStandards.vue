@@ -10,6 +10,7 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import GradeStandardDetails from "@/main/dashboard/assessment/assessmentComponents/GradeStandardDetails.vue";
 
 const { can } = useAbility()
 const assessmentStore = useAssessmentStore()
@@ -22,6 +23,7 @@ const notificationStore = useNotificationStore()
 const gradeStandardData = ref([])
 const errorMessage = ref(null)
 const showGradeStandardModal = ref(false)
+const gradeStandardInfoModel = ref(false)
 const routerData = useRouter()
 const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
@@ -132,6 +134,11 @@ const changeGradingStatus = (gradeList, index) => {
   assessmentStore.changeStatusGradeStandard(data)
 }
 
+const showGradeStandardDetails = (gradeList) => {
+  gradeStandardInfoModel.value = true
+  gradeDataList.value = gradeList
+}
+
 const editThisData = (gradeList) => {
   editModel.value = true
   gradeDataList.value = gradeList
@@ -189,9 +196,15 @@ watch(
 <template>
     <div>
 
+      <AppModal  title="Grade Standard Details" v-model="gradeStandardInfoModel" lg>
+        <GradeStandardDetails :gradeDataList="gradeDataList"></GradeStandardDetails>
+      </AppModal>
+
+
       <AppModal  :title="editModel ? 'Edit Grade Standard ' + namee:'New Grade Standard'" v-model="showGradeStandardModal" lg>
         <NewGradeStandard :gradeDataList="gradeDataList"></NewGradeStandard>
       </AppModal>
+
 
      <div class="px-2 py-2 border-b">
            <div class="flex justify-between">
@@ -268,12 +281,14 @@ watch(
                 </button>
               </td>
               <td>
-                <button @click="editThisData(gradeList)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
-                <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
-              </button>
-              &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
+                <button @click="showGradeStandardDetails(gradeList)" class="mr-1">
+                  <i class="bi bi-eye text-[#135f9a] text-[14px]"></i>
+                </button>
+                <button @click="editThisData(gradeList)" class="mr-1">
+                  <i class="bi bi-pencil-square text-[#135f9a] text-[14px]"></i>
+                </button>
               <button type="button" @click="deleteThisData(gradeList, index)">
-                <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+                <i class="bi bi-trash text-[14px]" style="color:rgb(201, 10, 10)"></i>
                 <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
                   <span class="visually-hidden">Loading...</span>
                 </div>
