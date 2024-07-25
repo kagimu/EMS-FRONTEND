@@ -41,6 +41,8 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const deleteAssessmentGradeResponse = ref(null)
     const aggregateNameGroupResponse = ref(null)
     const newAggregateNameGroupResponse = ref(null)
+    const updateAggregateNameGroupResponse = ref(null)
+    const deleteAggregateNameGroupResponse = ref(null)
 
     async function createAssessmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -519,6 +521,31 @@ async function updateMetric(data,metricNumber) {
             })
     }
 
+    async function updateAggregateGroupName(data) {
+        return await api.put("main/assessments/grade-groups/update",data)
+            .then((response) => {
+             updateAggregateNameGroupResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function deleteAggregateGroupName(data) {
+        return await api.delete("main/assessments/grade-groups?grade_group_number="+data.grade_group_number)
+            .then((response) => {
+             deleteAggregateNameGroupResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
     async function fetchAggregateGroupName(data) {
         return await api.get("main/assessments/grade-groups?school_number="+data.school_number)
             .then((response) => {
@@ -573,6 +600,9 @@ async function updateMetric(data,metricNumber) {
         changeStatusGradingScaleResponse,
         deleteAssessmentAreaGradingStandardResponse,
         aggregateNameGroupResponse,
+        newAggregateNameGroupResponse,
+        updateAggregateNameGroupResponse,
+        deleteAggregateNameGroupResponse,
         createAssessmentAreas,
         fetchAssessmentArea,
         fetchAssessments,
@@ -606,6 +636,8 @@ async function updateMetric(data,metricNumber) {
         deleteAssessmentGrade,
         deleteAssessmentAreaGradingStandard,
         createAggregateGroupName,
-        fetchAggregateGroupName
+        fetchAggregateGroupName,
+        updateAggregateGroupName,
+        deleteAggregateGroupName
     }
 })
