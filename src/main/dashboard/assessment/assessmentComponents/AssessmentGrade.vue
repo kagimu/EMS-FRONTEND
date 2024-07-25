@@ -211,11 +211,6 @@ watch (
             <div class="row mx-auto">
 
 
-
-
-
-
-
               <div class="col-lg-4 mb-3">
                 <select
                     class="form-select form-select-sm shadow-none" required
