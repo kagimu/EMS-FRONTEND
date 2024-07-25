@@ -184,10 +184,10 @@ const filterReportData = () => {
 
           <tr style="border-bottom: 1px solid #b8babb;">
             <td style="padding: 5px;">TOTAL/AGGREGATE</td>
-            <td style="padding: 5px;">324</td>
-            <td style="padding: 5px;">10</td>
-            <td style="padding: 5px;">340</td>
-            <td style="padding: 5px;">9</td>
+            <td style="padding: 5px;">-</td>
+            <td style="padding: 5px;">-</td>
+            <td style="padding: 5px;">-</td>
+            <td style="padding: 5px;">-</td>
             <td style="padding: 5px;" colspan="3" rowspan="2">&nbsp;</td>
           </tr>
 
