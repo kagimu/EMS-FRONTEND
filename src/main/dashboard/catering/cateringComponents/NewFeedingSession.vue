@@ -1,7 +1,8 @@
 <template>
+    {{ groupData }}
     <div>
 <form @submit.prevent="addFeedingSessionGroup">
-    <div class="mb-2">
+    <div class="mb-2" v-if="showSchool">
     <label class="textColor"><small>School</small> </label>
     <select
             style="box-shadow: none;"
@@ -26,7 +27,7 @@
         </option>
     </select>
 </div> -->
-<div class="mb-2">
+<div class="mb-2" >
     <label class="textColor"><small>Code</small></label>
     <input
         v-model="form.code"
@@ -80,12 +81,14 @@ const props = defineProps({
   groupData:[]
 })
 
-
+const showSchool = ref("none")
 onMounted(() => {
         schoolStore.fetchSchools()
         if(props.groupData.number != ""){
         form.code = props.groupData.code;
         form.name = props.groupData.name;
+        form.school_number = props.groupData.school_number;
+        showSchool.value = "true"
       }
     }
 )
