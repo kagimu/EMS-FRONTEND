@@ -202,92 +202,24 @@ const filterReportData = () => {
 
 
 
-<!--        <table style="width: 100%; border: 1px solid #b8babb; font-size: 13px;">
-
-          <tr style="border-bottom: 1px solid #b8babb;">
-            <td style="width: 30%; padding: 5px;">SUBJECT</td>
-            <td style="width: 10%; padding: 5px;">MT</td>
-            <td style="width: 10%; padding: 5px;">AGG</td>
-            <td style="width: 10%; padding: 5px;">EOT</td>
-            <td style="width: 10%; padding: 5px;">AGG</td>
-            <td style="width: 20%; padding: 5px;">REMARKS</td>
-            <td style="width: 10%; padding: 5px;">SIGN</td>
-          </tr>
-
-          <tr style="border-bottom: 1px solid #b8babb;">
-            <td style="padding: 5px;">ENGLISH</td>
-            <td style="padding: 5px;">90</td>
-            <td style="padding: 5px;">D1</td>
-            <td style="padding: 5px;">80</td>
-            <td style="padding: 5px;">D2</td>
-            <td style="padding: 5px;">VERY GOOD</td>
-            <td style="padding: 5px;">NJ</td>
-          </tr>
-
-          <tr style="border-bottom: 1px solid #b8babb;">
-            <td style="padding: 5px;">MATHEMATICS</td>
-            <td style="padding: 5px;">90</td>
-            <td style="padding: 5px;">D1</td>
-            <td style="padding: 5px;">80</td>
-            <td style="padding: 5px;">D2</td>
-            <td style="padding: 5px;">GOOD</td>
-            <td style="padding: 5px;">MS</td>
-          </tr>
-
-          <tr style="border-bottom: 1px solid #b8babb;">
-            <td style="padding: 5px;">LITERACY</td>
-            <td style="padding: 5px;">90</td>
-            <td style="padding: 5px;">D1</td>
-            <td style="padding: 5px;">80</td>
-            <td style="padding: 5px;">D2</td>
-            <td style="padding: 5px;">VERY GOOD</td>
-            <td style="padding: 5px;">KA</td>
-          </tr>
-
-          <tr style="border-bottom: 1px solid #b8babb;">
-            <td style="padding: 5px;">READING</td>
-            <td style="padding: 5px;">90</td>
-            <td style="padding: 5px;">D1</td>
-            <td style="padding: 5px;">80</td>
-            <td style="padding: 5px;">D2</td>
-            <td style="padding: 5px;">VERY GOOD</td>
-            <td style="padding: 5px;">KS</td>
-          </tr>
-
-          <tr style="border-bottom: 1px solid #b8babb;">
-            <td style="padding: 5px;">TOTAL/AGGREGATE</td>
-            <td style="padding: 5px;">324</td>
-            <td style="padding: 5px;">10</td>
-            <td style="padding: 5px;">340</td>
-            <td style="padding: 5px;">9</td>
-            <td style="padding: 5px;" colspan="2" rowspan="2">&nbsp;</td>
-          </tr>
-
-          <tr style="border-bottom: 1px solid #b8babb;">
-            <td style="padding: 5px; ">DIVISION</td>
-            <td style="padding: 5px; text-align: center;" colspan="2">DIVISION1 </td>
-            <td style="padding: 5px; text-align: center;" colspan="2">DIVISION 1</td>
-          </tr>
-
-        </table>-->
-
 
         <table style="width: 100%; border: 1px solid #b8babb; font-size: 13px; margin-top: 10px;">
 
           <tr style="border-bottom: 1px solid #b8babb;">
             <td style="width: 28%; padding: 5px;" rowspan="2">GRADING</td>
-            <td style="width: 8%; padding: 5px; text-align: center;">D1</td>
-            <td style="width: 8%; padding: 5px; text-align: center;">D2</td>
-            <td style="width: 8%; padding: 5px; text-align: center;">C3</td>
-            <td style="width: 8%; padding: 5px; text-align: center;">C4</td>
-            <td style="width: 8%; padding: 5px; text-align: center;">C5</td>
-            <td style="width: 8%; padding: 5px; text-align: center;">C6</td>
-            <td style="width: 8%; padding: 5px; text-align: center;">P7</td>
-            <td style="width: 8%; padding: 5px; text-align: center;">P8</td>
-            <td style="width: 8%; padding: 5px; text-align: center;">F9</td>
+            <td style="width: 8%; padding: 5px; text-align: center;" v-for="(scale,idx) in reportDetails?.aggregate_scale" :key="idx">{{scale?.short_name}}</td>
+<!--            <td style="width: 8%; padding: 5px; text-align: center;">D2</td>-->
+<!--            <td style="width: 8%; padding: 5px; text-align: center;">C3</td>-->
+<!--            <td style="width: 8%; padding: 5px; text-align: center;">C4</td>-->
+<!--            <td style="width: 8%; padding: 5px; text-align: center;">C5</td>-->
+<!--            <td style="width: 8%; padding: 5px; text-align: center;">C6</td>-->
+<!--            <td style="width: 8%; padding: 5px; text-align: center;">P7</td>-->
+<!--            <td style="width: 8%; padding: 5px; text-align: center;">P8</td>-->
+<!--            <td style="width: 8%; padding: 5px; text-align: center;">F9</td>-->
           </tr>
           <tr style="border-bottom: 1px solid #b8babb;">
-            <td style="width: 8%; padding: 5px; text-align: center;">95-100</td>
+            <td style="width: 8%; padding: 5px; text-align: center;" v-for="(scale,idx) in reportDetails?.aggregate_scale" :key="idx">{{scale?.min+" - "+scale?.max}}</td>
+<!--            <td style="width: 8%; padding: 5px; text-align: center;">95-100</td>
             <td style="width: 8%; padding: 5px; text-align: center;">80-94</td>
             <td style="width: 8%; padding: 5px; text-align: center;">70-9</td>
             <td style="width: 8%; padding: 5px; text-align: center;">65-69</td>
@@ -295,10 +227,12 @@ const filterReportData = () => {
             <td style="width: 8%; padding: 5px; text-align: center;">55-59</td>
             <td style="width: 8%; padding: 5px; text-align: center;">50-54</td>
             <td style="width: 8%; padding: 5px; text-align: center;">40-49</td>
-            <td style="width: 8%; padding: 5px; text-align: center;">0-39</td>
+            <td style="width: 8%; padding: 5px; text-align: center;">0-39</td>-->
           </tr>
 
         </table>
+
+
 
 
         <table style="width: 100%; font-size: 13px; margin-top: 20px;">
