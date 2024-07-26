@@ -34,6 +34,7 @@ const campusNumber = routerData.currentRoute.value.query.id
 const gradeDataInfo = ref([])
 const editM = ref(false)
 let schoolNumber = routerData.currentRoute.value.query.sch
+const aggregateData = ref([])
 const props = defineProps({
   gradeScaleDatainfo:{}
 })
@@ -41,8 +42,9 @@ const props = defineProps({
 const form = reactive({
   scale_name:"",
   count:"",
+  classes: [],
+  assessment_grade_items:[{code:"",name:"",minimum_points:"",maximum_points:"",remarks:"",abbreviation:"",description:""}]
 })
-// const sectionPart = ref([{ code: null, grade_number: "",min_value:null,max_value:null,weight:null,remark:null}])
 const sectionPart = ref([])
 
 onMounted(
@@ -50,9 +52,10 @@ onMounted(
 
       schoolStore.fetchSchools()
       fetchCampusLevel()
-
       await levelStore.fetchCampusCurriculum(campusNumber)
       assessmentStore.fetchGrades()
+      campusStore.fetchClassesBySchool(schoolNumber)
+      fetchGradeScale()
       let draft = props.gradeScaleDatainfo
 
       if(draft){
@@ -66,6 +69,40 @@ onMounted(
 
         sectionPart.value = gradesInfo
 
+      }
+    }
+)
+
+const fetchGradeScale = () =>{
+  let data = {
+    school_number:schoolNumber
+  }
+  assessmentStore.fetchAggregateScale(data)
+}
+
+
+const removeGradeScale = (index) => {
+  form.assessment_grade_items.splice(index, 1);
+}
+
+const newGradeScale = () => {
+  form.assessment_grade_items.push({code:null, name:null,abbreviation:null,minimum_points:null,maximum_points:null,remarks:null,description:null})
+}
+
+const addRequirements = (class_number) => {
+  if (form.classes.includes(class_number)) {
+    form.classes = form.classes.filter(item => item !== class_number);
+  } else {
+    form.classes.push(class_number);
+  }
+}
+
+
+watch(
+    () => assessmentStore.aggregateScaleResponse,
+    async (data) => {
+      if(data){
+        aggregateData.value = data.data
       }
     }
 )
@@ -219,14 +256,24 @@ watch(
     }
 )
 
+// watch(
+//     () => academicYearStore.campusClassByLevelResponse,
+//     async (data) => {
+//       if(data){
+//         campusClassList.value = data.data
+//       }
+//     }
+// )
+
 watch(
-    () => academicYearStore.campusClassByLevelResponse,
+    () => campusStore.schoolClassesResponse,
     async (data) => {
       if(data){
         campusClassList.value = data.data
       }
     }
 )
+
 
 watch(
     () => campusStore.campusClassesResponse,
@@ -270,13 +317,15 @@ watch(
     <div>
 
 
-        <div class="modal-content">
+        <div class="">
 
-      <div class="modal-body">
+      <div class="">
         <form @submit.prevent="createScale()">
 
 
-          <div class="mb-2">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="mb-2">
             <div class="text-[13px] text-[#505050]">Count of Scale</div>
             <input
                 @keypress="commons.codeValidator($event)"
@@ -389,6 +438,118 @@ watch(
 
             </tbody>
           </table>
+            </div>
+
+            <div class="col-lg-6">
+
+              <div class="mb-2 mt-3">
+      <label class="text-xs font-bold">Select Class(es)</label>
+      <div class="border p-3 rounded-md">
+        <div class="grid grid-cols-4 gap-2 text-sm" style="border-radius: 0 0 0 0;">
+          <div class="list-group-item mb-2 hover:bg-[#e3e0e0] hover:rounded-md cursor-pointer py-1" v-for="(classInfo) in campusClassList" @click="addRequirements(classInfo?.number)">
+            <div class="px-3">
+              <input
+                  v-model="form.classes"
+                  style="outline: none 0 !important; box-shadow: none;"
+                  class="w-[15px] h-[15px] text-indigo-600 cursor-pointer"
+                  type="checkbox"
+                  :value="classInfo.number"  :id="classInfo.number">
+              <label @click="addRequirements(classInfo.number)" class="form-check-label cursor-pointer capitalize ml-3" :for="classInfo.number">{{classInfo?.name+" [ "+classInfo?.abbreviation+" ]"}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      
+  <label class="mt-6"><small>GradeScale</small></label>
+<table
+    class="table table-hover caption-top table-sm table-striped"
+    style="font-size: 12px !important;"
+>
+  <thead>
+  <tr>
+    <td class="w-[5%]">code</td>
+    <td >Name</td>
+    <td>Abbrev</td>
+    <td>Minimum Point</td>
+    <td >Maximum Point</td>
+    <td>Remark</td>
+    <td>Description</td>
+    <td></td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr v-for="(gradeScaleInfo, index) in form?.assessment_grade_items" :key="index">
+    <td> 
+       <div class="mb-2">
+            <input
+                @keypress="commons.codeValidator($event)"
+                maxlength="10"
+                v-model="gradeScaleInfo.code"
+                required
+                @paste.prevent
+                class="form-control form-select-sm shadow-none">
+          </div>
+      </td>
+    <td>   
+      <div class="mb-2">
+         <input v-model="gradeScaleInfo.name" placeholder="First Grade, Second Grade ..." type="text" class="form-control outline-none shadow-none">
+        </div>
+    </td>
+    <td>
+      <div class="mb-2">
+      <input v-model="gradeScaleInfo.abbreviation" placeholder="Division 1 / Result 1" type="text" class="form-control outline-none shadow-none">
+      </div>
+    </td>
+    <td>
+    <input
+      maxlength="3"
+      @keypress="commons.numbersOnlyValidator($event)"
+      v-model="gradeScaleInfo.minimum_points"
+      type="text"
+      class="form-control outline-none shadow-none"
+    >
+    </td>
+
+    <td>
+    <input
+      maxlength="3"
+      @keypress="commons.numbersOnlyValidator($event)"
+      v-model="gradeScaleInfo.maximum_points"
+      type="text"
+      class="form-control outline-none shadow-none">    
+    </td>
+
+    <td>
+      <textarea v-model="gradeScaleInfo.remarks" class="form-control textColor outline-none shadow-none">
+      </textarea>
+    </td>
+
+    <td>
+      <textarea v-model="gradeScaleInfo.description" class="form-control textColor outline-none shadow-none">
+      </textarea>
+    </td>
+
+    <td>
+      <div class="mt-1">
+        <i class="bi bi-x-circle cursor-pointer text-[red]" @click="removeGradeScale(index)"></i>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<button @click="newGradeScale" type="button" class="bg-[#0d6efd] text-white text-sm px-2 rounded-sm" style="text-align: center;"><i class="bi bi-plus"></i>Add</button>
+
+
+
+      
+
+    </div>
+            </div>
+
+          </div>
+        
 
 
 
