@@ -42,7 +42,11 @@ const switchTabs = (data) => {
 
       <div v-if="selectedTab === 'new-unit'">
        <div v-if="can('create_unit_of_measure','manage')">
-         <NewUnitOfMeasurement></NewUnitOfMeasurement>
+        <div class="grid grid-cols-12 gap-2 px-4 mt-10">
+         <div class="col-span-5">
+           <NewUnitOfMeasurement></NewUnitOfMeasurement>
+         </div>
+        </div>
        </div>
       </div>
 

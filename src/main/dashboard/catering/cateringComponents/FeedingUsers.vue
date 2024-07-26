@@ -140,10 +140,10 @@ watch(
 )
 
 
-const doFetchMealCourses = () => {
+const doFetchMealCourses = (schoolN) => {
 
-  mealStore.fetchMealCourses({school_number:school_number.value,status:'ACTIVE'})
-  campusStore.fetchCampuses(school_number.value ?? "")
+  mealStore.fetchMealCourses({school_number:schoolN,status:'ACTIVE'})
+  campusStore.fetchCampuses(schoolN)
 
 }
 
@@ -175,7 +175,7 @@ watch(
                           style="box-shadow: none;"
                           class="form-select form-select-sm"
                           v-model="school_number"
-                          @change="doFetchMealCourses()"
+                          @change="doFetchMealCourses(school_number)"
                       >
                         <option disabled value="">-- Select School--</option>
                         <option v-for="(lvl, index) in schoolList" :key="index" :value="lvl.number">{{lvl.name}}</option>

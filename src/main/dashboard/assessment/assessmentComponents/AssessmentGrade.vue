@@ -181,7 +181,6 @@ watch (
       </AppModal>
     
 
-
       <div class="row">
             <div class="col-12">
               <div class="card">
@@ -209,11 +208,6 @@ watch (
 
           <div class="mt-[50px]">
             <div class="row mx-auto">
-
-
-
-
-
 
 
               <div class="col-lg-4 mb-3">

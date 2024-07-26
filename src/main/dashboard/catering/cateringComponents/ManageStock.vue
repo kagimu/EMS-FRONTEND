@@ -21,7 +21,7 @@ const switchTabs = (data) => {
         <div class="cursor-pointer text-sm" :class="selectedTab === 'stock' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('stock')">
           <div class="py-2 px-3">
             <i class="bi bi-box-arrow-in-right mr-1"></i>
-            Stock
+            Stocking History
           </div>
         </div>
         <div class="cursor-pointer text-sm" :class="selectedTab === 'new-stock' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('new-stock')">

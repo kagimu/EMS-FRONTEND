@@ -81,7 +81,7 @@ const studentScoreMenu = ref([
 
 const assess = ref([
 {
-    name:"Aggregate NameGroup",
+    name:"Aggregate Group Name",
     router_name:"aggregate-name-group"
   },
   {

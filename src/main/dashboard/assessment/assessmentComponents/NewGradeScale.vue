@@ -95,10 +95,8 @@ const autoFillMaxValue = (min_value, index) => {
   if(((parseInt(index) + 1) < sectionPart.value.length)) {
 
     for (let i = (parseInt(index) + 1); i < sectionPart.value.length; i++) {
-      let maxValue = null
-      let minValue = ((i + 1) === sectionPart.value.length) ? 0 : null
-      sectionPart.value[i].min_value = minValue
-      sectionPart.value[i].max_value = maxValue
+      sectionPart.value[i].min_value = ((i + 1) === sectionPart.value.length) ? 0 : null
+      sectionPart.value[i].max_value = null
     }
 
     if (min_value) {
@@ -132,14 +130,13 @@ const createScale = () =>{
   form.count =  parseInt(form.count)
   form.grades = sectionPart
   form.school_number = schoolNumber
+
+  convertFormValuesToInt()
+
   if(props.gradeScaleDatainfo.scale_number){
-    convertFormValuesToInt()
     form.scale_number = props.gradeScaleDatainfo.scale_number
-
     assessmentStore.updateAggregateScale(form)
-
   }else{
-    convertFormValuesToInt()
     assessmentStore.createAggregateScale(form)
   }
   
@@ -331,6 +328,7 @@ watch(
               <td>
                 <div class="mb-2">
                   <input
+                      readonly
                       @keypress="commons.codeValidator($event)"
                       maxlength="10"
                       v-model="field.code"

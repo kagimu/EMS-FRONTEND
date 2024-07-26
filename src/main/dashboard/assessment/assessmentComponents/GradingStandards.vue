@@ -9,22 +9,26 @@ import {useRouter} from "vue-router";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import GradeStandardDetails from "@/main/dashboard/assessment/assessmentComponents/GradeStandardDetails.vue";
 
 const { can } = useAbility()
 const assessmentStore = useAssessmentStore()
 const levelStore = useLevelStore()
 const classStore = useClassesStore()
 const academicYearStore = useAcademicYearStore()
+const campusStore = useCampusStore()
 const notificationStore = useNotificationStore()
 
 const gradeStandardData = ref([])
 const errorMessage = ref(null)
 const showGradeStandardModal = ref(false)
+const gradeStandardInfoModel = ref(false)
 const routerData = useRouter()
 const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
-const campus_level_number = ref("")
-const campus_class_number = ref("")
+const schoolNumber = routerData.currentRoute.value.query.sch
+const class_number = ref(null)
 const campusCurriculumDataInfo = ref(null)
 const campusLevelList = ref(null)
 const campusClassList = ref(null)
@@ -38,13 +42,13 @@ const deletionLoader = ref(undefined)
 onMounted(
     async () => {
         doFetchGradingStandard()
-       fetchCampusLevel()
+        campusStore.fetchClassesBySchool(schoolNumber)
     } )
 
 const doFetchGradingStandard = () => {
   let data = {
     campus_number:campusNumber,
-    campus_class_number:campus_class_number.value
+    class_number:class_number.value
   }
   assessmentStore.fetchGradeStandard(data)
 }
@@ -55,18 +59,7 @@ const addGradingStandard = () => {
   showGradeStandardModal.value = true
 }
 
-const fetchCampusLevel = () => {
-  classStore.fetchCampusLevel(campus_curriculum_number)
-}
 
-watch(
-    () => classStore.campusLevelResponse,
-    async (data) => {
-      if(data){
-        campusLevelList.value = data.data
-      }
-    }
-)
 
 watch(
     () => levelStore.campusCurriculumResponse,
@@ -77,18 +70,19 @@ watch(
     }
 )
 
-const fetchClass = (campus_level_number) => {
-  academicYearStore.fetchCampusClassByLevel(campus_level_number)
-}
+
+
 
 watch(
-    () => academicYearStore.campusClassByLevelResponse,
+    () => campusStore.schoolClassesResponse,
     async (data) => {
       if(data){
         campusClassList.value = data.data
       }
     }
 )
+
+
 
 watch (
     () => assessmentStore.gradeStandardResponse,
@@ -138,6 +132,11 @@ const changeGradingStatus = (gradeList, index) => {
   deletionLoader.value = index
  let data = {grading_standard_number:gradeList.number, status:gradeList.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'}
   assessmentStore.changeStatusGradeStandard(data)
+}
+
+const showGradeStandardDetails = (gradeList) => {
+  gradeStandardInfoModel.value = true
+  gradeDataList.value = gradeList
 }
 
 const editThisData = (gradeList) => {
@@ -197,23 +196,27 @@ watch(
 <template>
     <div>
 
+      <AppModal  title="Grade Standard Details" v-model="gradeStandardInfoModel" lg>
+        <GradeStandardDetails :gradeDataList="gradeDataList"></GradeStandardDetails>
+      </AppModal>
+
+
       <AppModal  :title="editModel ? 'Edit Grade Standard ' + namee:'New Grade Standard'" v-model="showGradeStandardModal" lg>
         <NewGradeStandard :gradeDataList="gradeDataList"></NewGradeStandard>
       </AppModal>
 
+
      <div class="px-2 py-2 border-b">
-           <div class="row">
-            <div class="col-lg-6 ">
-            </div>
-            <div class="col-lg-6">
+           <div class="flex justify-between">
+             <div>Grade Standards</div>
+            <div>
                 <button
                     @click="addGradingStandard"
                     v-if="can('add_grade_standard','general')"
-                    style="float: right; margin-right: 5px;"
                     type="button"
                     class="btn btn-primary btn-sm">
                   <i class="bi bi-plus"></i>
-                  New Grade-Standard
+                  New Grade Standard
                 </button>
             </div>
            </div>
@@ -223,29 +226,20 @@ watch(
       <div class="mt-[50px]">
         <div class="row mx-auto">
 
-        <div class="col-lg-4  mb-2">
-          <select
-              class="form-select form-select-sm shadow-none"
-              v-model="campus_level_number"
-              @change="fetchClass(campus_level_number)"
-          >
-            <option disabled value="">--Select Level--</option>
-            <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-          </select>
-        </div>
+
+          <div class="col-lg-4 mb-2">
+            <select
+                class="form-select form-select-sm shadow-none" required
+                v-model="class_number"
+                @change="doFetchGradingStandard"
+            >
+              <option disabled :value=null>--Select Class--</option>
+              <option value="">All</option>
+              <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
+            </select>
+          </div>
 
 
-
-        <div class="col-lg-4  mb-2">
-          <select
-              class="form-select form-select-sm shadow-none" required
-              v-model="campus_class_number"
-              @change="doFetchGradingStandard"
-          >
-            <option disabled value="">--Select Class--</option>
-            <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
-          </select>
-        </div>
 
       </div>
       </div>
@@ -287,12 +281,14 @@ watch(
                 </button>
               </td>
               <td>
-                <button @click="editThisData(gradeList)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
-                <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
-              </button>
-              &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
+                <button @click="showGradeStandardDetails(gradeList)" class="mr-1">
+                  <i class="bi bi-eye text-[#135f9a] text-[14px]"></i>
+                </button>
+                <button @click="editThisData(gradeList)" class="mr-1">
+                  <i class="bi bi-pencil-square text-[#135f9a] text-[14px]"></i>
+                </button>
               <button type="button" @click="deleteThisData(gradeList, index)">
-                <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+                <i class="bi bi-trash text-[14px]" style="color:rgb(201, 10, 10)"></i>
                 <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
                   <span class="visually-hidden">Loading...</span>
                 </div>

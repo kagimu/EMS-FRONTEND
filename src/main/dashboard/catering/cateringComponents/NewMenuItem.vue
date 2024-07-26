@@ -26,14 +26,6 @@ const menuItems = ref([])
 const unitMeasurementData = ref([])
 const item_number = ref(null)
 
-
-onMounted(() => {
-      schoolStore.fetchSchools()
-      cateringStore.fetchUnitOfMeasureInfo()
-      getMenuItemInfo()
-    }
-)
-
 const props = defineProps({
   menuItemsInfo:{}
 })
@@ -53,10 +45,18 @@ const menuForm = reactive({
   unit_of_measure_number:"",
   campus_number:"",
   base_price:null,
-  school_number:null,
-  purchase_unit_of_measure_number:"",
-  conversion_to_purchase_unit :null
+  school_number:"",
+  conversion_to_purchase_unit :null,
+  purchase_unit_of_measure_number :""
 } )
+
+
+onMounted(() => {
+      schoolStore.fetchSchools()
+      getMenuItemInfo()
+    }
+)
+
 
 watch(
     () => props.menuItemsInfo,
@@ -89,6 +89,8 @@ const getMenuItemInfo = () =>{
           menuItems.value = items
           doFetchMenuItem(draft.school_number)
         }
+
+        fetchUnit()
   }
 }
 
@@ -104,8 +106,7 @@ watch(
     () => cateringStore.UnitOfMeasureInfoResponse,
     async (data) => {
       unitMeasurementData.value = data.data
-    },
-    {deep: true}
+    }
 )
 
 
@@ -125,7 +126,8 @@ const addMenuItem = () =>{
     }
 
   }else{
-    //prepare data
+
+
     const secondaryItemNumbers = menuItems.value.map(menu => {
       return {
         secondary_item_number: menu.secondary_item_number,
@@ -134,23 +136,18 @@ const addMenuItem = () =>{
     })
 
 
-    let myData = reactive({
-      name:menuForm.name,
-      code:parseInt(menuForm.code),
-      type:menuForm.type,
-      unit_of_measure_number:menuForm.unit_of_measure_number,
-      campus_number:menuForm.campus_number,
-      secondary_items:secondaryItemNumbers,
-      school_number:menuForm.school_number
 
-    })
     buttonLoader.value = true
 
+
+    menuForm.code = parseInt(menuForm.code)
+    menuForm.secondary_items = secondaryItemNumbers
+
     if(item_number.value){
-      myData.menu_item_number = item_number.value
-      cateringStore.updateAssemblyItem(myData)
+      menuForm.menu_item_number = item_number.value
+      cateringStore.updateAssemblyItem(menuForm)
     }else {
-      cateringStore.newAssemblyItem(myData)
+      cateringStore.newAssemblyItem(menuForm)
     }
 
   }
@@ -159,19 +156,16 @@ const addMenuItem = () =>{
 watch(
     () => cateringStore.newMenuItemInfoResponse,
     async (data) => {
-
-      notificationStore.successToast("Success", data.message)
-
-          menuForm.name=null,
-          menuForm.code=null,
-          menuForm.type=null,
-          menuForm.unit_of_measure_number=null,
-          menuForm.campus_number=null
-          menuForm.conversion_to_purchase_unit=null,
-          menuForm.purchase_unit_of_measure_number=""
+          menuForm.name = null
+          menuForm.code = null
+          menuForm.type = null
+          menuForm.unit_of_measure_number = null
+          menuForm.campus_number = null
+          menuForm.conversion_to_purchase_unit = null
+          menuForm.purchase_unit_of_measure_number = ""
           buttonLoader.value = false
-    },
-    {deep: true}
+          notificationStore.successToast("Success", data.message)
+    }
 )
 
 
@@ -199,27 +193,28 @@ watch(
     }
 )
 
-const doFetchMenuItem = (school_number) => {
-  let data = {
-    school_number:school_number
-  }
-  cateringStore.fetchMenuItem(data)
+const doFetchMenuItem = () => {
+  cateringStore.fetchMenuItem({school_number:menuForm.school_number})
+
+  fetchUnit()
+}
+
+const fetchUnit = () => {
+  cateringStore.fetchUnitOfMeasureInfo({school_number:menuForm.school_number})
 }
 
 watch(
     () => cateringStore.menuItemResponse,
     async (data) => {
       menuOptions.value = data.map(option => ({ number: option.number,name:option.name}));
-    },
-    {deep: true}
+    }
 )
 
 watch(
     () => cateringStore.feedingGroupSessionsInfoResponse,
     async (data) => {
       feedingSessionGroupData.value = data.data
-    },
-    {deep: true}
+    }
 )
 
 
@@ -245,22 +240,6 @@ const compute = (value) => {
   menuForm.conversion_to_purchase_unit = eval(value) >= 0 ? eval(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null;
 }
 
-const createFeedingSessionItem = () => {
-  const secondaryItemNumbers = menuItems.value.map(menu => {
-    return {
-      secondary_item_number: menu.secondary_item_number,
-      quantity: menu.quantity
-    }
-  })
-
-  const data = {
-    primary_item_number: form.primary_item_number,
-    secondary_items: secondaryItemNumbers
-  }
-  const formattedData = JSON.stringify(data)
-
-  cateringStore.newAssemblyItem(formattedData)
-}
 
 watch(
     () => cateringStore.newAssemblyItemResponse,
@@ -268,8 +247,7 @@ watch(
       notificationStore.successToast("Success", data.message)
       clearFormData()
       buttonLoader.value = false;
-    },
-    {deep: true}
+    }
 )
 
 watch(
@@ -300,14 +278,14 @@ watch(
       if (data) {
         notificationStore.errorToast("Error", data.message)
       }
-    },
-    {deep: true}
+    }
 )
 
 const clearFormData = () => {
   form.primary_item_number = null
   menuItems.value = []
 }
+
 
 
 </script>
@@ -327,25 +305,22 @@ const clearFormData = () => {
   <div class="row">
 
     <div class="col-lg-6">
-<div class="mb-2">
-  <label class="textColor"><small>School</small> </label>
-  <select
-      v-model="menuForm.school_number"
-      class="form-select form-select-sm" required
-      style="box-shadow: none;"
-      @change="doFetchMenuItem(menuForm.school_number)"
-  >
-    <option disabled :value="null">Select School</option>
-    <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-    </option>
-  </select>
-</div>
-
-
-<div class="mb-2">
-        <label class="textColor"><small>Item Name</small></label>
-        <input v-model="menuForm.name"   class="form-control shadow-none" required type="text">
+      <div class="mb-2">
+          <label class="textColor"><small>School</small> </label>
+          <select
+              v-model="menuForm.school_number"
+              class="form-select form-select-sm" required
+              style="box-shadow: none;"
+              @change="doFetchMenuItem()"
+          >
+            <option disabled value="">--Select School--</option>
+            <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+            </option>
+          </select>
       </div>
+
+
+
 
       <div class="mb-2">
             <label class="textColor"><small>Code</small></label>
@@ -358,58 +333,79 @@ const clearFormData = () => {
                 @paste.prevent
                 @keypress="commons.codeValidator($event)">
           </div>
+
+          <div class="mb-2">
+        <label class="textColor"><small>Item Name</small></label>
+        <input v-model="menuForm.name"   class="form-control shadow-none" required type="text">
+      </div>
  
 </div>
 
 
 
-
-
-    
        
         <div class="col-lg-6">
 
+
+          <div class="mb-2" v-if="menuForm.school_number">
+            <label class="textColor"><small>Item Type</small> </label>
+            <select
+                v-model="menuForm.type"
+                class="form-select form-select-sm" required
+                style="box-shadow: none;"
+
+            >
+              <option disabled value="">--Select Type--</option>
+              <option value="ITEM">Ingredients (ITEM)</option>
+              <option>ASSEMBLED</option>
+            </select>
+          </div>
+
           
-          <div class="mb-2">
+          <div class="mb-2" v-if="menuForm.type && menuForm.school_number">
             <label class="textColor"><small> Unit of use</small></label>
             <div class="input-group">
             <select
                 v-model="menuForm.unit_of_measure_number"
                 class="form-control form-select shadow-none" id="inputGroupSelect02">
               <option disabled value="">--Select Unit of use--</option>
-              <option v-for="(list, index) in unitMeasurementData" :key="index" :value="list.number">{{list.name}}</option>
+              <option v-for="(list, indx) in unitMeasurementData" :key="indx" :value="list.unit_of_measure_number">{{list.name}}</option>
             </select>
             <span class="input-group-text p-0 px-1"  ><i  class="bi bi-plus-circle" @click="showUnitMeasurement()"></i></span>
           </div>
         </div>
 
-          <div class="mb-2">
-        <label class="textColor"><small>Conversion Purchase Unit</small></label>
-            <input
-                v-model="menuForm.conversion_to_purchase_unit"
-                @keypress="commons.onlyNumberValidator($event)"
-                v-on:blur="compute(menuForm.conversion_to_purchase_unit)"
-                class="form-control shadow-none"
-                maxlength="20"
-                required
-                type="text"
-                @paste.prevent>
+
+
+          <div v-if="menuForm.type && (menuForm.type === 'ITEM')">
+
+                  <div class="mb-2" >
+                <label class="textColor"><small>Conversion Purchase Unit</small></label>
+                    <input
+                        v-model="menuForm.conversion_to_purchase_unit"
+                        @keypress="commons.onlyNumberValidator($event)"
+                        v-on:blur="compute(menuForm.conversion_to_purchase_unit)"
+                        class="form-control shadow-none"
+                        maxlength="20"
+                        required
+                        type="text"
+                        @paste.prevent>
+                  </div>
+
+                  <div class="mb-2">
+                    <label class="textColor"><small>Purchase Unit of measure</small></label>
+                    <div class="input-group">
+                    <select
+                        v-model="menuForm.purchase_unit_of_measure_number"
+                        class="form-control form-select shadow-none" id="inputGroupSelect02">
+                      <option disabled value="">--Select Purchase Unit of measure--</option>
+                      <option v-for="(list, index) in unitMeasurementData" :key="index" :value="list.unit_of_measure_number">{{list.name}}</option>
+                    </select>
+                    <span class="input-group-text p-0 px-1"  ><i  class="bi bi-plus-circle" @click="showUnitMeasurement()"></i></span>
+                  </div>
+                </div>
           </div>
 
-          <div class="mb-2">
-            <label class="textColor"><small>Purchase Unit of measure</small></label>
-            <div class="input-group">
-            <select
-                v-model="menuForm.purchase_unit_of_measure_number"
-                class="form-control form-select shadow-none" id="inputGroupSelect02">
-              <option disabled value="">--Select Purchase Unit of measure--</option>
-              <option v-for="(list, index) in unitMeasurementData" :key="index" :value="list.number">{{list.name}}</option>
-            </select>
-            <span class="input-group-text p-0 px-1"  ><i  class="bi bi-plus-circle" @click="showUnitMeasurement()"></i></span>
-          </div>
-        </div>
-       
-     
       
 
       <div class="mb-2" v-if="menuForm.type === 'ITEM'">
@@ -423,19 +419,7 @@ const clearFormData = () => {
             @keypress="commons.numbersOnlyValidator($event)">
       </div>
 
-      <div class="mb-2">
-        <label class="textColor"><small>Item Type</small> </label>
-        <select
-            v-model="menuForm.type"
-            class="form-select form-select-sm" required
-            style="box-shadow: none;"
 
-        >
-          <option disabled value="">Select Type</option>
-          <option value="ITEM">Ingredients (ITEM)</option>
-          <option>ASSEMBLED</option>
-        </select>
-      </div>
     </div>
   </div>
   

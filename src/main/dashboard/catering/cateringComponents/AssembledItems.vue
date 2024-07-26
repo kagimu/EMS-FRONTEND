@@ -267,17 +267,17 @@ watch(
 
                   <table 
                     id="datatable"
-                    class="table table-hover caption-top mt-4 table-sm table-striped"
-                    style="font-size: 14px !important;"
+                    class="table table-hover caption-top mt-4 table-sm text-[12px]"
                     >
                     <thead >
                       <tr>
+                        <th>#</th>
                         <th>Name</th>
                         <th>Unit</th>
                         <th>Purchase Unit</th>
                         <th>Qty</th>
                         <th>Parts</th>
-                        <th>#</th>
+                        <th class="w-[5%]">Action</th>
                       </tr>
                       <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
                         {{errorMessage}}
@@ -286,18 +286,24 @@ watch(
                     <tbody>
                      
                       <tr v-if="isLoading===false" v-for="(list, index) in menuItemData" :key="index">
-                        <td   v-if="list.type==='ASSEMBLED'">{{ list?.name }} [{{ list?.code }}]</td>
+                        <td   v-if="list.type==='ASSEMBLED'">{{ list?.code }}</td>
+                        <td   v-if="list.type==='ASSEMBLED'">{{ list?.name }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.unit_of_measure_name }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.purchase_unit_of_measure_name }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.current_quantity }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">
                           <div  v-if="list.type==='ASSEMBLED'">
 
-                        <ul>
-                        <li  v-for="(ldData,idx) in list.parts" :key="idx">[{{ldData.code}}] {{ ldData.name }} - {{ ldData.quantity }} {{ ldData.unit_of_measure }}
-                        <i class="bi bi-x" style="color: red;"></i>
-                        </li>
-                        </ul>
+
+                       <div class="border rounded-md my-2 cursor-pointer">
+                         <div  v-for="(ldData,idx) in list.parts" :key="idx" class="hover:bg-[#dee2e6]" :class="(idx+1) !== list?.parts?.length?'border-bottom':''">
+                           <div class="flex flex-grow justify-between px-3 py-1">
+                             <div>{{(idx+1)}}. {{ ldData.name }} </div>
+                             <div>{{ ldData.quantity }} {{ ldData.unit_of_measure }}</div>
+                           </div>
+                         </div>
+                       </div>
+
                    
                           </div>
                         </td>

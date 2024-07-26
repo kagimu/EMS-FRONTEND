@@ -39,6 +39,10 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const updateAggregateScaleResponse = ref(null)
     const deleteAggregateScaleResponse = ref(null)
     const deleteAssessmentGradeResponse = ref(null)
+    const aggregateNameGroupResponse = ref(null)
+    const newAggregateNameGroupResponse = ref(null)
+    const updateAggregateNameGroupResponse = ref(null)
+    const deleteAggregateNameGroupResponse = ref(null)
 
     async function createAssessmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -185,8 +189,8 @@ async function createGradeStandard(data) {
 
 async function fetchGradeStandard(data) {
         let campus_number = data.campus_number ?? ""
-        let campus_class_number = data.campus_class_number ?? ""
-    return await api.get("main/grading-standard?campus_number="+campus_number+"&campus_class_number="+campus_class_number)
+        let class_number = data.class_number ?? ""
+    return await api.get("main/grading-standard?campus_number="+campus_number+"&class_number="+class_number)
         .then((response) => {
             gradeStandardResponse.value = response.data
         })
@@ -505,10 +509,59 @@ async function updateMetric(data,metricNumber) {
             })
     }
 
+    async function createAggregateGroupName(data) {
+        return await api.post("main/assessments/grade-groups",data)
+            .then((response) => {
+             newAggregateNameGroupResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function updateAggregateGroupName(data) {
+        return await api.put("main/assessments/grade-groups/update",data)
+            .then((response) => {
+             updateAggregateNameGroupResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function deleteAggregateGroupName(data) {
+        return await api.delete("main/assessments/grade-groups?grade_group_number="+data.grade_group_number)
+            .then((response) => {
+             deleteAggregateNameGroupResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
+    async function fetchAggregateGroupName(data) {
+        return await api.get("main/assessments/grade-groups?school_number="+data.school_number)
+            .then((response) => {
+             aggregateNameGroupResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
   
 
     return {
-        newAssessmentAreasResponse,
+        newAssessmentAreasResponse, 
         assessmentAreaResponse,
         gradingStandardResponse,
         newAssessmentResponse,
@@ -546,6 +599,10 @@ async function updateMetric(data,metricNumber) {
         deleteMetricResponse,
         changeStatusGradingScaleResponse,
         deleteAssessmentAreaGradingStandardResponse,
+        aggregateNameGroupResponse,
+        newAggregateNameGroupResponse,
+        updateAggregateNameGroupResponse,
+        deleteAggregateNameGroupResponse,
         createAssessmentAreas,
         fetchAssessmentArea,
         fetchAssessments,
@@ -578,5 +635,9 @@ async function updateMetric(data,metricNumber) {
         fetchStandardGradeDetails,
         deleteAssessmentGrade,
         deleteAssessmentAreaGradingStandard,
+        createAggregateGroupName,
+        fetchAggregateGroupName,
+        updateAggregateGroupName,
+        deleteAggregateGroupName
     }
 })

@@ -12,8 +12,6 @@ const commons = useCommonsStore()
 const buttonLoader = ref(false)
 const campusList = ref([])
 const schoolList = ref([])
-// const school_number = ref(null)
-let errorMessage = ref(null)
 const emit = defineEmits()
 const  notificationStore  = useNotificationStore()
 const schoolStore = useSchoolStore()
@@ -22,8 +20,8 @@ const cateringStore = useCateringStore()
 const isSelected = ref(true)
 
 const form = reactive({
-  campus_number:null,
-  school_number:null
+  campus_number:"",
+  school_number:""
 })
 
 const Items = ref([]);
@@ -81,24 +79,26 @@ onMounted(() => {
 
 
 const createStock = () => {
+  buttonLoader.value = true
   const item_price_and_quantity = Items.value.map(itemData => ({
     menu_item_number: itemData.menu_item_number,
     quantity: parseInt(itemData.quantity),
     unit_price: parseInt(itemData.unitPrice),
-    unit_cost: parseInt(itemData.amount)
+    unit_cost: parseInt(itemData.cost)
   }))
 
   const data = {
     campus_number:form.campus_number,
     item_price_and_quantity
   }
-  // alert(JSON.stringify(data))
+
   cateringStore.newStock(data)
 }
 
 watch(
     () => cateringStore.newStockResponse,
     async (data) => {
+      buttonLoader.value = false
       clearFormData()
       notificationStore.successToast("Success", data.message)
       cateringStore.fetchStock()
@@ -130,6 +130,7 @@ const fetchCampuses = (school_number) => {
 }
 
 const doFetchMenuItem = () => {
+  Items.value = []
   let formD = {
     school_number:form.school_number,
     campus_number:form.campus_number
@@ -144,11 +145,9 @@ watch(
 
       itemOption.value = data.map(option => ({ name: option.name, number: option.number }));
 
-      // if(data && data.data) {
-      //   itemOption.value = data.data.map(option => ({ name: option.name, number: option.number }));
-      // }
-    },
-    {deep: true}
+      isSelected.value = true
+      Items.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
+    }
 )
 
 watch(
@@ -157,8 +156,7 @@ watch(
       if (data) {
         schoolList.value = data.data
       }
-    },
-    {deep: true}
+    }
 )
 
 watch(
@@ -167,8 +165,7 @@ watch(
       if (data) {
         campusList.value = data.data
       }
-    },
-    {deep: true}
+    }
 )
 
 
@@ -181,67 +178,99 @@ watch(
             <div class="card-body" style="padding: 0;">
               <div class="mt-5">
                 <form @submit.prevent="createStock">
-                    <div class="row mx-auto">
-                        <div class="col-lg-4">
-                            <div class="mb-2">
-                            <label class="textColor"><small>School</small> </label>
-                            <select
-                                    style="box-shadow: none;"
-                                    class="form-select form-select-sm" required
-                                    v-model="form.school_number"
-                                    @change="fetchCampuses(form.school_number)"
-                            >
-                                <option disabled value="">Select School</option>
-                                <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-                                </option>
-                            </select>
-                        </div>
-                       
-                    
-                        <div class="mb-2">
-                    <label class="textColor"><small>Campus</small>  </label>
-                    <select
-                    :style="!isSelected ? 'border:1px solid red' : '' "
-                    style="box-shadow: none;"
-                    class="form-select form-select-sm"
-                    v-model="form.campus_number" required
-                    @change="doFetchMenuItem()"
-                    >
-                    <option disabled value="">Select campus</option>
-                    <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-                    </option>
-                    </select>
-                    </div>
-                        </div>
 
-                 
-                   
-            
-            <div class="col-lg-8">
+                  <div class="grid grid-cols-3 gap-2 px-3 mb-4">
+
+                    <div>
+                      <div>
+                        <label class="textColor"><small>School</small> </label>
+                        <select
+                            style="box-shadow: none;"
+                            class="form-select form-select-sm" required
+                            v-model="form.school_number"
+                            @change="fetchCampuses(form.school_number)"
+                        >
+                          <option disabled value="">Select School</option>
+                          <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div>
+                        <label class="textColor"><small>Campus</small>  </label>
+                        <select
+                            :style="!isSelected ? 'border:1px solid red' : '' "
+                            style="box-shadow: none;"
+                            class="form-select form-select-sm"
+                            v-model="form.campus_number" required
+                            @change="doFetchMenuItem()"
+                        >
+                          <option disabled value="">Select campus</option>
+                          <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+                          </option>
+                        </select>
+                    </div>
+                  </div>
+
+
+                    <div class="px-3">
+
+            <div>
               <!-- New Design -->
-                <table class="table table-hover caption-top mt-1 table-sm table-striped">
+                <table class="table table-hover mt-1 table-sm text-xs">
                   <thead>
-                    <tr class="" style="padding: 0px;margin: 0px;">
-                      <th style="width: 40%;">Item</th>
-                      <th>Qty</th>
-                      <th>Unit Price</th>
-                      <th>Amount</th>
-                      <th></th>
+                    <tr class="font-bold text-gray-600">
+                      <td class="w-[5%]">#</td>
+                      <td class="w-[30%]">Item</td>
+                      <td class="w-[20%]">Qty</td>
+                      <td class="w-[20%]">Unit Price</td>
+                      <td>Amount</td>
+                      <td></td>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="(itemData, index) in Items" :key="index" >
-                      <td>
-                        <select class="form-select form-select-sm form-control select-no-border" v-model="itemData.menu_item_number" @change="updateItem(index)">
+                      <td class="border-l border-r">{{(index + 1)}}</td>
+                      <td class="border-r">
+                        <select
+                            class="form-select form-select-sm form-control select-no-border"
+                            v-model="itemData.menu_item_number"
+                            @change="updateItem(index)">
                           <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
                         </select>
                       </td>
-                      <td><input   @keypress="commons.numbersOnlyValidator($event)"
-            maxlength="10" type="text" v-model="itemData.quantity" @input="updateAmount(index)" placeholder="1.0" class="form-control select-no-border"></td>
-                      <td><input  @keypress="commons.numbersOnlyValidator($event)"
-            maxlength="10" type="text" v-model="itemData.cost" @input="updateAmount(index)" placeholder="Unit Price" class="form-control select-no-border"></td>
-                      <td>{{ itemData.amount }}</td>
-                      <td><button type="button" @click="removeItem(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
+                      <td class="border-r">
+                        <input
+                            @keypress="commons.numbersOnlyValidator($event)"
+                            maxlength="10"
+                            type="text"
+                            v-model="itemData.quantity"
+                            @input="updateAmount(index)"
+                            placeholder="1.0"
+                            class="form-control select-no-border">
+                      </td>
+                      <td class="border-r">
+                        <input
+                            @keypress="commons.numbersOnlyValidator($event)"
+                            maxlength="10"
+                            type="text" v-model="itemData.cost"
+                            @input="updateAmount(index)"
+                            placeholder="Unit Price"
+                            class="form-control select-no-border">
+                      </td>
+                      <td>
+                        {{ itemData.amount }}
+                      </td>
+                      <td class="border-r">
+                       <div class="flex justify-end">
+                         <div class="mr-3">
+                           <button type="button" @click="removeItem(index)">
+                             <i class="bi bi-x-circle" style="color:red"></i>
+                           </button>
+                         </div>
+                       </div>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -276,10 +305,12 @@ watch(
                   &nbsp;
                      <div class="mr-3 mb-10">
                          <button type="submit" class="btn btn-sm btn-primary mb-2 mt-1" style="float: right !important;margin-right: 0px;">
+                         <div class="px-4">
                            <small>Submit</small>
-                           <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
+                           <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="buttonLoader">
                              <span class="visually-hidden">Loading...</span>
                            </div>
+                         </div>
                          </button>
                      </div>
 

@@ -3,7 +3,6 @@ import {onMounted,reactive, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import NewMenuItem from "@/main/dashboard/catering/cateringComponents/NewMenuItem.vue";
 import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
-import updateFoodMenuItem from "@/main/dashboard/catering/cateringComponents/updateFoodMenuItem.vue";
 
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
@@ -13,16 +12,9 @@ import AppModal from "@/components/AppModal.vue";
 const showingModal = ref(false)
 const isLoading = ref(true);
 const loading = ref(true)
-const editModal = ref(true)
 
-const showModal = () => {
-    showingModal.value = true
-    thisDialog.value=false
-}
 
 const notificationStore = useNotificationStore()
-const thisDialog = ref(false)
-const updateMenuDialog = ref(false)
 const menuItemsinfoData = ref(null)
 const errorMessage = ref(null)
 const campusList = ref([])
@@ -34,6 +26,7 @@ const menuItemDataParts = ref([])
 const cateringStore = useCateringStore()
 const page = ref(1)
 const per_page = ref(15)
+
 
 const form = reactive({
     school_number:"",
@@ -57,11 +50,11 @@ const filterBySchool = (school_number) => {
 
 const doFetchMenuItem = () => {
     let data = {
-    page: page.value,
-    per_page: per_page.value, 
-     school_number:form.school_number,
-     campus_number:form.campus_number,
-     type:"ITEM"
+      page: page.value,
+      per_page: per_page.value,
+      school_number:form.school_number,
+      campus_number:form.campus_number,
+      type:"ITEM"
     }
     cateringStore.fetchMenuItemPaginated(data)
 
@@ -112,29 +105,11 @@ const filterByCampus = () =>{
 const menuItemData=ref([])
 
 
-const showUpdateDialog = (menuList) => {
-    menuItemsinfoData.value = menuList
+const showUpdateDialog = (menuItemInfo) => {
+    menuItemsinfoData.value = menuItemInfo
     showingModal.value = true
-    thisDialog.value=false
 }
 
-
-const closeDialog = () => {
-    thisDialog.value = false
-    updateMenuDialog.value = false
-}
-
-
-const sta = ref(null)
-
-const showItems = (primaryItemNumber) =>{
-    sta.value=primaryItemNumber
-    // alert(primaryItemNumber)
-    cateringStore.fetchMenuItemDetails(primaryItemNumber)
-}
-const hideItems = () =>{
-    sta.value=""
-}
 
 
 
@@ -144,8 +119,7 @@ watch(
     async (data) => {
         menuItemDataParts.value = data
         loading.value=false;
-    },
-    {deep: true}
+    }
 )
 
 
@@ -155,8 +129,7 @@ watch(
         if (data) {
             notificationStore.errorToast("Error", data.message)
         }
-    },
-    {deep: true}
+    }
 )
 
 
@@ -167,8 +140,7 @@ watch(
         if (data) {
             schoolList.value = data.data
         }
-    },
-    {deep: true}
+    }
 )
 
 watch(
@@ -177,8 +149,7 @@ watch(
         if (data) {
             campusList.value = data.data
         }
-    },
-    {deep: true}
+    }
 )
 
 watch(
@@ -187,8 +158,7 @@ watch(
         if (data) {
             classList.value = data.data
         }
-    },
-    {deep: true}
+    }
 )
 
 
@@ -228,7 +198,7 @@ watch(
 <template>
     <div>
 
-<AppModal v-model="showingModal" lg title="Update Menu Item">
+<AppModal v-model="showingModal"  title="Update Menu Item" xl4>
     <NewMenuItem :menuItemsInfo="menuItemsinfoData"></NewMenuItem>
 </AppModal>
 
@@ -311,8 +281,7 @@ watch(
     </div>
     <table 
     id="datatable"
-    class="table table-striped"
-    style="font-size: 14px !important;"
+    class="table table-hover table-sm text-[12px]"
     >
         <thead>
             <tr>
@@ -329,8 +298,8 @@ watch(
     <tbody>
 
         <tr v-for="(list, index) in menuItemData" v-if="isLoading===false" :key="index">
-          <td>{{ index+1 }}</td>
-      <td>{{ list?.name }} [{{ list?.code }}]</td>
+          <td>{{ list?.code }}</td>
+      <td>{{ list?.name }}</td>
       <td>{{ list?.unit_of_measure_name }}</td>
       <td>{{ list?.purchase_unit_of_measure_name }}</td>
       <td>{{ list?.current_quantity }}</td>
