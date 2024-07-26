@@ -273,8 +273,16 @@ async function newStock(data) {
         })
 }
 
-async function fetchStock() {
-    return await api.get("main/catering/stocking")
+async function fetchStock(data) {
+
+        let school_number = data?.school_number ?? ""
+        let campus_number = data?.campus_number ?? ""
+        let menu_item_number  = data?.menu_item_number ?? ""
+
+    return await api.get("main/catering/stocking?" +
+            "school_number="+school_number+
+            "&campus_number="+campus_number+
+            "&menu_item_number="+menu_item_number)
         .then((response) => {
             stockResponse.value = response.data
         })

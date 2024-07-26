@@ -1,18 +1,151 @@
+<script setup>
+import {onMounted,reactive, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
+
+const notificationStore = useNotificationStore()
+const cateringStore = useCateringStore()
+const errorMessage = ref(null)
+const stockData = ref([])
+
+const campusList = ref([])
+const schoolList = ref([])
+const classList = ref([])
+const menuItemList = ref([])
+const schoolStore = useSchoolStore()
+const campusStore = useCampusStore()
+
+
+  const  school_number = ref("")
+  const  campus_number = ref("")
+  const  menu_item_number = ref("")
+
+
+
+onMounted(() => {
+  fetchAllStock()
+    }
+)
+
+const fetchCampuses = () => {
+  campusStore.fetchCampuses(school_number.value)
+  fetchAllStock()
+}
+
+const fetchMenuItemFilter = () => {
+  fetchAllStock()
+  doFetchMenuItem()
+}
+
+
+
+
+const fetchAllStock = () => {
+  let data = {
+    school_number:school_number.value,
+    campus_number:campus_number.value,
+    menu_item_number:menu_item_number.value
+  }
+  cateringStore.fetchStock(data)
+}
+
+
+const doFetchMenuItem = () => {
+  menuItemList.value = []
+  let formD = {
+    school_number:school_number.value,
+    campus_number:campus_number.value
+  }
+  cateringStore.fetchMenuItem(formD)
+}
+
+
+watch(
+    () => cateringStore.stockResponse,
+    async (data) => {
+      stockData.value = data.data
+    },
+    {deep: true}
+)
+watch(
+    () => cateringStore.errorMessage,
+    async (data) => {
+      if (data) {
+        notificationStore.errorToast("Error", data.message)
+      }
+    },
+    {deep: true}
+)
+
+
+onMounted(() => {
+      schoolStore.fetchSchools()
+    }
+)
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        schoolList.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+watch(
+    () => campusStore.campusListResponse,
+    async (data) => {
+      if (data) {
+        campusList.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+watch(
+    () => campusStore.campusClassesResponse,
+    async (data) => {
+      if (data) {
+        classList.value = data.data
+      }
+    },
+    {deep: true}
+)
+//delete
+const deleteThisData = (id,name) => {
+  if(!confirm("Are you sure, you want to delete: " + name)){
+    return
+  }
+}
+
+watch(
+    () => campusStore.campusListResponse,
+    async (data) => {
+      if (data) {
+        campusList.value = data.data
+      }
+    }
+)
+
+watch(
+    () => cateringStore.menuItemResponse,
+    async (data) => {
+
+      menuItemList.value = data.map(option => ({ name: option.name, number: option.number }));
+
+
+    }
+)
+
+</script>
 <template>
     <div>
 
-
-            <!-- schedule interview -->
-          <div class="offcanvas offcanvas-end" tabindex="-1" id="rolesDialogg" :class="{ show:thisDialog }" aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header">
-              <h5 class="offcanvas-title" id="offcanvasRightLabel"><small>Stock</small></h5>
-              <button type="button" class="btn-close"  data-bs-dismiss="offcanvas" aria-label="Close" @click="closeDialog"></button>
-            </div>
-            <div class="offcanvas-body">
-        
-            </div>
-          </div>
-  <!-- wnd  -->
 
 
 
@@ -39,68 +172,66 @@
         </div>
         </div>
     </div>
-    
-     <!-- filters -->
-     <div class="row">
-              <div class="col-4">
-                <div class="mb-2">
-          <label class="textColor"><small>School</small> </label>
-          <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm" required
-                  v-model="form.school_number"
-                  @change="fetchCampuses(form.school_number)"
-          >
-              <option disabled value="">Select School</option>
-              <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-              </option>
-          </select>
-      </div>
-              </div>
-              <div class="col-4">
-
-              </div>
-
-              <!-- <div class="col-4">
-      <div class="mb-2">
-          <label class="textColor"><small>Campus</small>  </label>
-          <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm"
-                  v-model="form.campus_number" required
-                  @change="fetchClasses(form.campus_number)"
-          >
-            
-              <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-              </option>
-          </select>
-      </div></div> -->
 
 
-     
+           <div class="grid grid-cols-3 gap-2 px-3 mb-4">
 
-  
-   
-      <div class="col-4">
-          <div class="mt-4">
-              <input type="text" class="form-control mt-1 mb-0" placeholder="Search..."> 
-          </div>
-     </div>
+             <div>
+               <div>
+                 <label class="textColor"><small>School</small> </label>
+                 <select
+                     style="box-shadow: none;"
+                     class="form-select form-select-sm" required
+                     v-model="school_number"
+                     @change="fetchCampuses">
+                   <option disabled value="">--Select School--</option>
+                   <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+                   </option>
+                 </select>
+               </div>
+             </div>
 
-            </div>
+             <div>
+               <label class="textColor"><small>Campus</small>  </label>
+               <select
+                   style="box-shadow: none;"
+                   class="form-select form-select-sm"
+                   v-model="campus_number" required
+                   @change="fetchMenuItemFilter">
+                 <option disabled value="">--Select campus--</option>
+                 <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+                 </option>
+               </select>
+             </div>
+
+             <div>
+               <label class="textColor"><small>Item</small>  </label>
+               <select
+                   style="box-shadow: none;"
+                   class="form-select form-select-sm"
+                   v-model="menu_item_number" required
+                   @change="fetchAllStock">
+                 <option disabled value="">--Select Item--</option>
+                 <option v-for="(list, index) in menuItemList" :key="index" :value="list.number">{{ list.name }}
+                 </option>
+               </select>
+
+             </div>
+           </div>
+
     
     <table
     id="datatable"
-    class="table table-striped"
+    class="table table-striped text-xs text-gray-600"
     style="font-size: 14px !important;"
     >
-    <thead >
-        <tr>
-        <th style="width: 2px;">#</th>
-        <th>Menu Item</th>
-        <th>Quantity</th>
-        <th>Unit Price</th>
-        <th>Campus</th>
+    <thead>
+        <tr class="font-bold">
+        <td>#</td>
+        <td>Menu Item</td>
+        <td>Quantity</td>
+        <td>Unit Price</td>
+        <td>Campus</td>
         </tr>
     <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
     {{errorMessage}}
@@ -136,103 +267,7 @@
     </div>
     </template>
     
-    <script setup>
-    import {onMounted,reactive, ref, watch} from "vue";
-    import useNotificationStore from "@/composables/useNotification.js";
-    import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 
-    import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-    import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-    import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
-
-    const notificationStore = useNotificationStore()
-    const cateringStore = useCateringStore()
-    const errorMessage = ref(null)
-    const stockData = ref([])
-
-    const campusList = ref([])
-    const schoolList = ref([])
-    const classList = ref([])
-    const schoolStore = useSchoolStore()
-    const campusStore = useCampusStore()
-    const classStore = useClassesStore()
-    const school_number = ref(null)
-    
-    const form = reactive({
-    school_number:null,
-    campus_class_number: null,
-    campus_number: null,
-    })
-
-
-    const closeDialog = () => {
-        thisDialog.value = false
-    }
-
-    onMounted(() => {
-        cateringStore.fetchStock()
-    }
-  )
-
-  watch(
-    () => cateringStore.stockResponse,
-    async (data) => {
-        stockData.value = data.data
-    },
-    {deep: true}
-  )
-  watch(
-    () => cateringStore.errorMessage,
-    async (data) => {
-          if (data) {
-          notificationStore.errorToast("Error", data.message)
-          }
-    },
-    {deep: true}
-  )
-
-
-  onMounted(() => {
-      schoolStore.fetchSchools()
-  }
-)
-
-watch(
-  () => schoolStore.schoolsResponse,
-  async (data) => {
-      if (data) {
-          schoolList.value = data.data
-      }
-  },
-  {deep: true}
-)
-
-watch(
-  () => campusStore.campusListResponse,
-  async (data) => {
-      if (data) {
-          campusList.value = data.data
-      }
-  },
-  {deep: true}
-)
-
-watch(
-  () => campusStore.campusClassesResponse,
-  async (data) => {
-      if (data) {
-          classList.value = data.data
-      }
-  },
-  {deep: true}
-)
-//delete
-const deleteThisData = (id,name) => {
-if(!confirm("Are you sure, you want to delete: " + name)){
-  return
-}
-}
-    </script>
     
     
     
