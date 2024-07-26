@@ -2,7 +2,7 @@
     <div>
 
 
-  <AppModal :title="editModel ? 'Edit ' + namee:'New Feeding Group'" v-model="showingModal" lg>
+  <AppModal :title="editModel ? 'Edit ' + namee:'New Feeding Pack'" v-model="showingModal" xl2>
     <NewFeedingSession :groupData="dataList"></NewFeedingSession>
     </AppModal>
 

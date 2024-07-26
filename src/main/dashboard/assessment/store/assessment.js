@@ -522,7 +522,7 @@ async function updateMetric(data,metricNumber) {
     }
 
     async function updateAggregateGroupName(data) {
-        return await api.put("main/assessments/grade-groups/update",data)
+        return await api.post("main/assessments/grade-groups/update",data)
             .then((response) => {
              updateAggregateNameGroupResponse.value = response.data
             })
@@ -534,7 +534,7 @@ async function updateMetric(data,metricNumber) {
     }
 
     async function deleteAggregateGroupName(data) {
-        return await api.delete("main/assessments/grade-groups?grade_group_number="+data.grade_group_number)
+        return await api.post("main/assessments/grade-groups/remove/"+data.grade_group_number)
             .then((response) => {
              deleteAggregateNameGroupResponse.value = response.data
             })
