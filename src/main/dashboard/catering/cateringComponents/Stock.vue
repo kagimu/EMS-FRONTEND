@@ -183,8 +183,7 @@ watch(
                      style="box-shadow: none;"
                      class="form-select form-select-sm" required
                      v-model="school_number"
-                     @change="fetchCampuses"
-                 >
+                     @change="fetchCampuses">
                    <option disabled value="">--Select School--</option>
                    <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
                    </option>
@@ -198,8 +197,7 @@ watch(
                    style="box-shadow: none;"
                    class="form-select form-select-sm"
                    v-model="campus_number" required
-                   @change="fetchMenuItemFilter"
-               >
+                   @change="fetchMenuItemFilter">
                  <option disabled value="">--Select campus--</option>
                  <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
                  </option>
@@ -212,8 +210,7 @@ watch(
                    style="box-shadow: none;"
                    class="form-select form-select-sm"
                    v-model="menu_item_number" required
-                   @change="fetchAllStock"
-               >
+                   @change="fetchAllStock">
                  <option disabled value="">--Select Item--</option>
                  <option v-for="(list, index) in menuItemList" :key="index" :value="list.number">{{ list.name }}
                  </option>
