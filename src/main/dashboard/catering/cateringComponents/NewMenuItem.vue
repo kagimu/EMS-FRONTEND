@@ -409,7 +409,7 @@ const clearFormData = () => {
       
 
       <div class="mb-2" v-if="menuForm.type === 'ITEM'">
-        <label class="textColor"><small>Unit Price</small></label>
+        <label class="textColor"><small>User Unit Price</small></label>
         <input
             v-model="menuForm.base_price"
             class="form-control shadow-none"
