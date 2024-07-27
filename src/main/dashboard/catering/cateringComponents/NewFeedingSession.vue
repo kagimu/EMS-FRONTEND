@@ -30,7 +30,7 @@
     onMounted(() => {
             schoolStore.fetchSchools()
             if(props.groupData.number != ""){
-            form.code = props.groupData.code;
+            // form.code = props.groupData.code;
             form.name = props.groupData.name;
             form.school_number = props.groupData.school_number;
             showSchool.value = "true"
@@ -39,7 +39,7 @@
     )
     
     const form = reactive({
-        code:null,
+        // code:null,
         name:null,
         status:"ACTIVE",
         campus_number:null,
@@ -47,16 +47,16 @@
     })
     const addFeedingSessionGroup = () => {
 
-  const menu_item_quantity = Items.value.map(itemData => ({
+  const menu_items = Items.value.map(itemData => ({
       menu_item_number: itemData.menu_item_number,
       quantity: parseInt(itemData.quantity),
     }))
 
         let myData = reactive({
-        code:parseInt(form.code),
+        // code:parseInt(form.code),
         name:form.name,
         status:"ACTIVE",
-        menu_item_quantity,
+        menu_items,
         school_number:form.school_number
         
     })
@@ -68,14 +68,14 @@
         let formD = {
           feeding_session_number:props.groupData.number,
           name:form.name,
-          code:parseInt(form.code),
+          // code:parseInt(form.code),
           status:"ACTIVE",
           school_number:form.school_number
         }
         cateringStore.updateFeedingSession(formD)
     }else{
-        alert(JSON.stringify(myData))
-        // cateringStore.newFeedingGroupSessionsInfo(myData)
+        // alert(JSON.stringify(myData))
+        cateringStore.newFeedingGroupSessionsInfo(myData)
     }
        
     }
@@ -165,7 +165,7 @@ watch(
           if(data){
             buttonLoader.value = false
             notificationStore.successToast("Success", data.message) 
-            form.code = ""
+            // form.code = ""
             form.name = ""
     
           }
@@ -245,7 +245,7 @@ watch(
                    </option>
                 </select>
              </div>
-             <div class="mb-2" >
+             <!-- <div class="mb-2" >
                 <label class="textColor"><small>Code</small></label>
                 <input
                    v-model="form.code"
@@ -255,7 +255,7 @@ watch(
                    @paste.prevent
                    required
                    class="form-control shadow-none">
-             </div>
+             </div> -->
              <div class="mb-2">
                 <label class="textColor"><small>Name</small></label>
                 <input v-model="form.name"   type="text" required class="form-control shadow-none" placeholder="eg. Break fast 1">

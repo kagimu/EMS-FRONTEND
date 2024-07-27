@@ -2,11 +2,9 @@
     <div>
 
 
-  <AppModal :title="editModel ? 'Edit ' + namee:'New Feeding Group'" v-model="showingModal" xl2>
+  <AppModal :title="editModel ? 'Edit ' + namee:'New Feeding Group'" v-model="showingModal" xl4>
     <NewFeedingSession :groupData="dataList"></NewFeedingSession>
     </AppModal>
-
-
 
                
     <!-- end  -->
@@ -235,6 +233,18 @@ watch (
     },
     {deep:true}
 )
+
+  
+watch (
+        () => cateringStore.updateFeedingSessionResponse,
+        async (data) => {
+          if(data){
+            showingModal.value = false
+            doFetchFeedingSessions()
+          }
+        },
+        {deep:true}
+    )
   </script>
   
   

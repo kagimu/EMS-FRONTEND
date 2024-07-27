@@ -165,23 +165,27 @@ const convertFormValuesToInt = () => {
 const createScale = () =>{
   buttonLoader.value = true
   form.count =  parseInt(form.count)
-  form.grades = sectionPart
+  form.aggregate_scales = sectionPart
   form.school_number = schoolNumber
 
   convertFormValuesToInt()
 
+  form.assessment_grade_items.forEach(scale => {
+    scale.code = scale.code ? parseInt(scale.code) : null
+    scale.minimum_points = scale.minimum_points ? parseFloat(scale.minimum_points) : null
+    scale.maximum_points = scale.maximum_points ? parseFloat(scale.maximum_points) : null
+  })
+
   if(props.gradeScaleDatainfo.scale_number){
     form.scale_number = props.gradeScaleDatainfo.scale_number
+    alert(JSON.stringify(form))
     assessmentStore.updateAggregateScale(form)
   }else{
-    alert(JSON.stringify(form))
-    // assessmentStore.createAggregateScale(form)
+    
+    assessmentStore.createAggregateScale(form)
   }
   
 }
-
-
-
 
 const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
