@@ -100,7 +100,8 @@ const createScale = () =>{
   if(form.assessment_grade_number){
     assessmentStore.updateAssessmentGrade(form)
   }else{
-    assessmentStore.createAssessmentGrade(form)
+    alert(JSON.stringify(form))
+    // assessmentStore.createAssessmentGrade(form)
   }
 
 }
@@ -233,16 +234,16 @@ watch(
     <div class="mb-2 mt-3">
       <label class="text-xs font-bold">Select Class(es)</label>
       <div class="border p-3 rounded-md">
-        <div class="grid grid-cols-4 gap-2 text-sm" style="border-radius: 0 0 0 0;">
+        <div class="grid grid-cols-3 gap-2 text-sm" style="border-radius: 0 0 0 0;">
           <div class="list-group-item mb-2 hover:bg-[#e3e0e0] hover:rounded-md cursor-pointer py-1" v-for="(classInfo) in campusClassList" @click="addRequirements(classInfo?.number)">
             <div class="px-3">
               <input
                   v-model="form.classes"
                   style="outline: none 0 !important; box-shadow: none;"
-                  class="w-[15px] h-[15px] text-indigo-600 cursor-pointer"
+                  class="w-[15px] h-[13px] text-indigo-600 cursor-pointer"
                   type="checkbox"
                   :value="classInfo.number"  :id="classInfo.number">
-              <label @click="addRequirements(classInfo.number)" class="form-check-label cursor-pointer capitalize ml-3" :for="classInfo.number">{{classInfo?.name+" [ "+classInfo?.abbreviation+" ]"}}</label>
+              <label @click="addRequirements(classInfo.number)" class="form-check-label cursor-pointer capitalize ml-1" :for="classInfo.number">{{classInfo?.name+" [ "+classInfo?.abbreviation+" ]"}}</label>
             </div>
           </div>
         </div>

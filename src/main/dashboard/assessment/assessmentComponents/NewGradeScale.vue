@@ -174,7 +174,8 @@ const createScale = () =>{
     form.scale_number = props.gradeScaleDatainfo.scale_number
     assessmentStore.updateAggregateScale(form)
   }else{
-    assessmentStore.createAggregateScale(form)
+    alert(JSON.stringify(form))
+    // assessmentStore.createAggregateScale(form)
   }
   
 }
@@ -324,7 +325,7 @@ watch(
 
 
           <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-5">
               <div class="mb-2">
             <div class="text-[13px] text-[#505050]">Count of Scale</div>
             <input
@@ -440,12 +441,12 @@ watch(
           </table>
             </div>
 
-            <div class="col-lg-6">
+            <div class="col-lg-7">
 
               <div class="mb-2 mt-3">
       <label class="text-xs font-bold">Select Class(es)</label>
       <div class="border p-3 rounded-md">
-        <div class="grid grid-cols-4 gap-2 text-sm" style="border-radius: 0 0 0 0;">
+        <div class="grid grid-cols-3 gap-2 text-sm" style="border-radius: 0 0 0 0;">
           <div class="list-group-item mb-2 hover:bg-[#e3e0e0] hover:rounded-md cursor-pointer py-1" v-for="(classInfo) in campusClassList" @click="addRequirements(classInfo?.number)">
             <div class="px-3">
               <input
@@ -454,7 +455,7 @@ watch(
                   class="w-[15px] h-[15px] text-indigo-600 cursor-pointer"
                   type="checkbox"
                   :value="classInfo.number"  :id="classInfo.number">
-              <label @click="addRequirements(classInfo.number)" class="form-check-label cursor-pointer capitalize ml-3" :for="classInfo.number">{{classInfo?.name+" [ "+classInfo?.abbreviation+" ]"}}</label>
+              <label style="font-size: 11px;" @click="addRequirements(classInfo.number)" class="form-check-label cursor-pointer capitalize ml-3" :for="classInfo.number">{{classInfo?.name+" [ "+classInfo?.abbreviation+" ]"}}</label>
             </div>
           </div>
         </div>
