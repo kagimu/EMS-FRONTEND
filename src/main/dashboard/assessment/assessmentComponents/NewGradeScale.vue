@@ -337,8 +337,8 @@ watch(
           </div>
 
         
-          <div class="text-[14px] text-[#505050] mb-2 mt-4 alert alert-primary p-1" ><b>Aggregate Scale</b></div>
-          <div class="mb-2">
+          <div class="text-[14px] text-[#505050] mb-2 mt-6 alert alert-primary p-1" ><b>Aggregate Scale</b></div>
+          <div class="mb-2 mt-4">
             <div class="text-[13px] text-[#505050]">Count of Scale</div>
             <input
                 @keypress="commons.codeValidator($event)"
@@ -347,7 +347,8 @@ watch(
                 v-model="form.count"
                 required
                 @paste.prevent
-                class="form-control form-select-sm shadow-none">
+                class="form-control form-select-sm shadow-none"
+                style="width: 100px;">
           </div>
 
           <div class="flex justify-end mt-5 mb-4" v-if="gradeScaleDatainfo?.scale_number">
@@ -445,7 +446,7 @@ watch(
           </table>
             </div>
 
-            <div class="text-[14px] text-[#505050] mb-2 mt-4 alert alert-primary p-1" ><b>Grading Category</b></div>
+            <div class="text-[13px] text-[#505050] mb-2 mt-8 alert alert-primary p-1" ><b>Grading Category</b></div>
 
               <div class="mb-2 mt-3">      
 <table
