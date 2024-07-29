@@ -130,7 +130,7 @@
               <table class="table table-hover table-sm table-striped text-[12px]">
                 <th>Name</th>
                 <th>Qty</th>
-                <th>Unit</th>
+                <th>Consumption Unit</th>
                 <tbody>
               <tr v-for="menuItem in list.pack_items" :key="menuItem.number" class="m-1">
                 <td>{{ menuItem.name }}</td>
