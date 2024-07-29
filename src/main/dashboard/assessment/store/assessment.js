@@ -397,8 +397,10 @@ async function updateMetric(data,metricNumber) {
             })
     }
 
-    async function fetchGrades() {
-        return await api.get("main/assessments/grades")
+    async function fetchGrades(data) {
+       let grade_group_number = data?.grade_group_number
+       let school_number = data?.school_number
+        return await api.get("main/assessments/grades?school_number="+school_number+"&grade_group_number="+grade_group_number)
             .then((response) => {
                 gradeResponse.value = response.data
             })
@@ -522,7 +524,7 @@ async function updateMetric(data,metricNumber) {
     }
 
     async function updateAggregateGroupName(data) {
-        return await api.put("main/assessments/grade-groups/update",data)
+        return await api.post("main/assessments/grade-groups/update",data)
             .then((response) => {
              updateAggregateNameGroupResponse.value = response.data
             })
@@ -534,7 +536,7 @@ async function updateMetric(data,metricNumber) {
     }
 
     async function deleteAggregateGroupName(data) {
-        return await api.delete("main/assessments/grade-groups?grade_group_number="+data.grade_group_number)
+        return await api.post("main/assessments/grade-groups/remove/"+data.grade_group_number)
             .then((response) => {
              deleteAggregateNameGroupResponse.value = response.data
             })
@@ -546,8 +548,8 @@ async function updateMetric(data,metricNumber) {
     }
 
 
-    async function fetchAggregateGroupName(data) {
-        return await api.get("main/assessments/grade-groups?school_number="+data.school_number)
+    async function fetchAggregateGroupName(school_number) {
+        return await api.get("main/assessments/grade-groups?school_number="+school_number)
             .then((response) => {
              aggregateNameGroupResponse.value = response.data
             })

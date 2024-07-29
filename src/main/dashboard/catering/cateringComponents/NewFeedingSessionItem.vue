@@ -40,7 +40,6 @@
        
 
             <div class="mb-3"> 
-
               <label class="textColor">Feeding Session</label>
                 <select v-model="form.feeding_session_number" class="form-control form-select shadow-none">
                     <option disabled value="">Select Feeding Sessions</option>
@@ -238,10 +237,6 @@ onMounted(
     () => cateringStore.menuItemResponse,
     async (data) => {
       itemOption.value = data.map(option => ({ name: option.name, number: option.number }));
-
-      // if(data && data.data) {
-      //   itemOption.value = data.map(option => ({ name: option.name, number: option.number }));
-      // }
     },
     {deep: true}
   )

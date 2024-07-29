@@ -100,6 +100,7 @@ watch (
     () => cateringStore.errorMessage,
     async (data) => {
       if(data){
+        buttonLoader.value = false
         errorMessage.value = data.message
         notificationStore.errorToast("Error",data.message)
       }
