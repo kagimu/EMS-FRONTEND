@@ -61,7 +61,7 @@
    </div>
       <div class="col-4">
           <div class="mt-4">
-              <input class="form-control mt-1 mb-0" placeholder="Search..." type="text">
+              <!-- <input class="form-control mt-1 mb-0" placeholder="Search..." type="text"> -->
           </div>
      </div>
 
@@ -105,16 +105,27 @@
         <div v-for="(list, index) in feedingSessionGroupData" :key="index" class="col-md-4 mb-2 mt-1">
           <div class="card m-2 card-hover">
             <div class="card-header">
-              <h5 class="card-title text-[13px]">{{ list.name }} 
-                <button @click="editThisData(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
-            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+       
+              <h5 class="card-title text-[13px]">
+                <div class="row">
+                <div class="col-lg-9">
+                  {{ list.name }} 
+                </div>
+
+                <div class="col-lg-3">
+                  <button @click="editThisData(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
+            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148);"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
           <button type="button" @click="deleteThisData(list.feeding_session_number,list.name)">
-            <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+            <i class="bi bi-trash" style="color:rgb(201, 10, 10);"></i>
           </button>
+                </div>
+
+              </div>
+              
               </h5>
-              <p class="card-text text-[13px]"><strong>Status:</strong> {{ list.status }}</p>
+              <!-- <p class="card-text text-[13px]"><strong>Status:</strong> {{ list.status }}</p> -->
             </div>
               <table class="table table-hover table-sm table-striped text-[12px]">
                 <th>Name</th>
