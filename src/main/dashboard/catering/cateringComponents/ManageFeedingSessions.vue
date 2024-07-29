@@ -28,19 +28,19 @@ const switchTabs = (data) => {
             Feeding Packs
           </div>
         </div>
-        <div class="cursor-pointer text-sm" :class="selectedTab === 'new-feeding-pack-item' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('new-feeding-pack-item')">
+        <!-- <div class="cursor-pointer text-sm" :class="selectedTab === 'new-feeding-pack-item' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('new-feeding-pack-item')">
           <div class="py-2 px-3">
             <i class="bi bi-box-arrow-in-right mr-1"></i>
             New Feeding Pack Item
           </div>
-        </div>
+        </div> -->
 
-        <div class="cursor-pointer text-sm" :class="selectedTab === 'feeding-pack-items' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('feeding-pack-items')">
+        <!-- <div class="cursor-pointer text-sm" :class="selectedTab === 'feeding-pack-items' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('feeding-pack-items')">
           <div class="py-2 px-3">
             <i class="bi bi-box-arrow-in-right mr-1"></i>
             Feeding Pack Items
           </div>
-        </div>
+        </div> -->
 
       </div>
 
