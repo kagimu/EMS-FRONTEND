@@ -39,13 +39,10 @@ onMounted(
     () =>{
       schoolStore.fetchSchools()
       getGradeDataInfo()
-      fetchAggregateGroup()
+      assessmentStore.fetchAggregateGroupName(schoolNumber)
     }
 )
 
-const fetchAggregateGroup = () =>{
-  assessmentStore.fetchAggregateGroupName(schoolNumber)
-}
 
 watch(
     () => props.gradeDataInfo,
@@ -58,11 +55,11 @@ watch(
 
 
 const getGradeDataInfo = () => {
-  if(props.gradeDataInfo){
-    let draft = props.gradeDataInfo
-        form.code = draft?.code ?? ""
-        form.name  = draft?.name ?? ""
-        form.short_name  = draft?.short_name ?? ""
+  let draft = props.gradeDataInfo
+  if(draft){
+    form.code = draft?.code ?? ""
+    form.name  = draft?.name ?? ""
+    form.short_name  = draft?.short_name ?? ""
   }
 }
 
@@ -93,8 +90,7 @@ watch(
       if(data){
         aggregateGroupData.value = data.gradeGroups
       }
-    },
-    {deep:true}
+    }
 )
 
 watch(
@@ -164,14 +160,14 @@ watch(
 
           <div class="mb-2">
             <div class="text-[13px] text-[#505050]">Aggregate Group Name</div>
-                    <select
-                        class="form-select form-select-sm shadow-none" required
-                        v-model="form.grade_group_number"
-                    >
-                      <option disabled value="">--Select Aggregate Group--</option>
-                      <option v-for="(list,index) in aggregateGroupData" :key="index" :value="list.number">{{ list.name }}</option>
-                    </select>
-                  </div>
+              <select
+                  class="form-select form-select-sm shadow-none" required
+                  v-model="form.grade_group_number"
+              >
+                <option disabled value="">--Select Aggregate Group--</option>
+                <option v-for="(list,index) in aggregateGroupData" :key="index" :value="list.number">{{ list.name }}</option>
+              </select>
+            </div>
 
           <div class="mb-2">
             <div class="text-[13px] text-[#505050]"> Short Code</div>

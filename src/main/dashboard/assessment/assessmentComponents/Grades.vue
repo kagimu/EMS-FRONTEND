@@ -5,10 +5,14 @@ import { useAssessmentStore } from "../store/assessment";
 import { useAbility } from '@casl/vue';
 import useNotificationStore from "@/composables/useNotification.js";
 import AppModal from "@/components/AppModal.vue";
-
+import {useRouter} from "vue-router";
+const routerData = useRouter()
 const { can } = useAbility()
 const assessmentStore = useAssessmentStore()
 const notificationStore = useNotificationStore()
+
+
+let schoolNumber = routerData.currentRoute.value.query.sch
 
 const gradeData = ref([])
 const errorMessage = ref(null)
@@ -16,7 +20,9 @@ const showGradeModal = ref(false)
 const gradeDataInfo = ref([])
 const editModel = ref(false)
 const deletionLoader = ref(undefined)
-const namee = ref(null)
+const grade_group_number = ref("")
+const aggregateGroupData = ref([])
+
 
 const addGrade  = () => {
     showGradeModal.value = true
@@ -26,17 +32,21 @@ const addGrade  = () => {
 
 onMounted(
     async () => {
+      await assessmentStore.fetchAggregateGroupName(schoolNumber)
        doFetchGrades()
     } )
 
 const doFetchGrades = () => {
-  assessmentStore.fetchGrades()
+  let data = {
+    grade_group_number:grade_group_number.value,
+    school_number:schoolNumber
+  }
+  assessmentStore.fetchGrades(data)
 }
 
 const showEditModal = (gradeD) => {
     gradeDataInfo.value = gradeD
     showGradeModal.value = true
-    namee.value = gradeD.name
     editModel.value = true
     
 }
@@ -100,6 +110,15 @@ watch(
     }
 )
 
+watch(
+    () => assessmentStore.aggregateNameGroupResponse,
+    async (data) => {
+      if(data){
+        aggregateGroupData.value = data.gradeGroups
+      }
+    }
+)
+
 </script>
 <template>
     <div>
@@ -109,10 +128,12 @@ watch(
       </AppModal>
 
      <div class="px-2 py-2 border-b">
-           <div class="row">
-            <div class="col-lg-6 ">
-            </div>
-            <div class="col-lg-6">
+           <div class="grid grid-cols-3 gap-2">
+             <div>
+              <div class="text-gray-600 text-sm mt-2"> Name Of Aggregates</div>
+             </div>
+             <div></div>
+            <div>
                 <button
                     @click="addGrade"
                     v-if="can('add_grade_standard','general')"
@@ -126,13 +147,32 @@ watch(
            </div>
      </div>
 
+
+
+
+      <div class="grid grid-cols-3 gap-2 mt-4 px-3">
+        <div>
+          <div class="mb-2">
+            <select
+                class="form-select form-select-sm shadow-none" required
+                v-model="grade_group_number"
+                @change="doFetchGrades"
+            >
+              <option disabled value="">--Filter by aggregate group--</option>
+              <option v-for="(list,index) in aggregateGroupData" :key="index" :value="list.number">{{ list.name }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
       <div class="mt-1">
         <table
           class="table table-striped"
           style="font-size: 11px !important;" >
         <thead>
         <tr>
-          <th scope="col">#</th>
+          <th class="w-[5%]">#</th>
+          <th class="w-[15%]">Group</th>
           <th scope="col">Name</th>
           <th scope="col">Short Name</th>
           <th scope="col">Status</th>
@@ -141,9 +181,10 @@ watch(
         </thead>
         <tbody>
         <tr v-for="(gradeList, index) in gradeData " :key="index">
-          <td>{{ gradeList.code }}</td>
-          <td>{{ gradeList.name }}</td>
-          <td>{{ gradeList.short_name }}</td>
+          <td>{{ gradeList?.code }}</td>
+          <td>{{ gradeList?.grade_group }}</td>
+          <td>{{ gradeList?.name }}</td>
+          <td>{{ gradeList?.short_name }}</td>
           <td><span class="border px-2 rounded-md">{{ gradeList.status }}</span></td>
           <td>
             <button @click="showEditModal(gradeList)"   type="button">

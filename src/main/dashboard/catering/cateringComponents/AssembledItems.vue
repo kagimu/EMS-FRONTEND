@@ -31,7 +31,7 @@ const campusStore = useCampusStore()
 const menuItemDataParts = ref([])
 const sta = ref(null)
 const page = ref(1)
-const per_page = ref(15)
+const per_page = ref(300)
 const menuItemData=ref([])
 
 const form = reactive({
