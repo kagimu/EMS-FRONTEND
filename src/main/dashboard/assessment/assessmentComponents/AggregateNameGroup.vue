@@ -145,19 +145,6 @@ watch(
            <div class="flex flex-grow justify-between">
             <div>
                <p class="mt-3 ml-4 text-gray-600">Aggregate Group Name</p>
-
-               <!-- <div class="mb-2 ml-4">
-          <select
-              v-model="form.school_number"
-              class="form-select form-select-sm" required
-              style="box-shadow: none;"
-              @change="fetchAggregateGroup(form.school_number)"
-          >
-            <option disabled value="">--Select School--</option>
-            <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-            </option>
-          </select>
-      </div> -->
             </div>
 
             <div>
