@@ -133,8 +133,8 @@ watch(
 <template>
     <div>
 
-      <AppModal :title= "editMode?'Edit Aggregate Group Name':'Add Aggregate Group Name' " v-model="showAggregateGroupModal" xs>
-<NewAggregateNameGroup :aggregateGroupDataInfo="aggregateGroupDataInfo"></NewAggregateNameGroup>
+      <AppModal :title= "editMode?'Edit Aggregate Group Name':'Add Aggregate Group Name' " v-model="showAggregateGroupModal" lg>
+          <NewAggregateNameGroup :aggregateGroupDataInfo="aggregateGroupDataInfo"></NewAggregateNameGroup>
       </AppModal>
 
 
