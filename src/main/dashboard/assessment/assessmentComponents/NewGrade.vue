@@ -60,6 +60,7 @@ const getGradeDataInfo = () => {
     form.code = draft?.code ?? ""
     form.name  = draft?.name ?? ""
     form.short_name  = draft?.short_name ?? ""
+    form.grade_group_number  = draft?.group_number ?? ""
   }
 }
 
