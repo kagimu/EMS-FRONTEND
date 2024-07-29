@@ -546,8 +546,8 @@ async function updateMetric(data,metricNumber) {
     }
 
 
-    async function fetchAggregateGroupName(data) {
-        return await api.get("main/assessments/grade-groups?school_number="+data.school_number)
+    async function fetchAggregateGroupName(school_number) {
+        return await api.get("main/assessments/grade-groups?school_number="+school_number)
             .then((response) => {
              aggregateNameGroupResponse.value = response.data
             })
