@@ -397,8 +397,10 @@ async function updateMetric(data,metricNumber) {
             })
     }
 
-    async function fetchGrades() {
-        return await api.get("main/assessments/grades")
+    async function fetchGrades(data) {
+       let grade_group_number = data?.grade_group_number
+       let school_number = data?.school_number
+        return await api.get("main/assessments/grades?school_number="+school_number+"&grade_group_number="+grade_group_number)
             .then((response) => {
                 gradeResponse.value = response.data
             })
@@ -546,8 +548,8 @@ async function updateMetric(data,metricNumber) {
     }
 
 
-    async function fetchAggregateGroupName(data) {
-        return await api.get("main/assessments/grade-groups?school_number="+data.school_number)
+    async function fetchAggregateGroupName(school_number) {
+        return await api.get("main/assessments/grade-groups?school_number="+school_number)
             .then((response) => {
              aggregateNameGroupResponse.value = response.data
             })

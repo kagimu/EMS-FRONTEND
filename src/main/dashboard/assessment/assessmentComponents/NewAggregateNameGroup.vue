@@ -8,13 +8,18 @@ import {useRouter} from "vue-router";
 
 const routerData = useRouter()
 let schoolNumber = routerData.currentRoute.value.query.sch
+const schoolStore = useSchoolStore()
+const assessmentStore= useAssessmentStore()
 const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
+
+
 const buttonLoader = ref(false)
 const errorMessage = ref(null)
-const assessmentStore= useAssessmentStore()
+
 const schoolList = ref([])
-const schoolStore = useSchoolStore()
+const number = ref("")
+
 
 const form = reactive({
   name:"",
@@ -33,13 +38,22 @@ onMounted(() => {
     }
 )
 
+watch (
+    () => props.aggregateGroupDataInfo,
+    async (data) => {
+      if(data){
+        getAssessmentGroupInfo()
+      }
+    }
+)
 
 
 const getAssessmentGroupInfo = () => {
-  
-  if(props.aggregateGroupDataInfo.number){
-    form.name = props.aggregateGroupDataInfo.name
-    form.code = props.aggregateGroupDataInfo.code
+  let draft  = props.aggregateGroupDataInfo
+  if(draft?.number){
+    form.name = draft?.name
+    form.code = draft?.code
+    number.value = draft?.number
   }
  
   
@@ -47,18 +61,17 @@ const getAssessmentGroupInfo = () => {
 
 
 const createAggregateGroupName = () =>{
-  let formData = {
-    code:parseInt(form.code),
-    school_number:form.school_number,
-    name:form.name
-  }
+
+  form.code = parseInt(form.code)
+
+
   buttonLoader.value = true
-  if(props.aggregateGroupDataInfo.number){
-    formData.grade_group_number = props.aggregateGroupDataInfo.number
-    assessmentStore.updateAggregateGroupName(formData)
+  if(number.value){
+    form.number = number.value
+    assessmentStore.updateAggregateGroupName(form)
   }
   else{
-    assessmentStore.createAggregateGroupName(formData)
+    assessmentStore.createAggregateGroupName(form)
   }
   
 }
@@ -109,23 +122,11 @@ watch(
 </script>
 <template>
     <div>
-     <!-- {{ aggregateGroupDataInfo }} -->
+
         <div class="modal-content">
       <div class="modal-body">
         <form @submit.prevent="createAggregateGroupName()">
 
-          <!-- <div class="mb-2">
-          <label class="textColor"><small>School</small> </label>
-          <select
-              v-model="form.school_number"
-              class="form-select form-select-sm"
-              style="box-shadow: none;"
-          >
-            <option disabled value="">--Select School--</option>
-            <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-            </option>
-          </select>
-      </div> -->
 
           <div class="mb-2">
             <div class="text-[13px] text-[#505050]">Code</div>
@@ -145,7 +146,10 @@ watch(
 
      <div class="flex justify-content-end mt-4" style="width: 100%;">
             <button type="submit" class="btn btn-primary border-0 btn-sm">
-                 <small><i class="bi bi-save"></i> submit</small>
+                 <small>
+                   <i class="bi bi-save"></i>
+                    {{number ? "Edit" : "Submit"}}
+                 </small>
                  <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
                       role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span> 
                     </span>
