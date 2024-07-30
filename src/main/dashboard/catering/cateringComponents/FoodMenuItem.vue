@@ -301,8 +301,19 @@ watch(
                   {{errorMessage}}
                 </div>
 
+
+
+
                 <div class="flex justify-end pt-5 pb-2">
-                  <div class="text-xs text-gray-600 mr-10">Items:{{total_items}} of {{total_rows}}</div>
+                  <div class="flex">
+                    <select class="border border-b-1  border-t-0 shadow-none" v-model="form.gender" aria-label="Default select example">
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                    <div class="text-xs text-gray-600 mr-10">Items:{{total_items}} of {{total_rows}}</div>
+                  </div>
                 </div>
 
                 <div
