@@ -33,7 +33,10 @@
             // form.code = props.groupData.code;
             form.name = props.groupData.name;
             form.school_number = props.groupData.school_number;
+            isSelected.value = true
             showSchool.value = "true"
+            alert(JSON.stringify(props.groupData.pack_items))
+            itemOption.value = props.groupData.pack_items
           }
         }
     )
@@ -212,7 +215,7 @@ watch(
  </script>
 
 <template>
-    <!-- {{ groupData }} -->
+    {{ groupData }}
       <div>
         <form @submit.prevent="addFeedingSessionGroup">
     <div class="row">

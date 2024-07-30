@@ -42,7 +42,6 @@ const props = defineProps({
 const form = reactive({
   scale_name:"",
   count:"",
-  classes: [],
   assessment_grade_items:[{code:"",name:"",minimum_points:"",maximum_points:"",remarks:"",abbreviation:"",description:""}]
 })
 const sectionPart = ref([])
@@ -62,16 +61,22 @@ onMounted(
         editM.value = true
         form.count = draft?.count
         form.scale_name = draft?.scale_name
-        let gradesInfo = draft?.grades
+        let gradesInfo = draft?.aggregate_scales
+        form.assessment_grade_items = draft?.assessment_grade.assessment_grade_items
+
         gradesInfo.forEach(lst => {
           lst.remark = lst.description
         }) 
-
+       
+        // alert(JSON.stringify())
         sectionPart.value = gradesInfo
 
       }
+  
     }
 )
+
+
 
 const fetchGradeScale = () =>{
   let data = {
@@ -89,13 +94,8 @@ const newGradeScale = () => {
   form.assessment_grade_items.push({code:null, name:null,abbreviation:null,minimum_points:null,maximum_points:null,remarks:null,description:null})
 }
 
-const addRequirements = (class_number) => {
-  if (form.classes.includes(class_number)) {
-    form.classes = form.classes.filter(item => item !== class_number);
-  } else {
-    form.classes.push(class_number);
-  }
-}
+
+
 
 
 watch(
@@ -178,7 +178,7 @@ const createScale = () =>{
 
   if(props.gradeScaleDatainfo.scale_number){
     form.scale_number = props.gradeScaleDatainfo.scale_number
-    alert(JSON.stringify(form))
+    // alert(JSON.stringify(form))
     assessmentStore.updateAggregateScale(form)
   }else{
     
@@ -321,16 +321,24 @@ watch(
 <template>
     <div>
 
-
+<!-- {{ gradeScaleDatainfo }} -->
         <div class="">
 
       <div class="">
         <form @submit.prevent="createScale()">
 
 
-          <div class="row">
-            <div class="col-lg-5">
-              <div class="mb-2">
+          <div>
+          
+          
+          <div class="mb-2">
+            <div class="text-[13px] text-[#505050]">Scale Name</div>
+            <input v-model="form.scale_name" type="text" class="form-control shadow-none" placeholder="Scale of 5">
+          </div>
+
+        
+          <div class="text-[14px] text-[#505050] mb-2 mt-6 alert alert-primary p-1" ><b>Aggregate Scale</b></div>
+          <div class="mb-2 mt-4">
             <div class="text-[13px] text-[#505050]">Count of Scale</div>
             <input
                 @keypress="commons.codeValidator($event)"
@@ -339,17 +347,11 @@ watch(
                 v-model="form.count"
                 required
                 @paste.prevent
-                class="form-control form-select-sm shadow-none">
-          </div>
-
-
-          <div class="mb-2">
-            <div class="text-[13px] text-[#505050]">Scale Name</div>
-            <input v-model="form.scale_name" type="text" class="form-control shadow-none" placeholder="Scale of 5">
+                class="form-control form-select-sm shadow-none"
+                style="width: 100px;">
           </div>
 
           <div class="flex justify-end mt-5 mb-4" v-if="gradeScaleDatainfo?.scale_number">
-
           <div>
             <button
                 type="button"  class="text-[#2c2f8c]  rounded-md text-xs hover:bg-[#2c2f8c] hover:text-white" style="border: 1px solid #2c2f8c;"  @click="newSectionPart('reset')">
@@ -363,7 +365,6 @@ watch(
           </div>
 
           <table
-              id="datatable"
               class="table table-hover text-sm"
               style="font-size: 12px !important;"
           >
@@ -445,29 +446,9 @@ watch(
           </table>
             </div>
 
-            <div class="col-lg-7">
+            <div class="text-[13px] text-[#505050] mb-2 mt-8 alert alert-primary p-1" ><b>Grading Category</b></div>
 
-              <div class="mb-2 mt-3">
-      <label class="text-xs font-bold">Select Class(es)</label>
-      <div class="border p-3 rounded-md">
-        <div class="grid grid-cols-3 gap-2 text-sm" style="border-radius: 0 0 0 0;">
-          <div class="list-group-item mb-2 hover:bg-[#e3e0e0] hover:rounded-md cursor-pointer py-1" v-for="(classInfo) in campusClassList" @click="addRequirements(classInfo?.number)">
-            <div class="px-3">
-              <input
-                  v-model="form.classes"
-                  style="outline: none 0 !important; box-shadow: none;"
-                  class="w-[15px] h-[15px] text-indigo-600 cursor-pointer"
-                  type="checkbox"
-                  :value="classInfo.number"  :id="classInfo.number">
-              <label style="font-size: 11px;" @click="addRequirements(classInfo.number)" class="form-check-label cursor-pointer capitalize ml-3" :for="classInfo.number">{{classInfo?.name+" [ "+classInfo?.abbreviation+" ]"}}</label>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      
-  <label class="mt-6"><small>GradeScale</small></label>
+              <div class="mb-2 mt-3">      
 <table
     class="table table-hover caption-top table-sm table-striped"
     style="font-size: 12px !important;"
@@ -551,9 +532,9 @@ watch(
       
 
     </div>
-            </div>
+            
 
-          </div>
+       
         
 
 
