@@ -37,7 +37,9 @@ onMounted(
 
 const getMenuItemInfo = () =>{
   let data = {
-    school_number:schoolNumber.value
+    school_number:schoolNumber.value,
+    sort_column:"code",
+    sort_direction:"asc"
   }
   cateringStore.fetchUnitOfMeasureInfo(data)
 }

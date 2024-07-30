@@ -1,6 +1,7 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
 import api from "@/config/api.js";
+import useCommonsStore from "@/composables/useCommons.js";
 
 export const useCateringStore = defineStore("catering", () => {
     let newUnitOfMeasureInfoResponse = ref(null)
@@ -43,6 +44,7 @@ export const useCateringStore = defineStore("catering", () => {
     let deleteFeedingGroupResponse = ref(null)
     const errorMessage = ref(null)
     const deleteMenuItemResponse = ref(null)
+    const commonsStore = useCommonsStore()
 
     async function newUnitOfMeasureInfo(data) {
         return await api.post("main/catering/units-of-measure", data)
@@ -57,8 +59,8 @@ export const useCateringStore = defineStore("catering", () => {
     }
 
     async function fetchUnitOfMeasureInfo(data) {
-          let school_number = data?.school_number ?? ""
-        return await api.get("main/catering/units-of-measure?school_number="+school_number)
+        let dataInfo = commonsStore.objectToQueryParams(data)
+        return await api.get("main/catering/units-of-measure?"+dataInfo)
             .then((response) => {
                 UnitOfMeasureInfoResponse.value = response.data
             })
