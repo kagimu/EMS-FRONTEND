@@ -10,10 +10,9 @@ import NewStaff from "@/main/dashboard/profiles/NewStaff.vue"
 import AssignUserEntity from "@/main/dashboard/entity/entityComponents/AssignUserEntity.vue"
 import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
 
-const loading = ref(false)
+
 const page = ref(1)
 const per_page = ref(15)
-const showingModal = ref(false)
 const status = ref("")
 const entityStore = useEntityStore()
 const userStore = useUserStore()
