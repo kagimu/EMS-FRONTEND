@@ -52,7 +52,7 @@ onMounted(
       schoolStore.fetchSchools()
       fetchCampusLevel()
       await levelStore.fetchCampusCurriculum(campusNumber)
-      assessmentStore.fetchGrades()
+      await assessmentStore.fetchGrades()
       campusStore.fetchClassesBySchool(schoolNumber)
       fetchGradeScale()
       let draft = props.gradeScaleDatainfo
