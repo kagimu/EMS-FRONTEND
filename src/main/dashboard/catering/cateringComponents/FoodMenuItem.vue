@@ -7,6 +7,7 @@ import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import AppModal from "@/components/AppModal.vue";
+import PaginationTemplate from "@/components/PaginationTemplate.vue";
 
 
 const showingModal = ref(false)
@@ -52,6 +53,7 @@ const filterBySchool = (school_number) => {
 
 
 const doFetchMenuItem = () => {
+  menuItemData.value = []
   let data = {
     page: 1,
     per_page: per_page.value,
@@ -302,19 +304,27 @@ watch(
                 </div>
 
 
+                <PaginationTemplate
+                    @perPageChanged="doFetchMenuItem"
+                    v-model:perPage="per_page"
+                    :per_page="per_page"
+                    :total_items="total_items"
+                    :total_rows="total_rows"></PaginationTemplate>
 
 
-                <div class="flex justify-end pt-5 pb-2">
-                  <div class="flex">
-                    <select class="border border-b-1  border-t-0 shadow-none" v-model="form.gender" aria-label="Default select example">
+<!--                <div class="flex justify-end pt-5 pb-2">
+                  <div class="flex pl-2">
+                    <select
+                        class="shadow-none w-[50px] cursor-pointer mr-3  !text-[13px] text-gray-600 border rounded-md px-2"
+                        v-model="per_page">
                       <option value="10">10</option>
                       <option value="20">20</option>
                       <option value="50">50</option>
                       <option value="100">100</option>
                     </select>
-                    <div class="text-xs text-gray-600 mr-10">Items:{{total_items}} of {{total_rows}}</div>
+                    <div class="text-xs text-gray-600 mr-10">Items: {{total_items}} of {{total_rows}}</div>
                   </div>
-                </div>
+                </div>-->
 
                 <div
                     @scroll="onScroll"
