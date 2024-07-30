@@ -170,10 +170,10 @@
       <AppModal :title="editMode? 'Edit Aggregate Scale': 'Add Aggregate Scale'" v-model="showAggregateScaleModal" xl6>
          <NewGradeScale :gradeScaleDatainfo="gradeScaleDatainfo"></NewGradeScale>
       </AppModal>
-      <div class="row">
-         <div class="col-12">
+      <div>
+         <div >
             <div class="">
-               <div class="flex flex-grow justify-between">
+               <div class="flex flex-grow justify-between" >
                   <div>
                      <p class="mt-3 ml-4 text-gray-600">Aggregate Scale</p>
                   </div>
@@ -189,22 +189,13 @@
                      </button>
                   </div>
                </div>
-               <div class="card-body" >
-                  <div >
-                     <div class="row">
-                        <div class="col-12">
-                        </div>
-                     </div>
-                     <table id="data"
-                        class="table table-hover caption-top mt-4 table-sm table-striped"
+               <div >
+                  <div>
+                     
+                     <table
+                        class="table table-hover caption-top mt-4  table-striped"
                         style="font-size: 11px !important;" >
-                        <thead>
-                           <!-- <tr>  
-                              <th scope="col"> </th>
-                              <th>Grading Category</th>
-                              <th>Actions</th>
-                           </tr> -->
-                        </thead>
+                
                         <tbody>
                            <tr v-for="(aggregateList,index) in aggregateData" :key="index">
                               
@@ -214,12 +205,25 @@
                                     style="font-size: 11px !important;" >
                                     <thead>
                                        <tr>
-                                          <th scope="col" class="alert alert-primary"><span>{{ index+1 }}.&nbsp;</span>{{ aggregateList.scale_name }}
-                                           
+                                          <th scope="col" class="alert alert-primary">
+                                        <div class="flex flex-grow justify-between ">
+                                          <div>
+                                            <span>{{ index+1 }}.&nbsp;</span>{{ aggregateList.scale_name }}
+                                          </div>
+                                         <div>
+                                      <button @click="openEditModal(aggregateList)">
+                            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+                            </button>
+                            &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
+                            <button type="button" @click="deleteThisData(aggregateList)">
+                            <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+                            </button>
+                                         </div>
+                                        </div>
                                           </th>
                                        </tr>
                                         <td>
-                                          <b> >Aggregate Scale</b>
+                                          <b> Aggregate Scale</b>
                                             <table   class="table table-hover caption-top mt-4 table-sm table-striped"> 
                                            
                                            <th scope="col">Value</th>
@@ -239,7 +243,7 @@
                                             </table>
 
                                             
-                                            <b><br>>Grading Category</b>
+                                            <b><br>Grading Category</b>
                                             <table   class="table table-hover caption-top mt-4 table-sm table-striped">
                                            <th scope="col">Points</th>
                                           <th scope="col">Name</th>
@@ -258,31 +262,6 @@
                                      
                                     </thead>
                                  </table>
-                              </td>
-                         
-                              <td>
-                                <!-- <div class="car col-lg-2 m-1"   v-for="(list, idx) in aggregateList.assessment_grade.assessment_grade_items" :key="idx">
-                           <div class="card-header flex justify-between items-center">
-                              {{ list.name }}
-                           </div>
-                           <div class="card-bod">
-                              <li>Points: {{ list.minimum_points }} - {{ list.maximum_points }}</li>
-                              <li>Remarks: {{ list.remarks }}</li>
-                              <li>Description: <small><i>{{ list.description }}</i></small></li>
-                           </div>
-                        </div> -->
-
-                      
-                              </td>
-
-                              <td>
-                                 <button @click="openEditModal(aggregateList)">
-                                 <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
-                                 </button>
-                                 &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
-                                 <button type="button" @click="deleteThisData(aggregateList)">
-                                 <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
-                                 </button>
                               </td>
                            </tr>
                         </tbody>
