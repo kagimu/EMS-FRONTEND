@@ -63,27 +63,38 @@ onMounted(
       doFetchGrades()
       campusStore.fetchClassesBySchool(schoolNumber)
       fetchGradeScale()
-      let draft = props.gradeScaleDatainfo
 
-      if(draft){
-        editM.value = true
-        form.count = draft?.count
-        form.scale_name = draft?.scale_name
-        let gradesInfo = draft?.aggregate_scales
-        form.assessment_grade_items = draft?.assessment_grade.assessment_grade_items
-
-        gradesInfo.forEach(lst => {
-          lst.remark = lst.description
-        }) 
-       
-        // alert(JSON.stringify())
-        sectionPart.value = gradesInfo
-
-      }
+      filterDraftData()
   
     }
 )
 
+watch(
+    () => props.gradeScaleDatainfo,
+    async (data) => {
+      if(data){
+        filterDraftData()
+      }
+    }
+)
+
+const filterDraftData = () => {
+  let draft = props.gradeScaleDatainfo
+  if(draft){
+    editM.value = true
+    form.count = draft?.count
+    form.scale_name = draft?.scale_name
+    let gradesInfo = draft?.aggregate_scales
+    form.assessment_grade_items = draft?.assessment_grade.assessment_grade_items
+
+    gradesInfo.forEach(lst => {
+      lst.remark = lst.description
+    })
+
+    sectionPart.value = gradesInfo
+
+  }
+}
 
 
 const doFetchGrades = () => {
@@ -278,14 +289,7 @@ watch(
     }
 )
 
-// watch(
-//     () => academicYearStore.campusClassByLevelResponse,
-//     async (data) => {
-//       if(data){
-//         campusClassList.value = data.data
-//       }
-//     }
-// )
+
 
 watch(
     () => campusStore.schoolClassesResponse,
@@ -344,22 +348,17 @@ watch(
 
 </script>
 <template>
-    <div>
 
-<!-- {{ gradeScaleDatainfo }} -->
-        <div class="">
+        <div>
 
       <div class="">
         <form @submit.prevent="createScale()">
-
-
           <div>
-          
-          
-          <div class="mb-2">
-            <div class="text-[13px] text-[#505050]">Scale Name</div>
-            <input v-model="form.scale_name" type="text" class="form-control shadow-none" placeholder="Scale of 5">
-          </div>
+
+            <div class="mb-2">
+              <div class="text-[13px] text-[#505050]">Scale Name</div>
+              <input v-model="form.scale_name" type="text" class="form-control shadow-none" placeholder="Scale of 5">
+            </div>
 
 
             <div class="text-[14px] text-[#505050] mt-6 alert alert-primary p-1" ><b>Aggregate Scale</b></div>
@@ -377,6 +376,8 @@ watch(
                   required
                   @paste.prevent
                   class="form-control form-select-sm shadow-none">
+
+              <div v-if="(sectionPart.length === 0)" class="text-[11px] bg-[purple] text-white text-center mt-1 rounded-sm">Please provide count to populate scale</div>
             </div>
 
 
@@ -598,8 +599,6 @@ watch(
     </form>
     </div>
     </div>
-    </div>
-
 </template>
 
 
