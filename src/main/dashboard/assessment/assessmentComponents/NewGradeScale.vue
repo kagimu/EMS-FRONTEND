@@ -18,8 +18,12 @@ const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
 const assessmentStore = useAssessmentStore()
 const classStore = useClassesStore()
-const academicYearStore = useAcademicYearStore()
 const routerData = useRouter()
+
+let schoolNumber = routerData.currentRoute.value.query.sch
+const campusNumber = routerData.currentRoute.value.query.id
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
+
 
 const classList = ref([])
 const buttonLoader = ref(false)
@@ -27,14 +31,18 @@ const errorMessage = ref(null)
 const levelData = ref([])
 const gradeData = ref([])
 const campusCurriculumDataInfo = ref(null)
-const campus_curriculum_number = routerData.currentRoute.value.query.crr
+
 const campusLevelList = ref(null)
 const campusClassList = ref(null)
-const campusNumber = routerData.currentRoute.value.query.id
+
 const gradeDataInfo = ref([])
 const editM = ref(false)
-let schoolNumber = routerData.currentRoute.value.query.sch
+
 const aggregateData = ref([])
+
+const grade_group_number = ref("")
+const aggregateGroupData = ref([])
+
 const props = defineProps({
   gradeScaleDatainfo:{}
 })
@@ -48,11 +56,11 @@ const sectionPart = ref([])
 
 onMounted(
     async () => {
-
+      await assessmentStore.fetchAggregateGroupName(schoolNumber)
       schoolStore.fetchSchools()
       fetchCampusLevel()
       await levelStore.fetchCampusCurriculum(campusNumber)
-      await assessmentStore.fetchGrades()
+      doFetchGrades()
       campusStore.fetchClassesBySchool(schoolNumber)
       fetchGradeScale()
       let draft = props.gradeScaleDatainfo
@@ -77,6 +85,15 @@ onMounted(
 )
 
 
+
+const doFetchGrades = () => {
+  let data = {
+    // grade_group_number:grade_group_number.value,
+    grade_group_number:"",
+    school_number:schoolNumber
+  }
+  assessmentStore.fetchGrades(data)
+}
 
 const fetchGradeScale = () =>{
   let data = {
@@ -315,6 +332,14 @@ watch(
 )
 
 
+watch(
+    () => assessmentStore.aggregateNameGroupResponse,
+    async (data) => {
+      if(data){
+        aggregateGroupData.value = data.gradeGroups
+      }
+    }
+)
 
 
 </script>
@@ -336,22 +361,42 @@ watch(
             <input v-model="form.scale_name" type="text" class="form-control shadow-none" placeholder="Scale of 5">
           </div>
 
-        
-          <div class="text-[14px] text-[#505050] mb-2 mt-6 alert alert-primary p-1" ><b>Aggregate Scale</b></div>
-          <div class="mb-2 mt-4">
-            <div class="text-[13px] text-[#505050]">Count of Scale</div>
-            <input
-                @keypress="commons.codeValidator($event)"
-                v-on:blur="newSectionPart('')"
-                maxlength="10"
-                v-model="form.count"
-                required
-                @paste.prevent
-                class="form-control form-select-sm shadow-none"
-                style="width: 100px;">
+
+            <div class="text-[14px] text-[#505050] mt-6 alert alert-primary p-1" ><b>Aggregate Scale</b></div>
+
+          <div class="grid grid-cols-4 gap-2">
+
+
+            <div class="mb-2">
+              <div class="text-[13px] text-[#505050]">Count of Scale</div>
+              <input
+                  @keypress="commons.codeValidator($event)"
+                  v-on:blur="newSectionPart('')"
+                  maxlength="10"
+                  v-model="form.count"
+                  required
+                  @paste.prevent
+                  class="form-control form-select-sm shadow-none">
+            </div>
+
+
+<!--            <div class="mb-2">
+              <div class="text-[13px] text-[#505050]">Aggregate group</div>
+              <select
+                  class="form-select form-select-sm shadow-none" required
+                  v-model="grade_group_number"
+                  @change="doFetchGrades"
+              >
+                <option disabled value="">&#45;&#45;Filter by aggregate group&#45;&#45;</option>
+                <option v-for="(list,index) in aggregateGroupData" :key="index" :value="list.number">{{ list.name }}</option>
+              </select>
+            </div>-->
+
+
+
           </div>
 
-          <div class="flex justify-end mt-5 mb-4" v-if="gradeScaleDatainfo?.scale_number">
+          <div class="flex justify-end mt-1 mb-4" v-if="gradeScaleDatainfo?.scale_number">
           <div>
             <button
                 type="button"  class="text-[#2c2f8c]  rounded-md text-xs hover:bg-[#2c2f8c] hover:text-white" style="border: 1px solid #2c2f8c;"  @click="newSectionPart('reset')">
