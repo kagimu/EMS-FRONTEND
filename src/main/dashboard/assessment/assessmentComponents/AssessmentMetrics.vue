@@ -5,6 +5,14 @@ import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.j
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import AppModal from "@/components/AppModal.vue";
 import NewAssessmentMetric from "@/main/dashboard/assessment/assessmentComponents/NewAssessmentMetric.vue"
+import { useAbility } from '@casl/vue';
+import {useRouter} from "vue-router";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
+import PaginationTemplate from "@/components/PaginationTemplate.vue";
+
+const { can } = useAbility()
+
 const routerData = useRouter()
 
 const academicYearStore = useAcademicYearStore()
@@ -18,7 +26,6 @@ const showingModal = ref(false)
 const campus_level_number = ref("")
 
 const page = ref(1)
-const per_page = ref(15)
 const campus_class_number = ref("")
 const academic_year_number = ref("")
 const study_period_number = ref("")
@@ -31,10 +38,14 @@ const studyPeriodList = ref([])
 const campusLevelList = ref([])
 const classLevelList = ref([])
 const AsessmentListData = ref([])
-
 const namee = ref(null)
 const assessmentMetricList = ref([])
 const editModel = ref(false)
+const per_page = ref(20)
+  const total_items = ref(0)
+  const total_rows = ref(0)
+ const tableLoader = ref(true)
+
 
 
 const showModal = () => {
@@ -43,13 +54,6 @@ const showModal = () => {
   showingModal.value = true
  
 }
-
-import { useAbility } from '@casl/vue';
-import {useRouter} from "vue-router";
-import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
-import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
-
-const { can } = useAbility()
 
 const buttonLoader = ref(false)
 const assessmentMetricsData = ref([])
@@ -82,6 +86,29 @@ const doFetchAssessmentMetric = async () => {
 
   await assessmentStore.fetchAssessmentMetrics(data)
 }
+
+
+function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
+  if (scrollTop + clientHeight >= scrollHeight) {
+
+    tableLoader.value = true
+    let data = {
+    page: (page.value+1),
+    per_page: per_page.value,
+    campus_class_number:campus_class_number.value,
+    academic_year_number:academic_year_number.value,
+    study_period_number:study_period_number.value,
+    metric_number:metric_number.value,
+    assessment_area_number:assessment_area_number.value,
+    paginated:"yes"
+  }
+
+  assessmentStore.fetchAssessmentMetrics(data)
+
+  }
+}
+
+
 
 const fetchCurriculumClass = () =>{
   classStore.fetchClassByLevel(campus_curriculum_number,campus_level_number.value)
@@ -147,15 +174,25 @@ watch(
 const filterAssessmentMetric = (data) => {
   if(data) {
     let current_page = data.page
-    page.value = current_page
+      page.value = current_page
+      tableLoader.value = false
 
-    let per_page_item = data.per_page;
-    per_page.value = per_page_item;
+      let per_page_item = data.per_page;
+      per_page.value = per_page_item;
 
-    let objArray = data.content
+      let objArray = data.content
+
+      let count_items = (current_page * per_page_item)
+      let totalItems = data?.total_rows
 
 
-    if(objArray && objArray.length > 0){
+      if(objArray && objArray.length > 0){
+
+      per_page.value = per_page_item;
+      page.value = current_page
+      total_rows.value = totalItems
+
+      total_items.value = (count_items > totalItems) ? totalItems : count_items
       objArray.forEach((list, i) => {
 
         list.key =  (current_page - 1) * per_page_item + i + 1
@@ -351,6 +388,17 @@ const deleteThisData = (id,name) => {
         <div class="card-body" >
           <div >
 
+            <PaginationTemplate
+                    @perPageChanged="doFetchAssessmentMetric"
+                    v-model:perPage="per_page"
+                    :per_page="per_page"
+                    :total_items="total_items"
+                    :total_rows="total_rows"></PaginationTemplate>
+
+              <div
+                    class="w-full overflow-auto max-h-[520px] scrollbar-thin"
+                    @scroll="onScroll">
+
             <table
                 id="datatable"
                 class="table table-striped"
@@ -386,6 +434,7 @@ const deleteThisData = (id,name) => {
 
               </tbody>
             </table>
+          </div>
           </div>
 
 

@@ -13,7 +13,7 @@ import {useRouter} from "vue-router";
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
 import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.js";
 import NewCommentFromTeacher from "@/main/dashboard/manageLevel/report_setup/comments/NewCommentFromTeacher.vue";
-
+import PaginationTemplate from "@/components/PaginationTemplate.vue";
 
 const reportStore = useReportCardStore()    
 const levelStore = useLevelStore()
@@ -38,7 +38,10 @@ const studyPeriodList = ref(null)
 const campusClassList = ref(null)
 const reportSummaryList = ref([])
 const page = ref(1)
-const per_page = ref(15)
+const per_page = ref(20)
+const total_items = ref(0)
+const total_rows = ref(0)
+ const tableLoader = ref(true)
 
 
 onMounted(
@@ -75,6 +78,26 @@ const doFilterReportSummary = () =>{
   }
 
   reportStore.fetchReportSummary(options)
+}
+
+
+function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
+  if (scrollTop + clientHeight >= scrollHeight) {
+
+    tableLoader.value = true
+    let options = {
+    page: (page.value+1),
+    per_page: per_page.value,
+    student_number: "",
+    study_period_number: study_period_number.value,
+    campus_class_number: campus_class_number.value,
+    stream_number: "",
+    grade: "",
+  }
+
+  reportStore.fetchReportSummary(options)
+
+  }
 }
 
 
@@ -146,14 +169,24 @@ const filterSummaryReport = (data) => {
     if(data) {
       let current_page = data.page
       page.value = current_page
+      tableLoader.value = false
 
       let per_page_item = data.per_page;
       per_page.value = per_page_item;
 
       let objArray = data.content
 
+      let count_items = (current_page * per_page_item)
+      let totalItems = data?.total_rows
+
 
       if(objArray && objArray.length > 0){
+
+      per_page.value = per_page_item;
+      page.value = current_page
+      total_rows.value = totalItems
+
+      total_items.value = (count_items > totalItems) ? totalItems : count_items
         objArray.forEach((list, i) => {
 
           list.key =  (current_page - 1) * per_page_item + i + 1
@@ -281,6 +314,17 @@ watch(
             <div class="flex justify-content-between mt-3">
                <div class="ml-4">Student Report Summary</div>
             </div>
+            <PaginationTemplate
+                    @perPageChanged="doFilterReportSummary"
+                    v-model:perPage="per_page"
+                    :per_page="per_page"
+                    :total_items="total_items"
+                    :total_rows="total_rows"></PaginationTemplate>
+
+                    <div
+                    class="w-full overflow-auto max-h-[520px] scrollbar-thin"
+                    @scroll="onScroll">
+
             <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
                <thead>
                   <tr class="text-gray-600 text-sm">
@@ -323,6 +367,9 @@ watch(
                   </tr>
                </tbody>
             </table>
+            </div>
+
+
          </div>
       </div>
    </div>

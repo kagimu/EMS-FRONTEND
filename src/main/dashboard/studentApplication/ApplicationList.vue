@@ -11,9 +11,12 @@
   import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
   import AppModal from "@/components/AppModal.vue";
   import NewApplication from "@/main/dashboard/studentApplication/NewApplication.vue"
+  import PaginationTemplate from "@/components/PaginationTemplate.vue";
 
   const showingModal = ref(false)
   const showAppmodal = ref(false)
+  const tableLoader = ref(true)
+
   
   const applicationModal = () =>{
    showAppmodal.value = true
@@ -44,7 +47,9 @@
   const streamList = ref([])
   const loading = ref(false)
   const page = ref(1)
-  const per_page = ref(15)
+  const per_page = ref(20)
+  const total_items = ref(0)
+  const total_rows = ref(0)
   
   const form = reactive({
   academic_year: "",
@@ -128,7 +133,7 @@
 
   const doFetchApplication = () =>{
    let data = {
-      page: page.value,
+      page: 1,
       per_page: per_page.value,   
       status: form.statusData 
    }
@@ -140,18 +145,48 @@
 
   }
 
+
+  function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
+  if (scrollTop + clientHeight >= scrollHeight) {
+
+    tableLoader.value = true
+
+    let data = {
+      page: (page.value+1),
+      per_page: per_page.value,   
+      status: form.statusData 
+   }
+   loading.value = true;
+   applicationInfoList.value = []
+   applicationStore.fetchApplicationList(data).finally(() => {
+    loading.value = false; 
+  })
+  }
+}
+
+
   const fetchApplications = (data) => {
     if(data) {
       let current_page = data.page
       page.value = current_page
+      tableLoader.value = false
 
       let per_page_item = data.per_page;
       per_page.value = per_page_item;
 
       let objArray = data.content
 
+      let count_items = (current_page * per_page_item)
+      let totalItems = data?.total_rows
 
       if(objArray && objArray.length > 0){
+      
+      per_page.value = per_page_item;
+      page.value = current_page
+      total_rows.value = totalItems
+
+      total_items.value = (count_items > totalItems) ? totalItems : count_items
+
         objArray.forEach((list, i) => {
 
           list.key =  (current_page - 1) * per_page_item + i + 1
@@ -407,6 +442,14 @@ watch (
                     </div>
                  </div>
               </div>
+
+              <PaginationTemplate
+                    @perPageChanged="doFetchApplication"
+                    v-model:perPage="per_page"
+                    :per_page="per_page"
+                    :total_items="total_items"
+                    :total_rows="total_rows"></PaginationTemplate>
+
               <div v-if="loading" class="text-center my-4">
                 <div class="spinner-border" role="status">
                   <span class="sr-only">Loading...</span>
@@ -417,7 +460,11 @@ watch (
                 <p>There is no data found</p>
               </div>
 
-              <div v-else>
+
+                <div
+                    class="w-full overflow-auto max-h-[520px] scrollbar-thin"
+                    @scroll="onScroll" v-else>
+              <div >
               <table
                  id="datatable"
                  class="table table-striped"
@@ -476,6 +523,7 @@ watch (
                     </tr>
                  </tbody>
               </table>
+            </div>
             </div>
          
   <div>
