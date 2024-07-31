@@ -81,6 +81,7 @@ const getMenuItemInfo = () =>{
         menuForm.base_price = draft?.unit_cost ?? ""
         menuForm.school_number = draft?.school_number ?? ""
         menuForm.purchase_unit_of_measure_number = draft?.purchase_unit_of_measure_number
+        menuForm.conversion_to_purchase_unit = draft?.conversion_to_purchase_unit
         if(draft?.parts?.length > 0) {
           let items = draft?.parts
           items.forEach(lst => {
