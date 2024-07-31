@@ -1,5 +1,5 @@
 <script setup>
-import {ref, watch} from 'vue';
+import {defineEmits, ref, watch} from 'vue';
 import { useRouter } from 'vue-router';
 import { useApplicationStore } from '@/main/application/applicationComponents/store/application.js';
 
@@ -12,6 +12,7 @@ const showPrompt = ref(true);
 const loading = ref(false);
 const success = ref(false);
 const applicationId = ref(null)
+const emit = defineEmits()
 
 
 
@@ -150,7 +151,27 @@ watch (
                              </div>
                           </div>
                           <div class="col-12 mt-2">
-                             <button @click="submitApplication" type="submit" class="btn btn-primary w-100" style="color:white !important;font-weight: bold;">Make Payment&nbsp; <i class="bi bi-check2-all"></i></button>
+                            <div class="flex flex-grow justify-between">
+                              <div>
+                                <button
+                                    @click="goBack()"
+                                    type="button"
+                                    class="btn btn-sm btn-success mb-2 mr-4"
+                                    style="color: white;">
+                                  <small><i class="bi bi-box-arrow-in-left"></i> Back</small>
+                                </button>
+                              </div>
+
+                              <div>
+                                <button
+                                    @click="submitApplication"
+                                    type="submit"
+                                    class="btn btn-sm btn-primary"
+                                    style="color:white !important">
+                                  <div class="px-3">Submit</div>
+                                </button>
+                              </div>
+                            </div>
                           </div>
                        </div>
                        <div v-if="answer === 'offline'">
@@ -167,7 +188,27 @@ watch (
                              </div>
                           </div>
                           <div class="col-12 mt-2">
-                             <button @click="submitApplication" type="submit" class="btn btn-primary w-100" style="color:white !important">Submit</button>
+                            <div class="flex flex-grow justify-between">
+                              <div>
+                                <button
+                                    @click="goBack()"
+                                    type="button"
+                                    class="btn btn-sm btn-success mb-2 mr-4"
+                                    style="color: white;">
+                                  <small><i class="bi bi-box-arrow-in-left"></i> Back</small>
+                                </button>
+                              </div>
+
+                              <div>
+                                <button
+                                    @click="submitApplication"
+                                    type="submit"
+                                    class="btn btn-sm btn-primary"
+                                    style="color:white !important">
+                                  <div class="px-3">Submit</div>
+                                </button>
+                              </div>
+                            </div>
                           </div>
                        </div>
                        <div v-if="answer === 'bank'">
@@ -207,8 +248,10 @@ watch (
                               <button
                                   @click="submitApplication"
                                   type="submit"
-                                  class="btn btn-primary"
-                                  style="color:white !important">Submit</button>
+                                  class="btn btn-sm btn-primary"
+                                  style="color:white !important">
+                                <div class="px-3">Submit</div>
+                              </button>
                             </div>
                           </div>
 
