@@ -1,3 +1,41 @@
+<script setup>
+import {onMounted, ref} from "vue";
+import PersonalDetailsOfStudent from "@/main/application/applicationComponents/PersonalDetailsOfParent.vue";
+import PersonalDetailsOfLearner from "@/main/application/applicationComponents/PersonalDetailsOfLearner.vue";
+import PreviousSchoolDetails from "@/main/application/applicationComponents/PreviousSchoolDetails.vue";
+import ApplicationPayement from "./applicationComponents/ApplicationPayement.vue";
+import PreviousSchoolResults from "./applicationComponents/PreviousSchoolResults.vue";
+import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+
+const applicationStore= useApplicationStore()
+
+const step = ref(1)
+
+
+onMounted(() => {
+
+        if (localStorage.getItem("application-id")) {
+          let applicationId = localStorage.getItem("application-id")
+          fetchApplicationData(applicationId)
+        }
+
+    }
+)
+
+const nextPage = (data) =>{
+  if(data) {
+    step.value = data?.step
+    if(data?.id) {
+      fetchApplicationData(data?.id)
+    }
+  }
+}
+
+const fetchApplicationData = (applicationNumber) => {
+  applicationStore.fetchApplicationById(applicationNumber)
+}
+
+</script>
 <template>
   <div class="temp">
     <div class="row">
@@ -173,19 +211,4 @@ input:focus {
 
 </style>
 
-<script setup>
-import {onMounted,reactive, ref, watch} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import PersonalDetailsOfStudent from "@/main/application/applicationComponents/PersonalDetailsOfParent.vue";
-import PersonalDetailsOfLearner from "@/main/application/applicationComponents/PersonalDetailsOfLearner.vue";
-import PreviousSchoolDetails from "@/main/application/applicationComponents/PreviousSchoolDetails.vue";
-import ApplicationPayement from "./applicationComponents/ApplicationPayement.vue";
-import PreviousSchoolResults from "./applicationComponents/PreviousSchoolResults.vue";
 
-const step = ref(1)
-
-function nextPage(data){
-  step.value = data
-}
-
-</script>

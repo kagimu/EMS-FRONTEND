@@ -29,23 +29,23 @@
     
     onMounted(() => {
             schoolStore.fetchSchools()
-            if(props.groupData.number != ""){
+            if(props.groupData.feeding_session_number){
             // form.code = props.groupData.code;
             form.name = props.groupData.name;
             form.school_number = props.groupData.school_number;
             showSchool.value = "true"
+            Items.value = props.groupData?.pack_items
           }
         }
     )
     
     const form = reactive({
-        // code:null,
         name:null,
         status:"ACTIVE",
-        campus_number:null,
         school_number:null
     })
     const addFeedingSessionGroup = () => {
+      buttonLoader.value = true
 
   const menu_items = Items.value.map(itemData => ({
       menu_item_number: itemData.menu_item_number,
@@ -60,7 +60,7 @@
         school_number:form.school_number
         
     })
-        buttonLoader.true
+        
         if(props.groupData.number){
         if(!confirm("Sure want Edit " + props.groupData.name )){
           return
@@ -98,9 +98,9 @@ function updateAmount(index) {
 
 
 function addItem() {
-if(!form.campus_number){
+  if(!form.school_number){
   isSelected.value = false
-  notificationStore.errorToast("Error", "No Campus Selected ! ")
+  notificationStore.errorToast("Error", "Select Schoo ")
 }else{
   isSelected.value = true
   Items.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
@@ -112,9 +112,6 @@ function removeItem(index) {
   Items.value.splice(index, 1);
 }
 
-function calculateTotal() {
-  return Items.value.reduce((total, item) => total + item.amount, 0);
-}
 
 function availableOptions(index) {
   const selectedNames = Items.value.map(item => item.name);
@@ -127,14 +124,29 @@ watch(Items, (newItems) => {
 }, { deep: true });
 
 
+const fetchMenuItems = () => {
+        doFetchMenuItem()
+    }
+    
 
 const doFetchMenuItem = () => {
-  let formD = {
+  if(props.groupData.feeding_session_number){
+    let formD = {
+    school_number:props.groupData.school_number,
+    campus_number:form.campus_number
+  }
+  cateringStore.fetchMenuItem(formD)
+  }else {
+    let formD = {
     school_number:form.school_number,
     campus_number:form.campus_number
   }
   cateringStore.fetchMenuItem(formD)
+  }
+
+  
 }
+
 
 
 watch(
@@ -194,20 +206,8 @@ watch(
         {deep: true}
     )
     
-      const fetchCampuses = (school_number) => {
-        campusStore.fetchCampuses(school_number)
-    }
-    
-    
-    watch(
-        () => campusStore.campusListResponse,
-        async (data) => {
-            if (data) {
-                campusList.value = data.data
-            }
-        },
-        {deep: true}
-    )
+  
+  
     
  </script>
 
@@ -225,37 +225,14 @@ watch(
                    style="box-shadow: none;"
                    class="form-select form-select-sm" required
                    v-model="form.school_number"
-                   @change="fetchCampuses(form.school_number)"
+                   @change="fetchMenuItems(form.school_number)"
+                   :style="!isSelected ? 'border:1px solid red' : '' "
                    >
                    <option disabled value="">Select School</option>
                    <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
                    </option>
                 </select>
              </div>
-             <div class="mb-2">
-                <label class="textColor"><small>Campus</small>  </label>
-                <select
-                   class="form-select form-select-sm"
-                   v-model="form.campus_number" required
-                    @change="doFetchMenuItem()"
-                    :style="!isSelected ? 'border:1px solid red' : '' "
-                   >
-                   <option disabled value="">Select campus</option>
-                   <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-                   </option>
-                </select>
-             </div>
-             <!-- <div class="mb-2" >
-                <label class="textColor"><small>Code</small></label>
-                <input
-                   v-model="form.code"
-                   @keypress="commons.codeValidator($event)"
-                   maxlength="10"
-                   type="text"
-                   @paste.prevent
-                   required
-                   class="form-control shadow-none">
-             </div> -->
              <div class="mb-2">
                 <label class="textColor"><small>Name</small></label>
                 <input v-model="form.name"   type="text" required class="form-control shadow-none" placeholder="eg. Break fast 1">

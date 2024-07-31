@@ -17,7 +17,6 @@
    const buttonLoader = ref(false)
    let show = ref(false)
    const rolesInfo = ref([])
-   // const role_numbers = ref([])
    let entityN = localStorage.getItem("entity_number")
    
    const form = reactive({
@@ -32,16 +31,23 @@
      entity_number:entityN,
      expiry_date:null
    })
-   
+
+
+   onMounted(
+       async () => {
+
+         await roleStore.fetchRoles(myData)
+
+         await accountStore.fetchUsersToAssign(entityN)
+       } )
+
+
    let myData = reactive({
     entity_number:localStorage.getItem('entity_number')
     })
 
-   //fetch
-   onMounted(
-       async () => {
-         await accountStore.fetchUsersToAssign(entityN)
-       } )
+
+
    
        watch(
        () => accountStore.userResponse,
@@ -59,17 +65,23 @@
    
    function addUser(){
      buttonLoader.value = true
-     form.roles=rolesInfo.value
-         // alert(JSON.stringify(form))
+     errorMessage.value = ""
+     form.roles=rolesInfo.value?.filter(item => item.role_number);
      userStore.createNewUser(form)
    
    }
-   //fetch
-   onMounted(
-       async () => {
-         await roleStore.fetchRoles(myData)
-       } )
-   
+
+   watch (
+       () => userStore.errorMessage,
+       async (data) => {
+         if(data){
+           buttonLoader.value = false
+           errorMessage.value = data.message
+           notificationStore.errorToast("Error",data.message)
+         }
+       }
+   )
+
    watch (
        () => userStore.newUserResponse,
        async (data) => {
@@ -90,17 +102,10 @@
        },
        {deep:true}
    )
-   watch (
-       () => userStore.errorMessage,
-       async (data) => {
-         if(data){
-           errorMessage.value = data.message
-           notificationStore.errorToast("Error",data.message)
-         }
-       },
-       {deep:true}
-   )
-   
+
+
+
+
    
    
        watch(
@@ -124,7 +129,11 @@
 </script>
 <template>
    <div>
+     <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+       {{errorMessage}}
+     </div>
       <form @submit.prevent="addUser">
+
          <div class="row">
             <div class="col-6">
 
@@ -201,6 +210,7 @@
               </div>
 
                <div class="mb-2">
+
 
                   <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
 

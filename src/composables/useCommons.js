@@ -100,17 +100,16 @@ export default function useCommonsStore() {
         return value < 10 ? '0' + value : value;
     }
 
+    const objectToQueryParams = (objectToParse) => {
+        return Object.keys(objectToParse).map(key => key + '=' + objectToParse[key]).join('&');
+    }
 
     return {
-        loadGoogleAdsScript,
-        classLevelList,
         onlyNumberValidator,
         numbersOnlyValidator,
         codeValidator,
         getOrdinalDate,
         getAgeFromDateOfBirth,
-        initializePdfData,
-        formatDate,
-        padZero
+        objectToQueryParams
     }
 }

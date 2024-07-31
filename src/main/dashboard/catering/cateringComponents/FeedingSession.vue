@@ -2,7 +2,7 @@
     <div>
 
 
-  <AppModal :title="editModel ? 'Edit ' + namee:'New Feeding Group'" v-model="showingModal" xl4>
+  <AppModal :title="editModel ? 'Edit ' + namee:'New Feeding Pack'" v-model="showingModal" xl4>
     <NewFeedingSession :groupData="dataList"></NewFeedingSession>
     </AppModal>
 
@@ -61,13 +61,13 @@
    </div>
       <div class="col-4">
           <div class="mt-4">
-              <input class="form-control mt-1 mb-0" placeholder="Search..." type="text">
+              <!-- <input class="form-control mt-1 mb-0" placeholder="Search..." type="text"> -->
           </div>
      </div>
 
             </div>
 
-    <table
+    <!-- <table
     id="datatable"
     class="table table-hover caption-top mt-4 table-sm table-striped"
     style="font-size: 14px !important;"
@@ -98,7 +98,52 @@
       </tr>
                 
     </tbody>
-    </table>
+    </table> -->
+
+
+    <div class="row">
+        <div v-for="(list, index) in feedingSessionGroupData" :key="index" class="col-md-4 mb-2 mt-1">
+          <div class="card m-2 card-hover">
+            <div class="card-header">
+       
+              <h5 class="card-title text-[13px]">
+                <div class="row">
+                <div class="col-lg-9">
+                  {{ list.name }} 
+                </div>
+
+                <div class="col-lg-3">
+                  <button @click="editThisData(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
+            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148);"></i>
+          </button>
+          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
+          <button type="button" @click="deleteThisData(list.feeding_session_number,list.name)">
+            <i class="bi bi-trash" style="color:rgb(201, 10, 10);"></i>
+          </button>
+                </div>
+
+              </div>
+              
+              </h5>
+              <!-- <p class="card-text text-[13px]"><strong>Status:</strong> {{ list.status }}</p> -->
+            </div>
+              <table class="table table-hover table-sm table-striped text-[12px]">
+                <th>Name</th>
+                <th>Qty</th>
+                <th>Consumption Unit</th>
+                <tbody>
+              <tr v-for="menuItem in list.pack_items" :key="menuItem.number" class="m-1">
+                <td>{{ menuItem.name }}</td>
+                <td>{{ menuItem.consumption_quantity }}</td>
+                <td>{{ menuItem.unit_of_consumption.name }}</td>
+              </tr>
+            </tbody>
+            </table>
+          
+          </div>
+        </div>
+      </div>
+
 
     </div>
     </div>
@@ -223,6 +268,18 @@ watch (
     },
     {deep:true}
 )
+
+watch (
+        () => cateringStore.newFeedingGroupSessionsInfoResponse,
+        async (data) => {
+          if(data){
+            showingModal.value = false
+            doFetchFeedingSessions()
+          }
+        },
+        {deep:true}
+    )
+
 watch (
     () => cateringStore.updateFeedingSessionResponse,
     async (data) => {

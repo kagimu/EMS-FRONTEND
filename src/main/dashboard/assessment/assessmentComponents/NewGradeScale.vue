@@ -18,8 +18,12 @@ const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
 const assessmentStore = useAssessmentStore()
 const classStore = useClassesStore()
-const academicYearStore = useAcademicYearStore()
 const routerData = useRouter()
+
+let schoolNumber = routerData.currentRoute.value.query.sch
+const campusNumber = routerData.currentRoute.value.query.id
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
+
 
 const classList = ref([])
 const buttonLoader = ref(false)
@@ -27,14 +31,18 @@ const errorMessage = ref(null)
 const levelData = ref([])
 const gradeData = ref([])
 const campusCurriculumDataInfo = ref(null)
-const campus_curriculum_number = routerData.currentRoute.value.query.crr
+
 const campusLevelList = ref(null)
 const campusClassList = ref(null)
-const campusNumber = routerData.currentRoute.value.query.id
+
 const gradeDataInfo = ref([])
 const editM = ref(false)
-let schoolNumber = routerData.currentRoute.value.query.sch
+
 const aggregateData = ref([])
+
+const grade_group_number = ref("")
+const aggregateGroupData = ref([])
+
 const props = defineProps({
   gradeScaleDatainfo:{}
 })
@@ -42,36 +50,61 @@ const props = defineProps({
 const form = reactive({
   scale_name:"",
   count:"",
-  classes: [],
   assessment_grade_items:[{code:"",name:"",minimum_points:"",maximum_points:"",remarks:"",abbreviation:"",description:""}]
 })
 const sectionPart = ref([])
 
 onMounted(
     async () => {
-
+      await assessmentStore.fetchAggregateGroupName(schoolNumber)
       schoolStore.fetchSchools()
       fetchCampusLevel()
       await levelStore.fetchCampusCurriculum(campusNumber)
-      assessmentStore.fetchGrades()
+      doFetchGrades()
       campusStore.fetchClassesBySchool(schoolNumber)
       fetchGradeScale()
-      let draft = props.gradeScaleDatainfo
 
-      if(draft){
-        editM.value = true
-        form.count = draft?.count
-        form.scale_name = draft?.scale_name
-        let gradesInfo = draft?.grades
-        gradesInfo.forEach(lst => {
-          lst.remark = lst.description
-        }) 
+      filterDraftData()
+  
+    }
+)
 
-        sectionPart.value = gradesInfo
-
+watch(
+    () => props.gradeScaleDatainfo,
+    async (data) => {
+      if(data){
+        filterDraftData()
       }
     }
 )
+
+const filterDraftData = () => {
+  let draft = props.gradeScaleDatainfo
+  if(draft){
+    editM.value = true
+    form.count = draft?.count
+    form.scale_name = draft?.scale_name
+    let gradesInfo = draft?.aggregate_scales
+    form.assessment_grade_items = draft?.assessment_grade.assessment_grade_items
+
+    gradesInfo.forEach(lst => {
+      lst.remark = lst.description
+    })
+
+    sectionPart.value = gradesInfo
+
+  }
+}
+
+
+const doFetchGrades = () => {
+  let data = {
+    // grade_group_number:grade_group_number.value,
+    grade_group_number:"",
+    school_number:schoolNumber
+  }
+  assessmentStore.fetchGrades(data)
+}
 
 const fetchGradeScale = () =>{
   let data = {
@@ -89,13 +122,8 @@ const newGradeScale = () => {
   form.assessment_grade_items.push({code:null, name:null,abbreviation:null,minimum_points:null,maximum_points:null,remarks:null,description:null})
 }
 
-const addRequirements = (class_number) => {
-  if (form.classes.includes(class_number)) {
-    form.classes = form.classes.filter(item => item !== class_number);
-  } else {
-    form.classes.push(class_number);
-  }
-}
+
+
 
 
 watch(
@@ -178,7 +206,7 @@ const createScale = () =>{
 
   if(props.gradeScaleDatainfo.scale_number){
     form.scale_number = props.gradeScaleDatainfo.scale_number
-    alert(JSON.stringify(form))
+    // alert(JSON.stringify(form))
     assessmentStore.updateAggregateScale(form)
   }else{
     
@@ -261,14 +289,7 @@ watch(
     }
 )
 
-// watch(
-//     () => academicYearStore.campusClassByLevelResponse,
-//     async (data) => {
-//       if(data){
-//         campusClassList.value = data.data
-//       }
-//     }
-// )
+
 
 watch(
     () => campusStore.schoolClassesResponse,
@@ -315,41 +336,68 @@ watch(
 )
 
 
+watch(
+    () => assessmentStore.aggregateNameGroupResponse,
+    async (data) => {
+      if(data){
+        aggregateGroupData.value = data.gradeGroups
+      }
+    }
+)
 
 
 </script>
 <template>
-    <div>
 
-
-        <div class="">
+        <div>
 
       <div class="">
         <form @submit.prevent="createScale()">
+          <div>
+
+            <div class="mb-2">
+              <div class="text-[13px] text-[#505050]">Scale Name</div>
+              <input v-model="form.scale_name" type="text" class="form-control shadow-none" placeholder="Scale of 5">
+            </div>
 
 
-          <div class="row">
-            <div class="col-lg-5">
-              <div class="mb-2">
-            <div class="text-[13px] text-[#505050]">Count of Scale</div>
-            <input
-                @keypress="commons.codeValidator($event)"
-                v-on:blur="newSectionPart('')"
-                maxlength="10"
-                v-model="form.count"
-                required
-                @paste.prevent
-                class="form-control form-select-sm shadow-none">
+            <div class="text-[14px] text-[#505050] mt-6 alert alert-primary p-1" ><b>Aggregate Scale</b></div>
+
+          <div class="grid grid-cols-4 gap-2">
+
+
+            <div class="mb-2">
+              <div class="text-[13px] text-[#505050]">Count of Scale</div>
+              <input
+                  @keypress="commons.codeValidator($event)"
+                  v-on:blur="newSectionPart('')"
+                  maxlength="10"
+                  v-model="form.count"
+                  required
+                  @paste.prevent
+                  class="form-control form-select-sm shadow-none">
+
+              <div v-if="(sectionPart.length === 0)" class="text-[11px] bg-[purple] text-white text-center mt-1 rounded-sm">Please provide count to populate scale</div>
+            </div>
+
+
+<!--            <div class="mb-2">
+              <div class="text-[13px] text-[#505050]">Aggregate group</div>
+              <select
+                  class="form-select form-select-sm shadow-none" required
+                  v-model="grade_group_number"
+                  @change="doFetchGrades"
+              >
+                <option disabled value="">&#45;&#45;Filter by aggregate group&#45;&#45;</option>
+                <option v-for="(list,index) in aggregateGroupData" :key="index" :value="list.number">{{ list.name }}</option>
+              </select>
+            </div>-->
+
+
+
           </div>
 
-
-          <div class="mb-2">
-            <div class="text-[13px] text-[#505050]">Scale Name</div>
-            <input v-model="form.scale_name" type="text" class="form-control shadow-none" placeholder="Scale of 5">
-          </div>
-
-          <div class="flex justify-end mt-5 mb-4" v-if="gradeScaleDatainfo?.scale_number">
-
+          <div class="flex justify-end mt-1 mb-4" v-if="gradeScaleDatainfo?.scale_number">
           <div>
             <button
                 type="button"  class="text-[#2c2f8c]  rounded-md text-xs hover:bg-[#2c2f8c] hover:text-white" style="border: 1px solid #2c2f8c;"  @click="newSectionPart('reset')">
@@ -363,7 +411,6 @@ watch(
           </div>
 
           <table
-              id="datatable"
               class="table table-hover text-sm"
               style="font-size: 12px !important;"
           >
@@ -445,29 +492,9 @@ watch(
           </table>
             </div>
 
-            <div class="col-lg-7">
+            <div class="text-[13px] text-[#505050] mb-2 mt-8 alert alert-primary p-1" ><b>Grading Category</b></div>
 
-              <div class="mb-2 mt-3">
-      <label class="text-xs font-bold">Select Class(es)</label>
-      <div class="border p-3 rounded-md">
-        <div class="grid grid-cols-3 gap-2 text-sm" style="border-radius: 0 0 0 0;">
-          <div class="list-group-item mb-2 hover:bg-[#e3e0e0] hover:rounded-md cursor-pointer py-1" v-for="(classInfo) in campusClassList" @click="addRequirements(classInfo?.number)">
-            <div class="px-3">
-              <input
-                  v-model="form.classes"
-                  style="outline: none 0 !important; box-shadow: none;"
-                  class="w-[15px] h-[15px] text-indigo-600 cursor-pointer"
-                  type="checkbox"
-                  :value="classInfo.number"  :id="classInfo.number">
-              <label style="font-size: 11px;" @click="addRequirements(classInfo.number)" class="form-check-label cursor-pointer capitalize ml-3" :for="classInfo.number">{{classInfo?.name+" [ "+classInfo?.abbreviation+" ]"}}</label>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      
-  <label class="mt-6"><small>GradeScale</small></label>
+              <div class="mb-2 mt-3">      
 <table
     class="table table-hover caption-top table-sm table-striped"
     style="font-size: 12px !important;"
@@ -551,9 +578,9 @@ watch(
       
 
     </div>
-            </div>
+            
 
-          </div>
+       
         
 
 
@@ -572,8 +599,6 @@ watch(
     </form>
     </div>
     </div>
-    </div>
-
 </template>
 
 

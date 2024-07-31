@@ -34,7 +34,12 @@ export const useApplicationStore = defineStore("application", () => {
     async function newApplicationDetails(data) {
         return await api.post("main/applications/new-parent", data)
             .then((response) => {
-                newApplicationDetailsResponse.value = response.data.data
+                if(response?.data?.data){
+                    let draft = response.data.data
+                    localStorage.setItem("application-id", draft.application_number)
+                    newApplicationDetailsResponse.value = draft
+                }
+
 
             })
             .catch((response) => {

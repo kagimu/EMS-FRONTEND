@@ -81,6 +81,7 @@ const getMenuItemInfo = () =>{
         menuForm.base_price = draft?.unit_cost ?? ""
         menuForm.school_number = draft?.school_number ?? ""
         menuForm.purchase_unit_of_measure_number = draft?.purchase_unit_of_measure_number
+        menuForm.conversion_to_purchase_unit = draft?.conversion_to_purchase_unit
         if(draft?.parts?.length > 0) {
           let items = draft?.parts
           items.forEach(lst => {
@@ -112,11 +113,10 @@ watch(
 
 
 const addMenuItem = () =>{
-
+  menuForm.conversion_to_purchase_unit = parseFloat(menuForm.conversion_to_purchase_unit.toString().replace(/,/g, ""))
   if(menuForm.type === 'ITEM'){
     menuForm.code = parseInt(menuForm.code)
     menuForm.base_price = parseFloat(menuForm.base_price)
-    menuForm.conversion_to_purchase_unit = parseFloat(menuForm.conversion_to_purchase_unit.toString().replace(/,/g, ""))
     buttonLoader.value = true
     if(item_number.value){
       menuForm.menu_item_number = item_number.value
@@ -276,6 +276,7 @@ watch(
     () => cateringStore.errorMessage,
     async (data) => {
       if (data) {
+        buttonLoader.value = false
         notificationStore.errorToast("Error", data.message)
       }
     }
@@ -377,7 +378,7 @@ const clearFormData = () => {
 
 
 
-          <div v-if="menuForm.type && (menuForm.type === 'ITEM')">
+<!--          <div v-if="menuForm.type && (menuForm.type === 'ITEM')">-->
 
                   <div class="mb-2" >
                 <label class="textColor"><small>Conversion Purchase Unit</small></label>
@@ -404,7 +405,7 @@ const clearFormData = () => {
                     <span class="input-group-text p-0 px-1"  ><i  class="bi bi-plus-circle" @click="showUnitMeasurement()"></i></span>
                   </div>
                 </div>
-          </div>
+<!--          </div>-->
 
       
 
