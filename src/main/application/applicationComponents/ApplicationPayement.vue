@@ -1,3 +1,59 @@
+<script setup>
+import {defineEmits, ref, watch} from 'vue';
+import { useRouter } from 'vue-router';
+import { useApplicationStore } from '@/main/application/applicationComponents/store/application.js';
+
+const applicationStore = useApplicationStore();
+const router = useRouter();
+
+const answer = ref('');
+const mobileNumber = ref('');
+const showPrompt = ref(true);
+const loading = ref(false);
+const success = ref(false);
+const applicationId = ref(null)
+const emit = defineEmits()
+
+
+
+const showSuccessPage = () => {
+  router.push("/client-dashboard/application-success");
+};
+
+const submitApplication = () => {
+  loading.value = true;
+  applicationStore.fetchApplicationList();
+  setTimeout(() => {
+    loading.value = false;
+    success.value = true;
+  }, 2000);
+
+
+  localStorage.removeItem('applicationId');
+  localStorage.removeItem('studentNumber');
+};
+
+const cancelApply = () => {
+  showPrompt.value = false; // Hide prompt if canceled
+};
+
+
+const goBack = () =>{
+  emit("next", {id:applicationId.value, step:4})
+}
+
+watch (
+    () => applicationStore.applicationByIdResponse,
+    async (data) => {
+      if(data){
+        applicationId.value = data.number
+
+
+      }
+    }
+)
+
+</script>
 <template>
   <!-- Prompt/modal for applying -->
   <div v-if="showPrompt" class="modal" tabindex="-1" role="dialog">
@@ -37,7 +93,7 @@
   </div>
   <div v-if="!success">
      <p class="ml-4 mt-4 mb-4" style="text-align: center !important;">
-        <i class="bi bi-arrow-left" @click="goBack()"></i> &nbsp;
+<!--        <i class="bi bi-arrow-left" @click="goBack()"></i> &nbsp;-->
         Payment Summary
      </p>
   </div>
@@ -46,7 +102,7 @@
         <div class="row">
            <div style="padding: 0;">
               <div class="container mt-0">
-                 <form @submit.prevent="submitPayment" v-if="!success">
+                 <form   v-if="!success">
                     <div class="row mx-auto">
                        <div class="col-12">
                           <h4 style="font-size: 18px;">Payment Method</h4>
@@ -79,7 +135,11 @@
                                    <div class="d-flex">
                                       <div class="input-group">
                                          <span class="input-group-text" style="background-color: #0d6efd; color: white;font-weight: bold;">+256</span>
-                                         <input type="text" class="form-control" placeholder="Enter your number" v-model="mobileNumber" required>
+                                         <input
+                                             type="text"
+                                             class="form-control shadow-none"
+                                             placeholder="Enter your number"
+                                             v-model="mobileNumber" required>
                                       </div>
                                    </div>
                                    <div class="card border-primary mt-3">
@@ -91,7 +151,27 @@
                              </div>
                           </div>
                           <div class="col-12 mt-2">
-                             <button @click="submitApplication" type="submit" class="btn btn-primary w-100" style="color:white !important;font-weight: bold;">Make Payment&nbsp; <i class="bi bi-check2-all"></i></button>
+                            <div class="flex flex-grow justify-between">
+                              <div>
+                                <button
+                                    @click="goBack()"
+                                    type="button"
+                                    class="btn btn-sm btn-success mb-2 mr-4"
+                                    style="color: white;">
+                                  <small><i class="bi bi-box-arrow-in-left"></i> Back</small>
+                                </button>
+                              </div>
+
+                              <div>
+                                <button
+                                    @click="submitApplication"
+                                    type="submit"
+                                    class="btn btn-sm btn-primary"
+                                    style="color:white !important">
+                                  <div class="px-3">Submit</div>
+                                </button>
+                              </div>
+                            </div>
                           </div>
                        </div>
                        <div v-if="answer === 'offline'">
@@ -108,7 +188,27 @@
                              </div>
                           </div>
                           <div class="col-12 mt-2">
-                             <button @click="submitApplication" type="submit" class="btn btn-primary w-100" style="color:white !important">Submit</button>
+                            <div class="flex flex-grow justify-between">
+                              <div>
+                                <button
+                                    @click="goBack()"
+                                    type="button"
+                                    class="btn btn-sm btn-success mb-2 mr-4"
+                                    style="color: white;">
+                                  <small><i class="bi bi-box-arrow-in-left"></i> Back</small>
+                                </button>
+                              </div>
+
+                              <div>
+                                <button
+                                    @click="submitApplication"
+                                    type="submit"
+                                    class="btn btn-sm btn-primary"
+                                    style="color:white !important">
+                                  <div class="px-3">Submit</div>
+                                </button>
+                              </div>
+                            </div>
                           </div>
                        </div>
                        <div v-if="answer === 'bank'">
@@ -131,7 +231,30 @@
                              </div>
                           </div>
                           <div class="col-12 mt-2">
-                             <button @click="submitApplication" type="submit" class="btn btn-primary w-100" style="color:white !important">Submit</button>
+
+
+                          <div class="flex flex-grow justify-between">
+                            <div>
+                              <button
+                                  @click="goBack()"
+                                  type="button"
+                                  class="btn btn-sm btn-success mb-2 mr-4"
+                                  style="color: white;">
+                                <small><i class="bi bi-box-arrow-in-left"></i> Back</small>
+                              </button>
+                            </div>
+
+                            <div>
+                              <button
+                                  @click="submitApplication"
+                                  type="submit"
+                                  class="btn btn-sm btn-primary"
+                                  style="color:white !important">
+                                <div class="px-3">Submit</div>
+                              </button>
+                            </div>
+                          </div>
+
                           </div>
                        </div>
                     </div>
@@ -142,45 +265,7 @@
      </div>
   </div>
 </template>
-<script setup>
-  import { ref } from 'vue';
-  import { useRouter } from 'vue-router';
-  import { useApplicationStore } from '@/main/application/applicationComponents/store/application.js';
-  
-  const applicationStore = useApplicationStore();
-  const router = useRouter();
-  
-  const answer = ref('');
-  const mobileNumber = ref('');
-  const showPrompt = ref(true);
-  const loading = ref(false);
-  const success = ref(false);
-  
-  const goBack = () => {
-    emit("next", 3);
-  };
-  
-  const showSuccessPage = () => {
-    router.push("/client-dashboard/application-success");
-  };
-  
-  const submitApplication = () => {
-    loading.value = true;
-    applicationStore.fetchApplicationList();
-    setTimeout(() => {
-      loading.value = false;
-      success.value = true;
-    }, 2000);
-  
-    // Removing applicationId and studentNumber from local storage
-    localStorage.removeItem('applicationId');
-    localStorage.removeItem('studentNumber');
-  };
-  
-  const cancelApply = () => {
-    showPrompt.value = false; // Hide prompt if canceled
-  };
-</script>
+
 <style scoped>
   .mb-8 {
   margin-bottom: 2rem;

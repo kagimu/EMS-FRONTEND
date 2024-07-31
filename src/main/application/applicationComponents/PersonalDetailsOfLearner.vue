@@ -37,7 +37,7 @@ const form = reactive({
   reason_for_choosing_school:null,
   preferred_campus_number: null,
   source_of_school_info: null,
-  application_number: localStorage.getItem("applicationId"),
+  application_number: applicationId.value,
   campus_class_number: null,
   learner_number:null
 })
