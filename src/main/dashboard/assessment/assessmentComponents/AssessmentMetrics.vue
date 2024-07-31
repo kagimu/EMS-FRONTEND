@@ -92,6 +92,7 @@ function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
   if (scrollTop + clientHeight >= scrollHeight) {
 
     tableLoader.value = true
+    assessmentMetricsData.value.splice(0)
     let data = {
     page: (page.value+1),
     per_page: per_page.value,
