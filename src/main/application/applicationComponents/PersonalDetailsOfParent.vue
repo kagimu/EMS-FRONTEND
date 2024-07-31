@@ -33,8 +33,8 @@ const formData = reactive ({
   parent_number:null
 })
 
-const page = ref(1)
-const per_page = ref(15)
+// const page = ref(1)
+// const per_page = ref(15)
 
 function handleInput(data) {
   if (data ==="main" && form.main_telephone_number.length > 15) {
@@ -50,21 +50,19 @@ watch (
     () => applicationStore.newApplicationDetailsResponse,
     async (data) => {
       if(data){
-        localStorage.setItem("applicationId", data.application_number)
+        let id = data.application_number
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        emit("next", 2 )
-
-        let dataa = {
+        emit("next", {id:data.application_number, step:2})
+      /*  let dataa = {
           page: page.value,
           per_page: per_page.value,
           status: "SUBMITTED"
         }
-        applicationStore.fetchApplicationList(dataa)
+        applicationStore.fetchApplicationList(dataa)*/
 
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -72,13 +70,11 @@ watch (
     () => applicationStore.updateParentPersonalDetailsresponse,
     async (data) => {
       if(data){
-        localStorage.setItem("applicationId", data.application_number)
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        emit("next", 2 )
+        emit("next", {id:data.application_number, step:2})
       }
-    },
-    {deep:true}
+    }
 )
 
 watch (
@@ -173,9 +169,20 @@ const addParentPersonalDetails = () => {
           <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" class="form-control form-control-sm">
         </div>
 
+      <div class="mb-2">
+        <label class="textColor text-sm"><small>Email</small> <span class="star">*</span></label>
+        <input type="email" style="outline: none 0 !important; box-shadow: none;" v-model="form.email"  required class="form-control form-control-sm">
+      </div>
+
 
       <div class="mb-2">
-        <label class="textColor text-sm"> <small>Telephone No. </small><span class="star">*</span></label>
+        <label class="textColor text-sm"><small>Alternative Email</small></label>
+        <input type="email" style="outline: none 0 !important; box-shadow: none;" v-model="form.alternative_email" class="form-control form-control-sm">
+      </div>
+    </div>
+
+      <div class="mb-2">
+        <label class="textColor text-sm"> <small>Telephone No </small><span class="star">*</span></label>
         <div class="input-group">
           <vue-tel-input
               @input="handleInput('main')"
@@ -191,7 +198,7 @@ const addParentPersonalDetails = () => {
       </div>
 
       <div class="mb-2">
-        <label class="textColor text-sm"> <small>Telephone No. </small><span class="star">*</span></label>
+        <label class="textColor text-sm"> <small>Alternative Telephone No </small></label>
         <div class="input-group">
           <vue-tel-input
               @input="handleInput('alternative')"
@@ -206,28 +213,9 @@ const addParentPersonalDetails = () => {
         </div>
       </div>
 
-<!--        <div class="mb-2">
-          <label class="textColor text-sm"> <small>Telephone No. </small><span class="star">*</span></label>
-          <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.main_telephone_number"   required class="form-control form-control-sm">
-        </div>
-
-        <div class="mb-2">
-          <label class="textColor text-sm"><small>Alternative No.</small> </label>
-          <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.alternative_telephone_number"  class="form-control form-control-sm">
-        </div>-->
          <div class="row">
           
-            <div class="mb-2">
-          <label class="textColor text-sm"><small>Email</small> <span class="star">*</span></label>
-          <input type="email" style="outline: none 0 !important; box-shadow: none;" v-model="form.email"  required class="form-control form-control-sm">
-        </div>
-         
-          
-            <div class="mb-2">
-          <label class="textColor text-sm"><small>Alternative Email</small></label>
-          <input type="email" style="outline: none 0 !important; box-shadow: none;" v-model="form.alternative_email" class="form-control form-control-sm">
-        </div>
-          </div>
+
         
     </div>
         <div class="text- mt-2">
@@ -236,9 +224,9 @@ const addParentPersonalDetails = () => {
             <div class="col-lg-4">
               <button type="submit" class="btn btn-sm btn-primary mb-2 mr-0" style="color: white;float: right;">
                 <small>Next &nbsp;<i class="bi bi-box-arrow-in-right"></i></small> 
-        <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
-          <span class="visually-hidden">Loading...</span>
-        </div>
+                <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
       </button>
             </div>
            

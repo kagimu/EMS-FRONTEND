@@ -10,8 +10,8 @@ import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.j
 const assessmentStore = useAssessmentStore()
 
 
-const routerData = useRouter()
-let  applicationNumber = routerData.currentRoute.value.query.applicationId
+// const routerData = useRouter()
+// let  applicationNumber = routerData.currentRoute.value.query.applicationId
 
 const buttonLoader = ref(false)
 let errorMessage = ref(null)
@@ -25,6 +25,7 @@ const classList = ref([])
 const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
 const school_number = ref(null)
+const applicationId = ref(null)
 
 const form = reactive({
   surname:null,
@@ -44,15 +45,16 @@ const form = reactive({
 onMounted(() => {
       schoolStore.fetchSchools(entity_number)
 
-      if(applicationNumber !==""){
+     /* if(applicationNumber !==""){
         applicationStore.fetchApplicationById(applicationNumber)
-      }
+      }*/
     }
 )
 
 const goBack = () =>{
-  emit("next", 1 )
+  emit("next", {id:applicationId.value, step:1})
 }
+
 const fetchCampuses = (school_number) => {
   campusStore.fetchCampuses(school_number)
 }
@@ -69,13 +71,13 @@ let entity_number = localStorage.getItem('entity_number')
 
 
 const addLearnerDetails = () => {
-  if(!applicationNumber){
+  if(!applicationId.value){
     buttonLoader.value = true
-    form.application_number = localStorage.getItem("applicationId")
+    form.application_number = applicationId.value
     applicationStore.newApplicationLeanerDetails(form)
   }else{
     buttonLoader.value = true
-    form.application_number = localStorage.getItem("applicationId")
+    form.application_number = applicationId.value
     if(form.learner_number){
       applicationStore.updateLearnerDetails(form.learner_number,form)
     }else{
@@ -96,7 +98,9 @@ watch (
         localStorage.setItem("studentNumber", data.data.number)
         buttonLoader.value = false
         assessmentStore.fetchAssessmentAreaByClass(form.campus_class_number)
-        emit("next", 3 )
+
+        emit("next", {id:applicationId.value, step:3})
+
 
         let dataa = {
           page: page.value,
@@ -105,8 +109,7 @@ watch (
         }
         applicationStore.fetchApplicationList(dataa)
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -114,13 +117,11 @@ watch (
     () => applicationStore.updateLearnerPersonalDetailsresponse,
     async (data) => {
       if(data){
-        localStorage.setItem("applicationId", data.application_number)
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        emit("next", 3 )
+        emit("next", {id:applicationId.value, step:3})
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -171,8 +172,7 @@ watch(
       if (data) {
         notificationStore.errorToast("Error", data.message)
       }
-    },
-    {deep: true}
+    }
 )
 
 
@@ -182,6 +182,7 @@ watch (
     () => applicationStore.applicationByIdResponse,
     async (data) => {
       if(data){
+        applicationId.value = data.number
         form.surname= data.Student.surname
         form.second_name=data.Student.second_name
         form.other_name=data.Student.other_name
@@ -192,7 +193,7 @@ watch (
         form.source_of_school_info = data.Student.source_of_school_info
         form.learner_number = data.Student.number
         if(form.learner_number){
-          setSchoolAndCampus(data)
+          await setSchoolAndCampus(data)
         }
 
       }

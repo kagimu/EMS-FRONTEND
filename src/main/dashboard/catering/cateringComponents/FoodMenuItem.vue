@@ -312,23 +312,11 @@ watch(
                     :total_rows="total_rows"></PaginationTemplate>
 
 
-<!--                <div class="flex justify-end pt-5 pb-2">
-                  <div class="flex pl-2">
-                    <select
-                        class="shadow-none w-[50px] cursor-pointer mr-3  !text-[13px] text-gray-600 border rounded-md px-2"
-                        v-model="per_page">
-                      <option value="10">10</option>
-                      <option value="20">20</option>
-                      <option value="50">50</option>
-                      <option value="100">100</option>
-                    </select>
-                    <div class="text-xs text-gray-600 mr-10">Items: {{total_items}} of {{total_rows}}</div>
-                  </div>
-                </div>-->
+
 
                 <div
+                    class="w-full overflow-auto max-h-[520px] scrollbar-thin"
                     @scroll="onScroll"
-                    style="width: 100%; overflow: scroll; max-height: 520px; scrollbar-width: thin;"
                 >
                   <table
                       id="datatable"
