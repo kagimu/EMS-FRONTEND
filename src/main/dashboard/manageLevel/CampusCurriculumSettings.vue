@@ -27,27 +27,27 @@ const switchTabs = (tab) => {
   <div>
 
 
-    <div class="flex border-b">
-      <div class="cursor-pointer text-sm" :class="selectedTab === 'campus-level' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('campus-level')">
+    <div class="flex border-b mt-1">
+      <div class="cursor-pointer text-sm rounded-t-md ml-1 mr-1" :class="selectedTab === 'campus-level' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('campus-level')">
         <div class="py-2 px-3">
           <i class="bi bi-box-arrow-in-right mr-1"></i>
           Levels
         </div>
       </div>
-      <div class="cursor-pointer text-sm" :class="selectedTab === 'class-data' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('class-data')">
+      <div class="cursor-pointer text-sm  rounded-t-md mr-1" :class="selectedTab === 'class-data' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('class-data')">
         <div class="py-2 px-3">
           <i class="bi bi-box-arrow-in-right mr-1"></i>
            Classes
         </div>
       </div>
-      <div class="cursor-pointer text-sm" :class="selectedTab === 'academic-year' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('academic-year')">
+      <div class="cursor-pointer text-sm  rounded-t-md mr-1" :class="selectedTab === 'academic-year' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('academic-year')">
         <div class="py-2 px-3">
           <i class="bi bi-box-arrow-in-right mr-1"></i>
           Academic Years
         </div>
       </div>
 
-      <div class="cursor-pointer text-sm" :class="selectedTab === 'study-period' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('study-period')">
+      <div class="cursor-pointer text-sm  rounded-t-md mr-1" :class="selectedTab === 'study-period' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('study-period')">
         <div class="py-2 px-3">
           <i class="bi bi-box-arrow-in-right mr-1"></i>
           Study Periods
