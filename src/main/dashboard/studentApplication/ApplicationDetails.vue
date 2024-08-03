@@ -1,394 +1,305 @@
 <script setup>
-import {onMounted,reactive, ref, watch} from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import useCommons from "@/composables/useCommons.js";
-import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
-import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import { useApplicationStore } from "@/main/application/applicationComponents/store/application.js";
+import { useSchoolStore } from "@/main/dashboard/manageSchool/store/school.js";
+import { useCampusStore } from "@/main/dashboard/manageCampus/store/campus.js";
 
-const applicationStore = useApplicationStore()
-const notificationStore = useNotificationStore()
-const buttonLoader = ref(false)
-const interviewListData = ref([])
-let errorMessage = ref(null)
-const useCommonsStore = useCommons()
-const previousSchoolResultsData=ref([])
-const campusList = ref([])
-const schoolList = ref([])
-const schoolStore = useSchoolStore()
-const campusStore = useCampusStore()
-const school_number = ref(null)
+const applicationStore = useApplicationStore();
+const notificationStore = useNotificationStore();
+const buttonLoader = ref(false);
+const interviewListData = ref([]);
+let errorMessage = ref(null);
+const useCommonsStore = useCommons();
+const previousSchoolResultsData = ref([]);
+const campusList = ref([]);
+const schoolList = ref([]);
+const schoolStore = useSchoolStore();
+const campusStore = useCampusStore();
+const school_number = ref(null);
 
-onMounted(
-  async () => {
-    applicationStore.fetchApplicationList()
-    applicationStore.fetchPreviousSchoolResultsAll()
-    applicationStore.fetchApplicationById(props.applicationNumber)
-    getInterviewListData
-    schoolStore.fetchSchools()
-  } )
-
+onMounted(async () => {
+  applicationStore.fetchApplicationList();
+  applicationStore.fetchPreviousSchoolResultsAll();
+  applicationStore.fetchApplicationById(props.applicationNumber);
+  getInterviewListData();
+  schoolStore.fetchSchools();
+});
 
 const props = defineProps({
-  applicationNumber:String
-})
+  applicationNumber: String,
+});
 
-const appDatails = reactive({ 
-surname: null,
-second_name: null,
-other_name: null,
-application_number: null,
-main_telephone_number: null,
-alternative_telephone_number: null,
-email: null,
-alternative_email:null,
-studentSurname: null,
-Studentsecond_name: null,
-StudentOther_name:null,
-StudentGender: null,
-StudentDate_of_birth: null,
-preferred_type_of_enrollment: null,
-preferred_campus_number:null,
-reason:null,
-status:null,
-previousSchools:[],
+const appDatails = reactive({
+  surname: null,
+  second_name: null,
+  other_name: null,
+  application_number: null,
+  main_telephone_number: null,
+  alternative_telephone_number: null,
+  email: null,
+  alternative_email: null,
+  studentSurname: null,
+  Studentsecond_name: null,
+  StudentOther_name: null,
+  StudentGender: null,
+  StudentDate_of_birth: null,
+  preferred_type_of_enrollment: null,
+  preferred_campus_number: null,
+  reason: null,
+  status: null,
+  previousSchools: [],
   student_number: null,
-})
+});
 
-
-function getAge(dob){
-return useCommonsStore.getAgeFromDateOfBirth(dob)
+function getAge(dob) {
+  return useCommonsStore.getAgeFromDateOfBirth(dob);
 }
 
-
-watch (
+watch(
   () => props.applicationNumber,
   async (data) => {
-    if(data){
-      applicationStore.fetchApplicationById(data)
-      // applicationStore.fetchPreviousSchoolResultsByStudent(appDatails.student_number)
+    if (data) {
+      applicationStore.fetchApplicationById(data);
     }
   },
-  {deep:true}
-)
+  { deep: true }
+);
 
-watch (
+watch(
   () => applicationStore.applicationByIdResponse,
   async (data) => {
-    if(data){
-      // alert(JSON.stringify(data))
-      appDatails.surname = data.Parent.surname
-      appDatails.second_name = data.Parent.second_name
-      appDatails.other_name = data.Parent.other_name
-      appDatails.main_telephone_number = data.Parent.alternative_telephone_number
-      appDatails.alternative_telephone_number= data.Parent.alternative_telephone_number
-      appDatails.email= data.Parent.email
-      appDatails.alternative_email=data.Parent.alternative_email
-      appDatails.studentSurname= data.Student.surname
-      appDatails.Studentsecond_name=data.Student.second_name,
-      appDatails.StudentOther_name=data.Student.other_name,
-      appDatails.StudentGender= data.Student.gender,
-      appDatails.StudentDate_of_birth=data.Student.date_of_birth,
-      appDatails.preferred_type_of_enrollment=data.preferred_type_of_enrollment,
-      appDatails.preferred_campus_number=data.Student.CampusClass.class_name,
-      appDatails.reason=data.Student.reason_for_choosing_school,
-      appDatails.status=data.status
-      appDatails.previousSchools=data.PreviousSchools
-        appDatails.student_number = data.Student.number
-        applicationStore.fetchPreviousSchoolResultsByStudent(appDatails.student_number)
+    if (data) {
+      alert(JSON.stringify(data.student.surname))
+      appDatails.surname = data.parent.surname;
+      appDatails.second_name = data.parent.second_name;
+      appDatails.other_name = data.parent.other_names;
+      appDatails.main_telephone_number = data.parent.telephone_number;
+      appDatails.alternative_telephone_number = data.parent.alternative_number;
+      appDatails.email = data.parent.email;
+      appDatails.alternative_email = data.parent.alternative_email;
+      appDatails.studentSurname = data.student.surname;
+      appDatails.Studentsecond_name = data.student.second_name;
+      appDatails.StudentOther_name = data.student.other_name;
+      appDatails.StudentGender = data.student.gender;
+      appDatails.StudentDate_of_birth = data.student.date_of_birth;
+      appDatails.preferred_type_of_enrollment = data.preferred_type_of_enrollment;
+      appDatails.preferred_campus_number = data.student.campus_class;
+      appDatails.reason = data.student.reason_for_choosing_school;
+      appDatails.status = data.status;
+      appDatails.previousSchools = data.PreviousSchools;
+      appDatails.student_number = data.student.number;
+      applicationStore.fetchPreviousSchoolResultsByStudent(appDatails.student_number);
     }
   },
-  {deep:true}
-)
+  { deep: true }
+);
 
-
-
-const getInterviewListData = () =>{
-    let  data = {
-      campus_class_number:""
-    }
-    applicationStore.fetchInterviewList(data)
-  }
-
+const getInterviewListData = () => {
+  let data = {
+    campus_class_number: "",
+  };
+  applicationStore.fetchInterviewList(data);
+};
 
 const formData = reactive({
-interview_number:null,
-})
+  interview_number: null,
+});
 
-function scheduleInterview(){
-buttonLoader.value = true
-formData.student_number = appDatails.student_number
-applicationStore. addStudentToInterview(formData)
+function scheduleInterview() {
+  buttonLoader.value = true;
+  formData.student_number = appDatails.student_number;
+  applicationStore.addStudentToInterview(formData);
 }
 
 const fetchCampuses = (school) => {
-      campusStore.fetchCampuses(school)
-  }
+  campusStore.fetchCampuses(school);
+};
 
 watch(
-    () => applicationStore.addStudentToInterviewResponse,
-    async (data) => {
-        if (data) {
-          formData.interview_number = null
-            buttonLoader.value = false
-            applicationStore.fetchApplicationList()
-            notificationStore.successToast("Success", data.message)       
-        }
-    },
-    {deep: true}
-)
+  () => applicationStore.addStudentToInterviewResponse,
+  async (data) => {
+    if (data) {
+      formData.interview_number = null;
+      buttonLoader.value = false;
+      applicationStore.fetchApplicationList();
+      notificationStore.successToast("Success", data.message);
+    }
+  },
+  { deep: true }
+);
 
-watch (
+watch(
   () => applicationStore.errorMessage,
   async (data) => {
-    if(data){
-      formData.interview_number = null
-      errorMessage.value = data.message
-      buttonLoader.value = false
+    if (data) {
+      formData.interview_number = null;
+      errorMessage.value = data.message;
+      buttonLoader.value = false;
     }
   },
-  {deep:true}
-)
+  { deep: true }
+);
 
-  watch(
+watch(
   () => applicationStore.interviewListResponse,
   async (data) => {
-    if(data){
-      interviewListData.value = data.data
+    if (data) {
+      interviewListData.value = data.data;
     }
   },
-  {deep:true}
-)
+  { deep: true }
+);
+
 watch(
   () => applicationStore.previousSchoolResultsByStudentResponse,
   async (data) => {
-    if(data){
-      previousSchoolResultsData.value = data.data
+    if (data) {
+      previousSchoolResultsData.value = data.data;
     }
   },
-  {deep:true}
-)
-watch(
-      () => campusStore.campusListResponse,
-      async (data) => {
-          if (data) {
-              campusList.value = data.data
-          }
-      },
-      {deep: true}
-  )
+  { deep: true }
+);
 
-  watch(
-      () => schoolStore.schoolsResponse,
-      async (data) => {
-          if (data) {
-              schoolList.value = data.data
-          }
-      },
-      {deep: true}
-  )
+watch(
+  () => campusStore.campusListResponse,
+  async (data) => {
+    if (data) {
+      campusList.value = data.data;
+    }
+  },
+  { deep: true }
+);
+
+watch(
+  () => schoolStore.schoolsResponse,
+  async (data) => {
+    if (data) {
+      schoolList.value = data.data;
+    }
+  },
+  { deep: true }
+);
 </script>
 
 <template>
-{{ appDatails }}
-            <div class="mt-2 mb-2">
-
-  <div class="row mx-auto">
-    <div class="col-3" style="border-right: 1px solid rgba(128, 128, 128, 0.137);">
-        <p class="ml-0 mt-2 mb-2" style="text-align: left !important;">GUARDIAN/PARENT DETAILS</p>
-        <div class="mb-2">
-          <span class="textColor text-sm"><small>Surname : <span class="details">{{appDatails.surname}}</span></small></span>
-        </div>
-        <div class="mb-2">
-          <span class="textColor text-sm"><small>Second name : <span class="details">{{appDatails.second_name}}</span></small></span>
-        </div>
-
-        <div class="mb-2">
-          <span class="textColor text-sm"><small>Other names: <span class="details">{{ appDatails.other_name}}</span></small> </span>
-        </div>
-
-        <div class="mb-2">
-          <span class="textColor text-sm"> <small>Telephone No. : <span class="details">{{  appDatails.main_telephone_number}}</span></small></span>
-        </div>
-
-        <div class="mb-2">
-          <span class="textColor text-sm"><small>Alternative No.: <span class="details">{{ appDatails.alternative_telephone_number }}</span></small> </span>
-        </div>
-         <div class="row">
-            <div class="mb-2">
-          <span class="textColor text-sm"><small>Email: <span class="details">{{ appDatails.email }}</span></small></span>
-        </div>
-            <div class="mb-2">
-          <span class="textColor text-sm"><small>Alternative Email: <span class="details">{{ appDatails.alternative_email }}</span></small></span>
-        </div>
-          </div>
-        
-    </div>
-
-
-    <div class="col-3" style="border-right: 1px solid rgba(128, 128, 128, 0.137);">
-        <p class="ml-0 mt-2 mb-2" style="text-align: left !important;">LEARNER DETAILS</p>
-        <div class="mb-2">
-          <span class="textColor text-sm"><small>Surname: <span class="details">{{ appDatails.studentSurname }}</span></small> </span>
-        </div>
-
-        <div class="mb-2">
-          <span class="textColor text-sm"><small>Second name: <span class="details">{{ appDatails.Studentsecond_name }}</span> </small></span>
-        </div>
-
-        <div class="mb-2">
-          <span class="textColor text-sm"><small>Other names</small>: <span class="details">{{ appDatails.StudentOther_name}}</span> </span>
-        </div>
-
-        <div class="mb-2">
-          <span class="textColor text-sm"> <small>Prefered Class: <span class="details">{{ appDatails.preferred_campus_number  }}</span> </small></span>
-        </div>
-
-      
-         <div class="row">
-            <div class="mb-2">
-          <span class="textColor text-sm"><small>Reason</small>: <span class="details"><i>{{ appDatails.reason}}</i></span> </span>
-        </div>
-            <div class="mb-2">
-          <span class="textColor text-sm"><small>Age: <span class="details">{{getAge(appDatails.StudentDate_of_birth) }}</span></small></span>
-        </div>
-          </div>
-        
-    </div>
-
-
-    
-    <div class="col-3" style="border-right: 1px solid rgba(128, 128, 128, 0.137);">
-        <p class="ml-0 mt-2 mb-2" style="text-align: left !important;">PREVIOUS SCHOOL DETAILS</p>
-        
-        <div v-for="(school,index) in appDatails.previousSchools" :key="index">
-        
-          <div class="row">
-          <div class="col-lg-12">
-          <span class="textColor text-sm" ><small><span class="details">{{ school.name}} </span></small> </span>
-        </div>
-        </div>
-
-        <div v-for="(cls,idx) in school.Classes" :key="idx">
-        <div class="row">
-        <div class="col-lg-12">
-          <span class="textColor text-sm" ><small> {{cls.class}}</small></span>
-        </div></div>
-        <div class="row">
-        <div class="col-lg-6">
-          <span class="textColor text-sm" ><small> {{cls.year}}</small></span>
-        </div>
+  <div class="container mt-2 mb-2">
+    <div class="row mx-auto">
+      <!-- Guardian/parent Details Card -->
+      <div class="col-md-3">
+        <div class="card mb-3">
+          <div class="card-header">Guardian/parent Details</div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Surname:</strong> {{ appDatails.surname }}</li>
+            <li class="list-group-item"><strong>Second name:</strong> {{ appDatails.second_name }}</li>
+            <li class="list-group-item"><strong>Other names:</strong> {{ appDatails.other_name }}</li>
+            <li class="list-group-item"><strong>Telephone No.:</strong> {{ appDatails.main_telephone_number }}</li>
+            <li class="list-group-item"><strong>Alternative No.:</strong> {{ appDatails.alternative_telephone_number }}</li>
+            <li class="list-group-item"><strong>Email:</strong> {{ appDatails.email }}</li>
+            <li class="list-group-item"><strong>Alternative Email:</strong> {{ appDatails.alternative_email }}</li>
+          </ul>
         </div>
       </div>
-      </div>
-        
-    </div>
-    <div  class="col-3" v-if="appDatails.status == 'INTERVIEW_SCHEDULED'">
-      <p class="ml-0 mt-2 mb-2" style="text-align: left !important;">PREVIOUS SCHOOL RESULTS</p>
-      <div class="table-responsive">
-                  <table class="text-sm table table-sm table-striped table-bordered">
-                    <thead>
-                        <th>ASSESSMENT</th>
-                        <th>SCORE</th>
-                    </thead>
-                    <tbody>
-                     <tr><td>Math</td><td>90</td></tr> 
-                     <tr><td>SST</td><td>90</td></tr> 
-                     <tr><td>Eng</td><td>90</td></tr> 
-                    </tbody>
-                    </table>
-                    <span>
-                      <a href="" class="btn btn-outline-link"><i class="bi bi-download"></i> Report Attachment </a>
-                    </span>
-  
-                  </div>
-<hr>
-      <div  > 
       
-      <p>Interview Has Been Scheduled</p>
+      <!-- Learner Details Card -->
+      <div class="col-md-3">
+        <div class="card mb-3">
+          <div class="card-header">Learner Details</div>
+          <ul class="list-group list-group-flush">
+           
+            <li class="list-group-item"><strong>Surname:</strong> {{ appDatails.studentSurname }}</li>
+            <li class="list-group-item"><strong>Second name:</strong> {{ appDatails.Studentsecond_name }}</li>
+            <li class="list-group-item"><strong>Other names:</strong> {{ appDatails.StudentOther_name }}</li>
+            <li class="list-group-item"><strong>Preferred Class:</strong> {{ appDatails.preferred_campus_number }}</li>
+            <li class="list-group-item"><strong>Reason:</strong> <i>{{ appDatails.reason }}</i></li>
+            <li class="list-group-item"><strong>Age:</strong> {{ getAge(appDatails.StudentDate_of_birth) }}</li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Previous School Details Card -->
+      <div class="col-md-3">
+        <div class="card mb-3">
+          <div class="card-header">Previous School Details</div>
+          <ul class="list-group list-group-flush">
+            <li v-for="(school, index) in appDatails.previousSchools" :key="index" class="list-group-item">
+              <strong>School:</strong> {{ school.name }}
+              <ul>
+                <li v-for="(cls, idx) in school.Classes" :key="idx">
+                  <strong>Class:</strong> {{ cls.class }}, <strong>Year:</strong> {{ cls.year }}
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
 
-      <button class="btn btn-primary btn-sm"><i class="bi bi-printer"></i> Print</button>
-    </div>
-    </div>
- 
-
-    <div class="col-3"  v-if="appDatails.status == 'ADMITTED'">
-      <p class="ml-0 mt-2 mb-2" style="text-align: left !important;">PREVIOUS SCHOOL RESULTS</p>
-
-<hr>
-      <div  > 
-      <p> STUDENT HASBEEN OFFERED AN ADMISSION</p>
-
-      <button class="btn btn-primary btn-sm">View Admission Details</button>
-    </div>
-    </div>
- 
-
-    <div class="col-3" v-if="appDatails.status == 'SUBMITTED'">
-      <p class="ml-0 mt-2 mb-2" style="text-align: left !important;">PREVIOUS SCHOOL RESULTS</p>
-
-<hr>
-      <div   > 
-      <!-- {{ appDatails }} -->
-  <form @submit.prevent="scheduleInterview" >
-              <label> <span style="text-align: center;font-size: 12px;"><small>Select Interview</small></span></label>
-
-           <div class="mb-2">
-              <select required class="form-control" v-model="formData.interview_number" >
-                  <option v-for="(list, index) in interviewListData" :key="index" :value="list.number">
-                    {{ list.name}} 
-                  </option>
-               </select>
-            </div>
-
-              <div class="text-right mt-1">
-                <button style="margin-right: 0px;float: left;" type="button" class="btn btn-sm btn-danger mb-2 mr-4" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i>&nbsp;<small>Reject</small></button>
-                <button style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2"  ><i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
-                  <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader" >
-                    <span class="visually-hidden">Loading...</span>
-                  </div>
-                </button>
-              </div>
-            </form>
-    </div>
-    </div>        
-    </div>   
-</div>
-
-<!-- schedule interview this is left out -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="rolesDialog" aria-labelledby="offcanvasRightLabel">
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasRightLabel">Schedule Interview</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      <!-- <div class="col-md-3" v-if="appDatails.status === 'INTERVIEW_SCHEDULED'">
+        <div class="card mb-3">
+          <div class="card-header">Previous School Results</div>
+          <div class="card-body">
+            <table class="table table-sm table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>ASSESSMENT</th>
+                  <th>SCORE</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Math</td>
+                  <td>90</td>
+                </tr>
+                <tr>
+                  <td>SST</td>
+                  <td>90</td>
+                </tr>
+                <tr>
+                  <td>Eng</td>
+                  <td>90</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="offcanvas-body">
-              <!-- {{ applicationNumber }} -->
-            <form @submit.prevent="scheduleInterview" >
-              <label> Select Interview</label>
-              <select required class="form-control" v-model="formData.interview_number" >
-                <option disabled value=""> - Select Interview - </option>
-                  <option v-for="(list, index) in interviewListData" :key="index" :value="list.number">
-                    {{ list.name}} 
-                  </option>
-               </select>
-              <div class="text-right mt-4">
-                <button style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
-                  <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader" >
-                    <span class="visually-hidden">Loading...</span>
-                  </div></button>
+        </div>
+      </div> -->
+      
+      <!-- Interview Scheduling Form Card -->
+      <div class="col-md-3" v-if="appDatails.status === 'SUBMITTED'">
+        <div class="card mb-3">
+          <div class="card-header" style="background-color: #198754 !important;" >Interview Scheduling</div>
+          <div class="card-body">
+            <form @submit.prevent="scheduleInterview">
+              <div class="form-group">
+                <label for="interview">Select Interview</label>
+                <select v-model="formData.interview_number" id="interview" class="form-control" required>
+                  <option v-for="interview in interviewListData" :value="interview.number">{{ interview.title }}</option>
+                </select>
               </div>
+              <button type="submit" class="btn btn-success mt-2" :disabled="buttonLoader">
+                {{ buttonLoader ? 'Scheduling...' : 'Schedule Interview' }}
+              </button>
             </form>
           </div>
         </div>
-  </template>
-  
-  <style scoped>
-  .mb-2 {
-    text-align: left;
-    font-family: Roboto, sans-serif;
-    border-radius: 3px !important;
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.card {
+  border: 1px solid #007bff;
 }
-  .details{
-    color:rgba(0, 0, 0, 0.824);
-  }
-  </style>
+
+.card-header {
+  background-color: #007bff;
+  color: white;
+}
+
+.table th,
+.table td {
+  text-align: center;
+}
+</style>

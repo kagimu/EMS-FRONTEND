@@ -48,22 +48,43 @@
       assessment_metrics:[]
     })
 
-
-
-    
     onMounted(
         async () => {
-          await applicationStore.fetchInterviewList()
+          // await applicationStore.fetchInterviewList()
           schoolStore.fetchSchools()
+          getInterviewDetails()
         } )
+    
+const props = defineProps({
+  interviewListData:{}
+})
 
 
-        const fetchCampuses = (school) => {
+const getInterviewDetails = () =>{
+  if(props.interviewListData.interview_number){
+    let data = {
+      interview_number : props.interviewListData.interview_number,
+      campus_class_number:props.interviewListData.campus_class_number
+    }
+    applicationStore.fetchInterviewListById(data)
+  }
+}
+  
+
+
+    const fetchCampuses = (school) => {
       campusStore.fetchCampuses(school)
   }
 
     const createInterview = () => {
-      applicationStore.createNewInterview(formData)
+      if(props.interviewListData.interview_number){
+        formData.interview_number = props.interviewListData.interview_number
+        // alert(JSON.stringify(formData))
+       applicationStore.updateInterview(formData)
+      }else{
+        applicationStore.createNewInterview(formData)
+      }
+      
     }
 
   const doFetchAssessmentMetrics = (campus_class_number) => {
@@ -74,6 +95,43 @@
   const fetchClasses = (campus_number) => {
       campusStore.fetchClassesByCampus(campus_number)
   }
+
+const checked = ref(false)
+  watch(
+        () => applicationStore.interviewListByIdResponse,
+        async (data) => {
+          if(data){
+         formData.name = data.data.name
+         formData.interview_date=data.data.interview_date
+         formData.message = data.data.message
+         formData.venue = data.data.venue
+        school_number.value = data.data.school_number
+        campus_number.value = data.data.campus_number
+        
+        if(school_number){
+          campusStore.fetchCampuses(data.data.school_number)
+          campus_number.value =data.data.campus_number
+        }
+        if(campus_number){
+          campusStore.fetchClassesByCampus(data.data.campus_number)
+          formData.campus_class_number = data.data.campus_class_number
+          // assessmentMetricList.value = data.data.assessment_schedules
+          assessmentStore.fetchAssessmentMetrics({campus_class_number:data.data.campus_class_number})
+        }
+
+          }
+        }
+    )
+
+
+  watch(
+      () => props.interviewListData,
+      async (data) => {
+          if (data) {
+             getInterviewDetails()
+          }
+      }
+  )
 
   watch(
       () => campusStore.campusClassesResponse,
@@ -105,6 +163,8 @@
       {deep: true}
   )
 
+
+
     
         watch(
         () => applicationStore.interviewListResponse,
@@ -113,8 +173,7 @@
             assesssmentMetricsDialog.value = false
             interviewList.value = data.data
           }
-        },
-        {deep:true}
+        }
     )
     
     watch (
@@ -147,6 +206,18 @@
                   notificationStore.successToast("Success", data.message)
                   await applicationStore.fetchInterviewList()
     
+              }
+          },
+          {deep: true}
+      )
+
+      watch(
+          () => applicationStore.updateInterviewResponse,
+          async (data) => {
+              if (data) {
+                  buttonLoader.value = false
+                  assesssmentMetricsDialog.value = false
+                  notificationStore.successToast("Success", data.message)
               }
           },
           {deep: true}
@@ -246,10 +317,10 @@ watch (
 
     <div class="col-lg-6">
       <div class="mb-2">
-
+<!-- {{ formData.assessment_metrics }} -->
 
         <div class="mb-2">
-          <label class="textColor mt-3 mb-2" v-if="assessmentMetricList.length > 0"><small>Select Assessment Metric</small></label>
+          <label class="textColor mt-3 mb-2" v-if="assessmentMetricList.length > 0">Select Assessment Schedule</label>
           <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;" v-if="assessmentMetricList.length > 0">
             <li class="list-group-item" v-for="(lvl,idx) in assessmentMetricList">
               <input
@@ -281,4 +352,7 @@ watch (
  </template>
  
  <style scoped>
+ .textColor{
+  font-size: 13px !important;
+ }
  </style>
