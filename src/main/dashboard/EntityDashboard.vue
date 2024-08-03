@@ -228,11 +228,11 @@ watch (
 
       <div class="flex justify-between">
         <span class="text-[16px]">Entities</span>
-        <div class="row">
-          <div class="col-lg-6">
+        <div class="flex justify-content-between">
+          <div class="mr-1">
             <button @click="showAddModal" class="btn btn-sm btn-primary"  v-if="can('can_create_entity','general')">New Entity</button>
           </div>
-          <div class="col-lg-6">
+          <div>
             <button @click="configDashboard" class="btn btn-sm btn-primary"  v-if="can('can_configure_entity','general')">Configure</button>
            </div>
 
