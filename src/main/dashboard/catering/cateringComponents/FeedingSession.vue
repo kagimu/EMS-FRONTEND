@@ -108,11 +108,11 @@
        
               <h5 class="card-title text-[13px]">
                 <div class="row">
-                <div class="col-lg-9">
+                <div class="col-lg-8">
                   {{ list.name }} 
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                   <button @click="editThisData(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148);"></i>
           </button>

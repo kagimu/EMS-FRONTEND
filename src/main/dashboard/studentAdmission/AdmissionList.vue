@@ -11,6 +11,7 @@
   import AppModal from "@/components/AppModal.vue";
   import {useEnrolmentStore} from "@/main/dashboard/enrollment/store/enrollment.js"
   import {useLevelStore} from "@/main/settings/level/store/level.js";
+  import PaginationTemplate from "@/components/PaginationTemplate.vue";
 
   import { useAbility } from '@casl/vue';
   const { can } = useAbility()
@@ -25,6 +26,8 @@
   const enrolmentStore = useEnrolmentStore()
   const mymodal = ref(false)
   const studentData = ref([])
+  const tableLoader = ref(true)
+
   const showModal = (studentN,adm,stud) =>{
   studentNum.value = studentN
   admissionNumber.value = adm
@@ -50,7 +53,10 @@
   const admissionNumber = ref(null)
   const loading = ref(false)
   const page = ref(1)
-  const per_page = ref(15)
+  const per_page = ref(20)
+  const total_items = ref(0)
+  const total_rows = ref(0)
+
   const curriculumList = ref([])
   const levelList = ref([])
   
@@ -179,18 +185,65 @@ watch(
   }
 
 
+  
+  function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
+  if (scrollTop + clientHeight >= scrollHeight) {
+
+    tableLoader.value = true
+  
+    let data = {
+      page: 1,
+      per_page:  (page.value+1),
+      study_period_number:form.study_period_number,
+      school_number:form.school_number,
+      campus_number: form.campus_number,
+      campus_class_number:form.campus_class_number,
+      stream_number:form.stream_number,
+      academic_year_number:form.academic_year_number
+   }
+
+   loading.value = true;
+   admissionList.value = []
+   admissionStore.fetchAdmissionByFilters(data).finally(() => {
+    loading.value = false; 
+  })
+
+
+  }
+}
+
+
   const fetchAdmissions = (data) => {
     if(data) {
+      // let current_page = data.page
+      // page.value = current_page
+
+      // let per_page_item = data.per_page;
+      // per_page.value = per_page_item;
+
+      // let objArray = data.content
+
       let current_page = data.page
       page.value = current_page
+      tableLoader.value = false
 
       let per_page_item = data.per_page;
       per_page.value = per_page_item;
 
       let objArray = data.content
 
+      let count_items = (current_page * per_page_item)
+      let totalItems = data?.total_rows
+
 
       if(objArray && objArray.length > 0){
+
+      per_page.value = per_page_item;
+      page.value = current_page
+      total_rows.value = totalItems
+
+      total_items.value = (count_items > totalItems) ? totalItems : count_items
+
         objArray.forEach((list, i) => {
 
           list.key =  (current_page - 1) * per_page_item + i + 1
@@ -465,8 +518,14 @@ watch(
                           </div>
                        </div>
                     </div>
+                    <PaginationTemplate
+                    @perPageChanged="doFetchAdmission"
+                    v-model:perPage="per_page"
+                    :per_page="per_page"
+                    :total_items="total_items"
+                    :total_rows="total_rows"></PaginationTemplate>
 
-               <div v-if="loading" class="text-center my-4">
+               <!-- <div v-if="loading" class="text-center my-4">
                 <div class="spinner-border" role="status">
                   <span class="sr-only">Loading...</span>
                 </div>
@@ -474,9 +533,12 @@ watch(
 
               <div v-else-if="admissionList.length === 0" class="text-center my-4">
                 <p>There is no data found</p>
-              </div>
+              </div> -->
 
-              <div v-else>
+              <div
+                    class="w-full overflow-auto max-h-[520px] scrollbar-thin"
+                    @scroll="onScroll">
+              <div>
                     <table
                        id="datatable"
                        class="table table-hover caption-top mt-4 table-sm table-striped"
@@ -544,6 +606,7 @@ watch(
                           </tr>
                        </tbody>
                     </table>
+               </div>
                </div>
 
                  </div>

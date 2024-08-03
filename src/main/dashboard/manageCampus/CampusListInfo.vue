@@ -222,7 +222,7 @@ watch (
                     type="button"
                     class="bg-[#2c2f8c] hover:bg-[#0c62e1] text-white text-sm text-center w-full rounded-bl-md py-2">
                       <span class="mx-9 text-sm">
-                        Setup Scheme
+                        View Scheme
                       </span>
                 </button>
               </router-link>
@@ -236,7 +236,7 @@ watch (
                     type="button"
                     class="bg-[#0d6efd] hover:bg-[#0c62e1] text-white text-sm text-center w-full rounded-br-md py-2">
                       <span class="mx-9 text-sm">
-                        Setup Campus
+                        View Campus
                       </span>
                 </button>
               </router-link>

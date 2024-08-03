@@ -4,18 +4,18 @@ import useNotificationStore from "@/composables/useNotification.js";
 import NewMenuItem from "@/main/dashboard/catering/cateringComponents/NewMenuItem.vue";
 import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 import updateFoodMenuItem from "@/main/dashboard/catering/cateringComponents/updateFoodMenuItem.vue";
-
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import AppModal from "@/components/AppModal.vue";
 import MenuParts from "@/main/dashboard/catering/cateringComponents/MenuParts.vue";
+import PaginationTemplate from "@/components/PaginationTemplate.vue";
 
 
 
 const showingModal = ref(false)
 const isLoading = ref(false);
 const loading = ref(true)
-
+const tableLoader = ref(true)
 
 const notificationStore = useNotificationStore()
 const cateringStore = useCateringStore()
@@ -31,8 +31,10 @@ const campusStore = useCampusStore()
 const menuItemDataParts = ref([])
 const sta = ref(null)
 const page = ref(1)
-const per_page = ref(300)
+const per_page = ref(20)
 const menuItemData=ref([])
+const total_items = ref(0)
+const total_rows = ref(0)
 
 const form = reactive({
     school_number:"",
@@ -68,7 +70,7 @@ onMounted(
 
 const doFetchMenuItem = () => {
     let data = {
-    page: page.value,
+    page: 1,
     per_page: per_page.value, 
      school_number:form.school_number,
      campus_number:form.campus_number,
@@ -79,20 +81,48 @@ const doFetchMenuItem = () => {
 
 }
 
+
+function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
+  if (scrollTop + clientHeight >= scrollHeight) {
+
+    tableLoader.value = true
+    let data = {
+      page: (page.value+1),
+      per_page: per_page.value,
+      school_number:form.school_number,
+      campus_number:form.campus_number,
+      type:"ITEM"
+    }
+    cateringStore.fetchMenuItemPaginated(data)
+
+  }
+}
+
+
 const fetchFoodMenuItem = (data) => {
     if(data) {
       let current_page = data.page
       page.value = current_page
+      tableLoader.value = false
 
       let per_page_item = data.per_page;
+      
       per_page.value = per_page_item;
 
       let objArray = data.content
+      let totalItems = data?.total_rows
 
 
       if(objArray && objArray.length > 0){
-        objArray.forEach((list, i) => {
+      per_page.value = per_page_item;
+      page.value = current_page
+      total_rows.value = totalItems
 
+      let count_items = (current_page * per_page_item)
+
+      total_items.value = (count_items > totalItems) ? totalItems : count_items
+
+        objArray.forEach((list, i) => {
           list.key =  (current_page - 1) * per_page_item + i + 1
 
           const index = menuItemData.value.findIndex(object => object.number === list.number);
@@ -265,6 +295,16 @@ watch(
                 <div>
 
 
+                  <PaginationTemplate
+                    @perPageChanged="doFetchMenuItem"
+                    v-model:perPage="per_page"
+                    :per_page="per_page"
+                    :total_items="total_items"
+                    :total_rows="total_rows"></PaginationTemplate>
+
+                <div
+                    class="w-full overflow-auto max-h-[520px] scrollbar-thin"
+                    @scroll="onScroll">
                   <table 
                     id="datatable"
                     class="table table-hover caption-top mt-4 table-sm text-[12px]"
@@ -320,11 +360,13 @@ watch(
                     </tbody>
                   </table>
 
-                  <div v-if="isLoading" class="flex justify-center" >
+                  <!-- <div v-if="isLoading" class="flex justify-center" >
                         <div class="spinner-border text-primary" role="status">
                           <span class="visually-hidden">Loading...</span>
                         </div>
-                      </div>
+                      </div> -->
+                      
+                 </div>
                       
                 </div>
               </div>

@@ -12,6 +12,7 @@
   import PromoteStudent from "@/main/settings/promotion/PromoteStudent.vue";
   import {usePromotionStore} from "@/main/settings/promotion/store/promotion.js"
   import AppModal from "@/components/AppModal.vue";
+  import PaginationTemplate from "@/components/PaginationTemplate.vue";
   
 
   const enrollmentList = ref( [])
@@ -37,7 +38,12 @@
   const promDialog = ref(false)
   const loading = ref(false)
   const page = ref(1)
-  const per_page = ref(15)
+  const per_page = ref(20)
+  const tableLoader = ref(true)
+  const total_items = ref(0)
+  const total_rows = ref(0)
+
+
 
   const form = reactive({
   study_period_number: "",
@@ -118,18 +124,53 @@
 
   }
 
+  function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
+  if (scrollTop + clientHeight >= scrollHeight) {
+
+    tableLoader.value = true
+ 
+    let data = {
+      page: (page.value+1),
+      per_page: per_page.value,
+      study_period_number:form.study_period_number,
+      school_number:form.school_number,
+      campus_number: form.campus_number,
+      campus_class_number:form.campus_class_number,
+      stream_number:form.stream_number,
+      academic_year_number:form.academic_year_number,
+      status:form.status
+   }
+   loading.value = true;
+   enrollmentList.value = []
+   enrollmentStore.fetchEnrolment(data).finally(() => {
+    loading.value = false; 
+  })
+  }
+}
+
+
   const fetchEnrollmentList = (data) => {
     if(data) {
       let current_page = data.page
       page.value = current_page
+      tableLoader.value = false
 
       let per_page_item = data.per_page;
       per_page.value = per_page_item;
 
       let objArray = data.content
 
+      let count_items = (current_page * per_page_item)
+      let totalItems = data?.total_rows
+
 
       if(objArray && objArray.length > 0){
+
+      per_page.value = per_page_item;
+      page.value = current_page
+      total_rows.value = totalItems
+
+      total_items.value = (count_items > totalItems) ? totalItems : count_items
         objArray.forEach((list, i) => {
 
           list.key =  (current_page - 1) * per_page_item + i + 1
@@ -412,17 +453,21 @@ studentNumber.value = a
             </div>
           </div>
         </div>
-       
+        <PaginationTemplate
+                    @perPageChanged="doFetchEnrollent"
+                    v-model:perPage="per_page"
+                    :per_page="per_page"
+                    :total_items="total_items"
+                    :total_rows="total_rows"></PaginationTemplate>
+
         <div v-if="loading" class="text-center my-4">
                 <div class="spinner-border" role="status">
                   <span class="sr-only">Loading...</span>
                 </div>
               </div>
-
               <div v-else-if="enrollmentList.length === 0" class="text-center my-4">
                 <p>There is no data found</p>
               </div>
-
               <div v-else>
       <table
         class="table table-hover caption-top mt-4 table-sm table-striped"

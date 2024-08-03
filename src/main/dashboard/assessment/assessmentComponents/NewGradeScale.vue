@@ -8,7 +8,6 @@ import { useAssessmentStore } from "../store/assessment";
 import { useLevelStore } from "../../../settings/level/store/level";
 import useCommonsStore from "@/composables/useCommons.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
-import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useRouter} from "vue-router";
 
 const commons = useCommonsStore()
@@ -40,17 +39,18 @@ const editM = ref(false)
 
 const aggregateData = ref([])
 
-const grade_group_number = ref("")
+
 const aggregateGroupData = ref([])
 
 const props = defineProps({
-  gradeScaleDatainfo:{}
+  gradeScaleDataInfo:{}
 })
 
 const form = reactive({
   scale_name:"",
-  count:"",
-  assessment_grade_items:[{code:"",name:"",minimum_points:"",maximum_points:"",remarks:"",abbreviation:"",description:""}]
+  aggregate_scale_count:"",
+  assessment_grade_count:"",
+  assessment_grades:[]
 })
 const sectionPart = ref([])
 
@@ -70,7 +70,7 @@ onMounted(
 )
 
 watch(
-    () => props.gradeScaleDatainfo,
+    () => props.gradeScaleDataInfo,
     async (data) => {
       if(data){
         filterDraftData()
@@ -79,13 +79,14 @@ watch(
 )
 
 const filterDraftData = () => {
-  let draft = props.gradeScaleDatainfo
+  let draft = props.gradeScaleDataInfo
   if(draft){
     editM.value = true
-    form.count = draft?.count
+    form.aggregate_scale_count = draft?.aggregate_scale_count
+    form.assessment_grade_count = draft?.assessment_grade?.assessment_grade_count
     form.scale_name = draft?.scale_name
     let gradesInfo = draft?.aggregate_scales
-    form.assessment_grade_items = draft?.assessment_grade.assessment_grade_items
+    form.assessment_grades = draft?.assessment_grade?.assessment_grades
 
     gradesInfo.forEach(lst => {
       lst.remark = lst.description
@@ -115,12 +116,12 @@ const fetchGradeScale = () =>{
 
 
 const removeGradeScale = (index) => {
-  form.assessment_grade_items.splice(index, 1);
+  form.assessment_grades.splice(index, 1);
 }
 
-const newGradeScale = () => {
-  form.assessment_grade_items.push({code:null, name:null,abbreviation:null,minimum_points:null,maximum_points:null,remarks:null,description:null})
-}
+// const newGradeScale = () => {
+//   form.assessment_grades.push({code:null, name:null,abbreviation:null,minimum_points:null,maximum_points:null,remarks:null,description:null})
+// }
 
 
 
@@ -136,20 +137,39 @@ watch(
 )
 
 
-const newSectionPart = (checkReset) => {
+const populateAggregateScale = (checkReset) => {
 
-  if(props.gradeScaleDatainfo?.scale_number && !checkReset){
+  if(props.gradeScaleDataInfo?.scale_number && !checkReset){
     return
   }
 
-  let count = parseInt(form.count)
+  let aggregate_scale_count = parseInt(form.aggregate_scale_count)
 
   sectionPart.value = []
-  if(count && (count > 0)) {
-    for (let i = 0; i < count; i++) {
+  if(aggregate_scale_count && (aggregate_scale_count > 0)) {
+    for (let i = 0; i < aggregate_scale_count; i++) {
       let maxValue = (i === 0) ?  100 : null
-      let minValue = ((i+1) === parseInt(count)) ? 0 : null
+      let minValue = ((i+1) === parseInt(aggregate_scale_count)) ? 0 : null
       sectionPart.value.push({code: (i+1), grade_number: "", min_value: minValue, max_value: maxValue, weight: (i+1) , remark: null})
+    }
+
+  }
+}
+
+
+const populateGrading = (checkReset) => {
+  if(props.gradeScaleDataInfo?.scale_number && !checkReset){
+    return
+  }
+  let assessment_grade_count = parseInt(form.assessment_grade_count)
+
+  form.assessment_grades = []
+  if(assessment_grade_count && (assessment_grade_count > 0)) {
+    for (let i = 0; i < assessment_grade_count; i++) {
+      // let maxValue = (i === 0) ?  100 : null
+      // let minValue = ((i+1) === parseInt(aggregate_scale_count)) ? 0 : null
+      // sectionPart.value.push({code: (i+1), grade_number: "", min_value: minValue, max_value: maxValue, weight: (i+1) , remark: null})
+      form.assessment_grades.push({code: (i+1), name:null,abbreviation:null,minimum_points:null,maximum_points:null,remarks:null,description:null})
     }
 
   }
@@ -192,20 +212,21 @@ const convertFormValuesToInt = () => {
 
 const createScale = () =>{
   buttonLoader.value = true
-  form.count =  parseInt(form.count)
+  form.aggregate_scale_count =  parseInt(form.aggregate_scale_count)
+  form.assessment_grade_count =  parseInt(form.assessment_grade_count)
   form.aggregate_scales = sectionPart
   form.school_number = schoolNumber
 
   convertFormValuesToInt()
 
-  form.assessment_grade_items.forEach(scale => {
+    form.assessment_grades.forEach(scale => {
     scale.code = scale.code ? parseInt(scale.code) : null
     scale.minimum_points = scale.minimum_points ? parseFloat(scale.minimum_points) : null
     scale.maximum_points = scale.maximum_points ? parseFloat(scale.maximum_points) : null
   })
 
-  if(props.gradeScaleDatainfo.scale_number){
-    form.scale_number = props.gradeScaleDatainfo.scale_number
+  if(props.gradeScaleDataInfo.scale_number){
+    form.scale_number = props.gradeScaleDataInfo.scale_number
     // alert(JSON.stringify(form))
     assessmentStore.updateAggregateScale(form)
   }else{
@@ -363,52 +384,38 @@ watch(
 
             <div class="text-[14px] text-[#505050] mt-6 alert alert-primary p-1" ><b>Aggregate Scale</b></div>
 
-          <div class="grid grid-cols-4 gap-2">
-
-
-            <div class="mb-2">
-              <div class="text-[13px] text-[#505050]">Count of Scale</div>
+          <div class="flex flex-grow justify-between mb-4 mt-5">
+            <div class="w-[30%]">
+              <div class="text-[13px] text-[#505050]">Aggregate Count</div>
               <input
                   @keypress="commons.codeValidator($event)"
-                  v-on:blur="newSectionPart('')"
+                  v-on:blur="populateAggregateScale('')"
                   maxlength="10"
-                  v-model="form.count"
+                  v-model="form.aggregate_scale_count"
                   required
                   @paste.prevent
                   class="form-control form-select-sm shadow-none">
 
-              <div v-if="(sectionPart.length === 0)" class="text-[11px] bg-[purple] text-white text-center mt-1 rounded-sm">Please provide count to populate scale</div>
+              <div v-if="(sectionPart.length === 0)" class="text-[11px] bg-[purple] text-white text-center mt-1 rounded-sm">Please provide aggregate count to populate scale</div>
             </div>
 
+            <div v-if="gradeScaleDataInfo?.scale_number">
 
-<!--            <div class="mb-2">
-              <div class="text-[13px] text-[#505050]">Aggregate group</div>
-              <select
-                  class="form-select form-select-sm shadow-none" required
-                  v-model="grade_group_number"
-                  @change="doFetchGrades"
-              >
-                <option disabled value="">&#45;&#45;Filter by aggregate group&#45;&#45;</option>
-                <option v-for="(list,index) in aggregateGroupData" :key="index" :value="list.number">{{ list.name }}</option>
-              </select>
-            </div>-->
-
-
-
-          </div>
-
-          <div class="flex justify-end mt-1 mb-4" v-if="gradeScaleDatainfo?.scale_number">
-          <div>
-            <button
-                type="button"  class="text-[#2c2f8c]  rounded-md text-xs hover:bg-[#2c2f8c] hover:text-white" style="border: 1px solid #2c2f8c;"  @click="newSectionPart('reset')">
+                <button
+                    type="button"
+                    class="text-[#2c2f8c]  rounded-md text-xs hover:bg-[#2c2f8c] hover:text-white"
+                    style="border: 1px solid #2c2f8c;"
+                    @click="populateAggregateScale('reset')">
                   <div class="px-3 py-1">
                     <i style="font-size: 15px;"  class="bi-reply mr-1"></i>
                     Reset
                   </div>
-            </button>
+                </button>
+
+            </div>
           </div>
 
-          </div>
+
 
           <table
               class="table table-hover text-sm"
@@ -494,7 +501,48 @@ watch(
 
             <div class="text-[13px] text-[#505050] mb-2 mt-8 alert alert-primary p-1" ><b>Grading Category</b></div>
 
-              <div class="mb-2 mt-3">      
+              <div class="mb-2 mt-3">
+
+
+
+
+
+
+
+
+
+
+                <div class="flex flex-grow justify-between mb-4 mt-5">
+
+                  <div class="w-[30%]">
+                    <div class="text-[13px] text-[#505050]">Grading Count</div>
+                    <input
+                        @keypress="commons.codeValidator($event)"
+                        v-on:blur="populateGrading('')"
+                        maxlength="10"
+                        v-model="form.assessment_grade_count"
+                        required
+                        @paste.prevent
+                        class="form-control form-select-sm shadow-none">
+
+                    <div v-if="(sectionPart.length === 0)" class="text-[11px] bg-[purple] text-white text-center mt-1 rounded-sm">Please provide grading count to populate scale</div>
+                  </div>
+
+                  <div v-if="gradeScaleDataInfo?.scale_number">
+
+                    <button
+                        type="button"  class="text-[#2c2f8c]  rounded-md text-xs hover:bg-[#2c2f8c] hover:text-white" style="border: 1px solid #2c2f8c;"  @click="populateGrading('reset')">
+                      <div class="px-3 py-1">
+                        <i style="font-size: 15px;"  class="bi-reply mr-1"></i>
+                        Reset
+                      </div>
+                    </button>
+
+                  </div>
+                </div>
+
+
+
 <table
     class="table table-hover caption-top table-sm table-striped"
     style="font-size: 12px !important;"
@@ -508,14 +556,15 @@ watch(
     <td >Maximum Point</td>
     <td>Remark</td>
     <td>Description</td>
-    <td></td>
+<!--    <td></td>-->
   </tr>
   </thead>
   <tbody>
-  <tr v-for="(gradeScaleInfo, index) in form?.assessment_grade_items" :key="index">
+  <tr v-for="(gradeScaleInfo, index) in form?.assessment_grades" :key="index">
     <td> 
        <div class="mb-2">
             <input
+                readonly
                 @keypress="commons.codeValidator($event)"
                 maxlength="10"
                 v-model="gradeScaleInfo.code"
@@ -563,15 +612,15 @@ watch(
       </textarea>
     </td>
 
-    <td>
+<!--    <td>
       <div class="mt-1">
         <i class="bi bi-x-circle cursor-pointer text-[red]" @click="removeGradeScale(index)"></i>
       </div>
-    </td>
+    </td>-->
   </tr>
   </tbody>
 </table>
-<button @click="newGradeScale" type="button" class="bg-[#0d6efd] text-white text-sm px-2 rounded-sm" style="text-align: center;"><i class="bi bi-plus"></i>Add</button>
+<!--<button @click="newGradeScale" type="button" class="bg-[#0d6efd] text-white text-sm px-2 rounded-sm" style="text-align: center;"><i class="bi bi-plus"></i>Add</button>-->
 
 
 
@@ -589,7 +638,7 @@ watch(
      <div class="flex justify-content-end mt-4" style="width: 100%;">
             <button type="submit" class="btn btn-primary border-0 btn-sm">
                  <small><i class="bi bi-save"></i>
-                  {{gradeScaleDatainfo?.scale_number ? "Edit" : "Submit"}}
+                  {{gradeScaleDataInfo?.scale_number ? "Edit" : "Submit"}}
                  </small>
                  <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
                       role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span> 

@@ -76,19 +76,32 @@
 
     const getAssessmentScheduleInfo = () =>{
        if(props.assessmentMetricList.number){
-      form.code = props.assessmentMetricList.code,
-      form.assessment_area_number = props.assessmentMetricList.name,
+      form.code = props.assessmentMetricList.key,
+      form.assessment_area_number = props.assessmentMetricList.assessment_area_number,
       form.description = props.assessmentMetricList.description,
       form.max_score = props.assessmentMetricList.max_score,
-      form.metric_number = props.assessmentMetricList.name,
-      form.campus_class_number = props.assessmentMetricList.name,
+      form.metric_number = props.assessmentMetricList.metric_number,
+      form.campus_class_number = props.assessmentMetricList.campus_class_number,
       form.grading_standard_number = props.assessmentMetricList.grading_standard_number,
-      form.study_period_number = props.assessmentMetricList.name,
+      form.study_period_number = props.assessmentMetricList.study_period_number,
       form.scheduled_on = props.assessmentMetricList.scheduled_on,
       form.require_comment = props.assessmentMetricList.require_comment
+      academic_year_number.value = props.assessmentMetricList.academic_year_number
+      campus_level_number.value = props.assessmentMetricList.campus_level_number
+
        }
     }
   
+    
+  watch(
+      () => props.assessmentMetricList,
+      async (data) => {
+        if(data){
+          getAssessmentScheduleInfo()
+        }
+      }
+  )
+
   const format = (date) => {
   const day = date.getDate();
   const month = date.getMonth() + 1;

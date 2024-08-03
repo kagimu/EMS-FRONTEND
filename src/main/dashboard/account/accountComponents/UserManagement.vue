@@ -9,13 +9,15 @@ import AppModal from "@/components/AppModal.vue";
 import NewStaff from "@/main/dashboard/profiles/NewStaff.vue"
 import AssignUserEntity from "@/main/dashboard/entity/entityComponents/AssignUserEntity.vue"
 import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
-
+import PaginationTemplate from "@/components/PaginationTemplate.vue";
 
 const page = ref(1)
-const per_page = ref(15)
 const status = ref("")
 const entityStore = useEntityStore()
 const userStore = useUserStore()
+const per_page = ref(20)
+const total_items = ref(0)
+const total_rows = ref(0)
 
 import { useAbility } from '@casl/vue';
 
@@ -34,6 +36,7 @@ const showingModalUser = ref(false)
 const showingEntity = ref(false)
 const entityList = ref(null)
 const userInfo = ref(null)
+const tableLoader = ref(true)
 let entityN = localStorage.getItem("entity_number")
 
 const openModal = (userInf) =>{
@@ -97,18 +100,44 @@ const doFetchAccount = () =>{
   }
 
 
+  function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
+  if (scrollTop + clientHeight >= scrollHeight) {
+
+    tableLoader.value = true
+    let data = {
+      page: (page.value+1),
+      per_page: per_page.value,
+      entity_number:entityN
+   }
+  //  loading.value = true;
+   userData.value = []
+   accountStore.fetchUsersToAssign(data)
+
+  }
+}
+
   const fetchUsers = (data) => {
     if(data) {
       let current_page = data.page
       page.value = current_page
+      tableLoader.value = false
 
       let per_page_item = data.per_page;
       per_page.value = per_page_item;
 
       let objArray = data.content
 
+      let count_items = (current_page * per_page_item)
+      let totalItems = data?.total_rows
+
 
       if(objArray && objArray.length > 0){
+
+      per_page.value = per_page_item;
+      page.value = current_page
+      total_rows.value = totalItems
+
+      total_items.value = (count_items > totalItems) ? totalItems : count_items
         objArray.forEach((list, i) => {
 
           list.key =  (current_page - 1) * per_page_item + i + 1
@@ -285,7 +314,16 @@ watch (
 
            </div>
 
+           <PaginationTemplate
+                    @perPageChanged="doFetchAccount"
+                    v-model:perPage="per_page"
+                    :per_page="per_page"
+                    :total_items="total_items"
+                    :total_rows="total_rows"></PaginationTemplate>
 
+                    <div
+                    class="w-full overflow-auto max-h-[520px] scrollbar-thin"
+                    @scroll="onScroll">
       <table id="data"
           class="table table-hover caption-top mt-1 table-sm table-striped"
           style="font-size: 11px !important;" >
@@ -335,6 +373,7 @@ watch (
       
         </tbody>
       </table>
+      </div>
       
         </div>
         </div>

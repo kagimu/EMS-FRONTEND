@@ -5,8 +5,8 @@ import useNotificationStore from "@/composables/useNotification.js";
 import NewSchool from "@/main/dashboard/manageSchool/NewSchool.vue";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
-import { useAbility } from '@casl/vue';
 import AppModal from "@/components/AppModal.vue";
+import { useAbility } from '@casl/vue';
 
 const { can } = useAbility()
 
@@ -133,7 +133,6 @@ const toggleCurriculum = (number) =>{
 
     <div class="mt-3">
       <button
-      v-if="can('add_school','general')"
           type="button"
           class="btn btn-sm buttonStyle btn-primary mr-2"
           @click="addSchool">
