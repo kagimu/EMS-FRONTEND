@@ -55,7 +55,7 @@ const switchTabs = (tab) => {
           </div>
         </div>
 
-        <div class="cursor-pointer text-sm" :class="selectedTab === 'grade-standards' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('grade-standards')">
+<!--        <div class="cursor-pointer text-sm" :class="selectedTab === 'grade-standards' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('grade-standards')">
           <div class="py-2 px-3">
             <i class="bi bi-box-arrow-in-right mr-1"></i>
             Grade Standards
@@ -74,7 +74,7 @@ const switchTabs = (tab) => {
             <i class="bi bi-box-arrow-in-right mr-1"></i>
             Assessment Schedule
           </div>
-        </div>
+        </div>-->
 
       </div>
 

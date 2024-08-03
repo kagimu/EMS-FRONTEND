@@ -7,6 +7,8 @@ import CampusCurriculumSettings from "@/main/dashboard/manageLevel/CampusCurricu
 import Assessment from "@/main/dashboard/assessment/Assessment.vue";
 import ReportSetup from "@/main/dashboard/manageLevel/report_setup/ReportSetup.vue";
 import ScoreSetup from "@/main/dashboard/manageLevel/report_setup/ScoreSetup.vue";
+import Grading from "@/main/dashboard/assessment/Grading.vue";
+import AssessmentSchedulePage from "@/main/dashboard/assessment/AssessmentSchedulePage.vue";
 const router = useRouter()
 const levelStore = useLevelStore()
 const campusCurriculumDataInfo = ref(null)
@@ -19,9 +21,6 @@ let campusCurriculumNumber = routerData.currentRoute.value.query.crr
 let curriculumNumberParent = routerData.currentRoute.value.query.cr
 let campusSetupQuery = routerData.currentRoute.value.query.type
 
-let studentScoreQuery = routerData.currentRoute.value.query.ss
-let assessmentSettingsQuery = routerData.currentRoute.value.query.ass
-let reportSettingsQuery = routerData.currentRoute.value.query.rp
 
 const campusSetupMenu = ref([
   {
@@ -29,8 +28,16 @@ const campusSetupMenu = ref([
     router_name:"campus-settings"
   },
   {
-    name:"Assessments Settings",
-    router_name:"assessments-settings"
+    name:"Aggregate",
+    router_name:"aggregate"
+  },
+  {
+    name:"Grading",
+    router_name:"grading"
+  },
+  {
+    name:"Assessment Schedule",
+    router_name:"assessment-schedule"
   },
   {
     name:"Report Card Settings",
@@ -40,95 +47,6 @@ const campusSetupMenu = ref([
     name:"Student Score",
     router_name:"student-score"
   },
-])
-
-
-const campusSettingsMenu = ref([
-  {
-    name:"Levels",
-    router_name:"campus-level"
-  },
-  {
-    name:"Classes",
-    router_name:"class-data"
-  },
-  {
-    name:"Academic Years",
-    router_name:"academic-year"
-  },
-  {
-    name:"Study Periods",
-    router_name:"study-period"
-  },
-])
-
-
-
-const reportSettingsMenu = ref([
-  {
-    name:"General report settings",
-    router_name:"report-setting"
-  },
-  {
-    name:"Report Columns Assessment",
-    router_name:"report-columns-assessment"
-  },
-  {
-    name:"Report Templates",
-    router_name:"report-templates"
-  },
-  {
-    name:"HeadTeacher Comments",
-    router_name:"teachers-comments"
-  },
-])
-
-
-const studentScoreMenu = ref([
-  {
-    name:"Add Score",
-    router_name:"student-score"
-  },
-  {
-    name:"Generate Report",
-    router_name:"generate-report"
-  },
-  {
-    name:"Report Summary",
-    router_name:"report-card"
-  },
-])
-
-const assess = ref([
-{
-    name:"Aggregate Group Name",
-    router_name:"aggregate-name-group"
-  },
-  {
-    name:"Name Of Aggregates",
-    router_name:"grades"
-  },
-  {
-    name:"Aggregate Scale",
-    router_name:"grade-scale"
-  },
-  {
-    name:"Grade Standards",
-    router_name:"grade-standards"
-  },
-  // {
-  //   name:"Assessment Grades",
-  //   router_name:"assessment-scale"
-  // },
-  {
-    name:"Assessment Area Grading Standard",
-    router_name:"assessment-area-grading-standard"
-  },
-  {
-    name:"Assessment Schedule",
-    router_name:"assessment-metrics"
-  },
-
 ])
 
 
@@ -199,18 +117,18 @@ const switchCurriculum = (curriculum) => {
 <div>
     <div class="row">
 
-      <div :class="campusSetupQuery || studentScoreQuery  || assessmentSettingsQuery || reportSettingsQuery ? 'col-3' : 'col-12 mx-auto'">
+      <div :class="campusSetupQuery ? 'col-3' : 'col-12 mx-auto'">
 
         <div class="w-full mb-10">
 
 
           <div class="card mt-3">
             <div class="card-body p-0">
-<!--              <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
-                <div class="ml-3 mb-2">Setup</div>
-              </div>-->
+              <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
+                <div class="ml-3 mb-2">Assessment</div>
+              </div>
 
-              <div class="list-group list-group-flush mb-1 mt-1" >
+              <div class="list-group list-group-flush mb-1" >
                 <router-link
                     v-for="(item, idx) in  campusSetupMenu" :key="idx"
                     class="list-group-item list-group-item-action"
@@ -250,7 +168,7 @@ const switchCurriculum = (curriculum) => {
       </div>
 
 
-      <div class="col-9" v-if="campusSetupQuery === 'assessments-settings'">
+      <div class="col-9" v-if="campusSetupQuery === 'aggregate'">
 
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
@@ -259,6 +177,25 @@ const switchCurriculum = (curriculum) => {
         </div>
       </div>
 
+
+
+      <div class="col-9" v-if="campusSetupQuery === 'grading'">
+
+        <div class="card mt-3">
+          <div class="card-body" style="padding: 0;">
+            <grading></grading>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-9" v-if="campusSetupQuery === 'assessment-schedule'">
+
+        <div class="card mt-3">
+          <div class="card-body" style="padding: 0;">
+            <assessment-schedule-page></assessment-schedule-page>
+          </div>
+        </div>
+      </div>
 
 
 
