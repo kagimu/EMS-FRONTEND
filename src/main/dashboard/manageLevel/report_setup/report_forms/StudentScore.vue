@@ -290,13 +290,14 @@ watch(
       <div class="col-3">
         <div class="mb-2">
           <label class="text-sm"><small>Assessment Schedule</small></label>
+          <!-- {{ metricListData }} -->
           <select
               style="box-shadow: none;"
               class="form-select py-10"
               v-model="assessmentMetricNumber"
               @click="fetchStudents(assessmentMetricNumber)">
             <option class="text-[13px]" disabled value="">--Select Assessment Schedule--</option>
-            <option class="text-[13px]" v-for="(list, index) in metricListData" :key="index" :value="list.number">{{list.name}}</option>
+            <option class="text-[13px]" v-for="(list, index) in metricListData" :key="index" :value="list.number">{{list.metric_name}}</option>
           </select>
         </div>
       </div>

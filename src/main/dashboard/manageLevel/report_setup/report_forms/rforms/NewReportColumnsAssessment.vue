@@ -52,7 +52,6 @@ const form = reactive({
 onMounted(
     async () => {
      levelStore.fetchCampusCurriculum(campusNumber)
-     reportSetupStore.fetchReportColumn()
       fetchCampusLevel()
     }
 )
@@ -116,8 +115,9 @@ const fetchAssessmentArea = (campus_class_number) =>{
 }
 
 
-const doFetchReportColumns = async () => {
-  await reportSetupStore.fetchReportColumn(report_setting_number.value)
+const doFetchReportColumns = () => {
+  // reportSetupStore.fetchReportColumn()
+ reportSetupStore.fetchReportColumn(report_setting_number.value)
 }
 
 const doFetchReportSettings = async (campus_class_number) => {
@@ -355,7 +355,7 @@ watch(
             v-model="form.assessment_area_number"
             @change="fetchAssessmentMetrics"
         >
-          <option disabled value=""> - Select Interview - </option>
+          <option disabled value=""> - Select Assessment Area - </option>
           <option v-for="(listdata, index) in interviewAssessmentListData" :key="index" :value="listdata.number">
             {{ listdata.name}}
           </option>
@@ -371,7 +371,7 @@ watch(
                 style="outline: none 0 !important; box-shadow: none;"
                 class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="idx">
             <label class="form-check-label cursor-pointer" :for="idx" style="font-size: 13px;">
-              {{lvl.description + " [ " +lvl.name + " ] " + " ( "+ lvl.assessment_area_name +" ) "}}
+              {{lvl.description + " [ " +lvl.metric_name + " ] " + " ( "+ lvl.assessment_area +" ) "}}
             </label>
           </li>
 

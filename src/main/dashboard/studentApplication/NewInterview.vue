@@ -10,7 +10,6 @@
     import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
     import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
     import { useAssessmentStore } from "@/main/dashboard/assessment/store/assessment.js";
-
     
     const showingModal = ref(false)
     const interviewList = ref( [])
@@ -256,7 +255,7 @@ watch (
               <input
                   v-model="formData.assessment_metrics"
                   class="form-check-input me-1 shadow-none" type="checkbox" :value="lvl.number" :id="idx">
-              <label class="form-check-label cursor-pointer" :for="idx">{{lvl.name}}</label>
+              <label class="form-check-label cursor-pointer" :for="idx">{{lvl.metric_name}} ({{ lvl.description }})</label>
             </li>
 
           </ul>

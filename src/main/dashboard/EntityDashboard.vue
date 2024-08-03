@@ -7,6 +7,10 @@ import NewEntity from "@/main/dashboard/entity/entityComponents/NewEntity.vue"
 import AppModal from "@/components/AppModal.vue";
 import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
 import DashboardConfig from "@/main/dashboard/entity/entityComponents/DashboardConfig.vue"
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
+
 
 const  authStore = useAuthStore();
 const name = ref(null)
@@ -224,12 +228,12 @@ watch (
 
       <div class="flex justify-between">
         <span class="text-[16px]">Entities</span>
-        <div class="row">
-          <div class="col-lg-6">
-            <button @click="showAddModal" class="btn btn-sm btn-primary">New Entity</button>
+        <div class="flex justify-content-between">
+          <div class="mr-1">
+            <button @click="showAddModal" class="btn btn-sm btn-primary"  v-if="can('can_create_entity','general')">New Entity</button>
           </div>
-          <div class="col-lg-6">
-            <button @click="configDashboard" class="btn btn-sm btn-primary">Configure</button>
+          <div>
+            <button @click="configDashboard" class="btn btn-sm btn-primary"  v-if="can('can_configure_entity','general')">Configure</button>
            </div>
 
         </div>
@@ -253,11 +257,13 @@ watch (
               </div>
               <div>
               <i
+                   v-if="can('can_update_entity','general')"
                   @click="editEntity(list)"
                   class="bi-pencil ml-2 cursor-pointer"
                   style="font-size: 14px;"
                ></i>
               <i
+                  v-if="can('can_delete_entity','general')"
                   @click="deleteEntity(list, index)"
               style="font-size: 14px;" class="bi-trash cursor-pointer ml-1"></i>
                 <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
