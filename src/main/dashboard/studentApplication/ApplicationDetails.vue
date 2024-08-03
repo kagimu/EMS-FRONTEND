@@ -24,9 +24,10 @@ onMounted(
     applicationStore.fetchApplicationList()
     applicationStore.fetchPreviousSchoolResultsAll()
     applicationStore.fetchApplicationById(props.applicationNumber)
-    applicationStore.fetchInterviewList()
+    getInterviewListData
     schoolStore.fetchSchools()
   } )
+
 
 const props = defineProps({
   applicationNumber:String
@@ -99,6 +100,16 @@ watch (
   },
   {deep:true}
 )
+
+
+
+const getInterviewListData = () =>{
+    let  data = {
+      campus_class_number:""
+    }
+    applicationStore.fetchInterviewList(data)
+  }
+
 
 const formData = reactive({
 interview_number:null,
@@ -179,7 +190,7 @@ watch(
 </script>
 
 <template>
-<!-- {{ applicationNumber }} -->
+{{ appDatails }}
             <div class="mt-2 mb-2">
 
   <div class="row mx-auto">
@@ -318,7 +329,7 @@ watch(
 
 <hr>
       <div   > 
-      <!-- {{ appDatails.status }} -->
+      <!-- {{ appDatails }} -->
   <form @submit.prevent="scheduleInterview" >
               <label> <span style="text-align: center;font-size: 12px;"><small>Select Interview</small></span></label>
 

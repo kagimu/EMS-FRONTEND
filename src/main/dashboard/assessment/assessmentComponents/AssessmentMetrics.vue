@@ -414,13 +414,14 @@ const deleteThisData = (id,name) => {
               </tr>
               </thead>
               <tbody>
+                <!-- {{assessmentMetricsData}} -->
               <tr v-for="(metricsData, index) in assessmentMetricsData " :key="index">
                 <td>
                   <!-- {{metricsData?.code ?? ""}} -->
                   {{ index+1 }}
                 </td>
                 <td>
-                  {{ metricsData.name + " - " + metricsData.CampusClass.class_name}}
+                  {{ metricsData.metric_name + " - " + metricsData.class}}
                 </td>
                 <td>{{ metricsData.description }}</td>
                 <td>

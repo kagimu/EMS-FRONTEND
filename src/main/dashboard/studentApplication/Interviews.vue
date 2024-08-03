@@ -8,7 +8,14 @@ import InterviewAssessmentMetricsList from "@/main/dashboard/studentApplication/
 import {useStudentApplicationStore} from "@/main/dashboard/studentApplication/store/student_application.js";
 import AppModal from "@/components/AppModal.vue";
 import NewInterview from "@/main/dashboard/studentApplication/NewInterview.vue"
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 
+
+const campusList = ref([])
+const schoolList = ref([])
+const schoolStore = useSchoolStore()
+const campusStore = useCampusStore()
 
 const showingModal = ref(false)
 const interviewList = ref( [])
@@ -23,20 +30,60 @@ const interviewAssessmentDialog = ref(false)
 const assesssmentMetricsDialog = ref(false)
 const thisDialog = ref(false)
 const loading = ref(false)
+const classList  = ref(null)
 
 const showModal = () => {
     showingModal.value = true
     thisDialog.value=false
 }
 
+const form = reactive({
+  campus_class_number:""
+})
 
 onMounted(
     async () => {
      loading.value = true
-    applicationStore.fetchInterviewList().finally(() => {
+     getInterviewList()
+     schoolStore.fetchSchools()
+    } )
+
+
+    const fetchCampuses = (school) => {
+      campusStore.fetchCampuses(school)
+  }
+
+    const getInterviewList = () => {
+     let data = {
+      campus_class_number:form.campus_class_number
+     }
+     applicationStore.fetchInterviewList(data).finally(() => {
     loading.value = false; 
   })
-    } )
+     
+    }
+
+
+    watch(
+      () => campusStore.campusListResponse,
+      async (data) => {
+          if (data) {
+              campusList.value = data.data
+          }
+      },
+      {deep: true}
+  )
+
+  watch(
+      () => schoolStore.schoolsResponse,
+      async (data) => {
+          if (data) {
+              schoolList.value = data.data
+          }
+      },
+      {deep: true}
+  )
+
 
     watch(
     () => applicationStore.interviewListResponse,
@@ -67,6 +114,11 @@ const showInterviewAssessmentDialog = (interview) =>{
   interviewAssessmentDialog.value = true
 
 }
+
+
+const fetchClasses = (campus_number) => {
+      campusStore.fetchClassesByCampus(campus_number)
+  }
 
 const formData = reactive({ 
 name:null,
@@ -110,6 +162,17 @@ watch(
           },
           {deep: true}
       )
+
+
+      watch(
+      () => campusStore.campusClassesResponse,
+      async (data) => {
+          if (data) {
+              classList.value = data.data
+          }
+      },
+      {deep: true}
+  )
   </script>
 
 <template>
@@ -164,7 +227,56 @@ watch(
       <i class="bi bi-plus"></i>&nbsp;<small>Create An Interview</small>
       </button>
 
-      <hr style="width:30px;"></h6>
+      <div class="row mt-4">
+        <div class="col-4">    
+         <div class="mb-2">
+            <label class="textSize"><small>School</small></label>
+         <select
+                 style="box-shadow: none;"
+                 class="form-select form-select-sm" required
+                 v-model="school_number"
+                 @change="fetchCampuses(school_number)"
+         >
+             <option disabled value="">-filter School -</option>
+             <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+             </option>
+         </select>
+     </div>
+     </div>
+      
+      <div class="col-4"> 
+      <div class="mb-2">
+            <label class="textSize"><small>Campus</small></label>
+            <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm"
+              v-model="campus_number" required
+              @change="fetchClasses(campus_number)">
+              <option disabled value="">Select campus</option>
+              <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}</option>
+            </select>
+        </div>  
+        </div> 
+
+        <div class="col-4"> 
+        <div class="mb-2">
+            <label class="textSize"><small>Class</small></label>
+            <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm" required
+              v-model="form.campus_class_number"
+              @change="getInterviewList(form.campus_class_number)"
+            >
+              <option disabled value="">Select class</option>
+              <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}</option>
+            </select>
+          </div>
+        </div>
+        
+
+      </div>
+
+   </h6>
       <div v-if="loading" class="text-center my-4">
                 <div class="spinner-border" role="status">
                   <span class="sr-only">Loading...</span>

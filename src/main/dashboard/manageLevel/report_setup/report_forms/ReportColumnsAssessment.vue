@@ -388,7 +388,7 @@ const deleteThisData = (id,assesmentArea,assesmentMet,rcolumn) => {
         <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
           <thead>
           <tr>
-            <th class="w-[10%]" scope="col">Code</th>
+            <th class="w-[5%]" scope="col">#</th>
             <th scope="col">Assessment Area</th>
             <th scope="col">Assessment Schedule</th>
             <th scope="col">Report Column</th>
@@ -397,7 +397,7 @@ const deleteThisData = (id,assesmentArea,assesmentMet,rcolumn) => {
           </thead>
           <tbody>
           <tr v-for="(levelInfo, index) in reportColumnAssessmentList" :key="index">
-            <td> {{levelInfo.code}}</td>
+            <td> {{index+1}}</td>
             <td> {{levelInfo.assessment_area}}</td>
             <td> {{levelInfo.assessment_metric}}</td>
             <td> {{levelInfo.report_column}}</td>
