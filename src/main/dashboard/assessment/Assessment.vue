@@ -10,55 +10,117 @@ import AssessmentAreaGradingStandard from "@/main/dashboard/assessment/Assessmen
 import AssessmentMetrics from "@/main/dashboard/assessment/assessmentComponents/AssessmentMetrics.vue";
 import Grades from "@/main/dashboard/assessment/assessmentComponents/Grades.vue";
 import AggregateNameGroup from "@/main/dashboard/assessment/assessmentComponents/AggregateNameGroup.vue";
+import router from "@/config/router.js";
+
 
 const routerData = useRouter()
-const selectedPage = routerData.currentRoute.value.query.ass
+const campusNumber = routerData.currentRoute.value.query.id
+const schoolNumber = routerData.currentRoute.value.query.sch
+let campusCurriculumNumber = routerData.currentRoute.value.query.crr
+let curriculumNumberParent = routerData.currentRoute.value.query.cr
 
+
+
+const selectedPage = routerData.currentRoute.value.query.type
+const selectedTab = routerData.currentRoute.value.query.tab ?? 'aggregate-name-group'
+
+const switchTabs = (tab) => {
+  router.push({name: "campus-curriculum-setup", query: {id:campusNumber,sch:schoolNumber, crr:campusCurriculumNumber, cr:curriculumNumberParent,type:selectedPage,tab:tab}});
+}
 
 </script>
 <template>
     <div>
 
+      <div class="flex border-b">
+
+        <div class="cursor-pointer text-sm" :class="selectedTab === 'aggregate-name-group' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('aggregate-name-group')">
+          <div class="py-2 px-3">
+            <i class="bi bi-box-arrow-in-right mr-1"></i>
+            Aggregate Group Name
+          </div>
+        </div>
+
+        <div class="cursor-pointer text-sm" :class="selectedTab === 'grades' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('grades')">
+          <div class="py-2 px-3">
+            <i class="bi bi-box-arrow-in-right mr-1"></i>
+            Name Of Aggregates
+          </div>
+        </div>
+
+        <div class="cursor-pointer text-sm" :class="selectedTab === 'grade-scale' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('grade-scale')">
+          <div class="py-2 px-3">
+            <i class="bi bi-box-arrow-in-right mr-1"></i>
+            Aggregate Scale
+          </div>
+        </div>
+
+        <div class="cursor-pointer text-sm" :class="selectedTab === 'grade-standards' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('grade-standards')">
+          <div class="py-2 px-3">
+            <i class="bi bi-box-arrow-in-right mr-1"></i>
+            Grade Standards
+          </div>
+        </div>
+
+        <div class="cursor-pointer text-sm" :class="selectedTab === 'assessment-area-grading-standard' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('assessment-area-grading-standard')">
+          <div class="py-2 px-3">
+            <i class="bi bi-box-arrow-in-right mr-1"></i>
+            Assessment Area Grading Standard
+          </div>
+        </div>
+
+        <div class="cursor-pointer text-sm" :class="selectedTab === 'assessment-metrics' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('assessment-metrics')">
+          <div class="py-2 px-3">
+            <i class="bi bi-box-arrow-in-right mr-1"></i>
+            Assessment Schedule
+          </div>
+        </div>
+
+      </div>
 
             <div class="card-body" style="padding: 0;">
   
               <div>
+
+                <div v-if="selectedTab === 'aggregate-name-group'">
+                  <AggregateNameGroup></AggregateNameGroup>
+                </div>
+
+
   
-                  <div v-if="selectedPage === 'assessments'">
+                  <div v-if="selectedTab === 'assessments'">
                     <AssessmentList></AssessmentList>
                   </div>
           
 
-                  <div v-if="selectedPage === 'examtype'">
+                  <div v-if="selectedTab === 'examtype'">
                     <ExamType></ExamType>
                   </div>
-                  <div v-if="selectedPage === 'grade-standards'">
+                  <div v-if="selectedTab === 'grade-standards'">
                       <GradingStandards></GradingStandards>
                   </div>
 
-                <div v-if="selectedPage === 'assessment-metrics'">
+                <div v-if="selectedTab === 'assessment-metrics'">
                   <assessment-metrics></assessment-metrics>
                 </div>
 
-                  <div v-if="selectedPage === 'grade-scale'">
+                  <div v-if="selectedTab === 'grade-scale'">
                     <GradingScale></GradingScale>
                   </div>
 
-                  <div v-if="selectedPage === 'grades'">
+                  <div v-if="selectedTab === 'grades'">
                     <Grades></Grades>
                   </div>
 
-                  <div v-if="selectedPage === 'assessment-scale'">
+                  <div v-if="selectedTab === 'assessment-scale'">
                    <AssessmentScale></AssessmentScale>
                   </div>
 
-                <div v-if="selectedPage === 'assessment-area-grading-standard'">
+                <div v-if="selectedTab === 'assessment-area-grading-standard'">
                   <assessment-area-grading-standard></assessment-area-grading-standard>
                 </div>
                   
-                <div v-if="selectedPage === 'aggregate-name-group'">
-                  <AggregateNameGroup></AggregateNameGroup>
-                </div>
+
                   
               </div>
   

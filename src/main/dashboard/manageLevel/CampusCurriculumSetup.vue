@@ -23,6 +23,26 @@ let studentScoreQuery = routerData.currentRoute.value.query.ss
 let assessmentSettingsQuery = routerData.currentRoute.value.query.ass
 let reportSettingsQuery = routerData.currentRoute.value.query.rp
 
+const campusSetupMenu = ref([
+  {
+    name:"Campus Settings",
+    router_name:"campus-settings"
+  },
+  {
+    name:"Assessments Settings",
+    router_name:"assessments-settings"
+  },
+  {
+    name:"Report Card Settings",
+    router_name:"report-card-settings"
+  },
+  {
+    name:"Student Score",
+    router_name:"student-score"
+  },
+])
+
+
 const campusSettingsMenu = ref([
   {
     name:"Levels",
@@ -181,79 +201,28 @@ const switchCurriculum = (curriculum) => {
 
       <div :class="campusSetupQuery || studentScoreQuery  || assessmentSettingsQuery || reportSettingsQuery ? 'col-3' : 'col-12 mx-auto'">
 
-        <div class="w-full h-[70vh] overflow-y-scroll scrollbar-thin mb-10">
+        <div class="w-full mb-10">
 
-        <div class="card mt-3">
-          <div class="card-body" style="padding: 0;">
-            <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
-              <div class="ml-3 mb-2">Campus Settings</div>
+
+          <div class="card mt-3">
+            <div class="card-body p-0">
+<!--              <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
+                <div class="ml-3 mb-2">Setup</div>
+              </div>-->
+
+              <div class="list-group list-group-flush mb-1 mt-1" >
+                <router-link
+                    v-for="(item, idx) in  campusSetupMenu" :key="idx"
+                    class="list-group-item list-group-item-action"
+                    :class="item.router_name === campusSetupQuery ? 'active' : ''"
+                    :to="{name:'campus-curriculum-setup', query:{id:campusNumber,sch:schoolNumber, crr:campusCurriculumNumber, cr:curriculumNumberParent,type:item.router_name}}">
+                  <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></router-link>
+              </div>
+
             </div>
-
-            <div class="list-group list-group-flush mb-1 rounded-0" >
-              <router-link
-                  v-for="(item, idx) in  campusSettingsMenu" :key="idx"
-                  class="list-group-item list-group-item-action"
-                  :class="item.router_name === campusSetupQuery ? 'active' : ''"
-                  :to="{name:'campus-curriculum-setup', query:{id:campusNumber,sch:schoolNumber, crr:campusCurriculumNumber, cr:curriculumNumberParent,type:item.router_name}}">
-                <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></router-link>
-            </div>
-
           </div>
-        </div>
 
 
-
-        <div class="card mt-3">
-          <div class="card-body" style="padding: 0;">
-            <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
-              <div class="ml-3 mb-2">Assessments Settings</div>
-            </div>
-            <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-              <router-link
-                  v-for="(item, idx) in  assess" :key="idx"
-                  class="list-group-item list-group-item-action"
-                  :class="item.router_name === assessmentSettingsQuery ? 'active' : ''"
-                  :to="{name:'campus-curriculum-setup', query:{id:campusNumber,sch:schoolNumber, crr:campusCurriculumNumber, cr:curriculumNumberParent, ass:item.router_name}}">
-                <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></router-link>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="card mt-3">
-          <div class="card-body" style="padding: 0;" >
-            <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
-              <div class="ml-3 mb-2">Report Card Settings</div>
-            </div>
-            <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-              <router-link
-                  v-for="(item, idx) in  reportSettingsMenu" :key="idx"
-                  class="list-group-item list-group-item-action"
-                  :class="item.router_name === reportSettingsQuery ? 'active' : ''"
-                  :to="{name:'campus-curriculum-setup', query:{id:campusNumber,sch:schoolNumber, crr:campusCurriculumNumber, cr:curriculumNumberParent, rp:item.router_name}}">
-                <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></router-link>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="card mt-3">
-          <div class="card-body" style="padding: 0;" >
-            <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
-              <div class="ml-3 mb-2">Student Score</div>
-            </div>
-
-            <div class="list-group list-group-flush mb-1 rounded-0" >
-              <router-link
-                  v-for="(item, idx) in  studentScoreMenu" :key="idx"
-                  class="list-group-item list-group-item-action"
-                  :class="item.router_name === studentScoreQuery ? 'active' : ''"
-                  :to="{name:'campus-curriculum-setup', query:{id:campusNumber,sch:schoolNumber, crr:campusCurriculumNumber, cr:curriculumNumberParent, ss:item.router_name}}">
-                <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></router-link>
-            </div>
-
-          </div>
-        </div>
 
         </div>
 
@@ -261,8 +230,9 @@ const switchCurriculum = (curriculum) => {
       </div>
 
 
-      <div class="col-9" v-if="campusSetupQuery">
 
+<!---------------------->
+      <div class="col-9" v-if="campusSetupQuery === 'campus-settings'">
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
 
@@ -280,8 +250,7 @@ const switchCurriculum = (curriculum) => {
       </div>
 
 
-
-      <div class="col-9" v-if="assessmentSettingsQuery">
+      <div class="col-9" v-if="campusSetupQuery === 'assessments-settings'">
 
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
@@ -290,19 +259,22 @@ const switchCurriculum = (curriculum) => {
         </div>
       </div>
 
-      <div class="col-9" v-if="studentScoreQuery">
-        <div class="card mt-3">
-          <div class="card-body" style="padding: 0;">
-            <score-setup></score-setup>
-          </div>
-        </div>
-      </div>
 
-      <div class="col-9" v-if="reportSettingsQuery">
+
+
+      <div class="col-9" v-if="campusSetupQuery === 'report-card-settings'" >
 
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
             <report-setup></report-setup>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-9" v-if="campusSetupQuery === 'student-score'">
+        <div class="card mt-3">
+          <div class="card-body" style="padding: 0;">
+            <score-setup></score-setup>
           </div>
         </div>
       </div>
