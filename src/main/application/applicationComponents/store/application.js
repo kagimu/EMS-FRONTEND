@@ -30,6 +30,9 @@ export const useApplicationStore = defineStore("application", () => {
     let previousSchoolResultsAllResponse = ref(null)
     let studentDataResponse = ref(null)
     let submitApplicationOnSkipPreviousSchoolResponse = ref(null)
+    let interviewListByIdResponse = ref(null)
+    let updateInterviewResponse = ref(null)
+    let interviewDeleteByIdResponse = ref(null)
 
     async function newApplicationDetails(data) {
         return await api.post("main/applications/new-parent", data)
@@ -145,6 +148,22 @@ export const useApplicationStore = defineStore("application", () => {
                 }
             })
     }
+
+     async function fetchInterviewListById(data) {
+        let interview_number = data?.interview_number ?? ""
+        let campus_class_number = data?.campus_class_number ?? ""
+        return await api.get("main/interviews/details?interview_number="+interview_number+"&campus_class_number="+campus_class_number)
+            .then((response) => {
+                interviewListByIdResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
     async function fetchApplicationById(applicationId){
     return await api.get("main/applications/"+applicationId)
     .then((response) => {
@@ -162,6 +181,33 @@ export const useApplicationStore = defineStore("application", () => {
             .then((response) => {
                 newInterviewResponse.value = response.data
 
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function updateInterview(data) {
+        return await api.put("main/interviews", data)
+            .then((response) => {
+                updateInterviewResponse.value = response.data
+
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
+    async function deleteInterviewList(data) {
+        let interview_number = data?.interview_number ?? ""
+        return await api.delete("main/interviews/delete/"+interview_number)
+            .then((response) => {
+                interviewDeleteByIdResponse.value = response.data
             })
             .catch((response) => {
                 if(response && response.response){
@@ -445,7 +491,13 @@ export const useApplicationStore = defineStore("application", () => {
         studentDataResponse,
         fetchStudent,
         submitApplicationOnSkipPreviousSchool,
-        submitApplicationOnSkipPreviousSchoolResponse
+        submitApplicationOnSkipPreviousSchoolResponse,
+        fetchInterviewListById,
+        interviewListByIdResponse,
+        updateInterview,
+        updateInterviewResponse,
+        deleteInterviewList,
+        interviewDeleteByIdResponse
 
     }
 })

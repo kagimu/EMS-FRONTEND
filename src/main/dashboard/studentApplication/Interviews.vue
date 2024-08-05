@@ -11,12 +11,10 @@ import NewInterview from "@/main/dashboard/studentApplication/NewInterview.vue"
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 
-
 const campusList = ref([])
 const schoolList = ref([])
 const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
-
 const showingModal = ref(false)
 const interviewList = ref( [])
 let errorMessage = ref(null)
@@ -31,8 +29,13 @@ const assesssmentMetricsDialog = ref(false)
 const thisDialog = ref(false)
 const loading = ref(false)
 const classList  = ref(null)
+const interviewListData = ref([])
+const editMode = ref(false)
+const namee = ref(null)
 
 const showModal = () => {
+  interviewListData.value = ""
+  editMode.value = false
     showingModal.value = true
     thisDialog.value=false
 }
@@ -64,7 +67,83 @@ onMounted(
     }
 
 
-    watch(
+const showInterviewAssessmentDialog = (interview) =>{
+  interviewNumber.value = interview.number
+  interviewAssessmentDialog.value = true
+
+}
+
+
+const fetchClasses = (campus_number) => {
+      campusStore.fetchClassesByCampus(campus_number)
+  }
+
+const formData = reactive({ 
+name:null,
+interview_date:null,
+venue:null,
+message:null,
+assessment:[]
+})
+
+
+const createInterview = () => {
+// alert(JSON.stringify(formData))
+applicationStore.createNewInterview(formData)
+}
+
+  const showAssesssmentMetricsDialog = (interview) =>{
+  interviewNumber.value = interview.number
+
+}
+
+const editThisData = (List) => {
+  editMode.value = true
+  interviewListData.value = List
+  namee.value = List.name
+  showingModal.value = true
+}
+
+
+  const deleteThisData = (interview) => {
+  if(!confirm("Are you sure, you want to delete: " + interview.name)){
+    return
+  }else{
+    let data = {
+      interview_number:interview.interview_number
+    }
+applicationStore.deleteInterviewList(data)
+  }
+}
+
+
+watch(
+    () => applicationStore.interviewDeleteByIdResponse,
+    async (data) => {
+        if (data) {
+            notificationStore.successToast("Success", data.message)
+            getInterviewList()
+        }
+    },
+    {deep: true}
+)
+    
+
+
+watch(
+          () => applicationStore.updateInterviewResponse,
+          async (data) => {
+              if (data) {
+               buttonLoader.value = false
+               showingModal.value = false
+               getInterviewList()
+              }
+          },
+          {deep: true}
+      )
+
+
+watch(
       () => campusStore.campusListResponse,
       async (data) => {
           if (data) {
@@ -103,55 +182,13 @@ watch (
         assesssmentMetricsDialog.value = false
         errorMessage.value = data.message
         buttonLoader.value = false
-        notificationStore.errorToast("Error",data.message)
+        // notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}
 )
 
-const showInterviewAssessmentDialog = (interview) =>{
-  interviewNumber.value = interview.number
-  interviewAssessmentDialog.value = true
 
-}
-
-
-const fetchClasses = (campus_number) => {
-      campusStore.fetchClassesByCampus(campus_number)
-  }
-
-const formData = reactive({ 
-name:null,
-interview_date:null,
-venue:null,
-message:null,
-assessment:[]
-})
-
-
-const createInterview = () => {
-// alert(JSON.stringify(formData))
-applicationStore.createNewInterview(formData)
-}
-
-watch(
-      () => applicationStore.newInterviewResponse,
-      async (data) => {
-          if (data) {
-              buttonLoader.value = false
-              assesssmentMetricsDialog.value = false
-              notificationStore.successToast("Success", data.message)
-              await applicationStore.fetchInterviewList()
-
-          }
-      },
-      {deep: true}
-  )
-
-  const showAssesssmentMetricsDialog = (interview) =>{
-  interviewNumber.value = interview.number
-
-}
 
 watch(
           () => applicationStore.newInterviewResponse,
@@ -197,8 +234,8 @@ watch(
     </div>
     
     
-    <AppModal title="Create Interview" v-model="showingModal" xl4>
-      <NewInterview></NewInterview>
+    <AppModal :title="editMode ? 'Edit ' + namee:'Create Interview'" v-model="showingModal" xl4>
+      <NewInterview :interviewListData="interviewListData"></NewInterview>
     </AppModal>
 
 
@@ -288,19 +325,18 @@ watch(
        </div>
 
  <div v-else>
-    <table
-      id="datatable"
-      class="table table-striped"
-      style="font-size: 13px !important;"
+    <table 
+       class="table table-hover caption-top mt-4 table-sm table-striped"
+      style="font-size: 13px !important;width: 100%;"
     >
       <thead>
         <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>ScheduledOn</th>
-          <th>Venue</th>
-          <th>Comment</th>
-          <th>Actions</th>
+          <th  class="w-[2%]">#</th>
+          <th  class="w-[18%]">Name</th>
+          <th  class="w-[10%]">ScheduledOn</th>
+          <th  class="w-[10%]">Venue</th>
+          <th class="w-[35%]">Comment</th>
+          <th class="w-[25%]">Actions</th>
         </tr>
 
       </thead>
@@ -310,13 +346,16 @@ watch(
           <td>{{ interview.name}}</td>
           <td>{{ interview.interview_date }}</td>
           <td>{{ interview.venue }}</td>
-          <td class="w-[25%]">{{ interview.message }}</td>
+          <td>{{ interview.message }}</td>
           <td>
-        
+            <div class="flex justify-content-between">
+            <button @click="editThisData(interview)"  class="link-primary" style="border-width: 0px;text-decoration: none;"><small>
+              <i  style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small>
+            </button>
+              <button class="mr-1" @click="deleteThisData(interview)">
+                <i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i>
+              </button>
 
-            <div>
-            
-       
               <router-link style="display:non"
                   class="text-decoration-none"
                   :to="{name:'manage-interviews', query:{interview_id:interview.number, interview:interview.name}}">
@@ -324,6 +363,10 @@ watch(
                 <small>Manage Applicants</small>
                 </button>
               </router-link>
+            </div>
+
+            <div>
+          
             </div>
 
 
