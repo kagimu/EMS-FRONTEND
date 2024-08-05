@@ -36,14 +36,14 @@ const switchTabs = (tab) => {
 
 
         <div class="cursor-pointer text-sm rounded-t-md ml-1 mr-1" :class="selectedTab === 'grade-standards' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('grade-standards')">
-          <div class="py-2 px-3">
+          <div class="py-1 px-3">
             <i class="bi bi-box-arrow-in-right mr-1"></i>
             Grade Standards
           </div>
         </div>
 
         <div class="cursor-pointer text-sm  rounded-t-md mr-1" :class="selectedTab === 'assessment-area-grading-standard' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('assessment-area-grading-standard')">
-          <div class="py-2 px-3">
+          <div class="py-1 px-3">
             <i class="bi bi-box-arrow-in-right mr-1"></i>
             Assessment Area Grading Standard
           </div>
