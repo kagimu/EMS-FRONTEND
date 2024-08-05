@@ -87,7 +87,7 @@ watch(
       appDatails.preferred_campus_number = data.student.campus_class;
       appDatails.reason = data.student.reason_for_choosing_school;
       appDatails.status = data.status;
-      appDatails.previousSchools = data.PreviousSchools;
+      appDatails.previousSchools = data.previous_schools;
       appDatails.student_number = data.student.number;
       applicationStore.fetchPreviousSchoolResultsByStudent(appDatails.student_number);
 
@@ -227,10 +227,11 @@ watch(
         <div class="card mb-3">
           <div class="card-header">Previous School Details</div>
           <ul class="list-group list-group-flush">
+            {{ appDatails.previous_schools }}
             <li v-for="(school, index) in appDatails.previousSchools" :key="index" class="list-group-item">
               <strong>School:</strong> {{ school.name }}
               <ul>
-                <li v-for="(cls, idx) in school.Classes" :key="idx">
+                <li v-for="(cls, idx) in school.classes" :key="idx">
                   <strong>Class:</strong> {{ cls.class }}, <strong>Year:</strong> {{ cls.year }}
                 </li>
               </ul>
@@ -239,10 +240,10 @@ watch(
         </div>
       </div>
 
-      <!-- <div class="col-md-3" v-if="appDatails.status === 'INTERVIEW_SCHEDULED'">
+      <div class="col-md-3" v-if="appDatails.status === 'INTERVIEW_SCHEDULED'">
         <div class="card mb-3">
-          <div class="card-header">Previous School Results</div>
-          <div class="card-body">
+          <div class="card-header" style="background-color: #198754;"><b>STUDENT SCHEDULED FOR INTERVIEW ...</b> </div>
+          <!-- <div class="card-body">
             <table class="table table-sm table-striped table-bordered">
               <thead>
                 <tr>
@@ -265,9 +266,9 @@ watch(
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div> -->
         </div>
-      </div> -->
+      </div>
       
       <!-- Interview Scheduling Form Card -->
       <div class="col-md-3" v-if="appDatails.status === 'SUBMITTED'">
