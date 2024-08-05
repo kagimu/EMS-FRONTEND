@@ -261,7 +261,7 @@ export const useApplicationStore = defineStore("application", () => {
             let  interview_number =   data?.interview_number ?? ""
             let assessment_metric_number = data?.assessment_metric_number ?? ""
           
-            return await api.get("main/interviews/students-by-interview/?interview_number="+interview_number+"&assessment_metric_number="+assessment_metric_number)
+            return await api.get("main/interviews/students-by-interview?interview_number="+interview_number+"&assessment_metric_number="+assessment_metric_number)
                 .then((response) => {
                     StudentsOnInterviewResponse.value = response.data
                 })

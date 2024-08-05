@@ -386,6 +386,8 @@ watch(
   
 
 <style scoped>
-  
+  .td{
+    text-transform: capitalize !important;
+  }
 </style>
  
