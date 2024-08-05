@@ -255,11 +255,13 @@ export const useApplicationStore = defineStore("application", () => {
         } )
         }
 
+        // main/interviews/"+interview_number+"/students?assessment_metric_number="+assessment_metric_number
+        // https://wholesome-api.noregrets.ug/main/interviews/students-by-interview/?interview_number=7f7ab8ff-dc31-40e8-9b85-e73f6bae9f9d&assessment_metric_number=0f1a614d-171a-4fbf-8943-2d1db3a3c416
         async function fetchStudentsOnInterview(data) {
             let  interview_number =   data?.interview_number ?? ""
             let assessment_metric_number = data?.assessment_metric_number ?? ""
           
-            return await api.get("main/interviews/"+interview_number+"/students?assessment_metric_number="+assessment_metric_number)
+            return await api.get("main/interviews/students-by-interview/?interview_number="+interview_number+"&assessment_metric_number="+assessment_metric_number)
                 .then((response) => {
                     StudentsOnInterviewResponse.value = response.data
                 })
