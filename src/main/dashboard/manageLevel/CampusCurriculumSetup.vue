@@ -148,8 +148,6 @@ const switchCurriculum = (curriculum) => {
       </div>
 
 
-
-<!---------------------->
       <div class="col-9" v-if="campusSetupQuery === 'campus-settings'">
         <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
