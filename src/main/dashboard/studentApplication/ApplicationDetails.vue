@@ -23,7 +23,6 @@ onMounted(async () => {
   applicationStore.fetchApplicationList();
   applicationStore.fetchPreviousSchoolResultsAll();
   applicationStore.fetchApplicationById(props.applicationNumber);
-  getInterviewListData();
   schoolStore.fetchSchools();
 });
 
@@ -71,7 +70,7 @@ watch(
   () => applicationStore.applicationByIdResponse,
   async (data) => {
     if (data) {
-      alert(JSON.stringify(data.student.surname))
+      // alert(JSON.stringify(data.student.campus_class_number))
       appDatails.surname = data.parent.surname;
       appDatails.second_name = data.parent.second_name;
       appDatails.other_name = data.parent.other_names;
@@ -91,17 +90,22 @@ watch(
       appDatails.previousSchools = data.PreviousSchools;
       appDatails.student_number = data.student.number;
       applicationStore.fetchPreviousSchoolResultsByStudent(appDatails.student_number);
+
+      let dataInfo = {
+    campus_class_number:data.student.campus_class_number ,
+  }
+  applicationStore.fetchInterviewList(dataInfo)
     }
   },
   { deep: true }
 );
 
-const getInterviewListData = () => {
-  let data = {
-    campus_class_number: "",
-  };
-  applicationStore.fetchInterviewList(data);
-};
+// const getInterviewListData = (campusClassNumber) => {
+//   let data = {
+//     campus_class_number: campusClassNumber,
+//   };
+//   applicationStore.fetchInterviewList(data);
+// };
 
 const formData = reactive({
   interview_number: null,
@@ -191,7 +195,7 @@ watch(
         <div class="card mb-3">
           <div class="card-header">Guardian/parent Details</div>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item"><strong>Surname:</strong> {{ appDatails.surname }}</li>
+            <li class="list-group-item" ><strong>Surname:</strong> {{ appDatails.surname }}</li>
             <li class="list-group-item"><strong>Second name:</strong> {{ appDatails.second_name }}</li>
             <li class="list-group-item"><strong>Other names:</strong> {{ appDatails.other_name }}</li>
             <li class="list-group-item"><strong>Telephone No.:</strong> {{ appDatails.main_telephone_number }}</li>
@@ -274,10 +278,10 @@ watch(
               <div class="form-group">
                 <label for="interview">Select Interview</label>
                 <select v-model="formData.interview_number" id="interview" class="form-control" required>
-                  <option v-for="interview in interviewListData" :value="interview.number">{{ interview.title }}</option>
+                  <option v-for="interview in interviewListData" :value="interview.interview_number">{{ interview.name }}</option>
                 </select>
               </div>
-              <button type="submit" class="btn btn-success mt-2" :disabled="buttonLoader">
+              <button type="submit" class="btn btn-success mt-3" :disabled="buttonLoader">
                 {{ buttonLoader ? 'Scheduling...' : 'Schedule Interview' }}
               </button>
             </form>
@@ -301,5 +305,8 @@ watch(
 .table th,
 .table td {
   text-align: center;
+}
+.list-group-item{
+  text-transform: capitalize !important;
 }
 </style>
