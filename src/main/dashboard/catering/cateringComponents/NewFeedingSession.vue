@@ -148,16 +148,18 @@ const doFetchMenuItem = () => {
 
 
     const compute = (value, index) => {
-      value = value.toString().replace(/,/g, "")
-      if (!isNaN(value)) {
-        value = value - 0;
-      }
+        if(value) {
+          value = value.toString().replace(/,/g, "")
+          if (!isNaN(value)) {
+            value = value - 0;
+          }
 
-      // let calculator = math.ela
-
-      Items.value[index].quantity = eval(value) >= 0 ? eval(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null;
+          let calculator = math.evaluate(value);
 
 
+          // Items.value[index].quantity = calculator >= 0 ? calculator.toLocaleString() : null;
+          Items.value[index].quantity = calculator >= 0 ? calculator.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null;
+        }
     }
 
 
@@ -272,7 +274,7 @@ watch(
                       </td>
                       <td>
                          <input
-                            maxlength="10"
+                            maxlength="20"
                             type="text"
                             v-model="itemData.quantity"
                             @input="updateAmount(index)"
