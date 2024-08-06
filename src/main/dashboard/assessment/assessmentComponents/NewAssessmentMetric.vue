@@ -61,7 +61,7 @@
       })
   
     const form = reactive({ 
-      name:null,
+
       code:null,
       assessment_area_number:null,
       description:null,
@@ -77,19 +77,38 @@
     const getAssessmentScheduleInfo = () =>{
        if(props.assessmentMetricList.number){
       form.code = props.assessmentMetricList.key,
-      form.assessment_area_number = props.assessmentMetricList.assessment_area_number,
       form.description = props.assessmentMetricList.description,
       form.max_score = props.assessmentMetricList.max_score,
-      form.metric_number = props.assessmentMetricList.metric_number,
-      form.campus_class_number = props.assessmentMetricList.campus_class_number,
-      form.grading_standard_number = props.assessmentMetricList.grading_standard_number,
-      form.study_period_number = props.assessmentMetricList.study_period_number,
+     form.metric_number = props.assessmentMetricList.metric_number,
+  
       form.scheduled_on = props.assessmentMetricList.scheduled_on,
       form.require_comment = props.assessmentMetricList.require_comment
-      academic_year_number.value = props.assessmentMetricList.academic_year_number
       campus_level_number.value = props.assessmentMetricList.campus_level_number
 
-       }
+      fetchCurriculumClass()
+
+      if(props.assessmentMetricList.campus_level_number){
+        classStore.fetchClassByLevel(campus_curriculum_number,props.assessmentMetricList.campus_level_number)
+         academicYearStore.fetchAcademicYearByLevel(props.assessmentMetricList.campus_level_number)   
+         form.campus_class_number = props.assessmentMetricList.campus_class_number
+         academic_year_number.value = props.assessmentMetricList.academic_year_number 
+      }
+      if(props.assessmentMetricList.academic_year_number){
+        studyPeriodStore.fetchStudyPeriodByAcademicYear(props.assessmentMetricList.academic_year_number)
+        form.study_period_number = props.assessmentMetricList.study_period_number
+      }
+
+
+    let dataInf = {
+     campus_number:campusNumber,
+     campus_class_number:props.assessmentMetricList.campus_class_number,
+     school_number:schoolN
+   }
+    assessmentStore.fetchGradeStandard(dataInf)
+   }
+
+   form.grading_standard_number  = props.assessmentMetricList.grading_standard_number
+       
     }
   
     
@@ -97,6 +116,7 @@
       () => props.assessmentMetricList,
       async (data) => {
         if(data){
+          fetchCurriculumClass()
           getAssessmentScheduleInfo()
         }
       }
@@ -112,8 +132,14 @@
 
 
   const fetchCurriculumClass = () =>{
-  classStore.fetchClassByLevel(campus_curriculum_number,campus_level_number.value)
-  academicYearStore.fetchAcademicYearByLevel(campus_level_number.value)
+    if(props.assessmentMetricList.number){
+      classStore.fetchClassByLevel(campus_curriculum_number,props.assessmentMetricList.campus_level_number)
+      academicYearStore.fetchAcademicYearByLevel(props.assessmentMetricList.campus_level_number)
+    }else {
+      classStore.fetchClassByLevel(campus_curriculum_number,campus_level_number.value)
+      academicYearStore.fetchAcademicYearByLevel(campus_level_number.value)
+    }
+
   }
   
   
@@ -185,7 +211,12 @@
      buttonLoader.value = true
       form.code = form.code ? parseInt(form.code) : form.code
       form.max_score = form.max_score ? parseInt(form.max_score) : form.max_score
-     assessmentStore.createAssessmentMetrics(form)
+      if(props.assessmentMetricList.number){
+ alert(JSON.stringify(form))
+      }else{
+        assessmentStore.createAssessmentMetrics(form)
+      }
+   
     }
   
     watch (
@@ -194,7 +225,6 @@
       if(data){
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-       form.name= ""
        form.assessment_area_number=null,
        form.description=null,
        form.max_score=null,
@@ -314,7 +344,7 @@
 
 <template>
   <div>
-    {{ assessmentMetricList }}
+    <!-- {{ assessmentMetricList }} -->
      <form @submit.prevent="addInterviewAssesmentMetrics">
         <div class="row">
            <div class="col-lg-6">
