@@ -131,7 +131,7 @@ const addMenuItem = () =>{
     const secondaryItemNumbers = menuItems.value.map(menu => {
       return {
         secondary_item_number: menu.secondary_item_number,
-        quantity:parseInt(menu.quantity)
+        quantity:parseFloat(menu.quantity.toString().replace(/,/g, ""))
       }
     })
 
@@ -232,12 +232,20 @@ function availableOptions(index) {
   return menuOptions.value.filter(option => !selectedNames.includes(option.name) || option.name === menuItems.value[index].name)
 }
 
-const compute = (value) => {
+const compute = (value, type, index) => {
   value = value.toString().replace(/,/g, "")
   if (!isNaN(value)) {
     value = value - 0;
   }
-  menuForm.conversion_to_purchase_unit = eval(value) >= 0 ? eval(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null;
+
+  if(type === 'unit') {
+    menuForm.conversion_to_purchase_unit = eval(value) >= 0 ? eval(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null;
+  }
+
+  if(type === 'assembled-item') {
+    menuItems.value[index].quantity = eval(value) >= 0 ? eval(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null;
+  }
+
 }
 
 
@@ -385,7 +393,7 @@ const clearFormData = () => {
                     <input
                         v-model="menuForm.conversion_to_purchase_unit"
                         @keypress="commons.onlyNumberValidator($event)"
-                        v-on:blur="compute(menuForm.conversion_to_purchase_unit)"
+                        v-on:blur="compute(menuForm.conversion_to_purchase_unit, 'unit', '')"
                         class="form-control shadow-none"
                         maxlength="20"
                         required
@@ -459,7 +467,8 @@ const clearFormData = () => {
                     maxlength="10"
                     placeholder="1.0"
                     type="text"
-                    @keypress="commons.numbersOnlyValidator($event)">
+                    @keypress="commons.onlyNumberValidator($event)"
+                    v-on:blur="compute(menu.quantity, 'assembled-item', index)">
               </td>
               <td>
                 <div  class="ml-5">

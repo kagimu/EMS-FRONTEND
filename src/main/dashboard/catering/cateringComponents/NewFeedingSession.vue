@@ -48,8 +48,8 @@
       buttonLoader.value = true
 
   const menu_items = Items.value.map(itemData => ({
-      menu_item_number: itemData.menu_item_number,
-      quantity: parseInt(itemData.quantity),
+      menu_item_number: itemData?.menu_item_number,
+      quantity:parseFloat(itemData?.quantity.toString().replace(/,/g, ""))
     }))
 
         let myData = reactive({
@@ -147,6 +147,17 @@ const doFetchMenuItem = () => {
   
 }
 
+
+    const compute = (value, index) => {
+      value = value.toString().replace(/,/g, "")
+      if (!isNaN(value)) {
+        value = value - 0;
+      }
+
+      Items.value[index].quantity = eval(value) >= 0 ? eval(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null;
+
+
+    }
 
 
 watch(
@@ -260,11 +271,12 @@ watch(
                       </td>
                       <td>
                          <input
-                            @keypress="commons.numbersOnlyValidator($event)"
                             maxlength="10"
                             type="text"
                             v-model="itemData.quantity"
                             @input="updateAmount(index)"
+                            @keypress="commons.onlyNumberValidator($event)"
+                            v-on:blur="compute(itemData.quantity, index)"
                             placeholder=""
                             class="form-control shadow-none">
                       </td>
