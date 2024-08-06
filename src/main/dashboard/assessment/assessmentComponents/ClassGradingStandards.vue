@@ -262,7 +262,7 @@ watch(
           <th scope="col">#</th>
           <th scope="col">Class</th>
           <th>Grading Standard</th>
-          <th>Status</th>
+          <th>Default</th>
           <th class="w-[15%]">Make Default</th>
 <!--          <th class="w-[10%]">Actions</th>-->
         </tr>
@@ -273,8 +273,8 @@ watch(
               <td>{{ gradeList.className }}</td>
               <td>{{ gradeList.grading_standard_name }}</td>
               <td>
-                <span class="border px-2 rounded-sm" v-if="gradeList.status === 'YES'">
-                  {{ gradeList.status === 'YES' ? 'Default' : '' }}
+                <span class="border px-2 rounded-sm">
+                  {{ gradeList.status }}
                 </span>
               </td>
               <td>
