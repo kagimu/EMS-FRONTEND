@@ -84,7 +84,45 @@ watch (
     () => assessmentStore.classGradeStandardResponse,
     async (data) => {
       if(data){
-        gradeStandardData.value = data.data
+
+
+
+   //     gradeStandardData.value = data.data
+
+
+
+        let draft = data.data
+        let accountJsn = {};
+        let accountObj = [];
+
+        let className = "";
+
+        draft.map((accountData,i) => {
+          let _className = "";
+
+          if (className !== accountData.class.name) {
+            className = accountData.class.name;
+            _className = className;
+          } else {
+            _className = "";
+          }
+
+          accountJsn = {
+            code:(i+1),
+            className: _className ? (_className + "["+ accountData.class.abbreviation+"]") : "",
+            class_number:accountData.class.number,
+            scale_name:accountData.scale.scale_name,
+            scale_number:accountData.scale.scale_number,
+            grading_standard_name:accountData.grading_standard.name,
+            grading_standard_number:accountData.grading_standard.number,
+            status:accountData.status,
+          };
+          accountObj.push(accountJsn);
+        }
+        )
+
+        gradeStandardData.value = accountObj
+
       }
     }
 )
@@ -102,7 +140,7 @@ watch(
     async (data) => {
       if(data){
         showGradeStandardModal.value = false
-         doFetchGradingStandard()
+        doFetchClassGradingStandard()
         notificationStore.successToast("Success", data.message)
       }
     }
@@ -113,7 +151,7 @@ watch(
     async (data) => {
       if(data){
         showGradeStandardModal.value = false
-         doFetchGradingStandard()
+        doFetchClassGradingStandard()
         notificationStore.successToast("Success", data.message)
       }
     }
@@ -160,7 +198,7 @@ watch(
     () => assessmentStore.changeStatusGradingScaleResponse,
     async (data) => {
       if(data){
-        doFetchGradingStandard()
+        doFetchClassGradingStandard()
         deletionLoader.value = false
         notificationStore.successToast("Success",data.message)
       }
@@ -171,7 +209,7 @@ watch(
     () => assessmentStore.deleteGradingScaleResponse,
     async (data) => {
       if(data){
-        doFetchGradingStandard()
+        doFetchClassGradingStandard()
         deletionLoader.value = false
         notificationStore.successToast("Success",data.message)
       }
@@ -217,7 +255,7 @@ watch(
             <select
                 class="form-select form-select-sm shadow-none" required
                 v-model="class_number"
-                @change="doFetchGradingStandard"
+                @change="doFetchClassGradingStandard"
             >
               <option disabled :value=null>--Select Class--</option>
               <option value="">All</option>
@@ -238,23 +276,23 @@ watch(
         <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Name</th>
+          <th scope="col">Class</th>
+          <th>Grading Standard</th>
           <th>Status</th>
-          <th>Descriptions</th>
-          <th>Change status</th>
-          <th class="w-[10%]">Actions</th>
+          <th>Make Default</th>
+<!--          <th class="w-[10%]">Actions</th>-->
         </tr>
         </thead>
         <tbody>
             <tr v-for="(gradeList, index) in gradeStandardData " :key="index">
               <td>{{ gradeList.code }}</td>
-              <td>{{ gradeList.name }}</td>
+              <td>{{ gradeList.className }}</td>
+              <td>{{ gradeList.grading_standard_name }}</td>
               <td>
                 <span class="border px-2 rounded-sm">
                   {{ gradeList.status }}
                 </span>
               </td>
-              <td>{{ gradeList.description }}</td>
               <td>
                 <button
                     @click="changeGradingStatus(gradeList, index)"
@@ -264,7 +302,8 @@ watch(
                   {{ gradeList.status === "ACTIVE" ? "Inactivate" : "Activate" }}
                 </button>
               </td>
-              <td>
+
+<!--              <td>
                 <button @click="showGradeStandardDetails(gradeList)" class="mr-1">
                   <i class="bi bi-eye text-[#135f9a] text-[14px]"></i>
                 </button>
@@ -277,7 +316,7 @@ watch(
                   <span class="visually-hidden">Loading...</span>
                 </div>
               </button>
-              </td>
+              </td>-->
             </tr>
         </tbody>
       </table>
