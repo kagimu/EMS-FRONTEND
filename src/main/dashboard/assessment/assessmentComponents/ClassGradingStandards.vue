@@ -18,7 +18,7 @@ const levelStore = useLevelStore()
 const campusStore = useCampusStore()
 const notificationStore = useNotificationStore()
 
-const gradeStandardData = ref([])
+const gradeStandardClasses = ref([])
 const errorMessage = ref(null)
 const showGradeStandardModal = ref(false)
 const gradeStandardInfoModel = ref(false)
@@ -87,7 +87,7 @@ watch (
 
 
 
-   //     gradeStandardData.value = data.data
+   //     gradeStandardClasses.value = data.data
 
 
 
@@ -121,7 +121,7 @@ watch (
         }
         )
 
-        gradeStandardData.value = accountObj
+        gradeStandardClasses.value = accountObj
 
       }
     }
@@ -157,7 +157,7 @@ watch(
     }
 )
 
-const changeGradingStatus = (gradeList, index) => {
+const makeGradingStandardDefault = (gradeList, index) => {
   if(!confirm("Are you sure, you want to change status of: " + gradeList.name)){
     return
   }
@@ -284,22 +284,23 @@ watch(
         </tr>
         </thead>
         <tbody>
-            <tr v-for="(gradeList, index) in gradeStandardData " :key="index">
+            <tr v-for="(gradeList, index) in gradeStandardClasses" :key="index">
               <td>{{ gradeList.code }}</td>
               <td>{{ gradeList.className }}</td>
               <td>{{ gradeList.grading_standard_name }}</td>
               <td>
-                <span class="border px-2 rounded-sm">
-                  {{ gradeList.status }}
+                <span class="border px-2 rounded-sm" v-if="gradeList.status === 'YES'">
+                  {{ gradeList.status === 'YES' ? 'Default' : '' }}
                 </span>
               </td>
               <td>
                 <button
-                    @click="changeGradingStatus(gradeList, index)"
+                    v-if="gradeList.status === 'NO'"
+                    @click="makeGradingStandardDefault(gradeList, index)"
                     type="button"
                     :class="gradeList.status === 'ACTIVE' ? 'bg-[red]' : 'bg-[#0d6efd]'"
                     class="text-white text-xs px-2 rounded-sm">
-                  {{ gradeList.status === "ACTIVE" ? "Inactivate" : "Activate" }}
+                  Make Default
                 </button>
               </td>
 
