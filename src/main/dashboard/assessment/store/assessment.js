@@ -33,8 +33,8 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const deleteGradeResponse = ref(null)
     const deleteGradingScaleResponse = ref(null)
     const changeStatusGradingScaleResponse = ref(null)
-    const  updateGradeStandardResponse = ref(null)
-    const  updateGradeStandardScaleDetailsResponse = ref(null)
+    const updateGradeStandardResponse = ref(null)
+    const updateGradeStandardScaleDetailsResponse = ref(null)
     const removeInterviewAssessmentScheduleResponse = ref(null)
     const removeStudentFromInterviewResponse = ref(null)
     const updateAggregateScaleResponse = ref(null)
@@ -44,6 +44,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const newAggregateNameGroupResponse = ref(null)
     const updateAggregateNameGroupResponse = ref(null)
     const deleteAggregateNameGroupResponse = ref(null)
+    const makeDefaultGradingScaleResponse = ref(null)
 
     async function createAssessmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -476,6 +477,19 @@ async function updateMetric(data,metricNumber) {
                 }
             })
     }
+
+
+    async function doMakeGradingStandardDefault(data) {
+        return await api.post("main/grading-standard/default-for-class",data)
+            .then((response) => {
+             makeDefaultGradingScaleResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
     
     async function updateGradeStandard(data) {
         return await api.post("main/grading-standard/update",data)
@@ -621,6 +635,7 @@ async function updateMetric(data,metricNumber) {
         updateAggregateNameGroupResponse,
         deleteAggregateNameGroupResponse,
         classGradeStandardResponse,
+        makeDefaultGradingScaleResponse,
         createAssessmentAreas,
         fetchAssessmentArea,
         fetchAssessments,
@@ -657,6 +672,7 @@ async function updateMetric(data,metricNumber) {
         fetchAggregateGroupName,
         updateAggregateGroupName,
         deleteAggregateGroupName,
-        fetchClassGradeStandardList
+        fetchClassGradeStandardList,
+        doMakeGradingStandardDefault
     }
 })

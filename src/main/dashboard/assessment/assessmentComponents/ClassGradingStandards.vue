@@ -7,8 +7,6 @@ import useNotificationStore from "@/composables/useNotification.js";
 import AppModal from "@/components/AppModal.vue";
 import {useRouter} from "vue-router";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
-import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
-import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import GradeStandardDetails from "@/main/dashboard/assessment/assessmentComponents/GradeStandardDetails.vue";
 
@@ -31,7 +29,7 @@ const campusClassList = ref(null)
 const namee = ref(null)
 const gradeDataList = ref([])
 const editModel = ref(false)
-const deletionLoader = ref(undefined)
+const buttonLoader = ref(undefined)
 
 
 
@@ -158,40 +156,26 @@ watch(
 )
 
 const makeGradingStandardDefault = (gradeList, index) => {
-  if(!confirm("Are you sure, you want to change status of: " + gradeList.name)){
-    return
-  }
 
-
-  deletionLoader.value = index
- let data = {grading_standard_number:gradeList.number, status:gradeList.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'}
-  assessmentStore.changeStatusGradeStandard(data)
+  buttonLoader.value = index
+  let data = {grading_standard_number:gradeList?.grading_standard_number, class_number:gradeList?.class_number}
+  assessmentStore.doMakeGradingStandardDefault(data)
 }
 
-const showGradeStandardDetails = (gradeList) => {
-  gradeStandardInfoModel.value = true
-  gradeDataList.value = gradeList
-}
 
-const editThisData = (gradeList) => {
-  editModel.value = true
-  gradeDataList.value = gradeList
-  namee.value = gradeList.name
-  showGradeStandardModal.value = true
-}
 
-const deleteThisData = (info,index) => {
 
-  if(!confirm("Are you sure, you want to delete: " + info.name)){
-    return
-  }
 
-  deletionLoader.value = index
-
-  assessmentStore.deleteGradeStandard(info.number)
-
-}
-
+watch(
+    () => assessmentStore.makeDefaultGradingScaleResponse,
+    async (data) => {
+      if(data){
+        doFetchClassGradingStandard()
+        buttonLoader.value = false
+        notificationStore.successToast("Success",data.message)
+      }
+    }
+)
 
 
 watch(
@@ -199,7 +183,7 @@ watch(
     async (data) => {
       if(data){
         doFetchClassGradingStandard()
-        deletionLoader.value = false
+        buttonLoader.value = false
         notificationStore.successToast("Success",data.message)
       }
     }
@@ -210,7 +194,7 @@ watch(
     async (data) => {
       if(data){
         doFetchClassGradingStandard()
-        deletionLoader.value = false
+        buttonLoader.value = false
         notificationStore.successToast("Success",data.message)
       }
     }
@@ -220,7 +204,7 @@ watch(
     () => assessmentStore.errorMessage,
     async (data) => {
       if(data){
-        deletionLoader.value = undefined
+        buttonLoader.value = undefined
         notificationStore.errorToast("Error",data.message)
       }
     })
@@ -279,7 +263,7 @@ watch(
           <th scope="col">Class</th>
           <th>Grading Standard</th>
           <th>Status</th>
-          <th>Make Default</th>
+          <th class="w-[15%]">Make Default</th>
 <!--          <th class="w-[10%]">Actions</th>-->
         </tr>
         </thead>
@@ -301,23 +285,12 @@ watch(
                     :class="gradeList.status === 'ACTIVE' ? 'bg-[red]' : 'bg-[#0d6efd]'"
                     class="text-white text-xs px-2 rounded-sm">
                   Make Default
+                  <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="buttonLoader === index">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
                 </button>
               </td>
 
-<!--              <td>
-                <button @click="showGradeStandardDetails(gradeList)" class="mr-1">
-                  <i class="bi bi-eye text-[#135f9a] text-[14px]"></i>
-                </button>
-                <button @click="editThisData(gradeList)" class="mr-1">
-                  <i class="bi bi-pencil-square text-[#135f9a] text-[14px]"></i>
-                </button>
-              <button type="button" @click="deleteThisData(gradeList, index)">
-                <i class="bi bi-trash text-[14px]" style="color:rgb(201, 10, 10)"></i>
-                <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </button>
-              </td>-->
             </tr>
         </tbody>
       </table>

@@ -153,6 +153,8 @@ const doFetchMenuItem = () => {
         value = value - 0;
       }
 
+      // let calculator = math.ela
+
       Items.value[index].quantity = eval(value) >= 0 ? eval(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null;
 
 
