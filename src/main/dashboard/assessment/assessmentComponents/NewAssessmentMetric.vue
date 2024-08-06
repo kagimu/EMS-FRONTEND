@@ -75,39 +75,38 @@
     })
 
     const getAssessmentScheduleInfo = () =>{
-       if(props.assessmentMetricList.number){
-      form.code = props.assessmentMetricList.key,
-      form.description = props.assessmentMetricList.description,
-      form.max_score = props.assessmentMetricList.max_score,
-     form.metric_number = props.assessmentMetricList.metric_number,
-  
-      form.scheduled_on = props.assessmentMetricList.scheduled_on,
-      form.require_comment = props.assessmentMetricList.require_comment
-      campus_level_number.value = props.assessmentMetricList.campus_level_number
+      let draft = props.assessmentMetricList
+      
+       if(draft.number){
+      form.code = draft.key,
+      form.description = draft.description,
+      form.max_score = draft.max_score,
+      form.metric_number = draft.metric_number,
+      form.scheduled_on = draft.scheduled_on,
+      form.require_comment = draft.require_comment
+      campus_level_number.value = draft.campus_level_number
 
-      fetchCurriculumClass()
-
-      if(props.assessmentMetricList.campus_level_number){
-        classStore.fetchClassByLevel(campus_curriculum_number,props.assessmentMetricList.campus_level_number)
-         academicYearStore.fetchAcademicYearByLevel(props.assessmentMetricList.campus_level_number)   
-         form.campus_class_number = props.assessmentMetricList.campus_class_number
-         academic_year_number.value = props.assessmentMetricList.academic_year_number 
+      if(draft.campus_level_number){
+        classStore.fetchClassByLevel(campus_curriculum_number,draft.campus_level_number)
+         academicYearStore.fetchAcademicYearByLevel(draft.campus_level_number)   
+         form.campus_class_number = draft.campus_class_number
+         academic_year_number.value = draft.academic_year_number 
       }
-      if(props.assessmentMetricList.academic_year_number){
-        studyPeriodStore.fetchStudyPeriodByAcademicYear(props.assessmentMetricList.academic_year_number)
-        form.study_period_number = props.assessmentMetricList.study_period_number
+      if(draft.academic_year_number){
+        studyPeriodStore.fetchStudyPeriodByAcademicYear(draft.academic_year_number)
+        form.study_period_number = draft.study_period_number
       }
 
 
     let dataInf = {
      campus_number:campusNumber,
-     campus_class_number:props.assessmentMetricList.campus_class_number,
+     campus_class_number:draft.campus_class_number,
      school_number:schoolN
    }
     assessmentStore.fetchGradeStandard(dataInf)
    }
 
-   form.grading_standard_number  = props.assessmentMetricList.grading_standard_number
+   form.grading_standard_number  = draft.grading_standard_number
        
     }
   
@@ -344,7 +343,7 @@
 
 <template>
   <div>
-    <!-- {{ assessmentMetricList }} -->
+    {{ assessmentMetricList }}
      <form @submit.prevent="addInterviewAssesmentMetrics">
         <div class="row">
            <div class="col-lg-6">
