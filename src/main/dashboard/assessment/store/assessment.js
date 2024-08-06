@@ -45,6 +45,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const updateAggregateNameGroupResponse = ref(null)
     const deleteAggregateNameGroupResponse = ref(null)
     const makeDefaultGradingScaleResponse = ref(null)
+    const updateAssessmentMetricResponse = ref(null)
 
     async function createAssessmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -249,6 +250,18 @@ async function createAssessmentMetrics(data) {
     return await api.post("main/assessments/assessment-metrics",data)
         .then((response) => {
          newAssessmentMetricResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response && response.response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function updateAssessmentMetrics(data) {
+    return await api.put("main/assessments/assessment-metrics",data)
+        .then((response) => {
+         updateAssessmentMetricResponse.value = response.data
         })
         .catch((response) => {
             if(response && response.response){
@@ -673,6 +686,8 @@ async function updateMetric(data,metricNumber) {
         updateAggregateGroupName,
         deleteAggregateGroupName,
         fetchClassGradeStandardList,
-        doMakeGradingStandardDefault
+        doMakeGradingStandardDefault,
+        updateAssessmentMetricResponse,
+        updateAssessmentMetrics
     }
 })

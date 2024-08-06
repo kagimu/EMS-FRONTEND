@@ -94,6 +94,19 @@
             </div>
          </div>
          
+         <div class="mb-2 ">
+               <label class="textColor"><small>Which Feeding Group ?</small> </label>
+               <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm" required
+                  v-model="form.feeding_group_number"
+              
+                  >
+                  <option disabled value="">Select feeding Group</option>
+                  <option v-for="(list, index) in feedingGroupData" :key="index" :value="list.number">{{ list.name }}
+                  </option>
+               </select>
+            </div>
 
          <div class="col-8">
             <p class="alert alert-danger p-1" style="" ><small>Select <i class="bi bi-check" style="color:red"> </i>items  brought by the student </small> </p>
@@ -188,7 +201,9 @@
    import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
    import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js"
    import useCommonsStore from "@/composables/useCommons.js";
+   import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
    
+
    const commons = useCommonsStore()
      
    const  notificationStore  = useNotificationStore()
@@ -197,6 +212,8 @@
    const enrolmentStore = useEnrolmentStore()
    const studentN = ref(null)
    const admissionStore = useAdmissionStore()
+   const cateringStore = useCateringStore()
+   const feedingGroupData = ref([])
    
    const campusList = ref([])
    const schoolList = ref([])
@@ -258,6 +275,7 @@
      enrollment_date:null,
      academic_year_number:null,
      status:"active",
+     feeding_group_number:""
      })
         
    
@@ -318,6 +336,7 @@
    
      const fetchCampuses = (school_number) => {
        campusStore.fetchCampuses(school_number)
+       cateringStore.fetchFeedingGroup(school_number)
    }
    
    const fetchClasses = (campus_number) => {
@@ -332,6 +351,14 @@
    classStore.fetchClassStreams(campusN)
    
    }
+
+   watch(
+    () => cateringStore.feedingGroupInfoResponse,
+    async (data) => {
+      feedingGroupData.value = data.data
+    },
+    {deep: true}
+)
    watch(
        () => academicYearStore.academicYearByCampusResponse,
        async (data) => {

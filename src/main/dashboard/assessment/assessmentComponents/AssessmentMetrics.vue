@@ -256,7 +256,7 @@ watch(
 const editThisData = (List) => {
   editModel.value = true
   assessmentMetricList.value = List
-  namee.value = List.name
+  namee.value = List.metric_name
   showingModal.value = true
 }
 
@@ -277,7 +277,7 @@ const deleteThisData = (id,name) => {
 <template>
   <div>
 
-    <AppModal  :title="editModel ? 'Edit ' + namee:'Add Assessment Schedule'" v-model="showingModal" xl2>
+    <AppModal  :title="editModel ? 'Edit Assessment Schedule ':'Add Assessment Schedule'" v-model="showingModal" xl2>
       <NewAssessmentMetric :assessmentMetricList="assessmentMetricList"></NewAssessmentMetric>
     </AppModal>
 
