@@ -53,7 +53,6 @@
     }))
 
         let myData = reactive({
-        // code:parseInt(form.code),
         name:form.name,
         status:"ACTIVE",
         menu_items,
