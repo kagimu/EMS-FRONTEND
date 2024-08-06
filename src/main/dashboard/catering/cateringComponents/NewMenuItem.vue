@@ -238,12 +238,14 @@ const compute = (value, type, index) => {
     value = value - 0;
   }
 
+  let calculator = math.evaluate(value);
+
   if(type === 'unit') {
-    menuForm.conversion_to_purchase_unit = eval(value) >= 0 ? eval(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null;
+    menuForm.conversion_to_purchase_unit = calculator >= 0 ? calculator.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null;
   }
 
   if(type === 'assembled-item') {
-    menuItems.value[index].quantity = eval(value) >= 0 ? eval(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null;
+    menuItems.value[index].quantity = calculator >= 0 ? calculator.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null;
   }
 
 }
