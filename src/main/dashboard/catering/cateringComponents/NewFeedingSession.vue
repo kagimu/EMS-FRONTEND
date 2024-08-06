@@ -135,9 +135,9 @@
    }, { deep: true });
    
    
-   const fetchMenuItems = () => {
-       doFetchMenuItem()
-   }
+  //  const fetchMenuItems = () => {
+  //      doFetchMenuItem()
+  //  }
    
    
    const doFetchMenuItem = () => {
@@ -241,7 +241,7 @@
                      style="box-shadow: none;"
                      class="form-select form-select-sm" required
                      v-model="form.school_number"
-                     @change="fetchMenuItems(form.school_number)"
+                     @change="doFetchMenuItem(form.school_number)"
                      :style="!isSelected ? 'border:1px solid red' : '' "
                      >
                      <option disabled value="">Select School</option>

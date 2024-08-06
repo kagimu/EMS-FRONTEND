@@ -325,8 +325,8 @@ watch(
                     <tr>
                       <th>#</th>
                       <th>Name</th>
-                      <th>Unit</th>
-                      <th>Purchase Unit</th>
+                      <th>Unit Of Use</th>
+                      <th>Unit of Purchase</th>
                       <th>Current Quantity</th>
                       <th>Action</th>
                     </tr>
