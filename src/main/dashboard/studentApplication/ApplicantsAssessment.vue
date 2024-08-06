@@ -147,7 +147,7 @@
                  @change="fetchStudentOnInterview(form.assessmentN)"
                  >
                  <option disabled value=""> - Select Assessment Schedule- </option>
-                 <option v-for="(assessment, index) in assessmentDataData" :key="index" :value="assessment.AssessmentMetric.number">{{assessment.AssessmentMetric.name  }}</option>
+                 <option v-for="(assessment, index) in assessmentDataData" :key="index" :value="assessment.number">{{assessment.metric_name  }} - [{{ assessment.assessment_area }}]</option>
               </select>
   <label class="input-group-text" for="inputGroupSelect02"><i  class="bi bi-plus-circle" @click="showModal()"></i></label>
 </div>
