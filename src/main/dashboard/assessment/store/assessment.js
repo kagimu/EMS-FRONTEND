@@ -14,6 +14,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const aggregateScaleResponse = ref(null)
     const newGradeStandardResponse = ref(null)
     const gradeStandardResponse = ref(null)
+    const classGradeStandardResponse = ref(null)
     const newReportCardResponse = ref(null)
     const newAssessmentMetricResponse = ref(null)
     const assessmentMetricsResponse = ref(null)
@@ -193,6 +194,20 @@ async function fetchGradeStandard(data) {
     return await api.get("main/grading-standard?campus_number="+campus_number+"&class_number="+class_number)
         .then((response) => {
             gradeStandardResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response && response.response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
+async function fetchClassGradeStandardList(data) {
+        let school_number = data.school_number ?? ""
+        let class_number = data.class_number ?? ""
+    return await api.get("main/grading-standard/classes?school_number="+school_number+"&class_number="+class_number)
+        .then((response) => {
+            classGradeStandardResponse.value = response.data
         })
         .catch((response) => {
             if(response && response.response){
@@ -605,6 +620,7 @@ async function updateMetric(data,metricNumber) {
         newAggregateNameGroupResponse,
         updateAggregateNameGroupResponse,
         deleteAggregateNameGroupResponse,
+        classGradeStandardResponse,
         createAssessmentAreas,
         fetchAssessmentArea,
         fetchAssessments,
@@ -640,6 +656,7 @@ async function updateMetric(data,metricNumber) {
         createAggregateGroupName,
         fetchAggregateGroupName,
         updateAggregateGroupName,
-        deleteAggregateGroupName
+        deleteAggregateGroupName,
+        fetchClassGradeStandardList
     }
 })

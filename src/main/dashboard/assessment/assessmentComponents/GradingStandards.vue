@@ -253,24 +253,22 @@ watch(
         <tr>
           <th scope="col">#</th>
           <th scope="col">Name</th>
-          <th scope="col">Type</th>
-          <th>Descriptions</th>
           <th>Status</th>
+          <th>Descriptions</th>
           <th>Change status</th>
-          <th>Actions</th>
+          <th class="w-[10%]">Actions</th>
         </tr>
         </thead>
         <tbody>
             <tr v-for="(gradeList, index) in gradeStandardData " :key="index">
               <td>{{ gradeList.code }}</td>
               <td>{{ gradeList.name }}</td>
-              <td>{{ gradeList.type }}</td>
-              <td>{{ gradeList.description }}</td>
               <td>
                 <span class="border px-2 rounded-sm">
                   {{ gradeList.status }}
                 </span>
               </td>
+              <td>{{ gradeList.description }}</td>
               <td>
                 <button
                     @click="changeGradingStatus(gradeList, index)"
