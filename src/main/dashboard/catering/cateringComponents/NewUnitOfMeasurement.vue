@@ -37,6 +37,15 @@ onMounted(() => {
     }
 )
 
+// const getMenuItemInfo = () =>{
+//   let data = {
+//     school_number:form.school_number,
+//     sort_column:"code",
+//     sort_direction:"asc"
+//   }
+//   cateringStore.fetchUnitOfMeasureInfo(data)
+// }
+
 watch (
     () => props.unitOfMeasureList,
     async (data) => {
@@ -59,7 +68,6 @@ const checkUnitOfMeasureInfo = () => {
 
 
 const unitMeasurement = () => {
-
 
   buttonLoader.value = true
   form.code = parseInt(form.code)
