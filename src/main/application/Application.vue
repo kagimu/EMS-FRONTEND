@@ -32,7 +32,10 @@ const nextPage = (data) =>{
 }
 
 const fetchApplicationData = (applicationNumber) => {
-  applicationStore.fetchApplicationById(applicationNumber)
+
+  if(applicationNumber){
+    applicationStore.fetchApplicationById(applicationNumber)
+  }
 }
 
 </script>

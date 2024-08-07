@@ -183,15 +183,15 @@ watch (
     async (data) => {
       if(data){
         applicationId.value = data.number
-        form.surname= data.Student.surname
-        form.second_name=data.Student.second_name
-        form.other_name=data.Student.other_name
-        form.gender= data.Student.gender
-        form.date_of_birth=data.Student.date_of_birth
-        form.preferred_campus_number=data.Student.preferred_campus_number
-        form.reason_for_choosing_school=data.Student.reason_for_choosing_school
-        form.source_of_school_info = data.Student.source_of_school_info
-        form.learner_number = data.Student.number
+        form.surname= data.student.surname
+        form.second_name=data.student.second_name
+        form.other_name=data.student.other_name
+        form.gender= data.student.gender
+        form.date_of_birth=data.student.date_of_birth
+        form.preferred_campus_number=data.student.preferred_campus_number
+        form.reason_for_choosing_school=data.student.reason_for_choosing_school
+        form.source_of_school_info = data.student.source_of_school_info
+        form.learner_number = data.student.number
         if(form.learner_number){
           await setSchoolAndCampus(data)
         }
@@ -210,10 +210,10 @@ async function setSchoolAndCampus(data) {
         api.get("main/campus/all")
             .then((responseData) => {
               campusList.value = responseData.data.data
-              form.preferred_campus_number = data.Student.preferred_campus_number
-              school_number.value=data.Student.PreferredCampus.school_number
-              campusStore.fetchClassesByCampus(data.Student.preferred_campus_number)
-              form.campus_class_number = data.Student.campus_class_number
+              form.preferred_campus_number = data.student.preferred_campus_number
+              school_number.value=data.student.PreferredCampus.school_number
+              campusStore.fetchClassesByCampus(data.student.preferred_campus_number)
+              form.campus_class_number = data.student.campus_class_number
             }).catch((error) => {
           if(error && error.response){
             errorMessage.value = error.response.data

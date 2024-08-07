@@ -18,7 +18,6 @@ let errorMessage = ref(null)
 const emit = defineEmits()
 
 
-
 const form = reactive({
   surname:null,
   second_name:null,
@@ -92,9 +91,7 @@ watch (
 
 onMounted(
     () => {
-      if(applicationNumber !=""){
-        applicationStore.fetchApplicationById(applicationNumber)
-      }
+     
     }
 )
 
@@ -115,16 +112,14 @@ watch (
     () => applicationStore.applicationByIdResponse,
     async (data) => {
       if(data){
-        form.surname = data.Parent.surname
-        form.second_name = data.Parent.second_name
-        form.other_name = data.Parent.other_name
-        form.main_telephone_number = data.Parent.main_telephone_number
-        form.alternative_telephone_number= data.Parent.alternative_telephone_number
-        form.email= data.Parent.email
-        form.alternative_email=data.Parent.alternative_email
-        formData.parent_number= data.Parent.number
-        // alert(JSON.stringify(data))
-        // notificationStore.successToast("Success", data.message)
+        form.surname = data.parent.surname
+        form.second_name = data.parent.second_name
+        form.other_name = data.parent.other_names
+        form.main_telephone_number = data.parent.telephone_number
+        form.alternative_telephone_number= data.parent.alternative_number
+        form.email= data.parent.email
+        form.alternative_email=data.parent.alternative_email
+        formData.parent_number= data.parent.number
       }
     },
     {deep:true}
