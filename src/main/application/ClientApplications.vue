@@ -136,6 +136,10 @@ watch (
     {deep:true}
 )
 
+const goToResume = (applicationId) => {
+// alert(applicationId)
+localStorage.setItem("application-id", applicationId)
+}
 </script>
 <template>
     <div>
@@ -201,7 +205,8 @@ watch (
                         <router-link
                             :to="{name:'application', query:{applicationId:applist.number}}"
                         >
-                          <button 
+                          <button  
+                          @click="goToResume(applist.number)"
                               class="border-b border-r border-t border-l border-[red] rounded-sm px-2 text-[red]"
                               title="">
                           <small style="color:rgb(244, 27, 27)">
@@ -240,6 +245,9 @@ watch (
 
 
 
-<style scoped>
+<style scoped> 
+td {
+  text-transform: capitalize !important;
+}
 
 </style>

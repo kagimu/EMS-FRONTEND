@@ -1,193 +1,4 @@
-<template>
-   <div>
-      <!-- {{ studentNumber }} -->
-      <!-- {{ adm }} -->
-      <form @submit.prevent="Enrol()">
-         <div class="row">
-            <div class="col-4">
-               <p class="alert alert-primary p-1" style="" ><small>Please , Choose a class to enroll
-                   <span style="text-transform: capitalize; color:#0d6efd;">
-                  <b>{{ studentDataInfo.Student.surname +" "+ studentDataInfo.Student.second_name }}</b>
-               </span> !</small> </p>
 
-            <div class="mb-2 ">
-               <label class="textColor"><small>School</small> </label>
-               <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm" required
-                  v-model="form.school_number"
-                  @change="fetchCampuses(form.school_number)"
-                  >
-                  <option disabled value="">Select School</option>
-                  <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-                  </option>
-               </select>
-            </div>
-            <div class="mb-2">
-               <label class="textColor"><small>Campus</small>  </label>
-               <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm"
-                  v-model="form.campus_number" required
-                  @change="fetchClasses(form.campus_number)"
-                  >
-                  <option disabled value="">Select campus</option>
-                  <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-                  </option>
-               </select>
-            </div>
-            <div class="mb-2">
-               <label class="textColor"><small>Class</small> </label>
-               <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm" required
-                  v-model="form.campus_class_number"
-                  @change="fetchAcademicYear(form.campus_class_number)"
-                  >
-                  <option disabled value="">Select class</option>
-                  <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}
-                  </option>
-               </select>
-            </div>
-            <div class="mb-2">
-               <label class="textColor"><small>Stream</small> </label>
-               <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm" required
-                  v-model="form.stream_number"
-                  >
-                  <option disabled value="">Select Stream</option>
-                  <option v-for="(slist, index) in streamList" :key="index" :value="slist.number">{{ slist.name }}
-                  </option>
-               </select>
-            </div>
-            <div class="mb-2">
-               <label class="textColor"><small>Academic Year</small> </label>
-               <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm" required
-                  v-model="form.academic_year_number"
-                  >
-                  <option disabled value="">Select Year</option>
-                  <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
-               </select>
-            </div>
-            <div class="mb-2">
-               <label class="textColor">
-                  <small>Study Period</small> 
-                  <!-- {{ studyPeriodList }} -->
-               </label>
-               <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm" required
-                  v-model="form.study_period_number"
-                  >
-                  <option disabled value="">Select</option>
-                  <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
-               </select>
-               
-            </div>
-            <div class="mb-2">
-               <label class="textColor"><small>Enrolment Date</small> 
-               </label>
-               <input type="date" class="form-control" v-model="form.enrollment_date">
-            </div>
-         </div>
-         
-         <div class="mb-2 ">
-               <label class="textColor"><small>Which Feeding Group ?</small> </label>
-               <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm" required
-                  v-model="form.feeding_group_number"
-              
-                  >
-                  <option disabled value="">Select feeding Group</option>
-                  <option v-for="(list, index) in feedingGroupData" :key="index" :value="list.number">{{ list.name }}
-                  </option>
-               </select>
-            </div>
-
-         <div class="col-8">
-            <p class="alert alert-danger p-1" style="" ><small>Select <i class="bi bi-check" style="color:red"> </i>items  brought by the student </small> </p>
-            <div class="col-12">
-               <div class="mb-2">
-                  <!-- <ul style="display: none;">
-                     <li v-for="(item, indx) in itemsData" :key="indx"
-                        class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
-                        <div class="d-flex align-items-center" style="font-size: 12px;">
-                           <input v-model="selectedItems" 
-                              class="form-check-input me-2" 
-                              type="checkbox" 
-                              :value="item.item_number" 
-                              @change="toggleSelection(item)"
-                              aria-label="..." />
-                           {{ item.item_name }} {{ item.cost }}
-                           <input type="text" 
-                           @keypress="commons.numbersOnlyValidator($event)"
-                            maxlength="10"
-                              class=" ml-1" 
-                              placeholder="1"
-                              style="width: 30px; font-size: 13px; border: 1px solid black;text-align: center;" 
-                              v-model="item.quantity"
-                               
-                              @input="updateQuantity(item, $event)">
-                        </div>
-                     </li>
-                  </ul> -->
-
-                  <table class="table table-hover caption-top mt-1 table-sm table-striped" style="font-size: 13px;">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Item Name</th>
-      <th>Cost</th>
-      <th>Quantity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr v-for="(item, indx) in itemsData" :key="indx">
-      <td>
-        <input v-model="selectedItems" 
-               class="form-check-input" 
-               type="checkbox" 
-               :value="item.item_number" 
-               @change="toggleSelection(item)"
-               aria-label="..." />
-      </td>
-      <td style="font-size: 12px;">{{ item.item_name }}</td>
-      <td style="font-size: 12px;">{{ item.cost }}</td>
-      <td>
-        <input type="text" 
-               @keypress="commons.numbersOnlyValidator($event)" 
-               maxlength="10"
-               class="form-control" 
-               placeholder="1"
-               style="width: 50px; font-size: 13px; text-align: center;" 
-               v-model="item.quantity" 
-               @input="updateQuantity(item, $event)">
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-               </div>
-            </div>
-         </div>
-      </div>
-
-         <hr>
-         <div class="flex justify-content-end mt-2" style="width: 100%;">
-            <button type="submit" class="btn btn-primary border-0 btn-sm">
-            <small>Enrol <i class="bi bi-box-arrow-in-right"></i></small>
-            <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
-               role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span> 
-            </span>
-            </button>
-         </div>
-      </form>
-   </div>
-</template>
 <script setup>
    import {onMounted, reactive, ref, watch} from "vue";
    import useNotificationStore from "@/composables/useNotification.js";
@@ -203,7 +14,7 @@
    import useCommonsStore from "@/composables/useCommons.js";
    import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
    
-
+   
    const commons = useCommonsStore()
      
    const  notificationStore  = useNotificationStore()
@@ -282,7 +93,7 @@
    //enrol student function
      const Enrol = () =>{
       buttonLoader.value=true
-
+   
       const ItemDataToSubmit = {
     items: selectedItems.value
       .map(({ item_number, quantity, brought }) => ({
@@ -303,11 +114,12 @@
      school_number:form.school_number,
      enrollment_date:form.enrollment_date,
      academic_year_number:form.academic_year_number,
+     feeding_group_number:form.feeding_group_number,
      status:"active",
      ...ItemDataToSubmit
    })
-
-      //  alert(JSON.stringify(enrollmentData))
+   
+       alert(JSON.stringify(enrollmentData))
        enrolmentStore.newEnrolment(enrollmentData)
      }
    
@@ -351,14 +163,14 @@
    classStore.fetchClassStreams(campusN)
    
    }
-
+   
    watch(
     () => cateringStore.feedingGroupInfoResponse,
     async (data) => {
       feedingGroupData.value = data.data
     },
     {deep: true}
-)
+   )
    watch(
        () => academicYearStore.academicYearByCampusResponse,
        async (data) => {
@@ -448,11 +260,175 @@
    )
      
 </script>
+<template>
+   <div>
+      <!-- {{ studentNumber }} -->
+      <!-- {{ adm }} -->
+      <form @submit.prevent="Enrol()">
+         <div class="row">
+            <div class="col-4">
+               <label class="alert alert-primary p-1 textColor" style="" ><small>Please , Choose a class to enroll
+                  <span style="text-transform: capitalize; color:#0d6efd;">
+                  <b>{{ studentDataInfo.Student.surname +" "+ studentDataInfo.Student.second_name }}</b>
+                  </span> !</small> 
+               </label>
+               <div class="mb-2 ">
+                  <label class="textColor"><small>School</small> </label>
+                  <select
+                     style="box-shadow: none;"
+                     class="form-select form-select-sm" required
+                     v-model="form.school_number"
+                     @change="fetchCampuses(form.school_number)"
+                     >
+                     <option disabled value="">Select School</option>
+                     <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+                     </option>
+                  </select>
+               </div>
+               <div class="mb-2">
+                  <label class="textColor"><small>Campus</small>  </label>
+                  <select
+                     style="box-shadow: none;"
+                     class="form-select form-select-sm"
+                     v-model="form.campus_number" required
+                     @change="fetchClasses(form.campus_number)"
+                     >
+                     <option disabled value="">Select campus</option>
+                     <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+                     </option>
+                  </select>
+               </div>
+               <div class="mb-2">
+                  <label class="textColor"><small>Class</small> </label>
+                  <select
+                     style="box-shadow: none;"
+                     class="form-select form-select-sm" required
+                     v-model="form.campus_class_number"
+                     @change="fetchAcademicYear(form.campus_class_number)"
+                     >
+                     <option disabled value="">Select class</option>
+                     <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}
+                     </option>
+                  </select>
+               </div>
+               <div class="mb-2">
+                  <label class="textColor"><small>Stream</small> </label>
+                  <select
+                     style="box-shadow: none;"
+                     class="form-select form-select-sm" required
+                     v-model="form.stream_number"
+                     >
+                     <option disabled value="">Select Stream</option>
+                     <option v-for="(slist, index) in streamList" :key="index" :value="slist.number">{{ slist.name }}
+                     </option>
+                  </select>
+               </div>
+               <div class="mb-2">
+                  <label class="textColor"><small>Academic Year</small> </label>
+                  <select
+                     style="box-shadow: none;"
+                     class="form-select form-select-sm" required
+                     v-model="form.academic_year_number"
+                     >
+                     <option disabled value="">Select Year</option>
+                     <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
+                  </select>
+               </div>
+               <div class="mb-2">
+                  <label class="textColor">
+                     <small>Study Period</small> 
+                     <!-- {{ studyPeriodList }} -->
+                  </label>
+                  <select
+                     style="box-shadow: none;"
+                     class="form-select form-select-sm" required
+                     v-model="form.study_period_number"
+                     >
+                     <option disabled value="">Select</option>
+                     <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
+                  </select>
+               </div>
+               <div class="mb-2">
+                  <label class="textColor"><small>Enrolment Date</small> 
+                  </label>
+                  <input type="date" class="form-control" v-model="form.enrollment_date">
+               </div>
+            </div>
+            <div class="col-8">
+               
+               <div class="col-12">
+                  <div class="mb-2">
+                     <label class="alert alert-primary p-1 textColor"  ><small>Tick off  <i class="bi bi-check" style="color:red"> </i>items  brought by the student </small> </label>
+                     <table class="table table-hover caption-top mt-1 table-sm table-striped" style="font-size: 13px;">
+                        <thead>
+                           <tr>
+                              <th>#</th>
+                              <th>Item</th>
+                              <th>Cost</th>
+                              <th>Quantity</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr v-for="(item, indx) in itemsData" :key="indx">
+                              <td>
+                                 <input v-model="selectedItems" 
+                                    class="form-check-input" 
+                                    type="checkbox" 
+                                    :value="item.item_number" 
+                                    @change="toggleSelection(item)"
+                                    aria-label="..." />
+                              </td>
+                              <td style="font-size: 12px;">{{ item.item_name }}</td>
+                              <td style="font-size: 12px;">{{ item.cost }}</td>
+                              <td>
+                                 <input type="text" 
+                                    @keypress="commons.numbersOnlyValidator($event)" 
+                                    maxlength="10"
+                                    class="form-control" 
+                                    placeholder="1"
+                                    style="width: 50px; font-size: 13px; text-align: center;" 
+                                    v-model="item.quantity" 
+                                    @input="updateQuantity(item, $event)">
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+               <div class="mb-2 ">
+                  <label class="textColor alert alert-primary p-1"><small>Which Feeding Group ?</small> </label>
+                  <select
+                     style="box-shadow: none;"
+                     class="form-select form-select-sm" required
+                     v-model="form.feeding_group_number"
+                     >
+                     <option disabled value="">Select feeding Group</option>
+                     <option v-for="(list, index) in feedingGroupData" :key="index" :value="list.number">{{ list.name }}
+                     </option>
+                  </select>
+               </div>
+            </div>
+         </div>
+         <hr>
+         <div class="flex justify-content-end mt-2" style="width: 100%;">
+            <button type="submit" class="btn btn-primary border-0 btn-sm">
+            <small>Enrol <i class="bi bi-box-arrow-in-right"></i></small>
+            <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
+               role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span> 
+            </span>
+            </button>
+         </div>
+      </form>
+   </div>
+</template>
 <style scoped>
    .noFocus:focus {
    outline: none 0 !important;
    box-shadow: none;
    -moz-box-shadow: none;
    -webkit-box-shadow: none;
+   }
+   .textColor {
+      font-size: 13px I !important;
    }
 </style>

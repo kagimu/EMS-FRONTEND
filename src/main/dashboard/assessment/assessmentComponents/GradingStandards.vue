@@ -47,8 +47,9 @@ onMounted(
 
 const doFetchGradingStandard = () => {
   let data = {
-    campus_number:campusNumber,
-    class_number:class_number.value
+    school_number:schoolNumber,
+    class_number:class_number.value,
+  
   }
   assessmentStore.fetchGradeStandard(data)
 }
