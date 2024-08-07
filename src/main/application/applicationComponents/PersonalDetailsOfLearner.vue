@@ -24,7 +24,6 @@ const schoolList = ref([])
 const classList = ref([])
 const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
-const school_number = ref(null)
 const applicationId = ref(null)
 
 const form = reactive({
@@ -33,6 +32,7 @@ const form = reactive({
   other_name:null,
   preferred_type_of_enrollment:null,
   date_of_birth:null,
+  school_number:null,
   gender:"",
   reason_for_choosing_school:null,
   preferred_campus_number: null,
@@ -182,53 +182,33 @@ watch (
     () => applicationStore.applicationByIdResponse,
     async (data) => {
       if(data){
+        let draft = data.student
         applicationId.value = data.number
-        form.surname= data.student.surname
-        form.second_name=data.student.second_name
-        form.other_name=data.student.other_name
-        form.gender= data.student.gender
-        form.date_of_birth=data.student.date_of_birth
-        form.preferred_campus_number=data.student.preferred_campus_number
-        form.reason_for_choosing_school=data.student.reason_for_choosing_school
-        form.source_of_school_info = data.student.source_of_school_info
-        form.learner_number = data.student.number
-        if(form.learner_number){
-          await setSchoolAndCampus(data)
+        form.surname= draft.surname
+        form.second_name=draft.second_name
+        form.other_name=draft.other_name
+        form.gender= draft.gender
+        form.date_of_birth=draft.date_of_birth
+        form.preferred_campus_number=draft.preferred_campus_number
+        form.reason_for_choosing_school=draft.reason_for_choosing_school
+        form.source_of_school_info = draft.source_of_school_info
+        form.learner_number = draft.number
+        form.school_number = draft.school_number
+
+        if(draft?.school_number) {
+          fetchCampuses(draft.school_number)
         }
 
+        if(draft?.preferred_campus_number) {
+          fetchClasses(draft?.preferred_campus_number)
+        }
+
+
       }
-    },
-    {deep:true}
+    }
 )
 
 
-
-async function setSchoolAndCampus(data) {
-  await api.get("main/school/all")
-      .then((response) => {
-        schoolList.value = response.data.data
-        api.get("main/campus/all")
-            .then((responseData) => {
-              campusList.value = responseData.data.data
-              form.preferred_campus_number = data.student.preferred_campus_number
-              school_number.value=data.student.PreferredCampus.school_number
-              campusStore.fetchClassesByCampus(data.student.preferred_campus_number)
-              form.campus_class_number = data.student.campus_class_number
-            }).catch((error) => {
-          if(error && error.response){
-            errorMessage.value = error.response.data
-          }
-        })
-
-      })
-      .catch((error) => {
-        if(error && error.response){
-          errorMessage.value = error.response.data
-        }
-      })
-
-
-}
 
 </script>
 
@@ -279,8 +259,8 @@ async function setSchoolAndCampus(data) {
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm" required
-                      v-model="school_number"
-                      @change="fetchCampuses(school_number)"
+                      v-model="form.school_number"
+                      @change="fetchCampuses(form.school_number)"
               >
                   <option disabled value="">Select School</option>
                   <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}

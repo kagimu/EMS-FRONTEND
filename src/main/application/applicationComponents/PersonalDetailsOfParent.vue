@@ -10,8 +10,8 @@ const routerData = useRouter()
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
 const commons = useCommonsStore()
+const applicationId = ref(null)
 
-let  applicationNumber = routerData.currentRoute.value.query.applicationId
 
 const buttonLoader = ref(false)
 let errorMessage = ref(null)
@@ -112,6 +112,7 @@ watch (
     () => applicationStore.applicationByIdResponse,
     async (data) => {
       if(data){
+        applicationId.value = data.number
         form.surname = data.parent.surname
         form.second_name = data.parent.second_name
         form.other_name = data.parent.other_names
@@ -119,7 +120,7 @@ watch (
         form.alternative_telephone_number= data.parent.alternative_number
         form.email= data.parent.email
         form.alternative_email=data.parent.alternative_email
-        formData.parent_number= data.parent.number
+        formData.application= data.parent.number
       }
     },
     {deep:true}
@@ -127,11 +128,10 @@ watch (
 
 const addParentPersonalDetails = () => {
   buttonLoader.value = true
-  if(!formData.parent_number){
+  if(!applicationId.value){
     applicationStore.newApplicationDetails(form)
   }else {
-    applicationStore.updateParentDetails(formData.parent_number,form)
-//  nextGo()
+    applicationStore.updateParentDetails(applicationId.value,form)
   }
 
 }

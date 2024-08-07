@@ -53,11 +53,10 @@ export const useApplicationStore = defineStore("application", () => {
     }
 
 
-    async function updateParentDetails(parentid,data) {
-        return await api.put("main/applications/parents/"+parentid, data)
+    async function updateParentDetails(applicationId,data) {
+        return await api.put("main/applications/parents/"+applicationId, data)
             .then((response) => {
                 updateParentPersonalDetailsresponse.value = response.data.data
-
             })
             .catch((response) => {
                 if(response && response.response){
