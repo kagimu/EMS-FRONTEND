@@ -255,8 +255,7 @@ watch(
 
       <div class="mt-10">
         <table
-          class="table table-striped"
-          style="font-size: 11px !important;" >
+          class="table table-striped text-[10px]">
         <thead>
         <tr>
           <th scope="col">#</th>
@@ -273,7 +272,7 @@ watch(
               <td>{{ gradeList.className }}</td>
               <td>{{ gradeList.grading_standard_name }}</td>
               <td>
-                <span class="border px-2 rounded-sm">
+                <span class="border rounded-md px-2" :class="gradeList.status === 'YES' ? 'bg-green-100' : 'bg-red-100'">
                   {{ gradeList.status }}
                 </span>
               </td>

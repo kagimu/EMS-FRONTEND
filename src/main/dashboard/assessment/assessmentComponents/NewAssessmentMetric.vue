@@ -17,6 +17,7 @@
 
   let  curriculumNumberParent = routerData.currentRoute.value.query.cr
   const campus_curriculum_number = routerData.currentRoute.value.query.crr
+  let schoolNumber = routerData.currentRoute.value.query.sch
 
 
   const academicYearStore = useAcademicYearStore()
@@ -45,7 +46,7 @@
   const campus_level_number = ref(null)
   const academic_year_number = ref(null)
   const campusNumber = routerData.currentRoute.value.query.id
-  const schoolN= routerData.currentRoute.value.query.sch
+
 
   const props = defineProps({
     assessmentMetricList:{}
@@ -68,7 +69,7 @@
       max_score:null,
       metric_number:null,
       campus_class_number:null,
-      grading_standard_number:null,
+      // grading_standard_number:null,
       study_period_number:null,
       scheduled_on:null,
       require_comment:null
@@ -98,15 +99,10 @@
       }
 
 
-    let dataInf = {
-     campus_number:campusNumber,
-     campus_class_number:draft.campus_class_number,
-     school_number:schoolN
-   }
-    assessmentStore.fetchGradeStandard(dataInf)
+      // doFetchGradingStandard()
    }
 
-   form.grading_standard_number  = draft.grading_standard_number
+   // form.grading_standard_number  = draft.grading_standard_number
        
     }
   
@@ -144,7 +140,7 @@
   
   const  fetchAssessmentAreaList = (campus_class_number) => {
   if(campus_class_number) {
-    doFetchGradingStandard()
+    // doFetchGradingStandard()
     let curriculum_class_number = classLevelList.value.find(item => item.number === campus_class_number).curriculum_class_number
     assessmentStore.fetchAssessmentArea(curriculum_class_number)
   }
@@ -175,15 +171,14 @@
 
 
   
-  const doFetchGradingStandard = () => {
+ /* const doFetchGradingStandard = () => {
    let data = {
-     campus_number:campusNumber,
-     campus_class_number:form.campus_class_number,
-     school_number:schoolN
+     school_number:schoolNumber,
+     class_number:form.campus_class_number,
    }
     assessmentStore.fetchGradeStandard(data)
   }
-  
+  */
 
       
   watch(
@@ -211,12 +206,14 @@
       form.code = form.code ? parseInt(form.code) : form.code
       form.max_score = form.max_score ? parseInt(form.max_score) : form.max_score
       if(props.assessmentMetricList.number){
- alert(JSON.stringify(form))
+
       }else{
         assessmentStore.createAssessmentMetrics(form)
       }
    
     }
+
+
   
     watch (
     () => assessmentStore.newAssessmentMetricResponse,
@@ -224,13 +221,13 @@
       if(data){
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-       form.assessment_area_number=null,
-       form.description=null,
-       form.max_score=null,
-       form.metric_number=null,
-       form.campus_class_number=null,
-       form.grading_standard_number=null,
-       form.study_period_number=null,
+       form.assessment_area_number=null
+       form.description=null
+       form.max_score=null
+       form.metric_number=null
+       form.campus_class_number=null
+       // form.grading_standard_number=null
+       form.study_period_number=null
        form.scheduled_on=null
       }
     }
@@ -343,7 +340,6 @@
 
 <template>
   <div>
-    {{ assessmentMetricList }}
      <form @submit.prevent="addInterviewAssesmentMetrics">
         <div class="row">
            <div class="col-lg-6">
@@ -425,22 +421,23 @@
                  </select>
               </div>
 
-              <div class="mb-2">
-                 <label class="textColor"><small>Assessment Area</small> <span class="star">*</span></label>
-                 <select
-                    style="box-shadow: none;"
-                    class="form-select form-select-sm"
-                    v-model="form.assessment_area_number"
-                    >
-                    <option disabled value="">Select</option>
-                    <option v-for="(list, index) in AsessmentListData" :key="index" :value="list.number">{{ list.name }}
-                    </option>
-                 </select>
-              </div>
+
 
         </div>
            <div class="col-lg-6">
-          
+
+             <div class="mb-2">
+               <label class="textColor"><small>Assessment Area</small> <span class="star">*</span></label>
+               <select
+                   style="box-shadow: none;"
+                   class="form-select form-select-sm"
+                   v-model="form.assessment_area_number"
+               >
+                 <option disabled value="">Select</option>
+                 <option v-for="(list, index) in AsessmentListData" :key="index" :value="list.number">{{ list.name }}
+                 </option>
+               </select>
+             </div>
           
               <div class="mb-2">
                  <label class="textColor"><small>Requires A comment ?</small> <span class="star">*</span></label>
@@ -455,7 +452,7 @@
               </div>
 
 
-             <div class="mb-2">
+<!--             <div class="mb-2">
                <label class="textColor"><small>Grading Standard</small> <span class="star">*</span></label>
                <select
                    style="box-shadow: none;"
@@ -465,7 +462,7 @@
                  <option disabled value="">Select</option>
                  <option v-for="(gradeList,index) in gradeData" :key="index" :value="gradeList.number">{{ gradeList.name }}</option>
                </select>
-             </div>
+             </div>-->
 
         <div class="mb-2">
                  <label class="textColor"><small>Maximum Score</small></label>

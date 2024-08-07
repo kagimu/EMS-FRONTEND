@@ -191,9 +191,9 @@ async function createGradeStandard(data) {
 }
 
 async function fetchGradeStandard(data) {
-        let campus_number = data.campus_number ?? ""
+        let school_number = data.school_number ?? ""
         let class_number = data.class_number ?? ""
-    return await api.get("main/grading-standard?campus_number="+campus_number+"&class_number="+class_number)
+    return await api.get("main/grading-standard?school_number="+school_number+"&class_number="+class_number)
         .then((response) => {
             gradeStandardResponse.value = response.data
         })
