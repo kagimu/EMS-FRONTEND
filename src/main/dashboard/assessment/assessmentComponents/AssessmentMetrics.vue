@@ -245,6 +245,16 @@ watch(
 
 
 watch(
+    () => assessmentStore.newAssessmentMetricResponse,
+    async (data) => {
+      if(data){
+        showingModal.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
+watch(
     () => assessmentStore.metricResponse,
     async (data) => {
       if(data){
