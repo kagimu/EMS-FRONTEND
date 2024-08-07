@@ -4,17 +4,25 @@ import {useApplicationStore} from "@/main/application/applicationComponents/stor
 import useNotificationStore from "@/composables/useNotification.js";
 import ClientApplicationDetails from "@/main/application/ClientApplicationDetails.vue";
 import router from "@/config/router.js";
+import PaginationTemplate from "@/components/PaginationTemplate.vue";
+
+const showingModal = ref(false)
+const showAppmodal = ref(false)
+const tableLoader = ref(true)
 
 const applicationInfoList = ref( [])
 let errorMessage = ref(null)
-
 const applications= ref(null)
 const isLoading = ref(true);
 
-
-
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
+const loading = ref(false)
+const page = ref(1)
+const per_page = ref(20)
+const total_items = ref(0)
+const total_rows = ref(0)
+
 
 const setApplicationNumber = (ap) =>{
   applications.value = ap
@@ -24,15 +32,93 @@ const setApplicationNumber = (ap) =>{
 
 onMounted(
     async () => {
-      await applicationStore.fetchApplicationList()
+      // await applicationStore.fetchApplicationList()
+      doFetchApplication()
     } )
+
+
+
+
+    const doFetchApplication = () =>{
+   let data = {
+      page: 1,
+      per_page: per_page.value,   
+      
+   }
+   loading.value = true;
+   applicationInfoList.value = []
+   applicationStore.fetchApplicationList(data).finally(() => {
+    loading.value = false; 
+  })
+
+  }
+
+  function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
+  if (scrollTop + clientHeight >= scrollHeight) {
+
+    tableLoader.value = true
+
+    let data = {
+      page: (page.value+1),
+      per_page: per_page.value,   
+     
+   }
+   loading.value = true;
+   applicationInfoList.value = []
+   applicationStore.fetchApplicationList(data).finally(() => {
+    loading.value = false; 
+  })
+  }
+}
+
+  const fetchApplications = (data) => {
+    if(data) {
+      let current_page = data.page
+      page.value = current_page
+      tableLoader.value = false
+
+      let per_page_item = data.per_page;
+      per_page.value = per_page_item;
+
+      let objArray = data.content
+
+      let count_items = (current_page * per_page_item)
+      let totalItems = data?.total_rows
+
+      if(objArray && objArray.length > 0){
+      
+      per_page.value = per_page_item;
+      page.value = current_page
+      total_rows.value = totalItems
+
+      total_items.value = (count_items > totalItems) ? totalItems : count_items
+
+        objArray.forEach((list, i) => {
+
+          list.key =  (current_page - 1) * per_page_item + i + 1
+
+          const index = applicationInfoList.value.findIndex(object => object.number === list.number);
+
+          if (index === -1) {
+            applicationInfoList.value.push(list);
+          }
+
+        })
+      }
+
+
+    }
+  }
+
+
 
 watch(
     () => applicationStore.applicationListResponse,
     async (data) => {
       if(data){
         isLoading.value = false;
-        applicationInfoList.value = data.data
+        // applicationInfoList.value = data.data
+        fetchApplications(data)
       }
     },
     {deep:true}
@@ -76,11 +162,21 @@ watch (
                 <div>
 
                   <p class="mt-3 ml-3"><b>Student Application List</b></p>
-
+<!-- {{ applicationInfoList }} -->
+<PaginationTemplate
+                    @perPageChanged="doFetchApplication"
+                    v-model:perPage="per_page"
+                    :per_page="per_page"
+                    :total_items="total_items"
+                    :total_rows="total_rows"></PaginationTemplate>
                   <hr >
+
                   <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
                     {{errorMessage}}
                   </div>
+                  <div
+                    class="w-full overflow-auto max-h-[520px] scrollbar-thin"
+                    @scroll="onScroll" v-else>
                   <table
                       id="datatable"
                       class="table table-sm table-striped text-sm"
@@ -130,6 +226,7 @@ watch (
                     </tr>
                     </tbody>
                   </table>
+                </div>
                 </div>
               </div></div></div>
         </div>
