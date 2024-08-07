@@ -190,6 +190,7 @@ watch (
         form.gender= draft.gender
         form.date_of_birth=draft.date_of_birth
         form.preferred_campus_number=draft.preferred_campus_number
+        form.campus_class_number=draft.campus_class_number
         form.reason_for_choosing_school=draft.reason_for_choosing_school
         form.source_of_school_info = draft.source_of_school_info
         form.learner_number = draft.number
