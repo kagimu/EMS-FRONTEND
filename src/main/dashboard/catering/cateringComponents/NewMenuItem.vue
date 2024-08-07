@@ -109,6 +109,15 @@ watch(
       unitMeasurementData.value = data.data
     }
 )
+watch (
+    () => cateringStore.newUnitOfMeasureInfoResponse,
+    async (data) => {
+      if(data){
+        fetchUnit()
+        showUnitModal.value = false
+      }
+    }
+)
 
 
 

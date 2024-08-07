@@ -101,6 +101,15 @@ watch (
       }
     }
 )
+
+watch (
+    () => cateringStore.newUnitOfMeasureInfoResponse,
+    async (data) => {
+      if(data){
+        getMenuItemInfo()
+      }
+    }
+)
 </script>
 <template>
     <div>
