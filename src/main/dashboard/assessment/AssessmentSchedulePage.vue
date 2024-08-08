@@ -1,15 +1,15 @@
 <script setup>
 
 import {useRouter} from "vue-router";
-import AssessmentList from "@/main/dashboard/assessment/assessmentComponents/AssessmentList.vue";
-import ExamType from "@/main/dashboard/assessment/assessmentComponents/ExamType.vue"
-import GradingScale from "@/main/dashboard/assessment/assessmentComponents/GradingScale.vue";
-import GradingStandards from "@/main/dashboard/assessment/assessmentComponents/GradingStandards.vue";
-import AssessmentScale from "@/main/dashboard/assessment/assessmentComponents/AssessmentGrade.vue";
-import AssessmentAreaGradingStandard from "@/main/dashboard/assessment/AssessmentAreaGradingStandard.vue";
+// import AssessmentList from "@/main/dashboard/assessment/assessmentComponents/AssessmentList.vue";
+// import ExamType from "@/main/dashboard/assessment/assessmentComponents/ExamType.vue"
+// import GradingScale from "@/main/dashboard/assessment/assessmentComponents/GradingScale.vue";
+// import GradingStandards from "@/main/dashboard/assessment/assessmentComponents/GradingStandards.vue";
+// import AssessmentScale from "@/main/dashboard/assessment/assessmentComponents/AssessmentGrade.vue";
+// import AssessmentAreaGradingStandard from "@/main/dashboard/assessment/AssessmentAreaGradingStandard.vue";
 import AssessmentMetrics from "@/main/dashboard/assessment/assessmentComponents/AssessmentMetrics.vue";
-import Grades from "@/main/dashboard/assessment/assessmentComponents/Grades.vue";
-import AggregateNameGroup from "@/main/dashboard/assessment/assessmentComponents/AggregateNameGroup.vue";
+// import Grades from "@/main/dashboard/assessment/assessmentComponents/Grades.vue";
+// import AggregateNameGroup from "@/main/dashboard/assessment/assessmentComponents/AggregateNameGroup.vue";
 import router from "@/config/router.js";
 
 
@@ -46,7 +46,7 @@ const switchTabs = (tab) => {
   
               <div>
 
-                <div v-if="selectedTab === 'aggregate-name-group'">
+<!--                <div v-if="selectedTab === 'aggregate-name-group'">
                   <AggregateNameGroup></AggregateNameGroup>
                 </div>
 
@@ -62,13 +62,13 @@ const switchTabs = (tab) => {
                   </div>
                   <div v-if="selectedTab === 'grade-standards'">
                       <GradingStandards></GradingStandards>
-                  </div>
+                  </div>-->
 
                 <div v-if="selectedTab === 'assessment-metrics'">
                   <assessment-metrics></assessment-metrics>
                 </div>
 
-                  <div v-if="selectedTab === 'grade-scale'">
+<!--                  <div v-if="selectedTab === 'grade-scale'">
                     <GradingScale></GradingScale>
                   </div>
 
@@ -82,7 +82,7 @@ const switchTabs = (tab) => {
 
                 <div v-if="selectedTab === 'assessment-area-grading-standard'">
                   <assessment-area-grading-standard></assessment-area-grading-standard>
-                </div>
+                </div>-->
                   
 
                   

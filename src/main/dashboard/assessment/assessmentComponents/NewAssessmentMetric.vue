@@ -44,6 +44,7 @@
   const academicYearList = ref([])
   const studyPeriodList = ref([])
   const campus_level_number = ref(null)
+  const assessment_schedule_number = ref(null)
   const academic_year_number = ref(null)
   const campusNumber = routerData.currentRoute.value.query.id
 
@@ -75,17 +76,30 @@
       require_comment:null
     })
 
+  watch(
+      () => props.assessmentMetricList,
+      async (data) => {
+        if(data){
+          fetchCurriculumClass()
+          getAssessmentScheduleInfo()
+        }
+      }
+  )
+
     const getAssessmentScheduleInfo = () =>{
       let draft = props.assessmentMetricList
       
        if(draft.number){
-      form.code = draft.key,
-      form.description = draft.description,
-      form.max_score = draft.max_score,
-      form.metric_number = draft.metric_number,
-      form.scheduled_on = draft.scheduled_on,
+      form.code = draft.key
+      form.description = draft.description
+      form.max_score = draft.max_score
+      form.metric_number = draft.metric_number
+      form.scheduled_on = draft.scheduled_on
       form.require_comment = draft.require_comment
       campus_level_number.value = draft.campus_level_number
+      assessment_schedule_number.value = draft.number
+
+      form.assessment_area_number = draft.assessment_area_number
 
       if(draft.campus_level_number){
         classStore.fetchClassByLevel(campus_curriculum_number,draft.campus_level_number)
@@ -99,23 +113,34 @@
       }
 
 
-      // doFetchGradingStandard()
+
    }
 
-   // form.grading_standard_number  = draft.grading_standard_number
+
        
     }
-  
-    
+
+
   watch(
-      () => props.assessmentMetricList,
+      () => classStore.classLevelByLevelResponse,
       async (data) => {
-        if(data){
-          fetchCurriculumClass()
-          getAssessmentScheduleInfo()
+        if (data) {
+          if(data && data.data){
+            let classData = data.data
+            if(classData && (classData.length > 0)){
+              classLevelList.value = classData[0].classes
+
+              // this is called on update
+              if(form.campus_class_number) {
+                fetchAssessmentAreaList(form.campus_class_number)
+              }
+
+            }
+          }
+
         }
-      }
-  )
+      })
+
 
   const format = (date) => {
   const day = date.getDate();
@@ -140,25 +165,12 @@
   
   const  fetchAssessmentAreaList = (campus_class_number) => {
   if(campus_class_number) {
-    // doFetchGradingStandard()
     let curriculum_class_number = classLevelList.value.find(item => item.number === campus_class_number).curriculum_class_number
     assessmentStore.fetchAssessmentArea(curriculum_class_number)
   }
   }
   
-  watch(
-  () => classStore.classLevelByLevelResponse,
-  async (data) => {
-      if (data) {
-          if(data && data.data){
-              let classData = data.data
-              if(classData && (classData.length > 0)){
-                classLevelList.value = classData[0].classes
-              }
-    }
 
-      }
-  })
 
   watch(
       () => assessmentStore.assessmentAreaResponse,
@@ -170,15 +182,6 @@
   )
 
 
-  
- /* const doFetchGradingStandard = () => {
-   let data = {
-     school_number:schoolNumber,
-     class_number:form.campus_class_number,
-   }
-    assessmentStore.fetchGradeStandard(data)
-  }
-  */
 
       
   watch(
@@ -191,22 +194,16 @@
   )
   
   
-  //working on dialog
-  const closeDialog = () => {
-  interviewDialog.value = false;
-  };
-  const showDialog = () => {
-  interviewDialog.value = true;
-  }
+
     const addInterviewAssesmentMetrics = () => {
-      // parseInt
-    //  alert(JSON.stringify(form))
+
      interviewDialog.value = true;
      buttonLoader.value = true
       form.code = form.code ? parseInt(form.code) : form.code
       form.max_score = form.max_score ? parseInt(form.max_score) : form.max_score
-      if(props.assessmentMetricList.number){
-
+      if(assessment_schedule_number.value){
+        form.assessment_metric_number = assessment_schedule_number.value
+        assessmentStore.updateAssessmentMetrics(form)
       }else{
         assessmentStore.createAssessmentMetrics(form)
       }
@@ -340,6 +337,7 @@
 
 <template>
   <div>
+
      <form @submit.prevent="addInterviewAssesmentMetrics">
         <div class="row">
            <div class="col-lg-6">
@@ -374,8 +372,7 @@
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
                     v-model="form.campus_class_number"
-                    @change="fetchAssessmentAreaList(form.campus_class_number)"
-                    >
+                    @change="fetchAssessmentAreaList(form.campus_class_number)">
                     <option disabled value="">Select Class</option>
                     <option v-for="(clist, index) in classLevelList" :key="index" :value="clist.number">{{clist.name}}</option>
                  </select>
