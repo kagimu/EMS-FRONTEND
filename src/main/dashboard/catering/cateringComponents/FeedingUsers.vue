@@ -94,7 +94,7 @@ watch(
     () => cateringStore.errorMessage,
     async (data) => {
       if (data) {
-        doGetUsersList()
+        // doGetUsersList()
         notificationStore.errorToast("Error", data.message);
       }
     }
