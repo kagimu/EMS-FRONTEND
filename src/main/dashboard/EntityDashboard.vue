@@ -49,7 +49,7 @@ const editEntity = (list) => {
 
 const deleteEntity = (list, index) => {
   let confirm_delete = confirm(
-      "Are you sure you want to delete this entity."
+      "Are you sure you want to delete this entity: "+list.name
   );
   if (!confirm_delete) {
     return false;

@@ -248,6 +248,18 @@ watch(
     () => assessmentStore.newAssessmentMetricResponse,
     async (data) => {
       if(data){
+        await doFetchAssessmentMetric()
+        showingModal.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
+watch(
+    () => assessmentStore.updateAssessmentMetricResponse,
+    async (data) => {
+      if(data){
+        await doFetchAssessmentMetric()
         showingModal.value = false
         notificationStore.successToast("Success", data.message)
       }
