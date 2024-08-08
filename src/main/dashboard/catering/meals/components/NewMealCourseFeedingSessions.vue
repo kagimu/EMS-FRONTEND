@@ -159,7 +159,7 @@ watch(
             <input
                 v-model="form.feeding_sessions"
                 style="outline: none 0 !important; box-shadow: none;"
-                class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="idx">
+                class="form-check-input me-1" type="checkbox" :value="lvl.feeding_session_number" :id="idx">
             <label class="form-check-label cursor-pointer" :for="idx">{{lvl.name}}</label>
           </li>
 

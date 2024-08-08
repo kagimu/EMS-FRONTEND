@@ -316,6 +316,30 @@ watch (
 )
 
   
+  //delete
+const deleteThisData = (applicationData) => {
+  if(!confirm("Are you sure, you want to delete: " + applicationData.Student.surname+' '+applicationData.Student.second_name )){
+    return
+  }else{
+    // delete endpoint
+    let data = {
+      application_number:applicationData.number
+    }
+    applicationStore.deleteApplication(data)
+  }
+}
+
+
+watch (
+    () => applicationStore.deleteApplicationResponse,
+    async (data) => {
+      if(data){
+         doFetchApplication()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
 </script>
 
 <template>
@@ -490,6 +514,7 @@ watch (
                        <td>{{ applist.Student.gender }}</td>
                        <!-- <td>{{ applist.Student.date_of_birth }}</td> -->
                        <td><span v-if="applist.status == 'INTERVIEW_SCHEDULED'">INTERVIEW SCHEDULED</span>
+                        <span v-if="applist.status == 'DRAFT'">DRAFT</span>
                           <span v-if="applist.status == 'SUBMITTED'" style="font-size: 12px;">SUBMITTED</span>
                           <span v-if="applist.status == 'ADMITTED'" style="font-size: 12px;">ADMITTED</span>
                           <span v-if="applist.status == 'ENROLLED'" style="font-size: 12px;">ENROLLED</span>
@@ -497,7 +522,7 @@ watch (
                        <td>{{ applist.application_fee_payment === false ? 'pending' : 'completed' }}</td>
                        <td>
                           <button v-if="applist.status === 'SUBMITTED'" @click="setApplicationNumber(applist.number)"
-                             class="btn btn-primary btn-sm mb-2" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
+                             class="btn btn-primary btn-sm textColor" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
                           Schedule Interview
                           </small>
                           </button>
@@ -516,6 +541,13 @@ watch (
                           View Details
                           </small>
                           </button>
+                          <button v-if="applist.status === 'DRAFT'"  @click="deleteThisData(applist)"
+                             style="border-width: 0px;text-decoration: none;" title="View Details"><small>
+                              <i class="bi bi-trash" style="color: red;"></i>
+                         
+                          </small>
+                          </button>
+                          
                           <!-- <RouterLink :to="{name : 'admit-student', query:{id:applist.number} }" class="link-danger" style="text-decoration: none;"  >
                              <i class="bi bi-eye"></i>  
                              </RouterLink>   -->

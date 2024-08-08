@@ -33,6 +33,7 @@ export const useApplicationStore = defineStore("application", () => {
     let interviewListByIdResponse = ref(null)
     let updateInterviewResponse = ref(null)
     let interviewDeleteByIdResponse = ref(null)
+    let deleteApplicationResponse = ref(null)
 
     async function newApplicationDetails(data) {
         return await api.post("main/applications/new-parent", data)
@@ -440,6 +441,19 @@ export const useApplicationStore = defineStore("application", () => {
             })
     }
 
+    async function deleteApplication(data) {
+        return await api.delete("main/applications/delete/"+data.application_number)
+            .then((response) => {
+                deleteApplicationResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
 
     return {
         newApplicationDetailsResponse ,
@@ -498,7 +512,8 @@ export const useApplicationStore = defineStore("application", () => {
         updateInterview,
         updateInterviewResponse,
         deleteInterviewList,
-        interviewDeleteByIdResponse
-
+        interviewDeleteByIdResponse,
+        deleteApplicationResponse,
+        deleteApplication
     }
 })
