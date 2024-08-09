@@ -187,13 +187,13 @@ watch(
 
 
           <div class="mb-2">
-            <label class="textColor"><small>Feeding Session</small></label>
+            <label class="textColor"><small>Menu Pack</small></label>
             <select
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
                 v-model="form.feeding_session_number">
-              <option disabled value="">--Select Feeding Session--</option>
-              <option v-for="(lst, index) in feedingSessionGroupList" :key="index" :value="lst.number">{{ lst.name }}
+              <option disabled value="">--Select Menu Pack--</option>
+              <option v-for="(lst, index) in feedingSessionGroupList" :key="index" :value="lst.feeding_session_number">{{ lst.name }}
               </option>
             </select>
           </div>
