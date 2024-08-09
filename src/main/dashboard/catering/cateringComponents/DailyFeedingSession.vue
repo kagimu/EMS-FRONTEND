@@ -18,7 +18,7 @@
                  <div class="">
                     <div class="row">
                     <div class="col-lg-8">
-                    <h5 style="font-size: 14px;margin-top: 2px;">Daily Feeding Sessions </h5>
+                    <h5 style="font-size: 14px;margin-top: 2px;">Daily Menu Pack </h5>
                     </div>
     
                 <div class="col-lg-4">
