@@ -9,6 +9,7 @@ import Comfirm from "@/main/dashboard/enrollment/Comfirm.vue"
 import AppModal from "@/components/AppModal.vue";
 import { useAbility } from '@casl/vue';
 const { can } = useAbility()
+import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 import router from "@/config/router.js";
 
 
@@ -36,11 +37,13 @@ const status = ref(null)
 const campus = ref(null)
 const school = ref(null)
 const actionType = ref(null)
-
+const cateringStore = useCateringStore()
 
 onMounted(
     async () => {
-      await applicationStore.fetchStudent(student_number)
+      applicationStore.fetchStudent(student_number)
+      cateringStore.FeedingGroupByUserId(student_number)
+      
     } )
 
 watch (
@@ -142,6 +145,16 @@ const cancelled = (cancelled) => {
   showActionDialog.value=false
 }
 
+
+watch (
+    () => cateringStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        notificationStore.errorToast("Error",data.message)
+      }
+    }
+)
 </script>
 <template>
 

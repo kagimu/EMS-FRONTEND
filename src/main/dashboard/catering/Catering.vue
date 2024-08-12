@@ -57,7 +57,7 @@ const mealMenu = ref([
   },
 
   {
-    text:"Meal Course Feeding Sessions",
+    text:"Meal Course Menu Pack",
     value:"meal-course-feeding-sessions"
   },
   {

@@ -116,7 +116,7 @@ if(!confirm("Are you sure, you want to delete: " + name)){
   <div>
 
 
-    <AppModal :title="mealEditMode ? 'Edit Meal Course Feeding Sessions' : 'Add Meal Course Feeding Sessions'" v-model="mealCourseFeedingSessionsDialog" lg>
+    <AppModal :title="mealEditMode ? 'Edit Meal Course Menu Pack' : 'Add Meal Course Menu Pack'" v-model="mealCourseFeedingSessionsDialog" lg>
       <NewMealCourseFeedingSessions :mealListData="mealListData"></NewMealCourseFeedingSessions>
     </AppModal>
 
@@ -128,11 +128,11 @@ if(!confirm("Are you sure, you want to delete: " + name)){
 
 
         <div class="flex justify-content-between mt-3">
-          <div class="ml-4">Meal Course Feeding Sessions</div>
+          <div class="ml-4">Meal Course Menu Pack</div>
           <button
               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addMeal">
             <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-            Add Meal Course Feeding Sessions
+            Add Meal Course                                                        
           </button>
         </div>
 

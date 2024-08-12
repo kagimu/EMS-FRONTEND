@@ -442,7 +442,7 @@ export const useApplicationStore = defineStore("application", () => {
     }
 
     async function deleteApplication(data) {
-        return await api.delete("main/applications/delete/"+data.application_number)
+        return await api.delete("main/applications/"+data.application_number)
             .then((response) => {
                 deleteApplicationResponse.value = response.data
             })

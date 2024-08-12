@@ -42,7 +42,7 @@
             <div class="mb-3"> 
               <label class="textColor">Feeding Session</label>
                 <select v-model="form.feeding_session_number" class="form-control form-select shadow-none">
-                    <option disabled value="">Select Feeding Sessions</option>
+                    <option disabled value="">Select Menu Pack</option>
                     <option v-for="(list, index) in feedingSessionGroupData" :key="index" :value="list.number">{{list.name}}</option>
                 </select>
             </div>

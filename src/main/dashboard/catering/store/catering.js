@@ -45,6 +45,7 @@ export const useCateringStore = defineStore("catering", () => {
     const errorMessage = ref(null)
     const deleteMenuItemResponse = ref(null)
     const commonsStore = useCommonsStore()
+    let feedingGroupByUserIResponse = ref(null)
 
     async function newUnitOfMeasureInfo(data) {
         return await api.post("main/catering/units-of-measure", data)
@@ -535,6 +536,19 @@ async function deleteMenuItem(data) {
         })
 }
 
+//feedingGroupUsers
+async function FeedingGroupByUserId(user_number) {
+    return await api.get("main/users/meals?user_number="+user_number)
+        .then((response) => {
+            feedingGroupByUserIResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response && response.response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
     return {
         newUnitOfMeasureInfoResponse,
         errorMessage,
@@ -613,5 +627,7 @@ async function deleteMenuItem(data) {
         deleteFeedingSession,
         deleteFeedingGroup,
         deleteMenuItem,
+        feedingGroupByUserIResponse,
+        FeedingGroupByUserId
     }
 } )
