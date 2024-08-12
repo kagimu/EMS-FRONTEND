@@ -132,7 +132,7 @@ if(!confirm("Are you sure, you want to delete: " + name)){
           <button
               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addMeal">
             <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-            Add Meal Course Menu Pack
+            Add Meal Course                                                        
           </button>
         </div>
 

@@ -140,6 +140,31 @@ const goToResume = (applicationId) => {
 // alert(applicationId)
 localStorage.setItem("application-id", applicationId)
 }
+
+  //delete
+  const deleteThisData = (applicationData) => {
+  if(!confirm("Are you sure, you want to delete: " + applicationData.Student.surname+' '+applicationData.Student.second_name )){
+    return
+  }else{
+    // delete endpoint
+    let data = {
+      application_number:applicationData.number
+    }
+    applicationStore.deleteApplication(data)
+  }
+}
+
+watch (
+    () => applicationStore.deleteApplicationResponse,
+    async (data) => {
+      if(data){
+         doFetchApplication()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
 </script>
 <template>
     <div>
@@ -214,6 +239,13 @@ localStorage.setItem("application-id", applicationId)
                           </small></button>
                           
                         </router-link>
+
+                        <button @click="deleteThisData(applist)"
+                             style="border-width: 0px;text-decoration: none;" title="Delete"><small>
+                              <i class="bi bi-trash ml-2" style="color: red;"></i>
+                         
+                          </small>
+                          </button>
                       </td>
 
                       <td v-if="applist.status == 'INTERVIEW_SCHEDULED' || applist.status == 'ADMITTED' || applist.status == 'SUBMITTED'">
@@ -225,6 +257,7 @@ localStorage.setItem("application-id", applicationId)
                             title="View Details">
                           <small><i class="bi bi-eye"></i> view Details</small>
                         </button>
+                       
                       </td>
 
 
