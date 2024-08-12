@@ -259,7 +259,7 @@ async function createAssessmentMetrics(data) {
 }
 
 async function updateAssessmentMetrics(data) {
-    return await api.put("main/assessments/assessment-metrics",data)
+    return await api.post("main/assessments/update",data)
         .then((response) => {
          updateAssessmentMetricResponse.value = response.data
         })
