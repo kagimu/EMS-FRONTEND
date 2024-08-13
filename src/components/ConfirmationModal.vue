@@ -87,12 +87,6 @@ defineExpose({
 
 <style scoped>
 
-/*.cancelButton {
-  @apply hover:bg-danger-600 hover:text-white rounded border text-[red] border-[red] text-sm px-5 py-2 whitespace-nowrap transition ease-in-out delay-150;
-}
 
-.confirmButton {
-  @apply hover:bg-danger-600 rounded bg-[red] text-white text-sm px-5 py-2 whitespace-nowrap transition ease-in-out delay-150;
-}*/
 
 </style>
