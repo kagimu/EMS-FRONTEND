@@ -32,18 +32,12 @@ onMounted(
     }
 )
 
-const fetchCampusBySchool = () => {
-  campus_number.value = ""
-  campusStore.fetchCampuses(school_number.value)
-}
 
 const doFetchGroupCalendarList = () => {
-  // if(groupCalendarList.value && groupCalendarList.value.length > 0) {
     groupCalendarList.value = []
-  // }
-  let data = {
-    school_number:school_number.value,
-  }
+    let data = {
+      school_number:school_number.value,
+    }
   mealStore.fetchGroupOnCalendar(data)
 }
 
@@ -70,7 +64,6 @@ watch(
     () => mealStore.groupOnCalendarResponse,
     async (data) => {
       if(data){
-        doFetchGroupCalendarList()
         groupCalendarList.value = data.data
       }
     }
