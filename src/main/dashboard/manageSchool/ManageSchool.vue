@@ -7,12 +7,15 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
 import AppModal from "@/components/AppModal.vue";
 import { useAbility } from '@casl/vue';
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
 
 const { can } = useAbility()
-
-
 const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
+
+const confirmationRef = ref(null);
+
+
 const schoolRef = ref(null)
 const editMode = ref(false)
 const showSelected = ref(null)
@@ -37,15 +40,12 @@ const editSchool = (school) => {
 }
 
 
-const deleteSchool = (school) => {
+const deleteSchool = async (school) => {
 
-  if(!confirm("Are you sure, you want to delete: "+school.name)){
-    return
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+school.name);
+  if (agreed) {
+    schoolStore.deleteSchool(school?.number)
   }
-  let data = {
-    school_number:school.number
-  }
-  schoolStore.deleteSchool(data)
 
 }
 
@@ -125,6 +125,7 @@ const toggleCurriculum = (number) =>{
 <template>
   <div>
 
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="editMode ? 'Edit School' : 'New School'" v-model="schoolDialog" lg>
       <new-school ref="schoolRef"></new-school>

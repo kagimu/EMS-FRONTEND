@@ -23,8 +23,8 @@ export const useSchoolStore = defineStore("school", () => {
             })
     }
 
-    async function deleteSchool(data) {
-        return await api.post("main/school/delete", data)
+    async function deleteSchool(id) {
+        return await api.delete("main/school/delete/"+id)
             .then((response) => {
                 deleteSchoolResponse.value = response.data
             })
