@@ -7,6 +7,8 @@ import router from "@/config/router.js";
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
 import StudentApplicationDetails from '@/main/dashboard/studentApplication/StudentApplicationDetails.vue';
 import AppModal from "@/components/AppModal.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
 
 const showingModal = ref(false)
 const showAppmodal = ref(false)
@@ -121,7 +123,7 @@ watch(
     () => applicationStore.applicationListResponse,
     async (data) => {
       if(data){
-        isLoading.value = false;
+        // isLoading.value = false;
         // applicationInfoList.value = data.data
         fetchApplications(data)
       }
@@ -147,11 +149,19 @@ localStorage.setItem("application-id", applicationId)
 }
 
   //delete
-  const deleteThisData = (applicationData) => {
-  if(!confirm("Are you sure, you want to delete: " + applicationData.Student.surname+' '+applicationData.Student.second_name )){
-    return
-  }else{
-    // delete endpoint
+  const deleteThisData = async (applicationData) => {
+  // if(!confirm("Are you sure, you want to delete: " + applicationData.Student.surname+' '+applicationData.Student.second_name )){
+  //   return
+  // }else{
+
+  //   let data = {
+  //     application_number:applicationData.number
+  //   }
+  //   applicationStore.deleteApplication(data)
+  // }
+
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+ applicationData.Student.surname+' '+applicationData.Student.second_name);
+  if (agreed) {
     let data = {
       application_number:applicationData.number
     }
@@ -177,13 +187,14 @@ watch (
         <student-application-details :application-number="applications"></student-application-details>
      </AppModal>
 
+     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
           <!-- Loader -->
-          <div v-if="isLoading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+          <!-- <div v-if="isLoading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
             <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
-        </div>
+        </div> -->
 
         <!-- modal for viewing more details -->
         <div class="modal fade" id="infoModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
@@ -192,7 +203,7 @@ watch (
             </div>
         </div>
 
-      <div class="mt-[60px;] w-[80%] mx-auto" v-if="isLoading==false">
+      <div class="mt-[60px;] w-[80%] mx-auto" >
         <div class="row">
           <div class="col-12">
             <div class="card p-0 bg-white">
