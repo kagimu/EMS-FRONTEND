@@ -147,12 +147,12 @@ watch (
     async (data) => {
       if(data){
         applicationId.value = data.number
-        formData.schools = []
+
 
         let previousSchool = data.PreviousSchools
         if(previousSchool && (previousSchool.length > 0)){
 
-
+          formData.schools = []
           previousSchool.forEach(lst => {
             let classArr = []
 
