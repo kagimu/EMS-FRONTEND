@@ -5,6 +5,8 @@ import useNotificationStore from "@/composables/useNotification.js";
 import ClientApplicationDetails from "@/main/application/ClientApplicationDetails.vue";
 import router from "@/config/router.js";
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
+import StudentApplicationDetails from '@/main/dashboard/studentApplication/StudentApplicationDetails.vue';
+import AppModal from "@/components/AppModal.vue";
 
 const showingModal = ref(false)
 const showAppmodal = ref(false)
@@ -25,7 +27,10 @@ const total_rows = ref(0)
 
 
 const setApplicationNumber = (ap) =>{
-  applications.value = ap
+  // applications.value = ap
+  // shDialog.value = true
+    applications.value = ap
+    showingModal.value = true
 }
 
 
@@ -168,6 +173,10 @@ watch (
 </script>
 <template>
     <div>
+      <AppModal title="Application Details" v-model="showingModal" xl6>
+        <student-application-details :application-number="applications"></student-application-details>
+     </AppModal>
+
 
           <!-- Loader -->
           <div v-if="isLoading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
@@ -250,8 +259,6 @@ watch (
 
                       <td v-if="applist.status == 'INTERVIEW_SCHEDULED' || applist.status == 'ADMITTED' || applist.status == 'SUBMITTED'">
                         <button
-                            data-bs-toggle="modal"
-                            data-bs-target="#infoModal"
                             @click="setApplicationNumber(applist.number)"
                             class="border-b border-r border-t border-l border-[#0d56c3] rounded-sm px-2 text-[#0d56c3] mr-2"
                             title="View Details">
