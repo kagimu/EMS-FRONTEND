@@ -3,12 +3,6 @@
 import {reactive, ref, watch,onMounted} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
-// import router from "@/config/router.js";
-// import {useRouter} from "vue-router";
-
-
-// const routerData = useRouter()
-// let  applicationNumber = routerData.currentRoute.value.query.applicationId
 
 const buttonLoader = ref(false)
 let errorMessage = ref(null)
@@ -82,13 +76,10 @@ watch (
 
 
 const addSchool = () => {
-  const lastSchool = formData.schools[formData.schools.length - 1];
-  if (lastSchool.name !== '' && lastSchool.classes.some(className => className !== '')) {
     formData.schools.push({
       name: '',
       classes: [{year:'',class:''}],
     });
-  }
 }
 
 const removeSchool = (schoolIndex) => {
@@ -106,10 +97,6 @@ const removeClass = (schoolIndex, classIndex) => {
   formData.schools[schoolIndex].classes.splice(classIndex, 1);
 }
 
-const canAddSchool = () => {
-  const lastSchool = formData.schools[formData.schools.length - 1];
-  return lastSchool.name !== '' && lastSchool.classes.some(className => className !== '');
-}
 
 
 
@@ -143,12 +130,12 @@ watch (
     async (data) => {
       if(data){
         applicationId.value = data.number
-        formData.schools = []
+
 
         let previousSchool = data.PreviousSchools
         if(previousSchool && (previousSchool.length > 0)){
 
-
+          formData.schools = []
           previousSchool.forEach(lst => {
             let classArr = []
 
@@ -160,9 +147,6 @@ watch (
           })
 
         }
-
-
-
 
       }
     }
@@ -218,7 +202,7 @@ watch (
         </div>
         <div class="row" style="margin-top: -20px;">
           <div class="col-lg-12">
-            <button class="btn btn-sm btn-outline-primary mb-2 mr-4" @click="addSchool" :disabled="!canAddSchool()"><small>Add Another School</small></button>
+            <button class="btn btn-sm btn-outline-primary mb-2 mr-4" type="button" @click="addSchool"><small>Add Another School</small></button>
           </div>
         </div>
         <div class="text- mt-4">
