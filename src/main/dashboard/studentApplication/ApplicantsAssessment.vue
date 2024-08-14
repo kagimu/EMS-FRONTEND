@@ -184,7 +184,7 @@
            <tr v-for="(std,index) in interviewStudentListData.students" :key="index" >
             <!-- {{ interviewStudentListData.students }} -->
               <td style="text-transform: capitalize;">
-                 {{std.student_second_name +" " +std.student_second_name + " "+ std.student_other_name}}
+                 {{std.student_surname +" " +std.student_second_name + " "+ std.student_other_name}}
               </td>
               <td scope="col" style="width: 150px;">
                  <input

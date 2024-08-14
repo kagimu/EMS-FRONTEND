@@ -76,7 +76,7 @@
       action:"view_application_list"
     },
     {
-      name:"Create Interview",
+      name:"Manage Interview pool",
       id:"interviews",
       action:"view_interviews"
     },
