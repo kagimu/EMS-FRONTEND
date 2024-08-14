@@ -10,6 +10,9 @@ import {useRouter} from "vue-router";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 
 const { can } = useAbility()
 
@@ -282,23 +285,27 @@ const editThisData = (List) => {
   showingModal.value = true
 }
 
-const deleteThisData = (id,name) => {
-  if(!confirm("Are you sure, you want to delete: " + name)){
-    return
-  }else{
-    // let data = {
-    //  assessment_metric_number:id
-    // }
+const deleteThisData = async (id,name) => {
 
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete Assessment Schedule ? ");
+  if (agreed) {
+    let data = {
      
+    }
+   //delete endpoint
   }
+  
 
 }
+
+
 
 </script>
 <template>
   <div>
 
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+    
     <AppModal  :title="editModel ? 'Edit Assessment Schedule ':'Add Assessment Schedule'" v-model="showingModal" xl2>
       <NewAssessmentMetric :assessmentMetricList="assessmentMetricList"></NewAssessmentMetric>
     </AppModal>
