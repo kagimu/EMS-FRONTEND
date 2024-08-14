@@ -66,7 +66,7 @@
   </table>
 
 
-
+  <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
 </div>
 </template>
@@ -79,6 +79,10 @@ import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/
 import useNotificationStore from "@/composables/useNotification.js";
 import {useRouter} from "vue-router";
 import AppModal from "@/components/AppModal.vue";
+
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 const routerData = useRouter()
 
 
@@ -106,12 +110,13 @@ const editLearningArea = (data) => {
   learningAreaStore.learningAreaData(data.number)
 }
 
-const deleteLearningArea = (data) => {
 
-  if(!confirm("Are you sure, you want to delete: "+data.name)){
-    return
-  }
 
+
+const deleteLearningArea = async (data) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+data.name);
+if (agreed) {
   deletionLoader.value = data.number
 
   let info = {
@@ -120,6 +125,10 @@ const deleteLearningArea = (data) => {
 
   learningAreaStore.deleteLearningArea(info)
 }
+
+
+}
+
 
 onMounted(
     () => {

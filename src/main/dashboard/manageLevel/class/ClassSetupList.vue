@@ -7,6 +7,9 @@ import {useRouter} from "vue-router";
 import NewClassSetUp from "@/main/dashboard/manageLevel/class/NewClassSetUp.vue";
 import useCommonsStore from "@/composables/useCommons.js";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 const routerData = useRouter()
 
 import { useAbility } from '@casl/vue';
@@ -41,20 +44,39 @@ const editClass = (data) => {
   classStore.classData(data.number)
 }
 
-const deleteClass = (data) => {
+// const deleteClass = (data) => {
 
-  if(!confirm("Are you sure, you want to delete: "+data.name)){
-    return
-  }
+//   if(!confirm("Are you sure, you want to delete: "+data.name)){
+//     return
+//   }
 
+//   deletionLoader.value = data.number
+
+//   let info = {
+//     number:data.number
+//   }
+
+//   classStore.deleteClassSetUp(info)
+// }
+
+
+
+const deleteClass = async (data) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+data.name);
+if (agreed) {
   deletionLoader.value = data.number
 
-  let info = {
-    number:data.number
-  }
-
-  classStore.deleteClassSetUp(info)
+let info = {
+  number:data.number
 }
+
+classStore.deleteClassSetUp(info)
+}
+
+
+}
+
 
 const filterClasses = () => {
   fetchClassList()
@@ -133,6 +155,8 @@ watch(
 <template>
   <div>
 
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+    
     <AppModal :title="classEditMode ? 'Edit Class' : 'Add Class'" v-model="classDialog" lg>
       <new-class-set-up ref="classRef"></new-class-set-up>
     </AppModal>

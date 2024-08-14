@@ -256,7 +256,7 @@ if (agreed) {
     <div class="card shadow-sm border-0">
       <div class="card-header bg-light d-flex justify-content-between align-items-center">
         <div>
-          <h5 class="mb-1">{{ list?.name }}</h5>
+          <h6 class="mb-1">{{ list?.name }}</h6>
           <p class="text-danger mb-0">Cost: Shs {{ list?.pack_cost }}</p>
         </div>
         <button
