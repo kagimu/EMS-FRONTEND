@@ -215,6 +215,27 @@ watch(
     () => classStore.campusLevelResponse,
     async (data) => {
       if(data){
+        levelList.value = data.data ///---------------
+      }
+    },
+    {deep:true}
+)
+
+  watch(
+    () => levelStore.campusCurriculumResponse,
+    async (data) => {
+      if(data){
+        curriculumList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
         campusLevelList.value = data.data
       }
     }
