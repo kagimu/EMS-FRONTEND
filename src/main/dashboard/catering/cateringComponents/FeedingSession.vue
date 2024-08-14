@@ -103,29 +103,33 @@
 
     <div class="row">
         <div v-for="(list, index) in feedingSessionGroupData" :key="index" class="col-md-4 mb-2 mt-1">
-          <div class="card m-2 card-hover">
-            <div class="card-header">
+          <div class="card card-hover">
+            <div class="bg-[#f7f7f7] px-2 py-2 rounded-t-md">
        
-              <h5 class="card-title text-[13px]">
-                <div class="row">
-                <div class="col-lg-8">
-                  {{ list.name }} 
+              <div class="">
+
+                <div class="flex flex-grow justify-between text-xs text-gray-600">
+                <div>
+                  <div class="font-bold">{{ list?.name }}</div>
+                  <div class="text-red-800">Cost: Shs {{ list?.pack_cost }}</div>
                 </div>
 
-                <div class="col-lg-4">
-                  <button @click="editThisData(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
-            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148);"></i>
-          </button>
-          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-          <button type="button" @click="deleteThisData(list.feeding_session_number,list.name)">
-            <i class="bi bi-trash" style="color:rgb(201, 10, 10);"></i>
-          </button>
+                <div>
+                  <button
+                      @click="editThisData(list)">
+                    <i class="bi bi-pencil-square mr-2" style="color:rgb(3, 85, 148);"></i>
+                  </button>
+                  <button type="button" @click="deleteThisData(list.feeding_session_number,list.name)">
+                    <i class="bi bi-trash" style="color:rgb(201, 10, 10);"></i>
+                  </button>
                 </div>
 
               </div>
               
-              </h5>
-              <!-- <p class="card-text text-[13px]"><strong>Status:</strong> {{ list.status }}</p> -->
+              </div>
+
+
+
             </div>
               <table class="table table-hover table-sm table-striped text-[12px]">
                 <th>Name</th>
