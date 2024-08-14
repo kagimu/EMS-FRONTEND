@@ -7,6 +7,11 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
 
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+
+
 const notificationStore = useNotificationStore()
 const cateringStore = useCateringStore()
 const errorMessage = ref(null)
@@ -116,12 +121,19 @@ watch(
     },
     {deep: true}
 )
-//delete
-const deleteThisData = (id,name) => {
-  if(!confirm("Are you sure, you want to delete: " + name)){
-    return
+
+
+const deleteThisData = async (id,name) => {
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete this item " + name);
+if (agreed) {
+  let data = {
+ 
   }
 }
+
+
+}
+
 
 watch(
     () => campusStore.campusListResponse,
@@ -146,9 +158,7 @@ watch(
 <template>
     <div>
 
-
-
-
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
     <!-- end  -->
     <div class="row mt-3">
     <div class="col-12">

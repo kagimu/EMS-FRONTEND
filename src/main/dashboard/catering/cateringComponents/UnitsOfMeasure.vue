@@ -7,6 +7,10 @@ import AppModal from "@/components/AppModal.vue";
 import EditUnitsOfMeasure from "@/main/dashboard/catering/cateringComponents/EditUnitsOfMeasure.vue";
 
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+
 const schoolStore = useSchoolStore()
 const schoolList = ref([])
 
@@ -64,15 +68,25 @@ const editUnit = (unitInfo) => {
 }
 
 
-//delete
-const deleteUnitOfMeasurer = (id,name) => {
+// const deleteUnitOfMeasurer = (id,name) => {
+//   deleteLoader.value = true;
+//   if(!confirm("Are you sure, you want to delete: " + name)){
+//     return
+//   }
+//   cateringStore.deleteUnitOfMeasure(id)
+// }
+
+
+const deleteUnitOfMeasurer = async (id,name) => {
   deleteLoader.value = true;
-  if(!confirm("Are you sure, you want to delete: " + name)){
-    return
-  }
-// delete endpoint
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
+if (agreed) {
   cateringStore.deleteUnitOfMeasure(id)
 }
+
+}
+
+
 
 watch(
     () => cateringStore.deleteUnitOfMeasureInfoResponse,
@@ -114,7 +128,7 @@ watch (
 <template>
     <div>
 
-
+      <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
   
     <AppModal :title="unitOfMeasureList ? 'Edit Unit of Measure' : 'Add Unit of Measure'" v-model="showUnitModal" lg>
       <NewUnitOfMeasurement :unitOfMeasureList="unitOfMeasureList"></NewUnitOfMeasurement>

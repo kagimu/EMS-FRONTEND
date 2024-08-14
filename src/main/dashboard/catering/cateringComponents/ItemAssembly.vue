@@ -75,7 +75,7 @@
     </div>
     </div>
     </div>
-    
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
     
     </div>
     </template>
@@ -85,6 +85,21 @@
     import useNotificationStore from "@/composables/useNotification.js";
     import NewItemAssembly from "@/main/dashboard/catering/cateringComponents/NewItemAssembly.vue";
     import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+    import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+
+const deleteThisData = async (id,name) => {
+
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete this Item? ");
+  if (agreed) {
+   
+  }
+  
+
+}
+
+
 
     const cateringStore = useCateringStore()
     const  notificationStore  = useNotificationStore()

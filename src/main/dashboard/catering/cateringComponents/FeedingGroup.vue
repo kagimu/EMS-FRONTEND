@@ -8,6 +8,9 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
 import AppModal from "@/components/AppModal.vue";
 
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 import { useAbility } from '@casl/vue';
 const { can } = useAbility()
 
@@ -115,20 +118,21 @@ const editThisData = (num) => {
   namee.value = num.name
   showingModal.value = true
 }
-//delete
-const deleteThisData = (id,name) => {
-  if(!confirm("Are you sure, you want to delete: " + name)){
-    return
-  }else{
-    // delete endpoint
-    let data = {
+
+const deleteThisData = async (id,name) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
+if (agreed) {
+  let data = {
      feeding_group_number:id
     }
      cateringStore.deleteFeedingGroup(data)
-  }
+}
 
 
 }
+
+
 
 watch (
     () => cateringStore.deleteFeedingGroupResponse,
@@ -158,7 +162,7 @@ watch (
 </script>
 <template>
     <div>
-
+      <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
   <AppModal :title="editModel ? 'Edit ' + namee:'New Feeding Group'" v-model="showingModal" lg>
     <NewFeedingGroup :groupData="dataList"></NewFeedingGroup>
     </AppModal>

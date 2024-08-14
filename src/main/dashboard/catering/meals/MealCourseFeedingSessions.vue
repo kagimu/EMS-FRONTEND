@@ -6,6 +6,9 @@ import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
 import NewMealCourseFeedingSessions from "@/main/dashboard/catering/meals/components/NewMealCourseFeedingSessions.vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 const  mealStore  = useMealStore()
 const  notificationStore  = useNotificationStore()
 const schoolStore = useSchoolStore()
@@ -99,12 +102,19 @@ const dataList = ref([])
     mealCourseFeedingSessionsDialog.value = true
     mealListData.value = num
   }
-//delete
-  const deleteThisData = (id,name) => {
-if(!confirm("Are you sure, you want to delete: " + name)){
-  return
+
+
+
+
+const deleteThisData = async (id,name) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
+if (agreed) {
+  let data = {
+ 
+  }
 }
-// delete endpoint
+
 
 }
 
@@ -114,7 +124,7 @@ if(!confirm("Are you sure, you want to delete: " + name)){
 
 <template>
   <div>
-
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="mealEditMode ? 'Edit Meal Course Menu Pack' : 'Add Meal Course Menu Pack'" v-model="mealCourseFeedingSessionsDialog" lg>
       <NewMealCourseFeedingSessions :mealListData="mealListData"></NewMealCourseFeedingSessions>
