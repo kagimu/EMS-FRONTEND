@@ -104,6 +104,7 @@ const fetchGradingStandard = () =>{
   if(campus_class_number.value) {
     let data = {
       campus_number:campusNumber,
+      school_number:schoolNumber,
       campus_class_number:campus_class_number.value
     }
     assessmentStore.fetchGradingStandardData(data)

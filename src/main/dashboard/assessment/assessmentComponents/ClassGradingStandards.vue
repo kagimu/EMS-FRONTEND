@@ -9,21 +9,30 @@ import {useRouter} from "vue-router";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import GradeStandardDetails from "@/main/dashboard/assessment/assessmentComponents/GradeStandardDetails.vue";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+const routerData = useRouter()
+
 
 const { can } = useAbility()
 const assessmentStore = useAssessmentStore()
 const levelStore = useLevelStore()
 const campusStore = useCampusStore()
+const classStore = useClassesStore()
+
 const notificationStore = useNotificationStore()
 
 const gradeStandardClasses = ref([])
 const errorMessage = ref(null)
 const showGradeStandardModal = ref(false)
 const gradeStandardInfoModel = ref(false)
-const routerData = useRouter()
+
 const campusNumber = routerData.currentRoute.value.query.id
 const schoolNumber = routerData.currentRoute.value.query.sch
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
+
 const class_number = ref(null)
+const campus_level_number = ref("")
+const campusLevelList = ref(null)
 const campusCurriculumDataInfo = ref(null)
 const campusClassList = ref(null)
 const namee = ref(null)
@@ -36,8 +45,25 @@ const buttonLoader = ref(undefined)
 onMounted(
     async () => {
         doFetchClassGradingStandard()
-        campusStore.fetchClassesBySchool(schoolNumber)
+      await classStore.fetchCampusLevel(campus_curriculum_number)
     } )
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        campusLevelList.value = data.data
+      }
+    }
+)
+
+const fetchCampusClass = async () => {
+  let data = {
+    school_number:schoolNumber,
+    campus_level_number:campus_level_number.value
+  }
+  await campusStore.fetchClassesBySchool(data)
+}
 
 const doFetchClassGradingStandard = () => {
   let data = {
@@ -45,12 +71,6 @@ const doFetchClassGradingStandard = () => {
     class_number:class_number.value
   }
   assessmentStore.fetchClassGradeStandardList(data)
-}
-
-const addGradingStandard = () => {
-  gradeDataList.value = ""
-  editModel.value = false
-  showGradeStandardModal.value = true
 }
 
 
@@ -82,12 +102,6 @@ watch (
     () => assessmentStore.classGradeStandardResponse,
     async (data) => {
       if(data){
-
-
-
-   //     gradeStandardClasses.value = data.data
-
-
 
         let draft = data.data
         let accountJsn = {};
@@ -234,8 +248,21 @@ watch(
       <div class="mt-[50px]">
         <div class="row mx-auto">
 
+          <div class="col-lg-3">
+            <div class="mb-2">
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="campus_level_number"
+                  @change="fetchCampusClass()"
+              >
+                <option disabled value="">--Filter by Level--</option>
+                <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+              </select>
+            </div>
+          </div>
 
-          <div class="col-lg-4 mb-2">
+          <div class="col-lg-3 mb-2">
             <select
                 class="form-select form-select-sm shadow-none" required
                 v-model="class_number"

@@ -115,7 +115,12 @@ export const useAssessmentStore = defineStore("assessment", () => {
     async function fetchGradingStandardData(data) {
         let campus_number = data?.campus_number ?? ""
         let campus_class_number = data?.campus_class_number ?? ""
-        return await api.get("main/grading-standard?campus_number="+campus_number+"&campus_class_number="+campus_class_number)
+        let school_number = data?.school_number ?? ""
+        return await api.get("main/grading-standard" +
+                "?campus_number="+campus_number+
+                "&school_number="+school_number+
+                "&campus_class_number="+campus_class_number
+            )
             .then((response) => {
                 gradingStandardResponse.value = response.data
             })
