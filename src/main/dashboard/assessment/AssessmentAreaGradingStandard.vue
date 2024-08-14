@@ -119,14 +119,21 @@ watch(
     }
 )
 
-const deleteAssessmentArea = (data, index) => {
-  if(!confirm("Are you sure, you want to delete this assessment area grading standard")){
-    return
+
+
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+const deleteAssessmentArea = async (data, index) => {
+
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete this assessment area grading standard ");
+  if (agreed) {
+    deletionLoader.value = index
+
+assessmentStore.deleteAssessmentAreaGradingStandard(data.number)
   }
+  
 
-  deletionLoader.value = index
-
-  assessmentStore.deleteAssessmentAreaGradingStandard(data.number)
 }
 
 watch(
@@ -150,13 +157,13 @@ watch(
 )
 
 
-
-
 </script>
 
 <template>
 
   <div>
+
+ <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal title="Attach Assessment Area to Grading Standard" v-model="showAssessmentGradingModal" lg>
       <new-assessment-area-grading-standard></new-assessment-area-grading-standard>

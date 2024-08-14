@@ -11,6 +11,9 @@ import {useRouter} from "vue-router";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 
 
 const routerData = useRouter()
@@ -232,20 +235,33 @@ watch (
     }
 )
 
-const deleteThisData = (id,assesmentArea,assesmentMet,rcolumn) => {
-  if(!confirm("Are you sure, you want to delete: " + assesmentArea + " - " + assesmentMet + " - " + rcolumn)){
-    return
-  }else{
+// const deleteThisData = (id,assesmentArea,assesmentMet,rcolumn) => {
+//   if(!confirm("Are you sure, you want to delete: " + assesmentArea + " - " + assesmentMet + " - " + rcolumn)){
+//     return
+//   }else{
 
+//   }
+
+// }
+
+const deleteThisData = async (id,assesmentArea,assesmentMet,rcolumn) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + assesmentArea + " - " + assesmentMet + " - " + rcolumn);
+if (agreed) {
+  let data = {
+ 
   }
+}
+
 
 }
+
 
 </script>
 
 <template>
   <div>
-
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal v-model="showReportColumn" title="Add Report Column Assessment" xl4>
       <new-report-columns-assessment></new-report-columns-assessment>

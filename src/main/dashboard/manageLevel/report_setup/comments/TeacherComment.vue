@@ -6,6 +6,9 @@ import useNotificationStore from "@/composables/useNotification.js";
 import AppModal from "@/components/AppModal.vue";
 import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.js";
 
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 
 const notificationStore  = useNotificationStore()
 const teacherCommentStore = useTeacherCommentStore()
@@ -33,14 +36,19 @@ const editComments = (comm) => {
   showCommentModal.value = true
 }
 
-const deleteThisData = (id,name) => {
-  if(!confirm("Are you sure, you want to delete: " + name)){
-    return
-  }else{
 
+
+const deleteThisData = async (id,name) => {
+
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
+  if (agreed) {
+    let data = {
+   
+    }
   }
-}
+  
 
+}
 
 watch(
     () => teacherCommentStore.newTeacherCommentResponse,
@@ -68,6 +76,9 @@ watch(
 <template>
 
   <div>
+ 
+
+ <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="editMode?'Edit Comment':'Add Head Teachers Comment'" v-model="showCommentModal" lg>
         <NewTeacherComment :headTeacherCommentList="headTeacherCommentList"></NewTeacherComment>

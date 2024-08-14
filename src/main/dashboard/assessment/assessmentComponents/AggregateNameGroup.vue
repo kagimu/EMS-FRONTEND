@@ -42,20 +42,25 @@ const addAggregateNameGroup = () => {
 }
 
 const fetchAggregateGroup = () =>{
-  assessmentStore.fetchAggregateGroupName(form)
+  assessmentStore.fetchAggregateGroupName(schoolNumber)
 }
 
-const deleteGrade = (data) => {
-  if(!confirm("Are you sure, you want to delete " + data.name)){
-    return
-  }else{
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+
+const deleteGrade = async (data) => {
+
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete " + data.name);
+  if (agreed) {
     let formD = {
       grade_group_number : data.number
     }
     assessmentStore.deleteAggregateGroupName(formD)
   }
-}
+  
 
+}
 
 const showEditModal = (data) =>{
   aggregateGroupDataInfo.value = data
@@ -132,6 +137,9 @@ watch(
 </script>
 <template>
     <div>
+
+
+ <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
       <AppModal :title= "editMode?'Edit Aggregate Group Name':'Add Aggregate Group Name' " v-model="showAggregateGroupModal" lg>
           <NewAggregateNameGroup :aggregateGroupDataInfo="aggregateGroupDataInfo"></NewAggregateNameGroup>

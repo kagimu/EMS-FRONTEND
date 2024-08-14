@@ -10,6 +10,9 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import clearClassModal from "@/main/dashboard/manageLevel/report_setup/reportTemplate/clearClassModal.vue";
 import ReportTemplateClasses from "./ReportTemplateClasses.vue";
 import {useRouter} from "vue-router";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 
 const routerData = useRouter()
 const schoolStore = useSchoolStore()
@@ -101,20 +104,34 @@ watch (
   {deep:true}
 )
 
-const deleteThisData = (id,name) => {
-  if(!confirm("Are you sure, you want to delete: " + name)){
-    return
-  }else{
+// const deleteThisData = (id,name) => {
+//   if(!confirm("Are you sure, you want to delete: " + name)){
+//     return
+//   }else{
 
+//   }
+
+// }
+
+const deleteThisData = async (id,name) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
+if (agreed) {
+  let data = {
+ 
   }
+}
+
 
 }
+
 
 </script>
 
 <template>
 
   <div>
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="editMode ?'Edit Report Template ' +reportName :'Add Report Template'" v-model="showReportTemplateModal" lg>
       <new-report-template :reportTemplateDataInfo="reportTemplateDataInfo"></new-report-template>

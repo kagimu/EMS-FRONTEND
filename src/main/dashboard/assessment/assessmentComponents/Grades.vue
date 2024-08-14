@@ -6,6 +6,9 @@ import { useAbility } from '@casl/vue';
 import useNotificationStore from "@/composables/useNotification.js";
 import AppModal from "@/components/AppModal.vue";
 import {useRouter} from "vue-router";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 const routerData = useRouter()
 const { can } = useAbility()
 const assessmentStore = useAssessmentStore()
@@ -51,15 +54,6 @@ const showEditModal = (gradeD) => {
     
 }
 
-const deleteGrade = (data, index) => {
-  if(!confirm("Are you sure, you want to delete: " + data.name)){
-    return
-  }
-
-  deletionLoader.value = index
-
-  assessmentStore.deleteGrade(data.number)
-}
 
 watch (
     () => assessmentStore.gradeResponse,
@@ -119,9 +113,25 @@ watch(
     }
 )
 
+
+
+const deleteGrade = async (data, index) => {
+
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + data.name);
+  if (agreed) {
+    deletionLoader.value = index
+
+assessmentStore.deleteGrade(data.number)
+  }
+  
+}
+
+
 </script>
 <template>
     <div>
+
+ <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
       <AppModal :title="editModel ? 'Edit Name Of Aggregates ' : 'Add Name Of Aggregates'  " v-model="showGradeModal" lg>
         <NewGrade :gradeDataInfo="gradeDataInfo"></NewGrade>

@@ -9,6 +9,10 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useRouter} from "vue-router";
 import useNotificationStore from "@/composables/useNotification.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+
 const  notificationStore  = useNotificationStore()
 const assessmentStore = useAssessmentStore()
 const levelStore = useLevelStore()
@@ -61,12 +65,15 @@ const fetchCampusLevel = () => {
 
 
 
-const deleteThisData = (info) => {
-  if(!confirm("Are you sure, you want to delete: " + info.scale_name)){
-    return
-  }
+const deleteThisData = async (info) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + info.scale_name);
+if (agreed) {
   deletionLoader.value = true
   assessmentStore.deleteAggregateScale(info.scale_number)
+}
+
+
 }
 
 
@@ -167,6 +174,7 @@ watch (
 </script>
 <template>
   <div>
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
     <AppModal :title="editMode? 'Edit Aggregate Scale': 'Add Aggregate Scale'" v-model="showAggregateScaleModal" xl6>
       <NewGradeScale :gradeScaleDataInfo="gradeScaleDatainfo"></NewGradeScale>
     </AppModal>

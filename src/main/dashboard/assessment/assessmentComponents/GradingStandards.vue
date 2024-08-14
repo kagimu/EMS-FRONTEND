@@ -147,19 +147,22 @@ const editThisData = (gradeList) => {
   showGradeStandardModal.value = true
 }
 
-const deleteThisData = (info,index) => {
 
-  if(!confirm("Are you sure, you want to delete: " + info.name)){
-    return
+
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+const deleteThisData = async (info,index) => {
+
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + info.name);
+  if (agreed) {
+    deletionLoader.value = index
+
+assessmentStore.deleteGradeStandard(info.number)
   }
-
-  deletionLoader.value = index
-
-  assessmentStore.deleteGradeStandard(info.number)
+  
 
 }
-
-
 
 watch(
     () => assessmentStore.changeStatusGradingScaleResponse,
@@ -197,6 +200,8 @@ watch(
 <template>
     <div>
 
+
+ <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
       <AppModal  title="Grade Standard Details" v-model="gradeStandardInfoModel" lg>
         <GradeStandardDetails :gradeDataList="gradeDataList"></GradeStandardDetails>
       </AppModal>
