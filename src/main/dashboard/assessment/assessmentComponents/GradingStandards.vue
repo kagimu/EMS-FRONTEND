@@ -29,6 +29,7 @@ const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const schoolNumber = routerData.currentRoute.value.query.sch
 const class_number = ref(null)
+const campus_level_number = ref("")
 const campusCurriculumDataInfo = ref(null)
 const campusLevelList = ref(null)
 const campusClassList = ref(null)
@@ -42,17 +43,38 @@ const deletionLoader = ref(undefined)
 onMounted(
     async () => {
         doFetchGradingStandard()
-        campusStore.fetchClassesBySchool(schoolNumber)
+        await classStore.fetchCampusLevel(campus_curriculum_number)
+
     } )
+
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        campusLevelList.value = data.data
+      }
+    }
+)
+
+const fetchCampusClass = async () => {
+  let data = {
+    school_number:schoolNumber,
+    campus_level_number:campus_level_number.value
+  }
+  await campusStore.fetchClassesBySchool(data)
+}
+
 
 const doFetchGradingStandard = () => {
   let data = {
     school_number:schoolNumber,
     class_number:class_number.value,
-  
+
   }
   assessmentStore.fetchGradeStandard(data)
 }
+
 
 const addGradingStandard = () => {
   gradeDataList.value = ""
@@ -227,8 +249,21 @@ watch(
       <div class="mt-[50px]">
         <div class="row mx-auto">
 
+          <div class="col-lg-3">
+            <div class="mb-2">
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="campus_level_number"
+                  @change="fetchCampusClass()"
+              >
+                <option disabled value="">--Filter by Level--</option>
+                <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+              </select>
+            </div>
+          </div>
 
-          <div class="col-lg-4 mb-2">
+          <div class="col-lg-3 mb-2">
             <select
                 class="form-select form-select-sm shadow-none" required
                 v-model="class_number"
