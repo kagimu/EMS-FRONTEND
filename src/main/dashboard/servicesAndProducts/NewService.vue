@@ -26,12 +26,12 @@ const props = defineProps({
 })
 
 const formData = reactive({
-  school_number: null,
+  school_number: "",
   description: null,
   cost: null,
   name:null,
   mandatory:false,
-  prefix:false,
+  prefix:null,
   campus_numbers:[],
   payment_mode:null
 
@@ -56,14 +56,14 @@ const checkDraftData = () => {
   let draft = props.serviceDetails
   if(draft){
 
-    formData.description = draft?.Item?.description
-    formData.cost = draft?.Item?.cost
-    formData.name = draft?.Item?.name
+    formData.description = draft?.Item?.description ?? null
+    formData.cost = draft?.Item?.cost ?? null
+    formData.name = draft?.Item?.name ?? null
     formData.mandatory = draft?.Item.mandatory
     formData.prefix = draft?.Item?.prefix
     formData.campus_numbers = draft?.Item?.campus_numbers ?? []
     formData.payment_mode = draft?.Item?.payment_mode
-    formData.school_number = draft?.Item?.school_number
+    formData.school_number = draft?.Item?.school_number ?? ""
     item_number.value = draft?.Item?.number
 
   }
