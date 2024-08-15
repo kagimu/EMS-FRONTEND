@@ -82,7 +82,8 @@
           </div>
         </td>
         <td>
-          <button  @click="paymentModal(list.number)" class="btn btn-primary btn-sm mb-2" style="float: right;" v-if="can('add_custom_invoice','general')">
+          <button  @click="paymentModal(list.number)" class="btn btn-primary btn-sm mb-2" style="float: right;"
+          v-if="can('pay_invoice','general')">
         <small>Pay</small></button>
          <router-link
               class="text-decoration-none"

@@ -20,11 +20,16 @@
                       <button  @click="deleteInvoice()" class="btn btn-danger  btn-sm mb-2 mr-4" style="float: right;">
                         <small><i class="bi bi-trash">&nbsp;Delete</i></small></button>
                       <!-- <button type="submit" class="btn btn-primary mb-3">Download Invoice</button> -->
-                        <button  @click="showModal(myData.invoiceN)"  class="btn btn-primary btn-sm mb-2 mr-4" style="float: right;" type="button" >
-                        <small><i class="bi bi-check-lg"><small>&nbsp;Make Payment</small></i></small></button>
+                        <button   @click="showModal(myData.invoiceN)"  class="btn btn-primary btn-sm mb-2 mr-4"
+                         style="float: right;" type="button" 
+                         v-if="can('pay_invoice','general')">
+                        <small><i class="bi bi-check-lg"><small>&nbsp;Make Payment</small></i></small>
+                      </button>
                         <button  class="btn btn-secondary  btn-sm mb-2 mr-4" style="float: right;">
                         <small><i class="bi bi-printer">&nbsp;Print</i></small></button>
-                        <button @click="cancelInvoice()"  class="btn btn-danger  btn-sm mb-2 mr-4" style="float: right;">
+                        <button @click="cancelInvoice()"  class="btn btn-danger  btn-sm mb-2 mr-4" 
+                        style="float: right;"
+                        v-if="can('cancel_invoice','general')">
                         <small><i class="bi bi-x">&nbsp;cancel</i></small></button>
                     </div>
 
@@ -236,7 +241,9 @@
                          <td> {{payment.recorded_by}}</td>
                          <td> {{payment.amount}}</td>
                          <td>
-                          <button  @click="cancelInvoicePayment(payment.payment_number)" class="btn btn-warning  btn-sm mb-2 mr-2">
+                          <button  @click="cancelInvoicePayment(payment.payment_number)" 
+                          class="btn btn-warning  btn-sm mb-2 mr-2"
+                          v-if="can('cancel_payment','general')">
                         <small><i class="bi bi-cancel">&nbsp;cancel</i></small></button>
                         <button  @click="deleteInvoicePayment(payment.payment_number)" class="btn btn-danger  btn-sm mb-2">
                         <small><i class="bi bi-trash"></i></small></button>
@@ -274,10 +281,9 @@ import AppModal from "@/components/AppModal.vue";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 const confirmationRef = ref(null);
+import { useAbility } from '@casl/vue';
 
-
-
-
+const { can } = useAbility()
 
 const invoiceStore = useInvoiceStore()
 const showDialog = ref(false)
