@@ -1,9 +1,9 @@
 <template>
     <div>
 
-      <AppModal title="New Service"   v-model="showDialog" lg>
+      <AppModal title="New Service"   v-model="showDialog" xl4>
         <NewService></NewService>
-    </AppModal>
+      </AppModal>
 
         <div class="modal fade" id="serviceModal" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: showDialog }">
       <div class="modal-dialog">
