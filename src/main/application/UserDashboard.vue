@@ -1,3 +1,40 @@
+<script setup>
+
+import {onMounted, ref} from "vue";
+import router from "@/config/router.js";
+import {useAuthStore} from "@/main/auth/store/auth.js";
+const  authStore = useAuthStore();
+const name = ref(null)
+let p = authStore.profile
+
+name.value = p.first_name+" "+p.second_name+" "+p.last_name
+
+function userLogout(){
+
+  localStorage.clear();
+
+  let r = router.resolve({
+    name: "login"
+  });
+  window.location.assign(r.href);
+
+}
+
+const  menuSelected = (name) =>{
+  return router.currentRoute.value.name === name
+}
+
+const applyApplication = () => {
+  window.localStorage.removeItem("application-id");
+  router.go({name:"application"})
+}
+
+onMounted(
+    async () => {
+      // alert(router.currentRoute.value.name)
+
+    } )
+</script>
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-[#2c2f8c] sticky-top"  style="position: absolute; top: 0; left: 0; width: 100%;">
     <div class="container-fluid">
@@ -11,9 +48,12 @@
         <div class="navbar-nav">
         </div>
         <div class="navbar-nav">
-          <router-link   :class="[ menuSelected('application') ? 'btn btn-outline-success nav-item nav-link text-black' : 'btn btn-outline-success nav-item nav-link text-white']"  :to="{name:'application'}">
-            <b>APPLY NOW</b> </router-link>
-
+          <div
+          :class="[ menuSelected('application') ? 'btn btn-outline-success nav-item nav-link text-black' : 'btn btn-outline-success nav-item nav-link text-white']"
+          @click="applyApplication()"
+          >
+            <b>APPLY NOW</b>
+          </div>
           <router-link :class="[ menuSelected('application_history') ? 'btn  btn-outline-danger nav-item nav-link' : 'btn btn-outline-success nav-item nav-link']" :to="{name:'application_history'}" style="border-radius: 0px; color:rgba(16, 54, 135, 0.751)" >
             APPLICATION HISTORY </router-link>
 
@@ -143,35 +183,4 @@ div.card {
 }
 </style>
 
-<script setup>
 
-import {onMounted, ref} from "vue";
-import router from "@/config/router.js";
-import {useAuthStore} from "@/main/auth/store/auth.js";
-const  authStore = useAuthStore();
-const name = ref(null)
-let p = authStore.profile
-
-name.value = p.first_name+" "+p.second_name+" "+p.last_name
-
-function userLogout(){
-
-  localStorage.clear();
-
-  let r = router.resolve({
-    name: "login"
-  });
-  window.location.assign(r.href);
-
-}
-
-function  menuSelected(name){
-  return router.currentRoute.value.name === name
-}
-
-onMounted(
-    async () => {
-      // alert(router.currentRoute.value.name)
-
-    } )
-</script>

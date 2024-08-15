@@ -3,6 +3,7 @@ import { reactive, ref, defineEmits,onMounted,watch } from 'vue';
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
 import useNotificationStore from "@/composables/useNotification.js";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js"
+import useCommonsStore from "@/composables/useCommons.js";
 
 
 const emit = defineEmits()
@@ -11,17 +12,15 @@ const AsessmentListData = ref([])
 const  notificationStore  = useNotificationStore()
 const applicationStore =  useApplicationStore()
 const buttonLoader = ref(false)
-let   campus_class_number = localStorage.getItem('CampusClassNumber')
 const errorMessage = ref(null)
 const uploadError = ref(null)
 const file = ref(null)
 const applicationId = ref(null)
+const commons = useCommonsStore()
 
 onMounted(
     async () => {
-      if(campus_class_number){
-        await assessmentStore.fetchAssessmentAreaByClass(campus_class_number)
-      }
+
     } )
 
 watch(
@@ -30,8 +29,7 @@ watch(
       if(data){
         AsessmentListData.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -122,8 +120,10 @@ watch (
     async (data) => {
       if(data){
         applicationId.value = data.number
-
-
+        let campusClassNo = data?.student?.campus_class_number
+        if(campusClassNo) {
+          await assessmentStore.fetchAssessmentAreaByClass(campusClassNo)
+        }
       }
     }
 )
@@ -144,13 +144,20 @@ watch (
               <table style="width: 100%;">
                 <tr v-for="(assessmentArea, index) in formD.assessmentArea" :key="index">
                   <td>
-                    <select v-model="assessmentArea.assessmentAreaNumber" class="form-select form-select-sm shadow-none">
+                    <select
+                        v-model="assessmentArea.assessmentAreaNumber"
+                        class="form-select form-select-sm shadow-none">
+                      <option disabled value="">--filter by Subject--</option>
                       <option v-for="option in AsessmentListData" :key="option" :value="option.number">{{ option.name }}</option>
-
                     </select>
                   </td>
                   <td style="width: 26%;">
-                    <input v-model="assessmentArea.score" type="number" class="form-control shadow-none">
+                    <input
+                        @keypress="commons.numbersOnlyValidator($event)"
+                        maxlength="4"
+                        v-model="assessmentArea.score"
+                        type="text"
+                        class="form-control shadow-none">
                   </td>
                   <td style="width: 2%;">
                     <button v-if="index > 0" type="button" @click="removeSubject(index)" class="btn btn-danger btn-sm p-0" ><i class="bi bi-x"></i></button>
@@ -173,7 +180,7 @@ watch (
 
             <input
               ref="file"
-              class="form-control form-control-sm noFocus"
+              class="form-control form-control-sm shadow-none"
               id="formFileSm"
               accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,.pdf"
               type="file">
