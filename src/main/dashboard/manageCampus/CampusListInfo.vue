@@ -7,6 +7,9 @@ import NewCampus from "@/main/dashboard/manageCampus/NewCampus.vue";
 import {useRouter} from "vue-router";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import useNotificationStore from "@/composables/useNotification.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 
 const routerData = useRouter()
 import { useAbility } from '@casl/vue';
@@ -45,14 +48,19 @@ const editCampus = (campus) => {
     campusStore.fetchCampusData(campus.number)
   }
 }
-const deleteCampus = (campus) => {
-  if(!confirm("Are you sure, you want to delete: "+campus.name)){
-    return
-  }
+
+
+const deleteCampus = async (campus) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+campus.name);
+if (agreed) {
   let data = {
     campus_number:campus.number
   }
   campusStore.deleteCampus(data)
+}
+
+
 }
 
 
@@ -149,6 +157,8 @@ watch (
 
 <template>
 <div>
+
+  <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
   <AppModal :title="campusEditMode ? 'Edit Campus' : 'New Campus'" v-model="campusDialog" xl6>
     <new-campus ref="campusRef"></new-campus>

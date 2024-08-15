@@ -541,12 +541,12 @@ watch (
                           View Details
                           </small>
                           </button>
-                          <button v-if="applist.status === 'DRAFT'"  @click="deleteThisData(applist)"
+                          <!-- <button v-if="applist.status === 'DRAFT'"  @click="deleteThisData(applist)"
                              style="border-width: 0px;text-decoration: none;" title="View Details"><small>
                               <i class="bi bi-trash" style="color: red;"></i>
                          
                           </small>
-                          </button>
+                          </button> -->
                           
                           <!-- <RouterLink :to="{name : 'admit-student', query:{id:applist.number} }" class="link-danger" style="text-decoration: none;"  >
                              <i class="bi bi-eye"></i>  
