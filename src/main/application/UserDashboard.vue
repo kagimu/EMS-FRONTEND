@@ -49,17 +49,11 @@ onMounted(
         </div>
         <div class="navbar-nav">
           <div
-              :class="[ menuSelected('application') ? 'btn btn-outline-success nav-item nav-link text-black' : 'btn btn-outline-success nav-item nav-link text-white']"
+          :class="[ menuSelected('application') ? 'btn btn-outline-success nav-item nav-link text-black' : 'btn btn-outline-success nav-item nav-link text-white']"
           @click="applyApplication()"
           >
             <b>APPLY NOW</b>
           </div>
-          <router-link
-              :class="[ menuSelected('application') ? 'btn btn-outline-success nav-item nav-link text-black' : 'btn btn-outline-success nav-item nav-link text-white']"
-              :to="{name:'application'}">
-            <b>APPLY NOW</b>
-          </router-link>
-
           <router-link :class="[ menuSelected('application_history') ? 'btn  btn-outline-danger nav-item nav-link' : 'btn btn-outline-success nav-item nav-link']" :to="{name:'application_history'}" style="border-radius: 0px; color:rgba(16, 54, 135, 0.751)" >
             APPLICATION HISTORY </router-link>
 
