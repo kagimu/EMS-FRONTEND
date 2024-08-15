@@ -38,16 +38,6 @@ const setEditRolesId = (roleD) => {
   editMode.value=true
 }
 
-// const  deleteRole = (roles) => {
-//   if(!confirm("Are you sure, you want to remove: " + roles.name)){
-//   // return
-//   notificationStore.errorToast("Cancelled","Action Cancelled Successfully !")
-// }else{
-//   roleStore.deleteRole(roles.number)
-
-// }
-// }
-
 
 const deleteRole = async (roles) => {
 
@@ -149,7 +139,7 @@ watch (
                 <div class="card-header">
            <div class="row">
             <div class="col-lg-6 "> 
-                  <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">  
+                 
             </div>
             <div class="col-lg-6">
                 <button
