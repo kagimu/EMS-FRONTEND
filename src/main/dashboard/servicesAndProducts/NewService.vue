@@ -84,19 +84,22 @@ const fetchClasses = (campus_number) => {
 const createNewService = () =>{
   buttonLoader.value = true
 
+  let data = formData
+  data.cost = parseInt(data.cost)
+
   if(props.productType === 'service') {
     if (item_number.value) {
-      serviceStore.updateService(formData, item_number.value)
+      serviceStore.updateService(data, item_number.value)
     } else {
-      serviceStore.createNewService(formData)
+      serviceStore.createNewService(data)
     }
   }
 
   if(props.productType === 'product') {
     if (item_number.value) {
-      serviceStore.updateProduct(formData, item_number.value)
+      serviceStore.updateProduct(data, item_number.value)
     } else {
-      serviceStore.createNewProduct(formData)
+      serviceStore.createNewProduct(data)
     }
   }
 
