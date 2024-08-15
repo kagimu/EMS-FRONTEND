@@ -16,10 +16,6 @@ const emit = defineEmits()
 
 
 
-const showSuccessPage = () => {
-  router.push("/client-dashboard/application-success");
-};
-
 const submitApplication = () => {
   loading.value = true;
   applicationStore.fetchApplicationList();
@@ -29,7 +25,7 @@ const submitApplication = () => {
   }, 2000);
 
 
-  localStorage.removeItem('applicationId');
+  localStorage.removeItem('application-id');
   localStorage.removeItem('studentNumber');
 };
 
@@ -47,8 +43,6 @@ watch (
     async (data) => {
       if(data){
         applicationId.value = data.number
-
-
       }
     }
 )

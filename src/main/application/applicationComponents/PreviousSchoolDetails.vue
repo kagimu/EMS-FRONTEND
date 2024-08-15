@@ -130,24 +130,7 @@ watch (
     async (data) => {
       if(data){
         applicationId.value = data.number
-
-
-        let previousSchool = data.PreviousSchools
-        if(previousSchool && (previousSchool.length > 0)){
-
-          formData.schools = []
-          previousSchool.forEach(lst => {
-            let classArr = []
-
-            lst.Classes.forEach(clss=>{
-              classArr.push({class:clss.class,year:clss.year})
-            });
-
-            formData.schools.push({name: lst.name,classes: classArr})
-          })
-
-        }
-
+        formData.schools = data.previous_schools
       }
     }
 )
