@@ -63,8 +63,8 @@ export const useServiceStore = defineStore("service", () => {
                     }
                 })
         }
-        async function updateService(serviceid,data) {
-            return await api.put("main/services/"+serviceid,data)
+        async function updateService(data, serviceId) {
+            return await api.put("main/services/"+serviceId,data)
                 .then((response) => {
                     updateServiceResponse.value = response.data
                 })
@@ -113,8 +113,8 @@ export const useServiceStore = defineStore("service", () => {
                     }
                 })
         }
-        async function updateProduct(data) {
-            return await api.put("main/products/"+data.product_number,data)
+        async function updateProduct(data, productId) {
+            return await api.put("main/products/"+productId,data)
                 .then((response) => {
                     updateProductResponse.value = response.data
                 })
@@ -128,24 +128,24 @@ export const useServiceStore = defineStore("service", () => {
 
     return {
         newServiceResponse,
-        errorMessage,      
-        createNewService,
+        errorMessage,
         servicesListResponse,
-        fetchServicesList,
-        deleteServiceResponse,
-        deleteService,
-        updateServiceResponse,
-        updateService,
-        newProductResponse,   
-        createNewProduct,
-        productListResponse,
-        fetchProductsList,
-        deleteServiceResponse,
-        deleteProduct,
+        allItemsListResponse,
         updateProductResponse,
+        productListResponse,
+        deleteServiceResponse,
+        updateServiceResponse,
+        newProductResponse,
+        fetchServicesList,
+        deleteService,
+        updateService,
+        createNewProduct,
+        fetchProductsList,
+        deleteProduct,
         updateProduct,
         fetchAllItems,
-        allItemsListResponse
+        createNewService,
+
 
 
     }
