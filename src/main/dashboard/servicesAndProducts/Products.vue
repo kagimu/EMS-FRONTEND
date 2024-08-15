@@ -1,13 +1,133 @@
+<script setup>
+import {onMounted,reactive, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import UpdateProduct from "./UpdateProduct.vue";
+import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js";
+import AppModal from "@/components/AppModal.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+
+import { useAbility } from '@casl/vue';
+import NewService from "@/main/dashboard/servicesAndProducts/NewService.vue";
+const showActionDialog = ref(false)
+const serviceStore = useServiceStore()
+
+const { can } = useAbility()
+
+
+const productsList = ref( [])
+let errorMessage = ref(null)
+const productListData = ref(null)
+const productStore= useServiceStore()
+const  notificationStore  = useNotificationStore()
+const showDialog = ref(false)
+
+
+const openProductModal = () =>{
+  showActionDialog.value=true
+}
+
+function showEditModal(product){
+  productListData.value = product
+  showActionDialog.value = true
+}
+
+onMounted(
+    async () => {
+      await productStore.fetchProductsList()
+    } )
+
+watch(
+    () => productStore.productListResponse,
+    async (data) => {
+      if(data){
+        productsList.value = data
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => productStore.newProductResponse,
+    async (data) => {
+      if(data){
+        showActionDialog.value = false
+        await productStore.fetchProductsList()
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => productStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+
+
+const deleteProduct = async (sid) => {
+
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + sid);
+  if (agreed) {
+    await productStore.deleteProduct(sid)
+  }
+
+
+}
+
+
+watch (
+    () => productStore.deleteProductResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+        await productStore.fetchProductsList()
+      }
+    }
+)
+
+
+
+watch (
+    () => serviceStore.updateProductResponse,
+    async (data) => {
+      if(data){
+       await productStore.fetchProductsList()
+        showActionDialog.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
+watch (
+    () => serviceStore.newProductResponse,
+    async (data) => {
+      if(data){
+       await productStore.fetchProductsList()
+        showActionDialog.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
+
+</script>
 <template>
  
 
-      <AppModal title="New Product" v-model="showActionDialog" xl>
-        <NewProduct></NewProduct>
-    </AppModal>
+      <AppModal title="New Product" v-model="showActionDialog" xl4>
+        <NewService :serviceDetails="productListData" productType="product"></NewService>
+      </AppModal>
 
-    <AppModal title="Update Product" v-model="showUpdateDialog" xl>
-        <UpdateProduct :productListData="productListData"></UpdateProduct>
-    </AppModal>
+  <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
         <div class="row">
       <div class="col-12">
@@ -77,110 +197,14 @@
                 </div>
             </div>
         </div>
-      
-        
-<ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+
+
+
       </div>
        
     </template>
     
-<script setup>
-  import {onMounted,reactive, ref, watch} from "vue";
-  import useNotificationStore from "@/composables/useNotification.js";
-  import NewProduct from "./NewProduct.vue";
-  import UpdateProduct from "./UpdateProduct.vue";
-  import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js";
-  import AppModal from "@/components/AppModal.vue";
-  import ConfirmationModal from "@/components/ConfirmationModal.vue";
-const confirmationRef = ref(null);
 
-
-  import { useAbility } from '@casl/vue';
-   const showActionDialog = ref(false)
-   const { can } = useAbility()
-   const showUpdateDialog  = ref(false)
-
-const productsList = ref( [])
-let errorMessage = ref(null)
-const productListData = ref(null)
-const productStore= useServiceStore()
-const  notificationStore  = useNotificationStore()
-const showDialog = ref(false)
-
-const openModal = () =>{
-  showDialog.value=true
-}
-const openProductModal = () =>{
-  showActionDialog.value=true
-}
-
-function showEditModal(product){
-productListData.value = product
-showUpdateDialog.value = true
-}
-  
-  onMounted(
-      async () => {
-        await productStore.fetchProductsList()
-      } )
-  
-      watch(
-      () => productStore.productListResponse,
-      async (data) => {
-        if(data){
-          productsList.value = data
-        }
-      },
-      {deep:true}
-  )
-
-  watch (
-    () => productStore.newProductResponse,
-    async (data) => {
-      if(data){
-        showActionDialog.value = false
-        await productStore.fetchProductsList()
-      }
-    },
-    {deep:true}
-)
-  
-  watch (
-      () => productStore.errorMessage,
-      async (data) => {
-        if(data){
-          errorMessage.value = data.message
-          notificationStore.errorToast("Error",data.message)
-        }
-      },
-      {deep:true}
-  )
-   
-
-
-
-const deleteProduct = async (sid) => {
-
-const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + sid);
-if (agreed) {
-  productStore.deleteProduct(sid)
-}
-
-
-}
-
-
-watch (
-    () => productStore.deleteProductResponse,
-    async (data) => {
-      if(data){
-        notificationStore.successToast("Success", data.message)
-        await productStore.fetchProductsList()
-      }
-    },
-    {deep:true}
-)
-  </script>
   
     <style scoped>
     
