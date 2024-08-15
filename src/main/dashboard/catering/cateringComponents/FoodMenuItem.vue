@@ -9,6 +9,12 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import AppModal from "@/components/AppModal.vue";
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
 
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+
+
+
 
 const showingModal = ref(false)
 const isLoading = ref(true);
@@ -207,17 +213,31 @@ watch(
 )
 
 
-const deleteThisData = (id,name) => {
-  if(!confirm("Are you sure, you want to delete: " + name)){
-    return
-  }
+// const deleteThisData = (id,name) => {
+//   if(!confirm("Are you sure, you want to delete: " + name)){
+//     return
+//   }
 
+//   let data = {
+//     menu_item_number:id
+//   }
+//   cateringStore.deleteMenuItem(data)
+
+// }
+
+const deleteThisData = async (id,name) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
+if (agreed) {
   let data = {
     menu_item_number:id
   }
   cateringStore.deleteMenuItem(data)
+}
+
 
 }
+
 
 watch(
     () => cateringStore.deleteMenuItemResponse,
@@ -232,6 +252,7 @@ watch(
 </script>
 <template>
   <div>
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal v-model="showingModal"  title="Update Menu Item" xl4>
       <NewMenuItem :menuItemsInfo="menuItemsinfoData"></NewMenuItem>

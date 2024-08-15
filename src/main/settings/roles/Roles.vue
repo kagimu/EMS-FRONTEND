@@ -5,6 +5,9 @@ import UpdateRole from "./roleComponents/UpdateRole.vue"
 import { useRolesStore } from "./store/roles";
 import useNotificationStore from "@/composables/useNotification.js";
 import AppModal from "@/components/AppModal.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 
 import { useAbility } from '@casl/vue';
 
@@ -35,15 +38,28 @@ const setEditRolesId = (roleD) => {
   editMode.value=true
 }
 
-const  deleteRole = (roles) => {
-  if(!confirm("Are you sure, you want to remove: " + roles.name)){
-  // return
-  notificationStore.errorToast("Cancelled","Action Cancelled Successfully !")
-}else{
+// const  deleteRole = (roles) => {
+//   if(!confirm("Are you sure, you want to remove: " + roles.name)){
+//   // return
+//   notificationStore.errorToast("Cancelled","Action Cancelled Successfully !")
+// }else{
+//   roleStore.deleteRole(roles.number)
+
+// }
+// }
+
+
+const deleteRole = async (roles) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to remove: " + roles.name);
+if (agreed) {
   roleStore.deleteRole(roles.number)
+}
+
 
 }
-}
+
+
 
 
 let myData = reactive({
@@ -119,6 +135,7 @@ watch (
 <template>
   <div>
 
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
       <AppModal :title="editMode ? 'Edit Role' : 'Add New Role'" v-model="showModal" xl4>
         <NewRole ref="roleRef" :roleData="roleData"></NewRole>

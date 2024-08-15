@@ -12,6 +12,8 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.
 import SetReportColumns from "@/main/dashboard/manageLevel/report_setup/report_forms/SetReportColumns.vue";
 import NewReportSettings from "@/main/dashboard/manageLevel/report_setup/report_forms/rforms/NewReportSettings.vue";
 import ViewReportColumns from "@/main/dashboard/manageLevel/report_setup/report_forms/ViewReportColumns.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
 
 
 const routerData = useRouter()
@@ -92,13 +94,27 @@ const viewReportColumn = (number) =>{
   viewColumnsModal.value = true
 }
 
-const deleteThisData = (id,name) => {
-  if(!confirm("Are you sure, you want to delete: " + name)){
-    return
-  }else{
+// const deleteThisData = (id,name) => {
+//   if(!confirm("Are you sure, you want to delete: " + name)){
+//     return
+//   }else{
 
+//   }
+// }
+
+
+const deleteThisData = async (id) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete Assessment Schedule ? ");
+if (agreed) {
+  let data = {
+ 
   }
 }
+
+
+}
+
 
 
 const fetchCampusLevel = () => {
@@ -195,6 +211,7 @@ watch(
 <template>
 
   <div>
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="editModel ? 'Edit ' + namee:'Add Report General Settings'"  v-model="showReportSettingsModal" lg>
       <NewReportSettings :reportSettingsD="reportSettingsD"></NewReportSettings>

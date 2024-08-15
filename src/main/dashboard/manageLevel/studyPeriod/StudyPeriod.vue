@@ -8,6 +8,9 @@ import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/st
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import AppModal from "@/components/AppModal.vue";
 import { useAbility } from '@casl/vue';
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 const { can } = useAbility()
 
 
@@ -49,20 +52,36 @@ const editStudyPeriod = (styPeriod)  => {
   }
 }
 
-const deleteStudyPeriod = (styPeriod, idx) => {
+// const deleteStudyPeriod = (styPeriod, idx) => {
+//   deletionLoader.value = idx
+
+//   if(!confirm("Are you sure, you want to delete: "+styPeriod.study_period_name)){
+//     return
+//   }
+
+
+//   let data = {
+//     number:styPeriod.number
+//   }
+//   studyPeriodStore.deleteStudyPeriod(data)
+
+// }
+
+
+const deleteStudyPeriod = async (styPeriod, idx) => {
   deletionLoader.value = idx
 
-  if(!confirm("Are you sure, you want to delete: "+styPeriod.study_period_name)){
-    return
-  }
-
-
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+styPeriod.study_period_name);
+if (agreed) {
   let data = {
     number:styPeriod.number
   }
   studyPeriodStore.deleteStudyPeriod(data)
+}
+
 
 }
+
 
 const filterStudyPeriod = (academicYearNumber) => {
   if(academicYearNumber) {
@@ -138,6 +157,8 @@ watch(
 </script>
 <template>
   <div>
+
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="editMode ? 'Edit Study Period' : 'Add Study Period'" v-model="newStudyPeriodDialog" lg>
       <new-study-period ref="studyPeriodRef"></new-study-period>

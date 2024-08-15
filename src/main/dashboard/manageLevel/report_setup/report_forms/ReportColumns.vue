@@ -8,6 +8,8 @@ import AppModal from "@/components/AppModal.vue";
 import {useRouter} from "vue-router";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
 
 const reportSetupStore = useReportSetupStore()
 const  notificationStore  = useNotificationStore()
@@ -129,12 +131,24 @@ const editThisData = (List) => {
   showReportColumnsModal.value = true
 }
 
-const deleteThisData = (id,name) => {
-  if(!confirm("Are you sure, you want to delete: " + name)){
-    return
-  }else{
+// const deleteThisData = (id,name) => {
+//   if(!confirm("Are you sure, you want to delete: " + name)){
+//     return
+//   }else{
 
+//   }
+
+// }
+
+const deleteThisData = async (id,name) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete " + name );
+if (agreed) {
+  let data = {
+ 
   }
+}
+
 
 }
 
@@ -142,7 +156,7 @@ const deleteThisData = (id,name) => {
 
 <template>
   <div>
-
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="editModel ? 'Edit ' + namee:'Add Report Columns'"   v-model="showReportColumnsModal" lg>
       <new-report-column :reportColumnsListD="reportColumnsListD"></new-report-column>

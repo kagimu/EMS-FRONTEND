@@ -7,6 +7,8 @@ import {useRouter} from "vue-router";
 import NewCampusClass from "@/main/dashboard/manageLevel/class/NewCampusClass.vue";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 import AppModal from "@/components/AppModal.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
 
 import { useAbility } from '@casl/vue';
 const { can } = useAbility()
@@ -49,13 +51,21 @@ const saveStream = () => {
   classStore.addStream(streamForm)
 }
 
-const deleteStream = (lst) => {
-  if(!confirm("Are you sure, you want to delete: "+lst.name)){
-    return
-  }
 
+
+
+const deleteStream = async (lst) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+lst.name);
+if (agreed) {
+  
   alert(JSON.stringify(lst))
 }
+
+
+}
+
+
 
 onMounted(
     () => {
@@ -111,7 +121,7 @@ watch(
 </script>
 <template>
     <div>
-
+      <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
       <AppModal title="Add Class" v-model="classDialog" lg>
         <new-campus-class :classListInfo="classList"></new-campus-class>
       </AppModal>

@@ -6,6 +6,9 @@ import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
 import NewMealCourseFeedingSessions from "@/main/dashboard/catering/meals/components/NewMealCourseFeedingSessions.vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 const  mealStore  = useMealStore()
 const  notificationStore  = useNotificationStore()
 const schoolStore = useSchoolStore()
@@ -99,12 +102,19 @@ const dataList = ref([])
     mealCourseFeedingSessionsDialog.value = true
     mealListData.value = num
   }
-//delete
-  const deleteThisData = (id,name) => {
-if(!confirm("Are you sure, you want to delete: " + name)){
-  return
+
+
+
+
+const deleteThisData = async (id,name) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
+if (agreed) {
+  let data = {
+ 
+  }
 }
-// delete endpoint
+
 
 }
 
@@ -114,7 +124,7 @@ if(!confirm("Are you sure, you want to delete: " + name)){
 
 <template>
   <div>
-
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="mealEditMode ? 'Edit Meal Course Menu Pack' : 'Add Meal Course Menu Pack'" v-model="mealCourseFeedingSessionsDialog" lg>
       <NewMealCourseFeedingSessions :mealListData="mealListData"></NewMealCourseFeedingSessions>
@@ -124,7 +134,6 @@ if(!confirm("Are you sure, you want to delete: " + name)){
     <div class="row">
 
       <div class="col-12">
-
 
 
         <div class="flex justify-content-between mt-3">
@@ -167,7 +176,7 @@ if(!confirm("Are you sure, you want to delete: " + name)){
         </div>
 
 
-        <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
+        <!-- <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
           <thead>
           <tr>
             <th scope="col" style="width: 30%;">#</th>
@@ -180,9 +189,6 @@ if(!confirm("Are you sure, you want to delete: " + name)){
             <td> {{index+1}}</td>
             <td> {{levelInfo.name}}</td>
             <td>
-        <!-- <button @click="editThisData(levelInfo)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
-            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
-          </button> -->
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
           <button type="button" @click="deleteThisData(levelInfo.number,levelInfo.name)">
             <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
@@ -190,11 +196,132 @@ if(!confirm("Are you sure, you want to delete: " + name)){
       </td>
           </tr>
           </tbody>
-        </table>
+        </table> -->
 
       </div>
     </div>
 
+
+
+    <!-- <div class="row m-2">
+      <div v-for="(list, index) in mealList" :key="index" class="col-md-6 mb-3 mt-2">
+        <div class="card card-hover">
+          <div class="bg-[#f7f7f7] px-2 py-2 rounded-t-md">
+     
+            <div class="">
+
+              <div class="flex flex-grow justify-between text-xs text-gray-600">
+              <div>
+                <div class="font-bold">{{ list?.name }}</div>
+                <div class="text-red-800 ">Cost: Shs {{ list?.pack_cost }}</div>
+               
+              </div>
+
+              <div>
+              
+                <button type="button" @click="deleteThisData(list.feeding_session_number,list.name)">
+                  <i class="bi bi-trash" style="color:rgb(201, 10, 10);"></i>
+                </button>
+              </div>
+
+            </div>
+            
+            </div>
+
+
+
+          </div>
+            <table class="table table-hover table-sm table-striped text-[12px]">
+              <th>Name</th>
+              <th>Qty</th>
+              <th>Consumption Unit</th>
+              <tbody>
+            <tr v-for="menuItem in list.pack_items" :key="menuItem.number" class="m-1">
+              <td>{{ menuItem.name }}</td>
+              <td>{{ menuItem.consumption_quantity }}</td>
+              <td>{{ menuItem.unit_of_consumption.name }}</td>
+            </tr>
+          </tbody>
+          </table>
+          
+        
+        </div>
+      </div>
+    </div> -->
+
+
+
+    <div class="row m-2">
+  <div v-for="(list, index) in mealList" :key="index" class="col-md-6 mb-3 mt-2">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-light d-flex justify-content-between align-items-center">
+        <div>
+          <h6 class="mb-1">{{ list?.name }}</h6>
+          <p class="text-danger mb-0">Cost: Shs {{ list?.pack_cost }}</p>
+        </div>
+        <button
+          type="button"
+          class="btn btn-outline-danger btn-sm"
+          @click="deleteThisData(list.feeding_session_number, list.name)"
+          aria-label="Delete"
+        >
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li v-for="menuItem in list.pack_items" :key="menuItem.number" class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{ menuItem.name }}</strong>
+              <p class="mb-0 small text-muted">Unit: {{ menuItem.unit_of_consumption.name }}</p>
+            </div>
+            <span class="badge bg-primary rounded-pill">{{ menuItem.consumption_quantity }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div class="row m-2">
+  <div v-for="(list, index) in mealList" :key="index" class="col-md-6 mb-3 mt-2">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-light d-flex justify-content-between align-items-center">
+        <div>
+          <h5 class="mb-1">{{ list?.name }}</h5>
+          <p class="text-danger mb-0">Cost: Shs {{ list?.pack_cost }}</p>
+        </div>
+        <button
+          type="button"
+          class="btn btn-outline-danger btn-sm"
+          @click="deleteThisData(list.feeding_session_number, list.name)"
+          aria-label="Delete"
+        >
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>
+      <div class="card-body p-3">
+        <table class="table table-sm table-borderless mb-0">
+          <thead>
+            <tr class="text-muted">
+              <th>Name</th>
+              <th class="text-center">Qty</th>
+              <th class="text-center">Consumption Unit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="menuItem in list.pack_items" :key="menuItem.number">
+              <td>{{ menuItem.name }}</td>
+              <td class="text-center">{{ menuItem.consumption_quantity }}</td>
+              <td class="text-center">{{ menuItem.unit_of_consumption.name }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div> -->
 
 
   </div>

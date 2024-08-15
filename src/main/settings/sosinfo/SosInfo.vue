@@ -53,6 +53,7 @@
             </table>
 
 </div>
+ <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 </template>
 
 
@@ -61,6 +62,13 @@ import {onMounted,reactive, ref, watch} from "vue";
 import {useSosStore} from  "@/main/settings/sosinfo/store/sos.js";
 import SosInformation from './SosInformation.vue';
 import useNotificationStore from "@/composables/useNotification.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+
+
+
+
 
 import { useAbility } from '@casl/vue';
 
@@ -168,17 +176,29 @@ watch(
     {deep:true}
 )
 
-const deleteSosInfo = (SosInfo) => {
-if(!confirm("Are you sure, you want to delete: "+SosInfo.name)){
-  return
-}
-let data = {
+// const deleteSosInfo = (SosInfo) => {
+// if(!confirm("Are you sure, you want to delete: "+SosInfo.name)){
+//   return
+// }
+// let data = {
+//   sosinfodata:SosInfo.name
+// }
+// sosInfo.deleteSos(data)
+
+// }
+
+const deleteSosInfo = async (SosInfo) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+SosInfo.name);
+if (agreed) {
+  let data = {
   sosinfodata:SosInfo.name
 }
 sosInfo.deleteSos(data)
-
 }
 
+
+}
 </script>
 
 <style scoped>

@@ -9,6 +9,11 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import { useAbility } from '@casl/vue';
 import AppModal from "@/components/AppModal.vue";
 
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+
+
 const { can } = useAbility()
 
 const levelStore = useLevelStore()
@@ -35,19 +40,36 @@ const editLevel = (data) => {
   levelDialog.value = true
   levelStore.LevelData(data.number)
 }
-const deleteLevel = (data, index) => {
+// const deleteLevel = (data, index) => {
+//   deletionLoader.value = index
+
+//   if(!confirm("Are you sure, you want to delete: "+data.name)){
+//     return
+//   }
+
+//   let info = {
+//     number:data.number
+//   }
+
+//   levelStore.deleteLevelSetUp(info)
+// }
+
+
+  
+const deleteLevel = async (data, index) => {
   deletionLoader.value = index
-
-  if(!confirm("Are you sure, you want to delete: "+data.name)){
-    return
-  }
-
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+data.name);
+if (agreed) {
   let info = {
     number:data.number
   }
 
   levelStore.deleteLevelSetUp(info)
 }
+
+
+}
+
 
 
 onMounted(
@@ -115,6 +137,8 @@ watch(
 <template>
   <div>
 
+    
+<ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="levelEditMode ? 'Edit Level' : 'Add Level'" v-model="levelDialog" lg>
       <new-level ref="levelRef"></new-level>
@@ -146,7 +170,7 @@ watch(
             <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
               <thead>
               <tr>
-                <th scope="col" style="width: 30%;">Code</th>
+                <th scope="col" style="width: 30%;">Codes</th>
                 <th scope="col">Name</th>
                 <th scope="col">Action</th>
               </tr>

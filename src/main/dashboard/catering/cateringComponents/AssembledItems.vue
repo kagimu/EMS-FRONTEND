@@ -9,6 +9,9 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import AppModal from "@/components/AppModal.vue";
 import MenuParts from "@/main/dashboard/catering/cateringComponents/MenuParts.vue";
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 
 
 
@@ -224,9 +227,24 @@ watch(
     }
 )
 
+
+const deleteThisData = async (id,name) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete this Item ? ");
+if (agreed) {
+  let data = {
+ 
+  }
+}
+
+
+}
+
+
 </script>
 <template>
     <div>  
+      <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
       <AppModal title="Update Menu Item" v-model="showingModal" xl4>
         <NewMenuItem :menuItemsInfo="menuItemsinfoData"></NewMenuItem>
@@ -352,7 +370,7 @@ watch(
                           <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
                           </button>
                           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-                          <button type="button">
+                          <button type="button" @click="deleteThisData(list)">
                           <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
                           </button>
                         </td>

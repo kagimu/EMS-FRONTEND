@@ -256,7 +256,7 @@
       </div>
 
 
-
+      <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <div>
  
@@ -272,6 +272,12 @@ import { useRouter } from 'vue-router'
 import useNotificationStore from "@/composables/useNotification.js"
 import AppModal from "@/components/AppModal.vue";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+
+
+
 
 const invoiceStore = useInvoiceStore()
 const showDialog = ref(false)
@@ -416,40 +422,40 @@ watch (
     }
 )
 
-const  deleteInvoice = (roles) => {
-  if(!confirm("Are you sure, you want to delete this Invoice " )){
-  // return
-  notificationStore.errorToast("Cancelled","Action Cancelled Successfully !")
-}else{
+const deleteInvoice = async (roles) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete this Invoice " );
+if (agreed) {
   invoiceStore.deleteInvoice(myData.invoiceN)
 }
 }
 
-const  cancelInvoice = (roles) => {
-  if(!confirm("Are you sure, you want to cancel this Invoice")){
-  // return
-  notificationStore.errorToast("Cancelled","Action Cancelled Successfully !")
-}else{
+const cancelInvoice = async (roles) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to cancel this Invoice " );
+if (agreed) {
   invoiceStore.cancelInvoice(myData.invoiceN)
 }
 }
-const  cancelInvoicePayment = (payment_number) => {
-  if(!confirm("Are you sure, you want to cancel this Payment")){
-  // return
-  notificationStore.errorToast("Cancelled","Action Cancelled Successfully !")
-}else{
+
+const cancelInvoicePayment = async (payment_number) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to cancel this Payment " );
+if (agreed) {
   invoiceStore.cancelInvoicePayment(payment_number)
 }
 }
 
-const  deleteInvoicePayment = (payment_number) => {
-  if(!confirm("Are you sure, you want to delete this Payment")){
-  // return
-  notificationStore.errorToast("Cancelled","Action Cancelled Successfully !")
-}else{
+
+const deleteInvoicePayment = async (payment_number) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete this Payment" );
+if (agreed) {
   invoiceStore.deleteInvoicePayment(payment_number)
 }
 }
+
+
 watch (
     () => invoiceStore.cancelInvoiceResponse,
     async (data) => {

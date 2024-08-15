@@ -7,6 +7,11 @@ import {useSubjectClusterStore} from "@/main/dashboard/curriculum/curriculumSetu
 import {useRouter} from "vue-router";
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
 import AppModal from "@/components/AppModal.vue";
+
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+
 const routerData = useRouter()
 const curriculumDialog = ref( false)
 const subjectClusterEditMode = ref( false)
@@ -30,12 +35,27 @@ const editSubjectCluster = (data) => {
   subjectClusterEditMode.value = true
   subjectClusterStore.subjectClusterData(data.number)
 }
-const deleteSubjectCluster = (data) => {
+// const deleteSubjectCluster = (data) => {
 
-  if(!confirm("Are you sure, you want to delete: "+data.name)){
-    return
-  }
+//   if(!confirm("Are you sure, you want to delete: "+data.name)){
+//     return
+//   }
 
+//   deletionLoader.value = data.number
+
+//   let info = {
+//     number:data.number
+//   }
+
+//   subjectClusterStore.deleteSubjectCluster(info)
+// }
+
+
+
+const deleteSubjectCluster = async (data) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+data.name);
+if (agreed) {
   deletionLoader.value = data.number
 
   let info = {
@@ -44,6 +64,10 @@ const deleteSubjectCluster = (data) => {
 
   subjectClusterStore.deleteSubjectCluster(info)
 }
+
+
+}
+
 
 
 onMounted(
@@ -129,6 +153,7 @@ watch(
 <template>
   <div>
 
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="subjectClusterEditMode ? 'Edit' : 'Add'" v-model="curriculumDialog" lg>
       <new-subject-cluster></new-subject-cluster>

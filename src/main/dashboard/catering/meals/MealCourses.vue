@@ -7,6 +7,9 @@ import NewMealCourse from "@/main/dashboard/catering/meals/components/NewMealCou
 import EditMealCourseItem from "@/main/dashboard/catering/meals/components/EditMealCourseItem.vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 const  mealStore  = useMealStore()
 const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
@@ -82,12 +85,27 @@ watch(
   }
 
 
-//delete
-const deleteThisData = (id,name) => {
-if(!confirm("Are you sure, you want to delete: " + name)){
-  return
+
+// const deleteThisData = (id,name) => {
+// if(!confirm("Are you sure, you want to delete: " + name)){
+//   return
+// }
+// }
+
+
+const deleteThisData = async (id,name) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
+if (agreed) {
+  let data = {
+ 
+  }
 }
+
+
 }
+
+
 
 const receivedSchoolNumber = ref('');
 
@@ -138,7 +156,7 @@ watch(
 <template>
   <div>
 
-
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
     <AppModal :title="mealEditMode ? 'Edit Meal' : 'Add Meal Course'" v-model="mealCourseDialog" lg >
       <new-meal-course :mealCourseData="mealCourseData" @schoolNumberChanged="handleSchoolNumberChanged"></new-meal-course>
     </AppModal>

@@ -65,7 +65,7 @@
               &nbsp;&nbsp; 
               <button 
               v-if="can('delete_service','general')"
-               @click="deleteService(serviceData.Item.number)" class="link-danger"><i class="bi bi-trash"></i></button>        
+               @click="deleteService(serviceData.Item)" class="link-danger"><i class="bi bi-trash"></i></button>        
               </td>
           </tr>      
         </tbody>
@@ -107,7 +107,9 @@
                     </div>
                 </div>
             </div>
-        </div></div>
+        </div>
+        <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+      </div>
        
     </template>
     
@@ -119,6 +121,9 @@
   import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js"
   import AppModal from "@/components/AppModal.vue";
   import { useAbility } from '@casl/vue';
+
+  import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
 
 const { can } = useAbility()
 const servicesList = ref( [])
@@ -164,13 +169,17 @@ const editMode = ref(false)
       {deep:true}
   )
    
-  const deleteService = (sid) => {
-if(!confirm("Are you sure, you want to delete: " + sid)){
-  return
-}
-serviceStore.deleteService(sid)
+
+
+const deleteService = async (sid) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + sid.name);
+if (agreed) {
+  serviceStore.deleteService(sid.number)
 }
 
+
+}
 
 watch (
     () => serviceStore.deleteServiceResponse,

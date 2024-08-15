@@ -15,6 +15,11 @@ import NewLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPla
 import NewSubtopicReference from "@/main/dashboard/curriculum/curriculumSetup/subTopic/NewSubtopicReference.vue";
 import AppModal from "@/components/AppModal.vue";
 import NewSubject from "@/main/dashboard/curriculum/curriculumSetup/subject/NewSubject.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+
+
 const routerData = useRouter()
 
 const subjectStore = useSubjectStore()
@@ -61,19 +66,36 @@ const editSubTopic = (data) => {
   subTopicEditMode.value = true
   subtopicStore.subTopicData(data.number)
 }
-const deleteSubTopic = (data) => {
-  if(!confirm("Are you sure, you want to delete: "+data.name)){
-    return
-  }
+// const deleteSubTopic = (data) => {
+//   if(!confirm("Are you sure, you want to delete: "+data.name)){
+//     return
+//   }
 
+//   deletionLoader.value = data.number
+
+//   let info = {
+//     number:data.number
+//   }
+
+//   subtopicStore.deleteSubTopic(info)
+// }
+
+const deleteSubTopic = async (data) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+data.name);
+if (agreed) {
   deletionLoader.value = data.number
 
-  let info = {
-    number:data.number
-  }
-
-  subtopicStore.deleteSubTopic(info)
+let info = {
+  number:data.number
 }
+
+subtopicStore.deleteSubTopic(info)
+}
+
+
+}
+
 
 const selectSubjectCluster = (learning_area_number) => {
 
@@ -273,6 +295,7 @@ watch(
 </script>
 <template>
   <div>
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="subTopicEditMode ? 'Edit Sub Topic' : 'Add Sub Topic'" v-model="subtopicDialog" lg>
       <new-sub-topic></new-sub-topic>

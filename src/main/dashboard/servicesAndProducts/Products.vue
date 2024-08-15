@@ -76,7 +76,11 @@
                     </div>
                 </div>
             </div>
-        </div></div>
+        </div>
+      
+        
+<ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+      </div>
        
     </template>
     
@@ -87,6 +91,9 @@
   import UpdateProduct from "./UpdateProduct.vue";
   import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js";
   import AppModal from "@/components/AppModal.vue";
+  import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 
   import { useAbility } from '@casl/vue';
    const showActionDialog = ref(false)
@@ -149,11 +156,17 @@ showUpdateDialog.value = true
       {deep:true}
   )
    
-  const deleteProduct = (sid) => {
-if(!confirm("Are you sure, you want to delete: " + sid)){
-  return
+
+
+
+const deleteProduct = async (sid) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + sid);
+if (agreed) {
+  productStore.deleteProduct(sid)
 }
-productStore.deleteProduct(sid)
+
+
 }
 
 

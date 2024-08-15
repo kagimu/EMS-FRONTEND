@@ -9,6 +9,10 @@ import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/st
 import { useAbility } from '@casl/vue';
 import AppModal from "@/components/AppModal.vue";
 
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+
 const { can } = useAbility()
 
 const schoolStore = useSchoolStore()
@@ -35,18 +39,21 @@ const editCurriculum = (curriculum) => {
 }
 
 
-const deleteCurriculum = (data) => {
-  if(!confirm("Are you sure, you want to delete: "+data.name)){
-    return
-  }
+const deleteCurriculum = async (data) => {
 
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+data.name);
+if (agreed) {
   deletionLoader.value = data.number
 
-  let info = {
-    number:data.number
-  }
-  curriculumStore.deleteCurriculum(info)
+let info = {
+  number:data.number
 }
+curriculumStore.deleteCurriculum(info)
+}
+
+
+}
+
 
 onMounted(
     async () => {
@@ -115,13 +122,11 @@ watch(
 <template>
   <div>
 
-
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="curiculumEditMode ? 'Edit Curriculum' : 'New Curriculum'" v-model="CurriculumDialog" lg>
       <new-curriculum></new-curriculum>
     </AppModal>
-
-
 
 
     <div class="mt-3">
@@ -182,7 +187,7 @@ watch(
                     type="button"
                 class="bg-[#0d6efd] hover:bg-[#0c62e1] text-white text-sm text-center w-full rounded-b-md py-2">
                       <span class="mx-9 text-sm">
-                        Setup Curriculum
+                        Setup Curriculums
                       </span>
                 </button>
               </router-link>
