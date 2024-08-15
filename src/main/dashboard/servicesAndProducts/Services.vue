@@ -159,7 +159,7 @@ watch (
     <div class="container mt-4">
       <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Services
         <button
-        v-if="can('add_service','general')"
+        v-if="can('create_service','general')"
         style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
       @click="openAddServiceModal">
         <i class="bi bi-plus"></i>&nbsp;<small>
