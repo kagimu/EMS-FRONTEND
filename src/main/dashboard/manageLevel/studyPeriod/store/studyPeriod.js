@@ -11,6 +11,10 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
     const studyPeriodDataResponse = ref(null)
     const editStudyPeriodResponse = ref(null)
     const studyPeriodByAcademicYearResponse = ref(null)
+    const newStudyPeriodGroupNameResponse = ref(null)
+    const studyPeriodGroupNameResponse = ref(null)
+    const deleteStudyPeriodGroupNameResponse = ref(null)
+    const editStudyPeriodGroupNameResponse = ref(null)
 
 
 
@@ -95,6 +99,54 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
             })
     }
 
+    async function newStudyPeriodGroupName(data) {
+        return await api.post("main/study-period/names", data)
+            .then((response) => {
+                newStudyPeriodGroupNameResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchStudyPeriodGroupName(data) {
+        return await api.get("main/study-period/names?school_number="+data)
+            .then((response) => {
+                studyPeriodGroupNameResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function deleteStudyPeriodGroupName(data) {
+        return await api.delete("main/study-period/names/"+data.study_name_number)
+            .then((response) => {
+                deleteStudyPeriodGroupNameResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    
+    async function editStudyPeriodGroupName(data) {
+        return await api.put("main/study-period/names", data)
+            .then((response) => {
+                editStudyPeriodGroupNameResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
     return {
         newStudyPeriodResponse,
@@ -104,6 +156,10 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
         studyPeriodByAcademicYearResponse,
         studyPeriodDataResponse,
         editStudyPeriodResponse,
+        studyPeriodGroupNameResponse,
+        newStudyPeriodGroupNameResponse,
+        deleteStudyPeriodGroupNameResponse,
+        editStudyPeriodGroupNameResponse,
         errorMessage,
         newStudyPeriod,
         fetchStudyPeriod,
@@ -111,5 +167,10 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
         fetchStudyPeriodByAcademicYear,
         fetchStudyPeriodData,
         editStudyPeriod,
+        newStudyPeriodGroupName,
+        fetchStudyPeriodGroupName,
+        deleteStudyPeriodGroupName,
+        editStudyPeriodGroupName
+        
     }
 })
