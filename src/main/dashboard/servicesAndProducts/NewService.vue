@@ -71,7 +71,11 @@ const checkDraftData = () => {
 
 
 const fetchCampuses = (school_number) => {
-  campusStore.fetchCampuses(school_number)
+  if(school_number) {
+    alert(school_number)
+    campusList.value = []
+    campusStore.fetchCampuses(school_number)
+  }
 }
 
 const fetchClasses = (campus_number) => {

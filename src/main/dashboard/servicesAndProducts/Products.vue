@@ -25,6 +25,7 @@ const showDialog = ref(false)
 
 
 const openProductModal = () =>{
+  productListData.value = ""
   showActionDialog.value=true
 }
 
@@ -75,9 +76,9 @@ watch (
 
 const deleteProduct = async (sid) => {
 
-  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + sid);
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + sid.Item.name);
   if (agreed) {
-    await productStore.deleteProduct(sid)
+    await productStore.deleteProduct(sid.item_number	)
   }
 
 
