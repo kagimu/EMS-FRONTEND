@@ -60,12 +60,12 @@ const checkDraftData = () => {
     formData.cost = draft?.Item?.cost ?? null
     formData.name = draft?.Item?.name ?? null
     formData.mandatory = draft?.Item.mandatory
-    formData.prefix = draft?.Item?.prefix
+    formData.prefix = draft?.Item?.serial_code
     formData.campus_numbers = draft?.Item?.campus_numbers ?? []
     formData.payment_mode = draft?.Item?.payment_mode
     formData.school_number = draft?.Item?.school_number ?? ""
     item_number.value = draft?.Item?.number
-
+    campusStore.fetchCampuses(formData.school_number )
   }
 }
 
@@ -77,7 +77,6 @@ const fetchCampuses = (school_number) => {
 const fetchClasses = (campus_number) => {
   campusStore.fetchClassesByCampus(campus_number)
 }
-
 
 
 
@@ -151,6 +150,7 @@ watch(
 
 </script>
 <template>
+  {{ serviceDetails }}
 
         <form @submit.prevent="createNewService">
 
