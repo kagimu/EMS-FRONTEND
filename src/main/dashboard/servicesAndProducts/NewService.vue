@@ -86,7 +86,6 @@ const fetchClasses = (campus_number) => {
 
 
 
-
 const createNewService = () =>{
   buttonLoader.value = true
 
@@ -156,6 +155,7 @@ watch(
 
 </script>
 <template>
+  {{ serviceDetails }}
 
         <form @submit.prevent="createNewService">
 

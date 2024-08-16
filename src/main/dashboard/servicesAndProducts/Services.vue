@@ -112,6 +112,7 @@ watch(
 
 
 const openAddServiceModal = () => {
+  serviceDetails.value = ""
   showDialog.value = true
   editMode.value = false
 }

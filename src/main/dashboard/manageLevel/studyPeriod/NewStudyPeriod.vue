@@ -32,6 +32,20 @@
             class="form-control form-select-sm">
       </div>
 
+      
+      <div class="mb-2">
+        <label class="textColor"><small>Study Period Group Name</small></label>
+        <!-- {{  studyPeriodGroupNameList }} -->
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.study_period_name_number"
+        >
+          <option disabled value="">--Select Study Period Group Name--</option>
+          <option v-for="(list, index) in studyPeriodGroupNameList " :key="index" :value="list.study_period_name_number">{{list.name}}</option>
+        </select>
+      </div>
+
       <div class="mb-2">
         <label class="textColor"><small>Level</small></label>
         <select
@@ -45,6 +59,17 @@
         </select>
       </div>
 
+
+      <div class="mb-2">
+            <select
+                class="form-select form-select-sm shadow-none" required
+                v-model="class_number"
+            >
+              <option disabled :value=null>--Select Class--</option>
+              <option value="">All</option>
+              <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
+            </select>
+          </div>
 
       <div class="mb-2">
         <label class="textColor"><small>Academic Year</small></label>
@@ -109,37 +134,35 @@
 <script setup>
 import {onMounted, reactive, ref, watch} from "vue";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-import {useRouter} from "vue-router";
 import useCommonsStore from "@/composables/useCommons.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import {useRouter} from "vue-router";
+
+
 const academicYearStore = useAcademicYearStore()
 const commons = useCommonsStore()
 const routerData = useRouter()
 const  notificationStore  = useNotificationStore()
 const campusStore = useCampusStore()
-
 const studyPeriodStore = useStudyPeriodStore()
 const classStore = useClassesStore()
+const schoolNumber = routerData.currentRoute.value.query.sch
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
-const campusNumber = routerData.currentRoute.value.query.id
+// const campusNumber = routerData.currentRoute.value.query.id
 const errorMessage = ref(null)
 const academicYearList = ref([])
 const loader = ref(false)
 const campus_level_number = ref("")
 const campusLevelList = ref([])
 const study_period_number = ref(null)
-
-
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
-import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
-import useNotificationStore from "@/composables/useNotification.js";
-import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
-
+const campusClassList = ref(null)
 const date = ref();
-
-
-
+const studyPeriodGroupNameList = ref( [])
 
 const form = reactive({
   code:null,
@@ -147,6 +170,7 @@ const form = reactive({
   academic_year_number:"",
   study_period_start_date:null,
   study_period_end_date:null,
+  study_period_name_number	:""
 })
 
 
@@ -160,6 +184,11 @@ const format = (date) => {
 
 const fetchAcademicYear = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
+  let data = {
+    school_number:schoolNumber,
+    campus_level_number:campus_level_number
+  }
+  campusStore.fetchClassesBySchool(data)
 }
 
 const clearStudyPeriod = () => {
@@ -179,8 +208,11 @@ defineExpose({
 onMounted(
     () =>{
       classStore.fetchCampusLevel(campus_curriculum_number)
+      studyPeriodStore.fetchStudyPeriodGroupName(schoolNumber)
     }
 )
+
+
 
 const addStudyPeriod = () => {
   loader.value = true
@@ -199,6 +231,25 @@ const addStudyPeriod = () => {
 }
 
 
+watch(
+    () => campusStore.schoolClassesResponse,
+    async (data) => {
+      if(data){
+        campusClassList.value = data.data
+      }
+    }
+)
+
+
+
+watch(
+    () => studyPeriodStore.studyPeriodGroupNameResponse,
+    async (data) => {
+      if(data){
+        studyPeriodGroupNameList.value = data.data
+      }
+    }
+)
 
 
 watch(
