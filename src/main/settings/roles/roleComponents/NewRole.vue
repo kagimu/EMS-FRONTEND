@@ -100,7 +100,7 @@
   }, { deep: true });
 </script>
 
-<template>
+<!-- <template>
   <form @submit.prevent="addRoles">
     <div class="mb-2 mr-5 ml-5">
       <label style="font-size: 14px;">Role Name</label>
@@ -150,4 +150,102 @@
       </button>
     </div>
   </form>
+</template> -->
+
+
+
+<template>
+  <div class="container mt-5">
+    <!-- Role Information Card -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Role Information</h5>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label class="form-label">Role Name</label>
+          <input placeholder="Role Name" type="text" v-model="form.name" required class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea v-model="form.description" class="form-control" style="height: 100px"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Permissions Card -->
+    <div class="card shadow-sm">
+      <div class="card-header bg-secondary text-white">
+        <h5 class="mb-0">Permissions</h5>
+      </div>
+      <div class="card-body">
+        <table id="datatable" class="table table-sm table-bordered" style="font-size: 13px;">
+          <tbody>
+            <tr v-for="(permissionGroup, groupIndex) in permissionData" :key="groupIndex">
+              <td class="bg-light fw-bold">{{ Object.keys(permissionGroup)[0] }}</td>
+              <td>
+                <ul class="list-unstyled">
+                  <li class="mb-2">
+                    <input 
+                      type="checkbox" 
+                      @change="toggleSelectAll(groupIndex, $event.target.checked)"
+                      :checked="Object.values(permissionGroup)[0].every(p => permissionSelected.includes(p))"
+                    >
+                    <b>Select All</b>
+                  </li>
+                  <li v-for="(permission, permissionIndex) in Object.values(permissionGroup)[0]" :key="permissionIndex">
+                    <input 
+                      type="checkbox" 
+                      :id="'permission_' + groupIndex + '_' + permissionIndex" 
+                      v-model="permissionSelected" 
+                      :value="permission"
+                    >
+                    &nbsp;<label class="textColor" :for="'permission_' + groupIndex + '_' + permissionIndex">{{ permission }}</label>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Save Button -->
+    <div class="text-end mt-4">
+      <button type="submit" class="btn btn-primary" @click.prevent="addRoles">
+        Save Data
+        <div class="spinner-border spinner-border-sm ms-2" role="status" v-if="buttonLoader">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </button>
+    </div>
+  </div>
 </template>
+
+<style scoped>
+.container {
+  max-width: 800px;
+  margin: auto;
+}
+
+.card {
+  border-radius: 10px;
+}
+
+.card-header {
+  font-size: 18px;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+ul {
+  padding-left: 0;
+}
+
+li {
+  padding: 5px 0;
+}
+</style>
