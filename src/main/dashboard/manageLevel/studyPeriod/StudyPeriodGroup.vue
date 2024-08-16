@@ -126,7 +126,7 @@ watch(
 
     <div class="flex justify-content-between mt-10 mb-4 mr-3">
       &nbsp;
-      <button v-if="can('create_study-period-name','manage')"
+      <button v-if="can('create_study_period_group_name','manage')"
           type="button"
           class="btn btn-sm buttonStyle btn-primary mr-2"
           @click="addStudyPeriod">
@@ -136,7 +136,7 @@ watch(
     </div>
 
 
-    <table class="table table-hover caption-top text-sm" style="font-size: 14px;" v-if="can('view_study-period-group','manage')">
+    <table class="table table-hover caption-top text-sm" style="font-size: 14px;" v-if="can('view_study_period_group_name','manage')">
       <thead>
       <tr>
         <th class="w-[2%]" scope="col">#</th>
