@@ -31,7 +31,7 @@ const formData = reactive({
   cost: null,
   name:null,
   mandatory:false,
-  prefix:null,
+  serial_code:null,
   campus_numbers:[],
   payment_mode:null
 
@@ -56,22 +56,28 @@ const checkDraftData = () => {
   let draft = props.serviceDetails
   if(draft){
 
-    formData.description = draft?.Item?.description ?? null
-    formData.cost = draft?.Item?.cost ?? null
-    formData.name = draft?.Item?.name ?? null
-    formData.mandatory = draft?.Item.mandatory
-    formData.prefix = draft?.Item?.serial_code
-    formData.campus_numbers = draft?.Item?.campus_numbers ?? []
-    formData.payment_mode = draft?.Item?.payment_mode
-    formData.school_number = draft?.Item?.school_number ?? ""
-    item_number.value = draft?.Item?.number
-    campusStore.fetchCampuses(formData.school_number )
+    formData.description = draft?.item?.description ?? null
+    formData.cost = draft?.item?.cost ?? null
+    formData.name = draft?.item?.name ?? null
+    formData.mandatory = draft?.item.mandatory
+    formData.serial_code = draft?.item?.serial_code
+    formData.payment_mode = draft?.item?.payment_mode
+    formData.school_number = draft?.item?.school_number ?? ""
+    item_number.value = draft?.item?.number
+    if(draft?.item?.school_number) {
+      fetchCampuses(draft?.item?.school_number)
+    }
+    if(draft?.campus_services){
+    formData.campus_numbers = (draft?.campus_services ?? []).map(item => item.campus_number);
+    }
   }
 }
 
 
 const fetchCampuses = (school_number) => {
-  campusStore.fetchCampuses(school_number)
+  if(school_number) {
+    campusStore.fetchCampuses(school_number)
+  }
 }
 
 const fetchClasses = (campus_number) => {
@@ -122,10 +128,9 @@ watch (
       if(data){
         errorMessage.value = data.message
         buttonLoader.value = false
-        notificationStore.errorToast("Error",data.message)
+        // notificationStore.errorToast("Error",data.message)
       }
-    },
-    {deep:true}
+    }
 )
 
 watch(
@@ -163,7 +168,7 @@ watch(
                     style="box-shadow: none;"
                     class="form-select form-select-sm" required
                     v-model="formData.school_number"
-                    @change="fetchCampuses(school_number)"
+                    @change="fetchCampuses(formData.school_number)"
                 >
                   <option disabled value="">--Select School--</option>
                   <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
@@ -203,7 +208,7 @@ watch(
               <div class="mb-2">
                 <label class="textColor">Serial Code</label>
                 <input  type="text" style="outline: none 0 !important;box-shadow: none;"
-                        required class="form-control form-select-sm" v-model="formData.prefix">
+                        required class="form-control form-select-sm" v-model="formData.serial_code">
               </div>
 
               <div class="mb-2">

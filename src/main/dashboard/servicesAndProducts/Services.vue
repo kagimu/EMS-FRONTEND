@@ -46,8 +46,8 @@ watch (
     () => serviceStore.errorMessage,
     async (data) => {
       if(data){
-        showDialog.value = false
-        errorMessage.value = data.message
+        // showDialog.value = false
+        // errorMessage.value = data.message
         notificationStore.errorToast("Error",data.message)
       }
     }
@@ -167,6 +167,7 @@ watch (
           Add Service</small></button>
           
         <hr style="width:30px;"></h6>
+
       <table
         id="datatable"
         class="table table-hover caption-top mt-4 table-sm table-striped"
@@ -174,7 +175,7 @@ watch (
       >
         <thead>
           <tr>
-            <th style="width: 5px;">#</th>
+            <th class="w-[5%]">#</th>
             <th>Service Name</th>
             <th>Cost</th>
             <th>Addition Info</th>
@@ -184,21 +185,23 @@ watch (
         <tbody>
           <tr v-for="(serviceData, index) in servicesList" :key="index" >
             <td>{{ index+1 }}</td>
-            <td>{{ serviceData.Item.name}}</td>
-            <td>{{ serviceData.Item.cost}}</td>
-            <td>{{ serviceData.Item.description}}</td>
+            <td>{{ serviceData?.item?.name}}</td>
+            <td>{{ serviceData?.item?.cost}}</td>
+            <td>{{ serviceData?.item?.description}}</td>
             <td>
 
-              <button
-              v-if="can('edit_service','general')"
-               @click="setServiceId(serviceData)" class="link-primary mr-3">
-                <i class="bi bi-pencil"></i>
-              </button>
+             <div class="flex">
+               <button
+                   v-if="can('edit_service','general')"
+                   @click="setServiceId(serviceData)" class="link-primary mr-2">
+                 <i class="bi bi-pencil"></i>
+               </button>
 
-              <button 
-              v-if="can('delete_service','general')"
-               @click="deleteService(serviceData.Item)" class="link-danger"><i class="bi bi-trash"></i>
-              </button>
+               <button
+                   v-if="can('delete_service','general')"
+                   @click="deleteService(serviceData?.item)" class="link-danger"><i class="bi bi-trash"></i>
+               </button>
+             </div>
 
               </td>
           </tr>      
