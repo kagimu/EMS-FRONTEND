@@ -12,7 +12,7 @@
     <div class="row m-3">
       <div class="col-12">
         <button  style="float: right;"
-        v-if="can('add_user','general')"
+        v-if="can('create_user','general')"
         class="btn btn-primary btn-sm" type="button" @click="showModalUser">New User</button>
       </div>
     </div>
