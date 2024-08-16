@@ -160,17 +160,21 @@ watch (
         </thead>
         <tbody>
           <tr v-for="(productData, index) in productsList" :key="index" >
-            <td>{{ productData.Item.name}}</td>
-            <td>{{ productData.Item.cost}}</td>
-            <td>{{ productData.Item.description}}</td>
+            <td>{{ productData.item.name}}</td>
+            <td>{{ productData.item.cost}}</td>
+            <td>{{ productData.item.description}}</td>
             <td>
-              <button 
-              v-if="can('edit_product','general')"
-              @click="showEditModal(productData)"><i class="bi bi-pencil"></i></button>&nbsp;&nbsp;   |
-              &nbsp;&nbsp; 
-              <button
-              v-if="can('delete_product','general')"
-                @click="deleteProduct(productData)" class="link-danger"><i class="bi bi-trash"></i></button>        
+              <div class="flex">
+                <button
+                    class="mr-2"
+                    v-if="can('edit_product','general')"
+                    @click="showEditModal(productData)"><i class="bi bi-pencil"></i></button>
+
+                <button
+                    v-if="can('delete_product','general')"
+                    @click="deleteProduct(productData)" class="link-danger"><i class="bi bi-trash"></i>
+                </button>
+              </div>
               </td>
           </tr>      
         </tbody>
