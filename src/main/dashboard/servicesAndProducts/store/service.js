@@ -120,7 +120,7 @@ export const useServiceStore = defineStore("service", () => {
                 })
                 .catch((response) => {
                     if(response && response.response){
-                        errorMessage.value = response.data
+                        errorMessage.value = response.response.data
                     }
                 })
         }
