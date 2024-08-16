@@ -22,7 +22,7 @@ const accountList = ref([
   {
     name: "User Management" ,
     id: "user-management",
-    action:"view_account_management"
+    action:"view_users"
   },
   {
     name:"Roles",
@@ -32,12 +32,12 @@ const accountList = ref([
   {
     name: "User Scope" ,
     id: "scope",
-    action:"view_scope"
+    action:"view_scopes"
   },
   {
     name: "Entity" ,
     id: "entity",
-    action:"view_entity"
+    action:"view_entities"
   },
 
 ])

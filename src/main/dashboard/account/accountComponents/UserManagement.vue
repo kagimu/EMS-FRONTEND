@@ -289,7 +289,7 @@ watch (
             </div>
             <div class="col-lg-6">
                 <button  style="float: right;border: none;"
-                  v-if="can('add_user','general')" 
+                  v-if="can('create_user','general')"
                   class="btn btn-primary btn-sm mr-3" type="button"  @click="showModalUser"><i class="bi bi-plus"></i>Add New User</button>
             </div>
     
