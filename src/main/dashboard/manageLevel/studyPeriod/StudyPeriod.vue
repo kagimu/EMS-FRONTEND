@@ -36,8 +36,7 @@ onMounted(
 )
 
 
-const addStudyPeriod = (item) => {
-  // classNumber.value = item.number
+const addStudyPeriod = () => {
   newStudyPeriodDialog.value = true
   editMode.value = false
   studyPeriodRef.value.clearStudyPeriod()
@@ -52,21 +51,6 @@ const editStudyPeriod = (styPeriod)  => {
   }
 }
 
-// const deleteStudyPeriod = (styPeriod, idx) => {
-//   deletionLoader.value = idx
-
-//   if(!confirm("Are you sure, you want to delete: "+styPeriod.study_period_name)){
-//     return
-//   }
-
-
-//   let data = {
-//     number:styPeriod.number
-//   }
-//   studyPeriodStore.deleteStudyPeriod(data)
-
-// }
-
 
 const deleteStudyPeriod = async (styPeriod, idx) => {
   deletionLoader.value = idx
@@ -76,7 +60,7 @@ if (agreed) {
   let data = {
     number:styPeriod.number
   }
-  studyPeriodStore.deleteStudyPeriod(data)
+  await studyPeriodStore.deleteStudyPeriod(data)
 }
 
 
@@ -86,21 +70,19 @@ if (agreed) {
 const filterStudyPeriod = (academicYearNumber) => {
   if(academicYearNumber) {
     studyPeriodData()
-    //studyPeriodStore.fetchStudyPeriod({level:campusCurriculumNumber, academic_year_number:academicYearNumber})
   }
 }
 
 onMounted(
     () => {
       studyPeriodData()
-      // studyPeriodStore.fetchStudyPeriod({level:campusCurriculumNumber, academic_year_number:academicYearNumber.value})
-      // academicYearStore.fetchAcademicYear(campusLevel)
     }
 )
 
 const studyPeriodData = () => {
   studyPeriodStore.fetchStudyPeriod({campus_curriculum_number:campus_curriculum_number, academic_year_number:academicYearNumber.value})
 }
+
 
 watch(
     () => studyPeriodStore.studyPeriodResponse,
@@ -115,7 +97,7 @@ watch(
     () => studyPeriodStore.newStudyPeriodResponse,
     async (data) => {
       if(data){
-        await studyPeriodData()
+        studyPeriodData()
         notificationStore.successToast("Success","Study Period added successfully")
       }
     }
@@ -135,8 +117,7 @@ watch(
     async (data) => {
       if(data){
         deletionLoader.value = undefined
-        await studyPeriodData()
-        // await studyPeriodStore.fetchStudyPeriod({level: campusCurriculumNumber, academic_year_number: academicYearNumber.value})
+        studyPeriodData()
       }
     }
 )
@@ -146,8 +127,7 @@ watch(
     async (data) => {
       if(data){
         notificationStore.successToast("Success",data.message)
-        await studyPeriodData()
-        // await studyPeriodStore.fetchStudyPeriod({level: campusCurriculumNumber, academic_year_number: academicYearNumber.value})
+         studyPeriodData()
       }
     }
 )

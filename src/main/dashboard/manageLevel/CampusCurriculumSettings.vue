@@ -78,14 +78,15 @@ const switchTabs = (tab) => {
           <academic-year></academic-year>
         </div>
 
-        <div v-if="selectedTab === 'study-period'">
-          <study-period></study-period>
-        </div>
+
+
         <div v-if="selectedTab === 'study-period-group'">
           <study-period-group></study-period-group>
         </div>
 
-
+        <div v-if="selectedTab === 'study-period'">
+          <study-period></study-period>
+        </div>
 
       </div>
 

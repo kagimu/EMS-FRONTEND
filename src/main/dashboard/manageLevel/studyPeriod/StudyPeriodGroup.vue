@@ -19,7 +19,9 @@ const  notificationStore  = useNotificationStore()
 const deletionLoader = ref( undefined)
 const editMode = ref( false)
 const studyPeriodStore = useStudyPeriodStore()
-const studyPerionGroupNameData = ref([])
+const studyPeriodGroupNameData = ref([])
+
+
 
 onMounted(
     () => {
@@ -29,28 +31,29 @@ onMounted(
 
 
 const addStudyPeriod = () => {
- studyPerionGroupNameData.value = ""
+ studyPeriodGroupNameData.value = ""
   newStudyPeriodDialog.value = true
   editMode.value = false
 }
 
 const openEditModal = (listData) =>{
-  studyPerionGroupNameData.value = listData
+  studyPeriodGroupNameData.value = listData
   editMode.value = true
   newStudyPeriodDialog.value = true
 }
 
 
 const deleteThisData = async (styPeriod, idx) => {
-  deletionLoader.value = idx
+
+deletionLoader.value = idx
 
 const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+styPeriod.name);
 if (agreed) {
   let data = {
     study_name_number:styPeriod.study_period_name_number
   }
-//   alert(styPeriod.study_period_name_number)
-  studyPeriodStore.deleteStudyPeriodGroupName(data)
+
+  await studyPeriodStore.deleteStudyPeriodGroupName(data)
 }
 
 
@@ -83,7 +86,7 @@ watch(
       if(data){
         deletionLoader.value = false
         notificationStore.successToast("Success", data.message)
-        studyPeriodStore.fetchStudyPeriodGroupName(schoolNumber)
+        await studyPeriodStore.fetchStudyPeriodGroupName(schoolNumber)
       }
     }
 )
@@ -94,7 +97,7 @@ watch(
     async (data) => {
       if(data){
         newStudyPeriodDialog.value = false
-        studyPeriodStore.fetchStudyPeriodGroupName(schoolNumber)
+        await studyPeriodStore.fetchStudyPeriodGroupName(schoolNumber)
       }
     }
 )
@@ -120,7 +123,7 @@ watch(
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="editMode ? 'Edit Study Period Group Name' : 'Add Study Period Group Name'" v-model="newStudyPeriodDialog" lg>
-      <new-study-period-group :studyPerionGroupNameData="studyPerionGroupNameData"></new-study-period-group>
+      <new-study-period-group :studyPeriodGroupNameData="studyPeriodGroupNameData"></new-study-period-group>
     </AppModal>
 
 
@@ -139,9 +142,9 @@ watch(
     <table class="table table-hover caption-top text-sm" style="font-size: 14px;" v-if="can('view_study_period_group_name','manage')">
       <thead>
       <tr>
-        <th class="w-[2%]" scope="col">#</th>
-        <th class="w-[70%]"  scope="col">Name</th>
-        <th class="w-[28%]"  scope="col">Action</th>
+        <th class="w-[10%]" scope="col">#</th>
+        <th class="w-[80%]"  scope="col">Name</th>
+        <th class="w-[10%]"  scope="col">Action</th>
       </tr>
       </thead>
       <tbody>

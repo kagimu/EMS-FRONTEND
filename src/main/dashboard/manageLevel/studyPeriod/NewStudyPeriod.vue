@@ -1,3 +1,195 @@
+<script setup>
+import {onMounted, reactive, ref, watch} from "vue";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import useCommonsStore from "@/composables/useCommons.js";
+import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import {useRouter} from "vue-router";
+
+
+const academicYearStore = useAcademicYearStore()
+const commons = useCommonsStore()
+const routerData = useRouter()
+const  notificationStore  = useNotificationStore()
+const campusStore = useCampusStore()
+const studyPeriodStore = useStudyPeriodStore()
+const classStore = useClassesStore()
+const schoolNumber = routerData.currentRoute.value.query.sch
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
+const errorMessage = ref(null)
+const academicYearList = ref([])
+const loader = ref(false)
+const campus_level_number = ref("")
+const campusLevelList = ref([])
+const study_period_number = ref(null)
+const campusClassList = ref(null)
+const date = ref();
+const studyPeriodGroupNameList = ref( [])
+
+const form = reactive({
+  code:null,
+  study_period_name:null,
+  academic_year_number:"",
+  study_period_start_date:null,
+  study_period_end_date:null,
+  study_period_name_number	:""
+})
+
+
+const format = (date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  return `Selected date is ${day}/${month}/${year}`;
+}
+
+const fetchAcademicYear = (campus_level_number) => {
+  academicYearStore.fetchAcademicYearByLevel(campus_level_number)
+  let data = {
+    school_number:schoolNumber,
+    campus_level_number:campus_level_number
+  }
+  campusStore.fetchClassesBySchool(data)
+}
+
+const clearStudyPeriod = () => {
+  form.code = null
+  form.study_period_name = null
+  form.academic_year_number = ""
+  form.study_period_start_date = null
+  form.study_period_end_date = null
+  study_period_number.value = null
+}
+
+defineExpose({
+  clearStudyPeriod
+})
+
+
+onMounted(
+    () =>{
+      classStore.fetchCampusLevel(campus_curriculum_number)
+      studyPeriodStore.fetchStudyPeriodGroupName(schoolNumber)
+    }
+)
+
+
+
+const addStudyPeriod = () => {
+  loader.value = true
+  errorMessage.value = ""
+
+  if(study_period_number.value){
+    form.study_period_number = study_period_number.value
+    form.code = String(form.code)
+    form.study_period_start_date = commons.formatDate(form.study_period_start_date)
+    form.study_period_end_date = commons.formatDate(form.study_period_end_date)
+    studyPeriodStore.editStudyPeriod(form)
+  }else {
+    studyPeriodStore.newStudyPeriod(form)
+  }
+
+}
+
+
+watch(
+    () => campusStore.schoolClassesResponse,
+    async (data) => {
+      if(data){
+        campusClassList.value = data.data
+      }
+    }
+)
+
+
+
+watch(
+    () => studyPeriodStore.studyPeriodGroupNameResponse,
+    async (data) => {
+      if(data){
+        studyPeriodGroupNameList.value = data.data
+      }
+    }
+)
+
+
+watch(
+    () => studyPeriodStore.editStudyPeriodResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    }
+)
+
+
+watch(
+    () => studyPeriodStore.newStudyPeriodResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+        form.code = null
+        form.study_period_name = null
+        form.academic_year_number = ""
+        form.study_period_date_range = null
+      }
+    }
+)
+
+watch(
+    () => academicYearStore.academicYearByLevelResponse,
+    async (data) => {
+      if(data){
+        academicYearList.value = data.data
+      }
+    }
+)
+
+
+watch(
+    () => studyPeriodStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        loader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    }
+)
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        campusLevelList.value = data.data
+      }
+    }
+)
+
+
+watch(
+    () => studyPeriodStore.studyPeriodDataResponse,
+    async (data) => {
+      if(data){
+        let info = data.data
+        form.code = info.code
+        form.study_period_name = info.study_period_name
+        form.academic_year_number = info.academic_year_number
+        form.study_period_start_date = info.study_period_start_date
+        form.study_period_end_date = info.study_period_end_date
+        campus_level_number.value = info.level_number
+        fetchAcademicYear(info.level_number)
+        study_period_number.value = info.number
+      }
+    }
+)
+
+</script>
 <template>
 
   <div>
@@ -131,199 +323,7 @@
   </div>
 
 </template>
-<script setup>
-import {onMounted, reactive, ref, watch} from "vue";
-import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-import useCommonsStore from "@/composables/useCommons.js";
-import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
-import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
-import useNotificationStore from "@/composables/useNotification.js";
-import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
-import {useRouter} from "vue-router";
 
-
-const academicYearStore = useAcademicYearStore()
-const commons = useCommonsStore()
-const routerData = useRouter()
-const  notificationStore  = useNotificationStore()
-const campusStore = useCampusStore()
-const studyPeriodStore = useStudyPeriodStore()
-const classStore = useClassesStore()
-const schoolNumber = routerData.currentRoute.value.query.sch
-const campus_curriculum_number = routerData.currentRoute.value.query.crr
-// const campusNumber = routerData.currentRoute.value.query.id
-const errorMessage = ref(null)
-const academicYearList = ref([])
-const loader = ref(false)
-const campus_level_number = ref("")
-const campusLevelList = ref([])
-const study_period_number = ref(null)
-const campusClassList = ref(null)
-const date = ref();
-const studyPeriodGroupNameList = ref( [])
-
-const form = reactive({
-  code:null,
-  study_period_name:null,
-  academic_year_number:"",
-  study_period_start_date:null,
-  study_period_end_date:null,
-  study_period_name_number	:""
-})
-
-
-const format = (date) => {
-  const day = date.getDate();
-  const month = date.getMonth() + 1;
-  const year = date.getFullYear();
-
-  return `Selected date is ${day}/${month}/${year}`;
-}
-
-const fetchAcademicYear = (campus_level_number) => {
-  academicYearStore.fetchAcademicYearByLevel(campus_level_number)
-  let data = {
-    school_number:schoolNumber,
-    campus_level_number:campus_level_number
-  }
-  campusStore.fetchClassesBySchool(data)
-}
-
-const clearStudyPeriod = () => {
-      form.code = null
-      form.study_period_name = null
-      form.academic_year_number = ""
-      form.study_period_start_date = null
-      form.study_period_end_date = null
-      study_period_number.value = null
-}
-
-defineExpose({
-  clearStudyPeriod
-})
-
-
-onMounted(
-    () =>{
-      classStore.fetchCampusLevel(campus_curriculum_number)
-      studyPeriodStore.fetchStudyPeriodGroupName(schoolNumber)
-    }
-)
-
-
-
-const addStudyPeriod = () => {
-  loader.value = true
-  errorMessage.value = ""
-
-  if(study_period_number.value){
-    form.study_period_number = study_period_number.value
-    form.code = String(form.code)
-    form.study_period_start_date = commons.formatDate(form.study_period_start_date)
-    form.study_period_end_date = commons.formatDate(form.study_period_end_date)
-    studyPeriodStore.editStudyPeriod(form)
-  }else {
-    studyPeriodStore.newStudyPeriod(form)
-  }
-
-}
-
-
-watch(
-    () => campusStore.schoolClassesResponse,
-    async (data) => {
-      if(data){
-        campusClassList.value = data.data
-      }
-    }
-)
-
-
-
-watch(
-    () => studyPeriodStore.studyPeriodGroupNameResponse,
-    async (data) => {
-      if(data){
-        studyPeriodGroupNameList.value = data.data
-      }
-    }
-)
-
-
-watch(
-    () => studyPeriodStore.editStudyPeriodResponse,
-    async (data) => {
-      if(data){
-        loader.value = false
-      }
-    }
-)
-
-
-watch(
-    () => studyPeriodStore.newStudyPeriodResponse,
-    async (data) => {
-      if(data){
-        loader.value = false
-        form.code = null
-        form.study_period_name = null
-        form.academic_year_number = ""
-        form.study_period_date_range = null
-      }
-    }
-)
-
-watch(
-    () => academicYearStore.academicYearByLevelResponse,
-    async (data) => {
-      if(data){
-        academicYearList.value = data.data
-      }
-    }
-)
-
-
-watch(
-    () => studyPeriodStore.errorMessage,
-    async (data) => {
-      if(data){
-        errorMessage.value = data.message
-        loader.value = false
-        notificationStore.errorToast("Error",data.message)
-      }
-    }
-)
-
-watch(
-    () => classStore.campusLevelResponse,
-    async (data) => {
-      if(data){
-        campusLevelList.value = data.data
-      }
-    }
-)
-
-
-watch(
-    () => studyPeriodStore.studyPeriodDataResponse,
-    async (data) => {
-      if(data){
-        let info = data.data
-            form.code = info.code
-            form.study_period_name = info.study_period_name
-            form.academic_year_number = info.academic_year_number
-            form.study_period_start_date = info.study_period_start_date
-            form.study_period_end_date = info.study_period_end_date
-            campus_level_number.value = info.level_number
-            fetchAcademicYear(info.level_number)
-            study_period_number.value = info.number
-      }
-    }
-)
-
-</script>
 
 <style scoped>
 
