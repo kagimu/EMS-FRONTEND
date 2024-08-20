@@ -112,6 +112,7 @@ const changeMenu = (value) => {
               <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
                   <div
                     v-for="(item, idx) in menu" :key="idx"
+                    v-show="can(item.action,'general')"
                     :class="item.value === menuSelected ? 'active' : ''"
                     class="list-group-item list-group-item-action cursor-pointer"
                     @click="changeMenu(item.value)">
@@ -144,6 +145,7 @@ const changeMenu = (value) => {
               <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
                 <div
                     v-for="(item, idx) in mealMenu" :key="idx"
+                    v-show="can(item.action,'general')"
                     :class="item.value === menuSelected ? 'active' : ''"
                     class="list-group-item list-group-item-action cursor-pointer"
                     @click="changeMenu(item.value)">
