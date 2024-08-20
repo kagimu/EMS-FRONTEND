@@ -25,13 +25,12 @@ const studyPeriodList = ref( [])
 const  notificationStore  = useNotificationStore()
 const academicYearNumber = ref( "")
 const academicYearList = ref( [])
-const studyPeriodRef = ref( null)
 const deletionLoader = ref( undefined)
 const editMode = ref( false)
 
 onMounted(
     () => {
-      classStore.fetchCampusLevel(campus_curriculum_number)
+      // classStore.fetchCampusLevel(campus_curriculum_number)
     }
 )
 
@@ -39,7 +38,6 @@ onMounted(
 const addStudyPeriod = () => {
   newStudyPeriodDialog.value = true
   editMode.value = false
-  studyPeriodRef.value.clearStudyPeriod()
 }
 
 
@@ -141,7 +139,7 @@ watch(
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="editMode ? 'Edit Study Period' : 'Add Study Period'" v-model="newStudyPeriodDialog" lg>
-      <new-study-period ref="studyPeriodRef"></new-study-period>
+      <new-study-period></new-study-period>
     </AppModal>
 
 
