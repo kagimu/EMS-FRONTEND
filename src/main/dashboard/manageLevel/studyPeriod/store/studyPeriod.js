@@ -64,6 +64,7 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
                 }
             })
     }
+    
 
 
     async function fetchStudyPeriodByAcademicYear(academic_year_number) {

@@ -14,6 +14,9 @@ const confirmationRef = ref(null);
 
 
 
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
 
 
 const showingModal = ref(false)
@@ -362,11 +365,11 @@ watch(
                       <td>{{ list?.purchase_unit_of_measure_name }}</td>
                       <td>{{ list?.current_quantity }}</td>
                       <td>
-                        <button @click="showUpdateDialog(list)" >
+                        <button v-if="can('edit_menu_item','general')" @click="showUpdateDialog(list)" >
                           <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
                         </button>
                         &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-                        <button type="button" @click="deleteThisData(list.number,list.name)">
+                        <button v-if="can('remove_menu_item','general')" type="button" @click="deleteThisData(list.number,list.name)">
                           <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
                         </button>
                       </td>

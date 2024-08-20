@@ -7,6 +7,9 @@ import NewMealCourseFeedingSessions from "@/main/dashboard/catering/meals/compon
 import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import { useAbility } from '@casl/vue';
+const { can } = useAbility()
+
 const confirmationRef = ref(null);
 
 const  mealStore  = useMealStore()
@@ -139,9 +142,10 @@ if (agreed) {
         <div class="flex justify-content-between mt-3">
           <div class="ml-4">Meal Course Menu Pack</div>
           <button
+          v-if="can('create_meal_course_menu_pack','general')" 
               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addMeal">
             <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-            Add Meal Course                                                        
+            Add Meal Course Menu Pack                                                   
           </button>
         </div>
 
@@ -260,12 +264,24 @@ if (agreed) {
           <p class="text-danger mb-0">Cost: Shs {{ list?.pack_cost }}</p>
         </div>
         <button
+        v-if="can('delete_meal_course_menu_pack','general')" 
+        style="float: right;"
           type="button"
           class="btn btn-outline-danger btn-sm"
           @click="deleteThisData(list.feeding_session_number, list.name)"
           aria-label="Delete"
         >
           <i class="bi bi-trash"></i>
+        </button>
+
+        <button
+        v-if="can('edit_meal_course_menu_pack','general')" 
+          type="button"
+          class="btn btn-outline-success btn-sm"
+          @click="editThisData(list)"
+          aria-label="edit"
+        >
+          <i class="bi bi-pencil"></i>
         </button>
       </div>
       <div class="card-body">

@@ -133,7 +133,6 @@ if (agreed) {
 }
 
 
-
 watch (
     () => cateringStore.deleteFeedingGroupResponse,
     async (data) => {
@@ -244,11 +243,11 @@ watch (
       <td>{{ list.status }}</td>
       <td>{{ list.school_name }}</td>
       <td>
-        <button @click="editThisData(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
+        <button v-if="can('edit_feeding_group','general')" @click="editThisData(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-          <button type="button" @click="deleteThisData(list.number,list.name)">
+          <button v-if="can('delete_feeding_group','general')" type="button" @click="deleteThisData(list.number,list.name)">
             <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
           </button>
       </td>

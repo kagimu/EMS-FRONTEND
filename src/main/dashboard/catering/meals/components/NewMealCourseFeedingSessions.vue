@@ -153,7 +153,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor mt-3 mb-2"><small>Select Feeding Session(s)</small></label>
+        <label class="textColor mt-3 mb-2"><small>Select Menu Packs</small></label>
         <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
           <li class="list-group-item" v-for="(lvl,idx) in feedingSessionGroupList">
             <input

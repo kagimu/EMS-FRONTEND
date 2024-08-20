@@ -35,15 +35,18 @@ const menu = ref([
   },
   {
     text:"Menu Items",
-    value:"menu-items"
+    value:"menu-items",
+     action:"view_menu_items"
   },
   {
     text:"Menu Packs",
-    value:"feeding-session"
+    value:"feeding-session",
+     action:"view_menu_packs"
   },
   {
     text:"Feeding Group",
-    value:"feeding-group"
+    value:"feeding-group",
+     action:"view_feeding_groups"
   },
 
 
@@ -53,33 +56,40 @@ const menu = ref([
 const mealMenu = ref([
   {
     text:"Meal Courses",
-    value:"meal-courses"
+    value:"meal-courses",
+     action:"view_meal_courses"
   },
 
   {
     text:"Meal Course Menu Pack",
-    value:"meal-course-feeding-sessions"
+    value:"meal-course-feeding-sessions",
+     action:"view_meal_course_menu_packs"
   },
   {
     text:"Daily group courses",
-    value:"meal-courses-per-day"
+    value:"meal-courses-per-day",
+     action:"view_daily_group_courses"
   },
   {
     text:"Groups On Calendar",
-    value:"groups-on-calendar"
+    value:"groups-on-calendar",
+     action:"view_groups_on_calendar"
   },
   {
     text:"Weekly Meal Items",
-    value:"meal-calendar"
+    value:"meal-calendar",
+     action:"view_weekly_meal_items"
   },
   {
     text:"Meals Delivery",
     value:"feeding",
-    action:"record_meals"
+    action:"record_meals",
+     action:"view_meals_delivery"
   },
   {
     text:"Meals Cost Projections",
-    value:"meals-cost-projections"
+    value:"meals-cost-projections",
+     action:"view_meal_cost_projections"
   },
 ])
 
@@ -111,7 +121,7 @@ const changeMenu = (value) => {
             </div>
           </div>
 
-          <div class="card mt-3">
+          <div class="card mt-3"    v-if="can('view_stock','general')">
             <div class="card-body" style="padding: 0;">
 
               <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">

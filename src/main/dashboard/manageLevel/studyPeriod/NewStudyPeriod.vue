@@ -36,7 +36,8 @@ const form = reactive({
   academic_year_number:"",
   study_period_start_date:null,
   study_period_end_date:null,
-  study_period_name_number	:""
+  study_period_name_number	:"",
+ classes:[]
 })
 
 
@@ -92,6 +93,8 @@ const addStudyPeriod = () => {
     form.study_period_number = study_period_number.value
     studyPeriodStore.editStudyPeriod(form)
   }else {
+    // alert(JSON.stringify(form))
+    form.code = parseInt(form.code)
     studyPeriodStore.newStudyPeriod(form)
   }
 
@@ -138,6 +141,7 @@ watch(
         form.study_period_name = null
         form.academic_year_number = ""
         form.study_period_date_range = null
+        form.class_number=""
       }
     }
 )

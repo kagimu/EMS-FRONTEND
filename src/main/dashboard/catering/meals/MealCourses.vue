@@ -10,6 +10,9 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 const confirmationRef = ref(null);
 
+import { useAbility } from '@casl/vue';
+const { can } = useAbility()
+
 const  mealStore  = useMealStore()
 const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
@@ -174,6 +177,7 @@ watch(
         <div class="flex justify-content-between mt-3" v-if="!mealCourseList?.count">
           <div class="ml-4">Meal Courses</div>
           <button
+          v-if="can('create_meal_course','general')" 
               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addCourse">
               <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
               Add a Meal Course
@@ -223,6 +227,7 @@ watch(
 
           <div>
             <button
+           
                 v-if="school_number"
                 type="button"  class="btn btn-sm buttonStyle btn-warning ml-1 mr-4" @click="editThisData()">
               <i style="font-size: 12px;"  class="bi-pencil mr-2"></i>
@@ -252,11 +257,11 @@ watch(
               <small class="text-white px-3 rounded-md py-[1px]" :class="levelInfo.status === 'ACTIVE' ? 'bg-green-800' : 'bg-red-800'">{{levelInfo.status === 'ACTIVE' ? 'Active' : 'Inactive'}}</small>
             </td>
             <td>
-                <button class="mr-2"  @click="showEditCourseItemModal(levelInfo)">
+                <button v-if="can('edit_meal_course','general')"  class="mr-2"  @click="showEditCourseItemModal(levelInfo)">
                   <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
                 </button>
 
-                <button type="button" @click="deleteThisData(levelInfo.number,levelInfo.name)">
+                <button v-if="can('delete_meal_course','general')"  type="button" @click="deleteThisData(levelInfo.number,levelInfo.name)">
                   <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
                 </button>
             </td>

@@ -7,6 +7,9 @@ import NewMealCoursePerDay from "@/main/dashboard/catering/meals/components/NewM
 import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
+import { useAbility } from '@casl/vue';
+const { can } = useAbility()
+
 const schoolStore = useSchoolStore()
 const  mealStore  = useMealStore()
 const  notificationStore  = useNotificationStore()
@@ -104,6 +107,7 @@ watch(
         <div class="flex justify-content-between mt-3">
           <div class="ml-4">Daily group courses</div>
           <button
+          v-if="can('create_daily_group_courses','general')" 
               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addMealCoursePerDay">
             <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
             Add Daily group courses
