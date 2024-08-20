@@ -225,7 +225,7 @@ watch(
                           <div class="table-responsive">
 
                              <table
-                             v-if="can('record_meals','manage')"
+                             v-if="can('view_meal_delivery','manage')"
                                 id="datatable"
                                 class="ext-sm table table-hover caption-top mt-1 table-sm table-striped"
                                 style="font-size: 14px !important;"
@@ -265,6 +265,7 @@ watch(
                                       </td>
                                      <td class="text-center align-middle">
                                        <input
+                                        v-if="can('serve_meal','manage')"
                                            v-model="user.served"
                                            @click="submitMeal(user.user_number,user.feeding_session_number)"
                                            class="form-check-input me-1 shadow-none cursor-pointer"

@@ -6,6 +6,12 @@
   import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
   import AppModal from "@/components/AppModal.vue";
   import ConfirmationModal from "@/components/ConfirmationModal.vue";
+
+  
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
+
 const confirmationRef = ref(null);
   const showingModal = ref(false)
 
@@ -15,6 +21,7 @@ const confirmationRef = ref(null);
   thisDialog.value=false
   editModel.value = false
   }
+
 
   const form = reactive({
     school_number:"",
@@ -175,7 +182,7 @@ watch (
                   </div>
   
               <div class="col-lg-4">
-              <button
+              <button v-if="can('create_menu_pack','general')"
               style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
               @click="showModal()">
               <small> <b><i class="bi bi-plus"></i></b>
@@ -268,10 +275,11 @@ watch (
 
               <div>
                 <button
+                v-if="can('edit_menu_pack','general')"
                     @click="editThisData(list)">
                   <i class="bi bi-pencil-square mr-2" style="color:rgb(3, 85, 148);"></i>
                 </button>
-                <button type="button" @click="deleteThisData(list.feeding_session_number,list.name)">
+                <button v-if="can('delete_menu_pack','general')" type="button" @click="deleteThisData(list.feeding_session_number,list.name)">
                   <i class="bi bi-trash" style="color:rgb(201, 10, 10);"></i>
                 </button>
               </div>

@@ -32,6 +32,7 @@ const editMode = ref( false)
 onMounted(
     () => {
       classStore.fetchCampusLevel(campus_curriculum_number)
+      academicYearStore.fetchAcademicYear(campus_curriculum_number)
     }
 )
 
@@ -46,9 +47,10 @@ const addStudyPeriod = (item) => {
 
 const editStudyPeriod = (styPeriod)  => {
   if(styPeriod) {
+    // alert(styPeriod)
     editMode.value = true
     newStudyPeriodDialog.value = true
-    studyPeriodStore.fetchStudyPeriodData(styPeriod.number)
+    studyPeriodStore.fetchStudyPeriodData(styPeriod)
   }
 }
 
@@ -160,7 +162,7 @@ watch(
 
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
-    <AppModal :title="editMode ? 'Edit Study Period' : 'Add Study Period'" v-model="newStudyPeriodDialog" lg>
+    <AppModal :title="editMode ? 'Edit Study Period' : 'Add Study Period'" v-model="newStudyPeriodDialog" xl2>
       <new-study-period ref="studyPeriodRef"></new-study-period>
     </AppModal>
 
@@ -181,7 +183,13 @@ watch(
     <div class="row mx-auto mb-4">
       <div class="col-3">
         <div class="mb-2">
+         
+           
+        
           <label class="textColor"><small>Academic Year</small></label>
+         
+         
+            {{ list }}
           <select
               style="box-shadow: none;"
               class="form-select form-select-sm"
@@ -189,11 +197,15 @@ watch(
               @change="filterStudyPeriod(academicYearNumber)"
           >
             <option disabled value="">--Select --</option>
-            <option value="">All</option>
-            <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
-              {{list.code+". "+list.academic_year_name}}
+            <!-- <option value="">All</option> -->
+            <template v-for="(list, index) in academicYearList" :key="index"  >
+            <option v-for="(listD, index) in list.academicYear" :key="index" :value="listD.number">
+              {{listD.code+". "+listD.academic_year_name}}
             </option>
+          </template>
           </select>
+
+     
         </div>
       </div>
     </div>
@@ -205,79 +217,51 @@ watch(
 <!--        <th scope="col">#</th>-->
         <th class="w-[5%]" scope="col">#Code</th>
         <th class="w-[20%]"  scope="col">Level</th>
-        <th>
-          <div class="row" >
-            <div class="col-lg-6">Academic Year</div>
-            <div class="col-lg-6">
-             <span class="ml-3">Study Period</span>
-            </div>
-          </div>
-        </th>
+        <th>Academic Year</th>
+        <th>Study Period NameGroup</th>
+        <th>Action</th>
       </tr>
       </thead>
       <tbody>
 
       <tr v-for="(level, index) in studyPeriodList" :key="index">
         <td> {{level.code}}</td>
-        <td class="capitalize"> {{level.name}}</td>
+        <td class="capitalize"> Level </td>
         <td>
           <table class="table table-hover caption-top text-sm">
             <tbody>
-            <tr v-for="(academicYre,idx) in level.academicYear" :key="idx">
-              <td class="w-[5%] capitalize">{{academicYre.code}}</td>
+            <tr>
               <td class="w-[40%] capitalize">
                 <div>
-                <div>{{academicYre.academic_year_name}}</div>
-                  <span class="bg-[#0d6efd] px-2 py-[2px] rounded-sm text-white text-xs">{{academicYre.no_of_study_period}} Study Periods</span>
+                <div>{{level.academic_year_name}}</div>
+                 
                 </div>
                 <div class="ml-5 text-sm">
                   <small>
-                   <b>From:</b>  <small>{{academicYre.academic_year_start_date}}</small><br />
-                   <b>To:</b>  <small>{{academicYre.academic_year_end_date}}</small>
+                   <b>From:</b>  <small>{{level.study_period_start_date}}</small><br />
+                   <b>To:</b>  <small>{{level.study_period_end_date}}</small>
                   </small>
                 </div>
-              </td>
-
-              <td>
-                <table class="table table-hover caption-top text-sm">
-                  <tbody>
-                  <tr v-for="(styPeriod, index) in academicYre.studyPeriod" :key="index">
-
-                    <td> {{styPeriod.code}}</td>
-                    <td>
-                      <div class="capitalize"> {{styPeriod.study_period_name}}</div>
-                      <div class="ml-3">
-                        <small>
-                          <b>From:</b> {{styPeriod.study_period_start_date}}<br />
-                          <b>To:</b> {{styPeriod.study_period_end_date}}
-                        </small>
-                      </div>
-
-                    </td>
-                    <td>
-                      <div>
-                        <i v-if="can('update_term','manage')"
-                            data-bs-toggle="modal"
-                            data-bs-target="#newStudyPeriod"
-                            class="bi-pencil mr-2 cursor-pointer"
-                            @click="editStudyPeriod(styPeriod)"></i>
-                        <i class="bi-trash cursor-pointer"  @click="deleteStudyPeriod(styPeriod,index)"></i>
-                        <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
-                          <span class="visually-hidden">Loading...</span>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-
               </td>
             </tr>
             </tbody>
           </table>
 
         </td>
-
+        <td>{{level.study_period_name}}</td>
+         <td>
+           <div>
+                        <i v-if="can('update_term','manage')"
+                            data-bs-toggle="modal"
+                            data-bs-target="#newStudyPeriod"
+                            class="bi-pencil mr-2 cursor-pointer"
+                            @click="editStudyPeriod(level.number)"></i>
+                        <i class="bi-trash cursor-pointer"  @click="deleteStudyPeriod(level,index)"></i>
+                        <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+           </div>
+        </td>
       </tr>
 
 

@@ -118,21 +118,7 @@ const editAcademicYear = (academicYre)  => {
   }
 }
 
-// const deleteAcademicYear = (academicYre, idx) => {
 
-//   if(!confirm("Are you sure, you want to delete: "+academicYre.academic_year_name)){
-//     return
-//   }
-
-//   deletionLoader.value = idx
-
-//   let data = {
-//     number:academicYre.number
-//   }
-
-//   academicYearStore.deleteAcademicYear(data)
-
-// }
 
 
 

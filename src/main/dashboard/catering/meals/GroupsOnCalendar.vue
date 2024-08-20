@@ -9,6 +9,9 @@ import ActivateMealCourse from "@/main/dashboard/catering/meals/components/Activ
 import useNotificationStore from "@/composables/useNotification.js";
 import ActivateGroupsOnCalendar from "@/main/dashboard/catering/meals/components/ActivateGroupsOnCalendar.vue";
 
+import { useAbility } from '@casl/vue';
+const { can } = useAbility()
+
 const  notificationStore  = useNotificationStore()
 const groupCalendarList = ref([])
 const  mealStore  = useMealStore()
@@ -96,6 +99,7 @@ watch(
         <div class="flex justify-content-between mt-3">
           <div class="ml-4">Groups On Calendar</div>
           <button
+          v-if="can('activate_groups_on_calendar','general')" 
               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="doActivateGroupOnCalendar">
             Activate Groups on Calendar
           </button>

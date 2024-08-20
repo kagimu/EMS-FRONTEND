@@ -195,11 +195,11 @@ watch (
       <td>{{ list?.name }}</td>
       <td>{{ list?.abbreviation }}</td>
       <td>
-        <button @click="editUnit(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
+        <button v-if="can('edit_unit_of_measure','manage')" @click="editUnit(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-          <button type="button" @click="deleteUnitOfMeasurer(list.unit_of_measure_number,list.name)">
+          <button v-if="can('delete_unit_of_measure','manage')" type="button" @click="deleteUnitOfMeasurer(list.unit_of_measure_number,list.name)">
             <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
             <!-- <div class="spinner-border spinner-border-sm" role="status" v-if="deleteLoader" >
         <span class="visually-hidden">Loading...</span>

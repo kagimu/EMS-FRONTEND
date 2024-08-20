@@ -1,136 +1,3 @@
-<template>
-
-  <div>
-    <form @submit.prevent="addStudyPeriod">
-
-      <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
-        {{ errorMessage }}
-      </div>
-
-
-      <div class="mb-2">
-        <label class="textColor"><small>Code</small></label>
-        <input
-            @keypress="commons.codeValidator($event)"
-            maxlength="10"
-            type="text"
-            v-model="form.code"
-            @paste.prevent
-            required
-            class="form-control form-select-sm shadow-none">
-      </div>
-
-      <div class="mb-2">
-        <label class="textColor"><small>Study period name</small></label>
-        <input
-            maxlength="50"
-            type="text"
-            style="outline: none 0 !important;
-               box-shadow: none;"
-            v-model="form.study_period_name"
-            required
-            class="form-control form-select-sm">
-      </div>
-
-      
-      <div class="mb-2">
-        <label class="textColor"><small>Study Period Group Name</small></label>
-        <!-- {{  studyPeriodGroupNameList }} -->
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="form.study_period_name_number"
-        >
-          <option disabled value="">--Select Study Period Group Name--</option>
-          <option v-for="(list, index) in studyPeriodGroupNameList " :key="index" :value="list.study_period_name_number">{{list.name}}</option>
-        </select>
-      </div>
-
-      <div class="mb-2">
-        <label class="textColor"><small>Level</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="campus_level_number"
-            @change="fetchAcademicYear(campus_level_number)"
-        >
-          <option disabled value="">--Select Level--</option>
-          <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-        </select>
-      </div>
-
-
-      <div class="mb-2">
-            <select
-                class="form-select form-select-sm shadow-none" required
-                v-model="class_number"
-            >
-              <option disabled :value=null>--Select Class--</option>
-              <option value="">All</option>
-              <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
-            </select>
-          </div>
-
-      <div class="mb-2">
-        <label class="textColor"><small>Academic Year</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="form.academic_year_number">
-          <option disabled value="">--Select Academic Year--</option>
-          <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
-            {{list.code+". "+list.academic_year_name}}
-          </option>
-        </select>
-      </div>
-
-
-
-        <div class="mb-2">
-          <label class="textColor"><small>Study Period Start Date</small></label>
-          <VueDatePicker
-              text-input
-              auto-apply
-              style="font-size: 7px;"
-              v-model="form.study_period_start_date"
-              :preview-format="format"
-              :teleport="true"
-              ></VueDatePicker>
-        </div>
-
-      <div class="mb-2">
-        <label class="textColor"><small>Study Period End Date</small></label>
-        <VueDatePicker
-            text-input
-            auto-apply
-            style="font-size: 7px;"
-            v-model="form.study_period_end_date"
-            :preview-format="format"
-            :teleport="true"
-        ></VueDatePicker>
-      </div>
-
-
-
-
-
-      <div class="flex justify-content-end mt-4" style="width: 100%;">
-        <button
-            type="submit"
-            class="btn btn-primary border-0">
-         {{study_period_number ? "Edit" : "Save"}}
-          <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </span>
-        </button>
-      </div>
-
-    </form>
-
-
-  </div>
-
-</template>
 <script setup>
 import {onMounted, reactive, ref, watch} from "vue";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
@@ -166,11 +33,11 @@ const studyPeriodGroupNameList = ref( [])
 
 const form = reactive({
   code:null,
-  study_period_name:null,
   academic_year_number:"",
   study_period_start_date:null,
   study_period_end_date:null,
-  study_period_name_number	:""
+  study_period_name_number	:"",
+ classes:[]
 })
 
 
@@ -193,7 +60,6 @@ const fetchAcademicYear = (campus_level_number) => {
 
 const clearStudyPeriod = () => {
       form.code = null
-      form.study_period_name = null
       form.academic_year_number = ""
       form.study_period_start_date = null
       form.study_period_end_date = null
@@ -220,11 +86,14 @@ const addStudyPeriod = () => {
 
   if(study_period_number.value){
     form.study_period_number = study_period_number.value
-    form.code = String(form.code)
+    form.code = parseInt(form.code)
     form.study_period_start_date = commons.formatDate(form.study_period_start_date)
-    form.study_period_end_date = commons.formatDate(form.study_period_end_date)
+    form.study_period_end_date =commons.formatDate(form.study_period_end_date)
+    // alert(JSON.stringify(form))
     studyPeriodStore.editStudyPeriod(form)
   }else {
+    // alert(JSON.stringify(form))
+    form.code = parseInt(form.code)
     studyPeriodStore.newStudyPeriod(form)
   }
 
@@ -271,6 +140,7 @@ watch(
         form.study_period_name = null
         form.academic_year_number = ""
         form.study_period_date_range = null
+        form.class_number=""
       }
     }
 )
@@ -324,6 +194,144 @@ watch(
 )
 
 </script>
+
+<template>
+
+  <div>
+    <form @submit.prevent="addStudyPeriod">
+
+      <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6">
+
+      <div class="mb-2">
+        <label class="textColor"><small>Code</small></label>
+        <input
+            @keypress="commons.codeValidator($event)"
+            maxlength="10"
+            type="text"
+            v-model="form.code"
+            @paste.prevent
+            required
+            class="form-control form-select-sm shadow-none">
+      </div>
+
+  
+      
+      <div class="mb-2">
+        <label class="textColor"><small>Study Period Group Name</small></label>
+        <!-- {{  studyPeriodGroupNameList }} -->
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.study_period_name_number"
+        >
+          <option disabled value="">--Select Study Period Group Name--</option>
+          <option v-for="(list, index) in studyPeriodGroupNameList " :key="index" :value="list.study_period_name_number">{{list.name}}</option>
+        </select>
+      </div>
+
+      <div class="mb-2">
+        <label class="textColor"><small>Level</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="campus_level_number"
+            @change="fetchAcademicYear(campus_level_number)"
+        >
+          <option disabled value="">--Select Level--</option>
+          <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
+
+      <div class="mb-2">
+       
+            <div v-if="(campusClassList && (campusClassList.length > 0))" class="max-h-[250px] overflow-y-scroll scrollbar-thin my-2 border rounded-md">
+                  <ul class="list-group list-group-flush text-sm">
+                    <label class="p-1 mb-2 mt-2" ><small><b>Select Class</b></small></label>
+                    <li class="list-group-item" v-for="(list,idx) in campusClassList">
+                      <input
+                          v-model="form.classes"
+                          class="form-check-input me-1 shadow-none cursor-pointer"
+                          style="width: 20px;height: 20px"
+                          type="checkbox"
+                          :value="list.number"
+                          :id="idx">
+                      <label class="form-check-label cursor-pointer ml-2" :for="idx">{{list?.name+" [ "+list?.abbreviation+" ]"}}</label>
+                    </li>
+                  </ul>
+                </div>
+          </div>
+
+        </div>
+
+
+<div class="col-lg-6">
+      <div class="mb-2">
+        <label class="textColor"><small>Academic Year</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.academic_year_number">
+          <option disabled value="">--Select Academic Year--</option>
+          <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
+            {{list.code+". "+list.academic_year_name}}
+          </option>
+        </select>
+      </div>
+
+
+
+        <div class="mb-2">
+          <label class="textColor"><small>Study Period Start Date</small></label>
+          <VueDatePicker
+              text-input
+              auto-apply
+              style="font-size: 7px;"
+              v-model="form.study_period_start_date"
+              :preview-format="format"
+              :teleport="true"
+              ></VueDatePicker>
+        </div>
+
+      <div class="mb-2">
+        <label class="textColor"><small>Study Period End Date</small></label>
+        <VueDatePicker
+            text-input
+            auto-apply
+            style="font-size: 7px;"
+            v-model="form.study_period_end_date"
+            :preview-format="format"
+            :teleport="true"
+        ></VueDatePicker>
+      </div>
+
+    </div>
+  </div>
+
+
+      <div class="flex justify-content-end mt-4" style="width: 100%;">
+        <button
+            type="submit"
+            class="btn btn-primary border-0">
+         {{study_period_number ? "Edit" : "Save"}}
+          <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </span>
+        </button>
+      </div>
+
+    </form>
+
+
+  </div>
+
+</template>
+
 
 <style scoped>
 

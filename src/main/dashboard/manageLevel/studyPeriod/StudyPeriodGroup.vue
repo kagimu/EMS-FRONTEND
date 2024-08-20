@@ -119,7 +119,7 @@ watch(
 
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
-    <AppModal :title="editMode ? 'Edit Study Period Group Name' : 'Add Study Period Group Name'" v-model="newStudyPeriodDialog" lg>
+    <AppModal :title="editMode ? 'Edit Study Period Group Name' : 'Add Study Period Group Name'" v-model="newStudyPeriodDialog"  xl2>
       <new-study-period-group :studyPerionGroupNameData="studyPerionGroupNameData"></new-study-period-group>
     </AppModal>
 
