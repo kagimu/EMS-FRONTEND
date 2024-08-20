@@ -240,8 +240,9 @@ watch(
       <thead>
       <tr>
 <!--        <th scope="col">#</th>-->
-        <th class="w-[5%]" scope="col">#Code</th>
-        <th class="w-[20%]"  scope="col">Level</th>
+        <th class="w-[5%]" scope="col">#</th>
+        <th class="w-[20%]"  scope="col">Academic Year</th>
+        <th class="w-[20%]"  scope="col">Study Period</th>
 <!--        <th>
           <div class="row" >
             <div class="col-lg-6">Academic Year</div>
@@ -256,8 +257,15 @@ watch(
 
       <tr v-for="(level, index) in studyPeriodList" :key="index">
         <td> {{level.code}}</td>
-        <td class="capitalize"> {{level.name}}</td>
-        <td>
+        <td class="capitalize"> {{level.academic_year_name}}</td>
+        <td class="capitalize">
+          <div class="mb-1">{{level.study_period_name}}</div>
+         <div class="text-xs">
+           <div class="mb-1">From: <span class="border px-3 rounded-md text-[green]">{{level.study_period_start_date	}}</span></div>
+           <div>To: <span class="border px-3 rounded-md text-[green]">{{level.study_period_end_date	}}</span> </div>
+         </div>
+        </td>
+<!--        <td>
           <table class="table table-hover caption-top text-sm">
             <tbody>
             <tr v-for="(academicYre,idx) in level.academicYear" :key="idx">
@@ -275,7 +283,7 @@ watch(
                 </div>
               </td>
 
-<!--              <td>
+&lt;!&ndash;              <td>
                 <table class="table table-hover caption-top text-sm">
                   <tbody>
                   <tr v-for="(styPeriod, index) in academicYre.studyPeriod" :key="index">
@@ -308,12 +316,12 @@ watch(
                   </tbody>
                 </table>
 
-              </td>-->
+              </td>&ndash;&gt;
             </tr>
             </tbody>
           </table>
 
-        </td>
+        </td>-->
 
       </tr>
 

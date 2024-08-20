@@ -220,7 +220,6 @@ watch(
 
       <div class="mb-2">
         <label class="textColor"><small>Study Period Group Name</small></label>
-        <!-- {{  studyPeriodGroupNameList }} -->
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
