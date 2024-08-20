@@ -32,7 +32,7 @@ const studyPeriodGroupNameList = ref( [])
 
 const form = reactive({
   code:null,
-  study_period_name:null,
+  classes:[],
   academic_year_number:"",
   study_period_start_date:null,
   study_period_end_date:null,
@@ -84,11 +84,12 @@ const addStudyPeriod = () => {
   loader.value = true
   errorMessage.value = ""
 
+  form.code = parseInt(form.code)
+  form.study_period_start_date = commons.formatDate(form.study_period_start_date)
+  form.study_period_end_date = commons.formatDate(form.study_period_end_date)
+
   if(study_period_number.value){
     form.study_period_number = study_period_number.value
-    form.code = String(form.code)
-    form.study_period_start_date = commons.formatDate(form.study_period_start_date)
-    form.study_period_end_date = commons.formatDate(form.study_period_end_date)
     studyPeriodStore.editStudyPeriod(form)
   }else {
     studyPeriodStore.newStudyPeriod(form)
@@ -213,15 +214,29 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Study period name</small></label>
-        <input
-            maxlength="50"
-            type="text"
-            style="outline: none 0 !important;
-               box-shadow: none;"
-            v-model="form.study_period_name"
-            required
-            class="form-control form-select-sm">
+        <label class="textColor"><small>Level</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="campus_level_number"
+            @change="fetchAcademicYear(campus_level_number)"
+        >
+          <option disabled value="">--Select Level--</option>
+          <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
+      <div class="mb-2">
+        <label class="textColor"><small>Academic Year</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.academic_year_number">
+          <option disabled value="">--Select Academic Year--</option>
+          <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
+            {{list.code+". "+list.academic_year_name}}
+          </option>
+        </select>
       </div>
 
       
@@ -238,47 +253,16 @@ watch(
         </select>
       </div>
 
-      <div class="mb-2">
-        <label class="textColor"><small>Level</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="campus_level_number"
-            @change="fetchAcademicYear(campus_level_number)"
-        >
-          <option disabled value="">--Select Level--</option>
-          <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-        </select>
-      </div>
-
-
-      <div class="mb-2">
-            <select
-                class="form-select form-select-sm shadow-none" required
-                v-model="class_number"
-            >
-              <option disabled :value=null>--Select Class--</option>
-              <option value="">All</option>
-              <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
-            </select>
-          </div>
-
-      <div class="mb-2">
-        <label class="textColor"><small>Academic Year</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="form.academic_year_number">
-          <option disabled value="">--Select Academic Year--</option>
-          <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
-            {{list.code+". "+list.academic_year_name}}
-          </option>
-        </select>
-      </div>
 
 
 
-        <div class="mb-2">
+
+
+
+
+
+      <div class="grid grid-cols-2 gap-2 mb-2">
+        <div>
           <label class="textColor"><small>Study Period Start Date</small></label>
           <VueDatePicker
               text-input
@@ -287,26 +271,40 @@ watch(
               v-model="form.study_period_start_date"
               :preview-format="format"
               :teleport="true"
-              ></VueDatePicker>
+          ></VueDatePicker>
         </div>
+        <div>
+          <label class="textColor"><small>Study Period End Date</small></label>
+          <VueDatePicker
+              text-input
+              auto-apply
+              style="font-size: 7px;"
+              v-model="form.study_period_end_date"
+              :preview-format="format"
+              :teleport="true"
+          ></VueDatePicker>
+        </div>
+      </div>
+
+
 
       <div class="mb-2">
-        <label class="textColor"><small>Study Period End Date</small></label>
-        <VueDatePicker
-            text-input
-            auto-apply
-            style="font-size: 7px;"
-            v-model="form.study_period_end_date"
-            :preview-format="format"
-            :teleport="true"
-        ></VueDatePicker>
+        <label class="textColor"><small>Class</small></label>
+        <select
+            multiple
+            class="form-select form-select-sm shadow-none" required
+            v-model="form.classes">
+          <option disabled :value=null>--Select Class--</option>
+          <option value="">All</option>
+          <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
+        </select>
       </div>
 
 
 
 
 
-      <div class="flex justify-content-end mt-4" style="width: 100%;">
+      <div class="flex justify-content-end" style="width: 100%;">
         <button
             type="submit"
             class="btn btn-primary border-0">
