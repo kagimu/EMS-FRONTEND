@@ -70,7 +70,7 @@ const deleteThisData = async (info) => {
 const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + info.scale_name);
 if (agreed) {
   deletionLoader.value = true
-  assessmentStore.deleteAggregateScale(info.scale_number)
+  await assessmentStore.deleteAggregateScale(info.scale_number)
 }
 
 

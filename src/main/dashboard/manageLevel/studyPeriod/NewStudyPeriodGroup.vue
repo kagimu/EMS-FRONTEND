@@ -13,7 +13,7 @@ const schoolNumber = routerData.currentRoute.value.query.sch
 const study_group_number = ref(false)
 
 const props = defineProps({
-    studyPerionGroupNameData:{}
+    studyPeriodGroupNameData:{}
 })
 
 
@@ -30,7 +30,7 @@ onMounted(
 )
 
 const getStudyPeriodGroupNameInfo = () => {
-let draft = props.studyPerionGroupNameData
+let draft = props.studyPeriodGroupNameData
 if(draft.study_period_name_number){
 form.name = draft.name
 study_group_number.value = true
@@ -39,8 +39,8 @@ study_group_number.value = true
 
 const addStudyPeriodGroupName = () => {
   loader.value = true
-  if(props.studyPerionGroupNameData.study_period_name_number){
-    form.study_period_name_number = props.studyPerionGroupNameData.study_period_name_number
+  if(props.studyPeriodGroupNameData.study_period_name_number){
+    form.study_period_name_number = props.studyPeriodGroupNameData.study_period_name_number
     studyPeriodStore.editStudyPeriodGroupName(form)
   }else {
     studyPeriodStore.newStudyPeriodGroupName(form)
@@ -92,7 +92,7 @@ watch(
 
 <template>
   <div>
-    <!-- {{ studyPerionGroupNameData }} -->
+
     <form @submit.prevent="addStudyPeriodGroupName">
 
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
@@ -101,7 +101,7 @@ watch(
 
       <div class="mb-2">
         <label class="mb-1"><small> Study Period Group Name</small></label>
-   <input type="text" v-model="form.name" class="form-control" required>
+        <input type="text" v-model.trim="form.name" class="form-control shadow-none" required>
       </div>
 
 
@@ -109,10 +109,10 @@ watch(
         <button
             type="submit"
             class="btn btn-primary border-0">
-        {{ study_group_number ?'Edit Data':' Save' }}
-          <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </span>
+              {{ study_group_number ?'Edit Data':' Save' }}
+              <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </span>
         </button>
       </div>
 

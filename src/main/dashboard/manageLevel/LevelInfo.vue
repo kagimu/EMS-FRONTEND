@@ -1,3 +1,47 @@
+<script setup>
+
+import {onMounted, ref, watch} from "vue";
+import {useRouter} from "vue-router";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+
+const levelStore = useLevelStore()
+const campusStore = useCampusStore()
+
+const routerData = useRouter()
+
+const campusInfo = ref(null)
+const levelInfo = ref(null)
+const campusNumber = routerData.currentRoute.value.query.id
+
+onMounted(
+    () => {
+      campusStore.fetchCampusData(campusNumber)
+    }
+)
+
+watch(
+    () => campusStore.campusInfoResponse,
+    async (data) => {
+      if(data){
+        campusInfo.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => levelStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        levelInfo.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+</script>
 <template>
 
     <div class="px-2 py-2 text-[#5e5e5e]">
@@ -47,50 +91,7 @@
 
 </template>
 
-<script setup>
 
-import {onMounted, ref, watch} from "vue";
- import {useRouter} from "vue-router";
-import {useLevelStore} from "@/main/settings/level/store/level.js";
-import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-
- const levelStore = useLevelStore()
- const campusStore = useCampusStore()
-
- const routerData = useRouter()
-
-const campusInfo = ref(null)
-const levelInfo = ref(null)
-const campusNumber = routerData.currentRoute.value.query.id
-
-onMounted(
-    () => {
-      campusStore.fetchCampusData(campusNumber)
-    }
-)
-
-watch(
-    () => campusStore.campusInfoResponse,
-    async (data) => {
-      if(data){
-       campusInfo.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => levelStore.campusLevelResponse,
-    async (data) => {
-      if(data){
-        levelInfo.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-</script>
 
 <style scoped>
 

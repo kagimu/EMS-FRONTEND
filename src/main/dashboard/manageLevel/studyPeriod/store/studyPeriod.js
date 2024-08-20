@@ -45,11 +45,16 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
 
 
     async function fetchStudyPeriod(data) {
-        let campus_curriculum_number = data.campus_curriculum_number ? data.campus_curriculum_number : ""
-        let  academic_year_number = data.academic_year_number ? data.academic_year_number :  ""
-        // alert(campus_curriculum_number)
+        let  campus_curriculum_number = data?.campus_curriculum_number ?? ""
+        let  academic_year_number = data?.academic_year_number ?? ""
+        let  class_number = data?.class_number ?? ""
 
-        return await api.get("main/study-period/all?campus_curriculum_number="+campus_curriculum_number+"&academic_year_number="+academic_year_number)
+
+        return await api.get("main/study-period/all" +
+                "?campus_curriculum_number="+campus_curriculum_number+
+                "&academic_year_number="+academic_year_number+
+                "&class_number="+class_number
+            )
             .then((response) => {
                 studyPeriodResponse.value = response.data
             })

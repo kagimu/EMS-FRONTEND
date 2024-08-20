@@ -155,8 +155,6 @@ watch(
 
 </script>
 <template>
-  {{ serviceDetails }}
-
         <form @submit.prevent="createNewService">
 
           <div class="grid grid-cols-2 gap-4">

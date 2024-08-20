@@ -9,6 +9,7 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.
 import AppModal from "@/components/AppModal.vue";
 import { useAbility } from '@casl/vue';
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 const confirmationRef = ref(null);
 
 const { can } = useAbility()
@@ -21,27 +22,49 @@ const classStore = useClassesStore()
 const routerData = useRouter()
 const newStudyPeriodDialog = ref( false)
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
+const schoolNumber = routerData.currentRoute.value.query.sch
 const studyPeriodList = ref( [])
 const  notificationStore  = useNotificationStore()
 const academicYearNumber = ref( "")
+const class_number = ref( "")
 const academicYearList = ref( [])
-const studyPeriodRef = ref( null)
 const deletionLoader = ref( undefined)
 const editMode = ref( false)
+const campus_level_number = ref("")
+const campusLevelList = ref([])
+const campusStore = useCampusStore()
+const campusClassList = ref(null)
 
 onMounted(
     () => {
+      // studyPeriodData()
       classStore.fetchCampusLevel(campus_curriculum_number)
       academicYearStore.fetchAcademicYear(campus_curriculum_number)
     }
 )
 
+// const fetchAcademicYear = (campus_level_number) => {
+//   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
+//   let data = {
+//     school_number:schoolNumber,
+//     campus_level_number:campus_level_number
+//   }
+//   campusStore.fetchClassesBySchool(data)
+// }
 
-const addStudyPeriod = (item) => {
-  // classNumber.value = item.number
+const fetchAcademicYear = (campus_level_number) => {
+  academicYearStore.fetchAcademicYearByLevel(campus_level_number)
+  let data = {
+    school_number:schoolNumber,
+    campus_level_number:campus_level_number
+  }
+  campusStore.fetchClassesBySchool(data)
+}
+
+
+const addStudyPeriod = () => {
   newStudyPeriodDialog.value = true
   editMode.value = false
-  studyPeriodRef.value.clearStudyPeriod()
 }
 
 
@@ -54,21 +77,6 @@ const editStudyPeriod = (styPeriod)  => {
   }
 }
 
-// const deleteStudyPeriod = (styPeriod, idx) => {
-//   deletionLoader.value = idx
-
-//   if(!confirm("Are you sure, you want to delete: "+styPeriod.study_period_name)){
-//     return
-//   }
-
-
-//   let data = {
-//     number:styPeriod.number
-//   }
-//   studyPeriodStore.deleteStudyPeriod(data)
-
-// }
-
 
 const deleteStudyPeriod = async (styPeriod, idx) => {
   deletionLoader.value = idx
@@ -78,31 +86,26 @@ if (agreed) {
   let data = {
     number:styPeriod.number
   }
-  studyPeriodStore.deleteStudyPeriod(data)
+  await studyPeriodStore.deleteStudyPeriod(data)
 }
 
 
 }
 
 
-const filterStudyPeriod = (academicYearNumber) => {
-  if(academicYearNumber) {
-    studyPeriodData()
-    //studyPeriodStore.fetchStudyPeriod({level:campusCurriculumNumber, academic_year_number:academicYearNumber})
-  }
-}
 
-onMounted(
-    () => {
-      studyPeriodData()
-      // studyPeriodStore.fetchStudyPeriod({level:campusCurriculumNumber, academic_year_number:academicYearNumber.value})
-      // academicYearStore.fetchAcademicYear(campusLevel)
-    }
-)
+
 
 const studyPeriodData = () => {
-  studyPeriodStore.fetchStudyPeriod({campus_curriculum_number:campus_curriculum_number, academic_year_number:academicYearNumber.value})
+  studyPeriodStore.fetchStudyPeriod(
+      {
+        campus_curriculum_number:campus_curriculum_number,
+        academic_year_number:academicYearNumber.value,
+        class_number:class_number.value
+      }
+  )
 }
+
 
 watch(
     () => studyPeriodStore.studyPeriodResponse,
@@ -117,14 +120,14 @@ watch(
     () => studyPeriodStore.newStudyPeriodResponse,
     async (data) => {
       if(data){
-        await studyPeriodData()
+        studyPeriodData()
         notificationStore.successToast("Success","Study Period added successfully")
       }
     }
 )
 
 watch(
-    () => academicYearStore.academicYearResponse,
+    () => academicYearStore.academicYearByLevelResponse,
     async (data) => {
       if(data){
         academicYearList.value = data.data
@@ -132,13 +135,14 @@ watch(
     }
 )
 
+
+
 watch(
     () => studyPeriodStore.deleteStudyPeriodResponse,
     async (data) => {
       if(data){
         deletionLoader.value = undefined
-        await studyPeriodData()
-        // await studyPeriodStore.fetchStudyPeriod({level: campusCurriculumNumber, academic_year_number: academicYearNumber.value})
+        studyPeriodData()
       }
     }
 )
@@ -148,8 +152,25 @@ watch(
     async (data) => {
       if(data){
         notificationStore.successToast("Success",data.message)
-        await studyPeriodData()
-        // await studyPeriodStore.fetchStudyPeriod({level: campusCurriculumNumber, academic_year_number: academicYearNumber.value})
+         studyPeriodData()
+      }
+    }
+)
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        campusLevelList.value = data.data
+      }
+    }
+)
+
+watch(
+    () => campusStore.schoolClassesResponse,
+    async (data) => {
+      if(data){
+        campusClassList.value = data.data
       }
     }
 )
@@ -162,8 +183,8 @@ watch(
 
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
-    <AppModal :title="editMode ? 'Edit Study Period' : 'Add Study Period'" v-model="newStudyPeriodDialog" xl2>
-      <new-study-period ref="studyPeriodRef"></new-study-period>
+    <AppModal :title="editMode ? 'Edit Study Period' : 'Add Study Period'" v-model="newStudyPeriodDialog" lg>
+      <new-study-period></new-study-period>
     </AppModal>
 
 
@@ -180,8 +201,22 @@ watch(
 
 
 
-    <div class="row mx-auto mb-4">
-      <div class="col-3">
+    <div class="grid grid-cols-4 gap-2 mb-4 px-3">
+      <div class="mb-2">
+        <label class="textColor"><small>Level</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="campus_level_number"
+            @change="fetchAcademicYear(campus_level_number)"
+        >
+          <option disabled value="">--Select Level--</option>
+          <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
+
+
         <div class="mb-2">
          
            
@@ -194,20 +229,29 @@ watch(
               style="box-shadow: none;"
               class="form-select form-select-sm"
               v-model="academicYearNumber"
-              @change="filterStudyPeriod(academicYearNumber)"
-          >
-            <option disabled value="">--Select --</option>
-            <!-- <option value="">All</option> -->
-            <template v-for="(list, index) in academicYearList" :key="index"  >
-            <option v-for="(listD, index) in list.academicYear" :key="index" :value="listD.number">
-              {{listD.code+". "+listD.academic_year_name}}
-            </option>
-          </template>
+              @change="studyPeriodData()">
+              <option disabled value="">--Select --</option>
+              <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
+                {{list.code+". "+list.academic_year_name}}
+              </option>
           </select>
 
      
         </div>
-      </div>
+
+          <div class="mb-2">
+            <label class="textColor"><small>Class</small></label>
+            <select
+                class="form-select form-select-sm shadow-none" required
+                v-model="class_number"
+                @change="studyPeriodData()"
+                >
+              <option disabled :value=null>--Select Class--</option>
+              <option value="">All</option>
+              <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
+            </select>
+          </div>
+
     </div>
 
 

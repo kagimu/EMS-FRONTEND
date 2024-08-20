@@ -110,6 +110,7 @@ export default function useCommonsStore() {
         codeValidator,
         getOrdinalDate,
         getAgeFromDateOfBirth,
-        objectToQueryParams
+        objectToQueryParams,
+        formatDate
     }
 }
