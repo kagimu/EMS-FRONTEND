@@ -316,7 +316,7 @@ const deleteThisData = async (id,name) => {
           <div class="flex justify-between mb-4">
             &nbsp;
               <button
-                  v-if="can('add_assessment_area','general')"
+                  v-if="can('add_assessment_schedule','general')"
                   class="btn btn-primary btn-sm float-end mb-0 mr-4" style="float: right" type="button"  @click="showModal">
                 <b><i class="bi bi-plus"></i></b> <small>
                 Add Assessment Schedule</small></button>
@@ -454,11 +454,15 @@ const deleteThisData = async (id,name) => {
                 </td>
                 <td>{{ metricsData.description }}</td>
                 <td>
-                  <button  @click="editThisData(metricsData)" type="button">
+                  <button 
+                    v-if="can('edit_assessment_schedule','general')"
+                   @click="editThisData(metricsData)" type="button">
                     <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
                   </button>
                   &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
-                  <button type="button" @click="deleteThisData(metricsData.number,metricsData.name)">
+                  <button 
+                  v-if="can('delete_assessment_schedule','general')"
+                  type="button" @click="deleteThisData(metricsData.number,metricsData.name)">
                     <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
                   </button></td>
               </tr>
