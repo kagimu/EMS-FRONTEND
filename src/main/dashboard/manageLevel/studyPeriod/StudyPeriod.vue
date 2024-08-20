@@ -242,14 +242,14 @@ watch(
 <!--        <th scope="col">#</th>-->
         <th class="w-[5%]" scope="col">#Code</th>
         <th class="w-[20%]"  scope="col">Level</th>
-        <th>
+<!--        <th>
           <div class="row" >
             <div class="col-lg-6">Academic Year</div>
             <div class="col-lg-6">
              <span class="ml-3">Study Period</span>
             </div>
           </div>
-        </th>
+        </th>-->
       </tr>
       </thead>
       <tbody>
@@ -275,7 +275,7 @@ watch(
                 </div>
               </td>
 
-              <td>
+<!--              <td>
                 <table class="table table-hover caption-top text-sm">
                   <tbody>
                   <tr v-for="(styPeriod, index) in academicYre.studyPeriod" :key="index">
@@ -308,7 +308,7 @@ watch(
                   </tbody>
                 </table>
 
-              </td>
+              </td>-->
             </tr>
             </tbody>
           </table>
