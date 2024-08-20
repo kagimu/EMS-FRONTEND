@@ -45,9 +45,8 @@ const form = reactive({
 
 onMounted(
     async () => {
-        campusStore.fetchClassesBySchool(schoolNumber)
-        // campusStore.fetchClassesByCampus(campusNumber)
-        campusStore.fetchAggregateScales(schoolNumber)
+        await campusStore.fetchClassesBySchool({school_number:schoolNumber})
+        await campusStore.fetchAggregateScales(schoolNumber)
         fetchCampusLevel()
         getGradeInfo()
     }

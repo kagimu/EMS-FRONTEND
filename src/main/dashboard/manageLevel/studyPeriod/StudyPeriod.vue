@@ -39,18 +39,8 @@ onMounted(
     () => {
       // studyPeriodData()
       classStore.fetchCampusLevel(campus_curriculum_number)
-      academicYearStore.fetchAcademicYear(campus_curriculum_number)
     }
 )
-
-// const fetchAcademicYear = (campus_level_number) => {
-//   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
-//   let data = {
-//     school_number:schoolNumber,
-//     campus_level_number:campus_level_number
-//   }
-//   campusStore.fetchClassesBySchool(data)
-// }
 
 const fetchAcademicYear = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
@@ -70,10 +60,9 @@ const addStudyPeriod = () => {
 
 const editStudyPeriod = (styPeriod)  => {
   if(styPeriod) {
-    // alert(styPeriod)
     editMode.value = true
     newStudyPeriodDialog.value = true
-    studyPeriodStore.fetchStudyPeriodData(styPeriod)
+    studyPeriodStore.fetchStudyPeriodData(styPeriod.number)
   }
 }
 
@@ -218,13 +207,7 @@ watch(
 
 
         <div class="mb-2">
-         
-           
-        
           <label class="textColor"><small>Academic Year</small></label>
-         
-         
-            {{ list }}
           <select
               style="box-shadow: none;"
               class="form-select form-select-sm"
@@ -235,8 +218,6 @@ watch(
                 {{list.code+". "+list.academic_year_name}}
               </option>
           </select>
-
-     
         </div>
 
           <div class="mb-2">
@@ -259,53 +240,89 @@ watch(
       <thead>
       <tr>
 <!--        <th scope="col">#</th>-->
-        <th class="w-[5%]" scope="col">#Code</th>
-        <th class="w-[20%]"  scope="col">Level</th>
-        <th>Academic Year</th>
-        <th>Study Period NameGroup</th>
-        <th>Action</th>
+        <th class="w-[5%]" scope="col">#</th>
+        <th class="w-[20%]"  scope="col">Academic Year</th>
+        <th class="w-[20%]"  scope="col">Study Period</th>
+<!--        <th>
+          <div class="row" >
+            <div class="col-lg-6">Academic Year</div>
+            <div class="col-lg-6">
+             <span class="ml-3">Study Period</span>
+            </div>
+          </div>
+        </th>-->
       </tr>
       </thead>
       <tbody>
 
       <tr v-for="(level, index) in studyPeriodList" :key="index">
         <td> {{level.code}}</td>
-        <td class="capitalize"> Level </td>
-        <td>
+        <td class="capitalize"> {{level.academic_year_name}}</td>
+        <td class="capitalize">
+          <div class="mb-1">{{level.study_period_name}}</div>
+         <div class="text-xs">
+           <div class="mb-1">From: <span class="border px-3 rounded-md text-[green]">{{level.study_period_start_date	}}</span></div>
+           <div>To: <span class="border px-3 rounded-md text-[green]">{{level.study_period_end_date	}}</span> </div>
+         </div>
+        </td>
+<!--        <td>
           <table class="table table-hover caption-top text-sm">
             <tbody>
-            <tr>
+            <tr v-for="(academicYre,idx) in level.academicYear" :key="idx">
+              <td class="w-[5%] capitalize">{{academicYre.code}}</td>
               <td class="w-[40%] capitalize">
                 <div>
-                <div>{{level.academic_year_name}}</div>
-                 
+                <div>{{academicYre.academic_year_name}}</div>
+                  <span class="bg-[#0d6efd] px-2 py-[2px] rounded-sm text-white text-xs">{{academicYre.no_of_study_period}} Study Periods</span>
                 </div>
                 <div class="ml-5 text-sm">
                   <small>
-                   <b>From:</b>  <small>{{level.study_period_start_date}}</small><br />
-                   <b>To:</b>  <small>{{level.study_period_end_date}}</small>
+                   <b>From:</b>  <small>{{academicYre.academic_year_start_date}}</small><br />
+                   <b>To:</b>  <small>{{academicYre.academic_year_end_date}}</small>
                   </small>
                 </div>
               </td>
-            </tr>
-            </tbody>
-          </table>
 
-        </td>
-        <td>{{level.study_period_name}}</td>
-         <td>
-           <div>
+&lt;!&ndash;              <td>
+                <table class="table table-hover caption-top text-sm">
+                  <tbody>
+                  <tr v-for="(styPeriod, index) in academicYre.studyPeriod" :key="index">
+
+                    <td> {{styPeriod.code}}</td>
+                    <td>
+                      <div class="capitalize"> {{styPeriod.study_period_name}}</div>
+                      <div class="ml-3">
+                        <small>
+                          <b>From:</b> {{styPeriod.study_period_start_date}}<br />
+                          <b>To:</b> {{styPeriod.study_period_end_date}}
+                        </small>
+                      </div>
+
+                    </td>
+                    <td>
+                      <div>
                         <i v-if="can('update_term','manage')"
                             data-bs-toggle="modal"
                             data-bs-target="#newStudyPeriod"
                             class="bi-pencil mr-2 cursor-pointer"
-                            @click="editStudyPeriod(level.number)"></i>
-                        <i class="bi-trash cursor-pointer"  @click="deleteStudyPeriod(level,index)"></i>
+                            @click="editStudyPeriod(styPeriod)"></i>
+                        <i class="bi-trash cursor-pointer"  @click="deleteStudyPeriod(styPeriod,index)"></i>
                         <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
                           <span class="visually-hidden">Loading...</span>
                         </div>
-           </div>
-        </td>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+
+              </td>&ndash;&gt;
+            </tr>
+            </tbody>
+          </table>
+
+        </td>-->
+
       </tr>
 
 

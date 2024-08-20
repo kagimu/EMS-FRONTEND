@@ -180,7 +180,7 @@ const deleteThisData = async (info,index) => {
   if (agreed) {
     deletionLoader.value = index
 
-assessmentStore.deleteGradeStandard(info.number)
+    await assessmentStore.deleteGradeStandard(info.number)
   }
   
 
@@ -223,7 +223,7 @@ watch(
     <div>
 
 
- <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+      <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
       <AppModal  title="Grade Standard Details" v-model="gradeStandardInfoModel" lg>
         <GradeStandardDetails :gradeDataList="gradeDataList"></GradeStandardDetails>
       </AppModal>
