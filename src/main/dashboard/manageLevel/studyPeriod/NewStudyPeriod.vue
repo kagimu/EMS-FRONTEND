@@ -213,33 +213,7 @@ watch(
             class="form-control form-select-sm shadow-none">
       </div>
 
-      <div class="mb-2">
-        <label class="textColor"><small>Level</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="campus_level_number"
-            @change="fetchAcademicYear(campus_level_number)"
-        >
-          <option disabled value="">--Select Level--</option>
-          <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-        </select>
-      </div>
 
-      <div class="mb-2">
-        <label class="textColor"><small>Academic Year</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="form.academic_year_number">
-          <option disabled value="">--Select Academic Year--</option>
-          <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
-            {{list.code+". "+list.academic_year_name}}
-          </option>
-        </select>
-      </div>
-
-      
       <div class="mb-2">
         <label class="textColor"><small>Study Period Group Name</small></label>
         <!-- {{  studyPeriodGroupNameList }} -->
@@ -287,6 +261,36 @@ watch(
       </div>
 
 
+      <div class="mb-2">
+        <label class="textColor"><small>Level</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="campus_level_number"
+            @change="fetchAcademicYear(campus_level_number)"
+        >
+          <option disabled value="">--Select Level--</option>
+          <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
+      <div class="mb-2">
+        <label class="textColor"><small>Academic Year</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.academic_year_number">
+          <option disabled value="">--Select Academic Year--</option>
+          <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
+            {{list.code+". "+list.academic_year_name}}
+          </option>
+        </select>
+      </div>
+
+      
+
+
+
 
       <div class="mb-2">
         <label class="textColor"><small>Class</small></label>
@@ -295,7 +299,6 @@ watch(
             class="form-select form-select-sm shadow-none" required
             v-model="form.classes">
           <option disabled :value=null>--Select Class--</option>
-          <option value="">All</option>
           <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
         </select>
       </div>
