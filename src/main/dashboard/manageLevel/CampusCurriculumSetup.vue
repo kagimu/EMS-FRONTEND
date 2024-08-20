@@ -9,6 +9,8 @@ import ReportSetup from "@/main/dashboard/manageLevel/report_setup/ReportSetup.v
 import ScoreSetup from "@/main/dashboard/manageLevel/report_setup/ScoreSetup.vue";
 import Grading from "@/main/dashboard/assessment/Grading.vue";
 import AssessmentSchedulePage from "@/main/dashboard/assessment/AssessmentSchedulePage.vue";
+import { useAbility } from '@casl/vue';
+const { can } = useAbility()
 const router = useRouter()
 const levelStore = useLevelStore()
 const campusCurriculumDataInfo = ref(null)
@@ -25,27 +27,34 @@ let campusSetupQuery = routerData.currentRoute.value.query.type
 const campusSetupMenu = ref([
   {
     name:"Campus Settings",
-    router_name:"campus-settings"
+    router_name:"campus-settings",
+     action:"view_campus_settings"
+
   },
   {
     name:"Aggregate",
-    router_name:"aggregate"
+    router_name:"aggregate",
+    action:"view_aggregate"
   },
   {
     name:"Grading",
-    router_name:"grading"
+    router_name:"grading",
+     action:"view_grading"
   },
   {
     name:"Assessment Schedule",
-    router_name:"assessment-schedule"
+    router_name:"assessment-schedule",
+     action:"view_assessment_schedule"
   },
   {
     name:"Report Card Settings",
-    router_name:"report-card-settings"
+    router_name:"report-card-settings",
+    action:"view_report_card_settings"
   },
   {
     name:"Student Score",
-    router_name:"student-score"
+    router_name:"student-score",
+    action:"view_student_score"
   },
 ])
 
