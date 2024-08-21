@@ -50,6 +50,7 @@ const appDatails = reactive({
   status: null,
   previousSchools: [],
   student_number: null,
+  preferred_campus:null
 });
 
 function getAge(dob) {
@@ -89,6 +90,7 @@ watch(
       appDatails.status = data.status;
       appDatails.previousSchools = data.previous_schools;
       appDatails.student_number = data.student.number;
+      appDatails.preferred_campus=data.student.preferred_campus;
       applicationStore.fetchPreviousSchoolResultsByStudent(appDatails.student_number);
 
       let dataInfo = {
@@ -215,6 +217,7 @@ watch(
             <li class="list-group-item"><strong>Surname:</strong> {{ appDatails.studentSurname }}</li>
             <li class="list-group-item"><strong>Second name:</strong> {{ appDatails.Studentsecond_name }}</li>
             <li class="list-group-item"><strong>Other names:</strong> {{ appDatails.StudentOther_name }}</li>
+            <li class="list-group-item"><strong>Preferred Campus:</strong> {{ appDatails.preferred_campus }}</li>
             <li class="list-group-item"><strong>Preferred Class:</strong> {{ appDatails.preferred_campus_number }}</li>
             <li class="list-group-item"><strong>Reason:</strong> <i>{{ appDatails.reason }}</i></li>
             <li class="list-group-item"><strong>Age:</strong> {{ getAge(appDatails.StudentDate_of_birth) }}</li>
@@ -243,39 +246,17 @@ watch(
       <div class="col-md-3" v-if="appDatails.status === 'INTERVIEW_SCHEDULED'">
         <div class="card mb-3">
           <div class="card-header" style="background-color: #198754;"><b>STUDENT SCHEDULED FOR INTERVIEW ...</b> </div>
-          <!-- <div class="card-body">
-            <table class="table table-sm table-striped table-bordered">
-              <thead>
-                <tr>
-                  <th>ASSESSMENT</th>
-                  <th>SCORE</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Math</td>
-                  <td>90</td>
-                </tr>
-                <tr>
-                  <td>SST</td>
-                  <td>90</td>
-                </tr>
-                <tr>
-                  <td>Eng</td>
-                  <td>90</td>
-                </tr>
-              </tbody>
-            </table>
-          </div> -->
+     
         </div>
       </div>
       
       <!-- Interview Scheduling Form Card -->
       <div class="col-md-3" v-if="appDatails.status === 'SUBMITTED'">
         <div class="card mb-3">
-          <div class="card-header" style="background-color: #198754 !important;" >Interview Scheduling</div>
+          <div class="card-header" style="background-color: #198754 !important; color:white;" >Interview Scheduling</div>
           <div class="card-body">
-            <form @submit.prevent="scheduleInterview">
+          
+            <form @submit.prevent="scheduleInterview" v-if="interviewListData.length != 0">
               <div class="form-group">
                 <label for="interview">Select Interview</label>
                 <select v-model="formData.interview_number" id="interview" class="form-control" required>
@@ -286,6 +267,7 @@ watch(
                 {{ buttonLoader ? 'Scheduling...' : 'Schedule Interview' }}
               </button>
             </form>
+         <p v-else class="alert alert-danger">No Interview(s) found  for <span style="color:green"> {{ appDatails.preferred_campus_number }}</span> !</p>
           </div>
         </div>
       </div>
