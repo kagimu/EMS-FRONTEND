@@ -130,8 +130,7 @@ const deleteAssessmentArea = async (data, index) => {
   const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete this assessment area grading standard ");
   if (agreed) {
     deletionLoader.value = index
-
-assessmentStore.deleteAssessmentAreaGradingStandard(data.number)
+      await assessmentStore.deleteAssessmentAreaGradingStandard(data.number)
   }
   
 
