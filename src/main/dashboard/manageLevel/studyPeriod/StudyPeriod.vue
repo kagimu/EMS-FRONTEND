@@ -62,7 +62,7 @@ const editStudyPeriod = (styPeriod)  => {
   if(styPeriod) {
     editMode.value = true
     newStudyPeriodDialog.value = true
-    studyPeriodStore.fetchStudyPeriodData(styPeriod.number)
+    studyPeriodStore.fetchStudyPeriodData(styPeriod.study_period_number	)
   }
 }
 
@@ -72,10 +72,7 @@ const deleteStudyPeriod = async (styPeriod, idx) => {
 
 const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+styPeriod.study_period_name);
 if (agreed) {
-  let data = {
-    number:styPeriod.number
-  }
-  await studyPeriodStore.deleteStudyPeriod(data)
+  await studyPeriodStore.deleteStudyPeriod(styPeriod.study_period_number)
 }
 
 
@@ -110,6 +107,7 @@ watch(
     async (data) => {
       if(data){
         studyPeriodData()
+        newStudyPeriodDialog.value = false
         notificationStore.successToast("Success","Study Period added successfully")
       }
     }
@@ -140,11 +138,15 @@ watch(
     () => studyPeriodStore.editStudyPeriodResponse,
     async (data) => {
       if(data){
+        newStudyPeriodDialog.value = false
         notificationStore.successToast("Success",data.message)
-         studyPeriodData()
+        studyPeriodData()
+
       }
     }
 )
+
+
 
 watch(
     () => classStore.campusLevelResponse,
@@ -164,7 +166,15 @@ watch(
     }
 )
 
-
+watch(
+    () => studyPeriodStore.errorMessage,
+    async (data) => {
+      if(data){
+        deletionLoader.value  = undefined
+        notificationStore.errorToast("Error",data.message)
+      }
+    }
+)
 
 </script>
 <template>
@@ -242,26 +252,40 @@ watch(
         <th class="w-[5%]" scope="col">#</th>
         <th class="w-[15%]"  scope="col">Level</th>
         <th class="w-[20%]"  scope="col">Academic Year</th>
-        <th class="w-[20%]"  scope="col">Study Period</th>
-        <th class="w-[20%]"  scope="col">Classes</th>
+        <th class="w-[25%]"  scope="col">Study Period</th>
+        <th class="w-[15%]"  scope="col">Classes</th>
+        <th class="w-[5%]"  scope="col">Action</th>
       </tr>
       </thead>
       <tbody>
 
-      <tr v-for="(level, index) in studyPeriodList" :key="index">
-        <td> {{level.code}}</td>
-        <td class="capitalize"> {{level?.level_name}}</td>
-        <td class="capitalize"> {{level?.academic_year_name}}</td>
+      <tr v-for="(studyPeriod, index) in studyPeriodList" :key="index">
+        <td> {{studyPeriod.code}}</td>
+        <td class="capitalize"> {{studyPeriod?.level_name}}</td>
+        <td class="capitalize"> {{studyPeriod?.academic_year_name}}</td>
         <td class="capitalize">
-          <div class="mb-1">{{level?.study_period_name}}</div>
+          <div class="mb-1">{{studyPeriod?.study_period_name}}</div>
          <div class="text-xs">
-           <div class="mb-1">From: <span class="border px-3 rounded-md text-[green]">{{level?.study_period_start_date	}}</span></div>
-           <div>To: <span class="border px-3 rounded-md text-[green]">{{level?.study_period_end_date	}}</span> </div>
+           <div class="mb-1">From: <span class="border px-3 rounded-md text-[green]">{{studyPeriod?.study_period_start_date	}}</span></div>
+           <div>To: <span class="border px-3 rounded-md text-[green]">{{studyPeriod?.study_period_end_date	}}</span> </div>
          </div>
         </td>
         <td class="capitalize">
-          <div class="text-xs"  v-for="(lst,idx) in level.classes" :key="idx">
+          <div class="text-xs"  v-for="(lst,idx) in studyPeriod.classes" :key="idx">
            {{(idx+1)}}. {{lst?.name}}
+          </div>
+        </td>
+        <td class="capitalize">
+          <div>
+            <i
+                style="font-size: 13px;"
+                data-bs-toggle="modal" data-bs-target="#levelModal"
+                class="bi-pencil mr-2 cursor-pointer" @click="editStudyPeriod(studyPeriod)"></i>
+            <i
+                style="font-size: 13px;" class="bi-trash cursor-pointer text-[red]"  @click="deleteStudyPeriod(studyPeriod, index)"></i>
+            <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
+              <span class="visually-hidden">Loading...</span>
+            </div>
           </div>
         </td>
 
