@@ -113,7 +113,7 @@ watch(
     () => serviceStore.servicesListResponse,
     async (data) => {
       if (data) {
-        ServiceOptions.value = data.map(option => ({ name: option.Item.name, cost: option.Item.cost,item_number:option.Item.number }));
+        ServiceOptions.value = data.map(option => ({ name: option.item.name, cost: option.item.cost,item_number:option.item.number }));
       }
     },
     { deep: true }
