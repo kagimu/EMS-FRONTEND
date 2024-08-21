@@ -121,7 +121,7 @@ const deleteGrade = async (data, index) => {
   if (agreed) {
     deletionLoader.value = index
 
-assessmentStore.deleteGrade(data.number)
+    await assessmentStore.deleteGrade(data.number)
   }
   
 }
