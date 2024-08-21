@@ -37,7 +37,6 @@ const form = reactive({
   study_period_start_date:null,
   study_period_end_date:null,
   study_period_name_number	:"",
- classes:[]
 })
 
 
@@ -93,7 +92,6 @@ const addStudyPeriod = () => {
     form.study_period_number = study_period_number.value
     studyPeriodStore.editStudyPeriod(form)
   }else {
-    // alert(JSON.stringify(form))
     form.code = parseInt(form.code)
     studyPeriodStore.newStudyPeriod(form)
   }
@@ -187,9 +185,12 @@ watch(
         form.academic_year_number = info.academic_year_number
         form.study_period_start_date = info.study_period_start_date
         form.study_period_end_date = info.study_period_end_date
-        campus_level_number.value = info.level_number
-        fetchAcademicYear(info.level_number)
-        study_period_number.value = info.number
+        form.study_period_name_number	 = info.study_period_name_number
+        form.classes = info.classes.map(classItem => classItem.number);
+        campus_level_number.value = info.campus_level_number
+        fetchAcademicYear(info.campus_level_number)
+        study_period_number.value = info.study_period_number
+
       }
     }
 )

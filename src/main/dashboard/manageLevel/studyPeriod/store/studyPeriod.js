@@ -81,7 +81,7 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
 
 
     async function deleteStudyPeriod(data) {
-        return await api.post("main/study-period/delete", data)
+        return await api.delete("main/study-period/delete/"+data)
             .then((response) => {
                 deleteStudyPeriodResponse.value = response.data
             })
