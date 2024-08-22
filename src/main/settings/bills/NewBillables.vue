@@ -10,6 +10,7 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useStudyModeStore} from "@/main/settings/mode-of-study/store/studyMode.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useBillStore} from "@/main/settings/bills/store/bills.js";
+import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 
 const commons = useCommonsStore()
 const studentInfoList = ref( [])
@@ -19,7 +20,6 @@ const emit = defineEmits()
 const  notificationStore  = useNotificationStore()
 const isAddButtonDisabled = ref(false);
 const classList = ref([])
-const user_number = ref(null)
 const buttonLoader = ref(false)
 const campus_level_number = ref("")
 
@@ -39,6 +39,8 @@ const curriculumList = ref([])
 const curriculumNumber = ref("")
 const modeOfSchoolData  = ref([])
 const academicYearStore = useAcademicYearStore()
+const campusClassList = ref(null)
+const studyPeriodStore = useStudyPeriodStore()
 
 
 const props = defineProps({
@@ -54,7 +56,9 @@ const formData = reactive({
   mode_of_study_number:"",
   campus_number:"",
   study_period_number:"",
-  type:null
+  type:null,
+  academic_year_number:"",
+  school_number:""
 })
 
 onMounted(
@@ -85,15 +89,16 @@ onMounted(
 
   let data = {
     description:formData.description,
-   class_number:formData.campus_class_number,
+   class_number:formData.class_number,
     mode_of_study_number:formData.mode_of_study_number,
     campus_number:formData.campus_number,
     study_period_number:formData.study_period_number,
+    school_number:formData.school_number,
     type:typeData.value,
     billable_items:selectedItems,
   }
  alert(JSON.stringify(data))
-  // modeStudyStore.newBillable(data)
+  billStore.newBillable(data)
 }
 
 
@@ -148,6 +153,7 @@ watch(Services, (newServices) => {
 
 
 
+
 watch(
     () => serviceStore.servicesListResponse,
     async (data) => {
@@ -158,18 +164,6 @@ watch(
     { deep: true }
 )
 
-// watch (
-//     () => invoiceStore.newInvoiceResponse,
-//     async (data) => {
-//       if (data) {
-//         notificationStore.successToast("Success", data.message)
-//         buttonLoader.value=false
-//         form.description = null,
-//             form.due_date = null
-//       }
-//     },
-//     { deep: true }
-// )
 
 watch (
     () => billStore.errorMessage,
@@ -182,6 +176,27 @@ watch (
     { deep: true }
 )
 
+
+const studyPeriodData = (classN) => {
+  studyPeriodStore.fetchStudyPeriod(
+      {
+        campus_curriculum_number:curriculumNumber.value,
+        academic_year_number:formData.academic_year_number,
+        class_number:classN
+      }
+  )
+}
+
+
+
+watch(
+    () => studyPeriodStore.studyPeriodResponse,
+    async (data) => {
+      if(data){
+        studyPeriodList.value = data.data
+      }
+    }
+)
 
 
 const fetchCampuses = (school) => {
@@ -197,10 +212,28 @@ const fetchCampuses = (school) => {
     classStore.fetchCampusLevel(campus_number)
   }
 
-  const fetchClasses = (campus_level_number) => {
+  const fetchClasses = (campuslevelnumber) => {
     // classStore.fetchClassByLevel(campus_level_number)
-    classStore.fetchClassLevel({campusCurriculumNumber: curriculumNumber.value, campusLevelNumber: campus_level_number})
+    academicYearStore.fetchAcademicYearByLevel(campuslevelnumber)
+    classStore.fetchClassLevel({campusCurriculumNumber: curriculumNumber.value, campusLevelNumber: campuslevelnumber})
+    let data = {
+    school_number:formData.school_number,
+    campus_level_number:campuslevelnumber
   }
+  campusStore.fetchClassesBySchool(data)
+  
+  }
+
+
+  watch(
+    () => campusStore.schoolClassesResponse,
+    async (data) => {
+      if(data){
+        campusClassList.value = data.data
+      }
+    }
+)
+
 
   
   watch(
@@ -212,14 +245,25 @@ const fetchCampuses = (school) => {
     }
 )
 
-watch(
-    () => classStore.classLevelInfoResponse,
+// watch(
+//     () => classStore.classLevelInfoResponse,
+//     async (data) => {
+//       if(data){
+//         classList.value = data.data
+//       }
+//     },
+//     {deep:true}
+// )
+
+watch (
+    () => billStore.newBillableResponse,
     async (data) => {
-      if(data){
-        classList.value = data.data
+      if (data) {
+        notificationStore.successToast("Success", data.message)
+        buttonLoader.value=false
       }
     },
-    {deep:true}
+    { deep: true }
 )
 
 
@@ -259,22 +303,17 @@ watch(
       {deep: true}
   )
 
+
   watch(
-    () => academicYearStore.academicYearByCampusResponse,
+    () => academicYearStore.academicYearByLevelResponse,
     async (data) => {
-        if (data) {
-          academicYearList.value = data.data
-  
-          if(data && data.data){
-        let studyData = data.data
-        if(studyData && (studyData.length > 0)){
-          studyPeriodList.value = studyData[0].studyPeriod
-        }
+      if(data){
+        academicYearList.value = data.data
       }
-        }
-    },
-    {deep: true}
-  )
+    }
+)
+
+
 
   watch(
     () => modeStudyStore.modeOfStudyInfoResponse,
@@ -346,23 +385,18 @@ watch(
               </select>
             </div>
 
-         
-        <div class="mb-2">
-            <label class="textSize"><small>Class</small></label>
-          <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm" required
-            v-model="formData.campus_class_number"
-           @change="fetchAcademicYear(formData.campus_class_number)"
-            >
-          <option disabled value="">-filter by class-</option>
-          <template v-for="(classItem, index) in classList" :key="index">
-          <option v-for="(classDetail, indx) in classItem.classes" :key="indx" :value="classDetail.number">
-          {{ classDetail.name }}
-          </option>
-          </template>
-          </select>
-          </div>
+
+            <div class="mb-2">
+        <label class="textColor"><small>Class</small></label>
+        <select
+            class="form-select form-select-sm shadow-none" required
+            v-model="formData.class_number"
+            @change="studyPeriodData(formData.class_number)">
+          <option disabled value="">--Select Class--</option>
+          <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
+        </select>
+      </div>
+
 
           <div class="mb-2">
             <label class="textSize"><small>AcademicYear</small></label>
@@ -378,7 +412,7 @@ watch(
      </div>
 
      <div class="mb-2">
-   
+      <label class="textSize"><small>Study Period</small></label>
    <select
       style="box-shadow: none;"
       class="form-select form-select-sm" required

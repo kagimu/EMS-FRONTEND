@@ -11,7 +11,7 @@ export const useBillStore = defineStore("billStore", () => {
 
 
     async function newBillable(data) {
-        return await api.post("main/new", data)
+        return await api.post("main/invoices/billable", data)
             .then((response) => {
                 newBillableResponse.value = response.data
             })
@@ -23,7 +23,7 @@ export const useBillStore = defineStore("billStore", () => {
     }
 
     async function deleteBillable(id) {
-        return await api.delete("main/delete/"+id)
+        return await api.delete("main/invoices/billable"+id)
             .then((response) => {
                 deleteBillableResponse.value = response.data
             })
@@ -35,7 +35,7 @@ export const useBillStore = defineStore("billStore", () => {
     }
 
     async function editBillable(data) {
-        return await api.post("main/", data)
+        return await api.post("main/invoices/billable", data)
             .then((response) => {
                 updateBillableResponse.value = response.data
             })
@@ -48,7 +48,7 @@ export const useBillStore = defineStore("billStore", () => {
 
     async function fetchBillable(data) {
          let  school_number = data.school_number ?? ""
-        return await api.get("main/"+school_number)
+        return await api.get("main/invoices/billable?school_number="+school_number)
             .then((response) => {
                 billableResponse.value = response.data
             })

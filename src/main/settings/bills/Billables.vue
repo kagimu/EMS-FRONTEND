@@ -5,17 +5,20 @@ import { useAbility } from '@casl/vue';
 import AppModal from "@/components/AppModal.vue";
 import NewBillables from "@/main/settings/bills/NewBillables.vue"
 import {useBillStore} from "@/main/settings/bills/store/bills.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
 
 const  notificationStore  = useNotificationStore()
+const schoolStore = useSchoolStore()
 const mymodal = ref(false)
 const errorMessage = ref(null)
 const loader  = ref(false)
 const { can } = useAbility()
+const schoolList = ref([])
 const billStore = useBillStore()
-
+const school_number = ref("")
 onMounted(
     async () => {
-      doFetchBillables()
+     schoolStore.fetchSchools()
     }
 )
 
@@ -24,8 +27,9 @@ const showModal = () =>{
 }
 
 
- const doFetchBillables = () =>{
+ const doFetchBillables = (schoolN) =>{
   let data = {
+    school_number:schoolN
   }
   billStore.fetchBillable(data)
  }
@@ -42,6 +46,17 @@ watch(
     {deep:true}
 )
 
+
+
+watch(
+      () => schoolStore.schoolsResponse,
+      async (data) => {
+          if (data) {
+              schoolList.value = data.data
+          }
+      },
+      {deep: true}
+  )
 
 watch (
     () => billStore.newBillableResponse,
@@ -72,7 +87,7 @@ watch (
 
 <template>
     <div>
-      <AppModal title="Creating New Billable" v-model="mymodal" xl8>
+      <AppModal title="Creating New Billable" v-model="mymodal" xl6>
       <NewBillables :userNumber="userNumber"></NewBillables>
       </AppModal>
 
@@ -90,6 +105,26 @@ watch (
             <div class="card-bdy" style="padding: 0;">
     <div class="mt-4">
 
+      <div class="row">
+       
+                  <div class="col-lg-4">
+                    <div class="mb-2">
+            <label class="textSize"><small>School</small></label>
+         <select
+                 style="box-shadow: none;"
+                 class="form-select form-select-sm" required
+                 v-model="school_number"
+                 @change="doFetchBillables(school_number)"
+         >
+             <option disabled value="">-filter School -</option>
+             <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+             </option>
+         </select>
+     </div>
+     </div>
+     <div class="col-lg-4"></div>
+     <div class="col-lg-4"></div>
+     </div>
   
       <table
         class="table table-hover caption-top mt-4 table-sm table-striped"
