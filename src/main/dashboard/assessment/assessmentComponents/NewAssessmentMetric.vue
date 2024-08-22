@@ -176,7 +176,7 @@
   let data = {
     curriculum_number:curriculumNumberParent,
     class_number:campus_class_number
-  // }
+  }
   // alert(JSON.stringify(data))
   assessmentStore.fetchAssessmentArea(data)
 
