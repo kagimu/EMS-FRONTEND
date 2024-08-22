@@ -31,7 +31,6 @@
    const classList = ref([])
    const schoolStore = useSchoolStore()
    const campusStore = useCampusStore()
-   const school_number = ref(null)
    const assessmentStore = useAssessmentStore()
    const academicYearStore = useAcademicYearStore()
    const academicYearList = ref([])
@@ -39,6 +38,7 @@
    const classStore = useClassesStore()
    const streamList = ref([])
    const currentYear = ref((new Date()).getFullYear());
+   
    const date = ref();
    const format = (date) => {
      const item = date.getDate();
@@ -54,7 +54,7 @@
    const props = defineProps({
      studN: String,
      studentNumber:String,
-     adm:String,
+     admissionData:{},
      studentDataInfo:[]
    })
    
@@ -62,8 +62,34 @@
    onMounted(() => {
            schoolStore.fetchSchools()
            enrolmentStore.fetchCheckListItems(props.adm)
+           getStudentInfoData()
        }
    )
+
+   const getStudentInfoData = () => {
+      let draftData = props.admissionData
+      if(draftData.number){
+         form.school_number = draftData.school_number
+
+         campusStore.fetchCampuses(form.school_number)
+         cateringStore.fetchFeedingGroup(form.school_number)
+         if(form.school_number){
+            form.campus_number = draftData.campus_number
+         }
+
+         if(form.campus_number){
+            campusStore.fetchClassesByCampus(form.campus_number)
+            form.campus_class_number = draftData.campus_class_number
+         }
+         if(form.campus_class_number){
+            academicYearStore.fetchAcademicYearByCampus(form.campus_class_number)
+            classStore.fetchClassStreams(form.campus_class_number)
+            form.stream_number = draftData.stream_number
+            form.academic_year_number=draftData.academic_year_number
+            form.study_period_number=draftData.study_period_number
+         }
+      }
+   }
    
        watch(
        () => enrolmentStore.checkListItemsResponse,
@@ -262,8 +288,7 @@
 </script>
 <template>
    <div>
-      <!-- {{ studentNumber }} -->
-      <!-- {{ adm }} -->
+    <!-- {{ admissionData.AcademicYear }} -->
       <form @submit.prevent="Enrol()">
          <div class="row">
             <div class="col-4">

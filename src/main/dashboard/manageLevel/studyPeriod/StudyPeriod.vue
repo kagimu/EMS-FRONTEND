@@ -13,8 +13,7 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 const confirmationRef = ref(null);
 
 const { can } = useAbility()
-
-
+const schoolList = ref([])
 const studyPeriodStore = useStudyPeriodStore()
 const academicYearStore = useAcademicYearStore()
 const classStore = useClassesStore()

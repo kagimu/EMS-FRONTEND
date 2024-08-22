@@ -11,6 +11,8 @@ import Products from "../dashboard/servicesAndProducts/Products.vue";
 import Profile from "@/main/settings/Profile.vue"
 import PromotionSettings from "./promotion/PromotionSettings.vue";
 import PromotionValue from "./promotion/PromotionValue.vue";
+import Billables from "@/main/settings/bills/Billables.vue"
+import ModeOfStudy from "@/main/settings/mode-of-study/ModeOfStudy.vue"
 
 import { useAbility } from '@casl/vue';
 
@@ -56,6 +58,16 @@ const settingsList = ref([
     name:"Products",
     id:"products",
     action:"view_products"
+  },
+  {
+    name:"Mode Of Study",
+    id:"mode-of-study",
+    action:"view_mode_of_study"
+  },
+  {
+    name:"Billables",
+    id:"billables",
+    action:"view_billables"
   },
   {
     name:"Promotion Settings",
@@ -127,6 +139,12 @@ const form = reactive({
                 </div>
                 <div v-if="selectedPage === 'products'">
                     <Products></Products>
+                </div>
+                <div v-if="selectedPage === 'mode-of-study'">
+                   <ModeOfStudy></ModeOfStudy>
+                </div>
+                <div v-if="selectedPage === 'billables'">
+                   <Billables></Billables>
                 </div>
 
                 <div v-if="selectedPage === 'promotion-settings'">

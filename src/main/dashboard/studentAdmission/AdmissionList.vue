@@ -30,7 +30,8 @@
 
   const showModal = (studentN,adm,stud) =>{
   studentNum.value = studentN
-  admissionNumber.value = adm
+  admissionInfoData.value = stud
+//   alert(JSON.stringify(stud))
   studentData.value =stud
   mymodal.value = true
    }
@@ -50,7 +51,7 @@
   const admissionList = ref([])
   const admissionStore = useAdmissionStore()
   const studN = ref(null)
-  const admissionNumber = ref(null)
+  const admissionInfoData = ref(null)
   const loading = ref(false)
   const page = ref(1)
   const per_page = ref(20)
@@ -361,7 +362,7 @@ watch(
 <template>
 
 <AppModal title="Enrol" v-model="mymodal" xl6>
-   <EnrolModel :studentNumber="studentNum" :adm="admissionNumber" :studentDataInfo="studentData"></EnrolModel>
+   <EnrolModel :studentNumber="studentNum" :admissionData="admissionInfoData" :studentDataInfo="studentData"></EnrolModel>
 </AppModal>
 
   <div>
@@ -562,6 +563,7 @@ watch(
                              </div> -->
                        </thead>
                        <tbody>
+                   
                           <tr v-for="(adm , index) in admissionList" :key="index">
                              <!-- <td>
                                 {{ index+1 }}
@@ -573,14 +575,8 @@ watch(
                              <td>{{ adm.Stream.class_name }}</td>
                              <td>{{ adm.Stream.name }}</td>
                              <td>{{ adm.StudyPeriod.study_period_name }}</td>
-                             <!-- <td>{{ adm.status }}</td> -->
-                             <!-- <span v-if="adm.status == 'Enrolled'" class="link link-primary"><i>{{ adm.status }}</i></span> -->
                              <td>
-                                <!-- <button v-if="adm.status != 'Enrolled'" @click="showDialog(adm)" 
-                                   data-bs-toggle="modal" data-bs-target="#admitMainModal" type="submit" class="btn btn-sm btn-primary mb-2 mr-4 "
-                                   style="color: white;">
-                                   <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  
-                                </button> -->
+                      
                                 
  
                                 <div v-if="can('enroll_student','manage')">

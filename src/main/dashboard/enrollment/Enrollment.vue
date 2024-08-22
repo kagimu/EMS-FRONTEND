@@ -503,15 +503,7 @@ studentNumber.value = a
             <td>{{ enrolData.class }}</td>
             
             <td>{{ enrolData.enrollment_date }}</td>
-            <td>
-                <!-- <button><i class="bi bi-trash"></i></button> &nbsp;
-                <button><i class="bi bi-pencil"></i></button> -->
-                <!-- <button 
-                 type="button" @click="promModal(enrolData.Student.number)"  class="btn btn-sm buttonStyle btn-primary mr-2"  data-bs-toggle="modal" data-bs-target="#promoteModal">
-                  Promote
-                </button> -->
-
-         
+            <td> 
                 <router-link
                   class="text-decoration-none"
                   :to="{name:'student-profile-details', query:{st_id:enrolData.student_number}}">
