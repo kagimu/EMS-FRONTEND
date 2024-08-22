@@ -11,7 +11,7 @@
             </h6>
         </div>
         <div class="col-lg-8">
-          <RouterLink :to="{name : 'invoices'}" type="link" class="link-primary textColor" style="margin-top:20px;float: right;font-size: 15px;margin-left:"><i class="bi bi-arrow-right" ></i>&nbsp;&nbsp;&nbsp;View Invoices</RouterLink>
+          <RouterLink :to="{name : 'invoices'}" type="link" class="link-primary textColor" style="margin-top:20px;float: right;font-size: 15px;"><i class="bi bi-arrow-right" ></i>&nbsp;&nbsp;&nbsp;View Invoices</RouterLink>
         </div>
        </div>
            </div>
