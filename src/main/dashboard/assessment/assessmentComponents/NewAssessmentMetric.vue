@@ -434,7 +434,7 @@
                     v-model="form.study_period_number"
                     >
                     <option disabled value="">Select Study Period</option>
-                    <option v-for="(list, index) in studyPeriodList" :key="index" :value="list.number">{{ list.study_period_name }}
+                    <option v-for="(list, index) in studyPeriodList" :key="index" :value="list.study_period_number">{{ list.study_period_name }}
                     </option>
                  </select>
         </div>

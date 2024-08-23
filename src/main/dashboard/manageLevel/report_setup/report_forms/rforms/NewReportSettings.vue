@@ -250,7 +250,7 @@ watch(
           v-model="form.study_period_number"
       >
         <option disabled value="">Select</option>
-        <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
+        <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
 
       </select>
     </div>
