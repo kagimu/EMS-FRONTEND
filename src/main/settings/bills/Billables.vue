@@ -16,6 +16,7 @@ const { can } = useAbility()
 const schoolList = ref([])
 const billStore = useBillStore()
 const school_number = ref("")
+const billableData= ref([])
 onMounted(
     async () => {
      schoolStore.fetchSchools()
@@ -40,7 +41,9 @@ watch(
     () => billStore.billableResponse,
     async (data) => {
       if(data){
-        billableData.value = data
+      
+        billableData.value = data.data
+        // alert(JSON.stringify(data))
       }
     },
     {deep:true}
@@ -135,10 +138,10 @@ watch (
             <th>No.</th>
             <th>Amount</th>
             <th>Campus</th>
-            <th>Academic Year</th>
+            <!-- <th>Academic Year</th> -->
             <th>StudyPeriod</th>
             <th>Class</th>
-            <th>Study Mode</th>
+            <!-- <th>Study Mode</th> -->
             <th>Type</th>
             <th>Status</th>
             <th>Actions</th>
@@ -146,16 +149,17 @@ watch (
         </thead>
  
         <tbody>
-         <tr>
-          <td>1100202</td>
-          <td>3000,000 ugx</td>
-          <td>Devine Campus</td>
-          <td>2024</td>
-          <td>Term One</td>
-          <td>Primary One</td>
-          <td>Boarding</td>
-          <td>No</td>
-          <td>Active</td>
+          
+          
+         <tr  v-for="(list, index) in billableData" :key="index" >
+        
+          <td>{{ list.billable_number }}</td>
+          <td>{{ list.total_amount }}</td>
+          <td>{{ list.campus_name }}</td>
+          <td>{{ list.study_period_name }}</td>
+          <td>{{ list.class_name }}</td>
+          <td>{{ list.type }}</td>
+          <td>{{list.status}}</td>
           <td>
 
             <button data-bs-toggle="offcanvas" aria-controls="rolesDialogg">

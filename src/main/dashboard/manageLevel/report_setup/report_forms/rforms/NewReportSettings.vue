@@ -7,6 +7,7 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
+
 import {useRouter} from "vue-router";
 
 const commons = useCommonsStore()
@@ -76,12 +77,31 @@ const fetchAcademicYea = (campus_level_number) => {
   academicYearStore.fetchCampusClassByLevel(campus_level_number)
 }
 
+//studyPeriod
 
 const fetchStudyPeriod = (academic_num) =>{
   studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
 }
 
 
+const studyPeriodData = (classN) => {
+  studyPeriodStore.fetchStudyPeriod(
+      {
+        campus_curriculum_number:campus_curriculum_number,
+        academic_year_number:form.academic_year_number,
+        class_number:classN
+      }
+  )
+}
+
+watch(
+    () => studyPeriodStore.studyPeriodResponse,
+    async (data) => {
+      if(data){
+        studyPeriodList.value = data.data
+      }
+    }
+)
 
 watch(
     () => levelStore.campusCurriculumResponse,
@@ -126,14 +146,14 @@ watch(
 )
 
 
-watch(
-    () => studyPeriodStore.studyPeriodByAcademicYearResponse,
-    async (data) => {
-      if(data){
-        studyPeriodList.value = data.data
-      }
-    }
-)
+// watch(
+//     () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+//     async (data) => {
+//       if(data){
+//         studyPeriodList.value = data.data
+//       }
+//     }
+// )
 
 watch(
     () => academicYearStore.campusClassByLevelResponse,
@@ -202,15 +222,29 @@ watch(
           style="box-shadow: none;"
           class="form-select form-select-sm"
           v-model="form.academic_year_number"
-          @change="fetchStudyPeriod(form.academic_year_number)"
+         
       >
-        <option disabled value="">--Select Class--</option>
+        <option disabled value="">--Select Academic Year--</option>
         <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
           {{list.code+". "+list.academic_year_name}}
         </option>
       </select>
     </div>
 
+
+    <div class="mb-2">
+      <label class="textColor"><small>Class</small>
+      </label>
+      <select
+          style="box-shadow: none;"
+          class="form-select form-select-sm" required
+          v-model="form.campus_class_number"
+           @change="studyPeriodData(form.campus_class_number)"
+      >
+        <option disabled value="">Select</option>
+        <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+      </select>
+    </div>
 
     <div class="mb-2">
       <label class="textColor"><small>Study Period</small>
@@ -227,19 +261,6 @@ watch(
     </div>
 
 
-
-    <div class="mb-2">
-      <label class="textColor"><small>Class</small>
-      </label>
-      <select
-          style="box-shadow: none;"
-          class="form-select form-select-sm" required
-          v-model="form.campus_class_number"
-      >
-        <option disabled value="">Select</option>
-        <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
-      </select>
-    </div>
 
     <div class="mb-2">
       <label class="textColor">Columns</label>
