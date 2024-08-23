@@ -23,6 +23,7 @@ const academicYearStore = useAcademicYearStore()
 const reportSetupStore = useReportSetupStore()
 const assessmentStore= useAssessmentStore()
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
+let  curriculumNumberParent = routerData.currentRoute.value.query.cr
 const assessmentListData = ref([])
 const metricListData = ref(null)
 const assessmentMetricNumber = ref("")
@@ -93,9 +94,16 @@ watch(
 
 
 const fetchAssessmentAreaAndStudyPeriod = (campus_class_number) =>{
-  if(campus_class_number) {
-    assessmentStore.fetchAssessmentArea(campus_class_number)
+  // if(campus_class_number) {
+  //   assessmentStore.fetchAssessmentArea(campus_class_number)
+  // }
+
+  let data = {
+    curriculum_number:curriculumNumberParent,
+    class_number:campus_class_number
   }
+  assessmentStore.fetchAssessmentArea(data)
+  
 
   studyPeriodStore.fetchStudyPeriod(
       {
@@ -115,7 +123,7 @@ const fetchAssessmentMetrics = () =>{
     let data = {
       study_period_number:study_period_number.value,
       assessment_area_number:assessment_area_number.value,
-      campus_class_number:result?.number
+      campus_class_number:campus_class_number.value
     }
      assessmentStore.fetchAssessmentMetrics(data)
   }

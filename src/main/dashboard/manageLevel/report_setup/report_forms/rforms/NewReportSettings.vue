@@ -95,6 +95,8 @@ const studyPeriodData = (classN) => {
         class_number:classN
       }
   )
+
+
 }
 
 watch(
