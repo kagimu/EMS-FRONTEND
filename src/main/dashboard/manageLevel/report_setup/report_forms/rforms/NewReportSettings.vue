@@ -7,12 +7,14 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
 
 import {useRouter} from "vue-router";
 
 const commons = useCommonsStore()
 const notificationStore  = useNotificationStore()
 const routerData = useRouter()
+const campusStore = useCampusStore()
 
 const studyPeriodStore = useStudyPeriodStore()
 const reportSetupStore = useReportSetupStore()
@@ -21,14 +23,14 @@ const academicYearStore = useAcademicYearStore()
 const classStore = useClassesStore()
 
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
-
+const schoolN = routerData.currentRoute.value.query.sch
 const errorMessage = ref("")
 const loader = ref(false)
 const campusCurriculumDataInfo = ref(null)
 const campusLevelList = ref(null)
 const academicYearList = ref(null)
 const studyPeriodList = ref(null)
-const campusClassList = ref(null)
+const campusClassList = ref([])
 const campus_level_number = ref("")
 
 const props = defineProps({
@@ -74,14 +76,15 @@ const fetchCampusLevel = () => {
 
 const fetchAcademicYea = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
-  academicYearStore.fetchCampusClassByLevel(campus_level_number)
+  let data = {
+    school_number:schoolN,
+    campus_level_number:campus_level_number
+  }
+  campusStore.fetchClassesBySchool(data)
 }
 
-//studyPeriod
 
-const fetchStudyPeriod = (academic_num) =>{
-  studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
-}
+
 
 
 const studyPeriodData = (classN) => {
@@ -146,23 +149,15 @@ watch(
 )
 
 
-// watch(
-//     () => studyPeriodStore.studyPeriodByAcademicYearResponse,
-//     async (data) => {
-//       if(data){
-//         studyPeriodList.value = data.data
-//       }
-//     }
-// )
-
 watch(
-    () => academicYearStore.campusClassByLevelResponse,
+    () => campusStore.schoolClassesResponse,
     async (data) => {
       if(data){
         campusClassList.value = data.data
       }
     }
 )
+
 
 
 watch(
@@ -242,7 +237,7 @@ watch(
            @change="studyPeriodData(form.campus_class_number)"
       >
         <option disabled value="">Select</option>
-        <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+        <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.name+" [ "+list.abbreviation+" ]"}}</option>
       </select>
     </div>
 
