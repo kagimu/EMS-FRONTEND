@@ -78,11 +78,12 @@
       description:null,
       max_score:null,
       metric_number:null,
-      campus_class_number:null,
+      class_number:null,
       // grading_standard_number:null,
       study_period_number:null,
       scheduled_on:null,
-      require_comment:null
+      require_comment:null,
+      campus_number:campusNumber
     })
 
   watch(
@@ -113,7 +114,7 @@
       if(draft.campus_level_number){
         classStore.fetchClassByLevel(campus_curriculum_number,draft.campus_level_number)
          academicYearStore.fetchAcademicYearByLevel(draft.campus_level_number)   
-         form.campus_class_number = draft.campus_class_number
+         form.class_number = draft.class_number
          academic_year_number.value = draft.academic_year_number 
       }
       if(draft.academic_year_number){
@@ -133,8 +134,8 @@
   //           let classData = data.data
   //           if(classData && (classData.length > 0)){
   //             classLevelList.value = classData[0].classes
-  //             if(form.campus_class_number) {
-  //               fetchAssessmentAreaList(form.campus_class_number)
+  //             if(form.class_number) {
+  //               fetchAssessmentAreaList(form.class_number)
   //             }
 
   //           }
@@ -167,15 +168,15 @@
   }
   
   
-  const  fetchAssessmentAreaList = (campus_class_number) => {
-  // if(campus_class_number) {
-  //   let curriculum_class_number = classLevelList.value.find(item => item.number === campus_class_number).curriculum_class_number
+  const  fetchAssessmentAreaList = (class_number) => {
+  // if(class_number) {
+  //   let curriculum_class_number = classLevelList.value.find(item => item.number === class_number).curriculum_class_number
   //   assessmentStore.fetchAssessmentArea(curriculum_class_number)
   // }
 
   let data = {
     curriculum_number:curriculumNumberParent,
-    class_number:campus_class_number
+    class_number:class_number
   }
   // alert(JSON.stringify(data))
   assessmentStore.fetchAssessmentArea(data)
@@ -184,7 +185,7 @@
       {
         campus_curriculum_number:campus_curriculum_number,
         academic_year_number:academic_year_number.value,
-        class_number:campus_class_number
+        class_number:class_number
       }
   )
 
@@ -242,7 +243,7 @@
        form.description=null
        form.max_score=null
        form.metric_number=null
-       form.campus_class_number=null
+       form.class_number=null
        // form.grading_standard_number=null
        form.study_period_number=null
        form.scheduled_on=null
@@ -347,11 +348,7 @@
     }
   }
   )
-  
-  const fetchStudyPeriodData = (classN) =>{
 
- 
-  }
  
  
   watch(
@@ -417,8 +414,8 @@
                  <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
-                    v-model="form.campus_class_number"
-                    @change="fetchAssessmentAreaList(form.campus_class_number)">
+                    v-model="form.class_number"
+                    @change="fetchAssessmentAreaList(form.class_number)">
                     <option disabled value="">Select Class</option>
                     <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
                  </select>

@@ -24,6 +24,8 @@ const classStore = useClassesStore()
 
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const schoolN = routerData.currentRoute.value.query.sch
+const campusNumber = routerData.currentRoute.value.query.id
+
 const errorMessage = ref("")
 const loader = ref(false)
 const campusCurriculumDataInfo = ref(null)
@@ -41,7 +43,8 @@ const form = reactive({
   code:null,
   academic_year_number:"",
   study_period_number:"",
-  campus_class_number:"",
+  class_number:"",
+  campus_number:campusNumber,
   columns:"",
 })
 
@@ -235,8 +238,8 @@ watch(
       <select
           style="box-shadow: none;"
           class="form-select form-select-sm" required
-          v-model="form.campus_class_number"
-           @change="studyPeriodData(form.campus_class_number)"
+          v-model="form.class_number"
+           @change="studyPeriodData(form.class_number)"
       >
         <option disabled value="">Select</option>
         <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.name+" [ "+list.abbreviation+" ]"}}</option>

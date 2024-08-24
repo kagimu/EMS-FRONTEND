@@ -11,20 +11,21 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 const confirmationRef = ref(null);
 
 
 const { can } = useAbility()
 
 const routerData = useRouter()
-
+const campusStore = useCampusStore()
 const academicYearStore = useAcademicYearStore()
 const classStore = useClassesStore()
 const studyPeriodStore = useStudyPeriodStore()
-
 let  curriculumNumberParent = routerData.currentRoute.value.query.cr
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
-
+const schoolN = routerData.currentRoute.value.query.sch
+const campusNumber = routerData.currentRoute.value.query.id
 const showingModal = ref(false)
 const campus_level_number = ref("")
 
@@ -79,11 +80,12 @@ const doFetchAssessmentMetric = async () => {
   let data = {
     page: 1,
     per_page: per_page.value,
-    campus_class_number:campus_class_number.value,
+    class_number:campus_class_number.value,
     academic_year_number:academic_year_number.value,
     study_period_number:study_period_number.value,
     metric_number:metric_number.value,
     assessment_area_number:assessment_area_number.value,
+    campus_number:campusNumber,
     paginated:"yes"
   }
 
@@ -114,27 +116,43 @@ function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
 
 
 
-const fetchCurriculumClass = () =>{
-  classStore.fetchClassByLevel(campus_curriculum_number,campus_level_number.value)
+const fetchClass = () =>{
+  // classStore.fetchClassByLevel(campus_curriculum_number,campus_level_number.value)
   academicYearStore.fetchAcademicYearByLevel(campus_level_number.value)
-}
 
-const  fetchAssessmentAreaList = () => {
-  if(campus_class_number.value) {
-    let curriculum_class_number = classLevelList.value.find(item => item.number === campus_class_number.value).curriculum_class_number
-    assessmentStore.fetchAssessmentArea(curriculum_class_number)
-    doFetchAssessmentMetric()
+  let data = {
+    school_number:schoolN,
+    campus_level_number:campus_level_number.value
   }
+  campusStore.fetchClassesBySchool(data)
+
 }
 
-const fetchStudyPeriod = () =>{
-  studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_year_number.value)
+const  fetchAssessmentAreaList = (classN) => {
+
+  let data = {
+    curriculum_number:curriculumNumberParent,
+    class_number:classN
+  }
+  assessmentStore.fetchAssessmentArea(data)
   doFetchAssessmentMetric()
+
+
+  studyPeriodStore.fetchStudyPeriod(
+      {
+        campus_curriculum_number:campus_curriculum_number,
+        academic_year_number:academic_year_number.value,
+        class_number:classN
+      }
+    )
+
 }
+
+
 
 
 watch(
-    () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+    () => studyPeriodStore.studyPeriodResponse,
     async (data) => {
       if(data){
         studyPeriodList.value = data.data
@@ -231,16 +249,12 @@ watch(
     }
 )
 
+
 watch(
-    () => classStore.classLevelByLevelResponse,
+    () => campusStore.schoolClassesResponse,
     async (data) => {
-      if (data) {
-        if(data && data.data){
-          let classData = data.data
-          if(classData && (classData.length > 0)){
-            classLevelList.value = classData[0].classes
-          }
-        }
+      if(data){
+        classLevelList.value = data.data
       }
     }
 )
@@ -331,7 +345,7 @@ const deleteThisData = async (id,name) => {
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="campus_level_number"
-                  @change="fetchCurriculumClass()"
+                  @change="fetchClass()"
               >
                 <option disabled value="">--Filter by Level--</option>
                 <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
@@ -344,21 +358,8 @@ const deleteThisData = async (id,name) => {
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
-                  v-model="campus_class_number"
-                  @change="fetchAssessmentAreaList()"
-              >
-                <option disabled value="">--Filter by Class--</option>
-                <option v-for="(clist, index) in classLevelList" :key="index" :value="clist.number">{{clist.name}}</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-lg-3">
-            <div class="mb-2">
-              <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm"
                   v-model="academic_year_number"
-                  @change="fetchStudyPeriod()" >
+                  >
                 <option disabled value="">--Filter by Academic Year--</option>
                 <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
                   {{list.code+". "+list.academic_year_name}}
@@ -366,6 +367,23 @@ const deleteThisData = async (id,name) => {
               </select>
             </div>
           </div>
+          
+
+          <div class="col-lg-3">
+            <div class="mb-2">
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="campus_class_number"
+                  @change="fetchAssessmentAreaList(campus_class_number)"
+              >
+                <option disabled value="">--Filter by Class--</option>
+                <option v-for="(clist, index) in classLevelList" :key="index" :value="clist.number">{{clist.name}}</option>
+              </select>
+            </div>
+          </div>
+       
+
           <div class="col-lg-3">
             <div class="mb-2">
               <select
@@ -375,7 +393,7 @@ const deleteThisData = async (id,name) => {
                   @change="doFetchAssessmentMetric()"
               >
                 <option disabled value="">--Filter by Study Period--</option>
-                <option v-for="(list, index) in studyPeriodList" :key="index" :value="list.number">{{ list.study_period_name }}
+                <option v-for="(list, index) in studyPeriodList" :key="index" :value="list.study_period_number">{{ list.study_period_name }}
                 </option>
               </select>
             </div>

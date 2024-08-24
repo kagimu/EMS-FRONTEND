@@ -8,10 +8,12 @@ import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/stor
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
 import {useRouter} from "vue-router";
 
 
 const notificationStore  = useNotificationStore()
+const campusStore = useCampusStore()
 const teacherCommentStore = useTeacherCommentStore()
 const commons = useCommonsStore()
 const routerData = useRouter()
@@ -20,6 +22,8 @@ const studyPeriodStore = useStudyPeriodStore()
 const classStore = useClassesStore()
 const academicYearStore = useAcademicYearStore()
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
+const schoolN = routerData.currentRoute.value.query.sch
+const campusNumber = routerData.currentRoute.value.query.id
 const reportSettingsList = ref(null)
 const campusLevelList = ref([])
 const academicYearList = ref([])
@@ -93,7 +97,13 @@ const fetchCampusLevel = () => {
 
 const fetchAcademicYear = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
-  academicYearStore.fetchCampusClassByLevel(campus_level_number)
+  // academicYearStore.fetchCampusClassByLevel(campus_level_number)
+
+  let data = {
+    school_number:schoolN,
+    campus_level_number:campus_level_number
+  }
+  campusStore.fetchClassesBySchool(data)
 }
 
 
@@ -133,13 +143,22 @@ watch(
 )
 
 watch(
-    () => academicYearStore.campusClassByLevelResponse,
+    () => campusStore.schoolClassesResponse,
     async (data) => {
       if(data){
         campusClassList.value = data.data
       }
     }
 )
+
+// watch(
+//     () => academicYearStore.campusClassByLevelResponse,
+//     async (data) => {
+//       if(data){
+//         campusClassList.value = data.data
+//       }
+//     }
+// )
 
 
 watch(
@@ -225,7 +244,7 @@ watch(
                 @change="doFetchReportSettings()"
             >
               <option disabled value="">--select--</option>
-              <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+              <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.name+" [ "+list.abbreviation+" ]"}}</option>
             </select>
           </div>
 
