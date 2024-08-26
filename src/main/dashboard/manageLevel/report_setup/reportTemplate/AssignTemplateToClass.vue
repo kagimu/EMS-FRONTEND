@@ -41,15 +41,16 @@ const classList = ref([])
 
 const form = reactive({
   report_template_number:props.reportTemplateNumber,
-  campus_classes:[]
+  classes:[],
+  campus_number:campusNumber
 })
 
 const toggleClass = (selectedClass) => {
-    const index = form.campus_classes.indexOf(selectedClass);
+    const index = form.classes.indexOf(selectedClass);
     if (index === -1) {
-        form.campus_classes.push(selectedClass);
+        form.classes.push(selectedClass);
     } else {
-        form.campus_classes.splice(index, 1);
+        form.classes.splice(index, 1);
     }
 }
 
@@ -155,7 +156,7 @@ watch(
     <div class="row">
             <div class="col-lg-2 mr-2" style="width: 5px;">
                 <input
-            v-model="form.campus_classes"
+            v-model="form.classes"
             style="outline: none 0 !important; box-shadow: none;width: 20px;height: 20px;"
             class="form-check-input form-control mr-2" type="checkbox" :value="list.number" :id="list.number"
             >

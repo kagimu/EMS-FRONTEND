@@ -13,6 +13,10 @@
    import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js"
    import useCommonsStore from "@/composables/useCommons.js";
    import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+   import {useStudyModeStore} from "@/main/settings/mode-of-study/store/studyMode.js";
+
+const modeStudyStore = useStudyModeStore()
+const modeOfSchoolData = ref([])
    
    
    const commons = useCommonsStore()
@@ -63,8 +67,17 @@
            schoolStore.fetchSchools()
            enrolmentStore.fetchCheckListItems(props.adm)
            getStudentInfoData()
+           getModeOfStudyInfo()
+
        }
    )
+
+   const getModeOfStudyInfo = () =>{
+  let data = {
+    school_number:form.school_number,
+  }
+  modeStudyStore.fetchModeOfStudy(data)
+}
 
    const getStudentInfoData = () => {
       let draftData = props.admissionData
@@ -112,7 +125,8 @@
      enrollment_date:null,
      academic_year_number:null,
      status:"active",
-     feeding_group_number:""
+     feeding_group_number:"",
+     mode_of_study_number:""
      })
         
    
@@ -175,6 +189,7 @@
      const fetchCampuses = (school_number) => {
        campusStore.fetchCampuses(school_number)
        cateringStore.fetchFeedingGroup(school_number)
+       getModeOfStudyInfo()
    }
    
    const fetchClasses = (campus_number) => {
@@ -284,6 +299,14 @@
        },
        {deep: true}
    )
+
+   watch(
+    () => modeStudyStore.modeOfStudyInfoResponse,
+    async (data) => {
+      modeOfSchoolData.value = data.data
+    },
+    {deep: true}
+)
      
 </script>
 <template>
@@ -336,6 +359,20 @@
                      </option>
                   </select>
                </div>
+
+                   <!-- {{ modeOfSchoolData }} -->
+          <div class="mb-2">
+              <label class="textColor"><small>Mode Of Study</small>  <span class="star">*</span></label>
+              <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm"
+                      v-model="form.mode_of_study_number" required
+              >
+                  <option disabled value="">Select Mode Of Study</option>
+                  <option v-for="(list, index) in modeOfSchoolData" :key="index" :value="list.mode_of_study_number">{{ list.name }}
+                  </option>
+              </select>
+          </div>
                <div class="mb-2">
                   <label class="textColor"><small>Stream</small> </label>
                   <select

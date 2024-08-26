@@ -280,7 +280,6 @@ async function fetchAssessmentMetrics(data) {
     let  page = data?.page ?? ""
     let  per_page =  data?.per_page ?? ""
     let  class_number =   data?.class_number ?? ""
-      let  campus_class_number =   data?.class_number ?? ""
     let  campus_number =   data?.campus_number ?? ""
     let  academic_year_number  =  data?.academic_year_number ?? ""
     let  study_period_number =  data?.study_period_number ?? ""
@@ -293,7 +292,6 @@ async function fetchAssessmentMetrics(data) {
             "&per_page="+per_page+
             "&assessment_area_number="+assessment_area_number+
             "&class_number="+class_number+
-            "&campus_class_number="+campus_class_number+
             "&academic_year_number="+academic_year_number+
             "&metric_number="+metric_number+
             "&campus_number="+campus_number+
