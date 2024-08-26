@@ -93,6 +93,8 @@ const getInterviewDetails = () =>{
       if(props.interviewListData.interview_number){
         formData.interview_number = props.interviewListData.interview_number
         // alert(JSON.stringify(formData))
+        formData.class_number = formData.campus_class_number
+        formData.campus_number = campus_number.value
        applicationStore.updateInterview(formData)
       }else{
         applicationStore.createNewInterview(formData)
@@ -101,7 +103,12 @@ const getInterviewDetails = () =>{
     }
 
   const doFetchAssessmentMetrics = (campus_class_number) => {
-    assessmentStore.fetchAssessmentMetrics({campus_class_number:campus_class_number})
+    assessmentStore.fetchAssessmentMetrics(
+      {
+        class_number:campus_class_number,
+        campus_number:campus_number.value
+      })
+
   }
 
 
@@ -375,7 +382,7 @@ watch (
             >
           <option disabled value="">-filter by class-</option>
           <template v-for="(classItem, index) in classList" :key="index">
-          <option v-for="(classDetail, indx) in classItem.classes" :key="indx" :value="classDetail.number">
+          <option v-for="(classDetail, indx) in classItem.classes" :key="indx" :value="classDetail.class_number">
           {{ classDetail.name }}
           </option>
           </template>
@@ -410,7 +417,9 @@ watch (
             <li class="list-group-item" v-for="(lvl,idx) in assessmentMetricList">
               <input
                   v-model="formData.assessment_metrics"
-                  class="form-check-input me-1 shadow-none" type="checkbox" :value="lvl.number" :id="idx">
+                  class="form-check-input me-1 shadow-none" type="checkbox" :value="lvl.number" :id="idx"
+                  style="outline: none 0 !important; box-shadow: none;width: 20px;height: 20px;"
+                  >
               <label class="form-check-label cursor-pointer" :for="idx">{{lvl.metric_name}} ({{ lvl.description }})</label>
             </li>
 
