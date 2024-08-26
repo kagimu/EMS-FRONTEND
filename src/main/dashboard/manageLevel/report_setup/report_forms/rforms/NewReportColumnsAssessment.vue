@@ -36,7 +36,7 @@ const campusLevelList = ref(null)
 const campus_level_number = ref("")
 const academic_year_number = ref("")
 const study_period_number = ref("")
-const campus_class_number = ref("")
+const class_number = ref("")
 const report_setting_number = ref("")
 const campusClassList = ref([])
 const reportSettingsList = ref([])
@@ -72,10 +72,11 @@ const fetchStudyPeriod = (academic_num) =>{
 const fetchAssessmentMetrics = () =>{
   if(study_period_number.value && assessment_area_number) {
     let data = {
-      campus_class_number:campus_class_number.value,
+      class_number:class_number.value,
       academic_year_number:academic_year_number.value,
       study_period_number:study_period_number.value,
-      assessment_area_number:form.assessment_area_number
+      assessment_area_number:form.assessment_area_number,
+      campus_number:campusNumber
     }
     assessmentStore.fetchAssessmentMetrics(data)
   }
@@ -117,12 +118,12 @@ const addReportColumnAssessment = () => {
   reportSetupStore.newReportColumnAssessment(form)
 }
 
-const fetchAssessmentArea = (campus_class_number) =>{
+const fetchAssessmentArea = (class_number) =>{
 
-   doFetchReportSettings(campus_class_number)
+   doFetchReportSettings(class_number)
   let data = {
     curriculum_number:curriculumNumberParent,
-    class_number:campus_class_number
+    class_number:class_number
   }
   assessmentStore.fetchAssessmentArea(data)
 
@@ -130,7 +131,7 @@ const fetchAssessmentArea = (campus_class_number) =>{
       {
         campus_curriculum_number:campus_curriculum_number,
         academic_year_number:academic_year_number.value,
-        class_number:campus_class_number
+        class_number:class_number
       }
   )
 }
@@ -141,11 +142,12 @@ const doFetchReportColumns = () => {
  reportSetupStore.fetchReportColumn(report_setting_number.value)
 }
 
-const doFetchReportSettings = async (campus_class_number) => {
+const doFetchReportSettings = async (class_number) => {
   let data = {
     academic_year_number:"",
     study_period_number:"",
-    campus_class_number:campus_class_number
+    campus_number:campusNumber,
+    class_number:class_number
   }
   await reportSetupStore.fetchReportSettings(data)
 }
@@ -326,8 +328,8 @@ watch(
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm" required
-            v-model="campus_class_number"
-            @change="fetchAssessmentArea(campus_class_number)"
+            v-model="class_number"
+            @change="fetchAssessmentArea(class_number)"
         >
           <option disabled value="">--Select Class--</option>
           <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.name+" [ "+list.abbreviation+" ]"}}</option>

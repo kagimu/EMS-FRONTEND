@@ -7,9 +7,12 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import api from "@/config/api.js";
 import {useRouter} from "vue-router";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
+import {useStudyModeStore} from "@/main/settings/mode-of-study/store/studyMode.js";
+
+
 const assessmentStore = useAssessmentStore()
-
-
+const modeStudyStore = useStudyModeStore()
+const modeOfSchoolData = ref([])
 // const routerData = useRouter()
 // let  applicationNumber = routerData.currentRoute.value.query.applicationId
 
@@ -39,16 +42,32 @@ const form = reactive({
   source_of_school_info: null,
   application_number: applicationId.value,
   campus_class_number: null,
-  learner_number:null
+  learner_number:null,
+   mode_of_study_number:""
 })
 
 onMounted(() => {
       schoolStore.fetchSchools(entity_number)
 
-     /* if(applicationNumber !==""){
-        applicationStore.fetchApplicationById(applicationNumber)
-      }*/
+      getModeOfStudyInfo()
     }
+)
+
+
+const getModeOfStudyInfo = () =>{
+  let data = {
+    school_number:form.school_number,
+  }
+  modeStudyStore.fetchModeOfStudy(data)
+}
+
+
+watch(
+    () => modeStudyStore.modeOfStudyInfoResponse,
+    async (data) => {
+      modeOfSchoolData.value = data.data
+    },
+    {deep: true}
 )
 
 const goBack = () =>{
@@ -57,6 +76,7 @@ const goBack = () =>{
 
 const fetchCampuses = (school_number) => {
   campusStore.fetchCampuses(school_number)
+  getModeOfStudyInfo()
 }
 
 const fetchClasses = (campus_number) => {
@@ -294,6 +314,20 @@ watch (
               >
                   <option disabled value="">Select class</option>
                   <option v-for="(list, index) in classList" :key="index" :value="list.number">{{ list.class_name }}
+                  </option>
+              </select>
+          </div>
+
+          <!-- {{ modeOfSchoolData }} -->
+          <div class="mb-2">
+              <label class="textColor"><small>Mode Of Study</small>  <span class="star">*</span></label>
+              <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm"
+                      v-model="form.mode_of_study_number" required
+              >
+                  <option disabled value="">Select Mode Of Study</option>
+                  <option v-for="(list, index) in modeOfSchoolData" :key="index" :value="list.mode_of_study_number">{{ list.name }}
                   </option>
               </select>
           </div>

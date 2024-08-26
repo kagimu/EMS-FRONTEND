@@ -69,7 +69,7 @@ const addComments = () => {
     loader.value = true
 //  alert(JSON.stringify(form))
 if(props.headTeacherCommentList){
-alert("Halleluhah")
+// alert("Halleluhah")
 }else{
 let formData = {
 min_aggregate : parseInt(form.min_aggregate),
@@ -85,9 +85,10 @@ const doFetchReportSettings = async () => {
   let data = {
      academic_year_number:academic_year_number.value,
      study_period_number:study_period_number.value,
-     campus_class_number:campus_class_number.value
+     campus_number:campusNumber,
+     class_number:campus_class_number.value
   }
-   await reportSetupStore.fetchReportSettings(data)
+    reportSetupStore.fetchReportSettings(data)
  }
 
 const fetchCampusLevel = () => {
@@ -107,10 +108,10 @@ const fetchAcademicYear = (campus_level_number) => {
 }
 
 
-const fetchStudyPeriod = (academic_num) =>{
-  studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
-  doFetchReportSettings()
-}
+// const fetchStudyPeriod = (academic_num) =>{
+//   studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
+//   doFetchReportSettings()
+// }
 
 
 
