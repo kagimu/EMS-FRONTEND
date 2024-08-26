@@ -32,13 +32,14 @@ const campusCurriculumDataInfo = ref(null)
 const campus_level_number = ref("")
 const academic_year_number = ref("")
 const study_period_number = ref("")
-const campus_class_number = ref("")
+const class_number = ref("")
 const assessment_area_number = ref("")
 const campusLevelList = ref(null)
 const academicYearList = ref(null)
 const studyPeriodList = ref([])
 const campusClassList = ref(null)
 const schoolN = routerData.currentRoute.value.query.sch
+const campusNumber = routerData.currentRoute.value.query.id
 
 
 
@@ -93,14 +94,14 @@ watch(
 
 
 
-const fetchAssessmentAreaAndStudyPeriod = (campus_class_number) =>{
-  // if(campus_class_number) {
-  //   assessmentStore.fetchAssessmentArea(campus_class_number)
+const fetchAssessmentAreaAndStudyPeriod = (class_number) =>{
+  // if(class_number) {
+  //   assessmentStore.fetchAssessmentArea(class_number)
   // }
 
   let data = {
     curriculum_number:curriculumNumberParent,
-    class_number:campus_class_number
+    class_number:class_number
   }
   assessmentStore.fetchAssessmentArea(data)
   
@@ -109,7 +110,7 @@ const fetchAssessmentAreaAndStudyPeriod = (campus_class_number) =>{
       {
         campus_curriculum_number:campus_curriculum_number,
         academic_year_number:academic_year_number.value,
-        class_number:campus_class_number
+        class_number:class_number
       }
   )
 
@@ -118,12 +119,14 @@ const fetchAssessmentAreaAndStudyPeriod = (campus_class_number) =>{
 const fetchAssessmentMetrics = () =>{
   if(study_period_number.value && assessment_area_number.value) {
 
-    let result = campusClassList.value?.find(item => item.curriculum_class_number === campus_class_number.value);
+    let result = campusClassList.value?.find(item => item.curriculum_class_number === class_number.value);
 
     let data = {
       study_period_number:study_period_number.value,
       assessment_area_number:assessment_area_number.value,
-      campus_class_number:campus_class_number.value
+      class_number:class_number.value,
+      campus_number:campusNumber
+
     }
      assessmentStore.fetchAssessmentMetrics(data)
   }
@@ -301,8 +304,8 @@ watch(
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm" required
-            v-model="campus_class_number"
-            @change="fetchAssessmentAreaAndStudyPeriod(campus_class_number)"
+            v-model="class_number"
+            @change="fetchAssessmentAreaAndStudyPeriod(class_number)"
 
         >
           <option disabled value="">Select</option>
@@ -351,7 +354,11 @@ watch(
               v-model="assessmentMetricNumber"
               @click="fetchStudents(assessmentMetricNumber)">
             <option class="text-[13px]" disabled value="">--Select Assessment Schedule--</option>
-            <option class="text-[13px]" v-for="(list, index) in metricListData" :key="index" :value="list.number">{{list.metric_name}}</option>
+        
+            <option class="text-[13px]" v-for="(list, index) in metricListData" :key="index" :value="list.number">
+              <!-- {{list.metric_name}} -->
+              {{list.description + " [ " +list.metric_name + " ] " + " ( "+ list.assessment_area +" ) "}}
+            </option>
           </select>
         </div>
       </div>

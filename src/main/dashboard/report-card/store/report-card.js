@@ -12,7 +12,7 @@ export const useReportCardStore = defineStore("ReportCard", () => {
 
 
     async function fetchGeneratedReport(data) {
-        return await api.get("main/report-settings/report-settings-by-student?study_period_number="+data.study_period_number+"&campus_class_number="+data.campus_class_number)
+        return await api.get("main/report-settings/report-settings-by-student?study_period_number="+data.study_period_number+"&class_number="+data.class_number+"&campus_number="+data.campus_number)
             .then((response) => {
                 reportGeneratedReportResponse.value = response.data
             })
@@ -25,7 +25,7 @@ export const useReportCardStore = defineStore("ReportCard", () => {
 
 
     async function fetchReportSummary(data) {
-        return await api.get("main/report-settings/report-summary?page="+data.page+"&per_page="+ data.per_page+"&student_number="+data.student_number+"&study_period_number="+data.study_period_number+"&campus_class_number="+data.campus_class_number+"&stream_number="+data.stream_number+"&grade="+data.grade)
+        return await api.get("main/report-settings/report-summary?page="+data.page+"&per_page="+ data.per_page+"&student_number="+data.student_number+"&study_period_number="+data.study_period_number+"&class_number="+data.class_number+"&stream_number="+data.stream_number+"&grade="+data.grade+"&campus_number="+data.campus_number)
             .then((response) => {
                 if(response && response.data) {
                     reportSummaryResponse.value = response.data

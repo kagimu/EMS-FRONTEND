@@ -14,6 +14,9 @@ import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/rep
 import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.js";
 import NewCommentFromTeacher from "@/main/dashboard/manageLevel/report_setup/comments/NewCommentFromTeacher.vue";
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
+
+const campusStore = useCampusStore()
 
 const reportStore = useReportCardStore()    
 const levelStore = useLevelStore()
@@ -24,14 +27,15 @@ const teacherCommentStore = useTeacherCommentStore()
 const routerData = useRouter()
 const showStudentsMarks = ref(false)
 const reportSummaryNumber = ref("")
-
+const schoolN = routerData.currentRoute.value.query.sch
+const campusNumber = routerData.currentRoute.value.query.id
 
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const campusCurriculumDataInfo = ref(null)
 const campus_level_number = ref("")
 const academic_year_number = ref("")
 const study_period_number = ref("")
-const campus_class_number = ref("")
+const class_number = ref("")
 const campusLevelList = ref(null)
 const academicYearList = ref(null)
 const studyPeriodList = ref(null)
@@ -72,12 +76,24 @@ const doFilterReportSummary = () =>{
     per_page: per_page.value,
     student_number: "",
     study_period_number: study_period_number.value,
-    campus_class_number: campus_class_number.value,
+    class_number: class_number.value,
+    campus_number:campusNumber,
     stream_number: "",
     grade: "",
   }
 
   reportStore.fetchReportSummary(options)
+
+
+  //get studyPeriod
+  studyPeriodStore.fetchStudyPeriod(
+      {
+        campus_curriculum_number:campus_curriculum_number,
+        academic_year_number:academic_year_number.value,
+        class_number:class_number.value
+      } 
+    )
+
 }
 
 
@@ -90,7 +106,7 @@ function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
     per_page: per_page.value,
     student_number: "",
     study_period_number: study_period_number.value,
-    campus_class_number: campus_class_number.value,
+    class_number: class_number.value,
     stream_number: "",
     grade: "",
   }
@@ -103,16 +119,26 @@ function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
 
 const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
+  
 }
 
 const fetchAcademicYea = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
-  academicYearStore.fetchCampusClassByLevel(campus_level_number)
+  // academicYearStore.fetchCampusClassByLevel(campus_level_number)
+
+
+  let data = {
+    school_number:schoolN,
+    campus_level_number:campus_level_number
+  }
+  campusStore.fetchClassesBySchool(data)
 }
 
-const fetchStudyPeriod = (academic_num) =>{
-  studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
-}
+// const fetchStudyPeriod = (academic_num) =>{
+//   studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
+
+
+// }
 
 
 watch(
@@ -146,8 +172,17 @@ watch(
 )
 
 
+// watch(
+//     () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+//     async (data) => {
+//       if(data){
+//         studyPeriodList.value = data.data
+//       }
+//     }
+// )
+
 watch(
-    () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+    () => studyPeriodStore.studyPeriodResponse,
     async (data) => {
       if(data){
         studyPeriodList.value = data.data
@@ -155,14 +190,25 @@ watch(
     }
 )
 
+// watch(
+//     () => academicYearStore.campusClassByLevelResponse,
+//     async (data) => {
+//       if(data){
+//         campusClassList.value = data.data
+//       }
+//     }
+// )
+
 watch(
-    () => academicYearStore.campusClassByLevelResponse,
+    () => campusStore.schoolClassesResponse,
     async (data) => {
       if(data){
         campusClassList.value = data.data
       }
     }
 )
+
+
 
 
 const filterSummaryReport = (data) => {
@@ -267,12 +313,25 @@ watch(
           style="box-shadow: none;"
           class="form-select form-select-sm"
           v-model="academic_year_number"
-          @change="fetchStudyPeriod(academic_year_number)"
       >
         <option disabled value="">--Select Academic Year--</option>
         <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
           {{list.code+". "+list.academic_year_name}}
         </option>
+      </select>
+    </div>
+
+    <div class="col-3">
+      <label class="textColor"><small>Class</small>
+      </label>
+      <select
+          style="box-shadow: none;"
+          class="form-select form-select-sm" required
+          v-model="class_number"
+          @change="doFilterReportSummary()"
+      >
+        <option disabled value="">Select</option>
+        <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.name+" [ "+list.abbreviation+" ]"}}</option>
       </select>
     </div>
 
@@ -286,23 +345,10 @@ watch(
           @change="doFilterReportSummary"
       >
         <option disabled value="">Select</option>
-        <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
-
+        <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
       </select>
     </div>
-    <div class="col-3">
-      <label class="textColor"><small>Class</small>
-      </label>
-      <select
-          style="box-shadow: none;"
-          class="form-select form-select-sm" required
-          v-model="campus_class_number"
-          @change="doFilterReportSummary"
-      >
-        <option disabled value="">Select</option>
-        <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
-      </select>
-    </div>
+  
                </div>
             </div>
          </div>

@@ -21,11 +21,12 @@ const routerData = useRouter()
 
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const schoolN = routerData.currentRoute.value.query.sch
+const campusNumber = routerData.currentRoute.value.query.id
 const campusCurriculumDataInfo = ref(null)
 const campus_level_number = ref("")
 const academic_year_number = ref("")
 const study_period_number = ref("")
-const campus_class_number = ref("")
+const class_number = ref("")
 const campusLevelList = ref(null)
 const academicYearList = ref(null)
 const studyPeriodList = ref(null)
@@ -35,40 +36,42 @@ const loader = ref(undefined)
 
 onMounted(
     async () => {
-      await filterGeneratedReport()
-      await fetchCampusLevel()
+      //  filterGeneratedReport()
+      fetchCampusLevel()
     }
 )
 
 
-const filterGeneratedReport = () => {
-  if(study_period_number.value && campus_class_number.value) {
+const filterGeneratedReport = (cla) => {
+alert(cla)
     let data = {
       study_period_number: study_period_number.value,
-      campus_class_number: campus_class_number.value,
+      class_number: cla,
+      campus_number:campusNumber
     }
     reportStore.fetchGeneratedReport(data)
-  }
+  
 
   studyPeriodStore.fetchStudyPeriod(
       {
         campus_curriculum_number:campus_curriculum_number,
         academic_year_number:academic_year_number.value,
-        class_number:campus_class_number.value
+        class_number:class_number.value
       } 
     )
 
 
 }
 
-const filterGeneratedReportByPeriod = () => {
-  if(study_period_number.value && campus_class_number.value) {
+const filterGeneratedReportByPeriod = (studyperiodnumber) => {
+
     let data = {
-      study_period_number: study_period_number.value,
-      campus_class_number: campus_class_number.value,
+      study_period_number: studyperiodnumber,
+      class_number: class_number.value,
+      campus_number:campusNumber
     }
     reportStore.fetchGeneratedReport(data)
-  }
+  
 }
 
 
@@ -163,7 +166,7 @@ const doGenerate = (studentInfo) => {
   loader.value = studentInfo.enrollment_number
   let data = {
     study_period_number:study_period_number.value,
-    campus_class_number:studentInfo.campus_class_number,
+    class_number:studentInfo.class_number,
     student_number:studentInfo.student_number
   }
   reportStore.generateReport(data)
@@ -227,7 +230,6 @@ watch(
           style="box-shadow: none;"
           class="form-select form-select-sm"
           v-model="academic_year_number"
-          @change="fetchStudyPeriod(academic_year_number)"
       >
         <option disabled value="">--Select Class--</option>
         <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
@@ -242,8 +244,8 @@ watch(
       <select
           style="box-shadow: none;"
           class="form-select form-select-sm" required
-          v-model="campus_class_number"
-          @change="filterGeneratedReport"
+          v-model="class_number"
+          @change="filterGeneratedReport(class_number)"
       >
         <option disabled value="">Select</option>
         <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.name+" [ "+list.abbreviation+" ]"}}</option>
@@ -258,10 +260,10 @@ watch(
           style="box-shadow: none;"
           class="form-select form-select-sm" required
           v-model="study_period_number"
-          @change="filterGeneratedReportByPeriod"
+          @change="filterGeneratedReportByPeriod(study_period_number)"
       >
         <option disabled value="">Select</option>
-        <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
+        <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
 
       </select>
     </div>
