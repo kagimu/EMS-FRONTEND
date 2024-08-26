@@ -97,6 +97,8 @@ const getInterviewDetails = () =>{
         formData.campus_number = campus_number.value
        applicationStore.updateInterview(formData)
       }else{
+        formData.class_number = formData.campus_class_number
+        formData.campus_number = campus_number.value
         applicationStore.createNewInterview(formData)
       }
       
