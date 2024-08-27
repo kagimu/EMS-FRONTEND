@@ -41,7 +41,7 @@
   })
 
   
-  const fetchStudentOnInterview = (assNumber) => {
+  const fetchStudentOnInterviewDetails = (assNumber) => {
    let data = reactive({
       interview_number:interviewNumber,
       assessment_metric_number:assNumber
@@ -136,7 +136,7 @@
           <select
                  class="form-select form-select-sm shadow-none"  id="inputGroupSelect02" required
                  v-model="form.assessment_number"
-                 @change="fetchStudentOnInterview(form.assessment_number)"
+                 @change="fetchStudentOnInterviewDetails(form.assessment_number)"
                  >
                  <option disabled value=""> - Select Assessment Schedule- </option>
                  <option v-for="(assessment, index) in assessmentDataData" :key="index" :value="assessment.number">{{assessment.metric_name  }} - [{{ assessment.assessment_area }}]</option>

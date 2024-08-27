@@ -159,7 +159,7 @@ const modeOfSchoolData = ref([])
      ...ItemDataToSubmit
    })
    
-       alert(JSON.stringify(enrollmentData))
+      //  alert(JSON.stringify(enrollmentData))
        enrolmentStore.newEnrolment(enrollmentData)
      }
    
@@ -407,7 +407,7 @@ const modeOfSchoolData = ref([])
                      v-model="form.study_period_number"
                      >
                      <option disabled value="">Select</option>
-                     <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
+                     <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
                   </select>
                </div>
                <div class="mb-2">
