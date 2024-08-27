@@ -60,9 +60,10 @@ export const useAssessmentStore = defineStore("assessment", () => {
     }
 
     async function fetchAssessmentArea(data) {
+         let curriculum_class_number = data?.curriculum_class_number ?? ""
          let curriculum_number = data?.curriculum_number ?? ""
-         let class_number =   data?.class_number ?? ""
-        return await api.get("main/assessment-areas?class_number="+class_number+"&curriculum_number="+curriculum_number)
+         let level_number =   data?.level_number ?? ""
+        return await api.get("main/assessment-areas?level_number="+level_number+"&curriculum_number="+curriculum_number+"&curriculum_class_number="+curriculum_class_number)
             .then((response) => {
                assessmentAreaResponse.value = response.data
             })
