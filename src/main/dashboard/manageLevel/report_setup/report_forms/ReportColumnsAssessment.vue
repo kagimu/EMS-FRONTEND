@@ -12,10 +12,11 @@ import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/st
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
+
 const confirmationRef = ref(null);
 
-
-
+const campusStore = useCampusStore()
 const routerData = useRouter()
 const  notificationStore  = useNotificationStore()
 const reportSetupStore = useReportSetupStore()
@@ -23,8 +24,9 @@ const classStore = useClassesStore()
 const academicYearStore = useAcademicYearStore()
 const studyPeriodStore = useStudyPeriodStore()
 const assessmentStore= useAssessmentStore()
-
-
+const schoolN = routerData.currentRoute.value.query.sch
+let  curriculumNumberParent = routerData.currentRoute.value.query.cr
+const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 
 
@@ -37,20 +39,16 @@ const academicYearList = ref(null)
 const studyPeriodList = ref(null)
 const assessmentMetricList = ref(null)
 const interviewAssessmentListData = ref(null)
-
 const reportColumnList = ref([])
 const reportSettingsList = ref([])
-
-
 const campus_level_number  = ref("")
 const academic_year_number  = ref("")
 const study_period_number  = ref("")
-const campus_class_number  = ref("")
+const class_number  = ref("")
 const assessment_area_number  = ref("")
 const assessment_metric_number  = ref("")
 const report_setting_number  = ref("")
 const report_column_number  = ref("")
-
 
 
 onMounted(
@@ -63,11 +61,12 @@ const doFetchReportColumnAssessment = () => {
   let data = {
     academic_year_number:academic_year_number.value,
     study_period_number:study_period_number.value,
-    campus_class_number:campus_class_number.value,
+    class_number:class_number.value,
     assessment_area_number:assessment_area_number.value,
     assessment_metric_number:assessment_metric_number.value,
     report_setting_number:report_setting_number.value,
     report_column_number:report_column_number.value,
+    campus_number:campusNumber
 
   }
   reportSetupStore.fetchReportColumnAssessment(data)
@@ -86,7 +85,14 @@ const addReportColumn = () => {
 
 const fetchAcademicYear = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
-  academicYearStore.fetchCampusClassByLevel(campus_level_number)
+  // academicYearStore.fetchCampusClassByLevel(campus_level_number)
+
+  let data = {
+    school_number:schoolN,
+    campus_level_number:campus_level_number
+  }
+  campusStore.fetchClassesBySchool(data)
+
 }
 
 
@@ -101,7 +107,9 @@ const fetchAssessmentMetrics = () =>{
 
     let data = {
       study_period_number:study_period_number.value,
-      assessment_area_number:assessment_area_number.value
+      assessment_area_number:assessment_area_number.value,
+      class_number:class_number.value,
+      campus_number:campusNumber
     }
     assessmentStore.fetchAssessmentMetrics(data)
 
@@ -112,18 +120,31 @@ const fetchAssessmentMetrics = () =>{
 }
 
 
-const fetchAssessmentArea = (campus_class_number) =>{
-  if(campus_class_number) {
-    doFetchReportSettings(campus_class_number)
+const fetchAssessmentArea = (class_number) =>{
 
-    let curriculumClassNumber = campusClassList.value.find(list => list.number === campus_class_number).curriculum_class_number
-    assessmentStore.fetchAssessmentArea(curriculumClassNumber)
-
-
-    // fetch report column assessment
+    doFetchReportSettings(class_number)
     doFetchReportColumnAssessment()
-  }
+    // fetch report column assessment
+    // doFetchReportColumnAssessment()
+
+    let data = {
+ curriculum_number:curriculumNumberParent,
+ class_number:class_number
 }
+assessmentStore.fetchAssessmentArea(data)
+
+studyPeriodStore.fetchStudyPeriod(
+   {
+     campus_curriculum_number:campus_curriculum_number,
+     academic_year_number:academic_year_number.value,
+     class_number:class_number
+   } 
+  )
+  
+}
+
+
+
 
 const doFetchReportColumns = async () => {
   await reportSetupStore.fetchReportColumn(report_setting_number.value)
@@ -141,11 +162,13 @@ watch(
     }
 )
 
-const doFetchReportSettings = async (campus_class_number) => {
+const doFetchReportSettings = async (class_number) => {
   let data = {
     academic_year_number:"",
     study_period_number:"",
-    campus_class_number:campus_class_number
+    class_number:class_number,
+    campus_number:campusNumber
+
   }
   await reportSetupStore.fetchReportSettings(data)
 }
@@ -199,14 +222,24 @@ watch(
 )
 
 
+// watch(
+//     () => academicYearStore.campusClassByLevelResponse,
+//     async (data) => {
+//       if(data){
+//         campusClassList.value = data.data
+//       }
+//     }
+// )
+
 watch(
-    () => academicYearStore.campusClassByLevelResponse,
+    () => campusStore.schoolClassesResponse,
     async (data) => {
       if(data){
         campusClassList.value = data.data
       }
     }
 )
+
 
 watch(
     () => academicYearStore.academicYearByLevelResponse,
@@ -217,14 +250,24 @@ watch(
     }
 )
 
+// watch(
+//     () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+//     async (data) => {
+//       if(data){
+//         studyPeriodList.value = data.data
+//       }
+//     }
+// )
+
 watch(
-    () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+    () => studyPeriodStore.studyPeriodResponse,
     async (data) => {
       if(data){
         studyPeriodList.value = data.data
       }
     }
 )
+
 
 watch (
     () => assessmentStore.assessmentMetricsResponse,
@@ -297,17 +340,30 @@ if (agreed) {
             </select>
           </div>
 
+          <div class="mb-2">
+            <select
+                style="box-shadow: none;"
+                class="form-select form-select-sm"
+                v-model="academic_year_number"
+            >
+              <option disabled value="">--Filter by Academic Year--</option>
+              <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
+                {{list.code+". "+list.academic_year_name}}
+              </option>
+            </select>
+          </div>
+
+
 
           <div class="mb-2">
             <select
                 style="box-shadow: none;"
                 class="form-select form-select-sm" required
-                v-model="campus_class_number"
-                @change="fetchAssessmentArea(campus_class_number)"
+                v-model="class_number"
+                @change="fetchAssessmentArea(class_number)"
             >
               <option disabled value="">Filter by Class</option>
-              <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
-              <!--              <option v-for="(list, index) in campusClassList" :key="index" :value="list.curriculum_class_number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>-->
+              <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.name+" [ "+list.abbreviation+" ]"}}</option>
             </select>
           </div>
 
@@ -339,20 +395,7 @@ if (agreed) {
 
 
 
-          <div class="mb-2">
-            <select
-                style="box-shadow: none;"
-                class="form-select form-select-sm"
-                v-model="academic_year_number"
-                @change="fetchStudyPeriod(academic_year_number)"
-            >
-              <option disabled value="">--Filter by Academic Year--</option>
-              <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
-                {{list.code+". "+list.academic_year_name}}
-              </option>
-            </select>
-          </div>
-
+        
 
           <div class="mb-2">
             <select
@@ -391,7 +434,7 @@ if (agreed) {
                >
               <option disabled value="">--Filter by Assessment Schedule--</option>
               <option v-for="(list, index) in assessmentMetricList" :key="index" :value="list.number">
-                {{list.description + " [ " +list.name + " ] " + " ( "+ list.assessment_area_name +" ) "}}</option>
+               {{list.description + " [ " +list.metric_name + " ] " + " ( "+ list.assessment_area +" ) "}}</option>
             </select>
           </div>
 

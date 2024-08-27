@@ -427,7 +427,10 @@
                         <tr style="text-transform: capitalize;" v-for="(student, index) in interviewStudentList.students" :key="index">
                            <td>
                               <!-- <input v-if="student.status != 'ADMITTED'" type="checkbox"  v-model="selectedStudents[index]" class="checkbox-primary"> -->
-                              <input v-if="student.status != 'ADMITTED'" v-model="selectedStudentNumber" class="form-check-input me-1 shadow-none form-control" type="checkbox" :value="student.number" :id="student.number">
+                              <input v-if="student.status != 'ADMITTED'" v-model="selectedStudentNumber" 
+                              class="form-check-input me-1 shadow-none form-control" type="checkbox" 
+                              :value="student.number" :id="student.number"
+                              style="outline: none 0 !important; box-shadow: none;width: 20px;height: 20px;">
                            </td>
                            <td> 
                               {{student.student_surname ? student.student_surname : ""}}

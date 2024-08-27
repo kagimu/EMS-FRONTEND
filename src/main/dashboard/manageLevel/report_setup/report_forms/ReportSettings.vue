@@ -13,9 +13,10 @@ import SetReportColumns from "@/main/dashboard/manageLevel/report_setup/report_f
 import NewReportSettings from "@/main/dashboard/manageLevel/report_setup/report_forms/rforms/NewReportSettings.vue";
 import ViewReportColumns from "@/main/dashboard/manageLevel/report_setup/report_forms/ViewReportColumns.vue";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
 const confirmationRef = ref(null);
 
-
+const campusStore = useCampusStore()
 const routerData = useRouter()
 const notificationStore  = useNotificationStore()
 const reportSetupStore = useReportSetupStore()
@@ -25,8 +26,9 @@ const academicYearStore = useAcademicYearStore()
 
 
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
+const schoolN = routerData.currentRoute.value.query.sch
 
-
+const campusNumber = routerData.currentRoute.value.query.id
 
 
 const reportSettingsList = ref(null)
@@ -70,9 +72,22 @@ onMounted(
   let data = {
      academic_year_number:academic_year_number.value,
      study_period_number:study_period_number.value,
-     campus_class_number:campus_class_number.value
+     class_number:campus_class_number.value,
+     campus_number:campusNumber
   }
    await reportSetupStore.fetchReportSettings(data)
+
+
+   studyPeriodStore.fetchStudyPeriod(
+      {
+        campus_curriculum_number:campus_curriculum_number,
+        academic_year_number:academic_year_number.value,
+        class_number:campus_class_number.value
+      }
+  )
+
+  
+
  }
 
  const addReportSettings = () => {
@@ -124,14 +139,21 @@ const fetchCampusLevel = () => {
 
 const fetchAcademicYear = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
-  academicYearStore.fetchCampusClassByLevel(campus_level_number)
+  // academicYearStore.fetchCampusClassByLevel(campus_level_number)
+
+  let data = {
+    school_number:schoolN,
+    campus_level_number:campus_level_number
+  }
+  campusStore.fetchClassesBySchool(data)
+
 }
 
 
-const fetchStudyPeriod = (academic_num) =>{
-  studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
-  doFetchReportSettings()
-}
+// const fetchAcademicYear = (academic_num) =>{
+//   studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
+//   doFetchReportSettings()
+// }
 
 
 
@@ -155,8 +177,17 @@ watch(
 )
 
 
+// watch(
+//     () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+//     async (data) => {
+//       if(data){
+//         studyPeriodList.value = data.data
+//       }
+//     }
+// )
+
 watch(
-    () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+    () => studyPeriodStore.studyPeriodResponse,
     async (data) => {
       if(data){
         studyPeriodList.value = data.data
@@ -165,13 +196,22 @@ watch(
 )
 
 watch(
-    () => academicYearStore.campusClassByLevelResponse,
+    () => campusStore.schoolClassesResponse,
     async (data) => {
       if(data){
         campusClassList.value = data.data
       }
     }
 )
+
+// watch(
+//     () => academicYearStore.campusClassByLevelResponse,
+//     async (data) => {
+//       if(data){
+//         campusClassList.value = data.data
+//       }
+//     }
+// )
 
 
 // -------
@@ -253,20 +293,8 @@ watch(
 
           <div class="mb-2">
             <select
-                class="form-select form-select-sm shadow-none" required
-                v-model="campus_class_number"
-                @change="doFetchReportSettings()"
-            >
-              <option disabled value="">--Filter by Class--</option>
-              <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
-            </select>
-          </div>
-
-          <div class="mb-2">
-            <select
                 class="form-select form-select-sm shadow-none"
                 v-model="academic_year_number"
-                @change="fetchStudyPeriod(academic_year_number)"
             >
               <option disabled value="">--Filter by Academic Year--</option>
               <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
@@ -274,6 +302,19 @@ watch(
               </option>
             </select>
           </div>
+
+          <div class="mb-2">
+            <select
+                class="form-select form-select-sm shadow-none" required
+                v-model="campus_class_number"
+                @change="doFetchReportSettings()"
+            >
+              <option disabled value="">--Filter by Class--</option>
+              <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.name+" [ "+list.abbreviation+" ]"}}</option>
+            </select>
+          </div>
+
+       
 
 
           <div class="mb-2">

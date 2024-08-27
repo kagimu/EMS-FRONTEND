@@ -14,8 +14,8 @@
   const commons = useCommonsStore()
   const studentsList = ref(null)
   const showingModal = ref(false)
-  const assessmentNumber = ref("")
-  const interviewStudentListData = ref( [])
+  const assessment_numberumber = ref("")
+  const interviewStudentList = ref( [])
   const assessmentStore = useAssessmentStore()
   const studentApplicationStore = useStudentApplicationStore()
   const routerData = useRouter()
@@ -37,17 +37,11 @@
   }  
 
   const form = reactive({
-   assessmentN : ""
+   assessment_number : ""
   })
 
-  onMounted(
-    () => {
-      studentApplicationStore.fetchAssessmentMetricsOnInterview(interviewNumber)
-    }
-)
-
   
-  const fetchStudentOnInterview = (assNumber) =>{
+  const fetchStudentOnInterviewDetails = (assNumber) => {
    let data = reactive({
       interview_number:interviewNumber,
       assessment_metric_number:assNumber
@@ -61,7 +55,6 @@
       async (data) => {
         if(data){
           assessmentDataData.value = data.data
-         
         }
       },
       {deep:true}
@@ -73,17 +66,16 @@
       async (data) => {
         if(data){
          errM.value = false
-          interviewStudentListData.value = data.data
+          interviewStudentList.value = data.data
         }
-      },
-      {deep:true}
+      }
   )
   
 
   const submitMarks = (a,b,c) =>{
       buttonLoader.value=true
       let formDat = reactive({
-      assessment_metric_number:form.assessmentN,
+      assessment_metric_number:form.assessment_number,
       comment:b,
       student_number:c,
       assessment_date:null,
@@ -143,8 +135,8 @@
             <div class="input-group mt-1">
           <select
                  class="form-select form-select-sm shadow-none"  id="inputGroupSelect02" required
-                 v-model="form.assessmentN"
-                 @change="fetchStudentOnInterview(form.assessmentN)"
+                 v-model="form.assessment_number"
+                 @change="fetchStudentOnInterviewDetails(form.assessment_number)"
                  >
                  <option disabled value=""> - Select Assessment Schedule- </option>
                  <option v-for="(assessment, index) in assessmentDataData" :key="index" :value="assessment.number">{{assessment.metric_name  }} - [{{ assessment.assessment_area }}]</option>
@@ -181,8 +173,7 @@
            </tr>
         </thead>
         <tbody>
-           <tr v-for="(std,index) in interviewStudentListData.students" :key="index" >
-            <!-- {{ interviewStudentListData.students }} -->
+           <tr v-for="(std,index) in interviewStudentList.students" :key="index" >
               <td style="text-transform: capitalize;">
                  {{std.student_surname +" " +std.student_second_name + " "+ std.student_other_name}}
               </td>

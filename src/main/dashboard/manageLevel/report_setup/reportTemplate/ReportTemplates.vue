@@ -179,7 +179,7 @@ if (agreed) {
             <td>
                 <ol>
                     <b><i
-                    style="font-size: 10px;"
+                    style="font-size: 14px;"
                     class="bi-plus-circle cursor-pointer link-primary" @click="assignClass(repoData.report_template_id)"></i></b> 
            
                       <ReportTemplateClasses :reportTemplateId="repoData.report_template_id"  :school_number="schoolNumber"></ReportTemplateClasses>
@@ -191,10 +191,10 @@ if (agreed) {
             <td>
              <div>
                 <i
-                    style="font-size: 13px;"
+                    style="font-size: 14px;"
                     class="bi-pencil mr-2 cursor-pointer " @click="editReportTemplate(repoData,repoData.name)"></i> &nbsp;
                 <i
-                    style="font-size: 13px;" class="bi-trash cursor-pointer" @click="deleteThisData(repoData.number,repoData.name)"></i>
+                    style="font-size: 14px;" class="bi-trash cursor-pointer" @click="deleteThisData(repoData.number,repoData.name)"></i>
               </div>
             </td>
           </tr>

@@ -279,19 +279,22 @@ async function updateAssessmentMetrics(data) {
 async function fetchAssessmentMetrics(data) {
     let  page = data?.page ?? ""
     let  per_page =  data?.per_page ?? ""
-    let  campus_class_number =   data?.campus_class_number ?? ""
+    let  class_number =   data?.class_number ?? ""
+    let  campus_number =   data?.campus_number ?? ""
     let  academic_year_number  =  data?.academic_year_number ?? ""
     let  study_period_number =  data?.study_period_number ?? ""
     let  metric_number =  data?.metric_number ?? ""
     let  assessment_area_number  =  data?.assessment_area_number ?? ""
     let  paginated  =  data?.paginated ?? "no"
+
     return await api.get("main/assessments/assessment-metrics?study_period_number="+study_period_number+
             "&page="+page+
             "&per_page="+per_page+
             "&assessment_area_number="+assessment_area_number+
-            "&campus_class_number="+campus_class_number+
+            "&class_number="+class_number+
             "&academic_year_number="+academic_year_number+
             "&metric_number="+metric_number+
+            "&campus_number="+campus_number+
             "&paginated="+paginated
         )
         .then((response) => {
