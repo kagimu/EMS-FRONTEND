@@ -9,6 +9,7 @@ import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/stor
 import useNotificationStore from "@/composables/useNotification.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useRouter} from "vue-router";
+import ComboBox from "@/components/ComboBox.vue";
 
 
 const academicYearStore = useAcademicYearStore()
@@ -103,7 +104,15 @@ watch(
     () => campusStore.schoolClassesResponse,
     async (data) => {
       if(data){
-        campusClassList.value = data.data
+        let dataInfo = data?.data
+        if(dataInfo && (dataInfo?.length > 0)){
+          let arr = []
+          dataInfo.forEach(item => {
+            arr.push({text:item?.name+" [ "+item?.abbreviation+" ]" , value:item?.number})
+          })
+          campusClassList.value = arr
+        }
+
       }
     }
 )
@@ -232,13 +241,6 @@ watch(
       </div>
 
 
-
-
-
-
-
-
-
       <div class="grid grid-cols-2 gap-2 mb-2">
         <div>
           <label class="textColor"><small>Study Period Start Date</small></label>
@@ -294,19 +296,14 @@ watch(
       
 
 
-
-
       <div class="mb-2">
         <label class="textColor"><small>Class</small></label>
-        <select
-            multiple
-            class="form-select form-select-sm shadow-none" required
-            v-model="form.classes">
-          <option disabled :value=null>--Select Class--</option>
-          <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
-        </select>
+        <combo-box
+            v-model:optionResponse="form.classes"
+            :optionList="campusClassList"
+            :optionDraft="form?.classes"
+        ></combo-box>
       </div>
-
 
 
 
