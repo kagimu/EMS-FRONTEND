@@ -101,7 +101,8 @@ export const useTimetableStore = defineStore("timetable", () => {
     }
 
     async function fetchTimetables(){
-        return await api.get("main/timetable/all-study-timetables").then((response)=>{
+        return await api.get("main/timetable/all-study-timetables")
+            .then((response)=>{
             studyTimetables.value = response.data
         }).catch((error) => {
             if(error && error.response){

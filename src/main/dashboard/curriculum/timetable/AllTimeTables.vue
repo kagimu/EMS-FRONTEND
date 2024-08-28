@@ -3,8 +3,6 @@
 import {onMounted, ref, watch} from "vue";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import useNotificationStore from "@/composables/useNotification.js";
-import NewCampus from "@/main/dashboard/manageCampus/NewCampus.vue";
-import {useRouter} from "vue-router";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useTimetableStore} from "@/main/dashboard/curriculum/timetable/store/timetable.js";
 import NewTimetable from "@/main/dashboard/curriculum/timetable/NewTimetable.vue";
@@ -12,6 +10,7 @@ import NewTimetable from "@/main/dashboard/curriculum/timetable/NewTimetable.vue
 
 
 import { useAbility } from '@casl/vue';
+import AppModal from "@/components/AppModal.vue";
 
 const { can } = useAbility()
 
@@ -21,7 +20,7 @@ const timetableStore = useTimetableStore()
 const  notificationStore  = useNotificationStore()
 
 const campusDialog = ref( false)
-const campusEditMode = ref( false)
+const editMode = ref( false)
 const campusList = ref( [])
 const timetableList = ref( [])
 const schoolsList = ref( [])
@@ -29,14 +28,14 @@ const school = ref( "")
 
 
 const addTimetable = () => {
-  campusEditMode.value = false
+  editMode.value = false
   campusDialog.value = true
 }
 
 
 const editCampus = (campus) => {
   if(campus) {
-    campusEditMode.value = true
+    editMode.value = true
     campusDialog.value = true
     campusStore.fetchCampusData(campus.number)
   }
@@ -75,8 +74,7 @@ watch(
       if(data){
         campusDialog.value = false
         notificationStore.successToast("Success", data.message)
-        // await campusStore.fetchCampuses(routerData.currentRoute.value.query.id)
-        await fetchCampusInfo(school.value)
+        fetchCampusInfo(school.value)
       }
     },
     {deep:true}
@@ -133,30 +131,27 @@ watch(
     {deep:true}
 )
 
+watch(
+    () => timetableStore.newTimetableResponse,
+    async (data) => {
+      if (data) {
+        campusDialog.value = false
+        await timetableStore.fetchTimetables()
+        notificationStore.successToast("Success",data.message)
+      }
+    }
+)
 
 
 </script>
 <template>
     <div>
 
+      <AppModal :title="editMode ? 'Edit Study Timetable' : 'New Study Timetable'" v-model="campusDialog" xl2>
+        <new-timetable></new-timetable>
+      </AppModal>
 
 
-        <div class="modal fade" id="infoModal" tabindex="-1" :class="{ show: campusDialog }" aria-labelledby="" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header text-sm p-0">
-                        <h6 class="modal-title ml-3 mt-2 mb-2">{{campusEditMode ? "Edit Study Timetable" : "New Study Timetable"}} </h6>
-                        <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mt-2 mb-2">
-                            <new-timetable></new-timetable>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
 
 
 

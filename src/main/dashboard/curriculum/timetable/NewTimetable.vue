@@ -42,7 +42,6 @@ const school_number = ref("")
 const level_number = ref("")
 const campus_number = ref("")
 const academic_year_number = ref("")
-const study_period_number = ref("")
 
 
 
@@ -116,9 +115,9 @@ const fetchStreams = (class_number) => {
 
 const addStudyTimetable = () => {
   loader.value = true
-  form.study_period_number = study_period_number.value
   timetableStore.newTimetable(form)
 }
+
 
 
 onMounted(
@@ -139,17 +138,7 @@ watch(
     {deep: true}
 )
 
-watch(
-    () => timetableStore.newTimetableResponse,
-    async (data) => {
-      if (data) {
-        loader.value = false
-        notificationStore.successToast("Success",data.message)
-        await timetableStore.fetchTimetables(campus_number.value)
-      }
-    },
-    {deep: true}
-)
+
 watch(
     () => classStore.classStreams,
     async (data) => {
@@ -332,10 +321,10 @@ watch(
                 <select
                         style="box-shadow: none;"
                         class="form-select form-select-sm shadow-none"
-                        v-model="study_period_number"
+                        v-model="form.study_period_number"
                 >
                     <option disabled value="">--Select study period--</option>
-                    <option v-for="(list, index) in studyPeriodList" :key="index" :value="list.number">{{ list.study_period_name }}
+                    <option v-for="(list, index) in studyPeriodList" :key="index" :value="list.study_period_number">{{ list.study_period_name }}
                     </option>
                 </select>
             </div>
