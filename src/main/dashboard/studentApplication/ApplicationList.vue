@@ -12,6 +12,7 @@
   import AppModal from "@/components/AppModal.vue";
   import NewApplication from "@/main/dashboard/studentApplication/NewApplication.vue"
   import PaginationTemplate from "@/components/PaginationTemplate.vue";
+  import {useLevelStore} from "@/main/settings/level/store/level.js";
 
   const showingModal = ref(false)
   const showAppmodal = ref(false)
@@ -29,7 +30,6 @@
   const searchQuery = ref('')
   let shDialog = ref(false)
   const applications= ref(null)
-  
   const applicationStore= useApplicationStore()
   const  notificationStore  = useNotificationStore()
   
@@ -38,6 +38,7 @@
   const classList = ref([])
   const schoolStore = useSchoolStore()
   const campusStore = useCampusStore()
+  const levelStore = useLevelStore()
   const school_number = ref(null)
   const assessmentStore = useAssessmentStore()
   const academicYearStore = useAcademicYearStore()
@@ -50,7 +51,9 @@
   const per_page = ref(20)
   const total_items = ref(0)
   const total_rows = ref(0)
-  
+  const levelList = ref([])
+  const curriculumList = ref([])
+
   const form = reactive({
   academic_year: "",
   study_period_number: "",
@@ -60,7 +63,9 @@
   interview_number:"",
   statusData:"",
   school_number:"",
-  academic_year_number:""
+  academic_year_number:"",
+  curriculumNumber:"",
+  level:""
   })
   
   
@@ -93,7 +98,7 @@
     },
     {deep: true}
   )
-  
+
   const filterByStream = () => {
   }
   
@@ -401,6 +406,36 @@ watch (
                                                   </select>
                                                </div>
                                             </div>
+
+                                            <div class="col-3">
+                                            <div class="mb-2">
+                                                <select
+                                                style="box-shadow: none;"
+                                                class="form-select form-select-sm"
+                                                   v-model="form.curriculumNumber"  
+                                                   @change="fetchCampusLevel(form.curriculumNumber)"                                         
+                                                >
+                                                   <option disabled value="" >--Select Curriculum--</option>
+                                                   <option  v-for="(lvl, index) in curriculumList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+                                                </select>
+                                             </div>
+                                             </div> 
+
+                                             
+                                            <div class="col-3" >
+                                                <div class="mb-2">
+                                                   <select
+                                                   style="box-shadow: none;"
+                                                   class="form-select form-select-sm"
+                                                      v-model="form.level"
+                                                      @change="fetchLevelClasses(form.level)"
+                                                   >
+                                                      <option disabled value="">-Filter by level-</option>
+                                                      <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
+                                                   </select>
+                                                   
+                                                </div>
+                                                </div>
                                             <div class="col-3">
                                                <div class="mb-2">
                                                   <select
