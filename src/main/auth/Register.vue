@@ -115,7 +115,7 @@ watch(
                 <router-link  :to="{ name: 'login' }">
                   <button
                       style="background-color: #1d2b36;"
-                      type="submit"
+                      type="button"
                       class="btn btn-primary float-end">
                     Login
                   </button>

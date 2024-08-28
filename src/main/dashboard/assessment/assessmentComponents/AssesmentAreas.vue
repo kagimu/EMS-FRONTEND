@@ -40,7 +40,12 @@ const areaDialog = ref(false)
 
   const fetchAssessmentAreaInfo = () => {
   if(curriculum_class_number.value){
-     assessmentStore.fetchAssessmentArea(curriculum_class_number.value)
+    let data = {
+      curriculum_number:curriculumNumber,
+      curriculum_class_number:curriculum_class_number.value,
+      level_number:level.value
+    }
+     assessmentStore.fetchAssessmentArea(data)
     }
   }
 
@@ -119,9 +124,9 @@ const closeAreaDialog = () =>{
 
 
   const deleteThisData = (id,name) => {
-if(!confirm("Are you sure, you want to delete: " + name)){
-  return
-}
+    if(!confirm("Are you sure, you want to delete: " + name)){
+      return
+    }
 }
 
 const openEditModel = (num,name) =>{
@@ -144,18 +149,19 @@ const openEditModel = (num,name) =>{
     <div class="col-12">
               <div class="card">
                 <div class="card-header">
-           <div class="row">
-            <div class="col-lg-6 "> 
-            </div>
-            <div class="col-lg-6">
-              <button
-                  v-if="can('add_assessment_area','general')"
-                  style="float: right" type="button"
-                  class="btn btn-primary btn-sm float-end mb-2 mr-4"
-                  @click="showAreaDialog">
-                <b><i class="bi bi-plus"></i></b>
-                <small>Add Assessment Area</small>
-              </button>
+           <div class="flex flex-grow justify-between">
+
+              <div class="text-sm">Assessment Area</div>
+
+             <div>
+               <button
+                   v-if="can('add_assessment_area','general')"
+                   style="float: right" type="button"
+                   class="btn btn-primary btn-sm float-end mr-4"
+                   @click="showAreaDialog">
+                 <b><i class="bi bi-plus"></i></b>
+                 <small>Add Assessment Area</small>
+               </button>
             </div>
     
            </div>
