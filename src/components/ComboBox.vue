@@ -153,15 +153,14 @@ const removeItem = (idx:number) => {
           <div
               class="cursor-pointer p-2 hover:bg-gray-100 flex items-center"
               v-for="(item,idx) in filteredItems" :key="idx">
-            <div class="px-3">
+            <div class="px-3 flex">
             <input
                 v-model="selectedItems"
-                style="outline: none 0 !important; box-shadow: none;"
-                class="form-check-input me-1"
+                class="form-check-input shadow-none"
                 type="checkbox"
                 :value="item?.value"
                 :id="item?.value">
-            <label class="form-check-label cursor-pointer capitalize ml-3" :for="item?.value">{{item?.text}}</label>
+            <label class="form-check-label cursor-pointer capitalize ml-3 text-sm text-gray-600" :for="item?.value">{{item?.text}}</label>
             </div>
           </div>
       </div>
