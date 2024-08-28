@@ -12,7 +12,7 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 
 const campusList = ref([])
-const schoolList = ref([])
+const schoolList = ref("")
 const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
 const showingModal = ref(false)
@@ -32,6 +32,8 @@ const classList  = ref(null)
 const interviewListData = ref([])
 const editMode = ref(false)
 const namee = ref(null)
+const school_number = ref("")
+const campus_number = ref("")
 
 const showModal = () => {
   interviewListData.value = ""
@@ -41,7 +43,9 @@ const showModal = () => {
 }
 
 const form = reactive({
-  campus_class_number:""
+  campus_class_number:"",
+  curriculumNumber:"",
+  level:""
 })
 
 onMounted(
@@ -294,6 +298,39 @@ watch(
             </select>
         </div>  
         </div> 
+
+        <div class="col-4">
+                                            <div class="mb-2">
+                                              <label class="textSize"><small>Curriculum</small></label>
+                                                <select
+                                                style="box-shadow: none;"
+                                                class="form-select form-select-sm"
+                                                   v-model="form.curriculumNumber"  
+                                                   @change="fetchCampusLevel(form.curriculumNumber)"                                         
+                                                >
+                                                   <option disabled value="" >--Select Curriculum--</option>
+                                                   <option  v-for="(lvl, index) in curriculumList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+                                                </select>
+                                             </div>
+                                             </div> 
+
+                                             
+                                            <div class="col-4" >
+                                                <div class="mb-2">
+                                                  <label class="textSize"><small>Level</small></label>
+                                                   <select
+                                                   style="box-shadow: none;"
+                                                   class="form-select form-select-sm"
+                                                      v-model="form.level"
+                                                      @change="fetchLevelClasses(form.level)"
+                                                   >
+                                                      <option disabled value="">-Filter by level-</option>
+                                                      <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
+                                                   </select>
+                                                   
+                                                </div>
+                                                </div>
+
 
         <div class="col-4"> 
         <div class="mb-2">

@@ -43,7 +43,6 @@ onMounted(
 
 
 const filterGeneratedReport = (cla) => {
-alert(cla)
     let data = {
       study_period_number: study_period_number.value,
       class_number: cla,
@@ -166,7 +165,7 @@ const doGenerate = (studentInfo) => {
   loader.value = studentInfo.enrollment_number
   let data = {
     study_period_number:study_period_number.value,
-    class_number:studentInfo.class_number,
+    campus_class_number:studentInfo.campus_class_number,
     student_number:studentInfo.student_number
   }
   reportStore.generateReport(data)
