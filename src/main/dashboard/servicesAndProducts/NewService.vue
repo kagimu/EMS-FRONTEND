@@ -155,6 +155,7 @@ watch(
 
 </script>
 <template>
+  {{ serviceDetails }}
         <form @submit.prevent="createNewService">
 
           <div class="grid grid-cols-2 gap-4">
@@ -198,7 +199,7 @@ watch(
             <div>
 
               <div class="mb-2">
-                <label class="textColor">Service Name</label>
+                <label class="textColor">Name</label>
                 <input  type="text" style="outline: none 0 !important;box-shadow: none;"
                         required class="form-control form-select-sm" v-model="formData.name">
               </div>

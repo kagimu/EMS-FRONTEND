@@ -52,7 +52,7 @@
       </div>
 
       <div class="mb-2">
-          <label class="textColor"><small>Service is ?</small></label>
+          <label class="textColor"><small>Product is ?</small></label>
           <br/>
           <input type="radio" v-model="formData.mandatory" :value="true" >&nbsp; Mandatory  &nbsp;&nbsp;&nbsp;
           <input type="radio" v-model="formData.mandatory" :value="false">&nbsp; Optional
