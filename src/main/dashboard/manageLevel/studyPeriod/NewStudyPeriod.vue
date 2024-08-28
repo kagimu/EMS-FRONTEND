@@ -9,6 +9,7 @@ import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/stor
 import useNotificationStore from "@/composables/useNotification.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useRouter} from "vue-router";
+import ComboBox from "@/components/ComboBox.vue";
 
 
 const academicYearStore = useAcademicYearStore()
@@ -232,13 +233,6 @@ watch(
       </div>
 
 
-
-
-
-
-
-
-
       <div class="grid grid-cols-2 gap-2 mb-2">
         <div>
           <label class="textColor"><small>Study Period Start Date</small></label>
@@ -294,8 +288,6 @@ watch(
       
 
 
-
-
       <div class="mb-2">
         <label class="textColor"><small>Class</small></label>
         <select
@@ -305,8 +297,9 @@ watch(
           <option disabled :value=null>--Select Class--</option>
           <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
         </select>
-      </div>
 
+        <combo-box :optionList="campusClassList"   v-model:currencyList="form.classes"></combo-box>
+      </div>
 
 
 

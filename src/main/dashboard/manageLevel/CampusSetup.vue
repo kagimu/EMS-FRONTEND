@@ -10,7 +10,7 @@ const campusCurriculumDataInfo = ref(null)
 
 const routerData = useRouter()
 
-const school = ref( "")
+
 
 
 const campusNumber = routerData.currentRoute.value.query.id

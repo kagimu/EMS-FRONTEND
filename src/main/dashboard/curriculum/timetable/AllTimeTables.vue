@@ -1,3 +1,141 @@
+<script setup>
+
+import {onMounted, ref, watch} from "vue";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import useNotificationStore from "@/composables/useNotification.js";
+import NewCampus from "@/main/dashboard/manageCampus/NewCampus.vue";
+import {useRouter} from "vue-router";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useTimetableStore} from "@/main/dashboard/curriculum/timetable/store/timetable.js";
+import NewTimetable from "@/main/dashboard/curriculum/timetable/NewTimetable.vue";
+
+
+
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
+
+const campusStore = useCampusStore()
+const schoolStore = useSchoolStore()
+const timetableStore = useTimetableStore()
+const  notificationStore  = useNotificationStore()
+
+const campusDialog = ref( false)
+const campusEditMode = ref( false)
+const campusList = ref( [])
+const timetableList = ref( [])
+const schoolsList = ref( [])
+const school = ref( "")
+
+
+const addTimetable = () => {
+  campusEditMode.value = false
+  campusDialog.value = true
+}
+
+
+const editCampus = (campus) => {
+  if(campus) {
+    campusEditMode.value = true
+    campusDialog.value = true
+    campusStore.fetchCampusData(campus.number)
+  }
+}
+const deleteCampus = (campus) => {
+  if(!confirm("Are you sure, you want to delete: "+campus.name)){
+    return
+  }
+  let data = {
+    campus_number:campus.number
+  }
+  campusStore.deleteCampus(data)
+}
+
+const filterSchool = (school) => {
+  campusStore.fetchCampuses(school)
+}
+
+onMounted(
+    () => {
+      // campusStore.fetchCampuses(routerData.currentRoute.value.query.id)
+      schoolStore.fetchSchools()
+      timetableStore.fetchTimetables()
+    }
+)
+
+const fetchCampusInfo = (schoolNumber) => {
+  if(schoolNumber) {
+    campusStore.fetchCampuses(schoolNumber)
+  }
+}
+
+watch(
+    () => campusStore.newCampusResponse,
+    async (data) => {
+      if(data){
+        campusDialog.value = false
+        notificationStore.successToast("Success", data.message)
+        // await campusStore.fetchCampuses(routerData.currentRoute.value.query.id)
+        await fetchCampusInfo(school.value)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => campusStore.campusListResponse,
+    async (data) => {
+      if(data){
+        campusList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => timetableStore.studyTimetables,
+    async (data) => {
+      if(data){
+        timetableList.value = data
+      }
+    },
+    {deep:true}
+)
+
+
+
+
+
+
+
+watch (
+    () => campusStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if(data){
+        let schoolNumber = data.data[0].number
+        school.value = schoolNumber
+        // await campusStore.fetchCampuses(schoolNumber)
+         fetchCampusInfo(schoolNumber)
+        schoolsList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+
+</script>
 <template>
     <div>
 
@@ -107,147 +245,7 @@
     </div>
 </template>
 
-<script setup>
 
-import {onMounted, ref, watch} from "vue";
-import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-import useNotificationStore from "@/composables/useNotification.js";
-import NewCampus from "@/main/dashboard/manageCampus/NewCampus.vue";
-import {useRouter} from "vue-router";
-import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-import {useTimetableStore} from "@/main/dashboard/curriculum/timetable/store/timetable.js";
-import NewTimetable from "@/main/dashboard/curriculum/timetable/NewTimetable.vue";
-
-
-
-const routerData = useRouter()
-
-
-import { useAbility } from '@casl/vue';
-
-const { can } = useAbility()
-
-const campusStore = useCampusStore()
-const schoolStore = useSchoolStore()
-const timetableStore = useTimetableStore()
-const  notificationStore  = useNotificationStore()
-
-const campusDialog = ref( false)
-const campusEditMode = ref( false)
-const campusList = ref( [])
-const timetableList = ref( [])
-const schoolsList = ref( [])
-const school = ref( "")
-
-
-const addTimetable = () => {
-    campusEditMode.value = false
-    campusDialog.value = true
-}
-
-
-const editCampus = (campus) => {
-    if(campus) {
-        campusEditMode.value = true
-        campusDialog.value = true
-        campusStore.fetchCampusData(campus.number)
-    }
-}
-const deleteCampus = (campus) => {
-    if(!confirm("Are you sure, you want to delete: "+campus.name)){
-        return
-    }
-    let data = {
-        campus_number:campus.number
-    }
-    campusStore.deleteCampus(data)
-}
-
-const filterSchool = (school) => {
-    campusStore.fetchCampuses(school)
-}
-
-onMounted(
-    () => {
-        // campusStore.fetchCampuses(routerData.currentRoute.value.query.id)
-        schoolStore.fetchSchools()
-        timetableStore.fetchTimetables()
-    }
-)
-
-const fetchCampusInfo = (schoolNumber) => {
-    if(schoolNumber) {
-        campusStore.fetchCampuses(schoolNumber)
-    }
-}
-
-watch(
-    () => campusStore.newCampusResponse,
-    async (data) => {
-        if(data){
-            campusDialog.value = false
-            notificationStore.successToast("Success", data.message)
-            // await campusStore.fetchCampuses(routerData.currentRoute.value.query.id)
-            await fetchCampusInfo(school.value)
-        }
-    },
-    {deep:true}
-)
-
-watch(
-    () => campusStore.campusListResponse,
-    async (data) => {
-        if(data){
-            campusList.value = data.data
-        }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => timetableStore.studyTimetables,
-    async (data) => {
-        if(data){
-            timetableList.value = data
-        }
-    },
-    {deep:true}
-)
-
-
-
-
-
-
-
-watch (
-    () => campusStore.errorMessage,
-    async (data) => {
-        if(data){
-            notificationStore.errorToast("Error",data.message)
-        }
-    },
-    {deep:true}
-)
-
-watch(
-    () => schoolStore.schoolsResponse,
-    async (data) => {
-        if(data){
-            let schoolNumber = data.data[0].number
-            school.value = schoolNumber
-            // await campusStore.fetchCampuses(schoolNumber)
-            await fetchCampusInfo(schoolNumber)
-            schoolsList.value = data.data
-        }
-    },
-    {deep:true}
-)
-
-
-
-</script>
 
 <style scoped>
 
