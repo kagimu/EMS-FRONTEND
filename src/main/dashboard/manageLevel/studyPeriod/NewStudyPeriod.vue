@@ -104,7 +104,15 @@ watch(
     () => campusStore.schoolClassesResponse,
     async (data) => {
       if(data){
-        campusClassList.value = data.data
+        let dataInfo = data?.data
+        if(dataInfo && (dataInfo?.length > 0)){
+          let arr = []
+          dataInfo.forEach(item => {
+            arr.push({text:item?.name+" [ "+item?.abbreviation+" ]" , value:item?.number})
+          })
+          campusClassList.value = arr
+        }
+
       }
     }
 )
@@ -290,15 +298,11 @@ watch(
 
       <div class="mb-2">
         <label class="textColor"><small>Class</small></label>
-        <select
-            multiple
-            class="form-select form-select-sm shadow-none" required
-            v-model="form.classes">
-          <option disabled :value=null>--Select Class--</option>
-          <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
-        </select>
-
-        <combo-box :optionList="campusClassList"   v-model:currencyList="form.classes"></combo-box>
+        <combo-box
+            v-model:optionResponse="form.classes"
+            :optionList="campusClassList"
+            :optionDraft="form?.classes"
+        ></combo-box>
       </div>
 
 

@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import {ref, computed, onMounted, type Ref, watch} from 'vue';
-import { onClickOutside } from '@vueuse/core'
+import {computed, onMounted, ref, type Ref, watch} from 'vue';
+import {onClickOutside} from '@vueuse/core'
+
 const target = ref(null)
 
 
 const props = defineProps({
-  optionList: []
+  optionList: [],
+  optionDraft: []
 })
 
 
@@ -16,8 +18,10 @@ const search = ref('');
 const dropdownOpen = ref(false);
 const selectedItems:Ref<string[]> = ref([]);
 const dropdownWrapper = ref<HTMLElement | null>(null);
+const items = ref([]);
+const hasProcessed = ref(false);
 
-const emits = defineEmits(["update:currencyList"]);
+const emits = defineEmits(["update:optionResponse"]);
 
 
 
@@ -30,29 +34,48 @@ onClickOutside(target, (event) => {
 
 
 onMounted(() => {
-  items.value = currency?.currencyList
+
   checkDraft()
+  checkOptionsDraft()
+
 });
 
-/*watch(
-    () => props.currencyDraft,
+watch(
+    () => props.optionDraft,
     async (data) => {
       if (data) {
         checkDraft()
       }
     },
-);*/
+);
 
 
 const checkDraft = () => {
-  let draft = props.currencyDraft
-  if(draft){
-    selectedItems.value = [...draft]
+  let draft =  props.optionDraft
+  if(draft && (draft.length > 0) && !hasProcessed.value){
+    selectedItems.value = draft
+    hasProcessed.value = true
   }
 }
 
+watch(
+    () => props.optionList,
+    async (data) => {
+      if (data) {
+        checkOptionsDraft()
+      }
+    },
+);
+
+
+
+
+const checkOptionsDraft = () => {
+  items.value = props.optionList
+}
+
 watch(selectedItems, (newVal) => {
-  emits("update:currencyList", newVal);
+  emits("update:optionResponse", newVal);
 });
 
 
@@ -60,7 +83,7 @@ watch(selectedItems, (newVal) => {
 // Filter items based on query
 const filteredItems = computed(() => {
   const searchTerm = search.value.toLowerCase();
-  return items.value.filter((item: ListOptions) =>
+  return items.value?.filter(item =>
       item.value.toLowerCase().includes(searchTerm) ||
       item.text.toLowerCase().includes(searchTerm)
   );
@@ -88,6 +111,7 @@ const removeItem = (idx:number) => {
 <div>
   <div class="relative" ref="dropdownWrapper">
 
+
     <div
         @click="openDropdown"
         @focus="openDropdown"
@@ -97,10 +121,11 @@ const removeItem = (idx:number) => {
       </div>
       <div
           v-else
-          class="text-xs border w-[10%] mx-1 my-1 rounded-md text-[#03408f] border-[#03408f] hover:bg-[#03408f] hover:text-white cursor-pointer"
+          class="text-xs border mx-1 my-[2px] rounded-md text-[#03408f] border-[#03408f] hover:bg-[#03408f] hover:text-white cursor-pointer"
           v-for="(item,idx) in selectedItems" :key="idx">
-        <div class="flex flex-grow justify-between px-1">{{item}}
-          <div><i class="fa-regular fa-times-circle hover:text-[yellow]"  @click="removeItem(idx)"/></div></div>
+        <div class="flex flex-grow px-2">
+          {{items.find(data => data.value === item)?.text}}
+          <div><i class="fa-regular fa-times-circle hover:text-[yellow] ml-2"  @click="removeItem(idx)"/></div></div>
       </div>
     </div>
 
@@ -116,9 +141,8 @@ const removeItem = (idx:number) => {
             v-model="search"
             @input="filterItems"
             type="text"
-            placeholder="Search Currency"
-            class="form-element"
-        />
+            placeholder="Search"
+            class="form-control form-select-sm shadow-none">
       </div>
 
 

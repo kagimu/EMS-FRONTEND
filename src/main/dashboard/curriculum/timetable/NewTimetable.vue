@@ -38,15 +38,16 @@ const academicYearList = ref([])
 const studyPeriodList = ref([])
 const classList = ref([])
 const streamList = ref([])
-const school_number = ref(null)
-const level_number = ref(null)
-const campus_number = ref(null)
-const academic_year_number = ref(null)
-const study_period_number = ref(null)
+const school_number = ref("")
+const level_number = ref("")
+const campus_number = ref("")
+const academic_year_number = ref("")
+const study_period_number = ref("")
 
 
 
 const form = reactive({
+  campus_number: "",
   campus_curriculum_number: "",
   study_period_number: "",
   name: "",
@@ -228,6 +229,16 @@ watch(
     }
 )
 
+watch(
+    () => timetableStore.errorMessage,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.errorToast("Error", data.message)
+      }
+    }
+)
+
 
 
 </script>
@@ -320,7 +331,7 @@ watch(
                 <label class="textColor"><small>Study Period</small></label>
                 <select
                         style="box-shadow: none;"
-                        class="form-select form-select-sm"
+                        class="form-select form-select-sm shadow-none"
                         v-model="study_period_number"
                 >
                     <option disabled value="">--Select study period--</option>
@@ -335,7 +346,7 @@ watch(
                 <label class="textColor"><small>Name</small></label>
                 <input
                         type="text"
-                         class="form-control form-control-sm"
+                         class="form-control form-control-sm shadow-none"
                         v-model="form.name"
 
                 />
