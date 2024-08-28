@@ -32,7 +32,7 @@
 
       <div class="mb-2">
         <label class="textColor mt-3 mb-2"><small>Select Curriculum(s) to adopt to this School</small></label>
-        <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+        <!-- <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
           <li class="list-group-item" v-for="(lvl,idx) in curriculumList">
             <input
                 v-model="form.curriculum"
@@ -41,7 +41,13 @@
             <label class="form-check-label cursor-pointer" :for="idx">{{lvl.name}}</label>
           </li>
 
-        </ul>
+        </ul> -->
+
+        <combo-box
+            v-model:optionResponse="form.curriculum"
+            :optionList="curriculumList"
+            :optionDraft="form?.curriculum"
+        ></combo-box>
       </div>
 
 
@@ -70,6 +76,7 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import VueDatePicker from "@vuepic/vue-datepicker";
+import ComboBox from "@/components/ComboBox.vue";
 
 const classError = ref(null)
 const name = ref(null)
@@ -185,7 +192,15 @@ watch(
     () => curriculumStore.curriculumDataResponse,
     async (data) => {
       if(data){
-        curriculumList.value = data.data
+        let draft = data?.data 
+        if(draft && (draft?.length > 0)){
+          let arr = []
+          draft?.forEach(lst => {
+            arr.push({text:lst?.name,value:lst?.number})
+          })
+          curriculumList.value = arr
+        }
+        
       }
     },
     {deep:true}

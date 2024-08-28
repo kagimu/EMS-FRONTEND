@@ -95,9 +95,6 @@ watch(
 
 
 const fetchAssessmentAreaAndStudyPeriod = (class_number) =>{
-  // if(class_number) {
-  //   assessmentStore.fetchAssessmentArea(class_number)
-  // }
 
   let data = {
     curriculum_number:curriculumNumberParent,
