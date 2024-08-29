@@ -83,7 +83,8 @@
       study_period_number:null,
       scheduled_on:null,
       require_comment:null,
-      campus_number:campusNumber
+      campus_number:campusNumber,
+      curriculum_number:curriculumNumberParent
     })
 
   watch(
@@ -112,51 +113,49 @@
       form.assessment_area_number = draft.assessment_area_number
 
       if(draft.campus_level_number){
-        classStore.fetchClassByLevel(campus_curriculum_number,draft.campus_level_number)
          academicYearStore.fetchAcademicYearByLevel(draft.campus_level_number)   
-         form.class_number = draft.class_number
-         academic_year_number.value = draft.academic_year_number 
+        
+        let data = {
+    school_number:schoolNumber,
+    campus_level_number:draft.campus_level_number
+  }
+  campusStore.fetchClassesBySchool(data) 
+  form.class_number = draft.class_number
+  academic_year_number.value = draft.academic_year_number 
+
+  studyPeriodStore.fetchStudyPeriod(
+      {
+        campus_curriculum_number:campus_curriculum_number,
+        academic_year_number:draft.academic_year_number,
+        class_number:draft.class_number
+      } 
+    )
+  form.study_period_number = draft.study_period_number
+
+
+  let datas = {
+    curriculum_number:curriculumNumberParent,
+    class_number:draft.class_number
+  }
+  assessmentStore.fetchAssessmentArea(datas)
+  form.assessment_area_number = draft.assessment_area_number
+
       }
-      if(draft.academic_year_number){
-        studyPeriodStore.fetchStudyPeriodByAcademicYear(draft.academic_year_number)
-        form.study_period_number = draft.study_period_number
-      }
+     
    }
        
     }
 
 
-  // watch(
-  //     () => classStore.classLevelByLevelResponse,
-  //     async (data) => {
-  //       if (data) {
-  //         if(data && data.data){
-  //           let classData = data.data
-  //           if(classData && (classData.length > 0)){
-  //             classLevelList.value = classData[0].classes
-  //             if(form.class_number) {
-  //               fetchAssessmentAreaList(form.class_number)
-  //             }
-
-  //           }
-  //         }
-
-  //       }
-  //     })
 
   const fetchCurriculumClass = (campuslevelnumber) =>{
 
     if(props.assessmentMetricList.number){
-      // classStore.fetchClassByLevel(campus_curriculum_number,props.assessmentMetricList.campus_level_number)
       academicYearStore.fetchAcademicYearByLevel(props.assessmentMetricList.campus_level_number)
     }else {
-      // classStore.fetchClassByLevel(campus_curriculum_number,campus_level_number.value)
       academicYearStore.fetchAcademicYearByLevel(campus_level_number.value)
     }
-
     academicYearStore.fetchAcademicYearByLevel(campuslevelnumber)
-    // classStore.fetchClassLevel({campusCurriculumNumber: curriculumNumber.value, campusLevelNumber: campuslevelnumber})
-
 
     let data = {
     school_number:schoolNumber,
@@ -169,16 +168,11 @@
   
   
   const  fetchAssessmentAreaList = (class_number) => {
-  // if(class_number) {
-  //   let curriculum_class_number = classLevelList.value.find(item => item.number === class_number).curriculum_class_number
-  //   assessmentStore.fetchAssessmentArea(curriculum_class_number)
-  // }
 
   let data = {
     curriculum_number:curriculumNumberParent,
     class_number:class_number
   }
-  // alert(JSON.stringify(data))
   assessmentStore.fetchAssessmentArea(data)
 
   studyPeriodStore.fetchStudyPeriod(
@@ -365,7 +359,7 @@
 
 <template>
   <div>
-
+<!-- {{ assessmentMetricList }} -->
      <form @submit.prevent="addInterviewAssesmentMetrics">
         <div class="row">
            <div class="col-lg-6">
