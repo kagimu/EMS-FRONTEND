@@ -106,7 +106,9 @@ const addLearnerDetails = () => {
     if(form.learner_number){
       applicationStore.updateLearnerDetails(form.learner_number,form)
     }else{
+
       form.class_number = form.campus_class_number
+      form.campus_number = form.preferred_campus_number
       applicationStore.newApplicationLeanerDetails(form)
     }
 
