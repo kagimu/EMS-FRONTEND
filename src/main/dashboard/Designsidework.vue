@@ -1,86 +1,153 @@
 <template>
-  <div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col"></th>
-          <th scope="col" v-for="header in headers" :key="header">{{ header }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="group in feedingGroups" :key="group.group_name">
-          <th scope="row">{{ group.group_name }}</th>
-          <td v-for="header in headers.slice(1)" :key="header">
-            <div v-if="getMealCourses(group, header)">
-              <div v-for="meal in getMealCourses(group, header)" :key="meal">{{ meal }}</div>
+  <section class="student-portal bg-light py-14">
+    <div class="container">
+      <!-- Top Bar -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center">
+          <img src="" alt="" style="height: 50px;" />
+          <h4 class="ms-3 mb-0">sssss</h4>
+        </div>
+        <div>
+          <button class="btn btn-success me-2">APPLY NOW</button>
+          <button class="btn btn-outline-success me-2">APPLICATION HISTORY</button>
+          <button class="btn btn-outline-success">ADMISSION HISTORY</button>
+          <div class="dropdown d-inline">
+            <button
+              class="btn btn-outline-secondary dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              {{ user.email }}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+              <li><a class="dropdown-item" href="#">Profile Settings</a></li>
+              <li><a class="dropdown-item" href="#">Log Out</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile and Navigation Section -->
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3">
+          <div class="card shadow-sm mb-4 text-center">
+            <div class="card-body">
+              <img
+                :src="user.profilePicture"
+                alt="Profile Picture"
+                class="rounded-circle mb-3"
+                style="width: 120px; height: 120px; object-fit: cover;"
+              />
+              <h5 class="card-title">{{ user.name }}</h5>
+              <p class="card-text text-muted">
+                <i class="bi-calendar-date"></i> {{ user.dob }}
+              </p>
             </div>
-            <div v-else>{{ getError(group, header) }}</div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+          </div>
+
+          <div class="card shadow-sm mb-4">
+            <ul class="list-group list-group-flush">
+              <li
+                v-for="(item, index) in menuItems"
+                :key="index"
+                class="list-group-item list-group-item-action"
+                :class="{ active: activeMenu === item.name }"
+                @click="activeMenu = item.name"
+              >
+                <i :class="item.icon + ' me-2'"></i> {{ item.label }}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-9">
+          <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+              <h5 class="mb-0"><i class="bi-person-circle me-2"></i> MY PROFILE DETAILS</h5>
+              <button class="btn btn-danger" @click="reloadProfile">RELOAD</button>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6 mb-3" v-for="(value, key) in userProfile" :key="key">
+                  <label class="form-label">{{ key }}:</label>
+                  <input type="text" class="form-control" :value="value" readonly />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
 
-const data = {
-  headers: [" ", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-  feeding_group: [
-    {
-      group_name: "Group 1",
-      meal_courses: [
-        { day: "Mon", meal_courses: ["Dinner", "Break"], error: "No meal course(s) set" },
-        { day: "Tue", meal_courses: ["Dinner", "Break"], error: "No meal course(s) set" },
-        { day: "Wed", meal_courses: null, error: "No meal course(s) set" },
-        { day: "Thu", meal_courses: ["Break", "Dinner"], error: "No meal course(s) set" },
-        { day: "Fri", meal_courses: null, error: "No meal course(s) set" },
-        { day: "Sat", meal_courses: null, error: "No meal course(s) set" },
-        { day: "Sun", meal_courses: ["Break", "Dinner"], error: "No meal course(s) set" }
-      ]
-    },
-    {
-      group_name: "Group 2",
-      meal_courses: [
-        { day: "Mon", meal_courses: null, error: "No meal course(s) set" },
-        { day: "Tue", meal_courses: null, error: "No meal course(s) set" },
-        { day: "Wed", meal_courses: ["Break", "Dinner"], error: "No meal course(s) set" },
-        { day: "Thu", meal_courses: null, error: "No meal course(s) set" },
-        { day: "Fri", meal_courses: null, error: "No meal course(s) set" },
-        { day: "Sat", meal_courses: null, error: "No meal course(s) set" },
-        { day: "Sun", meal_courses: null, error: "No meal course(s) set" }
-      ]
-    }
-  ]
-};
+// User Information
+const user = ref({
+  name: 'Solomon Chowere',
+  dob: '1999-12-31',
+  email: 'chowere@gmail.com',
+  profilePicture: 'https://via.placeholder.com/150'
+})
 
-const headers = ref(data.headers);
-const feedingGroups = ref(data.feeding_group);
+// Menu Items
+const menuItems = ref([
+  { name: 'profile', label: 'MY PROFILE', icon: 'bi-person' },
+  { name: 'changePassword', label: 'CHANGE PASSWORD', icon: 'bi-key' },
+  { name: 'applicationHistory', label: 'APPLICATION HISTORY', icon: 'bi-file-earmark-text' },
+  { name: 'admissionHistory', label: 'ADMISSION HISTORY', icon: 'bi-archive' },
+  { name: 'logout', label: 'LOG OUT', icon: 'bi-box-arrow-right' }
+])
 
-const getMealCourses = (group, day) => {
-  const mealCourse = group.meal_courses.find(meal => meal.day === day);
-  return mealCourse ? mealCourse.meal_courses : null;
-};
+// Active Menu State
+const activeMenu = ref('profile')
 
-const getError = (group, day) => {
-  const mealCourse = group.meal_courses.find(meal => meal.day === day);
-  return mealCourse ? mealCourse.error : "";
-};
+// Profile Information
+const userProfile = ref({
+  Surname: 'CHOWERE',
+  'Other Names': 'Solomon',
+  Gender: 'Male',
+  Nationality: 'UGANDAN',
+  Email: 'chowere@gmail.com',
+  'Phone Number': '256709112694',
+  'Date of Birth': '1999-12-31',
+  'Last Log in': '2024-08-29T06:25:43.000Z'
+})
+
+// Reload Profile Function
+const reloadProfile = () => {
+  // Simulate reloading data
+  console.log('Profile reloaded')
+}
 </script>
 
+<!-- Styles (Optional) -->
 <style scoped>
-.table {
-  width: 100%;
-  margin: 20px 0;
-  border-collapse: collapse;
+.student-portal {
+  padding-top: 20px;
 }
-.table th, .table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+
+.card-header {
+  background-color: #f8f9fa !important;
 }
-.table th {
-  background-color: #f2f2f2;
-  text-align: center;
+
+.list-group-item.active {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: white;
+}
+
+.list-group-item-action:hover {
+  background-color: #f1f1f1;
+}
+
+.btn {
+  border-radius: 20px;
 }
 </style>
