@@ -153,10 +153,8 @@ onMounted(
   </nav>
 
   <div class="row">
-    <div class="col-lg-4">
 
-    </div>
-    <div class="col-lg-8">
+    <div class="col-lg-12">
       <router-view></router-view>
     </div>
     

@@ -4,8 +4,8 @@
       <!-- Top Bar -->
       <div class="d-flex justify-content-between align-items-center mb-4">
         <div class="d-flex align-items-center">
-          <img src="makerere-logo.png" alt="Makerere University" style="height: 50px;" />
-          <h4 class="ms-3 mb-0">Makerere University</h4>
+          <img src="" alt="" style="height: 50px;" />
+          <h4 class="ms-3 mb-0">sssss</h4>
         </div>
         <div>
           <button class="btn btn-success me-2">APPLY NOW</button>
