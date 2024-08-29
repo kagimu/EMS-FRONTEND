@@ -1,5 +1,4 @@
 <script setup>
-
 import {onMounted, ref} from "vue";
 import router from "@/config/router.js";
 import {useAuthStore} from "@/main/auth/store/auth.js";
@@ -34,7 +33,49 @@ onMounted(
       // alert(router.currentRoute.value.name)
 
     } )
+
+
+    // User Information
+const user = ref({
+  name: 'Solomon Chowere',
+  dob: '1999-12-31',
+  email: 'chowere@gmail.com',
+  profilePicture: 'https://via.placeholder.com/150'
+})
+
+// Menu Items
+const menuItems = ref([
+  { name: 'profile', label: 'MY PROFILE', icon: 'bi-person' },
+  { name: 'changePassword', label: 'CHANGE PASSWORD', icon: 'bi-key' },
+  { name: 'applicationHistory', label: 'APPLICATION HISTORY', icon: 'bi-file-earmark-text' },
+  { name: 'admissionHistory', label: 'ADMISSION HISTORY', icon: 'bi-archive' },
+  { name: 'logout', label: 'LOG OUT', icon: 'bi-box-arrow-right' }
+])
+
+// Active Menu State
+const activeMenu = ref('profile')
+
+// Profile Information
+const userProfile = ref({
+  Surname: 'CHOWERE',
+  'Other Names': 'Solomon',
+  Gender: 'Male',
+  Nationality: 'UGANDAN',
+  Email: 'chowere@gmail.com',
+  'Phone Number': '256709112694',
+  'Date of Birth': '1999-12-31',
+  'Last Log in': '2024-08-29T06:25:43.000Z'
+})
+
+// Reload Profile Function
+const reloadProfile = () => {
+  // Simulate reloading data
+  console.log('Profile reloaded')
+}
+
 </script>
+
+
 <template>
   <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-[#2c2f8c] sticky-top"  style="position: absolute; top: 0; left: 0; width: 100%;">
     <div class="container-fluid">
@@ -283,5 +324,51 @@ div.card {
 .bg-darkB {
   background-color: #2c2f8c;
 }
+
+
+.student-portal {
+  padding-top: 20px;
+}
+
+.card-header {
+  background-color: #f8f9fa !important;
+}
+
+.list-group-item.active {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: white;
+}
+
+.list-group-item-action:hover {
+  background-color: #f1f1f1;
+}
+
+.btn {
+  border-radius: 20px;
+}
 </style>
 
+<style scoped>
+.student-portal {
+  padding-top: 20px;
+}
+
+.card-header {
+  background-color: #f8f9fa !important;
+}
+
+.list-group-item.active {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: white;
+}
+
+.list-group-item-action:hover {
+  background-color: #f1f1f1;
+}
+
+.btn {
+  border-radius: 20px;
+}
+</style>
