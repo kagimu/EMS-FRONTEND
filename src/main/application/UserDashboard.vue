@@ -145,7 +145,7 @@ const reloadProfile = () => {
               <img
                 src="http://127.0.0.1:5173/src/assets/images/victorius-budge.png"
                 alt="Logo"
-                class="rounded-cirle"
+                class="rounded-cirle mt-4"
                 style="width: 100%; height: 100%; object-fit: cover;"
               />
             </div>
