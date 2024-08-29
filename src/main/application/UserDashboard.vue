@@ -139,13 +139,16 @@ const reloadProfile = () => {
   </nav>
 
   <div class="row ">
-    <div class="col-lg-2 " style="border-right: 1px solid rgba(0, 0, 0, 0.02);background-color:white !important; padding: 0px;">
+    <div class="col-lg-2 " >
+    
+      <div   style="border-right: 1px solid rgba(0, 0, 0, 0.08); background-color: white !important; padding: 0px; position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto;">
+        
      
             <div class="p-4" style="background-color:rgba(0, 0, 0, 0.02)">
               <img
                 src="http://127.0.0.1:5173/src/assets/images/victorius-budge.png"
                 alt="Logo"
-                class="rounded-cirle mt-4"
+                class="rounded-cirle mt-14"
                 style="width: 100%; height: 100%; object-fit: cover;"
               />
             </div>
@@ -164,6 +167,8 @@ const reloadProfile = () => {
               </li>
             </ul>
           </div>
+
+        </div>
     </div>
     <div class="col-lg-10">
       <router-view></router-view>
