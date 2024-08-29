@@ -89,7 +89,11 @@ const fetchStudyPeriod = (academic_num) =>{
 const fetchAssessmentArea = (campus_class_number) =>{
   if(campus_class_number) {
     fetchNarrativeInfo()
-    assessmentStore.fetchAssessmentArea(campus_class_number)
+    let data = {
+      curriculum_number:campus_curriculum_number.value,
+       class_number:campus_class_number
+    }
+    assessmentStore.fetchAssessmentArea(data)
   }
 }
 

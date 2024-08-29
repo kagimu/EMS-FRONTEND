@@ -443,15 +443,15 @@ watch(
 
                  <div class="flex">
                    <div class="mr-4">
-                     <input v-model="formData.type" class="cursor-pointer" type="radio" :value="true" name="flexRadioDefault" id="box1">
+                     <input v-model="formData.type" class="cursor-pointer" type="radio" :value="CONTINUING" name="flexRadioDefault" id="box1">
                      <label class="form-check-label ml-2 cursor-pointer" for="box1">
                        Continueing
                      </label>
                    </div>
                    <div class="">
-                     <input v-model="formData.type" class="cursor-pointer" type="radio" :value="false" name="flexRadioDefault" id="box2">
+                     <input v-model="formData.type" class="cursor-pointer" type="radio" :value="NEW_APPLICATION" name="flexRadioDefault" id="box2">
                      <label class="form-check-label ml-2 cursor-pointer" for="box2">
-                       Old
+                      New Application
                      </label>
                    </div>
                  </div>

@@ -43,7 +43,7 @@ const form = reactive({
   application_number: applicationId.value,
   campus_class_number: null,
   learner_number:null,
-   mode_of_study_number:""
+   mode_of_study_number:"",
 })
 
 onMounted(() => {
@@ -80,7 +80,12 @@ const fetchCampuses = (school_number) => {
 }
 
 const fetchClasses = (campus_number) => {
-  campusStore.fetchClassesByCampus(campus_number)
+  // campusStore.fetchClassesByCampus(campus_number)
+  let data = {
+    school_number:form.school_number,
+    campus_number:campus_number
+  }
+  campusStore.fetchClassesBySchool(data)
 }
 
 let entity_number = localStorage.getItem('entity_number')
@@ -101,6 +106,7 @@ const addLearnerDetails = () => {
     if(form.learner_number){
       applicationStore.updateLearnerDetails(form.learner_number,form)
     }else{
+      form.class_number = form.campus_class_number
       applicationStore.newApplicationLeanerDetails(form)
     }
 
@@ -176,15 +182,7 @@ watch(
     }
 )
 
-watch(
-    () => campusStore.campusClassesResponse,
-    async (data) => {
-      if (data) {
-        classList.value = data.data
-      }
-    },
-    {deep: true}
-)
+
 
 watch(
     () => campusStore.errorMessage,
@@ -229,6 +227,24 @@ watch (
     }
 )
 
+// watch(
+//     () => campusStore.campusClassesResponse,
+//     async (data) => {
+//       if (data) {
+//         classList.value = data.data
+//       }
+//     },
+//     {deep: true}
+// )
+
+watch(
+    () => campusStore.schoolClassesResponse,
+    async (data) => {
+      if(data){
+        classList.value = data.data
+      }
+    }
+)
 
 
 </script>
@@ -313,7 +329,7 @@ watch (
                       v-model="form.campus_class_number"
               >
                   <option disabled value="">Select class</option>
-                  <option v-for="(list, index) in classList" :key="index" :value="list.number">{{ list.class_name }}
+                  <option v-for="(list, index) in classList" :key="index" :value="list.number">{{ list.name }}
                   </option>
               </select>
           </div>
