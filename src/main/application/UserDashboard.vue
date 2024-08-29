@@ -36,7 +36,7 @@ onMounted(
     } )
 </script>
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-[#2c2f8c] sticky-top"  style="position: absolute; top: 0; left: 0; width: 100%;">
+  <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-[#2c2f8c] sticky-top"  style="position: absolute; top: 0; left: 0; width: 100%;">
     <div class="container-fluid">
       <router-link :to="{name:'client_dashboard'}" class="navbar-brand" style="margin-left:20px;font-size:14px;
            font-weight:400"><i class="bi bi-list"></i>&nbsp;<b>Victorious Education Services</b>
@@ -81,10 +81,83 @@ onMounted(
         </div>
       </div>
     </div>
+  </nav> -->
+
+
+  
+  <nav class="navbar navbar-expand-lg navbar-light bg-darkB sticky-top ">
+    <div class="container-fluid d-flex justify-content-between align-items-center px-4 py-2">
+      <!-- Left Section: Title and Toggle -->
+      <div class="d-flex align-items-center">
+        <router-link :to="{ name: 'client_dashboard' }" class="navbar-brand d-flex align-items-center text-white">
+          <i class="bi bi-list fs-4"></i>&nbsp;
+          <span class="fw-bold fs-5">Victorious Education Services</span>
+        </router-link>
+       
+      </div>
+
+      <!-- Right Section: Buttons and User Info -->
+      <div class="d-flex align-items-center">
+        <!-- Buttons -->
+        <button
+          :class="[
+            menuSelected('application') ? 'btn btn-light me-3 text-success' : 'btn btn-outline-light me-3',
+            'px-3 py-2'
+          ]"
+          @click="applyApplication()"
+        >
+          APPLY NOW
+        </button>
+
+        <router-link
+          :class="[
+            menuSelected('application_history') ? 'btn btn-light me-3 text-success' : 'btn btn-outline-light me-3',
+            ' px-3 py-2'
+          ]"
+          :to="{ name: 'application_history' }"
+        >
+          APPLICATION HISTORY
+        </router-link>
+
+        <router-link
+          :class="[
+            menuSelected('admission_history') ? 'btn btn-light me-3 text-success' : 'btn btn-outline-light me-3',
+            'px-3 py-2'
+          ]"
+          :to="{ name: 'admission_history' }"
+        >
+          ADMISSION HISTORY
+        </router-link>
+
+        <!-- User Dropdown -->
+        <div class="dropdown">
+          <span
+            class=" dropdown-toggle d-flex align-items-center px-1 py-1"
+            type="button"
+            id="userDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            style="color: black; margin-right: 20px;"
+
+          >
+            {{ name }}
+        </span>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="#"><i class="bi bi-person-circle"></i> My Profile</a></li>
+            <li><a class="dropdown-item" href="#"><i class="bi bi-person-fill-lock"></i> Change Password</a></li>
+            <li><a class="dropdown-item" href="#" @click="userLogout"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </nav>
 
   <div class="row">
-    <router-view></router-view>
+
+    <div class="col-lg-12">
+      <router-view></router-view>
+    </div>
+    
   </div>
 
 
@@ -110,11 +183,7 @@ onMounted(
 html, body {
   height: 100%;
 }
-/* .cd{
-  padding:20px;
-  width:300px;
-  box-shadow: black;
-} */
+
 div.card {
   width: 300px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -149,7 +218,7 @@ div.card {
   background-color: rgb(13, 86, 195) !important;
 }
 .navbar{
-  padding: 0px;;
+  padding: 5px;;
 }
 .footer {
   position: absolute !important;
@@ -181,6 +250,36 @@ div.card {
   padding: 4px;
   text-decoration: none;
 }
-</style>
 
+.navbar {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand span {
+  font-size: 1.25rem; 
+}
+
+.btn {
+  font-size: 0.8rem; 
+}
+
+.dropdown-toggle {
+  font-size: 0.9rem; 
+}
+
+.dropdown-item {
+  font-size: 0.85rem;
+}
+
+.dropdown-menu {
+  min-width: 200px; 
+}
+
+.dropdown-item i {
+  margin-right: 8px; 
+}
+.bg-darkB {
+  background-color: #2c2f8c;
+}
+</style>
 

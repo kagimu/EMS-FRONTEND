@@ -147,14 +147,10 @@ watch(
 <template>
     <div>
 
+
       <AppModal :title="editMode ? 'Edit Study Timetable' : 'New Study Timetable'" v-model="campusDialog" xl2>
         <new-timetable></new-timetable>
       </AppModal>
-
-
-
-
-
 
 
         <div class="mt-3 flex justify-between">

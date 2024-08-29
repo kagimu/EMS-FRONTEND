@@ -28,6 +28,7 @@ import CurriculumSetup from "@/main/dashboard/curriculum/curriculumSetup/Curricu
 import Application from "../main/application/Application.vue";
 import Welcome from "../main/welcome/Welcome.vue";
 import UserDashboard from "../main/application/UserDashboard.vue";
+import UserDash from "../main/application/UserDash.vue";
 import ApplicationGuide from "../main/auth/ApplicationGuide.vue";
  import StudentApplication from "@/main/dashboard/studentApplication/StudentApplication.vue";
 import ClientApplications from "@/main/application/ClientApplications.vue";
@@ -83,7 +84,7 @@ const router = createRouter({
                 {path: 'welcome', component: Welcome, name:'welcome'},
                 {path: 'login', component: Login, name:'login'},
                 {path: 'register', component: Register, name:'register'},
-                {path: 'user-dashboard', component: UserDashboard, name:'user-dashboard'},
+                {path: 'user-dashboard', component: UserDash, name:'user-dashboard'},
                 {path: 'application-guide', component: ApplicationGuide, name:'application-guide'},
                 { path: 'set-password/:id', component: SetPassword, name:'set-password'},
                 { path: 'reset-password', component: ResetPassword, name:'reset-password'},
@@ -499,6 +500,7 @@ const router = createRouter({
                 requiresAuth: true,
             },
             children:[
+                {path: 'user-dash', component: UserDash, name:'user-dash'},
                 {path: 'application', component: Application, name:'application'},
                 {path: 'start', component: Application, name:'application'},
                 {path: 'admission', component: Application, name:'admission_history'},
