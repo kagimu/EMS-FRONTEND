@@ -195,7 +195,34 @@ const reloadProfile = () => {
 
   <div class="row">
     <div class="col-lg-3">
+      <div class="card shadow-sm mb-4 text-center">
+            <div class="card-body">
+              <img
+                :src="user.profilePicture"
+                alt="Profile Picture"
+                class="rounded-circle mb-3"
+                style="width: 120px; height: 120px; object-fit: cover;"
+              />
+              <h5 class="card-title">{{ user.name }}</h5>
+              <p class="card-text text-muted">
+                <i class="bi-calendar-date"></i> {{ user.dob }}
+              </p>
+            </div>
+          </div>
 
+          <div class="card shadow-sm mb-4">
+            <ul class="list-group list-group-flush">
+              <li
+                v-for="(item, index) in menuItems"
+                :key="index"
+                class="list-group-item list-group-item-action"
+                :class="{ active: activeMenu === item.name }"
+                @click="activeMenu = item.name"
+              >
+                <i :class="item.icon + ' me-2'"></i> {{ item.label }}
+              </li>
+            </ul>
+          </div>
     </div>
     <div class="col-lg-9">
       <router-view></router-view>
@@ -217,7 +244,7 @@ const reloadProfile = () => {
 
 
 
-<style scoped>
+<!-- <style scoped>
 .center {
   padding: 70px 0;
   /* border: 3px solid green; */
@@ -324,30 +351,7 @@ div.card {
 .bg-darkB {
   background-color: #2c2f8c;
 }
-
-
-.student-portal {
-  padding-top: 20px;
-}
-
-.card-header {
-  background-color: #f8f9fa !important;
-}
-
-.list-group-item.active {
-  background-color: #28a745;
-  border-color: #28a745;
-  color: white;
-}
-
-.list-group-item-action:hover {
-  background-color: #f1f1f1;
-}
-
-.btn {
-  border-radius: 20px;
-}
-</style>
+</style> -->
 
 <style scoped>
 .student-portal {
@@ -368,7 +372,12 @@ div.card {
   background-color: #f1f1f1;
 }
 
-.btn {
-  border-radius: 20px;
-}
+
 </style>
+
+
+
+
+
+
+

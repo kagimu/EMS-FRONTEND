@@ -1,37 +1,8 @@
 <template>
   <section class="student-portal bg-light py-14">
     <div class="container">
-      <!-- Top Bar -->
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <div class="d-flex align-items-center">
-          <img src="makerere-logo.png" alt="Makerere University" style="height: 50px;" />
-          <h4 class="ms-3 mb-0">Makerere University</h4>
-        </div>
-        <div>
-          <button class="btn btn-success me-2">APPLY NOW</button>
-          <button class="btn btn-outline-success me-2">APPLICATION HISTORY</button>
-          <button class="btn btn-outline-success">ADMISSION HISTORY</button>
-          <div class="dropdown d-inline">
-            <button
-              class="btn btn-outline-secondary dropdown-toggle"
-              type="button"
-              id="dropdownMenuButton"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              {{ user.email }}
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-              <li><a class="dropdown-item" href="#">Profile Settings</a></li>
-              <li><a class="dropdown-item" href="#">Log Out</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- Profile and Navigation Section -->
+ 
       <div class="row">
-        <!-- Sidebar -->
         <div class="col-lg-3">
           <div class="card shadow-sm mb-4 text-center">
             <div class="card-body">
