@@ -1,6 +1,9 @@
 <template>
   <section class="student-portal bg-light py-14">
     <div class="container">
+<<<<<<< HEAD
+ 
+=======
       <!-- Top Bar -->
       <div class="d-flex justify-content-between align-items-center mb-4">
         <div class="d-flex align-items-center">
@@ -30,8 +33,8 @@
       </div>
 
       <!-- Profile and Navigation Section -->
+>>>>>>> 013ad684af7a51996ca5754f245669eadd265884
       <div class="row">
-        <!-- Sidebar -->
         <div class="col-lg-3">
           <div class="card shadow-sm mb-4 text-center">
             <div class="card-body">
