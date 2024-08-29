@@ -1,7 +1,39 @@
 <template>
   <section class="student-portal bg-light py-14">
     <div class="container">
+<<<<<<< HEAD
  
+=======
+      <!-- Top Bar -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center">
+          <img src="" alt="" style="height: 50px;" />
+          <h4 class="ms-3 mb-0">sssss</h4>
+        </div>
+        <div>
+          <button class="btn btn-success me-2">APPLY NOW</button>
+          <button class="btn btn-outline-success me-2">APPLICATION HISTORY</button>
+          <button class="btn btn-outline-success">ADMISSION HISTORY</button>
+          <div class="dropdown d-inline">
+            <button
+              class="btn btn-outline-secondary dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              {{ user.email }}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+              <li><a class="dropdown-item" href="#">Profile Settings</a></li>
+              <li><a class="dropdown-item" href="#">Log Out</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile and Navigation Section -->
+>>>>>>> 013ad684af7a51996ca5754f245669eadd265884
       <div class="row">
         <div class="col-lg-3">
           <div class="card shadow-sm mb-4 text-center">

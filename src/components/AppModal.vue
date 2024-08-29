@@ -22,7 +22,7 @@ const props = defineProps({
 })
 const emit = defineEmits(["update:modelValue"])
 const modalClass = computed(() => {
-  return cva("w-full transform rounded-sm z-[65] bg-white text-left align-middle shadow-xl transition-all", {
+  return cva("w-full transform rounded-md z-[65] bg-white text-left align-middle shadow-xl transition-all", {
     variants: {
       xs: { true: "max-w-xs" },
       sm: { true: "max-w-sm" },

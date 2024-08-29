@@ -259,12 +259,15 @@ watch(
       <tbody>
 
       <tr v-for="(studyPeriod, index) in studyPeriodList" :key="index">
-        <td> {{studyPeriod.code}}</td>
+        <td> {{index+1}}</td>
         <td class="capitalize"> {{studyPeriod?.level_name}}</td>
         <td class="capitalize"> {{studyPeriod?.academic_year_name}}</td>
         <td class="capitalize">
           <div class="mb-1">{{studyPeriod?.study_period_name}}</div>
          <div class="text-xs">
+          <div class="mb-1">code: <span class="border px-3 rounded-md text-[green]">{{studyPeriod?.code	}}</span></div>
+
+
            <div class="mb-1">From: <span class="border px-3 rounded-md text-[green]">{{studyPeriod?.study_period_start_date	}}</span></div>
            <div>To: <span class="border px-3 rounded-md text-[green]">{{studyPeriod?.study_period_end_date	}}</span> </div>
          </div>
