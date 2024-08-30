@@ -41,8 +41,8 @@ const cateringStore = useCateringStore()
 
 onMounted(
     async () => {
-      applicationStore.fetchStudent(student_number)
-      cateringStore.FeedingGroupByUserId(student_number)
+      await applicationStore.fetchStudent(student_number)
+      await cateringStore.FeedingGroupByUserId(student_number)
       
     } )
 

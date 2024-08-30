@@ -67,7 +67,12 @@
   curriculumNumber:"",
   level:""
   })
-  
+
+  onMounted(() => {
+        doFetchApplication()
+        schoolStore.fetchSchools()
+      }
+  )
   
   const fetchCampuses = (school_number) => {
     campusStore.fetchCampuses(school_number)
@@ -141,11 +146,7 @@
     {deep: true}
   )
        
-  onMounted(() => {
-        doFetchApplication()
-        schoolStore.fetchSchools()
-    }
-  )
+
   
       watch(
       () => applicationStore.applicationListResponse,
@@ -253,8 +254,7 @@
         if (data) {
             campusList.value = data.data
         }
-    },
-    {deep: true}
+    }
   )
   
   watch(

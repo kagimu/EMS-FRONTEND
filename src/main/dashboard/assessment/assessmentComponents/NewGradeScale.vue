@@ -57,11 +57,11 @@ const sectionPart = ref([])
 onMounted(
     async () => {
       await assessmentStore.fetchAggregateGroupName(schoolNumber)
-      schoolStore.fetchSchools()
+      await schoolStore.fetchSchools()
       fetchCampusLevel()
       await levelStore.fetchCampusCurriculum(campusNumber)
       doFetchGrades()
-      campusStore.fetchClassesBySchool(schoolNumber)
+      await campusStore.fetchClassesBySchool(schoolNumber)
       fetchGradeScale()
 
       filterDraftData()

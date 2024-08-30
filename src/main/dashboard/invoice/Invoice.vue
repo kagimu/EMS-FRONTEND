@@ -1,3 +1,161 @@
+<script setup>
+import {onMounted, ref, watch,reactive} from "vue";
+import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
+import useNotificationStore from "@/composables/useNotification.js"
+import NewInvoice from "@/main/dashboard/invoice/NewInvoice.vue"
+import { useAbility } from '@casl/vue';
+import AppModal from "@/components/AppModal.vue";
+import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+import {useRouter} from "vue-router"
+const { can } = useAbility()
+const schoolStore = useSchoolStore()
+const campusStore = useCampusStore()
+import InvoicePayment from "./InvoicePayment.vue";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+const routerData = useRouter()
+const applicationStore= useApplicationStore()
+const studentNumber = routerData.currentRoute.value.query.st_id;
+const userNumber = ref(null)
+const invoiceData = ref([])
+const invoiceStore = useInvoiceStore()
+const  notificationStore  = useNotificationStore()
+const mymodal = ref(false)
+const invoiceNumber = ref("")
+const errorMessage = ref(null)
+const loader  = ref(false)
+const showPayment = ref(false)
+const userList = ref([])
+
+const school_number = ref("")
+const campus_number = ref("")
+const schoolList = ref([])
+const campusList = ref([])
+
+const showModal = () =>{
+  mymodal.value = true
+}
+
+const form = reactive({
+  statusData:""
+})
+
+onMounted(
+    async () => {
+      await schoolStore.fetchSchools()
+    }
+)
+
+const fetchCampuses = (school_number) => {
+  campusStore.fetchCampuses(school_number)
+  doFetchInvoices()
+}
+
+const doFetchInvoices = () =>{
+  let data = {
+    status:form.statusData,
+    school_number:school_number.value,
+    campus_number:campus_number.value,
+    user_number:userNumber.value
+  }
+  invoiceStore.fetchInvoice(data)
+}
+
+const paymentModal = (number) =>{
+  showPayment.value = true
+  invoiceNumber.value = number
+}
+
+
+
+
+
+watch (
+    () => applicationStore.studentDataResponse,
+    async (data) => {
+      if (data) {
+
+        userNumber.value = data.user_number
+        userList.value = data
+        doFetchInvoices()
+      }
+    }
+)
+
+
+
+
+
+watch(
+    () => invoiceStore.invoiceResponse,
+    async (data) => {
+      if(data){
+        invoiceData.value = data
+      }
+    },
+    {deep:true}
+)
+
+
+watch (
+    () => invoiceStore.newInvoiceResponse,
+    async (data) => {
+      if (data) {
+        // let school_number ="", campus_number="",status=""
+        // fetchAllInvoices()
+        // await invoiceStore.fetchInvoice(school_number, campus_number, userNumber.value, status)
+        mymodal.value=false
+
+      }
+    },
+    { deep: true }
+)
+
+watch (
+    () => invoiceStore.newInvoicePaymentResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+        showPayment.value = false
+        // fetchAllInvoices()
+      }
+    }
+)
+
+watch (
+    () => invoiceStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        notificationStore.errorToast("Error",data.message)
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        schoolList.value = data.data
+      }
+    }
+)
+
+
+watch(
+    () => campusStore.campusListResponse,
+    async (data) => {
+      if (data) {
+        campusList.value = data.data
+      }
+    }
+)
+
+
+
+</script>
 <template>
   <div>
 
@@ -13,11 +171,8 @@
 
     <div class="rw mt-3"  >
       <div class="">
-     <div class="row">
-      <div class="col-lg-4">
-      </div>
-      <div class="col-lg-8">
-
+     <div class="flex flex-grow justify-end">
+      <div v-if="studentNumber">
         <button  @click="showModal()" class="btn btn-primary btn-sm mb-2" style="float: right;" v-if="can('add_custom_invoice','general')">
         <small><i class="bi bi-plus"> Add New Invoice</i></small></button></div>
      </div>
@@ -26,6 +181,36 @@
   <div class="mt-4">
 
     <div class="row">
+      <div class="col-3">
+        <div class="mb-2">
+          <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm" required
+              v-model="school_number"
+              @change="fetchCampuses(school_number)"
+          >
+            <option disabled value=""> -Filter By School-</option>
+            <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="mb-2">
+          <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm"
+              v-model="campus_number" required
+              @change="doFetchInvoices"
+          >
+            <option disabled value="">-filter By Campus-</option>
+            <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
     <div class="col-3">
           <div class="mb-2">
             <select
@@ -36,7 +221,7 @@
                 >
                 <option disabled value="">-filter By Status</option>
               <option value="PAID">PAID</option>
-              <option value="PARTIALLY_PAID">PARTIALY PAID</option>
+              <option value="PARTIALLY_PAID">PARTIALLY PAID</option>
               <option value="NOT_PAID" >NOT PAID</option>
            
             </select>
@@ -123,125 +308,3 @@
 <style>
 
 </style>
-<script setup>
-import {onMounted, ref, watch,reactive} from "vue";
-import {useInvoiceStore} from "@/main/dashboard/invoice/store/invoice.js"
-import useNotificationStore from "@/composables/useNotification.js"
-import NewInvoice from "@/main/dashboard/invoice/NewInvoice.vue"
-import { useAbility } from '@casl/vue';
-import AppModal from "@/components/AppModal.vue";
-import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
-import {useRouter} from "vue-router"
-import InvoicePayment from "./InvoicePayment.vue";
-const routerData = useRouter()
-const applicationStore= useApplicationStore()
-const studentNumber = routerData.currentRoute.value.query.st_id;
-const userNumber = ref(null)
-const invoiceData = ref([])
-const invoiceStore = useInvoiceStore()
-const  notificationStore  = useNotificationStore()
-const mymodal = ref(false)
-const invoiceNumber = ref("")
-const errorMessage = ref(null)
-const loader  = ref(false)
-const showPayment = ref(false)
-const userList = ref([])
-const showModal = () =>{
-  mymodal.value = true
-}
-
- const form = reactive({
-  statusData:""
- })
-
- const doFetchInvoices = () =>{
-  let data = {
-    status:form.statusData,
-    school_number:"",
-    campus_number:"",
-    user_number:userNumber.value
-  }
-   invoiceStore.fetchInvoice(data)
- }
-
-const paymentModal = (number) =>{
-  showPayment.value = true
-  invoiceNumber.value = number
-}
-
-onMounted(
-    async () => {
-      await applicationStore.fetchStudent(studentNumber)
-    }
-)
-
-// const fetchAllInvoices = () => {
-//   let school_number ="", campus_number="",status=""
-//    invoiceStore.fetchInvoice(school_number, campus_number, userNumber.value, status)
-// }
-
-    watch (
-  () => applicationStore.studentDataResponse,
-  async (data) => {
-    if (data) {
-      userNumber.value = data.user_number
-      // fetchAllInvoices()
-      userList.value = data
-    }
-  },
-  { deep: true }
-)
-
-const { can } = useAbility()
-
-
-
-watch(
-    () => invoiceStore.invoiceResponse,
-    async (data) => {
-      if(data){
-        invoiceData.value = data
-      }
-    },
-    {deep:true}
-)
-
-
-watch (
-    () => invoiceStore.newInvoiceResponse,
-    async (data) => {
-      if (data) {
-        // let school_number ="", campus_number="",status=""
-        // fetchAllInvoices()
-        // await invoiceStore.fetchInvoice(school_number, campus_number, userNumber.value, status)
-        mymodal.value=false
-
-      }
-    },
-    { deep: true }
-)
-
-watch (
-    () => invoiceStore.newInvoicePaymentResponse,
-    async (data) => {""
-      if(data){
-        notificationStore.successToast("Success", data.message)
-        showPayment.value = false
-        // fetchAllInvoices()
-      }
-    }
-)
-
-watch (
-    () => invoiceStore.errorMessage,
-    async (data) => {
-      if(data){
-        errorMessage.value = data.message
-        notificationStore.errorToast("Error",data.message)
-        loader.value = false
-      }
-    },
-    {deep:true}
-)
-
-</script>

@@ -6,8 +6,11 @@ export const useTransactionStore = defineStore("transaction", () => {
     let  transactionResponse= ref(null)
     const errorMessage = ref(null)
 
-    async function fetchTransactions(schoolN,userN) {
-        return await api.get("main/invoices/payments?school_number="+schoolN+"&user_number="+userN)
+    async function fetchTransactions(data) {
+            let school_number = data?.school_number ?? ""
+            let campus_number = data?.campus_number ?? ""
+            let userNumber = data?.userNumber ?? ""
+        return await api.get("main/invoices/payments?school_number="+school_number+"&campus_number="+campus_number+"&user_number="+userNumber)
             .then((response) => {
                 transactionResponse.value = response.data
             })

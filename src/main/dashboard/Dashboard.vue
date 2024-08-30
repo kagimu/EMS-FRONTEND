@@ -37,6 +37,7 @@ const menuList = ref([
   {title:"Time table", name:"timetable", icon:"bi-pen",action:"view_timetable-details"},
   {title:"Student Application", name:"student-application", icon:"bi-person-plus",action:"view_applications"},
   {title:"Student Admission", name:"admission-list", icon:"bi-database-down",action:"view_admissions"},
+  {title:"Financial Records", name:"financial-records", icon:"bi-receipt",action:"view_admissions"},
   {title:"Student Enrolment", name:"enrolment", icon:"bi-database-down",action:"view_enrollments"},
   {title:"Catering", name:"catering", icon:"bi-egg-fried",action:"view_catering_menu" },
   {title:"Calendar", name:"general-calendar", icon:"bi-calendar3",action:"view_calendar"},
