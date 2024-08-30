@@ -75,12 +75,22 @@
   
   const fetchClasses = (campus_number) => {
     campusStore.fetchClassesByCampus(campus_number)
+    levelStore.fetchCampusCurriculum(campus_number)
   }
+
+  const fetchCampusLevel = (curriculumNumber) => {
+   classStore.fetchCampusLevel(curriculumNumber)
+}
   
   const fetchAcademicYear = (campusN) =>{
   academicYearStore.fetchAcademicYearByCampus(campusN)
   classStore.fetchClassStreams(campusN)
   }
+
+  const fetchLevelClasses = (levelNumber) => {
+   classStore.fetchClassLevel({campusCurriculumNumber: form.curriculumNumber, campusLevelNumber: levelNumber})
+}
+
 
   watch(
     () => academicYearStore.academicYearByCampusResponse,
@@ -106,6 +116,21 @@
   
   const filterByStudyPeriod = () => {
   }
+
+
+
+
+  watch(
+    () => levelStore.campusCurriculumResponse,
+    async (data) => {
+      if(data){
+        curriculumList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
   watch(
     () => classStore.classStreams,
     async (data) => {
@@ -243,6 +268,16 @@
   )
   
   watch(
+    () => classStore.classLevelInfoResponse,
+    async (data) => {
+      if(data){
+        classList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+  watch(
     () => campusStore.errorMessage,
     async (data) => {
           if (data) {
@@ -264,6 +299,16 @@
     // alert(shDialog.value)
   }
   
+
+  watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        levelList.value = data.data 
+      }
+    },
+    {deep:true}
+)
       
       watch (
       () => applicationStore.errorMessage,
@@ -438,7 +483,7 @@ watch (
                                                 </div>
                                             <div class="col-3">
                                                <div class="mb-2">
-                                                  <select
+                                                  <!-- <select
                                                      style="box-shadow: none;"
                                                      class="form-select form-select-sm" required
                                                      v-model="form.campus_class_number"
@@ -447,7 +492,22 @@ watch (
                                                      <option disabled value="">-filter By class-</option>
                                                      <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}
                                                      </option>
-                                                  </select>
+                                                  </select> -->
+
+
+                                                  <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm" required
+                  v-model="form.campus_class_number"
+                  @change="fetchAcademicYear(form.campus_class_number)"
+                  >
+                <option disabled value="">-filter by class-</option>
+                <template v-for="(classItem, index) in classList" :key="index">
+                <option v-for="(classDetail, indx) in classItem.classes" :key="indx" :value="classDetail.number">
+                {{ classDetail.name }}
+                </option>
+                </template>
+                </select>
                                                </div>
                                             </div>
                                             <div class="col-3" style="display: none">

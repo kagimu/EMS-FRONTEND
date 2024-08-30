@@ -51,12 +51,8 @@ const fetchApplicationData = (applicationNumber) => {
         <div class="card sect mx-auto" style="margin-bottom:60px;margin-top:50px;border-radius: 16px; width: 80%;">
           <div class="card-body" >
            <div class="row">
-            <div class="col-lg-6" style="text-align: center;padding-top:15px;">
-              <p class="txt4">You are applying for</p>
-              <h1 class="txt3">Victorious Education Services</h1>
-              <p class="txt4">To continue your application, please fill out the form below.</p>
-            </div>
-            <div class="col-lg-6">
+           
+            <div class="col-lg-12">
               <div>
             <div class="text-center">
               <ul class="nav nav-tabs text-xs" style="margin-top: 50px;">

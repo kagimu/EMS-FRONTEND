@@ -77,7 +77,7 @@ const reloadProfile = () => {
   
   <nav class="navbar navbar-expand-lg navbar-light bg-darkB sticky-top ">
     <div class="container-fluid d-flex justify-content-between align-items-center ">
-      <div class="d-flex align-items-center text-[11px]">
+      <div class="d-flex align-items-center text-[10px]">
         <router-link :to="{ name: 'client_dashboard' }" class="navbar-brand d-flex align-items-center text-white">
           <i class="bi bi-list "></i>&nbsp;
           <span class="fw-bol fs-5" style="color:#f8f8f8;">DASHBOARD</span>
@@ -85,7 +85,7 @@ const reloadProfile = () => {
       </div>
 
       <div class="d-flex align-items-center">
-        <button
+        <!-- <button
           :class="[
             menuSelected('application') ? 'btn btn-light me-3 text-success' : 'btn btn-outline-light me-3',
             'px-3 py-2'
@@ -93,7 +93,19 @@ const reloadProfile = () => {
           @click="applyApplication()"
         >
           APPLY NOW
-        </button>
+        </button> -->
+
+        <router-link
+          :class="[
+            menuSelected('application') ? 'btn btn-light me-3 text-success' : 'btn btn-outline-light me-3',
+            ' px-3 py-2'
+          ]"
+          :to="{ name: 'application' }"
+        >
+        APPLY NOW
+        </router-link>
+
+
 
         <router-link
           :class="[

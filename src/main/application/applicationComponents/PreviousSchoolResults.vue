@@ -121,8 +121,19 @@ watch (
       if(data){
         applicationId.value = data.number
         let campusClassNo = data?.student?.campus_class_number
+        
+        // if (localStorage.getItem("campus_curriculum_number")) {
+         
+        // }
+
         if(campusClassNo) {
-          await assessmentStore.fetchAssessmentAreaByClass(campusClassNo)
+          alert(campusClassNo)
+        //assessmentStore.fetchAssessmentAreaByClass(campusClassNo)
+        let data = {
+    class_number:campusClassNo,
+    curriculum_number:localStorage.getItem("campus_curriculum_number")
+  }
+  assessmentStore.fetchAssessmentArea(data)
         }
       }
     }

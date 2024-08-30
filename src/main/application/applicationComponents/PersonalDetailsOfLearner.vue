@@ -8,13 +8,17 @@ import api from "@/config/api.js";
 import {useRouter} from "vue-router";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
 import {useStudyModeStore} from "@/main/settings/mode-of-study/store/studyMode.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
 
-
+const levelStore = useLevelStore()
 const assessmentStore = useAssessmentStore()
 const modeStudyStore = useStudyModeStore()
 const modeOfSchoolData = ref([])
+const classStore = useClassesStore()
 // const routerData = useRouter()
 // let  applicationNumber = routerData.currentRoute.value.query.applicationId
+const levelList = ref([])
 
 const buttonLoader = ref(false)
 let errorMessage = ref(null)
@@ -28,6 +32,8 @@ const classList = ref([])
 const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
 const applicationId = ref(null)
+const curriculumList = ref([])
+
 
 const form = reactive({
   surname:null,
@@ -41,9 +47,11 @@ const form = reactive({
   preferred_campus_number: null,
   source_of_school_info: null,
   application_number: applicationId.value,
-  campus_class_number: null,
+  class_number: null,
   learner_number:null,
    mode_of_study_number:"",
+   campus_curriculum_number:"",
+   level:""
 })
 
 onMounted(() => {
@@ -60,6 +68,17 @@ const getModeOfStudyInfo = () =>{
   }
   modeStudyStore.fetchModeOfStudy(data)
 }
+
+
+watch(
+    () => levelStore.campusCurriculumResponse,
+    async (data) => {
+      if(data){
+        curriculumList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 
 watch(
@@ -80,13 +99,26 @@ const fetchCampuses = (school_number) => {
 }
 
 const fetchClasses = (campus_number) => {
-  // campusStore.fetchClassesByCampus(campus_number)
+  levelStore.fetchCampusCurriculum(campus_number)
+}
+
+
+const fetchLevelClasses = (levelNumber) => {
+   
   let data = {
     school_number:form.school_number,
-    campus_number:campus_number
+    campus_level_number:levelNumber,
+    campus_curriculum_number:form.campus_curriculum_number
   }
   campusStore.fetchClassesBySchool(data)
 }
+
+
+
+const fetchCampusLevel = (campus_curriculum_number) => {
+   classStore.fetchCampusLevel(campus_curriculum_number)
+}
+  
 
 let entity_number = localStorage.getItem('entity_number')
 
@@ -106,8 +138,7 @@ const addLearnerDetails = () => {
     if(form.learner_number){
       applicationStore.updateLearnerDetails(form.learner_number,form)
     }else{
-
-      form.class_number = form.campus_class_number
+      localStorage.setItem('campus_curriculum_number', form.campus_curriculum_number)
       form.campus_number = form.preferred_campus_number
       applicationStore.newApplicationLeanerDetails(form)
     }
@@ -122,10 +153,10 @@ watch (
     () => applicationStore.newApplicationDetailsLearnerResponse,
     async (data) => {
       if(data){
-        localStorage.setItem("CampusClassNumber", form.campus_class_number)
+        localStorage.setItem("CampusClassNumber", form.class_number)
         localStorage.setItem("studentNumber", data.data.number)
         buttonLoader.value = false
-        assessmentStore.fetchAssessmentAreaByClass(form.campus_class_number)
+        assessmentStore.fetchAssessmentAreaByClass(form.class_number)
 
         emit("next", {id:applicationId.value, step:3})
 
@@ -140,6 +171,16 @@ watch (
     }
 )
 
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        levelList.value = data.data ///---------------
+      }
+    },
+    {deep:true}
+)
 
 watch (
     () => applicationStore.updateLearnerPersonalDetailsresponse,
@@ -210,7 +251,7 @@ watch (
         form.gender= draft.gender
         form.date_of_birth=draft.date_of_birth
         form.preferred_campus_number=draft.preferred_campus_number
-        form.campus_class_number=draft.campus_class_number
+        form.class_number=draft.class_number
         form.reason_for_choosing_school=draft.reason_for_choosing_school
         form.source_of_school_info = draft.source_of_school_info
         form.learner_number = draft.number
@@ -322,13 +363,39 @@ watch(
               </select>
           </div>
 
+      <div class="mb-2">
+          <label class="textSize"><small>Curriculum</small></label>
+            <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+                v-model="form.campus_curriculum_number"  
+                @change="fetchCampusLevel(form.campus_curriculum_number)"                                         
+            >
+                <option disabled value="" >--Select Curriculum--</option>
+                <option  v-for="(lvl, index) in curriculumList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+            </select>
+          </div>
+
+          <div class="mb-2">
+              <label class="textSize"><small>Level</small></label>
+                <select
+                style="box-shadow: none;"
+                class="form-select form-select-sm"
+                  v-model="form.level"
+                  @change="fetchLevelClasses(form.level)"
+                >
+                  <option disabled value="">-Filter by level-</option>
+                  <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
+                </select>
+                
+            </div>
 
           <div class="mb-2">
               <label class="textColor"><small>Preferred Class</small> <span class="star">*</span></label>
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm" required
-                      v-model="form.campus_class_number"
+                      v-model="form.class_number"
               >
                   <option disabled value="">Select class</option>
                   <option v-for="(list, index) in classList" :key="index" :value="list.number">{{ list.name }}

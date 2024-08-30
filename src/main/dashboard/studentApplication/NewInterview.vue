@@ -12,6 +12,8 @@
     import { useAssessmentStore } from "@/main/dashboard/assessment/store/assessment.js";
     import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
     import {useLevelStore} from "@/main/settings/level/store/level.js";
+    import ComboBox from "@/components/ComboBox.vue";
+
     
     const levelStore = useLevelStore()
     const classStore = useClassesStore()
@@ -53,7 +55,7 @@
       interview_date:null,
       venue:null,
       message:null,
-      campus_class_number:null,
+      class_number:null,
       assessment_metrics:[]
     })
 
@@ -73,7 +75,7 @@ const getInterviewDetails = () =>{
   if(props.interviewListData.interview_number){
     let data = {
       interview_number : props.interviewListData.interview_number,
-      campus_class_number:props.interviewListData.campus_class_number
+      class_number:props.interviewListData.class_number
     }
     applicationStore.fetchInterviewListById(data)
   }
@@ -92,22 +94,22 @@ const getInterviewDetails = () =>{
     const createInterview = () => {
       if(props.interviewListData.interview_number){
         formData.interview_number = props.interviewListData.interview_number
-        // alert(JSON.stringify(formData))
-        formData.class_number = formData.campus_class_number
+        formData.campus_curriculum_number = curriculumNumber.value
+      
         formData.campus_number = campus_number.value
        applicationStore.updateInterview(formData)
       }else{
-        formData.class_number = formData.campus_class_number
+        formData.campus_curriculum_number = curriculumNumber.value
         formData.campus_number = campus_number.value
         applicationStore.createNewInterview(formData)
       }
       
     }
 
-  const doFetchAssessmentMetrics = (campus_class_number) => {
+  const doFetchAssessmentMetrics = (class_number) => {
     assessmentStore.fetchAssessmentMetrics(
       {
-        class_number:campus_class_number,
+        class_number:class_number,
         campus_number:campus_number.value
       })
 
@@ -141,9 +143,9 @@ const checked = ref(false)
         }
         if(campus_number){
           campusStore.fetchClassesByCampus(data.data.campus_number)
-          formData.campus_class_number = data.data.campus_class_number
+          formData.class_number = data.data.class_number
           // assessmentMetricList.value = data.data.assessment_schedules
-          assessmentStore.fetchAssessmentMetrics({campus_class_number:data.data.campus_class_number})
+          assessmentStore.fetchAssessmentMetrics({class_number:data.data.class_number})
         }
 
           }
@@ -308,7 +310,19 @@ watch (
     () => assessmentStore.assessmentMetricsResponse,
     async (data) => {
       if(data && data.data){
-        assessmentMetricList.value = data.data
+        // assessmentMetricList.value = data.data
+
+
+        let draft = data?.data 
+        if(draft && (draft?.length > 0)){
+          let arr = []
+          draft?.forEach(lst => {
+            arr.push({text:lst?.assessment_area+ " ["+lst.metric_name + "]",value:lst?.number})
+          })
+          assessmentMetricList.value = arr
+        }
+        
+
       }
     },
     {deep:true}
@@ -379,8 +393,8 @@ watch (
           <select
             style="box-shadow: none;"
             class="form-select form-select-sm" required
-            v-model="formData.campus_class_number"
-           @change="doFetchAssessmentMetrics(formData.campus_class_number)"
+            v-model="formData.class_number"
+           @change="doFetchAssessmentMetrics(formData.class_number)"
             >
           <option disabled value="">-filter by class-</option>
           <template v-for="(classItem, index) in classList" :key="index">
@@ -391,8 +405,25 @@ watch (
           </select>
           </div>
 
-          <div class="mb-2">
-             <label class="textColor"><small>Title</small></label>
+          
+        <div class="mb-2">
+          <!-- v-if="assessmentMetricList.length > 0" -->
+          <label class="textSize" ><small>Assessment Schedule</small></label>
+
+          <combo-box
+            v-model:optionResponse="formData.assessment_metrics"
+            :optionList="assessmentMetricList"
+            :optionDraft="formData.assessment_metrics"
+        ></combo-box>
+        </div>
+
+    </div>
+
+    <div class="col-lg-6">
+     
+      
+      <div class="mb-2">
+             <label class="textColor"><small>Interview Title</small></label>
              <input v-model="formData.name" type="text" required class="form-control">
           </div>
           <div class="mb-2">
@@ -407,28 +438,6 @@ watch (
              <label class="textColor"><small>Description</small></label>
              <textarea v-model="formData.message"  required class="form-control noFocus" id="floatingTextarea2" style="height: 100px"></textarea>
           </div>
-    </div>
-
-    <div class="col-lg-6">
-      <div class="mb-2">
-<!-- {{ formData.assessment_metrics }} -->
-
-        <div class="mb-2">
-          <label class="textColor mt-3 mb-2" v-if="assessmentMetricList.length > 0">Select Assessment Schedule</label>
-          <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;" v-if="assessmentMetricList.length > 0">
-            <li class="list-group-item" v-for="(lvl,idx) in assessmentMetricList">
-              <input
-                  v-model="formData.assessment_metrics"
-                  class="form-check-input me-1 shadow-none" type="checkbox" :value="lvl.number" :id="idx"
-                  style="outline: none 0 !important; box-shadow: none;width: 20px;height: 20px;"
-                  >
-              <label class="form-check-label cursor-pointer" :for="idx">{{lvl.metric_name}} ({{ lvl.description }})</label>
-            </li>
-
-          </ul>
-        </div>
-
-      </div>
 
     </div>
 
