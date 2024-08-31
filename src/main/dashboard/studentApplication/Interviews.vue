@@ -10,7 +10,10 @@ import AppModal from "@/components/AppModal.vue";
 import NewInterview from "@/main/dashboard/studentApplication/NewInterview.vue"
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
 
+const levelStore = useLevelStore()
 const campusList = ref([])
 const schoolList = ref("")
 const schoolStore = useSchoolStore()
@@ -18,7 +21,6 @@ const campusStore = useCampusStore()
 const showingModal = ref(false)
 const interviewList = ref( [])
 let errorMessage = ref(null)
-
 const buttonLoader = ref(false)
 const interviewNumber = ref(null)
 const studentApplicationStore = useStudentApplicationStore()
@@ -34,6 +36,9 @@ const editMode = ref(false)
 const namee = ref(null)
 const school_number = ref("")
 const campus_number = ref("")
+const curriculumList = ref([])
+const levelList = ref([])
+const classStore = useClassesStore()
 
 const showModal = () => {
   interviewListData.value = ""
@@ -80,6 +85,7 @@ const showInterviewAssessmentDialog = (interview) =>{
 
 const fetchClasses = (campus_number) => {
       campusStore.fetchClassesByCampus(campus_number)
+      levelStore.fetchCampusCurriculum(campus_number)
   }
 
 const formData = reactive({ 
@@ -91,10 +97,17 @@ assessment:[]
 })
 
 
-const createInterview = () => {
-// alert(JSON.stringify(formData))
-applicationStore.createNewInterview(formData)
+const fetchCampusLevel = (curriculumNumber) => {
+   classStore.fetchCampusLevel(curriculumNumber)
 }
+
+const fetchLevelClasses = (levelNumber) => {
+   classStore.fetchClassLevel({campusCurriculumNumber: form.curriculumNumber, campusLevelNumber: levelNumber})
+}
+
+// const createInterview = () => {
+// applicationStore.createNewInterview(formData)
+// }
 
   const showAssesssmentMetricsDialog = (interview) =>{
   interviewNumber.value = interview.number
@@ -120,6 +133,25 @@ applicationStore.deleteInterviewList(data)
   }
 }
 
+
+watch(
+    () => levelStore.campusCurriculumResponse,
+    async (data) => {
+      if(data){
+        curriculumList.value = data.data
+      }
+    },
+    {deep:true}
+)
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        levelList.value = data.data ///---------------
+      }
+    },
+    {deep:true}
+)
 
 watch(
     () => applicationStore.interviewDeleteByIdResponse,
@@ -205,15 +237,24 @@ watch(
       )
 
 
-      watch(
-      () => campusStore.campusClassesResponse,
-      async (data) => {
-          if (data) {
-              classList.value = data.data
-          }
-      },
-      {deep: true}
-  )
+  //     watch(
+  //     () => campusStore.campusClassesResponse,
+  //     async (data) => {
+  //         if (data) {
+  //             classList.value = data.data
+  //         }
+  //     },
+  //     {deep: true}
+  // )
+  watch(
+    () => classStore.classLevelInfoResponse,
+    async (data) => {
+      if(data){
+        classList.value = data.data
+      }
+    },
+    {deep:true}
+)
   </script>
 
 <template>
@@ -335,7 +376,7 @@ watch(
         <div class="col-4"> 
         <div class="mb-2">
             <label class="textSize"><small>Class</small></label>
-            <select
+            <!-- <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required
               v-model="form.campus_class_number"
@@ -343,7 +384,22 @@ watch(
             >
               <option disabled value="">Select class</option>
               <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}</option>
-            </select>
+            </select> -->
+
+                <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm" required
+                  v-model="form.campus_class_number"
+                  @change="getInterviewList(form.campus_class_number)"
+                  >
+                <option disabled value="">-filter by class-</option>
+                <template v-for="(classItem, index) in classList" :key="index">
+                <option v-for="(classDetail, indx) in classItem.classes" :key="indx" :value="classDetail.number">
+                {{ classDetail.name }}
+                </option>
+                </template>
+                </select>
+
           </div>
         </div>
         
