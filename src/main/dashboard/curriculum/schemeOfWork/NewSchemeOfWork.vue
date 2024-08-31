@@ -229,18 +229,11 @@ const schemeOptions  = ref([
     text:"New",
     value:"new"
   },
- /* {
-    text:"Standard Scheme",
-    value:"standard_scheme"
-  },*/
   {
     text:"Template",
     value:"template"
   },
 ])
-
-
-
 
 
 const form = reactive({
@@ -250,9 +243,44 @@ const form = reactive({
   academic_year_number:"",
 })
 
+const props = defineProps({
+  schemeOfWorkList: {},
+})
+
+
+onMounted(
+    () =>{
+        fetchAcademicYrList(classNo)
+        checkDraft()
+    }
+)
+
+
+watch(
+    () => props.schemeOfWorkList,
+    async (data) => {
+      if(data) {
+        checkDraft()
+      }
+    }
+)
+
+const checkDraft = () => {
+  let info = props.schemeOfWorkList
+  if(info && (info.status === "Pending")){
+    scheme_number.value = info.number
+    form.name = info.name
+    form.class_number = info.class_number
+    form.subject_number = info.subject_number
+    form.academic_year_number = info.academic_year_number
+
+    subtopicList.value = info.subtopic
+  }
+}
+
 const filterByType = (type) => {
   if(type){
-  //  alert(type)
+    //  alert(type)
   }
 }
 
@@ -264,7 +292,7 @@ const downloadSchemeByTemplate = (event) => {
 }
 
 const uploadTemplate = () => {
-    showTemplateUpload.value = !showTemplateUpload.value
+  showTemplateUpload.value = !showTemplateUpload.value
 }
 
 let classNumber = routerData.currentRoute.value.query.c
@@ -287,23 +315,10 @@ const filterSubject = (subjectNumber) => {
   subtopicStore.fetchSubTopicsByClass({class_number:form.class_number, subject_number:subjectNumber})
 }
 
-onMounted(
-    () =>{
-      // subtopicStore.fetchSubTopics(classNumber ? classNumber : "")
-       fetchAcademicYrList(classNo)
-    }
-)
-
-
 const fetchAcademicYrList = (classNumber) => {
   subjectStore.fetchAcademicYearByClass(classNumber)
   subjectStore.fetchSchemeSubjectByClass(classNumber)
 }
-
-const props = defineProps({
-  schemeOfWorkList: [],
-})
-
 
 
 const addSchemeOfWork = () =>{
@@ -358,22 +373,7 @@ const validateForm = () => {
 
 
 
-watch(
-    () => props.schemeOfWorkList,
-    async (data) => {
-      if(data && (data.status === "Pending")){
-        let info  = data
-        scheme_number.value = info.number
-        form.name = info.name
-        form.class_number = info.class_number
-        form.subject_number = info.subject_number
-        form.academic_year_number = info.academic_year_number
 
-        subtopicList.value = info.subtopic
-      }
-    },
-    {deep:true}
-)
 
 
 watch(

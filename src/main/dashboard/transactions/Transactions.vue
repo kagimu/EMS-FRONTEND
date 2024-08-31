@@ -17,6 +17,8 @@ const studentNumber = routerData.currentRoute.value.query.st_id;
 const userNumber = ref("")
 const school_number = ref("")
 const campus_number = ref("")
+const start_date = ref("")
+const end_date = ref("")
 const schoolList = ref([])
 const campusList = ref([])
 
@@ -42,7 +44,9 @@ const fetchTransactionData = () => {
   let data = {
     school_number:school_number.value,
     campus_number:campus_number.value,
-    userNumber:userNumber.value
+    userNumber:userNumber.value,
+    start_date:start_date.value,
+    end_date:end_date.value
   }
   transactionStore.fetchTransactions(data)
 }
@@ -108,8 +112,8 @@ watch (
       </AppModal>
 
 
-      <div class="row mt-3">
-        <div class="col-3">
+      <div class="grid grid-cols-4 gap-2 px-2 mt-4">
+        <div class="">
           <div class="mb-2">
             <select
                 style="box-shadow: none;"
@@ -123,7 +127,7 @@ watch (
             </select>
           </div>
         </div>
-        <div class="col-3">
+        <div class="">
           <div class="mb-2">
             <select
                 style="box-shadow: none;"
@@ -137,7 +141,35 @@ watch (
             </select>
           </div>
         </div>
+
+        <div>
+          <div class="mb-2">
+            <input
+                class="form-control  shadow-none"
+                type="date"
+                v-model="start_date"
+                pattern="\d{2}/\d{2}/\d{4}"
+                @change="fetchTransactionData"
+                placeholder="Start date">
+            <div class="text-xs text-gray-600 ml-2">Start date</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="mb-2">
+            <input
+                @change="fetchTransactionData"
+                pattern="\d{2}/\d{2}/\d{4}"
+                class="form-control shadow-none"
+                type="date" v-model="end_date"
+                placeholder="End date">
+            <div class="text-xs text-gray-600 ml-2">End date</div>
+          </div>
+        </div>
+
       </div>
+
+
 
 
   
@@ -161,6 +193,7 @@ watch (
       >
         <thead>
           <tr>
+            <th>#</th>
             <th>Invoice Ref_No</th>
             <th>Amount</th>
             <th>Recorded By</th>
@@ -169,6 +202,7 @@ watch (
      </thead>
      <tbody>
           <tr v-for="(list,index) in transactionList" :key="index">
+          <td>{{ (index + 1) }}</td>
           <td>{{ list.invoice_ref_number }}</td>
           <td>{{ list.amount }}</td>
           <td>{{ list.recorded_by }}</td>

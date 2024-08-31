@@ -116,8 +116,8 @@ const removeItem = (idx:number) => {
         @click="openDropdown"
         @focus="openDropdown"
         class="border rounded-md py-2 flex flex-wrap cursor-text">
-      <div v-if="selectedItems.length < 1" class="text-xs">
-        &nbsp;
+      <div v-if="selectedItems.length < 1" class="text-xs text-gray-600">
+       <div class="ml-3">--Select Item--</div>
       </div>
       <div
           v-else
@@ -134,7 +134,7 @@ const removeItem = (idx:number) => {
     <div
         ref="target"
         v-if="dropdownOpen"
-        class="absolute mt-1 w-full border border-gray-300 rounded-lg bg-white shadow-lg z-10"
+        class="absolute mt-1  border border-gray-300 rounded-lg bg-white shadow-lg z-10 w-full"
     >
       <div class="px-2 pt-2">
         <input
@@ -160,7 +160,9 @@ const removeItem = (idx:number) => {
                 type="checkbox"
                 :value="item?.value"
                 :id="item?.value">
-            <label class="form-check-label cursor-pointer capitalize ml-3 text-sm text-gray-600" :for="item?.value">{{item?.text}}</label>
+            <label
+                class="form-check-label cursor-pointer capitalize ml-3 text-sm text-gray-600 whitespace-nowrap overflow-hidden text-ellipsis"
+                 :for="item?.value">{{item?.text}}</label>
             </div>
           </div>
       </div>
