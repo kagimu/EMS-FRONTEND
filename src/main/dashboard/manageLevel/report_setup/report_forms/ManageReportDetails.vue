@@ -1,16 +1,23 @@
 <script setup>
 
-import {ref, watch} from "vue";
+import {ref, watch,reactive} from "vue";
 import {useReportCardStore} from "@/main/dashboard/report-card/store/report-card.js";
 import BabyClassReport from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/BabyClassReport.vue";
 import PrimaryReport from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/PrimaryReport.vue";
 import TopClassReport from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/TopClassReport.vue";
 import VictoriousReportCard
   from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/victorious/VictoriousReportCard.vue";
+
+  import {usePrintStore} from "@/main/dashboard/print/print.js";
 const reportStore = useReportCardStore()
+const printStore = usePrintStore()
 
 const reportDetails = ref(null)
 // const showReport = ref(false)
+
+const formData = reactive({
+  // innerHtmlData : repo.$el.innerHTML
+  })
 
 watch(
     () => reportStore.reportDetailsResponse,
@@ -21,10 +28,27 @@ watch(
     }
 )
 
+const myDiv = ref(null)
+
+const print = () => {
+  let htmlContent = myDiv.value.innerHTML;
+  
+
+  let data  = {
+   html: htmlContent.replace(/<!--v-if-->/g, '')
+  }
+
+alert(JSON.stringify(data))
+  printStore.printReport(data)
+}
+
 </script>
 
 <template>
+
 <div>
+  <button class="btn btn-success mb-2 " @click="print"><i class="bi bi-printer"></i></button>
+<div ref="myDiv">
 
   <div v-if="reportDetails?.report_template_name === 'noregrets-early-learning-report-one'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
     <baby-class-report></baby-class-report>
@@ -44,7 +68,7 @@ watch(
   <div v-if="reportDetails?.report_template_name === 'victorious-report-primary'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
     <victorious-report-card :reportDetails="reportDetails"></victorious-report-card>
   </div>
-
+</div>
 </div>
 </template>
 
