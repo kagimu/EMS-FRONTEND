@@ -177,7 +177,6 @@ watch(
           })
           itemsList.value = arr
         }
-
       }
     }
 )
