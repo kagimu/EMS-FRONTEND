@@ -10,6 +10,7 @@ import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/stor
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
 import {useRouter} from "vue-router";
+import ComboBox from "@/components/ComboBox.vue";
 
 const campusStore = useCampusStore()
 const routerData = useRouter()
@@ -207,7 +208,17 @@ watch (
     () => assessmentStore.assessmentMetricsResponse,
     async (data) => {
       if(data && data.data){
-        assessmentMetricList.value = data.data
+        // assessmentMetricList.value = data.data
+
+        let draft = data?.data 
+        if(draft && (draft?.length > 0)){
+          assessmentMetricList.value = []
+          let arr = []
+          draft?.forEach(lst => {
+            arr.push({text:lst?.assessment_area+"["+lst?.metric_name+"]"+"("+lst?.description+")",value:lst?.number})
+          })
+          assessmentMetricList.value = arr
+        }
       }
     }
 )
@@ -284,7 +295,7 @@ watch(
         <div class="col-lg-4">
 
       <div class="mb-2">
-        <label class="textColor"><small>Code</small></label>
+        <label class="textSize"><small>Code</small></label>
         <input
             @keypress="commons.codeValidator($event)"
             maxlength="10"
@@ -296,7 +307,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Level</small></label>
+        <label class="textSize"><small>Level</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -309,7 +320,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Academic Year</small></label>
+        <label class="textSize"><small>Academic Year</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -323,7 +334,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Class</small>
+        <label class="textSize"><small>Class</small>
         </label>
         <select
             style="box-shadow: none;"
@@ -337,7 +348,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Report Settings</small></label>
+        <label class="textSize"><small>Report Settings</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -350,7 +361,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Report Column</small></label>
+        <label class="textSize"><small>Report Column</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -363,7 +374,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Study Period</small>
+        <label class="textSize"><small>Study Period</small>
         </label>
         <select
             style="box-shadow: none;"
@@ -384,7 +395,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Assessment Area</small></label>
+        <label class="textSize"><small>Assessment Area</small></label>
         <select
             required
             class="form-control shadow-none"
@@ -399,8 +410,8 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Assessment Schedule</small></label>
-        <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+        <label class="textSize"><small>Assessment Schedule</small></label>
+        <!-- <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
           <li class="list-group-item" v-for="(lvl,idx) in assessmentMetricList">
             <input
                 v-model="form.assessment_schedule"
@@ -411,11 +422,18 @@ watch(
             </label>
           </li>
 
-        </ul>
+        </ul> -->
+
+         
+        <combo-box
+            v-model:optionResponse="form.assessment_schedule"
+            :optionList="assessmentMetricList"
+            :optionDraft="form?.assessment_schedule"
+        ></combo-box>
       </div>
 
       <!-- <div class="mb-2">
-        <label class="textColor"><small>Assessment Schedule</small></label>
+        <label class="textSize"><small>Assessment Schedule</small></label>
         <select
             class="form-control form-select form-control-sm shadow-none"
             v-model="form.assessment_metric_number"
