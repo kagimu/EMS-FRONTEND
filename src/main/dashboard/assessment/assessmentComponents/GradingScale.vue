@@ -107,10 +107,6 @@ watch(
 )
 
 
-
-
-
-
 // aggregateData
 watch(
     () => assessmentStore.aggregateScaleResponse,

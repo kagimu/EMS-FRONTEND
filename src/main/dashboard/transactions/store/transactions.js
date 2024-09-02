@@ -10,7 +10,16 @@ export const useTransactionStore = defineStore("transaction", () => {
             let school_number = data?.school_number ?? ""
             let campus_number = data?.campus_number ?? ""
             let userNumber = data?.userNumber ?? ""
-        return await api.get("main/invoices/payments?school_number="+school_number+"&campus_number="+campus_number+"&user_number="+userNumber)
+            let start_date = data?.start_date ?? ""
+            let end_date = data?.end_date ?? ""
+
+        return await api.get("main/invoices/payments" +
+                "?school_number="+school_number+
+                "&campus_number="+campus_number+
+                "&user_number="+userNumber+
+                "&start_date="+start_date+
+                "&end_date="+end_date
+            )
             .then((response) => {
                 transactionResponse.value = response.data
             })

@@ -159,7 +159,7 @@ watch(
             // selectedClass.value = classNo
             await subjectStore.fetchSchemeSubjectByClass(classNo)
             // await subjectStore.fetchAcademicYearByClass(classNo)
-            await fetchAcademicYrList(classNo)
+             fetchAcademicYrList(classNo)
 
             // fetch scheme of work
             if(academic_year_number.value && scheme_subject_number.value) {
@@ -307,7 +307,7 @@ watch(
     () => classStore.campusLevelResponse,
     async (data) => {
       if(data){
-        levelList.value = data.data ///---------------
+        levelList.value = data.data
       }
     },
     {deep:true}
@@ -329,9 +329,6 @@ watch(
     async (data) => {
       if(data){
         curriculumList.value = data.data
-        /* if(!campusCurriculumNumber){
-           campusCurriculumNumber = curriculumInfo[0].number
-         }*/
       }
     },
     {deep:true}

@@ -344,8 +344,7 @@ watch(
       if (data) {
         ServiceOptions.value = data.map(option => ({ name: option.name, cost: option.cost,item_number:option.number }));
       }
-    },
-    { deep: true }
+    }
   )
   
   const Admit = () =>{
