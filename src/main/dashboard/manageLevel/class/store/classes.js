@@ -219,7 +219,11 @@ export const useClassesStore = defineStore("classes", () => {
     }
 
     async function fetchClassStreams(data) {
-        return await api.get("main/stream/fetch?class_level_number="+data)
+        let class_level_number =  data?.class_level_number ?? ""
+          let campus_number =  data?.campus_number ?? ""
+        let campus_curriculum_number =  data?.campus_curriculum_number ?? ""
+        let class_number = data?.class_number ?? ""
+        return await api.get("main/stream/fetch?class_level_number="+class_level_number+"&class_number="+class_number+"&campus_curriculum_number="+campus_curriculum_number+"&campus_number="+campus_number)
             .then((response) => {
                 classStreams.value = response.data
             })

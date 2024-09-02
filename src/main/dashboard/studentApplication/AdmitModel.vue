@@ -112,7 +112,16 @@
 
 
   const fetchStudyPeriodData = (clasN) => {
-    classStore.fetchClassStreams(clasN)
+
+    let sData = {
+     campus_number:form.campus_number,
+     class_number:clasN,
+     campus_curriculum_number:form.curriculumNumber
+
+    }
+    classStore.fetchClassStreams(sData)
+
+
     studyPeriodStore.fetchStudyPeriod(
       {
         academic_year_number:form.academic_year_number,
