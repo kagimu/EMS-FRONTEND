@@ -8,6 +8,7 @@ import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import ComboBox from "@/components/ComboBox.vue";
 
 const classError = ref(null)
 const name = ref(null)
@@ -95,15 +96,7 @@ watch(
     }
 )
 
-// watch(
-//     () => mealStore.newMealCourseFeedingSessionsResponse,
-//     async (data) => {
-//       if (data) {
-        
-//         loader.value = false
-//       }
-//     }
-// )
+
 
 
 watch(
@@ -120,7 +113,17 @@ watch(
     () => campusStore.campusListResponse,
     async (data) => {
       if (data) {
-        campusList.value = data.data
+        // campusList.value = data.data
+
+        let draft = data?.data 
+        if(draft && (draft?.length > 0)){
+          campusList.value = []
+          let arr = []
+          draft?.forEach(lst => {
+            arr.push({text:lst?.name,value:lst?.name})
+          })
+          campusList.value = arr
+        }
       }
     }
 )
@@ -138,7 +141,17 @@ watch(
     () => mealStore.mealDataResponse,
     async (data) => {
       if(data){
-        feedingSessionGroupList.value = data.data
+        // feedingSessionGroupList.value = data.data
+
+        let draft = data?.data 
+        if(draft && (draft?.length > 0)){
+          feedingSessionGroupList.value = []
+          let arr = []
+          draft?.forEach(lst => {
+            arr.push({text:lst?.name,value:lst?.feeding_session_number})
+          })
+          feedingSessionGroupList.value = arr
+        }
       }
     }
 )
@@ -169,7 +182,26 @@ watch(
             </select>
           </div>
 
-          
+          <div class="mb-2">
+            <label class="textColor mt-3 mb-2"><small>Select Campus</small></label>
+            <!-- <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+              <li class="list-group-item" v-for="(lst,idx) in campusList">
+                <input
+                    v-model="form.campuses"
+                    style="outline: none 0 !important; box-shadow: none;"
+                    class="form-check-input me-1" type="checkbox" :value="lst.number" :id="idx+'-campus'">
+                <label class="form-check-label cursor-pointer" :for="idx+'-campus'">{{ lst.name }}</label>
+              </li>
+            </ul> -->
+
+      
+            <combo-box
+            v-model:optionResponse="form.campuses"
+            :optionList="campusList"
+            :optionDraft="form?.campuses"
+        ></combo-box>
+
+          </div>
 
           <div class="mb-2">
             <label class="textColor"><small>Meal Course</small></label>
@@ -188,30 +220,26 @@ watch(
 
           <div class="mb-2">
             <label class="textColor"><small>Menu Pack</small></label>
-            <select
+            <!-- <select
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
                 v-model="form.feeding_session_number">
               <option disabled value="">--Select Menu Pack--</option>
               <option v-for="(lst, index) in feedingSessionGroupList" :key="index" :value="lst.feeding_session_number">{{ lst.name }}
               </option>
-            </select>
+            </select> -->
+
+                  
+        <combo-box
+            v-model:optionResponse="form.feeding_session_number"
+            :optionList="feedingSessionGroupList"
+            :optionDraft="form?.feeding_session_number"
+        ></combo-box>
           </div>
 
 
 
-          <div class="mb-2" v-if="campusList && (campusList.length > 0)">
-            <label class="textColor mt-3 mb-2"><small>Select Campus</small></label>
-            <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-              <li class="list-group-item" v-for="(lst,idx) in campusList">
-                <input
-                    v-model="form.campuses"
-                    style="outline: none 0 !important; box-shadow: none;"
-                    class="form-check-input me-1" type="checkbox" :value="lst.number" :id="idx+'-campus'">
-                <label class="form-check-label cursor-pointer" :for="idx+'-campus'">{{ lst.name }}</label>
-              </li>
-            </ul>
-          </div>
+     
 
 
         </div>

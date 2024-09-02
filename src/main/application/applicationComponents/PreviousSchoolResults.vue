@@ -127,7 +127,7 @@ watch (
         // }
 
         if(campusClassNo) {
-          alert(campusClassNo)
+        //alert(campusClassNo)
         //assessmentStore.fetchAssessmentAreaByClass(campusClassNo)
         let data = {
     class_number:campusClassNo,

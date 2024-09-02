@@ -8,6 +8,7 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 import { useAbility } from '@casl/vue';
+import ComboBox from "@/components/ComboBox.vue";
 const { can } = useAbility()
 
 const confirmationRef = ref(null);
