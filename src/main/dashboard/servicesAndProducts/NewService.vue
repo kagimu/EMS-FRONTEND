@@ -5,6 +5,7 @@ import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/servic
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import useCommonsStore from "@/composables/useCommons.js";
+import ComboBox from "@/components/ComboBox.vue";
 
 const serviceStore= useServiceStore()
 const  notificationStore  = useNotificationStore()
@@ -55,7 +56,6 @@ watch (
 const checkDraftData = () => {
   let draft = props.serviceDetails
   if(draft){
-
     formData.description = draft?.item?.description ?? null
     formData.cost = draft?.item?.cost ?? null
     formData.name = draft?.item?.name ?? null
@@ -68,7 +68,7 @@ const checkDraftData = () => {
       fetchCampuses(draft?.item?.school_number)
     }
     if(draft?.campus_services){
-    formData.campus_numbers = (draft?.campus_services ?? []).map(item => item.campus_number);
+      formData.campus_numbers = (draft?.campus_services ?? []).map(item => item.campus_number);
     }
   }
 }
@@ -128,7 +128,6 @@ watch (
       if(data){
         errorMessage.value = data.message
         buttonLoader.value = false
-        // notificationStore.errorToast("Error",data.message)
       }
     }
 )
@@ -147,7 +146,19 @@ watch(
     () => campusStore.campusListResponse,
     async (data) => {
       if (data) {
-        campusList.value = data.data
+        // campusList.value = data.data
+        campusList.value = []
+        formData.campus_numbers = []
+        let draft = data.data
+        if (draft) {
+          if(draft && (draft.length > 0)){
+            let arr = []
+            draft.forEach(lst => {
+              arr.push({text:lst?.name,value:lst?.number})
+            })
+            campusList.value = arr
+          }
+        }
       }
     },
     {deep: true}
@@ -155,10 +166,9 @@ watch(
 
 </script>
 <template>
-  {{ serviceDetails }}
         <form @submit.prevent="createNewService">
 
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-2 gap-4 text-gray-600">
 
             <div>
               <div class="mb-2">
@@ -177,26 +187,14 @@ watch(
 
 
               <div class="mb-2">
-                <label class="textColor mt-3 mb-2">Campus</label>
-
-                <div v-if="(campusList && (campusList.length > 0))" class="max-h-[250px] overflow-y-scroll scrollbar-thin my-2 border rounded-md">
-                  <ul class="list-group list-group-flush text-sm">
-                    <li class="list-group-item" v-for="(camp,idx) in campusList">
-                      <input
-                          v-model="formData.campus_numbers"
-                          class="form-check-input me-1 shadow-none cursor-pointer"
-                          type="checkbox"
-                          :value="camp.number"
-                          :id="idx">
-                      <label class="form-check-label cursor-pointer ml-2" :for="idx">{{camp.name}}</label>
-                    </li>
-                  </ul>
-                </div>
-
+                <label class="textColor">Campus</label>
+                <combo-box
+                    v-model:optionResponse="formData.campus_numbers"
+                    :optionList="campusList"
+                    :optionDraft="formData?.campus_numbers"
+                ></combo-box>
               </div>
-            </div>
 
-            <div>
 
               <div class="mb-2">
                 <label class="textColor">Name</label>
@@ -209,6 +207,13 @@ watch(
                 <input  type="text" style="outline: none 0 !important;box-shadow: none;"
                         required class="form-control form-select-sm" v-model="formData.serial_code">
               </div>
+
+
+            </div>
+
+            <div>
+
+
 
               <div class="mb-2">
                 <label class="textColor">Cost</label>
@@ -229,13 +234,13 @@ watch(
                  <div class="flex">
                    <div class="mr-4">
                      <input v-model="formData.mandatory" class="cursor-pointer" type="radio" :value="true" name="flexRadioDefault" id="box1">
-                     <label class="form-check-label ml-2 cursor-pointer" for="box1">
+                     <label class="form-check-label ml-2 cursor-pointer text-sm text-gray-600" for="box1">
                        Mandatory
                      </label>
                    </div>
                    <div class="">
                      <input v-model="formData.mandatory" class="cursor-pointer" type="radio" :value="false" name="flexRadioDefault" id="box2">
-                     <label class="form-check-label ml-2 cursor-pointer" for="box2">
+                     <label class="form-check-label ml-2 cursor-pointer text-sm text-gray-600" for="box2">
                        Optional
                      </label>
                    </div>
@@ -245,7 +250,12 @@ watch(
 
               <div class="mb-2">
                 <label class="textColor">Addition Info</label>
-                <textarea v-model="formData.description" class="form-control "></textarea>
+                <textarea
+                    v-model="formData.description"
+                    style="font-size: 12px; color: #4e5866;"
+                    class="form-control shadow-none"
+                    rows="4"
+                ></textarea>
               </div>
             </div>
           </div>

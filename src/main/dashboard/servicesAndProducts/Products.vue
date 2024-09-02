@@ -184,28 +184,8 @@ watch (
   </div>
   </div>
     </div>
-    <!-- //editing modal  -->    
-    <div class="modal fade" id="editServiceModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header text-sm p-0">
-                        <h6 class="modal-title ml-3 mt-2 mb-2">UpdateService/Product</h6>
-                        <button aria-label="Close" class="btn-close btn-sm" data-bs-dismiss="modal"
-                                style="margin-right: 5px;" type="button"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mt-2 mb-2">           
-                           <UpdateProduct :product="productListData"></UpdateProduct>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
 
-
-      </div>
        
     </template>
     

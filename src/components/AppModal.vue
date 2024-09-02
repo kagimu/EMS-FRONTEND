@@ -87,7 +87,7 @@ const closeModal = () => {
                 </div>
               </div>
 
-              <div class="p-6 pt-3 pb-5">
+              <div class="p-6 pt-3 pb-3">
                 <slot />
               </div>
             </DialogPanel>

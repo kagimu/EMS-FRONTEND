@@ -71,7 +71,11 @@ watch(
 
 
 const checkOptionsDraft = () => {
-  items.value = props.optionList
+  let draft = props.optionList
+  if(draft) {
+    // selectedItems.value = []
+    items.value = draft
+  }
 }
 
 watch(selectedItems, (newVal) => {
@@ -159,10 +163,10 @@ const removeItem = (idx:number) => {
                 class="form-check-input shadow-none"
                 type="checkbox"
                 :value="item?.value"
-                :id="item?.value">
+                :id="'item-'+(idx+1)">
             <label
                 class="form-check-label cursor-pointer capitalize ml-3 text-sm text-gray-600 whitespace-nowrap overflow-hidden text-ellipsis"
-                 :for="item?.value">{{item?.text}}</label>
+                 :for="'item-'+(idx+1)">{{item?.text}}</label>
             </div>
           </div>
       </div>
