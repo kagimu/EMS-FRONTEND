@@ -32,7 +32,6 @@ const gradeData = ref([])
 const campusCurriculumDataInfo = ref(null)
 
 const campusLevelList = ref(null)
-const campusClassList = ref(null)
 
 const gradeDataInfo = ref([])
 const editM = ref(false)
@@ -61,9 +60,7 @@ onMounted(
       fetchCampusLevel()
       await levelStore.fetchCampusCurriculum(campusNumber)
       doFetchGrades()
-      await campusStore.fetchClassesBySchool(schoolNumber)
       fetchGradeScale()
-
       filterDraftData()
   
     }
@@ -310,16 +307,6 @@ watch(
     }
 )
 
-
-
-watch(
-    () => campusStore.schoolClassesResponse,
-    async (data) => {
-      if(data){
-        campusClassList.value = data.data
-      }
-    }
-)
 
 
 watch(
