@@ -168,7 +168,7 @@ watch(
 <template>
         <form @submit.prevent="createNewService">
 
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-2 gap-4 text-gray-600">
 
             <div>
               <div class="mb-2">
@@ -187,7 +187,7 @@ watch(
 
 
               <div class="mb-2">
-                <label class="textColor mt-3 mb-2">Campus</label>
+                <label class="textColor">Campus</label>
                 <combo-box
                     v-model:optionResponse="formData.campus_numbers"
                     :optionList="campusList"
@@ -234,13 +234,13 @@ watch(
                  <div class="flex">
                    <div class="mr-4">
                      <input v-model="formData.mandatory" class="cursor-pointer" type="radio" :value="true" name="flexRadioDefault" id="box1">
-                     <label class="form-check-label ml-2 cursor-pointer" for="box1">
+                     <label class="form-check-label ml-2 cursor-pointer text-sm text-gray-600" for="box1">
                        Mandatory
                      </label>
                    </div>
                    <div class="">
                      <input v-model="formData.mandatory" class="cursor-pointer" type="radio" :value="false" name="flexRadioDefault" id="box2">
-                     <label class="form-check-label ml-2 cursor-pointer" for="box2">
+                     <label class="form-check-label ml-2 cursor-pointer text-sm text-gray-600" for="box2">
                        Optional
                      </label>
                    </div>
@@ -252,6 +252,7 @@ watch(
                 <label class="textColor">Addition Info</label>
                 <textarea
                     v-model="formData.description"
+                    style="font-size: 12px; color: #4e5866;"
                     class="form-control shadow-none"
                     rows="4"
                 ></textarea>
