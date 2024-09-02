@@ -8,6 +8,7 @@ import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import ComboBox from "@/components/ComboBox.vue";
 
 const classError = ref(null)
 const loader = ref(false)
@@ -53,7 +54,17 @@ const activateGroupOnMealCalendar = () =>{
 watch(
     () => cateringStore.feedingGroupInfoResponse,
     async (data) => {
-      feedingGroupData.value = data.data
+      // feedingGroupData.value = data.data
+
+      let draft = data.data
+        if(draft && (draft?.length > 0)){
+          feedingGroupData.value = []
+          let arr = []
+          draft?.forEach(lst => {
+            arr.push({text:lst?.name,value:lst?.name})
+          })
+          feedingGroupData.value = arr
+        }
     }
 )
 
@@ -150,7 +161,7 @@ watch(
             <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
               {{errorMessage}}
             </div>
-            <table
+            <!-- <table
                 id="datatable"
                 class="table table-striped table-hover caption-top table-sm"
                 style="font-size: 14px !important;"
@@ -168,11 +179,18 @@ watch(
                 </tr>
                             
                 </tbody>
-                </table>
+                </table> -->
+
+
+                
+        <combo-box
+            v-model:optionResponse="form.feeding_groups"
+            :optionList="feedingGroupData"
+            :optionDraft="form?.feeding_groups"
+        ></combo-box>
           </div>
         </div>
         <div class="col-lg-6">
-          <!-- {{ groupEventsData }} -->
 
           <div class="mb-2">
             <label class=""><small>Calendar Events<span style="color: red;">*</span></small></label>
