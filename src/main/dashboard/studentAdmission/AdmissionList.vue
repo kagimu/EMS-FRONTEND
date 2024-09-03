@@ -216,13 +216,7 @@ watch(
 
   const fetchAdmissions = (data) => {
     if(data) {
-      // let current_page = data.page
-      // page.value = current_page
 
-      // let per_page_item = data.per_page;
-      // per_page.value = per_page_item;
-
-      // let objArray = data.content
 
       let current_page = data.page
       page.value = current_page
@@ -303,16 +297,7 @@ watch(
     },
     {deep: true}
   )
-  
-//   watch(
-//     () => campusStore.campusClassesResponse,
-//     async (data) => {
-//         if (data) {
-//             classList.value = data.data
-//         }
-//     },
-//     {deep: true}
-//   )
+
   
   watch(
     () => campusStore.errorMessage,
@@ -547,29 +532,23 @@ watch(
                        >
                        <thead >
                           <tr>
-                             <!-- <th style="width: 2px;">#</th> -->
+                             <th class="w-[5%]">#</th>
                              <th>ADN</th>
-                             <!-- <th>Year</th>       -->
                              <th>Student</th>
                              <th>Campus</th>
                              <th>Class</th>
                              <th>Stream</th>
                              <th>Study Period</th>
-                             <!-- <th>Status</th> -->
                              <th>Action</th>
                           </tr>
-                          <!-- <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-                             {{errorMessage}}
-                             </div> -->
                        </thead>
                        <tbody>
                    
                           <tr v-for="(adm , index) in admissionList" :key="index">
-                             <!-- <td>
-                                {{ index+1 }}
-                             </td> -->
+                              <td>
+                                {{ adm.key }}
+                             </td>
                              <td>{{ adm.Student.adn }}</td>
-                             <!-- <td>{{ adm.AcademicYear.academic_year_name }}</td> -->
                              <td style="text-transform: capitalize !important;">{{ adm.Student.surname + " " + adm.Student.second_name }}</td>
                              <td>{{ adm.Campus.name }}</td>
                              <td>{{ adm.Stream.class_name }}</td>
@@ -580,7 +559,7 @@ watch(
                                 
  
                                 <div v-if="can('enroll_student','manage')">
-                                 <button  v-if="adm.status != 'Enrolled'" @click="showModal(adm.Student.number,adm.number,adm)" 
+                                 <button  v-if="adm.status !== 'Enrolled'" @click="showModal(adm.Student.number,adm.number,adm)"
                                    type="button" class="btn btn-sm btn-primary mb-2 mr-4 "
                                    style="color: white;">
                                    <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  
@@ -590,14 +569,14 @@ watch(
 
 
 
-                                <router-link  v-if="adm.status == 'Enrolled'" style=""
+                                <router-link  v-if="adm.status === 'Enrolled'" style=""
                                    class="text-decoration-none"
                                    :to="{name:'student-profile-details', query:{st_id:adm.Student.number}}">
                                    <button type="button"
                                       class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
                                       >view Details</button>
                                 </router-link>
-                                <span  v-if="adm.status == 'Enrolled'" class="link link-success"><i class="bi bi-check"></i>enrolled</span>
+                                <span  v-if="adm.status === 'Enrolled'" class="link link-success"><i class="bi bi-check"></i>enrolled</span>
                              </td>
                           </tr>
                        </tbody>

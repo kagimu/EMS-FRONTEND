@@ -3,7 +3,6 @@
   import ApplicationDetails from './ApplicationDetails.vue';
   import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
   import useNotificationStore from "@/composables/useNotification.js";
-  import { useAdmissionStore } from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
   import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
   import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
   import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
@@ -27,7 +26,6 @@
   const applicationInfoList = ref( [])
   let errorMessage = ref(null)
   const buttonLoader = ref(false)
-  const searchQuery = ref('')
   let shDialog = ref(false)
   const applications= ref(null)
   const applicationStore= useApplicationStore()
@@ -39,8 +37,6 @@
   const schoolStore = useSchoolStore()
   const campusStore = useCampusStore()
   const levelStore = useLevelStore()
-  const school_number = ref(null)
-  const assessmentStore = useAssessmentStore()
   const academicYearStore = useAcademicYearStore()
   const academicYearList = ref([])
   const studyPeriodList  = ref([])
@@ -153,9 +149,7 @@
       async (data) => {
         if(data){
           shDialog.value = false
-         //  applicationInfoList.value = data.data
           fetchApplications(data)
-         //  doFetchApplication()
         }
       },
       {deep:true}
@@ -180,15 +174,14 @@
   function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
   if (scrollTop + clientHeight >= scrollHeight) {
 
-    tableLoader.value = true
+    // tableLoader.value = true
 
     let data = {
       page: (page.value+1),
       per_page: per_page.value,   
       status: form.statusData 
    }
-   loading.value = true;
-   applicationInfoList.value = []
+   // loading.value = true;
    applicationStore.fetchApplicationList(data).finally(() => {
     loading.value = false; 
   })
@@ -343,12 +336,12 @@ watch (
     async (data) => {
       if(data){
         
-         let dataa = {
+   let dataa = {
       page: page.value,
       per_page: per_page.value,   
       status: form.statusData 
    }
-   applicationStore.fetchApplicationList(dataa)
+   await applicationStore.fetchApplicationList(dataa)
 }
     },
     {deep:true}
@@ -393,6 +386,15 @@ watch (
 </script>
 
 <template>
+
+  <AppModal title="Application Details" v-model="showingModal" xl6>
+    <application-details :application-number="applications"></application-details>
+  </AppModal>
+
+  <AppModal title="New Application" v-model="showAppmodal" xl>
+    <NewApplication></NewApplication>
+  </AppModal>
+
   <div class="row ml-2 mt-3">
    <h5  class="ml-1" style="font-size: 14px;margin-top: 2px;">APPLICATIONS 
       <button @click="applicationModal" style="float: right;" class="btn btn-primary btn-sm ml-2 mb-2 mt-2 mr-2"><small>New Application</small></button></h5>
@@ -404,7 +406,7 @@ watch (
                              <div class="col-12">
                                 <div class="mt-0">
                                    <div class="row mx-auto">
-                                      <form @submit.prevent="Admit()">
+
                                          <div class="row">
                                           <div class="col-3">
                                                <div class="mb-2">
@@ -483,31 +485,19 @@ watch (
                                                 </div>
                                             <div class="col-3">
                                                <div class="mb-2">
-                                                  <!-- <select
-                                                     style="box-shadow: none;"
-                                                     class="form-select form-select-sm" required
-                                                     v-model="form.campus_class_number"
-                                                     @change="fetchAcademicYear(form.campus_class_number)"
-                                                     >
-                                                     <option disabled value="">-filter By class-</option>
-                                                     <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}
-                                                     </option>
-                                                  </select> -->
 
-
-                                                  <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm" required
-                  v-model="form.campus_class_number"
-                  @change="fetchAcademicYear(form.campus_class_number)"
-                  >
-                <option disabled value="">-filter by class-</option>
-                <template v-for="(classItem, index) in classList" :key="index">
-                <option v-for="(classDetail, indx) in classItem.classes" :key="indx" :value="classDetail.number">
-                {{ classDetail.name }}
-                </option>
-                </template>
-                </select>
+                                              <select
+                                                  style="box-shadow: none;"
+                                                  class="form-select form-select-sm" required
+                                                  v-model="form.campus_class_number"
+                                                  @change="fetchAcademicYear(form.campus_class_number)">
+                                                <option disabled value="">-filter by class-</option>
+                                                  <template v-for="(classItem, index) in classList" :key="index">
+                                                  <option v-for="(classDetail, indx) in classItem.classes" :key="indx" :value="classDetail.number">
+                                                  {{ classDetail.name }}
+                                                  </option>
+                                                  </template>
+                                                </select>
                                                </div>
                                             </div>
                                             <div class="col-3" style="display: none">
@@ -552,7 +542,7 @@ watch (
                                                </div>
                                             </div>
                                             </div>
-                                      </form>
+
                                    </div>
                                 </div>
                              </div>
@@ -595,57 +585,49 @@ watch (
                        <th>APN</th>
                        <th>Student</th>
                        <th>Gender</th>
-                       <!-- <th>DOB</th> -->
                        <th>Status</th>
                        <th>Payment</th>
                        <th style="width: 20%;">Action</th>
                     </tr>
                  </thead>
                  <tbody>
-                    <tr v-for="(applist, index) in applicationInfoList" :key="index">
-                      <td>{{ index+1 }}</td>
-                       <td>{{ applist.Student.apn }}</td>
-                       <td style="text-transform: capitalize;">{{ applist.Student.surname+ " "+ applist.Student.second_name+ " "+ applist.Student.other_name  }} </td>
-                       <td>{{ applist.Student.gender }}</td>
-                       <!-- <td>{{ applist.Student.date_of_birth }}</td> -->
-                       <td><span v-if="applist.status == 'INTERVIEW_SCHEDULED'">INTERVIEW SCHEDULED</span>
-                        <span v-if="applist.status == 'DRAFT'">DRAFT</span>
-                          <span v-if="applist.status == 'SUBMITTED'" style="font-size: 12px;">SUBMITTED</span>
-                          <span v-if="applist.status == 'ADMITTED'" style="font-size: 12px;">ADMITTED</span>
-                          <span v-if="applist.status == 'ENROLLED'" style="font-size: 12px;">ENROLLED</span>
-                       </td>
-                       <td>{{ applist.application_fee_payment === false ? 'pending' : 'completed' }}</td>
+                    <tr v-for="(appList, index) in applicationInfoList" :key="index">
+                      <td>{{ appList.key }}</td>
+                       <td>{{ appList.Student.apn }}</td>
+                       <td style="text-transform: capitalize;">{{ appList.Student.surname+ " "+ appList.Student.second_name+ " "+ appList.Student.other_name  }} </td>
+                       <td>{{ appList.Student.gender }}</td>
                        <td>
-                          <button v-if="applist.status === 'SUBMITTED'" @click="setApplicationNumber(applist.number)"
-                             class="btn btn-primary btn-sm textColor" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
-                          Schedule Interview
-                          </small>
+                          <span v-if="appList.status === 'INTERVIEW_SCHEDULED'">INTERVIEW SCHEDULED</span>
+                          <span v-if="appList.status === 'DRAFT'">DRAFT</span>
+                          <span v-if="appList.status === 'SUBMITTED'" style="font-size: 12px;">SUBMITTED</span>
+                          <span v-if="appList.status === 'ADMITTED'" style="font-size: 12px;">ADMITTED</span>
+                          <span v-if="appList.status === 'ENROLLED'" style="font-size: 12px;">ENROLLED</span>
+                       </td>
+                       <td>
+                         {{ appList.application_fee_payment === false ? 'pending' : 'completed' }}
+                       </td>
+                       <td>
+                          <button v-if="appList.status === 'SUBMITTED'" @click="setApplicationNumber(appList.number)"
+                             class="btn btn-primary btn-sm textColor" style="border-width: 0px;text-decoration: none;" title="View Details">
+                            <small>
+                              Schedule Interview
+                            </small>
                           </button>
-                          <button v-if="applist.status === 'ENROLLED'"  @click="setApplicationNumber(applist.number)"
+                          <button v-if="appList.status === 'ENROLLED'"  @click="setApplicationNumber(appList.number)"
                              class="btn btn-primary btn-sm mb-2" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
                           View Details
                           </small>
                           </button>
-                          <button v-if="applist.status === 'INTERVIEW_SCHEDULED'"  @click="setApplicationNumber(applist.number)"
+                          <button v-if="appList.status === 'INTERVIEW_SCHEDULED'"  @click="setApplicationNumber(appList.number)"
                              class="btn btn-primary btn-sm mb-2" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
                           View Details
                           </small>
                           </button>
-                          <button v-if="applist.status === 'ADMITTED'" @click="setApplicationNumber(applist.number)"
+                          <button v-if="appList.status === 'ADMITTED'" @click="setApplicationNumber(appList.number)"
                              class="btn btn-primary btn-sm mb-2" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
                           View Details
                           </small>
                           </button>
-                          <!-- <button v-if="applist.status === 'DRAFT'"  @click="deleteThisData(applist)"
-                             style="border-width: 0px;text-decoration: none;" title="View Details"><small>
-                              <i class="bi bi-trash" style="color: red;"></i>
-                         
-                          </small>
-                          </button> -->
-                          
-                          <!-- <RouterLink :to="{name : 'admit-student', query:{id:applist.number} }" class="link-danger" style="text-decoration: none;"  >
-                             <i class="bi bi-eye"></i>  
-                             </RouterLink>   -->
                        </td>
                     </tr>
                  </tbody>
@@ -654,19 +636,9 @@ watch (
             </div>
          
   <div>
-     <!-- <div class="modal fade" tabindex="-1" id="infoModal"   aria-hidden="true" :class="{ show: shDialog }">
-        <div class="modal-dialog modal-xl">
-           <application-details :application-number="applications"></application-details>
-        </div>
-     </div> -->
 
-     <AppModal title="Application Details" v-model="showingModal" xl6>
-        <application-details :application-number="applications"></application-details>
-     </AppModal>
 
-     <AppModal title="New Application" v-model="showAppmodal" xl>
-      <NewApplication></NewApplication>
-     </AppModal>
+
 
   </div>
 </template>
