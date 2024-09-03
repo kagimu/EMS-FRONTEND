@@ -38,8 +38,34 @@ const print = () => {
    html: htmlContent.replace(/<!--v-if-->/g, '')
   }
 
-alert(JSON.stringify(data))
   printStore.printReport(data)
+}
+
+
+watch(
+    () => printStore.printResponse,
+    async (data) => {
+      if(data){
+        let base64Response = "data:application/pdf;base64,"+ data.message
+        previewPdf(base64Response)
+        console.log(base64Response)
+      }
+    }
+)
+
+function previewPdf(base64Response) {
+
+if(navigator.userAgent.indexOf("Firefox") !== -1 ) {
+    // Firefox
+    window.open(base64Response, '_target')
+} else {
+    let a = document.createElement("a");
+    a.href = base64Response;
+    a.setAttribute('download', fileName)
+    a.target = "_blank";
+    document.body.appendChild(a)
+    a.click();
+}
 }
 
 </script>

@@ -14,13 +14,14 @@
    import useCommonsStore from "@/composables/useCommons.js";
    import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
    import {useStudyModeStore} from "@/main/settings/mode-of-study/store/studyMode.js";
+   import {useLevelStore} from "@/main/settings/level/store/level.js";
+   import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 
-const modeStudyStore = useStudyModeStore()
-const modeOfSchoolData = ref([])
-   
-   
+   const modeStudyStore = useStudyModeStore()
+   const modeOfSchoolData = ref([])
+   const levelStore = useLevelStore()
+   const studyPeriodStore = useStudyPeriodStore()
    const commons = useCommonsStore()
-     
    const  notificationStore  = useNotificationStore()
    const buttonLoader = ref(false)
    const errorMessage = ref(null)
@@ -29,7 +30,6 @@ const modeOfSchoolData = ref([])
    const admissionStore = useAdmissionStore()
    const cateringStore = useCateringStore()
    const feedingGroupData = ref([])
-   
    const campusList = ref([])
    const schoolList = ref([])
    const classList = ref([])
@@ -42,6 +42,10 @@ const modeOfSchoolData = ref([])
    const classStore = useClassesStore()
    const streamList = ref([])
    const currentYear = ref((new Date()).getFullYear());
+   const curriculumList = ref([])
+   const levelList = ref([])
+   const campusClassNumber = ref(null)
+   const isCont = ref(false)
    
    const date = ref();
    const format = (date) => {
@@ -92,11 +96,13 @@ const modeOfSchoolData = ref([])
 
          if(form.campus_number){
             campusStore.fetchClassesByCampus(form.campus_number)
-            form.campus_class_number = draftData.campus_class_number
+            form.class_number = draftData.class_number
+            fetchCurriculum(form.campus_number)
          }
-         if(form.campus_class_number){
-            academicYearStore.fetchAcademicYearByCampus(form.campus_class_number)
-            classStore.fetchClassStreams(form.campus_class_number)
+
+         if(form.class_number){
+            academicYearStore.fetchAcademicYearByCampus(form.class_number)
+            classStore.fetchClassStreams(form.class_number)
             form.stream_number = draftData.stream_number
             form.academic_year_number=draftData.academic_year_number
             form.study_period_number=draftData.study_period_number
@@ -104,6 +110,16 @@ const modeOfSchoolData = ref([])
       }
    }
    
+const getCampusN = (streamN) => {
+let data = streamList.value
+
+let no = streamN
+campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_class_number;
+
+  }
+
+
+
        watch(
        () => enrolmentStore.checkListItemsResponse,
        async (data) => {
@@ -118,7 +134,7 @@ const modeOfSchoolData = ref([])
      student_number:props.studentNumber,
      academic_year_number: null,
      study_period_number: null,
-     campus_class_number: null,
+     class_number: null,
      campus_number: null,
      stream_number:null,
      school_number:null,
@@ -126,7 +142,8 @@ const modeOfSchoolData = ref([])
      academic_year_number:null,
      status:"active",
      feeding_group_number:"",
-     mode_of_study_number:""
+     mode_of_study_number:"",
+     nature:""
      })
         
    
@@ -144,17 +161,23 @@ const modeOfSchoolData = ref([])
       .filter(item => item.item_number && item.quantity !== undefined && item.brought !== undefined)
    }
    
+if(form.nature == "true"){
+   isCont.value = true
+}
+
    let enrollmentData = reactive({
      student_number:props.studentNumber,
      academic_year_number:form.academic_year_number,
      study_period_number:form.study_period_number,
-     campus_class_number:form.campus_class_number,
+     campus_class_number:campusClassNumber.value ,
      campus_number:form.campus_number,
      stream_number:form.stream_number,
      school_number:form.school_number,
      enrollment_date:form.enrollment_date,
      academic_year_number:form.academic_year_number,
      feeding_group_number:form.feeding_group_number,
+     mode_of_study_number:form.mode_of_study_number,
+     continuing_student:isCont.value,
      status:"active",
      ...ItemDataToSubmit
    })
@@ -192,18 +215,88 @@ const modeOfSchoolData = ref([])
        getModeOfStudyInfo()
    }
    
-   const fetchClasses = (campus_number) => {
+   const fetchCurriculum = (campus_number) => {
        campusStore.fetchClassesByCampus(campus_number)
+       levelStore.fetchCampusCurriculum(campus_number)
    }
    
-   
+
+   const fetchLevelClasses = (levelNumber) => {
+  academicYearStore.fetchAcademicYearByLevel(levelNumber)
+  let data = {
+    school_number:form.school_number,
+    campus_level_number:levelNumber
+  }
+  campusStore.fetchClassesBySchool(data)
+
+  classStore.fetchClassLevel({campusCurriculumNumber: form.curriculumNumber, campusLevelNumber: levelNumber})
+}
+
+watch(
+    () => campusStore.schoolClassesResponse,
+    async (data) => {
+      if(data){
+        classList.value = data.data
+      }
+    }
+)
+
    //fetchacadmicYear
-   const fetchAcademicYear = (campusN) =>{
-   // alert(campusN)
-   academicYearStore.fetchAcademicYearByCampus(campusN)
-   classStore.fetchClassStreams(campusN)
-   
+   const fetchStreamAndStudyPeriod = (classN) =>{
+   // academicYearStore.fetchAcademicYearByCampus(campusN)
+   // classStore.fetchClassStreams(campusN)
+
+   let sData = {
+     campus_number:form.campus_number,
+     class_number:classN,
+     campus_curriculum_number:form.curriculumNumber
+
+    }
+    classStore.fetchClassStreams(sData)
+
+    
+    studyPeriodStore.fetchStudyPeriod(
+      {
+        academic_year_number:form.academic_year_number,
+        class_number:classN
+      } )
+
    }
+
+
+
+   const fetchCampusLevel = (curriculumNumber) => {
+   classStore.fetchCampusLevel(curriculumNumber)
+}
+
+watch(
+    () => studyPeriodStore.studyPeriodResponse,
+    async (data) => {
+      if(data){
+        studyPeriodList.value = data.data
+      }
+    }
+)
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        levelList.value = data.data 
+      }
+    },
+    {deep:true}
+)
+
+   watch(
+    () => levelStore.campusCurriculumResponse,
+    async (data) => {
+      if(data){
+        curriculumList.value = data.data
+      }
+    },
+    {deep:true}
+)
    
    watch(
     () => cateringStore.feedingGroupInfoResponse,
@@ -212,23 +305,33 @@ const modeOfSchoolData = ref([])
     },
     {deep: true}
    )
+
+   // watch(
+   //     () => academicYearStore.academicYearByCampusResponse,
+   //     async (data) => {
+   //         if (data) {
+   //           academicYearList.value = data.data
+   
+   //           if(data && data.data){
+   //         let studyData = data.data
+   //         if(studyData && (studyData.length > 0)){
+   //           studyPeriodList.value = studyData[0].studyPeriod
+   //         }
+   //       }
+   //         }
+   //     },
+   //     {deep: true}
+   // )
+   
    watch(
-       () => academicYearStore.academicYearByCampusResponse,
-       async (data) => {
-           if (data) {
-             academicYearList.value = data.data
-   
-             if(data && data.data){
-           let studyData = data.data
-           if(studyData && (studyData.length > 0)){
-             studyPeriodList.value = studyData[0].studyPeriod
-           }
-         }
-           }
-       },
-       {deep: true}
-   )
-   
+    () => academicYearStore.academicYearByLevelResponse,
+    async (data) => {
+      if(data){
+        academicYearList.value = data.data
+      }
+    }
+)
+
    
    //selecting Item 
    const toggleSelection = (item) => {
@@ -247,9 +350,11 @@ const modeOfSchoolData = ref([])
    }
    }
    
+
+ 
+
    
-   //watches
-     
+   //watches  
    watch(
        () => classStore.classStreams,
        async (data) => {
@@ -281,16 +386,6 @@ const modeOfSchoolData = ref([])
    )
    
    watch(
-       () => campusStore.campusClassesResponse,
-       async (data) => {
-           if (data) {
-               classList.value = data.data
-           }
-       },
-       {deep: true}
-   )
-   
-   watch(
        () => campusStore.errorMessage,
        async (data) => {
              if (data) {
@@ -315,13 +410,13 @@ const modeOfSchoolData = ref([])
       <form @submit.prevent="Enrol()">
          <div class="row">
             <div class="col-4">
-               <label class="alert alert-primary p-1 textColor" style="" ><small>Please , Choose a class to enroll
+               <label class="alert alert-primary p-1 textSize" style="" ><small>Please , Choose a class to enroll
                   <span style="text-transform: capitalize; color:#0d6efd;">
                   <b>{{ studentDataInfo.Student.surname +" "+ studentDataInfo.Student.second_name }}</b>
                   </span> !</small> 
                </label>
                <div class="mb-2 ">
-                  <label class="textColor"><small>School</small> </label>
+                  <label class="textSize"><small>School</small> </label>
                   <select
                      style="box-shadow: none;"
                      class="form-select form-select-sm" required
@@ -334,35 +429,82 @@ const modeOfSchoolData = ref([])
                   </select>
                </div>
                <div class="mb-2">
-                  <label class="textColor"><small>Campus</small>  </label>
+                  <label class="textSize"><small>Campus</small>  </label>
                   <select
                      style="box-shadow: none;"
                      class="form-select form-select-sm"
                      v-model="form.campus_number" required
-                     @change="fetchClasses(form.campus_number)"
+                     @change="fetchCurriculum(form.campus_number)"
                      >
                      <option disabled value="">Select campus</option>
                      <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
                      </option>
                   </select>
                </div>
-               <div class="mb-2">
-                  <label class="textColor"><small>Class</small> </label>
+
+          <div class="mb-2">
+          <label class="textSize"><small>Curriculum</small></label>
+            <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+                v-model="form.curriculumNumber"  
+                @change="fetchCampusLevel(form.curriculumNumber)"                                         
+            >
+                <option disabled value="" >--Select Curriculum--</option>
+                <option  v-for="(lvl, index) in curriculumList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+            </select>
+          </div>
+    
+
+          <div class="mb-2">
+            <label class="textSize"><small>Level</small></label>
+            <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+              v-model="form.level"
+              @change="fetchLevelClasses(form.level)"
+            >
+              <option disabled value="">-Filter by level-</option>
+              <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
+            </select>
+          </div>
+
+          <div class="mb-2">
+                  <label class="textSize"><small>Academic Year</small> </label>
                   <select
                      style="box-shadow: none;"
                      class="form-select form-select-sm" required
-                     v-model="form.campus_class_number"
-                     @change="fetchAcademicYear(form.campus_class_number)"
+                     v-model="form.academic_year_number"
+                     >
+                     <option disabled value="">Select Year</option>
+                     <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
+                  </select>
+               </div>
+
+    
+
+               <div class="mb-2">
+                  <label class="textSize"><small>Class</small> </label>
+                  <select
+                     style="box-shadow: none;"
+                     class="form-select form-select-sm" required
+                     v-model="form.class_number"
+                     @change="fetchStreamAndStudyPeriod(form.class_number)"
                      >
                      <option disabled value="">Select class</option>
-                     <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}
+                     <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">
+                        <!-- {{ claslist.class_name }} -->
+                        {{claslist?.name+" [ "+claslist?.abbreviation+" ]"}}
                      </option>
+
+                 
+
                   </select>
                </div>
 
                    <!-- {{ modeOfSchoolData }} -->
           <div class="mb-2">
-              <label class="textColor"><small>Mode Of Study</small>  <span class="star">*</span></label>
+              <label class="textSize"><small>Mode Of Study</small>  <span class="star">*</span></label>
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
@@ -374,30 +516,22 @@ const modeOfSchoolData = ref([])
               </select>
           </div>
                <div class="mb-2">
-                  <label class="textColor"><small>Stream</small> </label>
+                  <label class="textSize"><small>Stream</small> </label>
+           
                   <select
                      style="box-shadow: none;"
                      class="form-select form-select-sm" required
                      v-model="form.stream_number"
+                      @change="getCampusN(form.stream_number)"
                      >
                      <option disabled value="">Select Stream</option>
-                     <option v-for="(slist, index) in streamList" :key="index" :value="slist.number">{{ slist.name }}
+                     <option v-for="(slist, index) in streamList" :key="index" :value="slist.stream_number">{{ slist.name }}
                      </option>
                   </select>
                </div>
+           
                <div class="mb-2">
-                  <label class="textColor"><small>Academic Year</small> </label>
-                  <select
-                     style="box-shadow: none;"
-                     class="form-select form-select-sm" required
-                     v-model="form.academic_year_number"
-                     >
-                     <option disabled value="">Select Year</option>
-                     <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
-                  </select>
-               </div>
-               <div class="mb-2">
-                  <label class="textColor">
+                  <label class="textSize">
                      <small>Study Period</small> 
                      <!-- {{ studyPeriodList }} -->
                   </label>
@@ -411,7 +545,7 @@ const modeOfSchoolData = ref([])
                   </select>
                </div>
                <div class="mb-2">
-                  <label class="textColor"><small>Enrolment Date</small> 
+                  <label class="textSize"><small>Enrolment Date</small> 
                   </label>
                   <input type="date" class="form-control" v-model="form.enrollment_date">
                </div>
@@ -420,7 +554,7 @@ const modeOfSchoolData = ref([])
                
                <div class="col-12">
                   <div class="mb-2">
-                     <label class="alert alert-primary p-1 textColor"  ><small>Tick off  <i class="bi bi-check" style="color:red"> </i>items  brought by the student </small> </label>
+                     <label class="alert alert-primary p-1 textSize"  ><small>Tick off  <i class="bi bi-check" style="color:red"> </i>items  brought by the student </small> </label>
                      <table class="table table-hover caption-top mt-1 table-sm table-striped" style="font-size: 13px;">
                         <thead>
                            <tr>
@@ -458,7 +592,7 @@ const modeOfSchoolData = ref([])
                   </div>
                </div>
                <div class="mb-2 ">
-                  <label class="textColor alert alert-primary p-1"><small>Which Feeding Group ?</small> </label>
+                  <label class="textSize alert alert-primary p-1"><small>Which Feeding Group ?</small> </label>
                   <select
                      style="box-shadow: none;"
                      class="form-select form-select-sm" required
@@ -468,6 +602,14 @@ const modeOfSchoolData = ref([])
                      <option v-for="(list, index) in feedingGroupData" :key="index" :value="list.number">{{ list.name }}
                      </option>
                   </select>
+               </div>
+
+               <div class="mb-2 ">
+                  <label class="textSize alert alert-primary p-1 mt-2 mb-2"><small>Is Continuing Student ?</small> </label><br>
+                  <span class="mt-2">
+                 <input class="" type="radio" value="true" v-model="form.nature"> True &nbsp;&nbsp;
+                 <input type="radio" value="false" v-model="form.nature"> No
+               </span>  
                </div>
             </div>
          </div>
@@ -490,7 +632,7 @@ const modeOfSchoolData = ref([])
    -moz-box-shadow: none;
    -webkit-box-shadow: none;
    }
-   .textColor {
+   .textSize {
       font-size: 13px I !important;
    }
 </style>
