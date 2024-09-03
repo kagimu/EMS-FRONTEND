@@ -186,14 +186,7 @@ watch (
                 <div class="card mt-3">
             <div class="card-body" style="padding: 0;">
                 <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-                  <!-- <div
-                    v-for="(item, idx) in itemMenu" :key="idx"
-                    class="list-group-item list-group-item-action cursor-pointer"
-                    :class="item.value === menuSelected ? 'active' : ''"
-                    @click="changeMenu(item.value)">
-                  <small style="font-size:12px;">{{item.text}}</small>
-                </div>-->
-            
+
               <router-link
                   v-for="(item, idx) in  itemMenu" :key="idx"
                   class="list-group-item list-group-item-action"
@@ -212,12 +205,10 @@ watch (
          
           <div class="col-lg-9">
             <div class="py-2 px-3 border border-0 fw-normal bg-light card-header">
-   <div style="color: green;"><span class="text-primary me-1">SCHOOL:</span>{{ school }} &nbsp;<span class="text-primary me-1">CAMPUS:</span>{{ campus }}
-   <div  style="float: right;">
-    <span class="text-primary">STATUS:</span><span class="badge bg-danger rounded-pill ms-2 fs-6">{{ status }}</span>
-   
-
-  </div>
+             <div style="color: green;"><span class="text-primary me-1">SCHOOL:</span>{{ school }} &nbsp;<span class="text-primary me-1">CAMPUS:</span>{{ campus }}
+             <div  style="float: right;">
+              <span class="text-primary">STATUS:</span><span class="badge bg-danger rounded-pill ms-2 fs-6">{{ status }}</span>
+          </div>
    
 
 </div>
