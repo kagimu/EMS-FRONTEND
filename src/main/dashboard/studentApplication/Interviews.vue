@@ -2,7 +2,6 @@
 import {onMounted,reactive, ref, watch} from "vue";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import useNotificationStore from "@/composables/useNotification.js";
-import NewSchool from "@/main/dashboard/manageSchool/NewSchool.vue";
 import InterviewAssessment from "@/main/dashboard/studentApplication/InterviewAssessment.vue";
 import InterviewAssessmentMetricsList from "@/main/dashboard/studentApplication/InterviewAssessmentMetricsList.vue"
 import {useStudentApplicationStore} from "@/main/dashboard/studentApplication/store/student_application.js";
@@ -23,7 +22,6 @@ const interviewList = ref( [])
 let errorMessage = ref(null)
 const buttonLoader = ref(false)
 const interviewNumber = ref(null)
-const studentApplicationStore = useStudentApplicationStore()
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
 const interviewAssessmentDialog = ref(false)
@@ -57,7 +55,7 @@ onMounted(
     async () => {
      loading.value = true
      getInterviewList()
-     schoolStore.fetchSchools()
+     await schoolStore.fetchSchools()
     } )
 
 
@@ -105,9 +103,6 @@ const fetchLevelClasses = (levelNumber) => {
    classStore.fetchClassLevel({campusCurriculumNumber: form.curriculumNumber, campusLevelNumber: levelNumber})
 }
 
-// const createInterview = () => {
-// applicationStore.createNewInterview(formData)
-// }
 
   const showAssesssmentMetricsDialog = (interview) =>{
   interviewNumber.value = interview.number
@@ -147,7 +142,7 @@ watch(
     () => classStore.campusLevelResponse,
     async (data) => {
       if(data){
-        levelList.value = data.data ///---------------
+        levelList.value = data.data
       }
     },
     {deep:true}
@@ -218,7 +213,6 @@ watch (
         assesssmentMetricsDialog.value = false
         errorMessage.value = data.message
         buttonLoader.value = false
-        // notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}
@@ -237,15 +231,6 @@ watch(
       )
 
 
-  //     watch(
-  //     () => campusStore.campusClassesResponse,
-  //     async (data) => {
-  //         if (data) {
-  //             classList.value = data.data
-  //         }
-  //     },
-  //     {deep: true}
-  // )
   watch(
     () => classStore.classLevelInfoResponse,
     async (data) => {
@@ -269,7 +254,6 @@ watch(
           </div>
           <div class="modal-body">
             <div class="mt-2 mb-2">
-              <!-- <interview-assessment :interviewNumber="interviewNumber"></interview-assessment> -->
               <interview-assessment-metrics-list :interviewNumber="interviewNumber"></interview-assessment-metrics-list>
           </div>
           </div>
@@ -305,7 +289,7 @@ watch(
     <h6 style="margin-top:20px; text-align: left;font-size: 15px;">Interview List
 
       <button style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"  
-      @click="showModal" >
+      @click="showModal">
       <i class="bi bi-plus"></i>&nbsp;<small>Create An Interview</small>
       </button>
 
@@ -376,15 +360,6 @@ watch(
         <div class="col-4"> 
         <div class="mb-2">
             <label class="textSize"><small>Class</small></label>
-            <!-- <select
-              style="box-shadow: none;"
-              class="form-select form-select-sm" required
-              v-model="form.campus_class_number"
-              @change="getInterviewList(form.campus_class_number)"
-            >
-              <option disabled value="">Select class</option>
-              <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">{{ claslist.class_name }}</option>
-            </select> -->
 
                 <select
                   style="box-shadow: none;"
