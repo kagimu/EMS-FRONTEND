@@ -284,7 +284,7 @@ watch(
       </div>
 
 
-    <div class="grid grid-cols-4 gap-2 px-2">
+    <div class="grid grid-cols-3 gap-2 px-2">
       <div class="">
         <div class="mb-2">
           <combo-box
@@ -356,16 +356,10 @@ watch(
   </div>
   </div>
 
-
   </div>
   
 
-
-
   <div>
-
-
-
 
   </div>
   </template>
