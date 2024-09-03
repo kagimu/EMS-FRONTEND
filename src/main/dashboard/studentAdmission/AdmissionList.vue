@@ -179,8 +179,6 @@ watch(
   function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
   if (scrollTop + clientHeight >= scrollHeight) {
 
-
-  
     let data = {
       page: 1,
       per_page:  (page.value+1),
