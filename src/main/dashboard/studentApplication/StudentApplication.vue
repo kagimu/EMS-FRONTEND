@@ -1,3 +1,38 @@
+<script setup>
+
+import {reactive, ref} from "vue";
+import {useRouter} from "vue-router";
+import ApplicationList from "./ApplicationList.vue";
+import Interviews from "./Interviews.vue";
+import InterviewsQuestions from "./InterviewsQuestions.vue";
+import { useAbility } from '@casl/vue'
+
+
+const { can } = useAbility()
+
+const routerData = useRouter()
+
+const route = routerData.currentRoute.value.query.s
+const selectedPage = route ? route : "application-list"
+
+const application = ref([
+  {
+    name:"Applicants",
+    id:"application-list",
+    action:"view_application_list"
+  },
+  {
+    name:"Manage Interview pool",
+    id:"interviews",
+    action:"view_interviews"
+  },
+])
+const form = reactive({
+  name:null
+})
+
+
+</script>
 <template>
     <div>
 
@@ -51,42 +86,7 @@
     </div>
   </template>
   
-  <script setup>
-  
-  import {reactive, ref} from "vue";
-  import {useRouter} from "vue-router";
-  import ApplicationList from "./ApplicationList.vue";
-  import Interviews from "./Interviews.vue";
-  import InterviewsQuestions from "./InterviewsQuestions.vue";
-  import { useAbility } from '@casl/vue'
 
-
-  const { can } = useAbility()
-
-  const routerData = useRouter()
-  const buttonLoader = ref(false)
-  
-  const route = routerData.currentRoute.value.query.s
-  const selectedPage = route ? route : "application-list"
-  
-  const application = ref([
-    {
-      name:"Applicants",
-      id:"application-list",
-      action:"view_application_list"
-    },
-    {
-      name:"Manage Interview pool",
-      id:"interviews",
-      action:"view_interviews"
-    },
-  ])
-  const form = reactive({
-    name:null
-  })
-  
-  
-  </script>
   
   <style scoped>
   
