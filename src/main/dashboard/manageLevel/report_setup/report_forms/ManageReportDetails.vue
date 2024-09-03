@@ -48,7 +48,7 @@ watch(
       if(data){
         let base64Response = "data:application/pdf;base64,"+ data.message
         previewPdf(base64Response)
-        console.log(base64Response)
+        // console.log(base64Response)
       }
     }
 )
