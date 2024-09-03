@@ -17,11 +17,7 @@
   const { can } = useAbility()
 
   const levelStore = useLevelStore()
-  const interviewStudentList = ref( [])
-  let errorMessage = ref(null)
-  const buttonLoader = ref(false)
   const  notificationStore  = useNotificationStore()
-  const enrolDialog  = ref(null)
   const studentNum=ref(null)
   const enrolmentStore = useEnrolmentStore()
   const mymodal = ref(false)
@@ -31,7 +27,6 @@
   const showModal = (studentN,adm,stud) =>{
   studentNum.value = studentN
   admissionInfoData.value = stud
-//   alert(JSON.stringify(stud))
   studentData.value =stud
   mymodal.value = true
    }
@@ -41,8 +36,6 @@
   const classList = ref([])
   const schoolStore = useSchoolStore()
   const campusStore = useCampusStore()
-  const school_number = ref(null)
-  const assessmentStore = useAssessmentStore()
   const academicYearStore = useAcademicYearStore()
   const academicYearList = ref([])
   const studyPeriodList  = ref([])
@@ -50,7 +43,6 @@
   const streamList = ref([])
   const admissionList = ref([])
   const admissionStore = useAdmissionStore()
-  const studN = ref(null)
   const admissionInfoData = ref(null)
   const loading = ref(false)
   const page = ref(1)
@@ -122,7 +114,7 @@ watch(
     () => classStore.campusLevelResponse,
     async (data) => {
       if(data){
-        levelList.value = data.data ///---------------
+        levelList.value = data.data
       }
     },
     {deep:true}
@@ -175,12 +167,9 @@ watch(
       stream_number:form.stream_number,
       academic_year_number:form.academic_year_number
    }
-   //   alert(JSON.stringify(data))
-   //  admissionStore.fetchAdmissionByFilters(data)
    loading.value = true;
    admissionList.value = []
    admissionStore.fetchAdmissionByFilters(data).finally(() => {
-    loading.value = false; 
   })
 
   }
@@ -190,7 +179,7 @@ watch(
   function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
   if (scrollTop + clientHeight >= scrollHeight) {
 
-    tableLoader.value = true
+
   
     let data = {
       page: 1,
@@ -203,8 +192,6 @@ watch(
       academic_year_number:form.academic_year_number
    }
 
-   loading.value = true;
-   admissionList.value = []
    admissionStore.fetchAdmissionByFilters(data).finally(() => {
     loading.value = false; 
   })
