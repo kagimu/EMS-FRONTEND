@@ -39,6 +39,7 @@
   const streamList = ref([])
   const curriculumList = ref([])
   const studyPeriodStore = useStudyPeriodStore()
+  const campusClassNumber = ref(null)
   
   
   const studentNumber = "";
@@ -71,6 +72,17 @@
   level:null
   })
   
+
+   
+const getCampusN = (streamN) => {
+let data = streamList.value
+
+let no = streamN
+campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_class_number;
+alert(streamN)
+  }
+
+
   watch (
     () => admissionStore.admitStudentResponse,
     async (data) => {
@@ -225,6 +237,8 @@ watch(
       {deep: true}
   )
   
+
+
   
   
   
@@ -370,7 +384,7 @@ watch(
       student_number:props.selectedStudentNumber,
       academic_year_number: form.academic_year_number,
       study_period_number: form.study_period_number,
-      campus_class_number: form.campus_class_number,
+      campus_class_number: campusClassNumber.value,
       school_number:form.school_number,
       campus_number: form.campus_number,
       interview_number:interviewNumber,
@@ -473,13 +487,17 @@ watch(
   
           <div class="mb-2">
             <label class="textSize"><small>Stream</small></label>
+
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required
-              v-model="form.stream_number">
+              v-model="form.stream_number"
+             @change="getCampusN(form.stream_number)"
+              >
               <option disabled value="">Select Stream</option>
-              <option v-for="(slist, index) in streamList" :key="index" :value="slist.number">{{ slist.name }}</option>
+              <option v-for="(slist, index) in streamList" :key="index" :value="slist.stream_number">{{ slist.name }}</option>
             </select>
+            
           </div>
      
 
