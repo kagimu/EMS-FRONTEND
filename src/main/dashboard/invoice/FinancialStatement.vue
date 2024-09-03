@@ -1,30 +1,12 @@
 <template>
     <div>
       <div class="row">
-<!--        <div class="col-12">
-            <div class="card-body" style="padding: 0;">
-                <div class="row">
-                    <div class="col-lg-8">
 
-                    </div>
-                        <div class="col-lg-4">
-                        <button   class="btn btn-warning btn-sm mb-2 mr-4" style="float: right;" type="button" >
-                        <small><i class="bi bi-download"><small>&nbsp;Download</small></i></small></button>
-                        <button  class="btn btn-secondary  btn-sm mb-2 mr-4" style="float: right;">
-                        <small><i class="bi bi-printer">&nbsp;Print</i></small></button>
-                    </div>
-                </div>
-                  <div class="container mt-4">
-                
-              </div>
-            </div>
-            <hr>
-          </div>-->
 
         <div class="pb-5">
-          <p>Financial Summary</p>
+          <p class="text-gray-600">Financial Summary</p>
 
-        <div class="row border rounded-md p-3">
+        <div class="row my-4">
 
           <div class="col-lg-4 mb-1">
             <div class="card-body border rounded-md text-xs text-center">
