@@ -176,7 +176,7 @@ watch (
           
          <tr  v-for="(list, index) in billableData" :key="index" >
         
-          <td>{{ list.billable_number }}</td>
+          <td>{{ index+1 }}</td>
           <td>{{ list.total_amount }}</td>
           <td>{{ list.campus_name }}</td>
           <td>{{ list.study_period_name }}</td>

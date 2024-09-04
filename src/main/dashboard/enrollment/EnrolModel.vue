@@ -118,6 +118,7 @@
             }
             campusStore.fetchClassesBySchool(data)
             form.class_number = draftData.class.number
+            campusClassNumber.value	= draftData.stream.campus_class_number
          }
 
          if(form.class_number){
