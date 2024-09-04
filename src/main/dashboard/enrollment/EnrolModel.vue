@@ -69,7 +69,7 @@
    
    onMounted(() => {
            schoolStore.fetchSchools()
-           enrolmentStore.fetchCheckListItems(props.adm)
+           enrolmentStore.fetchCheckListItems(props?.admissionData?.admission_number)
            getStudentInfoData()
            getModeOfStudyInfo()
 
@@ -85,27 +85,48 @@
 
    const getStudentInfoData = () => {
       let draftData = props.admissionData
-      if(draftData.number){
-         form.school_number = draftData.school_number
+      if(draftData.admission_number){
+         form.school_number = draftData.campus.school_number
 
          campusStore.fetchCampuses(form.school_number)
          cateringStore.fetchFeedingGroup(form.school_number)
          if(form.school_number){
-            form.campus_number = draftData.campus_number
+            form.campus_number = draftData.student.preferred_campus_number
          }
 
          if(form.campus_number){
             campusStore.fetchClassesByCampus(form.campus_number)
-            form.class_number = draftData.class_number
+            form.class_number = draftData.class.number
+            form.curriculumNumber = draftData.student.campus_curriculum_number
             fetchCurriculum(form.campus_number)
+
+           
+         }
+
+         if(form.curriculumNumber){
+            classStore.fetchCampusLevel(form.curriculumNumber)
+            form.level = draftData.studyPeriod.campus_level_number
+           
+         }
+
+         if(form.level){
+            academicYearStore.fetchAcademicYearByLevel(form.level)
+            form.academic_year_number = draftData.studyPeriod.academic_year_number
+            let data = {
+               school_number:form.school_number,
+               campus_level_number:form.level
+            }
+            campusStore.fetchClassesBySchool(data)
+            form.class_number = draftData.class.number
          }
 
          if(form.class_number){
+            fetchStreamAndStudyPeriod(form.class_number)
             academicYearStore.fetchAcademicYearByCampus(form.class_number)
             classStore.fetchClassStreams(form.class_number)
-            form.stream_number = draftData.stream_number
-            form.academic_year_number=draftData.academic_year_number
-            form.study_period_number=draftData.study_period_number
+            form.stream_number = draftData.stream.stream_number
+            form.academic_year_number=draftData.studyPeriod.academic_year_number
+            form.study_period_number=draftData.studyPeriod.study_period_number
          }
       }
    }
@@ -306,22 +327,6 @@ watch(
     {deep: true}
    )
 
-   // watch(
-   //     () => academicYearStore.academicYearByCampusResponse,
-   //     async (data) => {
-   //         if (data) {
-   //           academicYearList.value = data.data
-   
-   //           if(data && data.data){
-   //         let studyData = data.data
-   //         if(studyData && (studyData.length > 0)){
-   //           studyPeriodList.value = studyData[0].studyPeriod
-   //         }
-   //       }
-   //         }
-   //     },
-   //     {deep: true}
-   // )
    
    watch(
     () => academicYearStore.academicYearByLevelResponse,
@@ -406,13 +411,13 @@ watch(
 </script>
 <template>
    <div>
-    <!-- {{ admissionData.AcademicYear }} -->
+   <!-- {{ admissionData }} -->
       <form @submit.prevent="Enrol()">
          <div class="row">
             <div class="col-4">
                <label class="alert alert-primary p-1 textSize" style="" ><small>Please , Choose a class to enroll
                   <span style="text-transform: capitalize; color:#0d6efd;">
-                  <b>{{ studentDataInfo.Student.surname +" "+ studentDataInfo.Student.second_name }}</b>
+                  <b>{{ studentDataInfo.student.surname +" "+ studentDataInfo.student.second_name }}</b>
                   </span> !</small> 
                </label>
                <div class="mb-2 ">
@@ -503,18 +508,7 @@ watch(
                </div>
 
                    <!-- {{ modeOfSchoolData }} -->
-          <div class="mb-2">
-              <label class="textSize"><small>Mode Of Study</small>  <span class="star">*</span></label>
-              <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
-                      v-model="form.mode_of_study_number" required
-              >
-                  <option disabled value="">Select Mode Of Study</option>
-                  <option v-for="(list, index) in modeOfSchoolData" :key="index" :value="list.mode_of_study_number">{{ list.name }}
-                  </option>
-              </select>
-          </div>
+        
                <div class="mb-2">
                   <label class="textSize"><small>Stream</small> </label>
            
@@ -549,6 +543,19 @@ watch(
                   </label>
                   <input type="date" class="form-control" v-model="form.enrollment_date">
                </div>
+
+               <div class="mb-2">
+              <label class="textSize"><small>Mode Of Study</small>  <span class="star">*</span></label>
+              <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm"
+                      v-model="form.mode_of_study_number" required
+              >
+                  <option disabled value="">Select Mode Of Study</option>
+                  <option v-for="(list, index) in modeOfSchoolData" :key="index" :value="list.mode_of_study_number">{{ list.name }}
+                  </option>
+              </select>
+          </div>
             </div>
             <div class="col-8">
                

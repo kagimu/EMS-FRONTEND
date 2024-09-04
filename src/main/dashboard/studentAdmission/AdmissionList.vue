@@ -228,7 +228,7 @@ watch(
 
           list.key =  (current_page - 1) * per_page_item + i + 1
 
-          const index = admissionList.value.findIndex(object => object.number === list.number);
+          const index = admissionList.value.findIndex(object => object.admission_number === list.admission_number);
 
           if (index === -1) {
             admissionList.value.push(list);
@@ -517,7 +517,7 @@ watch(
                        >
                        <thead >
                           <tr>
-                             <th class="w-[5%]">#</th>
+                          
                              <th>ADN</th>
                              <th>Student</th>
                              <th>Campus</th>
@@ -528,23 +528,24 @@ watch(
                           </tr>
                        </thead>
                        <tbody>
+                 
                    
                           <tr v-for="(adm , index) in admissionList" :key="index">
                               <td>
-                                {{ adm.key }}
+                                {{ adm.student.adn }}
                              </td>
-                             <td>{{ adm.Student.adn }}</td>
-                             <td style="text-transform: capitalize !important;">{{ adm.Student.surname + " " + adm.Student.second_name }}</td>
-                             <td>{{ adm.Campus.name }}</td>
-                             <td>{{ adm.Stream.class_name }}</td>
-                             <td>{{ adm.Stream.name }}</td>
-                             <td>{{ adm.StudyPeriod.study_period_name }}</td>
+                          
+                             <td style="text-transform: capitalize !important;">{{ adm.student.surname + " " + adm.student.second_name+ " " + adm.student.other_name }}</td>
+                             <td>{{ adm.campus.name }}</td>
+                             <td>{{ adm.student.campus_class }}</td>
+                             <td>{{ adm.stream.name }}</td>
+                             <td>{{ adm.studyPeriod.study_period_name }}</td>
                              <td>
                       
                                 
  
                                 <div v-if="can('enroll_student','manage')">
-                                 <button  v-if="adm.status !== 'Enrolled'" @click="showModal(adm.Student.number,adm.number,adm)"
+                                 <button  v-if="adm.status !== 'Enrolled'" @click="showModal(adm.student.number,adm.admission_number,adm)"
                                    type="button" class="btn btn-sm btn-primary mb-2 mr-4 "
                                    style="color: white;">
                                    <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  
@@ -556,7 +557,7 @@ watch(
 
                                 <router-link  v-if="adm.status === 'Enrolled'" style=""
                                    class="text-decoration-none"
-                                   :to="{name:'student-profile-details', query:{st_id:adm.Student.number}}">
+                                   :to="{name:'student-profile-details', query:{st_id:adm.student.number}}">
                                    <button type="button"
                                       class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
                                       >view Details</button>
