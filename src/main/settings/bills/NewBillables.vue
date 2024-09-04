@@ -98,7 +98,7 @@ onMounted(
     billable_items:selectedItems,
     bill_status:"ACTIVE"
   }
- alert(JSON.stringify(data))
+//  alert(JSON.stringify(data))s
   billStore.newBillable(data)
 }
 
