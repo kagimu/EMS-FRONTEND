@@ -181,7 +181,7 @@ watch (
           <td>{{ list.campus_name }}</td>
           <td>{{ list.study_period_name }}</td>
           <td>{{ list.class_name }}</td>
-          <td>{{ list.type }}</td>
+          <td>{{ list.type.replace("_", " ") }}</td>
           <td>{{list.status}}</td>
           <td>
 
