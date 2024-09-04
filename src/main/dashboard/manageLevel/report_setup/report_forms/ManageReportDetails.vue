@@ -33,7 +33,6 @@ const myDiv = ref(null)
 const print = () => {
   let htmlContent = myDiv.value.innerHTML;
   
-
   let data  = {
    html: htmlContent.replace(/<!--v-if-->/g, '')
   }
@@ -48,7 +47,6 @@ watch(
       if(data){
         let base64Response = "data:application/pdf;base64,"+ data.message
         previewPdf(base64Response)
-        // console.log(base64Response)
       }
     }
 )
@@ -56,8 +54,9 @@ watch(
 function previewPdf(base64Response) {
 
 if(navigator.userAgent.indexOf("Firefox") !== -1 ) {
-    // Firefox
+  
     window.open(base64Response, '_target')
+
 } else {
     let a = document.createElement("a");
     a.href = base64Response;
@@ -68,11 +67,13 @@ if(navigator.userAgent.indexOf("Firefox") !== -1 ) {
 }
 }
 
+
 </script>
 
 <template>
 
 <div>
+
   <button class="btn btn-success mb-2 " @click="print"><i class="bi bi-printer"></i></button>
 <div ref="myDiv">
 

@@ -9,7 +9,8 @@ import EditUnitsOfMeasure from "@/main/dashboard/catering/cateringComponents/Edi
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 const confirmationRef = ref(null);
-
+import { useAbility } from '@casl/vue';
+const { can } = useAbility()
 
 const schoolStore = useSchoolStore()
 const schoolList = ref([])
@@ -175,7 +176,7 @@ watch (
         </div>
         </div>
     </div>
-    
+    <!-- {{ unitMeasurementData }} -->
     <table
     id="datatable"
     class="table table-striped"

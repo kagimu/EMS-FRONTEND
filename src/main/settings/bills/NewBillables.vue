@@ -81,11 +81,11 @@ onMounted(
       }))
 
       const typeData = ref(null)
-      if(formData.type){
-        typeData.value = "continueing"
-      }else{
-         typeData.value = "old"
-      }
+      // if(formData.type){
+      //   typeData.value = "continueing"
+      // }else{
+      //    typeData.value = "old"
+      // }
 
   let data = {
     description:formData.description,
@@ -94,8 +94,9 @@ onMounted(
     campus_number:formData.campus_number,
     study_period_number:formData.study_period_number,
     school_number:formData.school_number,
-    type:typeData.value,
+    bill_type:formData.type,
     billable_items:selectedItems,
+    bill_status:"ACTIVE"
   }
  alert(JSON.stringify(data))
   billStore.newBillable(data)
@@ -245,16 +246,6 @@ const fetchCampuses = (school) => {
     }
 )
 
-// watch(
-//     () => classStore.classLevelInfoResponse,
-//     async (data) => {
-//       if(data){
-//         classList.value = data.data
-//       }
-//     },
-//     {deep:true}
-// )
-
 watch (
     () => billStore.newBillableResponse,
     async (data) => {
@@ -385,6 +376,19 @@ watch(
               </select>
             </div>
 
+            <div class="mb-2">
+            <label class="textSize"><small>AcademicYear</small></label>
+         
+         <select
+                 style="box-shadow: none;"
+                 class="form-select form-select-sm" required
+                 v-model="formData.academic_year_number"
+         >
+             <option disabled value="">-filter By AcademicYear</option>
+            <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
+         </select>
+     </div>
+
 
             <div class="mb-2">
         <label class="textColor"><small>Class</small></label>
@@ -397,19 +401,6 @@ watch(
         </select>
       </div>
 
-
-          <div class="mb-2">
-            <label class="textSize"><small>AcademicYear</small></label>
-         
-         <select
-                 style="box-shadow: none;"
-                 class="form-select form-select-sm" required
-                 v-model="formData.academic_year_number"
-         >
-             <option disabled value="">-filter By AcademicYear</option>
-            <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
-         </select>
-     </div>
 
      <div class="mb-2">
       <label class="textSize"><small>Study Period</small></label>
@@ -443,13 +434,13 @@ watch(
 
                  <div class="flex">
                    <div class="mr-4">
-                     <input v-model="formData.type" class="cursor-pointer" type="radio" :value="CONTINUING" name="flexRadioDefault" id="box1">
+                     <input v-model="formData.type" class="cursor-pointer" type="radio" value="CONTINUING" name="flexRadioDefault" id="box1">
                      <label class="form-check-label ml-2 cursor-pointer" for="box1">
                        Continueing
                      </label>
                    </div>
                    <div class="">
-                     <input v-model="formData.type" class="cursor-pointer" type="radio" :value="NEW_APPLICATION" name="flexRadioDefault" id="box2">
+                     <input v-model="formData.type" class="cursor-pointer" type="radio" value="NEW_APPLICATION" name="flexRadioDefault" id="box2">
                      <label class="form-check-label ml-2 cursor-pointer" for="box2">
                       New Application
                      </label>

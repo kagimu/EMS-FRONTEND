@@ -50,11 +50,32 @@ const filterReportData = () => {
   }
 }
 
+
+
+const printableContent = ref(null);
+const printContent = () => {
+  const printContents = printableContent.value.innerHTML;
+  const originalContents = document.body.innerHTML;
+
+  const printWindow = window.open('', '', 'height=600,width=800');
+  printWindow.document.write('<html><head><title>Print</title>');
+  printWindow.document.write(
+    '<style>body { font-family: Arial, sans-serif; } </style>'); 
+  printWindow.document.write('</head><body>');
+  printWindow.document.write(printContents);
+  printWindow.document.write('</body></html>');
+  printWindow.document.close();
+  printWindow.print();
+}
+
+
 </script>
 
 <template>
-<div>
+  <button @click="printContent">print </button>
 
+<div ref="printableContent" class="printable">
+  
   <table style="width: 100%;">
     <tr>
       <td style="text-align: center; width: 20%;">
@@ -302,6 +323,24 @@ const filterReportData = () => {
 </div>
 </template>
 
+
 <style scoped>
 
+.printable {
+  padding: 0px;
+  /* border: 1px solid #2e0404;? */
+  margin-top: 0px;
+}
+
+img {
+  display: block;
+  margin-top: 20px;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
 </style>

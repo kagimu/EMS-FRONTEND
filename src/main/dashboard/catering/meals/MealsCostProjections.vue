@@ -194,7 +194,7 @@ watch(
                 <th scope="col" class="w-[20%]">Name</th>
                 <th scope="col" class="w-[20%]">Use Quantities</th>
                  <th scope="col" class="w-[20%]">Purchase quantity</th>
-                <th scope="col" class="w-[20%]">Unit Purchase cost</th>
+                <th scope="col" class="w-[20%]">Unit Purchase cost (UGX)</th>
                
               </tr>
               </thead>
@@ -202,14 +202,14 @@ watch(
               <tr v-for="(summary, summary_index) in mealProjections?.items_summary" :key="summary_index">
                 <td> {{(summary_index + 1)}}</td>
                 <td> {{summary.name}}</td>
-                <td><div class="flex">{{summary.quantity}} ( {{summary.unit_of_measure}} )</div></td>
-                <td> {{summary.purchase_quantity}} ({{summary.purchase_unit_of_measure}})</td>
-                <td> {{summary.total_cost}}</td>
+                <td><div class="flex">{{summary?.quantity?.toLocaleString() ?? 0}} ( {{summary.unit_of_measure}} )</div></td>
+                <td> {{summary?.purchase_quantity?.toLocaleString() ?? 0}} ({{summary.purchase_unit_of_measure}})</td>
+                <td> {{summary?.total_cost?.toLocaleString() ?? 0}}</td>
                
               </tr>
               <tr class="font-bold">
                 <td colspan="3">Total</td>
-                <td>{{mealProjections?.total_cost}}</td>
+                <td>{{mealProjections?.total_cost?.toLocaleString() ?? 0}}</td>
               </tr>
               </tbody>
             </table>
@@ -265,7 +265,7 @@ watch(
                   <td>{{(item_key + 1)}}</td>
                   <td>{{item?.name}}</td>
                   <td>{{item?.quantity}} ( {{item?.unit_of_measure}} )</td>
-                  <td>{{item?.total_cost}}</td>
+                  <td>{{item?.total_cost?.toLocaleString() ?? 0}}</td>
                 </tr>
                 </tbody>
               </table>
