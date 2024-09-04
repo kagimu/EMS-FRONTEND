@@ -1,291 +1,221 @@
 <script setup>
-import {onMounted, ref, watch,reactive} from "vue";
-import useNotificationStore from "@/composables/useNotification.js"
+import { onMounted, ref, watch, reactive } from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
 import { useAbility } from '@casl/vue';
 import AppModal from "@/components/AppModal.vue";
-import NewBillables from "@/main/settings/bills/NewBillables.vue"
-import {useBillStore} from "@/main/settings/bills/store/bills.js";
-import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
+import NewBillables from "@/main/settings/bills/NewBillables.vue";
+import { useBillStore } from "@/main/settings/bills/store/bills.js";
+import { useSchoolStore } from "@/main/dashboard/manageSchool/store/school.js";
 
-const  notificationStore  = useNotificationStore()
-const schoolStore = useSchoolStore()
-const mymodal = ref(false)
-const errorMessage = ref(null)
-const loader  = ref(false)
-const { can } = useAbility()
-const schoolList = ref([])
-const billStore = useBillStore()
-const school_number = ref("")
-const billableData= ref([])
-onMounted(
-    async () => {
-     schoolStore.fetchSchools()
-    }
-)
+const notificationStore = useNotificationStore();
+const schoolStore = useSchoolStore();
+const mymodal = ref(false);
+const errorMessage = ref(null);
+const loader = ref(false);
+const { can } = useAbility();
+const schoolList = ref([]);
+const billStore = useBillStore();
+const school_number = ref("");
+const billableData = ref([]);
 
-const showModal = () =>{
-  mymodal.value = true
-}
+const props = defineProps({
+  billableNumber: String
+});
 
+onMounted(async () => {
+  schoolStore.fetchSchools();
+  doFetchBillablesDetails(props.billableNumber);
+});
 
- const doFetchBillables = (schoolN) =>{
+const dataInfo = reactive({
+  billable_number: "",
+  status: "",
+  class_name: "",
+  study_period_name: "",
+  campus_name: "",
+  type: "",
+  total_amount: 0,
+});
+
+const showModal = () => {
+  mymodal.value = true;
+};
+
+const doFetchBillablesDetails = (billableNumber) => {
   let data = {
-    school_number:schoolN
-  }
-  billStore.fetchBillable(data)
- }
-
-
+    billable_number: billableNumber
+  };
+  billStore.fetchBillableDetails(data);
+};
 
 watch(
-    () => billStore.billableResponse,
-    async (data) => {
-      if(data){
-      
-        billableData.value = data.data
-        // alert(JSON.stringify(data))
-      }
-    },
-    {deep:true}
-)
-
-
+  () => billStore.billableDetailsResponse,
+  async (data) => {
+    if (data) {
+      billableData.value = data.data;
+      Object.assign(dataInfo, {
+        billable_number: billableData.value.billable_number,
+        status: billableData.value.status,
+        class_name: billableData.value.class_name,
+        study_period_name: billableData.value.study_period_name,
+        campus_name: billableData.value.campus_name,
+        type: billableData.value.type,
+        total_amount: billableData.value.total_amount
+      });
+    }
+  },
+  { deep: true }
+);
 
 watch(
-      () => schoolStore.schoolsResponse,
-      async (data) => {
-          if (data) {
-              schoolList.value = data.data
-          }
-      },
-      {deep: true}
-  )
+  () => schoolStore.schoolsResponse,
+  async (data) => {
+    if (data) {
+      schoolList.value = data.data;
+    }
+  },
+  { deep: true }
+);
 
-watch (
-    () => billStore.newBillableResponse,
-    async (data) => {
-      if (data) {
-        mymodal.value=false
-      }
-    },
-    { deep: true }
-)
+watch(
+  () => billStore.newBillableResponse,
+  async (data) => {
+    if (data) {
+      mymodal.value = false;
+    }
+  },
+  { deep: true }
+);
+
+watch(
+  () => billStore.errorMessage,
+  async (data) => {
+    if (data) {
+      errorMessage.value = data.message;
+      notificationStore.errorToast("Error", data.message);
+      loader.value = false;
+    }
+  },
+  { deep: true }
+);
 
 
+const printableContent = ref(null);
+const printContent = () => {
+  const printContents = printableContent.value.innerHTML;
+  const originalContents = document.body.innerHTML;
 
-watch (
-    () => billStore.errorMessage,
-    async (data) => {
-      if(data){
-        errorMessage.value = data.message
-        notificationStore.errorToast("Error",data.message)
-        loader.value = false
-      }
-    },
-    {deep:true}
-)
+  const printWindow = window.open('', '', 'height=600,width=800');
+  printWindow.document.write('<html><head><title>Print</title>');
+  printWindow.document.write(
+    '<style>body { font-family: Arial, sans-serif; } </style>'); 
+  printWindow.document.write('</head><body>');
+  printWindow.document.write(printContents);
+  printWindow.document.write('</body></html>');
+  printWindow.document.close();
+  printWindow.print();
+}
 
 </script>
 
 <template>
-    <div>
-
-          <div class="row">
-             <div class="col-12">
-                <div class="card mt-0">
-                  <div class="card-header">
-                   <div class="row">
-                    <div class="col-lg-7">
-                        <h6 style="margin-top:20px; text-align: left;font-size: 15px;">
-                          <i  @click="goBack()" class="bi bi-x-lg"></i>&nbsp;&nbsp;Invoice Details<b></b>     </h6>
-                    </div>
-                    <div class="col-lg-5">
-                      <button  @click="deleteInvoice()" class="btn btn-danger  btn-sm mb-2 mr-4" style="float: right;">
-                        <small><i class="bi bi-trash">&nbsp;Delete</i></small></button>
-                      <!-- <button type="submit" class="btn btn-primary mb-3">Download Invoice</button> -->
-                        <button   @click="showModal(myData.invoiceN)"  class="btn btn-primary btn-sm mb-2 mr-4"
-                         style="float: right;" type="button" 
-                         v-if="can('pay_invoice','general')">
-                        <small><i class="bi bi-check-lg"><small>&nbsp;Make Payment</small></i></small>
-                      </button>
-                        <button  class="btn btn-secondary  btn-sm mb-2 mr-4" style="float: right;">
-                        <small><i class="bi bi-printer">&nbsp;Print</i></small></button>
-                        <button @click="cancelInvoice()"  class="btn btn-danger  btn-sm mb-2 mr-4" 
-                        style="float: right;"
-                        v-if="can('cancel_invoice','general')">
-                        <small><i class="bi bi-x">&nbsp;cancel</i></small></button>
-                    </div>
-
-                   </div>
-                 </div>
-                  <div class="card-body" style="padding: 0;">
-          <div class="container mt-1">
-
-            <!-- Invoice 1 - Bootstrap Brain Component -->
-<section class="py-3 py-md-5">
-  <div class="container">
-   
-       
-        <!-- <div class="row mb-3">
-          <div class="col-12 col-sm-6 col-md-8" style="text-transform: capitalize;" >
-            <h4>Bill To</h4>
-            <address>
-              <strong>  {{ studentName }} </strong><br>
-              {{ school}}<br>
-              {{ campus}}<br>
-              {{ className+"("+stream+")"}}<br>
-              {{ academicYear }} , {{ studyPeriod }}<br>
-            
-        
-            </address>
+  <div>
+    <div class="row mb-3 printable" ref="printableContent" >
+      <div class="col-12">
+        <div class="card shadow-sm">
+          <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Bill Details</h5>
+            <div>
+              <button class="btn btn-secondary btn-sm me-2" >
+                <i class="bi bi-pencil-square"></i> Edit
+              </button>
+              <button class="btn btn-danger btn-sm">
+                <i class="bi bi-trash"></i> Delete
+              </button>
+            </div>
           </div>
-          <div class="col-12 col-sm-6 col-md-4" >
-            <h4 class="row">
-              <span class="col-6">Invoice #</span>
-              <span class="col-6 text-sm-end ">{{ myData.ref_number }}</span>
-            </h4>
-            <div class="row">
-              
-              <span class="col-6">Invoice Date</span>
-              <span class="col-6 text-sm-end">{{ myData.date }}</span>
-              <span class="col-6">Due Date</span>
-              <span class="col-6 text-sm-end">{{ myData.due_date }}</span>
-              <span class="col-6">Status</span> <span class="col-6 text-sm-end badge bg-warning text-black fw-bold"><b>{{ myData.status }}</b></span>
+          <div class="card-body">
+            <div class="container">
+              <section class="py-3">
+                <div class="row">
+                  <div class="col-md-8">
+                    <h5>Bill To</h5>
+                    <address>
+                      <strong>Bill No:</strong> <u>{{ billableData.billable_number }}</u><br>
+                      <strong>Class:</strong> {{ billableData.class_name }}<br>
+                      <strong>Campus:</strong> {{ billableData.campus_name }}<br>
+                      <strong>Study Period:</strong> {{ billableData.study_period_name }}<br>
+                      <strong>Status:</strong> <span :class="{'text-success': billableData.status === 'Paid', 'text-danger': billableData.status !== 'Paid'}">{{ billableData.status }}</span>
+                    </address>
+                  </div>
+                  <div class="col-md-4 text-end">
+                    <button class="btn btn-outline-secondary btn-sm mb-2" @click="printContent">
+                      <i class="bi bi-printer"></i> Print
+                    </button>
+                  </div>
+                </div>
+              </section>
 
+              <section class="mb-3"  >
+                <div class="table-responsive">
+                  <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                      <tr>
+                        <th scope="col" class="text-uppercase">Qty</th>
+                        <th scope="col" class="text-uppercase">Item</th>
+                        <th scope="col" class="text-uppercase text-end">Unit Price</th>
+                        <th scope="col" class="text-uppercase text-end">Total Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(item, index) in billableData.billable_items" :key="index">
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.item_name }}</td>
+                        <td class="text-end">{{ item.unit_cost?.toLocaleString() ?? 'N/A' }}</td>
+                        <td class="text-end">{{ item.total_cost?.toLocaleString() ?? 'N/A' }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
             </div>
           </div>
         </div>
-        <div class="row mb-3">
-          <div class="col-12">
-            <div class="table-responsive">
-              <table class="table table-striped table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col" class="text-uppercase">Qty</th>
-                    <th scope="col" class="text-uppercase">Item</th>
-                    <th scope="col" class="text-uppercase text-end">Unit Price</th>
-                    <th scope="col" class="text-uppercase text-end">Amount</th>
-                  </tr>
-                </thead>
-                <tbody class="table-group-divider">
-                  <tr v-for="(payment, index) in invoiceData.items" :key="index">
-                    <th scope="row">{{payment.quantity}}</th>
-                       
-                        <td > {{payment.item_name}}</td>
-                        <td class="text-end"> {{payment.unit_cost}}</td>
-                        <td class="text-end"> {{payment.unit_cost}}</td>
-                  </tr>
-               
-                  <tr>
-                    <th scope="row" colspan="3" class="text-uppercase text-end">Total</th>
-                    <td class="text-end">{{myData.total_amount}}</td>
-                  </tr>
-                  <tr >
-                    <th scope="row" colspan="3" class="text-uppercase text-end">Paid</th>
-                    <td class="text-end">{{myData.paid_amount}}</td>
-                  </tr>
-                  <tr >
-                    <th scope="row" colspan="3" class="text-uppercase text-end">Balance</th>
-                    <td class="text-end">{{ myData.balance }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div> -->
-        
       </div>
-   
-</section>
+    </div>
 
-            <div class="row">
-            <div class="col-12">
+    <AppModal v-model="mymodal">
+      <NewBillables :billableData="billableData" />
+    </AppModal>
+  </div>
+</template>
 
-               
-        </div>
-        </div>
-        </div>
-        </div>
-
-
-
-          </div>
-
-
-
-                 <!-- <div class="card mt-2">
-                   <div class="card-header">
-                      Payments
-                     <hr />
-
-                     <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
-                       <thead>
-                       <tr>
-                         <th scope="col" style="width: 10%;">#</th>
-                         <th scope="col">Invoice Number</th>
-                         <th scope="col">Date</th>
-                         <th scope="col">By</th>
-                         <th scope="col">Amount</th>
-                         <th >Action</th>
-                       </tr>
-                       </thead>
-                       <tbody>
-                       <tr v-for="(payment, index) in invoiceData.payments" :key="index">
-                         <td> {{(index + 1)}}</td>
-                         <td> {{payment.invoice_ref_number}}</td>
-                         <td> {{payment.date_time}}</td>
-                         <td> {{payment.recorded_by}}</td>
-                         <td> {{payment.amount}}</td>
-                         <td>
-                          <button  @click="cancelInvoicePayment(payment.payment_number)" 
-                          class="btn btn-warning  btn-sm mb-2 mr-2"
-                          v-if="can('cancel_payment','general')">
-                        <small><i class="bi bi-cancel">&nbsp;cancel</i></small></button>
-                        <button  @click="deleteInvoicePayment(payment.payment_number)" class="btn btn-danger  btn-sm mb-2">
-                        <small><i class="bi bi-trash"></i></small></button>
-                         </td>
-                       </tr>
-                       </tbody>
-                     </table>
-
-
-
-                   </div>
-               </div> -->
-
-
-            </div>
-          </div>
-      </div>
-
-
-      <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
-
-    <div>
- 
-      </div>
-    </template>
-
-
-
-<style>
- .mb-8 {
-    margin-bottom: 2rem;
-    text-align: left;
-       /* color: rgb(0, 0, 0); */
-    font-family: Roboto, sans-serif;
-    font-size: 17px;
-}
-.mb-2 {
-    /* margin-bottom: 2rem; */
-    text-align: left;
-    color: rgb(0, 0, 0);
-    font-family: Roboto, sans-serif;
-    border-radius: 3px !important;
-    /* font-size: 17px; */
-}
-.textSize{
-  font-size: 13px;
+<style scoped>
+.card-header {
+  font-size: 18px;
 }
 
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table thead th {
+  background-color: #343a40;
+  color: white;
+}
+
+.table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.btn {
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+h5 {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
 </style>

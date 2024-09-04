@@ -6,6 +6,7 @@ import AppModal from "@/components/AppModal.vue";
 import NewBillables from "@/main/settings/bills/NewBillables.vue"
 import {useBillStore} from "@/main/settings/bills/store/bills.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
+import BillableDetails from "@/main/settings/bills/BillableDetails.vue";
 
 const  notificationStore  = useNotificationStore()
 const schoolStore = useSchoolStore()
@@ -17,6 +18,8 @@ const schoolList = ref([])
 const billStore = useBillStore()
 const school_number = ref("")
 const billableData= ref([])
+const modalDetails = ref(false)
+const billD = ref(null)
 onMounted(
     async () => {
      schoolStore.fetchSchools()
@@ -27,6 +30,12 @@ const showModal = () =>{
   mymodal.value = true
 }
 
+const showModalDetails = (billNumber) =>{
+  // alert(billNumber)
+  modalDetails.value = true
+  billD.value = billNumber
+}
+
 
  const doFetchBillables = (schoolN) =>{
   let data = {
@@ -35,6 +44,16 @@ const showModal = () =>{
   billStore.fetchBillable(data)
  }
 
+
+ watch (
+    () => billStore.newBillableResponse,
+    async (data) => {
+      if (data) {
+        billStore.fetchBillable(data)
+      }
+    },
+    { deep: true }
+)
 
 
 watch(
@@ -94,6 +113,10 @@ watch (
       <NewBillables :userNumber="userNumber"></NewBillables>
       </AppModal>
 
+      <AppModal title="Billable" v-model="modalDetails" xl6>
+      <BillableDetails :billableNumber="billD"></BillableDetails>
+      </AppModal>
+
   
       <div class="rw mt-3"  >
         <div class="">
@@ -106,13 +129,13 @@ watch (
        </div>
          
             <div class="card-bdy" style="padding: 0;">
-    <div class="mt-4">
+    <div class="m-2">
 
       <div class="row">
        
                   <div class="col-lg-4">
                     <div class="mb-2">
-            <label class="textSize"><small>School</small></label>
+            <!-- <label class="textSize"><small>School</small></label> -->
          <select
                  style="box-shadow: none;"
                  class="form-select form-select-sm" required
@@ -166,7 +189,7 @@ watch (
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-          <button type="button">
+          <button type="button" @click="showModalDetails(list.billable_number)">
             <i class="bi bi-eye" style="color:blue"></i>
           </button>
 

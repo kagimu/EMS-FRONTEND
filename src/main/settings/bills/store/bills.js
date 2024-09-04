@@ -8,7 +8,7 @@ export const useBillStore = defineStore("billStore", () => {
     const errorMessage = ref(null)
     const billableResponse = ref(null)
     const updateBillableResponse = ref(null)
-
+    const billableDetailsResponse = ref(null)
 
     async function newBillable(data) {
         return await api.post("main/invoices/billable", data)
@@ -60,16 +60,33 @@ export const useBillStore = defineStore("billStore", () => {
     }
 
 
+    // main/invoices/billable/details?billable_number=cd
+
+    
+    async function fetchBillableDetails(data) {
+        let  billable_number = data.billable_number ?? ""
+       return await api.get("main/invoices/billable/details?billable_number="+billable_number)
+           .then((response) => {
+               billableDetailsResponse.value = response.data
+           })
+           .catch((error) => {
+               if(error && error.response){
+                   errorMessage.value = error.response.data
+               }
+           })
+   }
 
     return {
         newBillableResponse,
         updateBillableResponse,
         billableResponse,
         deleteBillableResponse,
+        billableDetailsResponse,
         errorMessage,
         newBillable,
         fetchBillable,
         editBillable,
         deleteBillable,
+        fetchBillableDetails
     }
 })
