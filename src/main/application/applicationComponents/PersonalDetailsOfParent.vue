@@ -53,13 +53,6 @@ watch (
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
         emit("next", {id:data.application_number, step:2})
-      /*  let dataa = {
-          page: page.value,
-          per_page: per_page.value,
-          status: "SUBMITTED"
-        }
-        applicationStore.fetchApplicationList(dataa)*/
-
       }
     }
 )
@@ -99,8 +92,7 @@ watch(
     () => routerData.currentRoute.value.query.applicationId,
     async (data) => {
       if (data) {
-        // localStorage.removeItem('applicationId')
-        applicationStore.fetchApplicationById(data)
+        await applicationStore.fetchApplicationById(data)
       }
     },
     { deep: true }
@@ -112,15 +104,15 @@ watch (
     () => applicationStore.applicationByIdResponse,
     async (data) => {
       if(data){
-        applicationId.value = data.number
-        form.surname = data.parent.surname
-        form.second_name = data.parent.second_name
-        form.other_name = data.parent.other_names
-        form.main_telephone_number = data.parent.telephone_number
-        form.alternative_telephone_number= data.parent.alternative_number
-        form.email= data.parent.email
-        form.alternative_email=data.parent.alternative_email
-        formData.application= data.parent.number
+        applicationId.value = data?.number
+        form.surname = data?.parent?.surname
+        form.second_name = data?.parent?.second_name
+        form.other_name = data?.parent?.other_names
+        form.main_telephone_number = data?.parent?.telephone_number
+        form.alternative_telephone_number= data?.parent?.alternative_number
+        form.email= data?.parent?.email
+        form.alternative_email=data?.parent?.alternative_email
+        formData.application= data?.parent?.number
       }
     },
     {deep:true}
@@ -142,7 +134,7 @@ const addParentPersonalDetails = () => {
 <template>
 <div>
 <p class="ml-4 mt-4 mb-1" style="text-align: center !important;">GUARDIAN/PARENT DETAILS
-  <!-- {{ applicationNumber }} -->
+
 </p>
 
   <form  @submit.prevent="addParentPersonalDetails" style="margin-top: 6px;"> 
@@ -153,16 +145,24 @@ const addParentPersonalDetails = () => {
           <label class="textColor text-sm"><small>Surname/Family name</small> <span class="star">*</span></label>
           <input type="text" style="outline: none 0 !important; box-shadow: none; font-size: 10px;;" v-model="form.surname" required class="form-control form-control-sm">
         </div>
-
-        <div class="mb-8">
-          <label class="textColor text-sm"><small>Second name </small><span class="star">*</span></label>
-          <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.second_name"  required class="form-control form-control-sm">
+      <div class="row">
+        <div class="col-6">
+          <div class="mb-8">
+            <label class="textColor text-sm"><small>Second name </small><span class="star">*</span></label>
+            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.second_name"  required class="form-control form-control-sm">
+          </div>
         </div>
+        <div class="col-6">
+          <div class="mb-8">
+            <label class="textColor text-sm"><small>Other names</small> </label>
+            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" class="form-control form-control-sm">
+          </div>
 
-        <div class="mb-8">
-          <label class="textColor text-sm"><small>Other names</small> </label>
-          <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" class="form-control form-control-sm">
         </div>
+      </div>
+
+
+
 
       <div class="mb-2">
         <label class="textColor text-sm"><small>Email</small> <span class="star">*</span></label>
