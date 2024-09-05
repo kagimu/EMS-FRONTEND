@@ -137,9 +137,10 @@ const addParentPersonalDetails = () => {
 
 </p>
 
-  <form  @submit.prevent="addParentPersonalDetails" style="margin-top: 6px;"> 
+  <form  @submit.prevent="addParentPersonalDetails" style="margin-top: 12px;">
   <div class="row mx-auto">
     <div class="col-12">
+
         <div class="mb-8">
           <input type="hidden"  v-model="formData.parent_number">
           <label class="textColor text-sm"><small>Surname/Family name</small> <span class="star">*</span></label>
@@ -162,21 +163,25 @@ const addParentPersonalDetails = () => {
       </div>
 
 
-
-
-      <div class="mb-2">
-        <label class="textColor text-sm"><small>Email</small> <span class="star">*</span></label>
-        <input type="email" style="outline: none 0 !important; box-shadow: none;" v-model="form.email"  required class="form-control form-control-sm">
+      <div class="row">
+        <div class="col-6">
+          <div class="mb-2">
+            <label class="textColor text-sm"><small>Email</small> <span class="star">*</span></label>
+            <input type="email" style="outline: none 0 !important; box-shadow: none;" v-model="form.email"  required class="form-control form-control-sm">
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="mb-2">
+            <label class="textColor text-sm"><small>Alternative Email</small></label>
+            <input type="email" style="outline: none 0 !important; box-shadow: none;" v-model="form.alternative_email" class="form-control form-control-sm">
+          </div>
+        </div>
       </div>
 
 
-      <div class="mb-2">
-        <label class="textColor text-sm"><small>Alternative Email</small></label>
-        <input type="email" style="outline: none 0 !important; box-shadow: none;" v-model="form.alternative_email" class="form-control form-control-sm">
-      </div>
-    </div>
-
-      <div class="mb-2">
+      <div class="row">
+        <div class="col-6">
+          <div class="mb-2">
         <label class="textColor text-sm"> <small>Telephone No </small><span class="star">*</span></label>
         <div class="input-group">
           <vue-tel-input
@@ -191,8 +196,10 @@ const addParentPersonalDetails = () => {
               mode="international"></vue-tel-input>
         </div>
       </div>
+        </div>
 
-      <div class="mb-2">
+        <div class="col-6">
+          <div class="mb-2">
         <label class="textColor text-sm"> <small>Alternative Telephone No </small></label>
         <div class="input-group">
           <vue-tel-input
@@ -207,6 +214,14 @@ const addParentPersonalDetails = () => {
               mode="international"></vue-tel-input>
         </div>
       </div>
+        </div>
+      </div>
+
+
+
+    </div>
+
+
 
          <div class="row">
           
