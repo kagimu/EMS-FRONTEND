@@ -16,8 +16,6 @@ const assessmentStore = useAssessmentStore()
 const modeStudyStore = useStudyModeStore()
 const modeOfSchoolData = ref([])
 const classStore = useClassesStore()
-// const routerData = useRouter()
-// let  applicationNumber = routerData.currentRoute.value.query.applicationId
 const levelList = ref([])
 
 const buttonLoader = ref(false)
@@ -156,7 +154,7 @@ watch (
         localStorage.setItem("CampusClassNumber", form.class_number)
         localStorage.setItem("studentNumber", data.data.number)
         buttonLoader.value = false
-        assessmentStore.fetchAssessmentAreaByClass(form.class_number)
+        await assessmentStore.fetchAssessmentAreaByClass(form.class_number)
 
         emit("next", {id:applicationId.value, step:3})
 
@@ -166,7 +164,7 @@ watch (
           per_page: per_page.value,
           status: "SUBMITTED"
         }
-        applicationStore.fetchApplicationList(dataa)
+        await applicationStore.fetchApplicationList(dataa)
       }
     }
 )
@@ -176,7 +174,7 @@ watch(
     () => classStore.campusLevelResponse,
     async (data) => {
       if(data){
-        levelList.value = data.data ///---------------
+        levelList.value = data.data
       }
     },
     {deep:true}
@@ -277,15 +275,6 @@ watch (
     }
 )
 
-// watch(
-//     () => campusStore.campusClassesResponse,
-//     async (data) => {
-//       if (data) {
-//         classList.value = data.data
-//       }
-//     },
-//     {deep: true}
-// )
 
 watch(
     () => campusStore.schoolClassesResponse,
@@ -309,66 +298,90 @@ watch(
             <label class="textColor text-sm"><small>Surname</small> <span class="star">*</span></label>
             <input type="text" style="outline: none 0 !important; box-shadow: none;"  v-model="form.surname"  required class="form-control form-control-sm">
           </div>
-  
-          <div class="mb-2">
-            <label class="textColor text-sm"><small>Second name</small> <span class="star">*</span></label>
-            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.second_name"  required class="form-control form-control-sm">
-          </div>
-  
-          <div class="mb-2">
-            <label class="textColor text-sm"><small>Other names</small> </label>
-            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" class="form-control form-control-sm">
-          </div>
 
-          
-          <div class="mb-2">
-            <label class="textColor text-sm"><small>Reason to enroll </small> </label>
-            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.reason_for_choosing_school" class="form-control form-control-sm">
+        <div class="row">
+          <div class="col-6">
+            <div class="mb-2">
+              <label class="textColor text-sm"><small>Second name</small> <span class="star">*</span></label>
+              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.second_name"  required class="form-control form-control-sm">
+            </div>
           </div>
+          <div class="col-6">
+            <div class="mb-2">
+              <label class="textColor text-sm"><small>Other names</small> </label>
+              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" class="form-control form-control-sm">
+            </div>
+          </div>
+        </div>
 
 
-          <div class="mb-2">
+
+        <div class="row">
+          <div class="col-6">
+            <div class="mb-2">
+              <label class="textColor text-sm"><small>Reason to enroll </small> </label>
+              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.reason_for_choosing_school" class="form-control form-control-sm">
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="mb-2">
               <label class="textColor text-sm"><small>How did you know about us ? </small> </label>
               <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
-                      v-model="form.source_of_school_info">
-                  <option value="News paper" >News paper</option>
-                  <option value="Old parent">Old parent</option>
-                  <option value="Television">Television</option>
-                  <option value="Internet">Internet</option>
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="form.source_of_school_info">
+                <option value="News paper" >News paper</option>
+                <option value="Old parent">Old parent</option>
+                <option value="Television">Television</option>
+                <option value="Internet">Internet</option>
               </select>
+            </div>
           </div>
+        </div>
+
+          
 
 
-          <div class="mb-2">
+
+
+
+        <div class="row">
+          <div class="col-6">
+            <div class="mb-2">
               <label class="textColor"><small>School</small> <span class="star">*</span></label>
               <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="form.school_number"
-                      @change="fetchCampuses(form.school_number)"
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm" required
+                  v-model="form.school_number"
+                  @change="fetchCampuses(form.school_number)"
               >
-                  <option disabled value="">Select School</option>
-                  <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-                  </option>
+                <option disabled value="">Select School</option>
+                <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+                </option>
               </select>
+            </div>
           </div>
-
-
-          <div class="mb-2">
+          <div class="col-6">
+            <div class="mb-2">
               <label class="textColor"><small>Campus</small>  <span class="star">*</span></label>
               <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
-                      v-model="form.preferred_campus_number" required
-                      @change="fetchClasses(form.preferred_campus_number)"
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="form.preferred_campus_number" required
+                  @change="fetchClasses(form.preferred_campus_number)"
               >
-                  <option disabled value="">Select campus</option>
-                  <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-                  </option>
+                <option disabled value="">Select campus</option>
+                <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+                </option>
               </select>
+            </div>
           </div>
+        </div>
+
+
+
+
+
 
       <div class="mb-2">
           <label class="textSize"><small>Curriculum</small></label>
@@ -383,32 +396,41 @@ watch(
             </select>
           </div>
 
-          <div class="mb-2">
+
+        <div class="row">
+          <div class="col-6">
+            <div class="mb-2">
               <label class="textSize"><small>Level</small></label>
-                <select
-                style="box-shadow: none;"
-                class="form-select form-select-sm"
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
                   v-model="form.level"
                   @change="fetchLevelClasses(form.level)"
-                >
-                  <option disabled value="">-Filter by level-</option>
-                  <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
-                </select>
-                
+              >
+                <option disabled value="">-Filter by level-</option>
+                <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
+              </select>
             </div>
-
-          <div class="mb-2">
+          </div>
+          <div class="col-6">
+            <div class="mb-2">
               <label class="textColor"><small>Preferred Class</small> <span class="star">*</span></label>
               <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="form.class_number"
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm" required
+                  v-model="form.class_number"
               >
-                  <option disabled value="">Select class</option>
-                  <option v-for="(list, index) in classList" :key="index" :value="list.number">{{ list.name }}
-                  </option>
+                <option disabled value="">Select class</option>
+                <option v-for="(list, index) in classList" :key="index" :value="list.number">{{ list.name }}
+                </option>
               </select>
+            </div>
           </div>
+        </div>
+
+
+
+
 
           <!-- {{ modeOfSchoolData }} -->
           <div class="mb-2">

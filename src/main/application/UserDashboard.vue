@@ -30,7 +30,7 @@ const applyApplication = () => {
 
 onMounted(
     async () => {
-      // alert(router.currentRoute.value.name)
+
 
     } )
 
