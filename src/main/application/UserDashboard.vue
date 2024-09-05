@@ -156,7 +156,7 @@ const reloadProfile = () => {
       <div   style="border-right: 1px solid rgba(0, 0, 0, 0.08); background-color: white !important; padding: 0px; position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto;">
         
      
-            <div class="p-4" style="background-color:rgba(0, 0, 0, 0.02)">
+            <div class="p-4 border-b" style="background-color:rgba(0, 0, 0, 0.02)">
               <img
                 src="/src/assets/images/victorius-budge.png"
                 alt="Logo"
