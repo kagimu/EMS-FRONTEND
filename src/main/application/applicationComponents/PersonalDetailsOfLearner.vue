@@ -263,6 +263,13 @@ watch (
 
         if(draft?.preferred_campus_number) {
           fetchClasses(draft?.preferred_campus_number)
+          form.campus_curriculum_number = draft?.campus_curriculum_number
+        }
+
+        if(draft?.campus_curriculum_number) {
+          fetchCampusLevel(draft.campus_curriculum_number)
+          // alert(draft.level_number)
+          form.level = draft?.level_number
         }
 
 
