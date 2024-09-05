@@ -24,8 +24,8 @@ const  menuSelected = (name) =>{
 }
 
 const applyApplication = () => {
-  window.localStorage.removeItem("application-id");
-  router.go({name:"application"})
+  localStorage.removeItem("application-id");
+  // router.push({name:"application"})
 }
 
 onMounted(
@@ -85,21 +85,15 @@ const reloadProfile = () => {
       </div>
 
       <div class="d-flex align-items-center">
-        <!-- <button
-          :class="[
-            menuSelected('application') ? 'btn btn-light me-3 text-success' : 'btn btn-outline-light me-3',
-            'px-3 py-2'
-          ]"
+<!--         <button
+             :class="[ menuSelected('application') ? 'btn btn-light me-3 text-success' : 'btn btn-outline-light me-3',' px-3 py-2']"
           @click="applyApplication()"
         >
           APPLY NOW
-        </button> -->
-
+        </button>-->
         <router-link
-          :class="[
-            menuSelected('application') ? 'btn btn-light me-3 text-success' : 'btn btn-outline-light me-3',
-            ' px-3 py-2'
-          ]"
+            @click="applyApplication()"
+          :class="[ menuSelected('application') ? 'btn btn-light me-3 text-success' : 'btn btn-outline-light me-3',' px-3 py-2']"
           :to="{ name: 'application' }"
         >
         APPLY NOW

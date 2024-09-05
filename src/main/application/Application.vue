@@ -55,12 +55,6 @@ const fetchApplicationData = (applicationNumber) => {
               <div>
 
 
-
-
-
-
-
-
                 <div class="w-full flex flex-col space-y-2 pt-10">
 
                   <div style="margin-top: 20px;">
