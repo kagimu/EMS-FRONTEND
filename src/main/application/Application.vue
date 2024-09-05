@@ -42,10 +42,9 @@ const fetchApplicationData = (applicationNumber) => {
 <template>
   <div class="temp">
     <div class="row">
-      <div style="padding-top: 40px;">
-      <h5 class="txt" >APPLY</h5>
-      <h1  class="txt2">STUDENT APPLICATION</h1>
-      <h5  class="txt">Get Started Today With Few Steps </h5>
+      <div style="padding-top: 70px;">
+      <div  class="text-center font-bold text-[#2c2f8c]">STUDENT APPLICATION</div>
+      <div  class="text-center">Get Started Today With Few Steps </div>
     </div>
       <div class="col-lg-12">
         <div class="card sect mx-auto" style="margin-bottom:60px;margin-top:50px;border-radius: 16px; width: 80%;">
