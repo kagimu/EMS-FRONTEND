@@ -54,6 +54,75 @@ const fetchApplicationData = (applicationNumber) => {
            
             <div class="col-lg-12">
               <div>
+
+
+
+
+
+
+
+
+<!--                <div class="w-full flex flex-col space-y-2 pt-10">
+                  <div class="flex relative space-x-2 justify-around text-[#414548] border-2 border-primary border-l-0 border-r-0 border-b-0 z-10">
+                    <div class="text-center -mt-5 z-0" :class="step === 1 ? 'font-bold':'italic'">
+                      <i class="text-[30px] bg-white" :class="step === 1 ? 'animate-bounce fa-solid fa-arrow-circle-down step-wizard-current' : step <= 1 ? 'fa-solid fa-clock step-wizard-default' : 'fa-solid fa-check-circle step-wizard-success'"></i>
+                      <p class="text-sm">GUARDIAN/PARENT</p>
+                    </div>
+                    <div class="text-center -mt-5 z-0" :class="step === 2 ? 'font-bold':'italic'">
+                      <i class="text-[30px] bg-white" :class="step === 2 ? 'animate-bounce fa-solid fa-arrow-circle-down step-wizard-current' : step <= 2 ? 'fa-solid fa-clock step-wizard-default' : 'fa-solid fa-check-circle step-wizard-success'"></i>
+                      <p class="text-sm">LEARNER</p>
+                    </div>
+                    <div  class="text-center -mt-5 z-0" :class="step === 3 ? 'font-bold':'italic'">
+                      <i class="text-[30px] bg-white p-6"  :class="step === 3 ? 'animate-bounce fa-solid fa-arrow-circle-down step-wizard-current' : step < 3 ? 'fa-solid fa-clock step-wizard-default' : 'fa-solid fa-check-circle step-wizard-success'"></i>
+                      <p class="text-sm">PREVIOUS SCHOOL</p>
+                    </div>
+                    <div  class="text-center -mt-5 z-0" :class="step === 4 ? 'font-bold':'italic'">
+                      <i class="text-[30px] bg-white p-6"  :class="step === 4 ? 'animate-bounce fa-solid fa-arrow-circle-down step-wizard-current' : step < 4 ? 'fa-solid fa-clock step-wizard-default' : 'fa-solid fa-check-circle step-wizard-success'"></i>
+                      <p class="text-sm">PREVIOUS SCHOOL RESULTS</p>
+                    </div>
+                    <div class="text-center -mt-5 z-0" :class="step === 5 ? 'font-bold' : 'italic'">
+                      <i class="text-[30px] bg-white" :class="step === 5 ? 'animate-bounce fa-solid fa-arrow-circle-down step-wizard-current' : step < 5 ? 'fa-solid fa-clock step-wizard-default' : 'fa-solid fa-check-circle step-wizard-success'"></i>
+                      <p class="text-sm">PAYMENT</p>
+                    </div>
+
+
+                  </div>
+
+                  <div class="mb-10 pt-4">
+
+                    <div v-show="step === 1">
+                      <personal-details-of-student
+                          v-on:next="nextPage"
+                      ></personal-details-of-student>
+                    </div>
+                    <div v-show="step === 2">
+                      <personal-details-of-learner
+                          v-on:next="nextPage"
+                      ></personal-details-of-learner>
+                    </div>
+                    <div v-show="step === 3">
+                      <previous-school-details
+                          v-on:next="nextPage"
+                      ></previous-school-details>
+                    </div>
+                    <div v-show="step === 4">
+                      <PreviousSchoolResults
+                          v-on:next="nextPage"></PreviousSchoolResults>
+                    </div>
+                    <div v-show="step === 5">
+                      <application-payement  v-on:next="nextPage">
+                      </application-payement>
+                    </div>
+
+                  </div>
+                </div>-->
+
+
+
+
+
+
+
             <div class="text-center">
               <ul class="nav nav-tabs text-xs" style="margin-top: 50px;">
               <li class="nav-item cursor-pointer">
@@ -85,7 +154,9 @@ const fetchApplicationData = (applicationNumber) => {
             </ul>
            
           </div>
-        
+
+
+
             <div v-show="step === 1">
               <personal-details-of-student
                   v-on:next="nextPage"
