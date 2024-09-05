@@ -141,7 +141,7 @@ const reloadProfile = () => {
             {{ name }}
         </span>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-            <!-- <li><a class="dropdown-item" href="#"><i class="bi bi-person-circle"></i> My Profile</a></li> -->
+            <li><a class="dropdown-item" href="#"><i class="bi bi-person-circle"></i> My Profile</a></li>
             <!-- <li><a class="dropdown-item" href="#"><i class="bi bi-person-fill-lock"></i> Change Password</a></li> -->
             <li ><a class="dropdown-item"  href="#" @click="userLogout" ><i class="bi bi-box-arrow-right" ></i> Logout</a></li>
           </ul>
