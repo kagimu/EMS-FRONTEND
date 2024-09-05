@@ -158,7 +158,7 @@ const reloadProfile = () => {
      
             <div class="p-4" style="background-color:rgba(0, 0, 0, 0.02)">
               <img
-                src="http://127.0.0.1:5173/src/assets/images/victorius-budge.png"
+                src="/src/assets/images/victorius-budge.png"
                 alt="Logo"
                 class="rounded-cirle mt-14"
                 style="width: 100%; height: 100%; object-fit: cover;"
@@ -167,7 +167,7 @@ const reloadProfile = () => {
        
 
           <div class="shadow-s mb-4 ">
-            <ul class="list-group list-group-flush">
+            <!-- <ul class="list-group list-group-flush">
               <li
                 v-for="(item, index) in menuItems"
                 :key="index"
@@ -177,7 +177,7 @@ const reloadProfile = () => {
               >
                 <i :class="item.icon + ' me-2'"></i> {{ item.label }}
               </li>
-            </ul>
+            </ul> -->
           </div>
 
         </div>
