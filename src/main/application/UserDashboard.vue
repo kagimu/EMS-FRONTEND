@@ -111,7 +111,7 @@ const reloadProfile = () => {
           APPLICATION HISTORY
         </router-link>
 
-        <router-link
+        <!-- <router-link
           :class="[
             menuSelected('admission_history') ? 'btn btn-light me-3 text-success' : 'btn btn-outline-light me-3',
             'px-3 py-2'
@@ -119,7 +119,7 @@ const reloadProfile = () => {
           :to="{ name: 'admission_history' }"
         >
           ADMISSION HISTORY
-        </router-link>
+        </router-link> -->
 
 
         <div class="dropdown">

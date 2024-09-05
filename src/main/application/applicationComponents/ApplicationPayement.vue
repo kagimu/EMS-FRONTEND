@@ -17,17 +17,9 @@ const emit = defineEmits()
 
 
 const submitApplication = () => {
-  loading.value = true;
-  applicationStore.fetchApplicationList();
-  setTimeout(() => {
-    loading.value = false;
-    success.value = true;
-  }, 2000);
+  applicationStore.submitApplicationOnSkipPreviousSchool(applicationId.value)
 
-
-  localStorage.removeItem('application-id');
-  localStorage.removeItem('studentNumber');
-};
+}
 
 const cancelApply = () => {
   showPrompt.value = false; // Hide prompt if canceled
@@ -37,6 +29,24 @@ const cancelApply = () => {
 const goBack = () =>{
   emit("next", {id:applicationId.value, step:4})
 }
+
+watch (
+    () => applicationStore.submitApplicationOnSkipPreviousSchoolResponse,
+    async (data) => {
+      if(data){
+         loading.value = true;
+         applicationStore.fetchApplicationList();
+         setTimeout(() => {
+         loading.value = false;
+         success.value = true;
+         }, 2000);
+
+        localStorage.removeItem('application-id');
+        localStorage.removeItem('studentNumber');
+      }
+    }
+)
+
 
 watch (
     () => applicationStore.applicationByIdResponse,
