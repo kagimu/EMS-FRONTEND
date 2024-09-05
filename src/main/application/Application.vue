@@ -42,7 +42,7 @@ const fetchApplicationData = (applicationNumber) => {
 <template>
   <div class="temp">
     <div class="row">
-      <div style="padding-top: 140px;">
+      <div style="padding-top: 40px;">
       <h5 class="txt" >APPLY</h5>
       <h1  class="txt2">STUDENT APPLICATION</h1>
       <h5  class="txt">Get Started Today With Few Steps </h5>
