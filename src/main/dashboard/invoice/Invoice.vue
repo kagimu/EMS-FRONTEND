@@ -320,9 +320,9 @@ watch(
         <td>{{ (index + 1) }}</td>
         <td>{{ list?.ref_number }}</td>
         <td>{{ list?.names}}</td>
-        <td>{{ list?.total_amount}}</td>
-        <td>{{ list?.paid_amount}}</td>
-        <td>{{list?.balance}}</td>
+        <td>{{ list?.total_amount?.toLocaleString()}}</td>
+        <td>{{ list?.paid_amount?.toLocaleString()}}</td>
+        <td>{{list?.balance?.toLocaleString()}}</td>
         <td>
           <div :class="{'bg-green-700':list?.status==='PAID', 'bg-red-700':list?.status==='NOT_PAID', 'bg-purple-700':list?.status==='PARTIALLY_PAID'}" class="text-center text-white rounded-md">
             {{ list?.status?.replace("_", " ")?.toLowerCase() }}

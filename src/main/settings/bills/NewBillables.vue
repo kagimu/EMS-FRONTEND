@@ -52,7 +52,7 @@ const ServiceOptions = ref([])
 
 const formData = reactive({
   description:null,
- class_number:"",
+  class_number:"",
   mode_of_study_number:"",
   campus_number:"",
   study_period_number:"",
@@ -63,8 +63,8 @@ const formData = reactive({
 
 onMounted(
     async () => {
-      serviceStore.fetchServicesList()
-      schoolStore.fetchSchools()
+      await serviceStore.fetchServicesList()
+      await schoolStore.fetchSchools()
     
     } )
 
@@ -76,18 +76,16 @@ onMounted(
       service => ({
         item_number: service.number,
         quantity: parseInt(service.quantity),
-        // unitPrice: service.unitPrice,
         unit_cost: parseInt(service.cost)
       }))
 
-      const typeData = ref(null)
-      // if(formData.type){
-      //   typeData.value = "continueing"
-      // }else{
-      //    typeData.value = "old"
-      // }
 
-  let data = {
+    let data  = formData
+    data.billable_items = selectedItems
+    data.bill_status = "ACTIVE"
+
+
+/*  let data = {
     description:formData.description,
    class_number:formData.class_number,
     mode_of_study_number:formData.mode_of_study_number,
@@ -97,7 +95,7 @@ onMounted(
     bill_type:formData.type,
     billable_items:selectedItems,
     bill_status:"ACTIVE"
-  }
+  }*/
 //  alert(JSON.stringify(data))s
   billStore.newBillable(data)
 }
@@ -479,7 +477,7 @@ watch(
                                 v-model="Service.number" @change="updateService(index)">
                               <option disabled value="">--Select item--</option>
                               <option :value="option.item_number" v-for="option in availableOptions(index)">
-                                {{ option.name }} ({{ option.cost }})
+                                {{ option?.name }} ({{ option?.cost?.toLocaleString() }})
                               </option>
                             </select>
                           </td>
@@ -499,7 +497,7 @@ watch(
                                 placeholder="Unit Price"
                                 class="form-control shadow-none py-2" >
                           </td>
-                          <td>{{ Service.amount }}</td>
+                          <td>{{ Service.amount?.toLocaleString() }}</td>
                           <td><button type="button" @click="removeService(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
                         </tr>
                       </tbody>

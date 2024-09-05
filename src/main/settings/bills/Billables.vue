@@ -110,11 +110,11 @@ watch (
 <template>
     <div>
       <AppModal title="Creating New Billable" v-model="mymodal" xl6>
-      <NewBillables :userNumber="userNumber"></NewBillables>
+        <NewBillables :userNumber="userNumber"></NewBillables>
       </AppModal>
 
       <AppModal title="Billable" v-model="modalDetails" xl6>
-      <BillableDetails :billableNumber="billD"></BillableDetails>
+        <BillableDetails :billableNumber="billD"></BillableDetails>
       </AppModal>
 
   
