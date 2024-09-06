@@ -489,10 +489,9 @@ const fetchAssessmentAreaInfo = () => {
               <label class="textColor text-sm"><small>gender</small> <span class="star">*</span></label>
             <select class="form-control form-control-sm"
              v-model="form.gender" style="outline: none 0 !important; box-shadow: none;">
-              <option v-if="!form.gender" disabled>-select-</option>
-              <option v-if="form.gender">{{ form.gender }}</option>
-              <option  v-if="form.gender != 'Male'">Male</option>
-              <option  v-if="form.gender !='Female'">Female</option>
+              <option value="" disabled>-Select Gender-</option>
+              <option value="Male">Male</option>
+              <option value="Female" >Female</option>
             </select>
             </div>
 
