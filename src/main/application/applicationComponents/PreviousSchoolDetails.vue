@@ -33,18 +33,18 @@ const goBack = () =>{
 }
 
 const skip = () =>{
-  applicationStore.submitApplicationOnSkipPreviousSchool(applicationId)
+  // applicationStore.submitApplicationOnSkipPreviousSchool(applicationId)
   emit("next", {id:applicationId.value, step:4})
 }
-watch (
-    () => applicationStore.submitApplicationOnSkipPreviousSchoolResponse,
-    async (data) => {
-      if(data){
-        buttonLoader.value = false
-        emit("next", {id:applicationId.value, step:4})
-      }
-    }
-)
+// watch (
+//     () => applicationStore.submitApplicationOnSkipPreviousSchoolResponse,
+//     async (data) => {
+//       if(data){
+//         buttonLoader.value = false
+//         emit("next", {id:applicationId.value, step:4})
+//       }
+//     }
+// )
 
 
 

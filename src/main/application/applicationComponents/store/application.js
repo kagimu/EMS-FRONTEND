@@ -29,7 +29,7 @@ export const useApplicationStore = defineStore("application", () => {
     let previousSchoolResultsByStudentResponse = ref(null)
     let previousSchoolResultsAllResponse = ref(null)
     let studentDataResponse = ref(null)
-    let submitApplicationOnSkipPreviousSchoolResponse = ref(null)
+    let submitApplicationResponse = ref(null)
     let interviewListByIdResponse = ref(null)
     let updateInterviewResponse = ref(null)
     let interviewDeleteByIdResponse = ref(null)
@@ -429,10 +429,10 @@ export const useApplicationStore = defineStore("application", () => {
             })
     }
 
-    async function submitApplicationOnSkipPreviousSchool(applicationNumber) {
+    async function submitApplicationData(applicationNumber) {
         return await api.post("main/applications/submit-application/"+applicationNumber)
             .then((response) => {
-                submitApplicationOnSkipPreviousSchoolResponse.value = response.data
+                submitApplicationResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -505,8 +505,8 @@ export const useApplicationStore = defineStore("application", () => {
         fetchPreviousSchoolResultsAll,
         studentDataResponse,
         fetchStudent,
-        submitApplicationOnSkipPreviousSchool,
-        submitApplicationOnSkipPreviousSchoolResponse,
+        submitApplicationData,
+        submitApplicationResponse,
         fetchInterviewListById,
         interviewListByIdResponse,
         updateInterview,
