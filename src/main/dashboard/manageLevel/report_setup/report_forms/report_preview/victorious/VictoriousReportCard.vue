@@ -59,7 +59,6 @@ const printableContent = ref(null);
 // const printContent = () => {
 //   const printContents = printableContent.value.innerHTML;
 //   const originalContents = document.body.innerHTML;
-
 //   const printWindow = window.open('', '', 'height=600,width=800');
 //   printWindow.document.write('<html><head><title>Print</title>');
 //   printWindow.document.write(
@@ -75,10 +74,8 @@ const printableContent = ref(null);
 </script>
 
 <template>
-  <!-- {{ StudentImage }} -->
   <!-- <button @click="printContent">print </button> -->
 <div ref="printableContent" class="printable">
-  
   <table style="width: 100%;">
     <tr>
       <td style="text-align: center; width: 20%;">

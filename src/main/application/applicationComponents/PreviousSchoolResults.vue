@@ -4,7 +4,9 @@ import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.j
 import useNotificationStore from "@/composables/useNotification.js";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js"
 import useCommonsStore from "@/composables/useCommons.js";
-
+import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
+import ComboSearchBox from "@/components/ComboSearchBox.vue";
+const subjectStore = useSubjectStore()
 
 const emit = defineEmits()
 const assessmentStore= useAssessmentStore()
@@ -17,32 +19,34 @@ const uploadError = ref(null)
 const file = ref(null)
 const applicationId = ref(null)
 const commons = useCommonsStore()
+const subjectList = ref([])
+
+const formDataa = reactive ({
+  subject:[],
+  scores:[]
+})
 
 onMounted(
     async () => {
-
+      filterSubjectList()
     } )
 
-watch(
-    () => assessmentStore.assessmentAreaByClassResponse,
-    async (data) => {
-      if(data){
-        AsessmentListData.value = data.data
-      }
-    }
-)
+
+  const filterSubjectList = () => {
+  subjectStore.fetchAllSubjects()
+}
 
 
 const formD = reactive({
-  assessmentArea: [{ assessmentAreaNumber: '', score: '' }]
+  subjects: [{ subjectNumber: '', score: '' }]
 })
 
 const addSubject = () => {
-  formD.assessmentArea.push({ assessmentAreaNumber: '', score: '' })
+  formD.subjects.push({ subjectNumber: '', score: '' })
 }
 
 const removeSubject = (index) => {
-  formD.assessmentArea.splice(index, 1)
+  formD.subjects.splice(index, 1)
 }
 
 
@@ -52,26 +56,72 @@ function savePreviousSchoolResults(){
   uploadError.value = null
   const formData = new FormData();
   formData.set("attachment", file.value.files[0]);
-  const assessmentAndScore = formD.assessmentArea.map(assessmentArea => ({
-    assessment_area_number: assessmentArea.assessmentAreaNumber,
-    score: parseInt(assessmentArea.score)
-  }));
+  
+  
+  const subjects = formD.subjects.map(
+    subjects => (
+    subjects.subjectNumber
+  ))
 
-  formData.set("assessment_and_score", JSON.stringify(assessmentAndScore));
+  const scores = formD.subjects.map(
+    subjects => (
+    parseInt(subjects.score)
+  )
+)
+
+
+  // const scores = formD.subjects.map(subject => parseInt(subject.score, 10));
+  formData.set("subject", JSON.stringify(subjects));
+  formData.set("score", JSON.stringify(scores));
   formData.set("student_number", localStorage.getItem('studentNumber'));
-  formData.set("application_number",localStorage.getItem("applicationId"))
+  formData.set("application_number",localStorage.getItem("application-id"))
 
   applicationStore.createPreviousSchoolResults(formData)
 }
+
+
+
+watch(
+    () => subjectStore.subjectAllInfoResponse,
+    async (data) => {
+      if(data){
+        // subjectList.value = data.data
+
+        let draft = data?.data 
+        if(draft && (draft?.length > 0)){
+          subjectList.value = []
+          let arr = []
+          draft?.forEach(lst => {
+            arr.push({text:lst?.name,value:lst?.name})
+          })
+          subjectList.value = arr
+        }
+
+      }
+    },
+    {deep:true}
+)
+
+watch (
+    () => subjectStore.errorMessage,
+    async (data) => {
+      if(data){
+        errorMessage.value = data.message
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
 
 watch (
     () => applicationStore.previousSchoolResultresponse,
     async (data) => {
       if(data){
         buttonLoader.value = false
-        localStorage.removeItem('CampusClassNumber')
+        // localStorage.removeItem('CampusClassNumber')
         notificationStore.successToast("Success application submitted", data.message)
-        localStorage.removeItem('applicationId')
+        // localStorage.removeItem('applicationId')
         file.value = null
         const input = document.getElementById('formFileSm');
         input.value = '';
@@ -121,19 +171,12 @@ watch (
       if(data){
         applicationId.value = data.number
         let campusClassNo = data?.student?.campus_class_number
-        
-        // if (localStorage.getItem("campus_curriculum_number")) {
-         
-        // }
-
         if(campusClassNo) {
-        //alert(campusClassNo)
-        //assessmentStore.fetchAssessmentAreaByClass(campusClassNo)
         let data = {
     class_number:campusClassNo,
     curriculum_number:localStorage.getItem("campus_curriculum_number")
   }
-  assessmentStore.fetchAssessmentArea(data)
+  assessmentStore.fetchsubjects(data)
         }
       }
     }
@@ -153,20 +196,28 @@ watch (
             <div class="col-lg-8">
               <label class="textColor">Provide Previous Marks</label>
               <table style="width: 100%;">
-                <tr v-for="(assessmentArea, index) in formD.assessmentArea" :key="index">
+                <tr v-for="(subjects, index) in formD.subjects" :key="index">
                   <td>
-                    <select
-                        v-model="assessmentArea.assessmentAreaNumber"
+                    <!-- <select
+                        v-model="subjects.subjectNumber"
                         class="form-select form-select-sm shadow-none">
                       <option disabled value="">--filter by Subject--</option>
-                      <option v-for="option in AsessmentListData" :key="option" :value="option.number">{{ option.name }}</option>
-                    </select>
+                      <option v-for="option in subjectList" :key="option" :value="option.name">{{ option.name }}</option>
+                    </select> -->
+
+                  <ComboSearchBox
+                      v-model:optionResponse="subjects.subjectNumber"
+                      :optionList="subjectList"
+                      :optionDraft="subjects.subjectNumber"
+                  ></ComboSearchBox>
+
+
                   </td>
                   <td style="width: 26%;">
                     <input
                         @keypress="commons.numbersOnlyValidator($event)"
                         maxlength="4"
-                        v-model="assessmentArea.score"
+                        v-model="subjects.score"
                         type="text"
                         class="form-control shadow-none">
                   </td>
@@ -179,13 +230,16 @@ watch (
                         <button type="button" @click="addSubject" class="btn btn-primary mb-2 btn-sm" style="color:white !important">
                         <div class="text-xs">
                           <i class="bi bi-plus"></i>
-                          Add Marks
+                          
                         </div>
                         </button>
                     </td>
                     <td></td>
                 </tr>
               </table>
+
+
+              
               <p class="mt-3">
                 <label class="textColor">Attach Latest School Report</label>
 
