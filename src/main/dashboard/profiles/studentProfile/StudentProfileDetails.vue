@@ -15,7 +15,11 @@ import router from "@/config/router.js";
 
 import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
 import StudentNarativeReport from "@/main/dashboard/profiles/studentProfile/StudentNarativeReport.vue";
+import SchoolBudge from "@/assets/images/victorius-budge.png";
+import FileUploader from "@/components/FileUploader.vue";
 const enrollmentStore = useEnrolmentStore()
+
+
 
 const studentNum = ref(null)
 const routerData = useRouter()
@@ -38,6 +42,8 @@ const campus = ref(null)
 const school = ref(null)
 const actionType = ref(null)
 const cateringStore = useCateringStore()
+
+const uploadDialog = ref( false)
 
 onMounted(
     async () => {
@@ -155,6 +161,17 @@ watch (
       }
     }
 )
+
+const uploadBudge = () => {
+  uploadDialog.value = true
+}
+
+const successUpload = (data) => {
+  if(data){
+    uploadDialog.value = false
+  }
+}
+
 </script>
 <template>
 
@@ -162,6 +179,10 @@ watch (
       <Comfirm :studentNumber="studentNum" :action="actionType" @nedda="cancelled"></Comfirm>
     </AppModal>
 
+
+  <AppModal title="Upload School Budge"  v-on:nextAction="successUpload" v-model="uploadDialog" xl>
+    <file-uploader ref="profileUploadComponents" :imageUrl="SchoolBudge"></file-uploader>
+  </AppModal>
 
     <section style="background-color: #eee;">
         
@@ -175,6 +196,14 @@ watch (
               <div class="text-center">
                 <i class="bi-person-circle text-[100px] text-[#8a8888]"></i>
               </div>
+
+             <div class="text-center mb-4">
+               <button
+                   class="border-2 rounded-md px-2  border-[#2c2f8c] text-[#2c2f8c] text-sm"
+                   @click="uploadBudge">
+                 <i class="cursor-pointer mx-1 text-xs fa-solid fa-pencil"></i> Upload Student photo
+               </button>
+             </div>
 
               <div class="mb-3">
                 <div class="text-[#8a8888] text-sm mb-[10px]"><i class="bi-person-circle mr-2"></i>{{ studentName }}</div>

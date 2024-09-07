@@ -6,11 +6,9 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
-import useNotificationStore from "@/composables/useNotification.js";
 import ManageReportDetails from "@/main/dashboard/manageLevel/report_setup/report_forms/ManageReportDetails.vue";
 import AppModal from "@/components/AppModal.vue";
 import {useRouter} from "vue-router";
-import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
 import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.js";
 import NewCommentFromTeacher from "@/main/dashboard/manageLevel/report_setup/comments/NewCommentFromTeacher.vue";
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
@@ -124,7 +122,6 @@ const fetchCampusLevel = () => {
 
 const fetchAcademicYea = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
-  // academicYearStore.fetchCampusClassByLevel(campus_level_number)
 
 
   let data = {
@@ -133,12 +130,6 @@ const fetchAcademicYea = (campus_level_number) => {
   }
   campusStore.fetchClassesBySchool(data)
 }
-
-// const fetchStudyPeriod = (academic_num) =>{
-//   studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
-
-
-// }
 
 
 watch(
@@ -172,15 +163,6 @@ watch(
 )
 
 
-// watch(
-//     () => studyPeriodStore.studyPeriodByAcademicYearResponse,
-//     async (data) => {
-//       if(data){
-//         studyPeriodList.value = data.data
-//       }
-//     }
-// )
-
 watch(
     () => studyPeriodStore.studyPeriodResponse,
     async (data) => {
@@ -190,14 +172,6 @@ watch(
     }
 )
 
-// watch(
-//     () => academicYearStore.campusClassByLevelResponse,
-//     async (data) => {
-//       if(data){
-//         campusClassList.value = data.data
-//       }
-//     }
-// )
 
 watch(
     () => campusStore.schoolClassesResponse,

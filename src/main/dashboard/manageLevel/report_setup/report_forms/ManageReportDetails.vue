@@ -13,11 +13,8 @@ const reportStore = useReportCardStore()
 const printStore = usePrintStore()
 
 const reportDetails = ref(null)
-// const showReport = ref(false)
 
-const formData = reactive({
-  // innerHtmlData : repo.$el.innerHTML
-  })
+
 
 watch(
     () => reportStore.reportDetailsResponse,
