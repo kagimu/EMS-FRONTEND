@@ -114,7 +114,7 @@ const successUpload = (data) => {
           <div class="text-[18px]">School Budge:</div>
           <div class="text-[14px] text-[#575656]">
             <div style="text-align: right; margin-top: 10px;">
-              <img alt="logo" style="width: 130px;" :src="SchoolBudge"/>
+              <img alt="logo" style="width: 130px;" :src="schoolData?.logo"/>
             </div>
 
             <button

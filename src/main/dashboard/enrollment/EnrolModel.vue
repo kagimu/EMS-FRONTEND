@@ -45,9 +45,7 @@
    const curriculumList = ref([])
    const levelList = ref([])
    const campusClassNumber = ref(null)
-   const isCont = ref(false)
-   
-   const date = ref();
+
    const format = (date) => {
      const item = date.getDate();
      const month = date.getMonth() + 1;
@@ -161,11 +159,9 @@ campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_c
      stream_number:null,
      school_number:null,
      enrollment_date:null,
-     academic_year_number:null,
      status:"active",
      feeding_group_number:"",
      mode_of_study_number:"",
-     nature:""
      })
         
    
@@ -182,10 +178,7 @@ campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_c
       }))
       .filter(item => item.item_number && item.quantity !== undefined && item.brought !== undefined)
    }
-   
-if(form.nature == "true"){
-   isCont.value = true
-}
+
 
    let enrollmentData = reactive({
      student_number:props.studentNumber,
@@ -196,10 +189,8 @@ if(form.nature == "true"){
      stream_number:form.stream_number,
      school_number:form.school_number,
      enrollment_date:form.enrollment_date,
-     academic_year_number:form.academic_year_number,
      feeding_group_number:form.feeding_group_number,
      mode_of_study_number:form.mode_of_study_number,
-     continuing_student:isCont.value,
      status:"active",
      ...ItemDataToSubmit
    })
@@ -567,7 +558,7 @@ watch(
                         <thead>
                            <tr>
                               <th>#</th>
-                              <th>Item</th>
+                              <th>Other Items</th>
                               <th>Cost</th>
                               <th>Quantity</th>
                            </tr>
@@ -612,13 +603,13 @@ watch(
                   </select>
                </div>
 
-               <div class="mb-2 ">
+<!--               <div class="mb-2 ">
                   <label class="textSize alert alert-primary p-1 mt-2 mb-2"><small>Is Continuing Student ?</small> </label><br>
                   <span class="mt-2">
                  <input class="" type="radio" value="true" v-model="form.nature"> True &nbsp;&nbsp;
                  <input type="radio" value="false" v-model="form.nature"> No
                </span>  
-               </div>
+               </div>-->
             </div>
          </div>
          <hr>
