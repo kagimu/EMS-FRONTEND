@@ -44,7 +44,7 @@ const deleteSchool = async (school) => {
 
   const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+school.name);
   if (agreed) {
-    schoolStore.deleteSchool(school?.number)
+    await schoolStore.deleteSchool(school?.number)
   }
 
 }
