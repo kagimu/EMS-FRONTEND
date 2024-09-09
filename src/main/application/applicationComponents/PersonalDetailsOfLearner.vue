@@ -49,7 +49,8 @@ const form = reactive({
   learner_number:null,
    mode_of_study_number:"",
    campus_curriculum_number:"",
-   level:""
+   level:"",
+   lin:null
 })
 
 onMounted(() => {
@@ -154,7 +155,7 @@ watch (
         localStorage.setItem("CampusClassNumber", form.class_number)
         localStorage.setItem("studentNumber", data.data.number)
         buttonLoader.value = false
-        await assessmentStore.fetchAssessmentAreaByClass(form.class_number)
+        assessmentStore.fetchAssessmentAreaByClass(form.class_number)
 
         emit("next", {id:applicationId.value, step:3})
 
@@ -256,6 +257,15 @@ watch (
         form.school_number = draft.school_number
 
         if(draft?.school_number) {
+        let data = {
+    school_number:draft?.school_number,
+  }
+  modeStudyStore.fetchModeOfStudy(data)
+}
+
+        form.mode_of_study_number = draft.mode_of_study_number
+
+        if(draft?.school_number) {
           fetchCampuses(draft.school_number)
         }
 
@@ -264,15 +274,20 @@ watch (
           form.campus_curriculum_number = draft?.campus_curriculum_number
         }
 
-        if(draft?.campus_curriculum_number) {
-          fetchCampusLevel(draft.campus_curriculum_number)
-          // alert(draft.level_number)
-          form.level = draft?.level_number
+        if(draft?.campus_curriculum_number){
+          fetchCampusLevel(draft?.campus_curriculum_number)
+          form.level = draft?.campus_level_number
         }
 
-
+        if(draft?.campus_level_number){
+          fetchLevelClasses(draft?.campus_level_number)
+          form.class_number = draft?.class_number
+        }
+  
+        }
+      
       }
-    }
+    
 )
 
 
@@ -285,6 +300,16 @@ watch(
     }
 )
 
+
+const fetchAssessmentAreaInfo = () => {
+ 
+    let data = {
+      class_number:form.class_number,
+      level_number:form.level
+    }
+     assessmentStore.fetchAssessmentArea(data)
+}
+  
 
 </script>
 
@@ -339,11 +364,7 @@ watch(
           </div>
         </div>
 
-          
-
-
-
-
+        
 
         <div class="row">
           <div class="col-6">
@@ -419,6 +440,7 @@ watch(
                   style="box-shadow: none;"
                   class="form-select form-select-sm" required
                   v-model="form.class_number"
+                  @click="fetchAssessmentAreaInfo()"
               >
                 <option disabled value="">Select class</option>
                 <option v-for="(list, index) in classList" :key="index" :value="list.number">{{ list.name }}
@@ -431,8 +453,8 @@ watch(
 
 
 
-
-          <!-- {{ modeOfSchoolData }} -->
+        <div class="row">
+        <div class="col-6">
           <div class="mb-2">
               <label class="textColor"><small>Mode Of Study</small>  <span class="star">*</span></label>
               <select
@@ -444,6 +466,16 @@ watch(
                   <option v-for="(list, index) in modeOfSchoolData" :key="index" :value="list.mode_of_study_number">{{ list.name }}
                   </option>
               </select>
+          </div>
+          </div>
+
+          <div class="col-6">
+          <div class="mb-2">
+              <label class="textColor"><small>LIN</small></label>
+              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.lin" 
+             class="form-control form-control-sm" >
+          </div>
+          </div>
           </div>
 
 

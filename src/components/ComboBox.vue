@@ -68,8 +68,6 @@ watch(
 );
 
 
-
-
 const checkOptionsDraft = () => {
   let draft = props.optionList
   if(draft) {

@@ -1,156 +1,171 @@
 <template>
-  <section class="student-portal bg-light py-14">
-    <div class="container">
-<<<<<<< HEAD
- 
-=======
-      <!-- Top Bar -->
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <div class="d-flex align-items-center">
-          <img src="" alt="" style="height: 50px;" />
-          <h4 class="ms-3 mb-0">sssss</h4>
-        </div>
-        <div>
-          <button class="btn btn-success me-2">APPLY NOW</button>
-          <button class="btn btn-outline-success me-2">APPLICATION HISTORY</button>
-          <button class="btn btn-outline-success">ADMISSION HISTORY</button>
-          <div class="dropdown d-inline">
-            <button
-              class="btn btn-outline-secondary dropdown-toggle"
-              type="button"
-              id="dropdownMenuButton"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              {{ user.email }}
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-              <li><a class="dropdown-item" href="#">Profile Settings</a></li>
-              <li><a class="dropdown-item" href="#">Log Out</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+{{subjectList}}
+<div class="combo-box">
 
-      <!-- Profile and Navigation Section -->
->>>>>>> 013ad684af7a51996ca5754f245669eadd265884
-      <div class="row">
-        <div class="col-lg-3">
-          <div class="card shadow-sm mb-4 text-center">
-            <div class="card-body">
-              <img
-                :src="user.profilePicture"
-                alt="Profile Picture"
-                class="rounded-circle mb-3"
-                style="width: 120px; height: 120px; object-fit: cover;"
-              />
-              <h5 class="card-title">{{ user.name }}</h5>
-              <p class="card-text text-muted">
-                <i class="bi-calendar-date"></i> {{ user.dob }}
-              </p>
-            </div>
-          </div>
+   <input
+    @click="toggleDropdown"
+      type="text"
+      v-model="searchQuery"
+      placeholder="Search and select..."
+      class="form-control form-control-sm"
+      @focus="openDropdown"
+      @blur="closeDropdown"
+    />
+    
+    <ul v-if="isOpen" class="dropdown-menu">
+      <li
+        v-for="(option, index) in filteredOptions"
+        :key="index"
+        @mousedown.prevent="selectOption(option)"
+        class="dropdown-item"
+      >
+        {{ option.name }}
+      </li>
+    </ul>
 
-          <div class="card shadow-sm mb-4">
-            <ul class="list-group list-group-flush">
-              <li
-                v-for="(item, index) in menuItems"
-                :key="index"
-                class="list-group-item list-group-item-action"
-                :class="{ active: activeMenu === item.name }"
-                @click="activeMenu = item.name"
-              >
-                <i :class="item.icon + ' me-2'"></i> {{ item.label }}
-              </li>
-            </ul>
-          </div>
-        </div>
+    <button class="btn btn-primary mt-4" @click="submitSubjects">Submit Data</button>
 
-        <!-- Main Content -->
-        <div class="col-lg-9">
-          <div class="card shadow-sm mb-4">
-            <div class="card-header bg-light d-flex justify-content-between align-items-center">
-              <h5 class="mb-0"><i class="bi-person-circle me-2"></i> MY PROFILE DETAILS</h5>
-              <button class="btn btn-danger" @click="reloadProfile">RELOAD</button>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-6 mb-3" v-for="(value, key) in userProfile" :key="key">
-                  <label class="form-label">{{ key }}:</label>
-                  <input type="text" class="form-control" :value="value" readonly />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- Display selected subjects -->
+    <div v-if="subjects.length > 0">
+      <p>Selected Subjects:</p>
+      <ul>
+        <li v-for="(subject, index) in subjects" :key="index">{{ subject }}</li>
+      </ul>
     </div>
-  </section>
+  </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed , reactive, defineEmits,onMounted,watch} from 'vue';
+import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
+const subjectStore = useSubjectStore()
+import useNotificationStore from "@/composables/useNotification.js";
 
-// User Information
-const user = ref({
-  name: 'Solomon Chowere',
-  dob: '1999-12-31',
-  email: 'chowere@gmail.com',
-  profilePicture: 'https://via.placeholder.com/150'
-})
+const  notificationStore  = useNotificationStore()
+const subjectList = ref([])
+const option = ref([])
 
-// Menu Items
-const menuItems = ref([
-  { name: 'profile', label: 'MY PROFILE', icon: 'bi-person' },
-  { name: 'changePassword', label: 'CHANGE PASSWORD', icon: 'bi-key' },
-  { name: 'applicationHistory', label: 'APPLICATION HISTORY', icon: 'bi-file-earmark-text' },
-  { name: 'admissionHistory', label: 'ADMISSION HISTORY', icon: 'bi-archive' },
-  { name: 'logout', label: 'LOG OUT', icon: 'bi-box-arrow-right' }
-])
+onMounted(
+    async () => {
+      filterSubjectList()
+    } )
 
-// Active Menu State
-const activeMenu = ref('profile')
 
-// Profile Information
-const userProfile = ref({
-  Surname: 'CHOWERE',
-  'Other Names': 'Solomon',
-  Gender: 'Male',
-  Nationality: 'UGANDAN',
-  Email: 'chowere@gmail.com',
-  'Phone Number': '256709112694',
-  'Date of Birth': '1999-12-31',
-  'Last Log in': '2024-08-29T06:25:43.000Z'
-})
-
-// Reload Profile Function
-const reloadProfile = () => {
-  // Simulate reloading data
-  console.log('Profile reloaded')
+  const filterSubjectList = () => {
+  subjectStore.fetchAllSubjects()
 }
+
+
+
+watch(
+    () => subjectStore.subjectAllInfoResponse,
+    async (data) => {
+      if(data){
+        subjectList.value = data.data
+        option.value = subjectList.value
+      }
+    },
+    {deep:true}
+)
+
+
+
+const searchQuery = ref('');
+const isOpen = ref(false);
+const selectedOption = ref(null);
+const subjects = ref([]);  // Array to store selected subjects
+
+const filteredOptions = computed(() => {
+  if (!searchQuery.value) return options;
+  return options.filter(option =>
+    option.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+});
+
+const selectOption = (option) => {
+  selectedOption.value = option;
+  searchQuery.value = option.name;
+  isOpen.value = false;
+
+  // Add selected option to the subjects array if not already added
+  if (!subjects.value.includes(option.name)) {
+    subjects.value.push(option.name);
+  }
+};
+
+
+const toggleDropdown = (event) => {
+  if (event.target.closest('.dropdown-menu')) return;
+  isOpen.value = !isOpen.value;
+};
+
+const openDropdown = () => {
+  isOpen.value = true;
+};
+
+const closeDropdown = () => {
+  setTimeout(() => {
+    if (!document.activeElement.closest('.combo-box')) {
+      isOpen.value = false;
+    }
+  }, 200);
+};
+
+document.addEventListener('click', (event) => {
+  const comboBox = document.querySelector('.combo-box');
+  if (!comboBox.contains(event.target)) {
+    isOpen.value = false;
+  }
+});
 </script>
 
-<!-- Styles (Optional) -->
 <style scoped>
-.student-portal {
-  padding-top: 20px;
+.combo-box {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
 }
 
-.card-header {
-  background-color: #f8f9fa !important;
+.form-control {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
 }
 
-.list-group-item.active {
-  background-color: #28a745;
-  border-color: #28a745;
-  color: white;
+.dropdown-menu {
+  position: absolute;
+  width: 100%;
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #ccc;
+  z-index: 10;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  display: block;
 }
 
-.list-group-item-action:hover {
-  background-color: #f1f1f1;
+.dropdown-item {
+  padding: 8px;
+  cursor: pointer;
 }
 
-.btn {
-  border-radius: 20px;
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+.selected-option {
+  margin-top: 10px;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+li {
+  margin: 4px 0;
 }
 </style>

@@ -13,6 +13,7 @@ export const useSubjectStore = defineStore("subject", () => {
     const subjectDataInfoResponse = ref(null)
     const errorMessage = ref(null)
     const subjectEditResponse = ref(null)
+    const subjectAllInfoResponse = ref(null)
 
 
 
@@ -54,6 +55,20 @@ export const useSubjectStore = defineStore("subject", () => {
                 }
             })
     }
+
+
+    async function fetchAllSubjects(data) {
+        return await api.get("main/subjects/all")
+            .then((response) => {
+                subjectAllInfoResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
 
 
     async function fetchSubjectList(data) {
@@ -167,6 +182,7 @@ export const useSubjectStore = defineStore("subject", () => {
         deleteSubjectResponse,
         subjectDataInfoResponse,
         subjectEditResponse,
+        subjectAllInfoResponse,
         errorMessage,
         newSubjectData,
         fetchSubjects,
@@ -178,5 +194,6 @@ export const useSubjectStore = defineStore("subject", () => {
         deleteSubject,
         subjectData,
         editSubjectData,
+        fetchAllSubjects
     }
 })

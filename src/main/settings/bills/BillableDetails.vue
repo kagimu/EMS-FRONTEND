@@ -149,7 +149,7 @@ const printContent = () => {
                     </address>
                   </div>
                   <div class="col-md-4 text-end">
-                    <button class="btn btn-outline-secondary btn-sm mb-2" @click="printContent">
+                    <button class="btn btn-outline-secondary btn-sm mb-2" @click="">
                       <i class="bi bi-printer"></i> Print
                     </button>
                   </div>
