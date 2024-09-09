@@ -63,7 +63,20 @@
      admissionData:{},
      studentDataInfo:[]
    })
-   
+
+   const form = reactive({
+     student_number:props.studentNumber,
+     academic_year_number: null,
+     study_period_number: null,
+     class_number: null,
+     campus_number: null,
+     stream_number:null,
+     school_number:null,
+     enrollment_date:null,
+     status:"active",
+     feeding_group_number:"",
+     mode_of_study_number:"",
+   })
    
    onMounted(() => {
            schoolStore.fetchSchools()
@@ -150,19 +163,7 @@ campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_c
        {deep:true}
    )
    
-     const form = reactive({
-     student_number:props.studentNumber,
-     academic_year_number: null,
-     study_period_number: null,
-     class_number: null,
-     campus_number: null,
-     stream_number:null,
-     school_number:null,
-     enrollment_date:null,
-     status:"active",
-     feeding_group_number:"",
-     mode_of_study_number:"",
-     })
+
         
    
    //enrol student function
@@ -550,7 +551,6 @@ watch(
           </div>
             </div>
             <div class="col-8">
-               
                <div class="col-12">
                   <div class="mb-2">
                      <label class="alert alert-primary p-1 textSize"  ><small>Tick off  <i class="bi bi-check" style="color:red"> </i>items  brought by the student </small> </label>
@@ -567,7 +567,7 @@ watch(
                            <tr v-for="(item, indx) in itemsData" :key="indx">
                               <td>
                                  <input v-model="selectedItems" 
-                                    class="form-check-input" 
+                                    class="form-check-input shadow-none"
                                     type="checkbox" 
                                     :value="item.item_number" 
                                     @change="toggleSelection(item)"
@@ -579,7 +579,7 @@ watch(
                                  <input type="text" 
                                     @keypress="commons.numbersOnlyValidator($event)" 
                                     maxlength="10"
-                                    class="form-control" 
+                                    class="form-control shadow-none"
                                     placeholder="1"
                                     style="width: 50px; font-size: 13px; text-align: center;" 
                                     v-model="item.quantity" 
