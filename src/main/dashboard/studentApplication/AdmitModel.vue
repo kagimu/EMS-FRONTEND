@@ -79,7 +79,7 @@ let data = streamList.value
 
 let no = streamN
 campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_class_number;
-alert(streamN)
+// alert(streamN)
   }
 
 

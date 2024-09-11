@@ -40,7 +40,7 @@ const form = reactive({
   preferred_type_of_enrollment:null,
   date_of_birth:null,
   school_number:null,
-  gender:"",
+  gender:null,
   reason_for_choosing_school:null,
   preferred_campus_number: null,
   source_of_school_info: null,
@@ -255,6 +255,7 @@ watch (
         form.source_of_school_info = draft.source_of_school_info
         form.learner_number = draft.number
         form.school_number = draft.school_number
+        form.lin = draft?.lin
 
         if(draft?.school_number) {
         let data = {

@@ -255,9 +255,9 @@ watch(
      <td>{{ list.unit_cost }}</td>
      <td>{{ list.campus_name }}</td>
      <td>
-          <button >
+          <!-- <button >
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
-          </button>
+          </button> -->
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
           <button type="button" @click="deleteThisData(list.number,list.menu_item_name)">
             <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>

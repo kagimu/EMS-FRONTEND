@@ -16,6 +16,7 @@
    import {useStudyModeStore} from "@/main/settings/mode-of-study/store/studyMode.js";
    import {useLevelStore} from "@/main/settings/level/store/level.js";
    import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
+   import {useBillStore} from "@/main/settings/bills/store/bills.js";
 
    const modeStudyStore = useStudyModeStore()
    const modeOfSchoolData = ref([])
@@ -45,6 +46,8 @@
    const curriculumList = ref([])
    const levelList = ref([])
    const campusClassNumber = ref(null)
+   const billStore = useBillStore()
+   const billableData  = ref([])
 
    const format = (date) => {
      const item = date.getDate();
@@ -56,6 +59,8 @@
    const itemsData = ref([])
    const quantity = ref(null)
    const selectedItems = ref([])
+   const selectedBillableItems = ref([])
+
    
    const props = defineProps({
      studN: String,
@@ -76,6 +81,8 @@
      status:"active",
      feeding_group_number:"",
      mode_of_study_number:"",
+     curriculumNumber:"",
+     bill_number:""
    })
    
    onMounted(() => {
@@ -86,6 +93,18 @@
 
        }
    )
+
+   const getBillableDataInfo = () => {
+   let data = {
+      student_number:props.studentNumber,
+      study_period_number: form.study_period_number,
+     class_number: form.class_number                                                                    ,
+     campus_number:form.campus_number,
+     mode_of_study_number:form.mode_of_study_number,
+     campus_curriculum_number:form.curriculumNumber
+  }
+  billStore.fetchDeterminateBillables(data)
+   }
 
    const getModeOfStudyInfo = () =>{
   let data = {
@@ -193,6 +212,7 @@ campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_c
      feeding_group_number:form.feeding_group_number,
      mode_of_study_number:form.mode_of_study_number,
      status:"active",
+     bill_number:form.bill_number,
      ...ItemDataToSubmit
    })
    
@@ -272,7 +292,8 @@ watch(
     studyPeriodStore.fetchStudyPeriod(
       {
         academic_year_number:form.academic_year_number,
-        class_number:classN
+        class_number:classN,
+        school_number:form.school_number
       } )
 
    }
@@ -330,8 +351,9 @@ watch(
     }
 )
 
+
    
-   //selecting Item 
+//selecting Item 
    const toggleSelection = (item) => {
    const index = selectedItems.value.findIndex(selected => selected.item_number === item.item_number);
    if (index === -1) {
@@ -400,7 +422,18 @@ watch(
     },
     {deep: true}
 )
-     
+watch(
+    () => billStore.billableDeterminateResponse,
+    async (data) => {
+      if(data){
+        let draftData = data.data 
+        billableData.value = draftData.billable_items	
+        form.bill_number = draftData.billable_number
+      }
+    },
+    {deep:true}
+)
+
 </script>
 <template>
    <div>
@@ -526,6 +559,7 @@ watch(
                      style="box-shadow: none;"
                      class="form-select form-select-sm" required
                      v-model="form.study_period_number"
+                     
                      >
                      <option disabled value="">Select</option>
                      <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
@@ -543,6 +577,7 @@ watch(
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
                       v-model="form.mode_of_study_number" required
+                      @change="getBillableDataInfo"
               >
                   <option disabled value="">Select Mode Of Study</option>
                   <option v-for="(list, index) in modeOfSchoolData" :key="index" :value="list.mode_of_study_number">{{ list.name }}
@@ -553,11 +588,48 @@ watch(
             <div class="col-8">
                <div class="col-12">
                   <div class="mb-2">
-                     <label class="alert alert-primary p-1 textSize"  ><small>Tick off  <i class="bi bi-check" style="color:red"> </i>items  brought by the student </small> </label>
                      <table class="table table-hover caption-top mt-1 table-sm table-striped" style="font-size: 13px;">
                         <thead>
                            <tr>
-                              <th>#</th>
+                              <th style="width: 2px;">#</th>
+                              <th>Billable Items</th>
+                              <th>Cost</th>
+                              <th>Quantity</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr v-for="(itemData, indx) in billableData" :key="indx" 
+                           >
+                              <td>
+                                 <input v-model="selectedBillableItems" 
+                                    class="form-check-input shadow-none"
+                                    type="checkbox" 
+                                    style="width: 15px; height: 15px; font-size: 13px; text-align: center;"
+                                    />
+                              </td>
+                              <td style="font-size: 12px;">{{ itemData.item_name }}</td>
+                              <td style="font-size: 12px;">{{ itemData.unit_cost }}</td>
+                              <td>
+                                 <input type="text" 
+                                    @keypress="commons.numbersOnlyValidator($event)" 
+                                    maxlength="10"
+                                    class="form-control shadow-none disabbled"
+                                    placeholder="1"
+                                    style="width: 50px; font-size: 13px; text-align: center;" 
+                                    v-model="itemData.quantity" 
+                                 >
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+
+                  <div class="mb-2 mt-5">
+                     <label class="alert alert-primary p-1 textSize"  ><small>Tick off  <i class="bi bi-check" style="color:red"> </i>items  brought by the student </small> </label>
+                     <table class="table table-hover caption-top mt-1 table-sm " style="font-size: 13px;">
+                        <thead>
+                           <tr>
+                              <th style="width: 2px;">#</th>
                               <th>Other Items</th>
                               <th>Cost</th>
                               <th>Quantity</th>
@@ -571,7 +643,8 @@ watch(
                                     type="checkbox" 
                                     :value="item.item_number" 
                                     @change="toggleSelection(item)"
-                                    aria-label="..." />
+                                    aria-label="..." 
+                                    style="width: 15px; height: 15px; font-size: 13px; text-align: center;"/>
                               </td>
                               <td style="font-size: 12px;">{{ item.item_name }}</td>
                               <td style="font-size: 12px;">{{ item.cost }}</td>
@@ -602,14 +675,6 @@ watch(
                      </option>
                   </select>
                </div>
-
-<!--               <div class="mb-2 ">
-                  <label class="textSize alert alert-primary p-1 mt-2 mb-2"><small>Is Continuing Student ?</small> </label><br>
-                  <span class="mt-2">
-                 <input class="" type="radio" value="true" v-model="form.nature"> True &nbsp;&nbsp;
-                 <input type="radio" value="false" v-model="form.nature"> No
-               </span>  
-               </div>-->
             </div>
          </div>
          <hr>

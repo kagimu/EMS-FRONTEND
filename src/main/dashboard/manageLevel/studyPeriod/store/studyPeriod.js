@@ -49,11 +49,12 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
         let  academic_year_number = data?.academic_year_number ?? ""
         let  class_number = data?.class_number ?? ""
 
+         let  school_number = data?.school_number ?? ""
 
         return await api.get("main/study-period/all" +
                 "?campus_curriculum_number="+campus_curriculum_number+
                 "&academic_year_number="+academic_year_number+
-                "&class_number="+class_number
+                "&class_number="+class_number+ "&school_number="+school_number
             )
             .then((response) => {
                 studyPeriodResponse.value = response.data

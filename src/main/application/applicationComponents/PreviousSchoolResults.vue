@@ -38,11 +38,15 @@ onMounted(
 
 
 const formD = reactive({
-  subjects: [{ subjectNumber: '', score: '' }]
+  subjects: [
+    { 
+    subjectName: '', 
+    score: '' 
+    }]
 })
 
 const addSubject = () => {
-  formD.subjects.push({ subjectNumber: '', score: '' })
+  formD.subjects.push({ subjectName: '', score: '' })
 }
 
 const removeSubject = (index) => {
@@ -60,7 +64,7 @@ function savePreviousSchoolResults(){
   
   const subjects = formD.subjects.map(
     subjects => (
-    subjects.subjectNumber
+    subjects.subjectName
   ))
 
   const scores = formD.subjects.map(
@@ -183,6 +187,23 @@ watch (
 )
 
 
+watch (
+    () => applicationStore.applicationByIdResponse,
+    async (data) => {
+      if(data){
+        let draftD = data.previous_school_result
+
+        if (draftD && draftD.subjects) {
+
+        formD.subjects = draftD.subjects.map((subject) => ({
+          subjectName: subject.name,
+          score: subject.score
+        }))
+      } }
+    } 
+)
+
+
 </script>
 <template>
     <div>
@@ -199,16 +220,16 @@ watch (
                 <tr v-for="(subjects, index) in formD.subjects" :key="index">
                   <td>
                     <!-- <select
-                        v-model="subjects.subjectNumber"
+                        v-model="subjects.subjectName"
                         class="form-select form-select-sm shadow-none">
                       <option disabled value="">--filter by Subject--</option>
                       <option v-for="option in subjectList" :key="option" :value="option.name">{{ option.name }}</option>
                     </select> -->
-
+                 
                   <ComboSearchBox
-                      v-model:optionResponse="subjects.subjectNumber"
+                      v-model:optionResponse="subjects.subjectName"
                       :optionList="subjectList"
-                      :optionDraft="subjects.subjectNumber"
+                      :optionDraft="subjects.subjectName"
                   ></ComboSearchBox>
 
 

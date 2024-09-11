@@ -295,7 +295,7 @@ watch(
 
       
 
-
+{{ form?.classes }}
       <div class="mb-2">
         <label class="textColor"><small>Class</small></label>
         <combo-box

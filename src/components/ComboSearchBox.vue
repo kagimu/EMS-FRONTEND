@@ -43,10 +43,12 @@ watch(
 const checkDraft = () => {
   let draft = props.optionDraft;
   if (draft && draft.length > 0 && !hasProcessed.value) {
-    selectedItem.value = draft[0];  // Use the first draft value if available
+    selectedItem.value = draft[0];  
     hasProcessed.value = true;
   }
 };
+
+
 
 watch(
   () => props.optionList,
@@ -90,11 +92,11 @@ const openDropdown = () => {
 
 const selectItem = (item: any) => {
   selectedItem.value = item.value;
-  dropdownOpen.value = false;  // Close dropdown after selection
+  dropdownOpen.value = false; 
 };
 
 const removeItem = () => {
-  selectedItem.value = null;  // Clear the selected item
+  selectedItem.value = null;  
 };
 </script>
 
@@ -106,15 +108,15 @@ const removeItem = () => {
       class="border rounded-md py-2 flex flex-wrap cursor-text"
     >
       <div v-if="!selectedItem" class="text-xs text-gray-600">
-        <div class="ml-3">--Select Item--</div>
+        <div class="ml-3">--Select Subject--</div>
       </div>
       <div
         v-else
-        class="text-xs border mx-1 my-[2px] rounded-md text-[#03408f] border-[#03408f] hover:bg-[#03408f] hover:text-white cursor-pointer"
+        class="text-xs  mx-1 my-[2px]  text-[#03408f]  hover:bg-[#fafafa] hover:text-[#198754] cursor-pointer"
       >
         <div class="flex flex-grow px-2">
           {{ items.find(data => data.value === selectedItem)?.text }}
-          <div><i class="fa-regular fa-times-circle hover:text-[yellow] ml-2" @click="removeItem" /></div>
+          <div><i class="fa-regular fa-times-circle hover:text-[red] ml-2" @click="removeItem" /></div>
         </div>
       </div>
     </div>
@@ -130,7 +132,7 @@ const removeItem = () => {
           @input="filterItems"
           type="text"
           placeholder="Search"
-          class="form-control form-select-sm shadow-none"
+          class="form-control shadow-none"
         />
       </div>
 
@@ -141,7 +143,7 @@ const removeItem = () => {
           :key="idx"
           @click="selectItem(item)"
         >
-          <div class="px-3 flex">
+          <div class="px-1 flex">
             <label class="form-check-label cursor-pointer capitalize ml-3 text-sm text-gray-600 whitespace-nowrap overflow-hidden text-ellipsis">
               {{ item.text }}
             </label>

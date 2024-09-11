@@ -120,7 +120,7 @@ watch(
           campusList.value = []
           let arr = []
           draft?.forEach(lst => {
-            arr.push({text:lst?.name,value:lst?.name})
+            arr.push({text:lst?.name,value:lst?.number})
           })
           campusList.value = arr
         }
@@ -141,17 +141,17 @@ watch(
     () => mealStore.mealDataResponse,
     async (data) => {
       if(data){
-        // feedingSessionGroupList.value = data.data
+        feedingSessionGroupList.value = data.data
 
-        let draft = data?.data 
-        if(draft && (draft?.length > 0)){
-          feedingSessionGroupList.value = []
-          let arr = []
-          draft?.forEach(lst => {
-            arr.push({text:lst?.name,value:lst?.feeding_session_number})
-          })
-          feedingSessionGroupList.value = arr
-        }
+        // let draft = data?.data 
+        // if(draft && (draft?.length > 0)){
+        //   feedingSessionGroupList.value = []
+        //   let arr = []
+        //   draft?.forEach(lst => {
+        //     arr.push({text:lst?.name,value:lst?.feeding_session_number})
+        //   })
+        //   feedingSessionGroupList.value = arr
+        // }
       }
     }
 )
@@ -220,21 +220,21 @@ watch(
 
           <div class="mb-2">
             <label class="textColor"><small>Menu Pack</small></label>
-            <!-- <select
+            <select
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
                 v-model="form.feeding_session_number">
               <option disabled value="">--Select Menu Pack--</option>
               <option v-for="(lst, index) in feedingSessionGroupList" :key="index" :value="lst.feeding_session_number">{{ lst.name }}
               </option>
-            </select> -->
+            </select>
 
                   
-        <combo-box
+        <!-- <combo-box
             v-model:optionResponse="form.feeding_session_number"
             :optionList="feedingSessionGroupList"
             :optionDraft="form?.feeding_session_number"
-        ></combo-box>
+        ></combo-box> -->
           </div>
 
 
