@@ -111,7 +111,6 @@ watch (
     () => cateringStore.deleteFeedingSessionResponse,
     async (data) => {
       if(data){
-        // buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
         doFetchFeedingSessions()
 
@@ -161,9 +160,10 @@ watch (
   <div>
 
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
-<AppModal :title="editModel ? 'Edit ' + namee:'New Feeding Pack'" v-model="showingModal" xl4>
-  <NewFeedingSession :groupData="dataList"></NewFeedingSession>
-  </AppModal>
+
+      <AppModal :title="editModel ? 'Edit ' + namee:'New Feeding Pack'" v-model="showingModal" xl4>
+        <NewFeedingSession :groupData="dataList"></NewFeedingSession>
+      </AppModal>
 
              
   <!-- end  -->
@@ -220,49 +220,17 @@ watch (
  </div>
     <div class="col-4">
         <div class="mt-4">
-            <!-- <input class="form-control mt-1 mb-0" placeholder="Search..." type="text"> -->
         </div>
    </div>
 
           </div>
 
-  <!-- <table
-  id="datatable"
-  class="table table-hover caption-top mt-4 table-sm table-striped"
-  style="font-size: 14px !important;"
-  >
-  <thead >
-      <tr>
-      <th>Code</th>
-      <th>Name</th>
-      <th>Action</th>
-      </tr>
-  <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-  {{errorMessage}}
-  </div>
-  </thead>
-  <tbody>
-    <tr v-for="(list, index) in feedingSessionGroupData" :key="index">
-    <td>{{ list.code }}</td>
-    <td>{{ list.name }}</td>
-    <td>
-      <button @click="editThisData(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
-          <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
-        </button>
-        &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-        <button type="button" @click="deleteThisData(list.number,list.name)">
-          <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
-        </button>
-    </td>
-    </tr>
-              
-  </tbody>
-  </table> -->
 
-
-  <div class="row">
-      <div v-for="(list, index) in feedingSessionGroupData" :key="index" class="col-md-4 mb-2 mt-1">
-        <div class="card card-hover">
+  <div class="grid grid-cols-12 gap-4 my-4">
+      <div
+          v-for="(list, index) in feedingSessionGroupData" :key="index"
+          class="col-span-12 sm:col-span-12 md:col-span-6 lg:col-span-4">
+        <div class="border rounded-md h-[200px]">
           <div class="bg-[#f7f7f7] px-2 py-2 rounded-t-md">
      
             <div class="">
@@ -291,18 +259,21 @@ watch (
 
 
           </div>
-            <table class="table table-hover table-sm table-striped text-[12px]">
+          <div class="max-h-[140px] overflow-y-scroll scrollbar-thin">
+            <table class="table table-hover table-sm table-striped text-[12px] mt-3">
               <th>Name</th>
               <th>Qty</th>
               <th>Consumption Unit</th>
               <tbody>
-            <tr v-for="menuItem in list.pack_items" :key="menuItem.number" class="m-1">
-              <td>{{ menuItem.name }}</td>
-              <td>{{ menuItem.consumption_quantity }}</td>
-              <td>{{ menuItem.unit_of_consumption.name }}</td>
-            </tr>
-          </tbody>
-          </table>
+              <tr v-for="menuItem in list.pack_items" :key="menuItem.number" class="m-1">
+                <td>{{ menuItem.name }}</td>
+                <td>{{ menuItem.consumption_quantity }}</td>
+                <td>{{ menuItem.unit_of_consumption.name }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
         
         </div>
       </div>
