@@ -174,14 +174,12 @@
   function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
   if (scrollTop + clientHeight >= scrollHeight) {
 
-    // tableLoader.value = true
-
     let data = {
       page: (page.value+1),
       per_page: per_page.value,   
       status: form.statusData 
    }
-   // loading.value = true;
+
    applicationStore.fetchApplicationList(data).finally(() => {
     loading.value = false; 
   })
@@ -284,12 +282,9 @@
   
   
   const setApplicationNumber = (ap) =>{
-   // alert(ap)
     shDialog.value = true
     applications.value = ap
     showingModal.value = true
-    
-    // alert(shDialog.value)
   }
   
 
@@ -299,8 +294,7 @@
       if(data){
         levelList.value = data.data 
       }
-    },
-    {deep:true}
+    }
 )
       
       watch (
@@ -313,8 +307,7 @@
           notificationStore.errorToast("Error",data.message)
   
         }
-      },
-      {deep:true}
+      }
   )
   
   
@@ -326,23 +319,22 @@
                 showingModal.value = false,
                 doFetchApplication()
             }
-        },
-        {deep: true}
+        }
     )
 
     
 watch (
     () => applicationStore.newApplicationDetailsResponse,
     async (data) => {
-      if(data){
-        
-   let dataa = {
-      page: page.value,
-      per_page: per_page.value,   
-      status: form.statusData 
-   }
-   await applicationStore.fetchApplicationList(dataa)
-}
+              if(data){
+
+           let data = {
+              page: page.value,
+              per_page: per_page.value,
+              status: form.statusData
+           }
+           await applicationStore.fetchApplicationList(data)
+        }
     },
     {deep:true}
 )

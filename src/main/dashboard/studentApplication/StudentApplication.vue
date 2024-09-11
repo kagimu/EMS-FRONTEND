@@ -4,7 +4,6 @@ import {reactive, ref} from "vue";
 import {useRouter} from "vue-router";
 import ApplicationList from "./ApplicationList.vue";
 import Interviews from "./Interviews.vue";
-import InterviewsQuestions from "./InterviewsQuestions.vue";
 import { useAbility } from '@casl/vue'
 
 
@@ -71,9 +70,9 @@ const form = reactive({
                   <div v-if="selectedPage === 'interviews'">
                     <interviews></interviews>
                   </div>
-                  <div v-if="selectedPage === 'interviewquestions'">
+<!--                  <div v-if="selectedPage === 'interviewquestions'">
                     <interviews-questions></interviews-questions>
-                  </div>
+                  </div>-->
               </div>
   
   
