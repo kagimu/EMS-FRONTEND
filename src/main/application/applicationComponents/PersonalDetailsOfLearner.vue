@@ -302,14 +302,6 @@ watch(
 )
 
 
-const fetchAssessmentAreaInfo = () => {
- 
-    let data = {
-      class_number:form.class_number,
-      level_number:form.level
-    }
-     assessmentStore.fetchAssessmentArea(data)
-}
   
 
 </script>
@@ -441,7 +433,7 @@ const fetchAssessmentAreaInfo = () => {
                   style="box-shadow: none;"
                   class="form-select form-select-sm" required
                   v-model="form.class_number"
-                  @click="fetchAssessmentAreaInfo()"
+                
               >
                 <option disabled value="">Select class</option>
                 <option v-for="(list, index) in classList" :key="index" :value="list.number">{{ list.name }}
