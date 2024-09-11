@@ -424,7 +424,7 @@ watch(
                 <i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i>
               </button>
 
-              <router-link style="display:non"
+              <router-link style="display:none"
                   class="text-decoration-none"
                   :to="{name:'manage-interviews', query:{interview_id:interview.interview_number, interview:interview.name}}">
                 <button class="text-[#0d6efd] border border-primary p-1 rounded-sm hover:bg-[#0d6efd] hover:text-white">

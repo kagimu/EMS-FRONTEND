@@ -4,7 +4,6 @@
   import { useAdmissionStore } from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
   import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
   import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-  import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
   import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
   import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
   import EnrolModel from "@/main/dashboard/enrollment/EnrolModel.vue"
@@ -178,10 +177,9 @@ watch(
   
   function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
   if (scrollTop + clientHeight >= scrollHeight) {
-
     let data = {
-      page: 1,
-      per_page:  (page.value+1),
+      page: (page.value+1),
+      per_page: per_page.value,
       study_period_number:form.study_period_number,
       school_number:form.school_number,
       campus_number: form.campus_number,
@@ -311,8 +309,7 @@ watch(
       async (data) => {
         if(data){
          mymodal.value=false
-         admissionStore.fetchAdmissionByFilters(form.study_period_number,form.interview_number,form.stream_number,form.campus_number,form.campus_class_number)
-
+         await admissionStore.fetchAdmissionByFilters(form.study_period_number, form.interview_number, form.stream_number, form.campus_number, form.campus_class_number)
         }
       },
       {deep:true}
@@ -489,22 +486,14 @@ watch(
                           </div>
                        </div>
                     </div>
+
+
                     <PaginationTemplate
                     @perPageChanged="doFetchAdmission"
                     v-model:perPage="per_page"
                     :per_page="per_page"
                     :total_items="total_items"
                     :total_rows="total_rows"></PaginationTemplate>
-
-               <!-- <div v-if="loading" class="text-center my-4">
-                <div class="spinner-border" role="status">
-                  <span class="sr-only">Loading...</span>
-                </div>
-              </div>
-
-              <div v-else-if="admissionList.length === 0" class="text-center my-4">
-                <p>There is no data found</p>
-              </div> -->
 
               <div
                     class="w-full overflow-auto max-h-[520px] scrollbar-thin"
@@ -517,7 +506,7 @@ watch(
                        >
                        <thead >
                           <tr>
-                          
+                             <th>#</th>
                              <th>ADN</th>
                              <th>Student</th>
                              <th>Campus</th>
@@ -532,9 +521,11 @@ watch(
                    
                           <tr v-for="(adm , index) in admissionList" :key="index">
                               <td>
-                                {{ adm.student.adn }}
+                                {{adm.key}}
                              </td>
-                          
+                            <td>
+                                {{adm.student.adn}}
+                             </td>
                              <td style="text-transform: capitalize !important;">{{ adm.student.surname + " " + adm.student.second_name+ " " + adm.student.other_name }}</td>
                              <td>{{ adm.campus.name }}</td>
                              <td>{{ adm.student.campus_class }}</td>
