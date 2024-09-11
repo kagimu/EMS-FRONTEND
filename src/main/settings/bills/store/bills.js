@@ -9,6 +9,7 @@ export const useBillStore = defineStore("billStore", () => {
     const billableResponse = ref(null)
     const updateBillableResponse = ref(null)
     const billableDetailsResponse = ref(null)
+    const billableDeterminateResponse = ref(null)
 
     async function newBillable(data) {
         return await api.post("main/invoices/billable", data)
@@ -76,17 +77,38 @@ export const useBillStore = defineStore("billStore", () => {
            })
    }
 
+   async function fetchDeterminateBillables(data) {
+    let  student_number = data.student_number ?? ""
+    let  study_period_number = data.study_period_number ?? ""
+    let  class_number = data.class_number ?? ""
+    let  mode_of_study_number = data.mode_of_study_number ?? ""
+    let curriculum_number = data.curriculum_number ?? ""
+      let campus_curriculum_number = data.campus_curriculum_number ?? ""
+    let campus_number = data.campus_number ?? ""
+   return await api.get("main/invoices/billable/determine?student_number="+student_number+"&study_period_number="+study_period_number+"&class_number="+class_number+"&mode_of_study_number="+mode_of_study_number+"&curriculum_number="+curriculum_number+"&campus_number="+campus_number+"&campus_curriculum_number="+campus_curriculum_number)
+       .then((response) => {
+           billableDeterminateResponse.value = response.data
+       })
+       .catch((error) => {
+           if(error && error.response){
+               errorMessage.value = error.response.data
+           }
+       })
+}
+
     return {
         newBillableResponse,
         updateBillableResponse,
         billableResponse,
         deleteBillableResponse,
         billableDetailsResponse,
+        billableDeterminateResponse,
         errorMessage,
         newBillable,
         fetchBillable,
         editBillable,
         deleteBillable,
-        fetchBillableDetails
+        fetchBillableDetails,
+        fetchDeterminateBillables
     }
 })

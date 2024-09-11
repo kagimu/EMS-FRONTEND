@@ -331,7 +331,7 @@ if (agreed) {
                       <tr>
                         <th>#</th>
                         <th>Name</th>
-                        <th>Unit</th>
+                        <th>Unit Of Use</th>
                         <th>Purchase Unit</th>
                         <th>Qty</th>
                         <th>Parts</th>

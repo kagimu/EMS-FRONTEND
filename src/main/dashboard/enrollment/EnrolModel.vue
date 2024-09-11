@@ -16,6 +16,7 @@
    import {useStudyModeStore} from "@/main/settings/mode-of-study/store/studyMode.js";
    import {useLevelStore} from "@/main/settings/level/store/level.js";
    import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
+   import {useBillStore} from "@/main/settings/bills/store/bills.js";
 
    const modeStudyStore = useStudyModeStore()
    const modeOfSchoolData = ref([])
@@ -45,6 +46,8 @@
    const curriculumList = ref([])
    const levelList = ref([])
    const campusClassNumber = ref(null)
+   const billStore = useBillStore()
+   const billableData  = ref([])
 
    const format = (date) => {
      const item = date.getDate();
@@ -76,6 +79,7 @@
      status:"active",
      feeding_group_number:"",
      mode_of_study_number:"",
+     curriculumNumber:""
    })
    
    onMounted(() => {
@@ -86,6 +90,18 @@
 
        }
    )
+
+   const getBillableDataInfo = () => {
+   let data = {
+      student_number:props.studentNumber,
+      study_period_number: form.study_period_number,
+     class_number: form.class_number                                                                    ,
+     campus_number:form.campus_number,
+     mode_of_study_number:form.mode_of_study_number,
+     campus_curriculum_number:form.curriculumNumber
+  }
+  billStore.fetchDeterminateBillables(data)
+   }
 
    const getModeOfStudyInfo = () =>{
   let data = {
@@ -272,7 +288,8 @@ watch(
     studyPeriodStore.fetchStudyPeriod(
       {
         academic_year_number:form.academic_year_number,
-        class_number:classN
+        class_number:classN,
+        school_number:form.school_number
       } )
 
    }
@@ -400,7 +417,18 @@ watch(
     },
     {deep: true}
 )
-     
+watch(
+    () => billStore.billableDetailsResponse,
+    async (data) => {
+      if(data){
+      
+        billableData.value = data.data
+  
+      }
+    },
+    {deep:true}
+)
+
 </script>
 <template>
    <div>
@@ -526,6 +554,7 @@ watch(
                      style="box-shadow: none;"
                      class="form-select form-select-sm" required
                      v-model="form.study_period_number"
+                     
                      >
                      <option disabled value="">Select</option>
                      <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
@@ -543,6 +572,7 @@ watch(
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
                       v-model="form.mode_of_study_number" required
+                      @change="getBillableDataInfo"
               >
                   <option disabled value="">Select Mode Of Study</option>
                   <option v-for="(list, index) in modeOfSchoolData" :key="index" :value="list.mode_of_study_number">{{ list.name }}
@@ -602,6 +632,7 @@ watch(
                      </option>
                   </select>
                </div>
+               {{ billableData }}
 
 <!--               <div class="mb-2 ">
                   <label class="textSize alert alert-primary p-1 mt-2 mb-2"><small>Is Continuing Student ?</small> </label><br>

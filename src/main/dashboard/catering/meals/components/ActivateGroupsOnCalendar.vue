@@ -61,7 +61,7 @@ watch(
           feedingGroupData.value = []
           let arr = []
           draft?.forEach(lst => {
-            arr.push({text:lst?.name,value:lst?.name})
+            arr.push({text:lst?.name,value:lst?.number})
           })
           feedingGroupData.value = arr
         }
