@@ -604,6 +604,8 @@ watch(
                                  <input v-model="selectedBillableItems" 
                                     class="form-check-input shadow-none"
                                     type="checkbox" 
+                                    checked
+                                    disabled
                                     style="width: 15px; height: 15px; font-size: 13px; text-align: center;"
                                     />
                               </td>

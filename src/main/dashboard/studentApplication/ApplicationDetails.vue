@@ -21,7 +21,7 @@ const school_number = ref(null);
 
 onMounted(async () => {
   applicationStore.fetchApplicationList();
-  applicationStore.fetchPreviousSchoolResultsAll();
+  // applicationStore.fetchPreviousSchoolResultsAll();
   applicationStore.fetchApplicationById(props.applicationNumber);
   schoolStore.fetchSchools();
 });
@@ -50,7 +50,8 @@ const appDatails = reactive({
   status: null,
   previousSchools: [],
   student_number: null,
-  preferred_campus:null
+  preferred_campus:null,
+  previousSchoolsResults: [],
 });
 
 function getAge(dob) {
@@ -91,7 +92,7 @@ watch(
       appDatails.previousSchools = data.previous_schools;
       appDatails.student_number = data.student.number;
       appDatails.preferred_campus=data.student.preferred_campus;
-      applicationStore.fetchPreviousSchoolResultsByStudent(appDatails.student_number);
+      appDatails.previousSchoolsResults = data.previous_school_result
 
       let dataInfo = {
     campus_class_number:data.student.campus_class_number ,
@@ -158,15 +159,15 @@ watch(
   { deep: true }
 );
 
-watch(
-  () => applicationStore.previousSchoolResultsByStudentResponse,
-  async (data) => {
-    if (data) {
-      previousSchoolResultsData.value = data.data;
-    }
-  },
-  { deep: true }
-);
+// watch(
+//   () => applicationStore.previousSchoolResultsByStudentResponse,
+//   async (data) => {
+//     if (data) {
+//       previousSchoolResultsData.value = data.data;
+//     }
+//   },
+//   { deep: true }
+// );
 
 watch(
   () => campusStore.campusListResponse,
@@ -240,6 +241,29 @@ watch(
               </ul>
             </li>
           </ul>
+
+        
+
+          <div class="container mt-3">
+   <h4>Report</h4>
+   <a :href="appDatails.previousSchoolsResults.report_file" download class="btn btn-primary mb-3">Download Report</a>
+   
+   <table class="table table-bordered table-striped" style="font-size: 14px;">
+      <thead>
+         <tr>
+            <th>Subject</th>
+            <th>Score</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr v-for="(subject, indx) in appDatails.previousSchoolsResults.subjects " :key="indx">
+            <td>{{ subject.name }}</td>
+            <td>{{ subject.score }}</td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
         </div>
       </div>
 
