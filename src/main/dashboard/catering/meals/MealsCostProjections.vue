@@ -202,8 +202,8 @@ watch(
               <tr v-for="(summary, summary_index) in mealProjections?.items_summary" :key="summary_index">
                 <td> {{(summary_index + 1)}}</td>
                 <td> {{summary.name}}</td>
-                <td><div class="flex">{{summary?.quantity?.toLocaleString() ?? 0}} ( {{summary.unit_of_measure}} )</div></td>
                 <td> {{summary?.purchase_quantity?.toLocaleString() ?? 0}} ({{summary.purchase_unit_of_measure}})</td>
+                <td><div class="flex">{{summary?.quantity?.toLocaleString() ?? 0}} ( {{summary.unit_of_measure}} )</div></td>
                 <td> {{summary?.total_cost?.toLocaleString() ?? 0}}</td>
                
               </tr>
