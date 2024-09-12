@@ -102,6 +102,8 @@
    }
    }
    
+
+
    function updateAmount(index) {
    const item = Items.value[index];
    item.amount = item.quantity * item.cost;
@@ -226,7 +228,10 @@
    )
    
    
-   
+   const getUnitOfMeasure = (itemNumber) => {
+  const selectedItem = itemOption.value.find(option => option.number === itemNumber);
+  return selectedItem ? selectedItem.unit_of_measure_name : '';
+};
    
 </script>
 <template>
@@ -260,6 +265,7 @@
                      <thead>
                         <tr class="" style="padding: 0px;margin: 0px;">
                            <th>Menu Item</th>
+                           <th>Unit</th>
                            <th style="width: 25%;">Qty</th>
                            <th></th>
                         </tr>
@@ -273,9 +279,10 @@
                                  class="form-select form-select-sm form-control shadow-none"
                                  v-model="itemData.item_number"
                                  @change="updateItem(index)">
-                                 <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }} - [{{ option.unit_of_measure_name }}]</option>
+                                 <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
                               </select>
                            </td>
+                           <td>   <input class="form-control shadow-none" type="text" :value="getUnitOfMeasure(itemData.item_number)"  readonly/></td>
                            <td>
                               <input
                                  maxlength="20"
@@ -286,7 +293,10 @@
                                  v-on:blur="compute(itemData.quantity, index)"
                                  placeholder=""
                                  class="form-control shadow-none">
+                          
+                                 
                            </td>
+
                            <td>
                               <button
                                  type="button"
