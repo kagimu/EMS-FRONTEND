@@ -143,7 +143,7 @@ watch(
     () => cateringStore.menuItemResponse,
     async (data) => {
 
-      itemOption.value = data.map(option => ({ name: option.name, number: option.number }));
+      itemOption.value = data.map(option => ({ name: option.name, number: option.number,purchase_unit_of_measure_name:option.purchase_unit_of_measure_name }));
 
       isSelected.value = true
       Items.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
@@ -168,7 +168,11 @@ watch(
     }
 )
 
-
+   
+const getUnitOfMeasure = (itemNumber) => {
+  const selectedItem = itemOption.value.find(option => option.number === itemNumber);
+  return selectedItem ? selectedItem.purchase_unit_of_measure_name : '';
+}
 
 </script>
 <template>
@@ -222,8 +226,9 @@ watch(
                   <thead>
                     <tr class="font-bold text-gray-600">
                       <td class="w-[5%]">#</td>
-                      <td class="w-[30%]">Item</td>
-                      <td class="w-[20%]">Qty</td>
+                      <td class="w-[25%]">Item</td>
+                      <td class="w-[15%]">Qty</td>
+                      <td class="w-[10%]">unit</td>
                       <td class="w-[20%]">Unit Price</td>
                       <td>Amount</td>
                       <td></td>
@@ -231,6 +236,7 @@ watch(
                   </thead>
                   <tbody>
                     <tr v-for="(itemData, index) in Items" :key="index" >
+                      <!-- {{itemData}} -->
                       <td class="border-l border-r">{{(index + 1)}}</td>
                       <td class="border-r">
                         <select
@@ -250,6 +256,8 @@ watch(
                             placeholder="1.0"
                             class="form-control select-no-border">
                       </td>
+                      <td class="border-r"> <input class="form-control shadow-none select-no-border" 
+                        type="text" :value="getUnitOfMeasure(itemData.menu_item_number)"  readonly/></td>
                       <td class="border-r">
                         <input
                             @keypress="commons.numbersOnlyValidator($event)"

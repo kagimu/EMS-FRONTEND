@@ -228,10 +228,10 @@
    )
    
    
-   const getUnitOfMeasure = (itemNumber) => {
+ const getUnitOfMeasure = (itemNumber) => {
   const selectedItem = itemOption.value.find(option => option.number === itemNumber);
   return selectedItem ? selectedItem.unit_of_measure_name : '';
-};
+}
    
 </script>
 <template>
@@ -265,8 +265,9 @@
                      <thead>
                         <tr class="" style="padding: 0px;margin: 0px;">
                            <th>Menu Item</th>
-                           <th>Unit</th>
                            <th style="width: 25%;">Qty</th>
+                           <th>Unit</th>
+                          
                            <th></th>
                         </tr>
                      </thead>
@@ -282,7 +283,7 @@
                                  <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
                               </select>
                            </td>
-                           <td>   <input class="form-control shadow-none" type="text" :value="getUnitOfMeasure(itemData.item_number)"  readonly/></td>
+                          
                            <td>
                               <input
                                  maxlength="20"
@@ -292,10 +293,10 @@
                                  @keypress="commons.onlyNumberValidator($event)"
                                  v-on:blur="compute(itemData.quantity, index)"
                                  placeholder=""
-                                 class="form-control shadow-none">
-                          
-                                 
+                                 class="form-control shadow-none">  
                            </td>
+
+                           <td>   <input class="form-control shadow-none" type="text" :value="getUnitOfMeasure(itemData.item_number)"  readonly/></td>
 
                            <td>
                               <button

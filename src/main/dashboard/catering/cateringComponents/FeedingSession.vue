@@ -263,7 +263,7 @@ watch (
             <table class="table table-hover table-sm table-striped text-[12px] mt-3">
               <th>Name</th>
               <th>Qty</th>
-              <th>Consumption Unit</th>
+              <th>Unit Of Use</th>
               <tbody>
               <tr v-for="menuItem in list.pack_items" :key="menuItem.number" class="m-1">
                 <td>{{ menuItem.name }}</td>
