@@ -224,8 +224,7 @@ watch (
                         class="form-select form-select-sm shadow-none">
                       <option disabled value="">--filter by Subject--</option>
                       <option v-for="option in subjectList" :key="option" :value="option.name">{{ option.name }}</option>
-                    </select> -->
-                 
+                    </select> -->         
                   <ComboSearchBox
                       v-model:optionResponse="subjects.subjectName"
                       :optionList="subjectList"
