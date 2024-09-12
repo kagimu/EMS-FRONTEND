@@ -12,6 +12,7 @@ const emit = defineEmits()
 
 const errorMessage = ref(null)
 const selectedFile = ref(null)
+const schoolNumber = ref(null)
 const signatureInput = ref(null)
 const cropper = ref(null)
 const showSignaturePreview = ref(false)
@@ -21,13 +22,15 @@ const showImage = ref(true)
 const showCropper = ref(false)
 const loader = ref(false)
 
-let school_number = routerData.currentRoute.value.query.id
+let school_number = ""
+    school_number = routerData.currentRoute.value.query.id
 let student_number = routerData.currentRoute.value.query.st_id
 
 const commons = useCommonsStore()
 
 const props = defineProps({
   imageUrl: String,
+  schoolNumber: String,
 })
 
 
@@ -50,6 +53,9 @@ const updateImageCanva = () => {
   let url = props.imageUrl
   if(url) {
     selectedFile.value = url
+  }
+  if(props.schoolNumber) {
+    school_number = props.schoolNumber
   }
 }
 

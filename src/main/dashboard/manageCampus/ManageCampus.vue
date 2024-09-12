@@ -61,7 +61,7 @@ watch(
       if(data){
         campusDialog.value = false
         notificationStore.successToast("Success", data.message)
-        await fetchCampusInfo(schoolNumber)
+         fetchCampusInfo(schoolNumber)
       }
     },
     {deep:true}
@@ -100,7 +100,7 @@ const successUpload = (data) => {
     </AppModal>
 
     <AppModal title="Upload School Badge" v-model="uploadDialog" xl>
-       <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload" :imageUrl="SchoolBadge"></file-uploader>
+       <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload" :imageUrl="schoolData?.logo"></file-uploader>
     </AppModal>
 
 
@@ -114,7 +114,7 @@ const successUpload = (data) => {
           <div class="text-[18px]">School Badge:</div>
           <div class="text-[14px] text-[#575656]">
             <div style="text-align: right; margin-top: 10px;">
-              <img alt="logo" style="width: 130px;" :src="schoolData?.logo"/>
+              <img alt="logo" class="w-[130px] border-2 rounded-lg" :src="schoolData?.logo"/>
             </div>
 
             <button
