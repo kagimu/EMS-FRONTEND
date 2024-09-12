@@ -31,6 +31,7 @@ const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
 const applicationId = ref(null)
 const curriculumList = ref([])
+const student_number = ref(null)
 
 
 const form = reactive({
@@ -181,16 +182,7 @@ watch(
     {deep:true}
 )
 
-watch (
-    () => applicationStore.updateLearnerPersonalDetailsresponse,
-    async (data) => {
-      if(data){
-        buttonLoader.value = false
-        notificationStore.successToast("Success", data.message)
-        emit("next", {id:applicationId.value, step:3})
-      }
-    }
-)
+
 
 
 watch (
@@ -256,7 +248,7 @@ watch (
         form.learner_number = draft.number
         form.school_number = draft.school_number
         form.lin = draft?.lin
-
+        student_number.value = draft.number
         if(draft?.school_number) {
         let data = {
     school_number:draft?.school_number,
@@ -291,6 +283,19 @@ watch (
     
 )
 
+
+watch (
+    () => applicationStore.updateLearnerPersonalDetailsresponse,
+    async (data) => {
+      if(data){
+       
+        localStorage.setItem("studentNumber", student_number.value)
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+        emit("next", {id:applicationId.value, step:3})
+      }
+    }
+)
 
 watch(
     () => campusStore.schoolClassesResponse,

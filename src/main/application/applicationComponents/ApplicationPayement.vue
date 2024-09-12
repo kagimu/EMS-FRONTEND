@@ -1,53 +1,71 @@
 <script setup>
-import {defineEmits, ref, watch} from 'vue';
+import { defineEmits, ref, watch } from 'vue';
 import { useApplicationStore } from '@/main/application/applicationComponents/store/application.js';
 import useNotificationStore from "@/composables/useNotification.js";
+import { useRouter } from 'vue-router';
 
 const applicationStore = useApplicationStore();
-const errorMessage = ref(null)
+const errorMessage = ref(null);
 const answer = ref('');
 const mobileNumber = ref('');
-const emit = defineEmits()
-const  notificationStore  = useNotificationStore()
-const buttonLoader = ref(false)
+const emit = defineEmits();
+const notificationStore = useNotificationStore();
+const buttonLoader = ref(false);
+const showProgressBar = ref(false); // Progress bar control
+const router = useRouter();
 
 const submitApplication = () => {
-   buttonLoader.value = true
-let applicationNumber = localStorage.getItem('application-id')
-applicationStore.submitApplicationData(applicationNumber)
+   buttonLoader.value = true;
+   showProgressBar.value = true; // Show progress bar when submission starts
+   let applicationNumber = localStorage.getItem('application-id');
+   applicationStore.submitApplicationData(applicationNumber);
 }
 
-watch (
+watch(
     () => applicationStore.submitApplicationResponse,
     async (data) => {
-      if(data){
+      if (data) {
          localStorage.removeItem('application-id');
          localStorage.removeItem('studentNumber');
-         buttonLoader.value = false
-         notificationStore.successToast("Success", data.message)
+         buttonLoader.value = false;
+         
+   
+         setTimeout(() => {
+            showProgressBar.value = false; 
+            router.push('/client-dashboard/applications');
+            notificationStore.successToast("Success", data.message); 
+         }, 3000); // 3000 ms = 3 seconds
       }
+      
     }
-)
+);
 
-watch (
+watch(
     () => applicationStore.errorMessage,
     async (data) => {
-      if(data){
-        errorMessage.value = data.message
-        buttonLoader.value = false
-        notificationStore.errorToast("Error",data.message)
+      if (data) {
+        errorMessage.value = data.message;
+        buttonLoader.value = false;
+        showProgressBar.value = false; // Hide progress bar if there's an error
+        notificationStore.errorToast("Error", data.message);
       }
     }
-)
-
+);
 </script>
 <template>
-  <div class="container mt-0">
+   <div class="container mt-0">
+     <!-- Progress Bar -->
+     <div v-if="showProgressBar" class="progress mb-4" style="height: 25px;">
+       <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+         Submitting your application...
+       </div>
+     </div>
+ 
      <div>
-        <div class="row">
-           <div style="padding: 0;">
-              <div class="container mt-0">
-                 <form  @submit.prevent="submitApplication">
+       <div class="row">
+         <div style="padding: 0;">
+           <div class="container mt-0">
+            <form  @submit.prevent="submitApplication">
                     <div class="row mx-auto">
                        <div class="col-12">
                           <h4 style="font-size: 18px;">Payment Method</h4>
@@ -223,12 +241,13 @@ watch (
                        </div>
                     </div>
                  </form>
-              </div>
            </div>
-        </div>
+         </div>
+       </div>
      </div>
-  </div>
-</template>
+   </div>
+ </template>
+ 
 
 <style scoped>
   .mb-8 {
@@ -277,4 +296,11 @@ watch (
   color: #007bff;
   padding: 10px;
   }
+
+.progress-bar {
+  background-color: #007bff; /* Primary color for the progress bar */
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
 </style>
