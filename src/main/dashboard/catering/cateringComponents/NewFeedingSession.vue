@@ -175,7 +175,7 @@
    watch(
    () => cateringStore.menuItemResponse,
    async (data) => {
-     itemOption.value = data.map(option => ({ name: option.name, number: option.number }));
+     itemOption.value = data.map(option => ({ name: option.name, number: option.number,unit_of_measure_name:option.unit_of_measure_name}));
    },
    {deep: true}
    )
@@ -267,12 +267,13 @@
                      <tbody>
                       <!-- {{ Items }} -->
                         <tr v-for="(itemData, index) in Items" :key="index" >
+                         
                            <td>
                               <select
                                  class="form-select form-select-sm form-control shadow-none"
                                  v-model="itemData.item_number"
                                  @change="updateItem(index)">
-                                 <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
+                                 <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }} - [{{ option.unit_of_measure_name }}]</option>
                               </select>
                            </td>
                            <td>
