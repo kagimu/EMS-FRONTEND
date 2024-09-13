@@ -114,7 +114,8 @@ const fetchStudyPeriod = (campus_class_number) =>{
   let data = {
               campus_curriculum_number:campus_curriculum_number,
               academic_year_number:academic_year_number.value,
-              class_number:campus_class_number
+              class_number:campus_class_number,
+              school_number:schoolNumber
             }
   studyPeriodStore.fetchStudyPeriod(data)
 }

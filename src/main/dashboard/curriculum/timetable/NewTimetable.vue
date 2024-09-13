@@ -90,6 +90,7 @@ const fetchStudyPeriods = () => {
         campus_curriculum_number:form.campus_curriculum_number,
         academic_year_number:academic_year_number.value,
         // class_number:class_number.value
+        
       }
   )
 }

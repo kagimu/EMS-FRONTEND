@@ -95,7 +95,8 @@ const studyPeriodData = (classN) => {
       {
         campus_curriculum_number:campus_curriculum_number,
         academic_year_number:form.academic_year_number,
-        class_number:classN
+        class_number:classN,
+        school_number:schoolN
       }
   )
 

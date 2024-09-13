@@ -88,7 +88,8 @@ const doFilterReportSummary = () =>{
       {
         campus_curriculum_number:campus_curriculum_number,
         academic_year_number:academic_year_number.value,
-        class_number:class_number.value
+        class_number:class_number.value,
+        school_number:schoolN
       } 
     )
 
