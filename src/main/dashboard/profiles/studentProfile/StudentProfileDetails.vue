@@ -178,12 +178,12 @@ const successUpload = async (data) => {
 </script>
 <template>
 
-  <AppModal title="Comfirm" v-model="showActionDialog" xs>
+  <AppModal title="Confirm" v-model="showActionDialog" xs>
     <Comfirm :studentNumber="studentNum" :action="actionType" @nedda="cancelled"></Comfirm>
   </AppModal>
 
 
-  <AppModal title="Upload School Badge" v-model="uploadDialog" xl>
+  <AppModal title="Upload Student photo" v-model="uploadDialog" xl>
     <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload" :imageUrl="studentPhoto"></file-uploader>
   </AppModal>
 

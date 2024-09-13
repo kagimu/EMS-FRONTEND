@@ -24,13 +24,15 @@ const loader = ref(false)
 
 let school_number = ""
     school_number = routerData.currentRoute.value.query.id
-let student_number = routerData.currentRoute.value.query.st_id
+let student_number = ""
+    student_number = routerData.currentRoute.value.query.st_id
 
 const commons = useCommonsStore()
 
 const props = defineProps({
   imageUrl: String,
   schoolNumber: String,
+  studentNumber: String,
 })
 
 
@@ -56,6 +58,10 @@ const updateImageCanva = () => {
   }
   if(props.schoolNumber) {
     school_number = props.schoolNumber
+  }
+
+  if(props.studentNumber) {
+    student_number = props.studentNumber
   }
 }
 
