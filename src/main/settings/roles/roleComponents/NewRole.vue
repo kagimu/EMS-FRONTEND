@@ -133,7 +133,7 @@
                   v-model="permissionSelected" 
                   :value="permission"
                 >
-                &nbsp;<label class="textColor" :for="'permission_' + groupIndex + '_' + permissionIndex">{{ permission }}</label>
+                &nbsp;<label class="text-sm" :for="'permission_' + groupIndex + '_' + permissionIndex">{{ permission }}</label>
               </li>
             </ul>
           </td>
@@ -201,7 +201,7 @@
                       v-model="permissionSelected" 
                       :value="permission"
                     >
-                    &nbsp;<label class="textColor" :for="'permission_' + groupIndex + '_' + permissionIndex">{{ permission }}</label>
+                    &nbsp;<label class="text-sm" :for="'permission_' + groupIndex + '_' + permissionIndex">{{ permission }}</label>
                   </li>
                 </ul>
               </td>

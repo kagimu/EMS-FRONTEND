@@ -600,7 +600,7 @@ watch (
                        </td>
                        <td>
                           <button v-if="appList.status === 'SUBMITTED'" @click="setApplicationNumber(appList.number)"
-                             class="btn btn-primary btn-sm textColor" style="border-width: 0px;text-decoration: none;" title="View Details">
+                             class="btn btn-primary btn-sm text-sm" style="border-width: 0px;text-decoration: none;" title="View Details">
                             <small>
                               Schedule Interview
                             </small>

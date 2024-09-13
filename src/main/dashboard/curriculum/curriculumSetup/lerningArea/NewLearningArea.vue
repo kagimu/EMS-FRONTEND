@@ -8,7 +8,7 @@
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Code</small></label>
+        <label class="text-sm"><small>Code</small></label>
         <input
             @keypress="commons.codeValidator($event)"
             maxlength="10"
@@ -22,7 +22,7 @@
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Learning Area Name</small></label>
+        <label class="text-sm"><small>Learning Area Name</small></label>
         <input
             ref="nameRef"
             type="text"

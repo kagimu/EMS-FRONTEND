@@ -162,7 +162,7 @@ const previewTemplate = (report) => {
 </template>
 
 <style scoped>
-.textSize{
-  font-size: 13px;
+.text-sme{
+  font-size: 14px;
 }
 </style>

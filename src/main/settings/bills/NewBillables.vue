@@ -181,7 +181,8 @@ const studyPeriodData = (classN) => {
       {
         campus_curriculum_number:curriculumNumber.value,
         academic_year_number:formData.academic_year_number,
-        class_number:classN
+        class_number:classN,
+        school_number:formData.school_number
       }
   )
 }
@@ -322,7 +323,7 @@ watch(
                 <div class="row">
                   <div class="col-lg-4">
                     <div class="mb-2">
-            <label class="textSize"><small>School</small></label>
+            <label class="text-sm"><small>School</small></label>
          <select
                  style="box-shadow: none;"
                  class="form-select form-select-sm" required
@@ -337,7 +338,7 @@ watch(
                 
 
      <div class="mb-2">
-            <label class="textSize"><small>Campus</small></label>
+            <label class="text-sm"><small>Campus</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm"
@@ -349,7 +350,7 @@ watch(
         </div>   
 
         <div class="mb-2">
-          <label class="textSize"><small>Curriculum</small></label>
+          <label class="text-sm"><small>Curriculum</small></label>
             <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -362,7 +363,7 @@ watch(
           </div>
 
         <div class="mb-2">
-          <label class="textSize"><small>Level</small></label>
+          <label class="text-sm"><small>Level</small></label>
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
@@ -375,7 +376,7 @@ watch(
             </div>
 
             <div class="mb-2">
-            <label class="textSize"><small>AcademicYear</small></label>
+            <label class="text-sm"><small>AcademicYear</small></label>
          
          <select
                  style="box-shadow: none;"
@@ -389,7 +390,7 @@ watch(
 
 
             <div class="mb-2">
-        <label class="textColor"><small>Class</small></label>
+        <label class="text-sm"><small>Class</small></label>
         <select
             class="form-select form-select-sm shadow-none" required
             v-model="formData.class_number"
@@ -401,7 +402,7 @@ watch(
 
 
      <div class="mb-2">
-      <label class="textSize"><small>Study Period</small></label>
+      <label class="text-sm"><small>Study Period</small></label>
    <select
       style="box-shadow: none;"
       class="form-select form-select-sm" required
@@ -413,7 +414,7 @@ watch(
 </div>
 
           <div class="mb-2">
-            <label class="textSize"><small>Mode Of Study</small></label>
+            <label class="text-sm"><small>Mode Of Study</small></label>
           <select
             style="box-shadow: none;"
             class="form-select form-select-sm" required
@@ -428,7 +429,7 @@ watch(
           </div>
 
           <div class="mb-2">
-                <label class="textColor">Type ?</label>
+                <label class="text-sm">Type ?</label>
 
                  <div class="flex">
                    <div class="mr-4">
@@ -447,7 +448,7 @@ watch(
 
 
           <div class="mb-2">
-                    <label class="textSize">Description</label>
+                    <label class="text-sm">Description</label>
                     <textarea
                         v-model="formData.description"
                         required
@@ -503,7 +504,7 @@ watch(
                       </tbody>
                     </table>
                     <button
-                        class="btn btn-primary btn-sm textColor"
+                        class="btn btn-primary btn-sm text-sm"
                         @click.prevent="addService"
                         :disabled="isAddButtonDisabled">
                         <small class="p-1">
@@ -587,7 +588,7 @@ select{
 .star{
   color:red;
 }
-.textColor{
+.text-sm2{
   /* font-size: 1px !important; */
 }
   .select-no-border {

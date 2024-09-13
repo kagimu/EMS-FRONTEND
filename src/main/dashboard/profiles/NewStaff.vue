@@ -139,22 +139,22 @@
 
               <div class="grid grid-cols-2 gap-4">
                 <div class="mb-2">
-                  <label class="textColor"><small>First name</small></label>
+                  <label class="text-sm"><small>First name</small></label>
                   <input type="text" v-model="form.first_name" required class="form-control">
                 </div>
                 <div class="mb-2">
-                  <label class="textColor"><small>Second name</small></label>
+                  <label class="text-sm"><small>Second name</small></label>
                   <input type="text" v-model="form.second_name" required class="form-control">
                 </div>
               </div>
 
 
                <div class="mb-2">
-                  <label class="textColor"><small>Last name</small></label>
+                  <label class="text-sm"><small>Last name</small></label>
                   <input type="text" v-model="form.last_name" required class="form-control">
                </div>
                <div class="mb-2">
-                  <label class="textColor"><small>Gender</small></label>
+                  <label class="text-sm"><small>Gender</small></label>
                   <select class="form-select shadow-none" v-model="form.gender" aria-label="Default select example">
                      <option value="">Select Gender</option>
                      <option value="male">Male</option>
@@ -162,18 +162,18 @@
                   </select>
                </div>
                <div class="mb-2">
-                  <label class="textColor"><small>Phone</small></label>
+                  <label class="text-sm"><small>Phone</small></label>
                   <input type="tel" v-model="form.phone" required class="form-control">
                </div>
                <div class="mb-2">
-                  <label class="textColor"><small>Email</small></label>
+                  <label class="text-sm"><small>Email</small></label>
                   <input type="email" v-model="form.email" required class="form-control">
                </div>
 
 
               <div class="grid grid-cols-2 gap-4">
               <div class="mb-2">
-               <label class="textColor"><small>Password</small></label>
+               <label class="text-sm"><small>Password</small></label>
                <div class="input-group mb-3">
                   <input
                      :type="show ? 'text' : 'password'"
@@ -187,7 +187,7 @@
 
 
               <div class="mb-2">
-               <label class="textColor"><small>Confirm Password</small></label>
+               <label class="text-sm"><small>Confirm Password</small></label>
                <div class="input-group mb-3">
                   <input
                      :type="show ? 'text' : 'password'"
@@ -226,7 +226,7 @@
                               type="checkbox">
                            </div>
                            <div class="col-lg-4">
-                              <label style="float: left;" class="textColor cursor-pointer" :for="lst.number">{{lst.role_name}}</label>
+                              <label style="float: left;" class="text-sm cursor-pointer" :for="lst.number">{{lst.role_name}}</label>
                            </div>
                            <div class="col-lg-6">
                              <input
@@ -257,6 +257,6 @@
    input:focus {
    box-shadow: none;
    }
-   .textColor{
+   .text-sm2{
    }
 </style>

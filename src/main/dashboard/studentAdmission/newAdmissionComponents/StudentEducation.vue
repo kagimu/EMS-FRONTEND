@@ -11,7 +11,7 @@
           <div>
 
             <div class="mb-2">
-              <label class="textColor"><small>Campus  *</small></label>
+              <label class="text-sm"><small>Campus  *</small></label>
               <select style="font-size: 13px; outline: none 0 !important; box-shadow: none;" class="form-select" v-model="form.campus" aria-label="Default select example">
                 <option value="">Select Campus</option>
                 <option value="dfg434d">Mutala Campus</option>
@@ -20,7 +20,7 @@
             </div>
 
             <div class="mb-2">
-              <label class="textColor"><small>  Class Level  *</small></label>
+              <label class="text-sm"><small>  Class Level  *</small></label>
               <select style="font-size: 13px; outline: none 0 !important; box-shadow: none;" class="form-select" v-model="form.class_level" aria-label="Default select example">
                 <option value="">Select Class Level</option>
                 <option value="dfg434d">Nursery</option>
@@ -29,7 +29,7 @@
             </div>
 
             <div class="mb-2">
-              <label class="textColor"><small>Class of Entry  *</small></label>
+              <label class="text-sm"><small>Class of Entry  *</small></label>
               <select style="font-size: 13px; outline: none 0 !important; box-shadow: none;" class="form-select" v-model="form.class_of_entry" aria-label="Default select example">
                 <option value="">Select Class of Entry</option>
                 <option value="dfg434d">primary one</option>
@@ -47,7 +47,7 @@
           <div>
 
             <div class="mb-2">
-              <label class="textColor"><small>Academic Year  *   </small></label>
+              <label class="text-sm"><small>Academic Year  *   </small></label>
               <select style="font-size: 13px; outline: none 0 !important; box-shadow: none;" class="form-select" v-model="form.academic_year" aria-label="Default select example">
                 <option value="">Select Academic Year</option>
                 <option value="dfg434d">2021</option>
@@ -57,7 +57,7 @@
             </div>
 
             <div class="mb-2">
-              <label class="textColor"><small>Study Period *</small></label>
+              <label class="text-sm"><small>Study Period *</small></label>
               <select style="font-size: 13px; outline: none 0 !important; box-shadow: none;" class="form-select" v-model="form.study_period" aria-label="Default select example">
                 <option value="">Select Study Period</option>
                 <option value="dfg434d">term 1</option>
@@ -68,7 +68,7 @@
 
 
             <div class="mb-2">
-            <label class="textColor text-sm">Recommendation or school report from previous school for pupils entering any class other than Nursery must be provided</label>
+            <label class="text-sm text-sm">Recommendation or school report from previous school for pupils entering any class other than Nursery must be provided</label>
             <div class="input-group mb-3">
               <input
                   type="file"

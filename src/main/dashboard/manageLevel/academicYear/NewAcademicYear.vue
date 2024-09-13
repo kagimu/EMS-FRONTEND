@@ -9,7 +9,7 @@
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Code</small></label>
+        <label class="text-sm"><small>Code</small></label>
         <input
             @keypress="commons.codeValidator($event)"
             maxlength="10"
@@ -21,7 +21,7 @@
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Academic year name</small></label>
+        <label class="text-sm"><small>Academic year name</small></label>
         <input
             :placeholder="'Year '+currentYear"
             maxlength="50"
@@ -35,7 +35,7 @@
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Level</small></label>
+        <label class="text-sm"><small>Level</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -46,7 +46,7 @@
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Number of study period</small></label>
+        <label class="text-sm"><small>Number of study period</small></label>
         <input
             @keypress="commons.onlyNumberValidator($event)"
             maxlength="1"
@@ -59,7 +59,7 @@
 
 
         <div class="mb-2">
-          <label class="textColor"><small>Academic Year Start Date</small></label>
+          <label class="text-sm"><small>Academic Year Start Date</small></label>
           <VueDatePicker
               text-input
               auto-apply
@@ -71,7 +71,7 @@
         </div>
 
       <div class="mb-2">
-          <label class="textColor"><small>Academic Year End Date</small></label>
+          <label class="text-sm"><small>Academic Year End Date</small></label>
           <VueDatePicker
               text-input
               auto-apply

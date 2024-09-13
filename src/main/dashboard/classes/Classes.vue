@@ -12,7 +12,7 @@
       <div class="row mx-auto">
         <div class="col-6 mb-2">
           <div class="mb-2">
-          <label class="textColor"><small>School</small></label>
+          <label class="text-sm"><small>School</small></label>
           <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm" required
@@ -29,7 +29,7 @@
         <div class="col-6 mb-2">
       
           <div class="mb-2">
-          <label class="textColor"><small>Campus</small> </label>
+          <label class="text-sm"><small>Campus</small> </label>
           <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
@@ -46,7 +46,7 @@
         <!-- <div class="col-4 mb-5 mt-5">
          
       <div class="mb-2">
-          <label class="textColor"><small>Class</small></label>
+          <label class="text-sm"><small>Class</small></label>
           <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm" required

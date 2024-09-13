@@ -10,17 +10,17 @@
 
           <div>
             <div class="mb-2">
-              <label class="textColor  text-sm">Full Name of person to be contacted first in case of emergency</label>
+              <label class="text-sm  text-sm">Full Name of person to be contacted first in case of emergency</label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.full_name_of_person_to_be_contacted_first_in_case_of_emergency" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor text-sm">Telephone Contact of first person</label>
+              <label class="text-sm text-sm">Telephone Contact of first person</label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.telephone_contact_of_first_person" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor text-sm">Full Name of Alternative person to be contacted in case of emergency</label>
+              <label class="text-sm text-sm">Full Name of Alternative person to be contacted in case of emergency</label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.full_name_of_alternative_person_to_be_contacted" required class="form-control form-control-sm">
             </div>
 
@@ -32,17 +32,17 @@
 
           <div>
             <div class="mb-2">
-              <label class="textColor text-sm">Telephone Contact of alternative person</label>
+              <label class="text-sm text-sm">Telephone Contact of alternative person</label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.telephone_contact_of_alternative_person" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor text-sm">Full Name of Doctor to be contacted in case of direct emergency attention</label>
+              <label class="text-sm text-sm">Full Name of Doctor to be contacted in case of direct emergency attention</label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.full_name_of_doctor_to_be_contacted" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="textColor text-sm">Telephone contact of Doctor</label>
+              <label class="text-sm text-sm">Telephone contact of Doctor</label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.telephone_contact_of_doctor" required class="form-control form-control-sm">
             </div>
 

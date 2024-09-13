@@ -6,12 +6,12 @@
             <div class="card-header">
        <div class="row">
         <div class="col-lg-4">
-            <h6 class="textColor" style="margin-top:20px; text-align: left;font-size: 15px;">
+            <h6 class="text-sm" style="margin-top:20px; text-align: left;font-size: 15px;">
               <i class="bi bi-x-lg" @click="goBac()"></i>&nbsp;&nbsp;&nbsp;Offer Admission | School Requirements Invoice <b></b>    
             </h6>
         </div>
         <div class="col-lg-8">
-          <RouterLink :to="{name : 'invoices'}" type="link" class="link-primary textColor" style="margin-top:20px;float: right;font-size: 15px;"><i class="bi bi-arrow-right" ></i>&nbsp;&nbsp;&nbsp;View Invoices</RouterLink>
+          <RouterLink :to="{name : 'invoices'}" type="link" class="link-primary text-sm" style="margin-top:20px;float: right;font-size: 15px;"><i class="bi bi-arrow-right" ></i>&nbsp;&nbsp;&nbsp;View Invoices</RouterLink>
         </div>
        </div>
            </div>
@@ -27,7 +27,7 @@
             <ul>
             <li class="list-group-item">
                 <input class="form-check-input me-1" type="checkbox" :id="'selectAllCheckbox' + columnIndex" v-model="selectAllAll" @change="selectAllItems">
-                <label class="form-check-label cursor-pointer textColor" :for="'selectAllCheckbox' + columnIndex">Select All</label>
+                <label class="form-check-label cursor-pointer text-sm" :for="'selectAllCheckbox' + columnIndex">Select All</label>
               </li>
           </ul>
 
@@ -35,7 +35,7 @@
             <ul class="list-group text-sm mb-4" style="border-radius: 0;">
               <li class="list-group-item" v-for="(item, index) in column" :key="index">
                 <input class="form-check-input me-1" type="checkbox" :id="'itemCheckbox' + index" v-model="selectedItems" :value="(columnIndex * 7) + index">
-                <label class="form-check-label cursor-pointer textColor" :for="'itemCheckbox' + index">{{ item.description }} - [ ugshs {{ item.cost }} ]</label>
+                <label class="form-check-label cursor-pointer text-sm" :for="'itemCheckbox' + index">{{ item.description }} - [ ugshs {{ item.cost }} ]</label>
               </li>
             </ul>
           </div>
@@ -232,7 +232,7 @@ watch (
   .star{
   color:red;
   }
-  .textColor{
+  .text-sm2{
   font-size: 11px !important;
   }
   </style>

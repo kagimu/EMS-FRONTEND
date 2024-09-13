@@ -187,7 +187,7 @@ const getUnitOfMeasure = (itemNumber) => {
 
                     <div>
                       <div>
-                        <label class="textColor"><small>School</small> </label>
+                        <label class="text-sm"><small>School</small> </label>
                         <select
                             style="box-shadow: none;"
                             class="form-select form-select-sm" required
@@ -202,7 +202,7 @@ const getUnitOfMeasure = (itemNumber) => {
                     </div>
 
                     <div>
-                        <label class="textColor"><small>Campus</small>  </label>
+                        <label class="text-sm"><small>Campus</small>  </label>
                         <select
                             :style="!isSelected ? 'border:1px solid red' : '' "
                             style="box-shadow: none;"
@@ -286,7 +286,7 @@ const getUnitOfMeasure = (itemNumber) => {
 
               <div>
                 <button
-                    class="btn btn-primary btn-sm textColor ml-3"
+                    class="btn btn-primary btn-sm text-sm ml-3"
                     @click.prevent="addItem"
                     :disabled="isAddButtonDisabled">
                   <small><i class="bi bi-plus-lg"></i></small>

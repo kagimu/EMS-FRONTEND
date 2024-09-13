@@ -241,7 +241,7 @@
          <div class="row">
             <div class="col-lg-4">
                <div class="mb-2" v-if="showSchool">
-                  <label class="textColor"><small>School</small> </label>
+                  <label class="text-sm"><small>School</small> </label>
                   <select
                      style="box-shadow: none;"
                      class="form-select form-select-sm" required
@@ -255,7 +255,7 @@
                   </select>
                </div>
                <div class="mb-2">
-                  <label class="textColor"><small>Name</small></label>
+                  <label class="text-sm"><small>Name</small></label>
                   <input v-model="form.name"   type="text" required class="form-control shadow-none" placeholder="eg. Break fast 1">
                </div>
             </div>
@@ -310,7 +310,7 @@
                   </table>
                   <div>
                      <button
-                        class="btn btn-primary btn-sm textColor ml-3"
+                        class="btn btn-primary btn-sm text-sm ml-3"
                         @click.prevent="addItem"
                         :disabled="isAddButtonDisabled">
                      <small><i class="bi bi-plus-lg"></i></small>

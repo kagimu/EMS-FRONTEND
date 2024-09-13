@@ -3,7 +3,7 @@
 <form @submit.prevent="addGroupFeedingSession">
    
 <div class="mb-2">
-    <label class="textColor"><small>Feeding Session</small>  </label>
+    <label class="text-sm"><small>Feeding Session</small>  </label>
     <select v-model="form.feeding_session_number" class="form-control form-select"> 
             <option disabled value="">Select</option>
             <option v-for="(list, index) in feedingSessionGroupData" :key="index" :value="list.number">{{list.name}}</option>

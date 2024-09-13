@@ -145,7 +145,7 @@ watch (
           <div class="row">
             <div class="col-lg-12">
               <div class="form-group">
-              <label class="textColor text-sm" ><small>School Name
+              <label class="text-sm text-sm" ><small>School Name
               <button @click="removeSchool(schoolIndex)" type="button">
                 <i style="color:red;width: 12px;height: 12px;" class="bi bi-x-circle"></i></button></small>
                </label>
@@ -156,26 +156,26 @@ watch (
          
           <div class="classes-section">
               &nbsp;
-              <label class="textColor text-sm" ><small> Classes Attended</small></label>
-              <label class="textColor text-sm" ><small>
+              <label class="text-sm text-sm" ><small> Classes Attended</small></label>
+              <label class="text-sm text-sm" ><small>
                   &nbsp;&nbsp;<button type="button" @click="addClass(schoolIndex)"><i  class="bi bi-plus-circle"></i></button></small> </label>
 
               <div class="row" v-for="(className, classIndex) in school.classes" :key="classIndex">
             <div class="col-lg-5">
                 <div class="input-group mb-3 flex " >
-                    <label class="textColor text-sm" ><small>Class</small></label>
+                    <label class="text-sm text-sm" ><small>Class</small></label>
               <input type="text" class="form-control mx-2 shadow-none" v-model="school.classes[classIndex].class">
             </div>
             </div>
             <div class="col-lg-5">
               <div class="mb-3 flex" >
-                <label class="textColor text-sm" ><small>Year</small></label>
+                <label class="text-sm text-sm" ><small>Year</small></label>
               <input type="text" class="form-control mx-2 shadow-none" v-model="school.classes[classIndex].year">
 
             </div>
             </div>
             <div class="col-lg-1">
-              <label class="textColor text-sm" ><small></small></label>
+              <label class="text-sm text-sm" ><small></small></label>
              <button type="button"  @click="removeClass(schoolIndex, classIndex)" style="color:red;width: 12px;height: 12px;" title="Remove class"><i class="bi bi-x-circle-fill"></i></button>
             </div>
           </div>
@@ -219,7 +219,7 @@ watch (
           <div class="row">
             <div class="col-lg-12">
               <div class="form-group">
-              <label class="textColor text-sm" ><small>School Name
+              <label class="text-sm text-sm" ><small>School Name
               <button @click="removeSchool(schoolIndex)" type="button">
                 <i style="color:red;width: 12px;height: 12px;" class="bi bi-x-circle"></i></button></small>
                </label>
@@ -230,26 +230,26 @@ watch (
          
           <div class="classes-section">
               &nbsp;
-              <label class="textColor text-sm" ><small> Classes Attended</small></label>
-              <label class="textColor text-sm" ><small>
+              <label class="text-sm text-sm" ><small> Classes Attended</small></label>
+              <label class="text-sm text-sm" ><small>
                   &nbsp;&nbsp;<button type="button" @click="addClass(schoolIndex)"><i  class="bi bi-plus-circle"></i></button></small> </label>
 
               <div class="row" v-for="(className, classIndex) in school.classes" :key="classIndex">
             <div class="col-lg-5">
                 <div class="input-group mb-3 flex " >
-                    <label class="textColor text-sm" ><small>Class</small></label>
+                    <label class="text-sm text-sm" ><small>Class</small></label>
               <input type="text" class="form-control mx-2 shadow-none" v-model="school.classes[classIndex].class">
             </div>
             </div>
             <div class="col-lg-5">
               <div class="mb-3 flex" >
-                <label class="textColor text-sm" ><small>Year</small></label>
+                <label class="text-sm text-sm" ><small>Year</small></label>
               <input type="text" class="form-control mx-2 shadow-none" v-model="school.classes[classIndex].year">
 
             </div>
             </div>
             <div class="col-lg-1">
-              <label class="textColor text-sm" ><small></small></label>
+              <label class="text-sm text-sm" ><small></small></label>
              <button type="button"  @click="removeClass(schoolIndex, classIndex)" style="color:red;width: 12px;height: 12px;" title="Remove class"><i class="bi bi-x-circle-fill"></i></button>
             </div>
           </div>

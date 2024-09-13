@@ -26,7 +26,7 @@
 
 
             <div class="mt-3">
-              <label class="textColor p-0"><small>Password</small></label>
+              <label class="text-sm p-0"><small>Password</small></label>
               <div class="input-group mb-3">
                 <input
                     :type="show ? 'text' : 'password'"
@@ -38,7 +38,7 @@
                 </div>
               </div>
 
-              <label class="textColor p-0"><small>Confirm Password</small></label>
+              <label class="text-sm p-0"><small>Confirm Password</small></label>
               <div class="input-group mb-3">
                 <input
                     :type="show ? 'text' : 'password'"

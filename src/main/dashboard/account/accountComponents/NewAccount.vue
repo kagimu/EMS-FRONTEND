@@ -157,7 +157,7 @@ watch (
                             type="checkbox">
                            </div>
                            <div class="col-lg-4">
-                              <label style="float: left;" class="textColor cursor-pointer" :for="lst.number">{{lst.role_name}}</label>
+                              <label style="float: left;" class="text-sm cursor-pointer" :for="lst.number">{{lst.role_name}}</label>
                            </div>
                            <div class="col-lg-6">
                            <input
@@ -189,6 +189,6 @@ watch (
    input:focus {
    box-shadow: none;
    }
-   .textColor{
+   .text-sm2{
    }
 </style>

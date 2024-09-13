@@ -9,7 +9,7 @@
 
 
           <div class="mb-2">
-            <label class="textColor text-sm">Mention any special matter about the student that you would like to alert our attention to  *</label>
+            <label class="text-sm text-sm">Mention any special matter about the student that you would like to alert our attention to  *</label>
             <textarea style="outline: none 0 !important; box-shadow: none; height: 60px" class="form-control noFocus form-control-sm" v-model="form.special_matter" id="floatingTextarea2"></textarea>
           </div>
 

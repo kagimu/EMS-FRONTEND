@@ -68,7 +68,7 @@ watch (
     <form @submit.prevent="addEntity">
       
       <div class="mb-2">
-        <label class="textColor text-sm">Entity</label>
+        <label class="text-sm text-sm">Entity</label>
         <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required

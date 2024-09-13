@@ -132,7 +132,7 @@ watch(
           <div class="mt-2 mb-2">
 
             <div class="mb-6">
-              <label class="textColor"><small>Stream</small></label>
+              <label class="text-sm"><small>Stream</small></label>
               <input
                   placeholder="East,West,North"
                   ref="nameRef"

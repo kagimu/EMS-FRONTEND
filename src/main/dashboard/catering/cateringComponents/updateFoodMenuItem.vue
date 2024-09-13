@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-lg-6">
             <div class="mb-2">
-    <label class="textColor"><small>Type</small> </label>
+    <label class="text-sm"><small>Type</small> </label>
     <select
             style="box-shadow: none;"
             class="form-select form-select-sm" required
@@ -22,7 +22,7 @@
 
         <div class="col-lg-6">
         <div class="mb-2">
-        <label class="textColor"><small>Name</small></label>
+        <label class="text-sm"><small>Name</small></label>
         <input v-model="menuForm.name"   type="text" required class="form-control">
         </div>
         </div>
@@ -37,7 +37,7 @@
     <div class="col-lg-6">
 
         <div class="mb-2">
-    <label class="textColor"><small>Code</small></label>
+    <label class="text-sm"><small>Code</small></label>
     <input
         @keypress="commons.codeValidator($event)"
         maxlength="10"
@@ -50,7 +50,7 @@
     </div>
     <div class="col-lg-6">
         <div class="mb-2">
-    <label class="textColor"><small>Unit Of Measurement</small></label>
+    <label class="text-sm"><small>Unit Of Measurement</small></label>
     <select v-model="menuForm.unit_of_measure_number" class="form-control form-select"> 
         <option disabled value="">Select</option>
         <option v-for="(list, index) in unitMeasurementData" :key="index" :value="list.number">{{list.name}}</option>
@@ -65,7 +65,7 @@
 <div class="row">
 <div class="col-lg-6">
     <div class="mb-2">
-    <label class="textColor"><small>School</small> </label>
+    <label class="text-sm"><small>School</small> </label>
     <select
             style="box-shadow: none;"
             class="form-select form-select-sm" required
@@ -81,7 +81,7 @@
 
 <div class="col-lg-6">
     <div class="mb-2">
-    <label class="textColor"><small>Campus</small>  </label>
+    <label class="text-sm"><small>Campus</small>  </label>
     <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -126,7 +126,7 @@
                         </tbody>
                       </table>
                    
-                      <button class="btn btn-primary btn-sm textColor" @click.prevent="addItem" :disabled="isAddButtonDisabled"><small>ADD ANOTHER ITEM</small></button>
+                      <button class="btn btn-primary btn-sm text-sm" @click.prevent="addItem" :disabled="isAddButtonDisabled"><small>ADD ANOTHER ITEM</small></button>
                     
                   </div>
                 </div> 

@@ -7,7 +7,7 @@
           {{ classError }}
         </div>
         <div class="mb-2">
-            <label class="textColor"><small>Promotion Setting</small>  </label>
+            <label class="text-sm"><small>Promotion Setting</small>  </label>
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
@@ -21,7 +21,7 @@
 
 
         <div class="mb-2">
-            <label class="textColor"><small>School</small> </label>
+            <label class="text-sm"><small>School</small> </label>
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm" required
@@ -36,7 +36,7 @@
 
 
         <div class="mb-2">
-            <label class="textColor"><small>Campus</small>  </label>
+            <label class="text-sm"><small>Campus</small>  </label>
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
@@ -53,7 +53,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="mb-2">
-            <label class="textColor"><small>Class</small> </label>
+            <label class="text-sm"><small>Class</small> </label>
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm" required
@@ -69,7 +69,7 @@
         </div>
         
         <div class="mb-2">
-            <label class="textColor"><small>Current Academic Year</small> </label>
+            <label class="text-sm"><small>Current Academic Year</small> </label>
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm" required
@@ -82,7 +82,7 @@
       
 
         <div class="mb-2">
-            <label class="textColor"><small>Reason</small>  </label><br>
+            <label class="text-sm"><small>Reason</small>  </label><br>
           <textarea v-model="form.reason" class="form-control"></textarea>
          
         </div>

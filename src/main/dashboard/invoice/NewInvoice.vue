@@ -178,7 +178,7 @@ watch (
                 <div class="row">
                   <div class="col-lg-5">
                      <div class="mb-2">
-                      <label class="textSize">Due Date</label>
+                      <label class="text-sm">Due Date</label>
                       <input
                       type="date"
                       v-model="form.due_date"
@@ -189,7 +189,7 @@ watch (
                   </div>
                   <div class="col-lg-7">
                     <div class="mb-2">
-                    <label class="textSize">Description</label>
+                    <label class="text-sm">Description</label>
                     <textarea
                         v-model="form.description"
                         required
@@ -250,7 +250,7 @@ watch (
                       </tbody>
                     </table>
                     <button
-                        class="btn btn-primary btn-sm textColor"
+                        class="btn btn-primary btn-sm text-sm"
                         @click.prevent="addService"
                         :disabled="isAddButtonDisabled">
                         <small class="px-4">
@@ -323,7 +323,7 @@ select{
 .star{
   color:red;
 }
-.textColor{
+.text-sm2{
   /* font-size: 1px !important; */
 }
   .select-no-border {

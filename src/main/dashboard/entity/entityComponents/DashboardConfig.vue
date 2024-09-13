@@ -47,21 +47,21 @@ watch (
     <form @submit.prevent="dashboardConfig">
       
       <div class="mb-2">
-        <label class="textColor text-sm">Landing Page Name</label>
+        <label class="text-sm text-sm">Landing Page Name</label>
         <input  
            v-model="formData.title"  style="outline: none 0 !important; box-shadow: none;"
              type="text" required class="form-control form-control-sm">
       </div>
 
       <div class="mb-2">
-        <label class="textColor text-sm">Landing Page Description</label>
+        <label class="text-sm text-sm">Landing Page Description</label>
              <textarea
               v-model="formData.description"  style="outline: none 0 !important; box-shadow: none;"
              class="form-control" ></textarea>
       </div>
          
       <div class="mb-2">
-        <label class="textColor text-sm">Logo</label>
+        <label class="text-sm text-sm">Logo</label>
         <input  
             style="outline: none 0 !important; box-shadow: none;"
              type="file" required class="form-control form-control-sm">

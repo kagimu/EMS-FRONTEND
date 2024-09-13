@@ -136,7 +136,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Study Level</small></label>
+        <label class="text-sm"><small>Study Level</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -148,7 +148,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Code</small></label>
+        <label class="text-sm"><small>Code</small></label>
         <input
             @keypress="commons.codeValidator($event)"
             maxlength="10"
@@ -161,7 +161,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Class Name</small></label>
+        <label class="text-sm"><small>Class Name</small></label>
         <input
             style="outline: none 0 !important; box-shadow: none;"
             type="text" v-model="form.name"
@@ -170,7 +170,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Abbreviation</small></label>
+        <label class="text-sm"><small>Abbreviation</small></label>
         <input
             style="outline: none 0 !important; box-shadow: none;"
             type="text" v-model="form.abbreviation"

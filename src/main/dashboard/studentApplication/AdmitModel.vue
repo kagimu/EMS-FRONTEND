@@ -128,8 +128,8 @@ campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_c
     let sData = {
      campus_number:form.campus_number,
      class_number:clasN,
-     campus_curriculum_number:form.curriculumNumber
-
+     campus_curriculum_number:form.curriculumNumber,
+     school_number:form.school_number
     }
     classStore.fetchClassStreams(sData)
 
@@ -406,7 +406,7 @@ watch(
         <div class="col-lg-4">
           <p class="alert alert-primary p-1" style="" ><small>Please ,Choose a class Your admiting this Student !</small> </p>
           <div class="mb-2">
-            <label class="textSize"><small>School</small></label>
+            <label class="text-sm"><small>School</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required
@@ -419,7 +419,7 @@ watch(
     
    
           <div class="mb-2">
-            <label class="textSize"><small>Campus</small></label>
+            <label class="text-sm"><small>Campus</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm"
@@ -431,7 +431,7 @@ watch(
           </div>
         
         <div class="mb-2">
-          <label class="textSize"><small>Curriculum</small></label>
+          <label class="text-sm"><small>Curriculum</small></label>
             <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -445,7 +445,7 @@ watch(
         
 
           <div class="mb-2">
-            <label class="textSize"><small>Level</small></label>
+            <label class="text-sm"><small>Level</small></label>
             <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -459,7 +459,7 @@ watch(
           </div>
 
           <div class="mb-2">
-            <label class="textSize"><small>Academic Year</small></label>
+            <label class="text-sm"><small>Academic Year</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required
@@ -471,7 +471,7 @@ watch(
 
 
           <div class="mb-2">
-            <label class="textSize"><small>Class</small></label>
+            <label class="text-sm"><small>Class</small></label>
      
                 <select
                 class="form-select form-select-sm shadow-none" required
@@ -486,7 +486,7 @@ watch(
           </div>
   
           <div class="mb-2">
-            <label class="textSize"><small>Stream</small></label>
+            <label class="text-sm"><small>Stream</small></label>
 
             <select
               style="box-shadow: none;"
@@ -506,7 +506,7 @@ watch(
 
       
           <div class="mb-2">
-            <label class="textSize"><small>Study Period</small></label>
+            <label class="text-sm"><small>Study Period</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required
@@ -527,8 +527,8 @@ watch(
               <table class="table table-hover caption-top mt-1 ">
                 <thead>
                   <tr class="" style="padding: 0px;margin: 0px;font-size: 13px;">
-                    <th class="textSize">Item</th>
-                    <th class="textSize">Cost</th>
+                    <th class="text-sm">Item</th>
+                    <th class="text-sm">Cost</th>
                     <th>Quantity</th>
                     <th></th>
                   </tr>
@@ -546,7 +546,7 @@ watch(
                   </tr>
                 </tbody>
               </table>
-              <button style="width: 30px;" class="btn btn-primary btn-sm textSize" @click.prevent="addService" :disabled="isAddButtonDisabled"><small><i class="bi bi-plus-lg"></i></small></button>
+              <button style="width: 30px;" class="btn btn-primary btn-sm text-sm" @click.prevent="addService" :disabled="isAddButtonDisabled"><small><i class="bi bi-plus-lg"></i></small></button>
             </div>
          
         </div>
@@ -567,7 +567,7 @@ watch(
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
   }
-  .textSize{
+  .text-sm{
     font-size: 12px;
   }
 </style>

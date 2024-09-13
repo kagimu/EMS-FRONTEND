@@ -83,7 +83,7 @@ watch(
 
 
     <div class="mx-auto" style="width: 95%;">
-      <label class="textColor mt-3 mb-2">Add Level to Campus</label>
+      <label class="text-sm mt-3 mb-2">Add Level to Campus</label>
       <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
 
         <li class="list-group-item" v-for="(lvl,idx) in curriculumLevelList" :key="idx">

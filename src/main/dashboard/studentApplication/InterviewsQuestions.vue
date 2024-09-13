@@ -51,7 +51,7 @@
           <div class="offcanvas-body">
             <form @submit.prevent="addInterviewQuestions">
               <div class="mb-2">
-                <label class="textColor"><small>Assesment Area</small></label>
+                <label class="text-sm"><small>Assesment Area</small></label>
                <select required class="form-control" v-model="form.assessment_area_number" >
                 <option disabled value=""> - Select Interview - </option>
                   <option v-for="(listdata, index) in interviewAssesmentListData" :key="index" :value="listdata.number">
@@ -61,7 +61,7 @@
               </div>
               
               <div class="mb-2">
-                <label class="textColor"><small>Interviews</small></label>
+                <label class="text-sm"><small>Interviews</small></label>
                <select required class="form-control" v-model="form.interview_number" >
                 <option disabled value=""> - Select Interview - </option>
                   <option v-for="(list, index) in interviewListData" :key="index" :value="list.number">
@@ -73,15 +73,15 @@
               
 
               <div class="mb-2">
-                <label class="textColor"><small>Question</small></label>
+                <label class="text-sm"><small>Question</small></label>
                 <input v-model="form.question"  type="text" required class="form-control">
               </div>
               <div class="mb-2">
-                <label class="textColor"><small>Correct Answer</small></label>
+                <label class="text-sm"><small>Correct Answer</small></label>
                 <input  type="text" v-model="form.correct_answer"  required class="form-control" >
               </div>
               <div class="mb-2">
-    <label class="textColor text-sm"><small>Possible Answers</small></label>
+    <label class="text-sm text-sm"><small>Possible Answers</small></label>
     <div v-for="(answer, index) in form.possible_answers" :key="index" class="mb-2">
       <div class="row">
         <div class="col-lg-11">

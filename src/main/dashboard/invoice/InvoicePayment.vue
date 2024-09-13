@@ -4,14 +4,14 @@
     <form @submit.prevent="invoicePayment">
       
       <div class="mb-2">
-        <label class="textColor text-sm">Amount</label>
+        <label class="text-sm text-sm">Amount</label>
         <input   @keypress="commons.numbersOnlyValidator($event)"
             maxlength="10" v-model="formData.amount"  style="outline: none 0 !important; box-shadow: none;"
              type="text" required class="form-control form-control-sm">
       </div>
 
       <div class="mb-2">
-        <label class="textColor text-sm">Date</label>
+        <label class="text-sm text-sm">Date</label>
         <input v-model="formData.date"  style="outline: none 0 !important; box-shadow: none;" type="date" required class="form-control form-control-sm">
         <!-- <VueDatePicker
             text-input
