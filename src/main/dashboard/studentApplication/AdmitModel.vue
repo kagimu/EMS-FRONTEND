@@ -129,7 +129,6 @@ campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_c
      campus_number:form.campus_number,
      class_number:clasN,
      campus_curriculum_number:form.curriculumNumber,
-     school_number:form.school_number
     }
     classStore.fetchClassStreams(sData)
 
@@ -137,7 +136,8 @@ campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_c
     studyPeriodStore.fetchStudyPeriod(
       {
         academic_year_number:form.academic_year_number,
-        class_number:clasN
+        class_number:clasN,
+        school_number:form.school_number
       } 
   )
   }

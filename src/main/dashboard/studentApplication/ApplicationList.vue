@@ -383,7 +383,7 @@ watch (
     <application-details :application-number="applications"></application-details>
   </AppModal>
 
-  <AppModal title="New Application" v-model="showAppmodal" xl>
+  <AppModal title="New Application" v-model="showAppmodal" xl2>
     <NewApplication></NewApplication>
   </AppModal>
 
