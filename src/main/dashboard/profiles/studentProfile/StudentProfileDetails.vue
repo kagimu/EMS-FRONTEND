@@ -15,7 +15,7 @@ import router from "@/config/router.js";
 
 import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
 import StudentNarativeReport from "@/main/dashboard/profiles/studentProfile/StudentNarativeReport.vue";
-import SchoolBudge from "@/assets/images/victorius-budge.png";
+import SchoolBadge from "@/assets/images/victorius-budge.png";
 import FileUploader from "@/components/FileUploader.vue";
 const enrollmentStore = useEnrolmentStore()
 
@@ -162,7 +162,7 @@ watch (
     }
 )
 
-const uploadBudge = () => {
+const uploadBadge = () => {
   uploadDialog.value = true
 }
 
@@ -180,8 +180,8 @@ const successUpload = (data) => {
     </AppModal>
 
 
-  <AppModal title="Upload School Budge"  v-on:nextAction="successUpload" v-model="uploadDialog" xl>
-    <file-uploader ref="profileUploadComponents" :imageUrl="SchoolBudge"></file-uploader>
+  <AppModal title="Upload School Badge"  v-on:nextAction="successUpload" v-model="uploadDialog" xl>
+    <file-uploader ref="profileUploadComponents" :imageUrl="SchoolBadge"></file-uploader>
   </AppModal>
 
     <section style="background-color: #eee;">
@@ -200,7 +200,7 @@ const successUpload = (data) => {
              <div class="text-center mb-4">
                <button
                    class="border-2 rounded-md px-2  border-[#2c2f8c] text-[#2c2f8c] text-sm"
-                   @click="uploadBudge">
+                   @click="uploadBadge">
                  <i class="cursor-pointer mx-1 text-xs fa-solid fa-pencil"></i> Upload Student photo
                </button>
              </div>

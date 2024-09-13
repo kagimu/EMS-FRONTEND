@@ -8,7 +8,7 @@ const props = defineProps({
 
 const baseUrl = `${window.location.protocol}//${window.location.host}`;
 const StudentImage =  baseUrl+"/src/assets/images/studentId.png";
-const SchoolBudge = baseUrl+"/src/assets/images/victorius-budge.png";
+const SchoolBadge = baseUrl+"/src/assets/images/victorius-budge.png";
 
 const reportFilteredData = ref([])
 
@@ -80,7 +80,7 @@ const printableContent = ref(null);
     <tr>
       <td style="text-align: center; width: 20%;">
         <div style="text-align: right; margin-top: 10px;">
-          <img alt="logo" style="width: 130px; margin: 0 auto;" :src="SchoolBudge"/>
+          <img alt="logo" style="width: 130px; margin: 0 auto;" :src="SchoolBadge"/>
         </div>
       </td>
 

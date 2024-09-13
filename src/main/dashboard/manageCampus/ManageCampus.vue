@@ -6,7 +6,7 @@ import useNotificationStore from "@/composables/useNotification.js";
 import NewCampus from "@/main/dashboard/manageCampus/NewCampus.vue";
 import {useRouter} from "vue-router";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-import SchoolBudge from "@/assets/images/victorius-budge.png";
+import SchoolBadge from "@/assets/images/victorius-budge.png";
 
 import AppModal from "@/components/AppModal.vue";
 import CampusListInfo from "@/main/dashboard/manageCampus/CampusListInfo.vue";
@@ -61,7 +61,7 @@ watch(
       if(data){
         campusDialog.value = false
         notificationStore.successToast("Success", data.message)
-        await fetchCampusInfo(schoolNumber)
+         fetchCampusInfo(schoolNumber)
       }
     },
     {deep:true}
@@ -79,7 +79,7 @@ watch (
     {deep:true}
 )
 
-const uploadBudge = () => {
+const uploadBadge = () => {
   uploadDialog.value = true
 }
 
@@ -99,8 +99,8 @@ const successUpload = (data) => {
       <new-campus ref="campusRef"></new-campus>
     </AppModal>
 
-    <AppModal title="Upload School Budge" v-model="uploadDialog" xl>
-       <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload" :imageUrl="SchoolBudge"></file-uploader>
+    <AppModal title="Upload School Badge" v-model="uploadDialog" xl>
+       <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload" :imageUrl="schoolData?.logo"></file-uploader>
     </AppModal>
 
 
@@ -111,16 +111,16 @@ const successUpload = (data) => {
 
 
         <div>
-          <div class="text-[18px]">School Budge:</div>
+          <div class="text-[18px]">School Badge:</div>
           <div class="text-[14px] text-[#575656]">
             <div style="text-align: right; margin-top: 10px;">
-              <img alt="logo" style="width: 130px;" :src="schoolData?.logo"/>
+              <img alt="logo" class="w-[130px] border-2 rounded-lg" :src="schoolData?.logo"/>
             </div>
 
             <button
                 class="border-2 rounded-md px-2 mt-2 border-[#2c2f8c] text-[#2c2f8c]"
-                @click="uploadBudge">
-              <i class="cursor-pointer mx-1 text-xs fa-solid fa-pencil"></i> Upload Budge
+                @click="uploadBadge">
+              <i class="cursor-pointer mx-1 text-xs fa-solid fa-pencil"></i> Upload Badge
             </button>
 
           </div>

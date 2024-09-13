@@ -1,7 +1,7 @@
 <script setup>
 
 import StudentImage from "@/assets/images/pic.jpg";
-import SchoolBudge from "@/assets/images/victorius-budge.png";
+import SchoolBadge from "@/assets/images/victorius-budge.png";
 </script>
 
 <template>
@@ -11,7 +11,7 @@ import SchoolBudge from "@/assets/images/victorius-budge.png";
     <tr>
       <td style="text-align: center; width: 20%;">
         <div style="text-align: right; margin-top: 10px;">
-          <img alt="logo" style="width: 130px; margin: 0 auto;" :src="SchoolBudge"/>
+          <img alt="logo" style="width: 130px; margin: 0 auto;" :src="SchoolBadge"/>
         </div>
       </td>
 
