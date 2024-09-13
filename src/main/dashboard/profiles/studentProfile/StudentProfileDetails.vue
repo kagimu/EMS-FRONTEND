@@ -15,7 +15,7 @@ import router from "@/config/router.js";
 
 import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
 import StudentNarativeReport from "@/main/dashboard/profiles/studentProfile/StudentNarativeReport.vue";
-import SchoolBudge from "@/assets/images/victorius-budge.png";
+import SchoolBadge from "@/assets/images/victorius-budge.png";
 import FileUploader from "@/components/FileUploader.vue";
 const enrollmentStore = useEnrolmentStore()
 
@@ -35,6 +35,7 @@ const Level= ref(null)
 const className= ref(null)
 const dob = ref(null)
 const academicYear = ref(null)
+const studentPhoto = ref(null)
 const studyPeriod=ref(null)
 const stream = ref(null)
 const status = ref(null)
@@ -49,7 +50,7 @@ onMounted(
     async () => {
       await applicationStore.fetchStudent(student_number)
       await cateringStore.FeedingGroupByUserId(student_number)
-      
+
     } )
 
 watch (
@@ -65,6 +66,7 @@ watch (
         campus.value = data.current_enrollment.campus
         school.value = data.current_enrollment.school
         academicYear.value = data.current_enrollment.academic_year
+        studentPhoto.value = data.photo
       }
     },
     { deep: true }
@@ -162,165 +164,165 @@ watch (
     }
 )
 
-const uploadBudge = () => {
+const uploadBadge = () => {
   uploadDialog.value = true
 }
 
-const successUpload = (data) => {
-  if(data){
+const successUpload = async (data) => {
+  if (data) {
     uploadDialog.value = false
+    await applicationStore.fetchStudent(student_number)
   }
 }
 
 </script>
 <template>
 
-   <AppModal title="Comfirm" v-model="showActionDialog" xs>
-      <Comfirm :studentNumber="studentNum" :action="actionType" @nedda="cancelled"></Comfirm>
-    </AppModal>
-
-
-  <AppModal title="Upload School Budge"  v-on:nextAction="successUpload" v-model="uploadDialog" xl>
-    <file-uploader ref="profileUploadComponents" :imageUrl="SchoolBudge"></file-uploader>
+  <AppModal title="Confirm" v-model="showActionDialog" xs>
+    <Comfirm :studentNumber="studentNum" :action="actionType" @nedda="cancelled"></Comfirm>
   </AppModal>
 
-    <section style="background-color: #eee;">
-        
-      <div class="container py-4">
-        <!-- User Profile Information -->
-        <div class="row">
-          <div class="col-lg-3">
-            <!-- User Card -->
-            <div class="border rounded-md bg-white mb-4 px-3">
 
-              <div class="text-center">
-                <i class="bi-person-circle text-[100px] text-[#8a8888]"></i>
-              </div>
+  <AppModal title="Upload Student photo" v-model="uploadDialog" xl>
+    <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload" :imageUrl="studentPhoto"></file-uploader>
+  </AppModal>
 
-             <div class="text-center mb-4">
-               <button
-                   class="border-2 rounded-md px-2  border-[#2c2f8c] text-[#2c2f8c] text-sm"
-                   @click="uploadBudge">
-                 <i class="cursor-pointer mx-1 text-xs fa-solid fa-pencil"></i> Upload Student photo
-               </button>
-             </div>
+  <section style="background-color: #eee;">
 
-              <div class="mb-3">
-                <div class="text-[#8a8888] text-sm mb-[10px]"><i class="bi-person-circle mr-2"></i>{{ studentName }}</div>
-                <div class="text-[#8a8888] text-sm mb-[10px]"><i class="bi-calendar-date mr-2"></i>{{ dob }}</div>
-              </div>
+    <div class="container py-4">
+      <!-- User Profile Information -->
+      <div class="row">
+        <div class="col-lg-3">
+          <!-- User Card -->
+          <div class="border rounded-md bg-white mb-2 px-3">
 
+            <div class="text-center">
+              <img v-if="studentPhoto" alt="photo" class="w-[140px] border rounded-md mx-auto my-3" :src="studentPhoto"/>
+              <i v-else class="bi-person-circle text-[100px] text-[#8a8888] border rounded-md py-1 px-4"></i>
             </div>
-            
-                <div class="card mt-3">
-            <div class="card-body" style="padding: 0;">
-                <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
 
-              <router-link
-                  v-for="(item, idx) in  itemMenu" :key="idx"
-                  class="list-group-item list-group-item-action"
-                  :class="item.value === studentQuery ? 'active' : ''"
-                  :to="{name:'student-profile-details', query:{st_id:student_number,type:item.value}}">
-                <small style="font-size:12px;">{{item.text}}</small></router-link>
-
-
-              </div>
-          
-         
-              </div>
+            <div class="text-center mb-3">
+              <button
+                  class="border-2 rounded-md px-2  border-[#2c2f8c] text-[#2c2f8c] text-sm"
+                  @click="uploadBadge">
+                <i class="cursor-pointer mx-1 text-xs fa-solid fa-pencil"></i> Upload Student photo
+              </button>
             </div>
+
+            <div class="mb-3">
+              <div class="text-[#8a8888] text-sm mb-[10px]"><i class="bi-person-circle mr-2"></i>{{ studentName }}</div>
+              <div class="text-[#8a8888] text-sm mb-[10px]"><i class="bi-calendar-date mr-2"></i>{{ dob }}</div>
+            </div>
+
           </div>
-          
-         
-          <div class="col-lg-9">
-            <div class="py-2 px-3 border border-0 fw-normal bg-light card-header">
-             <div style="color: green;"><span class="text-primary me-1">SCHOOL:</span>{{ school }} &nbsp;<span class="text-primary me-1">CAMPUS:</span>{{ campus }}
-             <div  style="float: right;">
-              <span class="text-primary">STATUS:</span><span class="badge bg-danger rounded-pill ms-2 fs-6">{{ status }}</span>
-          </div>
-   
 
-</div>
-
-</div>
-
-<div class="border border-top-0 border-bottom-0 border-start-0 border-end-0 card">
-   <div class="py-2 px-3 mb-0 card-header border-0">
-      <span>
-        <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status">
-            <button type="button" class="text-sm text-uppercase mb-1 btn btn-dark">Class</button>
-            <button type="button" class="text-sm fw-bold text-white text-uppercase mb-1 btn btn-info">{{ className }}</button>
-         </div>
-         <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status">
-            <button type="button" class="text-sm text-uppercase mb-1 btn btn-dark">Academic YEAR.</button>
-            <button type="button" class="text-sm fw-bold text-white text-uppercase mb-1 btn btn-info">{{ academicYear }}</button>
-         </div>
-         <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status">
-            <button type="button" class="text-sm text-uppercase mb-1 btn btn-dark">STUDY PERIOD</button>
-            <button type="button" class="text-sm fw-bold text-white text-uppercase mb-1 btn btn-info">{{ studyPeriod }}</button>
-         </div>
-         <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status">
-            <button type="button" class="text-sm text-uppercase mb-1 btn btn-dark">STREAM</button>
-            <button type="button" class="text-sm fw-bold text-white text-uppercase mb-1 btn btn-danger">{{ stream }}</button>
-         </div>
-         <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status" style="float: right;">
-        
-        <div v-if="can('re-instate_enrollment','manage')"></div>  <button v-if="status == 'TERMINATED'" class="btn btn-success btn-sm mb-2 mx-1 mb-2" @click="reEnroll(student_number)">
-                <small>RE-INSTATE</small>
-                </button>
-               <div v-if="can('terminate_enrollment','manage')"><button v-if="status == 'ACTIVE'" class="btn btn-danger btn-sm mb-2 mx-1" @click="terminateEnrollment(student_number)">
-                <small>Terminate</small>
-                </button></div>
-              </div>
-      </span>
-     
-   </div>
-</div>
-
-
-           
-            
-            <!-- Project Status -->
-            <div class="row">
-              <div class="col-md-12">
-                <div class="card mb-4 mb-md-0">
-                  <div class="card-body">
-                    <div class="mt-0">
+          <div class="border bg-white rounded-md py-[3px]">
             <div>
-  
-              <div>
+              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
 
-                 <div v-if="studentQuery === 'financial-situation'">
-                  <ManageInvoices></ManageInvoices>
-                  </div>
+                <router-link
+                    v-for="(item, idx) in  itemMenu" :key="idx"
+                    class="list-group-item list-group-item-action"
+                    :class="item.value === studentQuery ? 'active' : ''"
+                    :to="{name:'student-profile-details', query:{st_id:student_number,type:item.value}}">
+                  <small style="font-size:12px;">{{item.text}}</small></router-link>
 
 
-                  <div v-if="studentQuery === 'report-cards'">
-                  <StudentReports></StudentReports>
-                  </div>
-                  <div v-if="studentQuery === 'bio-data'">
-                    <h1>Bio data</h1>
-                  </div>
-
-                  <div v-if="studentQuery === 'narrative'">
-                    <StudentNarativeReport></StudentNarativeReport>
-                  </div>
-                
               </div>
-  
+
+
             </div>
           </div>
+        </div>
 
-                  </div>
+
+        <div class="col-lg-9">
+
+          <div class="bg-white rounded-md mb-2 border">
+            <div class="py-2 px-3">
+              <div style="color: green;"><span class="text-primary me-1">SCHOOL:</span>{{ school }} &nbsp;<span class="text-primary me-1">CAMPUS:</span>{{ campus }}
+                <div  style="float: right;">
+                  <span class="text-primary">STATUS:</span><span class="badge bg-danger rounded-pill ms-2 fs-6">{{ status }}</span>
                 </div>
               </div>
             </div>
-            
+
+            <div class="">
+              <div class="py-2 px-3 mb-0 border-0">
+                <span>
+                  <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status">
+                      <button type="button" class="text-sm text-uppercase mb-1 btn btn-dark">Class</button>
+                      <button type="button" class="text-sm fw-bold text-white text-uppercase mb-1 btn btn-info">{{ className }}</button>
+                   </div>
+                   <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status">
+                      <button type="button" class="text-sm text-uppercase mb-1 btn btn-dark">Academic YEAR.</button>
+                      <button type="button" class="text-sm fw-bold text-white text-uppercase mb-1 btn btn-info">{{ academicYear }}</button>
+                   </div>
+                   <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status">
+                      <button type="button" class="text-sm text-uppercase mb-1 btn btn-dark">STUDY PERIOD</button>
+                      <button type="button" class="text-sm fw-bold text-white text-uppercase mb-1 btn btn-info">{{ studyPeriod }}</button>
+                   </div>
+                   <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status">
+                      <button type="button" class="text-sm text-uppercase mb-1 btn btn-dark">STREAM</button>
+                      <button type="button" class="text-sm fw-bold text-white text-uppercase mb-1 btn btn-danger">{{ stream }}</button>
+                   </div>
+                   <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status" style="float: right;">
+
+                  <div v-if="can('re-instate_enrollment','manage')"></div>  <button v-if="status === 'TERMINATED'" class="btn btn-success btn-sm mb-2 mx-1" @click="reEnroll(student_number)">
+                          <small>RE-INSTATE</small>
+                          </button>
+                         <div v-if="can('terminate_enrollment','manage')"><button v-if="status === 'ACTIVE'" class="btn btn-danger btn-sm mb-2 mx-1" @click="terminateEnrollment(student_number)">
+                          <small>Terminate</small>
+                          </button></div>
+                        </div>
+                </span>
+              </div>
+            </div>
           </div>
+
+
+
+          <!-- Project Status -->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="bg-white border rounded-md p-2 mb-4 mb-md-0">
+                <div class="">
+                  <div class="mt-0">
+                    <div>
+
+                      <div>
+
+                        <div v-if="studentQuery === 'financial-situation'">
+                          <ManageInvoices></ManageInvoices>
+                        </div>
+
+
+                        <div v-if="studentQuery === 'report-cards'">
+                          <StudentReports></StudentReports>
+                        </div>
+                        <div v-if="studentQuery === 'bio-data'">
+                          <h1>Bio data</h1>
+                        </div>
+
+                        <div v-if="studentQuery === 'narrative'">
+                          <StudentNarativeReport></StudentNarativeReport>
+                        </div>
+
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
-    </section>
-  </template>
+    </div>
+  </section>
+</template>
   
   
 

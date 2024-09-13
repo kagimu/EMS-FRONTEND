@@ -8,7 +8,7 @@
             </div>
 
             <div class="mb-2">
-                <label class="textColor"><small>Calendar</small></label>
+                <label class="text-sm"><small>Calendar</small></label>
                 <select
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
@@ -22,7 +22,7 @@
 
 
             <div class="mb-2">
-                <label class="textColor"><small>Event Name</small></label>
+                <label class="text-sm"><small>Event Name</small></label>
                 <input
                         style="outline: none 0 !important; box-shadow: none;"
                         type="text" v-model="form.name"
@@ -31,7 +31,7 @@
             </div>
 
             <div class="mb-2">
-                <label class="textColor"><small>Description</small></label>
+                <label class="text-sm"><small>Description</small></label>
                 <textarea
                         style="outline: none 0 !important; box-shadow: none;"
                         type="text" v-model="form.description"
@@ -41,11 +41,11 @@
 
             <div class="row">
                 <div class="col">
-                    <label class="textColor"><small>Start date</small></label>
+                    <label class="text-sm"><small>Start date</small></label>
                     <input class="form-control" type="date" v-model="form.start_date" placeholder="Start date">
                 </div>
                 <div class="col">
-                    <label class="textColor"><small>End date</small></label>
+                    <label class="text-sm"><small>End date</small></label>
                     <input class="form-control" type="date" v-model="form.end_date" placeholder="End date">
                 </div>
             </div>
@@ -53,7 +53,7 @@
 
                 <div class="col-lg-6">
                     <div class="mb-2">
-                        <label class="textColor"><small>Start Time</small></label>
+                        <label class="text-sm"><small>Start Time</small></label>
                         <input type="time" style="outline: none 0 !important; box-shadow: none;"
                                v-model="form.start_time"
                                placeholder="09:00" required class="form-control form-select-sm">
@@ -62,7 +62,7 @@
 
                 <div class="col-lg-6">
                     <div class="mb-2">
-                        <label class="textColor"><small>End Time</small></label>
+                        <label class="text-sm"><small>End Time</small></label>
                         <input type="time" style="outline: none 0 !important; box-shadow: none;" v-model="form.end_time"
                                placeholder="15:45" required class="form-control form-select-sm">
                     </div>

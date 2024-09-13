@@ -101,7 +101,7 @@ watch(
 
     
 <div class="mb-2">
-  <label class="textColor"><small>School</small> </label>
+  <label class="text-sm"><small>School</small> </label>
   <select
       v-model="form.school_number"
       class="form-select form-select-sm" required
@@ -115,7 +115,7 @@ watch(
 
 
     <div class="mb-2">
-      <label class="textSize">Name</label>
+      <label class="text-sm">Name</label>
       <input
           type="text"
           style="outline: none 0 !important;
@@ -142,7 +142,7 @@ watch(
 </template>
 
 <style scoped>
-.textSize{
+.text-sm{
     font-size: 13px;
 }
 </style>

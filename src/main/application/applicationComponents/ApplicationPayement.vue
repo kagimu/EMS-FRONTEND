@@ -1,56 +1,108 @@
 <script setup>
-import {defineEmits, ref, watch} from 'vue';
+import { defineEmits, ref, watch } from 'vue';
 import { useApplicationStore } from '@/main/application/applicationComponents/store/application.js';
 import useNotificationStore from "@/composables/useNotification.js";
+import { useRouter } from 'vue-router';
 
 const applicationStore = useApplicationStore();
-const errorMessage = ref(null)
+const errorMessage = ref(null);
 const answer = ref('');
 const mobileNumber = ref('');
-const emit = defineEmits()
-const  notificationStore  = useNotificationStore()
-const buttonLoader = ref(false)
+const emit = defineEmits();
+const notificationStore = useNotificationStore();
+const buttonLoader = ref(false);
+const showProgressBar = ref(false); // Progress bar control
+const router = useRouter();
+const showSuccessIcon = ref(false)
+
+const props = defineProps({
+   appMode:String
+   })
 
 const submitApplication = () => {
-   buttonLoader.value = true
-let applicationNumber = localStorage.getItem('application-id')
-applicationStore.submitApplicationData(applicationNumber)
+   showProgressBar.value = true; 
+
+       setTimeout(() => {
+            showProgressBar.value = false;  
+            buttonLoader.value = true;
+            let applicationNumber = localStorage.getItem('application-id');
+            applicationStore.submitApplicationData(applicationNumber);
+         },3000)
+
+
 }
 
-watch (
+watch(
     () => applicationStore.submitApplicationResponse,
     async (data) => {
-      if(data){
+      if (data) {
          localStorage.removeItem('application-id');
          localStorage.removeItem('studentNumber');
-         buttonLoader.value = false
-         notificationStore.successToast("Success", data.message)
-      }
-    }
-)
+         buttonLoader.value = false;
+         showProgressBar.value = false; 
+         showSuccessIcon.value = true
+         setTimeout(() => {
+            if(props.appMode){
+              }else {
+               if(showSuccessIcon){
+                router.push('/client-dashboard/applications');
+               }  
+            }
+         },3000)
 
-watch (
+       
+
+      }
+      
+    }
+);
+
+watch(
     () => applicationStore.errorMessage,
     async (data) => {
-      if(data){
-        errorMessage.value = data.message
-        buttonLoader.value = false
-        notificationStore.errorToast("Error",data.message)
+      if (data) {
+        errorMessage.value = data.message;
+        buttonLoader.value = false;
+        showProgressBar.value = false; // Hide progress bar if there's an error
+        notificationStore.errorToast("Error", data.message);
       }
     }
-)
-
+);
 </script>
 <template>
-  <div class="container mt-0">
+   <div class="container mt-0">
+     <!-- Progress Bar -->
+     <div v-if="showProgressBar" class="progress mb-4" style="height: 25px;">
+       <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+         Submitting your application...
+       </div>
+     </div>
+ 
+     
+<div class="row justify-content-center" v-if="showSuccessIcon && !showProgressBar">
+  <div class="col-md-6 text-center">
+    <!-- Animated checkmark -->
+    <div class="checkmark-container">
+      <i class="fas fa-check-circle checkmark-icon"></i>
+    </div>
+    <!-- Success message -->
+    <div class="success-message mt-3">
+      <h3>Thank you!</h3>
+      <p>Your application has been received.</p>
+    </div>
+  </div>
+</div>
+
+
+
      <div>
-        <div class="row">
-           <div style="padding: 0;">
-              <div class="container mt-0">
-                 <form  @submit.prevent="submitApplication">
+       <div class="row" v-if="!showSuccessIcon && !showProgressBar">
+         <div style="padding: 0;">
+           <div class="container mt-0">
+            <form  @submit.prevent="submitApplication">
                     <div class="row mx-auto">
                        <div class="col-12">
-                          <h4 style="font-size: 18px;">Payment Method</h4>
+                          <!-- <h4 style="font-size: 18px;">Payment Method</h4> -->
                        </div>
                        <div class="mb-2">
                           <div class="card card-hover mt-4 w-100">
@@ -223,12 +275,13 @@ watch (
                        </div>
                     </div>
                  </form>
-              </div>
            </div>
-        </div>
+         </div>
+       </div>
      </div>
-  </div>
-</template>
+   </div>
+ </template>
+ 
 
 <style scoped>
   .mb-8 {
@@ -277,4 +330,51 @@ watch (
   color: #007bff;
   padding: 10px;
   }
+
+.progress-bar {
+  background-color: #007bff; /* Primary color for the progress bar */
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Container for the checkmark */
+.checkmark-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Checkmark animation */
+.checkmark-icon {
+  font-size: 80px;
+  color: #28a745;
+  animation: pop 0.5s ease-out forwards;
+}
+
+/* Simple pop animation */
+@keyframes pop {
+  0% {
+    transform: scale(0);
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Success message */
+.success-message h3 {
+  font-size: 24px;
+  color: #28a745;
+}
+
+.success-message p {
+  font-size: 18px;
+  color: #555;
+}
+
 </style>

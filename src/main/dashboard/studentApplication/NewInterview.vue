@@ -336,7 +336,7 @@ watch (
   <div class="row">
     <div class="col-lg-6">      
          <div class="mb-2">
-            <label class="textSize"><small>School</small></label>
+            <label class="text-sm"><small>School</small></label>
          <select
                  style="box-shadow: none;"
                  class="form-select form-select-sm" required
@@ -350,7 +350,7 @@ watch (
      </div>
 
      <div class="mb-2">
-            <label class="textSize"><small>Campus</small></label>
+            <label class="text-sm"><small>Campus</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm"
@@ -362,7 +362,7 @@ watch (
         </div>   
 
         <div class="mb-2">
-          <label class="textSize"><small>Curriculum</small></label>
+          <label class="text-sm"><small>Curriculum</small></label>
             <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -375,7 +375,7 @@ watch (
           </div>
 
         <div class="mb-2">
-          <label class="textSize"><small>Level</small></label>
+          <label class="text-sm"><small>Level</small></label>
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
@@ -389,7 +389,7 @@ watch (
 
          
         <div class="mb-2">
-            <label class="textSize"><small>Class</small></label>
+            <label class="text-sm"><small>Class</small></label>
           <select
             style="box-shadow: none;"
             class="form-select form-select-sm" required
@@ -408,7 +408,7 @@ watch (
           
         <div class="mb-2">
           <!-- v-if="assessmentMetricList.length > 0" -->
-          <label class="textSize" ><small>Assessment Schedule</small></label>
+          <label class="text-sm" ><small>Assessment Schedule</small></label>
 
           <combo-box
             v-model:optionResponse="formData.assessment_metrics"
@@ -423,19 +423,19 @@ watch (
      
       
       <div class="mb-2">
-             <label class="textColor"><small>Interview Title</small></label>
+             <label class="text-sm"><small>Interview Title</small></label>
              <input v-model="formData.name" type="text" required class="form-control">
           </div>
           <div class="mb-2">
-             <label class="textColor"><small>Interview Date</small></label>
+             <label class="text-sm"><small>Interview Date</small></label>
              <input v-model="formData.interview_date"  type="date" required class="form-control">
           </div>
           <div class="mb-2">
-             <label class="textColor"><small>Venue</small></label>
+             <label class="text-sm"><small>Venue</small></label>
              <input v-model="formData.venue"  type="text" required class="form-control" >
           </div>
           <div class="mb-2">
-             <label class="textColor"><small>Description</small></label>
+             <label class="text-sm"><small>Description</small></label>
              <textarea v-model="formData.message"  required class="form-control noFocus" id="floatingTextarea2" style="height: 100px"></textarea>
           </div>
 
@@ -457,7 +457,7 @@ watch (
  </template>
  
  <style scoped>
- .textColor{
+ .text-sm2{
   font-size: 13px !important;
  }
  </style>

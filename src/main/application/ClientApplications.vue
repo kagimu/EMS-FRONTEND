@@ -220,12 +220,12 @@ watch (
                     :total_rows="total_rows"></PaginationTemplate>
                   <hr >
 
-                  <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+                  <!-- <div class="alert alert-danger"  style="padding: 0.5rem 1rem; font-size: 0.8rem;">
                     {{errorMessage}}
-                  </div>
+                  </div> -->
                   <div
                     class="w-full overflow-auto max-h-[520px] scrollbar-thin"
-                    @scroll="onScroll" v-else>
+                    @scroll="onScroll">
                   <table
                       id="datatable"
                       class="table table-sm table-striped text-sm"

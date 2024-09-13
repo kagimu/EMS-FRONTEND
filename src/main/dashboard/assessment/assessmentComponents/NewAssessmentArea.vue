@@ -3,7 +3,7 @@
     <form @submit.prevent="addAssessmentArea">
            
            <div class="mb-2">
-             <label class="textColor"><small>Level</small> <span class="star">*</span></label>
+             <label class="text-sm"><small>Level</small> <span class="star">*</span></label>
                  <select
                      style="box-shadow: none;"
                      class="form-select form-select-sm"
@@ -17,7 +17,7 @@
 
                
          <div class="mb-2">
-           <label class="textColor"><small>Class</small> <span class="star">*</span></label>
+           <label class="text-sm"><small>Class</small> <span class="star">*</span></label>
            <select
                      style="box-shadow: none;"
                      class="form-select form-select-sm"
@@ -30,7 +30,7 @@
 
 
              <div class="mb-2">
-             <label class="textColor"><small>Subjects</small> <span class="star">*</span></label>
+             <label class="text-sm"><small>Subjects</small> <span class="star">*</span></label>
              <!-- <select
                      style="box-shadow: none;"
                      class="form-select form-select-sm" 
@@ -73,7 +73,7 @@
         
 
          <div class="mb-2" v-if="form.subject_number === ''">
-               <label class="textColor"><small>Specify Name</small></label>
+               <label class="text-sm"><small>Specify Name</small></label>
                <input v-model="form.name"  type="text" required class="form-control">
              </div>
 

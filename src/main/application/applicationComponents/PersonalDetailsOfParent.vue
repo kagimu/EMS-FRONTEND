@@ -143,19 +143,19 @@ const addParentPersonalDetails = () => {
 
         <div class="mb-8">
           <input type="hidden"  v-model="formData.parent_number">
-          <label class="textColor text-sm"><small>Surname/Family name</small> <span class="star">*</span></label>
+          <label class="text-sm text-sm"><small>Surname/Family name </small> <span class="star">*</span></label>
           <input type="text" style="outline: none 0 !important; box-shadow: none; font-size: 10px;;" v-model="form.surname" required class="form-control form-control-sm">
         </div>
       <div class="row">
         <div class="col-6">
           <div class="mb-8">
-            <label class="textColor text-sm"><small>Second name </small><span class="star">*</span></label>
+            <label class="text-sm text-sm"><small>Second name </small><span class="star">*</span></label>
             <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.second_name"  required class="form-control form-control-sm">
           </div>
         </div>
         <div class="col-6">
           <div class="mb-8">
-            <label class="textColor text-sm"><small>Other names</small> </label>
+            <label class="text-sm text-sm"><small>Other names</small> </label>
             <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" class="form-control form-control-sm">
           </div>
 
@@ -166,13 +166,13 @@ const addParentPersonalDetails = () => {
       <div class="row">
         <div class="col-6">
           <div class="mb-2">
-            <label class="textColor text-sm"><small>Email</small> <span class="star">*</span></label>
+            <label class="text-sm text-sm"><small>Email</small> <span class="star">*</span></label>
             <input type="email" style="outline: none 0 !important; box-shadow: none;" v-model="form.email"  required class="form-control form-control-sm">
           </div>
         </div>
         <div class="col-6">
           <div class="mb-2">
-            <label class="textColor text-sm"><small>Alternative Email</small></label>
+            <label class="text-sm text-sm"><small>Alternative Email</small></label>
             <input type="email" style="outline: none 0 !important; box-shadow: none;" v-model="form.alternative_email" class="form-control form-control-sm">
           </div>
         </div>
@@ -182,7 +182,7 @@ const addParentPersonalDetails = () => {
       <div class="row">
         <div class="col-6">
           <div class="mb-2">
-        <label class="textColor text-sm"> <small>Telephone No </small><span class="star">*</span></label>
+        <label class="text-sm text-sm"> <small>Telephone No </small><span class="star">*</span></label>
         <div class="input-group">
           <vue-tel-input
               @input="handleInput('main')"
@@ -200,7 +200,7 @@ const addParentPersonalDetails = () => {
 
         <div class="col-6">
           <div class="mb-2">
-        <label class="textColor text-sm"> <small>Alternative Telephone No </small></label>
+        <label class="text-sm text-sm"> <small>Alternative Telephone No </small></label>
         <div class="input-group">
           <vue-tel-input
               @input="handleInput('alternative')"

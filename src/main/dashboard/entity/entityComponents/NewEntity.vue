@@ -96,7 +96,7 @@ watch (
     <form @submit.prevent="addEntity">
       
       <div class="mb-2">
-        <label class="textColor text-sm">Name</label>
+        <label class="text-sm text-sm">Name</label>
         <input  
            v-model="formData.name"  style="outline: none 0 !important; box-shadow: none;"
              type="text" required class="form-control form-control-sm">
@@ -104,21 +104,21 @@ watch (
 
          
       <div class="mb-2">
-        <label class="textColor text-sm">Email</label>
+        <label class="text-sm text-sm">Email</label>
         <input  
            v-model="formData.email"  style="outline: none 0 !important; box-shadow: none;"
              type="email" required class="form-control form-control-sm">
       </div>
          
       <div class="mb-2">
-        <label class="textColor text-sm">Phone</label>
+        <label class="text-sm text-sm">Phone</label>
         <input  
            v-model="formData.phone"  style="outline: none 0 !important; box-shadow: none;"
              type="text" required class="form-control form-control-sm">
       </div>
          
       <div class="mb-2">
-        <label class="textColor text-sm">Address</label>
+        <label class="text-sm text-sm">Address</label>
         <input  
            v-model="formData.address"  style="outline: none 0 !important; box-shadow: none;"
              type="text" required class="form-control form-control-sm">

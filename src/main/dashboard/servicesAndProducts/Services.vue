@@ -211,13 +211,13 @@ watch (
         <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
           <li class="page-item" :class="{disabled: currentPage === 1}">
-            <button class="page-link btn-sm textColor" @click="prevPage"><small>Previous</small></button>
+            <button class="page-link btn-sm text-sm" @click="prevPage"><small>Previous</small></button>
           </li>
           <li class="page-item" :class="{active: page === currentPage}" v-for="page in totalPages" :key="page">
-            <button class="page-link btn-sm textColor" @click="gotoPage(page)"><small>{{ page }}</small></button>
+            <button class="page-link btn-sm text-sm" @click="gotoPage(page)"><small>{{ page }}</small></button>
           </li>
           <li class="page-item" :class="{disabled: currentPage === totalPages}">
-            <button class="page-link btn-sm textColor" @click="nextPage"><small>Next</small></button>
+            <button class="page-link btn-sm text-sm" @click="nextPage"><small>Next</small></button>
           </li>
         </ul>
       </nav>

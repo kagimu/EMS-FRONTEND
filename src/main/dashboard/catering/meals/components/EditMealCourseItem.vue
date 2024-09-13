@@ -128,7 +128,7 @@ watch(
 
 
       <!-- <div class="mb-2">
-        <label class="textColor"><small>Count</small></label>
+        <label class="text-sm"><small>Count</small></label>
         <input
             @keypress="commons.numbersOnlyValidator($event)"
             maxlength="10"
@@ -145,7 +145,7 @@ watch(
         <p>Courses</p>
         <div class="row mx-auto">
           <div class="col-3">
-            <label class="textColor"><small>Code</small></label>
+            <label class="text-sm"><small>Code</small></label>
             <input
                   @keypress="commons.codeValidator($event)"
                   maxlength="10"
@@ -156,7 +156,7 @@ watch(
                   class="form-control form-select-sm shadow-none">
           </div>
           <div class="col-8">
-            <label class="textColor"><small>Name</small></label>
+            <label class="text-sm"><small>Name</small></label>
 
             <input
                   style="outline: none 0 !important; box-shadow: none;"

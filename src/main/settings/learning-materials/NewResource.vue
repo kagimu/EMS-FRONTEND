@@ -9,7 +9,7 @@
 
 
             <div class="mb-2">
-                <label class="textColor"><small>Code</small></label>
+                <label class="text-sm"><small>Code</small></label>
                 <input
                         @keypress="commons.codeValidator($event)"
                         maxlength="10"
@@ -22,7 +22,7 @@
 
 
             <div class="mb-2">
-                <label class="textColor"><small>Name</small></label>
+                <label class="text-sm"><small>Name</small></label>
                 <input
                         style="outline: none 0 !important; box-shadow: none;"
                         type="text" v-model="form.name"
@@ -32,7 +32,7 @@
 
 
             <div>
-                <label class="textColor"><small>Category</small></label>
+                <label class="text-sm"><small>Category</small></label>
                 <select
                         @change="FetchSubTypes"
                         style="outline: none 0 !important; box-shadow: none;"
@@ -49,7 +49,7 @@
 
 
             <div>
-                <label class="textColor"><small>Sub category</small></label>
+                <label class="text-sm"><small>Sub category</small></label>
                 <select
 
                         style="outline: none 0 !important; box-shadow: none;"
@@ -66,7 +66,7 @@
 
 
             <div>
-                <label class="textColor"><small>Type</small></label>
+                <label class="text-sm"><small>Type</small></label>
                 <select
                         style="outline: none 0 !important; box-shadow: none;"
                         type="text" v-model="form.type"

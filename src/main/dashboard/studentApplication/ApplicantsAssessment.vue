@@ -156,7 +156,7 @@
      <div>
 
       
-     <div class="alert alert-danger p-1 mt-3 mb-3 textColor" v-if="errM" >
+     <div class="alert alert-danger p-1 mt-3 mb-3 text-sm" v-if="errM" >
        {{ errorMessage }}
      </div>
       

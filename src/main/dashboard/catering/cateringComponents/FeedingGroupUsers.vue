@@ -192,7 +192,7 @@ watch(
           <form @submit.prevent="addFeedingGroupUsers">
     
             <div class="mb-2">
-              <label class="textColor">School</label>
+              <label class="text-sm">School</label>
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
@@ -206,7 +206,7 @@ watch(
          
        
           <div class="mb-2">
-            <label  class="textColor">Campus</label>
+            <label  class="text-sm">Campus</label>
             <select
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
@@ -220,7 +220,7 @@ watch(
          
           
           <div class="mb-2">
-            <label  class="textColor">Feeding Group</label>
+            <label  class="text-sm">Feeding Group</label>
             <select @change="" class="form-select form-control shadow-none" v-model="formData.feeding_group_number" required>
     <option value="" disabled>-select </option>
     <option v-for="(list,index) in feedingGroupData" :key="index" :value="list.number">{{list.name  }}</option>

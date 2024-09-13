@@ -137,7 +137,7 @@ watch(
     </div>
 
     <div class="mb-2">
-      <label class="textColor"><small>Level</small></label>
+      <label class="text-sm"><small>Level</small></label>
       <select
           style="box-shadow: none;"
           class="form-select form-select-sm"
@@ -162,7 +162,7 @@ watch(
             >
             </div>
             <div class="col-lg-10" style="float: left;">
-                <label class="textSize" :for="list.number"><small>{{list.name}} [{{ list.abbreviation }}]</small></label>
+                <label class="text-sm" :for="list.number"><small>{{list.name}} [{{ list.abbreviation }}]</small></label>
             </div>
     </div>
                 
@@ -188,7 +188,7 @@ watch(
 </template>
 
 <style scoped>
-.textSize{
+.text-sm{
     font-size: 13px;
 }
 </style>

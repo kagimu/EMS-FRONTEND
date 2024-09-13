@@ -7,7 +7,7 @@
       </div>
 
       <div class="mb-2">
-        <label class="textColor text-sm">Curriculum Name</label>
+        <label class="text-sm text-sm">Curriculum Name</label>
         <input
             style="outline: none 0 !important; box-shadow: none;"
             type="text"

@@ -33,7 +33,7 @@
                           </tr>
                         </tbody>
                       </table>
-                      <button class="btn btn-primary btn-sm textColor" @click.prevent="addService" :disabled="isAddButtonDisabled"><small><i class="bi bi-plus-lg" title="Add Item"></i></small></button>
+                      <button class="btn btn-primary btn-sm text-sm" @click.prevent="addService" :disabled="isAddButtonDisabled"><small><i class="bi bi-plus-lg" title="Add Item"></i></small></button>
                       <div class="row mt-10">
                         <div class="col-lg-8"></div>
                         <div class="col-lg-4">
@@ -243,7 +243,7 @@
   .star{
     color:red;
   }
-  .textColor{
+  .text-sm2{
     /* font-size: 1px !important; */
   }
     .select-no-border {

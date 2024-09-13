@@ -441,13 +441,13 @@ watch(
       <form @submit.prevent="Enrol()">
          <div class="row">
             <div class="col-4">
-               <label class="alert alert-primary p-1 textSize" style="" ><small>Please , Choose a class to enroll
+               <label class="alert alert-primary p-1 text-sm" style="" ><small>Please , Choose a class to enroll
                   <span style="text-transform: capitalize; color:#0d6efd;">
                   <b>{{ studentDataInfo.student.surname +" "+ studentDataInfo.student.second_name }}</b>
                   </span> !</small> 
                </label>
                <div class="mb-2 ">
-                  <label class="textSize"><small>School</small> </label>
+                  <label class="text-sm"><small>School</small> </label>
                   <select
                      style="box-shadow: none;"
                      class="form-select form-select-sm" required
@@ -460,7 +460,7 @@ watch(
                   </select>
                </div>
                <div class="mb-2">
-                  <label class="textSize"><small>Campus</small>  </label>
+                  <label class="text-sm"><small>Campus</small>  </label>
                   <select
                      style="box-shadow: none;"
                      class="form-select form-select-sm"
@@ -474,7 +474,7 @@ watch(
                </div>
 
           <div class="mb-2">
-          <label class="textSize"><small>Curriculum</small></label>
+          <label class="text-sm"><small>Curriculum</small></label>
             <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -488,7 +488,7 @@ watch(
     
 
           <div class="mb-2">
-            <label class="textSize"><small>Level</small></label>
+            <label class="text-sm"><small>Level</small></label>
             <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -501,7 +501,7 @@ watch(
           </div>
 
           <div class="mb-2">
-                  <label class="textSize"><small>Academic Year</small> </label>
+                  <label class="text-sm"><small>Academic Year</small> </label>
                   <select
                      style="box-shadow: none;"
                      class="form-select form-select-sm" required
@@ -515,7 +515,7 @@ watch(
     
 
                <div class="mb-2">
-                  <label class="textSize"><small>Class</small> </label>
+                  <label class="text-sm"><small>Class</small> </label>
                   <select
                      style="box-shadow: none;"
                      class="form-select form-select-sm" required
@@ -536,7 +536,7 @@ watch(
                    <!-- {{ modeOfSchoolData }} -->
         
                <div class="mb-2">
-                  <label class="textSize"><small>Stream</small> </label>
+                  <label class="text-sm"><small>Stream</small> </label>
            
                   <select
                      style="box-shadow: none;"
@@ -551,7 +551,7 @@ watch(
                </div>
            
                <div class="mb-2">
-                  <label class="textSize">
+                  <label class="text-sm">
                      <small>Study Period</small> 
                      <!-- {{ studyPeriodList }} -->
                   </label>
@@ -566,13 +566,13 @@ watch(
                   </select>
                </div>
                <div class="mb-2">
-                  <label class="textSize"><small>Enrolment Date</small> 
+                  <label class="text-sm"><small>Enrolment Date</small> 
                   </label>
                   <input type="date" class="form-control" v-model="form.enrollment_date">
                </div>
 
                <div class="mb-2">
-              <label class="textSize"><small>Mode Of Study</small>  <span class="star">*</span></label>
+              <label class="text-sm"><small>Mode Of Study</small>  <span class="star">*</span></label>
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
@@ -627,7 +627,7 @@ watch(
                   </div>
 
                   <div class="mb-2 mt-5">
-                     <label class="alert alert-primary p-1 textSize"  ><small>Tick off  <i class="bi bi-check" style="color:red"> </i>items  brought by the student </small> </label>
+                     <label class="alert alert-primary p-1 text-sm"  ><small>Tick off  <i class="bi bi-check" style="color:red"> </i>items  brought by the student </small> </label>
                      <table class="table table-hover caption-top mt-1 table-sm " style="font-size: 13px;">
                         <thead>
                            <tr>
@@ -666,7 +666,7 @@ watch(
                   </div>
                </div>
                <div class="mb-2 ">
-                  <label class="textSize alert alert-primary p-1"><small>Which Feeding Group ?</small> </label>
+                  <label class="text-sm alert alert-primary p-1"><small>Which Feeding Group ?</small> </label>
                   <select
                      style="box-shadow: none;"
                      class="form-select form-select-sm" required
@@ -698,7 +698,7 @@ watch(
    -moz-box-shadow: none;
    -webkit-box-shadow: none;
    }
-   .textSize {
+   .text-sm {
       font-size: 13px I !important;
    }
 </style>

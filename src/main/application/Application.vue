@@ -9,8 +9,8 @@ import {useApplicationStore} from "@/main/application/applicationComponents/stor
 
 const applicationStore= useApplicationStore()
 
-const step = ref(1)
 
+const step = ref(1)
 
 onMounted(() => {
 
@@ -153,7 +153,7 @@ input:focus {
   box-shadow: none;
 }
 
-.textColor{
+.text-sm2{
   color: #070707;
   float: left !important;
 }.txt{

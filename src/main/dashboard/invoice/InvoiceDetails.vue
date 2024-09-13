@@ -153,36 +153,36 @@
                 <!-- <div class="row">
                   <div class="col-lg-4">
                     <div class="mb-2">
-                    <label class="textSize"><small>Invoice Number</small></label>
+                    <label class="text-sm"><small>Invoice Number</small></label>
                     <input disabled type="text" class="form-control" v-model="myData.ref_number">
                   </div>
                   <div class="mb-2">
-                    <label class="textSize"><small>Created On</small> </label>
+                    <label class="text-sm"><small>Created On</small> </label>
                     <input disabled type="text" class="form-control" v-model="myData.date">
                   </div>
                   <div class="mb-2">
-                    <label class="textSize"><small>Due Date</small> </label>
+                    <label class="text-sm"><small>Due Date</small> </label>
                     <input disabled type="text" class="form-control" v-model="myData.due_date">
                   </div>
                   <div class="mb-2">
-                    <label class="textSize"><small>Total Amount</small> </label>
+                    <label class="text-sm"><small>Total Amount</small> </label>
                     <input disabled type="text" class="form-control" v-model="myData.total_amount">
                   </div>
                   <div class="mb-2">
-                    <label class="textSize"><small>Paid Amount</small></label>
+                    <label class="text-sm"><small>Paid Amount</small></label>
                     <input disabled  class="form-control" v-model="myData.paid_amount">
                   </div>
                   <div class="mb-2">
-                    <label class="textSize"><small>Balance</small></label>
+                    <label class="text-sm"><small>Balance</small></label>
                     <input disabled  class="form-control" v-model="myData.balance">
                   </div>
                   <div class="mb-2">
-                    <label class="textSize"><small>Status</small></label>
+                    <label class="text-sm"><small>Status</small></label>
                     <input disabled  class="form-control" v-model="myData.status">
                   </div>
                   </div>
                   <div class="col-lg-8">
-                    <p class="textSize" style="margin-bottom: 4px;text-align: left;">Items</p>
+                    <p class="text-sm" style="margin-bottom: 4px;text-align: left;">Items</p>
                     <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
                       <thead>
                       <tr>
@@ -519,8 +519,8 @@ watch (
     border-radius: 3px !important;
     /* font-size: 17px; */
 }
-.textSize{
-  font-size: 13px;
+.text-sme{
+  font-size: 14px;
 }
 
 </style>

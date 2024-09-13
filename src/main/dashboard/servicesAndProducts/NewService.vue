@@ -172,7 +172,7 @@ watch(
 
             <div>
               <div class="mb-2">
-                <label class="textColor">School <span class="star">*</span></label>
+                <label class="text-sm">School <span class="star">*</span></label>
                 <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm" required
@@ -187,7 +187,7 @@ watch(
 
 
               <div class="mb-2">
-                <label class="textColor">Campus</label>
+                <label class="text-sm">Campus</label>
                 <combo-box
                     v-model:optionResponse="formData.campus_numbers"
                     :optionList="campusList"
@@ -197,13 +197,13 @@ watch(
 
 
               <div class="mb-2">
-                <label class="textColor">Name</label>
+                <label class="text-sm">Name</label>
                 <input  type="text" style="outline: none 0 !important;box-shadow: none;"
                         required class="form-control form-select-sm" v-model="formData.name">
               </div>
 
               <div class="mb-2">
-                <label class="textColor">Serial Code</label>
+                <label class="text-sm">Serial Code</label>
                 <input  type="text" style="outline: none 0 !important;box-shadow: none;"
                         required class="form-control form-select-sm" v-model="formData.serial_code">
               </div>
@@ -216,7 +216,7 @@ watch(
 
 
               <div class="mb-2">
-                <label class="textColor">Cost</label>
+                <label class="text-sm">Cost</label>
                 <input
                     v-model="formData.cost"
                     @keypress="commons.onlyNumberValidator($event)"
@@ -229,7 +229,7 @@ watch(
 
 
               <div class="mb-2">
-                <label class="textColor">Service is ?</label>
+                <label class="text-sm">Service is ?</label>
 
                  <div class="flex">
                    <div class="mr-4">
@@ -249,7 +249,7 @@ watch(
               </div>
 
               <div class="mb-2">
-                <label class="textColor">Addition Info</label>
+                <label class="text-sm">Addition Info</label>
                 <textarea
                     v-model="formData.description"
                     style="font-size: 12px; color: #4e5866;"
@@ -281,7 +281,7 @@ watch(
 
 
 <style scoped>
-.textColor{
+.text-sm2{
     font-size: 11px !important;
 }
 .noFocus:focus {

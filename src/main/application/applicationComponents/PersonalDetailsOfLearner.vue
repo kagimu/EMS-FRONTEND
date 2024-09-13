@@ -31,6 +31,7 @@ const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
 const applicationId = ref(null)
 const curriculumList = ref([])
+const student_number = ref(null)
 
 
 const form = reactive({
@@ -56,7 +57,7 @@ const form = reactive({
 onMounted(() => {
       schoolStore.fetchSchools(entity_number)
 
-      getModeOfStudyInfo()
+      // getModeOfStudyInfo()
     }
 )
 
@@ -155,7 +156,7 @@ watch (
         localStorage.setItem("CampusClassNumber", form.class_number)
         localStorage.setItem("studentNumber", data.data.number)
         buttonLoader.value = false
-        assessmentStore.fetchAssessmentAreaByClass(form.class_number)
+        // assessmentStore.fetchAssessmentAreaByClass(form.class_number)
 
         emit("next", {id:applicationId.value, step:3})
 
@@ -181,16 +182,7 @@ watch(
     {deep:true}
 )
 
-watch (
-    () => applicationStore.updateLearnerPersonalDetailsresponse,
-    async (data) => {
-      if(data){
-        buttonLoader.value = false
-        notificationStore.successToast("Success", data.message)
-        emit("next", {id:applicationId.value, step:3})
-      }
-    }
-)
+
 
 
 watch (
@@ -256,12 +248,12 @@ watch (
         form.learner_number = draft.number
         form.school_number = draft.school_number
         form.lin = draft?.lin
-
+        student_number.value = draft.number
         if(draft?.school_number) {
-        let data = {
+        let dataa = {
     school_number:draft?.school_number,
   }
-  modeStudyStore.fetchModeOfStudy(data)
+  modeStudyStore.fetchModeOfStudy(dataa)
 }
 
         form.mode_of_study_number = draft.mode_of_study_number
@@ -292,6 +284,19 @@ watch (
 )
 
 
+watch (
+    () => applicationStore.updateLearnerPersonalDetailsresponse,
+    async (data) => {
+      if(data){
+       
+        localStorage.setItem("studentNumber", student_number.value)
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+        emit("next", {id:applicationId.value, step:3})
+      }
+    }
+)
+
 watch(
     () => campusStore.schoolClassesResponse,
     async (data) => {
@@ -313,20 +318,20 @@ watch(
     <div class="row">
       <div class="col-12">
           <div class="mb-2">
-            <label class="textColor text-sm"><small>Surname</small> <span class="star">*</span></label>
+            <label class="text-sm text-sm"><small>Surname</small> <span class="star">*</span></label>
             <input type="text" style="outline: none 0 !important; box-shadow: none;"  v-model="form.surname"  required class="form-control form-control-sm">
           </div>
 
         <div class="row">
           <div class="col-6">
             <div class="mb-2">
-              <label class="textColor text-sm"><small>Second name</small> <span class="star">*</span></label>
+              <label class="text-sm text-sm"><small>Second name</small> <span class="star">*</span></label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.second_name"  required class="form-control form-control-sm">
             </div>
           </div>
           <div class="col-6">
             <div class="mb-2">
-              <label class="textColor text-sm"><small>Other names</small> </label>
+              <label class="text-sm text-sm"><small>Other names</small> </label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" class="form-control form-control-sm">
             </div>
           </div>
@@ -337,13 +342,13 @@ watch(
         <div class="row">
           <div class="col-6">
             <div class="mb-2">
-              <label class="textColor text-sm"><small>Reason to enroll </small> </label>
+              <label class="text-sm text-sm"><small>Reason to enroll </small> </label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.reason_for_choosing_school" class="form-control form-control-sm">
             </div>
           </div>
           <div class="col-6">
             <div class="mb-2">
-              <label class="textColor text-sm"><small>How did you know about us ? </small> </label>
+              <label class="text-sm text-sm"><small>How did you know about us ? </small> </label>
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
@@ -362,7 +367,7 @@ watch(
         <div class="row">
           <div class="col-6">
             <div class="mb-2">
-              <label class="textColor"><small>School</small> <span class="star">*</span></label>
+              <label class="text-sm"><small>School</small> <span class="star">*</span></label>
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm" required
@@ -377,7 +382,7 @@ watch(
           </div>
           <div class="col-6">
             <div class="mb-2">
-              <label class="textColor"><small>Campus</small>  <span class="star">*</span></label>
+              <label class="text-sm"><small>Campus</small>  <span class="star">*</span></label>
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
@@ -398,7 +403,7 @@ watch(
 
 
       <div class="mb-2">
-          <label class="textSize"><small>Curriculum</small></label>
+          <label class="text-sm"><small>Curriculum</small></label>
             <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -414,7 +419,7 @@ watch(
         <div class="row">
           <div class="col-6">
             <div class="mb-2">
-              <label class="textSize"><small>Level</small></label>
+              <label class="text-sm"><small>Level</small></label>
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
@@ -428,7 +433,7 @@ watch(
           </div>
           <div class="col-6">
             <div class="mb-2">
-              <label class="textColor"><small>Preferred Class</small> <span class="star">*</span></label>
+              <label class="text-sm"><small>Preferred Class</small> <span class="star">*</span></label>
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm" required
@@ -449,7 +454,7 @@ watch(
         <div class="row">
         <div class="col-6">
           <div class="mb-2">
-              <label class="textColor"><small>Mode Of Study</small>  <span class="star">*</span></label>
+              <label class="text-sm"><small>Mode Of Study</small>  <span class="star">*</span></label>
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
@@ -464,7 +469,7 @@ watch(
 
           <div class="col-6">
           <div class="mb-2">
-              <label class="textColor"><small>LIN</small></label>
+              <label class="text-sm"><small>LIN</small></label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.lin" 
              class="form-control form-control-sm" >
           </div>
@@ -474,12 +479,12 @@ watch(
 
           <div class="row">
             <div class="col-lg-6">
-              <label class="textColor text-sm"><small>DOB</small> <span class="star">*</span></label>
+              <label class="text-sm text-sm"><small>DOB</small> <span class="star">*</span></label>
             <input type="date" style="outline: none 0 !important; box-shadow: none;" v-model="form.date_of_birth"  required
              class="form-control form-control-sm">
             </div>
             <div class="col-lg-6">
-              <label class="textColor text-sm"><small>gender</small> <span class="star">*</span></label>
+              <label class="text-sm text-sm"><small>gender</small> <span class="star">*</span></label>
             <select class="form-control form-control-sm"
              v-model="form.gender" style="outline: none 0 !important; box-shadow: none;">
               <option value="" disabled>-Select Gender-</option>

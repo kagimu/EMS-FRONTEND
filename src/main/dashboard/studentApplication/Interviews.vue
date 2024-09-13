@@ -296,7 +296,7 @@ watch(
       <div class="row mt-4">
         <div class="col-4">    
          <div class="mb-2">
-            <label class="textSize"><small>School</small></label>
+            <label class="text-sm"><small>School</small></label>
          <select
                  style="box-shadow: none;"
                  class="form-select form-select-sm" required
@@ -312,7 +312,7 @@ watch(
       
       <div class="col-4"> 
       <div class="mb-2">
-            <label class="textSize"><small>Campus</small></label>
+            <label class="text-sm"><small>Campus</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm"
@@ -326,7 +326,7 @@ watch(
 
         <div class="col-4">
                                             <div class="mb-2">
-                                              <label class="textSize"><small>Curriculum</small></label>
+                                              <label class="text-sm"><small>Curriculum</small></label>
                                                 <select
                                                 style="box-shadow: none;"
                                                 class="form-select form-select-sm"
@@ -342,7 +342,7 @@ watch(
                                              
                                             <div class="col-4" >
                                                 <div class="mb-2">
-                                                  <label class="textSize"><small>Level</small></label>
+                                                  <label class="text-sm"><small>Level</small></label>
                                                    <select
                                                    style="box-shadow: none;"
                                                    class="form-select form-select-sm"
@@ -359,7 +359,7 @@ watch(
 
         <div class="col-4"> 
         <div class="mb-2">
-            <label class="textSize"><small>Class</small></label>
+            <label class="text-sm"><small>Class</small></label>
 
                 <select
                   style="box-shadow: none;"

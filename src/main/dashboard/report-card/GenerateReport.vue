@@ -211,7 +211,7 @@ watch(
 
 
     <div class="col-3">
-      <label class="textColor"><small>Level</small></label>
+      <label class="text-sm"><small>Level</small></label>
       <select
           style="box-shadow: none;"
           class="form-select form-select-sm"
@@ -224,7 +224,7 @@ watch(
     </div>
 
     <div class="col-3">
-      <label class="textColor">Academic Year</label>
+      <label class="text-sm">Academic Year</label>
       <select
           style="box-shadow: none;"
           class="form-select form-select-sm"
@@ -238,7 +238,7 @@ watch(
     </div>
 
     <div class="col-3">
-      <label class="textColor"><small>Class</small>
+      <label class="text-sm"><small>Class</small>
       </label>
       <select
           style="box-shadow: none;"
@@ -253,7 +253,7 @@ watch(
 
 
     <div class="col-3">
-      <label class="textColor"><small>Study Period</small>
+      <label class="text-sm"><small>Study Period</small>
       </label>
       <select
           style="box-shadow: none;"

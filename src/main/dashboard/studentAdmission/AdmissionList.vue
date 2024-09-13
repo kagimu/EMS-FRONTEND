@@ -13,6 +13,7 @@
   import PaginationTemplate from "@/components/PaginationTemplate.vue";
 
   import { useAbility } from '@casl/vue';
+  import FileUploader from "@/components/FileUploader.vue";
   const { can } = useAbility()
 
   const levelStore = useLevelStore()
@@ -20,8 +21,11 @@
   const studentNum=ref(null)
   const enrolmentStore = useEnrolmentStore()
   const mymodal = ref(false)
-  const studentData = ref([])
+  const studentData = ref(null)
   const tableLoader = ref(true)
+  const uploadDialog = ref(false)
+  const studentPhoto = ref(null)
+  const studentNumber = ref(null)
 
   const showModal = (studentN,adm,stud) =>{
   studentNum.value = studentN
@@ -168,9 +172,7 @@ watch(
    }
    loading.value = true;
    admissionList.value = []
-   admissionStore.fetchAdmissionByFilters(data).finally(() => {
-  })
-
+   admissionStore.fetchAdmissionByFilters(data)
   }
 
 
@@ -188,9 +190,7 @@ watch(
       academic_year_number:form.academic_year_number
    }
 
-   admissionStore.fetchAdmissionByFilters(data).finally(() => {
-    loading.value = false; 
-  })
+   admissionStore.fetchAdmissionByFilters(data)
 
 
   }
@@ -203,7 +203,7 @@ watch(
 
       let current_page = data.page
       page.value = current_page
-      tableLoader.value = false
+      loading.value = false
 
       let per_page_item = data.per_page;
       per_page.value = per_page_item;
@@ -325,12 +325,29 @@ watch(
        {deep:true}
      )
 
+  const uploadStudentPhoto = (adm) => {
+    studentNumber.value = adm?.student?.number
+    studentPhoto.value = adm?.student?.photo
+    uploadDialog.value = true
+  }
+
+  const successUpload = (data) => {
+    if(data){
+      uploadDialog.value = false
+      doFetchAdmission()
+    }
+  }
+
 </script>
 <template>
 
 <AppModal title="Enrol" v-model="mymodal" xl6>
    <EnrolModel :studentNumber="studentNum" :admissionData="admissionInfoData" :studentDataInfo="studentData"></EnrolModel>
 </AppModal>
+
+  <AppModal title="Upload Student Photo" v-model="uploadDialog" xl>
+    <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload"  :studentNumber="studentNumber" :imageUrl="studentPhoto"></file-uploader>
+  </AppModal>
 
   <div>
 
@@ -359,7 +376,7 @@ watch(
                                             <div class="row">
                                                <div class="col-3">
                                                   <div class="mb-2">
-                                                     <!-- <label class="textColor"><small>School</small> </label> -->
+                                                     <!-- <label class="text-sm"><small>School</small> </label> -->
                                                      <select
                                                         style="box-shadow: none;"
                                                         class="form-select form-select-sm" required
@@ -375,7 +392,7 @@ watch(
                                                </div>
                                                <div class="col-3">
                                                   <div class="mb-2">
-                                                     <!-- <label class="textColor"><small>Campus</small>  </label> -->
+                                                     <!-- <label class="text-sm"><small>Campus</small>  </label> -->
                                                      <select
                                                         style="box-shadow: none;"
                                                         class="form-select form-select-sm"
@@ -436,7 +453,7 @@ watch(
                                                </div>
                                                <div class="col-3">
                                                   <div class="mb-2">
-                                                     <!-- <label class="textColor"><small>Stream</small> </label> -->
+                                                     <!-- <label class="text-sm"><small>Stream</small> </label> -->
                                                      <select
                                                         style="box-shadow: none;"
                                                         class="form-select form-select-sm" required
@@ -498,7 +515,7 @@ watch(
               <div
                     class="w-full overflow-auto max-h-[520px] scrollbar-thin"
                     @scroll="onScroll">
-              <div>
+
                     <table
                        id="datatable"
                        class="table table-hover caption-top mt-4 table-sm table-striped"
@@ -526,7 +543,17 @@ watch(
                             <td>
                                 {{adm.student.adn}}
                              </td>
-                             <td style="text-transform: capitalize !important;">{{ adm.student.surname + " " + adm.student.second_name+ " " + adm.student.other_name }}</td>
+                             <td style="text-transform: capitalize !important;">
+                               <div class="flex flex-row items-center">
+                                 <div class="text-center">
+                                   <img v-if="adm?.student?.photo" alt="photo" class="w-[50px] h-[50px] border rounded-full" :src="adm?.student?.photo"/>
+                                   <div v-else class="m-auto">
+                                     <i class="bi-person-circle text-[45px] text-[#8a8888]"></i>
+                                   </div>
+                                 </div>
+                                 <div class="ml-2">{{ adm.student.surname + " " + adm.student.second_name+ " " + adm.student.other_name }}</div>
+                               </div>
+                             </td>
                              <td>{{ adm.campus.name }}</td>
                              <td>{{ adm.student.campus_class }}</td>
                              <td>{{ adm.stream.name }}</td>
@@ -535,30 +562,37 @@ watch(
                       
                                 
  
-                                <div v-if="can('enroll_student','manage')">
-                                 <button  v-if="adm.status !== 'Enrolled'" @click="showModal(adm.student.number,adm.admission_number,adm)"
-                                   type="button" class="btn btn-sm btn-primary mb-2 mr-4 "
-                                   style="color: white;">
-                                   <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  
-                                </button>
+                               <div class="flex">
 
-                                </div>
+<!--                                 <div class="mr-2 rounded-sm px-2 text-[#0d6dfa] cursor-pointer" style="border: 1px solid #0d6dfa;" @click="uploadStudentPhoto(adm)">
+                                   <i class="bi bi-card-image cursor-pointer mr-1"></i>
+                                   Upload Photo
+                                 </div>-->
 
+                                 <div v-if="can('enroll_student','manage')">
+                                   <button  v-if="adm.status !== 'Enrolled'" @click="showModal(adm.student.number,adm.admission_number,adm)"
+                                            type="button" class="btn btn-sm btn-primary mb-2 mr-4 "
+                                            style="color: white;">
+                                     <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>
+                                   </button>
 
+                                 </div>
 
-                                <router-link  v-if="adm.status === 'Enrolled'" style=""
-                                   class="text-decoration-none"
-                                   :to="{name:'student-profile-details', query:{st_id:adm.student.number}}">
+                                 <router-link  v-if="adm.status === 'Enrolled'" style=""
+                                               class="text-decoration-none"
+                                               :to="{name:'student-profile-details', query:{st_id:adm.student.number}}">
                                    <button type="button"
-                                      class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
-                                      >view Details</button>
-                                </router-link>
-                                <span  v-if="adm.status === 'Enrolled'" class="link link-success"><i class="bi bi-check"></i>enrolled</span>
+                                           class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
+                                   >view Details</button>
+                                 </router-link>
+                                 <span  v-if="adm.status === 'Enrolled'" class="link link-success"><i class="bi bi-check"></i>enrolled</span>
+
+                               </div>
                              </td>
                           </tr>
                        </tbody>
                     </table>
-               </div>
+
                </div>
 
                  </div>

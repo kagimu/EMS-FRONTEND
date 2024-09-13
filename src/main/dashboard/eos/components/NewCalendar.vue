@@ -8,7 +8,7 @@
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Calendar Name</small></label>
+        <label class="text-sm"><small>Calendar Name</small></label>
         <input
             style="outline: none 0 !important; box-shadow: none;"
             type="text" v-model="form.name"
@@ -17,7 +17,7 @@
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Description</small></label>
+        <label class="text-sm"><small>Description</small></label>
         <textarea
             style="outline: none 0 !important; box-shadow: none;"
             type="text" v-model="form.description"

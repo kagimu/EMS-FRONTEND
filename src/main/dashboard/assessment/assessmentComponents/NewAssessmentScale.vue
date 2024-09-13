@@ -316,12 +316,12 @@ watch(
     </td>
 
     <td>
-      <textarea v-model="gradeScaleInfo.remarks" class="form-control textColor outline-none shadow-none">
+      <textarea v-model="gradeScaleInfo.remarks" class="form-control text-sm outline-none shadow-none">
       </textarea>
     </td>
 
     <td>
-      <textarea v-model="gradeScaleInfo.description" class="form-control textColor outline-none shadow-none">
+      <textarea v-model="gradeScaleInfo.description" class="form-control text-sm outline-none shadow-none">
       </textarea>
     </td>
 

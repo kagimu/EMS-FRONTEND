@@ -3,11 +3,11 @@
 <!--<form @submit.prevent="addLessonPlanReference">
         &lt;!&ndash;{{subTopicData}}&ndash;&gt;
 
-  <label class="textColor mt-3 mb-2 "><b>Add References</b></label>
+  <label class="text-sm mt-3 mb-2 "><b>Add References</b></label>
         <div class="mx-auto" style="width: 95%;">
 
 
-            <label class="textColor"><small>Learning Material </small></label>
+            <label class="text-sm"><small>Learning Material </small></label>
                     <select
                             v-model="form.learning_material_number"
                             style="outline: none 0 !important; box-shadow: none;"
@@ -22,7 +22,7 @@
 
 
             <div class="mb-2">
-                <label class="textColor"><small>Code</small></label>
+                <label class="text-sm"><small>Code</small></label>
                 <input
                         @keypress="commons.numbersOnlyValidator($event)"
                         maxlength="10"
@@ -36,7 +36,7 @@
 
 
             <div class="mb-2">
-                <label class="textColor"><small>Reference Description </small></label>
+                <label class="text-sm"><small>Reference Description </small></label>
                 <textarea
                         style="outline: none 0 !important; box-shadow: none;"
                         type="text" v-model="form.name"

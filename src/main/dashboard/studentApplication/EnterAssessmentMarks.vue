@@ -11,13 +11,13 @@
 
         <tr>
           <td>
-            <label class="label textColor">Score</label>
+            <label class="label text-sm">Score</label>
             <input type="number" v-model="form.actual_score" class="form-control" style="width:100px">
 
           </td></tr>
           <tr><td>
-            <label  class="label textColor">Comment</label>
-            <textarea v-model="form.comment" class="form-control mb-3 textColor"></textarea>
+            <label  class="label text-sm">Comment</label>
+            <textarea v-model="form.comment" class="form-control mb-3 text-sm"></textarea>
 
             <button type="submit"
                   class="btn btn-primary btn-sm"

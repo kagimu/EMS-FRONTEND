@@ -93,7 +93,7 @@ const form = reactive({
     box-shadow: none;
   }
   
-  .textColor{
+  .text-sm2{
     color: #717375;
   }
   

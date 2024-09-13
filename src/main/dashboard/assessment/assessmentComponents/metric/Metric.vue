@@ -190,7 +190,7 @@ watch (
 
 
 <style scoped>
-.textColor{
+.text-sm2{
   font-size: 11px;
 }
 

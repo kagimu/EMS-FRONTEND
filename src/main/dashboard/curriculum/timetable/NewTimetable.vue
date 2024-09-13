@@ -242,7 +242,7 @@ watch(
 
 
             <div class="mb-2">
-                <label class="textColor"><small>School</small></label>
+                <label class="text-sm"><small>School</small></label>
                 <select
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
@@ -257,7 +257,7 @@ watch(
 
 
             <div class="mb-2">
-                <label class="textColor"><small>Campus</small></label>
+                <label class="text-sm"><small>Campus</small></label>
                 <select
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
@@ -271,7 +271,7 @@ watch(
             </div>
 
           <div class="mb-2">
-            <label class="textColor"><small>Curriculum</small></label>
+            <label class="text-sm"><small>Curriculum</small></label>
             <select
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
@@ -285,7 +285,7 @@ watch(
           </div>
 
             <div class="mb-2">
-                <label class="textColor"><small>Level</small></label>
+                <label class="text-sm"><small>Level</small></label>
                 <select
                     v-model="level_number"
                         @change="fetchAcademicYears(level_number)"
@@ -302,7 +302,7 @@ watch(
 
             <div class="mb-2">
 
-                <label class="textColor"><small>Academic Year</small></label>
+                <label class="text-sm"><small>Academic Year</small></label>
                 <select
                         @change="fetchStudyPeriods"
                         style="box-shadow: none;"
@@ -317,7 +317,7 @@ watch(
 
             <div class="mb-2">
 
-                <label class="textColor"><small>Study Period</small></label>
+                <label class="text-sm"><small>Study Period</small></label>
                 <select
                         style="box-shadow: none;"
                         class="form-select form-select-sm shadow-none"
@@ -332,7 +332,7 @@ watch(
 
             <div class="mb-2">
 
-                <label class="textColor"><small>Name</small></label>
+                <label class="text-sm"><small>Name</small></label>
                 <input
                         type="text"
                          class="form-control form-control-sm shadow-none"

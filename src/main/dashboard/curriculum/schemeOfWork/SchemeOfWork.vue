@@ -483,7 +483,7 @@ watch(
             <div class="row mx-auto">
               <div class="col-3">
             <div class="mb-3">
-              <label class="textColor"><small>Sort by Subject</small></label>
+              <label class="text-sm"><small>Sort by Subject</small></label>
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
@@ -501,7 +501,7 @@ watch(
               <div class="col-3">
 
                 <div class="mb-2">
-                  <label class="textColor"><small>Sort by Academic Year</small></label>
+                  <label class="text-sm"><small>Sort by Academic Year</small></label>
                   <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm"

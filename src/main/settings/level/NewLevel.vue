@@ -8,7 +8,7 @@
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Code</small></label>
+        <label class="text-sm"><small>Code</small></label>
         <input
             @keypress="commons.codeValidator($event)"
             maxlength="10"
@@ -21,7 +21,7 @@
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Level Name</small></label>
+        <label class="text-sm"><small>Level Name</small></label>
         <input
             style="outline: none 0 !important; box-shadow: none;"
             type="text" v-model="form.name"

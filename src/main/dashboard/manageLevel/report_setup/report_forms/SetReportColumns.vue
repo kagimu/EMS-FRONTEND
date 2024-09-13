@@ -100,7 +100,7 @@ onMounted(() => {
       <div v-for="(field, index) in form" :key="index" class="row">
         <div class="col-lg-4">
           <div class="mb-2">
-            <label class="textColor"><small>Code</small></label>
+            <label class="text-sm"><small>Code</small></label>
             <input
               @keypress="commons.codeValidator($event)"
               maxlength="10"
@@ -113,7 +113,7 @@ onMounted(() => {
         </div>
         <div class="col-lg-4">
           <div class="mb-2">
-            <label class="textColor"><small>Column Name</small></label>
+            <label class="text-sm"><small>Column Name</small></label>
             <input
               placeholder="eg. Mid Term, End of Term"
               maxlength="50"
@@ -127,7 +127,7 @@ onMounted(() => {
         </div>
         <div class="col-lg-4">
           <div class="mb-2">
-            <label class="textColor"><small>Percentage Shares</small></label>
+            <label class="text-sm"><small>Percentage Shares</small></label>
             <input
               maxlength="50"
               type="text"

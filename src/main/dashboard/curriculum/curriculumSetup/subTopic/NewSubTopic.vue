@@ -234,7 +234,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Code</small></label>
+        <label class="text-sm"><small>Code</small></label>
         <input
             @keypress="commons.codeValidator($event)"
             maxlength="10"
@@ -247,7 +247,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Learning Area</small></label>
+        <label class="text-sm"><small>Learning Area</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -260,7 +260,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Subject Cluster</small></label>
+        <label class="text-sm"><small>Subject Cluster</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -276,7 +276,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Subject</small></label>
+        <label class="text-sm"><small>Subject</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -290,7 +290,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Strand</small></label>
+        <label class="text-sm"><small>Strand</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -304,7 +304,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Topic</small></label>
+        <label class="text-sm"><small>Topic</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -316,12 +316,12 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Sub Topic Name</small></label>
+        <label class="text-sm"><small>Sub Topic Name</small></label>
         <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.name" required class="form-control form-select-sm">
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Estimated time Required</small></label>
+        <label class="text-sm"><small>Estimated time Required</small></label>
         <input
             maxlength="15"
             @keypress="onlyNumberValidator($event)"

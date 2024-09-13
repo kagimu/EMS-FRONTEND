@@ -16,12 +16,23 @@
   const showingModal = ref(false)
   const showAppmodal = ref(false)
   const tableLoader = ref(true)
+  const isStaff = ref("")
+  const applicationN = ref(null)
 
-  
   const applicationModal = () =>{
+  applicationN.value = ""
    showAppmodal.value = true
+   isStaff.value = "staff"
   }
 
+  const resumeApplicationModal = (application_number) =>{
+   showAppmodal.value = true
+   isStaff.value = "staff"
+   applicationN.value = application_number
+
+  }
+
+  
 
   const applicationInfoList = ref( [])
   let errorMessage = ref(null)
@@ -49,6 +60,7 @@
   const total_rows = ref(0)
   const levelList = ref([])
   const curriculumList = ref([])
+ 
 
   const form = reactive({
   academic_year: "",
@@ -375,6 +387,27 @@ watch (
     },
     {deep:true}
 )
+
+watch(
+    () => applicationStore.submitApplicationResponse,
+    async (data) => {
+      if (data) {
+         showAppmodal.value = false
+         doFetchApplication()
+      }
+      
+    }
+);
+
+
+watch(
+  () => showAppmodal.value,
+  async (data) => {
+    if (!data) {  // Check if the popup is closed (false)
+      localStorage.removeItem('application-id');
+    }
+  }
+);
 </script>
 
 <template>
@@ -383,8 +416,8 @@ watch (
     <application-details :application-number="applications"></application-details>
   </AppModal>
 
-  <AppModal title="New Application" v-model="showAppmodal" xl>
-    <NewApplication></NewApplication>
+  <AppModal title="New Application" v-model="showAppmodal" xl4>
+    <NewApplication :applicationNumb="applicationN" :applicationMode="isStaff"></NewApplication>
   </AppModal>
 
   <div class="row ml-2 mt-3">
@@ -409,6 +442,7 @@ watch (
                                                      @change="doFetchApplication()"
                                                      >
                                                      <option disabled value="">-filter By Status</option>
+                                                     <option value="DRAFT">DRAFT</option>
                                                     <option value="SUBMITTED">SUBMITTED</option>
                                                     <option value="INTERVIEW_SCHEDULED">Scheduled For Interview</option>
                                                     <option value="ADMITTED" >Admitted</option>
@@ -600,11 +634,12 @@ watch (
                        </td>
                        <td>
                           <button v-if="appList.status === 'SUBMITTED'" @click="setApplicationNumber(appList.number)"
-                             class="btn btn-primary btn-sm textColor" style="border-width: 0px;text-decoration: none;" title="View Details">
+                             class="btn btn-primary btn-sm text-sm" style="border-width: 0px;text-decoration: none;" title="View Details">
                             <small>
                               Schedule Interview
                             </small>
                           </button>
+
                           <button v-if="appList.status === 'ENROLLED'"  @click="setApplicationNumber(appList.number)"
                              class="btn btn-primary btn-sm mb-2" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
                           View Details
@@ -619,6 +654,12 @@ watch (
                              class="btn btn-primary btn-sm mb-2" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
                           View Details
                           </small>
+                          </button>
+                          <button v-if="appList.status === 'DRAFT'" @click="resumeApplicationModal(appList.number)"
+                             class="btn btn-primary btn-sm text-sm" style="border-width: 0px;text-decoration: none;" title="Resume Application">
+                            <small>
+                            Resume
+                            </small>
                           </button>
                        </td>
                     </tr>

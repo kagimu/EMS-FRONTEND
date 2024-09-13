@@ -365,7 +365,7 @@
            <div class="col-lg-6">
 
              <div class="mb-2">
-               <label class="textColor"><small>Code</small></label>
+               <label class="text-sm"><small>Code</small></label>
                <input
                    @keypress="commons.codeValidator($event)"
                    maxlength="10"
@@ -376,7 +376,7 @@
              </div>
 
               <div class="mb-2">
-                 <label class="textColor"><small>Level</small></label>
+                 <label class="text-sm"><small>Level</small></label>
                  <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
@@ -389,7 +389,7 @@
               </div>
 
               <div class="mb-2">
-                 <label class="textColor"><small>Academic Year</small></label>
+                 <label class="text-sm"><small>Academic Year</small></label>
                  <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
@@ -404,7 +404,7 @@
 
          
               <div class="mb-2">
-                 <label class="textColor"><small>Class</small> <span class="star">*</span></label>
+                 <label class="text-sm"><small>Class</small> <span class="star">*</span></label>
                  <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
@@ -418,7 +418,7 @@
             
 
            <div class="mb-2">
-                 <label class="textColor"><small>Study Period</small> <span class="star">*</span></label>
+                 <label class="text-sm"><small>Study Period</small> <span class="star">*</span></label>
                  <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
@@ -431,7 +431,7 @@
         </div>
 
         <div class="mb-2">
-                 <label class="textColor"><small>Metric</small> <span class="star">*</span></label>
+                 <label class="text-sm"><small>Metric</small> <span class="star">*</span></label>
                  <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
@@ -449,7 +449,7 @@
            <div class="col-lg-6">
 
              <div class="mb-2">
-               <label class="textColor"><small>Assessment Area</small> <span class="star">*</span></label>
+               <label class="text-sm"><small>Assessment Area</small> <span class="star">*</span></label>
                <select
                    style="box-shadow: none;"
                    class="form-select form-select-sm"
@@ -462,7 +462,7 @@
              </div>
           
               <div class="mb-2">
-                 <label class="textColor"><small>Requires A comment ?</small> <span class="star">*</span></label>
+                 <label class="text-sm"><small>Requires A comment ?</small> <span class="star">*</span></label>
                  <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
@@ -474,7 +474,7 @@
               </div>
 
         <div class="mb-2">
-                 <label class="textColor"><small>Maximum Score</small></label>
+                 <label class="text-sm"><small>Maximum Score</small></label>
                  <input
                      v-model="form.max_score"
                      type="text" required
@@ -485,12 +485,12 @@
       
 
               <div class="mb-2">
-                 <label class="textColor">Scheduled On</label>
+                 <label class="text-sm">Scheduled On</label>
                  <input type="date" class="form-control shadow-none" v-model="form.scheduled_on">
               </div>
            
           <div class="mb-2">
-            <label class="textColor">Title</label>
+            <label class="text-sm">Title</label>
              <textarea
                  class="form-control shadow-none text-sm"
                  rows="3"
@@ -513,7 +513,7 @@
 </template>
 
 <style scoped>
-  .textColor{
+  .text-sm2{
   font-size: 11px;
   }
 </style>

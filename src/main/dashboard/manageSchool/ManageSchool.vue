@@ -8,6 +8,7 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import AppModal from "@/components/AppModal.vue";
 import { useAbility } from '@casl/vue';
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import FileUploader from "@/components/FileUploader.vue";
 
 const { can } = useAbility()
 const schoolStore = useSchoolStore()
@@ -17,6 +18,9 @@ const confirmationRef = ref(null);
 
 
 const schoolRef = ref(null)
+const uploadDialog = ref(false)
+const schoolBudge = ref(null)
+const schoolNumber = ref(null)
 const editMode = ref(false)
 const showSelected = ref(null)
 let entityN = localStorage.getItem("entity_number")
@@ -58,6 +62,12 @@ onMounted(
       schoolStore.fetchSchools(entityN)
     }
 )
+
+const uploadSchoolBudge = (school) => {
+  schoolBudge.value = school?.logo
+  schoolNumber.value = school?.number
+  uploadDialog.value = true
+}
 
 watch(
     () => schoolStore.newSchoolResponse,
@@ -120,6 +130,14 @@ const toggleCurriculum = (number) =>{
   showSelected.value = (showSelected.value === number) ? undefined : number
 }
 
+const successUpload = (data) => {
+  if(data){
+    uploadDialog.value = false
+    schoolStore.fetchSchools(entityN)
+  }
+}
+
+
 </script>
 
 <template>
@@ -129,6 +147,10 @@ const toggleCurriculum = (number) =>{
 
     <AppModal :title="editMode ? 'Edit School' : 'New School'" v-model="schoolDialog" lg>
       <new-school ref="schoolRef"></new-school>
+    </AppModal>
+
+    <AppModal title="Upload School Badge" v-model="uploadDialog" xl>
+      <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload"  :schoolNumber="schoolNumber" :imageUrl="schoolBudge"></file-uploader>
     </AppModal>
 
 
@@ -155,10 +177,18 @@ const toggleCurriculum = (number) =>{
           <div class="border rounded-md bg-white mt-3 p-0">
 
             <div class="p-3 text-[#5e5e5e]">
-            <div class="mb-3 flex justify-between text-[20px]">
-              {{school.name}}
-
-              <div>
+            <div class="mb-3 flex justify-between text-[16px]">
+              <div class="flex flex-row items-center">
+                <div class="">
+                   <img v-if="school?.logo" alt="logo" class="w-[50px] border rounded-md" :src="school?.logo"/>
+                  <i v-else class="bi bi-card-image w-[50px] text-[30px] border rounded-md p-[10px] bg-[#e4e6eb] text-gray-600"></i>
+                </div>
+                <div class="px-2">
+                  <div class="text-gray-600">{{school?.name}}</div>
+                </div>
+              </div>
+              <div class="flex">
+                <i class="bi bi-card-image cursor-pointer" @click="uploadSchoolBudge(school)" ></i>
               <i
               v-if="can('edit_school','general')"
                   class="bi-pencil ml-2 cursor-pointer"

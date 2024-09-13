@@ -149,16 +149,16 @@ watch (
     {deep:true}
 )
 
-watch (
-    () => assessmentStore.errorMessage,
-    async (data) => {
-      if(data){
-        errorMessage.value = data.message
-        notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-)
+// watch (
+//     () => assessmentStore.errorMessage,
+//     async (data) => {
+//       if(data){
+//         errorMessage.value = data.message
+//         notificationStore.errorToast("Error",data.message)
+//       }
+//     },
+//     {deep:true}
+// )
 
 const skipp = () =>{
   emit("next", {id:applicationId.value, step:5})
@@ -176,11 +176,11 @@ watch (
         applicationId.value = data.number
         let campusClassNo = data?.student?.campus_class_number
         if(campusClassNo) {
-        let data = {
-    class_number:campusClassNo,
-    curriculum_number:localStorage.getItem("campus_curriculum_number")
-  }
-  assessmentStore.fetchsubjects(data)
+  //       let data = {
+  //   class_number:campusClassNo,
+  //   curriculum_number:localStorage.getItem("campus_curriculum_number")
+  // }
+  // assessmentStore.fetchsubjects(data)
         }
       }
     }
@@ -207,7 +207,7 @@ watch (
 </script>
 <template>
     <div>
-      <p class=" mt-4 mb-10" style="text-align: center !important;">PREVIOUS SCHOOL RESULTS</p>
+      <p class=" mt-4 mb-10" style="text-align: center !important;">PREVIOUS SCHOOL RESULTS </p>
     </div>
     <div class="mt-0">
       <form @submit.prevent="savePreviousSchoolResults" enctype="multipart/form-data">
@@ -215,7 +215,7 @@ watch (
           <div class="row">
             <div class="col-lg-2"></div>
             <div class="col-lg-8">
-              <label class="textColor">Provide Previous Marks</label>
+              <label class="text-sm">Provide Previous Marks</label>
               <table style="width: 100%;">
                 <tr v-for="(subjects, index) in formD.subjects" :key="index">
                   <td>
@@ -224,8 +224,7 @@ watch (
                         class="form-select form-select-sm shadow-none">
                       <option disabled value="">--filter by Subject--</option>
                       <option v-for="option in subjectList" :key="option" :value="option.name">{{ option.name }}</option>
-                    </select> -->
-                 
+                    </select> -->         
                   <ComboSearchBox
                       v-model:optionResponse="subjects.subjectName"
                       :optionList="subjectList"
@@ -262,7 +261,7 @@ watch (
 
               
               <p class="mt-3">
-                <label class="textColor">Attach Latest School Report</label>
+                <label class="text-sm">Attach Latest School Report</label>
 
             <input
               ref="file"

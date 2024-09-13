@@ -220,7 +220,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Code</small></label>
+        <label class="text-sm"><small>Code</small></label>
         <input
             @keypress="commons.codeValidator($event)"
             maxlength="10"
@@ -236,7 +236,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Level</small></label>
+        <label class="text-sm"><small>Level</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -250,7 +250,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Academic Year</small></label>
+        <label class="text-sm"><small>Academic Year</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -267,7 +267,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor">
+        <label class="text-sm">
           <small>Class</small>
         </label>
         <select
@@ -285,7 +285,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Study Period</small>
+        <label class="text-sm"><small>Study Period</small>
         </label>
         <select
             style="box-shadow: none;"
@@ -300,7 +300,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Assessment Area</small></label>
+        <label class="text-sm"><small>Assessment Area</small></label>
         <select
             required
             class="form-control"
@@ -315,7 +315,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Grading Standards</small></label>
+        <label class="text-sm"><small>Grading Standards</small></label>
         <select
             class="form-control form-select form-control-sm shadow-none"
             v-model="form.grading_standard_number"

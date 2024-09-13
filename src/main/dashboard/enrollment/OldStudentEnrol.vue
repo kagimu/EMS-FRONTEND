@@ -3,7 +3,7 @@
         <form @submit.prevent="Enrol()">
             <!-- {{ studN }} -->
       <div class="mb-2">
-              <label class="textColor"><small>School</small> </label>
+              <label class="text-sm"><small>School</small> </label>
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm" required
@@ -18,7 +18,7 @@
   
   
           <div class="mb-2">
-              <label class="textColor"><small>Campus</small>  </label>
+              <label class="text-sm"><small>Campus</small>  </label>
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
@@ -33,7 +33,7 @@
   
   
           <div class="mb-2">
-              <label class="textColor"><small>Class</small> </label>
+              <label class="text-sm"><small>Class</small> </label>
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm" required
@@ -47,7 +47,7 @@
           </div>
   
           <div class="mb-2">
-              <label class="textColor"><small>Stream</small> </label>
+              <label class="text-sm"><small>Stream</small> </label>
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm" required
@@ -60,7 +60,7 @@
           </div>
   
           <div class="mb-2">
-              <label class="textColor"><small>Academic Year</small> </label>
+              <label class="text-sm"><small>Academic Year</small> </label>
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm" required
@@ -72,7 +72,7 @@
           </div>
   
           <div class="mb-2">
-              <label class="textColor"><small>Study Period</small> 
+              <label class="text-sm"><small>Study Period</small> 
               <!-- {{ studyPeriodList }} -->
               </label>
               <select
@@ -87,7 +87,7 @@
           </div>
 
           <div class="mb-2">
-              <label class="textColor"><small>Enrolment Date</small> 
+              <label class="text-sm"><small>Enrolment Date</small> 
               </label>
               <input type="date" class="form-control" v-model="form.enrollment_date">
                 <!-- <VueDatePicker

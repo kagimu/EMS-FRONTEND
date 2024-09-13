@@ -8,7 +8,7 @@
         </div>
   
         <div class="mb-2">
-          <label class="textColor"><small>Name</small></label>
+          <label class="text-sm"><small>Name</small></label>
           <input
               style="outline: none 0 !important; box-shadow: none;"
               type="text" v-model="form.name"
@@ -17,7 +17,7 @@
         </div>
 
         <div class="mb-2">
-            <label class="textColor"><small>School</small> </label>
+            <label class="text-sm"><small>School</small> </label>
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm" required
@@ -32,7 +32,7 @@
 
 
         <div class="mb-2">
-            <label class="textColor"><small>Campus</small>  </label>
+            <label class="text-sm"><small>Campus</small>  </label>
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
@@ -49,7 +49,7 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="mb-2">
-            <label class="textColor"><small>Current Class</small> </label>
+            <label class="text-sm"><small>Current Class</small> </label>
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm" required
@@ -64,7 +64,7 @@
             </div>
             <div class="col-lg-6">
                 <div class="mb-2">
-            <label class="textColor"><small>Next Class</small> </label>
+            <label class="text-sm"><small>Next Class</small> </label>
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm" required
@@ -82,7 +82,7 @@
         
   
         <div class="mb-2">
-            <label class="textColor"><small>Type</small>  </label><br>
+            <label class="text-sm"><small>Type</small>  </label><br>
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm" required

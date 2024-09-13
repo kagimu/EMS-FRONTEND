@@ -42,8 +42,8 @@ watch(
 
 const checkDraft = () => {
   let draft = props.optionDraft;
-  if (draft && draft.length > 0 && !hasProcessed.value) {
-    selectedItem.value = draft[0];  
+  if (draft && !hasProcessed.value) {
+    selectedItem.value = draft;  
     hasProcessed.value = true;
   }
 };
@@ -115,8 +115,7 @@ const removeItem = () => {
         class="text-xs  mx-1 my-[2px]  text-[#03408f]  hover:bg-[#fafafa] hover:text-[#198754] cursor-pointer"
       >
         <div class="flex flex-grow px-2">
-          {{ items.find(data => data.value === selectedItem)?.text }}
-          <div><i class="fa-regular fa-times-circle hover:text-[red] ml-2" @click="removeItem" /></div>
+          {{selectedItem}}
         </div>
       </div>
     </div>

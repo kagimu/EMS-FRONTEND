@@ -99,7 +99,7 @@ watch(
 
 
     <div class="mx-auto" style="width: 95%;">
-      <label class="textColor mt-3 mb-2"><small>Add Level to Curriculum</small></label>
+      <label class="text-sm mt-3 mb-2"><small>Add Level to Curriculum</small></label>
       <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
 
         <li class="list-group-item" v-for="(lvl,idx) in levelList" :key="idx">
