@@ -323,7 +323,7 @@ watch(
                 <div class="row">
                   <div class="col-lg-4">
                     <div class="mb-2">
-            <label class="textSize"><small>School</small></label>
+            <label class="text-sm"><small>School</small></label>
          <select
                  style="box-shadow: none;"
                  class="form-select form-select-sm" required
@@ -338,7 +338,7 @@ watch(
                 
 
      <div class="mb-2">
-            <label class="textSize"><small>Campus</small></label>
+            <label class="text-sm"><small>Campus</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm"
@@ -350,7 +350,7 @@ watch(
         </div>   
 
         <div class="mb-2">
-          <label class="textSize"><small>Curriculum</small></label>
+          <label class="text-sm"><small>Curriculum</small></label>
             <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -363,7 +363,7 @@ watch(
           </div>
 
         <div class="mb-2">
-          <label class="textSize"><small>Level</small></label>
+          <label class="text-sm"><small>Level</small></label>
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
@@ -376,7 +376,7 @@ watch(
             </div>
 
             <div class="mb-2">
-            <label class="textSize"><small>AcademicYear</small></label>
+            <label class="text-sm"><small>AcademicYear</small></label>
          
          <select
                  style="box-shadow: none;"
@@ -402,7 +402,7 @@ watch(
 
 
      <div class="mb-2">
-      <label class="textSize"><small>Study Period</small></label>
+      <label class="text-sm"><small>Study Period</small></label>
    <select
       style="box-shadow: none;"
       class="form-select form-select-sm" required
@@ -414,7 +414,7 @@ watch(
 </div>
 
           <div class="mb-2">
-            <label class="textSize"><small>Mode Of Study</small></label>
+            <label class="text-sm"><small>Mode Of Study</small></label>
           <select
             style="box-shadow: none;"
             class="form-select form-select-sm" required
@@ -448,7 +448,7 @@ watch(
 
 
           <div class="mb-2">
-                    <label class="textSize">Description</label>
+                    <label class="text-sm">Description</label>
                     <textarea
                         v-model="formData.description"
                         required

@@ -295,7 +295,7 @@ watch(
         <div class="col-lg-4">
 
       <div class="mb-2">
-        <label class="textSize"><small>Code</small></label>
+        <label class="text-sm"><small>Code</small></label>
         <input
             @keypress="commons.codeValidator($event)"
             maxlength="10"
@@ -307,7 +307,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textSize"><small>Level</small></label>
+        <label class="text-sm"><small>Level</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -320,7 +320,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textSize"><small>Academic Year</small></label>
+        <label class="text-sm"><small>Academic Year</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -334,7 +334,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textSize"><small>Class</small>
+        <label class="text-sm"><small>Class</small>
         </label>
         <select
             style="box-shadow: none;"
@@ -348,7 +348,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textSize"><small>Report Settings</small></label>
+        <label class="text-sm"><small>Report Settings</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -361,7 +361,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textSize"><small>Report Column</small></label>
+        <label class="text-sm"><small>Report Column</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -374,7 +374,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textSize"><small>Study Period</small>
+        <label class="text-sm"><small>Study Period</small>
         </label>
         <select
             style="box-shadow: none;"
@@ -395,7 +395,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textSize"><small>Assessment Area</small></label>
+        <label class="text-sm"><small>Assessment Area</small></label>
         <select
             required
             class="form-control shadow-none"
@@ -410,7 +410,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textSize"><small>Assessment Schedule</small></label>
+        <label class="text-sm"><small>Assessment Schedule</small></label>
         <!-- <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
           <li class="list-group-item" v-for="(lvl,idx) in assessmentMetricList">
             <input
@@ -433,7 +433,7 @@ watch(
       </div>
 
       <!-- <div class="mb-2">
-        <label class="textSize"><small>Assessment Schedule</small></label>
+        <label class="text-sm"><small>Assessment Schedule</small></label>
         <select
             class="form-control form-select form-control-sm shadow-none"
             v-model="form.assessment_metric_number"

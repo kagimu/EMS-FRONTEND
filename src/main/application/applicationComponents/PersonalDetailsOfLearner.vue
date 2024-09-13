@@ -403,7 +403,7 @@ watch(
 
 
       <div class="mb-2">
-          <label class="textSize"><small>Curriculum</small></label>
+          <label class="text-sm"><small>Curriculum</small></label>
             <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -419,7 +419,7 @@ watch(
         <div class="row">
           <div class="col-6">
             <div class="mb-2">
-              <label class="textSize"><small>Level</small></label>
+              <label class="text-sm"><small>Level</small></label>
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"

@@ -135,7 +135,7 @@ watch (
        
                   <div class="col-lg-4">
                     <div class="mb-2">
-            <!-- <label class="textSize"><small>School</small></label> -->
+            <!-- <label class="text-sm"><small>School</small></label> -->
          <select
                  style="box-shadow: none;"
                  class="form-select form-select-sm" required

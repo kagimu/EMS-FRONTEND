@@ -115,7 +115,7 @@ watch(
 
 
     <div class="mb-2">
-      <label class="textSize">Name</label>
+      <label class="text-sm">Name</label>
       <input
           type="text"
           style="outline: none 0 !important;
@@ -142,7 +142,7 @@ watch(
 </template>
 
 <style scoped>
-.textSize{
+.text-sm{
     font-size: 13px;
 }
 </style>
