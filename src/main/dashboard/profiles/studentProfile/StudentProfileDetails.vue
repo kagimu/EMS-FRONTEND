@@ -267,10 +267,10 @@ const successUpload = (data) => {
                    </div>
                    <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status" style="float: right;">
 
-                  <div v-if="can('re-instate_enrollment','manage')"></div>  <button v-if="status == 'TERMINATED'" class="btn btn-success btn-sm mb-2 mx-1 mb-2" @click="reEnroll(student_number)">
+                  <div v-if="can('re-instate_enrollment','manage')"></div>  <button v-if="status === 'TERMINATED'" class="btn btn-success btn-sm mb-2 mx-1" @click="reEnroll(student_number)">
                           <small>RE-INSTATE</small>
                           </button>
-                         <div v-if="can('terminate_enrollment','manage')"><button v-if="status == 'ACTIVE'" class="btn btn-danger btn-sm mb-2 mx-1" @click="terminateEnrollment(student_number)">
+                         <div v-if="can('terminate_enrollment','manage')"><button v-if="status === 'ACTIVE'" class="btn btn-danger btn-sm mb-2 mx-1" @click="terminateEnrollment(student_number)">
                           <small>Terminate</small>
                           </button></div>
                         </div>

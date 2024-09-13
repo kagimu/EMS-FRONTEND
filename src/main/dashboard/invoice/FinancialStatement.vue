@@ -9,7 +9,7 @@
         <div class="row my-4">
 
           <div class="col-lg-4 mb-1">
-            <div class="card-body border rounded-md text-xs text-center">
+            <div class="bg-white border rounded-md text-xs text-center py-3 shadow-md">
               <div class="font-bold text-[#063070] text-[13px]">{{financialSummary?.total_invoices?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</div>
              <div>Total Invoice</div>
             </div>
