@@ -535,25 +535,26 @@ watch(
                       
                                 
  
-                                <div v-if="can('enroll_student','manage')">
-                                 <button  v-if="adm.status !== 'Enrolled'" @click="showModal(adm.student.number,adm.admission_number,adm)"
-                                   type="button" class="btn btn-sm btn-primary mb-2 mr-4 "
-                                   style="color: white;">
-                                   <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>  
-                                </button>
+                               <div class="flex">
+                                 <div v-if="can('enroll_student','manage')">
+                                   <button  v-if="adm.status !== 'Enrolled'" @click="showModal(adm.student.number,adm.admission_number,adm)"
+                                            type="button" class="btn btn-sm btn-primary mb-2 mr-4 "
+                                            style="color: white;">
+                                     <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>
+                                   </button>
 
-                                </div>
+                                 </div>
 
-
-
-                                <router-link  v-if="adm.status === 'Enrolled'" style=""
-                                   class="text-decoration-none"
-                                   :to="{name:'student-profile-details', query:{st_id:adm.student.number}}">
+                                 <router-link  v-if="adm.status === 'Enrolled'" style=""
+                                               class="text-decoration-none"
+                                               :to="{name:'student-profile-details', query:{st_id:adm.student.number}}">
                                    <button type="button"
-                                      class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
-                                      >view Details</button>
-                                </router-link>
-                                <span  v-if="adm.status === 'Enrolled'" class="link link-success"><i class="bi bi-check"></i>enrolled</span>
+                                           class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
+                                   >view Details</button>
+                                 </router-link>
+                                 <span  v-if="adm.status === 'Enrolled'" class="link link-success"><i class="bi bi-check"></i>enrolled</span>
+
+                               </div>
                              </td>
                           </tr>
                        </tbody>
