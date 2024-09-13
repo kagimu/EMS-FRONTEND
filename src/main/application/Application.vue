@@ -9,8 +9,8 @@ import {useApplicationStore} from "@/main/application/applicationComponents/stor
 
 const applicationStore= useApplicationStore()
 
-const step = ref(1)
 
+const step = ref(1)
 
 onMounted(() => {
 

@@ -16,10 +16,14 @@
   const showingModal = ref(false)
   const showAppmodal = ref(false)
   const tableLoader = ref(true)
+  const isStaff = ref("")
+  const applicationN = ref(null)
 
-  
-  const applicationModal = () =>{
+  const applicationModal = (application_number) =>{
    showAppmodal.value = true
+   isStaff.value = "staff"
+   applicationN.value = application_number
+
   }
 
 
@@ -49,6 +53,7 @@
   const total_rows = ref(0)
   const levelList = ref([])
   const curriculumList = ref([])
+ 
 
   const form = reactive({
   academic_year: "",
@@ -375,6 +380,17 @@ watch (
     },
     {deep:true}
 )
+
+watch(
+    () => applicationStore.submitApplicationResponse,
+    async (data) => {
+      if (data) {
+         showAppmodal.value = false
+         doFetchApplication()
+      }
+      
+    }
+);
 </script>
 
 <template>
@@ -384,7 +400,7 @@ watch (
   </AppModal>
 
   <AppModal title="New Application" v-model="showAppmodal" xl4>
-    <NewApplication></NewApplication>
+    <NewApplication :applicationNumb="applicationN" :applicationMode="isStaff"></NewApplication>
   </AppModal>
 
   <div class="row ml-2 mt-3">
@@ -409,6 +425,7 @@ watch (
                                                      @change="doFetchApplication()"
                                                      >
                                                      <option disabled value="">-filter By Status</option>
+                                                     <option value="DRAFT">DRAFT</option>
                                                     <option value="SUBMITTED">SUBMITTED</option>
                                                     <option value="INTERVIEW_SCHEDULED">Scheduled For Interview</option>
                                                     <option value="ADMITTED" >Admitted</option>
@@ -605,6 +622,7 @@ watch (
                               Schedule Interview
                             </small>
                           </button>
+
                           <button v-if="appList.status === 'ENROLLED'"  @click="setApplicationNumber(appList.number)"
                              class="btn btn-primary btn-sm mb-2" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
                           View Details
@@ -619,6 +637,12 @@ watch (
                              class="btn btn-primary btn-sm mb-2" style="border-width: 0px;text-decoration: none;" title="View Details"><small>
                           View Details
                           </small>
+                          </button>
+                          <button v-if="appList.status === 'DRAFT'" @click="applicationModal(appList.number)"
+                             class="btn btn-primary btn-sm text-sm" style="border-width: 0px;text-decoration: none;" title="Resume Application">
+                            <small>
+                            Resume
+                            </small>
                           </button>
                        </td>
                     </tr>

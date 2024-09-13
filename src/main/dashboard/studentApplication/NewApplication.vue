@@ -8,17 +8,28 @@ import PreviousSchoolResults from "@/main/application/applicationComponents/Prev
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 
 const applicationStore= useApplicationStore()
-
 const step = ref(1)
+const isStaff = ref(null)
+const application_number = ref(null)
+
+const props = defineProps({
+   applicationMode:String,
+   applicationNum:String
+   })
+
 
 
 onMounted(() => {
-
         if (localStorage.getItem("application-id")) {
           let applicationId = localStorage.getItem("application-id")
           fetchApplicationData(applicationId)
+        }else if(props.applicationNum) {
+          fetchApplicationData(props.applicationNum)
         }
 
+        if(props.applicationMode){
+          isStaff.value = "isStaffApplying"
+        }
     }
 )
 
@@ -40,23 +51,22 @@ const fetchApplicationData = (applicationNumber) => {
 
 </script>
 <template>
-  <div class="">
+  <div class="temp">
     <div class="row">
       <div style="padding-top: 50px;">
       <div  class="text-center font-bold text-[#2c2f8c]">STUDENT APPLICATION</div>
       <div  class="text-center">Get Started Today With Few Steps </div>
     </div>
       <div class="col-lg-12">
-        <div class=" mx-auto" style="margin-bottom:10px;margin-top:10px;border-radius: 16px; width: 100%;">
+        <div class="mx-auto" style="margin-bottom:10px;margin-top:10px;border-radius: 16px; width: 100%;">
           <div  >
            <div class="row">
            
             <div class="col-lg-12">
               <div>
 
-
+{{ applicationNum }}
                 <div class="w-full flex flex-col space-y-2 pt-10">
-
                   <div style="margin-top: 20px;">
                     <div class="flex relative space-x-2 justify-around text-[#414548] border-2 border-primary border-l-0 border-r-0 border-b-0 z-10">
                       <div style="margin-top:-20px" class="text-center -mt-5 z-0" :class="step === 1 ? 'font-bold':'italic'">
@@ -106,7 +116,7 @@ const fetchApplicationData = (applicationNumber) => {
                           v-on:next="nextPage"></PreviousSchoolResults>
                     </div>
                     <div v-show="step === 5">
-                      <application-payement  v-on:next="nextPage">
+                      <application-payement :appMode="isStaff"  v-on:next="nextPage">
                       </application-payement>
                     </div>
 
@@ -131,21 +141,10 @@ const fetchApplicationData = (applicationNumber) => {
 
 <style scoped>
 
-.sect {
-    /* padding: 60px 80px; */
-    background: rgba(251, 251, 251, 0.94);
-    border-radius: 16px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 30px;
-    display: flex;
-    flex-direction: row;
-    gap: 24px;
-    padding: 10px;
-}
-
 .content {
   /* position: absolute; */
-  left: 50%;
-  top: 80%;
+  left: 10%;
+  top: 10%;
   transform: translate(-50%, -50%);
 }
 
@@ -160,59 +159,26 @@ input:focus {
   text-align: center;
   color: rgba(6, 6, 6, 0.623);
     font-family: Spartan, sans-serif;
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 700;
 
 }
-.txt2{
-    color: rgb(19, 108, 250);
-    text-align: center;
-    text-transform: uppercase;
-    font-family: Spartan, sans-serif;
-    font-weight: 600;
-    padding-top: 20px;
-    padding-bottom: 5px;
-    font-size: 22px;;
-}
-.txt3{
-  text-align: center;
-    color: rgb(19, 108, 250);
-    font-family: Spartan, sans-serif;
-    font-size: 25px;
-    font-weight: 800;
-    padding: 10px;
-    /* padding-bottom: 20px; */
-}
-.tx4{
-  text-align: center;
-    color: rgb(0, 0, 0);
-    font-family: Roboto, sans-serif;
-    font-size: 17px;
-}
-.temp{ 
-  height: 100%;
-    width: 100%;
- 
-  background-size: cover;
-  background-position: top;
-  position: relative;
-    margin-top: -20px;
-    margin-bottom: 30px;
-    
-    
-}
+
 .container-fluid{
   padding-top: 0%;
 }
+
 .nav-link{
   color: rgba(0, 0, 0, 0.874) !important;
   font-family: Spartan, sans-serif !important;
   font-size: 12px !important;
   font-family: bold;
 }
+
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
     color: rgb(19, 108, 250) !important;
 }
+
 * {
   margin: 0;
   padding: 0;

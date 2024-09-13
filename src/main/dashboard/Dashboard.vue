@@ -134,9 +134,9 @@ const offline = ref(null)
 function updateOnlineStatus() {
   online.value = navigator.onLine;
   if (!online.value) {
-    offline.value = "Your offline.";
+    offline.value = "offline.";
   }else{
-    offline.value = "Your Online.";
+    offline.value = "Online.";
   }
 }
 const goToEntities = () => {
@@ -302,11 +302,11 @@ watch (
             <div class="col-10 text-center">
              
               Copyright © 2011 Wholesome Education System . All rights reserved. &nbsp;
-              <span class="alert alert-warning p-1" v-if="!online">
+              Status: <span class="alert alert-warning p-1" v-if="!online">
               {{ offline  }}
               </span>
               <span class="alert alert-success p-1" v-if="online">
-              Your Online
+               Online
               </span>
             </div>
             <div class="col-2 text-end">Powered by Hamsoft</div>
