@@ -141,7 +141,7 @@ watch(
                 <div class="col-lg-6">
                   <div class="mb-2">
                     <div class="text-[#76787a] text-sm">Second name</div>
-                    <input type="text" v-model="form.second_name" required class="form-control shadow-none">
+                    <input type="text" v-model="form.second_name" class="form-control shadow-none">
                   </div>
                 </div>
               </div>
