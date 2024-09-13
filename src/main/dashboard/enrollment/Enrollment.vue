@@ -10,11 +10,12 @@ import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment"
 import PromoteStudent from "@/main/settings/promotion/PromoteStudent.vue";
 import {usePromotionStore} from "@/main/settings/promotion/store/promotion.js"
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
+import AppModal from "@/components/AppModal.vue";
+import FileUploader from "@/components/FileUploader.vue";
 
 const enrollmentList = ref( [])
 const  notificationStore  = useNotificationStore()
 const enrollmentStore = useEnrolmentStore()
-const studentNumber = ref(null)
 const promotionStore = usePromotionStore()
 
 const campusList = ref([])
@@ -31,9 +32,11 @@ const promDialog = ref(false)
 const loading = ref(false)
 const page = ref(1)
 const per_page = ref(20)
-const tableLoader = ref(true)
+const uploadDialog = ref(false)
 const total_items = ref(0)
 const total_rows = ref(0)
+const studentPhoto = ref(null)
+const studentNumber = ref(null)
 
 
 
@@ -263,12 +266,30 @@ watch(
       }
     }
 )
+
+const uploadStudentPhoto = (enrolData) => {
+  studentNumber.value = enrolData?.student_number
+  studentPhoto.value = enrolData?.photo
+  uploadDialog.value = true
+}
+
+const successUpload = (data) => {
+  if(data){
+    uploadDialog.value = false
+    doFetchEnrollent()
+  }
+}
+
 </script>
 
 
 
 <template>
   <div>
+
+    <AppModal title="Upload Student Photo" v-model="uploadDialog" xl>
+      <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload"  :studentNumber="studentNumber" :imageUrl="studentPhoto"></file-uploader>
+    </AppModal>
 
     <div id="promoteModal" :class="{ show: promDialog }" class="modal fade"  tabindex="-1">
       <div class="modal-dialog">
@@ -467,7 +488,7 @@ watch(
                       <th>StudyPeriod</th>
                       <th>Class</th>
                       <th>EnrolledOn</th>
-                      <th style="width: 13%;">Action</th>
+                      <th>Action</th>
                     </tr>
 
                     </thead>
@@ -493,13 +514,20 @@ watch(
                       <td>{{ enrolData.class }}</td>
                       <td>{{ enrolData.enrollment_date }}</td>
                       <td>
-                        <router-link
-                            :to="{name:'student-profile-details', query:{st_id:enrolData.student_number}}"
-                            class="text-decoration-none">
-                          <button class="btn btn-outline-primary btn-sm mb-2">
-                            <small><i class="bi bi-person"></i>View Profile</small>
-                          </button>
-                        </router-link>
+                           <div class="">
+                             <div class="mr-2 rounded-sm px-2 text-[#0d6dfa] cursor-pointer m-1" style="border: 1px solid #0d6dfa;" @click="uploadStudentPhoto(enrolData)">
+                               <i class="bi bi-card-image cursor-pointer mr-1"></i>
+                               Upload Photo
+                             </div>
+                             <router-link
+                                 :to="{name:'student-profile-details', query:{st_id:enrolData.student_number}}"
+                                 class="text-decoration-none">
+                                   <div class="mr-2 rounded-sm px-2 text-[#0d6dfa] cursor-pointer m-1" style="border: 1px solid #0d6dfa;">
+                                     <i class="bi bi-person cursor-pointer mr-1"></i>
+                                     View Profile
+                                   </div>
+                             </router-link>
+                           </div>
                       </td>
 
                     </tr>
