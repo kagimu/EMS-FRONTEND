@@ -168,9 +168,10 @@ const uploadBadge = () => {
   uploadDialog.value = true
 }
 
-const successUpload = (data) => {
-  if(data){
+const successUpload = async (data) => {
+  if (data) {
     uploadDialog.value = false
+    await applicationStore.fetchStudent(student_number)
   }
 }
 
@@ -182,8 +183,8 @@ const successUpload = (data) => {
   </AppModal>
 
 
-  <AppModal title="Upload School Badge"  v-on:nextAction="successUpload" v-model="uploadDialog" xl>
-    <file-uploader ref="profileUploadComponents" :imageUrl="studentPhoto"></file-uploader>
+  <AppModal title="Upload School Badge" v-model="uploadDialog" xl>
+    <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload" :imageUrl="studentPhoto"></file-uploader>
   </AppModal>
 
   <section style="background-color: #eee;">
