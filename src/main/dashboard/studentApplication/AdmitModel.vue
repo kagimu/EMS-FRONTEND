@@ -128,7 +128,8 @@ campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_c
     let sData = {
      campus_number:form.campus_number,
      class_number:clasN,
-     campus_curriculum_number:form.curriculumNumber
+     campus_curriculum_number:form.curriculumNumber,
+     school_number:form.school_number
 
     }
     classStore.fetchClassStreams(sData)

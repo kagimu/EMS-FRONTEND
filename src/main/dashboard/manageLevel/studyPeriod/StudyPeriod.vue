@@ -85,7 +85,8 @@ const studyPeriodData = () => {
   studyPeriodStore.fetchStudyPeriod(
       {
         academic_year_number:academicYearNumber.value,
-        class_number:class_number.value
+        class_number:class_number.value,
+        school_number:schoolNumber
       }
   )
 }

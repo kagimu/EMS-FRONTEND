@@ -130,15 +130,27 @@ window.addEventListener('online', updateOnlineStatus);
 window.addEventListener('offline', updateOnlineStatus);
 const offline = ref(null)
 
+
 function updateOnlineStatus() {
   online.value = navigator.onLine;
   if (!online.value) {
-    offline.value = "You are currently offline. Please check your internet connection.";
+    offline.value = "Your offline.";
+  }else{
+    offline.value = "Your Online.";
   }
 }
 const goToEntities = () => {
   router.push({name:'entity-dashboard'})
 }
+
+watch (
+    () => navigator.onLine,
+    async (data) => {
+      if(data){
+        updateOnlineStatus()
+      }
+    }
+)
 </script>
 <template>
 
@@ -288,9 +300,13 @@ const goToEntities = () => {
         <footer style="padding: 10px;">
           <div class="row" style="font-size: 13px;">
             <div class="col-10 text-center">
-              Copyright © 2011 Wholesome Education System . All rights reserved. 
-              <span class="alert alert-warning p-1" v-if="offline">
+             
+              Copyright © 2011 Wholesome Education System . All rights reserved. &nbsp;
+              <span class="alert alert-warning p-1" v-if="!online">
               {{ offline  }}
+              </span>
+              <span class="alert alert-success p-1" v-if="online">
+              Your Online
               </span>
             </div>
             <div class="col-2 text-end">Powered by Hamsoft</div>
