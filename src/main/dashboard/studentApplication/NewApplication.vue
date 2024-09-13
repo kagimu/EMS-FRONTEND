@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref} from "vue";
+import {onMounted, ref,watch} from "vue";
 import PersonalDetailsOfStudent from "@/main/application/applicationComponents/PersonalDetailsOfParent.vue";
 import PersonalDetailsOfLearner from "@/main/application/applicationComponents/PersonalDetailsOfLearner.vue";
 import PreviousSchoolDetails from "@/main/application/applicationComponents/PreviousSchoolDetails.vue";
@@ -10,11 +10,12 @@ import {useApplicationStore} from "@/main/application/applicationComponents/stor
 const applicationStore= useApplicationStore()
 const step = ref(1)
 const isStaff = ref(null)
+const checkApplicationStatus = ref(true)
 const application_number = ref(null)
 
 const props = defineProps({
    applicationMode:String,
-   applicationNum:String
+   applicationNumb:String
    })
 
 
@@ -23,8 +24,9 @@ onMounted(() => {
         if (localStorage.getItem("application-id")) {
           let applicationId = localStorage.getItem("application-id")
           fetchApplicationData(applicationId)
-        }else if(props.applicationNum) {
-          fetchApplicationData(props.applicationNum)
+        }else if(props.applicationNumb) {
+          checkApplication()
+          localStorage.setItem("application-id", props.applicationNumb)
         }
 
         if(props.applicationMode){
@@ -32,6 +34,22 @@ onMounted(() => {
         }
     }
 )
+
+watch (
+    () => props.applicationNumb,
+    async (data) => {
+      if(data){
+        checkApplication()
+        localStorage.setItem("application-id", props.applicationNumb)
+      }
+    } 
+)
+
+const checkApplication = () => {
+  if(props.applicationNumb){
+    fetchApplicationData(props.applicationNumb)
+  }
+}
 
 const nextPage = (data) =>{
   if(data) {
@@ -49,6 +67,7 @@ const fetchApplicationData = (applicationNumber) => {
   }
 }
 
+
 </script>
 <template>
   <div class="temp">
@@ -65,7 +84,6 @@ const fetchApplicationData = (applicationNumber) => {
             <div class="col-lg-12">
               <div>
 
-{{ applicationNum }}
                 <div class="w-full flex flex-col space-y-2 pt-10">
                   <div style="margin-top: 20px;">
                     <div class="flex relative space-x-2 justify-around text-[#414548] border-2 border-primary border-l-0 border-r-0 border-b-0 z-10">

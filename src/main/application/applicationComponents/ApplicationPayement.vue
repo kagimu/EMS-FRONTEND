@@ -13,16 +13,23 @@ const notificationStore = useNotificationStore();
 const buttonLoader = ref(false);
 const showProgressBar = ref(false); // Progress bar control
 const router = useRouter();
+const showSuccessIcon = ref(false)
 
 const props = defineProps({
    appMode:String
    })
 
 const submitApplication = () => {
-   buttonLoader.value = true;
-   showProgressBar.value = true; // Show progress bar when submission starts
-   let applicationNumber = localStorage.getItem('application-id');
-   applicationStore.submitApplicationData(applicationNumber);
+   showProgressBar.value = true; 
+
+       setTimeout(() => {
+            showProgressBar.value = false;  
+            buttonLoader.value = true;
+            let applicationNumber = localStorage.getItem('application-id');
+            applicationStore.submitApplicationData(applicationNumber);
+         },3000)
+
+
 }
 
 watch(
@@ -32,17 +39,19 @@ watch(
          localStorage.removeItem('application-id');
          localStorage.removeItem('studentNumber');
          buttonLoader.value = false;
-         
-   
+         showProgressBar.value = false; 
+         showSuccessIcon.value = true
          setTimeout(() => {
-            showProgressBar.value = false; 
-         if(props.appMode){
+            if(props.appMode){
               }else {
-               notificationStore.successToast("Success", data.message); 
-               router.push('/client-dashboard/applications');
+               if(showSuccessIcon){
+                router.push('/client-dashboard/applications');
+               }  
             }
-           
-         }, 3000); // 3000 ms = 3 seconds
+         },3000)
+
+       
+
       }
       
     }
@@ -69,14 +78,31 @@ watch(
        </div>
      </div>
  
+     
+<div class="row justify-content-center" v-if="showSuccessIcon && !showProgressBar">
+  <div class="col-md-6 text-center">
+    <!-- Animated checkmark -->
+    <div class="checkmark-container">
+      <i class="fas fa-check-circle checkmark-icon"></i>
+    </div>
+    <!-- Success message -->
+    <div class="success-message mt-3">
+      <h3>Thank you!</h3>
+      <p>Your application has been received.</p>
+    </div>
+  </div>
+</div>
+
+
+
      <div>
-       <div class="row">
+       <div class="row" v-if="!showSuccessIcon && !showProgressBar">
          <div style="padding: 0;">
            <div class="container mt-0">
             <form  @submit.prevent="submitApplication">
                     <div class="row mx-auto">
                        <div class="col-12">
-                          <h4 style="font-size: 18px;">Payment Method</h4>
+                          <!-- <h4 style="font-size: 18px;">Payment Method</h4> -->
                        </div>
                        <div class="mb-2">
                           <div class="card card-hover mt-4 w-100">
@@ -311,4 +337,44 @@ watch(
   font-weight: bold;
   text-align: center;
 }
+
+/* Container for the checkmark */
+.checkmark-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Checkmark animation */
+.checkmark-icon {
+  font-size: 80px;
+  color: #28a745;
+  animation: pop 0.5s ease-out forwards;
+}
+
+/* Simple pop animation */
+@keyframes pop {
+  0% {
+    transform: scale(0);
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Success message */
+.success-message h3 {
+  font-size: 24px;
+  color: #28a745;
+}
+
+.success-message p {
+  font-size: 18px;
+  color: #555;
+}
+
 </style>
