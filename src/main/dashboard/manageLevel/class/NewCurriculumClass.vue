@@ -10,7 +10,7 @@
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Study Level</small></label>
+        <label class="text-sm"><small>Study Level</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -26,7 +26,7 @@
 
 
       <div>
-        <label class="textColor mt-3 mb-2"><small>Add Class to Curriculum</small></label>
+        <label class="text-sm mt-3 mb-2"><small>Add Class to Curriculum</small></label>
         <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
 
           <li class="list-group-item" v-for="(cls,idx) in classList" :key="idx">

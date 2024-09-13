@@ -9,7 +9,7 @@
 
 
           <div class="mb-2">
-            <label class="textColor"><small>Code</small></label>
+            <label class="text-sm"><small>Code</small></label>
             <input
                 @keypress="commons.codeValidator($event)"
                 maxlength="10"
@@ -23,7 +23,7 @@
 
 
             <div>
-                <label class="textColor"><small>Category</small></label>
+                <label class="text-sm"><small>Category</small></label>
                 <select
                         style="outline: none 0 !important; box-shadow: none;"
                         type="text" v-model="form.category"
@@ -41,7 +41,7 @@
 
 
             <div class="mb-2">
-                <label class="textColor"><small>Name</small></label>
+                <label class="text-sm"><small>Name</small></label>
                 <input
                         style="outline: none 0 !important; box-shadow: none;"
                         type="text" v-model="form.name"

@@ -389,7 +389,7 @@ watch(
 
 
             <div class="mb-2">
-        <label class="textColor"><small>Class</small></label>
+        <label class="text-sm"><small>Class</small></label>
         <select
             class="form-select form-select-sm shadow-none" required
             v-model="formData.class_number"
@@ -428,7 +428,7 @@ watch(
           </div>
 
           <div class="mb-2">
-                <label class="textColor">Type ?</label>
+                <label class="text-sm">Type ?</label>
 
                  <div class="flex">
                    <div class="mr-4">
@@ -503,7 +503,7 @@ watch(
                       </tbody>
                     </table>
                     <button
-                        class="btn btn-primary btn-sm textColor"
+                        class="btn btn-primary btn-sm text-sm"
                         @click.prevent="addService"
                         :disabled="isAddButtonDisabled">
                         <small class="p-1">
@@ -587,7 +587,7 @@ select{
 .star{
   color:red;
 }
-.textColor{
+.text-sm2{
   /* font-size: 1px !important; */
 }
   .select-no-border {

@@ -3,7 +3,7 @@
 <form @submit.prevent="addDailyFeedingSession">
    
 <div class="mb-2">
-    <label class="textColor"><small>Session</small>  </label>
+    <label class="text-sm"><small>Session</small>  </label>
     <select v-model="form.feeding_session_number" class="form-control form-select"> 
             <option disabled value="">Select</option>
             <option v-for="(list, index) in feedingSessionGroupData" :key="index" :value="list.number">{{list.name}}</option>
@@ -11,7 +11,7 @@
 </div>
 
 <div class="mb-2">
-    <label class="textColor"><small>Day</small></label>
+    <label class="text-sm"><small>Day</small></label>
     <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
         <li v-for="(day, index) in daysOfWeek" :key="index" class="list-group-item">
            <div class="row">

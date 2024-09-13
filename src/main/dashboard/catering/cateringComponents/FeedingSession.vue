@@ -200,7 +200,7 @@ watch (
       <div class="row">
             <div class="col-4">
               <div class="mb-2">
-                <label class="textColor"><small>School</small>  </label>
+                <label class="text-sm"><small>School</small>  </label>
 
         <select
                 v-model="form.school_number"

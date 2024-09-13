@@ -11,7 +11,7 @@
         <div class="col-lg-6 content">
 
           <div class="mb-2">
-            <label class="textColor text-sm">Scheme Title</label>
+            <label class="text-sm text-sm">Scheme Title</label>
             <input
                 style="outline: none 0 !important; box-shadow: none;"
                 type="text"
@@ -23,7 +23,7 @@
 
 
       <div class="mb-2" v-if="classList && (classList.length > 0)">
-        <label class="textColor"><small>Class</small></label>
+        <label class="text-sm"><small>Class</small></label>
         <select
             :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'Pending'))"
             style="box-shadow: none;"
@@ -37,7 +37,7 @@
       </div>
 
           <div class="mb-5">
-            <label class="textColor"><small>Academic Year</small></label>
+            <label class="text-sm"><small>Academic Year</small></label>
             <select
                 :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'Pending'))"
                 style="box-shadow: none;"
@@ -58,7 +58,7 @@
 
 
           <div class="mb-2">
-            <label class="textColor"><small>Subject</small></label>
+            <label class="text-sm"><small>Subject</small></label>
             <select
                 :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'Pending'))"
                 style="box-shadow: none;"
@@ -75,7 +75,7 @@
 
 
           <div class="mb-5">
-            <label class="textColor"><small>Scheme by</small></label>
+            <label class="text-sm"><small>Scheme by</small></label>
             <select
                 :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'Pending'))"
                 style="box-shadow: none;"

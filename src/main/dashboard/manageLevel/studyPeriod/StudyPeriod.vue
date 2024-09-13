@@ -200,7 +200,7 @@ watch(
 
     <div class="grid grid-cols-4 gap-2 mb-4 px-3">
       <div class="mb-2">
-        <label class="textColor"><small>Level</small></label>
+        <label class="text-sm"><small>Level</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -215,7 +215,7 @@ watch(
 
 
         <div class="mb-2">
-          <label class="textColor"><small>Academic Year</small></label>
+          <label class="text-sm"><small>Academic Year</small></label>
           <select
               style="box-shadow: none;"
               class="form-select form-select-sm"
@@ -229,7 +229,7 @@ watch(
         </div>
 
           <div class="mb-2">
-            <label class="textColor"><small>Class</small></label>
+            <label class="text-sm"><small>Class</small></label>
             <select
                 class="form-select form-select-sm shadow-none" required
                 v-model="class_number"

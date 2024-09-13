@@ -326,7 +326,7 @@ const clearFormData = () => {
 
     <div class="col-lg-6">
       <div class="mb-2">
-          <label class="textColor"><small>School</small> </label>
+          <label class="text-sm"><small>School</small> </label>
           <select
               v-model="menuForm.school_number"
               class="form-select form-select-sm" required
@@ -343,7 +343,7 @@ const clearFormData = () => {
 
 
       <div class="mb-2">
-            <label class="textColor"><small>Code</small></label>
+            <label class="text-sm"><small>Code</small></label>
             <input
                 v-model="menuForm.code"
                 class="form-control shadow-none"
@@ -355,7 +355,7 @@ const clearFormData = () => {
           </div>
 
           <div class="mb-2">
-        <label class="textColor"><small>Item Name</small></label>
+        <label class="text-sm"><small>Item Name</small></label>
         <input v-model="menuForm.name"   class="form-control shadow-none" required type="text">
       </div>
  
@@ -368,7 +368,7 @@ const clearFormData = () => {
 
 
           <div class="mb-2" v-if="menuForm.school_number">
-            <label class="textColor"><small>Item Type</small> </label>
+            <label class="text-sm"><small>Item Type</small> </label>
             <select
                 v-model="menuForm.type"
                 class="form-select form-select-sm" required
@@ -383,7 +383,7 @@ const clearFormData = () => {
 
           
           <div class="mb-2" v-if="menuForm.type && menuForm.school_number">
-            <label class="textColor"><small> Unit of use</small></label>
+            <label class="text-sm"><small> Unit of use</small></label>
             <div class="input-group">
             <select
                 v-model="menuForm.unit_of_measure_number"
@@ -400,7 +400,7 @@ const clearFormData = () => {
 <!--          <div v-if="menuForm.type && (menuForm.type === 'ITEM')">-->
 
                   <div class="mb-2" >
-                <label class="textColor"><small>Conversion Purchase Unit</small></label>
+                <label class="text-sm"><small>Conversion Purchase Unit</small></label>
                     <input
                         v-model="menuForm.conversion_to_purchase_unit"
                         @keypress="commons.onlyNumberValidator($event)"
@@ -413,7 +413,7 @@ const clearFormData = () => {
                   </div>
 
                   <div class="mb-2">
-                    <label class="textColor"><small>Purchase Unit of measure</small></label>
+                    <label class="text-sm"><small>Purchase Unit of measure</small></label>
                     <div class="input-group">
                     <select
                         v-model="menuForm.purchase_unit_of_measure_number"
@@ -429,7 +429,7 @@ const clearFormData = () => {
       
 
       <div class="mb-2" v-if="menuForm.type === 'ITEM'">
-        <label class="textColor"><small>User Unit Price</small></label>
+        <label class="text-sm"><small>User Unit Price</small></label>
         <input
             v-model="menuForm.base_price"
             class="form-control shadow-none"
@@ -498,7 +498,7 @@ const clearFormData = () => {
 
           <div>
             <button
-                class="btn btn-primary btn-sm textColor ml-3"
+                class="btn btn-primary btn-sm text-sm ml-3"
                 @click.prevent="addItem">
               <small>ADD ANOTHER ITEM</small>
             </button>

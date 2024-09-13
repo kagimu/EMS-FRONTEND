@@ -197,7 +197,7 @@ watch(
           <div class="mx-auto" style="width: 95%;">
 
           <div class="mb-2">
-            <label class="textColor"><small>Campus Name</small></label>
+            <label class="text-sm"><small>Campus Name</small></label>
             <input
                 style="outline: none 0 !important; box-shadow: none;"
                 type="text"
@@ -207,7 +207,7 @@ watch(
           </div>
 
           <div class="mb-2">
-            <label class="textColor"><small>Phone</small></label>
+            <label class="text-sm"><small>Phone</small></label>
             <vue-tel-input
                 @input="handleInput"
                 @keypress="commons.onlyNumberValidator($event)"
@@ -221,7 +221,7 @@ watch(
           </div>
 
           <div class="mb-2">
-            <label class="textColor"><small>Email</small></label>
+            <label class="text-sm"><small>Email</small></label>
             <input
                 style="outline: none 0 !important; box-shadow: none;"
                 type="email"
@@ -232,7 +232,7 @@ watch(
 
 
           <div class="mb-2">
-            <label class="textColor text-sm">Location</label>
+            <label class="text-sm text-sm">Location</label>
             <textarea
                 style="outline: none 0 !important; box-shadow: none; height: 60px"
                 class="form-control noFocus form-control-sm"
@@ -246,7 +246,7 @@ watch(
 
 
             <div class="mb-2">
-              <label class="textColor text-sm">Commencement Date</label>
+              <label class="text-sm text-sm">Commencement Date</label>
               <VueDatePicker
                   text-input
                   auto-apply
@@ -259,7 +259,7 @@ watch(
 
 
             <div class="mb-2">
-              <label class="textColor mt-3 mb-2"><small>Select Curriculum(s) to adopt to this campus</small></label>
+              <label class="text-sm mt-3 mb-2"><small>Select Curriculum(s) to adopt to this campus</small></label>
               <!-- <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
                 <li class="list-group-item" v-for="(lvl,idx) in curriculumList">
                   <input

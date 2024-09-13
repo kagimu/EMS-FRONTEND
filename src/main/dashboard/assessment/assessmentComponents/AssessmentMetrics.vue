@@ -502,7 +502,7 @@ const deleteThisData = async (id,name) => {
 
 
 <style scoped>
-.textColor{
+.text-sm2{
   font-size: 11px;
 }
 

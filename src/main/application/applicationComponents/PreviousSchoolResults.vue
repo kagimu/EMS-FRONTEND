@@ -215,7 +215,7 @@ watch (
           <div class="row">
             <div class="col-lg-2"></div>
             <div class="col-lg-8">
-              <label class="textColor">Provide Previous Marks</label>
+              <label class="text-sm">Provide Previous Marks</label>
               <table style="width: 100%;">
                 <tr v-for="(subjects, index) in formD.subjects" :key="index">
                   <td>
@@ -261,7 +261,7 @@ watch (
 
               
               <p class="mt-3">
-                <label class="textColor">Attach Latest School Report</label>
+                <label class="text-sm">Attach Latest School Report</label>
 
             <input
               ref="file"

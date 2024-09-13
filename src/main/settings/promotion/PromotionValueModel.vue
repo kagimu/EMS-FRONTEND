@@ -8,7 +8,7 @@
         </div>
 
         <div class="mb-2">
-            <label class="textColor"><small>Promotion Setting</small>  </label>
+            <label class="text-sm"><small>Promotion Setting</small>  </label>
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
@@ -21,7 +21,7 @@
         </div>
 
         <div class="mb-2">
-            <label class="textColor"><small>Type</small>  </label><br>
+            <label class="text-sm"><small>Type</small>  </label><br>
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm" required
@@ -41,7 +41,7 @@
         </div>
 
         <div class="mb-2" v-if="isGrade == 'score' || isGrade=='aggregate'">
-          <label class="textColor"><small>Value</small></label>
+          <label class="text-sm"><small>Value</small></label>
           <input
               style="outline: none 0 !important; box-shadow: none;"
               type="number" v-model="form.score"
@@ -51,7 +51,7 @@
 
         
         <div class="mb-2" v-if="isGrade == 'grade'">
-            <label class="textColor"><small>Assessment Grade</small>  </label>
+            <label class="text-sm"><small>Assessment Grade</small>  </label>
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"

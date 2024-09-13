@@ -85,7 +85,7 @@ watch (
   <form @submit.prevent="addMetric">
 
     <div class="mb-2">
-      <label class="textColor"><small>Name</small></label>
+      <label class="text-sm"><small>Name</small></label>
       <input v-model="formData.name"  type="text" required class="form-control shadow-none" placeholder="eg. Exam or Group work or Tests">
     </div>
 

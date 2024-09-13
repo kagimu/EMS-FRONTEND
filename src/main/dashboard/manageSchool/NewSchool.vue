@@ -147,7 +147,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor text-sm">School Name</label>
+        <label class="text-sm text-sm">School Name</label>
         <input
             style="outline: none 0 !important; box-shadow: none;"
             type="text"
@@ -157,7 +157,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor text-sm">Commencement Date</label>
+        <label class="text-sm text-sm">Commencement Date</label>
         <VueDatePicker
             text-input
             auto-apply
@@ -171,7 +171,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor mt-3 mb-2"><small>Select Curriculum(s) to adopt to this School</small></label>
+        <label class="text-sm mt-3 mb-2"><small>Select Curriculum(s) to adopt to this School</small></label>
         <!-- <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
           <li class="list-group-item" v-for="(lvl,idx) in curriculumList">
             <input

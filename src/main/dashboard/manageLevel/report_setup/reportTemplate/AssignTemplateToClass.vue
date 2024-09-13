@@ -137,7 +137,7 @@ watch(
     </div>
 
     <div class="mb-2">
-      <label class="textColor"><small>Level</small></label>
+      <label class="text-sm"><small>Level</small></label>
       <select
           style="box-shadow: none;"
           class="form-select form-select-sm"

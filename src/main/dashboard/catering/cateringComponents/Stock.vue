@@ -188,7 +188,7 @@ watch(
 
              <div>
                <div>
-                 <label class="textColor"><small>School</small> </label>
+                 <label class="text-sm"><small>School</small> </label>
                  <select
                      style="box-shadow: none;"
                      class="form-select form-select-sm" required
@@ -202,7 +202,7 @@ watch(
              </div>
 
              <div>
-               <label class="textColor"><small>Campus</small>  </label>
+               <label class="text-sm"><small>Campus</small>  </label>
                <select
                    style="box-shadow: none;"
                    class="form-select form-select-sm"
@@ -215,7 +215,7 @@ watch(
              </div>
 
              <div>
-               <label class="textColor"><small>Item</small>  </label>
+               <label class="text-sm"><small>Item</small>  </label>
                <select
                    style="box-shadow: none;"
                    class="form-select form-select-sm"

@@ -250,7 +250,7 @@ watch (
                       </tbody>
                     </table>
                     <button
-                        class="btn btn-primary btn-sm textColor"
+                        class="btn btn-primary btn-sm text-sm"
                         @click.prevent="addService"
                         :disabled="isAddButtonDisabled">
                         <small class="px-4">
@@ -323,7 +323,7 @@ select{
 .star{
   color:red;
 }
-.textColor{
+.text-sm2{
   /* font-size: 1px !important; */
 }
   .select-no-border {

@@ -7,12 +7,12 @@
           <div class="card-header">
      <div class="row">
       <div class="col-lg-4">
-          <h6 class="textColor" style=" text-align: left;font-size: 15px;">
+          <h6 class="text-sm" style=" text-align: left;font-size: 15px;">
             <i class="bi bi-x-lg" @click="goBack()"></i>&nbsp;&nbsp;&nbsp;Student Admission<b></b>    
           </h6>
       </div>
       <div class="col-lg-8">
-        <button type="link" @click="goBack()" class="link-primary textColor" style="float: right;font-size: 15px;margin-left:"><i class="bi bi-arrow-right" ></i>&nbsp;&nbsp;&nbsp;View Admission Offers</button>
+        <button type="link" @click="goBack()" class="link-primary text-sm" style="float: right;font-size: 15px;margin-left:"><i class="bi bi-arrow-right" ></i>&nbsp;&nbsp;&nbsp;View Admission Offers</button>
       </div>
      </div>
          </div>

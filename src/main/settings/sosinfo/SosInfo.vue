@@ -11,7 +11,7 @@
   <div class="row mx-auto">
     <div class="col-12" style="margin-top: 20px;">
         <div class="mb-6">
-          <label class="textColor text-sm"><small>Source Of Info</small> <span class="star">*</span></label>
+          <label class="text-sm text-sm"><small>Source Of Info</small> <span class="star">*</span></label>
           <input type="text" style="outline: none 0 !important; box-shadow: none; font-size: 10px;;" v-model="form.name" required class="form-control form-control-sm">
           <div class="text- mt-4">
           <div class="row">

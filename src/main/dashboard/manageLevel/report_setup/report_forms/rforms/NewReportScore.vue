@@ -51,7 +51,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Code</small></label>
+        <label class="text-sm"><small>Code</small></label>
         <input
             @keypress="commons.codeValidator($event)"
             maxlength="10"
@@ -63,7 +63,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Level</small></label>
+        <label class="text-sm"><small>Level</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -77,7 +77,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Academic Year</small></label>
+        <label class="text-sm"><small>Academic Year</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -92,7 +92,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Columns</small></label>
+        <label class="text-sm"><small>Columns</small></label>
         <input
             maxlength="50"
             type="text"
@@ -105,7 +105,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Status</small></label>
+        <label class="text-sm"><small>Status</small></label>
         <input
             maxlength="50"
             type="text"

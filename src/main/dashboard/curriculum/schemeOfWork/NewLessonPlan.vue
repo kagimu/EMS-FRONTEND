@@ -8,21 +8,21 @@
       <div class="row mx-auto mb-4">
         <div class="col-lg-5 content">
 
-          <label class="textColor text-sm">
+          <label class="text-sm text-sm">
             <b>Concepts</b>
           </label>
           <div class="row mt-2">
             <div class="col-lg-4">
-              <label class="textColor text-sm">Code</label>
+              <label class="text-sm text-sm">Code</label>
             </div>
             <div class="col-lg-8">
-              <label class="textColor text-sm">Concept</label>
+              <label class="text-sm text-sm">Concept</label>
             </div>
           </div>
         </div>
         <div class="col-lg-1 content"></div>
         <div class="col-lg-6 content">
-          <label class="textColor text-sm">
+          <label class="text-sm text-sm">
           <b>Teaching steps</b>
         </label>
           <div class="row mt-2">

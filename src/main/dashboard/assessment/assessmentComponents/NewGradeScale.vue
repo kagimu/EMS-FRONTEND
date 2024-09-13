@@ -465,7 +465,7 @@ watch(
                 <textarea
                     placeholder="Very Good"
                     v-model="field.remark"
-                    class="form-control noFocus text-xs shadow-none textColor"
+                    class="form-control noFocus text-xs shadow-none text-sm"
                     id="floatingTextarea2"
                     style="height: 10px"></textarea>
               </td>
@@ -590,12 +590,12 @@ watch(
     </td>
 
     <td>
-      <textarea v-model="gradeScaleInfo.remarks" class="form-control textColor outline-none shadow-none">
+      <textarea v-model="gradeScaleInfo.remarks" class="form-control text-sm outline-none shadow-none">
       </textarea>
     </td>
 
     <td>
-      <textarea v-model="gradeScaleInfo.description" class="form-control textColor outline-none shadow-none">
+      <textarea v-model="gradeScaleInfo.description" class="form-control text-sm outline-none shadow-none">
       </textarea>
     </td>
 

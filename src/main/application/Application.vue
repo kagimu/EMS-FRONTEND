@@ -153,7 +153,7 @@ input:focus {
   box-shadow: none;
 }
 
-.textColor{
+.text-sm2{
   color: #070707;
   float: left !important;
 }.txt{

@@ -3,7 +3,7 @@
 
 
       <div class="mb-2">
-          <label class="textColor"><small>School</small> <span class="star">*</span></label>
+          <label class="text-sm"><small>School</small> <span class="star">*</span></label>
           <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm" required
@@ -18,7 +18,7 @@
 
 
       <div class="mb-2">
-          <label class="textColor"><small>Campus</small>  <span class="star">*</span></label>
+          <label class="text-sm"><small>Campus</small>  <span class="star">*</span></label>
 
           <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
 
@@ -28,7 +28,7 @@
 
                           style="outline: none 0 !important; box-shadow: none;"
                           class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="lvl.number">
-                  <label class="textColor" :for="lvl.number"><small>{{lvl.name}}</small></label>
+                  <label class="text-sm" :for="lvl.number"><small>{{lvl.name}}</small></label>
               </li>
 
           </ul>
@@ -36,30 +36,30 @@
 
 
     <div class="mb-2">
-      <label class="textColor"><small>Name</small></label>
+      <label class="text-sm"><small>Name</small></label>
       <input  type="text" style="outline: none 0 !important;box-shadow: none;"
           required class="form-control form-select-sm" v-model="formData.name">
     </div>
     <div class="mb-2">
-      <label class="textColor"><small>Prefix</small></label>
+      <label class="text-sm"><small>Prefix</small></label>
       <input  type="text" style="outline: none 0 !important;box-shadow: none;"
           required class="form-control form-select-sm" v-model="formData.prefix">
     </div>
     
       <div class="mb-2">
-          <label class="textColor"><small>Cost</small></label>
+          <label class="text-sm"><small>Cost</small></label>
           <input v-model="formData.cost" style="outline: none 0 !important; box-shadow: none;" type="number"  required  class="form-control form-select-sm">
       </div>
 
       <div class="mb-2">
-          <label class="textColor"><small>Product is ?</small></label>
+          <label class="text-sm"><small>Product is ?</small></label>
           <br/>
           <input type="radio" v-model="formData.mandatory" :value="true" >&nbsp; Mandatory  &nbsp;&nbsp;&nbsp;
           <input type="radio" v-model="formData.mandatory" :value="false">&nbsp; Optional
       </div>
 
       <div class="mb-2">
-          <label class="textColor"><small>Addition Info</small></label>
+          <label class="text-sm"><small>Addition Info</small></label>
           <textarea v-model="formData.description" class="form-control "></textarea>
       </div>
       <div class="flex justify-content-end mt-2" style="width: 100%;">
@@ -175,7 +175,7 @@ async (data) => {
 </script>
 
 <style scoped>
-.textColor{
+.text-sm2{
 font-size: 11px !important;
 }
 .noFocus:focus {

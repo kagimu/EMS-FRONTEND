@@ -216,7 +216,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Code</small></label>
+        <label class="text-sm"><small>Code</small></label>
         <input
             @keypress="commons.codeValidator($event)"
             maxlength="10"
@@ -229,7 +229,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Study Period Group Name</small></label>
+        <label class="text-sm"><small>Study Period Group Name</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -243,7 +243,7 @@ watch(
 
       <div class="grid grid-cols-2 gap-2 mb-2">
         <div>
-          <label class="textColor"><small>Study Period Start Date</small></label>
+          <label class="text-sm"><small>Study Period Start Date</small></label>
           <VueDatePicker
               text-input
               auto-apply
@@ -254,7 +254,7 @@ watch(
           ></VueDatePicker>
         </div>
         <div>
-          <label class="textColor"><small>Study Period End Date</small></label>
+          <label class="text-sm"><small>Study Period End Date</small></label>
           <VueDatePicker
               text-input
               auto-apply
@@ -268,7 +268,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Level</small></label>
+        <label class="text-sm"><small>Level</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -281,7 +281,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Academic Year</small></label>
+        <label class="text-sm"><small>Academic Year</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -297,7 +297,7 @@ watch(
 
 {{ form?.classes }}
       <div class="mb-2">
-        <label class="textColor"><small>Class</small></label>
+        <label class="text-sm"><small>Class</small></label>
         <combo-box
             v-model:optionResponse="form.classes"
             :optionList="campusClassList"

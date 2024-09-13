@@ -39,7 +39,7 @@
                         </tbody>
                       </table>
                    
-                      <button class="btn btn-primary btn-sm textColor" @click.prevent="addItem" :disabled="isAddButtonDisabled"><small>ADD ANOTHER ITEM</small></button>
+                      <button class="btn btn-primary btn-sm text-sm" @click.prevent="addItem" :disabled="isAddButtonDisabled"><small>ADD ANOTHER ITEM</small></button>
                     
                   </div>
                 </div> 

@@ -141,7 +141,7 @@ watch(
       </div>
       
       <div class="mb-2">
-        <label class="textColor"><small>Code</small></label>
+        <label class="text-sm"><small>Code</small></label>
         <input
             @keypress="commons.codeValidator($event)"
             maxlength="10"
@@ -154,7 +154,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Name</small></label>
+        <label class="text-sm"><small>Name</small></label>
         <input
             placeholder="eg. Mid Term, End of Term"
             maxlength="50"
@@ -168,7 +168,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Level</small></label>
+        <label class="text-sm"><small>Level</small></label>
         <select
             class="form-select form-select-sm shadow-none"
             v-model="campus_level_number"
@@ -180,7 +180,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Class</small></label>
+        <label class="text-sm"><small>Class</small></label>
         <select
             class="form-select form-select-sm shadow-none" required
             v-model="campus_class_number"
@@ -193,7 +193,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>General report settings</small></label>
+        <label class="text-sm"><small>General report settings</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -207,7 +207,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Percentage Share</small></label>
+        <label class="text-sm"><small>Percentage Share</small></label>
         <input
             maxlength="50"
             type="text"

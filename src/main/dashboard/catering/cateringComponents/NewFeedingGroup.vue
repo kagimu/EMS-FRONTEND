@@ -145,7 +145,7 @@ watch(
         <!-- {{ groupData }} -->
 <form @submit.prevent="addFeedingGroup">
     <div class="mb-2" v-if="groupData == ''">
-    <label class="textColor"><small>School</small> </label>
+    <label class="text-sm"><small>School</small> </label>
     <select
             style="box-shadow: none;"
             class="form-select form-select-sm shadow-none"
@@ -158,7 +158,7 @@ watch(
     </select>
 </div>
 <!-- <div class="mb-2" v-if="groupData == ''">
-    <label class="textColor"><small>Campus</small>  </label>
+    <label class="text-sm"><small>Campus</small>  </label>
     <select
             style="box-shadow: none;"
             class="form-select form-select-sm shadow-none"
@@ -171,7 +171,7 @@ watch(
 </div> -->
 <!-- 
 <div class="mb-2">
-    <label class="textColor"><small>Code</small></label>
+    <label class="text-sm"><small>Code</small></label>
     <input
         v-model="form.code"
         @keypress="commons.codeValidator($event)"
@@ -182,7 +182,7 @@ watch(
         class="form-control shadow-none">
 </div> -->
 <div class="mb-2">
-    <label class="textColor"><small>Name</small></label>
+    <label class="text-sm"><small>Name</small></label>
     <input v-model="form.name"   type="text" required class="form-control shadow-none" placeholder="eg. Full board">
     
 </div>

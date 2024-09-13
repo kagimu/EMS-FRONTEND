@@ -9,7 +9,7 @@
 
 
             <div class="mb-2">
-                <label class="textColor"><small>School</small></label>
+                <label class="text-sm"><small>School</small></label>
                 <select
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
@@ -24,7 +24,7 @@
 
 
             <div class="mb-2">
-                <label class="textColor"><small>Campus</small></label>
+                <label class="text-sm"><small>Campus</small></label>
                 <select
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
@@ -39,7 +39,7 @@
 
             <div class="mb-2">
 
-                <label class="textColor"><small>Level</small></label>
+                <label class="text-sm"><small>Level</small></label>
                 <select
                         @change="fetchClasses"
                         style="box-shadow: none;"
@@ -54,7 +54,7 @@
 
 
             <div class="mb-2">
-                <label class="textColor"><small>Class</small></label>
+                <label class="text-sm"><small>Class</small></label>
                 <select
                         @change="fetchStreamsAndSubjects(class_number)"
                         style="box-shadow: none;"
@@ -67,7 +67,7 @@
             </div>
 
             <div class="mb-2">
-                <label class="textColor"><small>Stream</small></label>
+                <label class="text-sm"><small>Stream</small></label>
                 <select
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
@@ -81,7 +81,7 @@
 
 
             <div class="mb-2">
-                <label class="textColor"><small>Subject</small></label>
+                <label class="text-sm"><small>Subject</small></label>
                 <select
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
@@ -94,7 +94,7 @@
 
 
             <div class="mb-3">
-                <label class="textColor"><small>Day of the week</small></label>
+                <label class="text-sm"><small>Day of the week</small></label>
                 <select
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
@@ -109,7 +109,7 @@
 
             <div class="col-lg-6">
               <div class="mb-2">
-                <label class="textColor"><small>Start Time</small></label>
+                <label class="text-sm"><small>Start Time</small></label>
                 <input type="time" style="outline: none 0 !important; box-shadow: none;" v-model="form.start_time"
                        placeholder="09:00" required class="form-control form-select-sm">
               </div>
@@ -117,7 +117,7 @@
 
             <div class="col-lg-6">
               <div class="mb-2">
-                <label class="textColor"><small>End Time</small></label>
+                <label class="text-sm"><small>End Time</small></label>
                 <input type="time" style="outline: none 0 !important; box-shadow: none;" v-model="form.end_time"
                        placeholder="15:45" required class="form-control form-select-sm">
               </div>

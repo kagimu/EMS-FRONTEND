@@ -178,7 +178,7 @@
   .star{
     color:red;
   }
-  .textColor{
+  .text-sm2{
     /* font-size: 1px !important; */
   }
     .select-no-border {

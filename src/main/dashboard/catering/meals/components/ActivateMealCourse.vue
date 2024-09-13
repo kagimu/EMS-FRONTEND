@@ -170,7 +170,7 @@ watch(
         <div class="col-lg-6">
 
           <div class="mb-2">
-            <label class="textColor"><small>School</small></label>
+            <label class="text-sm"><small>School</small></label>
             <select
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
@@ -183,7 +183,7 @@ watch(
           </div>
 
           <div class="mb-2">
-            <label class="textColor mt-3 mb-2"><small>Select Campus</small></label>
+            <label class="text-sm mt-3 mb-2"><small>Select Campus</small></label>
             <!-- <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
               <li class="list-group-item" v-for="(lst,idx) in campusList">
                 <input
@@ -204,7 +204,7 @@ watch(
           </div>
 
           <div class="mb-2">
-            <label class="textColor"><small>Meal Course</small></label>
+            <label class="text-sm"><small>Meal Course</small></label>
             <select
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
@@ -219,7 +219,7 @@ watch(
 
 
           <div class="mb-2">
-            <label class="textColor"><small>Menu Pack</small></label>
+            <label class="text-sm"><small>Menu Pack</small></label>
             <select
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
@@ -245,7 +245,7 @@ watch(
         </div>
         <div class="col-lg-6">
           <div class="mb-2">
-            <label class="textColor mt-3 mb-2"><small>Select Days of the week</small></label>
+            <label class="text-sm mt-3 mb-2"><small>Select Days of the week</small></label>
             <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
               <li class="list-group-item" v-for="(day,idx) in daysOfWeek">
                 <input

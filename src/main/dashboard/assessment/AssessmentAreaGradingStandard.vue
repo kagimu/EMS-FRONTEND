@@ -191,7 +191,7 @@ watch(
 
             <div class="mb-2">
               <div>
-                <label class="textColor"><small>Level</small></label>
+                <label class="text-sm"><small>Level</small></label>
                 <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
@@ -207,7 +207,7 @@ watch(
 
             <div class="mb-2">
               <div>
-                <label class="textColor"><small>Class</small>
+                <label class="text-sm"><small>Class</small>
                 </label>
                 <select
                     style="box-shadow: none;"
@@ -224,7 +224,7 @@ watch(
 
             <div class="mb-2">
               <div>
-                <label class="textColor"><small>Grading Standards</small></label>
+                <label class="text-sm"><small>Grading Standards</small></label>
                 <select
                     class="form-control form-select form-control-sm shadow-none"
                     v-model="grading_standard_number"

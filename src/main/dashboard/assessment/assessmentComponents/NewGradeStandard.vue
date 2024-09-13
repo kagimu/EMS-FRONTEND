@@ -228,7 +228,7 @@ const newClass = () => {
 
           <div class="mb-2">
             <div class="text-[13px] text-[#505050]"> Description</div>
-            <textarea class="form-control shadow-none text-[13px] text-[#505050] textColor" v-model="form.description"></textarea>
+            <textarea class="form-control shadow-none text-[13px] text-[#505050] text-sm" v-model="form.description"></textarea>
           </div>
 
 

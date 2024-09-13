@@ -359,7 +359,7 @@ watch(
                                             <div class="row">
                                                <div class="col-3">
                                                   <div class="mb-2">
-                                                     <!-- <label class="textColor"><small>School</small> </label> -->
+                                                     <!-- <label class="text-sm"><small>School</small> </label> -->
                                                      <select
                                                         style="box-shadow: none;"
                                                         class="form-select form-select-sm" required
@@ -375,7 +375,7 @@ watch(
                                                </div>
                                                <div class="col-3">
                                                   <div class="mb-2">
-                                                     <!-- <label class="textColor"><small>Campus</small>  </label> -->
+                                                     <!-- <label class="text-sm"><small>Campus</small>  </label> -->
                                                      <select
                                                         style="box-shadow: none;"
                                                         class="form-select form-select-sm"
@@ -436,7 +436,7 @@ watch(
                                                </div>
                                                <div class="col-3">
                                                   <div class="mb-2">
-                                                     <!-- <label class="textColor"><small>Stream</small> </label> -->
+                                                     <!-- <label class="text-sm"><small>Stream</small> </label> -->
                                                      <select
                                                         style="box-shadow: none;"
                                                         class="form-select form-select-sm" required
