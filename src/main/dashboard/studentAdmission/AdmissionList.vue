@@ -515,7 +515,7 @@ watch(
               <div
                     class="w-full overflow-auto max-h-[520px] scrollbar-thin"
                     @scroll="onScroll">
-              <div>
+
                     <table
                        id="datatable"
                        class="table table-hover caption-top mt-4 table-sm table-striped"
@@ -592,7 +592,7 @@ watch(
                           </tr>
                        </tbody>
                     </table>
-               </div>
+
                </div>
 
                  </div>
