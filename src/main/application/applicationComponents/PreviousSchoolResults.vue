@@ -207,7 +207,7 @@ watch (
 </script>
 <template>
     <div>
-      <p class=" mt-4 mb-10" style="text-align: center !important;">PREVIOUS SCHOOL RESULTS</p>
+      <p class=" mt-4 mb-10" style="text-align: center !important;">PREVIOUS SCHOOL RESULTS </p>
     </div>
     <div class="mt-0">
       <form @submit.prevent="savePreviousSchoolResults" enctype="multipart/form-data">

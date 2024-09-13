@@ -143,7 +143,7 @@ const addParentPersonalDetails = () => {
 
         <div class="mb-8">
           <input type="hidden"  v-model="formData.parent_number">
-          <label class="text-sm text-sm"><small>Surname/Family name</small> <span class="star">*</span></label>
+          <label class="text-sm text-sm"><small>Surname/Family name </small> <span class="star">*</span></label>
           <input type="text" style="outline: none 0 !important; box-shadow: none; font-size: 10px;;" v-model="form.surname" required class="form-control form-control-sm">
         </div>
       <div class="row">

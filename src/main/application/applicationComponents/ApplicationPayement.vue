@@ -14,6 +14,10 @@ const buttonLoader = ref(false);
 const showProgressBar = ref(false); // Progress bar control
 const router = useRouter();
 
+const props = defineProps({
+   appMode:String
+   })
+
 const submitApplication = () => {
    buttonLoader.value = true;
    showProgressBar.value = true; // Show progress bar when submission starts
@@ -32,8 +36,12 @@ watch(
    
          setTimeout(() => {
             showProgressBar.value = false; 
-            router.push('/client-dashboard/applications');
-            notificationStore.successToast("Success", data.message); 
+         if(props.appMode){
+              }else {
+               notificationStore.successToast("Success", data.message); 
+               router.push('/client-dashboard/applications');
+            }
+           
          }, 3000); // 3000 ms = 3 seconds
       }
       
