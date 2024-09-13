@@ -13,6 +13,7 @@
   import PaginationTemplate from "@/components/PaginationTemplate.vue";
 
   import { useAbility } from '@casl/vue';
+  import FileUploader from "@/components/FileUploader.vue";
   const { can } = useAbility()
 
   const levelStore = useLevelStore()
@@ -20,8 +21,11 @@
   const studentNum=ref(null)
   const enrolmentStore = useEnrolmentStore()
   const mymodal = ref(false)
-  const studentData = ref([])
+  const studentData = ref(null)
   const tableLoader = ref(true)
+  const uploadDialog = ref(false)
+  const studentPhoto = ref(null)
+  const studentNumber = ref(null)
 
   const showModal = (studentN,adm,stud) =>{
   studentNum.value = studentN
@@ -168,9 +172,7 @@ watch(
    }
    loading.value = true;
    admissionList.value = []
-   admissionStore.fetchAdmissionByFilters(data).finally(() => {
-  })
-
+   admissionStore.fetchAdmissionByFilters(data)
   }
 
 
@@ -188,9 +190,7 @@ watch(
       academic_year_number:form.academic_year_number
    }
 
-   admissionStore.fetchAdmissionByFilters(data).finally(() => {
-    loading.value = false; 
-  })
+   admissionStore.fetchAdmissionByFilters(data)
 
 
   }
@@ -203,7 +203,7 @@ watch(
 
       let current_page = data.page
       page.value = current_page
-      tableLoader.value = false
+      loading.value = false
 
       let per_page_item = data.per_page;
       per_page.value = per_page_item;
@@ -325,12 +325,30 @@ watch(
        {deep:true}
      )
 
+  const uploadStudentPhoto = (adm) => {
+    studentNumber.value = adm?.student?.number
+    studentPhoto.value = adm?.student?.photo
+    alert(JSON.stringify(adm))
+    uploadDialog.value = true
+  }
+
+  const successUpload = (data) => {
+    if(data){
+      uploadDialog.value = false
+      doFetchAdmission()
+    }
+  }
+
 </script>
 <template>
 
 <AppModal title="Enrol" v-model="mymodal" xl6>
    <EnrolModel :studentNumber="studentNum" :admissionData="admissionInfoData" :studentDataInfo="studentData"></EnrolModel>
 </AppModal>
+
+  <AppModal title="Upload Student Photo" v-model="uploadDialog" xl>
+    <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload"  :studentNumber="studentNumber" :imageUrl="studentPhoto"></file-uploader>
+  </AppModal>
 
   <div>
 
@@ -536,6 +554,7 @@ watch(
                                 
  
                                <div class="flex">
+                                 <i class="bi bi-card-image cursor-pointer" @click="uploadStudentPhoto(adm)" ></i>
                                  <div v-if="can('enroll_student','manage')">
                                    <button  v-if="adm.status !== 'Enrolled'" @click="showModal(adm.student.number,adm.admission_number,adm)"
                                             type="button" class="btn btn-sm btn-primary mb-2 mr-4 "
