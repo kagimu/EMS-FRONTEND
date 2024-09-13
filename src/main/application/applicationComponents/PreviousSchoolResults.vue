@@ -149,16 +149,16 @@ watch (
     {deep:true}
 )
 
-watch (
-    () => assessmentStore.errorMessage,
-    async (data) => {
-      if(data){
-        errorMessage.value = data.message
-        notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-)
+// watch (
+//     () => assessmentStore.errorMessage,
+//     async (data) => {
+//       if(data){
+//         errorMessage.value = data.message
+//         notificationStore.errorToast("Error",data.message)
+//       }
+//     },
+//     {deep:true}
+// )
 
 const skipp = () =>{
   emit("next", {id:applicationId.value, step:5})
@@ -176,11 +176,11 @@ watch (
         applicationId.value = data.number
         let campusClassNo = data?.student?.campus_class_number
         if(campusClassNo) {
-        let data = {
-    class_number:campusClassNo,
-    curriculum_number:localStorage.getItem("campus_curriculum_number")
-  }
-  assessmentStore.fetchsubjects(data)
+  //       let data = {
+  //   class_number:campusClassNo,
+  //   curriculum_number:localStorage.getItem("campus_curriculum_number")
+  // }
+  // assessmentStore.fetchsubjects(data)
         }
       }
     }

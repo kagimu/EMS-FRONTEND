@@ -57,7 +57,7 @@ const form = reactive({
 onMounted(() => {
       schoolStore.fetchSchools(entity_number)
 
-      getModeOfStudyInfo()
+      // getModeOfStudyInfo()
     }
 )
 
@@ -156,7 +156,7 @@ watch (
         localStorage.setItem("CampusClassNumber", form.class_number)
         localStorage.setItem("studentNumber", data.data.number)
         buttonLoader.value = false
-        assessmentStore.fetchAssessmentAreaByClass(form.class_number)
+        // assessmentStore.fetchAssessmentAreaByClass(form.class_number)
 
         emit("next", {id:applicationId.value, step:3})
 
@@ -250,10 +250,10 @@ watch (
         form.lin = draft?.lin
         student_number.value = draft.number
         if(draft?.school_number) {
-        let data = {
+        let dataa = {
     school_number:draft?.school_number,
   }
-  modeStudyStore.fetchModeOfStudy(data)
+  modeStudyStore.fetchModeOfStudy(dataa)
 }
 
         form.mode_of_study_number = draft.mode_of_study_number
