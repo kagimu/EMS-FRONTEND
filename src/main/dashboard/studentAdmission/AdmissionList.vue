@@ -328,7 +328,6 @@ watch(
   const uploadStudentPhoto = (adm) => {
     studentNumber.value = adm?.student?.number
     studentPhoto.value = adm?.student?.photo
-    alert(JSON.stringify(adm))
     uploadDialog.value = true
   }
 
@@ -544,7 +543,17 @@ watch(
                             <td>
                                 {{adm.student.adn}}
                              </td>
-                             <td style="text-transform: capitalize !important;">{{ adm.student.surname + " " + adm.student.second_name+ " " + adm.student.other_name }}</td>
+                             <td style="text-transform: capitalize !important;">
+                               <div class="flex flex-row items-center">
+                                 <div class="text-center">
+                                   <img v-if="adm?.student?.photo" alt="photo" class="w-[50px] h-[50px] border rounded-full" :src="adm?.student?.photo"/>
+                                   <div v-else class="m-auto">
+                                     <i class="bi-person-circle text-[45px] text-[#8a8888]"></i>
+                                   </div>
+                                 </div>
+                                 <div class="ml-2">{{ adm.student.surname + " " + adm.student.second_name+ " " + adm.student.other_name }}</div>
+                               </div>
+                             </td>
                              <td>{{ adm.campus.name }}</td>
                              <td>{{ adm.student.campus_class }}</td>
                              <td>{{ adm.stream.name }}</td>
@@ -554,7 +563,12 @@ watch(
                                 
  
                                <div class="flex">
-                                 <i class="bi bi-card-image cursor-pointer" @click="uploadStudentPhoto(adm)" ></i>
+
+<!--                                 <div class="mr-2 rounded-sm px-2 text-[#0d6dfa] cursor-pointer" style="border: 1px solid #0d6dfa;" @click="uploadStudentPhoto(adm)">
+                                   <i class="bi bi-card-image cursor-pointer mr-1"></i>
+                                   Upload Photo
+                                 </div>-->
+
                                  <div v-if="can('enroll_student','manage')">
                                    <button  v-if="adm.status !== 'Enrolled'" @click="showModal(adm.student.number,adm.admission_number,adm)"
                                             type="button" class="btn btn-sm btn-primary mb-2 mr-4 "

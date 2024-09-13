@@ -197,7 +197,7 @@ const successUpload = async (data) => {
           <div class="border rounded-md bg-white mb-2 px-3">
 
             <div class="text-center">
-              <img v-if="studentPhoto" alt="logo" class="w-[140px] border rounded-md mx-auto my-3" :src="studentPhoto"/>
+              <img v-if="studentPhoto" alt="photo" class="w-[140px] border rounded-md mx-auto my-3" :src="studentPhoto"/>
               <i v-else class="bi-person-circle text-[100px] text-[#8a8888] border rounded-md py-1 px-4"></i>
             </div>
 
