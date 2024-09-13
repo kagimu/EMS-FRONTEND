@@ -127,7 +127,8 @@
       {
         campus_curriculum_number:campus_curriculum_number,
         academic_year_number:draft.academic_year_number,
-        class_number:draft.class_number
+        class_number:draft.class_number,
+        school_number:schoolNumber
       } 
     )
   form.study_period_number = draft.study_period_number
@@ -179,7 +180,8 @@
       {
         campus_curriculum_number:campus_curriculum_number,
         academic_year_number:academic_year_number.value,
-        class_number:class_number
+        class_number:class_number,
+        school_number:schoolNumber
       }
   )
 
