@@ -546,8 +546,10 @@ watch(
                              <td style="text-transform: capitalize !important;">
                                <div class="flex flex-row items-center">
                                  <div class="text-center">
-                                   <img v-if="adm?.student?.photo" alt="logo" class="w-[40px] border rounded-md py-1 px-2" :src="studentPhoto"/>
-                                   <i v-else class="bi-person-circle text-[20px] text-[#8a8888] border rounded-md py-1 px-2"></i>
+                                   <img v-if="adm?.student?.photo" alt="photo" class="w-[50px] h-[50px] border rounded-full" :src="adm?.student?.photo"/>
+                                   <div v-else class="m-auto">
+                                     <i class="bi-person-circle text-[45px] text-[#8a8888]"></i>
+                                   </div>
                                  </div>
                                  <div class="ml-2">{{ adm.student.surname + " " + adm.student.second_name+ " " + adm.student.other_name }}</div>
                                </div>
@@ -562,10 +564,10 @@ watch(
  
                                <div class="flex">
 
-                                 <div class="mr-2 rounded-sm px-2 text-[#0d6dfa] cursor-pointer" style="border: 1px solid #0d6dfa;" @click="uploadStudentPhoto(adm)">
+<!--                                 <div class="mr-2 rounded-sm px-2 text-[#0d6dfa] cursor-pointer" style="border: 1px solid #0d6dfa;" @click="uploadStudentPhoto(adm)">
                                    <i class="bi bi-card-image cursor-pointer mr-1"></i>
                                    Upload Photo
-                                 </div>
+                                 </div>-->
 
                                  <div v-if="can('enroll_student','manage')">
                                    <button  v-if="adm.status !== 'Enrolled'" @click="showModal(adm.student.number,adm.admission_number,adm)"
