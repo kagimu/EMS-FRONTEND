@@ -109,19 +109,35 @@ const dataList = ref([])
 
 
 
-
 const deleteThisData = async (id,name) => {
 
 const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
 if (agreed) {
-  let data = {
- 
-  }
+     let data = {
+      feeding_session_number:id
+    }
+     mealStore.deleteMealCourseFeedingSessions(data)
+}
 }
 
+watch(
+    () => mealStore.deleteMealCourseFeedingSessionsResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
 
-}
-
+watch(
+    () => mealStore.errorMessage,
+    async (data) => {
+      if(data){
+        let message = data.message
+        notificationStore.errorToast("Error","No i wont delete !")
+      }
+    }
+)
 
 
 </script>
