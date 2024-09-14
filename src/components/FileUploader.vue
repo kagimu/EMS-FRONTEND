@@ -160,11 +160,10 @@ const  saveFile = async (data) => {
         </div>
 
         <VueCropper
-            style="width: 50%;"
             v-if="showCropper"
-            class="mx-auto"
+            class="mx-auto w-[90%] h-[400px]"
             ref="cropper"
-            :aspect-ratio="10 / 10"
+            :aspect-ratio="10 / 9"
             :src="selectedFile"
             alt="Source Image"></VueCropper>
 
