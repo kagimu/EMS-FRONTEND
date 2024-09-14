@@ -32,7 +32,8 @@ const form = reactive({
 })
 
 const props = defineProps({
-  mealListData:{}
+  mealListData:{},
+  feeding_meal_course_number:String
 })
 
 const getMealCourseMenuParkInfo = () => {
@@ -43,8 +44,8 @@ const getMealCourseMenuParkInfo = () => {
     doFetchMealCourses()
     }
   
-    form.meal_course_number=draftData.feeding_session_number,
-    form.feeding_sessions = draftData.pack_items
+    form.meal_course_number=props.feeding_meal_course_number,
+    form.feeding_sessions = [draftData.feeding_session_number];
   }
 }
 
@@ -69,13 +70,8 @@ const doFetchFeedingSessions = () => {
 
 const addMealCourseFeedingSessionsDialog = () =>{
   loader.value = true
-  if(props.mealListData){
-    form.feeding_session_number = props.mealListData.feeding_session_number
-    mealStore.updateMealCourseFeedingSessions(form)
-  }else{
-    mealStore.createMealCourseFeedingSessions(form)
-  }
-  
+  mealStore.createMealCourseFeedingSessions(form)
+ 
 }
 
 
@@ -93,8 +89,7 @@ watch(
 watch(
     () => cateringStore.feedingGroupSessionsInfoResponse,
     async (data) => {
-      // feedingSessionGroupList.value = data.data
-
+  
       let draft = data?.data 
         if(draft && (draft?.length > 0)){
           feedingSessionGroupList.value = []
@@ -157,7 +152,6 @@ watch(
 </script>
 <template>
   <div>
-    {{ mealListData }}
 
     <form @submit.prevent="addMealCourseFeedingSessionsDialog">
 
@@ -203,7 +197,7 @@ watch(
           </li>
         </ul> -->
 
-        
+     
         <combo-box
             v-model:optionResponse="form.feeding_sessions"
             :optionList="feedingSessionGroupList"

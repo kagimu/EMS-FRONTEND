@@ -27,6 +27,7 @@ const schoolsList = ref([])
 const mealCourseList = ref([])
 
 const addMeal = () => {
+  mealListData.value = ""
   mealCourseFeedingSessionsDialog.value = true
   mealEditMode.value=false
 }
@@ -40,12 +41,14 @@ onMounted(
 
 
 const doCourseFeedingSessionInfo = async () => {
-  await fetchAllMealCourseFeeding()
+  fetchAllMealCourseFeeding()
 }
 
 
 const doFetchMealCourses = () => {
+  fetchAllMealCourseFeeding()
     mealStore.fetchMealCourses({school_number:school_number.value,status:'ACTIVE'})
+   
 }
 
 const fetchAllMealCourseFeeding = async () => {
@@ -99,8 +102,10 @@ watch(
 const dataList = ref([])
  const namee = ref(null)
  const mealListData = ref([])
+ const feedingCourseNumber=ref(null)
 
   const editThisData = (num) => {
+    feedingCourseNumber.value = meal_course_number.value
     mealEditMode.value = true
     namee.value = num.name
     mealCourseFeedingSessionsDialog.value = true
@@ -134,7 +139,7 @@ watch(
     async (data) => {
       if(data){
         let message = data.message
-        notificationStore.errorToast("Error","No i wont delete !")
+        notificationStore.errorToast("Error",message)
       }
     }
 )
@@ -147,7 +152,7 @@ watch(
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="mealEditMode ? 'Edit Meal Course Menu Pack' : 'Add Meal Course Menu Pack'" v-model="mealCourseFeedingSessionsDialog" lg>
-      <NewMealCourseFeedingSessions :mealListData="mealListData"></NewMealCourseFeedingSessions>
+      <NewMealCourseFeedingSessions :mealListData="mealListData" :feeding_meal_course_number="feedingCourseNumber"></NewMealCourseFeedingSessions>
     </AppModal>
 
 
