@@ -8,6 +8,7 @@ import {useRouter} from "vue-router";
 import { useAbility } from '@casl/vue';
 import {breakpointsTailwind, useBreakpoints, useStorage} from "@vueuse/core";
 import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
+// import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 // const isDark = useDark()
 // const toggleDark = useToggle(isDark)
@@ -304,6 +305,8 @@ watch (
               <div>Home / {{ schoolName }} / {{ campusName }}</div>
             </router-link>
           </div>
+
+<!--        <breadcrumbs></breadcrumbs>-->
 
         <router-view></router-view>
       </div>
