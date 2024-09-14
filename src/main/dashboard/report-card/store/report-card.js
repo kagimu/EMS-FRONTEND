@@ -12,7 +12,7 @@ export const useReportCardStore = defineStore("ReportCard", () => {
 
 
     async function fetchGeneratedReport(data) {
-        return await api.get("main/report-settings/report-settings-by-student?study_period_number="+data.study_period_number+"&class_number="+data.class_number+"&campus_number="+data.campus_number)
+        return await api.get("main/report-settings/report-settings-by-student?study_period_number="+data.study_period_number+"&class_number="+data.class_number+"&campus_number="+data.campus_number+"&campus_curriculum_number="+data.campus_curriculum_number)
             .then((response) => {
                 reportGeneratedReportResponse.value = response.data
             })

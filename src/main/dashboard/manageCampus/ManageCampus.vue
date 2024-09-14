@@ -20,7 +20,6 @@ const  notificationStore  = useNotificationStore()
 const campusDialog = ref( false)
 const uploadDialog = ref( false)
 const campusEditMode = ref( false)
-const campusList = ref( [])
 const schoolData = ref( null)
 const campusRef = ref( null)
 
@@ -86,6 +85,7 @@ const uploadBadge = () => {
 const successUpload = (data) => {
   if(data){
     uploadDialog.value = false
+    schoolStore.fetchSchoolData(schoolNumber)
   }
 }
 

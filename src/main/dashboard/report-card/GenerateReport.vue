@@ -43,10 +43,12 @@ onMounted(
 
 
 const filterGeneratedReport = (cla) => {
+ 
     let data = {
       study_period_number: study_period_number.value,
       class_number: cla,
-      campus_number:campusNumber
+      campus_number:campusNumber,
+      campus_curriculum_number:campus_curriculum_number
     }
     reportStore.fetchGeneratedReport(data)
   
@@ -68,7 +70,8 @@ const filterGeneratedReportByPeriod = (studyperiodnumber) => {
     let data = {
       study_period_number: studyperiodnumber,
       class_number: class_number.value,
-      campus_number:campusNumber
+      campus_number:campusNumber,
+      campus_curriculum_number:campus_curriculum_number
     }
     reportStore.fetchGeneratedReport(data)
   

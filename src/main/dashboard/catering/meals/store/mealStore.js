@@ -17,6 +17,8 @@ export const useMealStore = defineStore("Meal", () => {
     const calendarsEventsResponse =  ref(null)
     const activateGroupOnCalendarResponse = ref(null)
     const groupOnCalendarResponse = ref(null)
+    const updateMealCourseFeedingSessionsResponse = ref(null)
+    const deleteMealCourseFeedingSessionsResponse = ref(null)
 
 
     async function createMealCourseFeedingSessions(data) {
@@ -181,6 +183,30 @@ export const useMealStore = defineStore("Meal", () => {
             })
     }
 
+    async function updateMealCourseFeedingSessions(data) {
+        return await api.post("main/catering/updatiiiiiiiiiiiiiing", data)
+            .then((response) => {
+                updateMealCourseFeedingSessionsResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function deleteMealCourseFeedingSessions(data) {
+        return await api.post("main/catering/deletiiiiiiiiiiing", data)
+            .then((response) => {
+                deleteMealCourseFeedingSessionsResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
     return {
        newMealCoursesResponse,
        mealCoursesResponse,
@@ -208,6 +234,10 @@ export const useMealStore = defineStore("Meal", () => {
        activateGroupOnCalendarResponse,
        activateGroupOnCalendar,
        fetchGroupOnCalendar,
-       groupOnCalendarResponse
+       groupOnCalendarResponse,
+       updateMealCourseFeedingSessionsResponse,
+       updateMealCourseFeedingSessions,
+       deleteMealCourseFeedingSessionsResponse,
+       deleteMealCourseFeedingSessions
     }
 })

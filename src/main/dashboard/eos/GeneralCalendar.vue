@@ -1,5 +1,82 @@
+<script setup>
+import { Calendar } from 'v-calendar';
+import 'v-calendar/style.css';
+import {onMounted, ref, watch} from 'vue';
+import NewCalendar from "@/main/dashboard/eos/components/NewCalendar.vue";
+import NewCalendarEvent from "@/main/dashboard/eos/components/NewCalendarEvent.vue";
+import {CalendarStore} from "@/main/dashboard/eos/store/EosStore.js";
+import useNotificationStore from "@/composables/useNotification.js";
+import router from "@/config/router.js";
+import useCommonsStore from "@/composables/useCommons.js";
+import NewCompany from "@/main/dashboard/eos/components/NewCompany.vue";
+
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
+
+const calendars = ref([]);
+const calendarDialog = ref(false);
+const companyDialog = ref(false);
+const calendarEventDialog = ref(false);
 
 
+const  calendarStore  = CalendarStore()
+const  notificationStore  = useNotificationStore()
+const commonsStore = useCommonsStore()
+
+onMounted(() =>{
+  calendarStore.fetchCalendars()
+})
+
+
+function dateFormat(date){
+  return commonsStore.getOrdinalDate(date)
+}
+function goToCalendar(number){
+  // router push
+  router.push({ name: "calendar-details", params:{"calendar_id":number}})
+}
+
+function showAddCalendarDialog(){
+  calendarDialog.value = true
+}
+
+function showAddCompanyDialog(){
+  companyDialog.value = true
+}
+
+function showAddCalendarEventDialog(){
+  calendarEventDialog.value = true
+}
+
+
+
+watch(
+    () => calendarStore.calendarCreate,
+    async (data) => {
+      if(data){
+        calendarDialog.value = false
+        notificationStore.successToast("Success",data.message)
+        calendarStore.fetchCalendars()
+      }
+
+    },
+    {deep:true}
+)
+
+watch(
+    () => calendarStore.calendarFetch,
+    async (data) => {
+
+      if(data){
+        calendars.value = data
+      }
+
+    },
+    {deep:true}
+)
+
+</script>
 <template>
     <div>
 
@@ -85,7 +162,7 @@
         </div>
 
       <div class="flex w-full mx-auto">
-        <div class="w-[30%] pr-4">
+        <div class="w-[30%] pr-4 max-h-[1085px] overflow-y-scroll scrollbar-thin rounded-md">
 
           <div v-for="(calendar,idx) in calendars" :key="idx" >
             <div class="border-b border-t border-l border-r rounded-md border-[#0d6efd] bg-white p-2 mb-2">
@@ -98,7 +175,6 @@
                     <div class="text-xs mr-5"><b>From</b> : {{dateFormat(calendar.start_date)}}</div>
                     <div class="text-xs"><b>To</b> : {{dateFormat(calendar.end_date)}}</div>
                   </div>
-
                   <div>
                     <a
                         v-if="can('view_calendar','general')"
@@ -128,86 +204,7 @@
     </div>
 </template>
 
-<script setup>
-import { Calendar } from 'v-calendar';
-import 'v-calendar/style.css';
-import {onMounted, ref, watch} from 'vue';
-import NewCalendar from "@/main/dashboard/eos/components/NewCalendar.vue";
-import NewCalendarEvent from "@/main/dashboard/eos/components/NewCalendarEvent.vue";
-import {CalendarStore} from "@/main/dashboard/eos/store/EosStore.js";
-import useNotificationStore from "@/composables/useNotification.js";
-import router from "@/config/router.js";
-import useCommonsStore from "@/composables/useCommons.js";
-import NewCompany from "@/main/dashboard/eos/components/NewCompany.vue";
 
-import { useAbility } from '@casl/vue';
-
-const { can } = useAbility()
-
-const calendar = ref(null);
-const calendars = ref([]);
-const calendarDialog = ref(false);
-const companyDialog = ref(false);
-const calendarEventDialog = ref(false);
-const attributes = ref(null);
-
-const  calendarStore  = CalendarStore()
-const  notificationStore  = useNotificationStore()
-const commonsStore = useCommonsStore()
-
-onMounted(() =>{
-    calendarStore.fetchCalendars()
-})
-
-
-function dateFormat(date){
-    return commonsStore.getOrdinalDate(date)
-}
-function goToCalendar(number){
-    // router push
-    router.push({ name: "calendar-details", params:{"calendar_id":number}})
-}
-
-function showAddCalendarDialog(){
-    calendarDialog.value = true
-}
-
-function showAddCompanyDialog(){
-    companyDialog.value = true
-}
-
-function showAddCalendarEventDialog(){
-    calendarEventDialog.value = true
-}
-
-
-
-watch(
-    () => calendarStore.calendarCreate,
-    async (data) => {
-        if(data){
-            calendarDialog.value = false
-            notificationStore.successToast("Success",data.message)
-            calendarStore.fetchCalendars()
-        }
-
-    },
-    {deep:true}
-)
-
-watch(
-    () => calendarStore.calendarFetch,
-    async (data) => {
-
-        if(data){
-            calendars.value = data
-        }
-
-    },
-    {deep:true}
-)
-
-</script>
 
 <style scoped>
 

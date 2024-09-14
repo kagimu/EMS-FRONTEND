@@ -44,7 +44,7 @@ const per_page = ref(20)
 const total_items = ref(0)
 const total_rows = ref(0)
  const tableLoader = ref(true)
-
+const reportSummaryData = ref([])
 
 onMounted(
     async () => {
@@ -56,6 +56,7 @@ onMounted(
 const showStudentReport = (summary) => {
   if(summary) {
     showStudentsMarks.value = true
+    reportSummaryData.value = summary
     let data = {
       report_summary_number:summary.number,
       html_report_template:"victorious-report-primary"
@@ -255,7 +256,7 @@ watch(
 
  
      <AppModal title="Preview Report" v-model="showStudentsMarks" xl6>
-       <manage-report-details></manage-report-details>
+       <manage-report-details :reportData="reportSummaryData"></manage-report-details>
      </AppModal>
 
      <AppModal title="Add Teachers Comment" v-model="showAddCommentModal" lg>
@@ -334,6 +335,7 @@ watch(
          <div class="col-12">
             <div class="flex justify-content-between mt-3">
                <div class="ml-4">Student Report Summary</div>
+           
             </div>
             <PaginationTemplate
                     @perPageChanged="doFilterReportSummary"

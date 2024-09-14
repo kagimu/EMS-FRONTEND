@@ -8,12 +8,29 @@ import {useRouter} from "vue-router";
 import { useAbility } from '@casl/vue';
 import {breakpointsTailwind, useBreakpoints, useStorage} from "@vueuse/core";
 import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
+// import Breadcrumbs from "@/components/Breadcrumbs.vue";
+
+// const isDark = useDark()
+// const toggleDark = useToggle(isDark)
 
 const entityStore = useEntityStore()
-const routerName = useRouter().currentRoute.value.name;
+
+let routerName = ""
+ routerName = useRouter().currentRoute.value.name;
+
+
+if((routerName === "campus") || routerName === "campus-setup" || routerName === "campus-curriculum-setup"){
+  routerName = "school"
+}
+
+
+if((routerName === "curriculum-setup")){
+  routerName = "curriculum"
+}
+
+
 
 const authStore = useAuthStore()
-
 const { can } = useAbility();
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
@@ -154,7 +171,7 @@ watch (
 </script>
 <template>
 
-<div class="p-0 h-screen w-screen">
+<div class="p-0 h-screen w-screen dark">
 
     <div class="row fixed w-screen mx-auto z-50">
       <div class="col-12 col-sm-12 col-md-12 col-lg-12 bg-[#2c2f8c]">
@@ -289,6 +306,8 @@ watch (
             </router-link>
           </div>
 
+<!--        <breadcrumbs></breadcrumbs>-->
+
         <router-view></router-view>
       </div>
     </div>
@@ -308,6 +327,8 @@ watch (
               <span class="alert alert-success p-1" v-if="online">
                Online
               </span>
+     
+
             </div>
             <div class="col-2 text-end">Powered by Hamsoft</div>
           </div>

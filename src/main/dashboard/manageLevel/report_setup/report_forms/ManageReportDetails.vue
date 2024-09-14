@@ -7,13 +7,17 @@ import PrimaryReport from "@/main/dashboard/manageLevel/report_setup/report_form
 import TopClassReport from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/TopClassReport.vue";
 import VictoriousReportCard
   from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/victorious/VictoriousReportCard.vue";
-
-  import {usePrintStore} from "@/main/dashboard/print/print.js";
+import {usePrintStore} from "@/main/dashboard/print/print.js";
+import ReportSummary from "./ReportSummary.vue";
 const reportStore = useReportCardStore()
 const printStore = usePrintStore()
 
 const reportDetails = ref(null)
 
+
+const props = defineProps({
+  reportData:{}
+})
 
 
 watch(
@@ -71,6 +75,7 @@ if(navigator.userAgent.indexOf("Firefox") !== -1 ) {
 
 <div>
 
+
   <button class="btn btn-success mb-2 " @click="print"><i class="bi bi-printer"></i></button>
 <div ref="myDiv">
 
@@ -90,7 +95,7 @@ if(navigator.userAgent.indexOf("Firefox") !== -1 ) {
   </div>
 
   <div v-if="reportDetails?.report_template_name === 'victorious-report-primary'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
-    <victorious-report-card :reportDetails="reportDetails"></victorious-report-card>
+    <victorious-report-card :reportDetails="reportDetails" :reportDataInfo="reportData"></victorious-report-card>
   </div>
 </div>
 </div>
