@@ -13,7 +13,22 @@ import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
 // const toggleDark = useToggle(isDark)
 
 const entityStore = useEntityStore()
-const routerName = useRouter().currentRoute.value.name;
+
+let routerName = ""
+ routerName = useRouter().currentRoute.value.name;
+
+
+if((routerName === "campus") || routerName === "campus-setup" || routerName === "campus-curriculum-setup"){
+  routerName = "school"
+}
+
+
+if((routerName === "curriculum-setup")){
+  routerName = "curriculum"
+}
+
+
+
 const authStore = useAuthStore()
 const { can } = useAbility();
 
