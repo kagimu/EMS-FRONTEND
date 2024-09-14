@@ -8,7 +8,7 @@ import {useRouter} from "vue-router";
 import { useAbility } from '@casl/vue';
 import {breakpointsTailwind, useBreakpoints, useStorage} from "@vueuse/core";
 import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
-// import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 // const isDark = useDark()
 // const toggleDark = useToggle(isDark)
@@ -300,13 +300,13 @@ watch (
     <div class="flex-1 h-screen overflow-y-scroll scrollbar-thin pb-[120px] bg-[#ecf0f5]">
       <div class="px-3 pt-[50px]">
 
-          <div class="text-xs text-gray-600 pt-3">
-            <router-link class="navbar-brand" :to="{name:'home'}">
-              <div>Home / {{ schoolName }} / {{ campusName }}</div>
-            </router-link>
-          </div>
 
-<!--        <breadcrumbs></breadcrumbs>-->
+       <div class="mt-3 flex justify-between">
+        <div> <breadcrumbs></breadcrumbs></div>
+         <div class="text-gray-600 text-[13px]">
+           {{schoolName}} / {{campusName}}
+         </div>
+       </div>
 
         <router-view></router-view>
       </div>

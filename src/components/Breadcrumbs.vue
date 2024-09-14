@@ -17,29 +17,25 @@ const breadcrumbs = computed(() => {
 
 <template>
   <div>
-
-{{breadcrumbs}}
     <nav aria-label="breadcrumb">
-      <ol class="flex space-x-2">
-        <li v-for="(crumb, index) in breadcrumbs" :key="index" class="flex items-center">
-          <!-- Links for all except the last breadcrumb -->
-
+      <div class="flex">
+        <div v-for="(crumb, index) in breadcrumbs" :key="index" class="flex items-center text-[13px]">
 
           <router-link
               v-if="index !== breadcrumbs.length - 1"
               :to="{name:crumb?.name}"
-              class="text-blue-500 hover:underline"
+              class="text-gray-600 hover:underline no-underline"
           >
-            {{ crumb?.name === "dashboard" ? "Home" : crumb?.name }}
+           <div> {{ crumb?.name === "dashboard" ? "Home" : crumb?.name }}</div>
           </router-link>
 
           <!-- Last breadcrumb without a link -->
-          <span v-else class="text-gray-600">{{ crumb.name }}</span>
+          <span v-else class="text-gray-600 capitalize">{{ crumb.name.toString().replace(/-/g, " ") }}</span>
 
           <!-- Separator -->
-          <span v-if="index !== breadcrumbs.length - 1" class="px-2 text-gray-400">/</span>
-        </li>
-      </ol>
+          <span v-if="index !== breadcrumbs.length - 1" class="px-2 text-gray-600">/</span>
+        </div>
+      </div>
     </nav>
 
   </div>
