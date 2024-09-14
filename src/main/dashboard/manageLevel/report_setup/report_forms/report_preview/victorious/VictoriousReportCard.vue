@@ -3,7 +3,8 @@
 import {onMounted, ref, watch} from "vue";
 
 const props = defineProps({
-  reportDetails:{}
+  reportDetails:{},
+  reportDataInfo:{}
 })
 
 const baseUrl = `${window.location.protocol}//${window.location.host}`;
@@ -74,13 +75,14 @@ const printableContent = ref(null);
 </script>
 
 <template>
-  <!-- <button @click="printContent">print </button> -->
+<!-- {{reportDataInfo}} -->
+<!-- {{ reportDetails.school.logo }} -->
 <div ref="printableContent" class="printable">
   <table style="width: 100%;">
     <tr>
       <td style="text-align: center; width: 20%;">
         <div style="text-align: right; margin-top: 10px;">
-          <img alt="logo" style="width: 130px; margin: 0 auto;" :src="SchoolBadge"/>
+          <img alt="logo" style="width: 130px; margin: 0 auto;" :src="reportDetails.school.logo"/>
         </div>
       </td>
 
@@ -131,7 +133,7 @@ const printableContent = ref(null);
 
           <tr>
             <td style="width: 10%">
-              <img alt="logo" style="width: 130px;" :src="StudentImage"/>
+              <img alt="logo" style="width: 130px;" :src="reportDataInfo.photo"/>
             </td>
 
             <td style="width: 80%">

@@ -13,10 +13,12 @@
 </script>
 
 <style scoped>
+
 .app{
   overflow-x: hidden;
   overflow-y: scroll;
   height: 100vh;
+ 
 }
 
 

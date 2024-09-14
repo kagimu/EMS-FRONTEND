@@ -35,12 +35,25 @@ const props = defineProps({
   mealListData:{}
 })
 
+const getMealCourseMenuParkInfo = () => {
+  let draftData = props.mealListData
+  if(draftData.feeding_session_number){
+    school_number.value = draftData.school_number
+    if(draftData.school_number){
+    doFetchMealCourses()
+    }
+  
+    form.meal_course_number=draftData.feeding_session_number,
+    form.feeding_sessions = draftData.pack_items
+  }
+}
 
 
 
 onMounted(
     async () =>{
       await schoolStore.fetchSchools()
+      getMealCourseMenuParkInfo()
     }
 )
 
@@ -56,9 +69,24 @@ const doFetchFeedingSessions = () => {
 
 const addMealCourseFeedingSessionsDialog = () =>{
   loader.value = true
-  mealStore.createMealCourseFeedingSessions(form)
+  if(props.mealListData){
+    form.feeding_session_number = props.mealListData.feeding_session_number
+    mealStore.updateMealCourseFeedingSessions(form)
+  }else{
+    mealStore.createMealCourseFeedingSessions(form)
+  }
+  
 }
 
+
+watch(
+    () => mealStore.updateMealCourseFeedingSessionsResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
 
 
 
@@ -129,7 +157,7 @@ watch(
 </script>
 <template>
   <div>
-    <!-- {{ mealListData }} -->
+    {{ mealListData }}
 
     <form @submit.prevent="addMealCourseFeedingSessionsDialog">
 
