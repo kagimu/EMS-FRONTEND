@@ -5,6 +5,7 @@ import api from "@/config/api.js";
 export const useAssessmentStore = defineStore("assessment", () => {
     const newAssessmentResponse = ref(null)
     const errorMessage = ref(null)
+    const markingGuideResponse = ref(null)
     const assessmentResponse = ref(null)
     const gradingStandardResponse = ref(null)
     const assessmentByStudentIdResponse = ref(null)
@@ -614,7 +615,31 @@ async function updateMetric(data,metricNumber) {
             })
     }
 
-  
+
+
+    async function uploadMarkingGuideFile(data, fileType) {
+        const paths = {
+            testMarkingGuide: "main/assessments/upload-marking-guide",
+            testScript: "main/assessments/upload-script"
+        };
+
+        const path = paths[fileType];
+
+        return await api.post(path, data, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })
+            .then((response) => {
+                markingGuideResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
 
     return {
         newAssessmentAreasResponse, 
@@ -661,6 +686,8 @@ async function updateMetric(data,metricNumber) {
         deleteAggregateNameGroupResponse,
         classGradeStandardResponse,
         makeDefaultGradingScaleResponse,
+        updateAssessmentMetricResponse,
+        markingGuideResponse,
         createAssessmentAreas,
         fetchAssessmentArea,
         fetchAssessments,
@@ -699,7 +726,7 @@ async function updateMetric(data,metricNumber) {
         deleteAggregateGroupName,
         fetchClassGradeStandardList,
         doMakeGradingStandardDefault,
-        updateAssessmentMetricResponse,
-        updateAssessmentMetrics
+        updateAssessmentMetrics,
+        uploadMarkingGuideFile
     }
 })

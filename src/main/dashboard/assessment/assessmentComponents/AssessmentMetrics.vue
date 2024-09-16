@@ -12,6 +12,7 @@ import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/stor
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import MarkingGuideFileUploader from "@/main/dashboard/assessment/assessmentComponents/MarkingGuideFileUploader.vue";
 const confirmationRef = ref(null);
 
 
@@ -28,6 +29,10 @@ const schoolN = routerData.currentRoute.value.query.sch
 const campusNumber = routerData.currentRoute.value.query.id
 const showingModal = ref(false)
 const campus_level_number = ref("")
+const uploadDialog = ref(false)
+const testScriptDialog = ref(false)
+const metricNumber = ref(null)
+
 
 const page = ref(1)
 const campus_class_number = ref("")
@@ -77,6 +82,7 @@ onMounted(
 
 const doFetchAssessmentMetric = async () => {
   assessmentMetricsData.value.splice(0)
+  tableLoader.value = true
   let data = {
     page: 1,
     per_page: per_page.value,
@@ -95,19 +101,17 @@ const doFetchAssessmentMetric = async () => {
 
 function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
   if (scrollTop + clientHeight >= scrollHeight) {
-
-    tableLoader.value = true
-    assessmentMetricsData.value.splice(0)
     let data = {
-    page: (page.value+1),
-    per_page: per_page.value,
-    campus_class_number:campus_class_number.value,
-    academic_year_number:academic_year_number.value,
-    study_period_number:study_period_number.value,
-    metric_number:metric_number.value,
-    assessment_area_number:assessment_area_number.value,
-    paginated:"yes"
-  }
+      page: (page.value+1),
+      per_page: per_page.value,
+      class_number:campus_class_number.value,
+      academic_year_number:academic_year_number.value,
+      study_period_number:study_period_number.value,
+      metric_number:metric_number.value,
+      assessment_area_number:assessment_area_number.value,
+      campus_number:campusNumber,
+      paginated:"yes"
+    }
 
   assessmentStore.fetchAssessmentMetrics(data)
 
@@ -299,6 +303,20 @@ const editThisData = (List) => {
   showingModal.value = true
 }
 
+const uploadMarkingGuide = (metricsData) => {
+  if(metricsData) {
+      uploadDialog.value = true
+      metricNumber.value = metricsData.number
+    }
+}
+
+const uploadTestScript = (metricsData) => {
+  if(metricsData) {
+      testScriptDialog.value = true
+      metricNumber.value = metricsData.number
+    }
+}
+
 const deleteThisData = async (id,name) => {
 
   const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete Assessment Schedule ? ");
@@ -312,6 +330,16 @@ const deleteThisData = async (id,name) => {
 
 }
 
+watch(
+    () => assessmentStore.markingGuideResponse,
+    async (data) => {
+      if(data){
+        uploadDialog.value = false
+        testScriptDialog.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
 
 
 </script>
@@ -322,6 +350,14 @@ const deleteThisData = async (id,name) => {
     
     <AppModal  :title="editModel ? 'Edit Assessment Schedule ':'Add Assessment Schedule'" v-model="showingModal" xl2>
       <NewAssessmentMetric :assessmentMetricList="assessmentMetricList"></NewAssessmentMetric>
+    </AppModal>
+
+    <AppModal title="Upload Marking Guide" v-model="uploadDialog" xl>
+      <marking-guide-file-uploader fileType="testMarkingGuide" :metricNumber="metricNumber"></marking-guide-file-uploader>
+    </AppModal>
+
+    <AppModal title="Upload Test Script" v-model="testScriptDialog" xl>
+      <marking-guide-file-uploader fileType="testScript" :metricNumber="metricNumber"></marking-guide-file-uploader>
     </AppModal>
 
     <div class="col-12 mt-2" >
@@ -457,15 +493,13 @@ const deleteThisData = async (id,name) => {
               <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Decription</th>
+                <th>Description</th>
                 <th>Action</th>
               </tr>
               </thead>
               <tbody>
-                <!-- {{assessmentMetricsData}} -->
               <tr v-for="(metricsData, index) in assessmentMetricsData " :key="index">
                 <td>
-                  <!-- {{metricsData?.code ?? ""}} -->
                   {{ index+1 }}
                 </td>
                 <td>
@@ -473,17 +507,41 @@ const deleteThisData = async (id,name) => {
                 </td>
                 <td>{{ metricsData.description }}</td>
                 <td>
-                  <button 
+
+                  <button
+                      class="mr-1"
+                      title="Upload Marking Guide"
+                      @click="uploadMarkingGuide(metricsData)"
+                      type="button">
+                    <i class="bi bi-filetype-pdf text-[16px]" style="color:rgb(3, 85, 148)"></i>
+                  </button>
+
+                  <button
+                      class="mr-1"
+                      title="Upload Test Script"
+                      @click="uploadTestScript(metricsData)"
+                      type="button">
+                    <i class="bi bi-file text-[16px]" style="color:rgb(3, 85, 148)"></i>
+                  </button>
+
+
+                  <button
+                      class="mr-1"
+                      title="Edit Assessment Schedule"
                     v-if="can('edit_assessment_schedule','general')"
                    @click="editThisData(metricsData)" type="button">
-                    <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+                    <i class="bi bi-pencil-square text-[15px]" style="color:rgb(3, 85, 148)"></i>
                   </button>
-                  &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
-                  <button 
+
+
+                  <button
+                  title="Delete Assessment Schedule"
+                  class="mr-1"
                   v-if="can('delete_assessment_schedule','general')"
                   type="button" @click="deleteThisData(metricsData.number,metricsData.name)">
-                    <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
-                  </button></td>
+                    <i class="bi bi-trash text-[15px]" style="color:rgb(201, 10, 10)"></i>
+                  </button>
+                </td>
               </tr>
 
               </tbody>
