@@ -196,17 +196,23 @@ watch (
             <th>#</th>
             <th>No</th>
             <th>Amount</th>
-            <th>Recorded By</th>
-            <th>Recorded On</th>
+            <th>Description</th>
+            <th>PaidBy</th>
+            <th>RecievedBy</th>
+            <th>Date Recieved</th>
+            
           </tr>
      </thead>
      <tbody>
           <tr v-for="(list,index) in transactionList" :key="index">
           <td>{{ (index + 1) }}</td>
-          <td>{{ list.invoice_ref_number }}</td>
+          <td>{{ list.receipt_number	 }}</td>
           <td>{{ list.amount?.toLocaleString() }}</td>
-          <td>{{ list.recorded_by }}</td>
-          <td>{{ list.date_time }}</td>
+          <td>{{ list.description	 }}</td>
+          <td>{{ list.paid_by }}</td>
+          <td>{{ list.received_by	 }}</td>
+          <td>{{ list.date_received	 }}</td>
+      
           </tr>  
         </tbody>
       </table>

@@ -311,6 +311,7 @@ const studentName = ref(null)
   const school = ref(null)
   const actionType = ref(null)
   const invoiceNum = ref(null)
+  const errorMessage  = ref(null)
 
 const  showModal = (invoice) =>{
   mymodalpay.value = true

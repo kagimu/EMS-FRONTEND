@@ -37,6 +37,7 @@ onMounted(
      schoolStore.fetchSchools()
      serviceStore.fetchAllItems()
      applicationStore.fetchStudent(studentNumber)
+    
     }
 )
 
@@ -46,6 +47,9 @@ watch (
     async (data) => {
       if (data) {
         userNumber.value = data.user_number
+        if(userNumber.value){
+         doFetchStatements()
+     }
       }
     }
 )
@@ -170,12 +174,12 @@ watch(
         <td>{{ list.date_received }}</td>
         <td>{{ list.received_by }}</td>
         <td>{{ list.description }}</td>
-        <td><span v-if="list.type ==='IN'">{{ list.amount }}</span>
+        <td><span v-if="list.type ==='IN'">{{ list.amount?.toLocaleString() }}</span>
             <span v-else> - </span>
         </td>
-        <td><span v-if="list.type ==='OUT'">{{ list.amount }}</span>
+        <td><span v-if="list.type ==='OUT'">{{ list.amount?.toLocaleString() }}</span>
             <span v-else> - </span></td>
-        <td>{{ list.balance }}</td>
+        <td>{{ list.balance?.toLocaleString() }}</td>
         <td>
           <i class="bi bi-printer"></i>
         </td>
