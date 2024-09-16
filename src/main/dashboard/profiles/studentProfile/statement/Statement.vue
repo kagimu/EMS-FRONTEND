@@ -69,7 +69,7 @@ watch(
     () => invoiceStore.statementsResponse,
     async (data) => {
       if(data){
-        statementsData.value = data
+        statementsData.value = data.data
       }
     },
     {deep:true}
@@ -168,7 +168,7 @@ watch(
         <tr v-for="(list,index) in statementsData"  :key="index">
         <td>{{ (index + 1) }}</td>
         <td>{{ list.date_received }}</td>
-        <td>Collins Mpiima</td>
+        <td>{{ list.received_by }}</td>
         <td>{{ list.description }}</td>
         <td><span v-if="list.type ==='IN'">{{ list.amount }}</span>
             <span v-else> - </span>
