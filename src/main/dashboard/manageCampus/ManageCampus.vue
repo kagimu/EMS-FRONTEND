@@ -6,7 +6,7 @@ import useNotificationStore from "@/composables/useNotification.js";
 import NewCampus from "@/main/dashboard/manageCampus/NewCampus.vue";
 import {useRouter} from "vue-router";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-import SchoolBadge from "@/assets/images/victorius-budge.png";
+
 
 import AppModal from "@/components/AppModal.vue";
 import CampusListInfo from "@/main/dashboard/manageCampus/CampusListInfo.vue";
