@@ -11,8 +11,6 @@ import { useAbility } from '@casl/vue';
 const { can } = useAbility()
 import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 import router from "@/config/router.js";
-
-
 import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
 import StudentNarativeReport from "@/main/dashboard/profiles/studentProfile/StudentNarativeReport.vue";
 import SchoolBadge from "@/assets/images/victorius-budge.png";
@@ -43,6 +41,7 @@ const campus = ref(null)
 const school = ref(null)
 const actionType = ref(null)
 const cateringStore = useCateringStore()
+const errorMessage  = ref(null)
 
 const uploadDialog = ref( false)
 
@@ -210,7 +209,7 @@ const successUpload = async (data) => {
             </div>
 
             <div class="mb-3">
-              <div class="text-[#8a8888] text-sm mb-[10px]"><i class="bi-person-circle mr-2"></i>{{ studentName }}</div>
+              <div class="text-[#8a8888] text-sm mb-[10px]" style="text-transform: capitalize;"><i class="bi-person-circle mr-2"></i>{{ studentName }}</div>
               <div class="text-[#8a8888] text-sm mb-[10px]"><i class="bi-calendar-date mr-2"></i>{{ dob }}</div>
             </div>
 
@@ -307,6 +306,8 @@ const successUpload = async (data) => {
                         <div v-if="studentQuery === 'narrative'">
                           <StudentNarativeReport></StudentNarativeReport>
                         </div>
+
+
 
                       </div>
 

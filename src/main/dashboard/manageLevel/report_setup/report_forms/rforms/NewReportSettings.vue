@@ -46,6 +46,7 @@ const form = reactive({
   class_number:"",
   campus_number:campusNumber,
   columns:"",
+  campus_curriculum_number:campus_curriculum_number
 })
 
 onMounted(
@@ -179,7 +180,7 @@ watch(
 
 <template>
   <div>
-    <!-- {{ reportSettingsD }} -->
+    {{ reportSettingsD }}
   <form @submit.prevent="addReportSettings">
 
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
