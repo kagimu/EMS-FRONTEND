@@ -210,7 +210,7 @@ const successUpload = async (data) => {
             </div>
 
             <div class="mb-3">
-              <div class="text-[#8a8888] text-sm mb-[10px]"><i class="bi-person-circle mr-2"></i>{{ studentName }}</div>
+              <div class="text-[#8a8888] text-sm mb-[10px]" style="text-transform: capitalize;"><i class="bi-person-circle mr-2"></i>{{ studentName }}</div>
               <div class="text-[#8a8888] text-sm mb-[10px]"><i class="bi-calendar-date mr-2"></i>{{ dob }}</div>
             </div>
 
