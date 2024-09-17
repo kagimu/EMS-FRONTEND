@@ -16,6 +16,7 @@ export const useInvoiceStore = defineStore("invoice", () => {
     const cancelInvoicePaymentResponse = ref(null)
     const deleteInvoicePaymentResponse = ref(null)
     const statementsResponse = ref(null)
+    const creditResponse = ref(null)
 
     async function createNewInvoice(data) {
         return await api.post("main/invoices", data)
@@ -184,6 +185,18 @@ export const useInvoiceStore = defineStore("invoice", () => {
             })
     }
 
+    async function fetchCredits(data) {
+        return await api.get("main/invoices/payments/credits?user_number="+data?.user_number)
+            .then((response) => {
+                creditResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     return {
        invoiceResponse,
        fetchInvoice,
@@ -209,6 +222,8 @@ export const useInvoiceStore = defineStore("invoice", () => {
        deleteInvoicePaymentResponse,
        deleteInvoicePayment,
        fetchStatements,
-       statementsResponse
+       statementsResponse,
+       creditResponse,
+       fetchCredits
     }
 })
