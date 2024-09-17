@@ -13,6 +13,7 @@ import PaginationTemplate from "@/components/PaginationTemplate.vue";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import MarkingGuideFileUploader from "@/main/dashboard/assessment/assessmentComponents/MarkingGuideFileUploader.vue";
+import AssessmentSchedulePreview from "@/main/dashboard/assessment/assessmentComponents/AssessmentSchedulePreview.vue";
 const confirmationRef = ref(null);
 
 
@@ -31,7 +32,9 @@ const showingModal = ref(false)
 const campus_level_number = ref("")
 const uploadDialog = ref(false)
 const testScriptDialog = ref(false)
+const assessmentScheduleDialog = ref(false)
 const metricNumber = ref(null)
+const assessmentScheduleData = ref(null)
 
 
 const page = ref(1)
@@ -317,6 +320,11 @@ const uploadTestScript = (metricsData) => {
     }
 }
 
+const viewAssessmentSchedule = (metricsData) => {
+  assessmentScheduleData.value = metricsData
+  assessmentScheduleDialog.value = true
+}
+
 const deleteThisData = async (id,name) => {
 
   const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete Assessment Schedule ? ");
@@ -360,12 +368,15 @@ watch(
       <marking-guide-file-uploader fileType="testScript" :metricNumber="metricNumber"></marking-guide-file-uploader>
     </AppModal>
 
+    <AppModal title="Assessment Schedule" v-model="assessmentScheduleDialog" xl>
+      <assessment-schedule-preview :assessmentScheduleData="assessmentScheduleData"></assessment-schedule-preview>
+    </AppModal>
+
     <div class="col-12 mt-2" >
 
       <div class="">
 
-          <div class="flex justify-between mb-4">
-            &nbsp;
+          <div class="flex justify-between mb-4 ml-2">
               <button
                   v-if="can('add_assessment_schedule','general')"
                   class="btn btn-primary btn-sm float-end mb-0 mr-4" style="float: right" type="button"  @click="showModal">
@@ -508,6 +519,8 @@ watch(
                 <td>{{ metricsData.description }}</td>
                 <td>
 
+
+
                   <button
                       class="mr-1"
                       title="Upload Marking Guide"
@@ -524,6 +537,13 @@ watch(
                     <i class="bi bi-file text-[16px]" style="color:rgb(3, 85, 148)"></i>
                   </button>
 
+                  <button
+                      class="mr-1"
+                      title="Upload Marking Guide"
+                      @click="viewAssessmentSchedule(metricsData)"
+                      type="button">
+                    <i class="bi bi-eye text-[16px]" style="color:rgb(3, 85, 148)"></i>
+                  </button>
 
                   <button
                       class="mr-1"
