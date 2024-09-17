@@ -1,8 +1,6 @@
 <script setup>
 import {ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
-import {useRouter} from "vue-router";
-import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
 
 
