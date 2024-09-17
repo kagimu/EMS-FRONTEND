@@ -26,6 +26,7 @@ const campus_number = ref("")
 const schoolList = ref([])
 const campusList = ref([])
 const serviceStore= useServiceStore()
+const creditsData = ref([])
 
 const form = reactive({
   start_date:"",
@@ -49,6 +50,7 @@ watch (
         userNumber.value = data.user_number
         if(userNumber.value){
          doFetchStatements()
+         doFetchCredits()
      }
       }
     }
@@ -65,6 +67,13 @@ const doFetchStatements = () =>{
   invoiceStore.fetchStatements(data)
 }
 
+const doFetchCredits = () =>{
+  let data = {
+    user_number:userNumber.value,
+  }
+  invoiceStore.fetchCredits(data)
+}
+
 
 
 
@@ -74,6 +83,16 @@ watch(
     async (data) => {
       if(data){
         statementsData.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => invoiceStore.creditResponse,
+    async (data) => {
+      if(data){
+        creditsData.value = data.data
       }
     },
     {deep:true}
@@ -115,12 +134,11 @@ watch(
 </script>
 <template>
   <div>
-
+{{ creditsData }}
     <div class="rw mt-3"  >  
   <div class="card-bdy" style="padding: 0;">
   <div class="mt-4">
     <div class="grid grid-cols-5 gap-2 px-2">
-
       <div>
         <div class="mb-2">
             <input

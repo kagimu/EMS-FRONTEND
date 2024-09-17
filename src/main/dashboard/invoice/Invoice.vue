@@ -35,7 +35,7 @@ const schoolList = ref([])
 const campusList = ref([])
 const itemsList = ref([])
 const serviceStore= useServiceStore()
-
+ 
 const showModal = () =>{
   mymodal.value = true
 }
@@ -192,8 +192,8 @@ watch(
     </AppModal>
 
 
-    <AppModal title="Pay Invoice" v-model="showPayment" xs>
-    <InvoicePayment :invoiceNumber="invoiceNumber" ></InvoicePayment>
+    <AppModal title="Pay Invoice" v-model="showPayment" xl>
+    <InvoicePayment :invoiceNumber="invoiceNumber" :userNum="userNumber"></InvoicePayment>
     </AppModal>
 
     <div class="rw mt-3"  >
@@ -319,7 +319,7 @@ watch(
         <tr v-for="(list,index) in invoiceData"  :key="index">
         <td>{{ (index + 1) }}</td>
         <td>{{ list?.ref_number }}</td>
-        <td>{{ list?.names}}</td>
+        <td style="text-transform: capitalize;">{{ list?.names}}</td>
         <td>{{ list?.total_amount?.toLocaleString()}}</td>
         <td>{{ list?.paid_amount?.toLocaleString()}}</td>
         <td>{{list?.balance?.toLocaleString()}}</td>
