@@ -215,9 +215,20 @@ const fetchUnit = () => {
 watch(
     () => cateringStore.menuItemResponse,
     async (data) => {
-      menuOptions.value = data.map(option => ({ number: option.number,name:option.name}));
+      // alert(JSON.stringify(data))
+      menuOptions.value = data.map(option => ({ number: option.number,name:option.name,unit_of_measure_name:option.unit_of_measure_name,unit_cost:option.unit_cost}));
     }
 )
+
+const getUnitOfMeasure = (itemNumber) => {
+  const selectedItem = menuOptions.value.find(option => option.number === itemNumber);
+  return selectedItem ? selectedItem.unit_of_measure_name : '';
+}
+
+const getUnitCost = (itemNumber) => {
+  const selectedItem = menuOptions.value.find(option => option.number === itemNumber);
+  return selectedItem ? selectedItem.unit_cost : '';
+}
 
 watch(
     () => cateringStore.feedingGroupSessionsInfoResponse,
@@ -237,6 +248,7 @@ function removeMenuItem(index) {
 }
 
 function availableOptions(index) {
+  
   const selectedNames = menuItems.value.map(menu => menu.name);
   return menuOptions.value.filter(option => !selectedNames.includes(option.name) || option.name === menuItems.value[index].name)
 }
@@ -451,22 +463,23 @@ const clearFormData = () => {
 <div v-if="(menuForm.type==='ASSEMBLED') && menuForm.school_number">
     <div class="mx-auto">
 
-      <div class="mt-4 text-[15px] ml-3">Assembled Items</div>
-
-      <table class="table table-hover caption-top  border-t table-sm table-striped">
+      <div class="mt-4 text-[15px] alert alert-success p-1 pl-1">Select Ingredients</div>
+      <table class="table table-hover caption-top  border-t table-sm ">
           <thead>
             <tr>
-              <td>#</td>
-              <td>Item</td>
-              <td><div class="pl-4">Quantity</div></td>
-              <td><div class="pl-4">Action</div></td>
+              <th>No</th>
+              <th>Item</th>
+              <th><div class="text-sm">Quantity</div></th>
+              <th><div class="text-sm">Unit Of Measure</div></th>
+              <th><div class="text-sm">Unit Cost</div></th>
+              <th><div class="text-sm">#</div></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(menu, index) in menuItems" :key="index" >
               <td class="text-sm text-[#8a8888]">{{(index + 1)}}</td>
               <td>
-                <select v-model="menu.secondary_item_number" class="form-select form-control select-no-border border">
+                <select v-model="menu.secondary_item_number" class="form-select form-control select-no-border ">
                   <option v-for="option in availableOptions(index)" :value="option.number">{{ option.name }}</option>
                 </select>
               </td>
@@ -475,19 +488,26 @@ const clearFormData = () => {
                 <input
                     v-model="menu.quantity"
                     class="form-control shadow-none ml-5"
+                    style="width: 80px;"
                     maxlength="10"
                     placeholder="1.0"
                     type="text"
                     @keypress="commons.onlyNumberValidator($event)"
                     v-on:blur="compute(menu.quantity, 'assembled-item', index)">
               </td>
-              <td>
-                <div  class="ml-5">
+              <td class="border-r"> <input style="width: 100px;" class="form-control shadow-none select-no-border " 
+                type="text" :value="getUnitOfMeasure(menu.secondary_item_number)"  readonly/></td>
+
+                <td class="border-r"> <input style="width: 100px;" class="form-control shadow-none select-no-border " 
+                  type="text" :value="getUnitCost(menu.secondary_item_number)"  readonly/></td>
+
+              <td> 
+                <div  class="">
                   <button
                       v-if="index > 0"
                       type="button"
                       @click="removeMenuItem(index)">
-                    <i class="bi bi-x-lg" style="color:red"></i>
+                    <i class="bi bi-trash" style="color:red"></i>
                   </button>
                 </div>
 
