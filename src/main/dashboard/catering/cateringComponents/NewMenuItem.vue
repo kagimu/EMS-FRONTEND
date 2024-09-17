@@ -227,7 +227,7 @@ const getUnitOfMeasure = (itemNumber) => {
 
 const getUnitCost = (itemNumber) => {
   const selectedItem = menuOptions.value.find(option => option.number === itemNumber);
-  return selectedItem ? selectedItem.unit_cost : '';
+  return selectedItem ? selectedItem.unit_cost.toLocaleString() : '';
 }
 
 watch(
@@ -470,7 +470,7 @@ const clearFormData = () => {
               <th>No</th>
               <th>Item</th>
               <th><div class="text-sm">Quantity</div></th>
-              <th><div class="text-sm">Unit Of Measure</div></th>
+              <th><div class="text-sm">Unit Of Use</div></th>
               <th><div class="text-sm">Unit Cost</div></th>
               <th><div class="text-sm">#</div></th>
             </tr>

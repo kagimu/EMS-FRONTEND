@@ -252,7 +252,7 @@ watch(
       <td>{{ index+1 }}</td>
       <td>{{ list.menu_item_name }}</td>
      <td> {{ list.quantity }}</td>
-     <td>{{ list.unit_cost }}</td>
+     <td>{{ list.unit_cost?.toLocaleString() }}</td>
      <td>{{ list.campus_name }}</td>
      <td>
           <!-- <button >

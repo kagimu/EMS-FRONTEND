@@ -4,7 +4,7 @@ import useNotificationStore from "@/composables/useNotification.js"
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
 import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
-
+import ComboMenuItemBox from "@/components/ComboMenuItemBox.vue";
 import useCommonsStore from "@/composables/useCommons.js";
 const commons = useCommonsStore()
 
@@ -228,7 +228,7 @@ const getUnitOfMeasure = (itemNumber) => {
                       <td class="w-[5%]">#</td>
                       <td class="w-[25%]">Item</td>
                       <td class="w-[15%]">Qty</td>
-                      <td class="w-[10%]">unit</td>
+                      <td class="w-[10%]">Purchase Unit Of Measure</td>
                       <td class="w-[20%]">Unit Price</td>
                       <td>Amount</td>
                       <td></td>
@@ -245,6 +245,14 @@ const getUnitOfMeasure = (itemNumber) => {
                             @change="updateItem(index)">
                           <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
                         </select>
+                           
+                       
+                        <!-- <ComboMenuItemBox
+                      v-model:optionResponse="itemData.menu_item_number"
+                      :optionList="availableOptions(index)"
+                      :optionDraft="itemData.menu_item_number"
+                     ></ComboMenuItemBox> -->
+
                       </td>
                       <td class="border-r">
                         <input
