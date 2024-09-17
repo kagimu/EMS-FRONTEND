@@ -236,7 +236,8 @@ const getUnitOfMeasure = (itemNumber) => {
                   </thead>
                   <tbody>
                     <tr v-for="(itemData, index) in Items" :key="index" >
-                      <!-- {{itemData}} -->
+                      <!-- {{itemData}} -->   
+                   
                       <td class="border-l border-r">{{(index + 1)}}</td>
                       <td class="border-r">
                         <select
