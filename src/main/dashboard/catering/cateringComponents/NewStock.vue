@@ -222,14 +222,14 @@ const getUnitOfMeasure = (itemNumber) => {
 
             <div>
               <!-- New Design -->
-                <table class="table table-hover mt-1 table-sm text-xs">
+                <table class="table table-hove mt-1 table-sm text-xs">
                   <thead>
                     <tr class="font-bold text-gray-600">
-                      <td class="w-[5%]">#</td>
+                      <td class="w-[1%]">#</td>
                       <td class="w-[25%]">Item</td>
-                      <td class="w-[15%]">Qty</td>
-                      <td class="w-[10%]">Purchase Unit Of Measure</td>
-                      <td class="w-[20%]">Unit Price</td>
+                      <td class="w-[10%]">Qty</td>
+                      <td class="w-[24%]">Purchase Unit Of Measure</td>
+                      <td class="w-[15%]">Unit Price</td>
                       <td>Amount</td>
                       <td></td>
                     </tr>
@@ -240,19 +240,19 @@ const getUnitOfMeasure = (itemNumber) => {
                    
                       <td class="border-l border-r">{{(index + 1)}}</td>
                       <td class="border-r">
-                        <select
+                        <!-- <select
                             class="form-select form-select-sm form-control select-no-border"
                             v-model="itemData.menu_item_number"
                             @change="updateItem(index)">
                           <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
-                        </select>
+                        </select> -->
                            
                        
-                        <!-- <ComboMenuItemBox
+                        <ComboMenuItemBox
                       v-model:optionResponse="itemData.menu_item_number"
                       :optionList="availableOptions(index)"
                       :optionDraft="itemData.menu_item_number"
-                     ></ComboMenuItemBox> -->
+                     ></ComboMenuItemBox>
 
                       </td>
                       <td class="border-r">
