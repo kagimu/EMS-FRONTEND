@@ -116,16 +116,16 @@ const removeItem = () => {
     <div
       @click="openDropdown"
       @focus="openDropdown"
-      class=" rounded-md py-2 flex flex-wrap cursor-text form-select form-select-sm form-control select-no-border"
+      class=" rounded-md py-0 flex flex-wrap cursor-text "
     >
       <div v-if="!selectedItem" class="text-xs text-gray-600">
-        <div class="ml-3">--Select Menu Item--</div>
+        <div class="ml-0">--Select Menu Item--</div>
       </div>
       <div
         v-else
-        class="text-xs mx-1 my-[2px]  hover:bg-[#fafafa] hover:text-[#198754] cursor-pointer"
+        class="text-xs mx-1 my-[2px]  hover:bg-[#fafafa] hover:text-[#198754] cursor-pointer form-select form-select-sm form-control select-no-border text-xs"
       >
-        <div class="flex flex-grow px-2 r" >
+        <div class="flex flex-grow px-0 r text-xs" >
           {{ selectedItem.name }}  <!-- Display name instead of number -->
         </div>
       </div>
@@ -134,14 +134,15 @@ const removeItem = () => {
     <div
       ref="target"
       v-if="dropdownOpen"
-      class="absolute mt-0  bg-white shadow-lg z-10 w-full"
+      class="absolute mt-0  bg-white shadow-lg z-10 w-full "
+      style="background-color: #f8f9fa !important;"
     >
       <div class="px-1 pt-1">
         <input
           v-model="search"
           @input="filterItems"
           type="text"
-          placeholder="Search"
+          placeholder="Search here ...."
           class="form-control shadow-none"
         />
       </div>
@@ -164,3 +165,9 @@ const removeItem = () => {
     </div>
   </div>
 </template>
+<style>
+.bg-whitey {
+  --bs-bg-opacity: 1;
+  background-color: rgb(248, 248, 248) !important;
+}
+</style>

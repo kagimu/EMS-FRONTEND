@@ -225,13 +225,13 @@ const getUnitOfMeasure = (itemNumber) => {
                 <table class="table table-hove mt-1 table-sm text-xs">
                   <thead>
                     <tr class="font-bold text-gray-600">
-                      <td class="w-[1%]">#</td>
-                      <td class="w-[25%]">Item</td>
-                      <td class="w-[10%]">Qty</td>
-                      <td class="w-[24%]">Purchase Unit Of Measure</td>
-                      <td class="w-[15%]">Unit Price</td>
-                      <td>Amount</td>
-                      <td></td>
+                      <th class="w-[1%]">#</th>
+                      <th class="w-[25%]">Item</th>
+                      <th class="w-[10%]">Qty</th>
+                      <th class="w-[24%]">Purchase Unit Of Measure</th>
+                      <th class="w-[15%]">Unit Price</th>
+                      <th>Amount</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -263,7 +263,7 @@ const getUnitOfMeasure = (itemNumber) => {
                             v-model="itemData.quantity"
                             @input="updateAmount(index)"
                             placeholder="1.0"
-                            class="form-control select-no-border">
+                            class="form-control select-no-border text-xs">
                       </td>
                       <td class="border-r"> <input class="form-control shadow-none select-no-border" 
                         type="text" :value="getUnitOfMeasure(itemData.menu_item_number)"  readonly/></td>
@@ -276,8 +276,10 @@ const getUnitOfMeasure = (itemNumber) => {
                             placeholder="Unit Price"
                             class="form-control select-no-border">
                       </td>
-                      <td>
-                        {{ itemData.amount?.toLocaleString() }}
+                      <td class="border-r">
+                        <input class="form-control shadow-none select-no-border" 
+                        type="text" :value="itemData.amount?.toLocaleString()"  readonly/>
+                        
                       </td>
                       <td class="border-r">
                        <div class="flex justify-end">
