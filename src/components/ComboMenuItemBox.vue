@@ -123,7 +123,7 @@ const removeItem = () => {
       </div>
       <div
         v-else
-        class="text-xs mx-1 my-[2px] text-[#03408f] hover:bg-[#fafafa] hover:text-[#198754] cursor-pointer"
+        class="text-xs mx-1 my-[2px]  hover:bg-[#fafafa] hover:text-[#198754] cursor-pointer"
       >
         <div class="flex flex-grow px-2 r" >
           {{ selectedItem.name }}  <!-- Display name instead of number -->
@@ -134,7 +134,7 @@ const removeItem = () => {
     <div
       ref="target"
       v-if="dropdownOpen"
-      class="absolute mt-0  bg-white shadow-lg z-1 w-full"
+      class="absolute mt-0  bg-white shadow-lg z-10 w-full"
     >
       <div class="px-1 pt-1">
         <input
