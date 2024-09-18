@@ -12,9 +12,6 @@ import PaginationTemplate from "@/components/PaginationTemplate.vue";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 const confirmationRef = ref(null);
 
-
-
-
 const showingModal = ref(false)
 const isLoading = ref(false);
 const loading = ref(true)
@@ -23,7 +20,7 @@ const tableLoader = ref(true)
 const notificationStore = useNotificationStore()
 const cateringStore = useCateringStore()
 const thisDialog = ref(false)
-const updateMenuDialog = ref(false)
+
 const menuItemsinfoData = ref(null)
 const errorMessage = ref(null)
 const campusList = ref([])
@@ -72,12 +69,15 @@ onMounted(
 
 
 const doFetchMenuItem = () => {
-    let data = {
-    page: 1,
-    per_page: per_page.value, 
-     school_number:form.school_number,
-     campus_number:form.campus_number,
-     type:"ASSEMBLED"
+      if(!form.school_number){
+        return
+      }
+      let data = {
+      page: 1,
+      per_page: per_page.value,
+      school_number:form.school_number,
+      campus_number:form.campus_number,
+      type:"ASSEMBLED"
     }
     isLoading.value = true
     cateringStore.fetchMenuItemPaginated(data)
@@ -87,8 +87,9 @@ const doFetchMenuItem = () => {
 
 function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
   if (scrollTop + clientHeight >= scrollHeight) {
-
-    tableLoader.value = true
+    if(!form.school_number){
+      return
+    }
     let data = {
       page: (page.value+1),
       per_page: per_page.value,
@@ -330,10 +331,12 @@ if (agreed) {
                     <thead >
                       <tr>
                         <th>#</th>
+                        <th>Code</th>
                         <th>Name</th>
                         <th>Unit Of Use</th>
                         <th>Purchase Unit</th>
                         <th>Qty</th>
+                        <th>Unit Cost</th>
                         <th>Parts</th>
                         <th class="w-[5%]">Action</th>
                       </tr>
@@ -344,11 +347,13 @@ if (agreed) {
                     <tbody>
                      
                       <tr v-if="isLoading===false" v-for="(list, index) in menuItemData" :key="index">
+                        <td   v-if="list.type==='ASSEMBLED'">{{ list?.key }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.code }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.name }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.unit_of_measure_name }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.purchase_unit_of_measure_name }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.current_quantity }}</td>
+                        <td   v-if="list.type==='ASSEMBLED'">{{ list?.unit_cost }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">
                           <div  v-if="list.type==='ASSEMBLED'">
 
@@ -366,10 +371,10 @@ if (agreed) {
                           </div>
                         </td>
                         <td   v-if="list.type==='ASSEMBLED'">
-                          <button @click="showUpdateDialog(list)" >
+                          <button @click="showUpdateDialog(list)" class="mr-1" >
                           <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
                           </button>
-                          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
+
                           <button type="button" @click="deleteThisData(list)">
                           <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
                           </button>
@@ -377,12 +382,6 @@ if (agreed) {
                       </tr>
                     </tbody>
                   </table>
-
-                  <!-- <div v-if="isLoading" class="flex justify-center" >
-                        <div class="spinner-border text-primary" role="status">
-                          <span class="visually-hidden">Loading...</span>
-                        </div>
-                      </div> -->
                       
                  </div>
                       

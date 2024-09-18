@@ -62,6 +62,9 @@ const filterBySchool = (school_number) => {
 
 
 const doFetchMenuItem = () => {
+  if(!form.school_number){
+    return
+  }
   menuItemData.value = []
   let data = {
     page: 1,
@@ -76,8 +79,9 @@ const doFetchMenuItem = () => {
 
 function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
   if (scrollTop + clientHeight >= scrollHeight) {
-
-    tableLoader.value = true
+    if(!form.school_number){
+      return
+    }
     let data = {
       page: (page.value+1),
       per_page: per_page.value,
@@ -304,7 +308,7 @@ watch(
                         v-model="form.campus_number"
                         class="form-select form-select-sm"
                         required style="box-shadow: none;"
-                        @change="filterByCampus(form.campus_number)"
+                        @change="filterByCampus()"
                     >
                       <option disabled value="">--Select Campus--</option>
                       <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
@@ -350,20 +354,24 @@ watch(
                     <thead>
                     <tr>
                       <th>#</th>
+<!--                      <th>Code</th>-->
                       <th>Name</th>
                       <th>Unit Of Use</th>
                       <th>Unit of Purchase</th>
                       <th>Current Quantity</th>
+                      <th>Unit Cost</th>
                       <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(list, index) in menuItemData" v-if="isLoading===false" :key="index">
-                      <td>{{ list?.code }}</td>
+                      <td>{{ list?.key }}</td>
+<!--                      <td>{{ list?.code }}</td>-->
                       <td>{{ list?.name }}</td>
                       <td>{{ list?.unit_of_measure_name }}</td>
                       <td>{{ list?.purchase_unit_of_measure_name }}</td>
                       <td>{{ list?.current_quantity }}</td>
+                      <td>{{ list?.unit_cost }}</td>
                       <td>
                         <button v-if="can('edit_menu_item','general')" @click="showUpdateDialog(list)" >
                           <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>

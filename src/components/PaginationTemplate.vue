@@ -26,7 +26,7 @@ watch(perPage, (newVal) => {
   <div class="flex justify-end pt-5 pb-2">
     <div class="flex pl-2">
       <select
-          class="shadow-none w-[50px] cursor-pointer mr-3  !text-[13px] text-gray-600 border rounded-md px-2"
+          class="shadow-none w-[55px] cursor-pointer mr-3  !text-[13px] text-gray-600 border rounded-md px-2"
           v-model="perPage">
 <!--        <option value="10">10</option>-->
         <option value="20">20</option>
