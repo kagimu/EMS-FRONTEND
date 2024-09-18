@@ -5,17 +5,10 @@ import { onClickOutside } from '@vueuse/core';
 const target = ref(null);
 
 const props = defineProps({
-  optionList: {
-    type: Array,
-    default: () => []
-  },
-  optionDraft: {
-    type: [Array, String, Number],
-    default: () => ''
-  }
+  optionList: {},
+  optionDraft:{}
 });
 
-// Reactive references
 const query = ref('');
 const search = ref('');
 const dropdownOpen = ref(false);
@@ -33,9 +26,12 @@ onClickOutside(target, (event) => {
 });
 
 onMounted(() => {
-  checkDraft();
+  if (items.value.length) {
+    checkDraft();
+  }
   checkOptionsDraft();
 });
+
 
 watch(
   () => props.optionDraft,
@@ -47,21 +43,26 @@ watch(
 );
 
 const checkDraft = () => {
-  let draft = props.optionDraft;
-  if (draft && !hasProcessed.value) {
-    const foundItem = items.value.find(item => item.number === draft);  // Find the full item based on the number
-    if (foundItem) {
-      selectedItem.value = foundItem;
-      hasProcessed.value = true;
-    }
+  const draft = props.optionDraft;
+  const foundItem = items.value.find(item => item.number === draft[0].number);
+  if (foundItem) {
+    selectedItem.value = foundItem; 
+  } else {
+    console.error('Item not found in optionList');
   }
-};
+}
+
+
+
+
 
 watch(
   () => props.optionList,
   async (data) => {
     if (data) {
-      checkOptionsDraft();
+     // Populate items with optionList data
+      checkOptionsDraft();  
+      checkDraft();
     }
   }
 );
@@ -112,14 +113,15 @@ const removeItem = () => {
 
 
 <template>
+  {{ selectedItem }}
   <div class="relative" ref="dropdownWrapper">
     <div
       @click="openDropdown"
       @focus="openDropdown"
-      class=" rounded-md py-0 flex flex-wrap cursor-text "
+      class=" rounded-md py-0 flex flex-wrap cursor-text"
     >
       <div v-if="!selectedItem" class="text-xs text-gray-600">
-        <div class="ml-0">--Select Menu Item--</div>
+        <div class="ml-1 pt-1">--Select Menu Item--</div>
       </div>
       <div
         v-else

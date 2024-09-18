@@ -66,7 +66,8 @@ const doFetchReportColumnAssessment = () => {
     assessment_metric_number:assessment_metric_number.value,
     report_setting_number:report_setting_number.value,
     report_column_number:report_column_number.value,
-    campus_number:campusNumber
+    campus_number:campusNumber,
+    campus_curriculum_number:campus_curriculum_number
 
   }
   reportSetupStore.fetchReportColumnAssessment(data)
@@ -109,7 +110,8 @@ const fetchAssessmentMetrics = () =>{
       study_period_number:study_period_number.value,
       assessment_area_number:assessment_area_number.value,
       class_number:class_number.value,
-      campus_number:campusNumber
+      campus_number:campusNumber,
+      campus_curriculum_number:campus_curriculum_number
     }
     assessmentStore.fetchAssessmentMetrics(data)
 
