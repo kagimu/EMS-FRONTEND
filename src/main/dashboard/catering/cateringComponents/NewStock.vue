@@ -57,7 +57,7 @@ function removeItem(index) {
 }
 
 function calculateTotal() {
-  return Items.value.reduce((total, item) => total + item.amount, 0);
+  return Items.value.reduce((total, item) => total + item.amount, 0)?.toLocaleString();
 }
 
 function availableOptions(index) {
@@ -277,7 +277,7 @@ const getUnitOfMeasure = (itemNumber) => {
                             class="form-control select-no-border">
                       </td>
                       <td>
-                        {{ itemData.amount }}
+                        {{ itemData.amount?.toLocaleString() }}
                       </td>
                       <td class="border-r">
                        <div class="flex justify-end">
