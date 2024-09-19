@@ -258,7 +258,7 @@ const newClass = () => {
                         v-model="classInfo.class_number"
                     >
                       <option disabled value="">--Select Class--</option>
-                      <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
+                      <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.code+". "+list?.name+" [ "+list?.abbreviation+" ]"}}</option>
                     </select>
                   </div>
                 </td>
