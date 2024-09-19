@@ -5,19 +5,22 @@ import { onClickOutside } from '@vueuse/core';
 const target = ref(null);
 
 const props = defineProps({
-  optionList: {},
-  optionDraft:{}
+  optionList: [],
+  optionDraft:String,
+  index:Number
 });
 
 const query = ref('');
-const search = ref('');
+const search = ref("");
 const dropdownOpen = ref(false);
-const selectedItem: Ref<{ number: number; name: string } | null> = ref(null);  // Store the full item (number & name)
+const selectedItem = ref(null);  // Store the full item (number & name)
+const selectedItemInfo = ref(null);  // Store the full item (number & name)
 const dropdownWrapper = ref<HTMLElement | null>(null);
 const items = ref([]);  // Initialize items as an empty array
 const hasProcessed = ref(false);
 
-const emits = defineEmits(["update:optionResponse"]);
+
+const emit = defineEmits(['update:optionResponse', 'change']);
 
 onClickOutside(target, (event) => {
   if (event) {
@@ -26,11 +29,31 @@ onClickOutside(target, (event) => {
 });
 
 onMounted(() => {
-  if (items.value.length) {
+ 
     checkDraft();
-  }
-  checkOptionsDraft();
+
+  checkOptionsListDraft();
 });
+
+
+watch(
+    () => props.optionList,
+    async (data) => {
+      if (data) {
+
+        checkOptionsListDraft();
+
+      }
+    }
+);
+
+const checkOptionsListDraft = () => {
+  let draft = props.optionList;
+  if (draft) {
+    items.value = draft;  // Ensure items are assigned properly
+    selectedItemInfo.value = props.optionList?.find(item => item?.number === props.optionDraft)?.text
+  }
+};
 
 
 watch(
@@ -44,49 +67,37 @@ watch(
 
 const checkDraft = () => {
   const draft = props.optionDraft;
-  const foundItem = items.value.find(item => item.number === draft[0].number);
-  if (foundItem) {
-    selectedItem.value = foundItem; 
-  } else {
-    console.error('Item not found in optionList');
+  if(draft){
+    selectedItem.value = draft
   }
+
 }
 
 
 
 
 
-watch(
-  () => props.optionList,
-  async (data) => {
-    if (data) {
-     // Populate items with optionList data
-      checkOptionsDraft();  
-      checkDraft();
-    }
-  }
-);
 
-const checkOptionsDraft = () => {
-  let draft = props.optionList;
-  if (draft) {
-    items.value = draft;  // Ensure items are assigned properly
-  }
-};
+
+
+
+
 
 watch(selectedItem, (newVal) => {
   if (newVal) {
-    emits("update:optionResponse", newVal.number);  // Emit the number value
+    emit("update:optionResponse", newVal);  // Emit the new value for v-model
   } else {
-    emits("update:optionResponse", null);
+    emit("update:optionResponse", null);    // Emit null if no value is selected
   }
+  // Optionally, emit a custom change event as well
+  emit("change", {number:newVal, index:props.index});
 });
 
 // Filter items based on query
 const filteredItems = computed(() => {
   const searchTerm = search.value.toLowerCase();
   return items.value?.filter(item =>
-    item.name.toLowerCase().includes(searchTerm)  // Assuming the name is still used for search
+    item.text.toLowerCase().includes(searchTerm)  // Filter based on the name
   );
 });
 
@@ -102,33 +113,34 @@ const openDropdown = () => {
 };
 
 const selectItem = (item: any) => {
-  selectedItem.value = item;  // Store the full item (name and number)
+  selectedItem.value = item.number;  // Store the full item (name and number)
+  selectedItemInfo.value = item.text;  // Store the full item (name and number)
   dropdownOpen.value = false;
 };
 
-const removeItem = () => {
+/*const removeItem = () => {
   selectedItem.value = null;  
-};
+};*/
 </script>
 
 
 <template>
-  <!-- {{ selectedItem }} -->
+
   <div class="relative" ref="dropdownWrapper">
     <div
       @click="openDropdown"
       @focus="openDropdown"
       class=" rounded-md py-0 flex flex-wrap cursor-text"
     >
-      <div v-if="!selectedItem" class="text-xs text-gray-600">
-        <div class="ml-1 pt-1">--Select Menu Item--</div>
+      <div v-if="!selectedItemInfo" class="text-xs text-gray-600 form-select border-0">
+        <div class="ml-1 pt-1 text-xs">--Select Item--</div>
       </div>
       <div
         v-else
-        class="text-xs mx-1 my-[2px]  hover:bg-[#fafafa] hover:text-[#198754] cursor-pointer form-select form-select-sm form-control select-no-border text-xs"
+        class="text-xs text-gray-600 form-select border-0"
       >
         <div class="flex flex-grow px-0 r text-xs" >
-          {{ selectedItem.name }}  <!-- Display name instead of number -->
+          {{ selectedItemInfo }}  <!-- Display name instead of number -->
         </div>
       </div>
     </div>
@@ -158,7 +170,7 @@ const removeItem = () => {
         >
           <div class="px-1 flex">
             <label class="form-check-label cursor-pointer capitalize ml-1 text-sm  whitespace-nowrap overflow-hidden text-ellipsis" style="font-size: 12px;">
-              {{ item.name }} 
+              {{ item.text }}
               <!-- ({{ item.number }})  if you want to show the number as well -->
             </label>
           </div>
@@ -172,4 +184,25 @@ const removeItem = () => {
   --bs-bg-opacity: 1;
   background-color: rgb(248, 248, 248) !important;
 }
+
+/* For WebKit-based browsers (Chrome, Safari, Edge) */
+.max-h-[300px]::-webkit-scrollbar {
+  width: 6px; /* Adjust the width as needed */
+}
+
+.max-h-[300px]::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* Color of the scrollbar thumb */
+  border-radius: 10px;     /* Rounded corners */
+}
+
+.max-h-[300px]::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Color of the scrollbar track */
+}
+
+/* For Firefox */
+.max-h-[300px] {
+  scrollbar-width: thin; /* Set scrollbar to thin */
+  scrollbar-color: #ccc #f1f1f1; /* Thumb and track colors */
+}
 </style>
+

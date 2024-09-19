@@ -26,9 +26,9 @@
 }
 
 /* Works on Chrome, Edge, and Safari */
-*::-webkit-scrollbar {
-  width: 8px;
-}
+/* *::-webkit-scrollbar {
+  width: 2px;
+} */
 
 *::-webkit-scrollbar-track {
   background: #f0f0f0;
