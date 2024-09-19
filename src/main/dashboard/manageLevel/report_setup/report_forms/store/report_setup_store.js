@@ -116,9 +116,11 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         let study_period_number = data?.study_period_number ?? ""
         let class_number = data?.class_number ?? ""
         let campus_number = data?.campus_number
+        let campus_curriculum_number = data?.campus_curriculum_number
         return await api.get("main/report-settings?academic_year_number="+academic_year_number+
                 "&study_period_number="+study_period_number+
-                "&class_number="+class_number+"&campus_number="+campus_number
+                "&class_number="+class_number+"&campus_number="+campus_number+
+                "&campus_curriculum_number="+campus_curriculum_number
             )
             .then((response) => {
                 reportSettingsListResponse.value = response.data
@@ -188,6 +190,7 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         let  report_setting_number = data?.report_setting_number ?? ""
         let  report_column_number = data?.report_column_number ?? ""
         let campus_number = data?.campus_number ?? ""
+        let campus_curriculum_number = data?.campus_curriculum_number ?? ""
         return await api.get("main/report-settings/report-column-assessment"+
                 "?academic_year_number="+academic_year_number+
                 "&study_period_number="+study_period_number+
@@ -196,7 +199,8 @@ export const useReportSetupStore = defineStore("report_setup", () => {
                 "&assessment_metric_number="+assessment_metric_number+
                 "&report_setting_number="+report_setting_number+
                 "&report_column_number="+report_column_number+
-                "&campus_number="+campus_number
+                "&campus_number="+campus_number+
+                "&campus_curriculum_number="+campus_curriculum_number
             )
             .then((response) => {
                 reportColumnAssessmentListResponse.value = response.data

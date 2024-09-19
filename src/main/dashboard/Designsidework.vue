@@ -1,123 +1,348 @@
+<script setup>
+import {onMounted, reactive, ref, watch, watchEffect, computed} from "vue"
+import useNotificationStore from "@/composables/useNotification.js"
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
+import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+import ComboMenuItemBox from "@/components/ComboMenuItemBox.vue";
+import useCommonsStore from "@/composables/useCommons.js";
+const commons = useCommonsStore()
+
+
+const buttonLoader = ref(false)
+const campusList = ref([])
+const schoolList = ref([])
+const emit = defineEmits()
+const  notificationStore  = useNotificationStore()
+const schoolStore = useSchoolStore()
+const campusStore = useCampusStore()
+const cateringStore = useCateringStore()
+const isSelected = ref(true)
+
+const form = reactive({
+  campus_number:"",
+  school_number:""
+})
+
+const Items = ref([]);
+const itemOption = ref([])
+
+function updateItem(index) {
+  const item = Items.value[index];
+  const selectedOption = itemOption.value.find(option => option.name === item.name);
+  if (selectedOption) {
+    item.cost = selectedOption.cost;
+    updateAmount(index);
+  }
+}
+
+function updateAmount(index) {
+  const item = Items.value[index];
+  item.amount = item.quantity * item.cost;
+}
+
+function addItem() {
+  if(!form.campus_number){
+    isSelected.value = false
+    notificationStore.errorToast("Error","No Campus Selected ! ")
+  }else{
+    isSelected.value = true
+    Items.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
+  }
+  
+}
+
+function removeItem(index) {
+  Items.value.splice(index, 1);
+}
+
+function calculateTotal() {
+  return Items.value.reduce((total, item) => total + item.amount, 0);
+}
+
+function availableOptions(index) {
+  const selectedNames = Items.value.map(item => item.name);
+  return itemOption.value.filter(option => !selectedNames.includes(option.name) || option.name === Items.value[index].name);
+}
+
+const isAddButtonDisabled = ref(false);
+watch(Items, (newItems) => {
+  isAddButtonDisabled.value = newItems.length === itemOption.value.length;
+}, { deep: true });
+
+
+onMounted(() => {
+      schoolStore.fetchSchools()
+    }
+)
+
+
+
+const createStock = () => {
+  buttonLoader.value = true
+  const item_price_and_quantity = Items.value.map(itemData => ({
+    menu_item_number: itemData.menu_item_number,
+    quantity: parseInt(itemData.quantity),
+    unit_price: parseInt(itemData.unitPrice),
+    unit_cost: parseInt(itemData.cost)
+  }))
+
+  const data = {
+    campus_number:form.campus_number,
+    item_price_and_quantity
+  }
+
+  cateringStore.newStock(data)
+}
+
+watch(
+    () => cateringStore.newStockResponse,
+    async (data) => {
+      buttonLoader.value = false
+      clearFormData()
+      notificationStore.successToast("Success", data.message)
+      cateringStore.fetchStock()
+     
+    },
+    {deep: true}
+)
+
+watch(
+    () => cateringStore.errorMessage,
+    async (data) => {
+      if (data) {
+        notificationStore.errorToast("Error", data.message)
+      }
+    },
+    {deep: true}
+)
+
+const clearFormData = () => {
+  form.school_number = null
+  form.campus_number = null
+  Items.value = []
+}
+
+
+
+const fetchCampuses = (school_number) => {
+  campusStore.fetchCampuses(school_number)
+}
+
+const doFetchMenuItem = () => {
+  Items.value = []
+  let formD = {
+    school_number:form.school_number,
+    campus_number:form.campus_number
+  }
+  cateringStore.fetchMenuItem(formD)
+}
+
+
+watch(
+    () => cateringStore.menuItemResponse,
+    async (data) => {
+
+      itemOption.value = data.map(option => ({ name: option.name, number: option.number,purchase_unit_of_measure_name:option.purchase_unit_of_measure_name }));
+
+      isSelected.value = true
+      Items.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
+    }
+)
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        schoolList.value = data.data
+      }
+    }
+)
+
+watch(
+    () => campusStore.campusListResponse,
+    async (data) => {
+      if (data) {
+        campusList.value = data.data
+      }
+    }
+)
+
+   
+const getUnitOfMeasure = (itemNumber) => {
+  const selectedItem = itemOption.value.find(option => option.number === itemNumber);
+  return selectedItem ? selectedItem.purchase_unit_of_measure_name : '';
+}
+
+</script>
 <template>
-  <div>
-    <form @submit.prevent="invoicePayment">
+    <div>
+      <div class="row">
+        <div class="col-12">
+            <div class="card-body" style="padding: 0;">
+              <div class="mt-5">
+                <form @submit.prevent="createStock">
 
-      <div class="options-menu">
-        <button 
-          v-for="option in paymentOptions" 
-          :key="option.amount" 
-          @click="toggleAmount(option.amount)"
-          :class="{'selected': selectedAmounts.includes(option.amount)}"
-          type="button" 
-          class="payment-option"
-        >
-          <span>{{ option.label }}</span>
-        </button>
-      </div>
+                  <div class="grid grid-cols-3 gap-2 px-3 mb-4">
 
-      <div class="mb-2">
-        <label class="text-sm">Selected Amounts: </label>
-        <div v-if="selectedAmounts.length">
-          <ul>
-            <li v-for="(amount, index) in selectedAmounts" :key="index">{{ amount }}</li>
-          </ul>
-        </div>
-        <div v-else>
-          <p>No amount selected yet</p>
-        </div>
-      </div>
+                    <div>
+                      <div>
+                        <label class="text-sm"><small>School</small> </label>
+                        <select
+                            style="box-shadow: none;"
+                            class="form-select form-select-sm" required
+                            v-model="form.school_number"
+                            @change="fetchCampuses(form.school_number)"
+                        >
+                          <option disabled value="">Select School</option>
+                          <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
 
-      <div class="mb-2">
-        <label class="text-sm">Date</label>
-        <input
-          v-model="formData.date"
-          type="date"
-          required
-          class="form-control form-control-sm"
-        />
+                    <div>
+                        <label class="text-sm"><small>Campus</small>  </label>
+                        <select
+                            :style="!isSelected ? 'border:1px solid red' : '' "
+                            style="box-shadow: none;"
+                            class="form-select form-select-sm"
+                            v-model="form.campus_number" required
+                            @change="doFetchMenuItem()"
+                        >
+                          <option disabled value="">Select campus</option>
+                          <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+                          </option>
+                        </select>
+                    </div>
+                  </div>
+
+
+                    <div class="px-3">
+
+            <div>
+              <!-- New Design -->
+                <table class="table table-hover mt-1 table-sm text-xs">
+                  <thead>
+                    <tr class="font-bold text-gray-600">
+                      <td class="w-[5%]">#</td>
+                      <td class="w-[25%]">Item</td>
+                      <td class="w-[15%]">Qty</td>
+                      <td class="w-[10%]">Purchase Unit Of Measure</td>
+                      <td class="w-[20%]">Unit Price</td>
+                      <td>Amount</td>
+                      <td></td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(itemData, index) in Items" :key="index" >
+                      <!-- {{itemData}} -->   
+                   
+                      <td class="border-l border-r">{{(index + 1)}}</td>
+                      <td class="border-r">
+                  
+                          
+                        <ComboMenuItemBox
+                      v-model:optionResponse="itemData.menu_item_number"
+                      :optionList="availableOptions(index)"
+                      :optionDraft="itemData.menu_item_number"
+                     ></ComboMenuItemBox>
+
+                      </td>
+                      <td class="border-r">
+                        <input
+                            @keypress="commons.numbersOnlyValidator($event)"
+                            maxlength="10"
+                            type="text"
+                            v-model="itemData.quantity"
+                            @input="updateAmount(index)"
+                            placeholder="1.0"
+                            class="form-control select-no-border">
+                      </td>
+                      <td class="border-r"> <input class="form-control shadow-none select-no-border" 
+                        type="text" :value="getUnitOfMeasure(itemData.menu_item_number)"  readonly/></td>
+                      <td class="border-r">
+                        <input
+                            @keypress="commons.numbersOnlyValidator($event)"
+                            maxlength="10"
+                            type="text" v-model="itemData.cost"
+                            @input="updateAmount(index)"
+                            placeholder="Unit Price"
+                            class="form-control select-no-border">
+                      </td>
+                      <td>
+                        {{ itemData.amount }}
+                      </td>
+                      <td class="border-r">
+                       <div class="flex justify-end">
+                         <div class="mr-3">
+                           <button type="button" @click="removeItem(index)">
+                             <i class="bi bi-x-circle" style="color:red"></i>
+                           </button>
+                         </div>
+                       </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+
+              <div>
+                <button
+                    class="btn btn-primary btn-sm text-sm ml-3"
+                    @click.prevent="addItem"
+                    :disabled="isAddButtonDisabled">
+                  <small><i class="bi bi-plus-lg"></i></small>
+                </button>
+              </div>
+
+
+              <div class="row mt-10 mx-auto">
+                  <div class="col-lg-8"></div>
+                  <div class="col-lg-4">
+                    <ul style="float: right;">
+                      <!-- <li>Subtotal - {{ calculateSubtotal() }}</li> -->
+                      <li>Total : <span style="color:rgba(173, 12, 12, 0.92)">{{ calculateTotal() }}</span> </li>
+                    </ul>
+                  </div>
+                </div>
+            
+              <!-- ends here -->
+            </div>
+         
+          </div>
+        
+                <div class="flex flex-grow justify-between">
+                  &nbsp;
+                     <div class="mr-3 mb-10">
+                         <button type="submit" class="btn btn-sm btn-primary mb-2 mt-1" style="float: right !important;margin-right: 0px;">
+                         <div class="px-4">
+                           <small>Submit</small>
+                           <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="buttonLoader">
+                             <span class="visually-hidden">Loading...</span>
+                           </div>
+                         </div>
+                         </button>
+                     </div>
+
+             </div>
+
+
+               </form>
+              </div>
+            </div>
+            
+          </div>
+        
       </div>
+    </div>
+  </template>
+
+
 
   
-      <div class="flex justify-content-end mt-3" style="width: 100%;">
-        <button type="submit" class="btn btn-primary border-0 btn-sm">
-          <small>Pay</small>
-          <span
-            v-if="loader"
-            style="width: 1.2rem; height: 1.2rem;"
-            class="spinner-border text-light"
-            role="status"
-          >
-            <span class="visually-hidden">Loading...</span>
-          </span>
-        </button>
-      </div>
-    </form>
-  </div>
-</template>
-
-<script setup>
-import { reactive, ref } from 'vue';
-
-const formData = reactive({
-  amount: null,
-  date: null,
-});
-
-const selectedAmounts = ref([]); // Array to store selected amounts
-const loader = ref(false);
-
-const paymentOptions = [
-  { label: 'Amount 1: $10', amount: 10 },
-  { label: 'Amount 2: $20', amount: 20 },
-  { label: 'Amount 3: $30', amount: 30 },
-  { label: 'Amount 4: $50', amount: 50 }
-];
-
-// Toggle amount selection
-const toggleAmount = (amount) => {
-  const index = selectedAmounts.value.indexOf(amount);
-  if (index === -1) {
-    selectedAmounts.value.push(amount);
-  } else {
-    selectedAmounts.value.splice(index, 1);
-  }
-};
-
-const invoicePayment = () => {
-  if (selectedAmounts.value.length === 0 || !formData.date) {
-    alert('Please select at least one amount and a date');
-    return;
-  }
-  loader.value = true;
-
-  // Simulate payment processing
-  setTimeout(() => {
-    loader.value = false;
-    alert('Payment Successful for amounts: ' + selectedAmounts.value.join(', '));
-  }, 2000);
-};
-</script>
-
-<style scoped>
-.options-menu {
-  display: flex;
-  gap: 10px;
-}
-
-.payment-option {
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  padding: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.payment-option.selected {
-  background-color: #007bff;
-  color: white;
-}
-
-.payment-option:hover {
-  background-color: #ddd;
-}
-</style>
+ 
+  
+  
+  
+  

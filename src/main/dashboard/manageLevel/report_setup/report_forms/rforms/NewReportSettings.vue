@@ -60,7 +60,7 @@ const getReportSettingInfo = () => {
   if(props.reportSettingsD){
     form.code = props.reportSettingsD.code,
     form.columns = props.reportSettingsD.columns,
-    alert(props.level_number)
+    // alert(props.level_number)
     campus_level_number.value = props.level_number
   }
 }

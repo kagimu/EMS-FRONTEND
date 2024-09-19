@@ -7,6 +7,7 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import AppModal from "@/components/AppModal.vue";
 import useCommonsStore from "@/composables/useCommons.js";
+import ComboMenuItemBox from "@/components/ComboMenuItemBox.vue";
 
 const commons = useCommonsStore()
 const schoolStore = useSchoolStore()
@@ -87,10 +88,11 @@ const getMenuItemInfo = () =>{
           items.forEach(lst => {
             lst.secondary_item_number = lst.number
           })
+          
           menuItems.value = items
           doFetchMenuItem(draft.school_number)
         }
-
+        
         fetchUnit()
   }
 }
@@ -330,8 +332,6 @@ const clearFormData = () => {
     </AppModal>
 
 
-
-
 <form @submit.prevent="addMenuItem">
 
   <div class="row">
@@ -463,6 +463,8 @@ const clearFormData = () => {
 <div v-if="(menuForm.type==='ASSEMBLED') && menuForm.school_number">
     <div class="mx-auto">
 
+    
+
       <div class="mt-4 text-[15px] alert alert-success p-1 pl-1">Select Ingredients</div>
       <table class="table table-hover caption-top  border-t table-sm ">
           <thead>
@@ -479,9 +481,17 @@ const clearFormData = () => {
             <tr v-for="(menu, index) in menuItems" :key="index" >
               <td class="text-sm text-[#8a8888]">{{(index + 1)}}</td>
               <td>
-                <select v-model="menu.secondary_item_number" class="form-select form-control select-no-border ">
+                <!-- <select v-model="menu.secondary_item_number" class="form-select form-control select-no-border ">
                   <option v-for="option in availableOptions(index)" :value="option.number">{{ option.name }}</option>
-                </select>
+                </select> -->
+{{ availableOptions(index) }}
+
+                <ComboMenuItemBox
+                      v-model:optionResponse="menu.secondary_item_number"
+                      :optionList="availableOptions(index)"
+                      :optionDraft="menu?.secondary_item_number"
+                     ></ComboMenuItemBox>
+
               </td>
 
               <td>

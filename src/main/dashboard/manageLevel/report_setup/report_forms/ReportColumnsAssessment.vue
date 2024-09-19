@@ -30,6 +30,7 @@ const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 
 
+
 const reportColumnAssessmentList = ref(null)
 
 const showReportColumn = ref(false)
@@ -66,7 +67,8 @@ const doFetchReportColumnAssessment = () => {
     assessment_metric_number:assessment_metric_number.value,
     report_setting_number:report_setting_number.value,
     report_column_number:report_column_number.value,
-    campus_number:campusNumber
+    campus_number:campusNumber,
+    campus_curriculum_number:campus_curriculum_number
 
   }
   reportSetupStore.fetchReportColumnAssessment(data)
@@ -109,7 +111,8 @@ const fetchAssessmentMetrics = () =>{
       study_period_number:study_period_number.value,
       assessment_area_number:assessment_area_number.value,
       class_number:class_number.value,
-      campus_number:campusNumber
+      campus_number:campusNumber,
+      campus_curriculum_number:campus_curriculum_number
     }
     assessmentStore.fetchAssessmentMetrics(data)
 
@@ -312,6 +315,7 @@ if (agreed) {
     </AppModal>
 
 
+    {{reportColumnAssessmentList  }}
     <div class="row">
 
       <div class="col-12">
@@ -459,7 +463,7 @@ if (agreed) {
           <tr v-for="(levelInfo, index) in reportColumnAssessmentList" :key="index">
             <td> {{index+1}}</td>
             <td> {{levelInfo.assessment_area}}</td>
-            <td> {{levelInfo.assessment_metric}}</td>
+            <td> {{levelInfo.assessment_metric}} [{{ levelInfo.scheduled_on }}]</td>
             <td> {{levelInfo.report_column}}</td>
             <td>
               <button @click="deleteThisData(levelInfo.number,levelInfo.assessment_area,levelInfo.report_column,levelInfo.assessment_area)"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>

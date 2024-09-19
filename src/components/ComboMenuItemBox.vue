@@ -5,21 +5,14 @@ import { onClickOutside } from '@vueuse/core';
 const target = ref(null);
 
 const props = defineProps({
-  optionList: {
-    type: Array,
-    default: () => []
-  },
-  optionDraft: {
-    type: [Array, String, Number],
-    default: () => ''
-  }
+  optionList: [],
+  optionDraft:String
 });
 
-// Reactive references
 const query = ref('');
 const search = ref('');
 const dropdownOpen = ref(false);
-const selectedItem: Ref<number | null> = ref(null);  // Changed to number select
+const selectedItem = ref();  // Store the full item (number & name)
 const dropdownWrapper = ref<HTMLElement | null>(null);
 const items = ref([]);  // Initialize items as an empty array
 const hasProcessed = ref(false);
@@ -33,9 +26,12 @@ onClickOutside(target, (event) => {
 });
 
 onMounted(() => {
-  checkDraft();
+ 
+    checkDraft();
+
   checkOptionsDraft();
 });
+
 
 watch(
   () => props.optionDraft,
@@ -47,18 +43,24 @@ watch(
 );
 
 const checkDraft = () => {
-  let draft = props.optionDraft;
-  if (draft && !hasProcessed.value) {
-    selectedItem.value = draft as number;  // Ensure the draft is a number
-    hasProcessed.value = true;
+  const draft = props.optionDraft;
+  if(draft){
+    selectedItem.value = draft
   }
-};
+
+}
+
+
+
+
 
 watch(
   () => props.optionList,
   async (data) => {
     if (data) {
-      checkOptionsDraft();
+     // Populate items with optionList data
+      checkOptionsDraft();  
+      checkDraft();
     }
   }
 );
@@ -71,7 +73,11 @@ const checkOptionsDraft = () => {
 };
 
 watch(selectedItem, (newVal) => {
-  emits("update:optionResponse", newVal);  // Emit the number value
+  if (newVal) {
+    emits("update:optionResponse", newVal);  // Emit the number value
+  } else {
+    emits("update:optionResponse", null);
+  }
 });
 
 // Filter items based on query
@@ -94,7 +100,7 @@ const openDropdown = () => {
 };
 
 const selectItem = (item: any) => {
-  selectedItem.value = item.number;  // Select by number
+  selectedItem.value = item;  // Store the full item (name and number)
   dropdownOpen.value = false;
 };
 
@@ -103,23 +109,24 @@ const removeItem = () => {
 };
 </script>
 
+
 <template>
+  <!-- {{ selectedItem }} -->
   <div class="relative" ref="dropdownWrapper">
     <div
       @click="openDropdown"
       @focus="openDropdown"
-      class="border rounded-md py-2 flex flex-wrap cursor-text"
+      class=" rounded-md py-0 flex flex-wrap cursor-text"
     >
       <div v-if="!selectedItem" class="text-xs text-gray-600">
-        <div class="ml-3">--Select Menu Item--</div>
+        <div class="ml-1 pt-1">--Select Menu Item--</div>
       </div>
       <div
         v-else
-        class="text-xs  mx-1 my-[2px]  text-[#03408f]  hover:bg-[#fafafa] hover:text-[#198754] cursor-pointer"
-       
+        class="text-xs mx-1 my-[2px]  hover:bg-[#fafafa] hover:text-[#198754] cursor-pointer form-select form-select-sm form-control select-no-border text-xs"
       >
-        <div class="flex flex-grow px-2">
-          {{ selectedItem }}
+        <div class="flex flex-grow px-0 r text-xs" >
+          {{ selectedItem }}  <!-- Display name instead of number -->
         </div>
       </div>
     </div>
@@ -127,30 +134,30 @@ const removeItem = () => {
     <div
       ref="target"
       v-if="dropdownOpen"
-      class="absolute mt-1 border border-gray-300 rounded-lg bg-white shadow-lg z-10 w-full"
+      class="absolute mt-0  bg-white shadow-lg z-10 w-full "
+      style="background-color: #f8f9fa !important;"
     >
-      <div class="px-2 pt-2">
+      <div class="px-1 pt-1">
         <input
           v-model="search"
           @input="filterItems"
           type="text"
-          placeholder="Search"
+          placeholder="Search here ...."
           class="form-control shadow-none"
-        
         />
       </div>
 
-      <div class="max-h-[200px] overflow-y-scroll scrollbar-thin my-2">
+      <div class="max-h-[300px] overflow-y-scroll scrollbar-thin my-2" >
         <div
-          class="cursor-pointer p-2 hover:bg-gray-100 flex items-center"
+          class="cursor-pointer p-1 hover:bg-gray-100 flex items-center"
           v-for="(item, idx) in filteredItems"
           :key="idx"
           @click="selectItem(item)"
         >
           <div class="px-1 flex">
-            <label class="form-check-label cursor-pointer capitalize ml-3 text-sm text-gray-600 whitespace-nowrap overflow-hidden text-ellipsis">
+            <label class="form-check-label cursor-pointer capitalize ml-1 text-sm  whitespace-nowrap overflow-hidden text-ellipsis" style="font-size: 12px;">
               {{ item.name }} 
-              <!-- ({{ item.number }})   -->
+              <!-- ({{ item.number }})  if you want to show the number as well -->
             </label>
           </div>
         </div>
@@ -158,7 +165,30 @@ const removeItem = () => {
     </div>
   </div>
 </template>
+<style>
+.bg-whitey {
+  --bs-bg-opacity: 1;
+  background-color: rgb(248, 248, 248) !important;
+}
 
-<style scoped>
-/* Custom styles (if any) */
+/* For WebKit-based browsers (Chrome, Safari, Edge) */
+.max-h-[300px]::-webkit-scrollbar {
+  width: 6px; /* Adjust the width as needed */
+}
+
+.max-h-[300px]::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* Color of the scrollbar thumb */
+  border-radius: 10px;     /* Rounded corners */
+}
+
+.max-h-[300px]::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Color of the scrollbar track */
+}
+
+/* For Firefox */
+.max-h-[300px] {
+  scrollbar-width: thin; /* Set scrollbar to thin */
+  scrollbar-color: #ccc #f1f1f1; /* Thumb and track colors */
+}
 </style>
+
