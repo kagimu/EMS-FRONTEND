@@ -23,6 +23,7 @@ const campusList = ref([])
 const schoolList = ref([])
 const feedingSessionGroupData = ref([])
 const menuOptions = ref([])
+const unfilteredMenuItems = ref([])
 const menuItems = ref([])
 const unitMeasurementData = ref([])
 const item_number = ref(null)
@@ -44,6 +45,7 @@ const menuForm = reactive({
   code:null,
   type:"",
   unit_of_measure_number:"",
+  unit_of_measure_name:"",
   campus_number:"",
   base_price:null,
   school_number:"",
@@ -71,29 +73,32 @@ watch(
 
 
 const getMenuItemInfo = () =>{
-  let draft  = props.menuItemsInfo
-  if (draft?.number){
+  let draft  = {...props.menuItemsInfo}
+  if (draft){
+
         item_number.value = draft?.number ?? ""
         menuForm.name = draft?.name ?? ""
         menuForm.code = draft?.code ?? ""
         menuForm.type = draft?.type ?? ""
         menuForm.unit_of_measure_number = draft?.unit_of_measure_number ?? ""
         menuForm.campus_number = draft?.number ?? ""
-        menuForm.base_price = draft?.unit_cost ?? ""
+        menuForm.unit_cost = draft?.unit_cost ?? ""
         menuForm.school_number = draft?.school_number ?? ""
         menuForm.purchase_unit_of_measure_number = draft?.purchase_unit_of_measure_number
         menuForm.conversion_to_purchase_unit = draft?.conversion_to_purchase_unit
+
         if(draft?.parts?.length > 0) {
           let items = draft?.parts
           items.forEach(lst => {
-            lst.secondary_item_number = lst.number
+            lst.secondary_item_number = lst?.number
+            lst.unit_of_measure_name = lst?.unit_of_measure
           })
-          
+
           menuItems.value = items
           doFetchMenuItem(draft.school_number)
         }
-        
-        fetchUnit()
+
+
   }
 }
 
@@ -139,12 +144,12 @@ const addMenuItem = () =>{
   }else{
 
 
-    const secondaryItemNumbers = menuItems.value.map(menu => {
+/*    const secondaryItemNumbers = menuItems.value.map(menu => {
       return {
         secondary_item_number: menu.secondary_item_number,
         quantity:parseFloat(menu.quantity.toString().replace(/,/g, ""))
       }
-    })
+    })*/
 
 
 
@@ -204,8 +209,8 @@ watch(
     }
 )
 
-const doFetchMenuItem = () => {
-  cateringStore.fetchMenuItem({school_number:menuForm.school_number})
+const doFetchMenuItem = (school_number) => {
+  cateringStore.fetchMenuItem({school_number:school_number})
 
   fetchUnit()
 }
@@ -217,19 +222,23 @@ const fetchUnit = () => {
 watch(
     () => cateringStore.menuItemResponse,
     async (data) => {
-      // alert(JSON.stringify(data))
-      menuOptions.value = data.map(option => ({ number: option.number,name:option.name,unit_of_measure_name:option.unit_of_measure_name,unit_cost:option.unit_cost}));
+      menuOptions.value =  data.map(item => ({
+        text: item.name,
+        number: item.number
+      }));
+      unfilteredMenuItems.value = data
+      // menuOptions.value = data.map(option => ({ number: option.number,name:option.name,unit_of_measure_name:option.unit_of_measure_name,unit_cost:option.unit_cost}));
     }
 )
 
 const getUnitOfMeasure = (itemNumber) => {
-  const selectedItem = menuOptions.value.find(option => option.number === itemNumber);
-  return selectedItem ? selectedItem.unit_of_measure_name : '';
+  // const selectedItem = menuOptions.value.find(option => option.number === itemNumber);
+  // return selectedItem ? selectedItem?.unit_of_measure_name : '';
 }
 
 const getUnitCost = (itemNumber) => {
-  const selectedItem = menuOptions.value.find(option => option.number === itemNumber);
-  return selectedItem ? selectedItem.unit_cost.toLocaleString() : '';
+  // const selectedItem = menuOptions.value.find(option => option.number === itemNumber);
+  // return selectedItem ? selectedItem.unit_cost.toLocaleString() : '';
 }
 
 watch(
@@ -241,19 +250,19 @@ watch(
 
 
 
-function addItem() {
+/*function addItem() {
   menuItems.value.push({ name: '', quantity: 1 })
-}
+}*/
 
-function removeMenuItem(index) {
+/*function removeMenuItem(index) {
   menuItems.value.splice(index, 1)
-}
+}*/
 
-function availableOptions(index) {
+/*function availableOptions(index) {
   
   const selectedNames = menuItems.value.map(menu => menu.name);
   return menuOptions.value.filter(option => !selectedNames.includes(option.name) || option.name === menuItems.value[index].name)
-}
+}*/
 
 const compute = (value, type, index) => {
   value = value.toString().replace(/,/g, "")
@@ -320,13 +329,26 @@ const clearFormData = () => {
   menuItems.value = []
 }
 
+const handleMenuChange = (data) => {
+  if(data){
+    let draft = data
+    let index = draft.index
+    let number = draft.number
+
+   let info = unfilteredMenuItems.value.find(item => item.number === number)
+    if(info) {
+      menuItems.value[index].unit_of_measure_name = info?.unit_of_measure_name
+      menuItems.value[index].unit_cost = info?.unit_cost
+    }
+  }
+}
 
 
 </script>
 <template>
     <div class="mt-1">
 
-    
+
     <AppModal v-model="showUnitModal" lg title="Add Unit of Measure">
       <NewUnitOfMeasurement></NewUnitOfMeasurement>
     </AppModal>
@@ -343,7 +365,7 @@ const clearFormData = () => {
               v-model="menuForm.school_number"
               class="form-select form-select-sm" required
               style="box-shadow: none;"
-              @change="doFetchMenuItem()"
+              @change="doFetchMenuItem(menuForm.school_number)"
           >
             <option disabled value="">--Select School--</option>
             <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
@@ -481,15 +503,17 @@ const clearFormData = () => {
             <tr v-for="(menu, index) in menuItems" :key="index" >
               <td class="text-sm text-[#8a8888]">{{(index + 1)}}</td>
               <td>
+
                 <!-- <select v-model="menu.secondary_item_number" class="form-select form-control select-no-border ">
                   <option v-for="option in availableOptions(index)" :value="option.number">{{ option.name }}</option>
                 </select> -->
-{{ availableOptions(index) }}
 
                 <ComboMenuItemBox
                       v-model:optionResponse="menu.secondary_item_number"
-                      :optionList="availableOptions(index)"
+                      :optionList="menuOptions"
                       :optionDraft="menu?.secondary_item_number"
+                      :index="index"
+                      @change="handleMenuChange"
                      ></ComboMenuItemBox>
 
               </td>
@@ -505,11 +529,18 @@ const clearFormData = () => {
                     @keypress="commons.onlyNumberValidator($event)"
                     v-on:blur="compute(menu.quantity, 'assembled-item', index)">
               </td>
-              <td class="border-r"> <input style="width: 100px;" class="form-control shadow-none select-no-border " 
-                type="text" :value="getUnitOfMeasure(menu.secondary_item_number)"  readonly/></td>
+              <td class="border-r">
+                <input
+                    v-model="menu.unit_of_measure_name"
+                    style="width: 100px;"
+                    class="form-control shadow-none select-no-border "
+                type="text" readonly/></td>
 
-                <td class="border-r"> <input style="width: 100px;" class="form-control shadow-none select-no-border " 
-                  type="text" :value="getUnitCost(menu.secondary_item_number)"  readonly/></td>
+                <td class="border-r">
+                  <input
+                      v-model="menu.unit_cost"
+                      style="width: 100px;" class="form-control shadow-none select-no-border "
+                  type="text"   readonly/></td>
 
               <td> 
                 <div  class="">
