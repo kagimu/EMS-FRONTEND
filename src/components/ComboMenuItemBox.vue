@@ -113,7 +113,7 @@ const removeItem = () => {
 
 
 <template>
-  {{ selectedItem }}
+  <!-- {{ selectedItem }} -->
   <div class="relative" ref="dropdownWrapper">
     <div
       @click="openDropdown"

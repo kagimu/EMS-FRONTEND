@@ -30,6 +30,7 @@ const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 
 
+
 const reportColumnAssessmentList = ref(null)
 
 const showReportColumn = ref(false)
