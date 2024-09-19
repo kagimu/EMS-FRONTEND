@@ -481,16 +481,16 @@ const clearFormData = () => {
             <tr v-for="(menu, index) in menuItems" :key="index" >
               <td class="text-sm text-[#8a8888]">{{(index + 1)}}</td>
               <td>
-                <select v-model="menu.secondary_item_number" class="form-select form-control select-no-border ">
+                <!-- <select v-model="menu.secondary_item_number" class="form-select form-control select-no-border ">
                   <option v-for="option in availableOptions(index)" :value="option.number">{{ option.name }}</option>
-                </select>
+                </select> -->
+{{ availableOptions(index) }}
 
-
-                <!-- <ComboMenuItemBox
+                <ComboMenuItemBox
                       v-model:optionResponse="menu.secondary_item_number"
                       :optionList="availableOptions(index)"
-                      :optionDraft="menuItems"
-                     ></ComboMenuItemBox> -->
+                      :optionDraft="menu?.secondary_item_number"
+                     ></ComboMenuItemBox>
 
               </td>
 

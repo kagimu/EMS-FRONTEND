@@ -182,7 +182,7 @@ watch(
 
 <template>
   <div>
-    <!-- {{ reportSettingsD }} -->
+    {{ reportSettingsD }}
   <form @submit.prevent="addReportSettings">
 
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">

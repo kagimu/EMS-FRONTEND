@@ -315,6 +315,7 @@ if (agreed) {
     </AppModal>
 
 
+    {{reportColumnAssessmentList  }}
     <div class="row">
 
       <div class="col-12">
@@ -462,7 +463,7 @@ if (agreed) {
           <tr v-for="(levelInfo, index) in reportColumnAssessmentList" :key="index">
             <td> {{index+1}}</td>
             <td> {{levelInfo.assessment_area}}</td>
-            <td> {{levelInfo.assessment_metric}}</td>
+            <td> {{levelInfo.assessment_metric}} [{{ levelInfo.scheduled_on }}]</td>
             <td> {{levelInfo.report_column}}</td>
             <td>
               <button @click="deleteThisData(levelInfo.number,levelInfo.assessment_area,levelInfo.report_column,levelInfo.assessment_area)"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>

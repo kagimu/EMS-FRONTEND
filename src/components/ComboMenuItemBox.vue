@@ -5,14 +5,14 @@ import { onClickOutside } from '@vueuse/core';
 const target = ref(null);
 
 const props = defineProps({
-  optionList: {},
-  optionDraft:{}
+  optionList: [],
+  optionDraft:String
 });
 
 const query = ref('');
 const search = ref('');
 const dropdownOpen = ref(false);
-const selectedItem: Ref<{ number: number; name: string } | null> = ref(null);  // Store the full item (number & name)
+const selectedItem = ref();  // Store the full item (number & name)
 const dropdownWrapper = ref<HTMLElement | null>(null);
 const items = ref([]);  // Initialize items as an empty array
 const hasProcessed = ref(false);
@@ -26,9 +26,9 @@ onClickOutside(target, (event) => {
 });
 
 onMounted(() => {
-  if (items.value.length) {
+ 
     checkDraft();
-  }
+
   checkOptionsDraft();
 });
 
@@ -44,12 +44,10 @@ watch(
 
 const checkDraft = () => {
   const draft = props.optionDraft;
-  const foundItem = items.value.find(item => item.number === draft[0].number);
-  if (foundItem) {
-    selectedItem.value = foundItem; 
-  } else {
-    console.error('Item not found in optionList');
+  if(draft){
+    selectedItem.value = draft
   }
+
 }
 
 
@@ -76,7 +74,7 @@ const checkOptionsDraft = () => {
 
 watch(selectedItem, (newVal) => {
   if (newVal) {
-    emits("update:optionResponse", newVal.number);  // Emit the number value
+    emits("update:optionResponse", newVal);  // Emit the number value
   } else {
     emits("update:optionResponse", null);
   }
@@ -128,7 +126,7 @@ const removeItem = () => {
         class="text-xs mx-1 my-[2px]  hover:bg-[#fafafa] hover:text-[#198754] cursor-pointer form-select form-select-sm form-control select-no-border text-xs"
       >
         <div class="flex flex-grow px-0 r text-xs" >
-          {{ selectedItem.name }}  <!-- Display name instead of number -->
+          {{ selectedItem }}  <!-- Display name instead of number -->
         </div>
       </div>
     </div>
@@ -172,4 +170,25 @@ const removeItem = () => {
   --bs-bg-opacity: 1;
   background-color: rgb(248, 248, 248) !important;
 }
+
+/* For WebKit-based browsers (Chrome, Safari, Edge) */
+.max-h-[300px]::-webkit-scrollbar {
+  width: 6px; /* Adjust the width as needed */
+}
+
+.max-h-[300px]::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* Color of the scrollbar thumb */
+  border-radius: 10px;     /* Rounded corners */
+}
+
+.max-h-[300px]::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Color of the scrollbar track */
+}
+
+/* For Firefox */
+.max-h-[300px] {
+  scrollbar-width: thin; /* Set scrollbar to thin */
+  scrollbar-color: #ccc #f1f1f1; /* Thumb and track colors */
+}
 </style>
+
