@@ -96,9 +96,8 @@ watch(selectedItem, (newVal) => {
 // Filter items based on query
 const filteredItems = computed(() => {
   const searchTerm = search.value.toLowerCase();
-  const selectedItem = search.value.toLowerCase();
   return items.value?.filter(item =>
-    item?.text?.toLowerCase().includes(searchTerm) || item?.value !== selectedItem // Filter based on the name
+    item?.text?.toLowerCase().includes(searchTerm)
   );
 });
 

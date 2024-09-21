@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, reactive, ref, watch, watchEffect, computed} from "vue"
+import {onMounted, reactive, ref, watch} from "vue"
 import useNotificationStore from "@/composables/useNotification.js"
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
