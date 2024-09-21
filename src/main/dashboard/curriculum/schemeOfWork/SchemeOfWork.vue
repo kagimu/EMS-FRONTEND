@@ -27,7 +27,6 @@ const exportLoader = ref( false)
 const lessonPlanDialog = ref( false)
 const lessonPlanDetailsDialog = ref( false)
 const lessonPlanInfo = ref( "")
-const learningAreaList = ref( [])
 const classList = ref( [])
 const levelList = ref( [])
 const classStore = useClassesStore()
@@ -73,7 +72,6 @@ const addSchemeOfWork = () => {
 }
 
 const exportSchemeOfWorkPdf = () => {
-
   if(schemeOfWorkList.value && schemeOfWorkList.value.length < 1){
     notificationStore.warningToast("Warning", "No details found on scheme of work")
     return

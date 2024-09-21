@@ -20,6 +20,32 @@ export default function useCommonsStore() {
         document.head.appendChild(script);
     };
 
+    const initializePdfData = (
+        fileName = "no content",
+        html = " <div style='margin-left: 40px;margin-right: 40px'><h2 style='text-align: center'>" +
+        "Document can't be generated for download  " +
+        "</h2> <br/> " +
+        "<p style='color: #343434; text-align: center'> You haven't filled out some fields on this form ,refresh the page and make sure you have filled all the fields " +
+        "if this persits please contact support</p>" +
+        "</div>",
+        options = {
+            "format": "A4",
+            "orientation": "portrait",
+            "header": {
+                "height": "5mm",
+                //"contents": '<div style="text-align: center;">Author: Marc Bachmann</div>'
+            },
+            "footer": {
+                "height": "10mm",
+                "contents": {
+                    default: '<small style="color: #444; font-size: 8px; width: 100%; text-align:right"><i>Page {{page}} of  {{pages}}</i></small>', // fallback value
+                }
+            },
+        }
+    ) => {
+        let htmlWithFormatting = "<html><head> <meta charset=\"utf-8\" /></head><body>"+html+" </body> </html>"
+        return { "html": htmlWithFormatting, "options": options, "fileName": fileName };
+    }
 
     function base64ToBinary(base64String, filename) {
         let arr = base64String.split(","),
@@ -67,33 +93,6 @@ export default function useCommonsStore() {
 
 
 
-     const initializePdfData = (
-        fileName = "no content",
-        html = " <div style='margin-left: 40px;margin-right: 40px'><h2 style='text-align: center'>" +
-        "Document can't be generated for download  " +
-        "</h2> <br/> " +
-        "<p style='color: #343434; text-align: center'> You haven't filled out some fields on this form ,refresh the page and make sure you have filled all the fields " +
-        "if this persits please contact support</p>" +
-        "</div>",
-        options = {
-            "format": "A4",
-            "orientation": "portrait",
-            "header": {
-                "height": "5mm",
-                //"contents": '<div style="text-align: center;">Author: Marc Bachmann</div>'
-            },
-            "footer": {
-                "height": "10mm",
-                "contents": {
-                    default: '<small style="color: #444; font-size: 8px; width: 100%; text-align:right"><i>Page {{page}} of  {{pages}}</i></small>', // fallback value
-                }
-            },
-        }
-    ) => {
-        let htmlWithFormatting = "<html><head> <meta charset=\"utf-8\" /></head><body>"+html+" </body> </html>"
-        return { "html": htmlWithFormatting, "options": options, "fileName": fileName };
-    }
-
 
 
     const formatDate = (dateString) => {
@@ -124,6 +123,7 @@ export default function useCommonsStore() {
         getAgeFromDateOfBirth,
         objectToQueryParams,
         base64ToBinary,
-        formatDate
+        formatDate,
+        initializePdfData
     }
 }

@@ -97,7 +97,7 @@ watch(selectedItem, (newVal) => {
 const filteredItems = computed(() => {
   const searchTerm = search.value.toLowerCase();
   return items.value?.filter(item =>
-    item.text.toLowerCase().includes(searchTerm)  // Filter based on the name
+    item?.text?.toLowerCase().includes(searchTerm)
   );
 });
 
@@ -126,6 +126,7 @@ const selectItem = (item: any) => {
 
 <template>
 
+<!-- {{optionDraft}} -->
   <div class="relative" ref="dropdownWrapper">
     <div
       @click="openDropdown"
@@ -160,8 +161,9 @@ const selectItem = (item: any) => {
           class="form-control shadow-none"
         />
       </div>
-
-      <div class="max-h-[300px] overflow-y-scroll scrollbar-thin my-2" >
+      <div v-if="filteredItems.length < 1" class="text-xs text-gray-600 text-center py-4">Item Not Found </div>
+      <div v-else class="max-h-[300px] overflow-y-scroll scrollbar-thin my-2" >
+       
         <div
           class="cursor-pointer p-1 hover:bg-gray-100 flex items-center"
           v-for="(item, idx) in filteredItems"
@@ -185,24 +187,5 @@ const selectItem = (item: any) => {
   background-color: rgb(248, 248, 248) !important;
 }
 
-/* For WebKit-based browsers (Chrome, Safari, Edge) */
-.max-h-[300px]::-webkit-scrollbar {
-  width: 6px; /* Adjust the width as needed */
-}
-
-.max-h-[300px]::-webkit-scrollbar-thumb {
-  background-color: #ccc; /* Color of the scrollbar thumb */
-  border-radius: 10px;     /* Rounded corners */
-}
-
-.max-h-[300px]::-webkit-scrollbar-track {
-  background-color: #f1f1f1; /* Color of the scrollbar track */
-}
-
-/* For Firefox */
-.max-h-[300px] {
-  scrollbar-width: thin; /* Set scrollbar to thin */
-  scrollbar-color: #ccc #f1f1f1; /* Thumb and track colors */
-}
 </style>
 

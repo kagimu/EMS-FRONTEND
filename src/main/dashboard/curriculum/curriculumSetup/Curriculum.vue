@@ -2,7 +2,6 @@
 
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
-import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import NewCurriculum from "@/main/dashboard/curriculum/curriculumSetup/NewCurriculum.vue";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 
@@ -15,7 +14,7 @@ const confirmationRef = ref(null);
 
 const { can } = useAbility()
 
-const schoolStore = useSchoolStore()
+
 const  notificationStore  = useNotificationStore()
 const curriculumStore = useCurriculumStore()
 
@@ -48,7 +47,7 @@ if (agreed) {
 let info = {
   number:data.number
 }
-curriculumStore.deleteCurriculum(info)
+await curriculumStore.deleteCurriculum(info)
 }
 
 
@@ -98,6 +97,7 @@ watch (
 
 
 
+
 watch(
     () => curriculumStore.curriculumDataResponse,
     async (data) => {
@@ -113,9 +113,9 @@ watch(
     async (data) => {
       if(data){
         deletionLoader.value = undefined
+        notificationStore.errorToast("Error",data.message)
       }
-    },
-    {deep:true}
+    }
 )
 
 </script>
@@ -156,7 +156,6 @@ watch(
           <div class="p-3 text-[#5e5e5e]">
             <div class="mb-3 flex justify-between" style="font-size: 20px;">
               {{curr.name}}
-
               <div>
                 <i 
                     v-if="can('edit_curriculum','general')"

@@ -20,6 +20,7 @@ const school_number = ref("")
 const billableData= ref([])
 const modalDetails = ref(false)
 const billD = ref(null)
+const billablesInfo = ref([])
 onMounted(
     async () => {
      schoolStore.fetchSchools()
@@ -27,6 +28,7 @@ onMounted(
 )
 
 const showModal = () =>{
+  billablesInfo.value = ""
   mymodal.value = true
 }
 
@@ -36,6 +38,10 @@ const showModalDetails = (billNumber) =>{
   billD.value = billNumber
 }
 
+const editModalBillables = (billables) =>{
+  mymodal.value = true
+  billablesInfo.value=billables
+}
 
  const doFetchBillables = (schoolN) =>{
   let data = {
@@ -104,13 +110,14 @@ watch (
     {deep:true}
 )
 
+
 </script>
 
 
 <template>
     <div>
       <AppModal title="Creating New Billable" v-model="mymodal" xl6>
-        <NewBillables :userNumber="userNumber"></NewBillables>
+        <NewBillables :userNumber="userNumber" :billablesInfo="billablesInfo" :schoolN="school_number"></NewBillables>
       </AppModal>
 
       <AppModal title="Billable" v-model="modalDetails" xl6>
@@ -177,15 +184,15 @@ watch (
          <tr  v-for="(list, index) in billableData" :key="index" >
         
           <td>{{ index+1 }}</td>
-          <td>{{ list.total_amount }}</td>
+          <td>{{ list.total_amount?.toLocaleString() }}</td>
           <td>{{ list.campus_name }}</td>
           <td>{{ list.study_period_name }}</td>
           <td>{{ list.class_name }}</td>
-          <td>{{ list.type.replace("_", " ") }}</td>
+          <td>{{ list.bill_type.replace("_", " ") }}</td>
           <td>{{list.status}}</td>
           <td>
 
-            <button data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
+            <button data-bs-toggle="offcanvas" aria-controls="rolesDialogg"  @click="editModalBillables(list.billable_number)">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;

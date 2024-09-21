@@ -47,10 +47,10 @@ const menuForm = reactive({
   unit_of_measure_number:"",
   unit_of_measure_name:"",
   campus_number:"",
-  base_price:null,
+  base_price:0,
   school_number:"",
   conversion_to_purchase_unit :null,
-  purchase_unit_of_measure_number :""
+  purchase_unit_of_measure_number :"",
 } )
 
 
@@ -82,10 +82,14 @@ const getMenuItemInfo = () =>{
         menuForm.type = draft?.type ?? ""
         menuForm.unit_of_measure_number = draft?.unit_of_measure_number ?? ""
         menuForm.campus_number = draft?.number ?? ""
-        menuForm.unit_cost = draft?.unit_cost ?? ""
+        menuForm.base_price = draft?.unit_cost ?? ""
         menuForm.school_number = draft?.school_number ?? ""
+        if(draft.school_number){
+          fetchUnit()
+        }
         menuForm.purchase_unit_of_measure_number = draft?.purchase_unit_of_measure_number
         menuForm.conversion_to_purchase_unit = draft?.conversion_to_purchase_unit
+
 
         if(draft?.parts?.length > 0) {
           let items = draft?.parts
@@ -138,31 +142,30 @@ const addMenuItem = () =>{
       menuForm.menu_item_number = item_number.value
       cateringStore.updateMenuItem(menuForm)
     }else {
+
       cateringStore.newMenuItemInfo(menuForm)
     }
 
   }else{
 
 
-/*    const secondaryItemNumbers = menuItems.value.map(menu => {
+   const secondaryItemNumbers = menuItems.value.map(menu => {
       return {
         secondary_item_number: menu.secondary_item_number,
         quantity:parseFloat(menu.quantity.toString().replace(/,/g, ""))
       }
-    })*/
-
-
-
+    })
+    
     buttonLoader.value = true
-
-
     menuForm.code = parseInt(menuForm.code)
     menuForm.secondary_items = secondaryItemNumbers
+  
 
     if(item_number.value){
       menuForm.menu_item_number = item_number.value
       cateringStore.updateAssemblyItem(menuForm)
     }else {
+      menuForm.base_price = 1000 //what is base_price 
       cateringStore.newAssemblyItem(menuForm)
     }
 
@@ -249,14 +252,13 @@ watch(
 )
 
 
+function addItem() {
+  menuItems.value.push( { "name": "", "quantity": null, "secondary_item_number": "", "unit_of_measure_name": "", "unit_cost": null } )
+}
 
-/*function addItem() {
-  menuItems.value.push({ name: '', quantity: 1 })
-}*/
-
-/*function removeMenuItem(index) {
+function removeMenuItem(index) {
   menuItems.value.splice(index, 1)
-}*/
+}
 
 /*function availableOptions(index) {
   
@@ -339,6 +341,8 @@ const handleMenuChange = (data) => {
     if(info) {
       menuItems.value[index].unit_of_measure_name = info?.unit_of_measure_name
       menuItems.value[index].unit_cost = info?.unit_cost
+      menuItems.value[index].quantity = info?.current_quantity
+
     }
   }
 }
@@ -347,7 +351,7 @@ const handleMenuChange = (data) => {
 </script>
 <template>
     <div class="mt-1">
-
+<!-- {{ menuItemsInfo }} -->
 
     <AppModal v-model="showUnitModal" lg title="Add Unit of Measure">
       <NewUnitOfMeasurement></NewUnitOfMeasurement>
@@ -526,6 +530,7 @@ const handleMenuChange = (data) => {
                     maxlength="10"
                     placeholder="1.0"
                     type="text"
+                    disabled
                     @keypress="commons.onlyNumberValidator($event)"
                     v-on:blur="compute(menu.quantity, 'assembled-item', index)">
               </td>
@@ -534,13 +539,13 @@ const handleMenuChange = (data) => {
                     v-model="menu.unit_of_measure_name"
                     style="width: 100px;"
                     class="form-control shadow-none select-no-border "
-                type="text" readonly/></td>
+                type="text" disabled/></td>
 
                 <td class="border-r">
                   <input
                       v-model="menu.unit_cost"
                       style="width: 100px;" class="form-control shadow-none select-no-border "
-                  type="text"   readonly/></td>
+                  type="text"   disabled/></td>
 
               <td> 
                 <div  class="">

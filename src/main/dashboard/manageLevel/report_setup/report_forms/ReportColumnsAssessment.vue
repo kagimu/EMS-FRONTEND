@@ -13,9 +13,9 @@ import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/stor
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
+import useCommonsStore from "@/composables/useCommons.js";
 
 const confirmationRef = ref(null);
-
 const campusStore = useCampusStore()
 const routerData = useRouter()
 const  notificationStore  = useNotificationStore()
@@ -28,7 +28,7 @@ const schoolN = routerData.currentRoute.value.query.sch
 let  curriculumNumberParent = routerData.currentRoute.value.query.cr
 const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
-
+const useCommon = useCommonsStore()
 
 
 const reportColumnAssessmentList = ref(null)
@@ -315,7 +315,7 @@ if (agreed) {
     </AppModal>
 
 
-    {{reportColumnAssessmentList  }}
+    <!-- {{reportColumnAssessmentList  }} -->
     <div class="row">
 
       <div class="col-12">
@@ -455,6 +455,7 @@ if (agreed) {
             <th class="w-[5%]" scope="col">#</th>
             <th scope="col">Assessment Area</th>
             <th scope="col">Assessment Schedule</th>
+            <th scope="col">Scheduled On</th>
             <th scope="col">Report Column</th>
             <th scope="col">Action</th>
           </tr>
@@ -463,7 +464,8 @@ if (agreed) {
           <tr v-for="(levelInfo, index) in reportColumnAssessmentList" :key="index">
             <td> {{index+1}}</td>
             <td> {{levelInfo.assessment_area}}</td>
-            <td> {{levelInfo.assessment_metric}} [{{ levelInfo.scheduled_on }}]</td>
+            <td> {{levelInfo.assessment_metric}} - {{ levelInfo.academic_year }} - {{ levelInfo.study_period }}</td>
+            <td>{{ useCommon.formatDate(levelInfo.scheduled_on) }}</td>
             <td> {{levelInfo.report_column}}</td>
             <td>
               <button @click="deleteThisData(levelInfo.number,levelInfo.assessment_area,levelInfo.report_column,levelInfo.assessment_area)"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>

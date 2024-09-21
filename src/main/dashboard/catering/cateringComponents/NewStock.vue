@@ -240,19 +240,19 @@ const getUnitOfMeasure = (itemNumber) => {
                    
                       <td class="border-l border-r">{{(index + 1)}}</td>
                       <td class="border-r">
-                        <!-- <select
+                        <select
                             class="form-select form-select-sm form-control select-no-border"
                             v-model="itemData.menu_item_number"
                             @change="updateItem(index)">
                           <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
-                        </select> -->
+                        </select>
                            
                        
-                        <ComboMenuItemBox
+                      <!-- <ComboMenuItemBox
                       v-model:optionResponse="itemData.menu_item_number"
                       :optionList="availableOptions(index)"
                       :optionDraft="itemData.menu_item_number"
-                     ></ComboMenuItemBox>
+                     ></ComboMenuItemBox> -->
 
                       </td>
                       <td class="border-r">
