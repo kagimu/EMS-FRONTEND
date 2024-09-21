@@ -57,11 +57,12 @@ onMounted(() => {
 const filterBySchool = (school_number) => {
   if(school_number) {
     campusStore.fetchCampuses(school_number)
+    doFetchMenuItem(school_number)
   }
 }
 
 
-const doFetchMenuItem = () => {
+const doFetchMenuItem = (school_number) => {
   if(!form.school_number){
     return
   }
@@ -69,7 +70,7 @@ const doFetchMenuItem = () => {
   let data = {
     page: 1,
     per_page: per_page.value,
-    school_number:form.school_number,
+    school_number:school_number,
     campus_number:form.campus_number,
     type:"ITEM"
   }
@@ -304,7 +305,7 @@ watch(
                 <div class="col-4">
                   <div class="mb-2">
 
-                    <select
+                    <!-- <select
                         v-model="form.campus_number"
                         class="form-select form-select-sm"
                         required style="box-shadow: none;"
@@ -313,8 +314,9 @@ watch(
                       <option disabled value="">--Select Campus--</option>
                       <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
                       </option>
-                    </select>
-                  </div></div>
+                    </select> -->
+                  </div>
+                </div>
 
 
 

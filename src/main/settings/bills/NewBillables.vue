@@ -11,6 +11,7 @@ import {useStudyModeStore} from "@/main/settings/mode-of-study/store/studyMode.j
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useBillStore} from "@/main/settings/bills/store/bills.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
+import ComboMenuItemBox from "@/components/ComboMenuItemBox.vue";
 
 const commons = useCommonsStore()
 const studentInfoList = ref( [])
@@ -41,14 +42,11 @@ const modeOfSchoolData  = ref([])
 const academicYearStore = useAcademicYearStore()
 const campusClassList = ref(null)
 const studyPeriodStore = useStudyPeriodStore()
-
-
-const props = defineProps({
-  userNumber:String
-})
-
-const Services = ref([{ name: "", quantity: 1, cost: 0, amount: 0 }]);
+const billableData = ref([])
+const servicesData = ref([]);
+const Services = ref([]);
 const ServiceOptions = ref([])
+const unfilteredServicesData = ref([])
 
 const formData = reactive({
   description:null,
@@ -61,42 +59,110 @@ const formData = reactive({
   school_number:""
 })
 
+
+const props = defineProps({
+  userNumber:String,
+  billablesInfo:{},
+  schoolN:String
+})
+
+const doFetchBillablesDetails = (billableNumber) => {
+  let data = {
+    billable_number: billableNumber
+  };
+  billStore.fetchBillableDetails(data);
+}
+
+watch(
+  () => billStore.billableDetailsResponse,
+  async (data) => {
+    if (data) {
+      let draft = data.data
+      billableData.value = draft
+      if(draft){
+        formData.campus_number = draft.campus_number
+        if(draft?.campus_number){
+          fetchCurriculum(draft?.campus_number)
+          curriculumNumber.value = draft.campus_curriculum_number
+        }
+        if(draft?.campus_curriculum_number){
+          fetchClassLevels(draft?.campus_curriculum_number)
+          campus_level_number.value = draft?.campus_level_number
+        }
+        if(draft?.campus_level_number){
+          fetchClasses(draft?.campus_level_number)
+          formData.academic_year_number = draft?.academic_year_number
+          formData.class_number = draft?.class_number
+        }
+        if(formData.class_number){
+          studyPeriodData(draft?.class_number)
+          formData.study_period_number = draft.study_period_number
+        }
+        formData.description = draft.description,
+        formData.mode_of_study_number=draft.mode_of_study_number,
+       
+        formData.bill_type = draft.bill_type,
+        formData.academic_year_number = draft.academic_year_number
+        
+        if(draft?.billable_items?.length > 0) {
+          let items = draft?.billable_items
+          let arr = []
+          items.forEach(lst => {
+            let obj = {
+              number:lst?.item_number, 
+              name: lst?.name, 
+              quantity: lst?.quantity, 
+              cost: lst?.unit_cost, 
+              amount: lst?.total_cost 
+            }
+            arr.push(obj)
+          }) 
+          servicesData.value = arr
+        }
+      }
+
+    }
+  },
+  { deep: true }
+)
+
+
+
 onMounted(
     async () => {
-      await serviceStore.fetchServicesList()
-      await schoolStore.fetchSchools()
+      serviceStore.fetchServicesList()
+       schoolStore.fetchSchools()
+       getSchoolInfo()
+      doFetchBillablesDetails(props.billablesInfo)
     
     } )
+
+
+    const getSchoolInfo = () =>{
+      if(props.schoolN){
+        formData.school_number = props?.schoolN
+        fetchCampuses(props?.schoolN)
+       }
+    }
 
 
   const createBill = () => {
      buttonLoader.value=true
 
-      const selectedItems = Services.value.map(
-      service => ({
-        item_number: service.number,
-        quantity: parseInt(service.quantity),
-        unit_cost: parseInt(service.cost)
+  
+      const selectedItems = servicesData.value.map(
+      lst => ({
+        number: lst.item_number,
+        quantity: parseInt(lst.quantity),
+        unit_cost: parseInt(lst.cost)
       }))
+      // alert(JSON.stringify(selectedItems))
 
 
     let data  = formData
     data.billable_items = selectedItems
+    data.campus_curriculum_number = curriculumNumber.value
     data.bill_status = "ACTIVE"
-
-
-/*  let data = {
-    description:formData.description,
-   class_number:formData.class_number,
-    mode_of_study_number:formData.mode_of_study_number,
-    campus_number:formData.campus_number,
-    study_period_number:formData.study_period_number,
-    school_number:formData.school_number,
-    bill_type:formData.type,
-    billable_items:selectedItems,
-    bill_status:"ACTIVE"
-  }*/
-//  alert(JSON.stringify(data))s
   billStore.newBillable(data)
 }
 
@@ -109,46 +175,41 @@ const getModeOfStudyInfo = (schoolN) =>{
 }
 
 
+// function updateService(index) {
+//   const Service = Services.value[index];
+//   const selectedOption = ServiceOptions.value.find(option => option.item_number === Service.number);
+//   if (selectedOption) {
+//     Service.cost = selectedOption.cost;
+//     updateAmount(index);
+//   }
+// }
 
-
-
-
-
-function updateService(index) {
-  const Service = Services.value[index];
-  const selectedOption = ServiceOptions.value.find(option => option.item_number === Service.number);
-  if (selectedOption) {
-    Service.cost = selectedOption.cost;
-    updateAmount(index);
-  }
-}
-
-function updateAmount(index) {
-  const Service = Services.value[index];
+const updateAmount = (index) => {
+  const Service = servicesData.value[index];
   Service.amount = Service.quantity * Service.cost;
 }
 
 function addService() {
-  Services.value.push({ name: "", quantity: 1, cost: 0, amount: 0 });
+  servicesData.value.push({number:"", name: "", quantity: 1, cost: 0, amount: 0 });
 }
 
 function removeService(index) {
-  Services.value.splice(index, 1);
+  servicesData.value.splice(index, 1);
+}  
+
+const  calculateTotal = () => {
+  return servicesData.value.reduce((total, Service) => total + Service.amount, 0);
 }
 
-function calculateTotal() {
-  return Services.value.reduce((total, Service) => total + Service.amount, 0);
-}
-
-function availableOptions(index) {
-  const selectedNames = Services.value.map(Service => Service.number);
-  return ServiceOptions.value.filter(option => !selectedNames.includes(option.item_number) || option.item_number === Services.value[index].number);
-}
+// function availableOptions(index) {
+//   const selectedNames = Services.value.map(Service => Service.number);
+//   return ServiceOptions.value.filter(option => !selectedNames.includes(option.item_number) || option.item_number === Services.value[index].number);
+// }
 
 
-watch(Services, (newServices) => {
-  isAddButtonDisabled.value = newServices.length === ServiceOptions.value.length;
-}, { deep: true });
+// watch(Services, (newServices) => {
+//   isAddButtonDisabled.value = newServices.length === ServiceOptions.value.length;
+// }, { deep: true });
 
 
 
@@ -157,7 +218,12 @@ watch(
     () => serviceStore.servicesListResponse,
     async (data) => {
       if (data) {
-        ServiceOptions.value = data.map(option => ({ name: option.item.name, cost: option.item.cost,item_number:option.item.number }));
+        ServiceOptions.value =  data.map(option => ({
+        text: option.item.name,
+        number: option.item.number
+      }));
+      unfilteredServicesData.value = data
+        // ServiceOptions.value = data.map(option => ({ name: option.item.name, cost: option.item.cost,item_number:option.item.number }));
       }
     },
     { deep: true }
@@ -313,6 +379,23 @@ watch(
     {deep: true}
 )
 
+
+const handleMenuChange = (data) => {
+  if(data){
+    let draft = data
+    let index = draft.index
+    let number = draft.number
+
+   let info = unfilteredServicesData.value?.find(item => item?.item?.number === number)
+  
+    if(info) {
+      servicesData.value[index].cost = info?.item.cost
+      servicesData.value[index].quantity = 1
+    }
+    updateAmount(draft.index)
+  }
+}
+
 </script>
 <template>
   <div>
@@ -323,7 +406,7 @@ watch(
                 <div class="row">
                   <div class="col-lg-4">
                     <div class="mb-2">
-            <label class="text-sm"><small>School</small></label>
+            <label class="text-xs"><small>School</small></label>
          <select
                  style="box-shadow: none;"
                  class="form-select form-select-sm" required
@@ -338,7 +421,7 @@ watch(
                 
 
      <div class="mb-2">
-            <label class="text-sm"><small>Campus</small></label>
+            <label class="text-xs"><small>Campus</small></label>
             <select
               style="box-shadow: none;"
               class="form-select form-select-sm"
@@ -350,7 +433,7 @@ watch(
         </div>   
 
         <div class="mb-2">
-          <label class="text-sm"><small>Curriculum</small></label>
+          <label class="text-xs"><small>Curriculum</small></label>
             <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -363,7 +446,7 @@ watch(
           </div>
 
         <div class="mb-2">
-          <label class="text-sm"><small>Level</small></label>
+          <label class="text-xs"><small>Level</small></label>
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
@@ -376,7 +459,7 @@ watch(
             </div>
 
             <div class="mb-2">
-            <label class="text-sm"><small>AcademicYear</small></label>
+            <label class="text-xs"><small>AcademicYear</small></label>
          
          <select
                  style="box-shadow: none;"
@@ -390,7 +473,7 @@ watch(
 
 
             <div class="mb-2">
-        <label class="text-sm"><small>Class</small></label>
+        <label class="text-xs"><small>Class</small></label>
         <select
             class="form-select form-select-sm shadow-none" required
             v-model="formData.class_number"
@@ -402,7 +485,7 @@ watch(
 
 
      <div class="mb-2">
-      <label class="text-sm"><small>Study Period</small></label>
+      <label class="text-xs"><small>Study Period</small></label>
    <select
       style="box-shadow: none;"
       class="form-select form-select-sm" required
@@ -414,7 +497,7 @@ watch(
 </div>
 
           <div class="mb-2">
-            <label class="text-sm"><small>Mode Of Study</small></label>
+            <label class="text-xs"><small>Mode Of Study</small></label>
           <select
             style="box-shadow: none;"
             class="form-select form-select-sm" required
@@ -429,18 +512,18 @@ watch(
           </div>
 
           <div class="mb-2">
-                <label class="text-sm">Type ?</label>
+                <label class="text-xs">Type ?</label>
 
                  <div class="flex">
                    <div class="mr-4">
                      <input v-model="formData.bill_type" class="cursor-pointer" type="radio" value="CONTINUING" name="flexRadioDefault" id="box1">
-                     <label class="form-check-label ml-2 cursor-pointer" for="box1">
+                     <label class="form-check-label ml-2 cursor-pointer text-xs" for="box1">
                        Continuing
                      </label>
                    </div>
                    <div class="">
                      <input v-model="formData.bill_type" class="cursor-pointer" type="radio" value="NEW_APPLICATION" name="flexRadioDefault" id="box2">
-                     <label class="form-check-label ml-2 cursor-pointer" for="box2">
+                     <label class="form-check-label ml-2 cursor-pointer text-xs" for="box2">
                       New Application
                      </label>
                    </div>
@@ -448,7 +531,7 @@ watch(
 
 
           <div class="mb-2">
-                    <label class="text-sm">Description</label>
+                    <label class="text-xs">Description</label>
                     <textarea
                         v-model="formData.description"
                         required
@@ -458,53 +541,66 @@ watch(
                   </div>
             </div>
                   <div class="col-lg-8">
-                    <table class="table table-striped">
-                      <thead>
+                    <!-- {{ servicesData }} -->
+                    <table class="table table-striped table-sm">
+                      <thead class="table-primary text-xs">
                         <tr>
                           <th class="w-[1%]">#</th>
-                          <th class="w-[50%]">Item</th>
-                          <th class="w-[10%]">Qty</th>
-                          <th class="w-[19%]">Unit Price</th>
-                          <th class="w-[20%]">Amount</th>
-                          <th></th>
+                          <th class="w-[60%]">Item</th>
+                          <th class="w-[9%]">Qty</th>
+                          <th class="w-[15%]">Unit Price</th>
+                          <th class="w-[14%]">Amount</th>
+                          <th class="w-[1%]"></th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr class="" v-for="(Service, index) in Services" :key="index" >
+                      
+                      
+                        <tr class="" v-for="(lst, index) in servicesData" :key="index" >
                           <td>{{(index + 1)}}</td>
                           <td>
-                            <select
+                            <!-- <select
                                 class="form-control shadow-none py-2"
                                 v-model="Service.number" @change="updateService(index)">
                               <option disabled value="">--Select item--</option>
                               <option :value="option.item_number" v-for="option in availableOptions(index)">
                                 {{ option?.name }} ({{ option?.cost?.toLocaleString() }})
                               </option>
-                            </select>
+                            </select> -->
+                            <!-- {{ lst.number }} -->
+
+                                <ComboMenuItemBox
+                                    v-model:optionResponse="lst.number"
+                                    :optionList="ServiceOptions"
+                                    :optionDraft="lst.number"
+                                    :index="index"
+                                    @change="handleMenuChange"
+                               ></ComboMenuItemBox>
+
                           </td>
                           <td>
                             <input class="form-control shadow-none py-2" maxlength="10"  required  type="text"
                              @keypress="commons.numbersOnlyValidator($event)" 
-                              v-model="Service.quantity" 
+                              v-model="lst.quantity" 
                               @input="updateAmount(index)" placeholder="1.0" >
                             </td>
                           <td>
                             <!-- readonly -->
                             <input
                                 type="text"
-                                v-model="Service.cost"
+                                v-model="lst.cost"
                                 @keypress="commons.numbersOnlyValidator($event)" 
                                 @input="updateAmount(index)"
                                 placeholder="Unit Price"
                                 class="form-control shadow-none py-2" >
                           </td>
-                          <td>{{ Service.amount?.toLocaleString() }}</td>
+                          <td>{{ lst.amount?.toLocaleString() }}</td>
                           <td><button type="button" @click="removeService(index)"><i class="bi bi-x-circle" style="color:red"></i></button></td>
                         </tr>
                       </tbody>
                     </table>
                     <button
-                        class="btn btn-primary btn-sm text-sm"
+                        class="btn btn-primary btn-sm text-xs"
                         @click.prevent="addService"
                         :disabled="isAddButtonDisabled">
                         <small class="p-1">
@@ -515,7 +611,7 @@ watch(
                       <div class="col-lg-8"></div>
                       <div class="col-lg-4">
                         <ul style="float: right;">
-                          <li>Total : <span style="color:rgba(173, 12, 12, 0.92)">{{ calculateTotal() }}</span> </li>
+                          <li>Total : <span style="color:rgba(173, 12, 12, 0.92)">{{ calculateTotal()?.toLocaleString() }}</span> </li>
                         </ul>
                       </div>
                     </div>
@@ -588,7 +684,7 @@ select{
 .star{
   color:red;
 }
-.text-sm2{
+.text-xs2{
   /* font-size: 1px !important; */
 }
   .select-no-border {

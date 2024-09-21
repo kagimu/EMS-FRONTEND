@@ -44,11 +44,12 @@ const form = reactive({
 
 const fetchCampuses = (school_number) => {
     campusStore.fetchCampuses(school_number ?? "")
+    doFetchMenuItem(school_number)
 }
 
-const filter = (campusN) =>{
-    doFetchMenuItem()
-}
+// const filter = (campusN) =>{
+//     doFetchMenuItem()
+// }
 
 const showUpdateDialog = (menuList) => {
     menuItemsinfoData.value = menuList
@@ -68,14 +69,14 @@ onMounted(
 
 
 
-const doFetchMenuItem = () => {
+const doFetchMenuItem = (schoolNumber) => {
       if(!form.school_number){
         return
       }
       let data = {
       page: 1,
       per_page: per_page.value,
-      school_number:form.school_number,
+      school_number:schoolNumber,
       campus_number:form.campus_number,
       type:"ASSEMBLED"
     }
@@ -292,7 +293,7 @@ if (agreed) {
                   </div>
                   <div class="col-4">
                     <div class="mb-2">
-                      <label class="text-sm"><small>Campus</small>  </label>
+                      <!-- <label class="text-sm"><small>Campus</small>  </label>
                       <select
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
@@ -302,7 +303,7 @@ if (agreed) {
                          <option disabled value="">--Select campus--</option>
                         <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
                         </option>
-                      </select>
+                      </select> -->
                     </div>
                   </div>
                   <div class="col-4">

@@ -82,7 +82,11 @@
      feeding_group_number:"",
      mode_of_study_number:"",
      curriculumNumber:"",
-     bill_number:""
+     billable_number:"",
+     description:null,
+     client_reference:null,
+     paid_amount:0,
+     date_paid:null
    })
    
    onMounted(() => {
@@ -94,13 +98,13 @@
        }
    )
 
-   const getBillableDataInfo = () => {
+   const getBillableDataInfo = (mode_of_study_number) => {
    let data = {
       student_number:props.studentNumber,
       study_period_number: form.study_period_number,
      class_number: form.class_number                                                                    ,
      campus_number:form.campus_number,
-     mode_of_study_number:form.mode_of_study_number,
+     mode_of_study_number:mode_of_study_number,
      campus_curriculum_number:form.curriculumNumber
   }
   billStore.fetchDeterminateBillables(data)
@@ -211,8 +215,13 @@ campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_c
      enrollment_date:form.enrollment_date,
      feeding_group_number:form.feeding_group_number,
      mode_of_study_number:form.mode_of_study_number,
-     status:"active",
-     bill_number:form.bill_number,
+     billable_number:form.billable_number,
+     description:form.description,
+     client_reference:form.client_reference,
+     paid_amount:form.paid_amount,
+     date_paid:form.date_paid,
+     status:"ACTIVE",
+     billable_number:form.billable_number,
      ...ItemDataToSubmit
    })
    
@@ -428,7 +437,7 @@ watch(
       if(data){
         let draftData = data.data 
         billableData.value = draftData.billable_items	
-        form.bill_number = draftData.billable_number
+        form.billable_number = draftData.billable_number
       }
     },
     {deep:true}
@@ -440,7 +449,7 @@ watch(
    <!-- {{ admissionData }} -->
       <form @submit.prevent="Enrol()">
          <div class="row">
-            <div class="col-4">
+            <div class="col-5">
                <label class="alert alert-primary p-1 text-sm" style="" ><small>Please , Choose a class to enroll
                   <span style="text-transform: capitalize; color:#0d6efd;">
                   <b>{{ studentDataInfo.student.surname +" "+ studentDataInfo.student.second_name }}</b>
@@ -532,8 +541,6 @@ watch(
 
                   </select>
                </div>
-
-                   <!-- {{ modeOfSchoolData }} -->
         
                <div class="mb-2">
                   <label class="text-sm"><small>Stream</small> </label>
@@ -577,15 +584,29 @@ watch(
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
                       v-model="form.mode_of_study_number" required
-                      @change="getBillableDataInfo"
+                      @change="getBillableDataInfo(form.mode_of_study_number)"
               >
                   <option disabled value="">Select Mode Of Study</option>
                   <option v-for="(list, index) in modeOfSchoolData" :key="index" :value="list.mode_of_study_number">{{ list.name }}
                   </option>
               </select>
           </div>
+
+          <div class="mb-2 ">
+                  <label class="text-sm  p-1"><small>Which Feeding Group ?</small> </label>
+                  <select
+                     style="box-shadow: none;"
+                     class="form-select form-select-sm" required
+                     v-model="form.feeding_group_number"
+                     >
+                     <option disabled value="">Select feeding Group</option>
+                     <option v-for="(list, index) in feedingGroupData" :key="index" :value="list.number">{{ list.name }}
+                     </option>
+                  </select>
+               </div>
+   
             </div>
-            <div class="col-8">
+            <div class="col-7">
                <div class="col-12">
                   <div class="mb-2">
                      <table class="table table-hover caption-top mt-1 table-sm table-striped" style="font-size: 13px;">
@@ -664,19 +685,39 @@ watch(
                         </tbody>
                      </table>
                   </div>
-               </div>
-               <div class="mb-2 ">
-                  <label class="text-sm alert alert-primary p-1"><small>Which Feeding Group ?</small> </label>
-                  <select
-                     style="box-shadow: none;"
-                     class="form-select form-select-sm" required
-                     v-model="form.feeding_group_number"
-                     >
-                     <option disabled value="">Select feeding Group</option>
-                     <option v-for="(list, index) in feedingGroupData" :key="index" :value="list.number">{{ list.name }}
-                     </option>
-                  </select>
-               </div>
+
+
+
+            <!-- Payment Section (Styled as a Card) -->
+             <!-- {{ billableData.length }} -->
+      <div class="card mb-2 mt-4 shadow-sm" v-if="billableData.length != 0">
+         <div class="card-header bg-primary text-white p-2">
+            <h6 class="m-0"><i class="bi bi-cash"></i>&nbsp;Paid Details</h6>
+         </div>
+         <div class="card-body p-3">
+            <div class="mb-2">
+               <label class="text-sm"><small>Paid Amount</small></label>
+               <input type="number" class="form-control form-control-sm" v-model="form.paid_amount" required>
+            </div>
+
+            <div class="mb-2">
+               <label class="text-sm"><small>Client Reference</small></label>
+               <input type="text" class="form-control form-control-sm" v-model="form.client_reference" required>
+            </div>
+
+            <div class="mb-2">
+               <label class="text-sm"><small>Paid On</small></label>
+               <input type="date" class="form-control form-control-sm" v-model="form.date_paid" required>
+            </div>
+
+            <div class="mb-2">
+               <label class="text-sm"><small>Description</small></label>
+               <textarea class="form-control form-control-sm" v-model="form.description"></textarea>
+            </div>
+       
+         </div> </div> </div>
+   
+               
             </div>
          </div>
          <hr>
