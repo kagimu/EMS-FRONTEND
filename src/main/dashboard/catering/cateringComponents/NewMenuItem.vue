@@ -155,7 +155,7 @@ const addMenuItem = () =>{
         quantity:parseFloat(menu.quantity.toString().replace(/,/g, ""))
       }
     })
-    
+
     buttonLoader.value = true
     menuForm.code = parseInt(menuForm.code)
     menuForm.secondary_items = secondaryItemNumbers
@@ -347,6 +347,10 @@ const handleMenuChange = (data) => {
   }
 }
 
+
+const  calculateTotal = () => {
+  return menuOptions.value.reduce((total, Service) => total + Service.amount, 0);
+}
 
 </script>
 <template>
@@ -562,6 +566,9 @@ const handleMenuChange = (data) => {
           </tbody>
         </table>
 
+        <ul style="float: right;">
+                          <li>Total : <span style="color:rgba(173, 12, 12, 0.92)">{{ calculateTotal()?.toLocaleString() }}</span> </li>
+                        </ul>
           <div>
             <button
                 class="btn btn-primary btn-sm text-sm ml-3"

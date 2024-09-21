@@ -69,6 +69,7 @@ const addReportSettings = () => {
   loader.value = true
   form.code = form.code ? parseInt(form.code) : form.code
   form.columns = form.columns ? parseInt(form.columns) : form.columns
+  
   reportSetupStore.newReportSettings(form)
 }
 
