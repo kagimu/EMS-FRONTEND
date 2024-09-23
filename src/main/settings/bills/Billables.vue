@@ -8,6 +8,7 @@ import {useBillStore} from "@/main/settings/bills/store/bills.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
 import BillableDetails from "@/main/settings/bills/BillableDetails.vue";
 
+
 const  notificationStore  = useNotificationStore()
 const schoolStore = useSchoolStore()
 const mymodal = ref(false)
@@ -110,7 +111,18 @@ watch (
     {deep:true}
 )
 
-
+watch (
+    () => billStore.updateBillableResponse,
+    async (data) => {
+      if (data) {
+        mymodal.value = false
+          let data = {
+          school_number:schoolN
+        }
+          billStore.fetchBillable(data)
+        }
+    }
+)
 </script>
 
 
@@ -131,7 +143,7 @@ watch (
         <div class="col-lg-4">
         </div>
         <div class="col-lg-8">
-          <button  @click="showModal()" class="btn btn-primary btn-sm mb-2" style="float: right;" v-if="can('add_custom_invoice','general')">
+          <button  @click="showModal()" class="btn btn-primary btn-sm mb-2" style="float: right;" v-if="can('create_billables','general')">
           <small><i class="bi bi-plus"> Add New Billable</i></small></button></div>
        </div>
          
@@ -192,11 +204,11 @@ watch (
           <td>{{list.status}}</td>
           <td>
 
-            <button data-bs-toggle="offcanvas" aria-controls="rolesDialogg"  @click="editModalBillables(list.billable_number)">
+            <button v-if="can('edit_billables','general')" data-bs-toggle="offcanvas" aria-controls="rolesDialogg"  @click="editModalBillables(list.billable_number)">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-          <button type="button" @click="showModalDetails(list.billable_number)">
+          <button v-if="can('delete_billables','general')" type="button" @click="showModalDetails(list.billable_number)">
             <i class="bi bi-eye" style="color:blue"></i>
           </button>
 

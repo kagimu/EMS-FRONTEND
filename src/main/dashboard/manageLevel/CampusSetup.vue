@@ -10,9 +10,6 @@ const campusCurriculumDataInfo = ref(null)
 
 const routerData = useRouter()
 
-
-
-
 const campusNumber = routerData.currentRoute.value.query.id
 let campusCurriculumNumber = routerData.currentRoute.value.query.crr
 let reportSettingsQuery = routerData.currentRoute.value.query.rp
@@ -84,13 +81,7 @@ watch(
 
           </div>
         </div>
-
       </div>
-
-
-
-
-
     </div>
 
   </div>

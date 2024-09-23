@@ -6,6 +6,9 @@ import AppModal from "@/components/AppModal.vue";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 import {useStudyModeStore} from "@/main/settings/mode-of-study/store/studyMode.js";
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
 
 const confirmationRef = ref(null);
 const schoolStore = useSchoolStore()
@@ -178,7 +181,7 @@ watch (
         </div>
         <div class="col-lg-8">
   
-          <button  @click="showModeOfStudy" class="btn btn-primary btn-sm mb-2" style="float: right;">
+          <button v-if="can('create_mode_of_study','general')"  @click="showModeOfStudy" class="btn btn-primary btn-sm mb-2" style="float: right;">
           <small><i class="bi bi-plus"> Add New Mode Of Study</i></small></button></div>
        </div>
     
@@ -200,11 +203,11 @@ watch (
         <td>{{ index+1 }}</td>
       <td>{{ list?.name }}</td>
       <td>
-        <button @click="editModeOfStudy(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
+        <button v-if="can('edit_mode_of_study','general')"  @click="editModeOfStudy(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-          <button type="button" @click="deleteModeOfStudy(list.mode_of_study_number,list.name)">
+          <button v-if="can('delete_mode_of_study','general')"  type="button" @click="deleteModeOfStudy(list.mode_of_study_number,list.name)">
             <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
           </button>
       </td>

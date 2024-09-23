@@ -32,7 +32,7 @@ const settingsList = ref([
   {
     name:"Level",
     id:"level",
-    action:"view_level"
+    action:"view_levels"
   },
   {
     name:"Classes",
@@ -72,7 +72,7 @@ const settingsList = ref([
   {
     name:"Promotion Settings",
     id:"promotion-settings",
-    action:"view_settings"
+    action:"view_promotion_settings"
   },
   {
     name:"Promotion Value",

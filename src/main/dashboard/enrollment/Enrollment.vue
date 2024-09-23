@@ -13,6 +13,10 @@ import PaginationTemplate from "@/components/PaginationTemplate.vue";
 import AppModal from "@/components/AppModal.vue";
 import FileUploader from "@/components/FileUploader.vue";
 
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
+
 const enrollmentList = ref( [])
 const  notificationStore  = useNotificationStore()
 const enrollmentStore = useEnrolmentStore()
@@ -514,12 +518,13 @@ const successUpload = (data) => {
                       <td>{{ enrolData.class }}</td>
                       <td>{{ enrolData.enrollment_date }}</td>
                       <td>
-                           <div class="">
+                           <div v-if="can('upload_student_photo','manage')" >
                              <div class="mr-2 rounded-sm px-2 text-[#0d6dfa] cursor-pointer m-1" style="border: 1px solid #0d6dfa;" @click="uploadStudentPhoto(enrolData)">
                                <i class="bi bi-card-image cursor-pointer mr-1"></i>
                                Upload Photo
                              </div>
                              <router-link
+                                 v-if="can('view_profile','manage')"
                                  :to="{name:'student-profile-details', query:{st_id:enrolData.student_number}}"
                                  class="text-decoration-none">
                                    <div class="mr-2 rounded-sm px-2 text-[#0d6dfa] cursor-pointer m-1" style="border: 1px solid #0d6dfa;">

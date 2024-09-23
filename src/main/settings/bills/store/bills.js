@@ -23,6 +23,8 @@ export const useBillStore = defineStore("billStore", () => {
             })
     }
 
+ 
+
     async function deleteBillable(id) {
         return await api.delete("main/invoices/billable"+id)
             .then((response) => {
@@ -36,7 +38,7 @@ export const useBillStore = defineStore("billStore", () => {
     }
 
     async function editBillable(data) {
-        return await api.post("main/invoices/billable", data)
+        return await api.put("main/invoices/billable", data)
             .then((response) => {
                 updateBillableResponse.value = response.data
             })

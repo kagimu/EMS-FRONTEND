@@ -47,6 +47,7 @@ const servicesData = ref([]);
 const Services = ref([]);
 const ServiceOptions = ref([])
 const unfilteredServicesData = ref([])
+const bills_number = ref(null)
 
 const formData = reactive({
   description:null,
@@ -80,6 +81,7 @@ watch(
       let draft = data.data
       billableData.value = draft
       if(draft){
+        bills_number.value=draft.billable_number
         formData.campus_number = draft.campus_number
         if(draft?.campus_number){
           fetchCurriculum(draft?.campus_number)
@@ -152,7 +154,7 @@ onMounted(
   
       const selectedItems = servicesData.value.map(
       lst => ({
-        number: lst.item_number,
+        item_number: lst.number,
         quantity: parseInt(lst.quantity),
         unit_cost: parseInt(lst.cost)
       }))
@@ -163,7 +165,16 @@ onMounted(
     data.billable_items = selectedItems
     data.campus_curriculum_number = curriculumNumber.value
     data.bill_status = "ACTIVE"
-  billStore.newBillable(data)
+      
+    if(bills_number != ""){
+      data.billable_number = bills_number.value
+      // alert(JSON.stringify(data))
+      billStore.editBillable(data)
+    }else {
+
+      billStore.newBillable(data)
+    }
+  
 }
 
 
@@ -323,6 +334,17 @@ watch (
 )
 
 
+watch (
+    () => billStore.updateBillableResponse,
+    async (data) => {
+      if (data) {
+        notificationStore.successToast("Success", data.message)
+        buttonLoader.value=false
+      }
+    },
+    { deep: true }
+)
+
 watch(
     () => levelStore.campusCurriculumResponse,
     async (data) => {
@@ -398,6 +420,7 @@ const handleMenuChange = (data) => {
 
 </script>
 <template>
+  {{ bills_number }}
   <div>
     <div class="row">
           <div class="card-body" style="padding: 0;">
@@ -637,7 +660,7 @@ const handleMenuChange = (data) => {
            <div class="col-lg-4"></div>
            <div class="col-lg-4 ">
              <button type="submit" class="btn btn-sm btn-primary mb-2 mt-1" style="float: right !important;margin-right: 0px;">
-               <small>Create Bill Data</small>
+               <small>Submit</small>
            <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
              <span class="visually-hidden">Loading...</span>
            </div>

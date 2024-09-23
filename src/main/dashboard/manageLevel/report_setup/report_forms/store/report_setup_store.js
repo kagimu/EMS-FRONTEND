@@ -24,11 +24,24 @@ export const useReportSetupStore = defineStore("report_setup", () => {
     const classesAddedToReportTemplateListResponse = ref(null)
     const removeClassFromReportTemplateResponse = ref(null)
     const reportColumnByReportSettingResponse = ref(null)
+    const reportSettingsUpdateResponse= ref(null)
 
     async function newReportSettings(data) {
         return await api.post("main/report-settings", data)
             .then((response) => {
                 reportSettingsResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function updateReportSettings(data) {
+        return await api.put("main/report-settings/update", data)
+            .then((response) => {
+                reportSettingsUpdateResponse.value = response.data
             })
             .catch((error) => {
                 if(error && error.response){
@@ -325,6 +338,8 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         removeClassFromReportTemplate,
         removeClassFromReportTemplateResponse,
         fetchReportColumnsByReportSettingId,
-        reportColumnByReportSettingResponse
+        reportColumnByReportSettingResponse,
+        updateReportSettings,
+        reportSettingsUpdateResponse
     }
 })

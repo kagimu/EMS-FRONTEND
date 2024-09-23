@@ -305,7 +305,7 @@ watch(
               </td>
               <td>
                 <button
-                    v-if="gradeList.status === 'NO'"
+                    v-if="gradeList.status === 'NO' && can('set_class_grading_standard_default','general')"
                     @click="makeGradingStandardDefault(gradeList, index)"
                     type="button"
                     :class="gradeList.status === 'ACTIVE' ? 'bg-[red]' : 'bg-[#0d6efd]'"

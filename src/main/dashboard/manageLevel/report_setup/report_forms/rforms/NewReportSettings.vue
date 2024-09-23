@@ -60,8 +60,17 @@ const getReportSettingInfo = () => {
   if(props.reportSettingsD){
     form.code = props.reportSettingsD.code,
     form.columns = props.reportSettingsD.columns,
-    // alert(props.level_number)
-    campus_level_number.value = props.level_number
+    campus_level_number.value = props.reportSettingsD.campus_level_number
+    if(props.reportSettingsD.campus_level_number){
+      fetchAcademicYea(props.reportSettingsD.campus_level_number)
+      form.academic_year_number = props.reportSettingsD.academic_year_number
+      form.class_number =  props.reportSettingsD.class_number
+    }
+    if(props.reportSettingsD.class_number){
+      studyPeriodData(props.reportSettingsD.class_number)
+      form.study_period_number = props.reportSettingsD.study_period_number
+    }
+
   }
 }
 
@@ -69,8 +78,13 @@ const addReportSettings = () => {
   loader.value = true
   form.code = form.code ? parseInt(form.code) : form.code
   form.columns = form.columns ? parseInt(form.columns) : form.columns
-  
-  reportSetupStore.newReportSettings(form)
+  if(props.reportSettingsD){
+    form.report_settings_number = props.reportSettingsD.number
+    reportSetupStore.updateReportSettings(form)
+  }else {
+    reportSetupStore.newReportSettings(form)
+  }
+ 
 }
 
 
@@ -179,11 +193,21 @@ watch(
     }
 )
 
+watch (
+    () => reportSetupStore.reportSettingsUpdateResponse,
+    async (data) => {
+      if (data) {
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    { deep: true }
+)
+
 </script>
 
 <template>
+  <!-- {{ reportSettingsD }} -->
   <div>
-    {{ reportSettingsD }}
   <form @submit.prevent="addReportSettings">
 
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">

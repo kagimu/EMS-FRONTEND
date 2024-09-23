@@ -179,8 +179,8 @@ const successUpload = (data) => {
             <div class="p-3 text-[#5e5e5e]">
             <div class="mb-3 flex justify-between text-[16px]">
               <div class="flex flex-row items-center">
-                <div class="">
-                   <img v-if="school?.logo" alt="logo" class="w-[50px] border rounded-md" :src="school?.logo"/>
+                <div v-if="can('upload_school_logo','general')">
+                   <img v-if="school?.logo" alt="logo" class="w-[50px] border rounded-md" :src="school?.logo" />
                   <i v-else class="bi bi-card-image w-[50px] text-[30px] border rounded-md p-[10px] bg-[#e4e6eb] text-gray-600"></i>
                 </div>
                 <div class="px-2">

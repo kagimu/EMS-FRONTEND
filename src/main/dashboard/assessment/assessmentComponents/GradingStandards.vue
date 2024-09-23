@@ -316,7 +316,7 @@ watch(
                     type="button"
                     :class="gradeList.status === 'ACTIVE' ? 'bg-[red]' : 'bg-[#0d6efd]'"
                     class="text-white text-xs px-2 rounded-sm">
-                  {{ gradeList.status === "ACTIVE" ? "Inactivate" : "Activate" }}
+                  {{ gradeList.status === "ACTIVE" ? "Deactivate" : "Activate" }}
                 </button>
               </td>
               <td>

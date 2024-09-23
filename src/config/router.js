@@ -165,7 +165,7 @@ const router = createRouter({
                         name: "financial-records",
                         meta: {
                             resource: "admission-list",
-                            action: "view-admission-list",
+                            action: "view_financial_records",
 
                         }
                     },

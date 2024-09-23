@@ -4,6 +4,8 @@ import router from "@/config/router.js";
 import {useRouter} from "vue-router";
 import Invoice from "@/main/dashboard/invoice/Invoice.vue";
 import Transactions from "@/main/dashboard/transactions/Transactions.vue";
+import { useAbility } from '@casl/vue';
+const { can } = useAbility()
 const routerData = useRouter()
 const selectedTab = routerData.currentRoute.value.query.tab ?? 'invoices'
 
