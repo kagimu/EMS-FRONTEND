@@ -5,7 +5,8 @@ import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.j
 
 
 const uploadError = ref(null)
-const attachment = ref(null)
+const markingGuideRef = ref(null)
+const ScriptRef = ref(null)
 const loader = ref(false)
 const notificationStore  = useNotificationStore()
 
@@ -29,9 +30,10 @@ function saveFile(){
   loader.value = true
   uploadError.value = null
   const formData = new FormData();
-  formData.set("attachment", attachment.value.files[0]);
+  formData.set("marking-guide-file", markingGuideRef.value.files[0]);
+  formData.set("script-file", ScriptRef.value.files[0]);
   formData.set("assessment_metric_number", props.metricNumber);
-  assessmentStore.uploadMarkingGuideFile(formData, props.fileType)
+  assessmentStore.uploadMarkingGuideFile(formData)
 
 }
 
@@ -62,9 +64,20 @@ watch(
         </div>
 
         <div class="mb-3">
-          <label for="formFileSm" class="form-label">Upload file</label>
+          <label for="formFileSm" class="form-label">Marking Guide</label>
           <input
-              ref="attachment"
+              ref="markingGuideRef"
+              class="form-control form-control-sm noFocus"
+              id="formFileSm"
+              accept=".pdf,application/pdf"
+              type="file">
+        </div>
+
+
+        <div class="mb-3">
+          <label for="formFileSm" class="form-label">Script</label>
+          <input
+              ref="ScriptRef"
               class="form-control form-control-sm noFocus"
               id="formFileSm"
               accept=".pdf,application/pdf"
