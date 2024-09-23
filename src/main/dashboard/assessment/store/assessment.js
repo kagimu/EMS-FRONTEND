@@ -617,15 +617,8 @@ async function updateMetric(data,metricNumber) {
 
 
 
-    async function uploadMarkingGuideFile(data, fileType) {
-        const paths = {
-            testMarkingGuide: "main/assessments/upload-marking-guide",
-            testScript: "main/assessments/upload-script"
-        };
-
-        const path = paths[fileType];
-
-        return await api.post(path, data, {
+    async function uploadMarkingGuideFile(data) {
+        return await api.post("main/assessments/script-marking-guide", data, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }

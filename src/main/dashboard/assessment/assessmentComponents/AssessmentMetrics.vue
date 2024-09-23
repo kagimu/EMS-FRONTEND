@@ -31,7 +31,7 @@ const campusNumber = routerData.currentRoute.value.query.id
 const showingModal = ref(false)
 const campus_level_number = ref("")
 const uploadDialog = ref(false)
-const testScriptDialog = ref(false)
+// const testScriptDialog = ref(false)
 const assessmentScheduleDialog = ref(false)
 const metricNumber = ref(null)
 const assessmentScheduleData = ref(null)
@@ -313,12 +313,12 @@ const uploadMarkingGuide = (metricsData) => {
     }
 }
 
-const uploadTestScript = (metricsData) => {
+/*const uploadTestScript = (metricsData) => {
   if(metricsData) {
       testScriptDialog.value = true
       metricNumber.value = metricsData.number
     }
-}
+}*/
 
 const viewAssessmentSchedule = (metricsData) => {
   assessmentScheduleData.value = metricsData
@@ -343,7 +343,7 @@ watch(
     async (data) => {
       if(data){
         uploadDialog.value = false
-        testScriptDialog.value = false
+        // testScriptDialog.value = false
         notificationStore.successToast("Success", data.message)
       }
     }
@@ -360,13 +360,13 @@ watch(
       <NewAssessmentMetric :assessmentMetricList="assessmentMetricList"></NewAssessmentMetric>
     </AppModal>
 
-    <AppModal title="Upload Marking Guide" v-model="uploadDialog" xl>
+    <AppModal title="Upload Marking Guide / Script" v-model="uploadDialog" xl>
       <marking-guide-file-uploader fileType="testMarkingGuide" :metricNumber="metricNumber"></marking-guide-file-uploader>
     </AppModal>
 
-    <AppModal title="Upload Test Script" v-model="testScriptDialog" xl>
+<!--    <AppModal title="Upload Test Script" v-model="testScriptDialog" xl>
       <marking-guide-file-uploader fileType="testScript" :metricNumber="metricNumber"></marking-guide-file-uploader>
-    </AppModal>
+    </AppModal>-->
 
     <AppModal title="Assessment Schedule" v-model="assessmentScheduleDialog" xl>
       <assessment-schedule-preview :assessmentScheduleData="assessmentScheduleData"></assessment-schedule-preview>
@@ -505,7 +505,7 @@ watch(
                 <th>#</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Action</th>
+                <th class="w-[12%]">Action</th>
               </tr>
               </thead>
               <tbody>
@@ -523,19 +523,19 @@ watch(
 
                   <button
                       class="mr-1"
-                      title="Upload Marking Guide"
+                      title="Upload Marking Guide / Script"
                       @click="uploadMarkingGuide(metricsData)"
                       type="button">
                     <i class="bi bi-filetype-pdf text-[16px]" style="color:rgb(3, 85, 148)"></i>
                   </button>
 
-                  <button
+<!--                  <button
                       class="mr-1"
                       title="Upload Test Script"
                       @click="uploadTestScript(metricsData)"
                       type="button">
                     <i class="bi bi-file text-[16px]" style="color:rgb(3, 85, 148)"></i>
-                  </button>
+                  </button>-->
 
                   <button
                       class="mr-1"
