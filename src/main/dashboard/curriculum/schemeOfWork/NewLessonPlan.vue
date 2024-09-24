@@ -1,179 +1,11 @@
-<template>
-  <div>
-
-
-
-    <form @submit.prevent="addLessonPlan">
-
-      <div class="row mx-auto mb-4">
-        <div class="col-lg-5 content">
-
-          <label class="text-sm text-sm">
-            <b>Concepts</b>
-          </label>
-          <div class="row mt-2">
-            <div class="col-lg-4">
-              <label class="text-sm text-sm">Code</label>
-            </div>
-            <div class="col-lg-8">
-              <label class="text-sm text-sm">Concept</label>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-1 content"></div>
-        <div class="col-lg-6 content">
-          <label class="text-sm text-sm">
-          <b>Teaching steps</b>
-        </label>
-          <div class="row mt-2">
-            <div class="col-lg-3 content">
-              <small>Code</small>
-            </div>
-            <div class="col-lg-3 content">
-              <small>
-                Step
-              </small>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      <div v-for="(list, index) in form" :key="index">
-
-      <div class="row mx-auto">
-        <div class="col-lg-5 content">
-
-          <div class="row">
-            <div class="col-lg-4">
-              <div class="mb-2">
-
-                <input
-                    @keypress="commons.codeValidator($event)"
-                    maxlength="10"
-                    type="text"
-                    v-model="list.code"
-                    @paste.prevent
-                    required
-                    class="form-control form-control-sm shadow-none">
-              </div>
-            </div>
-            <div class="col-lg-8">
-              <div class="mb-2 flex justify-content-between">
-                <select
-                    :disabled="!!form[0].number"
-                    style="box-shadow: none;"
-                    class="form-select form-select-sm"
-                    v-model="list.lesson_plan_concept_number"
-                >
-                  <option disabled value="">--Select Concept--</option>
-                  <option v-for="(list, index) in conceptListData" :key="index" :value="list.number">
-                    {{list.code+". "+list.name}}
-                  </option>
-                </select>
-                <button
-                    v-if="index !== 0 && !form[0].number"
-                    @click="removeConcept(index)"
-                    type="button"
-                    class="btn-close btn-sm border-0 mt-1">
-                </button>
-              </div>
-            </div>
-          </div>
-
-
-
-
-
-
-
-        </div>
-        <div class="col-lg-1 content"></div>
-        <div class="col-lg-6 content">
-          <div class="mb-3">
-
-
-            <div v-for="(lst, idx) in list.steps" :key="idx">
-
-              <div class="row">
-                <div class="col-lg-3 content">
-                  <input
-                      @keypress="commons.codeValidator($event)"
-                      maxlength="10"
-                      type="text"
-                      v-model="lst.code"
-                      @paste.prevent
-                      required
-                      class="form-control form-control-sm shadow-none">
-                </div>
-                <div class="col-lg-8 content">
-                  <input
-                      style="outline: none 0 !important; box-shadow: none;"
-                      type="text"
-                      v-model="lst.step"
-                      required
-                      class="form-control form-control-sm">
-                </div>
-                <div class="col-lg-1 content">
-                  <button
-                      v-if="idx !== 0"
-                      @click="removeStep(index,idx)"
-                      type="button"
-                      class="btn-close btn-sm border-0">
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <button
-                @click="addStep(index)"
-                type="button"
-                class="btn btn-sm btn-secondary border-0 mt-2">
-              <i style="font-size: 15px;" class="bi-plus mr-1"></i>
-              Add Step
-            </button>
-
-
-          </div>
-
-
-        </div>
-      </div>
-      <hr />
-      </div>
-
-      <button
-          v-if="((form.length + 1) <= (conceptListData.length))"
-          @click="addConcept"
-          type="button"
-          class="btn btn-sm btn-success border-0">
-        <i style="font-size: 15px;" class="bi-plus mr-1"></i>
-        Add Concept
-      </button>
-
-
-      <div class="flex justify-content-end mt-5" style="width: 100%;">
-        <button
-            type="submit"
-            class="btn btn-primary border-0">
-            {{form[0].number ? "Edit" : "Save"}}
-          <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </span>
-        </button>
-      </div>
-
-    </form>
-
-
-  </div>
-</template>
 <script setup>
-
-
 import {ref, watch} from "vue";
 import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
 import useCommonsStore from "@/composables/useCommons.js";
+import ImportLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/ImportLessonPlan.vue";
+import {useSubtopicStore} from "@/main/dashboard/curriculum/curriculumSetup/subTopic/store/subTopic.js";
+
+const subtopicStore = useSubtopicStore()
 
 const schemeOfWorkStore = useSchemeOfWorkStore()
 const conceptListData = ref([])
@@ -184,6 +16,21 @@ const loader = ref(false)
 const scheme_sub_topic_number = ref(null)
 
 const lessonPlanNumber = ref("")
+const type = ref("new")
+
+const showTemplateUpload = ref(false)
+
+const LessonPlanOptions  = ref([
+  {
+    text:"New",
+    value:"new"
+  },
+  {
+    text:"Template",
+    value:"template"
+  },
+])
+
 
 const form = ref([{
   number: "",
@@ -380,7 +227,236 @@ watch(
     {deep: true}
 )
 
+const filterByType = (typ) => {
+  type.value = typ
+}
+
+
+
+
+const downloadLessonPlanByTemplate = (event) => {
+  event.preventDefault();
+  subtopicStore.downloadSchemeTemplateExcel({class_number:form.class_number, subject_number:form.subject_number})
+}
+
+const uploadTemplate = () => {
+  showTemplateUpload.value = !showTemplateUpload.value
+}
+
 </script>
+
+<template>
+  <div>
+    <form @submit.prevent="addLessonPlan">
+      <div class="mb-5" style="width: 300px;">
+            <label class="text-sm"><small>Type</small></label>
+            <select
+                style="box-shadow: none;"
+                class="form-select form-select-sm"
+                v-model="type"
+                 @change="filterByType(type)"
+            >
+              <option disabled value="">--Select type--</option>
+              <option v-for="(list, index) in LessonPlanOptions" :key="index" :value="list.value">
+                {{list.text}}
+              </option>
+            </select>
+          </div>
+
+<div v-if="type === 'new'">
+      <div class="row mx-auto mb-4" >
+        <div class="col-lg-5 content">
+
+          <label class="text-sm text-sm">
+            <b>Concepts</b>
+          </label>
+          <div class="row mt-2">
+            <div class="col-lg-4">
+              <label class="text-sm text-sm">Code</label>
+            </div>
+            <div class="col-lg-8">
+              <label class="text-sm text-sm">Concept</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-1 content"></div>
+        <div class="col-lg-6 content">
+          <label class="text-sm text-sm">
+          <b>Teaching steps</b>
+        </label>
+          <div class="row mt-2">
+            <div class="col-lg-3 content">
+              <small>Code</small>
+            </div>
+            <div class="col-lg-3 content">
+              <small>
+                Step
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div v-for="(list, index) in form" :key="index">
+
+      <div class="row mx-auto">
+        <div class="col-lg-5 content">
+
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="mb-2">
+
+                <input
+                    @keypress="commons.codeValidator($event)"
+                    maxlength="10"
+                    type="text"
+                    v-model="list.code"
+                    @paste.prevent
+                    required
+                    class="form-control form-control-sm shadow-none">
+              </div>
+            </div>
+            <div class="col-lg-8">
+              <div class="mb-2 flex justify-content-between">
+                <select
+                    :disabled="!!form[0].number"
+                    style="box-shadow: none;"
+                    class="form-select form-select-sm"
+                    v-model="list.lesson_plan_concept_number"
+                >
+                  <option disabled value="">--Select Concept--</option>
+                  <option v-for="(list, index) in conceptListData" :key="index" :value="list.number">
+                    {{list.code+". "+list.name}}
+                  </option>
+                </select>
+                <button
+                    v-if="index !== 0 && !form[0].number"
+                    @click="removeConcept(index)"
+                    type="button"
+                    class="btn-close btn-sm border-0 mt-1">
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+
+
+        </div>
+        <div class="col-lg-1 content"></div>
+        <div class="col-lg-6 content">
+          <div class="mb-3">
+
+
+            <div v-for="(lst, idx) in list.steps" :key="idx">
+
+              <div class="row">
+                <div class="col-lg-3 content">
+                  <input
+                      @keypress="commons.codeValidator($event)"
+                      maxlength="10"
+                      type="text"
+                      v-model="lst.code"
+                      @paste.prevent
+                      required
+                      class="form-control form-control-sm shadow-none">
+                </div>
+                <div class="col-lg-8 content">
+                  <input
+                      style="outline: none 0 !important; box-shadow: none;"
+                      type="text"
+                      v-model="lst.step"
+                      required
+                      class="form-control form-control-sm">
+                </div>
+                <div class="col-lg-1 content">
+                  <button
+                      v-if="idx !== 0"
+                      @click="removeStep(index,idx)"
+                      type="button"
+                      class="btn-close btn-sm border-0">
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button
+                @click="addStep(index)"
+                type="button"
+                class="btn btn-sm btn-secondary border-0 mt-2">
+              <i style="font-size: 15px;" class="bi-plus mr-1"></i>
+              Add Step
+            </button>
+
+
+          </div>
+
+
+        </div>
+      </div>
+      <hr />
+      </div>
+
+      <button
+          @click="addConcept"
+          type="button"
+          class="btn btn-sm btn-success border-0">
+        <i style="font-size: 15px;" class="bi-plus mr-1"></i>
+        Add Concept
+      </button>
+
+
+      <div class="flex justify-content-end mt-5" style="width: 100%;">
+        <button
+            type="submit"
+            class="btn btn-primary border-0">
+            {{form[0].number ? "Edit" : "Save"}}
+          <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </span>
+        </button>
+      </div>
+
+  </div>
+
+  <div class="row mx-auto" v-if="type == 'template'">
+        <div class="col-lg-12 content">
+          <div>
+            <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="downloadLessonPlanByTemplate">
+              <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+              Download template
+            </button>
+            <button type="button"  class="btn btn-sm buttonStyle btn-success mr-2"  @click="uploadTemplate">
+              <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+              Import template
+            </button>
+
+
+
+            <div v-if="showTemplateUpload">
+              <div>
+
+                 <ImportLessonPlan></ImportLessonPlan>
+
+              </div>
+
+            </div>
+
+
+          </div>
+       
+        </div>
+      </div>
+    </form>
+
+
+  </div>
+</template>
+
 <style scoped>
 
 </style>

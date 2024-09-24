@@ -179,7 +179,7 @@ const successUpload = (data) => {
             <div class="p-3 text-[#5e5e5e]">
             <div class="mb-3 flex justify-between text-[16px]">
               <div class="flex flex-row items-center">
-                <div v-if="can('upload_school_logo','general')">
+                <div >
                    <img v-if="school?.logo" alt="logo" class="w-[50px] border rounded-md" :src="school?.logo" />
                   <i v-else class="bi bi-card-image w-[50px] text-[30px] border rounded-md p-[10px] bg-[#e4e6eb] text-gray-600"></i>
                 </div>
@@ -188,7 +188,7 @@ const successUpload = (data) => {
                 </div>
               </div>
               <div class="flex">
-                <i class="bi bi-card-image cursor-pointer" @click="uploadSchoolBudge(school)" ></i>
+                <i v-if="can('upload_school_logo','general')" class="bi bi-card-image cursor-pointer" @click="uploadSchoolBudge(school)" ></i>
               <i
               v-if="can('edit_school','general')"
                   class="bi-pencil ml-2 cursor-pointer"

@@ -222,7 +222,7 @@ watch (
 
           </div>
 
-            <div class="flex">
+            <div class="grid grid-cols-2 gap-0">
 
               <router-link
                   class="text-decoration-none"
@@ -230,8 +230,8 @@ watch (
               >
                 <button
                     type="button"
-                    class="bg-[#2c2f8c] hover:bg-[#0c62e1] text-white text-sm text-center w-full rounded-bl-md py-2">
-                      <span class="mx-9 text-sm">
+                    class="bg-[#2c2f8c] hover:bg-[#0c62e1] text-white  text-center w-full rounded-bl-md pt-1 pb-2">
+                      <span class="text-xs">
                         View Scheme
                       </span>
                 </button>
@@ -244,8 +244,8 @@ watch (
                 <button
                   @click="setCampusName(campus.name)"
                     type="button"
-                    class="bg-[#0d6efd] hover:bg-[#0c62e1] text-white text-sm text-center w-full rounded-br-md py-2">
-                      <span class="mx-9 text-sm">
+                    class="bg-[#0d6efd] hover:bg-[#0c62e1] text-white  text-center w-full rounded-br-md pt-1 pb-2">
+                      <span class="text-xs">
                         View Campus
                       </span>
                 </button>
