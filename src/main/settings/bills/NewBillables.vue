@@ -420,7 +420,7 @@ const handleMenuChange = (data) => {
 
 </script>
 <template>
-  {{ bills_number }}
+  <!-- {{ bills_number }} -->
   <div>
     <div class="row">
           <div class="card-body" style="padding: 0;">

@@ -295,9 +295,9 @@ watch(
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(studentInfo, index) in studentReportList" :key="index">
+          <tr v-for="(studentInfo, index) in studentReportList" :key="index">
           <td> {{(index + 1)}}</td>
-          <td> {{studentInfo.student}}</td>
+          <td style="text-transform: capitalize;"> {{studentInfo.student}}</td>
           <td> {{studentInfo.grade}}</td>
           <td> {{studentInfo.aggregate}}</td>
           <td> {{studentInfo.class}}</td>
