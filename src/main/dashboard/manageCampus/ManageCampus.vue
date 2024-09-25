@@ -12,6 +12,9 @@ import AppModal from "@/components/AppModal.vue";
 import CampusListInfo from "@/main/dashboard/manageCampus/CampusListInfo.vue";
 import SchoolReportTemplates from "@/main/dashboard/manageLevel/report_setup/reportTemplate/SchoolReportTemplates.vue";
 import FileUploader from "@/components/FileUploader.vue";
+import { useAbility } from '@casl/vue';
+
+const { can } = useAbility()
 const routerData = useRouter()
 const campusStore = useCampusStore()
 const schoolStore = useSchoolStore()
@@ -114,10 +117,11 @@ const successUpload = (data) => {
           <div class="text-[18px]">School Badge:</div>
           <div class="text-[14px] text-[#575656]">
             <div style="text-align: right; margin-top: 10px;">
-              <img alt="logo" class="w-[130px] border-2 rounded-lg" :src="schoolData?.logo"/>
+              <img  alt="logo" class="w-[130px] border-2 rounded-lg" :src="schoolData?.logo"/>
             </div>
 
             <button
+                v-if="can('upload_school_logo','general')"
                 class="border-2 rounded-md px-2 mt-2 border-[#2c2f8c] text-[#2c2f8c]"
                 @click="uploadBadge">
               <i class="cursor-pointer mx-1 text-xs fa-solid fa-pencil"></i> Upload Badge

@@ -130,6 +130,12 @@ watch (
     }
 )
 
+const calculateTotal = () => {
+  return menuItems.value.reduce((total, item) => {
+    const unitCost = parseFloat(item.unit_cost?.toString().replace(/,/g, "") || 0);
+    return total + unitCost;
+  }, 0);
+}
 
 
 const addMenuItem = () =>{
@@ -165,7 +171,8 @@ const addMenuItem = () =>{
       menuForm.menu_item_number = item_number.value
       cateringStore.updateAssemblyItem(menuForm)
     }else {
-      menuForm.base_price = 1000 //what is base_price 
+      menuForm.base_price = calculateTotal()
+      //what is base_price 
       cateringStore.newAssemblyItem(menuForm)
     }
 
@@ -348,9 +355,6 @@ const handleMenuChange = (data) => {
 }
 
 
-const  calculateTotal = () => {
-  return menuOptions.value.reduce((total, Service) => total + Service.amount, 0);
-}
 
 </script>
 <template>
