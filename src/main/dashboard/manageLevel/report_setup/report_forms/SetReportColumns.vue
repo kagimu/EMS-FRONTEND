@@ -50,7 +50,7 @@ const getReportColumnInfo = () =>{
 
 const initializeForm = (num = loop.value) => {
   for (let i = 0; i < num; i++) {
-    form.value.push({ code: null, name: null, percentage_share: null });
+    form.value.push({ code: null, name: null, percentage_share: null, report_column_number:null});
   }
 };
 
