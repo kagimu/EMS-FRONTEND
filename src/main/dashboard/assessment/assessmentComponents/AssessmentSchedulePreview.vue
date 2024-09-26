@@ -84,10 +84,13 @@ const previewForm = (imageLink) => {
 
 const selectAssessmentMetricPreview = (list) => {
   if (list) {
+    let url = api.defaults.baseURL
+      // https://www.oddscreenprinting.com.au/wp-content/uploads/2017/04/placeholder.png
+      let path = url + "wp-content/uploads/2017/04/placeholder.png"
       assessmentMetricNumber.value = list?.marking_guide_name;
+
       markingGuidePdf.value = list?.marking_guide_name;
       assessmentScriptPdf.value = list?.script_name;
-
   }
 }
 

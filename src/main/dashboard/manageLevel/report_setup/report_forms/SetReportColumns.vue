@@ -12,6 +12,7 @@ const errorMessage = ref("")
 const loader = ref(false)
 const loop = ref(null)
 const reportSettingNumber = ref(null)
+const form = ref([]);
 
 const props = defineProps({
   reportSettingNumber: String,
@@ -20,28 +21,42 @@ const props = defineProps({
 
 
 onMounted(() => {
-
   getReportColumnInfo()
 })
 
+watch(
+    () => props.reportSettingNumber,
+    async (data) => {
+      if (data) {
+        getReportColumnInfo()
+      }
+    }
+)
+
 const getReportColumnInfo = () =>{
-  if(props.reportColumns){
-  loop.value=parseInt(props.reportColumns)
+  let reportSettingsNumber = props.reportSettingNumber
+  let reportColumnsNo = props.reportColumns
+
+  if(reportSettingsNumber){
+    reportSettingNumber.value = reportSettingsNumber
+    reportSetupStore.fetchReportColumn(reportSettingsNumber)
   }
-  if(props.reportSettingNumber){
-  reportSettingNumber.value=props.reportSettingNumber
+
+  if(reportColumnsNo){
+    loop.value=parseInt(reportColumnsNo)
   }
+
 }
 
-const form = reactive([]);
-
-const initializeForm = () => {
-  for (let i = 0; i < loop.value; i++) {
-    form.push({ code: null, name: null, percentage_share: null })
+const initializeForm = (num = loop.value) => {
+  for (let i = 0; i < num; i++) {
+    form.value.push({ code: null, name: null, percentage_share: null });
   }
-}
+};
+
+
 const convertFormValuesToInt = () => {
-  form.forEach(field => {
+  form.value.forEach(field => {
     if (field.code !== null) {
       field.code = parseInt(field.code);
     }
@@ -56,7 +71,7 @@ const settingReportColumn = () => {
   convertFormValuesToInt()
   let formData = {
     report_setting_number: reportSettingNumber.value,
-    columns:form
+    columns:form.value
   }
   reportSetupStore.newReportColumn(formData)
   // alert(JSON.stringify(formData));
@@ -86,12 +101,33 @@ onMounted(() => {
   initializeForm()
 })
 
+watch(
+    () => reportSetupStore.reportColumnListResponse,
+    async (data) => {
+      let draft = data?.data
+      if(data && draft && draft?.length > 0){
+        let draftLength  = draft?.length
+        let loopLength = loop.value
+        form.value = draft?.map(item => ({
+          report_column_number: item?.number,
+          code: item?.code,
+          name: item?.name,
+          percentage_share: item?.percentage_share
+        }))
+
+        if(loopLength !== draftLength){
+          initializeForm((loopLength -draftLength))
+        }
+
+      }
+    }
+)
+
 
 </script>
 
 <template>
   <div>
-    <!-- {{ reportSettingNumber }} - {{ reportColumns }} -->
     <form @submit.prevent="settingReportColumn">
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
         {{ errorMessage }}
