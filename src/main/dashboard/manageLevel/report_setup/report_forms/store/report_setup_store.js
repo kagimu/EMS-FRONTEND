@@ -23,6 +23,7 @@ export const useReportSetupStore = defineStore("report_setup", () => {
     const classToReportTemplateResponse = ref(null)
     const classesAddedToReportTemplateListResponse = ref(null)
     const removeClassFromReportTemplateResponse = ref(null)
+    const deleteReportColumnResponse = ref(null)
     const reportColumnByReportSettingResponse = ref(null)
     const reportSettingsUpdateResponse= ref(null)
 
@@ -286,6 +287,18 @@ export const useReportSetupStore = defineStore("report_setup", () => {
                 }
             })
     }
+
+    async function deleteReportColumn(data) {
+        return await api.delete("main/report-settings/columns/"+data)
+            .then((response) => {
+                deleteReportColumnResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
     
     async function fetchReportColumnsByReportSettingId(report_setting_number) {
         return await api.get("main/report-settings?report_setting_number="+report_setting_number)
@@ -314,6 +327,14 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         studentMarksResponse,
         assessmentAreaGradingStandardResponse,
         assessmentAreaGradingStandardInfoResponse,
+        reportColumnByReportSettingResponse,
+        reportSettingsUpdateResponse,
+        reportTemplateListResponse,
+        reportTemplateResponse,
+        classToReportTemplateResponse,
+        classesAddedToReportTemplateListResponse,
+        removeClassFromReportTemplateResponse,
+        deleteReportColumnResponse,
         newReportSettings,
         newReportColumn,
         newReportColumnAssessment,
@@ -328,18 +349,11 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         newAssessmentAreaGradingStandard,
         fetchAssessmentAreaGradingStandardInfo,
         addReportTemplate,
-        reportTemplateListResponse,
-        reportTemplateResponse,
         fetchReportTemplate,
         addClassToReportTemplate,
-        classToReportTemplateResponse,
         fetchClassesAddedReportTemplate,
-        classesAddedToReportTemplateListResponse,
         removeClassFromReportTemplate,
-        removeClassFromReportTemplateResponse,
-        fetchReportColumnsByReportSettingId,
-        reportColumnByReportSettingResponse,
         updateReportSettings,
-        reportSettingsUpdateResponse
+        deleteReportColumn,
     }
 })

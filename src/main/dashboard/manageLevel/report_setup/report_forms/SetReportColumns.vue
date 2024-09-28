@@ -1,9 +1,10 @@
 <script setup>
 import useCommonsStore from "@/composables/useCommons.js";
-import { useReportSetupStore } from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
+import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
 import useNotificationStore from "@/composables/useNotification.js";
-import { onMounted, reactive, ref, watch } from "vue";
-
+import {onMounted, reactive, ref, watch} from "vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
 const commons = useCommonsStore()
 const notificationStore = useNotificationStore()
 const reportSetupStore = useReportSetupStore()
@@ -11,6 +12,7 @@ const reportSetupStore = useReportSetupStore()
 const errorMessage = ref("")
 const loader = ref(false)
 const loop = ref(null)
+const deletionLoader = ref(null)
 const reportSettingNumber = ref(null)
 const form = ref([]);
 
@@ -22,7 +24,9 @@ const props = defineProps({
 
 onMounted(() => {
   getReportColumnInfo()
+  initializeForm()
 })
+
 
 watch(
     () => props.reportSettingNumber,
@@ -33,24 +37,24 @@ watch(
     }
 )
 
-const getReportColumnInfo = () =>{
+const getReportColumnInfo = () => {
   let reportSettingsNumber = props.reportSettingNumber
   let reportColumnsNo = props.reportColumns
 
-  if(reportSettingsNumber){
+  if (reportSettingsNumber) {
     reportSettingNumber.value = reportSettingsNumber
     reportSetupStore.fetchReportColumn(reportSettingsNumber)
   }
 
-  if(reportColumnsNo){
-    loop.value=parseInt(reportColumnsNo)
+  if (reportColumnsNo) {
+    loop.value = parseInt(reportColumnsNo)
   }
 
 }
 
 const initializeForm = (num = loop.value) => {
   for (let i = 0; i < num; i++) {
-    form.value.push({ code: null, name: null, percentage_share: null, report_column_number:null});
+    form.value.push({code: null, name: null, percentage_share: null, report_column_number: null});
   }
 };
 
@@ -71,42 +75,38 @@ const settingReportColumn = () => {
   convertFormValuesToInt()
   let formData = {
     report_setting_number: reportSettingNumber.value,
-    columns:form.value
+    columns: form.value
   }
   reportSetupStore.newReportColumn(formData)
-  // alert(JSON.stringify(formData));
 }
 
 watch(
-  () => reportSetupStore.errorMessage,
-  async (data) => {
-    if (data) {
-      loader.value = false;
-      notificationStore.errorToast("Error", data.message);
+    () => reportSetupStore.errorMessage,
+    async (data) => {
+      if (data) {
+        loader.value = false;
+        notificationStore.errorToast("Error", data.message);
+      }
     }
-  }
 )
 
 watch(
-  () => reportSetupStore.reportColumnResponse,
-  async (data) => {
-    if (data) {
-      loader.value = false;
-      notificationStore.successToast("Success",data.message)
+    () => reportSetupStore.reportColumnResponse,
+    async (data) => {
+      if (data) {
+        loader.value = false;
+        notificationStore.successToast("Success", data.message)
+      }
     }
-  }
 )
 
-onMounted(() => {
-  initializeForm()
-})
 
 watch(
     () => reportSetupStore.reportColumnListResponse,
     async (data) => {
       let draft = data?.data
-      if(data && draft && draft?.length > 0){
-        let draftLength  = draft?.length
+      if (data && draft && draft?.length > 0) {
+        let draftLength = draft?.length
         let loopLength = loop.value
         form.value = draft?.map(item => ({
           report_column_number: item?.number,
@@ -115,8 +115,8 @@ watch(
           percentage_share: item?.percentage_share
         }))
 
-        if(loopLength !== draftLength){
-          initializeForm((loopLength -draftLength))
+        if (loopLength !== draftLength) {
+          initializeForm((loopLength - draftLength))
         }
 
       }
@@ -124,10 +124,39 @@ watch(
 )
 
 
+const deleteColumn = async (field, index) => {
+  if (field) {
+    const confirmDelete = await confirmationRef.value.confirm("Are you sure, you want to delete this column?");
+    if (confirmDelete) {
+      deletionLoader.value = index
+      await reportSetupStore.deleteReportColumn(field.report_column_number)
+    }
+  }
+}
+
+
+
+
+watch(
+    () => reportSetupStore.deleteReportColumnResponse,
+    async (data) => {
+      if(data) {
+        await reportSetupStore.fetchReportColumn(reportSettingNumber.value)
+        notificationStore.successToast("Success", data.message)
+        deletionLoader.value = null
+      }
+    }
+)
+
 </script>
 
 <template>
   <div>
+
+
+
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+
     <form @submit.prevent="settingReportColumn">
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
         {{ errorMessage }}
@@ -162,8 +191,10 @@ watch(
           </div>
         </div>
         <div class="col-lg-4">
+
           <div class="mb-2">
             <label class="text-sm"><small>Percentage Shares</small></label>
+            <div class="flex">
             <input
               maxlength="50"
               type="text"
@@ -172,8 +203,16 @@ watch(
               v-model="field.percentage_share"
               required
               class="form-control form-select-sm">
+              <div>
+                <button type="button" @click="deleteColumn(field, index)">
+                  <i class="bi bi-x-lg ml-2" style="color:rgb(201, 10, 10)"></i>
+                </button>
+              </div>
+            </div>
           </div>
+
         </div>
+
       </div>
       
       <div class="flex justify-content-end mt-4" style="width: 100%;">
