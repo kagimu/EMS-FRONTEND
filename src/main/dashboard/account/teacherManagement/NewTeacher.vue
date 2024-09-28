@@ -1,23 +1,23 @@
 <script setup>
-   import {onMounted, reactive, ref, watch,computed} from "vue";
+   import {onMounted, reactive, ref, watch} from "vue";
    import useNotificationStore from "@/composables/useNotification.js";
-   import { useAbility } from '@casl/vue';
+
    import { useAccountStore } from "@/main/dashboard/account/store/account.js";
    import { useRolesStore } from "@/main/settings/roles/store/roles.js";
-   import { useUserStore } from "@/main/dashboard/profiles/store/users.js"
+   import TeacherComboBox from "@/main/dashboard/account/teacherManagement/TeacherComboBox.vue";
    
-   const userStore = useUserStore()
+
    const notificationStore = useNotificationStore()
    const roleStore = useRolesStore()
    const accountStore = useAccountStore()
    const rolesData = ref([])
-   const { can } = useAbility()
+
    const errorMessage = ref(null)
    const userData = ref([])
    const buttonLoader = ref(false)
-   let show = ref(false)
+
    const rolesInfo = ref([])
-   // const role_numbers = ref([])
+
    let entityN = localStorage.getItem("entity_number")
 
 const props = defineProps({
@@ -27,8 +27,11 @@ const props = defineProps({
    
    const form = reactive({
      user_number:null,
-     expiry_date:null,
-     role_numbers:null
+     stream_number:null,
+     campus_class_number:null,
+     assessment_area_number:null,
+     school_number:null,
+     curriculum_number:null,
    })
 
    onMounted(
@@ -57,11 +60,7 @@ const props = defineProps({
    
    function addUser(){
      buttonLoader.value = true
-     form.user_number=props.userInfo
-     form.roles=rolesInfo.value
-        //  alert(JSON.stringify(form))
     accountStore.createNewAccount(form)
-   
    }
 
 
@@ -97,7 +96,7 @@ watch (
 //fetch
 onMounted(
     async () => {
-       accountStore.fetchAllUsers()
+       await accountStore.fetchAllUsers()
     } )
 
 
@@ -138,40 +137,18 @@ watch (
       <form @submit.prevent="addUser">
          <div class="row">
             <div class="col-12">
-               <div class="mb-2">
-
-                 <div class="text-sm">
-                   <div class="mb-2">Role</div>
-                   <div class="alert alert-primary py-1 px-3">Set expiry date on each role</div>
-                 </div>
-
-                  <ul class="list-group text-sm mb-1" style="border-radius: 0 0 0 0;">
-                     <li class="list-group-item" v-for="(lst, idx) in rolesInfo" :key="idx">
-                        <div class="row">
-                           <div class="col-lg-1">
-                             <input
-                            @change="addRoleNumber(lst.number, idx)"
-                            :value="lst.number"
-                            :id="lst.number"
-                            class="shadow-none"
-                            type="checkbox">
-                           </div>
-                           <div class="col-lg-4">
-                              <label style="float: left;" class="text-sm cursor-pointer" :for="lst.number">{{lst.role_name}}</label>
-                           </div>
-                           <div class="col-lg-6">
-                           <input
-                            v-model="lst.expiry_date"
-                            style="outline: none 0 !important; box-shadow: none;"
-                            class="form-control" type="date" required>
-                           </div>
-                        </div>
-                      
-                     </li>
 
 
-                  </ul>
-               </div>
+              <div class="mb-2">
+                <label class="text-sm mt-3 mb-2"><small>Select User</small></label>
+                <teacher-combo-box
+                    v-model:optionResponse="form.user_number"
+                    :optionDraft="form?.user_number"
+                ></teacher-combo-box>
+              </div>
+
+
+
             </div>
          </div>
          <div class="text-right mt-1">
@@ -192,3 +169,13 @@ watch (
    .text-sm2{
    }
 </style>
+
+
+
+
+
+
+
+
+
+

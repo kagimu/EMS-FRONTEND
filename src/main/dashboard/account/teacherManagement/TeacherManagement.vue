@@ -56,9 +56,9 @@ const rolesData= ref([])
 onMounted(
     async () => {
       await roleStore.fetchRoles()
-      accountStore.fetchAllUsers()
+      await accountStore.fetchAllUsers()
       doFetchAccount()
-      entityStore.fetchEntity()
+      await entityStore.fetchEntity()
     } )
 
     const openEntityModal = (userN) =>{
@@ -160,11 +160,9 @@ const doFetchAccount = () =>{
     () => accountStore.userResponse,
     async (data) => {
       if(data){
-        // userData.value = data.data
         fetchUsers(data)
       }
-    },
-    {deep:true}
+    }
     )
 
 
@@ -269,7 +267,7 @@ watch (
 <template>
     <div>
 
-    <AppModal title="New User" v-model="showingModalUser" xl6>
+    <AppModal title="Assign a teacher to a stream" v-model="showingModalUser" xl>
       <new-teacher></new-teacher>
     </AppModal>
 
@@ -296,19 +294,6 @@ watch (
               <div>
 
 
-<!--                <div class="row mx-auto">
-                  <div class="col-3">
-                    <select
-                        style="box-shadow: none;"
-                        class="form-select form-select-sm"
-                        v-model="status">
-                      <option disabled value="">&#45;&#45;filter by Status -</option>
-                      <option>Active</option>
-                      <option>Inactive</option>
-                    </select>
-
-                  </div>
-                </div>-->
 
                 <PaginationTemplate
                     @perPageChanged="doFetchAccount"
