@@ -364,11 +364,8 @@ watch(
       <marking-guide-file-uploader fileType="testMarkingGuide" :metricNumber="metricNumber"></marking-guide-file-uploader>
     </AppModal>
 
-<!--    <AppModal title="Upload Test Script" v-model="testScriptDialog" xl>
-      <marking-guide-file-uploader fileType="testScript" :metricNumber="metricNumber"></marking-guide-file-uploader>
-    </AppModal>-->
 
-    <AppModal title="Assessment Schedule" v-model="assessmentScheduleDialog" xl>
+    <AppModal title="Assessment Schedule" v-model="assessmentScheduleDialog" xl6>
       <assessment-schedule-preview :assessmentScheduleData="assessmentScheduleData"></assessment-schedule-preview>
     </AppModal>
 
