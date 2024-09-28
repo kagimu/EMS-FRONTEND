@@ -79,7 +79,7 @@ const addReportSettings = () => {
   form.code = form.code ? parseInt(form.code) : form.code
   form.columns = form.columns ? parseInt(form.columns) : form.columns
   if(props.reportSettingsD){
-    form.report_settings_number = props.reportSettingsD.number
+    form.report_setting_number = props.reportSettingsD.report_setting_number
     reportSetupStore.updateReportSettings(form)
   }else {
     reportSetupStore.newReportSettings(form)
@@ -183,7 +183,6 @@ watch(
 )
 
 
-
 watch(
     () => reportSetupStore.reportSettingsResponse,
     async (data) => {
@@ -275,13 +274,16 @@ watch (
       </select>
     </div>
 
+
     <div class="mb-2">
       <label class="text-sm"><small>Study Period</small>
       </label>
+      <!-- {{ studyPeriodList }} -->
       <select
           style="box-shadow: none;"
           class="form-select form-select-sm" required
           v-model="form.study_period_number"
+
       >
         <option disabled value="">Select</option>
         <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
