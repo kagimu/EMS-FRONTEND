@@ -82,15 +82,25 @@ const previewForm = (imageLink) => {
 };
 
 
-const selectAssessmentMetricPreview = (list) => {
+const selectAssessmentMetricPreview = async (list) => {
   if (list) {
-    let url = api.defaults.baseURL
-      // https://www.oddscreenprinting.com.au/wp-content/uploads/2017/04/placeholder.png
-      let path = url + "wp-content/uploads/2017/04/placeholder.png"
-      assessmentMetricNumber.value = list?.marking_guide_name;
+      let path = api.defaults.baseURL + "/attachments/download/"
+      assessmentMetricNumber.value = list?.marking_guide_number;
+      // markingGuidePdf.value = path + list?.marking_guide_number;
+      // assessmentScriptPdf.value = path + list?.script_number;
 
-      markingGuidePdf.value = list?.marking_guide_name;
-      assessmentScriptPdf.value = list?.script_name;
+    try {
+
+      const [markingGuideBase64, assessmentScriptBase64] = await Promise.all([
+        previewForm(path + list?.marking_guide_number),
+        previewForm(path + list?.script_number)
+      ]);
+
+      markingGuidePdf.value = markingGuideBase64;
+      assessmentScriptPdf.value = assessmentScriptBase64;
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
 }
 
@@ -144,7 +154,7 @@ const selectAssessmentMetricPreview = (list) => {
                 class="text-gray-600 text-sm p-2 cursor-pointer hover:bg-[#f1f1f1] hover:rounded-md"
                 :class="[
                     ((index + 1) < filesList.length ? 'border-b' : ''),
-                    (assessmentMetricNumber === list?.marking_guide_name ? 'bg-[#f1f8fe] rounded-md' : '')
+                    (assessmentMetricNumber === list?.marking_guide_number ? 'bg-[#f1f8fe]  rounded-md' : '')
                     ]"
                 @click="selectAssessmentMetricPreview(list)"
             >
