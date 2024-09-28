@@ -89,7 +89,7 @@ onMounted(
       }
   )
 
-  
+  doFetchReportSettings()
 
  }
 
@@ -373,7 +373,7 @@ watch (
             <td class="text-sm"> {{levelInfo.status}}</td>
             <td>
               <button  class="btn btn-success btn-sm p-1 mr-1" style="border-width: 0px;text-decoration: none;" @click="setReportColumn(levelInfo.report_setting_number,levelInfo.columns)"><small>Set Report Column</small></button>
-              <button  class="btn btn-outline-primary btn-sm p-1 mr-1" style="border-width: 0px;text-decoration: none;" @click="viewReportColumn(levelInfo.number)"><small>View</small></button>
+              <button  class="btn btn-outline-primary btn-sm p-1 mr-1" style="border-width: 0px;text-decoration: none;" @click="viewReportColumn(levelInfo.report_setting_number)"><small>View</small></button>
               <button  class="link-primary" style="border-width: 0px;text-decoration: none;" @click="editThisData(levelInfo)"><small><i  style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small></button>
               <button @click="deleteThisData(levelInfo.number,levelInfo.columns)"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>
             </td>
