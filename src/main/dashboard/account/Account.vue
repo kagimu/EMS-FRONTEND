@@ -6,13 +6,15 @@ import {useRouter} from "vue-router";
 import UserManagement from "./accountComponents/UserManagement.vue";
 import ScopeManager from "../profiles/ScopeManager.vue";
 import Entity from "@/main/dashboard/entity/Entity.vue"
+import TeacherManagement from "@/main/dashboard/account/teacherManagement/TeacherManagement.vue";
 
 import { useAbility } from '@casl/vue';
+
 
 const { can } = useAbility()
 
 const routerData = useRouter()
-const buttonLoader = ref(false)
+
 
 const route = routerData.currentRoute.value.query.s
 const selectedPage = route ? route : "user-management"
@@ -22,6 +24,11 @@ const accountList = ref([
   {
     name: "User Management" ,
     id: "user-management",
+    action:"view_users"
+  },
+  {
+    name: "Teacher Management" ,
+    id: "teacher-management",
     action:"view_users"
   },
   {
@@ -81,6 +88,9 @@ const form = reactive({
             <div class="card-body" style="padding: 0;">
                   <div v-if="selectedPage === 'user-management'">
                     <UserManagement></UserManagement>
+                  </div>
+                  <div v-if="selectedPage === 'teacher-management'">
+                    <TeacherManagement></TeacherManagement>
                   </div>
                   <div v-if="selectedPage === 'role'">
                       <roles></roles>
