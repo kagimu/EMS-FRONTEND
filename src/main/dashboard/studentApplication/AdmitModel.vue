@@ -400,7 +400,7 @@ watch(
 
 <template>
   <div>
-    <!-- {{ selectedStudentNumber }} -->
+    {{ selectedStudentNumber }}
     <form @submit.prevent="Admit()">
       <div class="row">
         <div class="col-lg-4">

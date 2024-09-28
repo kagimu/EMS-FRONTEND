@@ -76,13 +76,15 @@ onMounted(
      campus_number:campusNumber
   }
    await reportSetupStore.fetchReportSettings(data)
+ }
 
 
+ const getStudyPeriods =  (campus_class_number) => {
    studyPeriodStore.fetchStudyPeriod(
       {
         campus_curriculum_number:campus_curriculum_number,
         academic_year_number:academic_year_number.value,
-        class_number:campus_class_number.value,
+        class_number:campus_class_number,
         school_number:schoolN
       }
   )
@@ -247,6 +249,18 @@ watch(
   }
 )
 
+
+watch (
+    () => reportSetupStore.reportSettingsUpdateResponse,
+    async (data) => {
+      if (data) {
+        showReportSettingsModal.value = false
+        doFetchReportSettings()
+
+      }
+    }
+)
+
 </script>
 
 <template>
@@ -308,7 +322,7 @@ watch(
             <select
                 class="form-select form-select-sm shadow-none" required
                 v-model="campus_class_number"
-                @change="doFetchReportSettings()"
+                @change="getStudyPeriods(campus_class_number)"
             >
               <option disabled value="">--Filter by Class--</option>
               <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.name+" [ "+list.abbreviation+" ]"}}</option>
@@ -319,13 +333,14 @@ watch(
 
 
           <div class="mb-2">
+            <!-- {{ studyPeriodList }} -->
             <select
                 class="form-select form-select-sm shadow-none" required
                 v-model="study_period_number"
                 @change="doFetchReportSettings()"
             >
               <option disabled value="">--Filter by Study Period--</option>
-              <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
+              <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
 
             </select>
           </div>
@@ -357,7 +372,7 @@ watch(
             <td class="text-sm"> {{levelInfo.columns}}</td>
             <td class="text-sm"> {{levelInfo.status}}</td>
             <td>
-              <button  class="btn btn-success btn-sm p-1 mr-1" style="border-width: 0px;text-decoration: none;" @click="setReportColumn(levelInfo.number,levelInfo.columns)"><small>Set Report Column</small></button>
+              <button  class="btn btn-success btn-sm p-1 mr-1" style="border-width: 0px;text-decoration: none;" @click="setReportColumn(levelInfo.report_setting_number,levelInfo.columns)"><small>Set Report Column</small></button>
               <button  class="btn btn-outline-primary btn-sm p-1 mr-1" style="border-width: 0px;text-decoration: none;" @click="viewReportColumn(levelInfo.number)"><small>View</small></button>
               <button  class="link-primary" style="border-width: 0px;text-decoration: none;" @click="editThisData(levelInfo)"><small><i  style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small></button>
               <button @click="deleteThisData(levelInfo.number,levelInfo.columns)"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>
