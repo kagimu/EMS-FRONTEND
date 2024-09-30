@@ -16,6 +16,10 @@
   import FileUploader from "@/components/FileUploader.vue";
   const { can } = useAbility()
 
+  const schoolStore = useSchoolStore()
+  const campusStore = useCampusStore()
+  const academicYearStore = useAcademicYearStore()
+  const classStore = useClassesStore()
   const levelStore = useLevelStore()
   const  notificationStore  = useNotificationStore()
   const studentNum=ref(null)
@@ -37,12 +41,9 @@
   const campusList = ref([])
   const schoolList = ref([])
   const classList = ref([])
-  const schoolStore = useSchoolStore()
-  const campusStore = useCampusStore()
-  const academicYearStore = useAcademicYearStore()
   const academicYearList = ref([])
   const studyPeriodList  = ref([])
-  const classStore = useClassesStore()
+
   const streamList = ref([])
   const admissionList = ref([])
   const admissionStore = useAdmissionStore()
@@ -78,8 +79,6 @@
     campusStore.fetchCampuses(school_number)
     doFetchAdmission()
   }
-  
-
 
 
   const fetchClasses = (campus_number) => {
@@ -110,17 +109,16 @@ watch(
       if(data){
         classList.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
+
 watch(
     () => classStore.campusLevelResponse,
     async (data) => {
       if(data){
         levelList.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
   watch(
@@ -129,8 +127,7 @@ watch(
       if(data){
         curriculumList.value = data.data
       }
-    },
-    {deep:true}
+    }
 )
 
   watch(
@@ -267,8 +264,7 @@ watch(
         if (data) {
             schoolList.value = data.data
         }
-    },
-    {deep: true}
+    }
   )
   
   watch(
@@ -277,8 +273,7 @@ watch(
         if (data) {
             campusList.value = data.data
         }
-    },
-    {deep: true}
+    }
   )
 
   
@@ -387,7 +382,7 @@ watch(
                                                         <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
                                                         </option>
                                                      </select>
-                                                     
+
                                                   </div>
                                                </div>
                                                <div class="col-3">

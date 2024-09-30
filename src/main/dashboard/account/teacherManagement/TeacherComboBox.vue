@@ -95,22 +95,6 @@ watch(selectedItems, (newVal) => {
 
 
 
-// Filter items based on query
-const filteredItems = computed(() => {
-  const searchTerm = search.value.toLowerCase();
-  return items.value?.filter(item =>
-      item.value.toLowerCase().includes(searchTerm) ||
-      item.text.toLowerCase().includes(searchTerm)
-  );
-});
-
-// Methods
-const filterItems = () => {
-  if (query.value.length > 0) {
-    openDropdown();
-  }
-}
-
 const openDropdown = () => {
   dropdownOpen.value = true;
 }
@@ -143,7 +127,6 @@ const doFetchAccount = () =>{
     entity_number:entityNumber,
     search: search.value,
   }
-  //  loading.value = true;
   userData.value = []
   accountStore.fetchUsersToAssign(data)
 
@@ -160,10 +143,7 @@ function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
       entity_number:entityNumber,
       search: search.value,
     }
-    //  loading.value = true;
-    userData.value = []
     accountStore.fetchUsersToAssign(data)
-
   }
 }
 
@@ -252,7 +232,6 @@ watch(
       <div class="px-2 pt-2">
         <input
             v-model="search"
-            @input="filterItems"
             type="text"
             placeholder="Search"
             class="form-control form-select-sm shadow-none">
