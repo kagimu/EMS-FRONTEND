@@ -6,11 +6,10 @@ import { useAccountStore } from "../store/account.js";
 import { useRolesStore } from "@/main/settings/roles/store/roles.js";
 import { useUserStore } from "@/main/dashboard/profiles/store/users.js"
 import AppModal from "@/components/AppModal.vue";
-import AssignUserEntity from "@/main/dashboard/entity/entityComponents/AssignUserEntity.vue"
 import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
-import NewAccount from "@/main/dashboard/account/accountComponents/NewAccount.vue";
 import NewTeacher from "@/main/dashboard/account/teacherManagement/NewTeacher.vue";
+import {useTeacherStore} from "@/main/dashboard/account/teacherManagement/store/teacherStore.js";
 
 const page = ref(1)
 const status = ref("")
@@ -26,6 +25,7 @@ const { can } = useAbility()
 
 const roleStore = useRolesStore()
 const accountStore = useAccountStore()
+const teacherStore = useTeacherStore()
 const notificationStore = useNotificationStore()
 const buttonLoader = ref(false)
 const errorMessage = ref(null)
@@ -33,7 +33,7 @@ const userData = ref([])
 const showDialog = ref(false)
 const assignDialog = ref(false)
 const userAll = ref([])
-const showingModalUser = ref(false)
+const teacherDialog = ref(false)
 const showingEntity = ref(false)
 const entityList = ref(null)
 const userInfo = ref(null)
@@ -46,8 +46,8 @@ const openModal = (userInf) =>{
 }
 
 
-const showModalUser = () => {
-    showingModalUser.value = true
+const showTeacherDialog = () => {
+    teacherDialog.value = true
 }
 
 const rolesData= ref([])
@@ -238,7 +238,7 @@ watch (
       () => userStore.newUserResponse,
       async (data) => {
         if(data){
-          showingModalUser.value = false
+          teacherDialog.value = false
           doFetchAccount()
         }
       }
@@ -262,29 +262,35 @@ watch (
     }
 )
 
+
+// adding teacher
+watch(
+    () => teacherStore.assignTeacherResponse,
+    async (data) => {
+      if (data) {
+        teacherDialog.value = false
+        notificationStore.successToast("Success",data.message)
+      }
+    }
+)
+
 </script>
 
 <template>
     <div>
 
-    <AppModal title="Assign a teacher to a stream" v-model="showingModalUser" xl>
+    <AppModal title="Assign a teacher to a stream" v-model="teacherDialog" xl>
       <new-teacher></new-teacher>
     </AppModal>
 
-    <AppModal title="Assign Role" v-model="assignDialog" xl2>
-      <new-account :userInfo="userInfo"></new-account>
-    </AppModal>
 
-    <AppModal title="Assign Entity" v-model="showingEntity" xs>
-      <AssignUserEntity :userNumber="userNumber"></AssignUserEntity>
-    </AppModal>
 
       <div class="row">
             <div class="col-12">
 
               <div class="flex flex-grow justify-end mx-2 mt-2">
                 <button  style="float: right;border: none;"
-                         class="btn btn-primary btn-sm" type="button"  @click="showModalUser">
+                         class="btn btn-primary btn-sm" type="button"  @click="showTeacherDialog">
                   <i class="bi bi-plus"></i>
                   New Teacher
                 </button>

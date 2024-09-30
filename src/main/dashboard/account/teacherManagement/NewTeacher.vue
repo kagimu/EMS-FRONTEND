@@ -73,7 +73,9 @@
    
    function addATeacher(){
       buttonLoader.value = true
-     teacherStore.assignTeacher(form)
+     let formData = {...form}
+     formData.curriculum_number = curriculumList.value.find(item => item.number === form.curriculum_number)?.curriculum_number
+     teacherStore.assignTeacher(formData)
    }
 
 
@@ -137,6 +139,8 @@
    const fetchLevelClasses = (campus_level_number) => {
      let data = {
        school_number:form.school_number,
+       campus_number:form.campus_number,
+       campus_curriculum_number:form.curriculum_number,
        campus_level_number:campus_level_number
      }
      campusStore.fetchClassesBySchool(data)
@@ -195,14 +199,7 @@
    )
 
 
-   watch(
-       () => teacherStore.assignTeacherResponse,
-       async (data) => {
-         if (data) {
-           buttonLoader.value = false
-         }
-       }
-   )
+
 
    watch(
        () => assessmentStore.assessmentAreaResponse,
