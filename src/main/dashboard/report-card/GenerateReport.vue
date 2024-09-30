@@ -99,6 +99,8 @@ const fetchAcademicYea = (campus_level_number) => {
     campus_level_number:campus_level_number
   }
   campusStore.fetchClassesBySchool(data)
+
+  filterGeneratedReportByPeriod()
 }
 
 const fetchStudyPeriod = (academic_num) =>{
@@ -290,7 +292,7 @@ watch(
           <th scope="col" class="w-[30%]">Student Name</th>
           <th scope="col">Grade</th>
           <th scope="col">Aggregate</th>
-          <th scope="col">Class</th>
+          <!-- <th scope="col">Class</th> -->
           <th scope="col" class="w-[20%]">Action</th>
         </tr>
         </thead>
@@ -300,7 +302,7 @@ watch(
           <td style="text-transform: capitalize;"> {{studentInfo.student}}</td>
           <td> {{studentInfo.grade}}</td>
           <td> {{studentInfo.aggregate}}</td>
-          <td> {{studentInfo.class}}</td>
+          <!-- <td> {{studentInfo.class}}</td> -->
           <td>
             <div>
 

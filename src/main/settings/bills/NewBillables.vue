@@ -70,8 +70,8 @@ const props = defineProps({
 const doFetchBillablesDetails = (billableNumber) => {
   let data = {
     billable_number: billableNumber
-  };
-  billStore.fetchBillableDetails(data);
+  }
+  billStore.fetchBillableDetails(data)
 }
 
 watch(
@@ -160,18 +160,16 @@ onMounted(
       }))
       // alert(JSON.stringify(selectedItems))
 
-
     let data  = formData
     data.billable_items = selectedItems
     data.campus_curriculum_number = curriculumNumber.value
     data.bill_status = "ACTIVE"
       
-    if(bills_number != ""){
+    if(props.billablesInfo != ""){
       data.billable_number = bills_number.value
-      // alert(JSON.stringify(data))
       billStore.editBillable(data)
+      // billStore.newBillable(data)
     }else {
-
       billStore.newBillable(data)
     }
   
@@ -421,6 +419,7 @@ const handleMenuChange = (data) => {
 </script>
 <template>
   <!-- {{ bills_number }} -->
+  <!-- {{billablesInfo}} -->
   <div>
     <div class="row">
           <div class="card-body" style="padding: 0;">
