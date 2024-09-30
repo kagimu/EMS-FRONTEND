@@ -11,11 +11,12 @@
    import {useEnrolmentStore} from "@/main/dashboard/enrollment/store/enrollment.js"
    import {useLevelStore} from "@/main/settings/level/store/level.js";
    import PaginationTemplate from "@/components/PaginationTemplate.vue";
+   import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
    
    import { useAbility } from '@casl/vue';
    import FileUploader from "@/components/FileUploader.vue";
    const { can } = useAbility()
-   
+   const studyPeriodStore = useStudyPeriodStore()
    const levelStore = useLevelStore()
    const  notificationStore  = useNotificationStore()
    const studentNum=ref(null)
@@ -64,6 +65,7 @@
    
    const form = reactive({
    study_period_number: "",
+   class_number: "",
    campus_class_number: "",
    campus_number: "",
    stream_number:"",
@@ -94,18 +96,35 @@
      }
    )
    
-   const fetchAcademicYear = (campusN) =>{
-   academicYearStore.fetchAcademicYearByCampus(campusN)
+   const fetchStreamsAndStudyPeriod = (classNumber) =>{
    let sData = {
       campus_number:form.campus_number,
-      class_number:campusN,
+      class_number:classNumber,
       campus_curriculum_number:form.curriculumNumber
      }
      classStore.fetchClassStreams(sData)
-   doFetchAdmission()
+
+     studyPeriodStore.fetchStudyPeriod(
+      {
+        academic_year_number:form.academic_year_number,
+        class_number:classNumber,
+        school_number:form.school_number
+      } )
+
+     doFetchAdmission()
    }
+
    
-   
+   watch(
+    () => studyPeriodStore.studyPeriodResponse,
+    async (data) => {
+      if(data){
+        studyPeriodList.value = data.data
+      }
+    }
+)
+
+
    watch(
      () => academicYearStore.academicYearByLevelResponse,
      async (data) => {
@@ -167,8 +186,9 @@
        study_period_number:form.study_period_number,
        school_number:form.school_number,
        campus_number: form.campus_number,
-       campus_class_number:form.campus_class_number,
+       class_number:form.class_number,
        stream_number:form.stream_number,
+       campus_class_number:form.campus_class_number,
        academic_year_number:form.academic_year_number
     }
     loading.value = true;
@@ -186,7 +206,7 @@
        study_period_number:form.study_period_number,
        school_number:form.school_number,
        campus_number: form.campus_number,
-       campus_class_number:form.campus_class_number,
+       campus_class_number:form.class_number,
        stream_number:form.stream_number,
        academic_year_number:form.academic_year_number
     }
@@ -310,7 +330,7 @@
        async (data) => {
          if(data){
           mymodal.value=false
-          await admissionStore.fetchAdmissionByFilters(form.study_period_number, form.interview_number, form.stream_number, form.campus_number, form.campus_class_number)
+          await admissionStore.fetchAdmissionByFilters(form.study_period_number, form.interview_number, form.stream_number, form.campus_number, form.class_number)
          }
        },
        {deep:true}
@@ -427,14 +447,29 @@
                                                       </select>
                                                    </div>
                                                 </div>
+
+                                                <div class="col-3">
+                                                   <div class="mb-2">
+                                                      <select
+                                                         style="box-shadow: none;"
+                                                         class="form-select form-select-sm" required
+                                                         v-model="form.academic_year_number"
+                                                         @change="doFetchAdmission()"
+                                                         >
+                                                         <option disabled value="">-filter AcademicYear-</option>
+                                                         <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
+                                                      </select>
+                                                   </div>
+                                                </div>
+
                                                 <div class="col-3">
                                                    <div class="mb-2">
                                                       <!-- {{ classList }} -->
                                                       <select
                                                          style="box-shadow: none;"
                                                          class="form-select form-select-sm" required
-                                                         v-model="form.campus_class_number"
-                                                         @change="fetchAcademicYear(form.campus_class_number)"
+                                                         v-model="form.class_number"
+                                                         @change="fetchStreamsAndStudyPeriod(form.class_number)"
                                                          >
                                                          <option disabled value="">-filter by class-</option>
                                                          <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">
@@ -453,24 +488,12 @@
                                                          @change="filterByStream()"
                                                          >
                                                          <option disabled value="">-filter by Stream-</option>
-                                                         <option v-for="(slist, index) in streamList" :key="index" :value="slist.number">{{ slist.name }}
+                                                         <option v-for="(slist, index) in streamList" :key="index" :value="slist.stream_number">{{ slist.name }}
                                                          </option>
                                                       </select>
                                                    </div>
                                                 </div>
-                                                <div class="col-3">
-                                                   <div class="mb-2">
-                                                      <select
-                                                         style="box-shadow: none;"
-                                                         class="form-select form-select-sm" required
-                                                         v-model="form.academic_year_number"
-                                                         @change="doFetchAdmission()"
-                                                         >
-                                                         <option disabled value="">-filter AcademicYear-</option>
-                                                         <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
-                                                      </select>
-                                                   </div>
-                                                </div>
+                                             
                                                 <div class="col-3">
                                                    <div class="mb-2">
                                                       <select
@@ -480,7 +503,8 @@
                                                          @change="filterByStudyPeriod()"
                                                          >
                                                          <option disabled value="">filter by Study period -</option>
-                                                         <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
+                                                         <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
+
                                                       </select>
                                                    </div>
                                                 </div>
