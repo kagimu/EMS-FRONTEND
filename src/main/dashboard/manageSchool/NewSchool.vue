@@ -172,17 +172,6 @@ watch(
 
       <div class="mb-2">
         <label class="text-sm mt-3 mb-2"><small>Select Curriculum(s) to adopt to this School</small></label>
-        <!-- <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-          <li class="list-group-item" v-for="(lvl,idx) in curriculumList">
-            <input
-                v-model="form.curriculum"
-                style="outline: none 0 !important; box-shadow: none;"
-                class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="idx">
-            <label class="form-check-label cursor-pointer" :for="idx">{{lvl.name}}</label>
-          </li>
-
-        </ul> -->
-
         <combo-box
             v-model:optionResponse="form.curriculum"
             :optionList="curriculumList"
