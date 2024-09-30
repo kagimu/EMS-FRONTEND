@@ -174,8 +174,6 @@ campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_c
 
   }
 
-
-
        watch(
        () => enrolmentStore.checkListItemsResponse,
        async (data) => {
@@ -266,6 +264,7 @@ campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_c
 
    const fetchLevelClasses = (levelNumber) => {
   academicYearStore.fetchAcademicYearByLevel(levelNumber)
+  
   let data = {
     school_number:form.school_number,
     campus_level_number:levelNumber

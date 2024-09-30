@@ -141,7 +141,7 @@ const printContent = () => {
                   <div class="col-md-8">
                     <h5>Bill To</h5>
                     <address>
-                      <strong>Bill No:</strong> <u>{{ billableData.billable_number }}</u><br>
+                      <!-- <strong>Bill No:</strong> <u>{{ billableData.billable_number }}</u><br> -->
                       <strong>Class:</strong> {{ billableData.class_name }}<br>
                       <strong>Campus:</strong> {{ billableData.campus_name }}<br>
                       <strong>Study Period:</strong> {{ billableData.study_period_name }}<br>

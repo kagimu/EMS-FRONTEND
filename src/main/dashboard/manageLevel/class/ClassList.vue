@@ -30,7 +30,8 @@ const campus_curriculum_number = routerData.currentRoute.value.query.crr
 
 const streamForm = reactive({
   name: "",
-  class_level_number: null
+  class_level_number: null,
+  campus_class_number:null
 })
 const addCampus = () => {
   classDialog.value = true
@@ -42,9 +43,10 @@ const editClass = (data) => {
 }
 
 const addStream = (data) => {
+//  alert(JSON.stringify(data))
   streamDialog.value = true
   streamForm.class_level_number = data.number
-  streamClass.value = data.name
+  streamForm.campus_class_number = data.number
 }
 
 const saveStream = () => {
