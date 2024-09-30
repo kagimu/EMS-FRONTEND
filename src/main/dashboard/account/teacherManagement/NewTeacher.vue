@@ -49,7 +49,7 @@
      campus_number:null,
      curriculum_number:null,
      campus_level_number:null,
-     campus_class_number:null,
+     class_number:null,
      streams:null,
      assessment_area_number:null,
    })
@@ -199,7 +199,6 @@
        () => teacherStore.assignTeacherResponse,
        async (data) => {
          if (data) {
-           alert(JSON.stringify(data))
            buttonLoader.value = false
          }
        }
@@ -239,7 +238,7 @@
                     v-model="form.school_number"
                     @change="fetchCampuses(form.school_number)"
                 >
-                  <option disabled  :value="null">--filter by School--</option>
+                  <option disabled  :value="null">--Filter by School--</option>
                   <option v-for="(list, index) in schoolList" :key="index" :value="list.number">
                     {{ list.name }}
                   </option>
@@ -255,7 +254,7 @@
                     v-model="form.campus_number" required
                     @change="fetchClasses(form.campus_number)"
                 >
-                  <option disabled :value="null">-filter by Campus-</option>
+                  <option disabled :value="null">--Filter by Campus--</option>
                   <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
                   </option>
                 </select>
@@ -285,10 +284,9 @@
                     v-model="form.campus_level_number"
                     @change="fetchLevelClasses(form.campus_level_number)"
                 >
-                  <option disabled :value="null">-Filter by level-</option>
+                  <option disabled :value="null">--Filter by level--</option>
                   <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
                 </select>
-
               </div>
 
 
@@ -299,10 +297,10 @@
                 <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm" required
-                    v-model="form.campus_class_number"
-                    @change="fetchAcademicYear(form.campus_class_number)"
+                    v-model="form.class_number"
+                    @change="fetchAcademicYear(form.class_number)"
                 >
-                  <option disabled :value="null">-filter by class-</option>
+                  <option disabled :value="null">--Filter by Class--</option>
                   <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">
                     {{claslist?.name+" [ "+claslist?.abbreviation+" ]"}}
                   </option>
@@ -326,7 +324,7 @@
                     class="form-select form-select-sm"
                     v-model="form.assessment_area_number"
                 >
-                  <option disabled :value="null">--Filter by assessment area--</option>
+                  <option disabled :value="null">--Filter by Assessment Area--</option>
                   <option v-for="(list, index) in assessmentListData" :key="index" :value="list.number">{{ list.name }}
                   </option>
                 </select>

@@ -21,8 +21,8 @@ export const useTeacherStore = defineStore("teacher", () => {
 
 
     return {
-
         assignTeacherResponse,
+        errorMessage,
         assignTeacher,
     }
 })
