@@ -86,8 +86,8 @@ watch(selectedItems, (newVal) => {
 const filteredItems = computed(() => {
   const searchTerm = search.value.toLowerCase();
   return items.value?.filter(item =>
-      item.value.toLowerCase().includes(searchTerm) ||
-      item.text.toLowerCase().includes(searchTerm)
+      item?.value?.toLowerCase().includes(searchTerm) ||
+      item?.text?.toLowerCase().includes(searchTerm)
   );
 });
 

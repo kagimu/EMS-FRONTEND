@@ -3,14 +3,14 @@ import { ref } from "vue"
 import api from "@/config/api.js";
 
 export const useTeacherStore = defineStore("teacher", () => {
-    const newAssessmentResponse = ref(null)
+    const assignTeacherResponse = ref(null)
     const errorMessage = ref(null)
 
 
-    async function createAssessmentAreas(data) {
-        return await api.post("main/assessment-areas",data)
+    async function assignTeacher(data) {
+        return await api.post("main/staff-management/attach-staff-to-stream",data)
             .then((response) => {
-                newAssessmentResponse.value = response.data
+                assignTeacherResponse.value = response.data
             })
             .catch((response) => {
                 if(response && response.response){
@@ -21,8 +21,8 @@ export const useTeacherStore = defineStore("teacher", () => {
 
 
     return {
-
-        newAssessmentResponse,
-        createAssessmentAreas,
+        assignTeacherResponse,
+        errorMessage,
+        assignTeacher,
     }
 })
