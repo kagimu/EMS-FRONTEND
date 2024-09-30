@@ -49,7 +49,7 @@ const academicYearList = ref([])
 const studyPeriodList = ref([])
 const campusLevelList = ref([])
 const classLevelList = ref([])
-const AsessmentListData = ref([])
+const assessmentListData = ref([])
 const namee = ref(null)
 const assessmentMetricList = ref([])
 const editModel = ref(false)
@@ -183,7 +183,7 @@ watch(
     () => assessmentStore.assessmentAreaResponse,
     async (data) => {
       if(data){
-        AsessmentListData.value = data.data
+        assessmentListData.value = data.data
       }
     }
 )
@@ -468,7 +468,7 @@ watch(
                   @change="doFetchAssessmentMetric()"
               >
                 <option disabled value="">--Filter by assessment area--</option>
-                <option v-for="(list, index) in AsessmentListData" :key="index" :value="list.number">{{ list.name }}
+                <option v-for="(list, index) in assessmentListData" :key="index" :value="list.number">{{ list.name }}
                 </option>
               </select>
             </div>
