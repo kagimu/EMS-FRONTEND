@@ -239,7 +239,10 @@ const downloadLessonPlanByTemplate = (event) => {
   subtopicStore.downloadSchemeTemplateExcel({class_number:form.class_number, subject_number:form.subject_number})
 }
 
+const sub_topic_number = ref(null)
+
 const uploadTemplate = () => {
+  sub_topic_number.value = props.schemeDataInfo.number
   showTemplateUpload.value = !showTemplateUpload.value
 }
 
@@ -247,6 +250,7 @@ const uploadTemplate = () => {
 
 <template>
   <div>
+    {{ schemeDataInfo }}
     <form @submit.prevent="addLessonPlan">
       <div class="mb-5" style="width: 300px;">
             <label class="text-sm"><small>Type</small></label>
@@ -440,7 +444,7 @@ const uploadTemplate = () => {
             <div v-if="showTemplateUpload">
               <div>
 
-                 <ImportLessonPlan></ImportLessonPlan>
+                 <ImportLessonPlan :subTopicNumber="sub_topic_number"></ImportLessonPlan>
 
               </div>
 

@@ -501,11 +501,14 @@ watch(
               <tr>
                 <th>#</th>
                 <th>Name</th>
+                <th>Scheduled On</th>
+                <th>Class</th>
                 <th>Description</th>
                 <th class="w-[12%]">Action</th>
               </tr>
               </thead>
               <tbody>
+                <!-- {{ assessmentMetricsData }} -->
               <tr v-for="(metricsData, index) in assessmentMetricsData " :key="index">
                 <td>
                   {{ index+1 }}
@@ -513,6 +516,8 @@ watch(
                 <td>
                   {{ metricsData.metric_name + " - " + metricsData.class}}
                 </td>
+                <td>{{ metricsData.scheduled_on }}</td>
+                <td>{{ metricsData.class }}</td>
                 <td>{{ metricsData.description }}</td>
                 <td>
 

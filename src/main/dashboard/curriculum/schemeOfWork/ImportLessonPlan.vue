@@ -1,5 +1,6 @@
 <template>
     <div>
+    
   
       <form ref="form" @submit.prevent="saveExcelImport">
   
@@ -13,6 +14,7 @@
               </div>
   
   
+              {{ subTopicNumber }}
               <div class="mb-3">
                 <label for="formFileSm" class="form-label">Upload file</label>
                 <input
@@ -51,7 +53,9 @@
   import useNotificationStore from "@/composables/useNotification.js";
   import {useRouter} from "vue-router";
   import {useSubtopicStore} from "@/main/dashboard/curriculum/curriculumSetup/subTopic/store/subTopic.js";
-  
+  import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
+
+  const schemeOfWorkStore = useSchemeOfWorkStore()
   const subtopicStore = useSubtopicStore()
   const uploadError = ref(null)
   const excel_file = ref(null)
@@ -59,8 +63,14 @@
   const notificationStore  = useNotificationStore()
   const routerData = useRouter()
   const lessonPlanInfo = ref(null)
+
+  const props = defineProps({
+    lessonPlanDetailsForm: {},
+    subTopicNumber:String
+  })
   
-  
+
+
   function saveExcelImport(){
   
     uploadError.value = null
@@ -73,31 +83,29 @@
     loader.value = true
   
     const formData = new FormData();
-    formData.set("scheme_excel_file", excel_file.value.files[0]);
-    formData.set("name", (lessonPlanInfo.value.name).trim());
-    formData.set("class_number", lessonPlanInfo.value.class_number);
-    formData.set("subject_number", lessonPlanInfo.value.subject_number);
-    formData.set("academic_year_number", lessonPlanInfo.value.academic_year_number);
-    // subtopicStore.importSchemeOfWork(formData)
+    formData.set("file", excel_file.value.files[0]);
+    formData.set("scheme_sub_topic_number", props.subTopicNumber);
+    alert(JSON.stringify(formData))
+    schemeOfWorkStore.importLessonPlan(formData)
   }
   
   const validateForm = (lessonPlanInfo) => {
     let message = ""
-    if(!lessonPlanInfo.name){
-      message = "Scheme title is required!"
-    }
+    // if(!lessonPlanInfo.name){
+    //   message = "Scheme title is required!"
+    // }
   
-    if(!lessonPlanInfo.class_number){
-      message = "Class is required!"
-    }
+    // if(!lessonPlanInfo.class_number){
+    //   message = "Class is required!"
+    // }
   
-    if(!lessonPlanInfo.subject_number){
-      message =  "Subject is required!"
-    }
+    // if(!lessonPlanInfo.subject_number){
+    //   message =  "Subject is required!"
+    // }
   
-    if(!lessonPlanInfo.academic_year_number){
-      message =  "Academic year is required!"
-    }
+    // if(!lessonPlanInfo.academic_year_number){
+    //   message =  "Academic year is required!"
+    // }
   
     if(!excel_file.value.files[0]){
       message = "Attach a file!"
@@ -107,10 +115,7 @@
   
   }
   
-  const props = defineProps({
-    lessonPlanDetailsForm: {},
-  })
-  
+ 
   
   onMounted(
       async () => {
@@ -125,7 +130,7 @@
   }
   
   watch(
-      () => subtopicStore.importSchemeResponse,
+      () => schemeOfWorkStore.importLessonPlanResponse,
       async (data) => {
         if(data){
           loader.value = false
@@ -139,7 +144,7 @@
   )
   
   watch(
-      () => subtopicStore.errorMessage,
+      () => schemeOfWorkStore.errorMessage,
       async (data) => {
         if(data){
           loader.value = false

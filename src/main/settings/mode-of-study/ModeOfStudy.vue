@@ -28,6 +28,7 @@ const errorMessage = ref(null)
 
 
 const showModeOfStudy = () => {
+  modeOfStudyList.value = ""
   showMode.value = true
   thisDialog.value=false
 

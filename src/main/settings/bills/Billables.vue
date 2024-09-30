@@ -183,7 +183,8 @@ watch (
             <!-- <th>Academic Year</th> -->
             <th>StudyPeriod</th>
             <th>Class</th>
-            <!-- <th>Study Mode</th> -->
+            <th>Curriculum</th>
+            <th>ModeOfStudy</th>
             <th>Type</th>
             <th>Status</th>
             <th>Actions</th>
@@ -200,6 +201,8 @@ watch (
           <td>{{ list.campus_name }}</td>
           <td>{{ list.study_period_name }}</td>
           <td>{{ list.class_name }}</td>
+          <td>{{ list.curriculum_name }}</td>
+          <td>{{ list.mode_of_study_name }}</td>
           <td>{{ list.bill_type.replace("_", " ") }}</td>
           <td>{{list.status}}</td>
           <td>
