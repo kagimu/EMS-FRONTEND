@@ -345,4 +345,7 @@ button {
   font-size: 16px;
   cursor: pointer;
 }
+.capitalize{
+  text-transform: capitalize !important;
+}
 </style>

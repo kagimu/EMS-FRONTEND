@@ -65,7 +65,7 @@ const createModeOfStudy = () => {
     form.mode_of_study_number = mode_of_study_number.value
     modeStudyStore.editModeOfStudy(form)
   }else {
-    alert(JSON.stringify(form))
+    // alert(JSON.stringify(form))
     modeStudyStore.newModeOfStudy(form)
   }
 

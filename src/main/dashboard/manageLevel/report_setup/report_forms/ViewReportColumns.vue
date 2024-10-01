@@ -51,7 +51,7 @@ watch(
 <template>
   <div>
     <!-- {{ reportSettingNumber }} -->
-      <!-- {{ reportColumnData }} -->
+      {{ reportColumnData }}
 
       
     <table class="table table-hover caption-top mt-1 table-sm text-sm">
@@ -73,7 +73,7 @@ watch(
                 <!-- {{ list.assessments }} -->
               
             <span v-for="(listD, index) in list.assessments" :key="index">
-            {{listD.assessment_area}},
+            {{listD.assessment_area}} - {{ listD.assessment_metric }} - {{ listD.scheduled_on }}
             </span>
 
          

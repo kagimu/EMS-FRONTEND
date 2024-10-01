@@ -13,6 +13,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     let addReferenceResponse = ref(null)
     const errorMessage = ref(null)
     const lessonPlanResponse = ref(null)
+    const importLessonPlanResponse = ref(null)
 
 
     async function newSchemeOfWorkData(data) {
@@ -149,6 +150,23 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     }
 
 
+    async function importLessonPlan(data) {
+        return await api.post("main/lesson-plan/import", data,{
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        }
+        )
+            .then((response) => {
+                importLessonPlanResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
 
 
     return {
@@ -161,6 +179,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         errorMessage,
         lessonPlanResponse,
         addReferenceResponse,
+        importLessonPlanResponse,
         newSchemeOfWorkData,
         fetchSchemeOfWorkByClass,
         updateSchemeOfWorkData,
@@ -169,5 +188,6 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         saveLessonPlanReference,
         fetchLessonPlanDetails,
         exportPdf,
+        importLessonPlan
     }
 })
