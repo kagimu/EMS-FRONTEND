@@ -14,7 +14,7 @@
               </div>
   
   
-              {{ subTopicNumber }}
+              <!-- {{ subTopicNumber }}s -->
               <div class="mb-3">
                 <label for="formFileSm" class="form-label">Upload file</label>
                 <input
@@ -85,7 +85,6 @@
     const formData = new FormData();
     formData.set("file", excel_file.value.files[0]);
     formData.set("scheme_sub_topic_number", props.subTopicNumber);
-    alert(JSON.stringify(formData))
     schemeOfWorkStore.importLessonPlan(formData)
   }
   

@@ -128,6 +128,7 @@
      <AppModal title="Attach Assessment Schedules To An Interview" v-model="showingModal" lg>
         <interview-assessment :interviewNumber="interviewNumber"></interview-assessment>
      </AppModal>
+     
      <div class="row mt-4">
         <div class="col-lg-4">
            <div class="mb-2">
@@ -141,7 +142,7 @@
                  <option disabled value=""> - Select Assessment Schedule- </option>
                  <option v-for="(assessment, index) in assessmentDataData" :key="index" :value="assessment.number">{{assessment.metric_name  }} - [{{ assessment.assessment_area }}]</option>
               </select>
-  <label class="input-group-text" for="inputGroupSelect02"><i  class="bi bi-plus-circle" @click="showModal()"></i></label>
+  <!-- <label class="input-group-text" for="inputGroupSelect02"><i  class="bi bi-plus-circle" @click="showModal()"></i></label> -->
 </div>
            </div>
         </div>

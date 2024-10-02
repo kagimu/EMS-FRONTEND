@@ -7,13 +7,13 @@ const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
 
 // let  interviewNumber = routerData.currentRoute.value.query.interview_id
-const  interviewStudentList = ref( [])
+const  interviewStudentDataList = ref( [])
 const interviewObject = ref({AssessmentMetrics:[]})
 
 onMounted(
     () => {
         applicationStore.fetchInterviewDetails(interviewNumber)
-        applicationStore.fetchStudentsOnInterview(interviewNumber)
+        // applicationStore.fetchStudentsOnInterview(interviewNumber)
     }
 )
 
@@ -21,8 +21,8 @@ watch(
     () => applicationStore.StudentsOnInterviewResponse,
     async (data) => {
         if(data){
-            // notificationStore.successToast("Success", data.message)
-            interviewStudentList.value = data.data
+            
+            interviewStudentDataList.value = data.data
         }
     },
     {deep:true}
@@ -53,7 +53,7 @@ watch (
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(student, index) in interviewStudentList" :key="index">
+            <tr v-for="(student, index) in interviewStudentDataList" :key="index">
                 <td>{{index+1}}</td>
                 <td>{{ student.Student.surname + " " + student.Student.second_name }} </td>
                 <td v-for="(val,idx) in interviewObject.AssessmentMetrics" :key="idx" >

@@ -1,129 +1,132 @@
 <script setup>
-import {onMounted, ref, watch,reactive} from "vue";
-import useNotificationStore from "@/composables/useNotification.js"
+import { onMounted, ref, watch, reactive, computed } from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
 import { useAbility } from '@casl/vue';
 import AppModal from "@/components/AppModal.vue";
-import NewBillables from "@/main/settings/bills/NewBillables.vue"
-import {useBillStore} from "@/main/settings/bills/store/bills.js";
-import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
+import NewBillables from "@/main/settings/bills/NewBillables.vue";
+import { useBillStore } from "@/main/settings/bills/store/bills.js";
+import { useSchoolStore } from "@/main/dashboard/manageSchool/store/school.js";
 import BillableDetails from "@/main/settings/bills/BillableDetails.vue";
 
+const notificationStore = useNotificationStore();
+const schoolStore = useSchoolStore();
+const mymodal = ref(false);
+const errorMessage = ref(null);
+const loader = ref(false);
+const { can } = useAbility();
+const schoolList = ref([]);
+const billStore = useBillStore();
+const school_number = ref("");
+const billableData = ref([]);
+const modalDetails = ref(false);
+const billD = ref(null);
+const billablesInfo = ref([]);
+const searchQuery = ref(""); // Search query ref
 
-const  notificationStore  = useNotificationStore()
-const schoolStore = useSchoolStore()
-const mymodal = ref(false)
-const errorMessage = ref(null)
-const loader  = ref(false)
-const { can } = useAbility()
-const schoolList = ref([])
-const billStore = useBillStore()
-const school_number = ref("")
-const billableData= ref([])
-const modalDetails = ref(false)
-const billD = ref(null)
-const billablesInfo = ref([])
-onMounted(
-    async () => {
-     schoolStore.fetchSchools()
-    }
-)
+onMounted(async () => {
+  schoolStore.fetchSchools();
+});
 
-const showModal = () =>{
-  billablesInfo.value = ""
-  mymodal.value = true
-}
+const showModal = () => {
+  billablesInfo.value = "";
+  mymodal.value = true;
+};
 
-const showModalDetails = (billNumber) =>{
-  // alert(billNumber)
-  modalDetails.value = true
-  billD.value = billNumber
-}
+const showModalDetails = (billNumber) => {
+  modalDetails.value = true;
+  billD.value = billNumber;
+};
 
-const editModalBillables = (billables) =>{
-  mymodal.value = true
-  billablesInfo.value=billables
-}
+const editModalBillables = (billables) => {
+  mymodal.value = true;
+  billablesInfo.value = billables;
+};
 
- const doFetchBillables = (schoolN) =>{
+const doFetchBillables = (schoolN) => {
   let data = {
-    school_number:schoolN
-  }
-  billStore.fetchBillable(data)
- }
-
-
- watch (
-    () => billStore.newBillableResponse,
-    async (data) => {
-      if (data) {
-        billStore.fetchBillable(data)
-      }
-    },
-    { deep: true }
-)
-
+    school_number: schoolN,
+  };
+  billStore.fetchBillable(data);
+};
 
 watch(
-    () => billStore.billableResponse,
-    async (data) => {
-      if(data){
-      
-        billableData.value = data.data
-        // alert(JSON.stringify(data))
-      }
-    },
-    {deep:true}
-)
-
-
-
-watch(
-      () => schoolStore.schoolsResponse,
-      async (data) => {
-          if (data) {
-              schoolList.value = data.data
-          }
-      },
-      {deep: true}
-  )
-
-watch (
-    () => billStore.newBillableResponse,
-    async (data) => {
-      if (data) {
-        mymodal.value=false
-      }
-    },
-    { deep: true }
-)
-
-
-
-watch (
-    () => billStore.errorMessage,
-    async (data) => {
-      if(data){
-        errorMessage.value = data.message
-        notificationStore.errorToast("Error",data.message)
-        loader.value = false
-      }
-    },
-    {deep:true}
-)
-
-watch (
-    () => billStore.updateBillableResponse,
-    async (data) => {
-      if (data) {
-        mymodal.value = false
-          let data = {
-          school_number:schoolN
-        }
-          billStore.fetchBillable(data)
-        }
+  () => billStore.newBillableResponse,
+  async (data) => {
+    if (data) {
+      billStore.fetchBillable(data);
     }
-)
+  },
+  { deep: true }
+);
+
+watch(
+  () => billStore.billableResponse,
+  async (data) => {
+    if (data) {
+      billableData.value = data.data;
+    }
+  },
+  { deep: true }
+);
+
+watch(
+  () => schoolStore.schoolsResponse,
+  async (data) => {
+    if (data) {
+      schoolList.value = data.data;
+    }
+  },
+  { deep: true }
+);
+
+watch(
+  () => billStore.newBillableResponse,
+  async (data) => {
+    if (data) {
+      mymodal.value = false;
+    }
+  },
+  { deep: true }
+);
+
+watch(
+  () => billStore.errorMessage,
+  async (data) => {
+    if (data) {
+      errorMessage.value = data.message;
+      notificationStore.errorToast("Error", data.message);
+      loader.value = false;
+    }
+  },
+  { deep: true }
+);
+
+watch(
+  () => billStore.updateBillableResponse,
+  async (data) => {
+    if (data) {
+      mymodal.value = false;
+      let data = {
+        school_number: schoolN,
+      };
+      billStore.fetchBillable(data);
+    }
+  }
+);
+
+// Computed property for filtered billable data based on search query
+const filteredBillableData = computed(() => {
+  if (!searchQuery.value) {
+    return billableData.value;
+  }
+  return billableData.value.filter((item) =>
+    Object.values(item).some((val) =>
+      String(val).toLowerCase().includes(searchQuery.value.toLowerCase())
+    )
+  );
+});
 </script>
+
 
 
 <template>
@@ -143,7 +146,7 @@ watch (
         <div class="col-lg-4">
         </div>
         <div class="col-lg-8">
-          <button  @click="showModal()" class="btn btn-primary btn-sm mb-2" style="float: right;" v-if="can('create_billables','general')">
+          <button  @click="showModal()" class="btn btn-primary btn-sm mb-2 mr-2" style="float: right;" v-if="can('create_billables','general')">
           <small><i class="bi bi-plus"> Add New Billable</i></small></button></div>
        </div>
          
@@ -168,7 +171,9 @@ watch (
      </div>
      </div>
      <div class="col-lg-4"></div>
-     <div class="col-lg-4"></div>
+     <div class="col-lg-4">
+      <input type="text" placeholder="search ..." class="form-control" v-model="searchQuery">
+     </div>
      </div>
   
       <table
@@ -193,8 +198,8 @@ watch (
  
         <tbody>
           
-          
-         <tr  v-for="(list, index) in billableData" :key="index" >
+          <!-- {{ billableData }} -->
+         <tr  v-for="(list, index) in  filteredBillableData" :key="index" >
         
           <td>{{ index+1 }}</td>
           <td>{{ list.total_amount?.toLocaleString() }}</td>

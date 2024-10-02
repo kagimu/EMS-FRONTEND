@@ -244,10 +244,9 @@ watch (
     async (data) => {
       if (data) {
         errorMessage.value = data.message
-        notificationStore.errorToast("Error",data.message)
+        //notificationStore.errorToast("Error",data.message)
       }
-    },
-    { deep: true }
+    }
 )
 
 

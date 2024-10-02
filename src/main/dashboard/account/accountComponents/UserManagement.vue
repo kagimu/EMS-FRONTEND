@@ -110,7 +110,7 @@ const doFetchAccount = () =>{
       entity_number:entityN
    }
   //  loading.value = true;
-   userData.value = []
+  //  userData.value = []
    accountStore.fetchUsersToAssign(data)
 
   }
@@ -297,18 +297,17 @@ watch (
                </div>
                 <div class="card-body" >
         <div>
-<hr>
            <div class="row">
 
             <div class="col-3">
-              <select
+              <!-- <select
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
                 v-model="status">
                     <option disabled value="">--filter by Status -</option>
                     <option>Active</option>
                     <option>Inactive</option>
-                </select>
+                </select> -->
 
             </div>
 
@@ -319,13 +318,12 @@ watch (
                     v-model:perPage="per_page"
                     :per_page="per_page"
                     :total_items="total_items"
-                    :total_rows="total_rows"></PaginationTemplate>
-
+                    :total_rows="total_rows">
+            </PaginationTemplate>
                     <div
                     class="w-full overflow-auto max-h-[520px] scrollbar-thin"
                     @scroll="onScroll">
-      <table id="data"
-          class="table table-hover caption-top mt-1 table-sm table-striped"
+      <table id="data" class="table table-hover caption-top mt-0 table-sm table-striped"
           style="font-size: 11px !important;" >
         <thead>
         <tr>

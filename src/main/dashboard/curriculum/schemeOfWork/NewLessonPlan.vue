@@ -250,7 +250,7 @@ const uploadTemplate = () => {
 
 <template>
   <div>
-    {{ schemeDataInfo }}
+    <!-- {{ schemeDataInfo }} -->
     <form @submit.prevent="addLessonPlan">
       <div class="mb-5" style="width: 300px;">
             <label class="text-sm"><small>Type</small></label>

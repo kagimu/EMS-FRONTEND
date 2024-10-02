@@ -389,7 +389,7 @@ watch(
         </div>
 
       <div v-else-if="interviewList.length === 0" class="text-center my-4">
-                <p>There is no data found</p>
+                <span class="text-[12px]"><i>Nothing to show</i></span>
        </div>
 
  <div v-else>

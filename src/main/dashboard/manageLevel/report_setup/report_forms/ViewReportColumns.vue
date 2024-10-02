@@ -51,7 +51,7 @@ watch(
 <template>
   <div>
     <!-- {{ reportSettingNumber }} -->
-      {{ reportColumnData }}
+      <!-- {{ reportColumnData }}? -->
 
       
     <table class="table table-hover caption-top mt-1 table-sm text-sm">

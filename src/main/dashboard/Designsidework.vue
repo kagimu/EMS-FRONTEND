@@ -1,348 +1,227 @@
-<script setup>
-import {onMounted, reactive, ref, watch} from "vue"
-import useNotificationStore from "@/composables/useNotification.js"
-import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
-import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
-import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
-import ComboMenuItemBox from "@/components/ComboMenuItemBox.vue";
-import useCommonsStore from "@/composables/useCommons.js";
-const commons = useCommonsStore()
-
-
-const buttonLoader = ref(false)
-const campusList = ref([])
-const schoolList = ref([])
-const emit = defineEmits()
-const  notificationStore  = useNotificationStore()
-const schoolStore = useSchoolStore()
-const campusStore = useCampusStore()
-const cateringStore = useCateringStore()
-const isSelected = ref(true)
-
-const form = reactive({
-  campus_number:"",
-  school_number:""
-})
-
-const Items = ref([]);
-const itemOption = ref([])
-
-function updateItem(index) {
-  const item = Items.value[index];
-  const selectedOption = itemOption.value.find(option => option.name === item.name);
-  if (selectedOption) {
-    item.cost = selectedOption.cost;
-    updateAmount(index);
-  }
-}
-
-function updateAmount(index) {
-  const item = Items.value[index];
-  item.amount = item.quantity * item.cost;
-}
-
-function addItem() {
-  if(!form.campus_number){
-    isSelected.value = false
-    notificationStore.errorToast("Error","No Campus Selected ! ")
-  }else{
-    isSelected.value = true
-    Items.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
-  }
-  
-}
-
-function removeItem(index) {
-  Items.value.splice(index, 1);
-}
-
-function calculateTotal() {
-  return Items.value.reduce((total, item) => total + item.amount, 0);
-}
-
-function availableOptions(index) {
-  const selectedNames = Items.value.map(item => item.name);
-  return itemOption.value.filter(option => !selectedNames.includes(option.name) || option.name === Items.value[index].name);
-}
-
-const isAddButtonDisabled = ref(false);
-watch(Items, (newItems) => {
-  isAddButtonDisabled.value = newItems.length === itemOption.value.length;
-}, { deep: true });
-
-
-onMounted(() => {
-      schoolStore.fetchSchools()
-    }
-)
-
-
-
-const createStock = () => {
-  buttonLoader.value = true
-  const item_price_and_quantity = Items.value.map(itemData => ({
-    menu_item_number: itemData.menu_item_number,
-    quantity: parseInt(itemData.quantity),
-    unit_price: parseInt(itemData.unitPrice),
-    unit_cost: parseInt(itemData.cost)
-  }))
-
-  const data = {
-    campus_number:form.campus_number,
-    item_price_and_quantity
-  }
-
-  cateringStore.newStock(data)
-}
-
-watch(
-    () => cateringStore.newStockResponse,
-    async (data) => {
-      buttonLoader.value = false
-      clearFormData()
-      notificationStore.successToast("Success", data.message)
-      cateringStore.fetchStock()
-     
-    },
-    {deep: true}
-)
-
-watch(
-    () => cateringStore.errorMessage,
-    async (data) => {
-      if (data) {
-        notificationStore.errorToast("Error", data.message)
-      }
-    },
-    {deep: true}
-)
-
-const clearFormData = () => {
-  form.school_number = null
-  form.campus_number = null
-  Items.value = []
-}
-
-
-
-const fetchCampuses = (school_number) => {
-  campusStore.fetchCampuses(school_number)
-}
-
-const doFetchMenuItem = () => {
-  Items.value = []
-  let formD = {
-    school_number:form.school_number,
-    campus_number:form.campus_number
-  }
-  cateringStore.fetchMenuItem(formD)
-}
-
-
-watch(
-    () => cateringStore.menuItemResponse,
-    async (data) => {
-
-      itemOption.value = data.map(option => ({ name: option.name, number: option.number,purchase_unit_of_measure_name:option.purchase_unit_of_measure_name }));
-
-      isSelected.value = true
-      Items.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
-    }
-)
-
-watch(
-    () => schoolStore.schoolsResponse,
-    async (data) => {
-      if (data) {
-        schoolList.value = data.data
-      }
-    }
-)
-
-watch(
-    () => campusStore.campusListResponse,
-    async (data) => {
-      if (data) {
-        campusList.value = data.data
-      }
-    }
-)
-
-   
-const getUnitOfMeasure = (itemNumber) => {
-  const selectedItem = itemOption.value.find(option => option.number === itemNumber);
-  return selectedItem ? selectedItem.purchase_unit_of_measure_name : '';
-}
-
-</script>
 <template>
-    <div>
-      <div class="row">
-        <div class="col-12">
-            <div class="card-body" style="padding: 0;">
-              <div class="mt-5">
-                <form @submit.prevent="createStock">
+  <div>
+    <AppModal title="Creating New Billable" v-model="mymodal" xl6>
+      <NewBillables :userNumber="userNumber" :billablesInfo="billablesInfo" :schoolN="school_number"></NewBillables>
+    </AppModal>
 
-                  <div class="grid grid-cols-3 gap-2 px-3 mb-4">
+    <AppModal title="Billable" v-model="modalDetails" xl6>
+      <BillableDetails :billableNumber="billD"></BillableDetails>
+    </AppModal>
 
-                    <div>
-                      <div>
-                        <label class="text-sm"><small>School</small> </label>
-                        <select
-                            style="box-shadow: none;"
-                            class="form-select form-select-sm" required
-                            v-model="form.school_number"
-                            @change="fetchCampuses(form.school_number)"
-                        >
-                          <option disabled value="">Select School</option>
-                          <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-                          </option>
-                        </select>
-                      </div>
-                    </div>
+    <div class="rw mt-3">
+      <div class="">
+        <div class="row">
+          <div class="col-lg-4"></div>
+          <div class="col-lg-8">
+            <button @click="showModal()" class="btn btn-primary btn-sm mb-2 mr-2" style="float: right;" v-if="can('create_billables', 'general')">
+              <small><i class="bi bi-plus"> Add New Billable</i></small>
+            </button>
+          </div>
+        </div>
 
-                    <div>
-                        <label class="text-sm"><small>Campus</small>  </label>
-                        <select
-                            :style="!isSelected ? 'border:1px solid red' : '' "
-                            style="box-shadow: none;"
-                            class="form-select form-select-sm"
-                            v-model="form.campus_number" required
-                            @change="doFetchMenuItem()"
-                        >
-                          <option disabled value="">Select campus</option>
-                          <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-                          </option>
-                        </select>
-                    </div>
-                  </div>
-
-
-                    <div class="px-3">
-
-            <div>
-              <!-- New Design -->
-                <table class="table table-hover mt-1 table-sm text-xs">
-                  <thead>
-                    <tr class="font-bold text-gray-600">
-                      <td class="w-[5%]">#</td>
-                      <td class="w-[25%]">Item</td>
-                      <td class="w-[15%]">Qty</td>
-                      <td class="w-[10%]">Purchase Unit Of Measure</td>
-                      <td class="w-[20%]">Unit Price</td>
-                      <td>Amount</td>
-                      <td></td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(itemData, index) in Items" :key="index" >
-                      <!-- {{itemData}} -->   
-                   
-                      <td class="border-l border-r">{{(index + 1)}}</td>
-                      <td class="border-r">
-                  
-                          
-                        <ComboMenuItemBox
-                      v-model:optionResponse="itemData.menu_item_number"
-                      :optionList="availableOptions(index)"
-                      :optionDraft="itemData.menu_item_number"
-                     ></ComboMenuItemBox>
-
-                      </td>
-                      <td class="border-r">
-                        <input
-                            @keypress="commons.numbersOnlyValidator($event)"
-                            maxlength="10"
-                            type="text"
-                            v-model="itemData.quantity"
-                            @input="updateAmount(index)"
-                            placeholder="1.0"
-                            class="form-control select-no-border">
-                      </td>
-                      <td class="border-r"> <input class="form-control shadow-none select-no-border" 
-                        type="text" :value="getUnitOfMeasure(itemData.menu_item_number)"  readonly/></td>
-                      <td class="border-r">
-                        <input
-                            @keypress="commons.numbersOnlyValidator($event)"
-                            maxlength="10"
-                            type="text" v-model="itemData.cost"
-                            @input="updateAmount(index)"
-                            placeholder="Unit Price"
-                            class="form-control select-no-border">
-                      </td>
-                      <td>
-                        {{ itemData.amount }}
-                      </td>
-                      <td class="border-r">
-                       <div class="flex justify-end">
-                         <div class="mr-3">
-                           <button type="button" @click="removeItem(index)">
-                             <i class="bi bi-x-circle" style="color:red"></i>
-                           </button>
-                         </div>
-                       </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-
-
-              <div>
-                <button
-                    class="btn btn-primary btn-sm text-sm ml-3"
-                    @click.prevent="addItem"
-                    :disabled="isAddButtonDisabled">
-                  <small><i class="bi bi-plus-lg"></i></small>
-                </button>
-              </div>
-
-
-              <div class="row mt-10 mx-auto">
-                  <div class="col-lg-8"></div>
-                  <div class="col-lg-4">
-                    <ul style="float: right;">
-                      <!-- <li>Subtotal - {{ calculateSubtotal() }}</li> -->
-                      <li>Total : <span style="color:rgba(173, 12, 12, 0.92)">{{ calculateTotal() }}</span> </li>
-                    </ul>
-                  </div>
+        <div class="card-bdy" style="padding: 0;">
+          <div class="m-2">
+            <div class="row">
+              <div class="col-lg-4">
+                <div class="mb-2">
+                  <select
+                    style="box-shadow: none;"
+                    class="form-select form-select-sm"
+                    required
+                    v-model="school_number"
+                    @change="doFetchBillables(school_number)"
+                  >
+                    <option disabled value="">-filter School -</option>
+                    <option v-for="(list, index) in schoolList" :key="index" :value="list.number">
+                      {{ list.name }}
+                    </option>
+                  </select>
                 </div>
-            
-              <!-- ends here -->
-            </div>
-         
-          </div>
-        
-                <div class="flex flex-grow justify-between">
-                  &nbsp;
-                     <div class="mr-3 mb-10">
-                         <button type="submit" class="btn btn-sm btn-primary mb-2 mt-1" style="float: right !important;margin-right: 0px;">
-                         <div class="px-4">
-                           <small>Submit</small>
-                           <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="buttonLoader">
-                             <span class="visually-hidden">Loading...</span>
-                           </div>
-                         </div>
-                         </button>
-                     </div>
-
-             </div>
-
-
-               </form>
+              </div>
+              <div class="col-lg-4"></div>
+              <div class="col-lg-4">
+                <input
+                  type="text"
+                  v-model="searchQuery"
+                  placeholder="search ..."
+                  class="form-control"
+                />
               </div>
             </div>
-            
+
+            <table
+              class="table table-hover caption-top mt-4 table-sm table-striped"
+              style="font-size: 13px !important;width: 100%;"
+            >
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Amount</th>
+                  <th>Campus</th>
+                  <th>StudyPeriod</th>
+                  <th>Class</th>
+                  <th>Curriculum</th>
+                  <th>ModeOfStudy</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(list, index) in filteredBillableData" :key="index">
+                  <td>{{ index + 1 }}</td>
+                  <td>{{ list.total_amount?.toLocaleString() }}</td>
+                  <td>{{ list.campus_name }}</td>
+                  <td>{{ list.study_period_name }}</td>
+                  <td>{{ list.class_name }}</td>
+                  <td>{{ list.curriculum_name }}</td>
+                  <td>{{ list.mode_of_study_name }}</td>
+                  <td>{{ list.bill_type.replace('_', ' ') }}</td>
+                  <td>{{ list.status }}</td>
+                  <td>
+                    <button v-if="can('edit_billables', 'general')" data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="editModalBillables(list.billable_number)">
+                      <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+                    </button>
+                    &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
+                    <button v-if="can('delete_billables', 'general')" type="button" @click="showModalDetails(list.billable_number)">
+                      <i class="bi bi-eye" style="color:blue"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        
+        </div>
       </div>
     </div>
-  </template>
+  </div>
+</template>
 
+<script setup>
+import { onMounted, ref, watch, reactive, computed } from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import { useAbility } from '@casl/vue';
+import AppModal from "@/components/AppModal.vue";
+import NewBillables from "@/main/settings/bills/NewBillables.vue";
+import { useBillStore } from "@/main/settings/bills/store/bills.js";
+import { useSchoolStore } from "@/main/dashboard/manageSchool/store/school.js";
+import BillableDetails from "@/main/settings/bills/BillableDetails.vue";
 
+const notificationStore = useNotificationStore();
+const schoolStore = useSchoolStore();
+const mymodal = ref(false);
+const errorMessage = ref(null);
+const loader = ref(false);
+const { can } = useAbility();
+const schoolList = ref([]);
+const billStore = useBillStore();
+const school_number = ref("");
+const billableData = ref([]);
+const modalDetails = ref(false);
+const billD = ref(null);
+const billablesInfo = ref([]);
+const searchQuery = ref(""); // Search query ref
 
-  
- 
-  
-  
-  
-  
+onMounted(async () => {
+  schoolStore.fetchSchools();
+});
+
+const showModal = () => {
+  billablesInfo.value = "";
+  mymodal.value = true;
+};
+
+const showModalDetails = (billNumber) => {
+  modalDetails.value = true;
+  billD.value = billNumber;
+};
+
+const editModalBillables = (billables) => {
+  mymodal.value = true;
+  billablesInfo.value = billables;
+};
+
+const doFetchBillables = (schoolN) => {
+  let data = {
+    school_number: schoolN,
+  };
+  billStore.fetchBillable(data);
+};
+
+watch(
+  () => billStore.newBillableResponse,
+  async (data) => {
+    if (data) {
+      billStore.fetchBillable(data);
+    }
+  },
+  { deep: true }
+);
+
+watch(
+  () => billStore.billableResponse,
+  async (data) => {
+    if (data) {
+      billableData.value = data.data;
+    }
+  },
+  { deep: true }
+);
+
+watch(
+  () => schoolStore.schoolsResponse,
+  async (data) => {
+    if (data) {
+      schoolList.value = data.data;
+    }
+  },
+  { deep: true }
+);
+
+watch(
+  () => billStore.newBillableResponse,
+  async (data) => {
+    if (data) {
+      mymodal.value = false;
+    }
+  },
+  { deep: true }
+);
+
+watch(
+  () => billStore.errorMessage,
+  async (data) => {
+    if (data) {
+      errorMessage.value = data.message;
+      notificationStore.errorToast("Error", data.message);
+      loader.value = false;
+    }
+  },
+  { deep: true }
+);
+
+watch(
+  () => billStore.updateBillableResponse,
+  async (data) => {
+    if (data) {
+      mymodal.value = false;
+      let data = {
+        school_number: schoolN,
+      };
+      billStore.fetchBillable(data);
+    }
+  }
+);
+
+// Computed property for filtered billable data based on search query
+const filteredBillableData = computed(() => {
+  if (!searchQuery.value) {
+    return billableData.value;
+  }
+  return billableData.value.filter((item) =>
+    Object.values(item).some((val) =>
+      String(val).toLowerCase().includes(searchQuery.value.toLowerCase())
+    )
+  );
+});
+</script>

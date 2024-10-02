@@ -71,7 +71,7 @@ onMounted(
      
    }
    loading.value = true;
-   applicationInfoList.value = []
+  //  applicationInfoList.value = []
    applicationStore.fetchApplicationList(data).finally(() => {
     loading.value = false; 
   })

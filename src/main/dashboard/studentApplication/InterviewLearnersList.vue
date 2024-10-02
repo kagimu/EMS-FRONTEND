@@ -24,7 +24,7 @@
    })
    
    
-   const interviewStudentList = ref( [])
+   const interviewLearnerList = ref( [])
    let errorMessage = ref(null)
    const buttonLoader = ref(false)
    const applicationStore= useApplicationStore()
@@ -86,7 +86,7 @@
          interview_number:interviewNumber,
          assessment_metric_number:assessmentMetricNumber
       }
-         applicationStore.fetchStudentsOnInterview(data) 
+         // applicationStore.fetchStudentsOnInterview(data) 
          
      }
    
@@ -140,7 +140,7 @@
        () => applicationStore.StudentsOnInterviewResponse,
        async (data) => {
          if(data){
-           interviewStudentList.value = data.data
+           interviewLearnerList.value = data.data
          }
        },
        {deep:true}
@@ -424,7 +424,7 @@
                         </tr>
                      </thead>
                      <tbody>
-                        <tr style="text-transform: capitalize;" v-for="(student, index) in interviewStudentList.students" :key="index">
+                        <tr style="text-transform: capitalize;" v-for="(student, index) in interviewLearnerList.students" :key="index">
                            <td>
                               <!-- <input v-if="student.status != 'ADMITTED'" type="checkbox"  v-model="selectedStudents[index]" class="checkbox-primary"> -->
                               <input v-if="student.status != 'ADMITTED'" v-model="selectedStudentNumber" 
