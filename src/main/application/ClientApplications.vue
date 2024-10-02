@@ -1,9 +1,8 @@
 <script setup>
-import {onMounted,reactive, ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import ClientApplicationDetails from "@/main/application/ClientApplicationDetails.vue";
-import router from "@/config/router.js";
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
 import StudentApplicationDetails from '@/main/dashboard/studentApplication/StudentApplicationDetails.vue';
 import AppModal from "@/components/AppModal.vue";
@@ -11,7 +10,6 @@ import ConfirmationModal from "@/components/ConfirmationModal.vue";
 const confirmationRef = ref(null);
 
 const showingModal = ref(false)
-const showAppmodal = ref(false)
 const tableLoader = ref(true)
 
 const applicationInfoList = ref( [])
@@ -29,8 +27,6 @@ const total_rows = ref(0)
 
 
 const setApplicationNumber = (ap) =>{
-  // applications.value = ap
-  // shDialog.value = true
     applications.value = ap
     showingModal.value = true
 }
@@ -39,7 +35,6 @@ const setApplicationNumber = (ap) =>{
 
 onMounted(
     async () => {
-      // await applicationStore.fetchApplicationList()
       doFetchApplication()
     } )
 

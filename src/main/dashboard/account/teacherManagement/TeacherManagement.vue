@@ -4,41 +4,31 @@ import {onMounted, reactive, ref, watch,computed} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import { useAccountStore } from "../store/account.js";
 import { useRolesStore } from "@/main/settings/roles/store/roles.js";
-import { useUserStore } from "@/main/dashboard/profiles/store/users.js"
 import AppModal from "@/components/AppModal.vue";
-import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
 import NewTeacher from "@/main/dashboard/account/teacherManagement/NewTeacher.vue";
 import {useTeacherStore} from "@/main/dashboard/account/teacherManagement/store/teacherStore.js";
+import TeacherManagementFilters from "@/main/dashboard/account/teacherManagement/TeacherManagementFilters.vue";
 
-const page = ref(1)
-const status = ref("")
-const entityStore = useEntityStore()
-const userStore = useUserStore()
+let typingTimer = null;
+const teacherStore = useTeacherStore()
 const per_page = ref(20)
+const search = ref("")
 const total_items = ref(0)
 const total_rows = ref(0)
-
+const page = ref(1)
+const filterData = ref(null)
 
 
 const { can } = useAbility()
 
 const roleStore = useRolesStore()
 const accountStore = useAccountStore()
-const teacherStore = useTeacherStore()
-const notificationStore = useNotificationStore()
-const buttonLoader = ref(false)
-const errorMessage = ref(null)
 const userData = ref([])
-const showDialog = ref(false)
 const assignDialog = ref(false)
-const userAll = ref([])
 const teacherDialog = ref(false)
-const showingEntity = ref(false)
-const entityList = ref(null)
 const userInfo = ref(null)
 const tableLoader = ref(true)
-let entityN = localStorage.getItem("entity_number")
 
 const openModal = (userInf) =>{
   userInfo.value = userInf
@@ -55,18 +45,75 @@ const rolesData= ref([])
 //fetch
 onMounted(
     async () => {
-      await roleStore.fetchRoles()
-      await accountStore.fetchAllUsers()
-      doFetchAccount()
-      await entityStore.fetchEntity()
+       doFetchTeacherOnboarding()
     } )
 
-    const openEntityModal = (userN) =>{
-      showingEntity.value=true
-      userNumber.value = userN
+//fetch
+const doFetchTeacherOnboarding = () =>{
+
+  let data = {
+    page: 1,
+    per_page: per_page.value,
+    search:search.value,
+    school_number: filterData.value?.school_number,
+    campus_number: filterData.value?.campus_number,
+    curriculum_number: filterData.value?.curriculum_number,
+    campus_level_number: filterData.value?.campus_level_number,
+    class_number: filterData.value?.class_number,
+    streams: filterData.value?.streams,
+    assessment_area_number: filterData.value?.assessment_area_number,
+  }
+  tableLoader.value = true;
+  userData.value = []
+  teacherStore.fetchTeacherOnboarding(data)
+
+
+}
+
+function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
+  if (scrollTop + clientHeight >= scrollHeight) {
+
+    tableLoader.value = true
+    let data = {
+      page: (page.value+1),
+      per_page: per_page.value,
+      search:search.value,
+      school_number: filterData.value?.school_number,
+      campus_number: filterData.value?.campus_number,
+      curriculum_number: filterData.value?.curriculum_number,
+      campus_level_number: filterData.value?.campus_level_number,
+      class_number: filterData.value?.class_number,
+      streams: filterData.value?.streams,
+      assessment_area_number: filterData.value?.assessment_area_number,
     }
 
-    watch(
+    teacherStore.fetchTeacherOnboarding(data)
+  }
+}
+
+
+const debounceSearch = () => {
+  clearTimeout(typingTimer);
+  typingTimer = setTimeout(() => {
+    doFetchTeacherOnboarding()
+  }, 1000);
+};
+
+// Watch the search input and debounce the search function
+watch(search, () => {
+  debounceSearch();
+});
+
+
+const filterInfo = (data) => {
+  if(data) {
+    filterData.value = {...data}
+    doFetchTeacherOnboarding()
+  }
+}
+
+
+watch(
     () => roleStore.roleResponse,
     async (data) => {
       if(data){
@@ -87,37 +134,12 @@ watch (
 )
 
 
-//fetch
-const doFetchAccount = () =>{
-   let data = {
-      page: 1,
-      per_page: per_page.value,
-      entity_number:entityN
-   }
-  //  loading.value = true;
-   userData.value = []
-   accountStore.fetchUsersToAssign(data)
-
-  }
 
 
-  function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
-  if (scrollTop + clientHeight >= scrollHeight) {
 
-    tableLoader.value = true
-    let data = {
-      page: (page.value+1),
-      per_page: per_page.value,
-      entity_number:entityN
-   }
-  //  loading.value = true;
-   userData.value = []
-   accountStore.fetchUsersToAssign(data)
 
-  }
-}
 
-  const fetchUsers = (data) => {
+  const fetchTeachers = (data) => {
     if(data) {
       let current_page = data.page
       page.value = current_page
@@ -156,132 +178,28 @@ const doFetchAccount = () =>{
     }
   }
 
-    watch(
-    () => accountStore.userResponse,
-    async (data) => {
-      if(data){
-        fetchUsers(data)
-      }
-    }
-    )
-
-
-    watch(
-    () => accountStore.userAllResponse,
-    async (data) => {
-      if(data){
-        userAll.data = data.data
-      }
-    },
-    {deep:true}
-    )
-
-
-const formData = reactive({
-  user_number:null,
-  role_number:null
-})
-const selectedIndex = ref(null);
-
-
-
-const removeRole = (roleN,userN,rolename,userName) => {
-    if(!confirm("Are you sure, you want to remove: " + rolename +" role from " + userName)){
-      notificationStore.errorToast("Cancelled","Action Cancelled Successfully !")
-      return
-    }
-
-    let data = {
-      role_number:roleN,
-      user_number:userN
-    }
-
-    accountStore.removeAccountRole(data)
-}
-
-
-
 
 
 watch(
-    () => accountStore.removeRoleResponse,
-      async (data) => {
-        if(data){
-          notificationStore.successToast("Success", data.message)
-          doFetchAccount()
-        }
-      }
-    )
-
-    
-watch (
-    () => accountStore.errorMessage,
-    async (data) => {
-      if(data){
-        errorMessage.value = data.message
-        notificationStore.errorToast("Error",data.message)
-      }
-    }
-)
-
-watch (
-    () => accountStore.newAccountResponse,
-    async (data) => {
-      if(data){
-        doFetchAccount()
-      }
-    }
-)
-
-
-watch (
-      () => userStore.newUserResponse,
-      async (data) => {
-        if(data){
-          teacherDialog.value = false
-          doFetchAccount()
-        }
-      }
-  )
-
-  watch (
-  () => entityStore.entityResponse,
-  async (data) => {
-    if (data) {
-  entityList.value = data.data
-    }
-  }
-)
-
-watch (
-    () => entityStore.entityToUserResponse,
-    async (data) => {
-      if(data){
-        showingEntity.value = false
-      }
-    }
-)
-
-
-// adding teacher
-watch(
-    () => teacherStore.assignTeacherResponse,
+    () => teacherStore.teacherOnboardingResponse,
     async (data) => {
       if (data) {
-        teacherDialog.value = false
-        notificationStore.successToast("Success",data.message)
+        fetchTeachers(data?.data)
       }
     }
 )
+
+
 
 </script>
 
 <template>
     <div>
 
-    <AppModal title="Assign a teacher to a stream" v-model="teacherDialog" xl>
+    <AppModal title="Teacher Onboarding" v-model="teacherDialog" xl>
       <new-teacher></new-teacher>
     </AppModal>
+
 
 
 
@@ -296,13 +214,35 @@ watch(
                 </button>
               </div>
 
-
               <div>
+
+
+              <div class="mx-2">
+                <teacher-management-filters
+                    @filterData="filterInfo"
+                ></teacher-management-filters>
+              </div>
+
+                <div>
+                  <div class="flex flex-grow justify-end mt-2 px-2">
+
+                      <div class="w-[35%]">
+                        <input
+                            v-model="search"
+                            type="text"
+                            class="form-control form-control-sm shadow-none"
+                            placeholder="Search"
+                            aria-label="Search"
+                            aria-describedby="basic-addon1">
+                      </div>
+                    </div>
+                </div>
+
 
 
 
                 <PaginationTemplate
-                    @perPageChanged="doFetchAccount"
+                    @perPageChanged="doFetchTeacherOnboarding"
                     v-model:perPage="per_page"
                     :per_page="per_page"
                     :total_items="total_items"
@@ -313,48 +253,33 @@ watch(
                     @scroll="onScroll">
                   <table id="data"
                          class="table table-hover caption-top mt-1 table-sm table-striped"
-                         style="font-size: 11px !important;" >
+                         style="font-size: 13px !important;" >
                     <thead>
                     <tr>
                       <th>#</th>
+                      <th scope="col">Date</th>
                       <th scope="col">Name</th>
-                      <th scope="col">Role (s)</th>
-                      <th>Type</th>
-                      <th scope="col">Gender</th>
-                      <th scope="col">Status</th>
+                      <th scope="col">School</th>
+                      <th scope="col">Campus</th>
+                      <th scope="col">Curriculum</th>
+                      <th scope="col">Level</th>
+                      <th scope="col">Class</th>
+                      <th scope="col">Assessment Area	</th>
                       <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(user, index) in userData" :key="index">
                       <td>{{ index+1 }}</td>
-                      <td>{{ user.first_name + " " +user.last_name + " " + user.second_name }}</td>
-                      <td>
-              <span v-for="(rol,indx) in user.roles"  :key="indx" >
-               {{ rol.role_name }}
-               <button
-                   v-if="can('remove_assigned_role','general')"
-                   @click="removeRole(rol.role_number,user.number,rol.role_name,user.first_name)">
-                  &nbsp;<i  class="bi bi-x-circle-fill" style="color:rgb(228, 23, 23)"></i>
-                </button>
-              </span>
-                      </td>
-                      <td>{{ user.type }}</td>
-                      <td>{{ user.gender }}</td>
-                      <td>
-                        <span v-if="user.status === 'Active'" :style="user.status === 'Active' ? 'color:green' : 'color:rgb(239, 13, 13)'"><b>{{ user.status }}</b></span>
-                      </td>
-                      <td>
-                        <button
-                            v-if="can('update_assigned_role','general')"
-                            data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
-                          <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
-                        </button>
-                        &nbsp;&nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>
-                        <button @click="openModal(user.number)" type="button" class="btn btn-outline-primary mb-2 btn-small py-0 px-3 text-sm">
-                          <small>Assign Role</small>
-                        </button>
-                      </td>
+                      <td>{{ user?.created_at}}</td>
+                      <td>{{ user?.first_name + " " +user?.last_name + " " + user?.second_name }}</td>
+                     <td>{{ user?.school_name}}</td>
+                     <td>{{ user?.campus_name}}</td>
+                     <td>{{ user?.curriculum_name}}</td>
+                     <td>{{ user?.level_name}}</td>
+                     <td>{{ user?.campus_class_name}}</td>
+                     <td>{{ user?.assessment_area_name}}</td>
+                     <td></td>
                     </tr>
 
 
