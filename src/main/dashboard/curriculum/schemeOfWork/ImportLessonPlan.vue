@@ -136,7 +136,7 @@
           excel_file.value = null
           const input = document.getElementById('formFileSm');
           input.value = '';
-  
+          notificationStore.successToast("Success", data.message)
         }
       },
       {deep:true}

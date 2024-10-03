@@ -28,6 +28,8 @@ export const useReportSetupStore = defineStore("report_setup", () => {
     const reportColumnByReportSettingResponse = ref(null)
     const reportSettingsUpdateResponse= ref(null)
     const deleteReportColumnAssessmentResponse= ref(null)
+    const updateReportTemplateResponse = ref(null)
+    const deleteReportTemplateResponse = ref(null)
 
     async function newReportSettings(data) {
         return await api.post("main/report-settings", data)
@@ -241,6 +243,31 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             })
     }
 
+    async function updateReportTemplate(data) {
+        return await api.put("main/school/report-templates/update", data)
+            .then((response) => {
+                updateReportTemplateResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    
+    async function deleteReportTemplate(data) {
+        return await api.delete("main/school/report-templates/delete", data)
+            .then((response) => {
+                deleteReportTemplateResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
     async function fetchReportTemplate(schoolN) {
         return await api.get("main/school/report-templates/all?school_number="+schoolN)
             .then((response) => {
@@ -363,6 +390,8 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         deleteReportColumnResponse,
         deleteReportSettingsResponse,
         deleteReportColumnAssessmentResponse,
+        updateReportTemplateResponse,
+        deleteReportTemplateResponse,
         newReportSettings,
         newReportColumn,
         newReportColumnAssessment,
@@ -385,5 +414,7 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         deleteReportColumn,
         deleteReportSettings,
         deleteReportColumnAssessment,
+        updateReportTemplate,
+        deleteReportTemplate
     }
 })

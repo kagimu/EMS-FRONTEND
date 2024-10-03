@@ -46,7 +46,7 @@ const  getReportTemplateInfo = () =>{
 const addReportTemplate = () => {
   loader.value = true
   if(props.reportTemplateDataInfo){
-  alert("Halleluyah")
+    reportSetupStore.updateReportTemplate(form)
   }else{
     reportSetupStore.addReportTemplate(form)
   }
@@ -70,10 +70,23 @@ watch (
   {deep:true}
 )
 
+watch (
+  () => reportSetupStore.updateReportTemplateResponse,
+  async (data) => {
+    if(data){
+      notificationStore.successToast("Success", data.message)
+      await reportSetupStore.fetchReportTemplate()
+      loader.value=false
+    }
+  },
+  {deep:true}
+)
+
 watch(
     () => reportSetupStore.errorMessage,
     async (data) => {
           if (data) {
+            loader.value=false
               notificationStore.errorToast("Error", data.message)
           }
     },
