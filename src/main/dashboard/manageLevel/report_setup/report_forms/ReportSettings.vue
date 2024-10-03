@@ -354,40 +354,43 @@ watch (
             <td class="text-xs"> {{settings.status}}</td>
             <td>
 
-             <div>
+             <div class="mb-1">
                <button
-                   class="mr-2"
+                   class="mr-2 border border-success rounded-md px-3 text-success hover:bg-success-100 text-xs"
                    style="border-width: 0px;text-decoration: none;"
                    @click="setReportColumn(settings.report_setting_number,settings.columns)">
-                 <small style="font-size: 13px;" class="text-success hover:underline cursor-pointer">
+                 <span>
                    <i  class="bi-columns cursor-pointer"></i>
-                   Set Report Column
-                 </small>
+                   Set Column
+                 </span>
                </button>
 
                <button
-                   class="mr-1"
+                   class="border border-primary rounded-md px-3 text-primary hover:bg-primary-100 text-xs"
                    style="border-width: 0px;text-decoration: none;"
                    @click="viewReportColumn(settings.report_setting_number)">
-                 <small style="font-size: 13px;" class="text-primary hover:underline cursor-pointer">
+                 <span>
                    <i  class="bi-eye cursor-pointer"></i>
                    View
-                 </small>
+                 </span>
                </button>
              </div>
 
              <div>
                <button
-                   class="link-primary mr-2"
+                   style="border: 1px solid #2c2f8c;"
+                   class="mr-2 rounded-md px-3 text-[#2c2f8c] hover:bg-primary-100 text-xs"
                    @click="editThisData(settings)">
-                 <small style="font-size: 13px;color:#2c2f8c;" class="hover:underline cursor-pointer">
+                 <span>
                    <i  class="bi-pencil cursor-pointer"></i>
                    Update
-                 </small>
+                 </span>
                </button>
 
-               <button @click="deleteThisData(settings, index)">
-                <span style="font-size: 13px;color:rgb(202, 11, 11)" class="hover:underline cursor-pointer">
+               <button
+                   class="border border-danger rounded-md px-3 text-danger hover:bg-danger-100 text-xs"
+                   @click="deleteThisData(settings, index)">
+                <span>
                 <i class="bi-trash"></i>
                 <span>Delete</span>
                 </span>
