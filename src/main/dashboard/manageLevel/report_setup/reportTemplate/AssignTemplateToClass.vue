@@ -20,17 +20,35 @@ const levelStore = useLevelStore()
 const campusLevelList = ref([])
 const campusClassList = ref([])
 const classStore = useClassesStore()
-const campus_level_number = ref(null)
+const campus_level_number = ref("")
 
 const props = defineProps({
-    reportTemplateNumber:String
+    reportTemplateNumber:String,
+    addedClasses:{}
   })
 
   onMounted(() => {
-    // campusStore.fetchClassesByCampus(campusNumber)
     fetchCampusLevel()
+    filterAddedClasses()
     }
 )
+
+
+watch(
+    () => props.addedClasses,
+    async (data) => {
+      if(data){
+        filterAddedClasses()
+      }
+    }
+)
+
+const filterAddedClasses = () => {
+  let draft = props.addedClasses
+  if(draft) {
+    // form.classes = draft[0].classes.map(item => item.number);
+  }
+}
 
 const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
@@ -115,21 +133,13 @@ watch(
 
 
 
-// watch(
-//     () => campusStore.campusClassesResponse,
-//     async (data) => {
-//         if (data) {
-//             classList.value = data.data
-//         }
-//     },
-//     {deep: true}
-// )
+
 
 </script>
 
 <template>
   <div>
-    <!-- {{reportTemplateNumber}} -->
+
   <form @submit.prevent="addClassToReportTemplate">
 
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
@@ -150,7 +160,6 @@ watch(
     </div>
 
     <div class="mb-2">
-      <!-- {{ classList }} -->
     <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
 <li class="list-group-item" v-for="(list, index) in classList" :key="index" :value="list.number">
     <div class="row">

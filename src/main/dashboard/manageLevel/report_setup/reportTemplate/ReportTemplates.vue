@@ -160,9 +160,21 @@ if (agreed) {
             <td>
 
 
-                    <i
-                    style="font-size: 14px;"
-                    class="bi-plus-circle cursor-pointer link-primary" @click="assignClass(repoData.report_template_id)"></i>
+
+
+
+              <div>
+                <button
+                    style="border: 1px solid #2c2f8c;"
+                    class="mr-2 rounded-md px-3 text-[#2c2f8c] hover:bg-primary-100 text-xs"
+                    @click="assignClass(repoData.report_template_id)">
+                 <span>
+                   <i  class="bi-plus cursor-pointer"></i>
+                   Add Class
+                 </span>
+                </button>
+              </div>
+
            
                       <ReportTemplateClasses :reportTemplateId="repoData.report_template_id"  :school_number="schoolNumber"></ReportTemplateClasses>
 

@@ -4,11 +4,14 @@ import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/rep
 import api from "@/config/api.js";
 import clearClassModal from "@/main/dashboard/manageLevel/report_setup/reportTemplate/clearClassModal.vue";
 import AppModal from "@/components/AppModal.vue";
+import AssignTemplateToClass from "@/main/dashboard/manageLevel/report_setup/reportTemplate/AssignTemplateToClass.vue";
 
 const reportSetupStore = useReportSetupStore()
 const showClearClassModal = ref(false)
 const classOnTemplateList = ref([])
 const classListData = ref(null)
+const reportTemplateNumber = ref(null)
+const showAssignModal = ref(false)
 const emit = defineEmits()
 
 const props = defineProps({
@@ -85,11 +88,22 @@ watch (
     }
 )
 
+const assignClass = () => {
+  reportTemplateNumber.value = props.reportTemplateId
+  showAssignModal.value = true
+}
+
+
+
 
 </script>
 
 <template>
 <div>
+
+  <AppModal title="Assign Class To Template" v-model="showAssignModal" lg>
+    <AssignTemplateToClass :addedClasses="classOnTemplateList" :reportTemplateNumber="reportTemplateNumber"></AssignTemplateToClass>
+  </AppModal>
 
     <AppModal title="Confirm !" v-model="showClearClassModal" xs>
         <clearClassModal :classListData="classListData"></clearClassModal>
@@ -108,6 +122,18 @@ watch (
 
       </div>
    </div>
+
+  <div>
+    <button
+        style="border: 1px solid #2c2f8c;"
+        class="mr-2 rounded-md px-3 text-[#2c2f8c] hover:bg-primary-100 text-xs"
+        @click="assignClass()">
+                 <span>
+                   <i  class="bi-plus cursor-pointer"></i>
+                   Add Class
+                 </span>
+    </button>
+  </div>
 
 </div>
 
