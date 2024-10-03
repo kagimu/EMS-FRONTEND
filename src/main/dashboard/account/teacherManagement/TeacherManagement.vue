@@ -1,7 +1,6 @@
 <script setup>
 import { useAbility } from '@casl/vue';
 import {onMounted, reactive, ref, watch,computed} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
 import { useAccountStore } from "../store/account.js";
 import { useRolesStore } from "@/main/settings/roles/store/roles.js";
 import AppModal from "@/components/AppModal.vue";
@@ -9,6 +8,8 @@ import PaginationTemplate from "@/components/PaginationTemplate.vue";
 import NewTeacher from "@/main/dashboard/account/teacherManagement/NewTeacher.vue";
 import {useTeacherStore} from "@/main/dashboard/account/teacherManagement/store/teacherStore.js";
 import TeacherManagementFilters from "@/main/dashboard/account/teacherManagement/TeacherManagementFilters.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import useNotificationStore from "@/composables/useNotification.js";
 
 let typingTimer = null;
 const teacherStore = useTeacherStore()
@@ -18,6 +19,9 @@ const total_items = ref(0)
 const total_rows = ref(0)
 const page = ref(1)
 const filterData = ref(null)
+const deletionLoader = ref(undefined)
+const confirmationRef = ref(null);
+const  notificationStore  = useNotificationStore()
 
 
 const { can } = useAbility()
@@ -189,18 +193,49 @@ watch(
     }
 )
 
+const deleteUser = async (user,index) => {
+  deletionLoader.value = index
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to remove this teacher?");
+  if (agreed) {
+    deletionLoader.value = index
+    await teacherStore.deleteTeacherOnboarding(user)
+  }
+}
 
+
+
+watch(
+    () => teacherStore.deleteTeacherOnboardResponse,
+    async (data) => {
+      if (data) {
+        deletionLoader.value = undefined
+        doFetchTeacherOnboarding()
+        notificationStore.successToast("Success",data.message)
+      }
+    }
+)
+
+
+
+watch(
+    () => teacherStore.errorMessage,
+    async (data) => {
+      if (data) {
+        deletionLoader.value = undefined
+      }
+    }
+)
 
 </script>
 
 <template>
     <div>
 
+      <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+
     <AppModal title="Teacher Onboarding" v-model="teacherDialog" xl>
       <new-teacher></new-teacher>
     </AppModal>
-
-
 
 
       <div class="row">
@@ -279,7 +314,14 @@ watch(
                      <td>{{ user?.level_name}}</td>
                      <td>{{ user?.campus_class_name}}</td>
                      <td>{{ user?.assessment_area_name}}</td>
-                     <td></td>
+                     <td>
+                       <button type="button" @click="deleteUser(user, index)">
+                         <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+                         <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
+                           <span class="visually-hidden">Loading...</span>
+                         </div>
+                       </button>
+                     </td>
                     </tr>
 
 

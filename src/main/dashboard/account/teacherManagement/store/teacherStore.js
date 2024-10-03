@@ -5,6 +5,7 @@ import api from "@/config/api.js";
 export const useTeacherStore = defineStore("teacher", () => {
     const assignTeacherResponse = ref(null)
     const teacherOnboardingResponse = ref(null)
+    const deleteTeacherOnboardResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -50,12 +51,25 @@ export const useTeacherStore = defineStore("teacher", () => {
             })
     }
 
+    async function deleteTeacherOnboarding(user) {
+        return await api.delete("main/staff-management?user_number="+user.number+"&stream_number="+user.stream_number)
+            .then((response) => {
+                deleteTeacherOnboardResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
     return {
         assignTeacherResponse,
         teacherOnboardingResponse,
+        deleteTeacherOnboardResponse,
         errorMessage,
         assignTeacher,
-        fetchTeacherOnboarding
+        fetchTeacherOnboarding,
+        deleteTeacherOnboarding
     }
 })

@@ -53,6 +53,7 @@ const reportSettingNumber = ref(null)
 const reportColumns = ref(null)
 const viewColumnsModal = ref(false)
 const reportSettingNum = ref(null)
+const deletionLoader = ref(undefined)
 
 const setReportColumn = (number,column) =>{
   reportSettingNumber.value = number
@@ -112,27 +113,37 @@ const viewReportColumn = (number) =>{
   viewColumnsModal.value = true
 }
 
-// const deleteThisData = (id,name) => {
-//   if(!confirm("Are you sure, you want to delete: " + name)){
-//     return
-//   }else{
 
-//   }
-// }
-
-
-const deleteThisData = async (id) => {
+const deleteThisData = async (settings, index) => {
 
 const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete Assessment Schedule ? ");
 if (agreed) {
-  let data = {
- 
-  }
+  deletionLoader.value = index
+  await reportSetupStore.deleteReportSettings(settings.report_setting_number)
+}
 }
 
 
-}
+watch (
+    () => reportSetupStore.deleteReportSettingsResponse,
+    async (data) => {
+      if (data) {
+        await doFetchReportSettings()
+        deletionLoader.value = undefined
+        notificationStore.successToast("Success",data.message)
+      }
+    }
+)
 
+watch(
+    () => reportSetupStore.errorMessage,
+    async (data) => {
+      if (data) {
+        deletionLoader.value = undefined
+        notificationStore.errorToast("Error", data.message)
+      }
+    }
+)
 
 
 const fetchCampusLevel = () => {
@@ -142,7 +153,6 @@ const fetchCampusLevel = () => {
 
 const fetchAcademicYear = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
-  // academicYearStore.fetchCampusClassByLevel(campus_level_number)
 
   let data = {
     school_number:schoolN,
@@ -151,13 +161,6 @@ const fetchAcademicYear = (campus_level_number) => {
   campusStore.fetchClassesBySchool(data)
 
 }
-
-
-// const fetchAcademicYear = (academic_num) =>{
-//   studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
-//   doFetchReportSettings()
-// }
-
 
 
 
@@ -179,16 +182,6 @@ watch(
     }
 )
 
-
-// watch(
-//     () => studyPeriodStore.studyPeriodByAcademicYearResponse,
-//     async (data) => {
-//       if(data){
-//         studyPeriodList.value = data.data
-//       }
-//     }
-// )
-
 watch(
     () => studyPeriodStore.studyPeriodResponse,
     async (data) => {
@@ -206,18 +199,6 @@ watch(
       }
     }
 )
-
-// watch(
-//     () => academicYearStore.campusClassByLevelResponse,
-//     async (data) => {
-//       if(data){
-//         campusClassList.value = data.data
-//       }
-//     }
-// )
-
-
-// -------
 
 
 watch(
@@ -255,11 +236,13 @@ watch (
     async (data) => {
       if (data) {
         showReportSettingsModal.value = false
-        doFetchReportSettings()
+        await doFetchReportSettings()
 
       }
     }
 )
+
+
 
 </script>
 
@@ -349,33 +332,36 @@ watch (
 
 
 
-        <table class="table table-hover caption-top mt-5 table-sm text-sm" style="font-size: 14px;">
+        <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
           <thead>
           <tr>
-            <th class="w-[5%]" scope="col">Code</th>
-            <th>Class</th>
-            <th>Academic Year</th>
-            <th>Study Period</th>
-<!--            <th>Name</th>-->
-            <th>Number of Columns</th>
-            <th>Status</th>
-            <th>#</th>
+            <th class="w-[5%] text-xs" scope="col">Code</th>
+            <th class="text-xs">Class</th>
+            <th class="text-xs">Academic Year</th>
+            <th class="text-xs">Study Period</th>
+            <th class="text-xs w-[20%]">Number of Columns</th>
+            <th class="text-xs">Status</th>
+            <th class="text-xs">ACTION</th>
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(levelInfo, index) in reportSettingsList" :key="index">
-            <td class="text-sm"> {{levelInfo.code}}</td>
-            <td class="text-sm"> {{levelInfo.class}}</td>
-            <td class="text-sm"> {{levelInfo.academic_year}}</td>
-            <td class="text-sm"> {{levelInfo.study_period}}</td>
-<!--            <td class="text-sm"> {{levelInfo.name}}</td>-->
-            <td class="text-sm"> {{levelInfo.columns}}</td>
-            <td class="text-sm"> {{levelInfo.status}}</td>
+          <tr v-for="(settings, index) in reportSettingsList" :key="index">
+            <td class="text-xs"> {{settings.code}}</td>
+            <td class="text-xs"> {{settings.class}}</td>
+            <td class="text-xs"> {{settings.academic_year}}</td>
+            <td class="text-xs"> {{settings.study_period}}</td>
+            <td class="text-xs"> {{settings.columns}}</td>
+            <td class="text-xs"> {{settings.status}}</td>
             <td>
-              <button  class="btn btn-success btn-sm p-1 mr-1" style="border-width: 0px;text-decoration: none;" @click="setReportColumn(levelInfo.report_setting_number,levelInfo.columns)"><small>Set Report Column</small></button>
-              <button  class="btn btn-outline-primary btn-sm p-1 mr-1" style="border-width: 0px;text-decoration: none;" @click="viewReportColumn(levelInfo.report_setting_number)"><small>View</small></button>
-              <button  class="link-primary" style="border-width: 0px;text-decoration: none;" @click="editThisData(levelInfo)"><small><i  style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small></button>
-              <button @click="deleteThisData(levelInfo.number,levelInfo.columns)"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>
+              <button  class="btn btn-success btn-sm p-1 mr-1" style="border-width: 0px;text-decoration: none;" @click="setReportColumn(settings.report_setting_number,settings.columns)"><small>Set Report Column</small></button>
+              <button  class="btn btn-outline-primary btn-sm p-1 mr-1" style="border-width: 0px;text-decoration: none;" @click="viewReportColumn(settings.report_setting_number)"><small>View</small></button>
+              <button  class="link-primary" style="border-width: 0px;text-decoration: none;" @click="editThisData(settings)"><small><i  style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small></button>
+              <button @click="deleteThisData(settings, index)">
+                <i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i>
+                <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </button>
             </td>
 
           </tr>
