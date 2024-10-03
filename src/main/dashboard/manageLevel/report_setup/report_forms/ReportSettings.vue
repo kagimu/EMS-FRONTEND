@@ -353,15 +353,50 @@ watch (
             <td class="text-xs"> {{settings.columns}}</td>
             <td class="text-xs"> {{settings.status}}</td>
             <td>
-              <button  class="btn btn-success btn-sm p-1 mr-1" style="border-width: 0px;text-decoration: none;" @click="setReportColumn(settings.report_setting_number,settings.columns)"><small>Set Report Column</small></button>
-              <button  class="btn btn-outline-primary btn-sm p-1 mr-1" style="border-width: 0px;text-decoration: none;" @click="viewReportColumn(settings.report_setting_number)"><small>View</small></button>
-              <button  class="link-primary" style="border-width: 0px;text-decoration: none;" @click="editThisData(settings)"><small><i  style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small></button>
-              <button @click="deleteThisData(settings, index)">
-                <i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i>
-                <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </button>
+
+             <div>
+               <button
+                   class="mr-2"
+                   style="border-width: 0px;text-decoration: none;"
+                   @click="setReportColumn(settings.report_setting_number,settings.columns)">
+                 <small style="font-size: 13px;" class="text-success hover:underline cursor-pointer">
+                   <i  class="bi-columns cursor-pointer"></i>
+                   Set Report Column
+                 </small>
+               </button>
+
+               <button
+                   class="mr-1"
+                   style="border-width: 0px;text-decoration: none;"
+                   @click="viewReportColumn(settings.report_setting_number)">
+                 <small style="font-size: 13px;" class="text-primary hover:underline cursor-pointer">
+                   <i  class="bi-eye cursor-pointer"></i>
+                   View
+                 </small>
+               </button>
+             </div>
+
+             <div>
+               <button
+                   class="link-primary mr-2"
+                   @click="editThisData(settings)">
+                 <small style="font-size: 13px;color:#2c2f8c;" class="hover:underline cursor-pointer">
+                   <i  class="bi-pencil cursor-pointer"></i>
+                   Update
+                 </small>
+               </button>
+
+               <button @click="deleteThisData(settings, index)">
+                <span style="font-size: 13px;color:rgb(202, 11, 11)" class="hover:underline cursor-pointer">
+                <i class="bi-trash"></i>
+                <span>Delete</span>
+                </span>
+                 <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
+                   <span class="visually-hidden">Loading...</span>
+                 </div>
+               </button>
+             </div>
+
             </td>
 
           </tr>

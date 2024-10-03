@@ -302,7 +302,7 @@ export const useReportSetupStore = defineStore("report_setup", () => {
     }
 
     async function deleteReportSettings(data) {
-        return await api.delete("main/report-settings/"+data)
+        return await api.delete("main/report-settings?report_setting_number="+data)
             .then((response) => {
                 deleteReportSettingsResponse.value = response.data
             })
