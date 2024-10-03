@@ -99,14 +99,31 @@ const deleteThisData = async (id,name) => {
 const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
 if (agreed) {
   let data = {
- 
+  report_template_id:id
   }
+  reportSetupStore.deleteReportTemplate(data)
+}
 }
 
+watch(
+    () => reportSetupStore.errorMessage,
+    async (data) => {
+          if (data) {
+              notificationStore.errorToast("Error", data.message)
+          }
+    },
+    {deep: true}
+)
 
-}
-
-
+watch(
+    () => reportSetupStore.deleteReportTemplateInfoResponse,
+    async (data) => {
+          if (data) {
+              notificationStore.successToast("Success", data.message)
+          }
+    },
+    {deep: true}
+)
 </script>
 
 <template>
