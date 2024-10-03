@@ -75,21 +75,10 @@ const editReportTemplate = (repoData,name) => {
 }
 
 const assignClass = (repId) => {
-  // alert(repId)
   reportTemplateNumber.value = repId
   showAssignModal.value = true
 }
 
-const clearClass = (classInfo) => {
-  showClearClassModal.value = true
-  classListData.value = classInfo
-}
-
-
-const showClasses = (TemplateN) =>{
-reportSetupStore.fetchClassesAddedReportTemplate(TemplateN,schoolNumber)
-repoId.value = TemplateN
-}
 
 
 watch (
@@ -97,21 +86,13 @@ watch (
   async (data) => {
     if(data){
       showReportTemplateModal.value = false
-      reportSetupStore.fetchReportTemplate()
+      await reportSetupStore.fetchReportTemplate()
       filterReportTemplate()
     }
   },
   {deep:true}
 )
 
-// const deleteThisData = (id,name) => {
-//   if(!confirm("Are you sure, you want to delete: " + name)){
-//     return
-//   }else{
-
-//   }
-
-// }
 
 const deleteThisData = async (id,name) => {
 
@@ -177,15 +158,16 @@ if (agreed) {
             <td>{{ index+1 }}</td>
             <td>{{ repoData.name }}</td>
             <td>
-                <ol>
-                    <b><i
+
+
+                    <i
                     style="font-size: 14px;"
-                    class="bi-plus-circle cursor-pointer link-primary" @click="assignClass(repoData.report_template_id)"></i></b> 
+                    class="bi-plus-circle cursor-pointer link-primary" @click="assignClass(repoData.report_template_id)"></i>
            
                       <ReportTemplateClasses :reportTemplateId="repoData.report_template_id"  :school_number="schoolNumber"></ReportTemplateClasses>
 
 
-                </ol>
+
                 
             </td>
             <td>

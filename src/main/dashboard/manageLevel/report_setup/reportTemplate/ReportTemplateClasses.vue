@@ -9,6 +9,7 @@ const reportSetupStore = useReportSetupStore()
 const showClearClassModal = ref(false)
 const classOnTemplateList = ref([])
 const classListData = ref(null)
+const emit = defineEmits()
 
 const props = defineProps({
     reportTemplateId:String,
