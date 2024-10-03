@@ -203,7 +203,7 @@ watch(
               v-model="field.percentage_share"
               required
               class="form-control form-select-sm">
-              <div>
+              <div v-if="field.report_column_number">
                 <button type="button" @click="deleteColumn(field, index)">
                   <i class="bi bi-x-lg ml-2" style="color:rgb(201, 10, 10)"></i>
                 </button>

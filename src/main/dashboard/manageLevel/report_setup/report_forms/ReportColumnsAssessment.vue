@@ -32,6 +32,7 @@ const useCommon = useCommonsStore()
 
 
 const reportColumnAssessmentList = ref(null)
+const deletionLoader = ref(undefined)
 
 const showReportColumn = ref(false)
 const campusLevelList = ref(null)
@@ -200,7 +201,7 @@ watch(
     async (data) => {
       if(data){
         showReportColumn.value = false
-         reportSetupStore.fetchReportColumnAssessment()
+        doFetchReportColumnAssessment()
         notificationStore.successToast("Success",data.message)
       }
     }
@@ -254,14 +255,6 @@ watch(
     }
 )
 
-// watch(
-//     () => studyPeriodStore.studyPeriodByAcademicYearResponse,
-//     async (data) => {
-//       if(data){
-//         studyPeriodList.value = data.data
-//       }
-//     }
-// )
 
 watch(
     () => studyPeriodStore.studyPeriodResponse,
@@ -282,27 +275,38 @@ watch (
     }
 )
 
-// const deleteThisData = (id,assesmentArea,assesmentMet,rcolumn) => {
-//   if(!confirm("Are you sure, you want to delete: " + assesmentArea + " - " + assesmentMet + " - " + rcolumn)){
-//     return
-//   }else{
 
-//   }
 
-// }
-
-const deleteThisData = async (id,assesmentArea,assesmentMet,rcolumn) => {
-
-const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + assesmentArea + " - " + assesmentMet + " - " + rcolumn);
-if (agreed) {
-  let data = {
- 
+const deleteThisData = async (column, index) => {
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete this report column assessment?");
+  if (agreed) {
+    deletionLoader.value = index
+    await reportSetupStore.deleteReportColumnAssessment(column.number)
   }
 }
 
 
-}
 
+watch(
+    () => reportSetupStore.deleteReportColumnAssessmentResponse,
+    async (data) => {
+      if (data) {
+        deletionLoader.value = undefined
+        doFetchReportColumnAssessment()
+        notificationStore.successToast("Success",data.message)
+      }
+    }
+)
+
+watch(
+    () => reportSetupStore.errorMessage,
+    async (data) => {
+      if (data) {
+        deletionLoader.value = undefined
+        notificationStore.errorToast("Error", data.message)
+      }
+    }
+)
 
 </script>
 
@@ -461,14 +465,19 @@ if (agreed) {
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(levelInfo, index) in reportColumnAssessmentList" :key="index">
+          <tr v-for="(column, index) in reportColumnAssessmentList" :key="index">
             <td> {{index+1}}</td>
-            <td> {{levelInfo.assessment_area}}</td>
-            <td> {{levelInfo.assessment_metric}} - {{ levelInfo.academic_year }} - {{ levelInfo.study_period }}</td>
-            <td>{{ useCommon.wellFormatedDate(levelInfo.scheduled_on) }}</td>
-            <td> {{levelInfo.report_column}}</td>
+            <td> {{column.assessment_area}}</td>
+            <td> {{column.assessment_metric}} - {{ column.academic_year }} - {{ column.study_period }}</td>
+            <td>{{ useCommon.wellFormatedDate(column.scheduled_on) }}</td>
+            <td> {{column.report_column}}</td>
             <td>
-              <button @click="deleteThisData(levelInfo.number,levelInfo.assessment_area,levelInfo.report_column,levelInfo.assessment_area)"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>
+              <button @click="deleteThisData(column, index)">
+                <i style="font-size: 12px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i>
+                <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </button>
             </td>
           </tr>
           </tbody>

@@ -194,7 +194,6 @@ watch(
 )
 
 const deleteUser = async (user,index) => {
-  deletionLoader.value = index
   const agreed = await confirmationRef.value.confirm("Are you sure, you want to remove this teacher?");
   if (agreed) {
     deletionLoader.value = index
