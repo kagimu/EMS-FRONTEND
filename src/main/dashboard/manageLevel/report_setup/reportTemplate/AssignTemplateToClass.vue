@@ -21,6 +21,7 @@ const campusLevelList = ref([])
 const campusClassList = ref([])
 const classStore = useClassesStore()
 const campus_level_number = ref("")
+const addedClassData = ref([])
 
 const props = defineProps({
     reportTemplateNumber:String,
@@ -46,7 +47,7 @@ watch(
 const filterAddedClasses = () => {
   let draft = props.addedClasses
   if(draft) {
-    // form.classes = draft[0].classes.map(item => item.number);
+    addedClassData.value = draft[0].classes.map(item => item.number);
   }
 }
 
@@ -139,7 +140,9 @@ watch(
 
 <template>
   <div>
-
+<!--    {{addedClasses}}&#45;&#45;&#45;&#45;&#45;&#45;
+{{addedClassData}} -&#45;&#45;
+    {{form.classes}}-->
   <form @submit.prevent="addClassToReportTemplate">
 
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
