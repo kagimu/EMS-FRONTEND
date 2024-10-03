@@ -465,7 +465,7 @@ if (agreed) {
             <td> {{index+1}}</td>
             <td> {{levelInfo.assessment_area}}</td>
             <td> {{levelInfo.assessment_metric}} - {{ levelInfo.academic_year }} - {{ levelInfo.study_period }}</td>
-            <td>{{ useCommon.formatDate(levelInfo.scheduled_on) }}</td>
+            <td>{{ useCommon.wellFormatedDate(levelInfo.scheduled_on) }}</td>
             <td> {{levelInfo.report_column}}</td>
             <td>
               <button @click="deleteThisData(levelInfo.number,levelInfo.assessment_area,levelInfo.report_column,levelInfo.assessment_area)"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>

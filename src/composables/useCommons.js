@@ -107,6 +107,48 @@ export default function useCommonsStore() {
         return `${year}-${month}-${day}T${hour}:${minute}:${second}.000Z`;
     }
 
+
+  /*  const  wellFormatedDate = (dateString) => {
+        const date = new Date(dateString);
+        return new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        }).format(date);
+    }*/
+
+
+
+
+    const    wellFormatedDate = (dateString) => {
+            const date = new Date(dateString);
+
+            // Get day, month, and year
+            const day = date.getDate();
+            const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
+            const year = date.getFullYear();
+
+            // Add ordinal suffix to the day
+            const ordinalSuffix = getOrdinalSuffix(day);
+
+            // Return formatted date
+            return `${day}${ordinalSuffix} ${month} ${year}`;
+        }
+        const getOrdinalSuffix = (day) => {
+            if (day > 3 && day < 21) return 'th'; // for 11th - 20th
+            switch (day % 10) {
+                case 1: return 'st';
+                case 2: return 'nd';
+                case 3: return 'rd';
+                default: return 'th';
+            }
+        }
+
+
+
+
+
+
     const padZero = (value) => {
         return value < 10 ? '0' + value : value;
     }
@@ -124,6 +166,7 @@ export default function useCommonsStore() {
         objectToQueryParams,
         base64ToBinary,
         formatDate,
-        initializePdfData
+        initializePdfData,
+        wellFormatedDate
     }
 }
