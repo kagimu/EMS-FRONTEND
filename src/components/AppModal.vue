@@ -72,7 +72,7 @@ const closeModal = () => {
             enter-to="opacity-100 scale-100" leave="duration-200 ease-in" leave-from="opacity-100 scale-100"
             leave-to="opacity-0 scale-95">
             <DialogPanel :class="modalClass">
-              <div class="w-full p-6 p-0 border-b border-neutral-300 flex flex-row justify-between">
+              <div class="w-full p-0 border-b border-neutral-300 flex flex-row justify-between">
                 <DialogTitle as="h3" class="text-sm flex-grow leading-6 text-neutral-900 capitalize">
                   <slot name="title">
                    <div class="mt-1 ml-3 text-gray-700">
