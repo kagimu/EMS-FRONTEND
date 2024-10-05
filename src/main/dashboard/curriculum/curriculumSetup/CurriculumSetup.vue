@@ -213,14 +213,6 @@ watch(
         <div class="h-screen overflow-y-auto scrollbar-thin">
           <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
-         
-            <!-- <learning-area-list v-if="menuSelected==='learning-area'"> </learning-area-list> -->
-            <!-- <subject-cluster v-if="menuSelected==='subject-cluster'"></subject-cluster> -->
-            <!-- <subject-list  v-if="menuSelected==='subject'"></subject-list> -->
-            <!-- <strand-list v-if="menuSelected==='strand'"></strand-list>
-            <topic-list v-if="menuSelected==='topic'"></topic-list>
-            <sub-topic-list v-if="menuSelected==='subtopic'"></sub-topic-list> -->
-            <!-- <concept-list v-if="menuSelected==='concept'"></concept-list> -->
 
              <div v-if=" campusQuery === 'import-curriculum'">
                <manage-curriculum></manage-curriculum>
