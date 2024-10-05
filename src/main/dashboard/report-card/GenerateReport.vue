@@ -166,13 +166,27 @@ watch(
     }
 )
 
-
+const campusClassNumber = ref(null)
+const studentNumber = ref(null)
 const doGenerate = (studentInfo) => {
+
   loader.value = studentInfo.enrollment_number
+  studentNumber.value = studentInfo.campus_class_number
+  campusClassNumber.value = studentInfo.student_number
+
   let data = {
     study_period_number:study_period_number.value,
     campus_class_number:studentInfo.campus_class_number,
     student_number:studentInfo.student_number
+  }
+  reportStore.generateReport(data)
+}
+
+const doRefreshAfterReportGenerated = () =>{
+  let data = {
+    study_period_number:study_period_number.value,
+    campus_class_number:campusClassNumber.value,
+    student_number:studentNumber.value
   }
   reportStore.generateReport(data)
 }
@@ -182,7 +196,8 @@ watch(
     () => reportStore.generateReportResponse,
     async (data) => {
       if(data){
-        loader.value = undefined
+        loader.value = false
+        doRefreshAfterReportGenerated()
         notificationStore.successToast("Success", data.message)
       }
     }
