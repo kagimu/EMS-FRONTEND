@@ -258,7 +258,7 @@ watch(
                 v-model="form.report_setting_number"
             >
               <option disabled value="">--select--</option>
-              <option v-for="(list, index) in reportSettingsList" :key="index" :value="list.number">{{list.name}}</option>
+              <option v-for="(list, index) in reportSettingsList" :key="index" :value="list.report_setting_number">{{list.name}}</option>
             </select>
           </div>
 

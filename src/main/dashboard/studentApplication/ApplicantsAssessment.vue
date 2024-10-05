@@ -15,7 +15,7 @@
   const studentsList = ref(null)
   const showingModal = ref(false)
   const assessment_numberumber = ref("")
-  const interviewStudentList = ref( [])
+  const interviewStudentListInfo = ref( [])
   const assessmentStore = useAssessmentStore()
   const studentApplicationStore = useStudentApplicationStore()
   const routerData = useRouter()
@@ -66,7 +66,7 @@
       async (data) => {
         if(data){
          errM.value = false
-          interviewStudentList.value = data.data
+          interviewStudentListInfo.value = data.data
         }
       }
   )
@@ -174,7 +174,7 @@
            </tr>
         </thead>
         <tbody>
-           <tr v-for="(std,index) in interviewStudentList.students" :key="index" >
+           <tr v-for="(std,index) in interviewStudentListInfo.students" :key="index" >
               <td style="text-transform: capitalize;">
                  {{std.student_surname +" " +std.student_second_name + " "+ std.student_other_name}}
               </td>

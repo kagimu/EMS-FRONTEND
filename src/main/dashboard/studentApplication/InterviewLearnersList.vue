@@ -86,7 +86,7 @@
          interview_number:interviewNumber,
          assessment_metric_number:assessmentMetricNumber
       }
-         // applicationStore.fetchStudentsOnInterview(data) 
+         applicationStore.fetchStudentsOnInterview(data) 
          
      }
    
@@ -407,6 +407,7 @@
                </div>
             </div>
             <!-- {{ selectedStudentNumber }} -->
+            <!-- {{ interviewLearnerList }} -->
             <div class="row">
                <div class="col-lg-10">
                   <table

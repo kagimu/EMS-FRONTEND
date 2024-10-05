@@ -45,7 +45,7 @@ const  getReportTemplateInfo = () =>{
 
 const addReportTemplate = () => {
   loader.value = true
-  if(props.reportTemplateDataInfo){
+  if(props.reportTemplateDataInfo.report_template_id){
     reportSetupStore.updateReportTemplate(form)
   }else{
     reportSetupStore.addReportTemplate(form)
@@ -106,7 +106,7 @@ watch(
 
 <template>
   <div>
-    <!-- {{ reportTemplateDataInfo }} -->
+  <!-- {{ reportTemplateDataInfo }} -->
   <form @submit.prevent="addReportTemplate">
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
       {{ errorMessage }}
