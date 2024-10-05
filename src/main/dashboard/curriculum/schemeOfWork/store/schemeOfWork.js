@@ -14,6 +14,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     const errorMessage = ref(null)
     const lessonPlanResponse = ref(null)
     const importLessonPlanResponse = ref(null)
+    const exportLessonPlanResponse = ref(null)
 
 
     async function newSchemeOfWorkData(data) {
@@ -168,6 +169,18 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     }
 
 
+    async function exportLessonPlan(data) {
+        return await api.get("main/lesson-plan/export-template/"+data.scheme_sub_topic_number)
+            .then((response) => {
+                exportLessonPlanResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
 
     return {
         newSchemeOfWorkResponse,
@@ -180,6 +193,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         lessonPlanResponse,
         addReferenceResponse,
         importLessonPlanResponse,
+        exportLessonPlan,
         newSchemeOfWorkData,
         fetchSchemeOfWorkByClass,
         updateSchemeOfWorkData,
@@ -188,6 +202,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         saveLessonPlanReference,
         fetchLessonPlanDetails,
         exportPdf,
-        importLessonPlan
+        importLessonPlan,
+        exportLessonPlanResponse
     }
 })

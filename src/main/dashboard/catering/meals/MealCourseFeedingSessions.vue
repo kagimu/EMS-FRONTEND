@@ -228,8 +228,8 @@ watch(
 
 
 
-    <!-- <div class="row m-2">
-      <div v-for="(list, index) in mealList" :key="index" class="col-md-6 mb-3 mt-2">
+    <div class="row m-2">
+      <div v-for="(list, index) in mealList" :key="index" class="col-md-4 mb-3 mt-2">
         <div class="card card-hover">
           <div class="bg-[#f7f7f7] px-2 py-2 rounded-t-md">
      
@@ -244,9 +244,18 @@ watch(
 
               <div>
               
-                <button type="button" @click="deleteThisData(list.feeding_session_number,list.name)">
+                <!-- <button type="button" @click="deleteThisData(list.feeding_session_number,list.name)">
                   <i class="bi bi-trash" style="color:rgb(201, 10, 10);"></i>
-                </button>
+                </button> -->
+                <button
+        v-if="can('edit_meal_course_menu_pack','general')" 
+          type="button"
+          class="btn btn-outline-success btn-sm"
+          @click="editThisData(list)"
+          aria-label="edit"
+        >
+          <i class="bi bi-pencil"></i>
+        </button>
               </div>
 
             </div>
@@ -259,7 +268,7 @@ watch(
             <table class="table table-hover table-sm table-striped text-[12px]">
               <th>Name</th>
               <th>Qty</th>
-              <th>Consumption Unit</th>
+              <th> Unit Of Use</th>
               <tbody>
             <tr v-for="menuItem in list.pack_items" :key="menuItem.number" class="m-1">
               <td>{{ menuItem.name }}</td>
@@ -272,11 +281,11 @@ watch(
         
         </div>
       </div>
-    </div> -->
+    </div>
 
 
 
-    <div class="row m-2">
+    <!-- <div class="row m-2">
   <div v-for="(list, index) in mealList" :key="index" class="col-md-6 mb-3 mt-2">
     <div class="card shadow-sm border-0">
       <div class="card-header bg-light d-flex justify-content-between align-items-center">
@@ -315,46 +324,6 @@ watch(
             <span class="badge bg-primary rounded-pill">{{ menuItem.consumption_quantity }}</span>
           </li>
         </ul>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- <div class="row m-2">
-  <div v-for="(list, index) in mealList" :key="index" class="col-md-6 mb-3 mt-2">
-    <div class="card shadow-sm border-0">
-      <div class="card-header bg-light d-flex justify-content-between align-items-center">
-        <div>
-          <h5 class="mb-1">{{ list?.name }}</h5>
-          <p class="text-danger mb-0">Cost: Shs {{ list?.pack_cost }}</p>
-        </div>
-        <button
-          type="button"
-          class="btn btn-outline-danger btn-sm"
-          @click="deleteThisData(list.feeding_session_number, list.name)"
-          aria-label="Delete"
-        >
-          <i class="bi bi-trash"></i>
-        </button>
-      </div>
-      <div class="card-body p-3">
-        <table class="table table-sm table-borderless mb-0">
-          <thead>
-            <tr class="text-muted">
-              <th>Name</th>
-              <th class="text-center">Qty</th>
-              <th class="text-center">Consumption Unit</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="menuItem in list.pack_items" :key="menuItem.number">
-              <td>{{ menuItem.name }}</td>
-              <td class="text-center">{{ menuItem.consumption_quantity }}</td>
-              <td class="text-center">{{ menuItem.unit_of_consumption.name }}</td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
   </div>

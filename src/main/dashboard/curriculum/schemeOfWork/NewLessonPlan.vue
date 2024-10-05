@@ -236,7 +236,12 @@ const filterByType = (typ) => {
 
 const downloadLessonPlanByTemplate = (event) => {
   event.preventDefault();
-  subtopicStore.downloadSchemeTemplateExcel({class_number:form.class_number, subject_number:form.subject_number})
+  alert(props.schemeDataInfo.number)
+  let data = {
+    scheme_sub_topic_number:props.schemeDataInfo.number
+  }
+  schemeOfWorkStore.exportLessonPlan(data)
+  // subtopicStore.downloadSchemeTemplateExcel({class_number:form.class_number, subject_number:form.subject_number})
 }
 
 const sub_topic_number = ref(null)
@@ -246,6 +251,31 @@ const uploadTemplate = () => {
   showTemplateUpload.value = !showTemplateUpload.value
 }
 
+watch(
+    () => schemeOfWorkStore.exportLessonPlanResponse,
+    async (data) => {
+      if (data) {
+        loader.value = false
+        const pdfObj = document.createElement("a");
+        pdfObj.href = data.data;
+        pdfObj.click();
+      }
+    },
+    {deep: true}
+)
+
+
+
+watch(
+    () => schemeOfWorkStore.errorMessage,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
 </script>
 
 <template>

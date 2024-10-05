@@ -184,11 +184,12 @@ const doGenerate = (studentInfo) => {
 
 const doRefreshAfterReportGenerated = () =>{
   let data = {
-    study_period_number:study_period_number.value,
-    campus_class_number:campusClassNumber.value,
-    student_number:studentNumber.value
-  }
-  reportStore.generateReport(data)
+      study_period_number: study_period_number.value,
+      class_number: class_number.value,
+      campus_number:campusNumber,
+      campus_curriculum_number:campus_curriculum_number
+    }
+    reportStore.fetchGeneratedReport(data)
 }
 
 
@@ -207,7 +208,7 @@ watch(
     () => reportStore.errorMessage,
     async (data) => {
       if(data){
-        loader.value = undefined
+        loader.value = true
         notificationStore.errorToast("Error", data.message)
       }
     }
