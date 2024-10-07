@@ -235,7 +235,6 @@ const filterByType = (typ) => {
 
 
 const downloadLessonPlanByTemplate = (event) => {
-  // event.preventDefault();
   let data = {
     token:localStorage.getItem("token"),
     scheme_sub_topic_number:props.schemeDataInfo.number
@@ -245,17 +244,15 @@ const downloadLessonPlanByTemplate = (event) => {
  const link = document.createElement('a')
   link.href = downloadUrl
   link.setAttribute('download', downloadUrl)
+  link.target="_blank"
   document.body.appendChild(link)
   link.click()
 
   document.body.removeChild(link)
 
-
-  //implement open file xls in iframe
     // Google Docs Viewer URL
   let viewUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(downloadUrl)}&embedded=true`;
 
-// Update the iframe src with the viewUrl
 document.getElementById('xlsViewer').src = viewUrl;
 
 }
@@ -503,11 +500,12 @@ watch(
        
         </div>
 
+
        <!-- iframe to open xls file?? -->
 
-       <!-- <div class="col-lg-12 content mt-3">
+       <div class="col-lg-12 content mt-3">
           <iframe id="xlsViewer" style="width:100%; height:500px;" frameborder="0"></iframe>
-        </div> -->
+        </div>
       </div>
     </form>
 
