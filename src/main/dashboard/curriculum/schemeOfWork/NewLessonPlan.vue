@@ -235,17 +235,35 @@ const filterByType = (typ) => {
 
 
 const downloadLessonPlanByTemplate = (event) => {
-  event.preventDefault();
-  alert(props.schemeDataInfo.number)
+  // event.preventDefault();
   let data = {
+    token:localStorage.getItem("token"),
     scheme_sub_topic_number:props.schemeDataInfo.number
   }
-  schemeOfWorkStore.exportLessonPlan(data)
-  // subtopicStore.downloadSchemeTemplateExcel({class_number:form.class_number, subject_number:form.subject_number})
+ let  downloadUrl = "https://wholesome-api.noregrets.ug/main/lesson-plan/export-template/"+data.scheme_sub_topic_number+"?token="+data.token;
+ 
+ const link = document.createElement('a')
+  link.href = downloadUrl
+  link.setAttribute('download', downloadUrl)
+  document.body.appendChild(link)
+  link.click()
+
+  document.body.removeChild(link)
+
+
+  //implement open file xls in iframe
+    // Google Docs Viewer URL
+  let viewUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(downloadUrl)}&embedded=true`;
+
+// Update the iframe src with the viewUrl
+document.getElementById('xlsViewer').src = viewUrl;
+
 }
 
-const sub_topic_number = ref(null)
 
+
+
+const sub_topic_number = ref(null)
 const uploadTemplate = () => {
   sub_topic_number.value = props.schemeDataInfo.number
   showTemplateUpload.value = !showTemplateUpload.value
@@ -256,9 +274,6 @@ watch(
     async (data) => {
       if (data) {
         loader.value = false
-        const pdfObj = document.createElement("a");
-        pdfObj.href = data.data;
-        pdfObj.click();
       }
     },
     {deep: true}
@@ -462,6 +477,9 @@ watch(
           <div>
             <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="downloadLessonPlanByTemplate">
               <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+              <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </span>
               Download template
             </button>
             <button type="button"  class="btn btn-sm buttonStyle btn-success mr-2"  @click="uploadTemplate">
@@ -484,6 +502,12 @@ watch(
           </div>
        
         </div>
+
+       <!-- iframe to open xls file?? -->
+
+       <!-- <div class="col-lg-12 content mt-3">
+          <iframe id="xlsViewer" style="width:100%; height:500px;" frameborder="0"></iframe>
+        </div> -->
       </div>
     </form>
 

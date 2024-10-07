@@ -170,9 +170,10 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
 
 
     async function exportLessonPlan(data) {
-        return await api.get("main/lesson-plan/export-template/"+data.scheme_sub_topic_number)
+        return await api.get("main/lesson-plan/export-template/"+data.scheme_sub_topic_number+"?token="+data.token)
             .then((response) => {
                 exportLessonPlanResponse.value = response.data
+               
             })
             .catch((error) => {
                 if(error && error.response){
