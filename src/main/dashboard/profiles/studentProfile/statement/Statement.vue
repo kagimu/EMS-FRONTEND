@@ -134,7 +134,7 @@ watch(
 </script>
 <template>
   <div>
-{{ creditsData }}
+<!-- {{ creditsData }} -->
     <div class="rw mt-3"  >  
   <div class="card-bdy" style="padding: 0;">
   <div class="mt-4">

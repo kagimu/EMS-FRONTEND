@@ -2,6 +2,16 @@
 import {onMounted, ref} from "vue";
 import router from "@/config/router.js";
 import {useAuthStore} from "@/main/auth/store/auth.js";
+import {useRouter} from "vue-router";
+import ClientApplications from "@/main/application/ClientApplications.vue";
+import ClientEnrollments from "@/main/application/applicationComponents/ClientEnrollments.vue";
+import ClientAdmissions from "@/main/application/applicationComponents/ClientAdmissions.vue";
+
+const routerData = useRouter()
+const route = routerData.currentRoute.value.query.s
+const selectedPage = route ? route : "applications"
+
+
 const  authStore = useAuthStore();
 const name = ref(null)
 let p = authStore.profile
@@ -42,10 +52,12 @@ const user = ref({
 })
 
 const menuItems = ref([
-  { name: 'profile', label: 'MY PROFILE', icon: 'bi-person' },
-  { name: 'changePassword', label: 'CHANGE PASSWORD', icon: 'bi-key' },
-  { name: 'applicationHistory', label: 'APPLICATION HISTORY', icon: 'bi-file-earmark-text' },
-  { name: 'admissionHistory', label: 'ADMISSION HISTORY', icon: 'bi-archive' },
+{ name: 'applications', label: 'Applications', icon: 'bi-book' },
+{ name: 'admissions', label: 'Admissions', icon: 'bi-cash' },
+{ name: 'enrollments', label: 'Enrollments', icon: 'bi-book' },
+  { name: 'Invoices', label: 'Invoices', icon: 'bi-book' },
+  // { name: 'changePassword', label: 'CHANGE PASSWORD', icon: 'bi-key' },
+  // { name: 'applicationHistory', label: 'APPLICATION HISTORY', icon: 'bi-file-earmark-text' },
   { name: 'logout', label: 'LOG OUT', icon: 'bi-box-arrow-right' }
 ])
 
@@ -111,16 +123,6 @@ const reloadProfile = () => {
           APPLICATION HISTORY
         </router-link>
 
-        <!-- <router-link
-          :class="[
-            menuSelected('admission_history') ? 'btn btn-light me-3 text-success' : 'btn btn-outline-light me-3',
-            'px-3 py-2'
-          ]"
-          :to="{ name: 'admission_history' }"
-        >
-          ADMISSION HISTORY
-        </router-link> -->
-
 
         <div class="dropdown">
           <span
@@ -161,25 +163,42 @@ const reloadProfile = () => {
        
 
           <div class="shadow-s mb-4 ">
-            <!-- <ul class="list-group list-group-flush">
-              <li
-                v-for="(item, index) in menuItems"
-                :key="index"
-                class="list-group-item list-group-item-action text-[13px]"
-                :class="{ active: activeMenu === item.name }"
-                @click="activeMenu = item.name"
-              >
-                <i :class="item.icon + ' me-2'"></i> {{ item.label }}
-              </li>
-            </ul> -->
+            <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;" > 
+            <router-link
+                    v-for="(item, idx) in menuItems" :key="idx"
+                   
+                    class="list-group-item list-group-item-action"
+                    :class="item.name === selectedPage ? 'active' : ''"
+                    :to="{name:'client_dashboard', query:{s:item.name}}">
+                    <i :class="item.icon + ' me-2'"></i> <small style="font-size:12px;text-transform: capitalize;">{{item.name}}</small>
+                </router-link>
+                </div>
+
           </div>
 
         </div>
     </div>
     <div class="col-lg-10">
-      <router-view></router-view>
+      <!-- <router-view></router-view> -->
+
+      <div v-if="selectedPage === 'applications'">
+       <ClientApplications></ClientApplications>
+      </div>
+
+      <div v-if="selectedPage === 'admissions'">
+     <ClientAdmissions></ClientAdmissions>
+      </div>
+
+      <div v-if="selectedPage === 'enrollments'">
+     <ClientEnrollments></ClientEnrollments>
+      </div>
+
+
     </div>
-    
+  </div>
+
+  <div >
+
   </div>
 
 

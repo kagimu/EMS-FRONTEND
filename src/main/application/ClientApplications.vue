@@ -177,115 +177,82 @@ watch (
 
 </script>
 <template>
-    <div>
-      <AppModal title="Application Details" v-model="showingModal" xl6>
-        <student-application-details :application-number="applications"></student-application-details>
-     </AppModal>
+  <div>
+    <AppModal title="Application Details" v-model="showingModal" xl6>
+      <StudentApplicationDetails :application-number="applications" />
+    </AppModal>
 
-       <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+    <ConfirmationModal ref="confirmationRef" />
 
-          <!-- Loader -->
-          <div v-if="isLoading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
+    <!-- Loader -->
+    <div v-if="isLoading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
 
-        <!-- modal for viewing more details -->
-        <div class="modal fade" id="infoModal" tabindex="-1"  aria-labelledby="" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <client-application-details :application-number="applications"></client-application-details>
-            </div>
-        </div>
+    <!-- Application List Profile View -->
+    <div class="mt-1 w-[100%] mx-auto" v-if="isLoading == false">
+      <div class="row">
+        <div class="col-12">
+          <div class="card p-4 bg-white">
+            <p class="mt-3 ml-3 text-lg font-bold">Applications</p>
+            <PaginationTemplate
+              @perPageChanged="doFetchApplication"
+              v-model:perPage="per_page"
+              :per_page="per_page"
+              :total_items="total_items"
+              :total_rows="total_rows"
+            />
+        
 
-      <div class="mt-[60px;] w-[80%] mx-auto" v-if="isLoading==false">
-        <div class="row">
-          <div class="col-12">
-            <div class="card p-0 bg-white">
-              <div>
-                <div>
+            <div class="w-full overflow-auto max-h-[520px] scrollbar-thin" @scroll="onScroll">
+              <div v-for="(applist, index) in applicationInfoList" :key="index" class="profile-card my-2 p-2 bg-gray-100 rounded-lg">
+                <div class="flex justify-between">
+                  <div>
+                    <p><strong>#{{ index + 1 }}</strong></p>
+                    <p>Parent/Guardian: {{ applist.Parent.surname + " " + applist.Parent.second_name + " " + applist.Parent.other_name }}</p>
+                    <p>Status: {{ applist.status }}</p>
+                    <p>Payment Status: {{ applist.application_fee_payment === false ? 'Pending' : 'Completed' }}</p>
+                  </div>
+                  <div class="flex items-center">
+                    <!-- Action Buttons -->
+                    <button
+                      v-if="applist.status === 'DRAFT'"
+                      @click="goToResume(applist.number)"
+                      class="resume-btn text-red-600 border border-red-600 px-2 py-1 rounded-sm mr-2"
+                      title="Resume"
+                    >
+                      <small><i class="bi bi-arrow-right"></i> Resume</small>
+                    </button>
 
-                  <p class="mt-3 ml-3"><b>Student Application List</b></p>
-<!-- {{ applicationInfoList }} -->
-<PaginationTemplate
-                    @perPageChanged="doFetchApplication"
-                    v-model:perPage="per_page"
-                    :per_page="per_page"
-                    :total_items="total_items"
-                    :total_rows="total_rows"></PaginationTemplate>
-                  <hr >
+                    <button
+                      v-if="applist.status === 'INTERVIEW_SCHEDULED' || applist.status === 'ADMITTED' || applist.status === 'SUBMITTED'"
+                      @click="setApplicationNumber(applist.number)"
+                      class="view-details-btn text-blue-600 border border-blue-600 px-2 py-1 rounded-sm"
+                      title="View Details"
+                    >
+                      <small><i class="bi bi-eye"></i> View Details</small>
+                    </button>
 
-                  <!-- <div class="alert alert-danger"  style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-                    {{errorMessage}}
-                  </div> -->
-                  <div
-                    class="w-full overflow-auto max-h-[520px] scrollbar-thin"
-                    @scroll="onScroll">
-                  <table
-                      id="datatable"
-                      class="table table-sm table-striped text-sm"
-                  >
-                    <thead>
-                    <tr>
-                      <th><div class="ml-5">#</div></th>
-                      <th>Parent/Guardian</th>
-                      <th>Status</th>
-                      <th>Payment Status</th>
-                      <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="(applist, index) in applicationInfoList" :key="index">
-                      <td><div class="ml-5">{{(index + 1) }}</div> </td>
-                      <td>{{ applist.Parent.surname+ " "+ applist.Parent.second_name+ " "+ applist.Parent.other_name  }} </td>
-                      <td>{{ applist.status }} </td>
-                      <td>{{ applist.application_fee_payment === false ? 'pending' : 'completed' }}</td>
- 
-                      <td v-if="applist.status == 'DRAFT'">
-                        <router-link
-                            :to="{name:'application', query:{applicationId:applist.number}}"
-                        >
-                          <button  
-                          @click="goToResume(applist.number)"
-                              class="border-b border-r border-t border-l border-[red] rounded-sm px-2 text-[red]"
-                              title="">
-                          <small style="color:rgb(244, 27, 27)">
-                            <i class="bi bi-arrow-right">&nbsp;Resume</i>
-                          </small></button>
-                          
-                        </router-link>
-
-                        <button @click="deleteThisData(applist)"
-                             style="border-width: 0px;text-decoration: none;" title="Delete"><small>
-                              <i class="bi bi-trash ml-2" style="color: red;"></i>
-                         
-                          </small>
-                          </button>
-                      </td>
-
-                      <td v-if="applist.status == 'INTERVIEW_SCHEDULED' || applist.status == 'ADMITTED' || applist.status == 'SUBMITTED'">
-                        <button
-                            @click="setApplicationNumber(applist.number)"
-                            class="border-b border-r border-t border-l border-[#0d56c3] rounded-sm px-2 text-[#0d56c3] mr-2"
-                            title="View Details">
-                          <small><i class="bi bi-eye"></i> view Details</small>
-                        </button>
-                       
-                      </td>
-
-
-                    </tr>
-                    </tbody>
-                  </table>
+                    <button
+                      @click="deleteThisData(applist)"
+                      class="ml-2 text-red-600"
+                      title="Delete"
+                    >
+                      <small><i class="bi bi-trash"></i></small>
+                    </button>
+                  </div>
                 </div>
-                </div>
-              </div></div></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-
     </div>
+  </div>
 </template>
+
 
 
 
@@ -294,6 +261,26 @@ watch (
 <style scoped> 
 td {
   text-transform: capitalize !important;
+}
+
+
+
+.profile-card {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.resume-btn,
+.view-details-btn {
+  transition: all 0.3s ease;
+}
+
+.resume-btn:hover,
+.view-details-btn:hover {
+  background-color: rgba(255, 0, 0, 0.1);
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
 }
 
 </style>
