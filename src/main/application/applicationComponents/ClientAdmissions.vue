@@ -361,41 +361,26 @@
    
 </script>
 
-
-
 <template>
-    <AppModal title="Enrol" v-model="mymodal" xl6>
-      <EnrolModel :studentNumber="studentNum" :admissionData="admissionInfoData" :studentDataInfo="studentData"></EnrolModel>
-    </AppModal>
-    <AppModal title="Upload Student Photo" v-model="uploadDialog" xl>
-      <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload" :studentNumber="studentNumber" :imageUrl="studentPhoto"></file-uploader>
-    </AppModal>
-  
     <div>
-      <!-- start of 2-column profile layout -->
       <div class="row mt-1">
         <div class="col-12">
           <div class="card">
             <div class="card-body">
               <h5 class="card-title mb-3" style="font-size: 14px; margin-top: 2px;">ADMISSION OFFERS</h5>
               <div class="w-full overflow-auto max-h-[520px] scrollbar-thin" @scroll="onScroll">
-                <div v-for="(adm, index) in admissionList" :key="index" class="admission-item">
-                  <div class="row mb-3">
-                    <!-- Column 1: Student Details -->
-                    <div class="col-md-6 col-sm-12">
+                <div class="row">
+                  <div v-for="(adm, index) in admissionList" :key="index" class="col-md-6 col-sm-12 mb-3">
+                    <div class="admission-item">
                       <div class="student-profile text-center">
                         <img v-if="adm?.student?.photo" alt="photo" class="profile-image" :src="adm?.student?.photo" />
                         <div v-else class="m-auto">
                           <i class="bi-person-circle text-[45px] text-[#8a8888]"></i>
                         </div>
                         <h6 class="mt-2">{{ adm.student.surname + " " + adm.student.second_name + " " + adm.student.other_name }}</h6>
-                        <p>ADN: {{adm.student.adn}}</p>
+                        <p>ADN: {{ adm.student.adn }}</p>
                       </div>
-                    </div>
-  
-                    <!-- Column 2: Admission Details & Actions -->
-                    <div class="col-md-6 col-sm-12 d-flex flex-column justify-content-center">
-                      <div>
+                      <div class="admission-details mt-2 text-center">
                         <h6>Campus: {{ adm.campus.name }}</h6>
                         <h6>Class: {{ adm.student.campus_class }}</h6>
                         <h6>Stream: {{ adm.stream.name }}</h6>
@@ -403,19 +388,19 @@
                         <h6>Status: 
                           <span class="status-text">{{ adm.status }}</span>
                         </h6>
-                      </div>
-                      <div class="d-flex justify-content-center align-items-center mt-3">
-                        <div v-if="can('enroll_student', 'manage')">
-                          <button v-if="adm.status !== 'Enrolled'" @click="showModal(adm.student.number, adm.admission_number, adm)"
-                            type="button" class="btn btn-sm btn-primary">
-                            <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>
-                          </button>
+                        <div class="d-flex justify-content-center align-items-center mt-3">
+                          <div v-if="can('enroll_student', 'manage')">
+                            <button v-if="adm.status !== 'Enrolled'" @click="showModal(adm.student.number, adm.admission_number, adm)"
+                              type="button" class="btn btn-sm btn-primary">
+                              <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>
+                            </button>
+                          </div>
+                          <router-link v-if="adm.status === 'Enrolled'"
+                            class="text-decoration-none"
+                            :to="{ name: 'student-profile-details', query: { st_id: adm.student.number } }">
+                            <button type="button" class="btn btn-outline-primary">View Details</button>
+                          </router-link>
                         </div>
-                        <router-link v-if="adm.status === 'Enrolled'"
-                          class="text-decoration-none"
-                          :to="{name: 'student-profile-details', query: {st_id: adm.student.number}}">
-                          <button type="button" class="btn btn-outline-primary">View Details</button>
-                        </router-link>
                       </div>
                     </div>
                   </div>
@@ -433,8 +418,6 @@
           </div>
         </div>
       </div>
-
-      
     </div>
   </template>
   
@@ -471,5 +454,3 @@
       font-size: 13px;
     }
   </style>
-  
- 

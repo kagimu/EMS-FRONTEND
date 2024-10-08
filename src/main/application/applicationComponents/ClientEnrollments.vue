@@ -377,11 +377,10 @@ const successUpload = (data) => {
                         Upload Photo
                       </div>
                       <router-link
-                        v-if="can('view_profile','manage')" 
                         :to="{name:'student-profile-details', query:{st_id:enrolData.student_number}}" 
                         class="action-button">
                         <i class="bi bi-person"></i>
-                        View Profile
+                        View Details
                       </router-link>
                     </div>
                   </div>
@@ -465,6 +464,7 @@ const successUpload = (data) => {
 
 .action-button {
   display: inline-block;
+  text-decoration: none;
   padding: 8px 12px;
   font-size: 14px;
   color: #0d6dfa;
