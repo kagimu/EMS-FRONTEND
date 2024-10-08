@@ -360,97 +360,95 @@
    }
    
 </script>
-
 <template>
-    <div>
-      <div class="row mt-1">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title mb-3" style="font-size: 14px; margin-top: 2px;">ADMISSION OFFERS</h5>
-              <div class="w-full overflow-auto max-h-[520px] scrollbar-thin" @scroll="onScroll">
-                <div class="row">
-                  <div v-for="(adm, index) in admissionList" :key="index" class="col-md-6 col-sm-12 mb-3">
-                    <div class="admission-item">
-                      <div class="student-profile text-center">
-                        <img v-if="adm?.student?.photo" alt="photo" class="profile-image" :src="adm?.student?.photo" />
-                        <div v-else class="m-auto">
-                          <i class="bi-person-circle text-[45px] text-[#8a8888]"></i>
-                        </div>
-                        <h6 class="mt-2">{{ adm.student.surname + " " + adm.student.second_name + " " + adm.student.other_name }}</h6>
-                        <p>ADN: {{ adm.student.adn }}</p>
-                      </div>
-                      <div class="admission-details mt-2 text-center">
-                        <h6>Campus: {{ adm.campus.name }}</h6>
-                        <h6>Class: {{ adm.student.campus_class }}</h6>
-                        <h6>Stream: {{ adm.stream.name }}</h6>
-                        <h6>Study Period: {{ adm.studyPeriod.study_period_name }}</h6>
-                        <h6>Status: 
-                          <span class="status-text">{{ adm.status }}</span>
-                        </h6>
-                        <div class="d-flex justify-content-center align-items-center mt-3">
-                          <div v-if="can('enroll_student', 'manage')">
-                            <button v-if="adm.status !== 'Enrolled'" @click="showModal(adm.student.number, adm.admission_number, adm)"
-                              type="button" class="btn btn-sm btn-primary">
-                              <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>
-                            </button>
-                          </div>
-                          <router-link v-if="adm.status === 'Enrolled'"
-                            class="text-decoration-none"
-                            :to="{ name: 'student-profile-details', query: { st_id: adm.student.number } }">
-                            <button type="button" class="btn btn-outline-primary">View Details</button>
-                          </router-link>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+    <AppModal title="Enrol" v-model="mymodal" xl6>
+      <EnrolModel :studentNumber="studentNum" :admissionData="admissionInfoData" :studentDataInfo="studentData"></EnrolModel>
+    </AppModal>
+    <AppModal title="Upload Student Photo" v-model="uploadDialog" xl>
+      <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload" :studentNumber="studentNumber" :imageUrl="studentPhoto"></file-uploader>
+    </AppModal>
   
-              <PaginationTemplate
-                @perPageChanged="doFetchAdmission"
-                v-model:perPage="per_page"
-                :per_page="per_page"
-                :total_items="total_items"
-                :total_rows="total_rows">
-              </PaginationTemplate>
+    <div>
+      <h5 class="card-title mb-3" style="font-size: 14px; margin-top: 2px;">ADMISSION OFFERS</h5>
+      <div class="row">
+        <div v-for="(adm, index) in admissionList" :key="index" class="col-md-6 mb-3">
+          <div class="card admission-card">
+            <div class="card-body text-center">
+              <div class="student-profile">
+                <img v-if="adm?.student?.photo" alt="photo" class="profile-image" :src="adm?.student?.photo" />
+                <div v-else class="m-auto">
+                  <i class="bi-person-circle text-[45px] text-[#8a8888]"></i>
+                </div>
+                <h6 class="mt-2">{{ adm.student.surname + " " + adm.student.second_name + " " + adm.student.other_name }}</h6>
+                <p>ADN: {{ adm.student.adn }}</p>
+              </div>
+              <div class="admission-details">
+                <h6>Campus: {{ adm.campus.name }}</h6>
+                <h6>Class: {{ adm.student.campus_class }}</h6>
+                <h6>Stream: {{ adm.stream.name }}</h6>
+                <h6>Study Period: {{ adm.studyPeriod.study_period_name }}</h6>
+                <h6>Status: <span class="status-text">{{ adm.status }}</span></h6>
+              </div>
+              <div class="d-flex justify-content-center align-items-center mt-3">
+                <div v-if="can('enroll_student', 'manage')">
+                  <button v-if="adm.status !== 'Enrolled'" @click="showModal(adm.student.number, adm.admission_number, adm)" type="button" class="btn btn-sm btn-primary">
+                    <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>
+                  </button>
+                </div>
+                <router-link v-if="adm.status === 'Enrolled'" class="text-decoration-none" :to="{ name: 'student-profile-details', query: { st_id: adm.student.number } }">
+                  <button type="button" class="btn btn-outline-primary">View Details</button>
+                </router-link>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      <PaginationTemplate
+        @perPageChanged="doFetchAdmission"
+        v-model:perPage="per_page"
+        :per_page="per_page"
+        :total_items="total_items"
+        :total_rows="total_rows">
+      </PaginationTemplate>
     </div>
-  </template>
-  
-  <style scoped>
-    .student-profile {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-transform: capitalize;
-    }
-  
-    .profile-image {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 50%;
-    }
-  
-    .student-profile h6,
-    .student-profile p {
-      margin: 0;
-      font-size: 14px;
-    }
-  
-    .admission-item {
-      border-bottom: 1px solid #ddd;
-      padding: 10px 0;
-    }
-  
-    .status-text {
-      text-transform: uppercase;
-      color: green;
-      font-weight: bold;
-      font-size: 13px;
-    }
-  </style>
+</template>
+<style scoped>
+.student-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-transform: capitalize;
+}
+
+.profile-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.student-profile h6,
+.student-profile p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.admission-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.admission-details h6 {
+  margin: 5px 0;
+}
+
+.status-text {
+  text-transform: uppercase;
+  color: green;
+  font-weight: bold;
+  font-size: 13px;
+}
+</style>
