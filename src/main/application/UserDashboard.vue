@@ -6,6 +6,7 @@ import {useRouter} from "vue-router";
 import ClientApplications from "@/main/application/ClientApplications.vue";
 import ClientEnrollments from "@/main/application/applicationComponents/ClientEnrollments.vue";
 import ClientAdmissions from "@/main/application/applicationComponents/ClientAdmissions.vue";
+import ClientInvoices from "@/main/application/applicationComponents/ClientInvoices.vue";
 
 const routerData = useRouter()
 const route = routerData.currentRoute.value.query.s
@@ -55,7 +56,7 @@ const menuItems = ref([
 { name: 'applications', label: 'Applications', icon: 'bi-book' },
 { name: 'admissions', label: 'Admissions', icon: 'bi-cash' },
 { name: 'enrollments', label: 'Enrollments', icon: 'bi-book' },
-  { name: 'Invoices', label: 'Invoices', icon: 'bi-book' },
+  { name: 'financial-records', label: 'financial-records', icon: 'bi-book' },
   // { name: 'changePassword', label: 'CHANGE PASSWORD', icon: 'bi-key' },
   // { name: 'applicationHistory', label: 'APPLICATION HISTORY', icon: 'bi-file-earmark-text' },
   { name: 'logout', label: 'LOG OUT', icon: 'bi-box-arrow-right' }
@@ -191,6 +192,10 @@ const reloadProfile = () => {
 
       <div v-if="selectedPage === 'enrollments'">
      <ClientEnrollments></ClientEnrollments>
+      </div>
+
+      <div v-if="selectedPage === 'financial-records'">
+      <ClientInvoices></ClientInvoices>
       </div>
 
 
