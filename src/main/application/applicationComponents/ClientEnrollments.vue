@@ -290,12 +290,11 @@ const successUpload = (data) => {
 
 <template>
   <div>
-
     <AppModal title="Upload Student Photo" v-model="uploadDialog" xl>
       <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload"  :studentNumber="studentNumber" :imageUrl="studentPhoto"></file-uploader>
     </AppModal>
 
-    <div id="promoteModal" :class="{ show: promDialog }" class="modal fade"  tabindex="-1">
+    <div id="promoteModal" :class="{ show: promDialog }" class="modal fade" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
@@ -311,126 +310,172 @@ const successUpload = (data) => {
       </div>
     </div>
 
-
-
-
-
-    <!-- end  -->
     <div class="row mt-3">
       <div class="col-12">
         <div class="card">
           <div class="card-body" style="padding: 0;">
-            <div class="containe mt-1 mx-2">
+            <div class="container mt-1 mx-2">
               <div class="row">
                 <div class="col-lg-12">
-                  <div class="">
-                    <div class="">
-                      <ul>
-                        <h5 style="font-size: 14px;margin-top: 2px;">ENROLLED STUDENTS</h5>
-                        <li>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+                  <h5 style="font-size: 14px;margin-top: 2px;">ENROLLED STUDENTS</h5>
                 </div>
               </div>
+
+              <!-- Pagination Template -->
               <PaginationTemplate
-                  v-model:perPage="per_page"
-                  :per_page="per_page"
-                  :total_items="total_items"
-                  :total_rows="total_rows"
-                  @perPageChanged="doFetchEnrollent"></PaginationTemplate>
+                v-model:perPage="per_page"
+                :per_page="per_page"
+                :total_items="total_items"
+                :total_rows="total_rows"
+                @perPageChanged="doFetchEnrollent">
+              </PaginationTemplate>
 
               <div v-if="loading" class="text-center my-4">
                 <div class="spinner-border" role="status">
                   <span class="sr-only">Loading...</span>
                 </div>
               </div>
+              
               <div v-else-if="enrollmentList.length === 0" class="text-center my-4">
-                <p>There is no data found</p>
+                <p>No students enrolled.</p>
               </div>
-              <div v-else>
-                <div
-                    class="w-full overflow-auto max-h-[520px] scrollbar-thin"
-                    @scroll="onScroll">
-                  <table
-                      class="table table-hover caption-top mt-4 table-sm table-striped"
-                      style="font-size: 13px !important;"
-                  >
-                    <thead >
-                    <tr>
-                      <th style="width: 2px;">#</th>
-                      <th>ADN</th>
-                      <th>Student</th>
-                      <th>School</th>
-                      <th>Campus</th>
-                      <th>StudyPeriod</th>
-                      <th>Class</th>
-                      <th>EnrolledOn</th>
-                      <th>Action</th>
-                    </tr>
 
-                    </thead>
-                    <tbody>
-                    <tr v-for="(enrolData,index) in enrollmentList" :key="index" >
-                      <td>{{ index+1 }}</td>
-                      <td>{{ enrolData.adn }}</td>
-                      <td style="text-transform: capitalize;">
-                        <div class="flex flex-row items-center">
-                          <div class="text-center">
-                            <img v-if="enrolData?.photo" :src="enrolData?.photo" alt="photo" class="w-[40px] h-[40px] border rounded-full"/>
-                            <div v-else class="m-auto">
-                              <i class="bi-person-circle text-[40px] text-[#8a8888]"></i>
-                            </div>
-                          </div>
-                          <div class="ml-2">{{ enrolData.student_surname + " "+ enrolData.student_second_name + " "  + enrolData.student_other_name }}</div>
-                        </div>
+              <!-- Profile Grid Layout -->
+              <div v-else class="profile-grid-container">
+                <div 
+                  v-for="(enrolData, index) in enrollmentList" 
+                  :key="index" 
+                  class="profile-card">
+                  
+                  <div class="profile-image-container">
+                    <img 
+                      v-if="enrolData?.photo" 
+                      :src="enrolData?.photo" 
+                      alt="Student photo" 
+                      class="profile-image">
+                    <div v-else class="placeholder-icon">
+                      <i class="bi-person-circle"></i>
+                    </div>
+                  </div>
 
-                      </td>
-                      <td>{{enrolData.school }}</td>
-                      <td>{{ enrolData.campus }}</td>
-                      <td>{{ enrolData.study_period }}</td>
-                      <td>{{ enrolData.class }}</td>
-                      <td>{{ enrolData.enrollment_date }}</td>
-                      <td>
-                           <div v-if="can('upload_student_photo','manage')" >
-                             <div class="mr-2 rounded-sm px-2 text-[#0d6dfa] cursor-pointer m-1" style="border: 1px solid #0d6dfa;" @click="uploadStudentPhoto(enrolData)">
-                               <i class="bi bi-card-image cursor-pointer mr-1"></i>
-                               Upload Photo
-                             </div>
-                             <router-link
-                                 v-if="can('view_profile','manage')"
-                                 :to="{name:'student-profile-details', query:{st_id:enrolData.student_number}}"
-                                 class="text-decoration-none">
-                                   <div class="mr-2 rounded-sm px-2 text-[#0d6dfa] cursor-pointer m-1" style="border: 1px solid #0d6dfa;">
-                                     <i class="bi bi-person cursor-pointer mr-1"></i>
-                                     View Profile
-                                   </div>
-                             </router-link>
-                           </div>
-                      </td>
+                  <div class="profile-details">
+                    <h6 class="student-name">
+                      {{ enrolData.student_surname + " " + enrolData.student_second_name + " " + enrolData.student_other_name }}
+                    </h6>
+                    <p class="detail-item">ADN: {{ enrolData.adn }}</p>
+                    <p class="detail-item">School: {{ enrolData.school }}</p>
+                    <p class="detail-item">Campus: {{ enrolData.campus }}</p>
+                    <p class="detail-item">Study Period: {{ enrolData.study_period }}</p>
+                    <p class="detail-item">Class: {{ enrolData.class }}</p>
+                    <p class="detail-item">Enrolled On: {{ enrolData.enrollment_date }}</p>
 
-                    </tr>
-
-
-
-                    </tbody>
-                  </table>
+                    <div class="actions">
+                      <div v-if="can('upload_student_photo','manage')" 
+                        class="action-button" 
+                        @click="uploadStudentPhoto(enrolData)">
+                        <i class="bi bi-card-image"></i>
+                        Upload Photo
+                      </div>
+                      <router-link
+                        v-if="can('view_profile','manage')" 
+                        :to="{name:'student-profile-details', query:{st_id:enrolData.student_number}}" 
+                        class="action-button">
+                        <i class="bi bi-person"></i>
+                        View Profile
+                      </router-link>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
 
+            </div>
           </div>
         </div>
       </div>
     </div>
-
-
   </div>
 </template>
 
 
 
 <style scoped>
+.profile-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
 
+.profile-card {
+  background-color: white;
+  border: 1px solid #e3e3e3;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-5px);
+}
+
+.profile-image-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.profile-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #0d6dfa;
+}
+
+.placeholder-icon {
+  font-size: 50px;
+  color: #8a8888;
+}
+
+.profile-details {
+  padding: 15px;
+  text-align: center;
+}
+
+.student-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+  text-transform: capitalize;
+}
+
+.detail-item {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #666;
+}
+
+.actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.action-button {
+  display: inline-block;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #0d6dfa;
+  border: 1px solid #0d6dfa;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+  background-color: #0d6dfa;
+  color: white;
+}
 </style>
