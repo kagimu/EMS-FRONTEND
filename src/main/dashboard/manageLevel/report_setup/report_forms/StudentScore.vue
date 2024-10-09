@@ -208,18 +208,33 @@ const onlyNumberValidator = (event) => {
   if (!validChars.test(event.key)) return event.preventDefault();
 }
 
-const addMarks = (score, comment, number) => {
-
+const addMarks = (score, comment, number, index) => {
+  let scoreData = ""
+   if(score){
+      scoreData = returnComputedData(score)
+     studentsList.value[index].score = scoreData
+   }
   if(score && comment){
     let data = {
       student_number:number,
       assessment_metric_number:assessmentMetricNumber.value,
-      actual_score:parseInt(score),
+      actual_score:parseInt(String(scoreData).replace(/,/g, "")),
       comment:comment
     }
     reportSetupStore.addStudentMarks(data)
   }
 
+}
+
+const returnComputedData = (data) =>{
+  let value = String(data).replace(/,/g, "");
+  try {
+    // Use Function constructor to safely evaluate the expression
+    value = new Function(`return ${value}`)();
+    return value < 0 ? 0 : value > 100 ? 100 : value;
+  } catch (error) {
+    // return "Invalid expression";
+  }
 }
 
 watch(
@@ -397,11 +412,12 @@ watch(
             </td>
             <td>
               <input
+                  maxlength="3"
                   @keypress="onlyNumberValidator($event)"
                   style="outline: none 0 !important; box-shadow: none;"
                   type="text"
                   v-model="std.score"
-                  v-on:blur="addMarks(std.score, std.comment, std.number)"
+                  v-on:blur="addMarks(std.score, std.comment, std.number,index)"
                   required
                   class="form-control h-[35px]">
             </td>
@@ -410,7 +426,7 @@ watch(
                    style="outline: none 0 !important; box-shadow: none;"
                    type="text"
                    v-model="std.comment"
-                   v-on:blur="addMarks(std.score, std.comment, std.number)"
+                   v-on:blur="addMarks(std.score, std.comment, std.number, index)"
                    required
                    class="form-control form-select-sm h-1"></textarea>
             </td>
