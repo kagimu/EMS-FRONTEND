@@ -213,7 +213,7 @@ watch (
                   <div class="flex justify-between">
                     <div>
                       <p><strong>#{{ index + 1 }}</strong></p>
-                      <p>Parent/Guardian: {{ applist.Parent.surname + " " + applist.Parent.second_name + " " + applist.Parent.other_name }}</p>
+                      <p style="text-transform: capitalize;">Parent/Guardian: {{ applist.Parent.surname + " " + applist.Parent.second_name + " " + applist.Parent.other_name }}</p>
                       <p>Status: {{ applist.status }}</p>
                       <p>Payment Status: {{ applist.application_fee_payment === false ? 'Pending' : 'Completed' }}</p>
                     </div>

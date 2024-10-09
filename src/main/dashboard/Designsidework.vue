@@ -1,95 +1,45 @@
 <template>
-  <div>
-    <AppModal title="Creating New Billable" v-model="mymodal" xl6>
-      <NewBillables :userNumber="userNumber" :billablesInfo="billablesInfo" :schoolN="school_number"></NewBillables>
-    </AppModal>
+  <div class="text-center pa-4">
+    <button @click="showDialog = true" class="settings-btn">
+      Settings
+    </button>
 
-    <AppModal title="Billable" v-model="modalDetails" xl6>
-      <BillableDetails :billableNumber="billD"></BillableDetails>
-    </AppModal>
-
-    <div class="rw mt-3">
-      <div class="">
-        <div class="row">
-          <div class="col-lg-4"></div>
-          <div class="col-lg-8">
-            <button @click="showModal()" class="btn btn-primary btn-sm mb-2 mr-2" style="float: right;" v-if="can('create_billables', 'general')">
-              <small><i class="bi bi-plus"> Add New Billable</i></small>
-            </button>
-          </div>
+    <div v-if="showDialog" class="dialog-overlay">
+      <div class="dialog">
+        <div class="dialog-header">
+          <button @click="showDialog = false" class="close-btn">✖</button>
+          <h2>Settings</h2>
+          <button @click="saveSettings" class="save-btn">Save</button>
         </div>
 
-        <div class="card-bdy" style="padding: 0;">
-          <div class="m-2">
-            <div class="row">
-              <div class="col-lg-4">
-                <div class="mb-2">
-                  <select
-                    style="box-shadow: none;"
-                    class="form-select form-select-sm"
-                    required
-                    v-model="school_number"
-                    @change="doFetchBillables(school_number)"
-                  >
-                    <option disabled value="">-filter School -</option>
-                    <option v-for="(list, index) in schoolList" :key="index" :value="list.number">
-                      {{ list.name }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-4"></div>
-              <div class="col-lg-4">
-                <input
-                  type="text"
-                  v-model="searchQuery"
-                  placeholder="search ..."
-                  class="form-control"
-                />
-              </div>
-            </div>
+        <div class="dialog-content">
+          <h3>User Controls</h3>
+          <div class="list-item">
+            <span>Content filtering</span>
+            <p>Set the content filtering level to restrict apps that can be downloaded</p>
+            <input type="checkbox" v-model="contentFiltering" />
+          </div>
+          <div class="list-item">
+            <span>Password</span>
+            <p>Require password for purchase or use password to restrict purchase</p>
+            <input type="checkbox" v-model="passwordRequired" />
+          </div>
 
-            <table
-              class="table table-hover caption-top mt-4 table-sm table-striped"
-              style="font-size: 13px !important;width: 100%;"
-            >
-              <thead>
-                <tr>
-                  <th>No.</th>
-                  <th>Amount</th>
-                  <th>Campus</th>
-                  <th>StudyPeriod</th>
-                  <th>Class</th>
-                  <th>Curriculum</th>
-                  <th>ModeOfStudy</th>
-                  <th>Type</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(list, index) in filteredBillableData" :key="index">
-                  <td>{{ index + 1 }}</td>
-                  <td>{{ list.total_amount?.toLocaleString() }}</td>
-                  <td>{{ list.campus_name }}</td>
-                  <td>{{ list.study_period_name }}</td>
-                  <td>{{ list.class_name }}</td>
-                  <td>{{ list.curriculum_name }}</td>
-                  <td>{{ list.mode_of_study_name }}</td>
-                  <td>{{ list.bill_type.replace('_', ' ') }}</td>
-                  <td>{{ list.status }}</td>
-                  <td>
-                    <button v-if="can('edit_billables', 'general')" data-bs-toggle="offcanvas" aria-controls="rolesDialogg" @click="editModalBillables(list.billable_number)">
-                      <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
-                    </button>
-                    &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-                    <button v-if="can('delete_billables', 'general')" type="button" @click="showModalDetails(list.billable_number)">
-                      <i class="bi bi-eye" style="color:blue"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <h3>General</h3>
+          <div class="list-item">
+            <span>Notifications</span>
+            <p>Notify me about updates to apps or games that I downloaded</p>
+            <input type="checkbox" v-model="notifications" />
+          </div>
+          <div class="list-item">
+            <span>Sound</span>
+            <p>Auto-update apps at any time. Data charges may apply</p>
+            <input type="checkbox" v-model="sound" />
+          </div>
+          <div class="list-item">
+            <span>Auto-add widgets</span>
+            <p>Automatically add home screen widgets</p>
+            <input type="checkbox" v-model="widgets" />
           </div>
         </div>
       </div>
@@ -98,130 +48,77 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch, reactive, computed } from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import { useAbility } from '@casl/vue';
-import AppModal from "@/components/AppModal.vue";
-import NewBillables from "@/main/settings/bills/NewBillables.vue";
-import { useBillStore } from "@/main/settings/bills/store/bills.js";
-import { useSchoolStore } from "@/main/dashboard/manageSchool/store/school.js";
-import BillableDetails from "@/main/settings/bills/BillableDetails.vue";
+import { ref } from 'vue';
 
-const notificationStore = useNotificationStore();
-const schoolStore = useSchoolStore();
-const mymodal = ref(false);
-const errorMessage = ref(null);
-const loader = ref(false);
-const { can } = useAbility();
-const schoolList = ref([]);
-const billStore = useBillStore();
-const school_number = ref("");
-const billableData = ref([]);
-const modalDetails = ref(false);
-const billD = ref(null);
-const billablesInfo = ref([]);
-const searchQuery = ref(""); // Search query ref
+const showDialog = ref(false);
+const notifications = ref(false);
+const sound = ref(true);
+const widgets = ref(false);
+const contentFiltering = ref(false);
+const passwordRequired = ref(false);
 
-onMounted(async () => {
-  schoolStore.fetchSchools();
-});
-
-const showModal = () => {
-  billablesInfo.value = "";
-  mymodal.value = true;
+const saveSettings = () => {
+  // Implement save logic here
+  console.log('Settings saved:', {
+    notifications: notifications.value,
+    sound: sound.value,
+    widgets: widgets.value,
+    contentFiltering: contentFiltering.value,
+    passwordRequired: passwordRequired.value,
+  });
+  showDialog.value = false; // Close the dialog after saving
 };
-
-const showModalDetails = (billNumber) => {
-  modalDetails.value = true;
-  billD.value = billNumber;
-};
-
-const editModalBillables = (billables) => {
-  mymodal.value = true;
-  billablesInfo.value = billables;
-};
-
-const doFetchBillables = (schoolN) => {
-  let data = {
-    school_number: schoolN,
-  };
-  billStore.fetchBillable(data);
-};
-
-watch(
-  () => billStore.newBillableResponse,
-  async (data) => {
-    if (data) {
-      billStore.fetchBillable(data);
-    }
-  },
-  { deep: true }
-);
-
-watch(
-  () => billStore.billableResponse,
-  async (data) => {
-    if (data) {
-      billableData.value = data.data;
-    }
-  },
-  { deep: true }
-);
-
-watch(
-  () => schoolStore.schoolsResponse,
-  async (data) => {
-    if (data) {
-      schoolList.value = data.data;
-    }
-  },
-  { deep: true }
-);
-
-watch(
-  () => billStore.newBillableResponse,
-  async (data) => {
-    if (data) {
-      mymodal.value = false;
-    }
-  },
-  { deep: true }
-);
-
-watch(
-  () => billStore.errorMessage,
-  async (data) => {
-    if (data) {
-      errorMessage.value = data.message;
-      notificationStore.errorToast("Error", data.message);
-      loader.value = false;
-    }
-  },
-  { deep: true }
-);
-
-watch(
-  () => billStore.updateBillableResponse,
-  async (data) => {
-    if (data) {
-      mymodal.value = false;
-      let data = {
-        school_number: schoolN,
-      };
-      billStore.fetchBillable(data);
-    }
-  }
-);
-
-// Computed property for filtered billable data based on search query
-const filteredBillableData = computed(() => {
-  if (!searchQuery.value) {
-    return billableData.value;
-  }
-  return billableData.value.filter((item) =>
-    Object.values(item).some((val) =>
-      String(val).toLowerCase().includes(searchQuery.value.toLowerCase())
-    )
-  );
-});
 </script>
+
+<style scoped>
+.settings-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dialog {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-btn,
+.save-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.list-item {
+  margin: 10px 0;
+}
+
+.list-item input[type="checkbox"] {
+  margin-left: 10px;
+}
+</style>

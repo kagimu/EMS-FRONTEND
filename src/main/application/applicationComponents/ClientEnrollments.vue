@@ -341,18 +341,18 @@ const successUpload = (data) => {
               </div>
 
               <!-- Profile Grid Layout -->
-              <div v-else class="profile-grid-container">
+              <div v-else class="grid grid-cols-4 gap-4 mx-4 mt-3">
                 <div 
                   v-for="(enrolData, index) in enrollmentList" 
                   :key="index" 
-                  class="profile-card">
+                  class="profile-card ">
                   
                   <div class="profile-image-container">
                     <img 
                       v-if="enrolData?.photo" 
                       :src="enrolData?.photo" 
                       alt="Student photo" 
-                      class="profile-image">
+                      class="profile-image mx-auto">
                     <div v-else class="placeholder-icon">
                       <i class="bi-person-circle"></i>
                     </div>
@@ -362,12 +362,12 @@ const successUpload = (data) => {
                     <h6 class="student-name">
                       {{ enrolData.student_surname + " " + enrolData.student_second_name + " " + enrolData.student_other_name }}
                     </h6>
-                    <p class="detail-item">ADN: {{ enrolData.adn }}</p>
-                    <p class="detail-item">School: {{ enrolData.school }}</p>
-                    <p class="detail-item">Campus: {{ enrolData.campus }}</p>
-                    <p class="detail-item">Study Period: {{ enrolData.study_period }}</p>
-                    <p class="detail-item">Class: {{ enrolData.class }}</p>
-                    <p class="detail-item">Enrolled On: {{ enrolData.enrollment_date }}</p>
+                    <p class="text-sm"><b>ADN:</b> {{ enrolData.adn }}</p>
+                    <p class="text-sm"><b>School: </b>{{ enrolData.school }}</p>
+                    <p class="text-sm"><b>Campus:</b> {{ enrolData.campus }}</p>
+                    <p class="text-sm"><b>Study Period:</b> {{ enrolData.study_period }}</p>
+                    <p class="text-sm"><b>Class: </b>{{ enrolData.class }}</p>
+                    <p class="text-sm"><b>Enrolled On</b>: {{ enrolData.enrollment_date }}</p>
 
                     <div class="actions">
                       <div v-if="can('upload_student_photo','manage')" 
@@ -398,12 +398,12 @@ const successUpload = (data) => {
 
 
 <style scoped>
-.profile-grid-container {
+/* .profile-grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
   padding: 20px;
-}
+} */
 
 .profile-card {
   background-color: white;
@@ -438,7 +438,6 @@ const successUpload = (data) => {
 
 .profile-details {
   padding: 15px;
-  text-align: center;
 }
 
 .student-name {
@@ -449,8 +448,8 @@ const successUpload = (data) => {
   text-transform: capitalize;
 }
 
-.detail-item {
-  font-size: 14px;
+.text-sm {
+  /* font-size: 14px; */
   margin-bottom: 5px;
   color: #666;
 }
