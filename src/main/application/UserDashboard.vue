@@ -7,6 +7,7 @@ import ClientApplications from "@/main/application/ClientApplications.vue";
 import ClientEnrollments from "@/main/application/applicationComponents/ClientEnrollments.vue";
 import ClientAdmissions from "@/main/application/applicationComponents/ClientAdmissions.vue";
 import ClientInvoices from "@/main/application/applicationComponents/ClientInvoices.vue";
+import Application from "@/main/application/Application.vue";
 
 const routerData = useRouter()
 const route = routerData.currentRoute.value.query.s
@@ -105,16 +106,15 @@ const reloadProfile = () => {
           APPLY NOW
         </button>-->
         <router-link
-            @click="applyApplication()"
           :class="[ menuSelected('application') ? 'btn btn-light me-3 text-success' : 'btn btn-outline-light me-3',' px-3 py-2']"
-          :to="{ name: 'application' }"
+          :to="{name:'client_dashboard', query:{s:'apply'}}"
         >
         APPLY NOW
         </router-link>
 
 
 
-        <router-link
+        <!-- <router-link
           :class="[
             menuSelected('application_history') ? 'btn btn-light me-3 text-success' : 'btn btn-outline-light me-3',
             ' px-3 py-2'
@@ -122,7 +122,7 @@ const reloadProfile = () => {
           :to="{ name: 'application_history' }"
         >
           APPLICATION HISTORY
-        </router-link>
+        </router-link> -->
 
 
         <div class="dropdown">
@@ -181,6 +181,10 @@ const reloadProfile = () => {
     </div>
     <div class="col-lg-10">
       <!-- <router-view></router-view> -->
+
+      <div v-if="selectedPage === 'apply'">
+     <Application></Application>
+      </div>
 
       <div v-if="selectedPage === 'applications'">
        <ClientApplications></ClientApplications>
