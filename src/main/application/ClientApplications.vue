@@ -176,6 +176,8 @@ watch (
 )
 
 </script>
+
+
 <template>
   <div>
     <AppModal title="Application Details" v-model="showingModal" xl6>
@@ -192,7 +194,7 @@ watch (
     </div>
 
     <!-- Application List Profile View -->
-    <div class="mt-1 w-[100%] mx-auto" v-if="isLoading == false">
+    <div class="mt-1 w-[100%] mx-auto" v-if="!isLoading">
       <div class="row">
         <div class="col-12">
           <div class="card p-4 bg-white">
@@ -204,44 +206,45 @@ watch (
               :total_items="total_items"
               :total_rows="total_rows"
             />
-        
 
-            <div class="w-full overflow-auto max-h-[520px] scrollbar-thin" @scroll="onScroll">
-              <div v-for="(applist, index) in applicationInfoList" :key="index" class="profile-card my-2 p-2 bg-gray-100 rounded-lg">
-                <div class="flex justify-between">
-                  <div>
-                    <p><strong>#{{ index + 1 }}</strong></p>
-                    <p>Parent/Guardian: {{ applist.Parent.surname + " " + applist.Parent.second_name + " " + applist.Parent.other_name }}</p>
-                    <p>Status: {{ applist.status }}</p>
-                    <p>Payment Status: {{ applist.application_fee_payment === false ? 'Pending' : 'Completed' }}</p>
-                  </div>
-                  <div class="flex items-center">
-                    <!-- Action Buttons -->
-                    <button
-                      v-if="applist.status === 'DRAFT'"
-                      @click="goToResume(applist.number)"
-                      class="resume-btn text-red-600 border border-red-600 px-2 py-1 rounded-sm mr-2"
-                      title="Resume"
-                    >
-                      <small><i class="bi bi-arrow-right"></i> Resume</small>
-                    </button>
+            <div class="row mt-3">
+              <div v-for="(applist, index) in applicationInfoList" :key="index" class="col-md-6 mb-3">
+                <div class="profile-card p-3 bg-gray-100 rounded-lg shadow">
+                  <div class="flex justify-between">
+                    <div>
+                      <p><strong>#{{ index + 1 }}</strong></p>
+                      <p>Parent/Guardian: {{ applist.Parent.surname + " " + applist.Parent.second_name + " " + applist.Parent.other_name }}</p>
+                      <p>Status: {{ applist.status }}</p>
+                      <p>Payment Status: {{ applist.application_fee_payment === false ? 'Pending' : 'Completed' }}</p>
+                    </div>
+                    <div class="flex items-center">
+                      <!-- Action Buttons -->
+                      <button
+                        v-if="applist.status === 'DRAFT'"
+                        @click="goToResume(applist.number)"
+                        class="resume-btn text-red-600 border border-red-600 px-2 py-1 rounded-sm mr-2"
+                        title="Resume"
+                      >
+                        <small><i class="bi bi-arrow-right"></i> Resume</small>
+                      </button>
 
-                    <button
-                      v-if="applist.status === 'INTERVIEW_SCHEDULED' || applist.status === 'ADMITTED' || applist.status === 'SUBMITTED'"
-                      @click="setApplicationNumber(applist.number)"
-                      class="view-details-btn text-blue-600 border border-blue-600 px-2 py-1 rounded-sm"
-                      title="View Details"
-                    >
-                      <small><i class="bi bi-eye"></i> View Details</small>
-                    </button>
+                      <button
+                        v-if="applist.status === 'INTERVIEW_SCHEDULED' || applist.status === 'ADMITTED' || applist.status === 'SUBMITTED'"
+                        @click="setApplicationNumber(applist.number)"
+                        class="view-details-btn text-blue-600 border border-blue-600 px-2 py-1 rounded-sm"
+                        title="View Details"
+                      >
+                        <small><i class="bi bi-eye"></i> View Details</small>
+                      </button>
 
-                    <button
-                      @click="deleteThisData(applist)"
-                      class="ml-2 text-red-600"
-                      title="Delete"
-                    >
-                      <small><i class="bi bi-trash"></i></small>
-                    </button>
+                      <button
+                        @click="deleteThisData(applist)"
+                        class="ml-2 text-red-600"
+                        title="Delete"
+                      >
+                        <small><i class="bi bi-trash"></i></small>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -253,20 +256,20 @@ watch (
   </div>
 </template>
 
-
-
-
-
-
-<style scoped> 
+<style scoped>
 td {
   text-transform: capitalize !important;
 }
 
-
-
 .profile-card {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+
+.profile-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .resume-btn,
@@ -282,5 +285,4 @@ td {
 .scrollbar-thin {
   scrollbar-width: thin;
 }
-
 </style>
