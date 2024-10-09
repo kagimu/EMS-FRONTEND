@@ -60,7 +60,6 @@ const menuItems = ref([
   { name: 'financial-records', label: 'financial-records', icon: 'bi-book' },
   // { name: 'changePassword', label: 'CHANGE PASSWORD', icon: 'bi-key' },
   // { name: 'applicationHistory', label: 'APPLICATION HISTORY', icon: 'bi-file-earmark-text' },
-  { name: 'logout', label: 'LOG OUT', icon: 'bi-box-arrow-right' }
 ])
 
 const activeMenu = ref('profile')
@@ -99,31 +98,12 @@ const reloadProfile = () => {
       </div>
 
       <div class="d-flex align-items-center">
-<!--         <button
-             :class="[ menuSelected('application') ? 'btn btn-light me-3 text-success' : 'btn btn-outline-light me-3',' px-3 py-2']"
-          @click="applyApplication()"
-        >
-          APPLY NOW
-        </button>-->
         <router-link
           :class="[ menuSelected('application') ? 'btn btn-light me-3 text-success' : 'btn btn-outline-light me-3',' px-3 py-2']"
           :to="{name:'client_dashboard', query:{s:'apply'}}"
         >
         APPLY NOW
         </router-link>
-
-
-
-        <!-- <router-link
-          :class="[
-            menuSelected('application_history') ? 'btn btn-light me-3 text-success' : 'btn btn-outline-light me-3',
-            ' px-3 py-2'
-          ]"
-          :to="{ name: 'application_history' }"
-        >
-          APPLICATION HISTORY
-        </router-link> -->
-
 
         <div class="dropdown">
           <span

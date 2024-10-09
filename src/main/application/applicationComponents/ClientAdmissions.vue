@@ -370,24 +370,24 @@
   
     <div>
       <h5 class="card-title mb-3" style="font-size: 14px; margin-top: 2px;">ADMISSION OFFERS</h5>
-      <div class="row">
-        <div v-for="(adm, index) in admissionList" :key="index" class="col-md-6 mb-3">
+      <div class=" grid grid-cols-4 gap-4 mx-4 mt-3">
+        <div v-for="(adm, index) in admissionList" :key="index" >
           <div class="card admission-card">
-            <div class="card-body text-center">
+            <div class="card-body ">
               <div class="student-profile">
-                <img v-if="adm?.student?.photo" alt="photo" class="profile-image" :src="adm?.student?.photo" />
+                <img v-if="adm?.student?.photo" alt="photo" class="mb-1 profile-image mx-auto" :src="adm?.student?.photo" />
                 <div v-else class="m-auto">
                   <i class="bi-person-circle text-[45px] text-[#8a8888]"></i>
                 </div>
                 <h6 class="mt-2">{{ adm.student.surname + " " + adm.student.second_name + " " + adm.student.other_name }}</h6>
-                <p>ADN: {{ adm.student.adn }}</p>
+                <p class="mt-1">ADN: {{ adm.student.adn }}</p>
               </div>
               <div class="admission-details">
-                <h6>Campus: {{ adm.campus.name }}</h6>
-                <h6>Class: {{ adm.student.campus_class }}</h6>
-                <h6>Stream: {{ adm.stream.name }}</h6>
-                <h6>Study Period: {{ adm.studyPeriod.study_period_name }}</h6>
-                <h6>Status: <span class="status-text">{{ adm.status }}</span></h6>
+                <p><b>Campus:</b> {{ adm.campus.name }}</p>
+                <p><b>Class:</b> {{ adm.student.campus_class }}</p>
+                <p><b>Stream:</b> {{ adm.stream.name }}</p>
+                <p><b>Study Period:</b> {{ adm.studyPeriod.study_period_name }}</p>
+                <p><b>Status: </b><span class="status-text">{{ adm.status }}</span></p>
               </div>
               <div class="d-flex justify-content-center align-items-center mt-3">
                 <div v-if="can('enroll_student', 'manage')">
@@ -417,7 +417,6 @@
 .student-profile {
   display: flex;
   flex-direction: column;
-  align-items: center;
   text-transform: capitalize;
 }
 
@@ -443,6 +442,7 @@
 
 .admission-details h6 {
   margin: 5px 0;
+
 }
 
 .status-text {
