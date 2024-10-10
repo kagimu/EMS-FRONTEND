@@ -14,6 +14,7 @@ let errorMessage = ref(null)
 let buttonLoader = ref(false)
 let show = ref(false)
 const title  = ref(null)
+const scope = ref(null)
 
 onMounted(() => {
   entityStore.getConfigureLanding()
@@ -49,6 +50,7 @@ watch(
     () => authStore.loginResponse,
     async (data) => {
       if(data){
+        scope.value = data.data.scopes
         await authStore.userProfile()
       }
     }
@@ -66,6 +68,12 @@ watch(
         if (data.type === "User"){
           r = router.resolve({
             name: "client_dashboard"
+          });
+        }
+
+        if (scope.value != ""){
+          r = router.resolve({
+            name: "teacher"
           });
         }
 

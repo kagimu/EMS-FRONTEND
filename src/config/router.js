@@ -73,6 +73,9 @@ import StudentProfileDetails from "@/main/dashboard/profiles/studentProfile/Stud
 import AdmissionDetails from '@/main/dashboard/studentAdmission/newAdmissionComponents/AdmissionDetails.vue';
 import EntityDashboard from "@/main/dashboard/EntityDashboard.vue";
 import InvoiceAndTransactions from "@/main/dashboard/invoice/InvoiceAndTransactions.vue";
+import TeacherDashboard from "@/main/teacher/TeacherDashboard.vue";
+import HelloTeacher from "@/main/teacher/HelloTeacher.vue";
+import Students from "@/main/teacher/students/Students.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -89,6 +92,25 @@ const router = createRouter({
                 {path: 'application-guide', component: ApplicationGuide, name:'application-guide'},
                 { path: 'set-password/:id', component: SetPassword, name:'set-password'},
                 { path: 'reset-password', component: ResetPassword, name:'reset-password'},
+            ]
+        },
+      
+
+        {
+            path: '/client-dashboard',
+            component: UserDashboard,
+            name :"client_dashboard",
+            redirect:{ name: 'application' },
+            meta: {
+                requiresAuth: true,
+            },
+            children:[
+                {path: 'user-dash', component: UserDash, name:'user-dash'},
+                {path: 'application', component: Application, name:'application'},
+                {path: 'start', component: Application, name:'application'},
+                {path: 'admission', component: Application, name:'admission_history'},
+                {path: 'applications', component: ClientApplications, name:'application_history'},
+                {path: 'application-success', component: ApplicationSuccessPage, name: "application-success",},
             ]
         },
         {
@@ -534,6 +556,23 @@ const router = createRouter({
                 {path: 'application-success', component: ApplicationSuccessPage, name: "application-success",},
             ]
         },
+
+        
+        {
+            path: '/admin',
+            component: TeacherDashboard,
+            name :"teacher",
+            redirect:{ name: 'teacher-dashboard' },
+            meta: {
+                requiresAuth: true,
+            },
+            children:[
+                {path: 'teacher-dashboard', component: HelloTeacher, name:'teacher-dashboard'},
+                {path: 'students', component: Students, name:'students'},
+            ]
+        },
+
+
         {
             path: '/:pathMatch(.*)*',
             redirect: { name: "login" }
@@ -567,9 +606,10 @@ router.beforeEach((to, from, next) => {
         if (profile) {
             let user = JSON.parse(profile);
 
-            if(!localStorage.getItem("entity_number") && to.name !== "entity-dashboard" && user.type !== "User"){
+            if(!localStorage.getItem("entity_number") && to.name !== "entity-dashboard" && user.type !== "User" && user.type !== "Staff"){
                 next({ name: "entity-dashboard" });
             }
+
             if (user !== null) {
                 authStore.updateProfile(profile)
                 authStore.updateToken(token)
