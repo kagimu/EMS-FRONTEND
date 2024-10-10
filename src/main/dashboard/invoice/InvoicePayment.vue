@@ -50,7 +50,7 @@ const invoicePayment = () => {
   }
   
   loader.value = true;
-  alert(JSON.stringify(myData))
+  // alert(JSON.stringify(myData))
   invoiceStore.createInvoicePayment(myData);
 };
 

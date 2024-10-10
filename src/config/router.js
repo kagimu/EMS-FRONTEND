@@ -76,6 +76,7 @@ import InvoiceAndTransactions from "@/main/dashboard/invoice/InvoiceAndTransacti
 import TeacherDashboard from "@/main/teacher/TeacherDashboard.vue";
 import HelloTeacher from "@/main/teacher/HelloTeacher.vue";
 import Students from "@/main/teacher/students/Students.vue";
+import ManageStream from "@/main/teacher/ManageStream.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -569,6 +570,7 @@ const router = createRouter({
             children:[
                 {path: 'teacher-dashboard', component: HelloTeacher, name:'teacher-dashboard'},
                 {path: 'students', component: Students, name:'students'},
+                {path: 'manage-stream', component: ManageStream, name:'manage-stream'},
             ]
         },
 

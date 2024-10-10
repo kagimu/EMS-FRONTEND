@@ -1,150 +1,30 @@
-<script setup>
-
-import {onMounted, ref, watch} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import NewSchool from "@/main/dashboard/manageSchool/NewSchool.vue";
-import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-
-import AppModal from "@/components/AppModal.vue";
-import { useAbility } from '@casl/vue';
-import ConfirmationModal from "@/components/ConfirmationModal.vue";
-import FileUploader from "@/components/FileUploader.vue";
-
-const { can } = useAbility()
-const schoolStore = useSchoolStore()
-const  notificationStore  = useNotificationStore()
-
-const confirmationRef = ref(null);
-
-
-const schoolRef = ref(null)
-const uploadDialog = ref(false)
-const schoolBudge = ref(null)
-const schoolNumber = ref(null)
-const editMode = ref(false)
-const showSelected = ref(null)
-let entityN = localStorage.getItem("entity_number")
-
-
-const schoolDialog = ref( false)
-const schoolsList = ref( [])
-
-
-const addSchool = () => {
-  editMode.value = false
-  schoolDialog.value = true
-}
-
-const editSchool = (school) => {
-  if(school) {
-    schoolDialog.value = true
-    editMode.value = true
-    schoolStore.fetchSchoolData(school.number)
-  }
-}
-
-
-const deleteSchool = async (school) => {
-
-  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+school.name);
-  if (agreed) {
-    await schoolStore.deleteSchool(school?.number)
-  }
-
-}
-
-const setSchoolName = (school) =>{
-  localStorage.setItem('schoolName',school)
-}
-
-onMounted(
-    () => {
-      schoolStore.fetchSchools(entityN)
-    }
-)
-
-const uploadSchoolBudge = (school) => {
-  schoolBudge.value = school?.logo
-  schoolNumber.value = school?.number
-  uploadDialog.value = true
-}
-
-watch(
-    () => schoolStore.newSchoolResponse,
-    async (data) => {
-      if(data){
-        schoolDialog.value = false
-        await schoolStore.fetchSchools(entityN)
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => schoolStore.schoolsResponse,
-    async (data) => {
-      if(data){
-        schoolsList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-
-watch (
-    () => schoolStore.editSchoolResponse,
-    async (data) => {
-      if(data){
-        schoolDialog.value = false
-        await schoolStore.fetchSchools()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch (
-    () => schoolStore.deleteSchoolResponse,
-    async (data) => {
-      if(data){
-        await schoolStore.fetchSchools()
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch (
-    () => schoolStore.errorMessage,
-    async (data) => {
-      if(data){
-        notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-)
-
-
-const toggleStream = (number) =>{
-  showSelected.value = (showSelected.value === number) ? undefined : number
-}
-
-const successUpload = (data) => {
-  if(data){
-    uploadDialog.value = false
-    schoolStore.fetchSchools(entityN)
-  }
-}
-
-
-</script>
-
 <template>
-  <div>
+    <div class="dashboard">
+      <!-- Welcome Banner -->
+      <div class="welcome-card pa-5 mb-4 ">
+      
+          <div class="row" >
+            <div class="col-8">
+            <div class="icon mr-2 yellow-text">👋</div>
+            <h2 class="welcome-message">Welcome Back !</h2>
+            <p class="welcome-subtext">We're glad to see you again. Here's an overview of your latest activity.</p>
+          </div>
+          <div class="col-4">
+            <!-- Displaying Date and Time -->
+            <div class="date-time" style="font-size: 16px;">
+              <ul class="list-roup p-2 " style="float: right;">
+            <li class="list-group-item"> 📅 <span>{{ todayDate }}</span> - <span>{{ currentTime }}</span></li> 
+            </ul>
+            </div>
+        </div>
+        </div>
+       
+        
+      </div>
+  
 
-    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-      <div v-for="(school, index) in schoolsList" :key="index">
+      <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+      <div>
 
           <div class="border rounded-md bg-white mt-3 p-0">
 
@@ -160,18 +40,27 @@ const successUpload = (data) => {
               <div>
               </div>
               <div class="mt-3">
-                <div class="cursor-pointer text-[15px]" @click="toggleStream(school.number)" >
+                <div class="cursor-pointer text-[15px]" @click="toggleStream()" >
                   Show Stream
                   <i
                       class="text-[12px]"
-                      :class="showSelected === school.number ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"
+                      :class="showSelected === 'show' ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"
                   ></i>
                 </div>
               </div>
 
-              <div class="mt-2" v-show="showSelected === school.number">
-                <div class="ml-2" v-for="(curr, idx) in school.school_curriculum" key="idx">
-                  <div class="text-[13px] text-[#575656]"><a href="">{{curr.name}}</a></div>
+              <div class="mt-2" v-show="showSelected === 'show'">
+                <div class="ml-2">
+                  <div class="text-[13px] text-[#575656]">
+                    <router-link
+                  class="text-decoration-none"
+                  :to="{name:'manage-stream', query:{id:'stream-number'}}"
+              >East </router-link></div>
+                  <div class="text-[13px] text-[#575656]"><router-link
+                  class="text-decoration-none"
+                  :to="{name:'manage-stream', query:{id:'stream-number'}}"
+              >West </router-link></div>
+                  
                 </div>
               </div>
 
@@ -208,34 +97,120 @@ const successUpload = (data) => {
 
     </div>
 
-  </div>
-</template>
+    </div>
+  </template>
+  
+  <script setup>
+import { useAuthStore } from "@/main/auth/store/auth.js";
+import {onMounted, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+
+const schoolStore = useSchoolStore()
+const  notificationStore  = useNotificationStore()
+const showSelected = ref(null)
+let entityN = localStorage.getItem("entity_number")
+
+const schoolsList = ref( [])
+  const authStore = useAuthStore();
+  const todayDate = ref('');
+  const currentTime = ref('');
+  
+  const updateTime = () => {
+    const now = new Date();
+    
+    const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    todayDate.value = now.toLocaleDateString(undefined, dateOptions);
+  
+    const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    currentTime.value = now.toLocaleTimeString(undefined, timeOptions);
+  };
+  
+  onMounted(() => {
+    schoolStore.fetchSchools(entityN)
+    updateTime();
+    setInterval(updateTime, 1000);
+  })
 
 
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if(data){
+        schoolsList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
-<style scoped>
 
-.linkStyle {
-  text-decoration: none;
-  color: #1867c0;
-  font-size: 16px;
+watch (
+    () => schoolStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+const toggleStream = () =>{
+//   showSelected.value = (showSelected.value === number) ? undefined : number
+  showSelected.value = "show"
 }
 
-.linkStyle:hover {
-  font-size: 16px;
-  color: green;
-  text-decoration: underline;
-}
-
-.viewButtonStyle{
-  background-color: #2c6fb9;
-  color: #ffffff;
-  border-radius: 0;
-}
-
-.viewButtonStyle:hover {
-  background-color: #0557b4;
-  color: #ffffff;
-}
-
-</style>
+  </script>
+  
+  <style scoped>
+  .dashboard {
+    padding: 16px;
+  }
+  
+  .welcome-card {
+    background-color: #f3f4f6;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .welcome-message {
+    font-size: 24px;
+    font-weight: 600;
+  }
+  
+  .welcome-subtext {
+    font-size: 14px;
+    color: #6b7280;
+  }
+  
+  .icon {
+    font-size: 48px;
+  }
+  
+ 
+  .green-text {
+    color: green;
+  }
+  
+  .blue-text {
+    color: blue;
+  }
+  
+  .red-text {
+    color: red;
+  }
+  
+  .text-card {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 5px;
+  }
+  
+  .date-time {
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+  }
+  </style>
+  
