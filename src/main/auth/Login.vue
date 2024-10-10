@@ -51,6 +51,8 @@ watch(
     async (data) => {
       if(data){
         scope.value = data.data.scopes
+     let camp = JSON.stringify(data.data.Campuses)
+        localStorage.setItem("Campus", camp)
         await authStore.userProfile()
       }
     }

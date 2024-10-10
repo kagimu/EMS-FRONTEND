@@ -1,3 +1,70 @@
+
+<script setup>
+import { useAuthStore } from "@/main/auth/store/auth.js";
+import {onMounted, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+
+const schoolStore = useSchoolStore()
+const  notificationStore  = useNotificationStore()
+const showSelected = ref(null)
+let entityN = localStorage.getItem("entity_number")
+
+let campusListData = ref([])
+
+
+const schoolsList = ref( [])
+  const authStore = useAuthStore();
+  const todayDate = ref('');
+  const currentTime = ref('');
+  
+  const updateTime = () => {
+    const now = new Date();
+    
+    const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    todayDate.value = now.toLocaleDateString(undefined, dateOptions);
+  
+    const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    currentTime.value = now.toLocaleTimeString(undefined, timeOptions);
+  };
+  
+  onMounted(() => {
+    schoolStore.fetchSchools(entityN)
+    updateTime();
+    setInterval(updateTime, 1000);
+    campusListData.value = JSON.parse(localStorage.getItem("Campus"))
+  })
+
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if(data){
+        schoolsList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch (
+    () => schoolStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+const toggleStream = () =>{
+//   showSelected.value = (showSelected.value === number) ? undefined : number
+  showSelected.value = "show"
+}
+
+  </script>
+
 <template>
     <div class="dashboard">
       <!-- Welcome Banner -->
@@ -14,17 +81,47 @@
             <div class="date-time" style="font-size: 16px;">
               <ul class="list-roup p-2 " style="float: right;">
             <li class="list-group-item"> 📅 <span>{{ todayDate }}</span> - <span>{{ currentTime }}</span></li> 
+            <li class="text-xs ml-5 mt-1 welcome-subtext pt-1">Academic Year : 2024</li>
+            <li  class="text-xs ml-5 welcome-subtext pt-1">Study Period : Term 1</li>
             </ul>
+            
             </div>
         </div>
         </div>
-       
-        
       </div>
-  
+
+        <div class="row">
+        <div class="col-4">
+            <div class="mb-2">
+            <select
+                class="form-select form-select-sm"
+                style="box-shadow: none;">
+                <option disabled value="">--Select Campus--</option>
+                <option v-for="(list,index) in campusListData" :key="index">{{ list.campus_name }}
+                </option>
+            </select>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="mb-2">
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="mb-2">
+            <input class="form-control mb-0" placeholder="Search..." type="text">
+            </div>
+        </div>
+
+        </div>
+
 
       <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-      <div>
+        <template v-for="(list,index) in campusListData" :key="index">
+
+      <div v-for="(listD,index) in list.Classes" :key="index">
+
 
           <div class="border rounded-md bg-white mt-3 p-0">
 
@@ -32,7 +129,7 @@
             <div class="mb-3 flex justify-between text-[16px]">
               <div class="flex flex-row items-center">
                 <div class="">
-                  <div class="text-gray-900">Primary One [P1]</div>
+                  <div class="text-gray-900">{{ listD.name }}</div>
                 </div>
               </div>
             </div>
@@ -55,11 +152,11 @@
                     <router-link
                   class="text-decoration-none"
                   :to="{name:'manage-stream', query:{id:'stream-number'}}"
-              >East </router-link></div>
+              > <i class="bi bi-arrow-right"></i> East </router-link></div>
                   <div class="text-[13px] text-[#575656]"><router-link
                   class="text-decoration-none"
                   :to="{name:'manage-stream', query:{id:'stream-number'}}"
-              >West </router-link></div>
+              ><i class="bi bi-arrow-right"></i> West </router-link></div>
                   
                 </div>
               </div>
@@ -92,75 +189,15 @@
 
         </div>
 
+ 
       </div>
-
+    </template>
 
     </div>
 
     </div>
   </template>
   
-  <script setup>
-import { useAuthStore } from "@/main/auth/store/auth.js";
-import {onMounted, ref, watch} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-
-const schoolStore = useSchoolStore()
-const  notificationStore  = useNotificationStore()
-const showSelected = ref(null)
-let entityN = localStorage.getItem("entity_number")
-
-const schoolsList = ref( [])
-  const authStore = useAuthStore();
-  const todayDate = ref('');
-  const currentTime = ref('');
-  
-  const updateTime = () => {
-    const now = new Date();
-    
-    const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-    todayDate.value = now.toLocaleDateString(undefined, dateOptions);
-  
-    const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
-    currentTime.value = now.toLocaleTimeString(undefined, timeOptions);
-  };
-  
-  onMounted(() => {
-    schoolStore.fetchSchools(entityN)
-    updateTime();
-    setInterval(updateTime, 1000);
-  })
-
-
-watch(
-    () => schoolStore.schoolsResponse,
-    async (data) => {
-      if(data){
-        schoolsList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-
-watch (
-    () => schoolStore.errorMessage,
-    async (data) => {
-      if(data){
-        notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-)
-
-
-const toggleStream = () =>{
-//   showSelected.value = (showSelected.value === number) ? undefined : number
-  showSelected.value = "show"
-}
-
-  </script>
   
   <style scoped>
   .dashboard {
