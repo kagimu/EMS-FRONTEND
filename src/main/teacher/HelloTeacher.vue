@@ -1,22 +1,22 @@
-
 <script setup>
 import { useAuthStore } from "@/main/auth/store/auth.js";
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
 
+const classStore = useClassesStore()
 const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
 const showSelected = ref(null)
 let entityN = localStorage.getItem("entity_number")
-
 let campusListData = ref([])
 
-
 const schoolsList = ref( [])
-  const authStore = useAuthStore();
-  const todayDate = ref('');
-  const currentTime = ref('');
+const authStore = useAuthStore();
+const todayDate = ref('');
+const currentTime = ref('');
+const streamList = ref([])
   
   const updateTime = () => {
     const now = new Date();
@@ -34,6 +34,8 @@ const schoolsList = ref( [])
     setInterval(updateTime, 1000);
     campusListData.value = JSON.parse(localStorage.getItem("Campus"))
   })
+
+
 
 
 watch(
@@ -58,10 +60,27 @@ watch (
 )
 
 
-const toggleStream = () =>{
-//   showSelected.value = (showSelected.value === number) ? undefined : number
-  showSelected.value = "show"
+const toggleStream = (number) =>{
+  let sData = {
+      campus_class_number:number,
+     }
+    classStore.fetchClassStreamsByCampusClassNumber(sData)
+  showSelected.value = (showSelected.value === number) ? undefined : number
+  // showSelected.value = "show"
 }
+
+
+
+watch(
+    () => classStore.byCampusClassStreams,
+    async (data) => {
+      if (data) {
+        streamList.value = data.data
+      }
+    },
+    {deep: true}
+)
+
 
   </script>
 
@@ -84,7 +103,7 @@ const toggleStream = () =>{
             <li class="text-xs ml-5 mt-1 welcome-subtext pt-1">Academic Year : 2024</li>
             <li  class="text-xs ml-5 welcome-subtext pt-1">Study Period : Term 1</li>
             </ul>
-            
+          
             </div>
         </div>
         </div>
@@ -137,7 +156,7 @@ const toggleStream = () =>{
               <div>
               </div>
               <div class="mt-3">
-                <div class="cursor-pointer text-[15px]" @click="toggleStream()" >
+                <div class="cursor-pointer text-[15px]" @click="toggleStream(listD.number)" >
                   Show Stream
                   <i
                       class="text-[12px]"
@@ -146,7 +165,7 @@ const toggleStream = () =>{
                 </div>
               </div>
 
-              <div class="mt-2" v-show="showSelected === 'show'">
+              <!-- <div class="mt-2" v-show="showSelected === 'show'">
                 <div class="ml-2">
                   <div class="text-[13px] text-[#575656]">
                     <router-link
@@ -159,7 +178,22 @@ const toggleStream = () =>{
               ><i class="bi bi-arrow-right"></i> West </router-link></div>
                   
                 </div>
+              </div> -->
+
+
+
+              
+              <div class="mt-2" v-show="showSelected === listD.number">
+                  <!-- {{ streamList }} -->
+                <div class="ml-2" v-for="(list, idx) in streamList" key="idx">
+                  <router-link
+                  class="text-decoration-none link-primary" 
+                  :to="{name:'manage-stream', query:{id:list.stream_number,ccl:list.campus_class_number}}">
+                 <div class="text-[13px] text-[#575656]">{{idx+1}}. {{list.name}}</div>
+                </router-link>
+                </div>
               </div>
+
 
             </div>
 

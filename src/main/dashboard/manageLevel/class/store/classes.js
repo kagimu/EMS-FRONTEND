@@ -25,6 +25,7 @@ export const useClassesStore = defineStore("classes", () => {
     const errorMessage = ref(null)
     const curriculumClassByIdResponse = ref(null)
     const classLevelByLevelResponse = ref(null)
+    const byCampusClassStreams = ref(null)
 
 
 
@@ -234,6 +235,20 @@ export const useClassesStore = defineStore("classes", () => {
             })
     }
 
+
+    async function fetchClassStreamsByCampusClassNumber(data) {
+          let campus_class_number =  data?.campus_class_number ?? ""
+        return await api.get("main/stream/fetch?campus_class_number="+campus_class_number)
+            .then((response) => {
+                byCampusClassStreams.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     async function addStream(data) {
         return await api.post("main/stream/new",data)
             .then((response) => {
@@ -332,6 +347,7 @@ export const useClassesStore = defineStore("classes", () => {
         errorMessage,
         classLevelByLevelResponse,
         curriculumClassByIdResponse,
+        byCampusClassStreams,
         newClassData,
         editClassData,
         fetchClasses,
@@ -353,6 +369,7 @@ export const useClassesStore = defineStore("classes", () => {
         newCampusLevel,
         fetchCampusLevel,
         fetchClassByLevel,
-        fetchCurriculumClassesByID
+        fetchCurriculumClassesByID,
+        fetchClassStreamsByCampusClassNumber
     }
 })

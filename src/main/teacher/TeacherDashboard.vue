@@ -1,8 +1,6 @@
 <script setup>
-
 import router from "@/config/router.js";
-
-import {ref, onMounted, watch} from 'vue'
+import {ref, onMounted, watch,onUnmounted} from 'vue'
 import {useAuthStore} from "@/main/auth/store/auth.js";
 import {useRouter} from "vue-router";
 import { useAbility } from '@casl/vue';
@@ -10,8 +8,19 @@ import {breakpointsTailwind, useBreakpoints, useStorage} from "@vueuse/core";
 import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
-// const isDark = useDark()
-// const toggleDark = useToggle(isDark)
+// const currentSchool = ref(null)
+
+const isOpen = ref(true)
+const handleKeydown = (event) => {
+  if (event.key === 'Escape') {
+    event.preventDefault(); 
+  }
+}
+
+const stopPropagation = (event) => {
+  event.stopPropagation();
+}
+
 
 const entityStore = useEntityStore()
 
@@ -39,10 +48,12 @@ const sm = breakpoints.between('sm', 'md')
 const md = breakpoints.between('md', 'lg')
 let entityName = localStorage.getItem("entity_name")
 const schoolName = ref("")
+const schoolLists = ref([])
 const campusName = ref("")
 const landingPageData = ref([])
 const menu = ref(null);
 const landingPageTitle = ref(null)
+
 
 const defaultMenuSize = ref(useStorage("toggle", false))
 
@@ -68,7 +79,19 @@ onMounted(
       if(localStorage.getItem("campusName")){
       campusName.value = localStorage.getItem("campusName")
       }
+
+      if(localStorage.getItem("SchoolInfo")){
+        let data =  JSON.parse(localStorage.getItem("SchoolInfo")) 
+        schoolLists.value =data
+      }
+
+      // if(currentSchool.value !== ""){
+      //   localStorage.setItem("CurrentSchool", currentSchool)
+      //   isOpen.value = false
+      // }
+    
     }
+
 )
 
 
@@ -160,8 +183,32 @@ watch (
       }
     }
 )
+
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown);
+})
+
+const setSchool = (Sch) => {
+currentSchool.value = Sch;
+}
+
 </script>
 <template>
+
+<div class="overlay" v-if="isOpen" @click.self="stopPropagation">
+    <div class="dialog">
+      <p>Please select a school to continue.</p>
+      <select v-model="schoolName" @change="setSchool(schoolName)">
+        <option disabled value=""> -select-</option>
+        <option v-for="(school, index) in schoolLists" :key="index" :value="school.name">
+          {{ school.name }}
+        </option>
+      </select>
+      <button @click="isOpen = false" :disabled="!schoolName">Continue</button>
+    </div>
+  </div>
+
 
 <div class="p-0 h-screen w-screen dark">
 
@@ -177,8 +224,9 @@ watch (
                   :class="defaultMenuSize ? 'transition ease-in-out rotate-0 duration-700' : 'transition ease-in-out -rotate-180 duration-700'"
               ></i>
               <router-link class="navbar-brand text-white" :to="{name:'home'}"><div class="text-[17px]">
-                <!-- {{ entityName }}  -->
-                 Victorious Education Services 
+                <!-- {{ entityName }}   -->
+                <span v-for="(lt, index) in schoolLists" :key="index">{{ lt.name }}</span> 
+                 <!-- {{ currentSchool }} -->
               </div> </router-link>
             </div>
             <div class="navbar-collapse">
@@ -335,5 +383,29 @@ watch (
 
 
 <style scoped>
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* Ensure overlay is on top */
+}
 
+.dialog {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  text-align: center;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 </style>

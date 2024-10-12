@@ -12,6 +12,12 @@ import {usePromotionStore} from "@/main/settings/promotion/store/promotion.js"
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
 import AppModal from "@/components/AppModal.vue";
 import FileUploader from "@/components/FileUploader.vue";
+import {useRouter} from "vue-router";
+
+const routerData = useRouter()
+
+let streamNumber = routerData.currentRoute.value.query.id
+let campusClassNumber = routerData.currentRoute.value.query.ccl
 
 import { useAbility } from '@casl/vue';
 
@@ -45,12 +51,7 @@ const studentNumber = ref(null)
 
 
 const form = reactive({
-  study_period_number: "",
-  campus_class_number: "",
-  campus_number: "",
   stream_number:"",
-  school_number:"",
-  academic_year_number:"",
   status:""
 })
 
@@ -58,32 +59,21 @@ const form = reactive({
 onMounted(() => {
       schoolStore.fetchSchools()
       doFetchEnrollent()
+      getStream()
     }
+   
 )
 
-const fetchCampuses = (school_number) => {
-  campusStore.fetchCampuses(school_number)
-  doFetchEnrollent()
-}
+const getStream = () =>{
+  let sData = {
+      campus_class_number:campusClassNumber,
+     }
+    classStore.fetchClassStreamsByCampusClassNumber(sData)
 
-const fetchClasses = (campus_number) => {
-  campusStore.fetchClassesByCampus(campus_number)
-  doFetchEnrollent()
 }
-
-const fetchAcademicYear = (campusN) =>{
-  academicYearStore.fetchAcademicYearByCampus(campusN)
-  classStore.fetchClassStreams(campusN)
-  doFetchEnrollent()
-}
-
 
 
 const filterByStream = () => {
-  doFetchEnrollent()
-}
-
-const filterByStudyPeriod = () => {
   doFetchEnrollent()
 }
 
@@ -92,13 +82,8 @@ const doFetchEnrollent = () =>{
   let data = {
     page: 1,
     per_page: per_page.value,
-    study_period_number:form.study_period_number,
-    school_number:form.school_number,
-    campus_number: form.campus_number,
-    campus_class_number:form.campus_class_number,
-    stream_number:form.stream_number,
-    academic_year_number:form.academic_year_number,
-    status:form.status
+    campus_class_number:campusClassNumber,
+    stream_number:streamNumber,
   }
   loading.value = true;
   enrollmentList.value = []
@@ -176,10 +161,8 @@ watch (
     {deep:true}
 )
 
-
-
 watch(
-    () => classStore.classStreams,
+    () => classStore.byCampusClassStreams,
     async (data) => {
       if (data) {
         streamList.value = data.data
@@ -187,7 +170,6 @@ watch(
     },
     {deep: true}
 )
-
 
 
 
