@@ -438,7 +438,7 @@ const successUpload = (data) => {
                                         style="box-shadow: none;"
                                         @change="filterByStudyPeriod()"
                                     >
-                                      <option disabled value="">-Filter By Class-</option>
+                                      <option disabled value="">-Filter By StudyPeriod-</option>
                                       <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
 
                                     </select>
