@@ -1,218 +1,208 @@
 <script setup>
-import router from "@/config/router.js";
-import { ref, onMounted, watch, onUnmounted } from 'vue';
 import { useAuthStore } from "@/main/auth/store/auth.js";
-import { useRouter } from "vue-router";
-import { useAbility } from '@casl/vue';
-import { breakpointsTailwind, useBreakpoints, useStorage } from "@vueuse/core";
-import { useEntityStore } from "@/main/dashboard/entity/store/entity.js";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import { onMounted, ref, watch } from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import { useSchoolStore } from "@/main/dashboard/manageSchool/store/school.js";
+import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
 
-// Reactive state for dialog visibility
-const isOpen = ref(true); // Set to true to show overlay initially
+const classStore = useClassesStore();
+const schoolStore = useSchoolStore();
+const notificationStore = useNotificationStore();
+let entityN = localStorage.getItem("entity_number");
+let campusListData = ref([]);
+const streamLists = ref({});
+const schoolsList = ref([]);
+const todayDate = ref('');
+const currentTime = ref('');
 
-// Handle keydown event to prevent closing on "Esc" key
-const handleKeydown = (event) => {
-  if (event.key === 'Escape') {
-    event.preventDefault(); // Prevent default Esc behavior
-  }
+const updateTime = () => {
+  const now = new Date();
+  const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  todayDate.value = now.toLocaleDateString(undefined, dateOptions);
+  
+  const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+  currentTime.value = now.toLocaleTimeString(undefined, timeOptions);
 };
 
-// Stop click propagation to prevent closing on outside click
-const stopPropagation = (event) => {
-  event.stopPropagation();
-};
-
-const entityStore = useEntityStore();
-let routerName = useRouter().currentRoute.value.name;
-
-if (routerName === "campus" || routerName === "campus-setup" || routerName === "campus-curriculum-setup") {
-  routerName = "school";
-}
-
-if (routerName === "curriculum-setup") {
-  routerName = "curriculum";
-}
-
-const authStore = useAuthStore();
-const { can } = useAbility();
-
-const breakpoints = useBreakpoints(breakpointsTailwind);
-const xs = breakpoints.smaller('sm');
-const sm = breakpoints.between('sm', 'md');
-const md = breakpoints.between('md', 'lg');
-
-let entityName = localStorage.getItem("entity_name");
-const schoolName = ref("");
-const schoolLists = ref([]);
-const campusName = ref("");
-const landingPageData = ref([]);
-const menu = ref(null);
-const landingPageTitle = ref(null);
-
-const defaultMenuSize = ref(useStorage("toggle", false));
-
-const menuList = ref([
-  { title: "Dashboard", name: "teacher-dashboard", icon: "bi-house", action: "view_dashboard" },
-  { title: "TimeTable", name: "", icon: "bi-watch", action: "" },
-  { title: "Students", name: "students", icon: "bi-people", action: "view_students" },
-  { title: "Curriculum", name: "", icon: "bi-book", action: "" },
-  { title: "Assessment", name: "", icon: "bi-book", action: "" },
-]);
-
-onMounted(async () => {
-  updateOnlineStatus();
-  checkDynamicClass();
-  landingPageTitle.value = localStorage.getItem("landingPageTitle");
-
-  if (localStorage.getItem("schoolName")) {
-    schoolName.value = localStorage.getItem("schoolName");
-  }
-  if (localStorage.getItem("campusName")) {
-    campusName.value = localStorage.getItem("campusName");
-  }
-  if (localStorage.getItem("SchoolInfo")) {
-    let data = JSON.parse(localStorage.getItem("SchoolInfo"));
-    schoolLists.value = data;
-  }
-
-  window.addEventListener('keydown', handleKeydown);
-});
-
-watch(
-  () => entityStore.landPageResponse,
-  async (data) => {
-    if (data) {
-      landingPageData.value = data.data;
-    }
-  }
-);
-
-watch(
-  () => xs,
-  async (data) => {
-    if (data) {
-      checkDynamicClass();
-    }
-  },
-  { deep: true }
-);
-
-watch(
-  () => breakpoints,
-  async (data) => {
-    if (data) {
-      checkDynamicClass();
-    }
-  },
-  { deep: true }
-);
-
-const checkDynamicClass = () => {
-  if (md.value) {
-    defaultMenuSize.value = true;
-  }
-  if (sm.value) {
-    defaultMenuSize.value = false;
-  }
-  if (xs.value) {
-    defaultMenuSize.value = false;
-  }
-};
-
-const name = ref(null);
-let p = authStore.profile;
-
-name.value = p.first_name + " " + p.second_name + " " + p.last_name;
-
-const userLogout = () => {
-  localStorage.clear();
-
-  let r = router.resolve({
-    name: "login"
+const fetchStreamsForClasses = async (campusClasses) => {
+  campusClasses.forEach(async (campusClass) => {
+    let sData = {
+      campus_class_number: campusClass.number,
+    };
+    await classStore.fetchClassStreamsByCampusClassNumber(sData);
+    streamLists.value[campusClass.number] = classStore.byCampusClassStreams.data;
   });
-  window.location.assign(r.href);
 };
 
-const online = ref(navigator.onLine);
-window.addEventListener('online', updateOnlineStatus);
-window.addEventListener('offline', updateOnlineStatus);
-const offline = ref(null);
+onMounted(() => {
+  schoolStore.fetchSchools(entityN);
+  updateTime();
+  setInterval(updateTime, 1000);
+  campusListData.value = JSON.parse(localStorage.getItem("Campus"));
 
-function updateOnlineStatus() {
-  online.value = navigator.onLine;
-  if (!online.value) {
-    offline.value = "offline.";
-  } else {
-    offline.value = "Online.";
-  }
-}
-
-const goToEntities = () => {
-  router.push({ name: 'entity-dashboard' });
-};
+  // Fetch streams for all classes after the campus list is loaded
+  campusListData.value.forEach((campus) => {
+    fetchStreamsForClasses(campus.Classes);
+  });
+});
 
 watch(
-  () => navigator.onLine,
+  () => schoolStore.schoolsResponse,
   async (data) => {
     if (data) {
-      updateOnlineStatus();
+      schoolsList.value = data.data;
     }
-  }
+  },
+  { deep: true }
 );
 
-onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeydown);
-});
+watch(
+  () => schoolStore.errorMessage,
+  async (data) => {
+    if (data) {
+      notificationStore.errorToast("Error", data.message);
+    }
+  },
+  { deep: true }
+);
 </script>
-
 <template>
-  <div class="overlay" v-if="isOpen" @click.self="stopPropagation">
-    <div class="dialog">
-      <h2>Select School</h2>
-      <p>Please select a school to continue.</p>
-      <select v-model="schoolName">
-        <option disabled value="">Please select one</option>
-        <option v-for="(school, index) in schoolLists" :key="index" :value="school.name">
-          {{ school.name }}
-        </option>
-      </select>
-      <button @click="isOpen = false" :disabled="!schoolName">Continue</button>
+    <div class="dashboard">
+      <!-- Campus Filter Section -->
+      <div class="filters-row row mb-4">
+        <div class="col-md-4">
+          <select class="form-select form-select-sm" style="box-shadow: none;">
+            <option disabled value="">--Select Campus--</option>
+            <option v-for="(list, index) in campusListData" :key="index">{{ list.campus_name }}</option>
+          </select>
+        </div>
+      </div>
+  
+      <!-- Class and Stream Display -->
+      <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <template v-for="(campus, index) in campusListData" :key="index">
+          <div v-for="(classItem, classIndex) in campus.Classes" :key="classIndex" class="class-card">
+            <!-- Class Card -->
+            <div class="card p-4">
+              <!-- Class Header -->
+              <div class="class-header d-flex justify-between align-items-center mb-3">
+                <div class="class-name text-gray-900 font-weight-bold">{{ classItem.name }}</div>
+              </div>
+  
+              <!-- Streams List -->
+              <div class="stream-list">
+                <!-- Check if streams are loaded for the class -->
+                <div v-if="streamLists[classItem.number]">
+                  <div
+                    v-for="(stream, streamIndex) in streamLists[classItem.number]"
+                    :key="streamIndex"
+                    class="stream-item d-flex align-items-center"
+                  >
+                    <!-- Clickable Stream Link -->
+                    <router-link
+                      :to="{ name: 'manage-stream', query: { id: stream.stream_number, ccl: stream.campus_class_number } }"
+                      class="stream-link d-flex align-items-center"
+                    >
+                      <span class="stream-index mr-2">{{ streamIndex + 1 }}.</span>
+                      <span class="stream-name">{{ stream.name }}</span>
+                      <i class="bi bi-arrow-right ml-auto"></i> <!-- Right arrow icon -->
+                    </router-link>
+                  </div>
+                </div>
+                <div v-else>
+                  <small class="text-muted">Loading streams...</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
     </div>
-  </div>
-
-  <div class="p-0 h-screen w-screen dark">
-    <!-- Rest of your existing code goes here -->
-
-    <!-- Navbar, content, footer, etc. -->
-
-  </div>
-</template>
-
+  </template>
 <style scoped>
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+.dashboard {
+  padding: 16px;
+  background-color: #f8f9fa;
+}
+
+.filters-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.class-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.class-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.class-header {
+  font-weight: bold;
+  font-size: 18px;
+  border-bottom: 1px solid #e9ecef;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.stream-list {
+  padding-top: 10px;
+}
+
+.stream-item {
+  margin-top: 10px;
+  padding: 8px;
+  border-radius: 6px;
+  background-color: #f1f3f5;
+  transition: background-color 0.3s ease;
+}
+
+.stream-item:hover {
+  background-color: #e9ecef;
+}
+
+.stream-link {
   display: flex;
   align-items: center;
-  justify-content: center;
-  z-index: 9999; /* Ensure overlay is on top */
+  text-decoration: none;
+  color: #343a40;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.3s ease;
 }
 
-.dialog {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 300px;
-  text-align: center;
+.stream-link:hover {
+  color: #0d6efd;
+  text-decoration: underline;
 }
 
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.stream-index {
+  font-weight: bold;
+  color: #6c757d;
+}
+
+.stream-name {
+  margin-left: 6px;
+}
+
+.bi-arrow-right {
+  margin-left: auto;
+  font-size: 16px;
+  color: #6c757d;
+  transition: transform 0.3s ease;
+}
+
+.stream-item:hover .bi-arrow-right {
+  transform: translateX(5px);
 }
 </style>
+  

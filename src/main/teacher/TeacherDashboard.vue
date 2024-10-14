@@ -50,21 +50,26 @@ const md = breakpoints.between('md', 'lg')
 let entityName = localStorage.getItem("entity_name")
 const schoolName = ref("")
 const schoolLists = ref([])
-const campusName = ref("")
+const campusName = ref("Campus Name")
 const landingPageData = ref([])
 const menu = ref(null);
 const landingPageTitle = ref(null)
-
+const campusListData = ref([])
 
 const defaultMenuSize = ref(useStorage("toggle", false))
 
 
 const menuList = ref([
   {title:"Dashboard", name:"teacher-dashboard", icon:"bi-house",action:"view_dashboard"},
-  {title:"TimeTable", name:"", icon:"bi-watch" ,action:""},
+  {title:"Time Table", name:"", icon:"bi-clock" ,action:""},//my shedule and General timetable
+  {title:"My Classes", name:"my-classes", icon:"bi-files" ,action:"my-classes"}, //streams, students,  
   {title:"Students", name:"students", icon:"bi-people" ,action:"view_students"},
-  {title:"Curriculum", name:"", icon:"bi-book" ,action:""},
-  {title:"Assessment", name:"", icon:"bi-book" ,action:""},
+  {title:"My Subjects", name:"", icon:"bi-bookmarks-fill" ,action:""},//learning area,concept, etc
+  {title:"Scheme Of Work", name:"", icon:"bi-journals" ,action:""}, //create scheme of work, ...etc
+  {title:"Attendance", name:"", icon:"bi-journal-richtext" ,action:""}, //Daily Attendance, Subject Attendance,
+  {title:"Calendar", name:"", icon:"bi-calendar" ,action:""}, //Daily Attendance, Subject Attendance,
+  {title:"Assessment", name:"", icon:"bi-file-earmark-spreadsheet" ,action:""}, //exams, entermarks,reports, marksheet, 
+  {title:"My Profile", name:"", icon:"bi-person-lines-fill" ,action:""},
 ])
 
 
@@ -73,13 +78,6 @@ onMounted(
       updateOnlineStatus()
       checkDynamicClass()
       landingPageTitle.value = localStorage.getItem("landingPageTitle")
-      
-      if(localStorage.getItem("schoolName")){
-      schoolName.value = localStorage.getItem("schoolName")
-      }
-      if(localStorage.getItem("campusName")){
-      campusName.value = localStorage.getItem("campusName")
-      }
 
       if(localStorage.getItem("SchoolInfo")){
         let data =  JSON.parse(localStorage.getItem("SchoolInfo")) 
@@ -91,6 +89,8 @@ onMounted(
         let draft = JSON.parse(currentSchoolInfoData.value)
         currentSchoolName.value = draft.name
       }
+
+      campusListData.value = JSON.parse(localStorage.getItem("Campus"))
     }
 
 )
@@ -370,7 +370,7 @@ const stopPropagation = (event) => {
        <div class="mt-3 flex justify-between">
         <div> <breadcrumbs></breadcrumbs></div>
          <div class="text-gray-600 text-[13px]">
-           {{currentSchoolName}} / {{campusName}}
+           {{currentSchoolName}} /<span v-for="(cm,index) in campusListData" :key="index">{{ cm.campus_name }}</span>
          </div>
        </div>
 

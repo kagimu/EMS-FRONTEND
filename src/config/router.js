@@ -77,6 +77,7 @@ import TeacherDashboard from "@/main/teacher/TeacherDashboard.vue";
 import HelloTeacher from "@/main/teacher/HelloTeacher.vue";
 import Students from "@/main/teacher/students/Students.vue";
 import ManageStream from "@/main/teacher/ManageStream.vue";
+import TeacherClasses from '@/main/teacher/class/TeacherClasses.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -571,6 +572,7 @@ const router = createRouter({
                 {path: 'teacher-dashboard', component: HelloTeacher, name:'teacher-dashboard'},
                 {path: 'students', component: Students, name:'students'},
                 {path: 'manage-stream', component: ManageStream, name:'manage-stream'},
+                {path: 'my-classes', component: TeacherClasses, name:'my-classes'},
             ]
         },
 

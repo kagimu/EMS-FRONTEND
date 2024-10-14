@@ -79,11 +79,18 @@ const filterByStream = () => {
 
 
 const doFetchEnrollent = () =>{
+  let schoolInfo = JSON.parse(localStorage.getItem("currentSchoolInfo") )
+    
   let data = {
     page: 1,
     per_page: per_page.value,
-    campus_class_number:campusClassNumber,
+    study_period_number:"",
+    school_number:schoolInfo.number,
+    campus_number: "",
+    campus_class_number:"",
     stream_number:streamNumber,
+    academic_year_number:"",
+    status:""
   }
   loading.value = true;
   enrollmentList.value = []
@@ -93,19 +100,16 @@ const doFetchEnrollent = () =>{
 
 function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
   if (scrollTop + clientHeight >= scrollHeight) {
-
-
-
     let data = {
       page: (page.value+1),
       per_page: per_page.value,
-      study_period_number:form.study_period_number,
-      school_number:form.school_number,
-      campus_number: form.campus_number,
-      campus_class_number:form.campus_class_number,
-      stream_number:form.stream_number,
-      academic_year_number:form.academic_year_number,
-      status:form.status
+      study_period_number:"",
+      school_number:schoolInfo.number,
+      campus_number: "",
+      campus_class_number:"",
+      stream_number:streamNumber,
+      academic_year_number:"",
+      status:""
     }
 
     enrollmentStore.fetchEnrolment(data)
@@ -346,7 +350,6 @@ const successUpload = (data) => {
                   >
                     <thead >
                     <tr>
-                      <th style="width: 2px;">#</th>
                       <th>ADN</th>
                       <th>Student</th>
                       <th>School</th>
@@ -358,7 +361,6 @@ const successUpload = (data) => {
                     </thead>
                     <tbody>
                     <tr v-for="(enrolData,index) in enrollmentList" :key="index" >
-                      <td>{{ index+1 }}</td>
                       <td>{{ enrolData.adn }}</td>
                       <td style="text-transform: capitalize;">
                         <div class="flex flex-row items-center">
