@@ -100,7 +100,7 @@ watch(
             <div class="stream-list mt-3" v-show="showSelected === classItem.number">
               <div v-for="(stream, streamIndex) in streamList" :key="streamIndex" class="stream-item">
                 <router-link :to="{ name: 'manage-stream', query: { id: stream.stream_number, ccl: stream.campus_class_number } }" class="text-decoration-none">
-                  <div class="stream-text">{{ streamIndex + 1 }}. {{ stream.name }}</div>
+                  <div class="stream-text">{{ streamIndex + 1 }}. {{ stream.name }} &nbsp;<i class="bi bi-arrow-right text-primary"></i></div>
                 </router-link>
               </div>
             </div>

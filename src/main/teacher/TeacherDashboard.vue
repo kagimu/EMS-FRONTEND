@@ -61,9 +61,9 @@ const defaultMenuSize = ref(useStorage("toggle", false))
 
 const menuList = ref([
   {title:"Dashboard", name:"teacher-dashboard", icon:"bi-house",action:"view_dashboard"},
-  {title:"Time Table", name:"", icon:"bi-clock" ,action:""},//my shedule and General timetable
-  {title:"My Classes", name:"my-classes", icon:"bi-files" ,action:"my-classes"}, //streams, students,  
-  {title:"Students", name:"students", icon:"bi-people" ,action:"view_students"},
+  // {title:"Time Table", name:"", icon:"bi-clock" ,action:""},//my shedule and General timetable
+  {title:"Class Routines", name:"my-classes", icon:"bi-files" ,action:"my-classes"}, //streams, students,  
+  // {title:"Students", name:"students", icon:"bi-people" ,action:"view_students"},
   {title:"My Subjects", name:"", icon:"bi-bookmarks-fill" ,action:""},//learning area,concept, etc
   {title:"Scheme Of Work", name:"", icon:"bi-journals" ,action:""}, //create scheme of work, ...etc
   {title:"Attendance", name:"", icon:"bi-journal-richtext" ,action:""}, //Daily Attendance, Subject Attendance,
