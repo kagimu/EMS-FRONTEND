@@ -7,8 +7,12 @@ import { useAbility } from '@casl/vue';
 import {breakpointsTailwind, useBreakpoints, useStorage} from "@vueuse/core";
 import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import useNotificationStore from "@/composables/useNotification.js";
 
-// const currentSchool = ref(null)
+const currentSchool = ref(null)
+const currentSchoolName = ref(null)
+const currentSchoolInfoData = ref(null);
+const notificationStore = useNotificationStore()
 
 const isOpen = ref(true)
 const handleKeydown = (event) => {
@@ -17,9 +21,6 @@ const handleKeydown = (event) => {
   }
 }
 
-const stopPropagation = (event) => {
-  event.stopPropagation();
-}
 
 
 const entityStore = useEntityStore()
@@ -84,12 +85,12 @@ onMounted(
         let data =  JSON.parse(localStorage.getItem("SchoolInfo")) 
         schoolLists.value =data
       }
-
-      // if(currentSchool.value !== ""){
-      //   localStorage.setItem("CurrentSchool", currentSchool)
-      //   isOpen.value = false
-      // }
-    
+      currentSchoolInfoData.value = localStorage.getItem("currentSchoolInfo")
+      if(currentSchoolInfoData.value){
+        isOpen.value = false
+        let draft = JSON.parse(currentSchoolInfoData.value)
+        currentSchoolName.value = draft.name
+      }
     }
 
 )
@@ -154,9 +155,6 @@ const userLogout = () =>{
 
 }
 
-
-
-
 const online = ref(navigator.onLine);
 window.addEventListener('online', updateOnlineStatus);
 window.addEventListener('offline', updateOnlineStatus);
@@ -190,22 +188,51 @@ onUnmounted(() => {
 })
 
 const setSchool = (Sch) => {
-currentSchool.value = Sch;
+currentSchool.value = JSON.stringify(Sch)
 }
 
+const goToDashboard = () => {
+  localStorage.setItem("currentSchoolInfo",currentSchool.value) 
+  isOpen.value = false
+  let draft = JSON.parse(currentSchool.value)
+      currentSchoolName.value = draft.name
+}
+
+watch(
+  () => currentSchoolInfoData.value,
+  async (data) => {
+    if (data) {
+       isOpen.value = false
+       let draft = JSON.parse(currentSchoolInfoData.value)
+       currentSchoolName.value = draft.name
+    }
+  }
+)
+// const stopPropagation = (event) => {
+//   event.stopPropagation();
+// }
+
+
+// Prevent Event Propagation
+const stopPropagation = (event) => {
+  event.stopPropagation();
+  if (!currentSchool.value) {
+    notificationStore.errorToast("error","select school to continue please !")
+  }
+};
 </script>
 <template>
 
 <div class="overlay" v-if="isOpen" @click.self="stopPropagation">
     <div class="dialog">
       <p>Please select a school to continue.</p>
-      <select v-model="schoolName" @change="setSchool(schoolName)">
+      <select class="form-select " v-model="schoolName" @change="setSchool(schoolName)">
         <option disabled value=""> -select-</option>
-        <option v-for="(school, index) in schoolLists" :key="index" :value="school.name">
+        <option v-for="(school, index) in schoolLists" :key="index" :value="school">
           {{ school.name }}
         </option>
       </select>
-      <button @click="isOpen = false" :disabled="!schoolName">Continue</button>
+      <button @click="goToDashboard" :disabled="!schoolName" class="btn btn-primary btn-sm ml-2 mt-2 ">continue <i class="bi bi-arrow-right-circle"></i></button>
     </div>
   </div>
 
@@ -224,9 +251,9 @@ currentSchool.value = Sch;
                   :class="defaultMenuSize ? 'transition ease-in-out rotate-0 duration-700' : 'transition ease-in-out -rotate-180 duration-700'"
               ></i>
               <router-link class="navbar-brand text-white" :to="{name:'home'}"><div class="text-[17px]">
-                <!-- {{ entityName }}   -->
-                <span v-for="(lt, index) in schoolLists" :key="index">{{ lt.name }}</span> 
-                 <!-- {{ currentSchool }} -->
+             
+                <!-- <span v-for="(lt, index) in schoolLists" :key="index">{{ lt.name }}</span>  -->
+                 {{ currentSchoolName }}
               </div> </router-link>
             </div>
             <div class="navbar-collapse">
@@ -343,7 +370,7 @@ currentSchool.value = Sch;
        <div class="mt-3 flex justify-between">
         <div> <breadcrumbs></breadcrumbs></div>
          <div class="text-gray-600 text-[13px]">
-           {{schoolName}} / {{campusName}}
+           {{currentSchoolName}} / {{campusName}}
          </div>
        </div>
 
