@@ -50,7 +50,6 @@ onMounted(
 )
 
 
-
 const fetchStudents = (assessmentMetricNumber) => {
   if(assessmentMetricNumber){
     reportSetupStore.fetchStudentByAssessmentMetric(assessmentMetricNumber)
@@ -275,6 +274,7 @@ watch(
 //     }
 // )
 
+
 </script>
 
 <template>
@@ -396,10 +396,11 @@ watch(
         <table class="table table-hover caption-top mt-5 table-sm text-sm" style="font-size: 14px;">
           <thead>
           <tr>
-            <th class="w-[10%]">#</th>
+            <th class="w-[2%]">#</th>
             <th class="w-[30%]">Name</th>
-            <th>Score</th>
+            <th class="w-[15%]">Score</th>
             <th>Comment</th>
+            <th>#</th>
           </tr>
           </thead>
           <tbody>
@@ -431,6 +432,11 @@ watch(
                    class="form-control form-select-sm h-1"></textarea>
             </td>
 
+            <td>
+              <button v-if="std.score < 1" class="btn btn-success btn-sm mb-2" @click="addMarks(std.score, std.comment, std.number,index)">save</button>
+              <button v-else class="btn btn-primary btn-sm mb-2" @click="addMarks(std.score, std.comment, std.number,index)">update</button>
+
+            </td>
           </tr>
           </tbody>
         </table>
