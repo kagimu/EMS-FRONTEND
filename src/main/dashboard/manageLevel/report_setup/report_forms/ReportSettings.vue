@@ -242,6 +242,17 @@ watch (
     }
 )
 
+watch(
+    () => reportSetupStore.deleteReportColumnResponse,
+    async (data) => {
+      if(data) {
+      
+        doFetchReportSettings()
+        
+      }
+    }
+)
+
 
 
 </script>

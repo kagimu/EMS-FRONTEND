@@ -95,6 +95,8 @@ watch(
     async (data) => {
       if (data) {
         loader.value = false;
+        getReportColumnInfo()
+        await reportSetupStore.fetchReportColumn(reportSettingNumber.value)
         notificationStore.successToast("Success", data.message)
       }
     }
@@ -124,16 +126,23 @@ watch(
 )
 
 
+
 const deleteColumn = async (field, index) => {
   if (field) {
     const confirmDelete = await confirmationRef.value.confirm("Are you sure, you want to delete this column?");
     if (confirmDelete) {
-      deletionLoader.value = index
-      await reportSetupStore.deleteReportColumn(field.report_column_number)
+      deletionLoader.value = index;
+
+      form.value.splice(index, 1);
+
+      if (field.report_column_number) {
+        await reportSetupStore.deleteReportColumn(field.report_column_number);
+      }
+
+      deletionLoader.value = null;
     }
   }
-}
-
+};
 
 
 
@@ -141,9 +150,10 @@ watch(
     () => reportSetupStore.deleteReportColumnResponse,
     async (data) => {
       if(data) {
-        await reportSetupStore.fetchReportColumn(reportSettingNumber.value)
+      
         notificationStore.successToast("Success", data.message)
         deletionLoader.value = null
+        
       }
     }
 )
