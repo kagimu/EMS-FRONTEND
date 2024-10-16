@@ -366,6 +366,16 @@ watch(
             <td>
 
              <div class="mb-1">
+              <button
+                   style="border: 1px solid #2c2f8c;"
+                   class="mr-2 rounded-md px-3 text-[#2c2f8c] hover:bg-primary-100 text-xs"
+                   @click="editThisData(settings)">
+                 <span>
+                   <i  class="bi-pencil cursor-pointer"></i>
+                   Update
+                 </span>
+               </button>
+
                <button
                    class="mr-2 border border-success rounded-md px-3 text-success hover:bg-success-100 text-xs"
                    style="border-width: 0px;text-decoration: none;"
@@ -376,25 +386,17 @@ watch(
                  </span>
                </button>
 
-               <button
+           
+             </div>
+
+             <div>
+              <button
                    class="border border-primary rounded-md px-3 text-primary hover:bg-primary-100 text-xs"
                    style="border-width: 0px;text-decoration: none;"
                    @click="viewReportColumn(settings.report_setting_number)">
                  <span>
                    <i  class="bi-eye cursor-pointer"></i>
                    View
-                 </span>
-               </button>
-             </div>
-
-             <div>
-               <button
-                   style="border: 1px solid #2c2f8c;"
-                   class="mr-2 rounded-md px-3 text-[#2c2f8c] hover:bg-primary-100 text-xs"
-                   @click="editThisData(settings)">
-                 <span>
-                   <i  class="bi-pencil cursor-pointer"></i>
-                   Update
                  </span>
                </button>
 
