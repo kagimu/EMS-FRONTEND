@@ -375,7 +375,7 @@ watch(
                               @click="showAddComment(summary.number)"
                               type="button"
                               class="bg-[#1062da] text-white rounded-sm px-3 text-[12px] mb-2 mr-1">
-                             Add Teachers Comment
+                             Add Class Teacher's Comment
                            </button>
 
                            <button
