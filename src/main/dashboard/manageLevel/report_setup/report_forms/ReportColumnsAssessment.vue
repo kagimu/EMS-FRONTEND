@@ -106,10 +106,10 @@ const fetchStudyPeriod = (academic_num) =>{
   doFetchReportColumnAssessment()
 }
 
-const fetchAssessmentMetrics = () =>{
+const fetchAssessmentMetricsBystudyPeriod = (studyPeriod) =>{
 
     let data = {
-      study_period_number:study_period_number.value,
+      study_period_number:studyPeriod,
       assessment_area_number:assessment_area_number.value,
       class_number:class_number.value,
       campus_number:campusNumber,
@@ -120,6 +120,24 @@ const fetchAssessmentMetrics = () =>{
 
     // fetch report column assessment
     doFetchReportColumnAssessment()
+
+}
+
+
+const fetchAssessmentMetricsByAssessArea = (Area) =>{
+
+let data = {
+  study_period_number:study_period_number.value,
+  assessment_area_number:Area,
+  class_number:class_number.value,
+  campus_number:campusNumber,
+  campus_curriculum_number:campus_curriculum_number
+}
+assessmentStore.fetchAssessmentMetrics(data)
+
+
+// fetch report column assessment
+doFetchReportColumnAssessment()
 
 }
 
@@ -411,10 +429,10 @@ watch(
                 style="box-shadow: none;"
                 class="form-select form-select-sm" required
                 v-model="study_period_number"
-                @change="fetchAssessmentMetrics"
+                @change="fetchAssessmentMetricsBystudyPeriod(study_period_number)"
             >
               <option disabled value="">Filter by Study Period</option>
-              <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
+              <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
 
             </select>
           </div>
@@ -425,7 +443,7 @@ watch(
                 required
                 class="form-select form-select-sm shadow-none"
                 v-model="assessment_area_number"
-                @change="fetchAssessmentMetrics"
+                @change="fetchAssessmentMetricsByAssessArea(assessment_area_number)"
             >
               <option disabled value=""> --Filter by Assessment Area-- </option>
               <option v-for="(listdata, index) in interviewAssessmentListData" :key="index" :value="listdata.number">

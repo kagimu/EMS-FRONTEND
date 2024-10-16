@@ -93,11 +93,11 @@ watch(
 
 
 
-const fetchAssessmentAreaAndStudyPeriod = (class_number) =>{
+const fetchAssessmentAreaAndStudyPeriod = (classNumber) =>{
 
   let data = {
     curriculum_number:curriculumNumberParent,
-    class_number:class_number
+    class_number:classNumber
   }
   assessmentStore.fetchAssessmentArea(data)
   
@@ -106,29 +106,43 @@ const fetchAssessmentAreaAndStudyPeriod = (class_number) =>{
       {
         campus_curriculum_number:campus_curriculum_number,
         academic_year_number:academic_year_number.value,
-        class_number:class_number,
+        class_number:classNumber,
         school_number:schoolN
       }
   )
-
+  fetchStudents()
 }
 
-const fetchAssessmentMetrics = () =>{
-  if(study_period_number.value && assessment_area_number.value) {
-
-    let result = campusClassList.value?.find(item => item.curriculum_class_number === class_number.value);
-
+const fetchAssessmentMetricbyStudy = (studyP) =>{
+    // let result = campusClassList.value?.find(item => item.curriculum_class_number === class_number.value);
     let data = {
-      study_period_number:study_period_number.value,
+      study_period_number:studyP,
       assessment_area_number:assessment_area_number.value,
       class_number:class_number.value,
       campus_number:campusNumber
 
     }
      assessmentStore.fetchAssessmentMetrics(data)
-  }
+     fetchStudents()
+  
+
+ 
 }
 
+
+const fetchAssessmentMetricsByArea = (assessmentArrea) =>{
+ 
+    let data = {
+      study_period_number:study_period_number.value,
+      assessment_area_number:assessmentArrea,
+      class_number:class_number.value,
+      campus_number:campusNumber
+
+    }
+     assessmentStore.fetchAssessmentMetrics(data)
+  
+ 
+}
 
 
 
@@ -334,7 +348,7 @@ watch(
             style="box-shadow: none;"
             class="form-select form-select-sm" required
             v-model="study_period_number"
-            @change="fetchAssessmentMetrics"
+            @change="fetchAssessmentMetricbyStudy(study_period_number)"
         >
           <option disabled value="">Select</option>
           <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
@@ -349,7 +363,7 @@ watch(
               style="box-shadow: none;"
               class="form-select form-select-sm"
               v-model="assessment_area_number"
-              @change="fetchAssessmentMetrics"
+              @change="fetchAssessmentMetricsByArea(assessment_area_number)"
           >
             <option disabled value="">Select</option>
             <option v-for="(list, index) in assessmentListData" :key="index" :value="list.number">{{ list.name }}
@@ -365,7 +379,7 @@ watch(
               style="box-shadow: none;"
               class="form-select py-10"
               v-model="assessmentMetricNumber"
-              @click="fetchStudents(assessmentMetricNumber)">
+              @change="fetchStudents(assessmentMetricNumber)">
             <option class="text-[13px]" disabled value="">--Select Assessment Schedule--</option>
         
             <option class="text-[13px]" v-for="(list, index) in metricListData" :key="index" :value="list.number">
