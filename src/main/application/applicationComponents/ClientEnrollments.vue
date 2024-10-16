@@ -12,6 +12,8 @@ import {usePromotionStore} from "@/main/settings/promotion/store/promotion.js"
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
 import AppModal from "@/components/AppModal.vue";
 import FileUploader from "@/components/FileUploader.vue";
+import StudentProfile from '@/main/teacher/students/StudentProfile.vue';
+
 
 import { useAbility } from '@casl/vue';
 
@@ -283,6 +285,12 @@ const successUpload = (data) => {
     doFetchEnrollent()
   }
 }
+const studentModal = ref(false)
+
+const showStudentProfile = (std) => {
+  studentNumber.value = std
+  studentModal.value = true
+}
 
 </script>
 
@@ -293,6 +301,11 @@ const successUpload = (data) => {
     <AppModal title="Upload Student Photo" v-model="uploadDialog" xl>
       <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload"  :studentNumber="studentNumber" :imageUrl="studentPhoto"></file-uploader>
     </AppModal>
+
+    <AppModal title="Student Profile" v-model="studentModal" xl6>
+      <StudentProfile  :studentNum="studentNumber"></StudentProfile>
+    </AppModal>
+
 
     <div id="promoteModal" :class="{ show: promDialog }" class="modal fade" tabindex="-1">
       <div class="modal-dialog">
@@ -376,12 +389,15 @@ const successUpload = (data) => {
                         <i class="bi bi-card-image"></i>
                         Upload Photo
                       </div>
-                      <router-link
-                        :to="{name:'student-profile-details', query:{st_id:enrolData.student_number}}" 
+                      <!-- <router-link
+                        :to="{name:'student-profile', query:{st_id:enrolData.student_number}}" 
                         class="action-button">
                         <i class="bi bi-person"></i>
                         View Details
-                      </router-link>
+                      </router-link> -->
+                      <button class="btn btn-primary btn-sm" @click="showStudentProfile(enrolData.student_number)">
+                            View Profile
+                      </button>
                     </div>
                   </div>
                 </div>
