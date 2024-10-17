@@ -389,17 +389,17 @@ const showStudentProfile = (std) => {
                         <i class="bi bi-card-image"></i>
                         Upload Photo
                       </div>
-                   =
+                   
                       <router-link
                       :to="{name:'client_dashboard', query:{s:'student',st_id:enrolData.student_number}}"
                       
-                        class="action-button">
+                        class="action- btn btn-primary btn-sm">
                         <i class="bi bi-person"></i>
                         View Details
                       </router-link>
-                      <button class="btn btn-primary btn-sm" @click="showStudentProfile(enrolData.student_number)">
+                      <!-- <button class="btn btn-primary btn-sm" @click="showStudentProfile(enrolData.student_number)">
                             View Profile
-                      </button>
+                      </button> -->
                     </div>
                   </div>
                 </div>
