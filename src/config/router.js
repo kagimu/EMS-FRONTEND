@@ -99,23 +99,23 @@ const router = createRouter({
         },
       
 
-        {
-            path: '/client-dashboard',
-            component: UserDashboard,
-            name :"client_dashboard",
-            redirect:{ name: 'application' },
-            meta: {
-                requiresAuth: true,
-            },
-            children:[
-                {path: 'user-dash', component: UserDash, name:'user-dash'},
-                {path: 'application', component: Application, name:'application'},
-                {path: 'start', component: Application, name:'application'},
-                {path: 'admission', component: Application, name:'admission_history'},
-                {path: 'applications', component: ClientApplications, name:'application_history'},
-                {path: 'application-success', component: ApplicationSuccessPage, name: "application-success",},
-            ]
-        },
+        // {
+        //     path: '/client-dashboard',
+        //     component: UserDashboard,
+        //     name :"client_dashboard",
+        //     redirect:{ name: 'application' },
+        //     meta: {
+        //         requiresAuth: true,
+        //     },
+        //     children:[
+        //         {path: 'user-dash', component: UserDash, name:'user-dash'},
+        //         {path: 'application', component: Application, name:'application'},
+        //         {path: 'start', component: Application, name:'application'},
+        //         {path: 'admission', component: Application, name:'admission_history'},
+        //         {path: 'applications', component: ClientApplications, name:'application_history'},
+        //         {path: 'application-success', component: ApplicationSuccessPage, name: "application-success",},
+        //     ]
+        // },
         {
             path: '/main',
             component: Dashboard,
@@ -546,7 +546,7 @@ const router = createRouter({
             path: '/client-dashboard',
             component: UserDashboard,
             name :"client_dashboard",
-            // redirect:{ name: 'application' },
+            redirect:{ name: 'application' },
             meta: {
                 requiresAuth: true,
             },

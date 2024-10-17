@@ -22,8 +22,8 @@ const enrollmentStore = useEnrolmentStore()
 const studentNum = ref(null)
 const routerData = useRouter()
 const menuSelected = ref("financial-situation")
-// const student_number = routerData.currentRoute.value.query.st_id
-const student_number = ref(null)
+const student_number = routerData.currentRoute.value.query.st_id
+const studentNumberr = ref(null)
 const applicationStore = useApplicationStore()
 const notificationStore = useNotificationStore()
 const studentName = ref(null)
@@ -45,17 +45,17 @@ const cateringStore = useCateringStore()
 const errorMessage  = ref(null)
 
 const uploadDialog = ref( false)
-
-const props = defineProps({
-    studentNum: {},
-})
-
+const dataFetched = ref(false); 
 
 onMounted(
     async () => {
-     
-      await applicationStore.fetchStudent(props.studentNum)
-      await cateringStore.FeedingGroupByUserId(props.studentNum)
+        
+  
+      // Fetch student data only once
+        await applicationStore.fetchStudent(student_number);
+   
+      await cateringStore.FeedingGroupByUserId(student_number)
+      studentNumberr.value = routerData.currentRoute.value.query.st_id
 
     } )
 
@@ -73,6 +73,7 @@ watch (
         school.value = data.current_enrollment.school
         academicYear.value = data.current_enrollment.academic_year
         studentPhoto.value = data.photo
+        dataFetched.value = true
       }
     },
     { deep: true }
@@ -165,7 +166,7 @@ watch (
     async (data) => {
       if(data){
         errorMessage.value = data.message
-        notificationStore.errorToast("Error",data.message)
+        // notificationStore.errorToast("Error",data.message)
       }
     }
 )
@@ -183,7 +184,7 @@ const successUpload = async (data) => {
 
 </script>
 <template>
-{{ studentNumber }}
+
   <AppModal title="Confirm" v-model="showActionDialog" xs>
     <Comfirm :studentNumber="studentNum" :action="actionType" @nedda="cancelled"></Comfirm>
   </AppModal>
@@ -230,10 +231,8 @@ const successUpload = async (data) => {
                     v-for="(item, idx) in  itemMenu" :key="idx"
                     class="list-group-item list-group-item-action"
                     :class="item.value === studentQuery ? 'active' : ''"
-                    :to="{name:'student-profile-details', query:{st_id:student_number,type:item.value}}">
+                    :to="{name:'client_dashboard', query:{s:'student',st_id:studentNumberr,type:item.value}}">
                   <small style="font-size:12px;">{{item.text}}</small></router-link>
-
-
               </div>
 
 

@@ -12,7 +12,8 @@
    import {useLevelStore} from "@/main/settings/level/store/level.js";
    import PaginationTemplate from "@/components/PaginationTemplate.vue";
    import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
-   
+   import StudentProfile from '@/main/teacher/students/StudentProfile.vue';
+
    import { useAbility } from '@casl/vue';
    import FileUploader from "@/components/FileUploader.vue";
    const { can } = useAbility()
@@ -358,7 +359,13 @@
        doFetchAdmission()
      }
    }
-   
+
+   const studentModal = ref(false)
+
+const showStudentProfile = (std) => {
+  studentNumber.value = std
+  studentModal.value = true
+}
 </script>
 <template>
     <AppModal title="Enrol" v-model="mymodal" xl6>
@@ -366,6 +373,9 @@
     </AppModal>
     <AppModal title="Upload Student Photo" v-model="uploadDialog" xl>
       <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload" :studentNumber="studentNumber" :imageUrl="studentPhoto"></file-uploader>
+    </AppModal>
+    <AppModal title="Student Profile" v-model="studentModal" xl6>
+      <StudentProfile  :studentNum="studentNumber"></StudentProfile>
     </AppModal>
   
     <div>
@@ -395,9 +405,12 @@
                     <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>
                   </button>
                 </div>
-                <router-link v-if="adm.status === 'Enrolled'" class="text-decoration-none" :to="{ name: 'student-profile-details', query: { st_id: adm.student.number } }">
+                <!-- <router-link v-if="adm.status === 'Enrolled'" class="text-decoration-none" :to="{ name: 'student-profile-details', query: { st_id: adm.student.number } }">
                   <button type="button" class="btn btn-outline-primary">View Details</button>
-                </router-link>
+                </router-link> -->
+                <button class="btn btn-primary btn-sm" @click="showStudentProfile(adm.student.number)">
+                            View Profile
+                      </button>
               </div>
             </div>
           </div>

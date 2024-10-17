@@ -197,7 +197,7 @@ watch (
     <div class="mt-1 w-[100%] mx-auto" v-if="!isLoading">
       <div class="row">
         <div class="col-12">
-          <div class="card p-4 bg-white">
+          <div class=" p-4 bg-white">
             <p class="mt-3 ml-3 text-lg font-bold">Applications</p>
             <PaginationTemplate
               @perPageChanged="doFetchApplication"

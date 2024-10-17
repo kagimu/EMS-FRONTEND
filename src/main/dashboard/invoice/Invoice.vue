@@ -15,6 +15,10 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js";
 import ComboBox from "@/components/ComboBox.vue";
+let profile = localStorage.getItem("userProfile")
+import InvoiceDetails from "@/main/dashboard/invoice/InvoiceDetails.vue"
+
+
 const routerData = useRouter()
 const applicationStore= useApplicationStore()
 const studentNumber = routerData.currentRoute.value.query.st_id;
@@ -35,6 +39,7 @@ const schoolList = ref([])
 const campusList = ref([])
 const itemsList = ref([])
 const serviceStore= useServiceStore()
+const showInvoiceDetails = ref(false)
  
 const showModal = () =>{
   mymodal.value = true
@@ -46,11 +51,14 @@ const form = reactive({
   end_date:"",
   items:[]
 })
+const userType = ref(null)
 
 onMounted(
     async () => {
       await schoolStore.fetchSchools()
       await serviceStore.fetchAllItems()
+       let user = JSON.parse(profile)
+        userType.value = user.type
     }
 )
 
@@ -180,7 +188,13 @@ watch(
       }
     }
 )
-
+const invoiceN = ref(null)
+const studentN = ref(null)
+const showInvoiceInfoModal = (refN,studentNo) =>{
+  invoiceN.value = refN
+  studentN.value = studentNo
+  showInvoiceDetails.value = true
+}
 
 </script>
 <template>
@@ -189,6 +203,10 @@ watch(
 
     <AppModal title="Creating New Invoice" v-model="mymodal" xl6>
     <NewInvoice :userNumber="userNumber"></NewInvoice>
+    </AppModal>
+
+    <AppModal title="Invoice Details" v-model="showInvoiceDetails" xl6>
+    <InvoiceDetails :invoiceNumber="invoiceNumber" :studentN="studentN" :invoiceN="invoiceN"></InvoiceDetails>
     </AppModal>
 
 
@@ -332,13 +350,22 @@ watch(
           <td>{{ list?.date }}</td>
         <td>
         <div>
-          <router-link
+          <!-- <router-link
+          v-if="userType != 'User'"
               class="text-decoration-none"
               :to="{name:'invoice-details', query:{invoice_id:list.ref_number,st_id:studentNumber}}">
             <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
               <small>View</small>
             </button>
-          </router-link>
+          </router-link> -->
+
+
+            <button 
+             @click="showInvoiceInfoModal(list.ref_number,studentNumber)" class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
+              <small>View</small>
+            </button>
+         
+
           <button
               @click="paymentModal(list.number)" class="bg-[#0d6efd] rounded-sm text-white px-4 btn-primary btn-sm ml-3"
               v-if="can('pay_invoice','general')">

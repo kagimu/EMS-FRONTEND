@@ -186,7 +186,7 @@ watch (
          
             <div class="card-body" style="padding: 0;">
     <div class="container mt-1">
-      {{ transactionList }}
+      <!-- {{ transactionList }} -->
       <table
         id="datatable"
         class="table table-hover caption-top mt-4 table-sm table-striped"

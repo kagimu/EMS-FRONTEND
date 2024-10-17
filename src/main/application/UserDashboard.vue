@@ -8,6 +8,8 @@ import ClientEnrollments from "@/main/application/applicationComponents/ClientEn
 import ClientAdmissions from "@/main/application/applicationComponents/ClientAdmissions.vue";
 import ClientInvoices from "@/main/application/applicationComponents/ClientInvoices.vue";
 import Application from "@/main/application/Application.vue";
+import StudentProfile from '@/main/teacher/students/StudentProfile.vue';
+import InvoiceDetails from "@/main/dashboard/invoice/InvoiceDetails.vue"
 
 const routerData = useRouter()
 const route = routerData.currentRoute.value.query.s
@@ -182,6 +184,8 @@ const reloadProfile = () => {
       <ClientInvoices></ClientInvoices>
       </div>
 
+      <StudentProfile v-if="selectedPage === 'student'"></StudentProfile>
+      <InvoiceDetails v-if="selectedPage === 'invoice-details'"></InvoiceDetails>
 
     </div>
   </div>

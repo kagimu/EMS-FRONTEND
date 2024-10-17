@@ -325,8 +325,8 @@ const showStudentProfile = (std) => {
 
     <div class="row mt-3">
       <div class="col-12">
-        <div class="card">
-          <div class="card-body" style="padding: 0;">
+        <div class="">
+          <div class="" style="padding: 0;">
             <div class="container mt-1 mx-2">
               <div class="row">
                 <div class="col-lg-12">
@@ -389,12 +389,14 @@ const showStudentProfile = (std) => {
                         <i class="bi bi-card-image"></i>
                         Upload Photo
                       </div>
-                      <!-- <router-link
-                        :to="{name:'student-profile', query:{st_id:enrolData.student_number}}" 
+                   =
+                      <router-link
+                      :to="{name:'client_dashboard', query:{s:'student',st_id:enrolData.student_number}}"
+                      
                         class="action-button">
                         <i class="bi bi-person"></i>
                         View Details
-                      </router-link> -->
+                      </router-link>
                       <button class="btn btn-primary btn-sm" @click="showStudentProfile(enrolData.student_number)">
                             View Profile
                       </button>
