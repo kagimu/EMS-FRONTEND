@@ -397,9 +397,7 @@ const showStudentProfile = (std) => {
                         <i class="bi bi-person"></i>
                         View Details
                       </router-link>
-                      <!-- <button class="btn btn-primary btn-sm" @click="showStudentProfile(enrolData.student_number)">
-                            View Profile
-                      </button> -->
+                  
                     </div>
                   </div>
                 </div>
