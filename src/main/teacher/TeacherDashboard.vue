@@ -65,7 +65,7 @@ const menuList = ref([
   {title:"Class Routines", name:"my-classes", icon:"bi-files" ,action:"my-classes"}, //streams, students,  
   // {title:"Students", name:"students", icon:"bi-people" ,action:"view_students"},
   {title:"My Subjects", name:"manage-subjects", icon:"bi-bookmarks-fill" ,action:"manage-subjects"},//learning area,concept, etc
-  {title:"Scheme Of Work", name:"", icon:"bi-journals" ,action:""}, //create scheme of work, ...etc
+  {title:"Scheme Of Work", name:"manage-scheme-of-work", icon:"bi-journals" ,action:"manage-scheme-of-work"}, //create scheme of work, ...etc
   {title:"Attendance", name:"", icon:"bi-journal-richtext" ,action:""}, //Daily Attendance, Subject Attendance,
   {title:"Calendar", name:"", icon:"bi-calendar" ,action:""}, //Daily Attendance, Subject Attendance,
   {title:"Assessment", name:"", icon:"bi-file-earmark-spreadsheet" ,action:""}, //exams, entermarks,reports, marksheet, 

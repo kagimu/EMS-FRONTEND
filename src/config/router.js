@@ -80,6 +80,7 @@ import ManageStream from "@/main/teacher/ManageStream.vue";
 import TeacherClasses from '@/main/teacher/class/TeacherClasses.vue';
 import StudentProfile from '@/main/teacher/students/StudentProfile.vue';
 import Subjects from '@/main/teacher/Subjects.vue';
+import ManageSchemeOfWork from '@/main/teacher/ManageSchemeOfWork.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -577,7 +578,7 @@ const router = createRouter({
                 {path: 'manage-stream', component: ManageStream, name:'manage-stream'},
                 {path: 'my-classes', component: TeacherClasses, name:'my-classes'},
                 {path: 'manage-subjects', component: Subjects, name:'manage-subjects'},
-              
+                {path: 'manage-scheme-of-work', component: ManageSchemeOfWork, name:'manage-scheme-of-work'},
             ]
         },
 

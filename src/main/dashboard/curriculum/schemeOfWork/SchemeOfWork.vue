@@ -451,7 +451,7 @@ watch(
             <div class="flex justify-content-between mt-3">
 
               <div>
-                <div class="ml-4"><b>Scheme of work</b></div>
+                <div class="ml-4"><b>Scheme of works</b></div>
                 <div class="ml-7" v-if="schemeOfWorkList.name"><small><b>Title:</b> {{schemeOfWorkList.name}}</small></div>
                 <div class="ml-7" v-if="schemeOfWorkList.academic_year_name"><small><b>Class:</b> {{schemeOfWorkList.academic_year_name}}</small></div>
                 <div class="ml-7" v-if="schemeOfWorkList.class_name"><small><b>Class:</b> {{schemeOfWorkList.class_name}}</small></div>
