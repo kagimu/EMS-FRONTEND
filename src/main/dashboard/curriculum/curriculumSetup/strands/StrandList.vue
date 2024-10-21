@@ -256,17 +256,29 @@ const selectSubject = (subject_cluster_number) => {
   subjectStore.fetchSubjectList({subject_cluster_number:subject_cluster_number, curriculum_number:curriculumNumber})
 }
 
+const curriculum_number = localStorage.getItem("CurriculumNum")
 
 onMounted(
     () => {
       filterStrandList()
-      learningAreaStore.fetchLearningArea(curriculumNumber)
+
+
+      if(curriculum_number){
+        learningAreaStore.fetchLearningArea(curriculum_number)
+      }else{
+        learningAreaStore.fetchLearningArea(curriculumNumber)
+      }
+      
       selectSubjectCluster("")
       selectSubject("")
     }
 )
 
 const filterStrandList = () => {
+  if(curriculum_number){
+   curriculumNumber = curriculum_number
+  }
+
   let data = {
     learning_area_number:learning_area_number.value,
     subject_cluster_number:subject_cluster_number.value,

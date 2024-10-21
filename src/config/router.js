@@ -79,6 +79,7 @@ import Students from "@/main/teacher/students/Students.vue";
 import ManageStream from "@/main/teacher/ManageStream.vue";
 import TeacherClasses from '@/main/teacher/class/TeacherClasses.vue';
 import StudentProfile from '@/main/teacher/students/StudentProfile.vue';
+import Subjects from '@/main/teacher/Subjects.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -575,6 +576,7 @@ const router = createRouter({
                 {path: 'students', component: Students, name:'students'},
                 {path: 'manage-stream', component: ManageStream, name:'manage-stream'},
                 {path: 'my-classes', component: TeacherClasses, name:'my-classes'},
+                {path: 'manage-subjects', component: Subjects, name:'manage-subjects'},
               
             ]
         },

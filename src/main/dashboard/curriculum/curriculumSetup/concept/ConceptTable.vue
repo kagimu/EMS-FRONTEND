@@ -48,8 +48,15 @@ const sub_topic_number = ref("")
 const learning_area_number = ref("")
 const class_number = ref("")
 const conceptNumber = ref("")
-let  curriculumNumber = routerData.currentRoute.value.query.id
+// let  curriculumNumber = routerData.currentRoute.value.query.id
 
+let  curriculumNumber = ""
+
+if(routerData.currentRoute.value.query.id){
+  curriculumNumber = routerData.currentRoute.value.query.id
+}else {
+ curriculumNumber = localStorage.getItem("CurriculumNum")
+}
 
 
 

@@ -41,8 +41,14 @@ const subject_number = ref("")
 const strand_number = ref("")
 const learning_area_number = ref("")
 const class_number = ref("")
-let  curriculumNumber = routerData.currentRoute.value.query.id
+let  curriculumNumber = ""
 
+if(routerData.currentRoute.value.query.id){
+  curriculumNumber = routerData.currentRoute.value.query.id
+}else {
+ curriculumNumber = localStorage.getItem("CurriculumNum")
+}
+// const curriculum_number = localStorage.getItem("CurriculumNum")
 
 const addSubject = () => {
   topicEditMode.value = false

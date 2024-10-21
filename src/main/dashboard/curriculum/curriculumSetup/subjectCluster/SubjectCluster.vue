@@ -22,7 +22,7 @@ const subjectClusterStore = useSubjectClusterStore()
 const  notificationStore  = useNotificationStore()
 const learningAreaStore = useLearningAreaStore()
 const learningAreaList = ref([])
-let  curriculumNumber = routerData.currentRoute.value.query.id
+const  curriculumNumber = routerData.currentRoute.value.query.id
 
 const addCurriculum = () => {
   subjectClusterEditMode.value = false
@@ -68,18 +68,26 @@ if (agreed) {
 
 }
 
-
+const curriculum_number = localStorage.getItem("CurriculumNum")
 
 onMounted(
     () => {
-      fetchSubjectClusterList()
-      learningAreaStore.fetchLearningArea(curriculumNumber)
+       fetchSubjectClusterList()
+      if(curriculum_number){
+        learningAreaStore.fetchLearningArea(curriculum_number)
+      }else {
+        learningAreaStore.fetchLearningArea(curriculumNumber)
+      }
+      
     }
 )
 
 const fetchSubjectClusterList = () => {
-
+  if(curriculum_number){
+    subjectClusterStore.fetchSubjectCluster({learning_area_number:learning_area_number.value, curriculum_number:curriculum_number})
+      }else {
   subjectClusterStore.fetchSubjectCluster({learning_area_number:learning_area_number.value, curriculum_number:curriculumNumber})
+      }
 }
 
 
