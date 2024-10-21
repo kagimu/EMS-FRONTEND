@@ -68,7 +68,7 @@ const menuList = ref([
   {title:"Scheme Of Work", name:"manage-scheme-of-work", icon:"bi-journals" ,action:"manage-scheme-of-work"}, //create scheme of work, ...etc
   {title:"Attendance", name:"", icon:"bi-journal-richtext" ,action:""}, //Daily Attendance, Subject Attendance,
   {title:"Calendar", name:"", icon:"bi-calendar" ,action:""}, //Daily Attendance, Subject Attendance,
-  {title:"Assessment", name:"", icon:"bi-file-earmark-spreadsheet" ,action:""}, //exams, entermarks,reports, marksheet, 
+  {title:"Assessment", name:"manage-assessment", icon:"bi-file-earmark-spreadsheet" ,action:"manage-assessment"}, //exams, entermarks,reports, marksheet, 
   {title:"My Profile", name:"", icon:"bi-person-lines-fill" ,action:""},
 ])
 

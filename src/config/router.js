@@ -81,6 +81,7 @@ import TeacherClasses from '@/main/teacher/class/TeacherClasses.vue';
 import StudentProfile from '@/main/teacher/students/StudentProfile.vue';
 import Subjects from '@/main/teacher/Subjects.vue';
 import ManageSchemeOfWork from '@/main/teacher/ManageSchemeOfWork.vue';
+import ManageAssessment from '@/main/teacher/ManageAssessment.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -579,6 +580,7 @@ const router = createRouter({
                 {path: 'my-classes', component: TeacherClasses, name:'my-classes'},
                 {path: 'manage-subjects', component: Subjects, name:'manage-subjects'},
                 {path: 'manage-scheme-of-work', component: ManageSchemeOfWork, name:'manage-scheme-of-work'},
+                {path: 'manage-assessment', component: ManageAssessment, name:'manage-assessment'},
             ]
         },
 
