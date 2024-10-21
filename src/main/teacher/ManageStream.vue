@@ -8,9 +8,9 @@ import { useAbility } from '@casl/vue';
 const { can } = useAbility()
 const routerData = useRouter()
 const selectedTab = routerData.currentRoute.value.query.tab ?? 'students'
-
+ 
 const switchTabs = (tab) => {
-  router.push({name: "manage-stream", query: {tab:tab}});
+  router.push({name: "manage-stream", query: {id:routerData.currentRoute.value.query.id,tab:tab}});
 }
 
 
