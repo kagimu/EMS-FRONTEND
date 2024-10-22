@@ -5,6 +5,10 @@ import {onMounted, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 import { useAbility } from '@casl/vue';
+import StudentScore from "@/main/dashboard/manageLevel/report_setup/report_forms/StudentScore.vue";
+import GenerateReport from "@/main/dashboard/report-card/GenerateReport.vue";
+import ReportSummary from "@/main/dashboard/manageLevel/report_setup/report_forms/ReportSummary.vue";
+import AssessmentMetrics from "@/main/dashboard/assessment/assessmentComponents/AssessmentMetrics.vue";
 
 const { can } = useAbility()
 const routerData = useRouter()
@@ -82,22 +86,22 @@ watch(curriculumNumber, (newValue) => {
   </div>
 
   <div v-if="selectedTab === 'assessment-schedules'">
-   <p>Chedule</p>
+   <AssessmentMetrics></AssessmentMetrics>
   </div>
   <div v-if="selectedTab === 'assessment'">
    
   </div>
 
   <div v-if=" selectedTab === 'enter-marks'">
-                Marks
+              <StudentScore></StudentScore>
                 </div>
 
                 <div v-if=" selectedTab === 'generate-reports'">
-                  generate-reports
+                 <GenerateReport></GenerateReport>
                 </div>
 
                 <div v-if=" selectedTab === 'report-summary'">
-                  
+                  <ReportSummary></ReportSummary>
                    </div>
 </div>
   </div>

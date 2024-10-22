@@ -223,10 +223,10 @@ watch(
 
 
   <div class="flex justify-content-between mt-3">
-    <div class="ml-4">Generate Report</div>
+    <!-- <div class="ml-4">Generate Report</div> -->
   </div>
 
-<hr />
+<!-- <hr /> -->
 
   <div class="row bg-white mx-auto mt-2">
 
