@@ -400,14 +400,7 @@ const showStudentProfile = (std) => {
                 <p><b>Status: </b><span class="status-text">{{ adm.status }}</span></p>
               </div>
               <div class="d-flex justify-content-center align-items-center mt-3">
-                <div v-if="can('enroll_student', 'manage')">
-                  <button v-if="adm.status !== 'Enrolled'" @click="showModal(adm.student.number, adm.admission_number, adm)" type="button" class="btn btn-sm btn-primary">
-                    <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>
-                  </button>
-                </div>
-                <!-- <router-link v-if="adm.status === 'Enrolled'" class="text-decoration-none" :to="{ name: 'student-profile-details', query: { st_id: adm.student.number } }">
-                  <button type="button" class="btn btn-outline-primary">View Details</button>
-                </router-link> -->
+             
                 <button class="btn btn-primary btn-sm" @click="showStudentProfile(adm.student.number)">
                             View Profile
                       </button>
