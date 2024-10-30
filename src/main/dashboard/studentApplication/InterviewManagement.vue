@@ -58,30 +58,25 @@ const switchTabs = (data) => {
           </div>
           <div class="card-body">
            
-            <ul class="nav nav-tabs">
-              <!-- <li class="nav-item">
-                <a class="nav-link" :class="{ active: selectedTab === 'assessment' }" @click="switchTabs('assessment')">
-                  <i class="bi bi-box-arrow-in-right mr-1"></i>
-                  Assessment Schedules On Interview
-                </a>
-              </li> -->
-              <li class="nav-item">
-                <a class="nav-link" :class="{ active: selectedTab === 'applicants' }" @click="switchTabs('applicants')">
-                  <i class="bi bi-box-arrow-in-right mr-1"></i>
-                  Enter Interview Scores
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" :class="{ active: selectedTab === 'admission-offer' }" @click="switchTabs('admission-offer')">
-                  <i class="bi bi-box-arrow-in-right mr-1"></i>
-                  Offer Admission
-                </a>
-              </li>
-            </ul>
+
+            <div class="flex border-b mt-1">
+        <div class="cursor-pointer text-sm rounded-t-md ml-1 mr-1" :class="selectedTab === 'applicants' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('applicants')">
+          <div class="py-1 px-3">
+            <i class="bi bi-box-arrow-in-right mr-1"></i>
+            Enter Interview Scores
+          </div>
+        </div>
+        <div  class="cursor-pointer text-sm rounded-t-md mr-1" :class="selectedTab === 'admission-offer' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('admission-offer')">
+          <div class="py-1 px-3">
+            <i class="bi bi-box-arrow-in-right mr-1"></i>
+            Offer Admission
+          </div>
+        </div>
+      </div>
+
+      
             <div class="tab-content mt-4">
-              <!-- <div class="tab-pane" :class="{ active: selectedTab === 'assessment' }">
-                <InterviewAssessmentList></InterviewAssessmentList>
-              </div> -->
+      
               <div class="tab-pane" :class="{ active: selectedTab === 'applicants' }">
                 <ApplicantsAssessment></ApplicantsAssessment>
               </div>
