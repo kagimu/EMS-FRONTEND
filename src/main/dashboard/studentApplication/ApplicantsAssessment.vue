@@ -142,7 +142,7 @@ onMounted( async () => {
 
 
 <template>
-  <div>
+  <div style="background-color: white;" class="m-3">
    
      <!-- <AppModal title="Attach Assessment Schedules To An Interview" v-model="showingModal" lg>
         <interview-assessment :interviewNumber="interviewNumber"></interview-assessment>

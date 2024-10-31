@@ -14,6 +14,7 @@ import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classe
 import InterviewScoreOfferAdmission from "./InterviewScoreOfferAdmission.vue";
 
 const dialog = ref(false)
+const fullscreenMode = ref(false);
 const notifications = ref(false)
 const sound = ref(true)
 const widgets = ref(false)
@@ -261,6 +262,33 @@ watch(
     },
     {deep:true}
 )
+
+const toggleFullscreen = () => {
+  if (!fullscreenMode.value) {
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    } else if (document.documentElement.webkitRequestFullscreen) { // Safari
+      document.documentElement.webkitRequestFullscreen();
+    } else if (document.documentElement.msRequestFullscreen) { // IE11
+      document.documentElement.msRequestFullscreen();
+    }
+    fullscreenMode.value = true;
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) { // Safari
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) { // IE11
+      document.msExitFullscreen();
+    }
+    fullscreenMode.value = false;
+  }
+};
+
+// Watch fullscreen state change
+document.addEventListener("fullscreenchange", () => {
+  fullscreenMode.value = !!document.fullscreenElement;
+});
   </script>
 
 <template>
@@ -480,6 +508,10 @@ watch(
         <div class="modal-content" style="">
           <div class="modal-header" style="height: 15px;border: 0px;">
             <span class="modal-title"></span>
+            <button @click="toggleFullscreen" class="btn btn-secondary mb-3">
+      {{ fullscreenMode ? 'Exit Fullscreen' : 'Enter Fullscreen' }}
+    </button>
+            <i @click="expandSection()" class="bi bi-arrows-angle-expand"></i>
             <button class="btn btn-danger" type="button "   @click="dialog = false" 
             style="border: 1 solid red; border-radius: 8px;padding: 2px; font-weight: 600;">
             <span style="width: 60px;">&times;</span>close
