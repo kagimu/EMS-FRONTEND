@@ -440,7 +440,7 @@ watch(
             <div class="flex justify-content-between">
               <button class="mr-1 link-primary" @click="openModal(interview)">
                 <!-- <i style="font-size: 13px;color:#0ddd" class="bi bi-eye cursor-pointer"></i> -->
-                <i class="bi bi-box-arrow-in-right mr-1"></i> View Students
+                <i class="bi bi-box-arrow-in-right mr-1"></i> Manage Applicants
               </button>
 
             <button @click="editThisData(interview)"  class="link-primary" style="border-width: 0px;text-decoration: none;"><small>
