@@ -19,7 +19,10 @@
   const assessmentStore = useAssessmentStore()
   const studentApplicationStore = useStudentApplicationStore()
   const routerData = useRouter()
-  let  interviewNumber = routerData.currentRoute.value.query.interview_id
+  // let  interviewNumber = routerData.currentRoute.value.query.interview_id
+
+  const  interviewNumber = ref(null)
+
   let interviewM = routerData.currentRoute.value.query.interview_m
   const notificationStore = useNotificationStore()
   const applicationStore= useApplicationStore()
@@ -32,6 +35,20 @@
   const studentNumber = ref(null)
   const errM = ref(false)
 
+const props = defineProps({
+  interviewInfoData: {}
+})
+
+
+onMounted( async () => {
+
+  if(props.interviewInfoData){
+    interviewNumber.value = props.interviewInfoData.interview_number
+    studentApplicationStore.fetchAssessmentMetricsOnInterview(interviewNumber.value)
+  }
+
+  })
+
   const showModal = () => {
       showingModal.value = true
   }  
@@ -43,7 +60,7 @@
   
   const fetchStudentOnInterviewDetails = (assNumber) => {
    let data = reactive({
-      interview_number:interviewNumber,
+      interview_number:props.interviewInfoData.interview_number,
       assessment_metric_number:assNumber
    })
       applicationStore.fetchStudentsOnInterview(data) 
@@ -59,6 +76,7 @@
       },
       {deep:true}
   )
+  
   
   
   watch(
@@ -125,9 +143,10 @@
 
 <template>
   <div>
-     <AppModal title="Attach Assessment Schedules To An Interview" v-model="showingModal" lg>
+   
+     <!-- <AppModal title="Attach Assessment Schedules To An Interview" v-model="showingModal" lg>
         <interview-assessment :interviewNumber="interviewNumber"></interview-assessment>
-     </AppModal>
+     </AppModal> -->
      
      <div class="row mt-4">
         <div class="col-lg-4">
@@ -140,9 +159,8 @@
                  @change="fetchStudentOnInterviewDetails(form.assessment_number)"
                  >
                  <option disabled value=""> - Select Assessment Schedule- </option>
-                 <option v-for="(assessment, index) in assessmentDataData" :key="index" :value="assessment.number">{{assessment.metric_name  }} - [{{ assessment.assessment_area }}]</option>
+                 <option v-for="(assessment, index) in assessmentDataData" :key="index" :value="assessment.number">{{assessment.metric_name  }} - [{{ assessment.assessment_area }}] ({{ assessment.description }} [{{ assessment.scheduled_on }}])</option>
               </select>
-  <!-- <label class="input-group-text" for="inputGroupSelect02"><i  class="bi bi-plus-circle" @click="showModal()"></i></label> -->
 </div>
            </div>
         </div>
@@ -161,7 +179,8 @@
        {{ errorMessage }}
      </div>
       
-     <div v-else>
+     <div>
+      <!-- {{ interviewInfoData }} -->
      <table   id="data"
         class="table table-striped table-hover caption-top table-sm text-sm">
         <thead>

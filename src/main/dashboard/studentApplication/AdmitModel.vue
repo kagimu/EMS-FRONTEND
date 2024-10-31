@@ -1,5 +1,5 @@
 <script setup>
-  import {onMounted, reactive, ref, watch, watchEffect, computed} from "vue";
+  import {onMounted, reactive, ref, watch, watchEffect, computed } from "vue";
   import useNotificationStore from "@/composables/useNotification.js";
   import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
   import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
@@ -43,12 +43,25 @@
   
   
   const studentNumber = "";
-  const interviewNumber = routerData.currentRoute.value.query.interview_id;
+  const interviewNumber = ref(null);
   const student_number = ref([])
   
     const props = defineProps({
-      selectedStudentNumber:[]
+      selectedStudentNumber:[],
+      interviewInfo:{},
+      admissionDetails:{}
     })  
+
+
+    onMounted( async () => {
+    schoolStore.fetchSchools()  
+     applicationStore.fetchApplicationList()
+     await serviceStore.fetchAllItems()
+     getAdmissionInfo()
+    //  alert(props.interviewInfo.interview_number)
+      }
+  )
+
     watch (
       () => props.selectedStudentNumber,
       async (data) => {
@@ -59,13 +72,23 @@
       {deep:true}
   )
   
+  watch (
+      () => props.interviewInfo,
+      async (data) => {
+        if(data){
+          interviewNumber.value = props.interviewInfo.interview_number
+        }
+      },
+      {deep:true}
+  )
+
   const form = reactive({
   student_number,
   academic_year_number: null,
   study_period_number: null,
   campus_class_number: null,
   campus_number: null,
-  interview_number:interviewNumber,
+  interview_number:props.interviewInfo.interview_number,
   stream_number:null,
   school_number:null,
   curriculumNumber:null,
@@ -73,6 +96,29 @@
   })
   
 
+  const getAdmissionInfo = () => {
+    if(props.admissionDetails){
+      form.school_number = props.admissionDetails.school_number
+      if(form.school_number){
+        fetchCampuses(form.school_number)
+      }
+      form.campus_number = props.admissionDetails.campus_number
+      if(form.campus_number){
+        fetchClasses(form.campus_number)
+      }
+      form.curriculumNumber = props.admissionDetails.curriculum_number
+      if(form.curriculumNumber){
+        fetchCampusLevel(form.curriculumNumber)
+      }
+      form.level = props.admissionDetails.level_number
+      if(form.level){
+        fetchLevelClasses(form.level)
+      }
+      class_number.value = props.admissionDetails.campus_class_number
+     
+
+    }
+  }
    
 const getCampusN = (streamN) => {
 let data = streamList.value
@@ -91,7 +137,7 @@ campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_c
       form.study_period_number=null,
       form.campus_class_number=null,
       form.campus_number- null,
-      form.interview_number=interviewNumber,
+      form.interview_number=props.interviewInfo.interview_number,
       form.stream_number=null,
       form.school_number=null
       buttonLoader.value=false
@@ -199,24 +245,6 @@ watch(
     {deep:true}
 )
 
-
-  // watch(
-  //     () => academicYearStore.academicYearByCampusResponse,
-  //     async (data) => {
-  //         if (data) {
-  //           academicYearList.value = data.data
-  
-  //           if(data && data.data){
-  //         let studyData = data.data
-  //         if(studyData && (studyData.length > 0)){
-  //           studyPeriodList.value = studyData[0].studyPeriod
-  //         }
-  //       }
-  //         }
-  //     },
-  //     {deep: true}
-  // )
-  
   
   watch(
     () => studyPeriodStore.studyPeriodResponse,
@@ -238,14 +266,6 @@ watch(
   )
   
 
-
-  
-  
-  
-  onMounted(() => {
-          schoolStore.fetchSchools()
-      }
-  )
   
   watch(
       () => schoolStore.schoolsResponse,
@@ -302,11 +322,7 @@ watch(
   // Creating invoice Logic =========================================================
   const Services = ref([]);
   const ServiceOptions = ref([])
-  
-  onMounted(
-      async () => {
-        await applicationStore.fetchApplicationList()
-      } )
+
   
       watch(
       () => applicationStore.applicationListResponse,
@@ -356,10 +372,6 @@ watch(
   );
 }
 
-  onMounted(
-    async () => {
-      await serviceStore.fetchAllItems()
-    } )
   
   watch(
     () => serviceStore.allItemsListResponse,
@@ -387,20 +399,22 @@ watch(
       campus_class_number: campusClassNumber.value,
       school_number:form.school_number,
       campus_number: form.campus_number,
-      interview_number:interviewNumber,
+      interview_number:props.interviewInfo.interview_number,
       stream_number:form.stream_number,
       items
     }
    
-    // alert(JSON.stringify(data))
     admissionStore.admitStudent(data)
   }
+  
+
   
 </script>
 
 <template>
-  <div>
+  <div class="m-4">
     <!-- {{ selectedStudentNumber }} -->
+    <!-- {{ interviewInfo }} -->
     <form @submit.prevent="Admit()">
       <div class="row">
         <div class="col-lg-4">
@@ -552,8 +566,8 @@ watch(
         </div>
       </div>
       <div class="flex justify-content-end mt-2" style="width: 100%;">
-        <button type="submit" class="btn btn-primary border-0 btn-sm mb-2">
-          <small> submit</small>
+        <button type="submit" class="btn btn-primary border-0 mb-2">
+          <b>Admit ! &nbsp;<i class="bi bi-box-arrow-in-right mr-1"></i></b>
           <span style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span></span>
         </button>
       </div>
@@ -567,7 +581,11 @@ watch(
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
   }
-  .text-sm{
-    font-size: 12px;
-  }
+
+
+.app-modal {
+  z-index: 10910; /* Higher than Bootstrap's 1050 */
+}
+
+
 </style>

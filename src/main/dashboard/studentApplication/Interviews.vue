@@ -11,6 +11,27 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
+import InterviewScoreOfferAdmission from "./InterviewScoreOfferAdmission.vue";
+
+const dialog = ref(false)
+const notifications = ref(false)
+const sound = ref(true)
+const widgets = ref(false)
+const interviewInfoData = ref([])
+const admissionLearnerDetails = ref({})
+
+const openModal = (interviewInfoD) => {
+  dialog.value = true
+  interviewInfoData.value = interviewInfoD
+
+  admissionLearnerDetails.value = {
+    school_number : school_number.value,
+    campus_number:campus_number.value,
+    level_number:form.level,
+    curriculum_number:form.curriculumNumber,
+    campus_class_number:form.campus_class_number,
+  }
+}
 
 const levelStore = useLevelStore()
 const campusList = ref([])
@@ -294,7 +315,7 @@ watch(
       </button>
 
       <div class="row mt-4">
-        <div class="col-4">    
+        <div class="col-3">    
          <div class="mb-2">
             <label class="text-sm"><small>School</small></label>
          <select
@@ -310,7 +331,7 @@ watch(
      </div>
      </div>
       
-      <div class="col-4"> 
+      <div class="col-3"> 
       <div class="mb-2">
             <label class="text-sm"><small>Campus</small></label>
             <select
@@ -324,7 +345,7 @@ watch(
         </div>  
         </div> 
 
-        <div class="col-4">
+        <div class="col-2">
                                             <div class="mb-2">
                                               <label class="text-sm"><small>Curriculum</small></label>
                                                 <select
@@ -340,7 +361,7 @@ watch(
                                              </div> 
 
                                              
-                                            <div class="col-4" >
+                                            <div class="col-2" >
                                                 <div class="mb-2">
                                                   <label class="text-sm"><small>Level</small></label>
                                                    <select
@@ -357,7 +378,7 @@ watch(
                                                 </div>
 
 
-        <div class="col-4"> 
+        <div class="col-2"> 
         <div class="mb-2">
             <label class="text-sm"><small>Class</small></label>
 
@@ -417,6 +438,11 @@ watch(
           <td>{{ interview.message }}</td>
           <td>
             <div class="flex justify-content-between">
+              <button class="mr-1 link-primary" @click="openModal(interview)">
+                <!-- <i style="font-size: 13px;color:#0ddd" class="bi bi-eye cursor-pointer"></i> -->
+                <i class="bi bi-box-arrow-in-right mr-1"></i> View Students
+              </button>
+
             <button @click="editThisData(interview)"  class="link-primary" style="border-width: 0px;text-decoration: none;"><small>
               <i  style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small>
             </button>
@@ -424,13 +450,15 @@ watch(
                 <i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i>
               </button>
 
-              <router-link
+            
+
+              <!-- <router-link
                   class="text-decoration-none"
                   :to="{name:'manage-interviews', query:{interview_id:interview.interview_number, interview:interview.name}}">
                 <button class="text-[#0d6efd] border border-primary p-1 rounded-sm hover:bg-[#0d6efd] hover:text-white">
                 <small>Enter interview scores</small>
                 </button>
-              </router-link>
+              </router-link> -->
             </div>
 
             <div>
@@ -444,10 +472,23 @@ watch(
       </tbody>
     </table>
   </div>
-
   </div>
 
-  
+
+  <div v-if="dialog" class="modal fade show" style="display: block;" tabindex="-1" role="dialog" >
+      <div class="modal-dialog modal-fullscreen" role="document" >
+        <div class="modal-content" style="">
+          <div class="modal-header" style="height: 15px;border: 0px;">
+            <span class="modal-title"></span>
+            <button class="btn btn-danger" type="button "   @click="dialog = false" 
+            style="border: 1 solid red; border-radius: 8px;padding: 2px; font-weight: 600;">
+            <span style="width: 60px;">&times;</span>close
+            </button>
+          </div>
+         <InterviewScoreOfferAdmission :interviewInfo="interviewInfoData" :admissionLearnerDetails="admissionLearnerDetails"></InterviewScoreOfferAdmission>
+        </div>
+      </div>
+    </div>
 
   </div>
   </template>
@@ -457,5 +498,16 @@ watch(
   .td{
     text-transform: capitalize !important;
   }
+  .modal {
+  display: none;
+}
+
+.modal.show {
+  display: block;
+}
+
+.modal-dialog {
+  margin-top: 5rem; /* Adjust this value as needed for more spacing from the top */
+}
 </style>
  

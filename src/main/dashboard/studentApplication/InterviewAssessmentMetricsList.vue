@@ -20,18 +20,10 @@ const errorMessage = ref(null)
 const examTypeListData = ref([])
 
 
-
-// onMounted(
-//     () => {
-//       studentApplicationStore.fetchAssessmentMetricsOnInterview(props.interviewNumber)
-//     }
-// )
-
 watch(
     () => props.interviewNumber,
     async (data) => {
       if(data){
-        // alert(props.interviewNumber)
         await studentApplicationStore.fetchAssessmentMetricsOnInterview(props.interviewNumber)
       }
     },
@@ -42,7 +34,6 @@ watch(
     () => studentApplicationStore.assessmentMetricsOnInterviewResponse,
     async (data) => {
       if(data){
-        // notificationStore.successToast("Success", data.message)
         assessmentMetricList.value = data.data
       }
     },
@@ -116,7 +107,7 @@ watch(
 <template>
   <div>
 
-<ul v-for="(list, index) in assessmentMetricList" :key="index" class="list-group">
+<!-- <ul v-for="(list, index) in assessmentMetricList" :key="index" class="list-group">
   <li class="list-group-item d-flex justify-content-between align-items-start">
     
     <div class="ms-2 me-auto">
@@ -127,10 +118,10 @@ watch(
     :to="{ name: 'interview-details', query: { interview_id: props.interviewNumber, assessment_metric_id: list.AssessmentMetric.number, interview_m: list.AssessmentMetric.description  }}">
     ENTER MARKS
     </router-link>
-    <!-- <button class=" "><small>ENTER MARKS</small></button> -->
+  
     
   </li>
-</ul>
+</ul> -->
   </div>
 </template>
 
