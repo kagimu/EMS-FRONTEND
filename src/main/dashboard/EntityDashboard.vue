@@ -100,6 +100,8 @@ if(entity) {
  /* if(draftData.value?.number === entityNo){
     saveStorage(draftData.value)
   }else {*/
+  
+  localStorage.setItem('entityInfo',JSON.stringify(entity))
     buttonLoader.value = index
     entityStore.switchEntity(entityNo)
   // }
@@ -175,6 +177,7 @@ watch (
       if(data){
         await entityStore.fetchEntity()
         notificationStore.successToast("Success", data.message)
+        entityDialog.value = false
       }
     }
 )
@@ -183,7 +186,7 @@ watch (
 </script>
 <template>
 
-      <AppModal :title="(entityData?.number ? 'Edit' : 'Create')+' Entity'" v-model="entityDialog" lg>
+      <AppModal :title="(entityData?.number ? 'Edit' : 'Create')+' Entity'" v-model="entityDialog"  xl2>
         <NewEntity :entityData="entityData"></NewEntity>
       </AppModal>
 

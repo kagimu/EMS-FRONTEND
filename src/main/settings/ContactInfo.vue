@@ -31,13 +31,6 @@ const contactInfoForm = reactive({
           <div class="row">
             <div class="col-lg-6">
           <h3 class="text-sm font-semibold mb-4 ">Contact Information</h3>
-          
-          <div class="mb-3">
-            <label for="name" class="block text-gray-700 text-sm">Name</label>
-            <input type="text" id="name" v-model="contactInfoForm.name" 
-                   class="form-input mt-1 block w-full border-gray-300 rounded-md" />
-          </div>
-
           <div class="mb-3">
             <label for="email" class="block text-gray-700 text-sm">Email</label>
             <input type="email" id="email" v-model="contactInfoForm.email"
@@ -46,6 +39,12 @@ const contactInfoForm = reactive({
 
           <div class="mb-3">
             <label for="phone" class="block text-gray-700 text-sm">Phone</label>
+            <input type="text" id="phone" v-model="contactInfoForm.phone"
+                   class="form-input mt-1 block w-full border-gray-300 rounded-md" />
+          </div>
+
+          <div class="mb-3">
+            <label for="phone" class="block text-gray-700 text-sm">Whatsapp</label>
             <input type="text" id="phone" v-model="contactInfoForm.phone"
                    class="form-input mt-1 block w-full border-gray-300 rounded-md" />
           </div>

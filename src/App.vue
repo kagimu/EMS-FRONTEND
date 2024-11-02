@@ -5,30 +5,28 @@
 
 
   </div>
- 
-   <!-- Floating 'Need Help' Button -->
+<!-- 
    <div class="floating-help-button" @click="toggleContactDetails">
       Need Help?
     </div>
 
-    <!-- Contact Details Popup -->
     <div v-if="showContactDetails" class="contact-details">
       <h5>Contact Us</h5>
       <p><strong>Phone:</strong> <i class="bi bi-phone ml-1" style="color:orange;font-size: 20px;"></i> +2 567 800 000</p>
       <p><strong>Email:</strong> <i class="bi bi-envelope ml-1" style="color:blue;font-size: 18px;"></i> help@wholesome.com</p>
       <p><strong> WhatsApp:</strong> <i class="bi bi-whatsapp ml-1" style="color:green;font-size: 20px;"></i> +2 567 700 000</p>
       <button @click="toggleContactDetails" class="close-btn">Close</button>
-    </div>
+    </div> -->
   
 </template>
 
 <script setup>
-import {ref} from "vue";
-const showContactDetails = ref(false);
+// import {ref} from "vue";
+// const showContactDetails = ref(false);
 
-const toggleContactDetails = () => {
-  showContactDetails.value = !showContactDetails.value;
-};
+// const toggleContactDetails = () => {
+//   showContactDetails.value = !showContactDetails.value;
+// }
 
 </script>
 

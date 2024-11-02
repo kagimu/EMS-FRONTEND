@@ -61,6 +61,14 @@ const menuList = ref([
   {title:"Settings", name:"settings", icon:"bi-gear",action:"access_settings_menu"},
 ])
 
+const phoneNumber = ref(null)
+const whatsappNo = ref(null)
+const email = ref(null)
+const website = ref(null)
+const facebook = ref(null)
+const twitter = ref(null)
+const instagram = ref(null)
+
 
 onMounted(
     async () => {
@@ -73,6 +81,16 @@ onMounted(
       }
       if(localStorage.getItem("campusName")){
       campusName.value = localStorage.getItem("campusName")
+      }
+      if(localStorage.getItem("entityInfo")){
+       let draft = JSON.parse(localStorage.getItem("entityInfo"))
+      facebook.value = draft?.facebook
+      email.value = draft?.email
+      twitter.value = draft?.twitter
+      phoneNumber.value = draft?.phone
+      whatsappNo.value =  draft?.whatsapp
+      instagram.value = draft?.instagram
+      website.value = draft?.website
       }
     }
 )
@@ -167,6 +185,14 @@ watch (
       }
     }
 )
+
+const showContactDetails = ref(false);
+
+const toggleContactDetails = () => {
+  showContactDetails.value = !showContactDetails.value;
+}
+
+
 </script>
 <template>
 
@@ -315,6 +341,20 @@ watch (
     <div class="row mx-auto" style="position: fixed; width: 100%; bottom: 0; left: 0; right: 0;">
       <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #ffffff; border-top: 1px solid #dfe1e3;">
         <!-- Footer -->
+         
+   <div class="floating-help-button" @click="toggleContactDetails">
+      Need Help?
+    </div>
+    <div v-if="showContactDetails" class="contact-details">
+      <h5>Contact Us</h5>
+      <p><strong>Phone:</strong> <i class="bi bi-phone ml-1" style="color:orange;font-size: 20px;"></i> {{ phoneNumber }}</p>
+      <p><strong>Email:</strong>  <i class="bi bi-envelope ml-1" style="color:blue;font-size: 18px;"></i>{{ email }}</p>
+      <p><strong> WhatsApp:</strong> <i class="bi bi-whatsapp ml-1" style="color:green;font-size: 20px;"></i> {{ whatsappNo }}</p>
+      <p><strong> Website:</strong> <i class="bi bi-globe ml-1" style="color:green;font-size: 20px;"></i> {{ website }}</p>
+
+      <button @click="toggleContactDetails" class="close-btn">Close</button>
+    </div>
+
         <footer style="padding: 10px;">
           <div class="row" style="font-size: 13px;">
             <div class="col-10 text-center">
@@ -330,6 +370,7 @@ watch (
 
             </div>
             <div class="col-2 text-end">Powered by Hamsoft</div>
+
           </div>
         </footer>
       </div>
@@ -343,5 +384,47 @@ watch (
 
 
 <style scoped>
+.floating-help-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007bff;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 25px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  font-weight: bold;
+  z-index: 1100;
+  transition: background-color 0.3s;
+}
+.floating-help-button:hover {
+  background-color: #0056b3;
+}
+/* Contact Details Box */
+.contact-details {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background-color: #fff;
+  color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1100;
+  width: 250px;
+  font-size: 14px;
+}
+
+/* Close Button inside Contact Box */
+.close-btn {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  float: right;
+}
 
 </style>
