@@ -48,8 +48,8 @@ const defaultMenuSize = ref(useStorage("toggle", false))
 
 const menuList = ref([
   {title:"Home", name:"home", icon:"bi-house",action:"view_dashboard"},
-  {title:"School", name:"school", icon:"bi-house-add" , action:"view_school"},
   {title:"Curriculum", name:"curriculum", icon:"bi-pen", action:"view_curriculum"},
+  {title:"School", name:"school", icon:"bi-house-add" , action:"view_school"},
   {title:"Time table", name:"timetable", icon:"bi-pen",action:"view_timetable-details"},
   {title:"Student Application", name:"student-application", icon:"bi-person-plus",action:"view_applications"},
   {title:"Student Admission", name:"admission-list", icon:"bi-database-down",action:"view_admissions"},
