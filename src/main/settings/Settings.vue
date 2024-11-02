@@ -13,6 +13,7 @@ import PromotionSettings from "./promotion/PromotionSettings.vue";
 import PromotionValue from "./promotion/PromotionValue.vue";
 import Billables from "@/main/settings/bills/Billables.vue"
 import ModeOfStudy from "@/main/settings/mode-of-study/ModeOfStudy.vue"
+import ContactInfo from "@/main/settings/ContactInfo.vue"
 
 import { useAbility } from '@casl/vue';
 
@@ -28,6 +29,11 @@ const settingsList = ref([
     name:"Profile",
     id:"profile",
     action:"view_profile"
+  },
+  {
+    name:"Contact Info",
+    id:"contact-info",
+    action:"view_contactInfo"
   },
   {
     name:"Level",
@@ -121,6 +127,9 @@ const form = reactive({
 
                 <div v-if="selectedPage === 'profile'">
                   <Profile></Profile>
+                </div>
+                <div v-if="selectedPage === 'contact-info'">
+                  <ContactInfo></ContactInfo>
                 </div>
                 <div v-if="selectedPage === 'level'">
                   <level-setup></level-setup>

@@ -62,7 +62,7 @@ onMounted(async () => {
       <div 
            :class="selectedTab === 'applicants' ? 'selected-tab' : 'unselected-tab'"
            @click="switchTabs('applicants')">
-        <div class="py-1 px-3">
+        <div class="py-1 px-3 text-xs">
           <i class="bi bi-box-arrow-in-right mr-1"></i>
           Enter Interview Scores
         </div>
@@ -70,7 +70,7 @@ onMounted(async () => {
       <div 
            :class="selectedTab === 'admission-offer' ? 'selected-tab' : 'unselected-tab'"
            @click="switchTabs('admission-offer')">
-        <div class="py-1 px-3">
+        <div class="py-1 px-3 text-xs">
           <i class="bi bi-box-arrow-in-right mr-1"></i>
           Offer Admission
         </div>
@@ -89,6 +89,9 @@ onMounted(async () => {
   </div>
 </template>
 
+
+
+
 <style scoped>
 .selected-tab {
   border-bottom: 2px solid #2c2f8c;
@@ -106,7 +109,7 @@ onMounted(async () => {
   text-align: center;
 }
 .tab-content p {
-  font-size: 16px;
+  font-size: 13px;
   padding: 20px;
   background: #f8f9fa;
   border-radius: 8px;

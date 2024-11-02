@@ -143,12 +143,7 @@ onMounted( async () => {
 
 <template>
   <div style="background-color: white;" class="m-3">
-   
-     <!-- <AppModal title="Attach Assessment Schedules To An Interview" v-model="showingModal" lg>
-        <interview-assessment :interviewNumber="interviewNumber"></interview-assessment>
-     </AppModal> -->
-     
-     <div class="row mt-4">
+          <div class="row mt-4">
         <div class="col-lg-4">
            <div class="mb-2">
             <label style="font-size: 11px;"  class="alert alert-primary p-0">* Please Select Assessment Schedule to Enter/view Marks</label>

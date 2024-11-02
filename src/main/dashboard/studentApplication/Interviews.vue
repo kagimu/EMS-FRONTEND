@@ -508,10 +508,10 @@ document.addEventListener("fullscreenchange", () => {
         <div class="modal-content" style="">
           <div class="modal-header" style="height: 15px;border: 0px;">
             <span class="modal-title"></span>
-            <button @click="toggleFullscreen" class="btn btn-secondary mb-3">
+            <button style="width: 90px;font-size: 12px" @click="toggleFullscreen" class="btn btn-secondary btn-sm mb-3 p-0">
       {{ fullscreenMode ? 'Exit Fullscreen' : 'Enter Fullscreen' }}
     </button>
-            <i @click="expandSection()" class="bi bi-arrows-angle-expand"></i>
+           
             <button class="btn btn-danger" type="button "   @click="dialog = false" 
             style="border: 1 solid red; border-radius: 8px;padding: 2px; font-weight: 600;">
             <span style="width: 60px;">&times;</span>close

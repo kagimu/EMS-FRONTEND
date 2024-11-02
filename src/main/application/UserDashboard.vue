@@ -82,6 +82,7 @@ const reloadProfile = () => {
   console.log('Profile reloaded')
 }
 
+
 </script>
 
 
@@ -200,6 +201,10 @@ const reloadProfile = () => {
       <div class="text-white text-sm"><small>© 2011 Wholesome Education System, All rights reserved.</small></div>
       <a  class="text-white no-underline text-sm" href="#"><small><span>Powered by</span> <b>Hamsoft</b></small></a>
     </div>
+
+   
+ 
+
   </footer>
 
 
@@ -262,7 +267,6 @@ const reloadProfile = () => {
 .list-group-item.active {
   background-color: #2c2f8c;
 }
-
 </style>
 
 
