@@ -267,6 +267,24 @@ const toggleContactDetails = () => {
         <div class="floating-help-button text-xs p-2 ml-3" @click="toggleContactDetails">
       Need Help ?
     </div>
+
+    <div v-if="showContactDetails" class="contact-details ">
+      <div class="row" style="border-bottom: 1px  #f1f1f1 solid;">
+      <div class="col-lg-6">
+      <h5 class="text-xs">Contact us</h5>
+      </div>
+      <div class="col-lg-6">
+      <button @click="toggleContactDetails" class="close-btn">
+      <i class="bi bi-x-lg"></i>
+      </button>
+      </div>
+      </div>
+      <p><i class="bi bi-phone mr-2" style="color:orange;font-size: 20px;"></i> {{ phoneNumber }}</p>
+      <p> <i class="bi bi-envelope mr-2" style="color:blue;font-size: 18px;"></i>{{ email }}</p>
+      <p> <i class="bi bi-whatsapp mr-2" style="color:green;font-size: 20px;"></i> {{ whatsappNo }}</p>
+      <p> <i class="bi bi-globe mr-2" style="color:green;font-size: 20px;"></i> {{ website }}</p>
+      </div>
+
       </div>
       </div>
     </div>
@@ -347,27 +365,6 @@ const toggleContactDetails = () => {
         <!-- Footer -->
          
 
-    <div v-if="showContactDetails" class="contact-details">
-
-      <div class="row" style="border-bottom: 1px  #f1f1f1 solid;">
-        <div class="col-lg-6">
-          <h5 class="text-xs">Contact us</h5>
-        </div>
-        <div class="col-lg-6">
-          <button @click="toggleContactDetails" class="close-btn">
-            <i class="bi bi-x-lg"></i>
-          </button>
-         </div>
-
-      </div>
-
-      <p><i class="bi bi-phone mr-2" style="color:orange;font-size: 20px;"></i> {{ phoneNumber }}</p>
-      <p> <i class="bi bi-envelope mr-2" style="color:blue;font-size: 18px;"></i>{{ email }}</p>
-      <p> <i class="bi bi-whatsapp mr-2" style="color:green;font-size: 20px;"></i> {{ whatsappNo }}</p>
-      <p> <i class="bi bi-globe mr-2" style="color:green;font-size: 20px;"></i> {{ website }}</p>
-
-     
-    </div>
 
         <footer style="padding: 10px;">
           <div class="row" style="font-size: 13px;">
@@ -419,7 +416,8 @@ const toggleContactDetails = () => {
 .contact-details {
   position: fixed;
   bottom: 80px;
-  right: 950px;
+  left: 40px;
+  /* right: 990px; */
   background-color: #fff;
   color: #333;
   padding: 12px;
