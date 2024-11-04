@@ -264,6 +264,9 @@ const toggleContactDetails = () => {
             <small :class="{'inline-block': !defaultMenuSize, 'hidden group-hover:inline-block':defaultMenuSize}" class="duration-700">{{lst.title}}</small>
           </div>
         </router-link>
+        <div class="floating-help-button text-xs p-2 ml-3" @click="toggleContactDetails">
+      Need Help ?
+    </div>
       </div>
       </div>
     </div>
@@ -314,6 +317,7 @@ const toggleContactDetails = () => {
               <small>{{lst.title}}</small>
             </div>
           </router-link>
+     
           </div>
 
         </div>
@@ -342,19 +346,19 @@ const toggleContactDetails = () => {
       <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #ffffff; border-top: 1px solid #dfe1e3;">
         <!-- Footer -->
          
-   <div class="floating-help-button text-xs p-2" @click="toggleContactDetails">
-      Need Help ?
-    </div>
+
     <div v-if="showContactDetails" class="contact-details">
 
-      <div class="row">
+      <div class="row" style="border-bottom: 1px  #f1f1f1 solid;">
         <div class="col-lg-6">
           <h5 class="text-xs">Contact us</h5>
         </div>
         <div class="col-lg-6">
-          <button @click="toggleContactDetails" class="close-btn">x</button>
+          <button @click="toggleContactDetails" class="close-btn">
+            <i class="bi bi-x-lg"></i>
+          </button>
          </div>
-<hr>
+
       </div>
 
       <p><i class="bi bi-phone mr-2" style="color:orange;font-size: 20px;"></i> {{ phoneNumber }}</p>
@@ -397,7 +401,7 @@ const toggleContactDetails = () => {
 .floating-help-button {
   position: fixed;
   bottom: 45px;
-  right: 1180px;
+  /* right: 1180px; */
   background-color: #007bff;
   color: white;
   padding: 12px 20px;
@@ -418,23 +422,25 @@ const toggleContactDetails = () => {
   right: 950px;
   background-color: #fff;
   color: #333;
-  padding: 20px;
+  padding: 12px;
   border-radius: 8px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
   z-index: 1100;
   width: 250px;
   font-size: 11px;
+
 }
 
 /* Close Button inside Contact Box */
 .close-btn {
   /* background-color: red; */
-  color: rgb(250, 0, 0);
+  color: rgb(13, 13, 13);
   border: none;
   padding: 5px 5px;
   border-radius: 5px;
   cursor: pointer;
   float: right;
+  /* font-size: 20px; */
 }
 
 </style>
