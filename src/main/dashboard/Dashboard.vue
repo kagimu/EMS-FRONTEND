@@ -342,17 +342,27 @@ const toggleContactDetails = () => {
       <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #ffffff; border-top: 1px solid #dfe1e3;">
         <!-- Footer -->
          
-   <div class="floating-help-button" @click="toggleContactDetails">
-      Need Help?
+   <div class="floating-help-button text-xs p-2" @click="toggleContactDetails">
+      Need Help ?
     </div>
     <div v-if="showContactDetails" class="contact-details">
-      <h5>Contact Us</h5>
-      <p><strong>Phone:</strong> <i class="bi bi-phone ml-1" style="color:orange;font-size: 20px;"></i> {{ phoneNumber }}</p>
-      <p><strong>Email:</strong>  <i class="bi bi-envelope ml-1" style="color:blue;font-size: 18px;"></i>{{ email }}</p>
-      <p><strong> WhatsApp:</strong> <i class="bi bi-whatsapp ml-1" style="color:green;font-size: 20px;"></i> {{ whatsappNo }}</p>
-      <p><strong> Website:</strong> <i class="bi bi-globe ml-1" style="color:green;font-size: 20px;"></i> {{ website }}</p>
 
-      <button @click="toggleContactDetails" class="close-btn">Close</button>
+      <div class="row">
+        <div class="col-lg-6">
+          <h5 class="text-xs">Contact us</h5>
+        </div>
+        <div class="col-lg-6">
+          <button @click="toggleContactDetails" class="close-btn">x</button>
+         </div>
+<hr>
+      </div>
+
+      <p><i class="bi bi-phone mr-2" style="color:orange;font-size: 20px;"></i> {{ phoneNumber }}</p>
+      <p> <i class="bi bi-envelope mr-2" style="color:blue;font-size: 18px;"></i>{{ email }}</p>
+      <p> <i class="bi bi-whatsapp mr-2" style="color:green;font-size: 20px;"></i> {{ whatsappNo }}</p>
+      <p> <i class="bi bi-globe mr-2" style="color:green;font-size: 20px;"></i> {{ website }}</p>
+
+     
     </div>
 
         <footer style="padding: 10px;">
@@ -386,8 +396,8 @@ const toggleContactDetails = () => {
 <style scoped>
 .floating-help-button {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 45px;
+  right: 1180px;
   background-color: #007bff;
   color: white;
   padding: 12px 20px;
@@ -405,7 +415,7 @@ const toggleContactDetails = () => {
 .contact-details {
   position: fixed;
   bottom: 80px;
-  right: 20px;
+  right: 950px;
   background-color: #fff;
   color: #333;
   padding: 20px;
@@ -413,15 +423,15 @@ const toggleContactDetails = () => {
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
   z-index: 1100;
   width: 250px;
-  font-size: 14px;
+  font-size: 11px;
 }
 
 /* Close Button inside Contact Box */
 .close-btn {
-  background-color: red;
-  color: white;
+  /* background-color: red; */
+  color: rgb(250, 0, 0);
   border: none;
-  padding: 5px 10px;
+  padding: 5px 5px;
   border-radius: 5px;
   cursor: pointer;
   float: right;
