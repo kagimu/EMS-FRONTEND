@@ -227,6 +227,17 @@ currentSchool.value = JSON.stringify(Sch)
 }
 
 const goToDashboard = () => {
+
+  let logoInfoData = {
+  academic_year_number: form.academic_year_number,
+  study_period_number: form.study_period_number,
+  campus_class_number: form.campus_class_number,
+  campus_number: form.campus_number,
+  school_number:form.school_number,
+  curriculum_number:form.curriculumNumber,
+  level_number:form.level
+  }
+  localStorage.setItem("logoInfoData",JSON.stringify(logoInfoData)) 
   localStorage.setItem("currentSchoolInfo",currentSchool.value) 
   isOpen.value = false
   let draft = JSON.parse(currentSchool.value)
