@@ -34,7 +34,6 @@ const campusList = ref([])
   const levelList  = ref([])
   const studyPeriodList = ref([])
 
-
   const form = reactive({
   academic_year: "",
   study_period_number: "",
@@ -379,12 +378,12 @@ watch(
 <div class="overlay" v-if="isOpen" @click.self="stopPropagation">
     <div class="dialog">
       <p><i class="bi bi-arrow-right"></i>&nbsp;Logon Options </p>
-      <!-- <select class="form-select " v-model="schoolName" @change="setSchool(schoolName)">
+      <select class="form-select " v-model="schoolName" @change="setSchool(schoolName)">
         <option disabled value=""> -select-</option>
         <option v-for="(school, index) in schoolLists" :key="index" :value="school">
           {{ school.name }}
         </option>
-      </select> -->
+      </select>
 
       <div class="mb-2">       
         <label class="mb-1 mt-1 text-xs">School</label>                                       

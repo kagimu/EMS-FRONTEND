@@ -4,9 +4,10 @@ import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/sto
 import useCommonsStore from "@/composables/useCommons.js";
 import ImportLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/ImportLessonPlan.vue";
 import {useSubtopicStore} from "@/main/dashboard/curriculum/curriculumSetup/subTopic/store/subTopic.js";
+import useNotificationStore from "@/composables/useNotification.js"
 
 const subtopicStore = useSubtopicStore()
-
+const  notificationStore  = useNotificationStore()
 const schemeOfWorkStore = useSchemeOfWorkStore()
 const conceptListData = ref([])
 const commons = useCommonsStore()
