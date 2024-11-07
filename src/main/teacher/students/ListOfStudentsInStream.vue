@@ -51,15 +51,17 @@ const studentNumber = ref(null)
 const schoolData = ref(null)
 const schemeOfWorkStore = useSchemeOfWorkStore()
 let profile = localStorage.getItem("userProfile")
+const comment = ref(null)
 
 const form = reactive({
 stream_number:"",
-student_number:[],
+// student_number:[],
 comment:null,
 date:null,
 time:null,
 teacher_number:null,
 lessson_plan_step_numbers:null,
+students: []
 })
 
 
@@ -356,12 +358,42 @@ if (data) {
 },
 {deep: true}
 )
+
+
+
+
+
+// Toggle a student in form.students based on checkbox
+function toggleStudent(student_number) {
+  const index = form.students.findIndex(student => student.student_number === student_number);
+  if (index === -1) {
+    form.students.push({ student_number, comment: "" });
+  } else {
+    form.students.splice(index, 1);
+  }
+}
+
+// Retrieve the comment for a specific student
+function getStudentComment(student_number) {
+  const student = form.students.find(student => student.student_number === student_number);
+  return student ? student.comment : "";
+}
+
+// Update the comment for a specific student
+function updateStudentComment(student_number, comment) {
+  const student = form.students.find(student => student.student_number === student_number);
+  if (student) {
+    student.comment = comment;
+  } else {
+    form.students.push({ student_number, comment });
+  }
+}
 </script>
 <template>
 
 <div>
 <!-- {{ schoolData }} -->
-  {{ form.lessson_plan_step_numbers }}
+  <!-- {{ form.lessson_plan_step_numbers }} -->
 <div class="row mt-3">
 <div class="col-12">
    <div class="row">
@@ -413,7 +445,7 @@ if (data) {
 <div
 class="w-full overflow-auto max-h-[520px] scrollbar-thin"
 @scroll="onScroll">
-{{form.student_number}}
+<!-- {{form.student_number}} -->
 
 <div class="row">
    <div class="col-lg-8">
@@ -426,12 +458,14 @@ class="w-full overflow-auto max-h-[520px] scrollbar-thin"
          <th>#</th>
          <th>ADN</th>
          <th>Student</th>
+         <th>Comment</th>
       </tr>
    </thead>
    <tbody>
       <tr v-for="(enrolData,index) in enrollmentList" :key="index" >
          <td>
-            <input type="checkbox" v-model="form.student_number" :value="enrolData.student_number">
+            <input type="checkbox"  :value="enrolData.student_number" 
+            @change="toggleStudent(enrolData.student_number)">
          </td>
          <td>{{ enrolData.adn }}</td>
          <td style="text-transform: capitalize;">
@@ -445,7 +479,17 @@ class="w-full overflow-auto max-h-[520px] scrollbar-thin"
                <div class="ml-2">{{ enrolData.student_surname + " "+ enrolData.student_second_name + " "  + enrolData.student_other_name }}</div>
             </div>
          </td>
-
+         
+         <td>
+            <div class="mb-3">
+      <label class="form-label">Comment</label>
+      <textarea
+        class="form-control"
+        style="height: 100px"
+        @input="updateStudentComment(enrolData.student_number, $event.target.value)"
+      ></textarea>
+    </div>
+         </td>
       </tr>
    </tbody>
 </table>

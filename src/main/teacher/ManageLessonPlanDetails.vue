@@ -135,7 +135,7 @@ document.addEventListener("fullscreenchange", () => {
 
 <template>
 
-<AppModal v-model="studentModal"  title="" xl4>
+<AppModal v-model="studentModal"  title="" xl6>
      <ListOfStudentsInStream :schoolInfoData="draftInfo" :selectedStepNumbers="selectedSteps"></ListOfStudentsInStream>
 </AppModal>
 
