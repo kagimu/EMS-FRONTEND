@@ -15,6 +15,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     const lessonPlanResponse = ref(null)
     const importLessonPlanResponse = ref(null)
     const exportLessonPlanResponse = ref(null)
+    const curriculumDeliveryResponse = ref(null)
 
 
     async function newSchemeOfWorkData(data) {
@@ -182,6 +183,18 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
             })
     }
 
+    async function newCurriculumDelivery(data) {
+        return await api.post("main/curriculum-delivery/add-session", data)
+            .then((response) => {
+                curriculumDeliveryResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
 
     return {
         newSchemeOfWorkResponse,
@@ -204,6 +217,8 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         fetchLessonPlanDetails,
         exportPdf,
         importLessonPlan,
+        newCurriculumDelivery,
+        curriculumDeliveryResponse,
         exportLessonPlanResponse
     }
 })

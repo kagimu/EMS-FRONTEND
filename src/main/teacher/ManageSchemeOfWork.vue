@@ -1,25 +1,24 @@
 <script setup>
-  import {onMounted,reactive, ref, watch} from "vue";
-  import useNotificationStore from "@/composables/useNotification.js";
-  import { useAdmissionStore } from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
-  import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-  import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-  import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
-  import AppModal from "@/components/AppModal.vue";
-  import {useLevelStore} from "@/main/settings/level/store/level.js";
-  import { useAbility } from '@casl/vue';
-
+import {onMounted,reactive, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import { useAdmissionStore } from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
+import AppModal from "@/components/AppModal.vue";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+import { useAbility } from '@casl/vue';
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
 import NewSchemeOfWork from "@/main/dashboard/curriculum/schemeOfWork/NewSchemeOfWork.vue";
 import useCommonsStore from "@/composables/useCommons.js";
 import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
 import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
 import NewLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPlan.vue";
-import LessonPlanDetails from "@/main/dashboard/curriculum/schemeOfWork/LessonPlanDetails.vue";
 import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
 import SchemeOfWorkPdfTemplate from "@/main/dashboard/curriculum/schemeOfWork/SchemeOfWorkPdfTemplate.vue";
-
-  const levelStore = useLevelStore()
+import ManageLessonPlanDetails from "./ManageLessonPlanDetails.vue";
+  
+const levelStore = useLevelStore()
   const  notificationStore  = useNotificationStore()
   const schoolStore = useSchoolStore()
   const campusStore = useCampusStore()
@@ -160,7 +159,19 @@ const addLessonPlan = (schemeData) => {
   lessonPlanDialog.value = true
 }
 
+const schoolInfo = ref(null)
+
 const viewLessonPlan = (lst) => {
+  let schoolData = {
+  class_number: form.class_number,
+  campus_class_number: form.campus_class_number,
+  campus_number: form.campus_number,
+  school_number:form.school_number,
+  curriculumNumber:form.curriculumNumber,
+  level:form.level
+  }
+  schoolInfo.value = schoolData
+
   lessonPlanDetailsDialog.value = true
   lessonPlanInfo.value = lst
 }
@@ -377,6 +388,8 @@ watch(
 
 </script>
 <template>
+
+
   <div class="bg-white border rounded-md py-3 px-2">
     <div class="row mt-1">
       <div class="col-lg-11">
@@ -570,17 +583,6 @@ watch(
                     </div>
 
                     <div class="flex justify-between mt-4 mb-2" style="width: 350px;">
-                      <button
-                          type="button"
-                          class="btn btn-sm  btn-primary mr-2 m-0 py-0"
-                          @click="addLessonPlan(lst)"
-                          data-bs-toggle="modal"
-                          data-bs-target="#lessonPlanModal"
-                          v-tooltip.bottom="lst.concept_count+(lst.concept_count <1 ? ' Concept' : ' Concepts')"
-                      >
-                        <small class="m-0 p-0">Add lesson plan [ {{lst.concept_count}} ]</small>
-                      </button>
-
                       <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="viewLessonPlan(lst)" data-bs-toggle="modal" data-bs-target="#lessonPlanDetailsModal">
                         <small class="m-0 p-0">View lesson plan</small>
                       </button>
@@ -604,6 +606,29 @@ watch(
       </div>
 
 
+
+      <!-- <div class="modal fade" id="lessonPlanDetailsModal" tabindex="-1" :class="{ show: lessonPlanDetailsDialog }" aria-labelledby="" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header text-sm p-0">
+            <h6 class="modal-title ml-3 mt-2 mb-2">Lesson Plan: <b>{{lessonPlanInfo.name}}</b> </h6>
+            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-2">
+             
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div> -->
+
+    <app-modal v-model="lessonPlanDetailsDialog" :itle="'Lesson Plan:'+ lessonPlanInfo.name" xl6>
+      <manage-lesson-plan-details :lessonPlanInfo="lessonPlanInfo" :schoolInfo="schoolInfo"></manage-lesson-plan-details>
+    </app-modal>
+
+    
 
 </template>
 <style scoped></style>
