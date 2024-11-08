@@ -448,7 +448,7 @@ class="w-full overflow-auto max-h-[520px] scrollbar-thin"
 <!-- {{form.student_number}} -->
 
 <div class="row">
-   <div class="col-lg-8">
+   <div class="col-lg-9">
  <table
    class="table table-hover caption-top mt-1 table-sm table-striped"
    style="font-size: 13px !important;"
@@ -458,7 +458,7 @@ class="w-full overflow-auto max-h-[520px] scrollbar-thin"
          <th>#</th>
          <th>ADN</th>
          <th>Student</th>
-         <th>Comment</th>
+         <th></th>
       </tr>
    </thead>
    <tbody>
@@ -495,7 +495,7 @@ class="w-full overflow-auto max-h-[520px] scrollbar-thin"
 </table>
    </div>
 
-<div class="col-lg-4">
+<div class="col-lg-3">
    <div class="card shadow-sm mb-4 mt-6">
       <div class="card-header bg-primary text-white">
         <h5 class="mb-0">..</h5>
@@ -512,7 +512,7 @@ class="w-full overflow-auto max-h-[520px] scrollbar-thin"
         </div>
 
         <div class="mb-3">
-          <label class="form-label">Comment</label>
+          <label class="form-label">add comment <i class="bi bi-chevron-down"></i></label>
           <textarea v-model="form.comment" class="form-control" style="height: 100px"></textarea>
         </div>
 

@@ -222,11 +222,13 @@ document.addEventListener("fullscreenchange", () => {
     <div v-if="lessonPlanDetailsInfo" v-for="(lesson, index) in lessonPlanDetailsInfo.concepts" :key="index">
       <div class="row">
           <!-- {{lesson}} -->
+         
         <div class="col-lg-6 content">
           <div><b class="mr-5">{{ lesson.code }}.</b> {{ lesson.concept_name }}</div>
         </div>
         <div class="col-lg-6 content">
           <div class="ml-5 mt-2" v-for="(lsn, idx) in lesson.steps" :key="idx">
+
             <input type="checkbox" :value="lsn.number" v-model="selectedSteps" /> {{ lsn.code + ". " + lsn.step }}
             <button @click="openStudentsModal(lsn)" class="btn btn-outline-primary ml-3 btn-sm text-xs" v-if="selectedSteps.length === 1 && selectedSteps.includes(lsn.number)">Attendance <i class="bi bi-box-arrow-in-right mr-1"></i></button>
           </div>
