@@ -253,7 +253,6 @@ const openViewStudents = (number) => {
   session_number.value = number
   viewStudentModal.value = true
 }
-
 </script>
 <template> 
 
@@ -373,9 +372,13 @@ const openViewStudents = (number) => {
                   >
                     <thead >
                     <tr>
+                      <th style="">Subject</th>
+                      <th style="">Concept</th>
+                      <th style="">Lesson Plan Step</th>
                       <th style="">Date</th>
                       <th style="">Time</th>
-                      <th style="">Lesson Plan Step</th>
+                      <th style="">Class</th>
+                      <th style="">Stream</th>
                       <th style="">Teacher</th>
                       <th>comment</th>
                       <th>#</th>
@@ -385,9 +388,15 @@ const openViewStudents = (number) => {
                     <tbody>
                 
                     <tr v-for="(listData,index) in sessionListData" :key="index" >
-                      <td>{{listData.date}}</td>
+                      <td>{{ listData.subject}}</td>
+                      <td>{{listData.concept}}</td>
+                      <td>{{listData.step}}</td>
+                      <td>{{
+                        listData.date.split(' ')[0]
+                      }}</td>
                       <td>{{listData.time}}</td>
-                      <td>{{listData.lesson_plan_step_number}}</td>
+                      <td>{{listData.class}}</td>
+                      <td>{{listData.stream}}</td>
                       <td style="text-transform:capitalize">{{listData.teacher	}}</td>
                      <td>{{ listData.comment }}</td>
                      <td>
