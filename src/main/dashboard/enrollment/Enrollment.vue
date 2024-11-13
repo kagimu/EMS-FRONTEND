@@ -73,7 +73,16 @@ const fetchClasses = (campus_number) => {
 
 const fetchAcademicYear = (campusN) =>{
   academicYearStore.fetchAcademicYearByCampus(campusN)
-  classStore.fetchClassStreams(campusN)
+  // classStore.fetchClassStreams(campusN)
+
+  let sData = {
+     campus_number:form.campus_number,
+     class_number:classN,
+     campus_curriculum_number:form.curriculumNumber
+
+    }
+    classStore.fetchClassStreams(sData)
+
   doFetchEnrollent()
 }
 
@@ -108,9 +117,6 @@ const doFetchEnrollent = () =>{
 
 function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
   if (scrollTop + clientHeight >= scrollHeight) {
-
-
-
     let data = {
       page: (page.value+1),
       per_page: per_page.value,

@@ -60,7 +60,7 @@ comment:null,
 date:null,
 time:null,
 teacher_number:null,
-lessson_plan_step_numbers:null,
+step_numbers:null,
 students: []
 })
 
@@ -73,7 +73,7 @@ selectedStepNumbers:[]
 
 onMounted(() => {
 schoolStore.fetchSchools()
-doFetchEnrollent()
+// doFetchEnrollent()
 getSchoolInfo()
 getSteps()
 getTeacherNumber()
@@ -91,7 +91,7 @@ getStream(draft.class_number)
 const getSteps = () =>{
    let draftData = props.selectedStepNumbers
    if(draftData){
-      form.lessson_plan_step_numbers = draftData
+      form.step_numbers = draftData
    }
 }
 
@@ -130,7 +130,7 @@ doFetchEnrollent()
 }
 
 
-const doFetchEnrollent = (schoolN) =>{
+const doFetchEnrollent = () =>{
 let schoolInfo = JSON.parse(localStorage.getItem("currentSchoolInfo") )
 let data = {
 page: 1,
@@ -139,7 +139,7 @@ study_period_number:"",
 school_number:schoolInfo.number,
 campus_number: "",
 campus_class_number:"",
-stream_number:"",
+stream_number:form.stream_number,
 academic_year_number:"",
 status:""
 }
@@ -246,15 +246,7 @@ campusList.value = data.data
 {deep: true}
 )
 
-// watch(
-// () => campusStore.campusClassesResponse,
-// async (data) => {
-// if (data) {
-// classList.value = data.data
-// }
-// },
-// {deep: true}
-// )
+
 const classNumber = props.schoolInfoData.class_number;
 const streamListData = ref([])
 
@@ -263,7 +255,7 @@ watch(
     async (data) => {
       if(data){
         classList.value = data.data
-        
+        alert(JSON.stringify(data.data))
         const curriculum =data.data.find(item => 
         item.classes.some(classItem => classItem.number === classNumber)
     );
@@ -272,8 +264,6 @@ watch(
         return `Class with class_number ${classNumber} not found.`;
     }
 
-   //  const classItem = curriculum.classes.find(classItem => classItem.number === classNumber);
-   //  alert(JSON.stringify(classItem))
     streamListData.value = curriculum.classes.find(classItem => classItem.number === classNumber)
 
       }
@@ -334,10 +324,7 @@ studyPeriodList.value = studyData[0].studyPeriod
 )
 
 
-const submitSchemeOfWorkDelivery = () =>{
-   alert(JSON.stringify(form))
-   schemeOfWorkStore.newCurriculumDelivery(form)
-}
+
 
 watch(
 () => schemeOfWorkStore.errorMessage,
@@ -358,10 +345,6 @@ if (data) {
 },
 {deep: true}
 )
-
-
-
-
 
 // Toggle a student in form.students based on checkbox
 function toggleStudent(student_number) {
@@ -388,12 +371,31 @@ function updateStudentComment(student_number, comment) {
     form.students.push({ student_number, comment });
   }
 }
+
+
+const submitSchemeOfWorkDelivery = () =>{
+   // alert(JSON.stringify(form)) 
+   schemeOfWorkStore.newCurriculumDelivery(form)
+}
+const adn_no = ref(null)
+const showV = ref(false)
+
+const openCommentField = (adn) =>{
+adn_no.value = adn
+showV.value = true
+}
+
+const closeCommentField = (adn) =>{
+adn_no.value = adn
+showV.value = false
+}
+
 </script>
 <template>
 
 <div>
 <!-- {{ schoolData }} -->
-  <!-- {{ form.lessson_plan_step_numbers }} -->
+  <!-- {{ form.step_numbers }} -->
 <div class="row mt-3">
 <div class="col-12">
    <div class="row">
@@ -445,7 +447,7 @@ function updateStudentComment(student_number, comment) {
 <div
 class="w-full overflow-auto max-h-[520px] scrollbar-thin"
 @scroll="onScroll">
-<!-- {{form.student_number}} -->
+   <!-- {{ form.students }} -->
 
 <div class="row">
    <div class="col-lg-9">
@@ -453,7 +455,8 @@ class="w-full overflow-auto max-h-[520px] scrollbar-thin"
    class="table table-hover caption-top mt-1 table-sm table-striped"
    style="font-size: 13px !important;"
    >
-   <thead >
+
+   <thead>
       <tr>
          <th>#</th>
          <th>ADN</th>
@@ -482,8 +485,14 @@ class="w-full overflow-auto max-h-[520px] scrollbar-thin"
          
          <td>
             <div class="mb-3">
-      <label class="form-label">Comment</label>
+      <span v-if="!showV"  class="link link-primary cursor-pointer" @click="openCommentField(enrolData.adn)">
+         <i class="bi bi-chevron-double-right"></i> comment </span>
+
+         <span v-if="showV" class="link link-primary cursor-pointer" @click="closeCommentField(enrolData.adn)">
+            <i  class="bi bi-chevron-double-down"></i> comment </span>
       <textarea
+        v-if="adn_no === enrolData.adn && showV"
+
         class="form-control"
         style="height: 100px"
         @input="updateStudentComment(enrolData.student_number, $event.target.value)"
@@ -512,7 +521,7 @@ class="w-full overflow-auto max-h-[520px] scrollbar-thin"
         </div>
 
         <div class="mb-3">
-          <label class="form-label">add comment <i class="bi bi-chevron-down"></i></label>
+          <label class="form-label">Comment</label>
           <textarea v-model="form.comment" class="form-control" style="height: 100px"></textarea>
         </div>
 

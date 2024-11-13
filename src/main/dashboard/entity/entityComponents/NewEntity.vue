@@ -63,6 +63,7 @@ const props = defineProps({
     if(formData.entity_number){
       entityStore.editEntity(formData)
     }else {
+      formData.whatsapp = parseInt(formData.whatsapp)
       entityStore.newEntity(formData)
     }
 

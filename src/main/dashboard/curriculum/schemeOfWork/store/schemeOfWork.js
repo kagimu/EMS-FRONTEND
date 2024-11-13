@@ -16,6 +16,8 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     const importLessonPlanResponse = ref(null)
     const exportLessonPlanResponse = ref(null)
     const curriculumDeliveryResponse = ref(null)
+    const classSessionResponse = ref(null)
+    const classSessionStudentsResponse = ref(null)
 
 
     async function newSchemeOfWorkData(data) {
@@ -195,6 +197,29 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
             })
     }
 
+    async function fetchClassSessions(data) {
+        return await api.get("main/curriculum-delivery/sessions?page="+data?.page+"&per_page="+ data?.per_page+"&stream_number="+data.stream_number)
+            .then((response) => {
+                classSessionResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function fetchStudentsInSession(data) {
+        return await api.get("main/curriculum-delivery/students/"+data)
+            .then((response) => {
+                classSessionStudentsResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
 
     return {
         newSchemeOfWorkResponse,
@@ -218,7 +243,11 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         exportPdf,
         importLessonPlan,
         newCurriculumDelivery,
+        fetchClassSessions,
         curriculumDeliveryResponse,
-        exportLessonPlanResponse
+        exportLessonPlanResponse,
+        classSessionResponse,
+        classSessionStudentsResponse,
+        fetchStudentsInSession
     }
 })

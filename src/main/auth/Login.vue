@@ -78,9 +78,19 @@ watch(
         }
 
         if (scope.value != ""){
+
+          //select 
+
+
+          // r = router.resolve({
+          //   name: "/choose-school"
+          // })
+          localStorage.setItem("schoolSelectStatus", "NO")
           r = router.resolve({
             name: "teacher"
-          });
+          })
+
+
         }
 
         window.location.assign(r.href);

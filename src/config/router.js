@@ -82,6 +82,8 @@ import StudentProfile from '@/main/teacher/students/StudentProfile.vue';
 import Subjects from '@/main/teacher/Subjects.vue';
 import ManageSchemeOfWork from '@/main/teacher/ManageSchemeOfWork.vue';
 import ManageAssessment from '@/main/teacher/ManageAssessment.vue';
+import ManageSchemeOfWorkAndSessions from '@/main/teacher/ManageSchemeOfWorkAndSessions.vue';
+import SelectSchoolDetails from '@/main/auth/SelectSchoolDetails.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -570,6 +572,7 @@ const router = createRouter({
             component: TeacherDashboard,
             name :"teacher",
             redirect:{ name: 'teacher-dashboard' },
+         
             meta: {
                 requiresAuth: true,
             },
@@ -581,8 +584,14 @@ const router = createRouter({
                 {path: 'manage-subjects', component: Subjects, name:'manage-subjects'},
                 {path: 'manage-scheme-of-work', component: ManageSchemeOfWork, name:'manage-scheme-of-work'},
                 {path: 'manage-assessment', component: ManageAssessment, name:'manage-assessment'},
-            ]
+                {path: 'manage-scheme-and-sessions', component: ManageSchemeOfWorkAndSessions, name:'manage-scheme-and-sessions'},
+                { path: 'choose-school', component: SelectSchoolDetails, name:'choose-school',}
+                
+            ],
+             
         },
+
+      
 
 
         {
