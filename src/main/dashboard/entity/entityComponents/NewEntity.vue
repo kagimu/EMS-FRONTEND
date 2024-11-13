@@ -63,7 +63,7 @@ const props = defineProps({
     if(formData.entity_number){
       entityStore.editEntity(formData)
     }else {
-      formData.whatsapp = parseInt(formData.whatsapp)
+      // formData.whatsapp = parseInt(formData.whatsapp)
       entityStore.newEntity(formData)
     }
 
@@ -151,7 +151,7 @@ watch (
             <label for="phone" class="block text-gray-700 text-sm">Whatsapp No.</label>
             <input  
            v-model="formData.whatsapp"  style="outline: none 0 !important; box-shadow: none;"
-             type="number" required   class="form-input mt-1 block w-full border-gray-300 rounded-md">
+             type="text" required   class="form-input mt-1 block w-full border-gray-300 rounded-md">
           </div>
 
                  <div class="mb-3">

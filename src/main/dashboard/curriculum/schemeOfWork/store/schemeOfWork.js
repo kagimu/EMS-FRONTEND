@@ -210,7 +210,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     }
 
     async function fetchStudentsInSession(data) {
-        return await api.get("main/curriculum-delivery/students/"+data)
+        return await api.get("main/curriculum-delivery/students/"+data.session_number+"?page ="+data?.page+"&per_page="+ data?.per_page)
             .then((response) => {
                 classSessionStudentsResponse.value = response.data
             })
