@@ -394,7 +394,7 @@ const openViewStudents = (number) => {
                       <td>{{
                         listData.date.split(' ')[0]
                       }}</td>
-                      <td>{{listData.time}}</td>
+                        <td>{{ listData.time }} {{ listData.time.split(':')[0] >= 12 ? 'PM' : 'AM' }}</td>
                       <td>{{listData.class}}</td>
                       <td>{{listData.stream}}</td>
                       <td style="text-transform:capitalize">{{listData.teacher	}}</td>
