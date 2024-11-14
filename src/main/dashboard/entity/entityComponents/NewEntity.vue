@@ -110,7 +110,7 @@ watch (
             <div class="col-lg-6">
           <h3 class="text-sm font-semibold mb-4 ">Contact Information</h3>
       <div class="mb-2">
-        <label class="text-sm text-sm">Name</label>
+        <label class="text-sm">Name</label>
         <input  
            v-model="formData.name"  style="outline: none 0 !important; box-shadow: none;"
              type="text" required  class="form-input mt-1 block w-full border-gray-300 rounded-md">
@@ -118,31 +118,31 @@ watch (
 
          
       <div class="mb-2">
-        <label class="text-sm text-sm">Email</label>
+        <label class="text-sm">Email</label>
         <input  
            v-model="formData.email"  style="outline: none 0 !important; box-shadow: none;"
              type="email" required  class="form-input mt-1 block w-full border-gray-300 rounded-md">
       </div>
          
       <div class="mb-2">
-        <label class="text-sm text-sm">Phone</label>
+        <label class="text-sm">Phone</label>
         <input  
            v-model="formData.phone"  style="outline: none 0 !important; box-shadow: none;"
              type="text" required  class="form-input mt-1 block w-full border-gray-300 rounded-md">
       </div>
          
       <div class="mb-2">
-        <label class="text-sm text-sm">Address</label>
+        <label class="text-sm">Address</label>
         <input  
            v-model="formData.address"  style="outline: none 0 !important; box-shadow: none;"
              type="text" required  class="form-input mt-1 block w-full border-gray-300 rounded-md">
       </div>
 
       <div class="mb-2">
-        <label class="text-sm text-sm">Website</label>
+        <label class="text-sm">Website</label>
         <input  
            v-model="formData.website"  style="outline: none 0 !important; box-shadow: none;"
-             type="text" required  class="form-input mt-1 block w-full border-gray-300 rounded-md">
+             type="text"   class="form-input mt-1 block w-full border-gray-300 rounded-md">
       </div>
       </div>
       <div class="col-lg-6">
@@ -151,7 +151,7 @@ watch (
             <label for="phone" class="block text-gray-700 text-sm">Whatsapp No.</label>
             <input  
            v-model="formData.whatsapp"  style="outline: none 0 !important; box-shadow: none;"
-             type="text" required   class="form-input mt-1 block w-full border-gray-300 rounded-md">
+             type="text"    class="form-input mt-1 block w-full border-gray-300 rounded-md">
           </div>
 
                  <div class="mb-3">
