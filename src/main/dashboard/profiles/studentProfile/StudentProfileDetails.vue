@@ -45,11 +45,11 @@ const errorMessage  = ref(null)
 
 const uploadDialog = ref( false)
 
+const studentCateringData = ref([])
+
 onMounted(
     async () => {
       await applicationStore.fetchStudent(student_number)
-      await cateringStore.FeedingGroupByUserId(student_number)
-
     } )
 
 watch (
@@ -66,6 +66,19 @@ watch (
         school.value = data.current_enrollment.school
         academicYear.value = data.current_enrollment.academic_year
         studentPhoto.value = data.photo
+        await cateringStore.FeedingGroupByUserId(data.user_number)
+      }
+    },
+    { deep: true }
+)
+
+
+watch (
+    () => cateringStore.feedingGroupByUserIResponse,
+    async (data) => {
+      if (data) {
+        studentCateringData.value = data.data.group_name
+
       }
     },
     { deep: true }
@@ -174,6 +187,7 @@ const successUpload = async (data) => {
   }
 }
 
+
 </script>
 <template>
 
@@ -264,6 +278,11 @@ const successUpload = async (data) => {
                    <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status">
                       <button type="button" class="text-sm text-uppercase mb-1 btn btn-dark">STREAM</button>
                       <button type="button" class="text-sm fw-bold text-white text-uppercase mb-1 btn btn-danger">{{ stream }}</button>
+                   </div>
+
+                   <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status">
+                      <button type="button" class="text-sm text-uppercase mb-1 btn btn-dark">FEEDING GROUP.</button>
+                      <button type="button" class="text-sm fw-bold text-white text-uppercase mb-1 btn btn-info">{{ studentCateringData }}</button>
                    </div>
                    <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status" style="float: right;">
 

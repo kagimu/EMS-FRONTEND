@@ -172,7 +172,7 @@ watch(
                      :value="user?.number"
                      class="checkbox-primary"></td>
             <td>{{ index+1 }}</td>
-            <td>      
+            <td style="text-transform: capitalize;">      
                  {{ user.first_name + " " + user.second_name + " " + user.last_name}}
 
              </td>
