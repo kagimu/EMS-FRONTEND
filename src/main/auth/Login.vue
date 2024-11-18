@@ -5,6 +5,7 @@ import useNotificationStore from "@/composables/useNotification.js";
 import router from "@/config/router.js";
 import VictoriousLogo from "@/assets/images/victorious-logo.png";
 import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
+import api from "@/config/api.js";
 
 const  notificationStore  = useNotificationStore()
 const authStore = useAuthStore()
@@ -15,6 +16,9 @@ let buttonLoader = ref(false)
 let show = ref(false)
 const title  = ref(null)
 const scope = ref(null)
+
+const logoNumber = ref(null)
+const logoUrl = ref(null)
 
 onMounted(() => {
   entityStore.getConfigureLanding()
@@ -39,7 +43,12 @@ watch (
     () => entityStore.landPageResponse,
     async (data) => {
       if(data){
-       title.value = data.title  
+
+        let path = api.defaults.baseURL + "/attachments/download/"
+        title.value = data?.title
+        logoNumber.value = data?.logo_attachment_number
+        logoUrl.value = path+logoNumber.value
+
        localStorage.setItem("landingPageTitle", title.value)
       }
     }
@@ -77,7 +86,7 @@ watch(
           });
         }
 
-        if (scope.value != ""){
+        if (scope.value !== ""){
 
           //select 
 
@@ -119,7 +128,7 @@ watch(
       <div class="col-lg-4"></div>
       <div class="col-lg-4">
         <div class="align-centre mt-2 h6 font500 text-uppercase mb-2">
-          <img alt="logo" style="width: 100px; margin: 0 auto" :src="VictoriousLogo"/>
+          <img v-if="logoNumber" alt="logo" style="width: 100px; margin: 0 auto" :src="logoUrl"/>
           <div class="text-[#2c2f8c] text-center text-[20px]" >
            {{ title }}
           </div>
