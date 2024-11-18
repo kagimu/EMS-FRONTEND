@@ -3,7 +3,6 @@ import {onMounted,reactive, ref, watch} from 'vue'
 import {useAuthStore} from "@/main/auth/store/auth.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import router from "@/config/router.js";
-import VictoriousLogo from "@/assets/images/victorious-logo.png";
 import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
 import api from "@/config/api.js";
 
@@ -14,9 +13,9 @@ const entityStore = useEntityStore()
 let errorMessage = ref(null)
 let buttonLoader = ref(false)
 let show = ref(false)
-const title  = ref(null)
 const scope = ref(null)
 
+const title  = ref(null)
 const logoNumber = ref(null)
 const logoUrl = ref(null)
 
