@@ -211,6 +211,7 @@ async (data) => {
 if(data){
 promDialog.value = false;
 fetchEnrollmentList(data)
+// alert(JSON.string(data))
 }
 },
 {deep:true}
@@ -255,7 +256,7 @@ watch(
     async (data) => {
       if(data){
         classList.value = data.data
-        alert(JSON.stringify(data.data))
+      //   alert(JSON.stringify(data.data))
         const curriculum =data.data.find(item => 
         item.classes.some(classItem => classItem.number === classNumber)
     );
@@ -396,11 +397,7 @@ showV.value = false
 <div>
 <!-- {{ schoolData }} -->
   <!-- {{ form.step_numbers }} -->
-<div class="row mt-3">
-<div class="col-12">
-   <div class="row">
-      <div class="col-12">
-         <div class="mt-3">
+
             <div class="row mx-auto">
                <div class="row">
                   <div class="col-3">
@@ -430,11 +427,7 @@ showV.value = false
                </div>
             </div>
          </div>
-      </div>
-   </div>
-</div>
-</div>
-</div>
+
 <div v-if="loading" class="text-center my-1">
 <div class="spinner-border" role="status">
 <span class="sr-only">Loading...</span>

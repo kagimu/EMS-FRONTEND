@@ -15,6 +15,7 @@ import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment"
 import StudentNarativeReport from "@/main/dashboard/profiles/studentProfile/StudentNarativeReport.vue";
 import SchoolBadge from "@/assets/images/victorius-budge.png";
 import FileUploader from "@/components/FileUploader.vue";
+import AttachUserToFeedingGroup from "@/main/dashboard/catering/cateringComponents/AttachUserToFeedingGroup.vue";
 const enrollmentStore = useEnrolmentStore()
 
 
@@ -43,9 +44,11 @@ const school = ref(null)
 const actionType = ref(null)
 const cateringStore = useCateringStore()
 const errorMessage  = ref(null)
-
 const uploadDialog = ref( false)
 const dataFetched = ref(false); 
+const studentCateringData = ref([])
+const openModal = ref(false)
+const userNum = ref(null)
 
 onMounted(
     async () => {
@@ -53,8 +56,7 @@ onMounted(
   
       // Fetch student data only once
         await applicationStore.fetchStudent(student_number);
-   
-      await cateringStore.FeedingGroupByUserId(student_number)
+  
       studentNumberr.value = routerData.currentRoute.value.query.st_id
 
     } )
@@ -74,6 +76,19 @@ watch (
         academicYear.value = data.current_enrollment.academic_year
         studentPhoto.value = data.photo
         dataFetched.value = true
+        userNum.value = data.user_number
+        await cateringStore.FeedingGroupByUserId(data.user_number)
+      }
+    },
+    { deep: true }
+)
+
+watch (
+    () => cateringStore.feedingGroupByUserIResponse,
+    async (data) => {
+      if (data) {
+        studentCateringData.value = data.data.group_name
+
       }
     },
     { deep: true }
@@ -182,11 +197,29 @@ const successUpload = async (data) => {
   }
 }
 
+const attachFeedingGroup = () => {
+  openModal.value = true
+
+}
+
+watch (
+    () => cateringStore.newFeedingGroupResponse,
+    async (data) => {
+      if(data){
+    openModal.value = false;
+    await applicationStore.fetchStudent(student_number)
+      }
+    }
+)
 </script>
 <template>
 
   <AppModal title="Confirm" v-model="showActionDialog" xs>
     <Comfirm :studentNumber="studentNum" :action="actionType" @nedda="cancelled"></Comfirm>
+  </AppModal>
+
+  <AppModal title="Assign User to Feeding Group" v-model="openModal" xs>
+    <AttachUserToFeedingGroup :userNumber="userNum"></AttachUserToFeedingGroup>
   </AppModal>
 
 
@@ -270,6 +303,15 @@ const successUpload = async (data) => {
                    <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status">
                       <button type="button" class="text-sm text-uppercase mb-1 btn btn-dark">STREAM</button>
                       <button type="button" class="text-sm fw-bold text-white text-uppercase mb-1 btn btn-danger">{{ stream }}</button>
+                   </div>
+
+                   <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status">
+                      <button type="button" class="text-sm text-uppercase mb-1 btn btn-dark">FEEDING GROUP.</button>
+                      <button type="button" class="text-sm fw-bold text-white text-uppercase mb-1 btn btn-info">
+                        {{studentCateringData}}
+        
+                      </button>
+                      <button v-if="studentCateringData == ''"  type="button" class="text-sm fw-bold text-white text-uppercase mb-1 btn btn-success" @click="attachFeedingGroup"><i class="bi bi-plus" ></i></button>
                    </div>
                    <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status" style="float: right;">
 

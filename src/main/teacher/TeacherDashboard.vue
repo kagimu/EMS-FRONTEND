@@ -19,7 +19,7 @@
    
    const currentSchool = ref(null)
    const currentSchoolName = ref(null)
-   const currentSchoolInfoData = ref(null);
+   const currentSchoolInfoData = ref([]);
    const notificationStore = useNotificationStore()
    const classStore = useClassesStore()
    const studyPeriodStore = useStudyPeriodStore()
@@ -121,16 +121,19 @@
            let data =  JSON.parse(localStorage.getItem("SchoolInfo")) 
            schoolLists.value =data
          }
-         currentSchoolInfoData.value = localStorage.getItem("currentSchoolInfo")
+         currentSchoolInfoData.value = JSON.parse(localStorage.getItem("currentSchoolInfo"))
          if(currentSchoolInfoData.value){
            isOpen.value = false
-           let draft = JSON.parse(currentSchoolInfoData.value)
+           let draft = currentSchoolInfoData.value
            currentSchoolName.value = draft.name
          }
    
          campusListData.value = JSON.parse(localStorage.getItem("Campus"))
 
          IsSchoolSelected.value = localStorage.getItem("schoolSelectStatus")
+
+       
+
        }
    
    )
@@ -233,22 +236,22 @@
    
    const goToDashboard = () => {
    
-     let logoInfoData = {
-     academic_year_number: form.academic_year_number,
-     study_period_number: form.study_period_number,
-     campus_class_number: form.campus_class_number,
-     campus_number: form.campus_number,
-     school_number:form.school_number,
-     curriculum_number:form.curriculumNumber,
-     level_number:form.level
-     }
+    //  let logoInfoData = {
+    //  academic_year_number: form.academic_year_number,
+    //  study_period_number: form.study_period_number,
+    //  campus_class_number: form.campus_class_number,
+    //  campus_number: form.campus_number,
+    //  school_number:form.school_number,
+    //  curriculum_number:form.curriculumNumber,
+    //  level_number:form.level
+    //  }
 
      if(form.school_number){
       schoolStore.fetchSchoolData(form.school_number)
      }
-    
+    // 
 
-     localStorage.setItem("logoInfoData",JSON.stringify(logoInfoData)) 
+    //  localStorage.setItem("logoInfoData",JSON.stringify(logoInfoData)) 
      localStorage.setItem("currentSchoolInfo",currentSchool.value) 
      isOpen.value = false
      let draft = JSON.parse(currentSchool.value)
@@ -388,7 +391,7 @@
 </script>
 <template>
 
-    <div class="overlay" v-if="isOpen" @click.self="stopPropagation">
+    <!-- <div class="overlay" v-if="isOpen" @click.self="stopPropagation">
       <div class="dialog">
          <p>Select Options</p>
          <select class="form-select " v-model="schoolName" @change="setSchool(schoolName)">
@@ -399,7 +402,7 @@
          </select>
          <button @click="goToDashboard" :disabled="!schoolName" class="btn btn-primary btn-sm ml-2 mt-2 ">continue <i class="bi bi-arrow-right-circle"></i></button>
       </div>
-   </div> 
+   </div>  -->
 
 
    <div class="p-0 h-screen w-screen dark" >
@@ -417,7 +420,7 @@
                      <router-link class="navbar-brand text-white" :to="{name:'home'}">
                         <div class="text-[17px]">
                            <!-- <span v-for="(lt, index) in schoolLists" :key="index">{{ lt.name }}</span>  -->
-                           {{ currentSchoolName }}
+                           <span v-for="(sch,index) in currentSchoolInfoData" :key="index">{{sch.name}}</span>
                         </div>
                      </router-link>
                   </div>
@@ -524,7 +527,7 @@
                      <breadcrumbs></breadcrumbs>
                   </div>
                   <div class="text-gray-600 text-[13px]">
-                     {{currentSchoolName}} /<span v-for="(cm,index) in campusListData" :key="index">{{ cm.campus_name }}</span>
+                    <span v-for="(sch,index) in currentSchoolInfoData" :key="index">{{sch.name}}</span> /<span v-for="(cm,index) in campusListData" :key="index">{{ cm.campus_name }}</span>
                   </div>
                </div>
                <router-view></router-view>

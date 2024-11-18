@@ -66,6 +66,9 @@ watch(
      let school = JSON.stringify(data.data.Schools)
         localStorage.setItem("SchoolInfo", school)
       
+
+        localStorage.setItem("currentSchoolInfo",school)
+
         await authStore.userProfile()
       }
     }
@@ -87,13 +90,6 @@ watch(
         }
 
         if (scope.value !== ""){
-
-          //select 
-
-
-          // r = router.resolve({
-          //   name: "/choose-school"
-          // })
           localStorage.setItem("schoolSelectStatus", "NO")
           r = router.resolve({
             name: "teacher"

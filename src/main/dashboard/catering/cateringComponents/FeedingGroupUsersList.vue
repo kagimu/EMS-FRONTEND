@@ -193,7 +193,7 @@ watch(
             <!-- {{ userList }} -->
          <tr v-for="(list,index) in userList" :key="index">
             <td>{{ index+1 }}</td>
-            <td>{{ list.name }}</td>
+            <td style="text-transform: capitalize;">{{ list.name }}</td>
             <td>{{list.gender  }}</td>
             <td>{{ list.feeding_group_name }}</td>
             <td>{{ list.campus_name }}</td>
