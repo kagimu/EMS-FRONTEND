@@ -653,11 +653,28 @@ router.beforeEach((to, from, next) => {
 });
 
 
-/*const DEFAULT_TITLE = "Wholesome Education";
-router.afterEach(to => {
+// const DEFAULT_TITLE = localStorage.getItem("landingPageTitle")
+// const DEFAULT_TITLED = "Victorious Education Services";
+// router.afterEach(to => {
+//     document.title = DEFAULT_TITLE == "" ?  DEFAULT_TITLED
+//     alert(JSON.stringify(DEFAULT_TITLE))
+//   Vue.nextTick(() => {
+       
+//     });
+// });
+
+
+const DEFAULT_TITLED = "Victorious Education Services";
+
+router.afterEach((to) => {
+  const DEFAULT_TITLE = localStorage.getItem("landingPageTitle") || DEFAULT_TITLED;
+  document.title = DEFAULT_TITLE;
+//   alert(`Document title set to: ${DEFAULT_TITLE}`);
   Vue.nextTick(() => {
-        document.title = to.meta.title || DEFAULT_TITLE;
-    });
-});*/
+    // document.title = DEFAULT_TITLE;
+  });
+  
+});
+
 
 export default router;

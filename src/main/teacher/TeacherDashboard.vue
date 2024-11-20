@@ -106,7 +106,7 @@
      {title:"Attendance", name:"", icon:"bi-journal-richtext" ,action:""}, //Daily Attendance, Subject Attendance,
      {title:"Calendar", name:"", icon:"bi-calendar" ,action:""}, //Daily Attendance, Subject Attendance,
      {title:"Assessment", name:"manage-assessment", icon:"bi-file-earmark-spreadsheet" ,action:"manage-assessment"}, //exams, entermarks,reports, marksheet, 
-     {title:"My Profile", name:"", icon:"bi-person-lines-fill" ,action:""},
+    //  {title:"My Profile", name:"", icon:"bi-person-lines-fill" ,action:""},
    ])
    
    
@@ -256,18 +256,18 @@
      isOpen.value = false
      let draft = JSON.parse(currentSchool.value)
          currentSchoolName.value = draft.name
-   }
+   } 
    
-   watch(
-     () => currentSchoolInfoData.value,
-     async (data) => {
-       if (data) {
-          isOpen.value = false
-          let draft = JSON.parse(currentSchoolInfoData.value)
-          currentSchoolName.value = draft.name
-       }
-     }
-   )
+  //  watch(
+  //    () => currentSchoolInfoData.value,
+  //    async (data) => {
+  //      if (data) {
+  //         isOpen.value = false
+  //         let draft = JSON.parse(currentSchoolInfoData.value)
+  //         currentSchoolName.value = draft.name
+  //      }
+  //    }
+  //  )
  
    // Prevent Event Propagation
    const stopPropagation = (event) => {
