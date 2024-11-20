@@ -111,7 +111,6 @@ const selectAssessmentMetricPreview = async (list) => {
 <template>
   <div>
     <div class="">
-
       <div class="text-sm grid grid-cols-2 gap-2">
         <div>
           <div class="mb-3">

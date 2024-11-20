@@ -100,7 +100,7 @@ if(entity) {
  /* if(draftData.value?.number === entityNo){
     saveStorage(draftData.value)
   }else {*/
-  
+
   localStorage.setItem('entityInfo',JSON.stringify(entity))
     buttonLoader.value = index
     entityStore.switchEntity(entityNo)
@@ -178,6 +178,15 @@ watch (
         await entityStore.fetchEntity()
         notificationStore.successToast("Success", data.message)
         entityDialog.value = false
+      }
+    }
+)
+
+watch (
+    () => entityStore.newLandingPageResponse,
+    async (data) => {
+      if(data){
+        showDashboardModal.value = false
       }
     }
 )
