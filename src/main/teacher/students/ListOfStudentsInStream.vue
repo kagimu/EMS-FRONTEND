@@ -52,16 +52,16 @@ const schoolData = ref(null)
 const schemeOfWorkStore = useSchemeOfWorkStore()
 let profile = localStorage.getItem("userProfile")
 const comment = ref(null)
+const session = ref(null)
 
 const form = reactive({
 stream_number:"",
-// student_number:[],
 comment:null,
 date:null,
 time:null,
 teacher_number:null,
 step_numbers:null,
-students: []
+students: [],
 })
 
 
@@ -357,13 +357,7 @@ function toggleStudent(student_number) {
   }
 }
 
-// Retrieve the comment for a specific student
-function getStudentComment(student_number) {
-  const student = form.students.find(student => student.student_number === student_number);
-  return student ? student.comment : "";
-}
 
-// Update the comment for a specific student
 function updateStudentComment(student_number, comment) {
   const student = form.students.find(student => student.student_number === student_number);
   if (student) {
@@ -375,9 +369,16 @@ function updateStudentComment(student_number, comment) {
 
 
 const submitSchemeOfWorkDelivery = () =>{
-   // alert(JSON.stringify(form)) 
-   schemeOfWorkStore.newCurriculumDelivery(form)
+   form.sessions = {
+      time: form.time,
+      step_numbers: form.step_numbers,
+      students: form.students
+   }
+   alert(JSON.stringify(form)) 
+   // schemeOfWorkStore.newCurriculumDelivery(form)
 }
+
+
 const adn_no = ref(null)
 const showV = ref(false)
 
@@ -402,7 +403,7 @@ showV.value = false
             <div class="row mx-auto">
                <div class="row">
                   <div class="col-3">
-                     <div class="mb-2">
+                     <div class="mb-0 mt-4">
                         <select
                            v-model="form.stream_number"
                            class="form-select form-select-sm" required
@@ -415,8 +416,12 @@ showV.value = false
                         </select>
                      </div>
                   </div>
-                  <div class="col-3"></div>
-                  <div class="col-3"></div>
+                  <div class="col-3 mt-3">
+                    
+                  </div>
+                  <div class="col-3">
+
+                  </div>
                   <div class="col-3">
                      <PaginationTemplate
                         v-model:perPage="per_page"
@@ -441,10 +446,9 @@ showV.value = false
 <div
 class="w-full overflow-auto max-h-[520px] scrollbar-thin"
 @scroll="onScroll">
-   <!-- {{ form.students }} -->
 
 <div class="row">
-   <div class="col-lg-12">
+   <div class="col-lg-8">
  <table
    class="table table-hover caption-top mt-1 table-sm table-striped"
    style="font-size: 13px !important;"
@@ -496,6 +500,38 @@ class="w-full overflow-auto max-h-[520px] scrollbar-thin"
       </tr>
    </tbody>
 </table>
+   </div>
+
+   <div class="col-lg-4 pt-4">
+      <div class="m-2 ">
+      <label  class="form-label">Time</label>
+          <input
+            type="time"
+            class="form-control"
+            placeholder="Enter time"
+            v-model="form.time"
+
+          />
+      </div>
+      <div class="m-2">
+         <label  class="form-label">General Comment</label>
+          <textarea            
+            class="form-control"
+            rows="2"
+            v-model="form.comment"
+            placeholder="Enter comment"
+          ></textarea>
+      </div>
+
+      <div class="m-2">
+         <button
+            class="btn btn-primary mb-2 btn-sm text-sm"
+            style="float: right"
+            @click="submitSchemeOfWorkDelivery"
+            >
+            Submit
+         </button>
+      </div>
    </div>
 
 
