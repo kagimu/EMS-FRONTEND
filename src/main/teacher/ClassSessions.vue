@@ -12,6 +12,7 @@ import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/sto
 import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
 import AppModal from "@/components/AppModal.vue";
 import StudentsInASession from "@/main/teacher/StudentsInASession.vue"
+import EditStudentsInASessionAndAttendance from "@/main/teacher/EditStudentsInASessionAndAttendance.vue"
   
   const levelStore = useLevelStore()
   const  notificationStore  = useNotificationStore()
@@ -163,7 +164,7 @@ watch(
 )
 
 const getStreams = (classN) => {
-    alert(classN)
+    // alert(classN)
 
     subjectStore.fetchAcademicYearByClass(classN)
 
@@ -253,12 +254,28 @@ const openViewStudents = (number) => {
   session_number.value = number
   viewStudentModal.value = true
 }
+
+
+const editModal = ref(false)
+const sessionDataList = ref(null)
+
+const openViewEditModal = (num) => {
+editModal.value = true
+sessionDataList.value = num
+}
+
+
 </script>
 <template> 
 
 <AppModal v-model="viewStudentModal"  title="Students In A Class Session" xl4>
    <StudentsInASession :sessionNumber="session_number"></StudentsInASession>
 </AppModal>
+
+<AppModal v-model="editModal"  title="Edit Class Session Attendance" xl8>
+   <EditStudentsInASessionAndAttendance :sessionInfo="sessionDataList"></EditStudentsInASessionAndAttendance>
+</AppModal>
+
 
   <div class="bg-white  rounded-md py-3 px-2">
     <div class="row mt-1">
@@ -312,7 +329,7 @@ const openViewStudents = (number) => {
         </div>
       </div>
       <div class="col-2" >
-        <div class="mb-2">
+        <div class="mb-2"> 
           <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -401,6 +418,9 @@ const openViewStudents = (number) => {
                      <td>{{ listData.comment }}</td>
                      <td>
                       <button class="btn btn-primary btn-sm" ><small @click="openViewStudents(listData.number)">View Students</small></button>
+                    
+                      <button class="btn btn-success btn-sm ml-1" ><small @click="openViewEditModal(listData)">Edit</small></button>
+
                      </td>
                     </tr>
 

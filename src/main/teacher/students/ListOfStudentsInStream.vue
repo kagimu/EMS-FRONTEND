@@ -136,7 +136,7 @@ let data = {
 page: 1,
 per_page: per_page.value,
 study_period_number:"",
-school_number:schoolInfo.number,
+school_number:props.schoolInfoData.school_number,
 campus_number: "",
 campus_class_number:"",
 stream_number:form.stream_number,
@@ -155,7 +155,7 @@ let data = {
 page: (page.value+1),
 per_page: per_page.value,
 study_period_number:"",
-school_number:schoolInfo.number,
+school_number:props.schoolInfoData.school_number,
 campus_number: "",
 campus_class_number:"",
 stream_number:streamNumber,
@@ -396,6 +396,7 @@ showV.value = false
 
 <div>
 <!-- {{ schoolData }} -->
+  <!-- {{ schoolInfoData }} -->
   <!-- {{ form.step_numbers }} -->
 
             <div class="row mx-auto">
@@ -443,7 +444,7 @@ class="w-full overflow-auto max-h-[520px] scrollbar-thin"
    <!-- {{ form.students }} -->
 
 <div class="row">
-   <div class="col-lg-9">
+   <div class="col-lg-12">
  <table
    class="table table-hover caption-top mt-1 table-sm table-striped"
    style="font-size: 13px !important;"
@@ -497,45 +498,10 @@ class="w-full overflow-auto max-h-[520px] scrollbar-thin"
 </table>
    </div>
 
-<div class="col-lg-3">
-   <div class="card shadow-sm mb-4 mt-6">
-      <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">..</h5>
-      </div>
-      <form @submit.prevent="submitSchemeOfWorkDelivery">
-      <div class="card-body">
-        <div class="mb-3">
-          <label class="form-label">Date</label>
-          <input placeholder="" type="date" v-model="form.date" required class="form-control">
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Time</label>
-          <input placeholder="" type="time" v-model="form.time" required class="form-control">
-        </div>
 
-        <div class="mb-3">
-          <label class="form-label">Comment</label>
-          <textarea v-model="form.comment" class="form-control" style="height: 100px"></textarea>
-        </div>
-
-          <!-- Save Button -->
-    <div class="text-end mt-4">
-      <button type="submit" class="btn btn-primary" >
-        Submit
-        <div class="spinner-border spinner-border-sm ms-2" role="status" v-if="buttonLoader">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </button>
-    </div>
-      </div>
-   </form>
-    </div>
-</div>
 
    </div>
-
-
-
+   
 </div>
 </div>
 </template>
