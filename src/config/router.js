@@ -667,7 +667,7 @@ router.beforeEach((to, from, next) => {
 const DEFAULT_TITLED = "Victorious Education Services";
 
 router.afterEach((to) => {
-  const DEFAULT_TITLE = localStorage.getItem("entity_name") || DEFAULT_TITLED;
+  const DEFAULT_TITLE = localStorage.getItem("landingPageTitle") || DEFAULT_TITLED;
   document.title = DEFAULT_TITLE;
 //   alert(`Document title set to: ${DEFAULT_TITLE}`);
   Vue.nextTick(() => {
