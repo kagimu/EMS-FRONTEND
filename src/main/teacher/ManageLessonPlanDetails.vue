@@ -198,7 +198,7 @@ watch(
                 <div v-if="selectedSteps.includes(lsn.number)" class="mt-3">
                   <div class="card">
                     <div class="card-body">
-                      <ListOfStudentsInStream :schoolInfoData="draftInfo" :selectedStepNumbers="[lsn.number]" />
+                      <ListOfStudentsInStream :schoolInfoData="draftInfo" :selectedStepNumbers="lsn.number" />
                     </div>
                   </div>
                 </div>
