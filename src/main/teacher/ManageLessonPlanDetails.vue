@@ -367,6 +367,14 @@ if (data) {
 )
    
    
+// Track maximize/minimize state
+const isMaximized = ref(false);
+
+const toggleMaximize = () => {
+  isMaximized.value = !isMaximized.value;
+};
+
+
    
 </script>
 <template>
@@ -446,6 +454,9 @@ if (data) {
          <div class="col-lg-6 content"></div>
       </div>
       <hr />
+
+   <div :class="{ fullscreen: isMaximized }"> 
+
       <div class="row mx-auto">
          <div class="row">
             <div class="col-3">
@@ -487,6 +498,12 @@ if (data) {
                     required
                     />
               </div>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-outline-primary mt-4 " @click="toggleMaximize" style="float: right">
+         <i :class="isMaximized ? 'bi bi-fullscreen-exit' : 'bi bi-fullscreen ' "></i> 
+        </button>
+
             </div>
     
          </div>
@@ -628,6 +645,8 @@ if (data) {
             <LessonPlanDetailsPdf :lessonPlanInfo="lessonPlanInfo"></LessonPlanDetailsPdf>
          </div>
       </div>
+      </div>
+
    </div>
 </template>
 <style scoped>
@@ -676,4 +695,18 @@ if (data) {
    font-size: 16px;
    margin-bottom: 15px;
    }
+
+   .fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  margin: 0;
+  padding: 20px;
+  background: white;
+  border-radius: 0;
+  overflow-y: auto;
+}
 </style>
