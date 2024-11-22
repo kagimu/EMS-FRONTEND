@@ -350,7 +350,7 @@ if (data) {
 {deep: true}
 )
 
-// Toggle a student in form.students based on checkbox
+
 function toggleStudent(student_number) {
   const index = form.students.findIndex(student => student.student_number === student_number);
   if (index === -1) {
@@ -387,20 +387,9 @@ const submitSchemeOfWorkDelivery = () =>{
 
    }
   
-   alert(JSON.stringify(formData)) 
+ alert(JSON.stringify(formData)) 
    schemeOfWorkStore.newCurriculumDelivery(formData)
 }
-
-
-watch(
-() => schemeOfWorkStore.curriculumDeliveryResponse,
-async (data) => {
-if (data) {
-notificationStore.successToast("succcess", data.message)
-}
-},
-{deep: true}
-)
 
 
 
@@ -456,6 +445,7 @@ notificationStore.successToast("succcess", data.message)
 <p class="alert alert-warning">No stream is selected ..!</p>
 </div>
 <div v-else>
+
 <div
 class="w-full overflow-auto max-h-[520px] scrollbar-thin"
 @scroll="onScroll">
@@ -564,6 +554,7 @@ class="w-full overflow-auto max-h-[520px] scrollbar-thin"
    </div>
    
 </div>
+
 </div>
 </template>
 <style scoped>

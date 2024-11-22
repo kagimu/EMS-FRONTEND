@@ -122,7 +122,7 @@ watch(
           <div class="col-md-12">
             <div class="row">
               <div class="col-md-12">
-                <h5 class="text-center">Students in this session</h5>
+                <h5 class="text-center text-sm">Students in this session</h5>
               </div>
             </div>
             <div class="row">
@@ -137,10 +137,10 @@ watch(
              
                   <div  class="w-full overflow-auto max-h-[520px] scrollbar-thin"
                   @scroll="onScroll">
-                <table class="table table-bordered table-striped">
+                <table class="table table-hover caption-top mt-1 table-sm table-striped">
                   <thead>
                     <tr>
-                      <th>#</th>
+                      <th style="width:5%">#</th>
                       <th>Name</th>
                       <th>Gender</th>
                       </tr>
