@@ -18,6 +18,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     const curriculumDeliveryResponse = ref(null)
     const classSessionResponse = ref(null)
     const classSessionStudentsResponse = ref(null)
+    const curriculumDeliveryProgressResponse = ref(null)
 
 
     async function newSchemeOfWorkData(data) {
@@ -221,6 +222,18 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
             })
     }
 
+    async function fetchCurriculumDeliveryProgress(data) {
+        return await api.get("main/curriculum-delivery/percentage-by-stream/"+data.stream_number)
+            .then((response) => {
+                curriculumDeliveryProgressResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
     return {
         newSchemeOfWorkResponse,
         updateSchemeOfWorkResponse,
@@ -248,6 +261,8 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         exportLessonPlanResponse,
         classSessionResponse,
         classSessionStudentsResponse,
-        fetchStudentsInSession
+        fetchStudentsInSession,
+        curriculumDeliveryProgressResponse,
+        fetchCurriculumDeliveryProgress
     }
 })

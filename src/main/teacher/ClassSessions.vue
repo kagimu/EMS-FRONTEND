@@ -49,6 +49,7 @@
      onMounted(() => {
        schoolStore.fetchSchools()
        dofetchSessions()
+      
       }
      )
    
@@ -233,8 +234,12 @@
      }
    }
    
-   const filterByStream = () => {
+   const filterByStream = (streamN) => {
     dofetchSessions()
+     let data = {
+      stream_number:streamN
+     }
+       schemeOfWorkStore.fetchCurriculumDeliveryProgress(data)
    }
    
    watch (
@@ -367,7 +372,7 @@
                   v-model="form.stream_number"
                   class="form-select form-select-sm" required
                   style="box-shadow: none;"
-                  @change="filterByStream()"
+                  @change="filterByStream(form.stream_number)"
                   >
                   <option disabled value="">-Filter By Stream-</option>
                   <option v-for="(slist, index) in streamListData" :key="index" :value="slist.stream_number">{{ slist.name }}

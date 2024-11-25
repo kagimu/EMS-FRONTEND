@@ -549,6 +549,8 @@ const toggleMaximize = () => {
                                     @scroll="onScroll">
                                     <div class="row">
                                        <div class="col-lg-8">
+                                          <!-- {{ selectedStep }} -->
+                                            {{ form.students }}
                                           <table
                                              class="table table-hover caption-top mt-1 table-sm table-striped"
                                              style="font-size: 13px !important;"
@@ -562,10 +564,12 @@ const toggleMaximize = () => {
                                                 </tr>
                                              </thead>
                                              <tbody>
+                                               
                                                 <tr v-for="(enrolData,index) in enrollmentList" :key="index" >
                                                    <td>
                                                       <input type="checkbox"  :value="enrolData.student_number" 
-                                                         @change="toggleStudent(enrolData.student_number)">
+                                                         @change="toggleStudent(enrolData.student_number)" 
+                                                         >
                                                    </td>
                                                    <td>{{ enrolData.adn }}</td>
                                                    <td style="text-transform: capitalize;">
@@ -708,5 +712,6 @@ const toggleMaximize = () => {
   background: white;
   border-radius: 0;
   overflow-y: auto;
+  transition: all 0.3s ease-in-out;
 }
 </style>

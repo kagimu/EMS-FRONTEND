@@ -1,159 +1,70 @@
 <template>
-  <div>
-    <div class="accordion maximize-minize" :class="{ fullscreen: isMaximized }">
-      <div>
-        <button class="btn btn-primary" @click="toggleMaximize">
-          {{ isMaximized ? "Minimize" : "Maximize" }} this section
-        </button>
+  <div class="curriculum-progress">
+    <div v-for="curriculum in curriculums" :key="curriculum.id" class="curriculum">
+      <div class="curriculum-header">
+        <h3 class="text-sm">{{ curriculum.name }}</h3>
+        <span>{{ curriculum.completedPercentage }}%</span>
       </div>
-      <div class="content">
-        <p>
-          This is some content inside the section that will be maximized or
-          minimized. You can include your dynamic content here.
-        </p>
+      <div class="progress-bar">
         <div
-          v-for="(item, index) in data.content"
-          :key="item.number"
-          class="accordion-group"
-        >
-          <div
-            v-for="(step, stepIndex) in item.steps"
-            :key="`${item.number}-${stepIndex}`"
-            class="accordion-item"
-          >
-            <button
-              class="accordion-header"
-              @click="togglePanel(`${item.number}-${stepIndex}`)"
-            >
-              <div class="header-info">
-                <h4 class="text-xs">{{ index + 1 }}. {{ step.name }}</h4>
-                <span>
-                  {{ expandedPanel === `${item.number}-${stepIndex}`
-                    ? "▲"
-                    : "▼" }}
-                </span>
-              </div>
-            </button>
-            <div
-              v-if="expandedPanel === `${item.number}-${stepIndex}`"
-              class="accordion-body text-xs"
-            >
-              <p><strong>Concept:</strong> {{ step.concept }}</p>
-              <p><strong>Topic:</strong> {{ step.topic }}</p>
-              <p><strong>Sub-topic:</strong> {{ step.sub_topic }}</p>
-              <p><strong>Date:</strong> {{ step.date }}</p>
-              <p><strong>Comment:</strong> {{ step.comment || "None" }}</p>
-            </div>
-          </div>
-        </div>
+          class="progress-fill"
+          :class="{ 'complete': curriculum.completedPercentage === 100 }"
+          :style="{ width: curriculum.completedPercentage + '%' }"
+        ></div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref } from 'vue';
 
-// Mock data
-const data = {
-  per_page: 20,
-  page: 1,
-  sort_column: "id",
-  sort_direction: "desc",
-  total_rows: 2,
-  total_pages: 1,
-  content: [
-    {
-      number: "fdbf6c28-920d-4cbe-91ab-77e4aff59ac6",
-      steps: [
-        {
-          name: "Solving difficult equations",
-          concept: "Drawing Halves And Quarters In A Whole",
-          topic: "Activities in our community",
-          subject: "",
-          sub_topic: "Drawing halves and quarters in a whole",
-          date: "11:01",
-          time: "",
-          comment: "None",
-        },
-      ],
-    },
-    {
-      number: "027375c1-059d-456b-891c-d145c41cb4a7",
-      steps: [
-        {
-          name: "Old numbers",
-          concept: "Drawing Halves And Quarters In A Whole",
-          topic: "Activities in our community",
-          subject: "",
-          sub_topic: "Drawing halves and quarters in a whole",
-          date: "11:11",
-          time: "",
-          comment: "Dozing\n",
-        },
-      ],
-    },
-  ],
-};
-
-// Track the expanded panel
-const expandedPanel = ref(null);
-
-// Track maximize/minimize state
-const isMaximized = ref(false);
-
-const togglePanel = (panelId) => {
-  expandedPanel.value = expandedPanel.value === panelId ? null : panelId;
-};
-
-const toggleMaximize = () => {
-  isMaximized.value = !isMaximized.value;
-};
+const curriculums = ref([
+  { id: 1, name: 'Wholesome', completedPercentage: 100 },
+  { id: 2, name: 'Daycare Curriculum', completedPercentage: 40 },
+  { id: 3, name: 'P.1- P.3 Thematic Curriculum', completedPercentage: 90 },
+  { id: 4, name: 'Early Childhood Learning Framework', completedPercentage: 20 },
+]);
 </script>
 
-<style>
-.accordion {
-  margin: 20px;
-  transition: all 0.3s ease-in-out;
-  background: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-.fullscreen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1000;
-  margin: 0;
+<style scoped>
+.curriculum-progress {
+  font-family: Arial, sans-serif;
   padding: 20px;
-  background: white;
-  border-radius: 0;
-  overflow-y: auto;
+  max-width: 600px;
+  margin: auto;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.content {
-  padding: 10px;
+.curriculum {
+  margin-bottom: 20px;
 }
 
-.accordion-header {
+.curriculum-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  padding: 10px;
-  background-color: #eaeaea;
-  cursor: pointer;
-  border: none;
-  outline: none;
+  margin-bottom: 8px;
 }
 
-.accordion-body {
-  padding: 10px;
-  background-color: #fff;
-  border-top: 1px solid #ddd;
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #4caf50;
+  transition: width 0.3s ease;
+}
+
+.progress-fill.complete {
+  background: #2196f3; /* Blue color for 100% completion */
 }
 </style>

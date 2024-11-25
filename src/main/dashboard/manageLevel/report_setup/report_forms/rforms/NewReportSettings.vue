@@ -294,7 +294,7 @@ watch (
 
 
     <div class="mb-2">
-      <label class="text-sm">Columns</label>
+      <label class="text-sm">Number Of Columns</label>
       <input
           maxlength="50"
           type="text"
