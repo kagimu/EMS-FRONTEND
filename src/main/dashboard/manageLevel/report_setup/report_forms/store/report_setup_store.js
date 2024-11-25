@@ -258,7 +258,7 @@ export const useReportSetupStore = defineStore("report_setup", () => {
 
     
     async function deleteReportTemplate(data) {
-        return await api.delete("main/school/report-templates/delete", data)
+        return await api.delete("main/school/report-templates/delete/"+data)
             .then((response) => {
                 deleteReportTemplateResponse.value = response.data
             })

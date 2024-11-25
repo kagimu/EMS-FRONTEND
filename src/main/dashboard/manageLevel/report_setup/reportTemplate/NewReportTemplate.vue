@@ -1,24 +1,17 @@
 <script setup>
 import {onMounted, reactive, ref, watch} from "vue";
-import useCommonsStore from "@/composables/useCommons.js";
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
-import {useRouter} from "vue-router";
 
-const commons = useCommonsStore()
 const reportSetupStore = useReportSetupStore()
 const notificationStore  = useNotificationStore()
-const routerData = useRouter()
 const schoolStore = useSchoolStore()
 const schoolList = ref([])
-const campusNumber = routerData.currentRoute.value.query.id
-let schoolNumber = routerData.currentRoute.value.query.id
 
 const errorMessage = ref("")
 const loader = ref(false)
-const classList = ref([])
 
 const props = defineProps({
   reportTemplateDataInfo:{}
@@ -106,7 +99,7 @@ watch(
 
 <template>
   <div>
-  <!-- {{ reportTemplateDataInfo }} -->
+
   <form @submit.prevent="addReportTemplate">
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
       {{ errorMessage }}
