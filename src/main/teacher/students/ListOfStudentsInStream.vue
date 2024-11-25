@@ -14,21 +14,14 @@ import AppModal from "@/components/AppModal.vue";
 import FileUploader from "@/components/FileUploader.vue";
 import {useRouter} from "vue-router";
 import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
-
-const routerData = useRouter()
-
-let streamNumber = "Hhheheh"
-let campusClassNumber = "hdhdhdhdh"
-
 import { useAbility } from '@casl/vue';
 
+const routerData = useRouter()
 const { can } = useAbility()
-
 const enrollmentList = ref( [])
 const  notificationStore  = useNotificationStore()
 const enrollmentStore = useEnrolmentStore()
 const promotionStore = usePromotionStore()
-
 const campusList = ref([])
 const schoolList = ref([])
 const classList = ref([])
@@ -53,6 +46,18 @@ const schemeOfWorkStore = useSchemeOfWorkStore()
 let profile = localStorage.getItem("userProfile")
 const comment = ref(null)
 const session = ref(null)
+const adn_no = ref(null)
+const showV = ref(false)
+const openCommentField = (adn) =>{
+adn_no.value = adn
+showV.value = true
+}
+
+const closeCommentField = (adn) =>{
+adn_no.value = adn
+showV.value = false
+}
+
 
 const form = reactive({
 stream_number:"",
@@ -60,7 +65,7 @@ comment:null,
 date:null,
 time:null,
 teacher_number:null,
-step_numbers:null,
+step_number:null,
 students: [],
 })
 
@@ -73,7 +78,6 @@ selectedStepNumbers:[]
 
 onMounted(() => {
 schoolStore.fetchSchools()
-// doFetchEnrollent()
 getSchoolInfo()
 getSteps()
 getTeacherNumber()
@@ -91,7 +95,7 @@ getStream(draft.class_number)
 const getSteps = () =>{
    let draftData = props.selectedStepNumbers
    if(draftData){
-      form.step_numbers = draftData
+      form.step_number = draftData
    }
 }
 
@@ -326,7 +330,6 @@ studyPeriodList.value = studyData[0].studyPeriod
 
 
 
-
 watch(
 () => schemeOfWorkStore.errorMessage,
 async (data) => {
@@ -347,7 +350,7 @@ if (data) {
 {deep: true}
 )
 
-// Toggle a student in form.students based on checkbox
+
 function toggleStudent(student_number) {
   const index = form.students.findIndex(student => student.student_number === student_number);
   if (index === -1) {
@@ -369,28 +372,26 @@ function updateStudentComment(student_number, comment) {
 
 
 const submitSchemeOfWorkDelivery = () =>{
-   form.sessions = {
+
+   let formData = {
+      stream_number: form.stream_number,
+      date: form.date,
       time: form.time,
-      step_numbers: form.step_numbers,
-      students: form.students
+      teacher_number: form.teacher_number,
+      sessions : [ {
+      comment: form.comment,
+      time: form.time,
+      step_number: form.step_number,
+      students: form.students 
+   } ]
+
    }
-   alert(JSON.stringify(form)) 
-   // schemeOfWorkStore.newCurriculumDelivery(form)
+  
+ alert(JSON.stringify(formData)) 
+   schemeOfWorkStore.newCurriculumDelivery(formData)
 }
 
 
-const adn_no = ref(null)
-const showV = ref(false)
-
-const openCommentField = (adn) =>{
-adn_no.value = adn
-showV.value = true
-}
-
-const closeCommentField = (adn) =>{
-adn_no.value = adn
-showV.value = false
-}
 
 </script>
 <template>
@@ -398,7 +399,7 @@ showV.value = false
 <div>
 <!-- {{ schoolData }} -->
   <!-- {{ schoolInfoData }} -->
-  <!-- {{ form.step_numbers }} -->
+  <!-- {{ form.step_number }} -->
 
             <div class="row mx-auto">
                <div class="row">
@@ -428,7 +429,8 @@ showV.value = false
                         :per_page="per_page"
                         :total_items="total_items"
                         :total_rows="total_rows"
-                        @perPageChanged="doFetchEnrollent"></PaginationTemplate>
+                        ></PaginationTemplate>
+                        <!-- @perPageChanged="doFetchEnrollent" -->
                   </div>
                </div>
             </div>
@@ -440,9 +442,10 @@ showV.value = false
 </div>
 </div>
 <div v-else-if="enrollmentList.length === 0" class="text-center my-4">
-<p>There is no data found</p>
+<p class="alert alert-warning">No stream is selected ..!</p>
 </div>
 <div v-else>
+
 <div
 class="w-full overflow-auto max-h-[520px] scrollbar-thin"
 @scroll="onScroll">
@@ -504,13 +507,25 @@ class="w-full overflow-auto max-h-[520px] scrollbar-thin"
 
    <div class="col-lg-4 pt-4">
       <div class="m-2 ">
+      <label  class="form-label">Date</label>
+          <input
+            type="date"
+            class="form-control"
+            placeholder="Enter Date"
+            v-model="form.date"
+            required
+
+          />
+      </div>
+
+      <div class="m-2 ">
       <label  class="form-label">Time</label>
           <input
             type="time"
             class="form-control"
             placeholder="Enter time"
             v-model="form.time"
-
+            required
           />
       </div>
       <div class="m-2">
@@ -539,6 +554,7 @@ class="w-full overflow-auto max-h-[520px] scrollbar-thin"
    </div>
    
 </div>
+
 </div>
 </template>
 <style scoped>

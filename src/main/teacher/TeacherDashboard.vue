@@ -101,7 +101,7 @@
      // {title:"Time Table", name:"", icon:"bi-clock" ,action:""},//my shedule and General timetable
      {title:"Class Routines", name:"my-classes", icon:"bi-files" ,action:"my-classes"}, //streams, students,  
      // {title:"Students", name:"students", icon:"bi-people" ,action:"view_students"},
-     {title:"My Subjects", name:"manage-subjects", icon:"bi-bookmarks-fill" ,action:"manage-subjects"},//learning area,concept, etc
+    //  {title:"My Subjects", name:"manage-subjects", icon:"bi-bookmarks-fill" ,action:"manage-subjects"},
      {title:"Scheme Of Work", name:"manage-scheme-and-sessions", icon:"bi-journals" ,action:"manage-scheme-and-sessions"}, //create scheme of work, ...etc
      {title:"Attendance", name:"", icon:"bi-journal-richtext" ,action:""}, //Daily Attendance, Subject Attendance,
      {title:"Calendar", name:"", icon:"bi-calendar" ,action:""}, //Daily Attendance, Subject Attendance,

@@ -74,19 +74,30 @@ if(classNo){
   const getSessionInfo = () => {
     let draft = props.sessionInfo
     schemeOfWorkStore.fetchStudentsInSession(draft.number)
-    step.value = draft.step
-    concept.value = draft.concept
-    topic.value = draft.topic
-    subject.value = draft.subject
-    sub_topic.value = draft.sub_topic
     streamName.value = draft.stream
     className.value = draft.class
     date.value = draft.date
     time.value = draft.time
     teacher.value = draft.teacher
-    number_of_students.value = 30
+    number_of_students.value = draft.number_of_students
     comment.value = draft.comment
     stream.value = draft.stream_number
+    let stepsData = draft.steps
+
+    stepsData.forEach(item => {
+      step.value = item.name
+      concept.value = item.concept
+      topic.value = item.topic
+      subject.value = item.subject
+      sub_topic.value = item.sub_topic
+    });
+
+  
+    // step.value = stepsData
+    // concept.value = stepsData.concept
+    // topic.value = stepsData.topic
+    // subject.value = stepsData.subject
+    // sub_topic.value = stepsData.sub_topic
 
   }
 
@@ -152,7 +163,7 @@ watch(
     async (data) => {
       if(data){
         // fetchSessionStudentList(data)
-        alert(JSON.stringify(data))
+        // alert(JSON.stringify(data))
         
       }
     }
@@ -251,24 +262,21 @@ fetchEnrollmentList(data)
 <!-- {{ sessionInfo }} -->
   <!-- {{classSessionStudentsData}} -->
 
-<div class="bg-gray-100 shadow-md rounded-md p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+<div class="p-1 flex flex-col sm:flex-row items-start sm:items-center gap-4">
     <!-- Left Section -->
-    <div class="flex-shrink-0 flex items-center justify-center bg-blue-100 rounded-full w-16 h-16 text-blue-600">
+    <div class="flex-shrink-0 flex items-center justify-center bg-blue-100 rounded-full w-12 h-12 text-blue-600">
       <i class="fas fa-chalkboard-teacher text-3xl"></i>
     </div>
 
     <!-- Right Section -->
     <div class="flex-1">
       <div class="mb-2">
-        <div class="text-sm text-gray-500">Step:</div>
-        <div class="text-lg font-semibold text-blue-600">{{ step }}</div>
+        <div class="text-sm text-gray-500">Concept:</div>
+        <div class="text-sm font-semibold text-blue-600">{{concept}}</div>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 text-sm">
-        <p>
-          <i class="fas fa-lightbulb text-yellow-500"></i>
-          <strong> Concept:</strong> {{concept}}
-        </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1 text-sm">
+       
         <p>
           <i class="fas fa-book text-green-500"></i>
           <strong> Topic:</strong>{{topic}}
