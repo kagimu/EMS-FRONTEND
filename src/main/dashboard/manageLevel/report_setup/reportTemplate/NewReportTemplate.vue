@@ -30,9 +30,10 @@ const form = reactive({
 })
 
 const  getReportTemplateInfo = () =>{
-  if(props.reportTemplateDataInfo){
-    form.name = props.reportTemplateDataInfo.name
-    form.school_number = props.reportTemplateDataInfo.school_number
+  let draft  = props.reportTemplateDataInfo
+  if(draft){
+    form.name = draft?.name ?? ""
+    form.school_number = draft?.school_number ?? ""
   }
 }
 
@@ -113,7 +114,7 @@ watch(
       class="form-select form-select-sm" required
       style="box-shadow: none;"
   >
-    <option disabled :value="null">Select School</option>
+    <option disabled value="">--Select School--</option>
     <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
     </option>
   </select>

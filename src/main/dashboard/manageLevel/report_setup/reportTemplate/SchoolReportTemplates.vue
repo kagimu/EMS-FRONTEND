@@ -104,7 +104,7 @@ watch (
   async (data) => {
     if(data){
       notificationStore.successToast("Success", data.message)
-      await reportSetupStore.fetchReportTemplate()
+      await reportSetupStore.fetchReportTemplate(schoolNumber)
       loader.value=false
     }
   },
