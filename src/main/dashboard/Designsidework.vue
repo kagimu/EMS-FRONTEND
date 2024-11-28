@@ -21,9 +21,6 @@ import { ref } from 'vue';
 
 const curriculums = ref([
   { id: 1, name: 'Wholesome', completedPercentage: 100 },
-  { id: 2, name: 'Daycare Curriculum', completedPercentage: 40 },
-  { id: 3, name: 'P.1- P.3 Thematic Curriculum', completedPercentage: 90 },
-  { id: 4, name: 'Early Childhood Learning Framework', completedPercentage: 20 },
 ]);
 </script>
 
