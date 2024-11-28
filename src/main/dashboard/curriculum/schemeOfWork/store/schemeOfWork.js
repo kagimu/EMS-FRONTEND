@@ -19,6 +19,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     const classSessionResponse = ref(null)
     const classSessionStudentsResponse = ref(null)
     const curriculumDeliveryProgressResponse = ref(null)
+    const updateCurriculumDeliveryResponse = ref(null)
 
 
     async function newSchemeOfWorkData(data) {
@@ -234,6 +235,17 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
             })
     }
 
+    async function updateCurriculumDelivery(data) {
+        return await api.put("main/curriculum-delivery/update-session", data)
+            .then((response) => {
+                updateCurriculumDeliveryResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
     return {
         newSchemeOfWorkResponse,
         updateSchemeOfWorkResponse,
@@ -263,6 +275,8 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         classSessionStudentsResponse,
         fetchStudentsInSession,
         curriculumDeliveryProgressResponse,
-        fetchCurriculumDeliveryProgress
+        fetchCurriculumDeliveryProgress,
+        updateCurriculumDeliveryResponse,
+        updateCurriculumDelivery
     }
 })

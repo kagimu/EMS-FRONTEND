@@ -506,6 +506,7 @@ const handleMenuChange = (data) => {
               <th>No</th>
               <th>Item</th>
               <th><div class="text-sm">Quantity</div></th>
+              <th><div class="text-sm">Available Quantity</div></th>
               <th><div class="text-sm">Unit Of Use</div></th>
               <th><div class="text-sm">Unit Cost</div></th>
               <th><div class="text-sm">#</div></th>
@@ -528,6 +529,18 @@ const handleMenuChange = (data) => {
                       @change="handleMenuChange"
                      ></ComboMenuItemBox>
 
+              </td>
+
+              <td>
+                <input
+                    v-model="menu.quantity"
+                    class="form-control shadow-none ml-5"
+                    style="width: 80px;"
+                    maxlength="10"
+                    placeholder="1.0"
+                    type="text"
+                    @keypress="commons.onlyNumberValidator($event)"
+                    v-on:blur="compute(menu.quantity, 'assembled-item', index)">
               </td>
 
               <td>
