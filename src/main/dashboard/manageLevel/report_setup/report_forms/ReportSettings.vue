@@ -1,6 +1,5 @@
 <script setup>
 
-
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
@@ -63,9 +62,8 @@ const setReportColumn = (number,column) =>{
 
 onMounted(
     async () => {
-
       fetchCampusLevel()
-      await doFetchReportSettings()
+      // await doFetchReportSettings()
     }
 )
 

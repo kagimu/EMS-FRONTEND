@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import {createRouter, createWebHistory} from 'vue-router';
 import Login from "../main/auth/Login.vue";
 import Register from "../main/auth/Register.vue";
 import Home from "../main/dashboard/home/Home.vue";
@@ -65,8 +65,8 @@ import ResetPassword from "@/main/auth/ResetPassword.vue";
 import Promotions from "@/main/dashboard/promotions/Promotions.vue"
 import InterviewManagement from "@/main/dashboard/studentApplication/InterviewManagement.vue"
 import Catering from "@/main/dashboard/catering/Catering.vue"
-import FoodMenuItem  from "@/main/dashboard/catering/cateringComponents/FoodMenuItem.vue"
-import FeedingGroupUserDetails  from "@/main/dashboard/catering/cateringComponents/FeedingGroupUserDetails.vue"
+import FoodMenuItem from "@/main/dashboard/catering/cateringComponents/FoodMenuItem.vue"
+import FeedingGroupUserDetails from "@/main/dashboard/catering/cateringComponents/FeedingGroupUserDetails.vue"
 import ApplicationSuccessPage from "@/main/application/applicationComponents/ApplicationSuccessPage.vue"
 import CampusCurriculumSetup from "@/main/dashboard/manageLevel/CampusCurriculumSetup.vue";
 import StudentProfileDetails from "@/main/dashboard/profiles/studentProfile/StudentProfileDetails.vue"
@@ -667,12 +667,11 @@ router.beforeEach((to, from, next) => {
 const DEFAULT_TITLED = "Victorious Education Services";
 
 router.afterEach((to) => {
-  const DEFAULT_TITLE = localStorage.getItem("landingPageTitle") || DEFAULT_TITLED;
-  document.title = DEFAULT_TITLE;
+    document.title = localStorage.getItem("landingPageTitle") || DEFAULT_TITLED;
 //   alert(`Document title set to: ${DEFAULT_TITLE}`);
-  Vue.nextTick(() => {
+//   Vue.nextTick(() => {
     // document.title = DEFAULT_TITLE;
-  });
+  // });
   
 });
 
