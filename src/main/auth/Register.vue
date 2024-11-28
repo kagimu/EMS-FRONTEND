@@ -111,7 +111,7 @@ watch (
       <div class="col-lg-4">
         <div class="align-centre mt-2 h6 font500 text-uppercase mb-2">
 
-          <img v-if="logoNumber" alt="logo" style="width: 100px; margin: 0 auto" :src="logoUrl"/>
+          <img v-if="logoNumber" alt="logo" style="width: 100px; margin: 0 auto" class="mb-3" :src="logoUrl"/>
           <div class="text-[#2c2f8c] text-center text-[20px]">
           {{title}}
           </div>

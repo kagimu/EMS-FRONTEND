@@ -9,8 +9,7 @@ import ReportSetup from "@/main/dashboard/manageLevel/report_setup/ReportSetup.v
 import ScoreSetup from "@/main/dashboard/manageLevel/report_setup/ScoreSetup.vue";
 import Grading from "@/main/dashboard/assessment/Grading.vue";
 import AssessmentSchedulePage from "@/main/dashboard/assessment/AssessmentSchedulePage.vue";
-import { useAbility } from '@casl/vue';
-const { can } = useAbility()
+
 const router = useRouter()
 const levelStore = useLevelStore()
 const campusCurriculumDataInfo = ref(null)

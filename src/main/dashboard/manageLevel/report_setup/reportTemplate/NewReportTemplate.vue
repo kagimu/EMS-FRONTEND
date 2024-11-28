@@ -1,24 +1,17 @@
 <script setup>
 import {onMounted, reactive, ref, watch} from "vue";
-import useCommonsStore from "@/composables/useCommons.js";
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
-import {useRouter} from "vue-router";
 
-const commons = useCommonsStore()
 const reportSetupStore = useReportSetupStore()
 const notificationStore  = useNotificationStore()
-const routerData = useRouter()
 const schoolStore = useSchoolStore()
 const schoolList = ref([])
-const campusNumber = routerData.currentRoute.value.query.id
-let schoolNumber = routerData.currentRoute.value.query.id
 
 const errorMessage = ref("")
 const loader = ref(false)
-const classList = ref([])
 
 const props = defineProps({
   reportTemplateDataInfo:{}
@@ -37,9 +30,10 @@ const form = reactive({
 })
 
 const  getReportTemplateInfo = () =>{
-  if(props.reportTemplateDataInfo){
-    form.name = props.reportTemplateDataInfo.name
-    form.school_number = props.reportTemplateDataInfo.school_number
+  let draft  = props.reportTemplateDataInfo
+  if(draft){
+    form.name = draft?.name ?? ""
+    form.school_number = draft?.school_number ?? ""
   }
 }
 
@@ -106,7 +100,7 @@ watch(
 
 <template>
   <div>
-  <!-- {{ reportTemplateDataInfo }} -->
+
   <form @submit.prevent="addReportTemplate">
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
       {{ errorMessage }}
@@ -120,7 +114,7 @@ watch(
       class="form-select form-select-sm" required
       style="box-shadow: none;"
   >
-    <option disabled :value="null">Select School</option>
+    <option disabled value="">--Select School--</option>
     <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
     </option>
   </select>

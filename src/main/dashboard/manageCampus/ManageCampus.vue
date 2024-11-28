@@ -192,7 +192,6 @@ const successUpload = (data) => {
           </div>
           <div v-if=" campusQuery==='report-template'">
             <div class="rounded  border bg-white mt-3">
-
               <school-report-templates :schoolData="schoolData"></school-report-templates>
             </div>
           </div>
