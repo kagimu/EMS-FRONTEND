@@ -127,7 +127,7 @@ watch(
           type="text"
           style="outline: none 0 !important;
                box-shadow: none;"
-          v-model="form.name"
+          v-model.trim="form.name"
           required
           class="form-control form-select-sm">
     </div>

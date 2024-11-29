@@ -79,22 +79,22 @@ if(navigator.userAgent.indexOf("Firefox") !== -1 ) {
   <button class="btn btn-success mb-2 " @click="print"><i class="bi bi-printer"></i></button>
 <div ref="myDiv">
 
-  <div v-if="reportDetails?.report_template_name === 'noregrets-early-learning-report-one'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
+  <div v-if="reportDetails?.report_template_name.trim() === 'wholesome-early-learning-report-baby-class'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
     <baby-class-report></baby-class-report>
     <br />
   </div>
 
 
-  <div v-if="reportDetails?.report_template_name === 'noregrets-early-learning-report-two'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
+  <div v-if="reportDetails?.report_template_name.trim() === 'wholesome-early-learning-report-top-class'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
     <top-class-report></top-class-report>
     <br />
   </div>
 
-  <div v-if="reportDetails?.report_template_name === 'noregrets-report-primary'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
-    <primary-report :reportDetails="reportDetails"></primary-report>
+  <div v-if="reportDetails?.report_template_name.trim() === 'wholesome-report-primary'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
+    <primary-report :reportDataInfo="reportData" :reportDetails="reportDetails"></primary-report>
   </div>
 
-  <div v-if="reportDetails?.report_template_name === 'victorious-report-primary'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
+  <div v-if="reportDetails?.report_template_name.trim() === 'victorious-report-primary'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
     <victorious-report-card :reportDetails="reportDetails" :reportDataInfo="reportData"></victorious-report-card>
   </div>
 </div>

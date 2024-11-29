@@ -101,7 +101,7 @@ if (agreed) {
   let data = {
   report_template_id:id
   }
-  reportSetupStore.deleteReportTemplate(data)
+  await reportSetupStore.deleteReportTemplate(data)
 }
 }
 
@@ -136,10 +136,10 @@ watch(
     </AppModal>
     
     <AppModal title="Assign Class To Template" v-model="showAssignModal" lg>
-        <AssignTemplateToClass :reportTemplateNumber="reportTemplateNumber"></AssignTemplateToClass>
+        <AssignTemplateToClass :addedClasses="classOnTemplateList" :reportTemplateNumber="reportTemplateNumber"></AssignTemplateToClass>
     </AppModal>
 
-    <AppModal title="Comfirm !" v-model="showClearClassModal" xs>
+    <AppModal title="Confirm !" v-model="showClearClassModal" xs>
         <clearClassModal :classListData="classListData"></clearClassModal>
     </AppModal>
 
