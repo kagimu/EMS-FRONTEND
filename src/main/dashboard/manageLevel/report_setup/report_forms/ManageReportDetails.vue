@@ -91,7 +91,7 @@ if(navigator.userAgent.indexOf("Firefox") !== -1 ) {
   </div>
 
   <div v-if="reportDetails?.report_template_name.trim() === 'wholesome-report-primary'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
-    <primary-report :reportDetails="reportDetails"></primary-report>
+    <primary-report :reportDataInfo="reportData" :reportDetails="reportDetails"></primary-report>
   </div>
 
   <div v-if="reportDetails?.report_template_name.trim() === 'victorious-report-primary'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">

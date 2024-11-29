@@ -8,8 +8,6 @@ const props = defineProps({
 })
 
 const baseUrl = `${window.location.protocol}//${window.location.host}`;
-const StudentImage =  baseUrl+"/src/assets/images/studentId.png";
-const SchoolBadge = baseUrl+"/src/assets/images/victorius-budge.png";
 
 const reportFilteredData = ref([])
 
@@ -57,26 +55,12 @@ const filterReportData = () => {
 
 const printableContent = ref(null);
 
-// const printContent = () => {
-//   const printContents = printableContent.value.innerHTML;
-//   const originalContents = document.body.innerHTML;
-//   const printWindow = window.open('', '', 'height=600,width=800');
-//   printWindow.document.write('<html><head><title>Print</title>');
-//   printWindow.document.write(
-//     '<style>body { font-family: Arial, sans-serif; } </style>'); 
-//   printWindow.document.write('</head><body>');
-//   printWindow.document.write(printContents);
-//   printWindow.document.write('</body></html>');
-//   printWindow.document.close();
-//   printWindow.print();
-// }
 
 
 </script>
 
 <template>
-<!-- {{reportDataInfo}} -->
-<!-- {{ reportDetails.school.logo }} -->
+
 <div ref="printableContent" class="printable">
   <table style="width: 100%;">
     <tr>

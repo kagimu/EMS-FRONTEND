@@ -165,6 +165,7 @@ watch(
           <tr>
             <th class="w-[10%]" scope="col">#</th>
             <th>Name</th>
+            <th>School</th>
             <th>Preview Template2</th>
             <th>Action</th>
           </tr>
@@ -173,6 +174,7 @@ watch(
           <tr v-for="(report,index) in reportTemplateList" :key="index">
             <td>{{ index+1 }}</td>
             <td>{{ report.name }}</td>
+            <td>{{ report.school_name	 }}</td>
             <td>
               <button class="bg-green-700 text-white text-sm px-3 rounded-md" @click="previewTemplate(report)" type="button">
                 Preview

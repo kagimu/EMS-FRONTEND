@@ -31,7 +31,7 @@ const form = reactive({
   name:null,
   short_name:null,
   school_number:schoolNumber,
-  grade_group_number:""
+  // grade_group_number:""
 })
 
 
@@ -60,7 +60,7 @@ const getGradeDataInfo = () => {
     form.code = draft?.code ?? ""
     form.name  = draft?.name ?? ""
     form.short_name  = draft?.short_name ?? ""
-    form.grade_group_number  = draft?.group_number ?? ""
+    // form.grade_group_number  = draft?.group_number ?? ""
   }
 }
 
@@ -159,16 +159,18 @@ watch(
           </div>
 
 
+<!--
           <div class="mb-2">
             <div class="text-[13px] text-[#505050]">Aggregate Group Name</div>
               <select
                   class="form-select form-select-sm shadow-none" required
                   v-model="form.grade_group_number"
               >
-                <option disabled value="">--Select Aggregate Group--</option>
+                <option disabled value="">&#45;&#45;Select Aggregate Group&#45;&#45;</option>
                 <option v-for="(list,index) in aggregateGroupData" :key="index" :value="list.number">{{ list.name }}</option>
               </select>
             </div>
+-->
 
           <div class="mb-2">
             <div class="text-[13px] text-[#505050]"> Short Code</div>

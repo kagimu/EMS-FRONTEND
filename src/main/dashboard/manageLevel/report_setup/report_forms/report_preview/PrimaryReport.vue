@@ -8,7 +8,8 @@ const printReport = () => {
 }
 
 const props = defineProps({
-  reportDetails:{}
+  reportDetails:{},
+  reportDataInfo:{}
 })
 
 
@@ -16,15 +17,16 @@ const props = defineProps({
 
 <template>
   <div>
+<!--    {{reportDetails}}-->
     <div class="mx-auto mt-10" style="width: 98%">
 
-      <div class="mt-4 mb-2 flex justify-content-between">
+<!--      <div class="mt-4 mb-2 flex justify-content-between">
         &nbsp;
         <button type="button" @click="printReport" class="btn btn-primary btn-sm mr-3" style="border-radius: 0;">
           <i class="bi-printer"></i>
           Print Report
         </button>
-      </div>
+      </div>-->
 
         <table style="width: 100%; border: 1px solid #f4f4f4; margin-bottom: 20px;">
         <tr>
@@ -35,7 +37,7 @@ const props = defineProps({
             <table style="width: 100%;">
               <tr>
                 <td style="width: 20%; text-align: center;">
-                  <img alt="logo" style="width: 150px; margin: 0 auto" :src="Badge"/>
+                  <img alt="logo" style="width: 130px; margin: 0 auto;" :src="reportDetails.school.logo"/>
                 </td>
                 <td style="width: 60%;" class="text-center">
                   <!--        <div style="font-size: 30px;"><b>NOREGRETS LIFE SCHOOL</b></div>-->
@@ -56,7 +58,8 @@ const props = defineProps({
                 </td>
                 <td style="width: 20%;">
                   <div style="text-align: center; margin-top: 10px;">
-                    <img alt="logo" style="width: 130px; margin: 0 auto;" :src="StudentImage"/>
+<!--                    <img alt="logo" style="width: 130px; margin: 0 auto;" :src="StudentImage"/>-->
+                    <img alt="logo" style="width: 130px;" :src="reportDataInfo.photo"/>
                   </div>
                 </td>
               </tr>
