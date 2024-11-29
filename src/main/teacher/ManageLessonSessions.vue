@@ -406,7 +406,7 @@ const fetchSessionList = (data) => {
        async (data) => {
          if(data){
            fetchSessionList(data)
-           alert(JSON.stringify(data))
+          //  alert(JSON.stringify(data))
          }
        },
        {deep:true}
@@ -468,8 +468,8 @@ watch (
 
   
 </script>
-<template>
-    {{ sessionListData }}
+<template> 
+    <!-- {{ sessionListData }} -->
       <!-- {{ classSessionStudentsData }} -->
         <!-- {{ selectedStudentEnrolment }} -->
           <!-- {{deliveryProgressData}} -->

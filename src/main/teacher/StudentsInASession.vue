@@ -370,7 +370,14 @@ watch(
    {deep: true}
    )
 
-   
+   const toggleAllStudents = () => {
+   if (form.students.length === enrollmentList.value.length) {
+   form.students = [];
+   } else {
+   form.students = enrollmentList.value.map(student => ({ student_number: student.student_number, comment: "" }));
+   }
+   }
+
 </script>
 <template>
   <!-- {{ studentsInASessionDataInfo }} -->
@@ -401,7 +408,12 @@ watch(
                         >
                         <thead>
                            <tr>
-                              <th>#</th>
+                              <th>
+                                 <input type="checkbox" 
+                                    @change="toggleAllStudents"
+                                    :checked="form.students.length === enrollmentList.length"
+                                   >
+                              </th>
                               <th>ADN</th>
                               <th>Student</th>
                               <th></th>
