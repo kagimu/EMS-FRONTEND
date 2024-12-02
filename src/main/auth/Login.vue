@@ -82,20 +82,24 @@ watch(
         });
 
 
-        if (data.type === "User"){
+        if (data.type === "User" && scope.value.length === 0){
           r = router.resolve({
             name: "client_dashboard"
           });
-        }
 
-        if (scope.value !== ""){
+        } else {
           localStorage.setItem("schoolSelectStatus", "NO")
           r = router.resolve({
             name: "teacher"
           })
-
-
         }
+     
+        // if (!scope.value){
+        //   localStorage.setItem("schoolSelectStatus", "NO")
+        //   r = router.resolve({
+        //     name: "teacher"
+        //   })
+        // }
 
         window.location.assign(r.href);
 

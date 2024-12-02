@@ -19,6 +19,7 @@ const routerData = useRouter()
 let streamNumber = routerData.currentRoute.value.query.id
 let campusClassNumber = routerData.currentRoute.value.query.ccl
 
+
 import { useAbility } from '@casl/vue';
 
 const { can } = useAbility()
@@ -47,7 +48,8 @@ const total_items = ref(0)
 const total_rows = ref(0)
 const studentPhoto = ref(null)
 const studentNumber = ref(null)
-
+const schoolLists = ref([])
+const currentSchoolNumber= ref(null)
 
 
 const form = reactive({
@@ -60,6 +62,18 @@ onMounted(() => {
       schoolStore.fetchSchools()
       doFetchEnrollent()
       getStream()
+
+      if(localStorage.getItem("SchoolInfo")){
+        let data =  JSON.parse(localStorage.getItem("SchoolInfo")) 
+        schoolLists.value = data
+        const numbers = data.map(item => item.number);
+         currentSchoolNumber.value = numbers[0]
+
+      }
+
+      // form.stream_number = routerData.currentRoute.value.query.id
+
+
     }
    
 )
@@ -85,7 +99,7 @@ const doFetchEnrollent = () =>{
     page: 1,
     per_page: per_page.value,
     study_period_number:"",
-    school_number:schoolInfo.number,
+    school_number:currentSchoolNumber.value,
     campus_number: "",
     campus_class_number:"",
     stream_number:streamNumber,
@@ -104,7 +118,7 @@ function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
       page: (page.value+1),
       per_page: per_page.value,
       study_period_number:"",
-      school_number:schoolInfo.number,
+      school_number:currentSchoolNumber.value,
       campus_number: "",
       campus_class_number:"",
       stream_number:streamNumber,
@@ -276,7 +290,7 @@ const successUpload = (data) => {
 
 <template>
   <div>
-
+<!-- {{schoolLists}} -->
     <AppModal title="Upload Student Photo" v-model="uploadDialog" xl>
       <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload"  :studentNumber="studentNumber" :imageUrl="studentPhoto"></file-uploader>
     </AppModal>
@@ -378,7 +392,7 @@ const successUpload = (data) => {
                       <td>{{ enrolData.campus }}</td>
                       <td>{{ enrolData.study_period }}</td>
                       <td>{{ enrolData.class }}</td>
-                      <td>
+                      <!-- <td>
                            <div v-if="can('upload_student_photo','manage')" >
                              <div class="mr-2 rounded-sm px-2 text-[#0d6dfa] cursor-pointer m-1" style="border: 1px solid #0d6dfa;" @click="uploadStudentPhoto(enrolData)">
                                <i class="bi bi-card-image cursor-pointer mr-1"></i>
@@ -394,7 +408,7 @@ const successUpload = (data) => {
                                    </div>
                              </router-link>
                            </div>
-                      </td>
+                      </td> -->
 
                     </tr>
 
