@@ -198,14 +198,15 @@ watch (
       <div class="row">
         <div class="col-12">
           <div class=" p-4 bg-white">
-            <p class="mt-3 ml-3 text-lg font-bold">Applications</p>
-            <PaginationTemplate
+            <p class="mt-3 ml-3 text-sm mb-2">
+             <i class="bi bi-book"></i>&nbsp;&nbsp;APPLICATIONS</p>
+            <!-- <PaginationTemplate
               @perPageChanged="doFetchApplication"
               v-model:perPage="per_page"
               :per_page="per_page"
               :total_items="total_items"
               :total_rows="total_rows"
-            />
+            /> -->
 
             <div class="row mt-3">
               <div v-for="(applist, index) in applicationInfoList" :key="index" class="col-md-6 mb-3">
@@ -237,13 +238,13 @@ watch (
                         <small><i class="bi bi-eye"></i> View Details</small>
                       </button>
 
-                      <button
+                      <!-- <button
                         @click="deleteThisData(applist)"
                         class="ml-2 text-red-600"
                         title="Delete"
                       >
                         <small><i class="bi bi-trash"></i></small>
-                      </button>
+                      </button> -->
                     </div>
                   </div>
                 </div>
