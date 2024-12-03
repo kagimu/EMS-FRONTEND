@@ -148,7 +148,7 @@ const props = defineProps({
                       white-space: nowrap;
                       font-size: 14px;"
                   >
-                {{learning_area.name}}
+                    {{learning_area.name}}
                   </div>
 
                 </td>
@@ -174,25 +174,30 @@ const props = defineProps({
 
             </table>
 
-<!--            <table  v-for="(lst,idx) in reportDetails?.learning_areas" :key="idx" class="w-full text-[13px] border">
-              <tr style="border-bottom: 1px solid #f4f4f4;">
-                <td class="w-[10%] bg-amber-200" rowspan="4" style="transform: rotate(270deg); white-space: nowrap;"> <small>{{lst.name}}</small></td>
-                <td class="p-[5px]">
-                 <table class="w-full">
-                   <tr v-for="(list,idx) in lst?.assessments" :key="idx">
-                     <td class="p-[5px] w-[10%]" style="padding: 5px;">
-                       {{list.name}}
-                     </td>
-                     <td class="p-[5px] w-[10%]" v-for="(report_score,idx) in list?.report_scores" :key="idx" style="padding: 5px;">50</td>
-                     <td class="p-[5px] w-[10%]">{{list.report_score_summary.summation}} &lt;!&ndash;aggregate&ndash;&gt;</td>
-                     <td class="p-[5px] w-[10%]">{{list.report_score_summary.comment}} &lt;!&ndash;remarks&ndash;&gt;</td>
-                     <td class="p-[5px] w-[10%]">M.O &lt;!&ndash;remarks&ndash;&gt;</td>
-                   </tr>
-                 </table>
-                </td>
 
-              </tr>
-            </table>-->
+
+
+
+
+            <!--            <table  v-for="(lst,idx) in reportDetails?.learning_areas" :key="idx" class="w-full text-[13px] border">
+                          <tr style="border-bottom: 1px solid #f4f4f4;">
+                            <td class="w-[10%] bg-amber-200" rowspan="4" style="transform: rotate(270deg); white-space: nowrap;"> <small>{{lst.name}}</small></td>
+                            <td class="p-[5px]">
+                             <table class="w-full">
+                               <tr v-for="(list,idx) in lst?.assessments" :key="idx">
+                                 <td class="p-[5px] w-[10%]" style="padding: 5px;">
+                                   {{list.name}}
+                                 </td>
+                                 <td class="p-[5px] w-[10%]" v-for="(report_score,idx) in list?.report_scores" :key="idx" style="padding: 5px;">50</td>
+                                 <td class="p-[5px] w-[10%]">{{list.report_score_summary.summation}} &lt;!&ndash;aggregate&ndash;&gt;</td>
+                                 <td class="p-[5px] w-[10%]">{{list.report_score_summary.comment}} &lt;!&ndash;remarks&ndash;&gt;</td>
+                                 <td class="p-[5px] w-[10%]">M.O &lt;!&ndash;remarks&ndash;&gt;</td>
+                               </tr>
+                             </table>
+                            </td>
+
+                          </tr>
+                        </table>-->
 
 
 
@@ -488,6 +493,24 @@ const props = defineProps({
 
         <tr>
           <td>
+
+
+            <table style="width: 100%; border: 1px solid #b8babb; font-size: 13px; margin-top: 10px;">
+
+              <tr style="border-bottom: 1px solid #b8babb;">
+                <td style="width: 28%; padding: 5px;" rowspan="2">GRADING</td>
+                <td style="width: 8%; padding: 5px; text-align: center;" v-for="(scale,idx) in reportDetails?.aggregate_scale" :key="idx">
+                  {{scale?.short_name}}
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid #b8babb;">
+                <td style="width: 8%; padding: 5px; text-align: center;" v-for="(scale,idx) in reportDetails?.aggregate_scale" :key="idx">
+                  {{scale?.min+" - "+scale?.max}}
+                </td>
+              </tr>
+
+            </table>
+
 
             <table style="width: 100%; font-size: 13px; margin-top: 20px; margin-bottom: 30px;">
               <tr>
