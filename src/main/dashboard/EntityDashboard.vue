@@ -79,8 +79,11 @@ watch(
 
 
 function userLogout(){
+  let landT = localStorage.getItem("landingPageTitle")
 
   localStorage.clear();
+
+  localStorage.setItem("landingPageTitle", landT)
 
   let r = router.resolve({
     name: "login"

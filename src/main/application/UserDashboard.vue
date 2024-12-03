@@ -24,7 +24,12 @@ name.value = p.first_name+" "+p.second_name+" "+p.last_name
 
 function userLogout(){
 
+  let landT = localStorage.getItem("landingPageTitle")
+
   localStorage.clear();
+
+  localStorage.setItem("landingPageTitle", landT)
+
 
   let r = router.resolve({
     name: "login"
