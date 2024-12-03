@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import {useAuthStore} from "@/main/auth/store/auth.js";
 import LineGraph from "@/main/graphs/LineGraph.vue";
 import Analytics from "@/main/dashboard/home/Analytics.vue";
+import AnalyticsDashboard from "@/main/dashboard/AnalyticsDashboard.vue";
 
 const authStore = useAuthStore()
 
@@ -30,17 +31,30 @@ const count = ref(0)
 </div>
 
 
-
    <div class="mx-auto mt-3" style="width: 100%;">
      <div class="card mx-auto" style="width: 100%;">
        <div class="card-body">
          <div style="height: 400px; width: 100%; display: flex; justify-content: center;">
            <line-graph></line-graph>
          </div>
-
        </div>
      </div>
    </div>
+
+
+   
+   <div class="mx-auto mt-3" style="width: 100%;">
+     <div class="card mx-auto" style="width: 100%;">
+       <div class="card-body">
+         <div style="height: 400px; width: 100%; display: flex; justify-content: left;">
+          <AnalyticsDashboard></AnalyticsDashboard>
+         </div>
+       </div>
+     </div>
+   </div>
+
+
+
 
 
 <!--

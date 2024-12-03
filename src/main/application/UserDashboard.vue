@@ -14,6 +14,7 @@ import InvoiceDetails from "@/main/dashboard/invoice/InvoiceDetails.vue"
 const routerData = useRouter()
 const route = routerData.currentRoute.value.query.s
 const selectedPage = route ? route : "applications"
+const logoUrl = localStorage.getItem("logo")
 
 
 const  authStore = useAuthStore();
@@ -143,7 +144,7 @@ const reloadProfile = () => {
      
             <div class="p-4 border-b" style="background-color:rgba(0, 0, 0, 0.02)">
               <img
-                src="/src/assets/images/victorius-budge.png"
+                :src="logoUrl"
                 alt="Logo"
                 class="rounded-cirle mt-14"
                 style="width: 100%; height: 100%; object-fit: cover;"

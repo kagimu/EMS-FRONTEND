@@ -49,6 +49,7 @@ watch (
         logoUrl.value = path+logoNumber.value
 
        localStorage.setItem("landingPageTitle", title.value)
+       localStorage.setItem("logo",logoUrl.value)
       }
     }
 )
