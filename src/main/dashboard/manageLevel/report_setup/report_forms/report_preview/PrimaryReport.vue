@@ -77,30 +77,26 @@ const props = defineProps({
                 <td style="width: 15%;">
                   <div style="padding-left: 60px; padding-bottom: 10px;">Name:</div>
                   <div style="padding-left: 60px; padding-bottom: 10px;">Class:</div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;"> Days Present:</div>
                   <div style="padding-left: 60px; padding-bottom: 10px;">Sex:</div>
                   <div style="padding-left: 60px; padding-bottom: 10px;">Age:</div>
                 </td>
                 <td style="width: 40%;">
                   <div style="padding-left: 60px; padding-bottom: 10px;"><span class="capitalize">{{reportDetails?.student?.surname}}</span> <span class="capitalize">{{reportDetails?.student?.second_name}}</span> <span class="capitalize">{{reportDetails?.student?.other_name}}</span></div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;"><span>{{reportDetails?.class_abbreviation}}</span></div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;"><span>{{reportDetails?.class_abbreviation}}<span v-if="reportDetails?.stream">, {{reportDetails?.stream}}</span></span></div>
                   <div style="padding-left: 60px; padding-bottom: 10px;"><span class="capitalize">{{reportDetails?.student?.gender}}</span></div>
                   <div style="padding-left: 60px; padding-bottom: 10px;">6yrs , 8mth</div>
                 </td>
                 <td style="width: 15%;">
                   <div style="padding-left: 60px; padding-bottom: 10px;">Term:</div>
                   <div style="padding-left: 60px; padding-bottom: 10px;">School Team:</div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">Days Absent:</div>
                   <div style="padding-left: 60px; padding-bottom: 10px;">Date:</div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">Grade</div>
                 </td>
                 <td style="width: 30%;">
                   <div style="padding-left: 60px; padding-bottom: 10px;">{{reportDetails?.study_period}}</div>
                   <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
                   <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">{{reportDetails?.grade}}</div>
                 </td>
               </tr>
             </table>
