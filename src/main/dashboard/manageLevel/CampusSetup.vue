@@ -72,24 +72,10 @@ watch(
             <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
               <router-link
                   v-for="(item, idx) in  campusCurriculumDataInfo" :key="idx"
-                  class="list-group-item list-group-item-action curriculum ml-2"
+                  class="list-group-item list-group-item-action "
                   :class="item.number === campusCurriculumNumber ? 'active' : ''"
                   :to="{name:'campus-curriculum-setup', query:{id:campusNumber,sch:schoolNumber, crr:item.number, cr:item.curriculum_number}}">
-               
-             
-                  <div class="curriculum-header">
-                      <h3 class="text-sm"> <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></h3>
-                      <span>{{ 90 }}%</span>
-                  </div>
-                  <div class="progress-bar">
-                     <div
-                      class="progress-fill"
-                      :class="{ 'complete': 90 === 100 }"
-                      :style="{ width: 90 + '%' }" >
-                    </div>
-                </div>
-          
-              
+                  <h3 class="text-sm"> <small style="font-size:12px;">{{(idx+1) +". "+item.name}}</small></h3> 
               </router-link>
             </div>
 
