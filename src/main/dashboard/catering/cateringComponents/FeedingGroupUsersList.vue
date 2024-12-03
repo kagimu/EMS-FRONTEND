@@ -68,7 +68,7 @@ watch(
 const doFetchUsers = () =>{
   let data = {
      school_number:formData.school_number,
-     group_number:formData.group_number, 
+     group_number:formData.feeding_group_number, 
      campus_number:formData.campus_number
   }
   cateringStore.fetchGroupUsersList(data)
