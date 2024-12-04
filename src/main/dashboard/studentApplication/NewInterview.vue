@@ -79,10 +79,44 @@ const getInterviewDetails = () =>{
     }
     applicationStore.fetchInterviewListById(data)
   }
+
+  // { "school_number": "44712387-e6cc-4e5a-8f8f-d964698ea501", 
+  // "campus_number": "4821d6b9-5167-4a84-8acd-8ce6a51aaa43", 
+  // "level_number": "82ac3852-c44d-4b1a-acac-c0786b12cbc1", 
+  // "curriculum_number": "f9596d22-7b64-42c1-81b3-b6c15a9ce3da", 
+  // "campus_class_number": "d34eceee-4e02-44b1-b9cb-ac7d5e852724", 
+  // "interview_number": "edcd7f83-6291-4135-9f97-174422d3947b" } 
+
+  let draft = props.interviewListData
+
+  if(draft.school_number){
+    school_number.value = draft.school_number
+    fetchCampuses(draft.school_number)
+  }
+
+  if(draft.campus_number){
+    campus_number.value = draft.campus_number
+    fetchCurriculum(draft.campus_number)
+  }
+
+  if(draft.curriculum_number){
+    curriculumNumber.value = draft.curriculum_number
+    fetchClassLevels(draft.curriculum_number)
+  }
+
+  if(draft.level_number){
+    campus_level_number.value = draft.level_number
+    fetchClasses(draft.level_number)
+  } 
+
+  if(draft.campus_class_number){
+    formData.class_number = draft.campus_class_number
+    assessmentStore.fetchAssessmentMetrics({class_number:draft.campus_class_number})
+  }
+
+
 }
   
-
-
     const fetchCampuses = (school) => {
       campusStore.fetchCampuses(school)
   }
@@ -134,20 +168,6 @@ const checked = ref(false)
          formData.interview_date=data.data.interview_date
          formData.message = data.data.message
          formData.venue = data.data.venue
-        school_number.value = data.data.school_number
-        campus_number.value = data.data.campus_number
-        
-        if(school_number){
-          campusStore.fetchCampuses(data.data.school_number)
-          campus_number.value =data.data.campus_number
-        }
-        if(campus_number){
-          campusStore.fetchClassesByCampus(data.data.campus_number)
-          formData.class_number = data.data.class_number
-          // assessmentMetricList.value = data.data.assessment_schedules
-          assessmentStore.fetchAssessmentMetrics({class_number:data.data.class_number})
-        }
-
           }
         }
     )
@@ -330,6 +350,7 @@ watch (
  </script>
 
 <template>
+  <!-- {{ interviewListData }} -->
     <div>
        <form @submit.prevent="createInterview">
 

@@ -132,8 +132,18 @@ const fetchLevelClasses = (levelNumber) => {
 }
 
 const editThisData = (List) => {
+  
   editMode.value = true
-  interviewListData.value = List
+  
+  interviewListData.value = {
+    school_number : school_number.value,
+    campus_number:campus_number.value,
+    level_number:form.level,
+    curriculum_number:form.curriculumNumber,
+    campus_class_number:form.campus_class_number,
+    interview_number:List.interview_number
+  }
+  
   namee.value = List.name
   showingModal.value = true
 }
