@@ -399,7 +399,7 @@ watch(
       campus_class_number: campusClassNumber.value,
       school_number:form.school_number,
       campus_number: form.campus_number,
-      interview_number:props.interviewInfo.interview_number,
+      interview_number:props.admissionDetails.interview_number,
       stream_number:form.stream_number,
       items
     }
@@ -408,6 +408,7 @@ watch(
   }
   
 
+
   
 </script>
 
@@ -415,6 +416,7 @@ watch(
   <div class="m-4">
     <!-- {{ selectedStudentNumber }} -->
     <!-- {{ interviewInfo }} -->
+      <!-- {{admissionDetails}} -->
     <form @submit.prevent="Admit()">
       <div class="row">
         <div class="col-lg-4">

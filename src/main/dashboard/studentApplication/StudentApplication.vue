@@ -5,6 +5,8 @@ import {useRouter} from "vue-router";
 import ApplicationList from "./ApplicationList.vue";
 import Interviews from "./Interviews.vue";
 import { useAbility } from '@casl/vue'
+import InterviewScore from "./InterviewScore.vue"
+import OfferAdmission from "./OfferAdmission.vue"
 
 
 const { can } = useAbility()
@@ -12,19 +14,30 @@ const { can } = useAbility()
 const routerData = useRouter()
 
 const route = routerData.currentRoute.value.query.s
-const selectedPage = route ? route : "application-list"
+const selectedPage = route ? route : "interviews"
 
 const application = ref([
+{
+    name:"Interview pool",
+    id:"interviews",
+    action:"view_interviews"
+  },
   {
     name:"Applicants",
     id:"application-list",
     action:"view_application_list"
   },
   {
-    name:"Manage Interview pool",
-    id:"interviews",
-    action:"view_interviews"
+    name:"Enter Interview Scores",
+    id:"enter-interview-score",
+    action:"view_interview_score"
   },
+  {
+    name:"Offer Admissions",
+    id:"offer-admission",
+    action:"view_offer_admission"
+  },
+
 ])
 const form = reactive({
   name:null
@@ -70,9 +83,14 @@ const form = reactive({
                   <div v-if="selectedPage === 'interviews'">
                     <interviews></interviews>
                   </div>
-<!--                  <div v-if="selectedPage === 'interviewquestions'">
-                    <interviews-questions></interviews-questions>
-                  </div>-->
+                  
+                  <div v-if="selectedPage === 'enter-interview-score'">
+                  <interview-score></interview-score>
+                  </div>
+
+                  <div v-if="selectedPage === 'offer-admission'">
+                  <OfferAdmission></OfferAdmission>
+                  </div>
               </div>
   
   

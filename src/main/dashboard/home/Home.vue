@@ -4,6 +4,7 @@ import {useAuthStore} from "@/main/auth/store/auth.js";
 import LineGraph from "@/main/graphs/LineGraph.vue";
 import Analytics from "@/main/dashboard/home/Analytics.vue";
 import AnalyticsDashboard from "@/main/dashboard/AnalyticsDashboard.vue";
+import FiltersModal from '../FiltersModal.vue';
 
 const authStore = useAuthStore()
 
@@ -25,6 +26,7 @@ const count = ref(0)
 
  <div>
 
+<FiltersModal></FiltersModal>
 
 <div>
   <analytics></analytics>
