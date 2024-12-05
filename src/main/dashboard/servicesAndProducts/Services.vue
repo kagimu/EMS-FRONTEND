@@ -20,7 +20,7 @@ const servId = ref(null)
 const showDialog = ref(false)
 
 // Pagination variables
-const itemsPerPage = 9 // Number of items per page
+const itemsPerPage = 15 // Number of items per page
 const currentPage = ref(1) // Current page
 const totalPages = ref(1) // Total pages
 const paginatedConditionList = ref([]) // Paginated condition list
@@ -186,7 +186,7 @@ watch (
           <tr v-for="(serviceData, index) in servicesList" :key="index" >
             <td>{{ index+1 }}</td>
             <td>{{ serviceData?.item?.name}}</td>
-            <td>{{ serviceData?.item?.cost}}</td>
+            <td>{{ serviceData?.item?.cost.toLocaleString()}}</td>
             <td>{{ serviceData?.item?.description}}</td>
             <td>
 
