@@ -30,8 +30,9 @@ const transactionList = ref(null)
 
 
 
-onMounted(() => {
-      schoolStore.fetchSchools()
+onMounted(async () => {
+  await applicationStore.fetchStudent(studentNumber)
+    schoolStore.fetchSchools()
     }
 )
 
@@ -96,6 +97,7 @@ watch (
       if (data) {
 
         userNumber.value = data.user_number
+    
         fetchTransactionData()
 
       }
@@ -183,42 +185,37 @@ watch (
           <small><i class="bi bi-plus"> Add New Transaction</i></small></button> -->
         </div>
        </div>
-         
-            <div class="card-body" style="padding: 0;">
-    <div class="container mt-1">
+
       <!-- {{ transactionList }} -->
       <table
-        id="datatable"
-        class="table table-hover caption-top mt-4 table-sm table-striped"
-        style="font-size: 13px !important;"
+        class="table table-hover caption-top mt-4  table-striped text-sm"
       >
         <thead>
           <tr>
-            <th>#</th>
-            <th>No</th>
+            <!-- <th>#</th> -->
+            <th>Receipt No.</th>
             <th>Amount</th>
             <th>Description</th>
             <th>PaidBy</th>
             <th>RecievedBy</th>
-            <th>Date Recieved</th>
+            <th>Recieved On</th>
             
           </tr>
      </thead>
      <tbody>
           <tr v-for="(list,index) in transactionList" :key="index">
-          <td>{{ (index + 1) }}</td>
+          <!-- <td>{{ (index + 1) }}</td> -->
           <td>{{ list.receipt_number	 }}</td>
           <td>{{ list.amount?.toLocaleString() }}</td>
           <td>{{ list.description	 }}</td>
-          <td>{{ list.paid_by }}</td>
-          <td>{{ list.received_by	 }}</td>
+          <td style="text-transform: capitalize;">{{ list.paid_by }}</td>
+          <td style="text-transform: capitalize;">{{ list.received_by	 }}</td>
           <td>{{ list.date_received	 }}</td>
       
           </tr>  
         </tbody>
       </table>
-    </div>
-    </div>
+
     </div>
     </div>
   

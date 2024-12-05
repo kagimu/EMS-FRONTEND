@@ -216,7 +216,7 @@ watch(
 
 <template>
   <div>
-    <!-- {{ headTeacherCommentList }} -->
+    {{ headTeacherCommentList }}
   <form @submit.prevent="addComments">
 
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
