@@ -251,7 +251,8 @@ watch(
 
 
               <div class="mb-2">
-                <label class="text-sm">Service is ?</label>
+                <label class="text-sm" v-if="productType === 'service'">Service is ?</label>
+                <label class="text-sm" v-else >Product is ?</label>
 
                  <div class="flex">
                    <div class="mr-4">
