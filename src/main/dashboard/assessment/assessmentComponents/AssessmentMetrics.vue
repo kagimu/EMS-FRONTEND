@@ -541,7 +541,7 @@ watch(
 
                   <button
                       class="mr-1"
-                      title="Upload Marking Guide"
+                      title="View Assessment Schedule"
                       @click="viewAssessmentSchedule(metricsData)"
                       type="button">
                     <i class="bi bi-eye text-[16px]" style="color:rgb(3, 85, 148)"></i>
