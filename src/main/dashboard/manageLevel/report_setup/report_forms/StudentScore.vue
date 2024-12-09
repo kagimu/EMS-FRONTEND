@@ -49,9 +49,13 @@ onMounted(
     }
 )
 
+const maxScore = ref(null)
 
 const fetchStudents = (assessmentMetricNumber) => {
   if(assessmentMetricNumber){
+   let result = metricListData.value.find((item) => item.number === assessmentMetricNumber)
+   maxScore.value = result.max_score
+   
     reportSetupStore.fetchStudentByAssessmentMetric(assessmentMetricNumber)
   }
 }
@@ -412,7 +416,7 @@ watch(
           <tr>
             <th class="w-[2%]">#</th>
             <th class="w-[30%]">Name</th>
-            <th class="w-[15%]">Score</th>
+            <th class="w-[15%]">Score /(<span style="color: red;">{{ maxScore}}</span>)</th>
             <th>Comment</th>
             <th>#</th>
           </tr>
@@ -434,7 +438,7 @@ watch(
                   v-model="std.score"
                   v-on:blur="addMarks(std.score, std.comment, std.number,index)"
                   required
-                  class="form-control h-[35px]">
+                  class="form-control h-[35px] ">
             </td>
             <td>
                <textarea
