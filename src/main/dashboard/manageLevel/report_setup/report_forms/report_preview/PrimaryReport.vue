@@ -494,7 +494,6 @@ const props = defineProps({
         <tr>
           <td>
 
-
             <table style="width: 100%; border: 1px solid #b8babb; font-size: 13px; margin-top: 10px;">
 
               <tr style="border-bottom: 1px solid #b8babb;">
