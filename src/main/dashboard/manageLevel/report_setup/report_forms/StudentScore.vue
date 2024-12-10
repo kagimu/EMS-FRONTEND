@@ -10,6 +10,7 @@ import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/stor
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useRouter} from "vue-router";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
+// import { max } from "moment";
 
 
 const notificationStore  = useNotificationStore()
@@ -225,10 +226,17 @@ const onlyNumberValidator = (event) => {
   if (!validChars.test(event.key)) return event.preventDefault();
 }
 
+const checkIfScore = (score) => {
+  if(score > maxScore.value){
+    notificationStore.errorToast("Error","Score cannot be greater than the maximum score (" + maxScore.value+")")
+    return
+  }
+}
+
 const addMarks = (score, comment, number, index) => {
   let scoreData = ""
    if(score){
-      scoreData = returnComputedData(score)
+      scoreData = returnComputedData(score) 
      studentsList.value[index].score = scoreData
    }
   if(score && comment){
@@ -396,16 +404,11 @@ watch(
 
     </div>
 
-
-
-
-
     <hr />
 
     <div class="row">
 
       <div class="col-12">
-
         <div class="flex justify-content-between mt-3">
           <div class="ml-4">Student Score</div>
         </div>
@@ -437,6 +440,7 @@ watch(
                   type="text"
                   v-model="std.score"
                   v-on:blur="addMarks(std.score, std.comment, std.number,index)"
+                  @input="checkIfScore(std.score)"
                   required
                   class="form-control h-[35px] ">
             </td>
@@ -455,9 +459,14 @@ watch(
               <button v-else class="btn btn-primary btn-sm mb-2" @click="addMarks(std.score, std.comment, std.number,index)">update</button>
 
             </td>
-          </tr>
+          </tr>        
           </tbody>
+     
         </table>
+        <p class="alert alert-danger m-2 p-3" v-if="assessmentMetricNumber && studentsList.length  === 0 ">
+        No Student data found !
+
+          </p>
 
       </div>
     </div>
