@@ -1,3 +1,108 @@
+<script setup>
+  
+import {onMounted, reactive, ref, watch,defineEmits} from "vue";
+import {useRouter} from "vue-router";
+import useCommonsStore from "@/composables/useCommons.js";
+import useNotificationStore from "@/composables/useNotification.js";
+import {usePromotionStore} from "./store/promotion.js"
+import { useAssessmentStore } from "@/main/dashboard/assessment/store/assessment.js";
+import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
+
+const emit = defineEmits();
+const classError = ref(null)
+const loader = ref(false)
+const commons = useCommonsStore()
+const  notificationStore  = useNotificationStore()
+const promotionStore = usePromotionStore()
+const assessmentStore = useAssessmentStore()
+const isGrade = ref(null)
+const subjectStore = useSubjectStore()
+
+const promoSettingList = ref([])
+const assessmentScaleData = ref([])
+const subjectList = ref([])
+
+const form = reactive({
+  type:null,
+  score:null,
+  promotion_setting_number:null,
+  assessment_grade_number:null
+})
+
+const theType = () => {
+  isGrade.value = form.type
+}
+
+const addPromotionValue = () =>{
+  loader.value = true
+  promotionStore.newPromotionSettingValue(form)
+} 
+
+
+
+
+onMounted(() => {
+        assessmentStore.fetchAssessmentGrades()
+        promotionStore.fetchPromotionSetting()
+        subjectStore.fetchAllSubjects()
+    }
+) 
+watch(
+  () => assessmentStore.assessmentScaleResponse,
+  async (data) => {
+    if(data){
+      loader.value = false
+      // notificationStore.successToast("Success", data.message)
+      assessmentScaleData.value = data.data
+    }
+  },
+  {deep:true}
+)
+
+
+
+watch(
+  () => promotionStore.newPromotionSettingValueResponse,
+  async (data) => {
+      if (data) {
+        loader.value = false
+        notificationStore.successToast("Success", data.message)
+        promotionStore.fetchPromotionSettingValue()
+        form.type=null,
+        form.score=null,
+        form.promotion_setting_number=null,
+        form.assessment_grade_number=null
+      }
+  },
+  {deep: true}
+)
+
+watch(
+  () => promotionStore.errorMessage,
+  async (data) => {
+        if (data) {
+            notificationStore.errorToast("Error", data.message)
+        }
+  },
+  {deep: true}
+
+)
+
+watch(
+  () => promotionStore.PromotionSettingResponse,
+  async (data) => {
+      if (data) {
+        promoSettingList.value = data.data
+        // notificationStore.s`uccessToast("Success application submitted", data.message)
+      }
+  },
+  {deep: true}
+)
+
+
+</script>
+
+
 <template>
     <div>
 
@@ -36,6 +141,8 @@
                 </option>
                 <option value="grade">Grade
                 </option>
+                <option value="assessment">Assessment Area
+                </option>
             </select>
          
         </div>
@@ -63,6 +170,11 @@
             </select>
         </div>
 
+
+        <div class="mb-2" v-if="isGrade == 'assessment'">
+            <label class="text-sm"><small>Assessment Area</small>  </label>
+      
+        </div>
        
   
         <div class="flex justify-content-end mt-2" style="width: 100%;">
@@ -82,107 +194,7 @@
     </div>
   </template>
   
-  <script setup>
-  
-  import {onMounted, reactive, ref, watch,defineEmits} from "vue";
-  import {useRouter} from "vue-router";
-  import useCommonsStore from "@/composables/useCommons.js";
-  import useNotificationStore from "@/composables/useNotification.js";
-import {usePromotionStore} from "./store/promotion.js"
-import { useAssessmentStore } from "@/main/dashboard/assessment/store/assessment.js";
 
-const emit = defineEmits();
-const classError = ref(null)
-const loader = ref(false)
-const commons = useCommonsStore()
-const  notificationStore  = useNotificationStore()
-const promotionStore = usePromotionStore()
-const assessmentStore = useAssessmentStore()
-const isGrade = ref(null)
-
-const promoSettingList = ref([])
-const assessmentScaleData = ref([])
-
-  const form = reactive({
-    type:null,
-    score:null,
-    promotion_setting_number:null,
-    assessment_grade_number:null
-  })
-  
-  const theType = () => {
-    isGrade.value = form.type
-  }
-  
-  const addPromotionValue = () =>{
-    loader.value = true
-    promotionStore.newPromotionSettingValue(form)
-  } 
-  
-
-  onMounted(() => {
-          assessmentStore.fetchAssessmentGrades()
-      }
-  ) 
-  watch(
-    () => assessmentStore.assessmentScaleResponse,
-    async (data) => {
-      if(data){
-        loader.value = false
-        // notificationStore.successToast("Success", data.message)
-        assessmentScaleData.value = data.data
-      }
-    },
-    {deep:true}
-)
- 
-
-
-watch(
-    () => promotionStore.newPromotionSettingValueResponse,
-    async (data) => {
-        if (data) {
-          loader.value = false
-          notificationStore.successToast("Success", data.message)
-          promotionStore.fetchPromotionSettingValue()
-          form.type=null,
-          form.score=null,
-          form.promotion_setting_number=null,
-          form.assessment_grade_number=null
-        }
-    },
-    {deep: true}
-)
-
-watch(
-    () => promotionStore.errorMessage,
-    async (data) => {
-          if (data) {
-              notificationStore.errorToast("Error", data.message)
-          }
-    },
-    {deep: true}
-
-)
-
-
-onMounted(() => {
-    promotionStore.fetchPromotionSetting()
-    }
-)
-watch(
-    () => promotionStore.PromotionSettingResponse,
-    async (data) => {
-        if (data) {
-          promoSettingList.value = data.data
-          // notificationStore.s`uccessToast("Success application submitted", data.message)
-        }
-    },
-    {deep: true}
-)
-
-
-  </script>
   
   <style scoped>
   .noFocus:focus {

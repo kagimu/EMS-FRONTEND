@@ -1,3 +1,165 @@
+<script setup>
+import {onMounted, reactive, ref, watch,defineEmits} from "vue";
+import {useRouter} from "vue-router";
+import useCommonsStore from "@/composables/useCommons.js";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
+import {usePromotionStore} from "./store/promotion.js"
+
+const emit = defineEmits();
+const classError = ref(null)
+const loader = ref(false)
+const commons = useCommonsStore()
+const  notificationStore  = useNotificationStore()
+const promNumber = ref("")
+const promotionStore = usePromotionStore()
+
+const campusList = ref([])
+const schoolList = ref([])
+const classList = ref([])
+const schoolStore = useSchoolStore()
+const campusStore = useCampusStore()
+const school_number = ref(null)
+const academicYearStore = useAcademicYearStore()
+const classStore = useClassesStore()
+
+
+const form = reactive({
+  name:null,
+  status:"ACTIVE",
+  type:null,
+  next_class_number:null,
+  previous_class_number:null
+})
+
+
+const addPromotionSetting = () =>{
+  loader.value = true
+  promotionStore.newPromotionSetting(form)
+} 
+
+
+
+
+const fetchCampuses = (school_number) => {
+  campusStore.fetchCampuses(school_number)
+}
+
+const fetchClasses = (campus_number) => {
+  campusStore.fetchClassesByCampus(campus_number)
+}
+
+
+//fetchacadmicYear
+const fetchAcademicYear = (campusN) =>{
+// alert(campusN)
+academicYearStore.fetchAcademicYearByCampus(campusN)
+classStore.fetchClassStreams(campusN)
+
+}
+
+
+
+
+watch(
+  () => classStore.classStreams,
+  async (data) => {
+      if (data) {
+        streamList.value = data.data
+      }
+  },
+  {deep: true}
+)
+
+
+
+
+onMounted(() => {
+      schoolStore.fetchSchools()
+  }
+)
+
+watch(
+  () => schoolStore.schoolsResponse,
+  async (data) => {
+      if (data) {
+          schoolList.value = data.data
+      }
+  },
+  {deep: true}
+)
+
+watch(
+  () => campusStore.campusListResponse,
+  async (data) => {
+      if (data) {
+          campusList.value = data.data
+      }
+  },
+  {deep: true}
+)
+
+watch(
+  () => campusStore.campusClassesResponse,
+  async (data) => {
+      if (data) {
+          classList.value = data.data
+      }
+  },
+  {deep: true}
+)
+
+watch(
+  () => campusStore.errorMessage,
+  async (data) => {
+        if (data) {
+            notificationStore.errorToast("Error", data.message)
+        }
+  },
+  {deep: true}
+)
+
+
+watch(
+  () => promotionStore.newPromotionSettingResponse,
+  async (data) => {
+      if (data) {
+          form.name=null,
+          form.status="ACTIVE",
+          form.type=null,
+          form.next_class_number=null,
+          form.previous_class_number=null
+          loader.value = false
+        notificationStore.successToast("Success application submitted", data.message)
+        promotionStore.fetchPromotionSetting()
+      }
+  },
+  {deep: true}
+)
+
+watch(
+  () => promotionStore.errorMessage,
+  async (data) => {
+        if (data) {
+          form.name=null,
+          form.status="ACTIVE",
+          form.type=null,
+          form.next_class_number=null,
+          form.previous_class_number=null
+          loader.value = false
+            notificationStore.errorToast("Error", data.message)
+        }
+  },
+  {deep: true}
+)
+
+</script>
+
+
+
 <template>
     <div>
 
@@ -6,6 +168,23 @@
         <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
           {{ classError }}
         </div>
+
+        <div class="mb-2">
+            <label class="text-sm"><small>Type</small>  </label><br>
+            <select
+                    style="box-shadow: none;"
+                    class="form-select form-select-sm" required
+                    v-model="form.type"
+                  
+            >
+                <option disabled value="">Select class</option>
+                <option value="promotion">Promotion
+                </option>
+                <option value="promotion">Admission
+                </option>
+            </select>
+        </div>
+
   
         <div class="mb-2">
           <label class="text-sm"><small>Name</small></label>
@@ -79,24 +258,6 @@
            </div>
 
         </div>
-        
-  
-        <div class="mb-2">
-            <label class="text-sm"><small>Type</small>  </label><br>
-            <select
-                    style="box-shadow: none;"
-                    class="form-select form-select-sm" required
-                    v-model="form.type"
-                  
-            >
-                <option disabled value="">Select class</option>
-                <option value="promotion">Promotion
-                </option>
-                <option value="promotion">Admission
-                </option>
-            </select>
-         
-        </div>
 
        
   
@@ -117,171 +278,7 @@
     </div>
   </template>
   
-  <script setup>
-  
-  import {onMounted, reactive, ref, watch,defineEmits} from "vue";
-  import {useRouter} from "vue-router";
-  import useCommonsStore from "@/composables/useCommons.js";
-  import useNotificationStore from "@/composables/useNotification.js";
-
-import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
-import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
-import {usePromotionStore} from "./store/promotion.js"
-
-const emit = defineEmits();
-  const classError = ref(null)
-  const loader = ref(false)
-  const commons = useCommonsStore()
-  const  notificationStore  = useNotificationStore()
-  const promNumber = ref("")
-  const promotionStore = usePromotionStore()
-
-const campusList = ref([])
-const schoolList = ref([])
-const classList = ref([])
-const schoolStore = useSchoolStore()
-const campusStore = useCampusStore()
-const school_number = ref(null)
-const academicYearStore = useAcademicYearStore()
-const classStore = useClassesStore()
-
-
-  const form = reactive({
-    name:null,
-    status:"ACTIVE",
-    type:null,
-    next_class_number:null,
-    previous_class_number:null
-  })
-  
-  
-  const addPromotionSetting = () =>{
-    loader.value = true
-    promotionStore.newPromotionSetting(form)
-  } 
-  
-
-
-  
-  const fetchCampuses = (school_number) => {
-    campusStore.fetchCampuses(school_number)
-}
-
-const fetchClasses = (campus_number) => {
-    campusStore.fetchClassesByCampus(campus_number)
-}
-
-
-//fetchacadmicYear
-const fetchAcademicYear = (campusN) =>{
-// alert(campusN)
-academicYearStore.fetchAcademicYearByCampus(campusN)
-classStore.fetchClassStreams(campusN)
-
-}
-
-
-
-
-  watch(
-    () => classStore.classStreams,
-    async (data) => {
-        if (data) {
-          streamList.value = data.data
-        }
-    },
-    {deep: true}
-)
-
-
-
-
-onMounted(() => {
-        schoolStore.fetchSchools()
-    }
-)
-
-watch(
-    () => schoolStore.schoolsResponse,
-    async (data) => {
-        if (data) {
-            schoolList.value = data.data
-        }
-    },
-    {deep: true}
-)
-
-watch(
-    () => campusStore.campusListResponse,
-    async (data) => {
-        if (data) {
-            campusList.value = data.data
-        }
-    },
-    {deep: true}
-)
-
-watch(
-    () => campusStore.campusClassesResponse,
-    async (data) => {
-        if (data) {
-            classList.value = data.data
-        }
-    },
-    {deep: true}
-)
-
-watch(
-    () => campusStore.errorMessage,
-    async (data) => {
-          if (data) {
-              notificationStore.errorToast("Error", data.message)
-          }
-    },
-    {deep: true}
-)
-
-
-watch(
-    () => promotionStore.newPromotionSettingResponse,
-    async (data) => {
-        if (data) {
-            form.name=null,
-            form.status="ACTIVE",
-            form.type=null,
-            form.next_class_number=null,
-            form.previous_class_number=null
-            loader.value = false
-          notificationStore.successToast("Success application submitted", data.message)
-          promotionStore.fetchPromotionSetting()
-        }
-    },
-    {deep: true}
-)
-
-watch(
-    () => promotionStore.errorMessage,
-    async (data) => {
-          if (data) {
-            form.name=null,
-            form.status="ACTIVE",
-            form.type=null,
-            form.next_class_number=null,
-            form.previous_class_number=null
-            loader.value = false
-              notificationStore.errorToast("Error", data.message)
-          }
-    },
-    {deep: true}
-)
-
-
-
-
-  </script>
-  
+ 
   <style scoped>
   .noFocus:focus {
     outline: none 0 !important;
