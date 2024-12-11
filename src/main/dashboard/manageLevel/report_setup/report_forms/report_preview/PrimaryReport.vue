@@ -13,6 +13,39 @@ const props = defineProps({
 })
 
 
+const ageCalculator = (dob) => {
+  const now = new Date();
+  const birthDate = new Date(dob);
+
+  if (isNaN(birthDate)) {
+    throw new Error("Invalid date format. Please provide a valid date.");
+  }
+
+  let years = now.getFullYear() - birthDate.getFullYear();
+  let months = now.getMonth() - birthDate.getMonth();
+  let days = now.getDate() - birthDate.getDate();
+
+  // Adjust for negative days
+  if (days < 0) {
+    months--;
+    const previousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+    days += previousMonth.getDate();
+  }
+
+  // Adjust for negative months
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  let result = "";
+  if (years > 0) result += `${years}yrs`;
+  if (months > 0) result += result ? `, ${months}mth` : `${months}mth`;
+  if (days > 0) result += result ? `, ${days}dys` : `${days}dys`;
+
+  return result || "0dys"; // Return "0dys" if all are zero
+}
+
 </script>
 
 <template>
@@ -37,7 +70,7 @@ const props = defineProps({
             <table style="width: 100%;">
               <tr>
                 <td style="width: 20%; text-align: center;">
-                  <img alt="logo" style="width: 130px; margin: 0 auto;" :src="reportDetails.school.logo"/>
+                  <img alt="logo" style="width: 130px; margin: 0 auto;" :src="reportDetails?.school?.logo"/>
                 </td>
                 <td style="width: 60%;" class="text-center">
                   <!--        <div style="font-size: 30px;"><b>NOREGRETS LIFE SCHOOL</b></div>-->
@@ -54,12 +87,13 @@ const props = defineProps({
                       <!--            Bunamwaya, P.O.BOX 21671 Kampala | +256752698545 | mwesigwa.noregrets@gmail.com-->
                     </small></div>
 
-                  <div style="background-color: green; color: #ffffff;">PROGRESS REPORT FOR KINDERGARTEN</div>
+<!--                  <div style="background-color: green; color: #ffffff;">PROGRESS REPORT FOR KINDERGARTEN</div>-->
+                  <div style="background-color: green; color: #ffffff; text-transform: uppercase; text-align: center;">PROGRESS REPORT FOR {{reportDetails?.level_name}}</div>
                 </td>
                 <td style="width: 20%;">
                   <div style="text-align: center; margin-top: 10px;">
 <!--                    <img alt="logo" style="width: 130px; margin: 0 auto;" :src="StudentImage"/>-->
-                    <img alt="logo" style="width: 130px;" :src="reportDataInfo.photo"/>
+                    <img alt="logo" style="width: 130px;" :src="reportDataInfo?.photo"/>
                   </div>
                 </td>
               </tr>
@@ -72,7 +106,7 @@ const props = defineProps({
           <td>
 
 
-            <table style="width: 100%; font-size: 13px; margin-top: 30px; margin-bottom: 30px;">
+            <table style="width: 100%; font-size: 13px; margin-top: 30px; margin-bottom: 30px; color: #45484c;">
               <tr>
                 <td style="width: 15%;">
                   <div style="padding-left: 60px; padding-bottom: 10px;">Name:</div>
@@ -84,19 +118,19 @@ const props = defineProps({
                   <div style="padding-left: 60px; padding-bottom: 10px;"><span class="capitalize">{{reportDetails?.student?.surname}}</span> <span class="capitalize">{{reportDetails?.student?.second_name}}</span> <span class="capitalize">{{reportDetails?.student?.other_name}}</span></div>
                   <div style="padding-left: 60px; padding-bottom: 10px;"><span>{{reportDetails?.class_abbreviation}}<span v-if="reportDetails?.stream">, {{reportDetails?.stream}}</span></span></div>
                   <div style="padding-left: 60px; padding-bottom: 10px;"><span class="capitalize">{{reportDetails?.student?.gender}}</span></div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">6yrs , 8mth</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;"><!--6yrs , 8mth-->{{ageCalculator(reportDetails?.student?.date_of_birth)}}</div>
                 </td>
                 <td style="width: 15%;">
                   <div style="padding-left: 60px; padding-bottom: 10px;">Term:</div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">School Team:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">Stream:</div>
                   <div style="padding-left: 60px; padding-bottom: 10px;">Date:</div>
                   <div style="padding-left: 60px; padding-bottom: 10px;">Grade</div>
                 </td>
                 <td style="width: 30%;">
                   <div style="padding-left: 60px; padding-bottom: 10px;">{{reportDetails?.study_period}}</div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">{{reportDetails?.grade}}</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">{{reportDetails?.stream	}}</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">{{new Date().toLocaleDateString()}}</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px; color:#008000;">{{reportDetails?.grade}}</div>
                 </td>
               </tr>
             </table>
@@ -118,52 +152,42 @@ const props = defineProps({
 
 
 
-            <table class="w-full text-[13px]" style="border: 1px solid #eef0f2" cellspacing="0" cellpadding="0">
+            <table class="w-full text-[13px]" style="border: 1px solid #45484c;" cellspacing="0" cellpadding="0">
               <tr>
-                <td style="width: 5%; border-right: 1px solid #eef0f2;">&nbsp;</td>
-                <td :colspan="(5 + Number(reportDetails?.report_columns.length))">
+                <td style="width: 5%; border-right: 1px solid #45484c;">&nbsp;</td>
+                <td :colspan="(5 + Number(reportDetails?.report_columns?.length))">
                   <table cellspacing="0" cellpadding="0" style="width: 100%; font-size: 13px; border-top: 1px solid #eef0f2;">
                     <tr>
-                      <td style="width: 30%; padding: 4px; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">SUBJECT UNIT</div></td>
-                      <td style="width: 10%; border-right: 1px solid #eef0f2;" v-for="(column,column_index) in reportDetails?.report_columns" :key="column_index"><div style="margin-left: 4px;">{{column}}</div></td>
-                      <td style="width: 10%; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">Average</div></td>
-                      <td style="width: 5%; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">Aggr</div></td>
-                      <td style="width: 25%; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">Remark</div></td>
-                      <td style="width: 5%; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">Initial</div></td>
+                      <td style="width: 30%; padding: 4px; border-right: 1px solid #45484c;"><div style="margin-left: 4px;">SUBJECT UNIT</div></td>
+                      <td style="width: 10%; border-right: 1px solid #45484c;" v-for="(column,column_index) in reportDetails?.report_columns" :key="column_index"><div style="margin-left: 4px;">{{column}}</div></td>
+                      <td style="width: 10%; border-right: 1px solid #45484c;"><div style="margin-left: 4px;">Average</div></td>
+                      <td style="width: 5%; border-right: 1px solid #45484c;"><div style="margin-left: 4px;">Aggr</div></td>
+                      <td style="width: 25%; border-right: 1px solid #45484c;"><div style="margin-left: 4px;">Remark</div></td>
+                      <td style="width: 5%; border-right: 1px solid #45484c;"><div style="margin-left: 4px;">Initial</div></td>
                     </tr>
                   </table>
                 </td>
-
               </tr>
 
-
-
               <tr v-for="(learning_area,learning_area_index) in reportDetails?.learning_areas" :key="learning_area_index">
-                <td
-                    class="border-r border-t"
-                >
-                  <div
-                      style="
-                      transform: rotate(270deg);
-                      white-space: nowrap;
-                      font-size: 14px;"
-                  >
-                    {{learning_area.name}}
+                <td style="border-top: 1px solid #45484c; border-right: 1px solid #45484c;">
+<!--                  <div style="transform: rotate(270deg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">-->
+                  <div>
+                    {{learning_area?.name}}
                   </div>
-
                 </td>
 
                 <td :colspan="(5 + Number(reportDetails?.report_columns.length))">
-                  <table cellspacing="0" cellpadding="0" style="width: 100%; font-size: 13px; border-top: 1px solid #eef0f2;">
-                  <tr v-for="(assessment,assessment_index) in learning_area?.assessments" :key="assessment_index" style="border-bottom: 1px solid #f4f4f4;">
-                    <td style="width: 30%; padding: 4px; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">{{assessment.name}}</div></td>
-                    <td style="width: 10%; padding: 4px; border-right: 1px solid #eef0f2;" v-for="(report_score,report_score_index) in assessment.report_scores" :key="report_score_index">
+                  <table cellspacing="0" cellpadding="0" style="width: 100%; font-size: 13px; border-top: 1px solid #45484c;">
+                  <tr v-for="(assessment,assessment_index) in learning_area?.assessments" :key="assessment_index">
+                    <td style="width: 30%; padding: 4px; border-right: 1px solid #45484c;"><div style="margin-left: 4px;">{{assessment.name}}</div></td>
+                    <td style="width: 10%; padding: 4px; border-right: 1px solid #45484c;" v-for="(report_score,report_score_index) in assessment.report_scores" :key="report_score_index">
                       {{report_score.score >= 0 ? report_score.score.toFixed(1) : '-'}}
                     </td>
-                    <td style="width: 10%; padding: 4px; border-right: 1px solid #eef0f2;">{{assessment.report_score_summary.summation}}</td>
-                    <td style="width: 5%; padding: 4px; border-right: 1px solid #eef0f2;">{{assessment.report_score_summary.grade}}</td>
-                    <td style="width: 25%; padding: 4px; border-right: 1px solid #eef0f2;">{{assessment.report_score_summary.comment}}</td>
-                    <td style="width: 5%; padding: 4px; border-right: 1px solid #eef0f2;">M.O</td>
+                    <td style="width: 10%; padding: 4px; border-right: 1px solid #45484c;">{{assessment.report_score_summary.summation}}</td>
+                    <td style="width: 5%; padding: 4px; border-right: 1px solid #45484c;">{{assessment.report_score_summary.grade}}</td>
+                    <td style="width: 25%; padding: 4px; border-right: 1px solid #45484c;">{{assessment.report_score_summary.comment}}</td>
+                    <td style="width: 5%; padding: 4px; border-right: 1px solid #45484c;">M.O</td>
                   </tr>
 
                   </table>
@@ -514,16 +538,16 @@ const props = defineProps({
             <table style="width: 100%; font-size: 13px; margin-top: 20px; margin-bottom: 30px;">
               <tr>
                 <td style="width: 25%;">
-                  <div style="padding-left: 5px; padding-bottom: 10px;">CLASS TEACHER'S SIGNATURE:</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">HEAD TEACHER'S SIGNATURE:</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">NEXT TERM BEGINS:</div>
+                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">CLASS TEACHER'S SIGNATURE:</div>
+                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">HEAD TEACHER'S SIGNATURE:</div>
+                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">NEXT TERM BEGINS:</div>
                 </td>
 
                 <td>
 
-                  <div style="padding-left: 5px; padding-bottom: 10px;"> ________________________________________________________________</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;"> ________________________________________________________________</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;"> 18th/May/2020</div>
+                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 12px;"></div>
+                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 12px;"> {{reportDetails?.head_teachers_comment}}</div>
+                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;"> <!--18th/May/2020--> {{reportDetails?.next_term_begins	}}</div>
 
                 </td>
               </tr>
