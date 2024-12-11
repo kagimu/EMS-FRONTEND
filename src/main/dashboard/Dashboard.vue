@@ -347,7 +347,7 @@ const toggleContactDetails = () => {
 
 
 
-    <div class="flex-1 h-screen overflow-y-scroll scrollbar-thin pb-[120px] bg-[#ecf0f5]">
+    <div class="flex-1 h-screen overflow-y-scroll scrollbar-thin pb-[120px]">
       <div class="px-3 pt-[50px]">
 
 
