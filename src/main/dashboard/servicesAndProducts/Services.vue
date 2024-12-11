@@ -170,12 +170,12 @@ watch (
 
       <table
         id="datatable"
-        class="table table-hover caption-top mt-4 table-sm table-striped"
+        class="table table-hover caption-top mt-4 table-sm table-striped text-xs"
         style="font-size: 13px !important;"
       >
         <thead>
           <tr>
-            <th class="w-[5%]">#</th>
+            <th class="w-[1%]">#</th>
             <th>Service Name</th>
             <th>Cost</th>
             <th>Addition Info</th>
