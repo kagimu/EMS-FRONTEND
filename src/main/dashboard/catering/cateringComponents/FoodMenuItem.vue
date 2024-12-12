@@ -15,8 +15,11 @@ const confirmationRef = ref(null);
 
 
 import { useAbility } from '@casl/vue';
+import useCommonsStore from "@/composables/useCommons.js";
 
 const { can } = useAbility()
+const notificationStore = useNotificationStore()
+const commons = useCommonsStore()
 
 
 const showingModal = ref(false)
@@ -25,7 +28,7 @@ const loading = ref(true)
 const tableLoader = ref(true)
 
 
-const notificationStore = useNotificationStore()
+
 const menuItemsinfoData = ref(null)
 const errorMessage = ref(null)
 const campusList = ref([])
@@ -364,8 +367,8 @@ watch(
                       <td>{{ list?.name }}</td>
                       <td>{{ list?.unit_of_measure_name }}</td>
                       <td>{{ list?.purchase_unit_of_measure_name }}</td>
-                      <td>{{ list?.current_quantity.toLocaleString() }}</td>
-                      <td>{{ list?.unit_cost.toLocaleString() }}</td>
+                      <td>{{ commons.formatNumbersWithComma(list?.current_quantity) }}</td>
+                      <td>{{ commons.formatNumbersWithComma(list?.unit_cost) }}</td>
                       <td>
                         <button v-if="can('edit_menu_item','general')" @click="showUpdateDialog(list)" >
                           <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>

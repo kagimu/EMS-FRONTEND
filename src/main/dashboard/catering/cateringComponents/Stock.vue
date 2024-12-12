@@ -5,14 +5,15 @@ import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
 
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import useCommonsStore from "@/composables/useCommons.js";
 const confirmationRef = ref(null);
 
 
 
 const notificationStore = useNotificationStore()
+const commons = useCommonsStore()
 const cateringStore = useCateringStore()
 const errorMessage = ref(null)
 const stockData = ref([])
@@ -251,8 +252,8 @@ watch(
     <tr v-for="(list, index) in stockData" :key="index">
       <td>{{ index+1 }}</td>
       <td>{{ list.menu_item_name }}</td>
-     <td> {{ list.quantity }}</td>
-     <td>{{ list.unit_cost?.toLocaleString() }}</td>
+     <td> {{ commons.formatNumbersWithComma(list.quantity) }}</td>
+     <td>{{ commons.formatNumbersWithComma(list.unit_cost) }}</td>
      <td>{{ list.campus_name }}</td>
      <td>
           <!-- <button >
