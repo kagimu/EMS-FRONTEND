@@ -1,7 +1,6 @@
 <script setup>
    import {onMounted,reactive, ref, watch} from "vue";
    import useNotificationStore from "@/composables/useNotification.js";
-   import { useAdmissionStore } from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
    import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
    import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
    import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
@@ -9,8 +8,6 @@
    import {useLevelStore} from "@/main/settings/level/store/level.js";
    import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
    
-   import { useAbility } from '@casl/vue';
-   const { can } = useAbility()
    const studyPeriodStore = useStudyPeriodStore()
    const levelStore = useLevelStore()
    const  notificationStore  = useNotificationStore()

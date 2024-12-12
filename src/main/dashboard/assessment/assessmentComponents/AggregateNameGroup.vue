@@ -184,7 +184,7 @@ watch(
         <thead>
         <tr>
           <th>#</th>
-          <th scope="col">Name</th>
+          <th scope="col">Names</th>
           <th>Actions</th>
         </tr>
         </thead>
