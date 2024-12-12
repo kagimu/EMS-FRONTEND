@@ -92,39 +92,7 @@ const reloadProfile = () => {
 </script>
 
 <template>
-  <div style="display: flex; height: 100vh; background-color: white;">
-    <!-- Sidebar -->
-    <div style="width: 15%; background-color: white; border-right: 1px solid rgba(0, 0, 0, 0.08);">
-      <div style="position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto; width: 15%;">
-        <div class="p-4 mt-15">
-          <img
-            :src="logoUrl"
-            alt="Logo"
-            class="rounded-cirle mt-15"
-            style="width: 130px;"
-          />
-        </div>
-        <div class="shadow-s mb-4">
-          <div class="list-group list-group-flush mb-1" style="border-radius: 0;">
-            <router-link
-              v-for="(item, idx) in menuItems"
-              :key="idx"
-              class="list-group-item list-group-item-action"
-              :class="item.name === selectedPage ? 'active' : ''"
-              :to="{ name: 'client_dashboard', query: { s: item.name } }"
-            >
-              <i :class="item.icon + ' me-2'"></i>
-              <small style="font-size:12px; text-transform: capitalize;">{{ item.label }}</small>
-            </router-link>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Main Content -->
-    <div style="width: 85%; display: flex; flex-direction: column;">
-      <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg navbar-light bg-darkB sticky-top">
+       <nav class="navbar navbar-expand-lg navbar-light bg-darkB sticky-top">
         <div class="container-fluid d-flex justify-content-between align-items-center">
           <div class="d-flex align-items-center">
             <router-link :to="{ name: 'client_dashboard' }" class="navbar-brand d-flex align-items-center text-white">
@@ -164,6 +132,40 @@ const reloadProfile = () => {
           </div>
         </div>
       </nav>
+  <div style="display: flex; height: 100vh; background-color: white;">
+    
+    <!-- Sidebar -->
+    <div style="width: 15%; background-color: white; border-right: 1px solid rgba(0, 0, 0, 0.08);">
+      <div style="position: fixed; top: 140; left: 0; height: 100vh; overflow-y: auto; width: 15%;">
+        <div class="p-4 mt-15">
+          <img
+            :src="logoUrl"
+            alt="Logo"
+            class="rounded-cirle mt-15"
+            style="width: 130px;"
+          />
+        </div>
+        <div class="shadow-s mb-4">
+          <div class="list-group list-group-flush mb-1" style="border-radius: 0;">
+            <router-link
+              v-for="(item, idx) in menuItems"
+              :key="idx"
+              class="list-group-item list-group-item-action"
+              :class="item.name === selectedPage ? 'active' : ''"
+              :to="{ name: 'client_dashboard', query: { s: item.name } }"
+            >
+              <i :class="item.icon + ' me-2'"></i>
+              <small style="font-size:12px; text-transform: capitalize;">{{ item.label }}</small>
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div style="width: 85%; display: flex; flex-direction: column;">
+      <!-- Navbar -->
+ 
 
       <!-- Content -->
       <div style="flex: 1; padding: 20px; overflow-y: auto;">

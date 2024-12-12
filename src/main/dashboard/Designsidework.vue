@@ -1,67 +1,125 @@
 <template>
-  <div class="curriculum-progress">
-    <div v-for="curriculum in curriculums" :key="curriculum.id" class="curriculum">
-      <div class="curriculum-header">
-        <h3 class="text-sm">{{ curriculum.name }}</h3>
-        <span>{{ curriculum.completedPercentage }}%</span>
+  <div>
+    <div class="col-4">
+      <div class="mb-2">
+        <input
+          v-model="searchQuery"
+          class="form-control mb-0"
+          placeholder="Search..."
+          type="text"
+        />
       </div>
-      <div class="progress-bar">
-        <div
-          class="progress-fill"
-          :class="{ 'complete': curriculum.completedPercentage === 100 }"
-          :style="{ width: curriculum.completedPercentage + '%' }"
-        ></div>
-      </div>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Unit of Measure</th>
+          <th>Purchase Unit</th>
+          <th>Current Quantity</th>
+          <th>Unit Cost</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(list, index) in filteredMenuItems"
+          v-if="!isLoading"
+          :key="index"
+        >
+          <td>{{ index + 1 }}</td>
+          <td>{{ list.name }}</td>
+          <td>{{ list.unit_of_measure_name }}</td>
+          <td>{{ list.purchase_unit_of_measure_name }}</td>
+          <td>{{ list.current_quantity.toLocaleString() }}</td>
+          <td>{{ list.unit_cost.toLocaleString() }}</td>
+          <td>
+            <button v-if="can('edit_menu_item', 'general')" @click="showUpdateDialog(list)">
+              <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+            </button>
+            &nbsp;
+            <button v-if="can('remove_menu_item', 'general')" type="button" @click="deleteThisData(list.number, list.name)">
+              <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div v-if="isLoading" class="text-center">
+      Loading data...
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue';
+<script>
+import { ref, computed } from 'vue';
 
-const curriculums = ref([
-  { id: 1, name: 'Wholesome', completedPercentage: 100 },
-]);
+export default {
+  setup() {
+    // Reactive variables
+    const searchQuery = ref("");
+    const isLoading = ref(false);
+
+    // Mock data for the table
+    const menuItemData = ref([
+      { name: "Item 1", unit_of_measure_name: "Kg", purchase_unit_of_measure_name: "Box", current_quantity: 50, unit_cost: 5000 },
+      { name: "Item 2", unit_of_measure_name: "L", purchase_unit_of_measure_name: "Bottle", current_quantity: 20, unit_cost: 3000 },
+      { name: "Item 3", unit_of_measure_name: "Pcs", purchase_unit_of_measure_name: "Packet", current_quantity: 100, unit_cost: 200 },
+    ]);
+
+    // Filtering logic
+    const filteredMenuItems = computed(() => {
+      if (!searchQuery.value.trim()) {
+        return menuItemData.value;
+      }
+      return menuItemData.value.filter((item) =>
+        item.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+      );
+    });
+
+    // Mock permissions and actions
+    const can = (action, resource) => {
+      // Replace with actual permission logic
+      return true;
+    };
+
+    const showUpdateDialog = (item) => {
+      alert(`Update item: ${item.name}`);
+    };
+
+    const deleteThisData = (number, name) => {
+      alert(`Delete item: ${name}`);
+    };
+
+    return {
+      searchQuery,
+      isLoading,
+      filteredMenuItems,
+      can,
+      showUpdateDialog,
+      deleteThisData,
+    };
+  },
+};
 </script>
 
-<style scoped>
-.curriculum-progress {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-  max-width: 600px;
-  margin: auto;
-  background: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.curriculum {
-  margin-bottom: 20px;
-}
-
-.curriculum-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.progress-bar {
+<style>
+.table {
   width: 100%;
-  height: 10px;
-  background: #e0e0e0;
-  border-radius: 5px;
-  overflow: hidden;
-  position: relative;
+  margin: 1rem 0;
+  border-collapse: collapse;
 }
 
-.progress-fill {
-  height: 100%;
-  background: #4caf50;
-  transition: width 0.3s ease;
+.table th, .table td {
+  border: 1px solid #ddd;
+  padding: 8px;
 }
 
-.progress-fill.complete {
-  background: #2196f3; /* Blue color for 100% completion */
+.table th {
+  background-color: #f4f4f4;
+  text-align: left;
 }
 </style>

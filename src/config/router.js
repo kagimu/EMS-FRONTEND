@@ -84,6 +84,7 @@ import ManageSchemeOfWork from '@/main/teacher/ManageSchemeOfWork.vue';
 import ManageAssessment from '@/main/teacher/ManageAssessment.vue';
 import ManageSchemeOfWorkAndSessions from '@/main/teacher/ManageSchemeOfWorkAndSessions.vue';
 import SelectSchoolDetails from '@/main/auth/SelectSchoolDetails.vue';
+import ClientInvoices from '@/main/application/applicationComponents/ClientInvoices.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -562,7 +563,8 @@ const router = createRouter({
                 {path: 'admission', component: Application, name:'admission_history'},
                 {path: 'applications', component: ClientApplications, name:'application_history'},
                 {path: 'application-success', component: ApplicationSuccessPage, name: "application-success"},
-                {path: 'student-profile', component: StudentProfile, name:'student-profile'}
+                {path: 'student-profile', component: StudentProfile, name:'student-profile'},
+                {path:'client-invoices', component: ClientInvoices, name: "client-invoices"},
             ]
         },
 

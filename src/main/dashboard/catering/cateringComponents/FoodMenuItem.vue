@@ -305,16 +305,7 @@ watch(
                 <div class="col-4">
                   <div class="mb-2">
 
-                    <!-- <select
-                        v-model="form.campus_number"
-                        class="form-select form-select-sm"
-                        required style="box-shadow: none;"
-                        @change="filterByCampus()"
-                    >
-                      <option disabled value="">--Select Campus--</option>
-                      <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-                      </option>
-                    </select> -->
+
                   </div>
                 </div>
 
@@ -324,7 +315,8 @@ watch(
 
                 <div class="col-4">
                   <div class="mb-2">
-                    <input class="form-control mb-0" placeholder="Search..." type="text">
+                    <input
+                     class="form-control mb-0" placeholder="Search..." type="text">
                   </div>
                 </div>
 
@@ -372,8 +364,8 @@ watch(
                       <td>{{ list?.name }}</td>
                       <td>{{ list?.unit_of_measure_name }}</td>
                       <td>{{ list?.purchase_unit_of_measure_name }}</td>
-                      <td>{{ list?.current_quantity }}</td>
-                      <td>{{ list?.unit_cost }}</td>
+                      <td>{{ list?.current_quantity.toLocaleString() }}</td>
+                      <td>{{ list?.unit_cost.toLocaleString() }}</td>
                       <td>
                         <button v-if="can('edit_menu_item','general')" @click="showUpdateDialog(list)" >
                           <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
