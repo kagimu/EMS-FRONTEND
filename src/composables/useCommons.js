@@ -157,6 +157,13 @@ export default function useCommonsStore() {
         return Object.keys(objectToParse).map(key => key + '=' + objectToParse[key]).join('&');
     }
 
+    const formatNumbersWithComma = (value) => {
+        if (value != null) {
+            return new Intl.NumberFormat().format(value);
+        }
+        return value;
+    }
+
     return {
         onlyNumberValidator,
         numbersOnlyValidator,
@@ -167,6 +174,7 @@ export default function useCommonsStore() {
         base64ToBinary,
         formatDate,
         initializePdfData,
-        wellFormatedDate
+        wellFormatedDate,
+        formatNumbersWithComma
     }
 }

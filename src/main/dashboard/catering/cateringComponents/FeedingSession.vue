@@ -9,8 +9,11 @@
 
   
 import { useAbility } from '@casl/vue';
+  import useCommonsStore from "@/composables/useCommons.js";
 
 const { can } = useAbility()
+  const notificationStore = useNotificationStore()
+  const commons = useCommonsStore()
 
 const confirmationRef = ref(null);
   const showingModal = ref(false)
@@ -30,7 +33,6 @@ const confirmationRef = ref(null);
   const schoolList = ref([])
   const schoolStore = useSchoolStore()
   const cateringStore = useCateringStore()
-  const notificationStore = useNotificationStore()
   const thisDialog = ref(false)
   const feedingSessionGroupData = ref([])
   const showDialog = () => {
@@ -238,7 +240,7 @@ watch (
               <div class="flex flex-grow justify-between text-xs text-gray-600">
               <div>
                 <div class="font-bold">{{ list?.name }}</div>
-                <div class="text-red-800">Cost: Shs {{ list?.pack_cost }}</div>
+                <div class="text-red-800">Cost: Shs {{ commons.formatNumbersWithComma(list?.pack_cost) }}</div>
               </div>
 
               <div>
@@ -267,7 +269,7 @@ watch (
               <tbody>
               <tr v-for="menuItem in list.pack_items" :key="menuItem.number" class="m-1">
                 <td>{{ menuItem.name }}</td>
-                <td>{{ menuItem.consumption_quantity }}</td>
+                <td>{{ commons.formatNumbersWithComma(menuItem.consumption_quantity) }}</td>
                 <td>{{ menuItem.unit_of_consumption.name }}</td>
               </tr>
               </tbody>
