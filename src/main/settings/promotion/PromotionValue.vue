@@ -1,8 +1,12 @@
 <template>
     <div>
   
+      <AppModal title="Promotion Value" v-model="shDialog" xl4>
+        <PromotionValueModel></PromotionValueModel>
+    </AppModal>
+
   
-      <div class="modal fade" id="levelModal" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: shDialog }">
+      <!-- <div class="modal fade" id="levelModal" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: shDialog }">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header text-sm p-0">
@@ -16,7 +20,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
   
   <div class="card">
     <div class="card-body">
@@ -26,7 +30,7 @@
               <div class="flex justify-content-between mt-3">
                 <div class="ml-4">Settings</div>
                 <button 
-                 type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  data-bs-toggle="modal" data-bs-target="#levelModal" @click="openModal()">
+                 type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"   @click="openModal()">
                   Promotion Value
                 </button>
               </div>
@@ -69,6 +73,7 @@
   import useNotificationStore from "@/composables/useNotification.js";
   import {usePromotionStore} from "./store/promotion.js"
 import PromotionValueModel from "./PromotionValueModel.vue";
+import AppModal from "@/components/AppModal.vue";
 
 
   const promotionStore = usePromotionStore()

@@ -7,6 +7,28 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {usePromotionStore} from "./store/promotion.js"
 import { useAssessmentStore } from "@/main/dashboard/assessment/store/assessment.js";
 import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
+
+const levelStore = useLevelStore()
+const schoolStore = useSchoolStore()
+const campusStore = useCampusStore()
+const academicYearStore = useAcademicYearStore()
+const classStore = useClassesStore()
+const studyPeriodStore = useStudyPeriodStore()
+const campusList = ref([])
+const schoolList = ref([])
+const classList = ref([])
+const academicYearList = ref([])
+const studyPeriodList  = ref([])
+const streamList = ref([])
+const curriculumList = ref([])
+const levelList = ref([])
+
 
 const emit = defineEmits();
 const classError = ref(null)
@@ -17,10 +39,24 @@ const promotionStore = usePromotionStore()
 const assessmentStore = useAssessmentStore()
 const isGrade = ref(null)
 const subjectStore = useSubjectStore()
-
 const promoSettingList = ref([])
 const assessmentScaleData = ref([])
 const subjectList = ref([])
+const assessmentListData = ref([])
+const gradeData = ref([])
+
+
+const formData = reactive({
+   study_period_number: "",
+   class_number: "",
+   campus_class_number: "",
+   campus_number: "",
+   stream_number:"",
+   school_number:"",
+   academic_year_number:"",
+   curriculumNumber:"",
+   level:""
+   })
 
 const form = reactive({
   type:null,
@@ -28,6 +64,17 @@ const form = reactive({
   promotion_setting_number:null,
   assessment_grade_number:null
 })
+
+const rows = reactive([{ assessmentArea: "", score: "", aggregate: "" }])
+
+const addRow = () => {
+  rows.push({ assessmentArea: "", score: "", aggregate: "" });
+}
+
+const removeRow = (index) => {
+  rows.splice(index, 1);
+}
+
 
 const theType = () => {
   isGrade.value = form.type
@@ -45,8 +92,22 @@ onMounted(() => {
         assessmentStore.fetchAssessmentGrades()
         promotionStore.fetchPromotionSetting()
         subjectStore.fetchAllSubjects()
+        schoolStore.fetchSchools()
     }
 ) 
+
+
+const  fetchAssessmentAreaList = (classN) => {
+let data = {
+  curriculum_number:"04d4e153-c55b-4d62-a54d-1ca1fa510873",
+  class_number:formData.class_number,
+}
+assessmentStore.fetchAssessmentArea(data)
+}
+
+
+
+
 watch(
   () => assessmentStore.assessmentScaleResponse,
   async (data) => {
@@ -93,12 +154,171 @@ watch(
   async (data) => {
       if (data) {
         promoSettingList.value = data.data
-        // notificationStore.s`uccessToast("Success application submitted", data.message)
       }
   },
   {deep: true}
 )
 
+
+
+const fetchCampuses = (school_number) => {
+     campusStore.fetchCampuses(school_number)
+     let data = {
+    school_number:school_number
+  }
+  assessmentStore.fetchGrades(data)
+     
+   }
+   
+   
+   const fetchClasses = (campus_level_number) => {
+     levelStore.fetchCampusCurriculum(campus_level_number)
+     
+   }
+   
+   watch(
+     () => campusStore.schoolClassesResponse,
+     async (data) => {
+       if(data){
+         classList.value = data.data
+       }
+     }
+   )
+   
+   const fetchStreamsAndStudyPeriod = (classNumber) =>{
+   let sData = {
+      campus_number:form.campus_number,
+      class_number:classNumber,
+      campus_curriculum_number:form.curriculumNumber
+     }
+     classStore.fetchClassStreams(sData)
+
+     studyPeriodStore.fetchStudyPeriod(
+      {
+        academic_year_number:form.academic_year_number,
+        class_number:classNumber,
+        school_number:form.school_number
+      } )
+
+     
+   }
+
+
+   watch (
+    () => assessmentStore.gradeResponse,
+    async (data) => {
+      if(data){
+        gradeData.value = data
+      }
+    }
+)
+
+
+   
+   watch(
+    () => studyPeriodStore.studyPeriodResponse,
+    async (data) => {
+      if(data){
+        studyPeriodList.value = data.data
+      }
+    }
+)
+
+
+   watch(
+     () => academicYearStore.academicYearByLevelResponse,
+     async (data) => {
+       if(data){
+         academicYearList.value = data.data
+       }
+     }
+   )
+   
+   const fetchCampusLevel = (curriculumNumber) => {
+    classStore.fetchCampusLevel(curriculumNumber)
+   }
+   
+   
+   
+   const fetchLevelClasses = (levelNumber) => {
+    let data = {
+     school_number:formData.school_number,
+     campus_level_number:levelNumber
+   }
+   campusStore.fetchClassesBySchool(data)
+   academicYearStore.fetchAcademicYearByLevel(levelNumber)
+   }
+   
+   watch(
+     () => classStore.campusLevelResponse,
+     async (data) => {
+       if(data){
+         levelList.value = data.data
+       }
+     },
+     {deep:true}
+   )
+   
+   watch(
+     () => levelStore.campusCurriculumResponse,
+     async (data) => {
+       if(data){
+         curriculumList.value = data.data
+       }
+     },
+     {deep:true}
+   )
+  
+
+   watch(
+     () => classStore.classStreams,
+     async (data) => {
+         if (data) {
+           streamList.value = data.data
+         }
+     }
+   )
+   
+   
+   watch(
+     () => schoolStore.schoolsResponse,
+     async (data) => {
+         if (data) {
+             schoolList.value = data.data
+         }
+     },
+     {deep: true}
+   )
+   
+   watch(
+     () => campusStore.campusListResponse,
+     async (data) => {
+         if (data) {
+             campusList.value = data.data
+         }
+     },
+     {deep: true}
+   )
+   
+   
+   watch(
+     () => campusStore.errorMessage,
+     async (data) => {
+           if (data) {
+               notificationStore.errorToast("Error", data.message)
+           }
+     },
+     {deep: true}
+   )
+
+   watch(
+    () => assessmentStore.assessmentAreaResponse,
+    async (data) => {
+      if(data){
+        assessmentListData.value = data.data
+      }
+    }
+)
 
 </script>
 
@@ -171,8 +391,128 @@ watch(
         </div>
 
 
-        <div class="mb-2" v-if="isGrade == 'assessment'">
-            <label class="text-sm"><small>Assessment Area</small>  </label>
+        <div class="mb-2 mt-4" v-if="isGrade == 'assessment'">
+          
+          <p class="text-sm alert alert-success" ><small>ASSESSMENT AREA ------</small>  </p>
+          <div class="row">
+          <div class="col-3">
+          <div class="mb-2">
+          <select
+          style="box-shadow: none;"
+          class="form-select form-select-sm" required
+          v-model="formData.school_number"
+          @change="fetchCampuses(formData.school_number)"
+          >
+          <option disabled  value="">-filter by School-</option>
+          <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+          </option>
+          </select>
+          </div>
+          </div>
+          <div class="col-3">
+          <div class="mb-2">
+          <!-- <label class="text-sm"><small>Campus</small>  </label> -->
+          <select
+          style="box-shadow: none;"
+          class="form-select form-select-sm"
+          v-model="formData.campus_number" required
+          @change="fetchClasses(formData.campus_number)"
+          >
+          <option disabled value="">-filter by Campus-</option>
+          <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+          </option>
+          </select>
+          </div>
+          </div>
+          <div class="col-2">
+          <div class="mb-2">
+          <select
+          style="box-shadow: none;"
+          class="form-select form-select-sm"
+          v-model="formData.curriculumNumber"  
+          @change="fetchCampusLevel(formData.curriculumNumber)"                                         
+          >
+          <option disabled value="" >--Select Curriculum--</option>
+          <option  v-for="(lvl, index) in curriculumList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+          </select>
+          </div>
+          </div>
+          <div class="col-2" >
+          <div class="mb-2">
+          <select
+          style="box-shadow: none;"
+          class="form-select form-select-sm"
+          v-model="formData.level"
+          @change="fetchLevelClasses(formData.level)"
+          >
+          <option disabled value="">-Filter by level-</option>
+          <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
+          </select>
+          </div>
+          </div>
+
+          <div class="col-2">
+          <div class="mb-2">
+          <!-- {{ classList }} -->
+          <select
+          style="box-shadow: none;"
+          class="form-select form-select-sm" required
+          v-model="formData.class_number"
+          @change="fetchAssessmentAreaList(formData.class_number)"
+          >
+          <option disabled value="">-filter by class-</option>
+          <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">
+          {{claslist?.name+" [ "+claslist?.abbreviation+" ]"}}
+          </option>
+          </select>
+          </div>
+          </div>
+
+
+          </div>
+
+          <div class="row">
+          <div class="col-12">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th class="text-xs">Assessment Area</th>
+                <th class="text-xs">Score</th>
+                <th class="text-xs">Aggregate</th>
+                <th class="text-xs">#</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(row, index) in rows" :key="index">
+                <td>
+                  <select class="form-select form-select-sm"
+                  v-model="row.assessmentArea"
+                    >
+                    <option disabled value="">Select Assessment Area</option>
+                    <option v-for="(assess, index) in assessmentListData" :key="index">{{ assess.name }}
+                    </option>
+                  </select>
+                </td>
+                <td><input type="number" class="form-control form-select-sm" v-model="row.score"></td>
+                <td>
+            <!-- {{gradeData}} -->
+                  <select class="form-select form-select-sm" v-model="row.aggregate">
+                    <option value="">-select -</option>
+                    <option v-for="(list,index) in gradeData" :key="index" :value="list.number">{{ list.name }} ({{ list.short_name }})</option>
+                  </select>
+                </td>
+                <td>
+                  <i style="cursor: pointer;color: red;"  @click="removeRow(index)" class="bi bi-x-circle-fill"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <button class="btn btn-sm btn-primary mr-2" @click="addRow(index)" ><i class="bi bi-plus"></i></button> 
+
+          </div>
+
+          </div>
       
         </div>
        
