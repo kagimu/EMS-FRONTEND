@@ -65,10 +65,10 @@ const form = reactive({
   assessment_grade_number:null
 })
 
-const rows = reactive([{ assessmentArea: "", score: "", aggregate: "" }])
+const rows = reactive([{ assessment_area_number: "", score: "", aggregate_number: "" }])
 
 const addRow = () => {
-  rows.push({ assessmentArea: "", score: "", aggregate: "" });
+  rows.push({  assessment_area_number: "", score: "", aggregate_number: ""});
 }
 
 const removeRow = (index) => {
@@ -82,7 +82,9 @@ const theType = () => {
 
 const addPromotionValue = () =>{
   loader.value = true
-  promotionStore.newPromotionSettingValue(form)
+  form.assessment_area = rows
+  alert(JSON.stringify(form))
+  // promotionStore.newPromotionSettingValue(form)
 } 
 
 
@@ -486,17 +488,17 @@ const fetchCampuses = (school_number) => {
               <tr v-for="(row, index) in rows" :key="index">
                 <td>
                   <select class="form-select form-select-sm"
-                  v-model="row.assessmentArea"
+                  v-model="row.assessment_area_number" required
                     >
                     <option disabled value="">Select Assessment Area</option>
-                    <option v-for="(assess, index) in assessmentListData" :key="index">{{ assess.name }}
+                    <option v-for="(assess, index) in assessmentListData" :key="index" :value="assess.number">{{ assess.name }}
                     </option>
                   </select>
                 </td>
                 <td><input type="number" class="form-control form-select-sm" v-model="row.score"></td>
                 <td>
             <!-- {{gradeData}} -->
-                  <select class="form-select form-select-sm" v-model="row.aggregate">
+                  <select class="form-select form-select-sm" v-model="row.aggregate_number">
                     <option value="">-select -</option>
                     <option v-for="(list,index) in gradeData" :key="index" :value="list.number">{{ list.name }} ({{ list.short_name }})</option>
                   </select>
@@ -508,12 +510,11 @@ const fetchCampuses = (school_number) => {
             </tbody>
           </table>
 
-          <button class="btn btn-sm btn-primary mr-2" @click="addRow(index)" ><i class="bi bi-plus"></i></button> 
+          <button type="button" class="btn btn-sm btn-primary mr-2" @click="addRow(index)" ><i class="bi bi-plus"></i></button> 
 
           </div>
 
           </div>
-      
         </div>
        
   
