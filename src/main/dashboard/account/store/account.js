@@ -75,9 +75,10 @@ export const useAccountStore = defineStore("account", () => {
 
      
         async function fetchUsersToAssign(data) {
+             let search =   data?.search ?? ""
             return await api.get("main/users?page="+data?.page+
                     "&per_page="+ data?.per_page+
-                    "&search="+data?.search+
+                    "&search="+search+
                     "&entity_number="+data?.entity_number
                 )
                 .then((response) => {

@@ -30,11 +30,11 @@ const settingsList = ref([
     id:"profile",
     action:"view_profile"
   },
-  {
-    name:"Contact Info",
-    id:"contact-info",
-    action:"view_contactInfo"
-  },
+  // {
+  //   name:"Contact Info",
+  //   id:"contact-info",
+  //   action:"view_contactInfo"
+  // },
   {
     name:"Level",
     id:"level",

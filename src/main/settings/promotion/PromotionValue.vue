@@ -31,13 +31,13 @@
                 <div class="ml-4">Settings</div>
                 <button 
                  type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"   @click="openModal()">
-                  Promotion Value
+                  New PromotionValue
                 </button>
               </div>
   
   
   
-              <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
+              <table class="table table-striped table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
                 <thead>
                 <tr>
                   <th>Promotion Setting</th>

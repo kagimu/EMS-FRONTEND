@@ -11,11 +11,13 @@ import ConfirmationModal from "@/components/ConfirmationModal.vue";
 const confirmationRef = ref(null);
 
 import { useAbility } from '@casl/vue';
+import { errorMessages } from "vue/compiler-sfc";
 const { can } = useAbility()
 
 
 const routerData = useRouter()
 const levelStore = useLevelStore()
+const stream_number = ref(null)
 
 
 const classStore = useClassesStore()
@@ -44,13 +46,22 @@ const editClass = (data) => {
 
 const addStream = (data) => {
 //  alert(JSON.stringify(data))
+
+ streamClass.value = data.name
   streamDialog.value = true
   streamForm.class_level_number = data.number
   streamForm.campus_class_number = data.number
+  streamForm.name = ""
+  stream_number.value = ""
 }
 
 const saveStream = () => {
+  if(stream_number.value){
+    streamForm.stream_number = stream_number.value
+    classStore.updateStream(streamForm)
+  }else{
   classStore.addStream(streamForm)
+  }
 }
 
 
@@ -118,7 +129,34 @@ watch(
     {deep: true}
 )
 
+const editStream = (lst,cls) => {
+ streamClass.value = cls
+  streamDialog.value = true
+  stream_number.value = lst.stream_number
+  streamForm.name = lst.name
+}
 
+watch(
+    () => classStore.updateStreamSuccess,
+    async (data) => {
+      if (data) {
+        streamForm.name = ""
+        filterClassInfo()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep: true}
+)
+
+watch (
+    () => classStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
 
 </script>
 <template>
@@ -157,7 +195,9 @@ watch(
                 data-bs-target="#streamModal"
 
                 style="font-size: 13px;"
-                @click="saveStream">Save Stream(s)
+                @click="saveStream">
+                <span v-if="stream_number != ''">Update Stream</span>
+                <span v-else>Save Stream(s)</span>
             </button>
 
           </div>
@@ -202,7 +242,8 @@ watch(
                         <div v-for="(lst,idx) in list.streams" :key="idx">
                         <small class="capitalize">
                           {{lst.name}}
-                          <i class="bi bi-x-circle cursor-pointer" style="font-size: 13px;" @click="deleteStream(lst)"></i>
+                          <i class="bi bi-x-circle cursor-pointer" style="font-size: 13px;color:red" @click="deleteStream(lst)"></i>
+                          <i class="bi bi-pencil cursor-pointer ml-2" style="font-size: 11px;color:#0d6efd" @click="editStream(lst,list.name)"></i>
                         </small>
                       </div>
                       </td>

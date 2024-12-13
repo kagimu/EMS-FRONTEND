@@ -26,6 +26,7 @@ export const useClassesStore = defineStore("classes", () => {
     const curriculumClassByIdResponse = ref(null)
     const classLevelByLevelResponse = ref(null)
     const byCampusClassStreams = ref(null)
+    const updateStreamSuccess = ref(null)
 
 
 
@@ -261,6 +262,18 @@ export const useClassesStore = defineStore("classes", () => {
             })
     }
 
+    async function updateStream(data) {
+        return await api.put("main/stream/update",data)
+            .then((response) => {
+                updateStreamSuccess.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     async function newCampusLevel(data) {
         return await api.post("main/campus/new-level",data)
             .then((response) => {
@@ -370,6 +383,9 @@ export const useClassesStore = defineStore("classes", () => {
         fetchCampusLevel,
         fetchClassByLevel,
         fetchCurriculumClassesByID,
-        fetchClassStreamsByCampusClassNumber
+        fetchClassStreamsByCampusClassNumber,
+        updateStream,
+        updateStreamSuccess
+        
     }
 })

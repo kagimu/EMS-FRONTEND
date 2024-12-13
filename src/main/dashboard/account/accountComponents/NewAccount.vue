@@ -150,7 +150,7 @@ watch (
 
            arr = arr.map(item => {
              // Check if the item role_number exists in userRolesData.value
-             let matchingRole = userRolesData.value.find(a => a.role_number === item.role_number);
+             let matchingRole = userRolesData.value?.find(a => a.role_number === item.role_number);
 
              // If a match is found, update the checkRole and expiry_date
              if (matchingRole) {
@@ -170,6 +170,8 @@ watch (
    
 </script>
 <template>
+  {{ userInfoData }}<br>
+  {{userRolesData}}
    <div>
       <form @submit.prevent="addUser">
          <div class="row">
