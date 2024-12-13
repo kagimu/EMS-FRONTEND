@@ -362,9 +362,10 @@ watch (
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;&nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>
-          <button @click="openModal(user.number)" type="button" class="btn btn-outline-primary mb-2 btn-small py-0 px-3 text-sm">
+          <button @click="openModal(user)" type="button" class="btn btn-outline-primary mb-2 btn-small py-0 px-3 text-sm">
            <small>Assign Role</small>
           </button>
+
         </td>
         </tr>
     
