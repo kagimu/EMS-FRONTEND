@@ -81,23 +81,24 @@
     }
   };
 
-  watch(() => roleStore.editRoleResponse, async (data) => {
+ /* watch(() => roleStore.editRoleResponse, async (data) => {
     if (data) {
       buttonLoader.value = false;
       notificationStore.successToast("Success", data.message);
     }
-  }, { deep: true });
+  }, { deep: true });*/
 
-  watch(() => roleStore.newRoleResponse, async (data) => {
-    if (data) {
-      showDialog.value = false;
-      buttonLoader.value = false;
-      form.name = null;
-      form.description = null;
-      permissionSelected.value = [];
-      notificationStore.successToast("Success", data.message);
-    }
-  }, { deep: true });
+/*  watch(() => roleStore.newRoleResponse,
+      async (data) => {
+          if (data) {
+            showDialog.value = false;
+            buttonLoader.value = false;
+            form.name = null;
+            form.description = null;
+            permissionSelected.value = [];
+            notificationStore.successToast("Success", data.message);
+          }
+    }, { deep: true });*/
 </script>
 
 <!-- <template>
@@ -155,44 +156,53 @@
 
 
 <template>
-  <div class="container mt-1">
-    <!-- Role Information Card -->
-    <div class="card shadow-sm mb-4">
-      <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">Role Information</h5>
+  <div class=" mt-1">
+    <div class="mb-5">
+      <div class="mt-3">
+        <div class="mb-4 text-gray-600 border-b">Role Information</div>
       </div>
-      <div class="card-body">
+      <div class="">
         <div class="mb-3">
-          <label class="form-label">Role Name</label>
-          <input placeholder="Role Name" type="text" v-model="form.name" required class="form-control">
+          <div class="text-sm text-gray-600">Role Name</div>
+          <input
+              type="text"
+              v-model="form.name"
+              required
+              class="form-control shadow-none">
         </div>
 
         <div class="mb-3">
-          <label class="form-label">Description</label>
-          <textarea v-model="form.description" class="form-control" style="height: 100px"></textarea>
+          <div class="text-sm text-gray-600">Description</div>
+          <textarea
+              v-model="form.description"
+              class="form-control shadow-none"
+              rows="5"></textarea>
         </div>
       </div>
     </div>
 
-    <!-- Permissions Card -->
-    <div class="card shadow-sm">
-      <div class="card-header bg-secondary text-white">
-        <h5 class="mb-0">Permissions</h5>
+
+    <div class="border rounded-md">
+      <div class="mb-4  border-b">
+        <div class="py-1 text-gray-600 ml-3">Permissions</div>
       </div>
-      <div class="card-body">
-        <table id="datatable" class="table table-sm table-bordered" style="font-size: 13px;">
+      <div class="px-2 pb-2">
+        <table id="" class="table table-sm table-bordered rounded-md" style="font-size: 13px;">
           <tbody>
             <tr v-for="(permissionGroup, groupIndex) in permissionData" :key="groupIndex">
-              <td class="bg-light fw-bold">{{ Object.keys(permissionGroup)[0] }}</td>
-              <td>
+              <td class="bg-light fw-bold p-3">{{ Object.keys(permissionGroup)[0] }}</td>
+              <td class="p-3">
                 <ul class="list-unstyled">
                   <li class="mb-2">
-                    <input 
-                      type="checkbox" 
-                      @change="toggleSelectAll(groupIndex, $event.target.checked)"
-                      :checked="Object.values(permissionGroup)[0].every(p => permissionSelected.includes(p))"
-                    >
-                    <b>Select All</b>
+                   <div class="flex">
+                     <input
+                         type="checkbox"
+                         :id="'select_all'+ groupIndex"
+                         @change="toggleSelectAll(groupIndex, $event.target.checked)"
+                         :checked="Object.values(permissionGroup)[0].every(p => permissionSelected.includes(p))"
+                     >
+                     <label :for="'select_all'+groupIndex" class="font-semibold text-gray-600 ml-2 text-md cursor-pointer">Select All</label>
+                   </div>
                   </li>
                   <li v-for="(permission, permissionIndex) in Object.values(permissionGroup)[0]" :key="permissionIndex">
                     <input 
@@ -201,7 +211,7 @@
                       v-model="permissionSelected" 
                       :value="permission"
                     >
-                    &nbsp;<label class="text-sm" :for="'permission_' + groupIndex + '_' + permissionIndex">{{ permission }}</label>
+                    &nbsp;<label class="text-sm cursor-pointer" :for="'permission_' + groupIndex + '_' + permissionIndex">{{ permission }}</label>
                   </li>
                 </ul>
               </td>
@@ -213,8 +223,8 @@
 
     <!-- Save Button -->
     <div class="text-end mt-4">
-      <button type="submit" class="btn btn-primary" @click.prevent="addRoles">
-        Save
+      <button type="submit" class="btn btn-sm btn-primary px-4" @click.prevent="addRoles">
+         {{role_number ? "Edit" : "Save"}}
         <div class="spinner-border spinner-border-sm ms-2" role="status" v-if="buttonLoader">
           <span class="visually-hidden">Loading...</span>
         </div>

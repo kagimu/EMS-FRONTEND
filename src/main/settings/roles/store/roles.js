@@ -108,7 +108,6 @@ export const useRolesStore = defineStore("roles", () => {
         deleteRoleResponse,
         deleteRole,
         updateRoleResponse,
-        updateRole,
         editRoleResponse,
         editRole
     }
