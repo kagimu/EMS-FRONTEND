@@ -1,8 +1,65 @@
+<script setup>
+import {onMounted, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import useCommonsStore from "@/composables/useCommons.js";
+import NewLevel from "@/main/settings/level/NewLevel.vue";
+import PromotionSetupModal from "./PromotionSetupModal.vue";
+import {usePromotionStore} from "./store/promotion.js"
+import AppModal from "@/components/AppModal.vue";
+
+const promotionStore = usePromotionStore()
+const notificationStore = useNotificationStore()
+const promotionData = ref([])
+const  shDialog = ref(false)
+const  promotionSettingData = ref(null)
+
+onMounted(() => {
+  promotionStore.fetchPromotionSetting()
+  }
+)
+
+const openModal = () =>{
+shDialog.value = true
+}
+
+watch(
+  () => promotionStore.PromotionSettingResponse,
+  async (data) => {
+      if (data) {
+        shDialog.value = false
+        promotionData.value = data.data
+        // notificationStore.s`uccessToast("Success application submitted", data.message)
+      }
+  },
+  {deep: true}
+)
+
+watch(
+  () => promotionStore.errorMessage,
+  async (data) => {
+        if (data) {
+          shDialog.value = false
+            notificationStore.errorToast("Error", data.message)
+        }
+  },
+  {deep: true}
+)
+
+const promotionSettingInfo = ref(null)
+
+const openEditModal = (promotion) => {
+  promotionSettingInfo.value = promotion
+  shDialog.value = true
+}
+
+</script>
+
+
 <template>
     <div>
   
   
-      <div class="modal fade" id="levelModal" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: shDialog }">
+      <!-- <div class="modal fade" id="levelModal" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: shDialog }">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header text-sm p-0">
@@ -16,7 +73,13 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
+
+      <AppModal title="Auto Promotion Setting" v-model="shDialog" xl2>
+        <PromotionSetupModal :promotionSettingInfo="promotionSettingInfo"></PromotionSetupModal>
+    </AppModal>
+
+
   
       <div class="card">
   <div class="card-body">
@@ -26,7 +89,7 @@
               <div class="flex justify-content-between mt-3">
                 <div class="ml-4">Settings</div>
                 <button @click="openModal()"
-                 type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  data-bs-toggle="modal" data-bs-target="#levelModal">
+                 type="button"  class="btn btn-sm buttonStyle btn-primary mr-2" >
                   Promotion/Admission Setup
                 </button>
               </div>
@@ -53,7 +116,7 @@
                  <td>{{ prom.type }}</td>
                  <td>{{ prom.status }}</td>
                  <td> <button><i class="bi bi-trash"></i></button> &nbsp;
-                <button><i class="bi bi-pencil"></i></button></td>
+                <button @click="openEditModal(prom)"><i class="bi bi-pencil"></i></button></td>
                 </tr>
                 </tbody>
               </table>
@@ -66,54 +129,7 @@
   </div>
   </template>
   
-  <script setup>
-  
-  import {onMounted, ref, watch} from "vue";
-  import useNotificationStore from "@/composables/useNotification.js";
-  import useCommonsStore from "@/composables/useCommons.js";
-  import NewLevel from "@/main/settings/level/NewLevel.vue";
-  import PromotionSetupModal from "./PromotionSetupModal.vue";
-  import {usePromotionStore} from "./store/promotion.js"
-
-
-  const promotionStore = usePromotionStore()
-  const notificationStore = useNotificationStore()
-  const promotionData = ref([])
-  const  shDialog = ref(false)
-
-  onMounted(() => {
-    promotionStore.fetchPromotionSetting()
-    }
-)
-
-const openModal = () =>{
-  shDialog.value = true
-}
-
-watch(
-    () => promotionStore.PromotionSettingResponse,
-    async (data) => {
-        if (data) {
-          shDialog.value = false
-          promotionData.value = data.data
-          // notificationStore.s`uccessToast("Success application submitted", data.message)
-        }
-    },
-    {deep: true}
-)
-
-watch(
-    () => promotionStore.errorMessage,
-    async (data) => {
-          if (data) {
-            shDialog.value = false
-              notificationStore.errorToast("Error", data.message)
-          }
-    },
-    {deep: true}
-)
-
-  </script>
+ 
   
   <style scoped>
   

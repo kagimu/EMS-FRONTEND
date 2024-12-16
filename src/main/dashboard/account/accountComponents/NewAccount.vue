@@ -170,8 +170,6 @@ watch (
    
 </script>
 <template>
-  {{ userInfoData }}<br>
-  {{userRolesData}}
    <div>
       <form @submit.prevent="addUser">
          <div class="row">

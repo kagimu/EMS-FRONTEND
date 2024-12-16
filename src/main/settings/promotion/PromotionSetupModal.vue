@@ -35,6 +35,12 @@ const levelList = ref([])
 const studyPeriodList  = ref([])
 
 
+onMounted(() => {
+      schoolStore.fetchSchools()
+      getPromotionSettingInfo()
+  }
+)
+
 const form = reactive({
   name:null,
   status:"ACTIVE",
@@ -64,6 +70,32 @@ const addPromotionSetting = () =>{
 } 
 
 
+const props = defineProps({
+    promotionSettingInfo: String
+  })
+
+  const getPromotionSettingInfo = () => {
+    let promoData = props.promotionSettingInfo
+    if(promoData){
+      form.name = promoData.name
+      form.type = promoData.type
+      // form.next_class_number = promoData.next_class_number
+      // form.previous_class_number = promoData.previous_class_number
+      // form.academic_year_number = promoData.academic_year_number
+      // form.study_period_number = promoData.study_period_number
+      // promNumber.value = promoData.number
+    }
+  }
+
+
+  watch(
+     () => props.promotionSettingInfo,
+     async (data) => {
+       if(data){
+        getPromotionSettingInfo()
+       }
+     }
+   )
 
 
 const fetchCampuses = (school_number) => {
@@ -107,13 +139,6 @@ watch(
   {deep: true}
 )
 
-
-
-
-onMounted(() => {
-      schoolStore.fetchSchools()
-  }
-)
 
 watch(
   () => schoolStore.schoolsResponse,
@@ -261,6 +286,7 @@ const fetchCampusLevel = (curriculumNumber) => {
 
 <template>
     <div>
+      <!-- {{promotionSettingInfo}} -->
 
       <form @submit.prevent="addPromotionSetting">
   

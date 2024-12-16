@@ -339,7 +339,7 @@ watch (
         <tbody>
             <tr v-for="(user, index) in userData" :key="index">
             <td>{{ index+1 }}</td>
-            <td>{{ user.first_name + " " +user.last_name + " " + user.second_name }}</td>
+            <td style="text-transform: capitalize;">{{ user.first_name + " " +user.last_name + " " + user.second_name }}</td>
             <td>
               <span v-for="(rol,indx) in user.roles"  :key="indx" >
                {{ rol.role_name }} 
