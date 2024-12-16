@@ -6,6 +6,8 @@ import NewLevel from "@/main/settings/level/NewLevel.vue";
 import PromotionSetupModal from "./PromotionSetupModal.vue";
 import {usePromotionStore} from "./store/promotion.js"
 import AppModal from "@/components/AppModal.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
 
 const promotionStore = usePromotionStore()
 const notificationStore = useNotificationStore()
@@ -52,6 +54,15 @@ const openEditModal = (promotion) => {
   shDialog.value = true
 }
 
+const deletePromoSetting = async (promotion) => {
+
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + promotion.name);
+if (agreed) {
+
+  
+}
+}
+
 </script>
 
 
@@ -79,7 +90,7 @@ const openEditModal = (promotion) => {
         <PromotionSetupModal :promotionSettingInfo="promotionSettingInfo"></PromotionSetupModal>
     </AppModal>
 
-
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
   
       <div class="card">
   <div class="card-body">
@@ -115,8 +126,8 @@ const openEditModal = (promotion) => {
                  <td>{{ prom.next_class.class_name }}</td>
                  <td>{{ prom.type }}</td>
                  <td>{{ prom.status }}</td>
-                 <td> <button><i class="bi bi-trash"></i></button> &nbsp;
-                <button @click="openEditModal(prom)"><i class="bi bi-pencil"></i></button></td>
+                 <td> <button style="color: red;" @click="deletePromoSetting(prom)"><i class="bi bi-trash"></i></button> &nbsp;
+                <button @click="openEditModal(prom)"><i class="bi bi-pencil" style="color: blue;"></i></button></td>
                 </tr>
                 </tbody>
               </table>
