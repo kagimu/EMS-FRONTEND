@@ -1,15 +1,57 @@
+<script setup>
+
+import Badge from "@/assets/images/badge.png";
+import StudentImage from "@/assets/images/pic.jpg";
+
+const printReport = () => {
+  // alert("Print pdf now man")
+}
+
+const props = defineProps({
+  reportDetails:{},
+  reportDataInfo:{}
+})
+
+
+const ageCalculator = (dob) => {
+  const now = new Date();
+  const birthDate = new Date(dob);
+
+  if (isNaN(birthDate)) {
+    throw new Error("Invalid date format. Please provide a valid date.");
+  }
+
+  let years = now.getFullYear() - birthDate.getFullYear();
+  let months = now.getMonth() - birthDate.getMonth();
+  let days = now.getDate() - birthDate.getDate();
+
+  // Adjust for negative days
+  if (days < 0) {
+    months--;
+    const previousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+    days += previousMonth.getDate();
+  }
+
+  // Adjust for negative months
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  let result = "";
+  if (years > 0) result += `${years}yrs`;
+  if (months > 0) result += result ? `, ${months}mth` : `${months}mth`;
+  if (days > 0) result += result ? `, ${days}dys` : `${days}dys`;
+
+  return result || "0dys"; // Return "0dys" if all are zero
+}
+
+</script>
+
+
 <template>
   <div>
     <div class="mx-auto mt-10" style="width: 98%">
-
-      <div class="mt-4 mb-2 flex justify-content-between">
-        &nbsp;
-        <button type="button" @click="printReport" class="btn btn-primary btn-sm mr-3" style="border-radius: 0;">
-          <i class="bi-printer"></i>
-          Print Report
-        </button>
-      </div>
-
       <table style="width: 100%; border: 1px solid #f4f4f4; margin-bottom: 20px;">
         <tr>
           <td>
@@ -17,20 +59,24 @@
             <table style="width: 100%;">
               <tr>
                 <td style="width: 20%; text-align: center;">
-<!--                  <img alt="logo" style="width: 150px; margin: 0 auto" src="../../../../public/img/badge.png"/>-->
+                 <img alt="logo" style="width: 150px; margin: 0 auto" :src="reportDetails?.school?.logo"/>
                 </td>
                 <td style="width: 60%;" class="text-center">
-                  <div style="font-size: 30px;"><b>NOREGRETS LIFE SCHOOL</b></div>
+                  <div style="font-size: 30px;text-transform: uppercase;"><b>{{reportDetails?.school?.name}}</b></div>
 
-                  <div style="font-size: 20px; margin-top: 5px;">BUNAMWAYA CAMPUS</div>
+                  <div style="font-size: 20px; margin-top: 5px;text-transform: uppercase;">{{reportDetails?.campus?.name}}</div>
 
-                  <div style="margin-top: 6px; margin-bottom: 10px;"><small>Bunamwaya, P.O.BOX 21671 Kampala | +256752698545 | mwesigwa.noregrets@gmail.com</small></div>
+                  <div style="margin-top: 6px; margin-bottom: 10px;"><small>
+                       {{reportDetails?.campus?.location}} |
+                      {{reportDetails?.campus?.phone}} |
+                      {{reportDetails?.campus?.email}}
+                  </small></div>
 
                   <div style="background-color: green; color: #ffffff;">PROGRESS REPORT FOR KINDERGARTEN</div>
                 </td>
                 <td style="width: 20%;">
                   <div style="text-align: center; margin-top: 10px;">
-<!--                    <img alt="logo" style="width: 130px; margin: 0 auto;" src="../../../../public/img/pic.jpg"/>-->
+                   <img alt="logo" style="width: 130px; margin: 0 auto;" :src="reportDataInfo?.photo"/>
                   </div>
                 </td>
               </tr>
@@ -51,10 +97,10 @@
                   <div style="padding-left: 5px; padding-bottom: 10px;">Term:</div>
                 </td>
                 <td style="width: 40%;">
-                  <div style="padding-left: 5px; padding-bottom: 10px;"> NZANZU Titus Garnette</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">Top Class</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">310</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">Term 1</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;"><span class="capitalize">{{reportDetails?.student?.surname}}</span> <span class="capitalize">{{reportDetails?.student?.second_name}}</span> <span class="capitalize">{{reportDetails?.student?.other_name}}</span></div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;"><span>{{reportDetails?.class_abbreviation}}<span v-if="reportDetails?.stream">, {{reportDetails?.stream}}</span></span></div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;"><span class="capitalize">310</span></div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;">{{reportDetails?.study_period}}</div>
                 </td>
                 <td style="width: 15%;">
                   <div style="padding-left: 5px; padding-bottom: 10px;">  Age:</div>
@@ -63,10 +109,10 @@
                   <div style="padding-left: 5px; padding-bottom: 10px;">Date:</div>
                 </td>
                 <td style="width: 30%;">
-                  <div style="padding-left: 5px; padding-bottom: 10px;"> 6yrs , 8mth</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">&nbsp;</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">2</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">30th/Nov/-0001</div>
+                  <div style="padding-left: 5px; padding-bottom: 10px;"><!--6yrs , 8mth-->{{ageCalculator(reportDetails?.student?.date_of_birth)}}</div>
+                <div style="padding-left: 5px; padding-bottom: 10px;">&nbsp;</div>
+                <div style="padding-left: 5px; padding-bottom: 10px;">2</div>
+                <div style="padding-left: 5px; padding-bottom: 10px;">{{new Date().toLocaleDateString()}}</div>
                 </td>
               </tr>
             </table>
@@ -324,12 +370,6 @@
   </div>
 </template>
 
-<script setup>
-const printReport = () => {
-  // alert("Print pdf now man")
-}
-
-</script>
 
 <style scoped>
 

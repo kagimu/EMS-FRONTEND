@@ -86,7 +86,7 @@ if(navigator.userAgent.indexOf("Firefox") !== -1 ) {
 
 
   <div v-if="reportDetails?.report_template_name.trim() === 'wholesome-early-learning-report-top-class'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
-    <top-class-report></top-class-report>
+    <top-class-report :reportDataInfo="reportData" :reportDetails="reportDetails"></top-class-report>
     <br />
   </div>
 
