@@ -514,7 +514,7 @@ watch(
                   {{ index+1 }}
                 </td>
                 <td>
-                  {{ metricsData.metric_name + " - " + metricsData.class}}
+                  {{ metricsData.metric_name + " - " + metricsData.assessment_area	}}
                 </td>
                 <td>{{ metricsData.scheduled_on }}</td>
                 <td>{{ metricsData.class }}</td>

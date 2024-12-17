@@ -164,7 +164,7 @@ const deleteGrade = async (data, index) => {
         <thead>
         <tr>
           <th class="w-[5%]">#</th>
-          <th class="w-[15%]">Group</th>
+          <!-- <th class="w-[15%]">Group</th> -->
           <th scope="col">Name</th>
           <th scope="col">Short Name</th>
           <th scope="col">Status</th>
@@ -174,7 +174,7 @@ const deleteGrade = async (data, index) => {
         <tbody>
         <tr v-for="(gradeList, index) in gradeData " :key="index">
           <td>{{ gradeList?.code }}</td>
-          <td>{{ gradeList?.grade_group }}</td>
+          <!-- <td>{{ gradeList?.grade_group }}</td> -->
           <td>{{ gradeList?.name }}</td>
           <td>{{ gradeList?.short_name }}</td>
           <td><span class="border px-2 rounded-md">{{ gradeList.status }}</span></td>

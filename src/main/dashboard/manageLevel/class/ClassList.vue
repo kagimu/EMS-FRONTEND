@@ -72,7 +72,7 @@ const deleteStream = async (lst) => {
 const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+lst.name);
 if (agreed) {
   
-  alert(JSON.stringify(lst))
+  // alert(JSON.stringify(lst))
 }
 
 
