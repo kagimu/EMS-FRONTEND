@@ -171,13 +171,14 @@ const ageCalculator = (dob) => {
 
               <tr v-for="(learning_area,learning_area_index) in reportDetails?.learning_areas" :key="learning_area_index">
                 <td style="border-top: 1px solid #45484c; border-right: 1px solid #45484c;">
-<!--                  <div style="transform: rotate(270deg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">-->
+<!--                  <div style="transform: rotate(270deg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: auto;">-->
                   <div>
                     {{learning_area?.name}}
                   </div>
                 </td>
 
                 <td :colspan="(5 + Number(reportDetails?.report_columns.length))">
+
                   <table cellspacing="0" cellpadding="0" style="width: 100%; font-size: 13px; border-top: 1px solid #45484c;">
                   <tr v-for="(assessment,assessment_index) in learning_area?.assessments" :key="assessment_index">
                     <td style="width: 30%; padding: 4px; border-right: 1px solid #45484c;"><div style="margin-left: 4px;">{{assessment.name}}</div></td>
@@ -189,8 +190,8 @@ const ageCalculator = (dob) => {
                     <td style="width: 25%; padding: 4px; border-right: 1px solid #45484c;">{{assessment.report_score_summary.comment}}</td>
                     <td style="width: 5%; padding: 4px; border-right: 1px solid #45484c;">M.O</td>
                   </tr>
-
                   </table>
+
 
                 </td>
               </tr>
