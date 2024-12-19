@@ -1,7 +1,8 @@
 <script setup>
 
-import Badge from "@/assets/images/badge.png";
-import StudentImage from "@/assets/images/pic.jpg";
+import useCommonsStore from "@/composables/useCommons.js";
+
+const commons = useCommonsStore()
 
 const printReport = () => {
   // alert("Print pdf now man")
@@ -13,38 +14,7 @@ const props = defineProps({
 })
 
 
-const ageCalculator = (dob) => {
-  const now = new Date();
-  const birthDate = new Date(dob);
 
-  if (isNaN(birthDate)) {
-    throw new Error("Invalid date format. Please provide a valid date.");
-  }
-
-  let years = now.getFullYear() - birthDate.getFullYear();
-  let months = now.getMonth() - birthDate.getMonth();
-  let days = now.getDate() - birthDate.getDate();
-
-  // Adjust for negative days
-  if (days < 0) {
-    months--;
-    const previousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-    days += previousMonth.getDate();
-  }
-
-  // Adjust for negative months
-  if (months < 0) {
-    years--;
-    months += 12;
-  }
-
-  let result = "";
-  if (years > 0) result += `${years}yrs`;
-  if (months > 0) result += result ? `, ${months}mth` : `${months}mth`;
-  if (days > 0) result += result ? `, ${days}dys` : `${days}dys`;
-
-  return result || "0dys"; // Return "0dys" if all are zero
-}
 
 </script>
 
@@ -118,7 +88,7 @@ const ageCalculator = (dob) => {
                   <div style="padding-left: 60px; padding-bottom: 10px;"><span class="capitalize">{{reportDetails?.student?.surname}}</span> <span class="capitalize">{{reportDetails?.student?.second_name}}</span> <span class="capitalize">{{reportDetails?.student?.other_name}}</span></div>
                   <div style="padding-left: 60px; padding-bottom: 10px;"><span>{{reportDetails?.class_abbreviation}}<span v-if="reportDetails?.stream">, {{reportDetails?.stream}}</span></span></div>
                   <div style="padding-left: 60px; padding-bottom: 10px;"><span class="capitalize">{{reportDetails?.student?.gender}}</span></div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;"><!--6yrs , 8mth-->{{ageCalculator(reportDetails?.student?.date_of_birth)}}</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;"><!--6yrs , 8mth-->{{commons.ageCalculator(reportDetails?.student?.date_of_birth)}}</div>
                 </td>
                 <td style="width: 15%;">
                   <div style="padding-left: 60px; padding-bottom: 10px;">Term:</div>
