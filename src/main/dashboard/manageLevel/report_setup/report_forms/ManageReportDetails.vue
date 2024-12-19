@@ -3,7 +3,7 @@
 import {ref, watch,reactive} from "vue";
 import {useReportCardStore} from "@/main/dashboard/report-card/store/report-card.js";
 import BabyClassReport from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/BabyClassReport.vue";
-import PrimaryReport from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/PrimaryReport.vue";
+import PrimaryReportCopy from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/PrimaryReportCopy.vue";
 import TopClassReport from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/TopClassReport.vue";
 import VictoriousReportCard
   from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/victorious/VictoriousReportCard.vue";
@@ -91,7 +91,7 @@ if(navigator.userAgent.indexOf("Firefox") !== -1 ) {
   </div>
 
   <div v-if="reportDetails?.report_template_name.trim() === 'wholesome-report-primary'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
-    <primary-report :reportDataInfo="reportData" :reportDetails="reportDetails"></primary-report>
+    <primary-report-copy :reportDataInfo="reportData" :reportDetails="reportDetails"></primary-report-copy>
   </div>
 
   <div v-if="reportDetails?.report_template_name.trim() === 'victorious-report-primary'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">

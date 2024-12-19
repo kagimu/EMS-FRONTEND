@@ -1,220 +1,166 @@
 <template>
-<div style="font-family: Arial, sans-serif; margin: 20px;">
+  <table style="border: 1px solid #dee2e6; color:#4b5563; font-size:13px; width: 100%; border-collapse: collapse; text-align: left;">
+    <!-- Table Header -->
+    <thead>
+      <tr>
+        <th style="width:5%;border: 1px solid #dee2e6;color:#4b5563; font-size:13px;"></th>
+        <th style="width:20%;border: 1px solid #dee2e6;color:#4b5563; font-size:13px;">SUBJECT UNIT</th>
+        <th style="width:10%;border: 1px solid #dee2e6;color:#4b5563; font-size:13px;">ROC</th>
+        <th style="width:10%;border: 1px solid #dee2e6;color:#4b5563; font-size:13px;">End of Term</th>
+        <th style="width:10%;border: 1px solid #dee2e6;color:#4b5563; font-size:13px;">Quarter Term</th>
+        <th style="width:10%;border: 1px solid #dee2e6;color:#4b5563; font-size:13px;">Average</th>
+        <th style="width:10%;border: 1px solid #dee2e6;color:#4b5563; font-size:13px;">Aggr</th>
+        <th style="width:10%;border: 1px solid #dee2e6;color:#4b5563; font-size:13px;">Remark</th>
+        <th style="width:10%;border: 1px solid #dee2e6;color:#4b5563; font-size:13px;">Initial</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Iterate over the data -->
+      <template v-for="(subjectGroup, groupName) in dataList" :key="groupName">
+        <template v-for="(subject, index) in subjectGroup.assessments" :key="index">
+          <tr>
+            <!-- Subject Group Name with Rowspan -->
+            <th v-if="index === 0" :rowspan="Number(subjectGroup.assessments.length)" 
+                style="transform: rotate(270deg); white-space: nowrap; overflow: hidden; 
+                text-overflow: ellipsis; margin: auto; border: 1px solid #dee2e6;color:#4b5563 !important;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-weight: 300 !important; font-size:13px; vertical-align: middle;
+                padding-left: 10px;padding-right:10px; padding-top:10px;padding-bottom:10px;
+                letter-spacing: 0.07em; line-height: 1.5em; height: auto;">
+              {{ subjectGroup.name }}
+            </th>
 
-        <table class="table"  style="border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;   width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 13px;">
-            <!-- Table Header -->
-            <thead>
-                <tr>
-                  <th style="width:5%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;"></th>
-                    <th style="width:20%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">SUBJECT UNIT</th>
-                    <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">ROC</th>
-                    <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">End of Term</th>
-                    <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Quarter Term</th>
-                    <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Average</th>
-                    <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Aggr</th>
-                    <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Remark</th>
-                    <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Initial</th>
-                </tr>
-            </thead>
-            <!-- MENTAL STUDIES -->
-            <tr >
-                <th style="border: 1px  solid #dee2e6;color:#4b5563 !important; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 300px !important; font-size:13px;vertical-align: middle;padding-left: 50px;padding-right:80px; padding-top:10px; padding-bottom:10px;letter-spacing: 0.07cap;" class="vertical-header" rowspan="5">MENTAL STUDIES</th>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Mathematics</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-            </tr>
-            <tr>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Language</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-            </tr>
-            <tr>
-              <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">History</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-            </tr>
-            <tr>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Geography</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-            </tr>
-            <tr>
-              <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Science</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-            </tr>
-            <!-- PHYSICAL STUDIES -->
-            <tr>
-                <th  style="border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;vertical-align: middle;padding-left: 50px;padding-right:50px;letter-spacing: 0.07cap;" class="vertical-header" rowspan="4">PHYSICAL STUDIES</th>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;"> Games and Athletics</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-            </tr>
-            <tr>
-                <td  style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Celebrate: Performing Arts</td>
-             
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-            </tr>
-            <tr>
-          
-                <td  style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Art and Design</td>
-             
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-            </tr>
-            <tr>
-              <td  style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Creative Work and Resources</td>
-             
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-            </tr>
-            <!-- RELIGIOUS STUDIES -->
-            <tr>
-                <th style="border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;vertical-align: middle;padding-left: 50px;padding-right:50px;letter-spacing: 0.07cap;" class="vertical-header" rowspan="3">RELIGIOUS STUDIES</th>
-            <td  style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Praise and Worship</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-            </tr>
-            <tr>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Prayer</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-            </tr>
-            <tr>
-                <td  style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">God's Purpose and Plan</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-            </tr>
-            <!-- SOCIAL STUDIES -->
-            <tr>
-                <th style="border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;vertical-align: middle;padding-left: 50px;padding-right:50px;letter-spacing: 0.07cap;" class="vertical-header" rowspan="3">SOCIAL STUDIES</th>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Law and Government</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-            </tr>
-            <tr>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Service and Enterprise</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-            </tr>
-            <tr>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Family and Community</td>
-                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-            </tr>
-        </table>
-
-    </div>
+            <!-- Subject Information Cells -->
+            <td style="border: 1px solid #dee2e6;color:#4b5563; font-size:13px; padding: 10px;">{{ subject.name }}</td>
+            <td style="border: 1px solid #dee2e6;color:#4b5563; font-size:13px; padding: 10px;">{{ subject.report_scores[0]?.score || '-' }}</td>
+            <td style="border: 1px solid #dee2e6;color:#4b5563; font-size:13px; padding: 10px;">{{ subject.report_scores[1]?.score || '-' }}</td>
+            <td style="border: 1px solid #dee2e6;color:#4b5563; font-size:13px; padding: 10px;">{{ subject.report_score_summary.summation }}</td>
+            <td style="border: 1px solid #dee2e6;color:#4b5563; font-size:13px; padding: 10px;">{{ subject.report_score_summary.comment }}</td>
+            <td style="border: 1px solid #dee2e6;color:#4b5563; font-size:13px; padding: 10px;">{{ subject.report_score_summary.grade }}</td>
+            <td style="border: 1px solid #dee2e6;color:#4b5563; font-size:13px; padding: 10px;">{{ subject.report_score_summary.grade }}</td>
+            <td style="border: 1px solid #dee2e6;color:#4b5563; font-size:13px; padding: 10px;">{{ subject.report_score_summary.comment }}</td>
+            <td style="border: 1px solid #dee2e6;color:#4b5563; font-size:13px; padding: 10px;">M.O</td>
+          </tr>
+        </template>
+      </template>
+    </tbody>
+  </table>
 </template>
 
 <script setup>
-</script>
+import { ref } from 'vue';
 
-<style>
-  /* table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 13px;
-        } */
-        th, td {
-            /* border: 1px solid #ddd; */
-            padding: 5px;
+const dataList = ref([
+  {
+    "name": "Mental Studies",
+    "assessments": [
+      {
+        "name": "Mathematics",
+        "report_scores": [
+          { "score": 30, "grade": "Distinction one", "remark": "Excellent" },
+          { "score": 24, "grade": "Distinction one", "remark": "Excellent" }
+        ],
+        "report_score_summary": {
+          "summation": 54,
+          "comment": "Excellent",
+          "grade": "D1"
         }
-        .vertical-header {
-            writing-mode: sideways-lr;
-            text-orientation:mixed;
-            /* font-weight: bold; */
-            text-align: center;
+      },
+      {
+        "name": "Language English",
+        "report_scores": [
+          { "score": 27, "grade": "Distinction one", "remark": "Excellent" }
+        ],
+        "report_score_summary": {
+          "summation": 27,
+          "comment": "Fair",
+          "grade": "P8"
         }
-        .section-header {
-            background-color: #f4f4f4;
-            /* font-weight: bold; */
+      },
+      {
+        "name": "Language English",
+        "report_scores": [
+          { "score": 27, "grade": "Distinction one", "remark": "Excellent" }
+        ],
+        "report_score_summary": {
+          "summation": 27,
+          "comment": "Fair",
+          "grade": "P8"
         }
-        .data-row td {
-            padding: 0px;
+      },
+      {
+        "name": "Language English",
+        "report_scores": [
+          { "score": 27, "grade": "Distinction one", "remark": "Excellent" }
+        ],
+        "report_score_summary": {
+          "summation": 27,
+          "comment": "Fair",
+          "grade": "P8"
         }
-        thead th {
-            background-color: #e6e6e6;
-            /* font-weight: bold; */
+      },
+      {
+        "name": "Language English",
+        "report_scores": [
+          { "score": 27, "grade": "Distinction one", "remark": "Excellent" }
+        ],
+        "report_score_summary": {
+          "summation": 27,
+          "comment": "Fair",
+          "grade": "P8"
         }
-</style>
+      }
+    ]
+  },
+  {
+    "name": "Religious Studies",
+    "assessments": [
+      {
+        "name": "Mathematics",
+        "report_scores": [
+          { "score": 30, "grade": "Distinction one", "remark": "Excellent" },
+          { "score": 24, "grade": "Distinction one", "remark": "Excellent" }
+        ],
+        "report_score_summary": {
+          "summation": 54,
+          "comment": "Excellent",
+          "grade": "D1"
+        }
+      },
+      {
+        "name": "Language English",
+        "report_scores": [
+          { "score": 27, "grade": "Distinction one", "remark": "Excellent" }
+        ],
+        "report_score_summary": {
+          "summation": 27,
+          "comment": "Fair",
+          "grade": "P8"
+        }
+      },
+      {
+        "name": "Language English",
+        "report_scores": [
+          { "score": 27, "grade": "Distinction one", "remark": "Excellent" }
+        ],
+        "report_score_summary": {
+          "summation": 27,
+          "comment": "Fair",
+          "grade": "P8"
+        }
+      },
+      {
+        "name": "Language English",
+        "report_scores": [
+          { "score": 27, "grade": "Distinction one", "remark": "Excellent" }
+        ],
+        "report_score_summary": {
+          "summation": 27,
+          "comment": "Fair",
+          "grade": "P8"
+        }
+      }
+    ]
+  }
+]);
+</script>

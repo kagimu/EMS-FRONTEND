@@ -50,17 +50,7 @@ const ageCalculator = (dob) => {
 
 <template>
   <div>
-   {{reportDetails}}
     <div class="mx-auto mt-10" style="width: 98%; ">
-
-   <div class="mt-4 mb-2 flex justify-content-between">
-        &nbsp;
-        <button type="button" @click="printReport" class="btn btn-primary btn-sm mr-3" style="border-radius: 0;">
-          <i class="bi-printer"></i>
-          Print Report
-        </button>
-      </div>
-
         <table style="width: 100%; border: 1px solid #f4f4f4; margin-bottom: 20px;">
         <tr>
           <td>
@@ -134,229 +124,66 @@ const ageCalculator = (dob) => {
                 </td>
               </tr>
             </table>
-
-
           </td>
         </tr>
-
-
-
 
 
         <tr>
           <td>
 
 
+ <div style="font-family: Arial, sans-serif; margin: 0px;">
 
 
-
-
- <div style="font-family: Arial, sans-serif; margin: 20px;">
-<table  style="border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;   width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-    font-size: 13px;">
+    <table
+     style="border-bottom: 1px solid  #f4f4f4; color:#4b5563; background-color: transparent; font-size:13px; width: 100%; 
+     border-collapse: collapse; text-align: left;background-color: transparent;"
+  
+     >
     <!-- Table Header -->
     <thead>
-        <tr>
-          <th style="width:5%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;"></th>
-            <th style="width:20%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">SUBJECT UNIT</th>
-            <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">ROC</th>
-            <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">End of Term</th>
-            <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Quarter Term</th>
-            <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Average</th>
-            <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Aggr</th>
-            <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Remark</th>
-            <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Initial</th>
-        </tr>
+      <tr>
+        <th style="width:5%;border-top: 1px solid  #f4f4f4;color:white; background-color: transparent; font-size:12px;border-left:0px !important"></th>
+        <th style="width:22%;border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px;padding-top:5px;;padding-bottom:5px; border-left:10px !important">SUBJECT UNIT</th>
+        <th style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:11px;padding-top:5px;padding-bottom:5px">ROC</th>
+        <th style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:11px;padding-top:5px;padding-bottom:5px">End of Term</th>
+        <th style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:11px;padding-top:5px;padding-bottom:5px">Quarter Term</th>
+        <th style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:11px;padding-top:5px;padding-bottom:5px">Average</th>
+        <th style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:11px;padding-top:5px;padding-bottom:5px">Aggr</th>
+        <th style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:11px;padding-top:5px;padding-bottom:5px">Remark</th>
+        <th style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:11px;padding-top:5px;padding-bottom:5px">Initial</th>
+      </tr>
     </thead>
-    <!-- MENTAL STUDIES -->
-    <tr>
-        <th  rowspan="5" 
-         style="transform: rotate(270deg); white-space: nowrap; overflow: hidden; 
-         text-overflow: ellipsis; margin: auto;border: 1px  solid #dee2e6;color:#4b5563 !important; 
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-         font-weight: 300px !important; font-size:13px;vertical-align:
-          middle;padding-left: 10px;padding-right:10px; 
-          padding-top:10px; padding-bottom:10px;letter-spacing: 0.07cap; height:200px !important">MENTAL STUDIES</th>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Mathematics</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-    </tr>
+    <tbody>
+      <!-- Iterate over the data -->
+      <template v-for="(subjectGroup, groupName) in reportDetails?.learning_areas" :key="groupName">
+        <template v-for="(subject, index) in subjectGroup.assessments" :key="index">
+          <tr>
+            <!-- Subject Group Name with Rowspan -->
+            <th v-if="index === 0" :rowspan="Number(subjectGroup.assessments.length)" 
+                style="transform: rotate(270deg); white-space: nowrap; overflow: hidden; 
+                text-overflow: ellipsis; border-top: 1px solid  #f4f4f4;color:#4b5563 !important;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-weight: 300 !important; font-size:10px; vertical-align: middle;
+                letter-spacing: 0.05em; height: auto;text-transform: uppercase;">
+           {{ subjectGroup.name }}
+            </th>
 
+            <!-- Subject Information Cells -->
+            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 10px;">{{ subject.name }}</td>
+            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 5px;">{{ subject.report_scores[0]?.score || '-' }}</td>
+            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 5px;">{{ subject.report_scores[1]?.score || '-' }}</td>
+            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 5px;">{{ subject.report_score_summary.summation }}</td>
+            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px;padding-top: 5px;padding-bottom: 5px;">{{ subject.report_score_summary.comment }}</td>
+            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 5px;">{{ subject.report_score_summary.grade }}</td>
+            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 5px;">{{ subject.report_score_summary.comment }}</td>
+            <td style="border-top: 1px solid  #f4f4f4;border-bottom: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:13px; padding: 0px;">M.O</td>
+          </tr>
+        </template>
+      </template>
+    </tbody>
+  </table>
 
- <tr>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Language</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-    </tr>
-    <tr>
-      <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">History</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-    </tr>
-    <tr>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Geography</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-    </tr>
-    <tr>
-      <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Science</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-    </tr>
-
-
-    <!-- <tr>
-        <th     style="transform: rotate(270deg); white-space: nowrap; overflow: hidden; 
-         text-overflow: ellipsis; margin: auto;border: 1px  solid #dee2e6;color:#4b5563 !important; 
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-         font-weight: 300px !important; font-size:13px;vertical-align:
-          middle;padding-left: 10px;padding-right:10px; 
-          padding-top:10px; padding-bottom:10px;letter-spacing: 0.07cap; height:200px !important" rowspan="4">PHYSICAL STUDIES</th>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;"> Games and Athletics</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-    </tr>
-    <tr>
-        <td  style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Celebrate: Performing Arts</td>
-     
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-    </tr>
-    <tr>
-  
-        <td  style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Art and Design</td>
-     
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-    </tr>
-    <tr>
-      <td  style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Creative Work and Resources</td>
-     
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-    </tr>
-    <tr>
-        <th     style="transform: rotate(270deg); white-space: nowrap; overflow: hidden; 
-         text-overflow: ellipsis; margin: auto;border: 1px  solid #dee2e6;color:#4b5563 !important; 
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-         font-weight: 300px !important; font-size:13px;vertical-align:
-          middle;padding-left: 10px;padding-right:10px; 
-          padding-top:10px; padding-bottom:10px;letter-spacing: 0.07cap; height:200px !important"  rowspan="3">RELIGIOUS STUDIES</th>
-    <td  style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Praise and Worship</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-    </tr>
-    <tr>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Prayer</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-    </tr>
-    <tr>
-        <td  style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">God's Purpose and Plan</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-    </tr>
-    <tr>
-        <th     style="transform: rotate(270deg); white-space: nowrap; overflow: hidden; 
-         text-overflow: ellipsis; margin: auto;border: 1px  solid #dee2e6;color:#4b5563 !important; 
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-         font-weight: 300px !important; font-size:13px;vertical-align:
-          middle;padding-left: 10px;padding-right:10px; 
-          padding-top:10px; padding-bottom:10px;letter-spacing: 0.07cap; height:200px !important" rowspan="3">SOCIAL STUDIES</th>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Law and Government</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-    </tr>
-    <tr>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Service and Enterprise</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-    </tr>
-    <tr>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Family and Community</td>
-        <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
-     <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
-    </tr>  -->
-
-
-</table>
 
 </div>
 
