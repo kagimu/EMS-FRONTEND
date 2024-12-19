@@ -51,15 +51,15 @@ const ageCalculator = (dob) => {
 <template>
   <div>
 <!--    {{reportDetails}}-->
-    <div class="mx-auto mt-10" style="width: 98%">
+    <div class="mx-auto mt-10" style="width: 98%; ">
 
-<!--      <div class="mt-4 mb-2 flex justify-content-between">
+   <div class="mt-4 mb-2 flex justify-content-between">
         &nbsp;
         <button type="button" @click="printReport" class="btn btn-primary btn-sm mr-3" style="border-radius: 0;">
           <i class="bi-printer"></i>
           Print Report
         </button>
-      </div>-->
+      </div>
 
         <table style="width: 100%; border: 1px solid #f4f4f4; margin-bottom: 20px;">
         <tr>
@@ -67,14 +67,14 @@ const ageCalculator = (dob) => {
 
 
 
-            <table style="width: 100%;">
+            <table style="width: 100%; text-align: center;">
               <tr>
                 <td style="width: 20%; text-align: center;">
                   <img alt="logo" style="width: 130px; margin: 0 auto;" :src="reportDetails?.school?.logo"/>
                 </td>
                 <td style="width: 60%;" class="text-center">
                   <!--        <div style="font-size: 30px;"><b>NOREGRETS LIFE SCHOOL</b></div>-->
-                  <div style="font-size: 30px; text-transform: uppercase;"><b>{{reportDetails?.school?.name}}</b></div>
+                  <div style="font-size: 30px; text-transform: uppercase;text-align: center;"><b>{{reportDetails?.school?.name}}</b></div>
 
                   <!--        <div style="font-size: 20px; margin-top: 5px;">BUNAMWAYA CAMPUS</div>-->
                   <div style="font-size: 20px; margin-top: 5px;text-transform: uppercase;">{{reportDetails?.campus?.name}}</div>
@@ -91,7 +91,7 @@ const ageCalculator = (dob) => {
                   <div style="background-color: green; color: #ffffff; text-transform: uppercase; text-align: center;">PROGRESS REPORT FOR {{reportDetails?.level_name}}</div>
                 </td>
                 <td style="width: 20%;">
-                  <div style="text-align: center; margin-top: 10px;">
+                  <div style="text-align: center; margin-top: 10px;padding-left:20px">
 <!--                    <img alt="logo" style="width: 130px; margin: 0 auto;" :src="StudentImage"/>-->
                     <img alt="logo" style="width: 130px;" :src="reportDataInfo?.photo"/>
                   </div>
@@ -171,10 +171,11 @@ const ageCalculator = (dob) => {
 
               <tr v-for="(learning_area,learning_area_index) in reportDetails?.learning_areas" :key="learning_area_index">
                 <td style="border-top: 1px solid #45484c; border-right: 1px solid #45484c;">
-<!--                  <div style="transform: rotate(270deg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: auto;">-->
+                 <div style="transform: rotate(270deg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: auto;">
                   <div>
                     {{learning_area?.name}}
                   </div>
+                </div>
                 </td>
 
                 <td :colspan="(5 + Number(reportDetails?.report_columns.length))">
@@ -571,13 +572,41 @@ const ageCalculator = (dob) => {
 
 
     </div>
-
-
   </div>
+
+
+ 
 </template>
 
 
 
-<style scoped>
 
+<style>
+  /* table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 13px;
+        } */
+        th, td {
+            /* border: 1px solid #ddd; */
+            /* padding: 5px; */
+        }
+        .vertical-header {
+            writing-mode: sideways-lr;
+            text-orientation:mixed;
+            /* font-weight: bold; */
+            text-align: center;
+        }
+        .section-header {
+            background-color: #f4f4f4;
+            /* font-weight: bold; */
+        }
+        .data-row td {
+            padding: 0px;
+        }
+        thead th {
+            background-color: #e6e6e6;
+            /* font-weight: bold; */
+        }
 </style>

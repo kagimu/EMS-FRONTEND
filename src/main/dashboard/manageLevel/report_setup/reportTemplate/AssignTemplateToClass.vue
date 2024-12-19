@@ -57,7 +57,8 @@ const classList = ref([])
 const form = reactive({
   report_template_number:props.reportTemplateNumber,
   classes:[],
-  campus_number:campusNumber
+  campus_number:campusNumber,
+  campus_curriculum_number:routerData.currentRoute.value.query.crr
 })
 
 const toggleClass = (selectedClass) => {

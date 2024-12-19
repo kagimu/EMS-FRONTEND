@@ -1,125 +1,220 @@
 <template>
-  <div>
-    <div class="col-4">
-      <div class="mb-2">
-        <input
-          v-model="searchQuery"
-          class="form-control mb-0"
-          placeholder="Search..."
-          type="text"
-        />
-      </div>
-    </div>
+<div style="font-family: Arial, sans-serif; margin: 20px;">
 
-    <table class="table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Unit of Measure</th>
-          <th>Purchase Unit</th>
-          <th>Current Quantity</th>
-          <th>Unit Cost</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(list, index) in filteredMenuItems"
-          v-if="!isLoading"
-          :key="index"
-        >
-          <td>{{ index + 1 }}</td>
-          <td>{{ list.name }}</td>
-          <td>{{ list.unit_of_measure_name }}</td>
-          <td>{{ list.purchase_unit_of_measure_name }}</td>
-          <td>{{ list.current_quantity.toLocaleString() }}</td>
-          <td>{{ list.unit_cost.toLocaleString() }}</td>
-          <td>
-            <button v-if="can('edit_menu_item', 'general')" @click="showUpdateDialog(list)">
-              <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
-            </button>
-            &nbsp;
-            <button v-if="can('remove_menu_item', 'general')" type="button" @click="deleteThisData(list.number, list.name)">
-              <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+        <table class="table"  style="border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;   width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 13px;">
+            <!-- Table Header -->
+            <thead>
+                <tr>
+                  <th style="width:5%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;"></th>
+                    <th style="width:20%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">SUBJECT UNIT</th>
+                    <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">ROC</th>
+                    <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">End of Term</th>
+                    <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Quarter Term</th>
+                    <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Average</th>
+                    <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Aggr</th>
+                    <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Remark</th>
+                    <th style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Initial</th>
+                </tr>
+            </thead>
+            <!-- MENTAL STUDIES -->
+            <tr >
+                <th style="border: 1px  solid #dee2e6;color:#4b5563 !important; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 300px !important; font-size:13px;vertical-align: middle;padding-left: 50px;padding-right:80px; padding-top:10px; padding-bottom:10px;letter-spacing: 0.07cap;" class="vertical-header" rowspan="5">MENTAL STUDIES</th>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Mathematics</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
+            </tr>
+            <tr>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Language</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
+            </tr>
+            <tr>
+              <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">History</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
+            </tr>
+            <tr>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Geography</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
+            </tr>
+            <tr>
+              <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Science</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
+            </tr>
+            <!-- PHYSICAL STUDIES -->
+            <tr>
+                <th  style="border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;vertical-align: middle;padding-left: 50px;padding-right:50px;letter-spacing: 0.07cap;" class="vertical-header" rowspan="4">PHYSICAL STUDIES</th>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;"> Games and Athletics</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
+            </tr>
+            <tr>
+                <td  style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Celebrate: Performing Arts</td>
+             
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
+            </tr>
+            <tr>
+          
+                <td  style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Art and Design</td>
+             
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
+            </tr>
+            <tr>
+              <td  style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Creative Work and Resources</td>
+             
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
+            </tr>
+            <!-- RELIGIOUS STUDIES -->
+            <tr>
+                <th style="border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;vertical-align: middle;padding-left: 50px;padding-right:50px;letter-spacing: 0.07cap;" class="vertical-header" rowspan="3">RELIGIOUS STUDIES</th>
+            <td  style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Praise and Worship</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
+            </tr>
+            <tr>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Prayer</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
+            </tr>
+            <tr>
+                <td  style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">God's Purpose and Plan</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
+            </tr>
+            <!-- SOCIAL STUDIES -->
+            <tr>
+                <th style="border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;vertical-align: middle;padding-left: 50px;padding-right:50px;letter-spacing: 0.07cap;" class="vertical-header" rowspan="3">SOCIAL STUDIES</th>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Law and Government</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
+            </tr>
+            <tr>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Service and Enterprise</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
+            </tr>
+            <tr>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Family and Community</td>
+                <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">50</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">89</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">80</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">D1</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">Good</td>
+             <td style="width:10%;border: 1px  solid #dee2e6;color:#4b5563; font-size:13px;">M.O</td>
+            </tr>
+        </table>
 
-    <div v-if="isLoading" class="text-center">
-      Loading data...
     </div>
-  </div>
 </template>
 
-<script>
-import { ref, computed } from 'vue';
-
-export default {
-  setup() {
-    // Reactive variables
-    const searchQuery = ref("");
-    const isLoading = ref(false);
-
-    // Mock data for the table
-    const menuItemData = ref([
-      { name: "Item 1", unit_of_measure_name: "Kg", purchase_unit_of_measure_name: "Box", current_quantity: 50, unit_cost: 5000 },
-      { name: "Item 2", unit_of_measure_name: "L", purchase_unit_of_measure_name: "Bottle", current_quantity: 20, unit_cost: 3000 },
-      { name: "Item 3", unit_of_measure_name: "Pcs", purchase_unit_of_measure_name: "Packet", current_quantity: 100, unit_cost: 200 },
-    ]);
-
-    // Filtering logic
-    const filteredMenuItems = computed(() => {
-      if (!searchQuery.value.trim()) {
-        return menuItemData.value;
-      }
-      return menuItemData.value.filter((item) =>
-        item.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-      );
-    });
-
-    // Mock permissions and actions
-    const can = (action, resource) => {
-      // Replace with actual permission logic
-      return true;
-    };
-
-    const showUpdateDialog = (item) => {
-      alert(`Update item: ${item.name}`);
-    };
-
-    const deleteThisData = (number, name) => {
-      alert(`Delete item: ${name}`);
-    };
-
-    return {
-      searchQuery,
-      isLoading,
-      filteredMenuItems,
-      can,
-      showUpdateDialog,
-      deleteThisData,
-    };
-  },
-};
+<script setup>
 </script>
 
 <style>
-.table {
-  width: 100%;
-  margin: 1rem 0;
-  border-collapse: collapse;
-}
-
-.table th, .table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-.table th {
-  background-color: #f4f4f4;
-  text-align: left;
-}
+  /* table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 13px;
+        } */
+        th, td {
+            /* border: 1px solid #ddd; */
+            padding: 5px;
+        }
+        .vertical-header {
+            writing-mode: sideways-lr;
+            text-orientation:mixed;
+            /* font-weight: bold; */
+            text-align: center;
+        }
+        .section-header {
+            background-color: #f4f4f4;
+            /* font-weight: bold; */
+        }
+        .data-row td {
+            padding: 0px;
+        }
+        thead th {
+            background-color: #e6e6e6;
+            /* font-weight: bold; */
+        }
 </style>
