@@ -63,6 +63,17 @@ if (agreed) {
 }
 }
 
+watch(
+  () => promotionStore.newPromotionSettingResponse,
+  async (data) => {
+      if (data) {
+        shDialog.value = false
+        promotionStore.fetchPromotionSetting()
+       
+      }
+  }
+)
+
 </script>
 
 

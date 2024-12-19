@@ -63,9 +63,23 @@ const formData = reactive({
    level:""
    })
 
+
+  //  "name": "Sample Name",
+  // "status": "Active",
+  // "type": "Regular",
+  // "next_class_number": "12345",
+  // "previous_class_number": "12344",
+  // "study_period_number": "SP001",
+  // "campus_number": "CAMP001",
+  // "curriculum_number": "CUR001",
+  // "campus_curriculum_number": "CCN001"
+
 const addPromotionSetting = () =>{
   loader.value = true
-  alert(JSON.stringify(form))
+  // alert(JSON.stringify(form))
+  form.campus_number = formData.campus_number
+  // form.curriculum_number = formData.curriculumNumber
+  form.campus_curriculum_number = formData.curriculumNumber
   promotionStore.newPromotionSetting(form)
 } 
 
