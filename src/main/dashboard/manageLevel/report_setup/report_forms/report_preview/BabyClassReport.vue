@@ -101,7 +101,8 @@ const props = defineProps({
 
       <tr>
         <td>
-          <table style="width: 100%; border: 1px solid #f4f4f4; margin-bottom: 20px; font-size: 13px;">
+
+<!--          <table style="width: 100%; border: 1px solid #f4f4f4; margin-bottom: 20px; font-size: 13px;">
             <tr>
               <td style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;">KEY TO SCORES:</td>
               <td style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;">EXCELLENT</td>
@@ -109,7 +110,25 @@ const props = defineProps({
               <td style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;">FAIR</td>
               <td style="width: 20%; padding: 7px;"><div>NEED IMPROVEMENT</div></td>
             </tr>
+          </table>-->
+
+
+          <table style="width: 100%; border: 1px solid #b8babb; font-size: 13px; margin-top: 10px;">
+
+            <tr style="border-bottom: 1px solid #b8babb;">
+              <td style="width: 28%; padding: 5px;" rowspan="2">GRADING</td>
+              <td style="width: 8%; padding: 5px; text-align: center;" v-for="(scale,idx) in reportDetails?.aggregate_scale" :key="idx">
+                {{scale?.short_name}}
+              </td>
+            </tr>
+            <tr style="border-bottom: 1px solid #b8babb;">
+              <td style="width: 8%; padding: 5px; text-align: center;" v-for="(scale,idx) in reportDetails?.aggregate_scale" :key="idx">
+                {{scale?.min+" - "+scale?.max}}
+              </td>
+            </tr>
+
           </table>
+
         </td>
       </tr>
 
@@ -118,9 +137,36 @@ const props = defineProps({
       <tr>
         <td>
 
-          {{reportDetails}}
+
 
           <table style="width: 100%; border: 1px solid #f4f4f4; font-size: 13px;">
+            <tr style="text-align: center; border-bottom: 1px solid #f4f4f4;">
+              <td v-for="(item,idx) in reportDetails?.learning_areas" :key="idx" style="width: 25%; padding: 5px; border-right: 1px solid #f4f4f4; text-transform: uppercase;">{{item?.name}}</td>
+<!--              <td style="width: 25%; padding: 5px; border-right: 1px solid #f4f4f4;">PHYSICAL STUDIES</td>-->
+<!--              <td style="width: 25%; padding: 5px; border-right: 1px solid #f4f4f4;">RELIGIOUS STUDIES</td>-->
+<!--              <td style="width: 25%; padding: 5px;">SOCIAL STUDIES</td>-->
+            </tr>
+            <tr  style="border-bottom: 1px solid #f4f4f4;">
+              <td style="padding: 5px; border-right: 1px solid #f4f4f4;  vertical-align: top;" v-for="(item,idx) in reportDetails?.learning_areas" :key="idx">
+
+
+                <table style="width: 100%; border: 1px solid #f4f4f4; font-size: 13px;">
+                  <tr v-for="(lst,index) in  item?.assessments" :key="index" style="border-bottom: 1px solid #f4f4f4;">
+                    <td style="padding: 5px; border-right: 1px solid #f4f4f4; width: 70%;">{{lst?.name}}</td>
+                    <td style="padding: 5px; border-right: 1px solid #f4f4f4;">{{lst?.report_scores[0]?.grade}}</td>
+                  </tr>
+                </table>
+
+              </td>
+<!--              <td style="padding: 5px; border-right: 1px solid #f4f4f4;">Feeding Pattern</td>-->
+<!--              <td style="padding: 5px; border-right: 1px solid #f4f4f4;">Praise and Worship</td>-->
+<!--              <td style="padding: 5px;">Handling Acceptance</td>-->
+            </tr>
+
+          </table>
+
+
+<!--          <table style="width: 100%; border: 1px solid #f4f4f4; font-size: 13px;">
             <tr style="text-align: center; border-bottom: 1px solid #f4f4f4;">
               <td style="width: 25%; padding: 5px; border-right: 1px solid #f4f4f4;">MENTAL STUDIES</td>
               <td style="width: 25%; padding: 5px; border-right: 1px solid #f4f4f4;">PHYSICAL STUDIES</td>
@@ -176,7 +222,7 @@ const props = defineProps({
               <td style="padding: 5px;"></td>
             </tr>
 
-          </table>
+          </table>-->
 
 
         </td>
@@ -218,7 +264,27 @@ const props = defineProps({
       <tr>
         <td>
 
+
           <table style="width: 100%; font-size: 13px; margin-top: 20px; margin-bottom: 30px;">
+            <tr>
+              <td style="width: 25%;">
+                <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">CLASS TEACHER'S SIGNATURE:</div>
+                <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">HEAD TEACHER'S SIGNATURE:</div>
+                <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">NEXT TERM BEGINS:</div>
+              </td>
+
+              <td>
+
+                <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 12px;"></div>
+                <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 12px;"> {{reportDetails?.head_teachers_comment}}</div>
+                <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;"> <!--18th/May/2020--> {{reportDetails?.next_term_begins	}}</div>
+
+              </td>
+            </tr>
+          </table>
+
+
+<!--          <table style="width: 100%; font-size: 13px; margin-top: 20px; margin-bottom: 30px;">
             <tr>
               <td style="width: 25%;">
                 <div style="padding-left: 5px; padding-bottom: 10px;">CLASS TEACHER'S SIGNATURE:</div>
@@ -234,7 +300,7 @@ const props = defineProps({
 
               </td>
             </tr>
-          </table>
+          </table>-->
 
         </td>
       </tr>
