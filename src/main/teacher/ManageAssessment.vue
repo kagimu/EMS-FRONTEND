@@ -7,7 +7,7 @@ import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/st
 import { useAbility } from '@casl/vue';
 import StudentScore from "@/main/dashboard/manageLevel/report_setup/report_forms/StudentScore.vue";
 import GenerateReportByTeacher from "@/main/dashboard/report-card/GenerateReportByTeacher.vue";
-import ReportSummary from "@/main/dashboard/manageLevel/report_setup/report_forms/ReportSummary.vue";
+import ReportSummaryByTeacher from "@/main/dashboard/manageLevel/report_setup/report_forms/ReportSummaryByTeacher.vue";
 import AssessmentMetrics from "@/main/dashboard/assessment/assessmentComponents/AssessmentMetrics.vue";
 
 const { can } = useAbility()
@@ -101,7 +101,7 @@ watch(curriculumNumber, (newValue) => {
                 </div>
 
                 <div v-if=" selectedTab === 'report-summary'">
-                  <ReportSummary></ReportSummary>
+                  <ReportSummaryByTeacher></ReportSummaryByTeacher>
                    </div>
 </div>
   </div>
