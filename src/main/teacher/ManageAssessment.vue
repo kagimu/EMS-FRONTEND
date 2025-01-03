@@ -5,7 +5,7 @@ import {onMounted, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 import { useAbility } from '@casl/vue';
-import StudentScore from "@/main/dashboard/manageLevel/report_setup/report_forms/StudentScore.vue";
+import StudentScoreByTeacher from "@/main/dashboard/manageLevel/report_setup/report_forms/StudentScoreByTeacher.vue";
 import GenerateReportByTeacher from "@/main/dashboard/report-card/GenerateReportByTeacher.vue";
 import ReportSummaryByTeacher from "@/main/dashboard/manageLevel/report_setup/report_forms/ReportSummaryByTeacher.vue";
 import AssessmentMetrics from "@/main/dashboard/assessment/assessmentComponents/AssessmentMetrics.vue";
@@ -93,7 +93,7 @@ watch(curriculumNumber, (newValue) => {
   </div>
 
   <div v-if=" selectedTab === 'enter-marks'">
-              <StudentScore></StudentScore>
+              <StudentScoreByTeacher></StudentScoreByTeacher>
                 </div>
 
                 <div v-if=" selectedTab === 'generate-reports'">
