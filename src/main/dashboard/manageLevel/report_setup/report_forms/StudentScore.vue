@@ -391,7 +391,7 @@ watch(
       </div>
 
 
-      <div class="col-3">
+      <div class="col-2">
         <label class="text-sm"><small>Level</small></label>
         <select
             style="box-shadow: none;"
@@ -404,7 +404,7 @@ watch(
         </select>
       </div>
 
-      <div class="col-3">
+      <div class="col-2">
         <label class="text-sm"><small>Academic Year</small></label>
         <select
             style="box-shadow: none;"
@@ -418,7 +418,7 @@ watch(
         </select>
       </div>
 
-      <div class="col-3">
+      <div class="col-2">
         <label class="text-sm"><small>Class</small>
         </label>
         <select
@@ -434,7 +434,7 @@ watch(
         </select>
       </div>
 
-      <div class="col-3">
+      <div class="col-2">
         <label class="text-sm"><small>Study Period</small>
         </label>
         <select
