@@ -1,50 +1,14 @@
 <script setup>
 
-import Badge from "@/assets/images/badge.png";
-import StudentImage from "@/assets/images/pic.jpg";
+import useCommonsStore from "@/composables/useCommons.js";
 
-const printReport = () => {
-  // alert("Print pdf now man")
-}
+const commons = useCommonsStore()
 
 const props = defineProps({
   reportDetails:{},
   reportDataInfo:{}
 })
 
-
-const ageCalculator = (dob) => {
-  const now = new Date();
-  const birthDate = new Date(dob);
-
-  if (isNaN(birthDate)) {
-    throw new Error("Invalid date format. Please provide a valid date.");
-  }
-
-  let years = now.getFullYear() - birthDate.getFullYear();
-  let months = now.getMonth() - birthDate.getMonth();
-  let days = now.getDate() - birthDate.getDate();
-
-  // Adjust for negative days
-  if (days < 0) {
-    months--;
-    const previousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-    days += previousMonth.getDate();
-  }
-
-  // Adjust for negative months
-  if (months < 0) {
-    years--;
-    months += 12;
-  }
-
-  let result = "";
-  if (years > 0) result += `${years}yrs`;
-  if (months > 0) result += result ? `, ${months}mth` : `${months}mth`;
-  if (days > 0) result += result ? `, ${days}dys` : `${days}dys`;
-
-  return result || "0dys"; // Return "0dys" if all are zero
-}
 
 </script>
 
@@ -56,27 +20,33 @@ const ageCalculator = (dob) => {
         <tr>
           <td>
 
-            <table style="width: 100%;">
+            <table style="width: 100%; text-align: center;">
               <tr>
                 <td style="width: 20%; text-align: center;">
-                 <img alt="logo" style="width: 150px; margin: 0 auto" :src="reportDetails?.school?.logo"/>
+                  <img alt="logo" style="width: 130px; margin: 0 auto;" :src="reportDetails?.school?.logo"/>
                 </td>
                 <td style="width: 60%;" class="text-center">
-                  <div style="font-size: 30px;text-transform: uppercase;"><b>{{reportDetails?.school?.name}}</b></div>
+                  <!--        <div style="font-size: 30px;"><b>NOREGRETS LIFE SCHOOL</b></div>-->
+                  <div style="font-size: 30px; text-transform: uppercase;text-align: center;"><b>{{reportDetails?.school?.name}}</b></div>
 
+                  <!--        <div style="font-size: 20px; margin-top: 5px;">BUNAMWAYA CAMPUS</div>-->
                   <div style="font-size: 20px; margin-top: 5px;text-transform: uppercase;">{{reportDetails?.campus?.name}}</div>
 
-                  <div style="margin-top: 6px; margin-bottom: 10px;"><small>
-                       {{reportDetails?.campus?.location}} |
+                  <div style="margin-top: 6px; margin-bottom: 10px;">
+                    <small>
+                      {{reportDetails?.campus?.location}} |
                       {{reportDetails?.campus?.phone}} |
                       {{reportDetails?.campus?.email}}
-                  </small></div>
+                      <!--            Bunamwaya, P.O.BOX 21671 Kampala | +256752698545 | mwesigwa.noregrets@gmail.com-->
+                    </small></div>
 
-                  <div style="background-color: green; color: #ffffff;">PROGRESS REPORT FOR KINDERGARTEN</div>
+                  <!--                  <div style="background-color: green; color: #ffffff;">PROGRESS REPORT FOR KINDERGARTEN</div>-->
+                  <div style="background-color: green; color: #ffffff; text-transform: uppercase; text-align: center;">PROGRESS REPORT FOR {{reportDetails?.level_name}}</div>
                 </td>
                 <td style="width: 20%;">
-                  <div style="text-align: center; margin-top: 10px;">
-                   <img alt="logo" style="width: 130px; margin: 0 auto;" :src="reportDataInfo?.photo"/>
+                  <div style="text-align: center; margin-top: 10px;padding-left:20px">
+                    <!--                    <img alt="logo" style="width: 130px; margin: 0 auto;" :src="StudentImage"/>-->
+                    <img alt="logo" style="width: 130px;" :src="reportDataInfo?.photo"/>
                   </div>
                 </td>
               </tr>
@@ -87,37 +57,34 @@ const ageCalculator = (dob) => {
         <tr>
           <td>
 
-
-            <table style="width: 100%; font-size: 13px; margin-top: 30px; margin-bottom: 30px;">
+            <table style="width: 100%; font-size: 13px; margin-top: 30px; margin-bottom: 30px; color: #45484c;">
               <tr>
                 <td style="width: 15%;">
-                  <div style="padding-left: 5px; padding-bottom: 10px;">Name:</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">Class:</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;"> Days Present:</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">Term:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">Name:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">Class:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">Sex:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">Age:</div>
                 </td>
                 <td style="width: 40%;">
-                  <div style="padding-left: 5px; padding-bottom: 10px;"><span class="capitalize">{{reportDetails?.student?.surname}}</span> <span class="capitalize">{{reportDetails?.student?.second_name}}</span> <span class="capitalize">{{reportDetails?.student?.other_name}}</span></div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;"><span>{{reportDetails?.class_abbreviation}}<span v-if="reportDetails?.stream">, {{reportDetails?.stream}}</span></span></div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;"><span class="capitalize">310</span></div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">{{reportDetails?.study_period}}</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;"><span class="capitalize">{{reportDetails?.student?.surname}}</span> <span class="capitalize">{{reportDetails?.student?.second_name}}</span> <span class="capitalize">{{reportDetails?.student?.other_name}}</span></div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;"><span>{{reportDetails?.class_abbreviation}}<span v-if="reportDetails?.stream">, {{reportDetails?.stream}}</span></span></div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;"><span class="capitalize">{{reportDetails?.student?.gender}}</span></div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;"><!--6yrs , 8mth-->{{commons.ageCalculator(reportDetails?.student?.date_of_birth)}}</div>
                 </td>
                 <td style="width: 15%;">
-                  <div style="padding-left: 5px; padding-bottom: 10px;">  Age:</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">School Team:</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">Days Absent:</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">Date:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">Term:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">Stream:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">Date:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">Grade</div>
                 </td>
                 <td style="width: 30%;">
-                  <div style="padding-left: 5px; padding-bottom: 10px;"><!--6yrs , 8mth-->{{ageCalculator(reportDetails?.student?.date_of_birth)}}</div>
-                <div style="padding-left: 5px; padding-bottom: 10px;">&nbsp;</div>
-                <div style="padding-left: 5px; padding-bottom: 10px;">2</div>
-                <div style="padding-left: 5px; padding-bottom: 10px;">{{new Date().toLocaleDateString()}}</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">{{reportDetails?.study_period}}</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">{{reportDetails?.stream	}}</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">{{new Date().toLocaleDateString()}}</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px; color:#008000;">{{reportDetails?.grade}}</div>
                 </td>
               </tr>
             </table>
-
-
 
           </td>
         </tr>
@@ -125,7 +92,8 @@ const ageCalculator = (dob) => {
         <tr>
           <td>
 
-            <table style="width: 100%; border: 1px solid #f4f4f4; margin-bottom: 20px; font-size: 13px;">
+
+<!--            <table style="width: 100%; border: 1px solid #f4f4f4; margin-bottom: 20px; font-size: 13px;">
               <tr>
                 <td style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;">KEY TO SCORES:</td>
                 <td style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;">EXCELLENT</td>
@@ -133,7 +101,24 @@ const ageCalculator = (dob) => {
                 <td style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;">FAIR</td>
                 <td style="width: 20%; padding: 7px;"><div>NEED IMPROVEMENT</div></td>
               </tr>
+            </table>-->
+
+            <table style="width: 100%; border: 1px solid #b8babb; font-size: 13px; margin-top: 10px;">
+
+              <tr style="border-bottom: 1px solid #b8babb;">
+                <td style="width: 28%; padding: 5px;" rowspan="2">GRADING</td>
+                <td style="width: 8%; padding: 5px; text-align: center;" v-for="(scale,idx) in reportDetails?.aggregate_scale" :key="idx">
+                  {{scale?.short_name}}
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid #b8babb;">
+                <td style="width: 8%; padding: 5px; text-align: center;" v-for="(scale,idx) in reportDetails?.aggregate_scale" :key="idx">
+                  {{scale?.min+" - "+scale?.max}}
+                </td>
+              </tr>
+
             </table>
+
           </td>
         </tr>
 
@@ -154,6 +139,55 @@ const ageCalculator = (dob) => {
         <tr>
           <td>
 
+
+            <table style="width: 100%; border: 1px solid #f4f4f4; font-size: 13px;" v-for="(item,idx) in reportDetails?.learning_areas" :key="idx">
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td colspan="3" style="text-align: center; padding: 5px; text-transform: uppercase;font-weight: bold;">{{item?.name}}</td>
+              </tr>
+              <tr v-for="(lst,index) in  item?.assessments"  style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">{{lst?.name}}</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;">{{lst?.report_score_summary?.comment}}</td>
+              </tr>
+<!--
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Story</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Listening Closely</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Paying Attention</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Reading & Vocabulary</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%;"></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Writing</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;"></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="width: 30%; padding: 5px;">Numeracy</td>
+                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 60%; padding: 5px;">He can write numbers from 0 to 200</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f4;">
+                <td style="padding: 5px;">Overall Remark</td>
+                <td colspan="2" style="padding: 5px;">great work on this</td>
+              </tr>-->
+
+            </table>
+
+<!--
 
             <table style="width: 100%; border: 1px solid #f4f4f4; font-size: 13px;">
               <tr style="border-bottom: 1px solid #f4f4f4;">
@@ -319,6 +353,7 @@ const ageCalculator = (dob) => {
               </tr>
 
             </table>
+-->
 
 
           </td>
@@ -331,6 +366,24 @@ const ageCalculator = (dob) => {
           <td>
 
             <table style="width: 100%; font-size: 13px; margin-top: 20px; margin-bottom: 30px;">
+              <tr>
+                <td style="width: 25%;">
+                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">CLASS TEACHER'S SIGNATURE:</div>
+                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">HEAD TEACHER'S SIGNATURE:</div>
+                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">NEXT TERM BEGINS:</div>
+                </td>
+
+                <td>
+
+                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 12px;"></div>
+                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 12px;"> {{reportDetails?.head_teachers_comment}}</div>
+                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;"> <!--18th/May/2020--> {{reportDetails?.next_term_begins	}}</div>
+
+                </td>
+              </tr>
+            </table>
+
+<!--            <table style="width: 100%; font-size: 13px; margin-top: 20px; margin-bottom: 30px;">
               <tr>
                 <td style="width: 25%;">
                   <div style="padding-left: 5px; padding-bottom: 10px;">CLASS TEACHER'S SIGNATURE:</div>
@@ -346,7 +399,7 @@ const ageCalculator = (dob) => {
 
                 </td>
               </tr>
-            </table>
+            </table>-->
 
           </td>
         </tr>

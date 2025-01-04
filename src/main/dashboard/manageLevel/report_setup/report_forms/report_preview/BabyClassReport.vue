@@ -28,7 +28,6 @@ const props = defineProps({
       <tr>
         <td>
 
-
           <table style="width: 100%; text-align: center;">
             <tr>
               <td style="width: 20%; text-align: center;">
@@ -60,7 +59,6 @@ const props = defineProps({
               </td>
             </tr>
           </table>
-
 
         </td>
       </tr>

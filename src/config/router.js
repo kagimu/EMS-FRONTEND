@@ -666,7 +666,8 @@ router.beforeEach((to, from, next) => {
 // });
 
 
-const DEFAULT_TITLED = "Victorious Education Services";
+// const DEFAULT_TITLED = "Victorious Education Services";
+const DEFAULT_TITLED = "WholesomeEd";
 
 router.afterEach((to) => {
     document.title = localStorage.getItem("landingPageTitle") || DEFAULT_TITLED;
