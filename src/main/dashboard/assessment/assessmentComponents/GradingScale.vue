@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted,reactive, ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import NewGradeScale from "@/main/dashboard/assessment/assessmentComponents/NewGradeScale.vue"
 import { useAssessmentStore } from "../store/assessment";
 import { useAbility } from '@casl/vue';
@@ -10,6 +10,7 @@ import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/st
 import {useRouter} from "vue-router";
 import useNotificationStore from "@/composables/useNotification.js";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import AggregateScaleFileUploader from "@/components/AggregateScaleFileUploader.vue";
 const confirmationRef = ref(null);
 
 
@@ -32,6 +33,8 @@ const editMode = ref(false)
 const gradeScaleDatainfo = ref([])
 let schoolNumber = routerData.currentRoute.value.query.sch
 const deletionLoader = ref(false)
+const uploadDialog = ref( false)
+const scaleDetails = ref( false)
 
 onMounted(() => {
       fetchGradeScale()
@@ -166,11 +169,36 @@ watch (
     {deep:true}
 )
 
+const uploadImage = (list) => {
+  if(list){
+    uploadDialog.value = true
+    scaleDetails.value = list
+  }
+}
+
+const successUpload = async (data) => {
+  if (data) {
+    // uploadDialog.value = false
+    // await applicationStore.fetchStudent(student_number)
+  }
+}
 
 </script>
 <template>
   <div>
+
+
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+
+
+    <AppModal title="Upload Aggregate Scale Image" v-model="uploadDialog" xl>
+      <aggregate-scale-file-uploader
+          ref="profileUploadComponents"
+          v-on:nextAction="successUpload"
+          :scaleDetails="scaleDetails"></aggregate-scale-file-uploader>
+    </AppModal>
+
+
     <AppModal :title="editMode? 'Edit Aggregate Scale': 'Add Aggregate Scale'" v-model="showAggregateScaleModal" xl6>
       <NewGradeScale :gradeScaleDataInfo="gradeScaleDatainfo"></NewGradeScale>
     </AppModal>
@@ -234,6 +262,7 @@ watch (
                            <th scope="col">weight</th>
                            <th scope="col">Name</th>
                            <th>Remark</th>
+                           <th scope="col">Image</th>
                          </tr>
                           <tbody>
                           <!-- {{ list?.code }} -->
@@ -242,7 +271,15 @@ watch (
                             <td>{{ list?.weight }}</td>
                             <td>  {{ list?.name }} ( {{ list?.short_name }} )</td>
 
-                            <td>  {{ list?.description }}</td>
+                            <td>{{ list?.description }}</td>
+                            <td>
+                              <span
+                                  style="border: 1px solid #2c2f8c;"
+                                  class="border-1 rounded-md px-2 text-xs cursor-pointer border-[#2c2f8c] text-[#2c2f8c] hover:bg-gray-400"
+                                  @click="uploadImage(list)">
+                                <i class="cursor-pointer mx-1 text-xs fa-solid bi-upload"></i> Upload Image Color
+                              </span>
+                            </td>
                           </tr>
                           </tbody>
                         </table>
