@@ -57,7 +57,7 @@ const curriculumNumber = ref("")
 onMounted(
     async () => {
       schoolStore.fetchSchools()
-      
+      fetchCampusLevel()
     }
 )
 
@@ -73,8 +73,8 @@ const fetchStudents = (assessmentMetricNumber) => {
 }
 
 
-const fetchCampusLevel = (campus_cu) => {
-  classStore.fetchCampusLevel(campus_cu)
+const fetchCampusLevel = () => {
+  classStore.fetchCampusLevel(campus_curriculum_number)
 }
 
 
@@ -83,7 +83,7 @@ const fetchClassesByLevel = (campus_level_number) => {
   // academicYearStore.fetchCampusClassByLevel(campus_level_number)
 
   let data = {
-    school_number:school_number.value,
+    school_number:schoolN,
     campus_level_number:campus_level_number
   }
   campusStore.fetchClassesBySchool(data)
@@ -121,8 +121,9 @@ watch(
 
 const fetchAssessmentAreaAndStudyPeriod = (classNumber) =>{
 
+
   let data = {
-    curriculum_number:curriculumNumber,
+    curriculum_number:curriculumNumberParent,
     class_number:classNumber
   }
   assessmentStore.fetchAssessmentArea(data)
@@ -130,10 +131,10 @@ const fetchAssessmentAreaAndStudyPeriod = (classNumber) =>{
 
   studyPeriodStore.fetchStudyPeriod(
       {
-        campus_curriculum_number:curriculumNumber.value,
+        campus_curriculum_number:campus_curriculum_number,
         academic_year_number:academic_year_number.value,
         class_number:classNumber,
-        school_number:school_number.value
+        school_number:schoolN
       }
   )
   fetchStudents()
@@ -145,7 +146,7 @@ const fetchAssessmentMetricbyStudy = (studyP) =>{
       study_period_number:studyP,
       assessment_area_number:assessment_area_number.value,
       class_number:class_number.value,
-      campus_number:campus_number.value
+      campus_number:campusNumber
 
     }
      assessmentStore.fetchAssessmentMetrics(data)
@@ -162,7 +163,7 @@ const fetchAssessmentMetricsByArea = (assessmentArrea) =>{
       study_period_number:study_period_number.value,
       assessment_area_number:assessmentArrea,
       class_number:class_number.value,
-      campus_number:campus_number.value
+      campus_number:campusNumber
 
     }
      assessmentStore.fetchAssessmentMetrics(data)
@@ -342,7 +343,7 @@ watch(
 
     <div class="row bg-white mx-auto mt-2">
 
-      <div class="col-3">
+      <!-- <div class="col-3">
         <label class="text-sm"><small>School</small></label>
         <div class="mb-2">
           <select
@@ -388,7 +389,7 @@ watch(
             <option  v-for="(lvl, index) in curriculumList" :key="index" :value="lvl.number">{{lvl.name}}</option>
           </select>
         </div>
-      </div>
+      </div> -->
 
 
       <div class="col-3">
@@ -434,7 +435,7 @@ watch(
         </select>
       </div>
 
-      <div class="col-3">
+      <div class="col-2">
         <label class="text-sm"><small>Study Period</small>
         </label>
         <select

@@ -100,8 +100,10 @@ onMounted(() => {
 
 
 const  fetchAssessmentAreaList = (classN) => {
+  const result = curriculumList.value.find(item => item.number === formData.curriculumNumber);
+  
 let data = {
-  curriculum_number:"04d4e153-c55b-4d62-a54d-1ca1fa510873",
+  curriculum_number: result.curriculum_number,
   class_number:formData.class_number,
 }
 assessmentStore.fetchAssessmentArea(data)
