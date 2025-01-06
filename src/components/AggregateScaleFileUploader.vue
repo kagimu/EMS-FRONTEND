@@ -102,8 +102,8 @@ function saveProfile() {
     errorMessage.value = ""
     let formData = new FormData()
 
-    formData.set(school_number?"logo":"photo", commons.base64ToBinary(cropper.value.getCroppedCanvas().toDataURL("image/png"), "logo.png"))
-    formData.set("school_number", school_number )
+    formData.set("photo", commons.base64ToBinary(cropper.value.getCroppedCanvas().toDataURL("image/png"), "logo.png"))
+    formData.set("aggregate_scale_number", props.scaleDetails?.number)
 
     saveFile(formData)
   }
@@ -111,7 +111,7 @@ function saveProfile() {
 
 
 const  saveFile = async (data) => {
-  let url = 'main/student-details/upload-student-photo'
+  let url = 'main/assessments/aggregate-scales/upload-illustration'
   return await api.post(url, data, {
         headers: {
           "Content-Type": "multipart/form-data"
