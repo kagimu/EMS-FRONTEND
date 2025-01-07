@@ -21,6 +21,7 @@ const saveImageButton = ref(false)
 const showImage = ref(true)
 const showCropper = ref(false)
 const loader = ref(false)
+let imagePath = api.defaults.baseURL + "/attachments/download/"
 
 let school_number = ""
     school_number = routerData.currentRoute.value.query.id
@@ -42,7 +43,7 @@ onMounted(() => {
 })
 
 watch(
-    () => props.imageUrl,
+    () => props.scaleDetails,
     async (data) => {
       if(data){
        updateImageCanva()
@@ -52,17 +53,17 @@ watch(
 
 
 const updateImageCanva = () => {
-  let url = props.imageUrl
+  let url = props.scaleDetails?.illustration
   if(url) {
-    selectedFile.value = url
+    selectedFile.value = imagePath+url
   }
-  if(props.schoolNumber) {
+  /*if(props.schoolNumber) {
     school_number = props.schoolNumber
   }
 
   if(props.studentNumber) {
     student_number = props.studentNumber
-  }
+  }*/
 }
 
 
@@ -148,12 +149,18 @@ const  saveFile = async (data) => {
         </div>
 
         <div style="text-align: center;">
-          <img
-              class="mx-auto w-[50%] border p-2 rounded-md"
-              v-if="showImage"
-              :src="selectedFile"
-              alt=""
-          />
+          <span v-if="selectedFile">
+             <img
+                 class="mx-auto w-[50%] border p-2 rounded-md"
+                 v-if="showImage"
+                 :src="selectedFile"
+                 alt=""
+             />
+          </span>
+
+          <span v-else>
+            <i  class="bi-image text-[130px] text-[#8a8888] border rounded-md py-1 px-4"></i>
+          </span>
         </div>
 
         <VueCropper
