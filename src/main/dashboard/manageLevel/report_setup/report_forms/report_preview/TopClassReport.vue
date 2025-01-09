@@ -1,8 +1,10 @@
 <script setup>
 
 import useCommonsStore from "@/composables/useCommons.js";
+import api from "@/config/api.js";
 
 const commons = useCommonsStore()
+let imagePath = api.defaults.baseURL + "/attachments/download/"
 
 const props = defineProps({
   reportDetails:{},
@@ -93,17 +95,31 @@ const props = defineProps({
           <td>
 
 
-<!--            <table style="width: 100%; border: 1px solid #f4f4f4; margin-bottom: 20px; font-size: 13px;">
+            <table style="width: 100%; border: 1px solid #f4f4f4; margin-bottom: 20px; font-size: 13px;">
               <tr>
                 <td style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;">KEY TO SCORES:</td>
-                <td style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;">EXCELLENT</td>
-                <td style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;">GOOD</td>
-                <td style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;">FAIR</td>
-                <td style="width: 20%; padding: 7px;"><div>NEED IMPROVEMENT</div></td>
+                <td
+                    v-for="(scale,idx) in reportDetails?.aggregate_scale" :key="idx"
+                    style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;"
+                >
+                <div style="display: flex; flex-grow: 1; justify-content: space-between;">
+                  <div style="text-transform: uppercase; margin-top: 10px;">{{scale?.name}}</div>
+                  <div>
+                    <img
+                        v-if="scale?.illustration"
+                        alt="logo"
+                        style="width: 40px;"
+                        :src="imagePath+scale?.illustration"/>
+                  </div>
+                </div>
+                </td>
+<!--                <td style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;">GOOD</td>-->
+<!--                <td style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;">FAIR</td>-->
+<!--                <td style="width: 20%; padding: 7px;"><div>NEED IMPROVEMENT</div></td>-->
               </tr>
-            </table>-->
+            </table>
 
-            <table style="width: 100%; border: 1px solid #b8babb; font-size: 13px; margin-top: 10px;">
+<!--            <table style="width: 100%; border: 1px solid #b8babb; font-size: 13px; margin-top: 10px;">
 
               <tr style="border-bottom: 1px solid #b8babb;">
                 <td style="width: 28%; padding: 5px;" rowspan="2">GRADING</td>
@@ -117,7 +133,7 @@ const props = defineProps({
                 </td>
               </tr>
 
-            </table>
+            </table>-->
 
           </td>
         </tr>
@@ -146,7 +162,14 @@ const props = defineProps({
               </tr>
               <tr v-for="(lst,index) in  item?.assessments"  style="border-bottom: 1px solid #f4f4f4;">
                 <td style="width: 30%; padding: 5px;">{{lst?.name}}</td>
-                <td style="width: 10%; padding: 5px;">Flower</td>
+                <td style="width: 10%; padding: 5px;">
+                  <img
+                      v-if="lst?.report_scores?.illustration"
+                      alt="logo"
+                      style="width: 40px;"
+                      :src="imagePath+lst?.report_scores.illustration"/>
+<!--                  {{lst.report_scores.illustration}}-->
+                </td>
                 <td style="width: 60%; padding: 5px;">{{lst?.report_score_summary?.comment}}</td>
               </tr>
 <!--

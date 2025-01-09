@@ -184,13 +184,17 @@ const deleteImage = async (list) => {
     const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete this image");
     if (agreed) {
       deletionLoader.value = true
-      await deleteAggregateScaleImage(list.number)
+      let data = {
+        attachment_number: list?.illustration,
+        category: "aggregate_scale"
+      }
+      await deleteAggregateScaleImage(data)
     }
 }
 
 
 const  deleteAggregateScaleImage = async (data) => {
-  let url = 'main/assessments/aggregate-scales/delete'
+  let url = api.defaults.baseURL + "/attachments/delete"
   return await api.post(url, data)
       .then((response) => {
         if(response && response.data){
