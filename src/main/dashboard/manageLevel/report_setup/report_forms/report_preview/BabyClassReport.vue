@@ -110,8 +110,31 @@ const props = defineProps({
             </tr>
           </table>-->
 
+          <table style="width: 100%; border: 1px solid #f4f4f4; margin-bottom: 20px; font-size: 13px;">
+            <tr>
+              <td style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;">KEY TO SCORES:</td>
+              <td
+                  v-for="(scale,idx) in reportDetails?.aggregate_scale" :key="idx"
+                  style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;"
+              >
+                <div style="display: flex; flex-grow: 1; justify-content: space-between;">
+                  <div style="text-transform: uppercase; margin-top: 10px;">{{scale?.name}}</div>
+                  <div>
+                    <img
+                        v-if="scale?.illustration"
+                        alt="logo"
+                        style="width: 40px;"
+                        :src="imagePath+scale?.illustration"/>
+                  </div>
+                </div>
+              </td>
+              <!--                <td style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;">GOOD</td>-->
+              <!--                <td style="width: 20%; border-right: 1px solid #f4f4f4; padding: 7px;">FAIR</td>-->
+              <!--                <td style="width: 20%; padding: 7px;"><div>NEED IMPROVEMENT</div></td>-->
+            </tr>
+          </table>
 
-          <table style="width: 100%; border: 1px solid #b8babb; font-size: 13px; margin-top: 10px;">
+<!--          <table style="width: 100%; border: 1px solid #b8babb; font-size: 13px; margin-top: 10px;">
 
             <tr style="border-bottom: 1px solid #b8babb;">
               <td style="width: 28%; padding: 5px;" rowspan="2">GRADING</td>
@@ -125,7 +148,7 @@ const props = defineProps({
               </td>
             </tr>
 
-          </table>
+          </table>-->
 
         </td>
       </tr>
