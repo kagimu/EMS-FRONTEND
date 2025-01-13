@@ -1,8 +1,10 @@
 <script setup>
 
 import useCommonsStore from "@/composables/useCommons.js";
+import api from "@/config/api.js";
 
 const commons = useCommonsStore()
+let imagePath = api.defaults.baseURL + "/attachments/download/"
 
 const printReport = () => {
   // alert("Print pdf now man")
@@ -122,7 +124,7 @@ const props = defineProps({
                   <div>
                     <img
                         v-if="scale?.illustration"
-                        alt="logo"
+                        alt="img"
                         style="width: 40px;"
                         :src="imagePath+scale?.illustration"/>
                   </div>
@@ -174,7 +176,13 @@ const props = defineProps({
                 <table style="width: 100%; border: 1px solid #f4f4f4; font-size: 13px;">
                   <tr v-for="(lst,index) in  item?.assessments" :key="index" style="border-bottom: 1px solid #f4f4f4;">
                     <td style="padding: 5px; border-right: 1px solid #f4f4f4; width: 70%;">{{lst?.name}}</td>
-                    <td style="padding: 5px; border-right: 1px solid #f4f4f4;">{{lst?.report_scores[0]?.grade}}</td>
+                    <td style="padding: 5px; border-right: 1px solid #f4f4f4;">
+                      <img
+                          v-if="lst?.report_scores[0].illustration"
+                          alt="logo"
+                          style="width: 40px;"
+                          :src="imagePath+lst?.report_scores[0].illustration"/>
+                    </td>
                   </tr>
                 </table>
 
