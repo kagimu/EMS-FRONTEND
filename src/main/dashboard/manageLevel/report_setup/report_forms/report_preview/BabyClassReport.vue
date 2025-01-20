@@ -2,6 +2,9 @@
 
 import useCommonsStore from "@/composables/useCommons.js";
 import api from "@/config/api.js";
+import {onMounted,ref} from "vue";
+
+const nextTermBegins = ref(null)
 
 const commons = useCommonsStore()
 let imagePath = api.defaults.baseURL + "/attachments/download/"
@@ -16,6 +19,13 @@ const props = defineProps({
 })
 
 
+onMounted(
+    () =>{
+  const rawDate = props.reportDetails?.next_term_begins;
+  const formattedDate = rawDate.split(' ')[0];
+  nextTermBegins.value = formattedDate
+    }
+)
 
 </script>
 
@@ -304,9 +314,13 @@ const props = defineProps({
 
               <td>
 
-                <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 12px;"></div>
+                <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top:28px;"></div>
                 <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 12px;"> {{reportDetails?.head_teachers_comment}}</div>
-                <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;"> <!--18th/May/2020--> {{reportDetails?.next_term_begins	}}</div>
+                <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;"> <!--18th/May/2020--> 
+
+                  <!-- {{reportDetails?.next_term_begins	}} -->
+                  {{ nextTermBegins }}
+                </div>
 
               </td>
             </tr>
