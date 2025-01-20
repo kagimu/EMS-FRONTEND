@@ -164,10 +164,10 @@ const props = defineProps({
                 <td style="width: 30%; padding: 5px;">{{lst?.name}}</td>
                 <td style="width: 10%; padding: 5px;">
                   <img
-                      v-if="lst?.report_scores?.illustration"
+                      v-if="lst?.report_score_summary?.illustration"
                       alt="logo"
                       style="width: 40px;"
-                      :src="imagePath+lst?.report_scores.illustration"/>
+                      :src="imagePath+lst?.report_score_summary?.illustration"/>
 <!--                  {{lst.report_scores.illustration}}-->
                 </td>
                 <td style="width: 60%; padding: 5px;">{{lst?.report_score_summary?.comment}}</td>
