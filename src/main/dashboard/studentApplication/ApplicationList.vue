@@ -408,6 +408,33 @@ watch(
     }
   }
 );
+
+const columns = ref([
+{ label: 'ADN', key: 'adn' },
+  { label: 'Name', key: 'surname	' },
+  { label: 'second_name	', key: 'second_name	' },
+  { label: 'Gender', key: 'gender' },
+
+]);
+
+
+
+const exportToCSV = () => {
+  const csvContent = [
+    columns.value.map((col) => col.label).join(','),
+    ...applicationInfoList.value.map((row) =>
+      columns.value.map((col) => `"${row[col.key]}"`).join(',')
+    ),
+  ].join('\n');
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'data.csv';
+  link.click();
+  URL.revokeObjectURL(url);
+};
 </script>
 
 <template>
@@ -577,6 +604,9 @@ watch(
                     </div>
                  </div>
               </div>
+
+              <button @click="exportToCSV" class="link link-primary mr-4"> <i class="bi bi-filetype-csv"></i> CSV    
+              </button>
 
               <PaginationTemplate
                     @perPageChanged="doFetchApplication"

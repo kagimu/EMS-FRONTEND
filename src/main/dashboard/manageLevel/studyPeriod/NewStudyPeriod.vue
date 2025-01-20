@@ -38,6 +38,7 @@ const form = reactive({
   study_period_start_date:null,
   study_period_end_date:null,
   study_period_name_number	:"",
+  next_term_begins_on:null
 })
 
 
@@ -260,6 +261,17 @@ watch(
               auto-apply
               style="font-size: 7px;"
               v-model="form.study_period_end_date"
+              :preview-format="format"
+              :teleport="true"
+          ></VueDatePicker>
+        </div>
+        <div>
+          <label class="text-sm"><small>Next Term Begins</small></label>
+          <VueDatePicker
+              text-input
+              auto-apply
+              style="font-size: 7px;"
+              v-model="form.next_term_begins_on"
               :preview-format="format"
               :teleport="true"
           ></VueDatePicker>

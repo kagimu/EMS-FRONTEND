@@ -9,6 +9,7 @@ import ReportSetup from "@/main/dashboard/manageLevel/report_setup/ReportSetup.v
 import ScoreSetup from "@/main/dashboard/manageLevel/report_setup/ScoreSetup.vue";
 import Grading from "@/main/dashboard/assessment/Grading.vue";
 import AssessmentSchedulePage from "@/main/dashboard/assessment/AssessmentSchedulePage.vue";
+import ManagePromotions from "@/main/settings/promotion/ManagePromotions.vue";
 
 const router = useRouter()
 const levelStore = useLevelStore()
@@ -49,6 +50,11 @@ const campusSetupMenu = ref([
     name:"Report Card Settings",
     router_name:"report-card-settings",
     action:"view_report_card_settings"
+  },
+  {
+    name:"Promotion",
+    router_name:"promotion",
+    action:"view_promotions"
   },
   {
     name:"Student Score",
@@ -218,6 +224,13 @@ const switchCurriculum = (curriculum) => {
         </div>
       </div>
 
+      <div class="col-9" v-if="campusSetupQuery === 'promotion'">
+        <div class="card mt-3">
+          <div class="card-body" style="padding: 0;">
+            <manage-promotions></manage-promotions>
+          </div>
+        </div>
+        </div>
 
     </div>
 </div>

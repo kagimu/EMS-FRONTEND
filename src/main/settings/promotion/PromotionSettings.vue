@@ -112,7 +112,7 @@ watch(
                 <div class="ml-4">Settings</div>
                 <button @click="openModal()"
                  type="button"  class="btn btn-sm buttonStyle btn-primary mr-2" >
-                  Promotion/Admission Setup
+                  New Setup
                 </button>
               </div>
   
@@ -124,6 +124,7 @@ watch(
                   <th scope="col">Name</th>
                   <th>Current Class</th>
                   <th>Next Class</th>
+                  <th>Study Period</th>
                   <th>Type</th>
                   <th>Status</th>
                   <th scope="col">Action</th>
@@ -133,8 +134,9 @@ watch(
               
                 <tr v-for="(prom,index) in promotionData" :key="index">
                 <td>{{ prom.name }}</td>
-                 <td>{{prom.previous_class.class_name}}</td>
-                 <td>{{ prom.next_class.class_name }}</td>
+                 <td>{{prom.previous_class.name}} [{{ prom.previous_class.abbreviation	 }}]</td>
+                 <td>{{ prom.next_class.name }} [{{ prom.next_class.abbreviation	 }}]</td>
+                 <td>{{ prom.study_period.name }}</td>
                  <td>{{ prom.type }}</td>
                  <td>{{ prom.status }}</td>
                  <td> <button style="color: red;" @click="deletePromoSetting(prom)"><i class="bi bi-trash"></i></button> &nbsp;

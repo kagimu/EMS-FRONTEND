@@ -1,8 +1,10 @@
 <script setup>
-
+import {onMounted} from "vue";
 import useCommonsStore from "@/composables/useCommons.js";
+import { ref } from "vue";
 
 const commons = useCommonsStore()
+const nextTermBegins = ref(null)
 
 const printReport = () => {
   // alert("Print pdf now man")
@@ -13,6 +15,12 @@ const props = defineProps({
   reportDataInfo:{}
 })
 
+onMounted(
+    () =>{
+      // alert(JSON.stringify(props.reportDetails))
+    
+    }
+)
 
 
 
@@ -20,7 +28,7 @@ const props = defineProps({
 
 <template>
   <div>
-<!--    {{reportDetails}}-->
+
     <div class="mx-auto mt-10" style="width: 98%; ">
 
    <div class="mt-4 mb-2 flex justify-content-between">

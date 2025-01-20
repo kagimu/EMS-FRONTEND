@@ -83,8 +83,8 @@ const theType = () => {
 const addPromotionValue = () =>{
   loader.value = true
   form.assessment_area = rows
-  alert(JSON.stringify(form))
-  // promotionStore.newPromotionSettingValue(form)
+  // alert(JSON.stringify(form))
+  promotionStore.newPromotionSettingValue(form)
 } 
 
 
@@ -345,7 +345,7 @@ const fetchCampuses = (school_number) => {
                     v-model="form.promotion_setting_number" required
             >
                 <option disabled value="">Select Promotion Setting</option>
-                <option v-for="(list, index) in promoSettingList" :key="index" :value="list.number">{{ list.name }}
+                <option v-for="(list, index) in promoSettingList" :key="index" :value="list.promotion_settings_number">{{ list.name }}
                 </option>
             </select>
         </div>

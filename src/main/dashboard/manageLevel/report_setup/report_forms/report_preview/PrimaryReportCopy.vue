@@ -2,16 +2,31 @@
 
 import Badge from "@/assets/images/badge.png";
 import StudentImage from "@/assets/images/pic.jpg";
+import {onMounted,ref} from "vue";
 
 const printReport = () => {
   // alert("Print pdf now man")
 }
+const nextTermBegins = ref(null)
 
 const props = defineProps({
   reportDetails:{},
   reportDataInfo:{}
 })
 
+
+onMounted(
+    () =>{
+
+  const rawDate = props.reportDetails?.next_term_begins;
+  // const formattedDate = date.toISOString().split('')[0];
+  const formattedDate = rawDate.split(' ')[0];
+  nextTermBegins.value = formattedDate
+    }
+)
+
+
+// next_term_begins
 
 const ageCalculator = (dob) => {
   const now = new Date();
@@ -49,6 +64,7 @@ const ageCalculator = (dob) => {
 </script>
 
 <template>
+  
   <div>
     <div class="mx-auto mt-10" style="width: 98%; ">
         <table style="width: 100%; border: 1px solid #f4f4f4; margin-bottom: 20px;">
@@ -254,9 +270,12 @@ const ageCalculator = (dob) => {
 
                 <td>
 
-                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 12px;"></div>
+                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 28px;"></div>
                   <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 12px;"> {{reportDetails?.head_teachers_comment}}</div>
-                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;"> <!--18th/May/2020--> {{reportDetails?.next_term_begins	}}</div>
+                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;"> <!--18th/May/2020--> 
+                    <!-- {{reportDetails?.next_term_begins	}} -->
+                    {{nextTermBegins}}
+                  </div>
 
                 </td>
               </tr>

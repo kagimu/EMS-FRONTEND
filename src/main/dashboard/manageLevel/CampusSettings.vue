@@ -8,6 +8,7 @@
           <button class="nav-link navColor" id="Camacademic-year-tab" data-bs-toggle="tab" data-bs-target="#academic-year" type="button" role="tab" aria-controls="academic-year" aria-selected="false"><small>Academic Year</small></button>
           <button class="nav-link navColor" id="study-period-tab" data-bs-toggle="tab" data-bs-target="#study-period" type="button" role="tab" aria-controls="study-period" aria-selected="false"><small>Study Period</small></button>
           <button class="nav-link navColor" id="assessment-metrics-tab" data-bs-toggle="tab" data-bs-target="#assessment-metrics" type="button" role="tab" aria-controls="assessment-metrics" aria-selected="false"><small>Assessment Schedule</small></button>
+          <button class="nav-link navColor" id="next-study-period" data-bs-toggle="tab" data-bs-target="#next-study-period" type="button" role="tab" aria-controls="next-study-period" aria-selected="false"><small>Next Study Period </small></button>
         </div>
       </nav>
       <div class="tab-content" id="nav-tabContent">
@@ -27,6 +28,13 @@
         <div class="tab-pane fade" id="assessment-metrics" role="tabpanel" aria-labelledby="assessment-metrics-tab" tabindex="0">
           <assessment-metrics></assessment-metrics>
         </div>
+
+
+        <div class="tab-pane fade" id="next-study-period" role="tabpanel" aria-labelledby="next-study-period" tabindex="0">
+          <next-study-period-config></next-study-period-config>
+        </div>
+
+
 <!--        <div class="tab-pane fade" id="mode-of-assessment" role="tabpanel" aria-labelledby="mode-of-assessment-tab" tabindex="0">Mode of Assessment</div>-->
 <!--        <div class="tab-pane fade" id="grading-term" role="tabpanel" aria-labelledby="grading-term-tab" tabindex="0">Grading Term</div>-->
       </div>
@@ -44,6 +52,7 @@ import StudyPeriod from "@/main/dashboard/manageLevel/studyPeriod/StudyPeriod.vu
 import AcademicYear from "@/main/dashboard/manageLevel/academicYear/AcademicYear.vue";
 import CampusLevel from "@/main/dashboard/manageLevel/class/CampusLevel.vue";
 import AssessmentMetrics from "@/main/dashboard/assessment/assessmentComponents/AssessmentMetrics.vue";
+import NextStudyPeriodConfig from "@/main/dashboard/manageLevel/studyPeriod/NextStudyPeriodConfig.vue";
 </script>
 
 <style scoped>
