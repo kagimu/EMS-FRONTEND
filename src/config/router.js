@@ -235,11 +235,15 @@ const router = createRouter({
                         action: "view_report-center",
                     }
                 },
-                {path: 'settings', component: settings, name: "settings",
+                {
+                    path: 'settings',
+                    component: settings,
+                    name: "settings",
                     meta: {
                         resource: "settings",
                         action: "view_settings",
-                    }},
+                    }
+                },
                 {path: 'curriculum', component: Curriculum, name: "curriculum",
                     meta: {
                         resource: "campus",

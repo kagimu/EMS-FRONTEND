@@ -28,6 +28,23 @@ const studyPeriodList  = ref([])
 const streamList = ref([])
 const curriculumList = ref([])
 const levelList = ref([])
+const gradeDataList = ref([])
+const gradeAssessmentAreaList = ref([])
+const gradingInfo = ref([
+  {
+    minimum_grade:"",
+    maximum_aggregate:"",
+    minimum_score:"",
+  }
+])
+
+const assessmentStoreInfo = ref([
+  {
+    assessment_area_number:"",
+    minimum_grade:"",
+    maximum_score:"",
+  }
+])
 
 
 const emit = defineEmits();
@@ -61,7 +78,7 @@ const formData = reactive({
 const form = reactive({
   type:null,
   score:null,
-  promotion_setting_number:null,
+  promotion_setting_number:"",
   assessment_grade_number:null
 })
 
@@ -132,7 +149,7 @@ watch(
       if (data) {
         loader.value = false
         notificationStore.successToast("Success", data.message)
-        promotionStore.fetchPromotionSettingValue()
+        await promotionStore.fetchPromotionSettingValue()
         form.type=null,
         form.score=null,
         form.promotion_setting_number=null,
@@ -324,6 +341,36 @@ const fetchCampuses = (school_number) => {
     }
 )
 
+const fetchSettingsDetails = async (promotion_setting_number) => {
+  await promotionStore.fetchPromotionSettingDetails(promotion_setting_number)
+}
+
+
+watch(
+    () => promotionStore.promotionSettingDetailsResponse,
+    async (data) => {
+      if (data && data.data) {
+        let draft = data.data
+        alert(JSON.stringify(draft))
+      }
+    }
+)
+
+const addAggregateScale = () => {
+  gradingInfo.value.push({
+    minimum_grade:"",
+    maximum_aggregate:"",
+    minimum_score:"",
+  })
+}
+
+const addAssessmentArea = () => {
+  assessmentStoreInfo.value.push({
+    assessment_area_number:"",
+    minimum_grade:"",
+    maximum_score:"",
+  })
+}
 
 </script>
 
@@ -342,15 +389,156 @@ const fetchCampuses = (school_number) => {
             <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
-                    v-model="form.promotion_setting_number" required
+                    v-model="form.promotion_setting_number"
+                    required
+                    @change="fetchSettingsDetails(form.promotion_setting_number)"
             >
-                <option disabled value="">Select Promotion Setting</option>
-                <option v-for="(list, index) in promoSettingList" :key="index" :value="list.promotion_settings_number">{{ list.name }}
+                <option disabled value="">
+                  --Select Promotion Setting--
+                </option>
+                <option v-for="(list, index) in promoSettingList" :key="index" :value="list.promotion_settings_number">
+                  {{ list.name }}
                 </option>
             </select>
         </div>
 
-        <div class="mb-2">
+
+        <p class="mt-5">Grade Settings</p>
+
+        <table   class="table  table-sm table-striped text-sm">
+          <tr>
+            <td>#</td>
+            <td>Minimum Grade</td>
+            <td>Maximum Aggregate</td>
+            <td>Minimum Score</td>
+            <td>Action</td>
+          </tr>
+          <tbody>
+
+          <tr v-for="(list,idx) in gradingInfo" :key="idx">
+            <td>{{(idx + 1)}}</td>
+            <td>
+              <select
+                  style="outline: none 0 !important; box-shadow: none;"
+                  type="text"
+                  v-model="list.minimum_grade"
+                  required
+                  class="form-control form-select-sm">
+                <option disabled value="">--Select Grade--</option>
+                <option v-for="(lst, index) in gradeDataList" :key="index" :value="lst.number">{{ lst.name }}</option>
+              </select>
+
+            </td>
+            <td>
+              <input
+                  type="email"
+                  v-model.trim="list.maximum_aggregate"
+                  required
+                  class="form-control shadow-none">
+            </td>
+            <td>
+              <input
+                  type="email"
+                  v-model.trim="list.minimum_score"
+                  required
+                  class="form-control shadow-none">
+            </td>
+            <td>
+
+                  <div class="mt-2">
+                      <i
+                          class="cursor-pointer mx-1 text-xs fa-solid bi-trash"
+                          @click="gradingInfo.splice(idx, 1)"
+                      ></i>
+                  </div>
+
+            </td>
+          </tr>
+
+
+          </tbody>
+        </table>
+
+        <button
+            @click="addAggregateScale"
+            type="button"
+            class="btn btn-sm btn-success btn-sm text-sm">
+          <i class="bi bi-plus"></i>
+          Add grade settings
+        </button>
+
+
+        <p class="mt-5">Assessment Area Settings</p>
+
+        <table   class="table table-sm table-striped text-sm">
+          <tr>
+            <td>#</td>
+            <td>Subject / Assessment Area</td>
+            <td>Minimum Grade</td>
+            <td>Minimum Score</td>
+            <td>Action</td>
+          </tr>
+          <tbody>
+
+          <tr v-for="(list,idx) in assessmentStoreInfo" :key="idx">
+            <td>{{(idx + 1)}}</td>
+            <td>
+              <select
+                  style="outline: none 0 !important; box-shadow: none;"
+                  type="text"
+                  v-model="list.assessment_area_number"
+                  required
+                  class="form-control form-select-sm">
+                <option disabled value="">--Select Assessment Area--</option>
+                <option v-for="(lst, index) in gradeAssessmentAreaList" :key="index" :value="lst.number">{{ lst.name }}</option>
+              </select>
+
+            </td>
+            <td>
+              <select
+                  style="outline: none 0 !important; box-shadow: none;"
+                  type="text"
+                  v-model="list.minimum_grade"
+                  required
+                  class="form-control form-select-sm">
+                <option disabled value="">--Select Grade--</option>
+                <option v-for="(lst, index) in gradeDataList" :key="index" :value="lst.number">{{ lst.name }}</option>
+              </select>
+
+            </td>
+            <td>
+              <input
+                  type="email"
+                  v-model.trim="list.maximum_score"
+                  required
+                  class="form-control shadow-none">
+            </td>
+            <td>
+
+              <div class="mt-2">
+                <i
+                    class="cursor-pointer mx-1 text-xs fa-solid bi-trash"
+                    @click="assessmentStoreInfo.splice(idx, 1)"
+                ></i>
+              </div>
+
+            </td>
+          </tr>
+
+
+          </tbody>
+        </table>
+
+        <button
+            @click="addAssessmentArea"
+            type="button"
+            class="btn btn-sm btn-success btn-sm text-sm">
+          <i class="bi bi-plus"></i>
+            Add Assessment Area settings
+        </button>
+
+
+<!--        <div class="mb-2">
             <label class="text-sm"><small>Type</small>  </label><br>
             <select
                     style="box-shadow: none;"
@@ -398,7 +586,7 @@ const fetchCampuses = (school_number) => {
 
         <div class="mb-2 mt-4" v-if="isGrade == 'assessment'">
           
-          <p class="text-sm alert alert-success" ><small>ASSESSMENT AREA ------</small>  </p>
+          <p class="text-sm alert alert-success" ><small>ASSESSMENT AREA &#45;&#45;&#45;&#45;&#45;&#45;</small>  </p>
           <div class="row">
           <div class="col-3">
           <div class="mb-2">
@@ -416,7 +604,7 @@ const fetchCampuses = (school_number) => {
           </div>
           <div class="col-3">
           <div class="mb-2">
-          <!-- <label class="text-sm"><small>Campus</small>  </label> -->
+          &lt;!&ndash; <label class="text-sm"><small>Campus</small>  </label> &ndash;&gt;
           <select
           style="box-shadow: none;"
           class="form-select form-select-sm"
@@ -437,7 +625,7 @@ const fetchCampuses = (school_number) => {
           v-model="formData.curriculumNumber"  
           @change="fetchCampusLevel(formData.curriculumNumber)"                                         
           >
-          <option disabled value="" >--Select Curriculum--</option>
+          <option disabled value="" >&#45;&#45;Select Curriculum&#45;&#45;</option>
           <option  v-for="(lvl, index) in curriculumList" :key="index" :value="lvl.number">{{lvl.name}}</option>
           </select>
           </div>
@@ -458,7 +646,7 @@ const fetchCampuses = (school_number) => {
 
           <div class="col-2">
           <div class="mb-2">
-          <!-- {{ classList }} -->
+          &lt;!&ndash; {{ classList }} &ndash;&gt;
           <select
           style="box-shadow: none;"
           class="form-select form-select-sm" required
@@ -500,7 +688,7 @@ const fetchCampuses = (school_number) => {
                 </td>
                 <td><input type="number" class="form-control form-select-sm" v-model="row.score"></td>
                 <td>
-            <!-- {{gradeData}} -->
+            &lt;!&ndash; {{gradeData}} &ndash;&gt;
                   <select class="form-select form-select-sm" v-model="row.aggregate_number">
                     <option value="">-select -</option>
                     <option v-for="(list,index) in gradeData" :key="index" :value="list.number">{{ list.name }} ({{ list.short_name }})</option>
@@ -519,7 +707,7 @@ const fetchCampuses = (school_number) => {
 
           </div>
         </div>
-       
+       -->
   
         <div class="flex justify-content-end mt-2" style="width: 100%;">
           <button

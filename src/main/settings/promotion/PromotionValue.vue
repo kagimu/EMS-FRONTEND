@@ -37,16 +37,15 @@ watch(
     () => promotionStore.errorMessage,
     async (data) => {
           if (data) {
-            shDialog.value = false
               notificationStore.errorToast("Error", data.message)
           }
-    },
-    {deep: true}
+    }
 )
 
 const filterType = (ty) =>{
   type.value = ty
 }
+
 
 
   </script>
