@@ -30,6 +30,7 @@ const curriculumList = ref([])
 const levelList = ref([])
 const gradeDataList = ref([])
 const gradeAssessmentAreaList = ref([])
+const gradeDraft = ref({})
 const gradingInfo = ref([
   {
     minimum_grade:"",
@@ -38,11 +39,10 @@ const gradingInfo = ref([
   }
 ])
 
-const assessmentStoreInfo = ref([
+const assessment_areas = ref([
   {
+    grade_number:"",
     assessment_area_number:"",
-    minimum_grade:"",
-    maximum_score:"",
   }
 ])
 
@@ -75,12 +75,23 @@ const formData = reactive({
    level:""
    })
 
-const form = reactive({
-  type:null,
-  score:null,
+const form = ref({
+  score:"",
+  minimum_points:"",
   promotion_setting_number:"",
-  assessment_grade_number:null
+  assessment_grade_scale_number:"",
+  assessment_areas:"",
+  // type:null,
+  // score:null,
+  // promotion_setting_number:"",
+  // assessment_grade_number:null
 })
+
+
+
+
+
+
 
 const rows = reactive([{ assessment_area_number: "", score: "", aggregate_number: "" }])
 
@@ -94,14 +105,15 @@ const removeRow = (index) => {
 
 
 const theType = () => {
-  isGrade.value = form.type
+  isGrade.value = form.value.type
 }
 
 const addPromotionValue = () =>{
   loader.value = true
-  form.assessment_area = rows
-  // alert(JSON.stringify(form))
-  promotionStore.newPromotionSettingValue(form)
+  form.value.assessment_areas = assessment_areas.value[0].assessment_area_number ? assessment_areas.value : []
+  form.value.score = parseFloat(form.value.score)
+  form.value.minimum_points = parseFloat(form.value.minimum_points)
+  promotionStore.newPromotionSettingValue(form.value)
 } 
 
 
@@ -150,10 +162,10 @@ watch(
         loader.value = false
         notificationStore.successToast("Success", data.message)
         await promotionStore.fetchPromotionSettingValue()
-        form.type=null,
-        form.score=null,
-        form.promotion_setting_number=null,
-        form.assessment_grade_number=null
+        form.value.type=null,
+        form.value.score=null,
+        form.value.promotion_setting_number=null,
+        form.value.assessment_grade_number=null
       }
   },
   {deep: true}
@@ -208,17 +220,17 @@ const fetchCampuses = (school_number) => {
    
    const fetchStreamsAndStudyPeriod = (classNumber) =>{
    let sData = {
-      campus_number:form.campus_number,
+      campus_number:form.value.campus_number,
       class_number:classNumber,
-      campus_curriculum_number:form.curriculumNumber
+      campus_curriculum_number:form.value.curriculumNumber
      }
      classStore.fetchClassStreams(sData)
 
      studyPeriodStore.fetchStudyPeriod(
       {
-        academic_year_number:form.academic_year_number,
+        academic_year_number:form.value.academic_year_number,
         class_number:classNumber,
-        school_number:form.school_number
+        school_number:form.value.school_number
       } )
 
      
@@ -342,11 +354,22 @@ const fetchCampuses = (school_number) => {
 )
 
 const fetchSettingsDetails = async (promotion_setting_number) => {
-  await promotionStore.fetchPromotionSettingDetails(promotion_setting_number)
+  // await promotionStore.fetchPromotionSettingDetails(promotion_setting_number)
+  await promotionStore.fetchPromotionSettingGrades(promotion_setting_number)
 }
 
 
 watch(
+    () => promotionStore.promotionSettingGradesResponse,
+    async (data) => {
+      if (data && data.data) {
+         gradeDraft.value = data.data
+
+      }
+    }
+)
+
+/*watch(
     () => promotionStore.promotionSettingDetailsResponse,
     async (data) => {
       if (data && data.data) {
@@ -354,7 +377,7 @@ watch(
         alert(JSON.stringify(draft))
       }
     }
-)
+)*/
 
 const addAggregateScale = () => {
   gradingInfo.value.push({
@@ -365,12 +388,13 @@ const addAggregateScale = () => {
 }
 
 const addAssessmentArea = () => {
-  assessmentStoreInfo.value.push({
+  assessment_areas.value.push({
+    grade_number:"",
     assessment_area_number:"",
-    minimum_grade:"",
-    maximum_score:"",
   })
 }
+
+
 
 </script>
 
@@ -407,90 +431,72 @@ const addAssessmentArea = () => {
 
         <table   class="table  table-sm table-striped text-sm">
           <tr>
-            <td>#</td>
             <td>Minimum Grade</td>
             <td>Maximum Aggregate</td>
             <td>Minimum Score</td>
-            <td>Action</td>
+<!--            <td>Action</td>-->
           </tr>
           <tbody>
 
-          <tr v-for="(list,idx) in gradingInfo" :key="idx">
-            <td>{{(idx + 1)}}</td>
+          <tr>
+
             <td>
               <select
                   style="outline: none 0 !important; box-shadow: none;"
                   type="text"
-                  v-model="list.minimum_grade"
+                  v-model="form.assessment_grade_scale_number"
                   required
                   class="form-control form-select-sm">
                 <option disabled value="">--Select Grade--</option>
-                <option v-for="(lst, index) in gradeDataList" :key="index" :value="lst.number">{{ lst.name }}</option>
+                <option v-for="(lst, index) in gradeDraft?.grade_scales	" :key="index" :value="lst.number">{{ lst.name+" - "+lst.abbreviation+" [ Min point:"+lst.minimum_points+" <==> Max point:"+lst.maximum_points+" ]" }}</option>
               </select>
 
             </td>
             <td>
               <input
-                  type="email"
-                  v-model.trim="list.maximum_aggregate"
+                  type="text"
+                  v-model.trim="form.minimum_points"
                   required
                   class="form-control shadow-none">
             </td>
             <td>
               <input
-                  type="email"
-                  v-model.trim="list.minimum_score"
+                  type="text"
+                  v-model.trim="form.score"
                   required
                   class="form-control shadow-none">
             </td>
-            <td>
 
-                  <div class="mt-2">
-                      <i
-                          class="cursor-pointer mx-1 text-xs fa-solid bi-trash"
-                          @click="gradingInfo.splice(idx, 1)"
-                      ></i>
-                  </div>
-
-            </td>
           </tr>
 
 
           </tbody>
         </table>
 
-        <button
-            @click="addAggregateScale"
-            type="button"
-            class="btn btn-sm btn-success btn-sm text-sm">
-          <i class="bi bi-plus"></i>
-          Add grade settings
-        </button>
 
 
-        <p class="mt-5">Assessment Area Settings</p>
+        <div class="mt-10 font-bold text-gray-500 mb-2">Assessment Area Settings</div>
 
-        <table   class="table table-sm table-striped text-sm">
+        <table   class="table table-sm table-striped text-sm border-t">
           <tr>
             <td>#</td>
             <td>Subject / Assessment Area</td>
             <td>Minimum Grade</td>
-            <td>Minimum Score</td>
+<!--            <td>Minimum Score</td>-->
             <td>Action</td>
           </tr>
           <tbody>
 
-          <tr v-for="(list,idx) in assessmentStoreInfo" :key="idx">
+          <tr v-for="(list,idx) in assessment_areas" :key="idx">
             <td>{{(idx + 1)}}</td>
             <td>
               <select
                   style="outline: none 0 !important; box-shadow: none;"
                   type="text"
                   v-model="list.assessment_area_number"
-                  required
                   class="form-control form-select-sm">
                 <option disabled value="">--Select Assessment Area--</option>
-                <option v-for="(lst, index) in gradeAssessmentAreaList" :key="index" :value="lst.number">{{ lst.name }}</option>
+                <option v-for="(lst, index) in gradeDraft?.assessment_areas	" :key="index" :value="lst.number">{{ lst.name }}</option>
               </select>
 
             </td>
@@ -498,27 +504,26 @@ const addAssessmentArea = () => {
               <select
                   style="outline: none 0 !important; box-shadow: none;"
                   type="text"
-                  v-model="list.minimum_grade"
-                  required
+                  v-model="list.grade_number"
                   class="form-control form-select-sm">
                 <option disabled value="">--Select Grade--</option>
                 <option v-for="(lst, index) in gradeDataList" :key="index" :value="lst.number">{{ lst.name }}</option>
               </select>
 
             </td>
-            <td>
+<!--            <td>
               <input
                   type="email"
                   v-model.trim="list.maximum_score"
                   required
                   class="form-control shadow-none">
-            </td>
+            </td>-->
             <td>
 
               <div class="mt-2">
                 <i
                     class="cursor-pointer mx-1 text-xs fa-solid bi-trash"
-                    @click="assessmentStoreInfo.splice(idx, 1)"
+                    @click="assessment_areas.splice(idx, 1)"
                 ></i>
               </div>
 

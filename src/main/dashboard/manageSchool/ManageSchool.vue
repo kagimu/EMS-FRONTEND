@@ -269,7 +269,6 @@ const curriculums = ref([
                 </button>
               </router-link>
 
-
             </div>
 
 

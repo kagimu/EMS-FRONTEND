@@ -15,6 +15,7 @@ export const usePromotionStore = defineStore("promotion", () => {
     let promotionsResponse = ref(null)
     let promotedStudentsResponse = ref(null)
     let promotionSettingDetailsResponse = ref(null)
+    let promotionSettingGradesResponse = ref(null)
 
     async function newPromotionSetting(data) {
         return await api.post("main/promotions/settings", data)
@@ -99,6 +100,18 @@ export const usePromotionStore = defineStore("promotion", () => {
             })
     }
 
+    async function fetchPromotionSettingGrades(promotion_setting_number) {
+        return await api.get("main/promotions/settings/grades?promotion_setting_number="+promotion_setting_number)
+            .then((response) => {
+                promotionSettingGradesResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     async function newPromotion(data) {
         return await api.post("main/promotions", data)
             .then((response) => {
@@ -160,6 +173,7 @@ export const usePromotionStore = defineStore("promotion", () => {
         promotionsResponse,
         promotedStudentsResponse,
         promotionSettingDetailsResponse,
+        promotionSettingGradesResponse,
         newPromotionSetting,
         fetchPromotionSetting,
         fetchPromotionSettingValue,
@@ -168,6 +182,7 @@ export const usePromotionStore = defineStore("promotion", () => {
         fetchPromotionByCampusClassNumber,
         fetchPromotions,
         fetchPromotedStudents,
-        fetchPromotionSettingDetails
+        fetchPromotionSettingDetails,
+        fetchPromotionSettingGrades
     }
 } )
