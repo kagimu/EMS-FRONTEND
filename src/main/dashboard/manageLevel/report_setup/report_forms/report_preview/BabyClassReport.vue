@@ -43,7 +43,7 @@ onMounted(
           <table style="width: 100%; text-align: center;">
             <tr>
               <td style="width: 20%; text-align: center;">
-                <img alt="logo" style="width: 130px; margin: 0 auto;" :src="reportDetails?.school?.logo"/>
+                <img alt="img" style="width: 130px; margin: 0 auto;" :src="reportDetails?.school?.logo"/>
               </td>
               <td style="width: 60%;" class="text-center">
                 <!--        <div style="font-size: 30px;"><b>NOREGRETS LIFE SCHOOL</b></div>-->
@@ -66,7 +66,7 @@ onMounted(
               <td style="width: 20%;">
                 <div style="text-align: center; margin-top: 10px;padding-left:20px">
                   <!--                    <img alt="logo" style="width: 130px; margin: 0 auto;" :src="StudentImage"/>-->
-                  <img alt="logo" style="width: 130px;" :src="reportDataInfo?.photo"/>
+                  <img alt="img" style="width: 130px;" :src="reportDataInfo?.photo"/>
                 </div>
               </td>
             </tr>
