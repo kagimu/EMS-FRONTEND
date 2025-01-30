@@ -103,8 +103,7 @@ watch(
 
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
   
-      <div class="card">
-  <div class="card-body">
+  <div>
       <div class="row">
   
         <div class="col-12">
@@ -118,7 +117,7 @@ watch(
   
   
   
-              <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
+              <table class="table table-hover caption-top mt-5 table-striped" style="font-size: 13px;">
                 <thead>
                 <tr>
                   <th scope="col">Name</th>
@@ -129,7 +128,7 @@ watch(
                   <th>Campus</th>
                   <th>Type</th>
                   <th>Status</th>
-                  <th scope="col">Action</th>
+                  <!-- <th scope="col">Action</th> -->
                 </tr>
                 </thead>
                 <tbody>
@@ -143,8 +142,8 @@ watch(
                  <td>{{ prom.campus.name }}</td>
                  <td>{{ prom.type }}</td>
                  <td>{{ prom.status }}</td>
-                 <td> <button style="color: red;" @click="deletePromoSetting(prom)"><i class="bi bi-trash"></i></button> &nbsp;
-                <button @click="openEditModal(prom)"><i class="bi bi-pencil" style="color: blue;"></i></button></td>
+                 <!-- <td> <button style="color: red;" @click="deletePromoSetting(prom)"><i class="bi bi-trash"></i></button> &nbsp;
+                <button @click="openEditModal(prom)"><i class="bi bi-pencil" style="color: blue;"></i></button></td> -->
                 </tr>
                 </tbody>
               </table>
@@ -153,7 +152,7 @@ watch(
           </div>
         </div>
   
-      </div>
+     
   </div>
   </template>
   
