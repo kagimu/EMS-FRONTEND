@@ -125,6 +125,8 @@ watch(
                   <th>Current Class</th>
                   <th>Next Class</th>
                   <th>Study Period</th>
+                  <th>Curriculum</th>
+                  <th>Campus</th>
                   <th>Type</th>
                   <th>Status</th>
                   <th scope="col">Action</th>
@@ -137,6 +139,8 @@ watch(
                  <td>{{prom.previous_class.name}} [{{ prom.previous_class.abbreviation	 }}]</td>
                  <td>{{ prom.next_class.name }} [{{ prom.next_class.abbreviation	 }}]</td>
                  <td>{{ prom.study_period.name }}</td>
+                 <td>{{ prom.curriculum.name }}</td>
+                 <td>{{ prom.campus.name }}</td>
                  <td>{{ prom.type }}</td>
                  <td>{{ prom.status }}</td>
                  <td> <button style="color: red;" @click="deletePromoSetting(prom)"><i class="bi bi-trash"></i></button> &nbsp;
