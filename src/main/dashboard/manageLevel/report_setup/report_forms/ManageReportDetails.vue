@@ -76,6 +76,7 @@ if(navigator.userAgent.indexOf("Firefox") !== -1 ) {
 <div>
 
 
+
   <button class="btn btn-success mb-2 " @click="print"><i class="bi bi-printer"></i></button>
 <div ref="myDiv">
 

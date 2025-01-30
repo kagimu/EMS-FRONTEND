@@ -57,6 +57,7 @@ const showStudentReport = (summary) => {
   if(summary) {
     showStudentsMarks.value = true
     reportSummaryData.value = summary
+
     let data = {
       report_summary_number:summary.number,
       html_report_template:"victorious-report-primary"

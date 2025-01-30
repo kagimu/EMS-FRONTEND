@@ -41,7 +41,8 @@ export const useReportCardStore = defineStore("ReportCard", () => {
     async function fetchReportDetailsInfo(data) {
          let report_summary_number = data?.report_summary_number ?? ""
          let html_report_template = data?.html_report_template ?? ""
-        return await api.get("main/report-settings/report-summary-details/"+report_summary_number+"?html_report_template="+html_report_template)
+        // return await api.get("main/report-settings/report-summary-details/"+report_summary_number+"?html_report_template="+html_report_template)
+        return await api.get("main/report-settings/report-summary-details/"+report_summary_number)
             .then((response) => {
                 reportDetailsResponse.value = response.data
             })
