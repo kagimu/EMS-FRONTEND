@@ -202,35 +202,9 @@ const confirmPromotion = () => {
             <div class="statistics">
                 <div class="container mt-4">
     <div class="row g-2">
-        <div class="col-3">
-            <div class="card text-center">
-                <div class="card-body">
-                    <i class="bi bi-check-circle text-success fs-2"></i>
-                    <h6 class="mt-2">Students Promoted</h6>
-                    <p class="fw-bold mb-0">100</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="card text-center">
-                <div class="card-body">
-                    <i class="bi bi-x-circle text-danger fs-2"></i>
-                    <h6 class="mt-2">Students Not Promoted</h6>
-                    <p class="fw-bold mb-0">20</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="card text-center">
-                <div class="card-body">
-                    <i class="bi bi-people text-primary fs-2"></i>
-                    <h6 class="mt-2">Total Students In Class</h6>
-                    <p class="fw-bold mb-0">300</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="card text-center">
+
+      <div class="col-6">
+            <div class="card text-center text-sm">
                 <div class="card-body">
                     <i class="bi bi-arrow-left-right text-warning fs-2"></i>
                     <p class="mb-0">
@@ -241,6 +215,35 @@ const confirmPromotion = () => {
               </div>
               </div>
         </div>
+
+        <div class="col-3">
+            <div class="card text-center text-sm">
+                <div class="card-body">
+                    <i class="bi bi-check-circle text-success fs-2"></i>
+                    <h6 class="mt-2">Students Promoted</h6>
+                    <p class="fw-bold mb-0">100</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card text-center text-sm">
+                <div class="card-body">
+                    <i class="bi bi-x-circle text-danger fs-2"></i>
+                    <h6 class="mt-2">Students Not Promoted</h6>
+                    <p class="fw-bold mb-0">20</p>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="bi bi-people text-primary fs-2"></i>
+                    <h6 class="mt-2">Total Students In Class</h6>
+                    <p class="fw-bold mb-0">300</p>
+                </div>
+            </div>
+        </div> -->
+       
         
     </div>
 </div>
@@ -265,9 +268,8 @@ const confirmPromotion = () => {
                 <button @click="exportToCSV" class="link link-primary mr-4"> <i class="bi bi-filetype-csv"></i> CSV    
                 </button>
         <button @click="exportToPDF" class="link link-success mr-4"><i class="bi bi-file-earmark-pdf"></i> PDF</button>
-        <button @click="copyToClipboard" class="link link-default mr-3">  <i class="bi bi-clipboard"></i> Copy </button>
         <button @click="confirmPromotion" class="btn btn-primary mb-2">  Confirm </button>
-
+        <!-- <button @click="copyToClipboard" class="link link-default mr-3">  <i class="bi bi-clipboard"></i> Copy </button> -->
     </div>
 
         </div>
@@ -276,7 +278,7 @@ const confirmPromotion = () => {
   
       <!-- Table -->
       <div class="table-container">
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered table-striped table-hover text-xs">
           <thead>
             <tr>
               <th
