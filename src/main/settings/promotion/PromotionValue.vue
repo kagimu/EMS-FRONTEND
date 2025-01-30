@@ -95,19 +95,22 @@ const filterType = (ty) =>{
                 <thead>
                 <tr>
                   <th>Promotion Setting</th>
-                  <th>Value</th>
-                  <th>Type</th>
-                  <th scope="col">Action</th>
+                  <th>Maximum Aggregate</th>
+                  <th>Minimum Score</th>
+                  
+                  <!-- <th scope="col">Action</th> -->
                 </tr>
                 </thead>
                 <tbody>
               
                 <tr v-for="(promV,index) in promotionValueData" :key="index">
                 <td>{{ promV.PromotionSetting.name}}</td>
-                 <td>{{promV.score}}</td>
-                 <td>{{promV.type}}</td>
-                 <td> <button><i class="bi bi-trash"></i></button> &nbsp;
-                <button><i class="bi bi-pencil"></i></button></td>
+                <td>{{promV.MinimumPoints}}</td>
+                 <td>{{promV.Score}}</td>
+                 
+               
+                 <!-- <td> <button><i class="bi bi-trash"></i></button> &nbsp;
+                <button><i class="bi bi-pencil"></i></button></td> -->
                 </tr>
                 </tbody>
               </table>
