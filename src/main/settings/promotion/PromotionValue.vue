@@ -67,7 +67,7 @@ watch(
   
       <AppModal title="Promotion Value" v-model="shDialog" xl4>
         <PromotionValueModel></PromotionValueModel>
-    </AppModal>
+      </AppModal>
   
 
       <div class="row">
