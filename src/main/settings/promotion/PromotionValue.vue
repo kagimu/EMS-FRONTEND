@@ -10,15 +10,26 @@ const promotionStore = usePromotionStore()
 const notificationStore = useNotificationStore()
 const promotionValueData = ref([])
 const shDialog = ref(false)
+const promotion_setting_number = ref("")
+const promoSettingList = ref([])
 
   onMounted(() => {
-    promotionStore.fetchPromotionSettingValue()
+    filterPromotionSettings()
+    promotionStore.fetchPromotionSetting()
     }
 )
 
 const openModal = () =>{
 shDialog.value = true
 }
+
+
+
+const filterPromotionSettings = (promotion_setting_number) => {
+  promotionStore.fetchPromotionSettingValue(promotion_setting_number)
+}
+
+
 
 
 watch(
@@ -52,12 +63,20 @@ watch(
       if (data) {
         shDialog.value = false
         notificationStore.successToast("Success", data.message)
-        await promotionStore.fetchPromotionSettingValue()
+         filterPromotionSettings()
 
       }
     }
 )
 
+watch(
+    () => promotionStore.PromotionSettingResponse,
+    async (data) => {
+      if (data) {
+        promoSettingList.value = data.data
+      }
+    }
+)
 
   </script>
 
@@ -73,34 +92,35 @@ watch(
       <div class="row">
   
         <div class="col-12">
-              <div class="flex justify-content-between mt-4">
-                <div>Promotion Configurations</div>
-                <button 
-                 type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"   @click="openModal()">
-                  New Configuration
-                </button>
-              </div>
+
 
         
           <div class="" style="width: 300px;">
-            <label class="text-sm"><small>Type</small>  </label><br>
-            <select
-                    style="box-shadow: none;"
-                    class="form-select form-select-sm" required
-                    v-model="type"
-                    @change="filterType(type)"     
-            >
-                <option disabled value="">Select Type</option>
-                <option value="score">Score</option>
-                <option value="aggregate">Aggregate</option>
-                <option value="grade">Grade</option>
-                <option value="assessment">Assessment Area
+
+
+            <div class="mb-2">
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="promotion_setting_number"
+                  required
+                  @change="filterPromotionSettings(promotion_setting_number)"
+              >
+                <option disabled value="">
+                  --Filter by promotion Setting--
                 </option>
-            </select>
+                <option v-for="(list, index) in promoSettingList" :key="index" :value="list.promotion_settings_number">
+                  {{ list.name }}
+                </option>
+              </select>
+            </div>
+
+
+
         </div>
   
   
-        <div v-if="type=='score'">
+        <div>
   
               <table class="table table-striped table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
                 <thead>
@@ -129,57 +149,6 @@ watch(
             </div>
           </div> 
 
-<div v-if="type=='assessment'">
-
-  <div class="row">
-    <div class="col-12">
-      <div class="flex justify-content-between mt-4">
-        <div></div>
-        <button @click="adjustConfig()"
-  type="button"  class="btn btn-sm  btn-outline-danger mr-2 text-xs" style="font-size: 12px !important;" >
-  <i class="bi bi-arrow-left"></i> Adjust Configurations
-      </button>
-
-      </div>
-      </div>
-  </div>
-
- <table class="table table-responsive table-striped table-hover text-sm p-2 mt-3">
-    <thead>
-      <tr>
-        <th>Assessment Area</th>
-        <th>Score</th>
-        <th>Aggregate</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Mathematics</td>
-        <td>88</td>
-        <td>Distinction (D1)</td>
-      </tr>
-      <tr>
-        <td>SST</td>
-        <td>89</td>
-        <td>Distinction (D1)</td>
-      </tr>
-      <tr>
-        <td>Science</td>
-        <td>99</td>
-        <td>Distinction (D1)</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<div v-if="type=='aggregate'">
-
-</div>
-
-
-<div v-if="type=='grade'">
-
-</div>
 
 
           </div>

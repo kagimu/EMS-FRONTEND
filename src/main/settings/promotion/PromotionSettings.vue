@@ -7,6 +7,7 @@ import PromotionSetupModal from "./PromotionSetupModal.vue";
 import {usePromotionStore} from "./store/promotion.js"
 import AppModal from "@/components/AppModal.vue";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import PromotionValueInfo from "@/main/settings/promotion/PromotionValueInfo.vue";
 const confirmationRef = ref(null);
 
 const promotionStore = usePromotionStore()
@@ -14,6 +15,7 @@ const notificationStore = useNotificationStore()
 const promotionData = ref([])
 const  shDialog = ref(false)
 const  promotionSettingData = ref(null)
+const  promotionSettingDialog = ref(false)
 
 onMounted(() => {
   promotionStore.fetchPromotionSetting()
@@ -49,59 +51,40 @@ watch(
 
 const promotionSettingInfo = ref(null)
 
-const openEditModal = (promotion) => {
-  promotionSettingInfo.value = promotion
-  shDialog.value = true
-}
 
-const deletePromoSetting = async (promotion) => {
-
-  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + promotion.name);
-if (agreed) {
-
-  
-}
-}
 
 watch(
   () => promotionStore.newPromotionSettingResponse,
   async (data) => {
       if (data) {
         shDialog.value = false
-        promotionStore.fetchPromotionSetting()
+        await promotionStore.fetchPromotionSetting()
        
       }
   }
 )
+
+const openPromotionValueDialog = (prom) => {
+  promotionSettingData.value = prom
+  promotionSettingDialog.value = true
+}
 
 </script>
 
 
 <template>
     <div>
-  
-  
-      <!-- <div class="modal fade" id="levelModal" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: shDialog }">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header text-sm p-0">
-              <h6 class="modal-title ml-3 mt-2 mb-2">Auto Promotion Setting</h6>
-              <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <div class="mt-2 mb-2">
-               <PromotionSetupModal></PromotionSetupModal>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
+
+      <AppModal title="Promotion Value" v-model="promotionSettingDialog" xl2>
+        <PromotionValueInfo :promotionSettingData="promotionSettingData"></PromotionValueInfo>
+      </AppModal>
+
 
       <AppModal title="Auto Promotion Setting" v-model="shDialog" xl2>
         <PromotionSetupModal :promotionSettingInfo="promotionSettingInfo"></PromotionSetupModal>
-    </AppModal>
+      </AppModal>
 
-    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+      <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
   
   <div>
       <div class="row">
@@ -128,7 +111,7 @@ watch(
                   <th>Campus</th>
                   <th>Type</th>
                   <th>Status</th>
-                  <!-- <th scope="col">Action</th> -->
+                   <th scope="col">Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -142,8 +125,16 @@ watch(
                  <td>{{ prom.campus.name }}</td>
                  <td>{{ prom.type }}</td>
                  <td>{{ prom.status }}</td>
-                 <!-- <td> <button style="color: red;" @click="deletePromoSetting(prom)"><i class="bi bi-trash"></i></button> &nbsp;
-                <button @click="openEditModal(prom)"><i class="bi bi-pencil" style="color: blue;"></i></button></td> -->
+                 <td>
+<!--                    <button style="color: red;" @click="deletePromoSetting(prom)"><i class="bi bi-trash"></i></button>-->
+                    <button
+                        @click="openPromotionValueDialog(prom)"
+                        class="rounded text-[#0d6efd] font-normal"
+                        style="border: 1px solid #0d6efd;">
+                          <i class="bi bi-eye mr-2"></i>
+                          Promotion Value
+                    </button>
+                 </td>
                 </tr>
                 </tbody>
               </table>

@@ -154,8 +154,7 @@ watch(
       if (data) {
         promoSettingList.value = data.data
       }
-  },
-  {deep: true}
+  }
 )
 
 
