@@ -46,6 +46,17 @@ const filterType = (ty) =>{
   type.value = ty
 }
 
+watch(
+    () => promotionStore.newPromotionSettingValueResponse,
+    async (data) => {
+      if (data) {
+        shDialog.value = false
+        notificationStore.successToast("Success", data.message)
+        await promotionStore.fetchPromotionSettingValue()
+
+      }
+    }
+)
 
 
   </script>
