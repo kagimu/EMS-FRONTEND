@@ -123,6 +123,9 @@ watch(
 const filterPromotionSetting = async () => {
   let promotion_setting_number = props.promotion_settings_number
   form.value.promotion_setting_number = promotion_setting_number
+
+  await promotionStore.fetchPromotionSettingGrades(promotion_setting_number)
+
   await promotionStore.fetchPromotionSettingValue(promotion_setting_number)
 
 }
@@ -130,8 +133,15 @@ const filterPromotionSetting = async () => {
 watch(
     () => promotionStore.promotionSettingValueResponse,
     async (data) => {
-      if (data) {
-        // promotionValueData.value = data.data
+      if (data && data.data) {
+
+        let draft = data.data
+
+        form.value.assessment_grade_scale_number  =  draft?.assessment_grade_number
+        form.value.minimum_points  =  draft?.minimum_aggregates
+        form.value.score = draft?.minimum_score
+
+        assessment_areas.value = draft?.assessment_areas
       }
     }
 )
@@ -410,7 +420,7 @@ const addAssessmentArea = () => {
 
         <table   class="table  table-sm table-striped text-sm">
           <tr>
-            <td>Minimum Grade</td>
+            <td class="w-[40%]">Minimum Grade</td>
             <td>Maximum Aggregate</td>
             <td>Minimum Score</td>
 <!--            <td>Action</td>-->
