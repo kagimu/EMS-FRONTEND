@@ -80,11 +80,11 @@ const settingsList = ref([
     id:"promotion-settings",
     action:"view_promotion_settings"
   },
-  {
+/*  {
     name:"Promotion Value",
     id:"promotion-value",
     action:"view_promotion_value"
-  }
+  }*/
 ])
 const form = reactive({
   name:null

@@ -34,7 +34,7 @@ watch(
       if (data) {
         shDialog.value = false
         promotionData.value = data.data
-        // notificationStore.s`uccessToast("Success application submitted", data.message)
+        // notificationStore.successToast("Success application submitted", data.message)
       }
   },
   {deep: true}
@@ -75,6 +75,19 @@ const newPromotionValue = (prom) => {
   promotionSettingData.value = prom
   newPromotionValueDialog.value = true
 }
+
+
+
+
+watch(
+    () => promotionStore.newPromotionSettingValueResponse,
+    async (data) => {
+      if (data) {
+        newPromotionValueDialog.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
 
 </script>
 

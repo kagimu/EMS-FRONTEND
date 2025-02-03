@@ -141,7 +141,10 @@ watch(
         form.value.minimum_points  =  draft?.minimum_aggregates
         form.value.score = draft?.minimum_score
 
-        assessment_areas.value = draft?.assessment_areas
+        assessment_areas.value = draft?.assessment_areas.map(area => ({
+          ...area,
+          grade_number: area.aggregate_scale_number
+        }));
       }
     }
 )
