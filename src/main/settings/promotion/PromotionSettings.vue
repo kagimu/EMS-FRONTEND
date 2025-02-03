@@ -8,6 +8,7 @@ import {usePromotionStore} from "./store/promotion.js"
 import AppModal from "@/components/AppModal.vue";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 import PromotionValueInfo from "@/main/settings/promotion/PromotionValueInfo.vue";
+import PromotionValueModel from "@/main/settings/promotion/PromotionValueModel.vue";
 const confirmationRef = ref(null);
 
 const promotionStore = usePromotionStore()
@@ -16,6 +17,7 @@ const promotionData = ref([])
 const  shDialog = ref(false)
 const  promotionSettingData = ref(null)
 const  promotionSettingDialog = ref(false)
+const  newPromotionValueDialog = ref(false)
 
 onMounted(() => {
   promotionStore.fetchPromotionSetting()
@@ -69,11 +71,20 @@ const openPromotionValueDialog = (prom) => {
   promotionSettingDialog.value = true
 }
 
+const newPromotionValue = (prom) => {
+  promotionSettingData.value = prom
+  newPromotionValueDialog.value = true
+}
+
 </script>
 
 
 <template>
     <div>
+
+      <AppModal title="Add Promotion Value" v-model="newPromotionValueDialog" xl4>
+        <PromotionValueModel :promotion_settings_number="promotionSettingData?.promotion_settings_number"></PromotionValueModel>
+      </AppModal>
 
       <AppModal title="Promotion Value" v-model="promotionSettingDialog" xl2>
         <PromotionValueInfo :promotionSettingData="promotionSettingData"></PromotionValueInfo>
@@ -103,13 +114,11 @@ const openPromotionValueDialog = (prom) => {
               <table class="table table-hover caption-top mt-5 table-striped" style="font-size: 13px;">
                 <thead>
                 <tr>
+                  <th scope="col">#</th>
                   <th scope="col">Name</th>
-                  <th>Current Class</th>
-                  <th>Next Class</th>
+                  <th>Current / Next Class</th>
                   <th>Study Period</th>
                   <th>Curriculum</th>
-                  <th>Campus</th>
-                  <th>Type</th>
                   <th>Status</th>
                    <th scope="col">Action</th>
                 </tr>
@@ -117,23 +126,42 @@ const openPromotionValueDialog = (prom) => {
                 <tbody>
               
                 <tr v-for="(prom,index) in promotionData" :key="index">
+                <td>{{ (index + 1) }}</td>
                 <td>{{ prom.name }}</td>
-                 <td>{{prom.previous_class.name}} [{{ prom.previous_class.abbreviation	 }}]</td>
-                 <td>{{ prom.next_class.name }} [{{ prom.next_class.abbreviation	 }}]</td>
+                 <td>
+
+
+                   <div class="border-b border-gray-100 pb-2">
+                     <span class="text-xs">Current Class:</span><br />
+                     {{prom.previous_class.name}} [{{ prom.previous_class.abbreviation	 }}]
+                   </div>
+
+                   <div class="border-b border-gray-100 pb-2">
+                     <span class="text-xs">Next Class:</span><br />
+                     {{ prom.next_class.name }} [{{ prom.next_class.abbreviation	 }}]
+                   </div>
+
+
+                 </td>
                  <td>{{ prom.study_period.name }}</td>
                  <td>{{ prom.curriculum.name }}</td>
-                 <td>{{ prom.campus.name }}</td>
-                 <td>{{ prom.type }}</td>
                  <td>{{ prom.status }}</td>
                  <td>
 <!--                    <button style="color: red;" @click="deletePromoSetting(prom)"><i class="bi bi-trash"></i></button>-->
                     <button
-                        @click="openPromotionValueDialog(prom)"
-                        class="rounded text-[#0d6efd] font-normal"
-                        style="border: 1px solid #0d6efd;">
-                          <i class="bi bi-eye mr-2"></i>
+                        @click="newPromotionValue(prom)"
+                        class="rounded text-success font-normal px-2 mb-2"
+                        style="border: 1px solid #198754;">
+                          <i class="bi bi-plus mr-2"></i>
                           Promotion Value
                     </button>
+                   <button
+                       @click="openPromotionValueDialog(prom)"
+                       class="rounded text-[#0d6efd] font-normal px-2"
+                       style="border: 1px solid #0d6efd;">
+                     <i class="bi bi-eye mr-2"></i>
+                     Promotion Value
+                   </button>
                  </td>
                 </tr>
                 </tbody>

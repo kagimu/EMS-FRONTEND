@@ -63,6 +63,11 @@ const assessmentListData = ref([])
 const gradeData = ref([])
 
 
+const props = defineProps({
+  promotion_settings_number:String
+})
+
+
 const formData = reactive({
    study_period_number: "",
    class_number: "",
@@ -81,10 +86,6 @@ const form = ref({
   promotion_setting_number:"",
   assessment_grade_scale_number:"",
   assessment_areas:"",
-  // type:null,
-  // score:null,
-  // promotion_setting_number:"",
-  // assessment_grade_number:null
 })
 
 
@@ -105,9 +106,35 @@ onMounted(() => {
         promotionStore.fetchPromotionSetting()
         subjectStore.fetchAllSubjects()
         schoolStore.fetchSchools()
+        filterPromotionSetting()
     }
-) 
+)
 
+
+watch(
+    () => props.promotion_settings_number,
+    async (data) => {
+      if(data){
+        await filterPromotionSetting()
+      }
+    }
+)
+
+const filterPromotionSetting = async () => {
+  let promotion_setting_number = props.promotion_settings_number
+  form.value.promotion_setting_number = promotion_setting_number
+  await promotionStore.fetchPromotionSettingValue(promotion_setting_number)
+
+}
+
+watch(
+    () => promotionStore.promotionSettingValueResponse,
+    async (data) => {
+      if (data) {
+        // promotionValueData.value = data.data
+      }
+    }
+)
 
 const  fetchAssessmentAreaList = (classN) => {
   const result = curriculumList.value.find(item => item.number === formData.curriculumNumber);
@@ -122,16 +149,16 @@ assessmentStore.fetchAssessmentArea(data)
 
 
 
+
+
 watch(
   () => assessmentStore.assessmentScaleResponse,
   async (data) => {
     if(data){
       loader.value = false
-      // notificationStore.successToast("Success", data.message)
       assessmentScaleData.value = data.data
     }
-  },
-  {deep:true}
+  }
 )
 
 
@@ -361,6 +388,7 @@ const addAssessmentArea = () => {
         <div class="mb-2">
             <label class="text-sm"><small>Promotion Setting</small>  </label>
             <select
+                disabled
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
                     v-model="form.promotion_setting_number"
