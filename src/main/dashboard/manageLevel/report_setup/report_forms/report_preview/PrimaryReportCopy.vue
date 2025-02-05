@@ -161,9 +161,12 @@ const ageCalculator = (dob) => {
       <tr>
         <th style="width:5%;border-top: 1px solid  #f4f4f4;color:white; background-color: transparent; font-size:12px;border-left:0px !important"></th>
         <th style="width:22%;border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px;padding-top:5px;;padding-bottom:5px; border-left:10px !important">SUBJECT UNIT</th>
-        <th style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:11px;padding-top:5px;padding-bottom:5px">ROC</th>
-        <th style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:11px;padding-top:5px;padding-bottom:5px">End of Term</th>
-        <th style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:11px;padding-top:5px;padding-bottom:5px">Quarter Term</th>
+        <th
+            v-for="(item,idx) in reportDetails?.report_columns" :key="idx"
+            style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:11px;padding-top:5px;padding-bottom:5px"
+        >
+          {{item}}
+        </th>
         <th style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:11px;padding-top:5px;padding-bottom:5px">Average</th>
         <th style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:11px;padding-top:5px;padding-bottom:5px">Aggr</th>
         <th style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:11px;padding-top:5px;padding-bottom:5px">Remark</th>
@@ -176,21 +179,21 @@ const ageCalculator = (dob) => {
         <template v-for="(subject, index) in subjectGroup.assessments" :key="index">
           <tr>
             <!-- Subject Group Name with Rowspan -->
-            <th v-if="index === 0" :rowspan="Number(subjectGroup.assessments.length)" 
-                style="transform: rotate(270deg); white-space: nowrap; overflow: hidden; 
-                text-overflow: ellipsis; border-top: 1px solid  #f4f4f4;color:#4b5563 !important;
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                font-weight: 300 !important; font-size:10px; vertical-align: middle;
-                letter-spacing: 0.05em; height: auto;text-transform: uppercase;">
+            <td v-if="index === 0" :rowspan="Number(subjectGroup.assessments.length)"
+                style="transform: rotate(270deg); white-space: nowrap; overflow: hidden;
+                text-overflow: ellipsis; border-top: 1px solid  #f4f4f4;color:#4b5563; font-size:10px; vertical-align: middle;
+                letter-spacing: 0.05em; height: auto;text-transform: uppercase; font-weight: bold;">
            {{ subjectGroup.name }}
-            </th>
+            </td>
 
             <!-- Subject Information Cells -->
             <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 10px;">{{ subject.name }}</td>
-            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 5px;">{{ subject.report_scores[0]?.score || '-' }}</td>
-            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 5px;">{{ subject.report_scores[1]?.score || '-' }}</td>
-            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 5px;">{{ subject.report_score_summary.summation }}</td>
-            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px;padding-top: 5px;padding-bottom: 5px;">{{ subject.report_score_summary.comment }}</td>
+            <td
+                v-for="(item,idx) in subject?.report_scores" :key="idx"
+                style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 5px;" >
+                  {{ item?.score > 0 ? item?.score : '-' }}
+            </td>
+            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px;padding-top: 5px;padding-bottom: 5px;">{{ subject.report_score_summary.summation }}</td>
             <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 5px;">{{ subject.report_score_summary.grade }}</td>
             <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 5px;">{{ subject.report_score_summary.comment }}</td>
             <td style="border-top: 1px solid  #f4f4f4;border-bottom: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:13px; padding: 0px;">M.O</td>

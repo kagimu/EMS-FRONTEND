@@ -136,9 +136,10 @@ const switchCurriculum = (curriculum) => {
         <div class="w-full mb-10">
 
 
-          <div class="card mt-3">
+          <div class="card p-0 mt-3">
             <div class="card-body p-0">
-              <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
+
+              <div class=" mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
                 <div class="ml-3 mb-2">Assessment</div>
               </div>
 

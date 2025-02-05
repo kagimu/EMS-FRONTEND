@@ -250,7 +250,10 @@ const router = createRouter({
                         action: "view_curriculum",
 
                     }},
-                {path: 'curriculum-setup', component: CurriculumSetup, name: "curriculum-setup",
+                {
+                    path: 'curriculum-setup',
+                    component: CurriculumSetup,
+                    name: "curriculum-setup",
                     meta: {
                         resource: "curriculum-setup",
                         action: "view_curriculum-setup",
