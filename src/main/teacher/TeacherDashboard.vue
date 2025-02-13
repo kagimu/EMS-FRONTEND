@@ -103,8 +103,8 @@
      // {title:"Students", name:"students", icon:"bi-people" ,action:"view_students"},
     //  {title:"My Subjects", name:"manage-subjects", icon:"bi-bookmarks-fill" ,action:"manage-subjects"},
      {title:"Scheme Of Work", name:"manage-scheme-and-sessions", icon:"bi-journals" ,action:"manage-scheme-and-sessions"}, //create scheme of work, ...etc
-     {title:"Attendance", name:"", icon:"bi-journal-richtext" ,action:""}, //Daily Attendance, Subject Attendance,
-     {title:"Calendar", name:"", icon:"bi-calendar" ,action:""}, //Daily Attendance, Subject Attendance,
+    //  {title:"Attendance", name:"", icon:"bi-journal-richtext" ,action:""},
+    //  {title:"Calendar", name:"", icon:"bi-calendar" ,action:""}, 
      {title:"Assessment", name:"manage-assessment", icon:"bi-file-earmark-spreadsheet" ,action:"manage-assessment"}, //exams, entermarks,reports, marksheet, 
     //  {title:"My Profile", name:"", icon:"bi-person-lines-fill" ,action:""},
    ])

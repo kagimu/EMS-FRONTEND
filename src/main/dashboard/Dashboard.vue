@@ -57,6 +57,7 @@ const menuList = ref([
   {title:"Student Enrolment", name:"enrolment", icon:"bi-database-down",action:"view_enrollments"},
   {title:"Catering", name:"catering", icon:"bi-egg-fried",action:"view_catering_menu" },
   // {title:"Calendar", name:"general-calendar", icon:"bi-calendar3",action:"view_calendar"},
+       {title:"Attendance", name:"manage-attendance", icon:"bi-journal-richtext" ,action:""},
   {title:"Account Management", name:"account-management", icon:"bi-people",action:"view_account-management"},
   {title:"Settings", name:"settings", icon:"bi-gear",action:"access_settings_menu"},
 ])
