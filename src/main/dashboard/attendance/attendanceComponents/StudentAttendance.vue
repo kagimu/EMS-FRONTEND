@@ -18,8 +18,8 @@ onMounted(() => {
 
 
 const staffList = reactive([
-  { id: 1, name: "John Doe", role: "Teacher", school: "ABC School",campus: "CBC School", status: null },
-  { id: 2, name: "Jane Smith", role: "Principal", school: "XYZ Academy",campus: "LKS School", status: null },
+  { id: 1, name: "John Doe", class: "Primary One", school: "ABC School",campus: "CBC School", status: null },
+  { id: 2, name: "Jane Smith", class: "Primary Two", school: "XYZ Academy",campus: "LKS School", status: null },
 ]);
 
 
@@ -77,7 +77,7 @@ showingAbsentModal.value = true
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Role</th>
+                  <th>Class</th>
                   <th>School</th>
                   <th>Campus</th>
                   <th>Status</th>
@@ -86,7 +86,7 @@ showingAbsentModal.value = true
               <tbody>
                 <tr v-for="staff in staffList" :key="staff.id">
                   <td>{{ staff.name }}</td>
-                  <td>{{ staff.role }}</td>
+                  <td>{{ staff.class }}</td>
                   <td>{{ staff.school }}</td>
                   <td>{{ staff.campus }}</td>
                   <td>
