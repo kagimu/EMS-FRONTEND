@@ -269,6 +269,7 @@ const ageCalculator = (dob) => {
                   <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">CLASS TEACHER'S SIGNATURE:</div>
                   <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">HEAD TEACHER'S SIGNATURE:</div>
                   <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">NEXT TERM BEGINS:</div>
+                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;"></div>
                 </td>
 
                 <td>
@@ -278,6 +279,9 @@ const ageCalculator = (dob) => {
                   <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;"> <!--18th/May/2020--> 
                     <!-- {{reportDetails?.next_term_begins	}} -->
                     {{nextTermBegins}}
+                  </div>
+                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top:28px;">
+                    {{reportDetails?.promotion_status}}
                   </div>
 
                 </td>

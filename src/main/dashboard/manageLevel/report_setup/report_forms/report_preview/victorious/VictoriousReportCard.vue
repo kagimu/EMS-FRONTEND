@@ -269,12 +269,12 @@ const printableContent = ref(null);
         <table style="width: 100%; font-size: 13px; margin-top: 20px;">
           <tr style="border-bottom: 1px solid #b8babb;">
             <td style="width: 30%; padding: 5px;"><b>Promotion Status</b></td>
-            <td style="padding: 5px; text-align: center;"></td>
+            <td style="padding: 5px; text-align: center;">{{reportDetails?.promotion_status}}</td>
           </tr>
           <tr style="border-bottom: 1px solid #b8babb;">
             <td style="padding: 5px;">Next Term Begins on</td>
             <td style="padding: 5px;">
-              Monday, May 27, 2024
+              {{reportDetails?.next_term_begins	}}
             </td>
           </tr>
 
