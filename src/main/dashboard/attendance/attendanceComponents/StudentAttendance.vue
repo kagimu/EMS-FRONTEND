@@ -16,7 +16,6 @@ onMounted(() => {
 
 })
 
-
 const staffList = reactive([
   { id: 1, name: "John Doe", class: "Primary One", school: "ABC School",campus: "CBC School", status: null },
   { id: 2, name: "Jane Smith", class: "Primary Two", school: "XYZ Academy",campus: "LKS School", status: null },
