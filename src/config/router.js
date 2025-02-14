@@ -85,6 +85,9 @@ import ManageAssessment from '@/main/teacher/ManageAssessment.vue';
 import ManageSchemeOfWorkAndSessions from '@/main/teacher/ManageSchemeOfWorkAndSessions.vue';
 import SelectSchoolDetails from '@/main/auth/SelectSchoolDetails.vue';
 import ClientInvoices from '@/main/application/applicationComponents/ClientInvoices.vue';
+import ManageAttendance from '@/main/dashboard/attendance/ManageAttendance.vue';
+import ManageStudentAttendance from '@/main/dashboard/attendance/ManageStudentAttendance.vue';
+import ManageStaffAttendance from '@/main/dashboard/attendance/ManageStaffAttendance.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -217,6 +220,40 @@ const router = createRouter({
 
                     }
                     },
+
+                    {
+                        path: 'manage-attendance',
+                        component: ManageAttendance,
+                        name: "manage-attendance",
+                        meta: {
+                            resource: "manage-attendance",
+                            action: "view_manage-attendance",
+    
+                        }
+                        },
+
+                        {
+                            path: 'manage-student-attendance',
+                            component: ManageStudentAttendance,
+                            name: "manage-student-attendance",
+                            meta: {
+                                resource: "manage-student-attendance",
+                                action: "view_manage-student-attendance",
+        
+                            }
+                            },
+
+                            {
+                                path: 'manage-staff-attendance',
+                                component: ManageStaffAttendance,
+                                name: "manage-staff-attendance",
+                                meta: {
+                                    resource: "manage-staff-attendance",
+                                    action: "view_manage-staff-attendance",
+            
+                                }
+                                },
+
                 {path: 'profiles', component: userProfiles, name: "profiles",
                     meta: {
                         resource: "profiles",
@@ -554,6 +591,9 @@ const router = createRouter({
 
             }
         },
+
+    
+
 
         {
             path: '/client-dashboard',
