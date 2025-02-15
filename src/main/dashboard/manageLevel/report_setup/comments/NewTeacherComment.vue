@@ -36,6 +36,7 @@ const study_period_number = ref("")
 const campus_class_number = ref("")
 const commentsList = ref(null)
 const loader = ref(false)
+const isUpdate = ref(false)
 
 const props = defineProps({
   headTeacherCommentList:{}
@@ -59,11 +60,22 @@ onMounted(
 
 const getCommentInfo = () =>{
   if(props.headTeacherCommentList){
-   form.min_aggregate = props.headTeacherCommentList.min_aggregate,
-   form.max_aggregate = props.headTeacherCommentList.max_aggregate,
+   form.min_aggregate = props.headTeacherCommentList.min_aggregate
+   form.max_aggregate = props.headTeacherCommentList.max_aggregate
    form.comment = props.headTeacherCommentList.comment
+
+    isUpdate.value = true
   }
 }
+
+watch(
+    () => props.headTeacherCommentList,
+    async (data) => {
+      if(data){
+        getCommentInfo()
+      }
+    }
+)
 
 const addComments = () => {
     loader.value = true
@@ -216,14 +228,14 @@ watch(
 
 <template>
   <div>
-    {{ headTeacherCommentList }}
+<!--     {{ headTeacherCommentList }}-->
   <form @submit.prevent="addComments">
 
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
       {{ errorMessage }}
     </div>
 
-<div class="row">
+<div v-if="!isUpdate" class="row">
  
           <div class="mb-2">
             <label class="text-sm text-gray-600">Level</label>
@@ -263,6 +275,7 @@ watch(
           </div>
 
         </div>
+
    <div class="row">
     <div class="col-6">
         <div class="mb-2">

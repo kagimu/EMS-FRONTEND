@@ -263,7 +263,7 @@ export const useClassesStore = defineStore("classes", () => {
     }
 
     async function updateStream(data) {
-        return await api.put("main/stream/update",data)
+        return await api.patch("main/stream/update",data)
             .then((response) => {
                 updateStreamSuccess.value = response.data
             })

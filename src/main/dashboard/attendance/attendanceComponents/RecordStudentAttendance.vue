@@ -3,14 +3,11 @@ import {onMounted,reactive, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
 import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
-import PromoteStudent from "@/main/settings/promotion/PromoteStudent.vue";
 import {usePromotionStore} from "@/main/settings/promotion/store/promotion.js"
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
-import AppModal from "@/components/AppModal.vue";
 import {useAttendanceStore} from "@/main/dashboard/attendance/store/attendance.js";
 
 
@@ -25,7 +22,6 @@ const  notificationStore  = useNotificationStore()
 const enrollmentStore = useEnrolmentStore()
 const promotionStore = usePromotionStore()
 const attendanceStore = useAttendanceStore()
-
 const campusList = ref([])
 const schoolList = ref([])
 const classList = ref([])
@@ -43,7 +39,7 @@ const per_page = ref(20)
 const total_items = ref(0)
 const total_rows = ref(0)
 const studentNumber = ref(null)
-
+const isComment = ref(false)
 
 
 const form = reactive({
@@ -55,6 +51,23 @@ const form = reactive({
   academic_year_number:"",
   status:""
 })
+
+
+
+const formData = reactive({
+  check_in_time: "",
+  check_out_time: "",
+  present: "",
+  user_number: "",
+  campus_class_number: "",
+  campus_number: "",
+  absence_reason: "",
+  school_number: "",
+  date: "",
+
+})
+
+const adn_no = ref(null)
 
 
 onMounted(() => {
@@ -162,11 +175,22 @@ const fetchEnrollmentList = (data) => {
 
         list.key =  (current_page - 1) * per_page_item + i + 1
 
-        const index = enrollmentList.value.findIndex(object => object.number === list.number);
+        // const index = enrollmentList.value.findIndex(object => object.number === list.number);
+        //
+        // if (index === -1) {
+        //   enrollmentList.value.push(list);
+        // }
 
+
+        const index = enrollmentList.value.findIndex(object => object.number === list.number);
         if (index === -1) {
+          list.status = "";
+          // isComment.value = false
+          // formData.present="YES"
+          // Add status property
           enrollmentList.value.push(list);
         }
+
       })
     }
 
@@ -279,21 +303,22 @@ watch(
     }
 )
 
-const formData = ref({
-  check_in_time: "",
-  check_out_time: "",
-  present: "",
-  user_number: "",
-  campus_class_number: "",
-  campus_number: "", 
-  absence_reason: "",
-  school_number: "",
-  date: "",
 
-})
+const  setAttendanceStatus = (status,adn,userN) => {
+  adn_no.value = adn
+  formData.user_number = userN
+  if(status === "present"){
+    isComment.value = false
+    formData.present="YES"
+  }else {
+    isComment.value = true
+    formData.present="NO"
+  }
+}
 
 
-const saveAttendance = () => {
+const saveAttendanceData = () =>{
+  // alert(JSON.stringify(formData))
   attendanceStore.newStudentAttendance(formData)
 }
 
@@ -317,6 +342,10 @@ watch(
     },
     {deep: true}
 )
+
+
+
+
 
 
 </script>
@@ -469,19 +498,20 @@ watch(
                     class="w-full overflow-auto max-h-[520px] scrollbar-thin"
                     @scroll="onScroll">
                   <table
-                      class="table table-hover caption-top mt-4 table-sm table-striped"
+                      class="table table-hover caption-top mt-1 table-sm table-striped text-xs"
                       style="font-size: 13px !important;"
                   >
                     <thead >
                     <tr>
                     
-                      <th>Student</th>
-                      <!-- <th>School</th> -->
-                      <th>Campus</th>
-                      <!-- <th>StudyPeriod</th> -->
-                      <th>Class</th>
-                      <th style="width: 15%;">Check In</th>
-                      <th style="width: 15%;">Check Out</th>
+                      <th class="text-xs">Student</th>
+                      <th class="text-xs">Class</th>
+                      <th class="text-xs" style="width: 45%;">
+                      Check InDate <span style="color: red">*</span>
+                        <input class="ml-2 p-1" type="date"  v-model="formData.date" style="width: 150px">
+
+                      </th>
+
                     </tr>
 
                     </thead>
@@ -500,18 +530,31 @@ watch(
                         </div>
 
                       </td>
-                      <!-- <td>{{enrolData.school }}</td> -->
-                      <td>{{ enrolData.campus }}</td>
-                      <!-- <td>{{ enrolData.study_period }}</td> -->
                       <td>{{ enrolData.class }}</td>
              
                       <td>
-                          <input type="time" class="form-control form-control-sm" v-model="enrolData.check_in">
+                        <div class="row">
+                          <div class="col-lg-3">
+                             <select class="form-control form-select-sm" v-model="enrolData.status" @change="setAttendanceStatus(enrolData.status,enrolData.adn,enrolData.user_number)">
+                               <option value="">-select-</option>
+                               <option value="present">Present</option>
+                               <option value="absent">Absent</option>
+                             </select>
+                          </div>
+                          <div class="col-lg-9" v-if="isComment && enrolData.adn === adn_no">
+                            <textarea v-on:blur="saveAttendanceData" class="form-control form-control-sm" v-model="formData.absence_reason"></textarea>
+                          </div>
+                          <div class="col-lg-9" v-if="!isComment && enrolData.adn === adn_no">
+                            <input v-on:blur="saveAttendanceData" type="time" class="form-control form-control-sm" v-model="formData.check_in_time">
+                          </div>
+
+
+                        </div>
+
+                       
                         </td>
 
-                      <td>
-                        <input type="time" class="form-control form-control-sm" v-model="enrolData.check_out">     
-                        </td>
+
 
                     </tr>
                     </tbody>

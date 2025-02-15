@@ -29,6 +29,7 @@ const classList = ref([])
 const streamClass = ref(null)
 const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
+const buttonLoader = ref(false)
 
 const streamForm = reactive({
   name: "",
@@ -55,7 +56,16 @@ const addStream = (data) => {
   stream_number.value = ""
 }
 
+const editStream = (lst,cls,classN) => {
+  streamClass.value = cls
+  streamDialog.value = true
+  stream_number.value = lst.stream_number
+  streamForm.name = lst.name
+  streamForm.campus_class_number = classN
+}
+
 const saveStream = () => {
+  buttonLoader.value = true
   if(stream_number.value){
     streamForm.stream_number = stream_number.value
     classStore.updateStream(streamForm)
@@ -121,6 +131,7 @@ watch(
     () => classStore.newStreamSuccess,
     async (data) => {
       if (data) {
+        buttonLoader.value = false
         streamForm.name = ""
         filterClassInfo()
         notificationStore.successToast("Success", data.message)
@@ -129,20 +140,16 @@ watch(
     {deep: true}
 )
 
-const editStream = (lst,cls) => {
- streamClass.value = cls
-  streamDialog.value = true
-  stream_number.value = lst.stream_number
-  streamForm.name = lst.name
-}
+
 
 watch(
     () => classStore.updateStreamSuccess,
     async (data) => {
       if (data) {
+        buttonLoader.value = true
         streamForm.name = ""
-        filterClassInfo()
         notificationStore.successToast("Success", data.message)
+        filterClassInfo()
       }
     },
     {deep: true}
@@ -152,6 +159,8 @@ watch (
     () => classStore.errorMessage,
     async (data) => {
       if(data){
+        // filterClassInfo()
+        buttonLoader.value = false
         notificationStore.errorToast("Error",data.message)
       }
     },
@@ -198,6 +207,9 @@ watch (
                 @click="saveStream">
                 <span v-if="stream_number != ''">Update Stream</span>
                 <span v-else>Save Stream(s)</span>
+              <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
+                <span class="visually-hidden">Loading...</span>
+              </div>
             </button>
 
           </div>
@@ -243,7 +255,7 @@ watch (
                         <small class="capitalize">
                           {{lst.name}}
                           <i class="bi bi-x-circle cursor-pointer" style="font-size: 13px;color:red" @click="deleteStream(lst)"></i>
-                          <i class="bi bi-pencil cursor-pointer ml-2" style="font-size: 11px;color:#0d6efd" @click="editStream(lst,list.name)"></i>
+                          <i class="bi bi-pencil cursor-pointer ml-2" style="font-size: 11px;color:#0d6efd" @click="editStream(lst,list.name,list.number)"></i>
                         </small>
                       </div>
                       </td>

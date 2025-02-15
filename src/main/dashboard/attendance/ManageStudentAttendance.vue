@@ -1,11 +1,11 @@
 <script setup>
-import UnitsOfMeasure from "@/main/dashboard/catering/cateringComponents/UnitsOfMeasure.vue";
-import NewUnitOfMeasurement from "@/main/dashboard/catering/cateringComponents/NewUnitOfMeasurement.vue";
 import router from "@/config/router.js";
 import { useAbility } from '@casl/vue';
 import StudentAttendance from "@/main/dashboard/attendance/attendanceComponents/StudentAttendance.vue";
 import RecordStudentAttendance from "@/main/dashboard/attendance/attendanceComponents/RecordStudentAttendance.vue";
 import { UserCheck, Users } from "lucide-vue-next"
+import RecordStudentCheckout from "@/main/dashboard/attendance/attendanceComponents/RecordStudentCheckout.vue";
+
 
 const { can } = useAbility()
 
@@ -40,7 +40,14 @@ const switchTabs = (data) => {
         <div v-if="can('create_staff_attendance','general')" class="cursor-pointer text-sm rounded-t-md mr-1" :class="selectedTab === 'record-attendance' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('record-attendance')">
           <div class="py-1 px-3">
             <i class="bi bi-box-arrow-in-right mr-1"></i>
-            Record Attendance
+            Check In
+          </div>
+        </div>
+
+        <div v-if="can('create_staff_attendance','general')" class="cursor-pointer text-sm rounded-t-md mr-1" :class="selectedTab === 'check-out' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('check-out')">
+          <div class="py-1 px-3">
+            <i class="bi bi-box-arrow-in-right mr-1"></i>
+            Check Out
           </div>
         </div>
 
@@ -65,6 +72,12 @@ const switchTabs = (data) => {
           <student-attendance></student-attendance>
         </div>
         </div>
+
+          <div v-if="selectedTab === 'check-out'">
+            <div>
+             <RecordStudentCheckout></RecordStudentCheckout>
+            </div>
+          </div>
 
    
 
