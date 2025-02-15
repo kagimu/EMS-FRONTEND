@@ -171,9 +171,9 @@ const successUpload = (data) => {
     <div class="row">
       <div class="col-2">
 
-        <div class="card mt-3">
+        <div class="card mt-3 p-0">
           <div class="card-body" style="padding: 0;">
-            <div class="list-group list-group-flush mb-1 rounded-0" >
+            <div class="list-group list-group-flush rounded" >
               <router-link
                   v-for="(item, idx) in  campusMenu" :key="idx"
                   class="list-group-item list-group-item-action"
@@ -184,6 +184,7 @@ const successUpload = (data) => {
 
           </div>
         </div>
+
 
       </div>
       <div class="col-10">
