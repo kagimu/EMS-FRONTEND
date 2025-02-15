@@ -51,11 +51,11 @@ const campusSetupMenu = ref([
     router_name:"report-card-settings",
     action:"view_report_card_settings"
   },
-  {
-    name:"Promotion",
-    router_name:"promotion",
-    action:"view_promotions"
-  },
+  // {
+  //   name:"Promotion",
+  //   router_name:"promotion",
+  //   action:"view_promotions"
+  // },
   {
     name:"Student Score",
     router_name:"student-score",
