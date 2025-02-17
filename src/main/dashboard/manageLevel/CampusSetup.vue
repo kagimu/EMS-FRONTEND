@@ -62,7 +62,7 @@ watch(
     <div class="row">
       <div :class="reportSettingsQuery || assessmentSettingsQuery ? 'col-3' : 'col-12 mx-auto'">
 
-        <div class="card mt-3">
+        <div class="card p-0 mt-3">
           <div class="card-body" style="padding: 0;" v-if="campusCurriculumDataInfo">
 
             <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
