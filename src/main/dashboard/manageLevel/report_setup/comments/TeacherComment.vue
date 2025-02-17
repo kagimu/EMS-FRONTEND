@@ -43,11 +43,11 @@ const deleteThisData = async (id,name) => {
   const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
   if (agreed) {
     let data = {
-   
+   comment_number : id
     }
-  }
-  
 
+    await teacherCommentStore.deleteHeadTeacherComment(data)
+  }
 }
 
 watch(
@@ -70,6 +70,26 @@ watch(
 )
 
 
+watch(
+    () => teacherCommentStore.deleteHeadTeacherCommentResponse,
+    async (data) => {
+      if(data){
+        await teacherCommentStore.fetchTeacherComments()
+        notificationStore.successToast("success",data.message)
+      }
+    }
+)
+
+watch(
+    () => teacherCommentStore.errorMessage,
+    async (data) => {
+      if(data){
+        await teacherCommentStore.fetchTeacherComments()
+        notificationStore.errorToast("error",data.error)
+
+      }
+    }
+)
 
 </script>
 

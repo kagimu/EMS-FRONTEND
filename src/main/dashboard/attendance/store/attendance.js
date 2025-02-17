@@ -12,7 +12,7 @@ export const useAttendanceStore = defineStore("attendance", () => {
 
 
     async function newStudentAttendance(data) {
-        return await api.post("main/attendance", data)
+        return await api.post("main/attendances", data)
             .then((response) => {
                 newStudentAttendanceResponse.value = response.data
             })
