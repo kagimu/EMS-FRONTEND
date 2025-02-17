@@ -27,7 +27,7 @@ export const useClassesStore = defineStore("classes", () => {
     const classLevelByLevelResponse = ref(null)
     const byCampusClassStreams = ref(null)
     const updateStreamSuccess = ref(null)
-
+    const deleteStreamResponse = ref(null)
 
 
 
@@ -337,6 +337,19 @@ export const useClassesStore = defineStore("classes", () => {
                 }
             })
     }
+
+    async function deleteClassStream(data) {
+        return await api.delete("main/stream/"+data.stream_number)
+            .then((response) => {
+                deleteStreamResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     return {
         classResponse,
         classStreams,
@@ -361,6 +374,7 @@ export const useClassesStore = defineStore("classes", () => {
         classLevelByLevelResponse,
         curriculumClassByIdResponse,
         byCampusClassStreams,
+        deleteStreamResponse,
         newClassData,
         editClassData,
         fetchClasses,
@@ -385,7 +399,8 @@ export const useClassesStore = defineStore("classes", () => {
         fetchCurriculumClassesByID,
         fetchClassStreamsByCampusClassNumber,
         updateStream,
-        updateStreamSuccess
+        updateStreamSuccess,
+        deleteClassStream
         
     }
 })

@@ -59,7 +59,7 @@ export const useTeacherCommentStore = defineStore("teacherComment", () => {
     }
 
     async function deleteHeadTeacherComment(data) {
-        return await api.post("main/report-settings/head-teacher-comment/"+data.comment_number)
+        return await api.delete("main/report-settings/head-teacher-comment/"+data.id)
             .then((response) => {
             deleteHeadTeacherCommentResponse.value = response.data
             })

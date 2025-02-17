@@ -68,6 +68,7 @@ const saveStream = () => {
   buttonLoader.value = true
   if(stream_number.value){
     streamForm.stream_number = stream_number.value
+    streamForm.status = "ACTIVE"
     classStore.updateStream(streamForm)
   }else{
   classStore.addStream(streamForm)
@@ -81,8 +82,10 @@ const deleteStream = async (lst) => {
 
 const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+lst.name);
 if (agreed) {
-  
-  // alert(JSON.stringify(lst))
+  let data = {
+    stream_number: lst.stream_number
+  }
+  await classStore.deleteClassStream(data)
 }
 
 
@@ -146,7 +149,8 @@ watch(
     () => classStore.updateStreamSuccess,
     async (data) => {
       if (data) {
-        buttonLoader.value = true
+        streamDialog.value = false
+        buttonLoader.value = false
         streamForm.name = ""
         notificationStore.successToast("Success", data.message)
         filterClassInfo()
@@ -166,6 +170,18 @@ watch (
     },
     {deep:true}
 )
+
+watch(
+    () => classStore.deleteStreamResponse,
+    async (data) => {
+      if (data) {
+        filterClassInfo()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep: true}
+)
+
 
 </script>
 <template>
