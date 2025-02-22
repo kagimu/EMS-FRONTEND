@@ -1,6 +1,5 @@
 <script setup>
 import {onMounted, reactive, ref, watch,defineEmits} from "vue";
-import {useRouter} from "vue-router";
 import useCommonsStore from "@/composables/useCommons.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
@@ -44,7 +43,7 @@ onMounted(() => {
 const form = reactive({
   name:null,
   status:"ACTIVE",
-  type:null,
+  type:"",
   next_class_number:'',
   previous_class_number:'',
   academic_year_number:'',
@@ -315,11 +314,11 @@ const fetchCampusLevel = (curriculumNumber) => {
                     class="form-select form-select-sm" required
                     v-model="form.type"
             >
-                <option disabled value="">Select class</option>
-                <option value="promotion">Promotion
-                </option>
-                <option value="promotion">Admission
-                </option>
+                <option disabled value="">--Select Type--</option>
+                <option value="promotion">Promotion</option>
+                <option value="repeat">Repeat</option>
+                <option value="demote">Demote</option>
+                <option value="admission">Admission</option>
             </select>
         </div>
 

@@ -13,7 +13,6 @@ import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 import router from "@/config/router.js";
 import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
 import StudentNarativeReport from "@/main/dashboard/profiles/studentProfile/StudentNarativeReport.vue";
-import SchoolBadge from "@/assets/images/victorius-budge.png";
 import FileUploader from "@/components/FileUploader.vue";
 const enrollmentStore = useEnrolmentStore()
 
@@ -21,15 +20,9 @@ const enrollmentStore = useEnrolmentStore()
 
 const studentNum = ref(null)
 const routerData = useRouter()
-const menuSelected = ref("financial-situation")
 const student_number = routerData.currentRoute.value.query.st_id
 const applicationStore = useApplicationStore()
-const notificationStore = useNotificationStore()
 const studentName = ref(null)
-const Sex = ref(null)
-const School= ref(null)
-const Campus= ref(null)
-const Level= ref(null)
 const className= ref(null)
 const dob = ref(null)
 const academicYear = ref(null)
