@@ -188,7 +188,7 @@ const curriculums = ref([
                   <i v-else class="bi bi-card-image w-[50px] text-[30px] border rounded-md p-[10px] bg-[#e4e6eb] text-gray-600"></i>
                 </div>
                 <div class="px-2">
-                  <div class="text-gray-600">{{school?.name}}</div>
+                  <div class="text-gray-700">{{school?.name}}</div>
                 </div>
               </div>
               <div class="flex">
@@ -233,15 +233,15 @@ const curriculums = ref([
                 <div v-for="(curr, idx) in school.school_curriculum" :key="idx" class="curriculum">
                 <div class="curriculum-header">
                 <h3 class="text-sm">{{idx+1}}. {{curr.name}}</h3>
-                <span>{{ 90 }}%</span>
+<!--                <span>{{ 90 }}%</span>-->
                 </div>
-                <div class="progress-bar">
-                <div
-                class="progress-fill"
-                :class="{ 'complete': 90 === 100 }"
-                :style="{ width: 90 + '%' }"
-                ></div>
-                </div>
+<!--                <div class="progress-bar">-->
+<!--                <div-->
+<!--                class="progress-fill"-->
+<!--                :class="{ 'complete': 90 === 100 }"-->
+<!--                :style="{ width: 90 + '%' }"-->
+<!--                ></div>-->
+<!--                </div>-->
              
               
 
@@ -321,14 +321,14 @@ const curriculums = ref([
 }
 
 .curriculum {
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 }
 
 .curriculum-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 
 .progress-bar {

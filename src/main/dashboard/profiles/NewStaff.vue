@@ -151,7 +151,7 @@
 
                <div class="mb-2">
                   <label class="text-sm"><small>Last name</small></label>
-                  <input type="text" v-model="form.last_name" required class="form-control">
+                  <input type="text" v-model="form.last_name"  class="form-control">
                </div>
                <div class="mb-2">
                   <label class="text-sm"><small>Gender</small></label>

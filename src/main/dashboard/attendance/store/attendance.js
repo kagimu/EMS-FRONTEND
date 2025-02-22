@@ -24,7 +24,7 @@ export const useAttendanceStore = defineStore("attendance", () => {
     }
 
     async function fetchStudentAttendance() {
-        return await api.get("main/attendance")
+        return await api.get("main/attendances")
             .then((response) => {
                 attendanceStudentResponse.value = response.data
             })
