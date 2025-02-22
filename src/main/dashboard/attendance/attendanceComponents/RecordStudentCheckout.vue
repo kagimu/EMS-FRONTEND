@@ -491,6 +491,9 @@ watch(
                 <div
                     class="w-full overflow-auto max-h-[520px] scrollbar-thin"
                     @scroll="onScroll">
+                  <label class="label mt-2 mb-2">Date</label>
+                  <input class="ml-2 p-1 form-control " type="date"  v-model="formData.date" style="width: 200px;" >
+
                   <table
                       class="table table-hover caption-top mt-1 table-sm table-striped text-xs"
                       style="font-size: 13px !important;"
@@ -500,12 +503,9 @@ watch(
                     
                       <th class="text-xs">Student</th>
                       <th class="text-xs">Class</th>
-                      <th class="text-xs" style="width: 45%;">
-                      Check InDate <span style="color: red">*</span>
-                        <input class="ml-2 p-1" type="date"  v-model="formData.date" style="width: 150px">
+                      <th class="text-xs" style="width: 15%;">Check Out
 
                       </th>
-                      <th class="text-xs" style="width: 15%;">Check Out</th>
                     </tr>
 
                     </thead>
@@ -525,28 +525,7 @@ watch(
 
                       </td>
                       <td>{{ enrolData.class }}</td>
-             
-                      <td>
-                        <div class="row">
-                          <div class="col-lg-2">
-                             <select class="form-contr form-select-sm" v-model="enrolData.status" @change="setAttendanceStatus(enrolData.status,enrolData.adn,enrolData.user_number)">
-                               <option value="">-select-</option>
-                               <option value="present">Present</option>
-                               <option value="absent">Absent</option>
-                             </select>
-                          </div>
-                          <div class="col-lg-10" v-if="isComment && enrolData.adn === adn_no">
-                            <textarea v-on:blur="saveAttendanceData" class="form-control form-control-sm" v-model="formData.absence_reason"></textarea>
-                          </div>
-                          <div class="col-lg-10" v-if="!isComment && enrolData.adn === adn_no">
-                            <input v-on:blur="saveAttendanceData" type="time" class="form-control form-control-sm" v-model="formData.check_in_time">
-                          </div>
 
-
-                        </div>
-
-                       
-                        </td>
 
                       <td>
                         <input type="time" class="form-control form-control-sm" v-model="enrolData.check_out">     

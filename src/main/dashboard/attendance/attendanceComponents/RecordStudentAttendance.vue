@@ -64,6 +64,7 @@ const formData = reactive({
   absence_reason: "",
   school_number: "",
   date: "",
+  student_number:""
 
 })
 
@@ -304,9 +305,10 @@ watch(
 )
 
 
-const  setAttendanceStatus = (status,adn,userN) => {
+const  setAttendanceStatus = (status,adn,userN,stdN) => {
   adn_no.value = adn
   formData.user_number = userN
+  formData.student_number = stdN
   if(status === "present"){
     isComment.value = false
     formData.present="YES"
@@ -506,9 +508,9 @@ watch(
                     
                       <th class="text-xs">Student</th>
                       <th class="text-xs">Class</th>
-                      <th class="text-xs" style="width: 45%;">
+                      <th class="text-xs" :style="formData.present ?'width: 45%;'  : 'width:35%'">
                       Check InDate <span style="color: red">*</span>
-                        <input class="ml-2 p-1" type="date"  v-model="formData.date" style="width: 150px">
+                        <input class="ml-2 p-1"  type="date"  v-model="formData.date" style="width: 150px">
 
                       </th>
 
@@ -534,17 +536,17 @@ watch(
              
                       <td>
                         <div class="row">
-                          <div class="col-lg-3">
-                             <select class="form-control form-select-sm" v-model="enrolData.status" @change="setAttendanceStatus(enrolData.status,enrolData.adn,enrolData.user_number)">
-                               <option value="">-select-</option>
+                          <div class="col-lg-4">
+                             <select class="form-control form-select" v-model="enrolData.status" @change="setAttendanceStatus(enrolData.status,enrolData.adn,enrolData.user_number,enrolData.student_number)">
+                               <option value="">- select -</option>
                                <option value="present">Present</option>
                                <option value="absent">Absent</option>
                              </select>
                           </div>
-                          <div class="col-lg-9" v-if="isComment && enrolData.adn === adn_no">
+                          <div class="col-lg-8" v-if="isComment && enrolData.adn === adn_no">
                             <textarea v-on:blur="saveAttendanceData" class="form-control form-control-sm" v-model="formData.absence_reason"></textarea>
                           </div>
-                          <div class="col-lg-9" v-if="!isComment && enrolData.adn === adn_no">
+                          <div class="col-lg-8" v-if="!isComment && enrolData.adn === adn_no">
                             <input v-on:blur="saveAttendanceData" type="time" class="form-control form-control-sm" v-model="formData.check_in_time">
                           </div>
 

@@ -100,46 +100,74 @@ watch(
 );
 
 
+// const printableContent = ref(null);
+// const printContent = () => {
+//   const printContents = printableContent.value.innerHTML;
+//   const originalContents = document.body.innerHTML;
+//
+//   const printWindow = window.open('', '', 'height=600,width=800');
+//   printWindow.document.write('<html><head><title>Print</title>');
+//   printWindow.document.write(
+//     '<style>body { font-family: Arial, sans-serif; } </style>');
+//   printWindow.document.write('</head><body>');
+//   printWindow.document.write(printContents);
+//   printWindow.document.write('</body></html>');
+//   printWindow.document.close();
+//   printWindow.print();
+// }
+
 const printableContent = ref(null);
+
 const printContent = () => {
   const printContents = printableContent.value.innerHTML;
-  const originalContents = document.body.innerHTML;
-
   const printWindow = window.open('', '', 'height=600,width=800');
-  printWindow.document.write('<html><head><title>Print</title>');
-  printWindow.document.write(
-    '<style>body { font-family: Arial, sans-serif; } </style>'); 
-  printWindow.document.write('</head><body>');
-  printWindow.document.write(printContents);
-  printWindow.document.write('</body></html>');
+  printWindow.document.write(`
+    <html>
+    <head>
+      <title>Billable Items</title>
+      <style>
+        ${document.head.innerHTML}
+      </style>
+    </head>
+    <body>
+      ${printContents}
+    </body>
+    </html>
+  `);
   printWindow.document.close();
+  printWindow.focus();
   printWindow.print();
-}
+  // printWindow.close();
+};
 
 </script>
 
 <template>
   <div>
+    <button style="float: right" class="btn btn-secondary btn-sm mb-2" @click="printContent">
+      <i class="bi bi-printer"></i> Print
+    </button>
     <div class="row mb-3 printable" ref="printableContent" >
       <div class="col-12">
         <div class="card shadow-sm">
           <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Bill Details</h5>
             <div>
-              <button class="btn btn-secondary btn-sm me-2" >
-                <i class="bi bi-pencil-square"></i> Edit
-              </button>
-              <button class="btn btn-danger btn-sm">
-                <i class="bi bi-trash"></i> Delete
-              </button>
+<!--              <button class="btn btn-secondary btn-sm me-2" >-->
+<!--                <i class="bi bi-pencil-square"></i> Edit-->
+<!--              </button>-->
+<!--              <button class="btn btn-danger btn-sm">-->
+<!--                <i class="bi bi-trash"></i> Delete-->
+<!--              </button>-->
+
             </div>
           </div>
-          <div class="card-body">
+          <div class="card-body "  >
             <div class="container">
               <section class="py-3">
                 <div class="row">
                   <div class="col-md-8">
-                    <h5>Bill To</h5>
+<!--                    <h5>Bill To</h5>-->
                     <address>
                       <!-- <strong>Bill No:</strong> <u>{{ billableData.billable_number }}</u><br> -->
                       <strong>Class:</strong> {{ billableData.class_name }}<br>
@@ -149,9 +177,7 @@ const printContent = () => {
                     </address>
                   </div>
                   <div class="col-md-4 text-end">
-                    <button class="btn btn-outline-secondary btn-sm mb-2" @click="">
-                      <i class="bi bi-printer"></i> Print
-                    </button>
+
                   </div>
                 </div>
               </section>
