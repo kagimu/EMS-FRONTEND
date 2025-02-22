@@ -84,23 +84,28 @@
   
   const fetchCampuses = (school_number) => {
     campusStore.fetchCampuses(school_number)
+    doFetchApplication()
   }
   
   const fetchClasses = (campus_number) => {
+    doFetchApplication()
     campusStore.fetchClassesByCampus(campus_number)
     levelStore.fetchCampusCurriculum(campus_number)
   }
 
   const fetchCampusLevel = (curriculumNumber) => {
+    doFetchApplication()
    classStore.fetchCampusLevel(curriculumNumber)
 }
   
   const fetchAcademicYear = (campusN) =>{
+    doFetchApplication()
   academicYearStore.fetchAcademicYearByCampus(campusN)
   classStore.fetchClassStreams(campusN)
   }
 
   const fetchLevelClasses = (levelNumber) => {
+    doFetchApplication()
    classStore.fetchClassLevel({campusCurriculumNumber: form.curriculumNumber, campusLevelNumber: levelNumber})
 }
 
@@ -172,7 +177,12 @@
    let data = {
       page: 1,
       per_page: per_page.value,   
-      status: form.statusData 
+      status: form.statusData,
+     school_number:form.school_number,
+     campus_number:form.campus_number,
+     curriculum_number:form.curriculumNumber,
+      level_number:form.level,
+     campus_class_number:form.campus_class_number
    }
    loading.value = true;
    applicationInfoList.value = []
