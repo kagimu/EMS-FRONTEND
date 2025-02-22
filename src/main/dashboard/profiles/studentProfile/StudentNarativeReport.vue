@@ -10,6 +10,8 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
+import AppModal from "@/components/AppModal.vue";
+import NewNarrativeReport from "@/main/dashboard/profiles/studentProfile/NewNarrativeReport.vue";
 const routerData = useRouter()
 
 const userStore = useUserStore()
@@ -30,6 +32,7 @@ const academic_year_number = ref("")
 const campus_class_number = ref("")
 const study_period_number = ref("")
 const assessment_area_number = ref("")
+const reportDialog = ref( false)
 
 
 
@@ -181,13 +184,28 @@ watch(
     }
 )
 
+const addANarrativeReport = () => {
+  reportDialog.value = true
+}
+
 </script>
 
 <template>
 <div>
 
-  <div class="flex justify-content-between mt-1">
+
+  <AppModal title="Add Narrative Report" v-model="reportDialog" lg>
+      <new-narrative-report :student_number="student_number"></new-narrative-report>
+  </AppModal>
+
+
+  <div class="flex justify-content-between mt-3">
     <div class="ml-4">Narrative Report</div>
+    <button
+        type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addANarrativeReport">
+      <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+      Add a narrative report
+    </button>
   </div>
 
 
