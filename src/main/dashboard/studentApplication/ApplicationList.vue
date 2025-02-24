@@ -183,6 +183,7 @@
      curriculum_number:form.curriculumNumber,
       level_number:form.level,
      campus_class_number:form.campus_class_number
+     
    }
    loading.value = true;
    applicationInfoList.value = []
