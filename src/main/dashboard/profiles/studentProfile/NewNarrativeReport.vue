@@ -11,7 +11,6 @@ import {useStudyModeStore} from "@/main/settings/mode-of-study/store/studyMode.j
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useBillStore} from "@/main/settings/bills/store/bills.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
-import ComboMenuItemBox from "@/components/ComboMenuItemBox.vue";
 import api from "@/config/api.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
 
@@ -54,16 +53,7 @@ const campus_number = ref("")
 const academic_year_number = ref("")
 const assessmentListData = ref([])
 
-/*const formData = reactive({
-  description:null,
-  class_number:"",
-  mode_of_study_number:"",
-  campus_number:"",
-  study_period_number:"",
-  bill_type:null,
-  academic_year_number:"",
-  school_number:""
-})*/
+
 
 const formData = ref({
 description:"",
@@ -137,7 +127,6 @@ watch(
 
 onMounted(
     async () => {
-      await serviceStore.fetchServicesList()
       await schoolStore.fetchSchools()
       getSchoolInfo()
     } )
@@ -169,6 +158,7 @@ const  saveNarrativeReport = async (data) => {
       .then((response) => {
         if(response){
           buttonLoader.value = false;
+          emit("next")
         }
 
       })
@@ -182,6 +172,7 @@ const  saveNarrativeReport = async (data) => {
 
 
 
+/*
 const getModeOfStudyInfo = (schoolN) =>{
   let data = {
     school_number:schoolN,
@@ -189,6 +180,7 @@ const getModeOfStudyInfo = (schoolN) =>{
   modeStudyStore.fetchModeOfStudy(data)
 }
 
+*/
 
 
 
@@ -238,11 +230,12 @@ watch (
 
 
 const studyPeriodData = (campus_class_number) => {
+   let classNumber = campusClassList.value ? campusClassList.value.find(item => item.number === campus_class_number)?.class_number : null
   studyPeriodStore.fetchStudyPeriod(
       {
         campus_curriculum_number:curriculumNumber.value,
         academic_year_number:academic_year_number.value,
-        class_number:campus_class_number,
+        class_number:classNumber, //campus_class_number,
         school_number:school_number.value
       }
   )
@@ -252,7 +245,7 @@ const studyPeriodData = (campus_class_number) => {
   const curriculum = curriculumList.value.find(item => item?.number === curriculumNumber.value);
   let info = {
     curriculum_number:curriculum ? curriculum?.curriculum_number : null,
-    class_number:campus_class_number
+    class_number:classNumber, //campus_class_number
   }
 
   assessmentStore.fetchAssessmentArea(info)
@@ -273,7 +266,6 @@ watch(
 
 const fetchCampuses = (school) => {
   campusStore.fetchCampuses(school)
-  getModeOfStudyInfo(school)
 }
 
 const fetchCurriculum = (campus_number) => {
@@ -288,23 +280,34 @@ const fetchClasses = (campuslevelnumber) => {
   // classStore.fetchClassByLevel(campus_level_number)
   academicYearStore.fetchAcademicYearByLevel(campuslevelnumber)
   classStore.fetchClassLevel({campusCurriculumNumber: curriculumNumber.value, campusLevelNumber: campuslevelnumber})
-  let data = {
+/*  let data = {
     school_number:school_number.value,
     campus_level_number:campuslevelnumber
   }
-  campusStore.fetchClassesBySchool(data)
+  campusStore.fetchClassesBySchool(data)*/
 
 }
 
 
 watch(
-    () => campusStore.schoolClassesResponse,
+    () => classStore.classLevelInfoResponse,
     async (data) => {
       if(data){
-        campusClassList.value = data.data
+        // alert(JSON.stringify(data.data))
+        campusClassList.value = data?.data[0]?.classes
       }
     }
 )
+
+/*watch(
+    () => campusStore.schoolClassesResponse,
+    async (data) => {
+      if(data){
+        // alert(JSON.stringify(data.data))
+        campusClassList.value = data.data
+      }
+    }
+)*/
 
 
 
@@ -362,9 +365,6 @@ watch(
     {deep: true}
 )
 
-const fetchAcademicYear = (campusN) =>{
-  academicYearStore.fetchAcademicYearByCampus(campusN)
-}
 
 watch(
     () => schoolStore.schoolsResponse,
@@ -397,21 +397,7 @@ watch(
 )
 
 
-const handleMenuChange = (data) => {
-  if(data){
-    let draft = data
-    let index = draft.index
-    let number = draft.number
 
-    let info = unfilteredServicesData.value?.find(item => item?.item?.number === number)
-
-    if(info) {
-      servicesData.value[index].cost = info?.item.cost
-      servicesData.value[index].quantity = 1
-    }
-    updateAmount(draft.index)
-  }
-}
 
 watch(
     () => assessmentStore.assessmentAreaResponse,
@@ -541,18 +527,18 @@ watch(
                 </div>
 
 
-                <div class="mb-2">
+<!--                <div class="mb-2">
                   <label class="text-sm"><small>Narrative Schedule</small></label>
                   <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
                       v-model="formData.narrative_schedule_number	"
                   >
-                    <option disabled :value="null">--Select Narrative Schedule--</option>
+                    <option disabled :value="null">&#45;&#45;Select Narrative Schedule&#45;&#45;</option>
                     <option v-for="(list, index) in assessmentListData" :key="index" :value="list.number">{{ list.name }}
                     </option>
                   </select>
-                </div>
+                </div>-->
 
                 <div class="mb-2">
                   <label class="text-xs"><small>Description</small></label>

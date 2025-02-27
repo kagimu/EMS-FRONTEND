@@ -188,6 +188,10 @@ const addANarrativeReport = () => {
   reportDialog.value = true
 }
 
+const closeDialog = () => {
+  reportDialog.value = false
+}
+
 </script>
 
 <template>
@@ -195,7 +199,7 @@ const addANarrativeReport = () => {
 
 
   <AppModal title="Add Narrative Report" v-model="reportDialog" lg>
-      <new-narrative-report :student_number="student_number"></new-narrative-report>
+      <new-narrative-report v-on:next="closeDialog" :student_number="student_number"></new-narrative-report>
   </AppModal>
 
 
