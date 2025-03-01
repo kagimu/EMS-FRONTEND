@@ -12,6 +12,7 @@ import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/stor
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
 import AppModal from "@/components/AppModal.vue";
 import NewNarrativeReport from "@/main/dashboard/profiles/studentProfile/NewNarrativeReport.vue";
+import NarrativeReportList from "@/main/dashboard/profiles/studentProfile/NarrativeReportList.vue";
 const routerData = useRouter()
 
 const userStore = useUserStore()
@@ -211,6 +212,9 @@ const closeDialog = () => {
       Add a narrative report
     </button>
   </div>
+
+
+  <narrative-report-list></narrative-report-list>
 
 
   <div class="row mt-5 mb-2 mx-auto">
