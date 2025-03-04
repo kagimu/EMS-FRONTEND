@@ -56,11 +56,18 @@
     onMounted( async () => {
     schoolStore.fetchSchools()  
      applicationStore.fetchApplicationList()
-     await serviceStore.fetchAllItems()
+     // await serviceStore.fetchAllItems()
      getAdmissionInfo()
     //  alert(props.interviewInfo.interview_number)
       }
   )
+
+  const fetchItemsData = (schoolN) => {
+    let data = {
+      school_number:schoolN
+    }
+    serviceStore.fetchAllItems(data)
+  }
 
     watch (
       () => props.selectedStudentNumber,
@@ -101,6 +108,7 @@
       form.school_number = props.admissionDetails.school_number
       if(form.school_number){
         fetchCampuses(form.school_number)
+
       }
       form.campus_number = props.admissionDetails.campus_number
       if(form.campus_number){
@@ -160,6 +168,7 @@ campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_c
   
   const fetchCampuses = (school_number) => {
       campusStore.fetchCampuses(school_number)
+    fetchItemsData(school_number)
   }
   
   const fetchClasses = (campus_number) => {

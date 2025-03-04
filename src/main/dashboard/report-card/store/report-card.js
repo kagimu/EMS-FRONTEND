@@ -33,6 +33,7 @@ export const useReportCardStore = defineStore("ReportCard", () => {
             let grade = data?.grade ?   data?.grade : ""
             let stream_number = data?.stream_number ?   data?.stream_number : ""
             let student_number = data?.student_number ? data?.student_number : ""
+        let curriculum_number = data?.curriculum_number ? data?.curriculum_number : ""
         return await api.get(
             "main/report-settings/report-summary?page="+data.page+
                 "&per_page="+ data.per_page+
@@ -43,7 +44,8 @@ export const useReportCardStore = defineStore("ReportCard", () => {
                 "&class_number="+class_number+
                 "&stream_number="+stream_number+
                 "&grade="+grade+
-                "&campus_number="+campus_number
+                "&campus_number="+campus_number+
+            "&curriculum_number="+curriculum_number
             )
             .then((response) => {
                 if(response && response.data) {

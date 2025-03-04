@@ -298,17 +298,17 @@ const formData = reactive({
 
 const adn_no = ref(null)
 
-const  setAttendanceStatus = (status,adn,userN) => {
-  adn_no.value = adn
-  formData.user_number = userN
-  if(status === "present"){
-    isComment.value = false
-    formData.present="YES"
-  }else {
-    isComment.value = true
-    formData.present="NO"
-  }
-}
+// const  setAttendanceStatus = (status,adn,userN) => {
+//   adn_no.value = adn
+//   formData.user_number = userN
+//   if(status === "present"){
+//     isComment.value = false
+//     formData.present="YES"
+//   }else {
+//     isComment.value = true
+//     formData.present="NO"
+//   }
+// }
 
 
 const saveAttendanceData = () =>{
@@ -528,7 +528,7 @@ watch(
 
 
                       <td>
-                        <input type="time" class="form-control form-control-sm" v-model="enrolData.check_out">     
+                        <input v-on:blur="saveAttendanceData" type="time" class="form-control form-control-sm" v-model="enrolData.check_out_time">
                         </td>
 
                     </tr>

@@ -80,6 +80,7 @@ const doFilterReportSummary = () =>{
     student_number: "",
     stream_number: "",
     grade: "",
+    curriculum_number:routerData.currentRoute.value.query.cr
   }
 
   reportStore.fetchReportSummary(options)

@@ -8,11 +8,13 @@ import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/st
 import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
 import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
 import PromoteStudent from "@/main/settings/promotion/PromoteStudent.vue";
-import {usePromotionStore} from "@/main/settings/promotion/store/promotion.js"
+// import {usePromotionStore} from "@/main/settings/promotion/store/promotion.js"
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
 import AppModal from "@/components/AppModal.vue";
 import FileUploader from "@/components/FileUploader.vue";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
+import NewEnrollmentModel from "@/main/dashboard/enrollment/NewEnrollmentModel.vue"
+
 
 
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
@@ -26,7 +28,7 @@ const { can } = useAbility()
 const enrollmentList = ref( [])
 const  notificationStore  = useNotificationStore()
 const enrollmentStore = useEnrolmentStore()
-const promotionStore = usePromotionStore()
+
 
 const campusList = ref([])
 const schoolList = ref([])
@@ -52,6 +54,10 @@ const curriculumList = ref([])
 const levelList = ref([])
 
 const levelStore = useLevelStore()
+const enrolDialog = ref(false)
+const studentNum=ref(null)
+const admissionInfoData = ref(null)
+const studentData = ref(null)
 
 
 const form = reactive({
@@ -70,7 +76,7 @@ const form = reactive({
 
 onMounted(() => {
       schoolStore.fetchSchools()
-      doFetchEnrollent()
+      // doFetchEnrollent()
     }
 )
 
@@ -321,15 +327,15 @@ watch(
 )
 
 
-watch(
-    () => promotionStore.newPromotionsResponse,
-    async (data) => {
-      if (data) {
-        promDialog.value = false;
-      }
-    },
-    {deep: true}
-)
+// watch(
+//     () => promotionStore.newPromotionsResponse,
+//     async (data) => {
+//       if (data) {
+//         promDialog.value = false;
+//       }
+//     },
+//     {deep: true}
+// )
 
 
 watch(
@@ -365,12 +371,23 @@ watch(
     {deep:true}
 )
 
+const enrolStudent = (enrolData) => {
+  // alert(JSON.stringify(enrolData))
+  studentNum.value = enrolData.student_number
+  studentData.value = enrolData
+  enrolDialog.value = true
+}
 </script>
 
 
 
 <template>
   <div class="card p-1">
+
+    <AppModal title="Enrol" v-model="enrolDialog" xl6>
+      <NewEnrollmentModel :studentNumber="studentNum" :studentDataInfo="studentData"></NewEnrollmentModel>
+    </AppModal>
+
     <AppModal title="Upload Student Photo" v-model="uploadDialog" xl>
       <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload"  :studentNumber="studentNumber" :imageUrl="studentPhoto"></file-uploader>
     </AppModal>
@@ -467,7 +484,7 @@ watch(
                       </div>
                     </div>
 
-                    <div class="col-3">
+                    <div class="col-2">
                       <div class="mb-2">
                         <!-- {{ classList }} -->
                         <select
@@ -483,7 +500,7 @@ watch(
                         </select>
                       </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-2">
                       <div class="mb-2">
                         <!-- <label class="text-sm"><small>Stream</small> </label> -->
                         <select
@@ -499,7 +516,7 @@ watch(
                       </div>
                     </div>
 
-                    <div class="col-3">
+                    <div class="col-2">
                       <div class="mb-2">
                         <select
                             style="box-shadow: none;"
@@ -511,6 +528,14 @@ watch(
                           <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
 
                         </select>
+                      </div>
+                    </div>
+
+
+                    <div class="col-3">
+                      <div class="mb-2">
+<!--                        ///search input-->
+
                       </div>
                     </div>
                   </div>
@@ -575,21 +600,50 @@ watch(
                       <td>{{ enrolData.class }}</td>
                       <td>{{ enrolData.enrollment_date }}</td>
                       <td>
-                           <div v-if="can('upload_student_photo','manage')" >
-                             <div class="mr-2 rounded-sm px-2 text-[#0d6dfa] cursor-pointer m-1" style="border: 1px solid #0d6dfa;" @click="uploadStudentPhoto(enrolData)">
-                               <i class="bi bi-card-image cursor-pointer mr-1"></i>
-                               Upload Photo
-                             </div>
-                             <router-link
-                                 v-if="can('view_profile','manage')"
-                                 :to="{name:'student-profile-details', query:{st_id:enrolData.student_number}}"
-                                 class="text-decoration-none">
-                                   <div class="mr-2 rounded-sm px-2 text-[#0d6dfa] cursor-pointer m-1" style="border: 1px solid #0d6dfa;">
-                                     <i class="bi bi-person cursor-pointer mr-1"></i>
-                                     View Profile
-                                   </div>
-                             </router-link>
-                           </div>
+<!--                           <div v-if="can('upload_student_photo','manage')" >-->
+<!--                             <div class="mr-2 rounded-sm px-2 text-[#0d6dfa] cursor-pointer m-1" style="border: 1px solid #0d6dfa;" @click="uploadStudentPhoto(enrolData)">-->
+<!--                               <i class="bi bi-card-image cursor-pointer mr-1"></i>-->
+<!--                               Upload Photo-->
+<!--                             </div>-->
+<!--                             <router-link-->
+<!--                                 v-if="can('view_profile','manage')"-->
+<!--                                 :to="{name:'student-profile-details', query:{st_id:enrolData.student_number}}"-->
+<!--                                 class="text-decoration-none">-->
+<!--                                   <div class="mr-2 rounded-sm px-2 text-[#0d6dfa] cursor-pointer m-1" style="border: 1px solid #0d6dfa;">-->
+<!--                                     <i class="bi bi-person cursor-pointer mr-1"></i>-->
+<!--                                     View Profile-->
+<!--                                   </div>-->
+<!--                             </router-link>-->
+<!--                           </div>-->
+
+
+
+                        <div v-if="can('upload_student_photo','manage')" >
+                          <div class="dropdown text-xs">
+                            <button class="btn btn-outline-primary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                              -select-
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                              <li>
+                                <div class="dropdown-item cursor-pointer" @click="uploadStudentPhoto(enrolData)">
+                                  <i class="bi bi-card-image cursor-pointer mr-1"></i> Upload Photo
+                                </div>
+                              </li>
+                              <li v-if="can('view_profile','manage')">
+                                <router-link :to="{name:'student-profile-details', query:{st_id:enrolData.student_number}}" class="dropdown-item text-decoration-none">
+                                  <i class="bi bi-person cursor-pointer mr-1"></i> View Profile
+                                </router-link>
+                              </li>
+
+                              <li>
+                                <div class="dropdown-item cursor-pointer" @click="enrolStudent(enrolData)">
+                                  <i class="bi bi-people-fill cursor-pointer mr-1"></i> Enrol
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+
                       </td>
 
                     </tr>
