@@ -84,15 +84,15 @@ showingAbsentModal.value = true
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="staff in staffList" :key="staff.id">
-                  <td>{{ staff.name }}</td>
-                  <td>{{ staff.role }}</td>
-                  <td>{{ staff.school }}</td>
-                  <td>{{ staff.campus }}</td>
-                  <td>
-                  Present
-                  </td>
-                </tr>
+<!--                <tr v-for="staff in staffList" :key="staff.id">-->
+<!--                  <td>{{ staff.name }}</td>-->
+<!--                  <td>{{ staff.role }}</td>-->
+<!--                  <td>{{ staff.school }}</td>-->
+<!--                  <td>{{ staff.campus }}</td>-->
+<!--                  <td>-->
+<!--                  Present-->
+<!--                  </td>-->
+<!--                </tr>-->
               </tbody>
             </table>
           </div>

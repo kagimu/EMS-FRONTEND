@@ -4,23 +4,23 @@
     <div>
       <div class="row">
           <div class="col-9">
-              <input 
-        type="text" 
-        v-model="searchQuery" 
-        placeholder="Search..." 
+              <input
+        type="text"
+        v-model="searchQuery"
+        placeholder="Search..."
         class="search-input"
       />
           </div>
-          
+
           <div class="col-3 mb-2">
-              <button @click="exportToCSV" class="link link-primary mr-4"> <i class="bi bi-filetype-csv"></i> CSV    
+              <button @click="exportToCSV" class="link link-primary mr-4"> <i class="bi bi-filetype-csv"></i> CSV
               </button>
       <button @click="exportToPDF" class="link link-success mr-4"><i class="bi bi-file-earmark-pdf"></i> PDF</button>
       <button @click="copyToClipboard" class="link link-default">  <i class="bi bi-clipboard"></i> Copy </button>
           </div>
 
       </div>
-     
+
     </div>
 
     <!-- Table -->

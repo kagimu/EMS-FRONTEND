@@ -12,7 +12,9 @@ const props = defineProps({
 const perPage = ref(0)
 
 onMounted(() => {
-  perPage.value = props.per_page
+  if(props.per_page) {
+    perPage.value = props.per_page
+  }
 })
 
 watch(perPage, (newVal) => {
