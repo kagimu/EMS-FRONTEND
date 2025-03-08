@@ -214,7 +214,7 @@ const closeDialog = () => {
   </div>
 
 
-  <narrative-report-list></narrative-report-list>
+  <narrative-report-list :student_number="student_number"></narrative-report-list>
 
 
 <!--

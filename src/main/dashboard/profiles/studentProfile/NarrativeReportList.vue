@@ -274,16 +274,6 @@ watch(
     }
 )
 
-/*watch(
-    () => campusStore.schoolClassesResponse,
-    async (data) => {
-      if(data){
-        // alert(JSON.stringify(data.data))
-        campusClassList.value = data.data
-      }
-    }
-)*/
-
 
 
 watch(
