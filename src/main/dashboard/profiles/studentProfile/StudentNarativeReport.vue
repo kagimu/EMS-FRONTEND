@@ -217,6 +217,7 @@ const closeDialog = () => {
   <narrative-report-list></narrative-report-list>
 
 
+<!--
   <div class="row mt-5 mb-2 mx-auto">
     <div class="col-3">
       <div class="mb-2">
@@ -226,7 +227,7 @@ const closeDialog = () => {
             v-model="school_number"
             @change="fetchCampusBySchool()"
         >
-          <option disabled value="">--Filter by School--</option>
+          <option disabled value="">&#45;&#45;Filter by School&#45;&#45;</option>
           <option v-for="(lvl, index) in schoolsList" :key="index" :value="lvl.number">{{lvl.name}}</option>
         </select>
       </div>
@@ -239,7 +240,7 @@ const closeDialog = () => {
             v-model="campus_number" required
             @change="doFetchCurriculum(campus_number)"
         >
-          <option disabled value="">--Filter by campus--</option>
+          <option disabled value="">&#45;&#45;Filter by campus&#45;&#45;</option>
           <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
           </option>
         </select>
@@ -253,7 +254,7 @@ const closeDialog = () => {
           v-model="campus_curriculum_number"
           @change="fetchLevel(campus_curriculum_number)"
       >
-        <option disabled value="">--Select Curriculum--</option>
+        <option disabled value="">&#45;&#45;Select Curriculum&#45;&#45;</option>
         <option v-for="(list, index) in campusCurriculumDataList" :key="index" :value="list.number">{{list.name}}</option>
       </select>
     </div>
@@ -265,20 +266,20 @@ const closeDialog = () => {
           v-model="campus_level_number"
           @change="fetchCampusClass(campus_level_number)"
       >
-        <option disabled value="">--Select Level--</option>
+        <option disabled value="">&#45;&#45;Select Level&#45;&#45;</option>
         <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
       </select>
     </div>
 
     <div class="col-3">
-<!--      <label class="text-sm"><small>Academic Year</small></label>-->
+&lt;!&ndash;      <label class="text-sm"><small>Academic Year</small></label>&ndash;&gt;
       <select
           style="box-shadow: none;"
           class="form-select form-select-sm"
           v-model="academic_year_number"
           @change="fetchStudyPeriod(academic_year_number)"
       >
-        <option disabled value="">--Select Academic Year--</option>
+        <option disabled value="">&#45;&#45;Select Academic Year&#45;&#45;</option>
         <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
           {{list.code+". "+list.academic_year_name}}
         </option>
@@ -286,43 +287,43 @@ const closeDialog = () => {
     </div>
 
     <div class="col-3">
-<!--      <label class="text-sm"><small>Study Period</small>-->
-<!--      </label>-->
+&lt;!&ndash;      <label class="text-sm"><small>Study Period</small>&ndash;&gt;
+&lt;!&ndash;      </label>&ndash;&gt;
       <select
           style="box-shadow: none;"
           class="form-select form-select-sm" required
           v-model="study_period_number"
           @change="fetchNarrativeInfo"
       >
-        <option disabled value="">--Select Study period--</option>
+        <option disabled value="">&#45;&#45;Select Study period&#45;&#45;</option>
         <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
 
       </select>
     </div>
     <div class="col-3">
-<!--      <label class="text-sm"><small>Class</small>-->
-<!--      </label>-->
+&lt;!&ndash;      <label class="text-sm"><small>Class</small>&ndash;&gt;
+&lt;!&ndash;      </label>&ndash;&gt;
       <select
           style="box-shadow: none;"
           class="form-select form-select-sm" required
           v-model="campus_class_number"
           @change="fetchAssessmentArea(campus_class_number)"
       >
-        <option disabled value="">--Select Class--</option>
-<!--                  <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>-->
+        <option disabled value="">&#45;&#45;Select Class&#45;&#45;</option>
+&lt;!&ndash;                  <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>&ndash;&gt;
         <option v-for="(list, index) in campusClassList" :key="index" :value="list.curriculum_class_number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
       </select>
     </div>
 
     <div class="col-3">
-<!--      <label class="text-sm"><small>Assessment Area</small></label>-->
+&lt;!&ndash;      <label class="text-sm"><small>Assessment Area</small></label>&ndash;&gt;
       <select
           style="box-shadow: none;"
           class="form-select form-select-sm"
           v-model="assessment_area_number"
           @change="fetchNarrativeInfo"
       >
-        <option disabled value="">--Select Assessment Area--</option>
+        <option disabled value="">&#45;&#45;Select Assessment Area&#45;&#45;</option>
         <option v-for="(list, index) in assessmentListData" :key="index" :value="list.number">{{ list.name }}
         </option>
       </select>
@@ -344,7 +345,7 @@ const closeDialog = () => {
       <th scope="col">Class</th>
       <th scope="col">Assessment Area</th>
       <th scope="col">Narration</th>
-<!--      <th scope="col">Action</th>-->
+&lt;!&ndash;      <th scope="col">Action</th>&ndash;&gt;
     </tr>
     </thead>
     <tbody>
@@ -357,7 +358,7 @@ const closeDialog = () => {
       <td> {{info?.class ?? ""}}</td>
       <td> {{info?.assessment_area ?? ""}}</td>
       <td> {{info?.narration ?? ""}}</td>
-<!--      <td>
+&lt;!&ndash;      <td>
         <div>
           <i
               v-if="can('edit_level','general')"
@@ -371,10 +372,11 @@ const closeDialog = () => {
             <span class="visually-hidden">Loading...</span>
           </div>
         </div>
-      </td>-->
+      </td>&ndash;&gt;
     </tr>
     </tbody>
   </table>
+-->
 
 </div>
 </template>

@@ -176,70 +176,7 @@ const getSchoolInfo = () =>{
     fetchCampuses(props?.schoolN)
   }
 }
-/*
 
-
-const createNarrativeReportInfo = () => {
-  buttonLoader.value=true
-
-
-
-
-  let data  = formData.value
-  data.student_number = props.student_number
-  saveNarrativeReport(data)
-
-}
-
-
-const  saveNarrativeReport = async (data) => {
-  await api.post("main/report-settings/narrative", data)
-      .then((response) => {
-        if(response){
-          buttonLoader.value = false;
-          emit("next")
-        }
-
-      })
-      .catch((error) => {
-        if(error && error.response) {
-          buttonLoader.value = false;
-        }
-      });
-}
-
-
-*/
-
-
-/*
-const getModeOfStudyInfo = (schoolN) =>{
-  let data = {
-    school_number:schoolN,
-  }
-  modeStudyStore.fetchModeOfStudy(data)
-}
-
-*/
-
-
-
-const updateAmount = (index) => {
-  const Service = servicesData.value[index];
-  Service.amount = Service.quantity * Service.cost;
-}
-
-function addService() {
-  servicesData.value.push({number:"", name: "", quantity: 1, cost: 0, amount: 0 });
-}
-
-function removeService(index) {
-  servicesData.value.splice(index, 1);
-}
-
-const  calculateTotal = () => {
-  return servicesData.value.reduce((total, Service) => total + Service.amount, 0);
-}
 
 
 watch(
@@ -251,7 +188,6 @@ watch(
           number: option.item.number
         }));
         unfilteredServicesData.value = data
-        // ServiceOptions.value = data.map(option => ({ name: option.item.name, cost: option.item.cost,item_number:option.item.number }));
       }
     },
     { deep: true }
@@ -263,7 +199,6 @@ watch (
     async (data) => {
       if (data) {
         errorMessage.value = data.message
-        //notificationStore.errorToast("Error",data.message)
       }
     }
 )
@@ -285,7 +220,7 @@ const studyPeriodData = (campus_class_number) => {
   const curriculum = curriculumList.value.find(item => item?.number === curriculumNumber.value);
   let info = {
     curriculum_number:curriculum ? curriculum?.curriculum_number : null,
-    class_number:classNumber, //campus_class_number
+    class_number:classNumber,
   }
 
   assessmentStore.fetchAssessmentArea(info)
