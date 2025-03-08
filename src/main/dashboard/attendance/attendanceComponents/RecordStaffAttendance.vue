@@ -1,19 +1,6 @@
 <template>
   <div>
-    <AppModal title="New User" v-model="showingModalUser" xl6>
-      <NewStaff></NewStaff>
-    </AppModal>
-
-    <AppModal title="Assign Role" v-model="assignDialog" xl2>
-      <new-account :userInfo="userInfo"></new-account>
-    </AppModal>
-
-    <AppModal title="Assign Entity" v-model="showingEntity" xs>
-      <AssignUserEntity :userNumber="userNumber"></AssignUserEntity>
-    </AppModal>
-
     <div class="row">
-
             <PaginationTemplate
                 @perPageChanged="doFetchAccount"
                 v-model:perPage="per_page"
@@ -21,6 +8,7 @@
                 :total_items="total_items"
                 :total_rows="total_rows">
             </PaginationTemplate>
+
             <div class="w-full overflow-auto max-h-[520px] scrollbar-thin" @scroll="onScroll">
               <table class="table table-hover caption-top mt-0 table-sm table-striped" style="font-size: 11px !important;">
                 <thead>
@@ -39,8 +27,6 @@
                   <td style="text-transform: capitalize;">{{ user.first_name + " " + user.last_name }}</td>
                   <td style="text-transform: capitalize;">{{ user.type}}</td>
                   <td style="text-transform: capitalize;">{{user.gender }}</td>
-
-
                   <td>
                     <select v-model="user.attendance" @change="handleAttendanceChange(user)">
                       <option value="">-- Select --</option>
@@ -68,10 +54,7 @@ import { useAccountStore } from "@/main/dashboard/account/store/account.js";
 import { useRolesStore } from "@/main/settings/roles/store/roles.js";
 import { useUserStore } from "@/main/dashboard/profiles/store/users.js";
 import { useEntityStore } from "@/main/dashboard/entity/store/entity.js";
-import AppModal from "@/components/AppModal.vue";
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
-import NewStaff from "@/main/dashboard/profiles/NewStaff.vue";
-import AssignUserEntity from "@/main/dashboard/entity/entityComponents/AssignUserEntity.vue";
 import { useAbility } from "@casl/vue";
 
 const { can } = useAbility();

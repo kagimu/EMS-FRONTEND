@@ -59,7 +59,7 @@
    
    onMounted(() => {
      schoolStore.fetchSchools()
-     doFetchAdmission()
+     // doFetchAdmission()
     }
    )
    
@@ -180,6 +180,10 @@
    }
    
    const doFetchAdmission = () =>{
+     if(!form.school_number){
+       return
+     }
+
     let data = {
        page: 1,
        per_page: per_page.value,

@@ -114,6 +114,10 @@ const filterByStudyPeriod = () => {
 
 
 const doFetchEnrollent = () =>{
+  if(!form.school_number){
+    return
+  }
+
   let data = {
     page: 1,
     per_page: per_page.value,

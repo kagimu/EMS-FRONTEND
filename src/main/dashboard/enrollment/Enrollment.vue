@@ -14,9 +14,6 @@ import AppModal from "@/components/AppModal.vue";
 import FileUploader from "@/components/FileUploader.vue";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 import NewEnrollmentModel from "@/main/dashboard/enrollment/NewEnrollmentModel.vue"
-
-
-
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 
 const studyPeriodStore = useStudyPeriodStore()
@@ -122,6 +119,9 @@ const fetchCampusLevel = (curriculumNumber) => {
 
 
 const doFetchEnrollent = () =>{
+  if(!form.school_number){
+    return
+  }
   let data = {
     page: 1,
     per_page: per_page.value,
@@ -327,17 +327,6 @@ watch(
 )
 
 
-// watch(
-//     () => promotionStore.newPromotionsResponse,
-//     async (data) => {
-//       if (data) {
-//         promDialog.value = false;
-//       }
-//     },
-//     {deep: true}
-// )
-
-
 watch(
     () => academicYearStore.academicYearByLevelResponse,
     async (data) => {
@@ -535,6 +524,12 @@ const enrolStudent = (enrolData) => {
                     <div class="col-3">
                       <div class="mb-2">
 <!--                        ///search input-->
+                        <input
+                            type="text"
+                            v-model="searchQuery"
+                            class="form-control"
+                            placeholder="Search ....."
+                        >
 
                       </div>
                     </div>

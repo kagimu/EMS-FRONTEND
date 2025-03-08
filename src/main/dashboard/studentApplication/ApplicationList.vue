@@ -174,6 +174,11 @@
 
 
   const doFetchApplication = () =>{
+
+    if(!form.school_number){
+      return
+    }
+
    let data = {
       page: 1,
       per_page: per_page.value,   
@@ -211,6 +216,7 @@
 
 
   const fetchApplications = (data) => {
+
     if(data) {
       let current_page = data.page
       page.value = current_page
