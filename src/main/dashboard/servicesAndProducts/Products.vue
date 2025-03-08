@@ -5,8 +5,9 @@ import UpdateProduct from "./UpdateProduct.vue";
 import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js";
 import AppModal from "@/components/AppModal.vue";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
-const confirmationRef = ref(null);
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
+const confirmationRef = ref(null);
 
 import { useAbility } from '@casl/vue';
 import NewService from "@/main/dashboard/servicesAndProducts/NewService.vue";
@@ -15,7 +16,6 @@ const serviceStore = useServiceStore()
 
 const { can } = useAbility()
 
-
 const productsList = ref( [])
 let errorMessage = ref(null)
 const productListData = ref(null)
@@ -23,6 +23,9 @@ const productStore= useServiceStore()
 const  notificationStore  = useNotificationStore()
 const showDialog = ref(false)
 
+const schoolStore = useSchoolStore()
+const school_number = ref("")
+const schoolList = ref([])
 
 const openProductModal = () =>{
   productListData.value = ""
@@ -36,13 +39,33 @@ function showEditModal(product){
 
 onMounted(
     async () => {
-      await productStore.fetchProductsList()
+      await schoolStore.fetchSchools()
+
     } )
+
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        schoolList.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+const filterProducts = (schoolN) =>{
+  let data = {
+    school_number:school_number.value
+  }
+   productStore.fetchProductsList(data)
+}
 
 watch(
     () => productStore.productListResponse,
     async (data) => {
       if(data){
+        await schoolStore.fetchSchools()
         productsList.value = data
       }
     },
@@ -129,6 +152,25 @@ watch (
       </AppModal>
 
   <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="mb-2 ">
+        <label class="text-sm"><small>School</small> </label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm" required
+            v-model="school_number"
+            @change="filterProducts(school_number)"
+        >
+          <option disabled value=""> - filter By School -</option>
+          <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+  </div>
+
 
         <div class="row">
       <div class="col-12">

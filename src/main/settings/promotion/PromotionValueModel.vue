@@ -64,7 +64,8 @@ const gradeData = ref([])
 
 
 const props = defineProps({
-  promotion_settings_number:String
+  promotion_settings_number:String,
+  studyPeriodNumber:String
 })
 
 
@@ -103,13 +104,32 @@ const addPromotionValue = () =>{
 
 onMounted(() => {
         assessmentStore.fetchAssessmentGrades()
-        promotionStore.fetchPromotionSetting()
+
+        getPromotionSetting()
+
         subjectStore.fetchAllSubjects()
         schoolStore.fetchSchools()
         filterPromotionSetting()
     }
 )
 
+const getPromotionSetting =()=>{
+  if(props.studyPeriodNumber){
+    let data = {
+      study_period_number:props.studyPeriodNumber
+    }
+    promotionStore.fetchPromotionSetting(data)
+  }
+}
+
+watch(
+    () => props.studyPeriodNumber,
+    async (data) => {
+      if(data){
+        getPromotionSetting()
+      }
+    }
+)
 
 watch(
     () => props.promotion_settings_number,
@@ -375,8 +395,6 @@ watch(
 )
 
 
-
-
 const addAssessmentArea = () => {
   assessment_areas.value.push({
     grade_number:"",
@@ -391,7 +409,6 @@ const addAssessmentArea = () => {
 
 <template>
     <div>
-
       <form @submit.prevent="addPromotionValue">
   
         <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">

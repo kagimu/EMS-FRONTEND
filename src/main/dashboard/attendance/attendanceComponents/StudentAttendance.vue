@@ -45,7 +45,7 @@ watch(
 
     <!-- end  -->
     <div class="row">
-      {{studentAttendanceList}}
+<!--      {{studentAttendanceList}}-->
       </div>
 
   </div>

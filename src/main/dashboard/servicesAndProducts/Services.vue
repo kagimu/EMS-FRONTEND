@@ -5,6 +5,8 @@ import NewService from "./NewService.vue"
 import UpdateService from "./UpdateService.vue"
 import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js"
 import AppModal from "@/components/AppModal.vue";
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+
 import { useAbility } from '@casl/vue';
 
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
@@ -25,12 +27,33 @@ const currentPage = ref(1) // Current page
 const totalPages = ref(1) // Total pages
 const paginatedConditionList = ref([]) // Paginated condition list
 const editMode = ref(false)
+const schoolStore = useSchoolStore()
+const school_number = ref("")
+const schoolList = ref([])
 
 onMounted(
     async () => {
-      await serviceStore.fetchServicesList()
+      await schoolStore.fetchSchools()
+
     } )
 
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        schoolList.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+const filterServices = (schoolN) =>{
+  let data = {
+    school_number:school_number.value
+  }
+   serviceStore.fetchServicesList(data)
+}
 
 watch (
     () => serviceStore.newServiceResponse,
@@ -150,8 +173,27 @@ watch (
       </AppModal>
 
 
-
     </div>
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="mb-2 ">
+        <label class="text-sm"><small>School</small> </label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm" required
+            v-model="school_number"
+            @change="filterServices(school_number)"
+        >
+          <option disabled value=""> - filter By School -</option>
+          <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+  </div>
+
+
         <div class="row">
       <div class="col-12">
         <div class="car mt-3">

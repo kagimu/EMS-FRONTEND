@@ -29,8 +29,8 @@ export const usePromotionStore = defineStore("promotion", () => {
             })
     }
 
-    async function fetchPromotionSetting() {
-        return await api.get("main/promotions/settings")
+    async function fetchPromotionSetting(data) {
+        return await api.get("main/promotions/settings?study_period_number="+data?.study_period_number)
             .then((response) => {
                 PromotionSettingResponse.value = response.data
             })

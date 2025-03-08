@@ -27,8 +27,8 @@ export const useServiceStore = defineStore("service", () => {
                 })
         }
 
-        async function fetchServicesList() {
-            return await api.get("main/services")
+        async function fetchServicesList(data) {
+            return await api.get("main/services?school_number="+data?.school_number)
                 .then((response) => {
                     servicesListResponse.value = response.data
                 })
@@ -39,8 +39,8 @@ export const useServiceStore = defineStore("service", () => {
                 })
         }
 
-        async function fetchAllItems() {
-            return await api.get("main/items")
+        async function fetchAllItems(data) {
+            return await api.get("main/items?school_number="+data?.school_number)
                 .then((response) => {
                     allItemsListResponse.value = response.data
                 })
@@ -89,8 +89,8 @@ export const useServiceStore = defineStore("service", () => {
                 })
         }
 
-        async function fetchProductsList() {
-            return await api.get("main/products")
+        async function fetchProductsList(data) {
+            return await api.get("main/products?school_number="+data.school_number)
                 .then((response) => {
                     productListResponse.value = response.data
                 })

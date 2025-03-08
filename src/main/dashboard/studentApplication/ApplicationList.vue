@@ -77,7 +77,7 @@
   })
 
   onMounted(() => {
-        doFetchApplication()
+        // doFetchApplication()
         schoolStore.fetchSchools()
       }
   )
@@ -616,8 +616,8 @@ const exportToCSV = () => {
                  </div>
               </div>
 
-              <button @click="exportToCSV" class="link link-primary mr-4"> <i class="bi bi-filetype-csv"></i> CSV    
-              </button>
+<!--              <button @click="exportToCSV" class="link link-primary mr-4"> <i class="bi bi-filetype-csv"></i> CSV    -->
+<!--              </button>-->
 
               <PaginationTemplate
                     @perPageChanged="doFetchApplication"
