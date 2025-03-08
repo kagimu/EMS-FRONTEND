@@ -14,6 +14,7 @@ import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/stor
 import api from "@/config/api.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
 import {useUserStore} from "@/main/dashboard/profiles/store/users.js";
+import VueDatePicker from "@vuepic/vue-datepicker";
 
 
 const assessmentStore= useAssessmentStore()
@@ -54,6 +55,8 @@ const bills_number = ref(null)
 const school_number = ref("")
 const campus_number = ref("")
 const academic_year_number = ref("")
+const start_date = ref("")
+const end_date = ref("")
 const assessmentListData = ref([])
 
 
@@ -92,7 +95,9 @@ const fetchNarrativeInfo = () => {
     assessment_area_number:assessment_area_number.value,
     study_period_number:study_period_number.value,
     campus_class_number:campus_class_number.value,
-    academic_year_number:academic_year_number.value
+    academic_year_number:academic_year_number.value,
+    start_date:start_date.value,
+    end_date:end_date.value
   }
 
   userStore.fetchNarrativeReport(data)
@@ -176,70 +181,7 @@ const getSchoolInfo = () =>{
     fetchCampuses(props?.schoolN)
   }
 }
-/*
 
-
-const createNarrativeReportInfo = () => {
-  buttonLoader.value=true
-
-
-
-
-  let data  = formData.value
-  data.student_number = props.student_number
-  saveNarrativeReport(data)
-
-}
-
-
-const  saveNarrativeReport = async (data) => {
-  await api.post("main/report-settings/narrative", data)
-      .then((response) => {
-        if(response){
-          buttonLoader.value = false;
-          emit("next")
-        }
-
-      })
-      .catch((error) => {
-        if(error && error.response) {
-          buttonLoader.value = false;
-        }
-      });
-}
-
-
-*/
-
-
-/*
-const getModeOfStudyInfo = (schoolN) =>{
-  let data = {
-    school_number:schoolN,
-  }
-  modeStudyStore.fetchModeOfStudy(data)
-}
-
-*/
-
-
-
-const updateAmount = (index) => {
-  const Service = servicesData.value[index];
-  Service.amount = Service.quantity * Service.cost;
-}
-
-function addService() {
-  servicesData.value.push({number:"", name: "", quantity: 1, cost: 0, amount: 0 });
-}
-
-function removeService(index) {
-  servicesData.value.splice(index, 1);
-}
-
-const  calculateTotal = () => {
-  return servicesData.value.reduce((total, Service) => total + Service.amount, 0);
-}
 
 
 watch(
@@ -251,7 +193,6 @@ watch(
           number: option.item.number
         }));
         unfilteredServicesData.value = data
-        // ServiceOptions.value = data.map(option => ({ name: option.item.name, cost: option.item.cost,item_number:option.item.number }));
       }
     },
     { deep: true }
@@ -263,7 +204,6 @@ watch (
     async (data) => {
       if (data) {
         errorMessage.value = data.message
-        //notificationStore.errorToast("Error",data.message)
       }
     }
 )
@@ -285,7 +225,7 @@ const studyPeriodData = (campus_class_number) => {
   const curriculum = curriculumList.value.find(item => item?.number === curriculumNumber.value);
   let info = {
     curriculum_number:curriculum ? curriculum?.curriculum_number : null,
-    class_number:classNumber, //campus_class_number
+    class_number:classNumber,
   }
 
   assessmentStore.fetchAssessmentArea(info)
@@ -317,15 +257,8 @@ const fetchClassLevels = (campus_number) => {
 }
 
 const fetchClasses = (campuslevelnumber) => {
-  // classStore.fetchClassByLevel(campus_level_number)
   academicYearStore.fetchAcademicYearByLevel(campuslevelnumber)
   classStore.fetchClassLevel({campusCurriculumNumber: curriculumNumber.value, campusLevelNumber: campuslevelnumber})
-  /*  let data = {
-      school_number:school_number.value,
-      campus_level_number:campuslevelnumber
-    }
-    campusStore.fetchClassesBySchool(data)*/
-
 }
 
 
@@ -333,21 +266,10 @@ watch(
     () => classStore.classLevelInfoResponse,
     async (data) => {
       if(data){
-        // alert(JSON.stringify(data.data))
         campusClassList.value = data?.data[0]?.classes
       }
     }
 )
-
-/*watch(
-    () => campusStore.schoolClassesResponse,
-    async (data) => {
-      if(data){
-        // alert(JSON.stringify(data.data))
-        campusClassList.value = data.data
-      }
-    }
-)*/
 
 
 
@@ -449,7 +371,12 @@ watch(
 )
 
 
-
+const format = (date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  return `Selected date is ${day}/${month}/${year}`;
+}
 
 </script>
 <template>
@@ -563,6 +490,32 @@ watch(
                     <option v-for="(list, index) in assessmentListData" :key="index" :value="list.number">{{ list.name }}
                     </option>
                   </select>
+                </div>
+
+                <div>
+                  <VueDatePicker
+                      placeholder="Start date: dd/mm/yyy"
+                      text-input
+                      auto-apply
+                      :teleport="true"
+                      style="font-size: 7px;"
+                      v-model="start_date"
+                      :preview-format="format"
+                      @update:modelValue="fetchNarrativeInfo()"
+                  ></VueDatePicker>
+                </div>
+
+                <div>
+                  <VueDatePicker
+                      placeholder="End date: dd/mm/yyy"
+                      text-input
+                      auto-apply
+                      :teleport="true"
+                      style="font-size: 7px;"
+                      v-model="end_date"
+                      :preview-format="format"
+                      @update:modelValue="fetchNarrativeInfo()"
+                  ></VueDatePicker>
                 </div>
 
 
