@@ -9,11 +9,13 @@ import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment"
 import {usePromotionStore} from "@/main/settings/promotion/store/promotion.js"
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
 import {useAttendanceStore} from "@/main/dashboard/attendance/store/attendance.js";
-
+import AppModal from "@/components/AppModal.vue";
 
 import { useAbility } from '@casl/vue';
+import RecordAttendanceModal from "./RecordAttendanceModal.vue";
 
 const { can } = useAbility()
+
 
 const time = ref("");
  
@@ -41,6 +43,7 @@ const total_rows = ref(0)
 const studentNumber = ref(null)
 const isComment = ref(false)
 
+const myModal = ref(false)
 
 const form = reactive({
   study_period_number: "",
@@ -62,7 +65,6 @@ const formData = reactive({
   campus_class_number: "",
   campus_number: "",
   absence_reason: "",
-  school_number: "",
   date: "",
   student_number:""
 
@@ -313,6 +315,8 @@ const  setAttendanceStatus = (status,adn,userN,stdN) => {
   adn_no.value = adn
   formData.user_number = userN
   formData.student_number = stdN
+
+
   if(status === "present"){
     isComment.value = false
     formData.present="YES"
@@ -324,7 +328,8 @@ const  setAttendanceStatus = (status,adn,userN,stdN) => {
 
 
 const saveAttendanceData = () =>{
-  // alert(JSON.stringify(formData))
+  formData.school_number = form.school_number
+  alert(JSON.stringify(formData))
   attendanceStore.newStudentAttendance(formData)
 }
 
@@ -350,8 +355,9 @@ watch(
 )
 
 
-
-
+const openRecordAttendance = (student) => {
+  myModal.value = true;
+}
 
 
 </script>
@@ -359,8 +365,11 @@ watch(
 
 
 <template>
-  <div> 
+  <div>
 
+    <AppModal title="Check In" v-model="myModal" xs>
+      <RecordAttendanceModal></RecordAttendanceModal>
+    </AppModal>
 
     <!-- end  -->
     <div class="row">
@@ -509,7 +518,8 @@ watch(
                   >
                     <thead >
                     <tr>
-                    
+
+<!--                      <th>#</th>-->
                       <th class="text-xs">Student</th>
                       <th class="text-xs">Class</th>
                       <th class="text-xs" :style="formData.present ?'width: 45%;'  : 'width:35%'">
@@ -523,6 +533,10 @@ watch(
                     </thead>
                     <tbody>
                     <tr v-for="(enrolData,index) in enrollmentList" :key="index" >
+
+<!--                      <td>-->
+<!--                        <input type="checkbox" class="mt-3">-->
+<!--                      </td>-->
                      
                       <td style="text-transform: capitalize;">
                         <div class="flex flex-row items-center">
@@ -532,7 +546,11 @@ watch(
                               <i class="bi-person-circle text-[40px] text-[#8a8888]"></i>
                             </div>
                           </div>
-                          <div class="ml-2">{{ enrolData.student_surname + " "+ enrolData.student_second_name + " "  + enrolData.student_other_name }}</div>
+                          <div class="ml-2">
+                           <span class="link link-primary" style="cursor: pointer" @click="openRecordAttendance(enrolData.student_number)">
+                             {{ enrolData.student_surname + " "+ enrolData.student_second_name + " "  + enrolData.student_other_name }}
+                           </span>
+                           </div>
                         </div>
 
                       </td>
