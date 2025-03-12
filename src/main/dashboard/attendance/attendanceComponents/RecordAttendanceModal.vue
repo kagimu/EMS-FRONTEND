@@ -327,7 +327,7 @@ const  setAttendanceStatus = (status,adn,userN,stdN) => {
 
 const saveAttendanceData = () =>{
   formData.school_number = form.school_number
-  alert(JSON.stringify(formData))
+  // alert(JSON.stringify(formData))
   attendanceStore.newStudentAttendance(formData)
 }
 
@@ -382,15 +382,23 @@ const openRecordAttendance = (student) => {
                 </select>
               </div>
               <br>
+              
+  
               <div class="col-lg-12 mt-2" >
-                <textarea v-on:blur="saveAttendanceData" class="form-control form-control-sm" v-model="formData.absence_reason"></textarea>
+                <label>Time</label>
+                <input v-on:blur="saveAttendanceData" type="time" class="form-control form-control-sm" v-model="formData.check_in_time">
               </div>
               <br>
               <div class="col-lg-12 mt-2" >
-                <input v-on:blur="saveAttendanceData" type="time" class="form-control form-control-sm" v-model="formData.check_in_time">
+                <label>Comment</label>
+                <textarea v-on:blur="saveAttendanceData" class="form-control form-control-sm" v-model="formData.absence_reason"></textarea>
               </div>
 
 
+              <div class="col-lg-12 mt-2" >
+                <button style="float: right;" class="btn btn-primary mb-2">Submit</button>
+                
+              </div>
             </div>
 
           </div>

@@ -367,7 +367,7 @@ const openRecordAttendance = (student) => {
 <template>
   <div>
 
-    <AppModal title="Check In" v-model="myModal" xs>
+    <AppModal title="CheckOut => CheckIn" v-model="myModal" xs>
       <RecordAttendanceModal></RecordAttendanceModal>
     </AppModal>
 
