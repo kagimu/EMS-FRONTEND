@@ -120,7 +120,7 @@
 <script setup>
 
 import NewLessonPlanReference from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPlanReference.vue";
-import {ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
 import LessonPlanDetailsPdf from "@/main/dashboard/curriculum/schemeOfWork/LessonPlanDetailsPdf.vue";
 import useCommonsStore from "@/composables/useCommons.js";
@@ -144,20 +144,26 @@ const exportLessonPlanPdf = () => {
   schemeOfWorkStore.exportPdf(commons.initializePdfData("Lesson Plan", lessonPlanRef.value.innerHTML));
 }
 
+onMounted(() => {
+  fetchLessonInfo()
+})
+
 
 
 watch(
     () => props.lessonPlanInfo,
     async (data) => {
       if (data) {
-        lessonPlanDetailsInfo.value = null
-        scheme_sub_topic_number.value = props.lessonPlanInfo.number
-        await schemeOfWorkStore.fetchLessonPlanDetails(props.lessonPlanInfo.number)
+        await fetchLessonInfo()
       }
-    },
-    {deep: true}
+    }
 )
 
+const fetchLessonInfo = async () => {
+  lessonPlanDetailsInfo.value = null
+  scheme_sub_topic_number.value = props.lessonPlanInfo.number
+  await schemeOfWorkStore.fetchLessonPlanDetails(props.lessonPlanInfo.number)
+}
 
 const showHideReferenceForm = () => {
     referenceDialog.value = !referenceDialog.value

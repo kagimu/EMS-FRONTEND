@@ -1,5 +1,5 @@
 <script setup>
-import {ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
 import useCommonsStore from "@/composables/useCommons.js";
 import ImportLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/ImportLessonPlan.vue";
@@ -71,6 +71,27 @@ if((form.value.length + 1) <= (conceptListData.value.length)){
 }
 
 
+onMounted(() => {
+  fetchConceptInfo()
+})
+
+
+
+
+watch(
+    () => props.schemeDataInfo,
+    async (data) => {
+      if (data) {
+        await fetchConceptInfo()
+      }
+    }
+)
+
+const fetchConceptInfo = async () => {
+  scheme_sub_topic_number.value = props.schemeDataInfo.number
+  await schemeOfWorkStore.fetchConceptsBySubTopic(props.schemeDataInfo.sub_topic_number)
+  await schemeOfWorkStore.fetchLessonPlanDetails(props.schemeDataInfo.number)
+}
 
 const addStep = (idx) => {
   let data = {
@@ -110,33 +131,8 @@ const addLessonPlan = () => {
   schemeOfWorkStore.saveLessonPlan(formData)
 }
 
-watch(
-    () => props.schemeDataInfo,
-    async (data) => {
-      if (data) {
-        resetFormData()
-        scheme_sub_topic_number.value = props.schemeDataInfo.number
-        await schemeOfWorkStore.fetchConceptsBySubTopic(props.schemeDataInfo.sub_topic_number)
-        // fetch lesson plan draftData
-        await schemeOfWorkStore.fetchLessonPlanDetails(props.schemeDataInfo.number)
-      }
-    },
-    {deep: true}
-)
 
-const resetFormData = () => {
-   form.value = [{
-    number: "",
-    code: 1,
-    lesson_plan_concept_number: "",
-    concept_name: "",
-    steps: [{
-      number: "",
-      code: "1",
-      step: ""
-    }]
-  }]
-}
+
 
 watch(
     () => schemeOfWorkStore.conceptsBySubtopicResponse,

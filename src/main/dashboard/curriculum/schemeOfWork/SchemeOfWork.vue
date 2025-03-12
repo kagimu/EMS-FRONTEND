@@ -16,6 +16,7 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
 import SchemeOfWorkPdfTemplate from "@/main/dashboard/curriculum/schemeOfWork/SchemeOfWorkPdfTemplate.vue";
 import AppModal from "@/components/AppModal.vue";
+import AggregateScaleFileUploader from "@/components/AggregateScaleFileUploader.vue";
 
 const level = ref( "")
 const curriculumNumber = ref( "")
@@ -341,9 +342,15 @@ watch(
       <new-scheme-of-work :schemeOfWorkList="schemeOfWorkList" ref="schemeOfWorkRef"></new-scheme-of-work>
     </AppModal>
 
+    <AppModal :title="'New Lesson Plan: '+ schemeDataInfo.name" v-model="lessonPlanDialog" xl8>
+      <new-lesson-plan :schemeDataInfo="schemeDataInfo" ref="lessonPlanRef"></new-lesson-plan>
+    </AppModal>
 
+    <AppModal :title="'Lesson Plan: '+ lessonPlanInfo.name" v-model="lessonPlanDetailsDialog" xl8>
+      <lesson-plan-details :lessonPlanInfo="lessonPlanInfo"></lesson-plan-details>
+    </AppModal>
 
-    <div class="modal fade" id="lessonPlanModal" tabindex="-1" :class="{ show: lessonPlanDialog }" aria-labelledby="" aria-hidden="true">
+<!--    <div class="modal fade" id="lessonPlanModal" tabindex="-1" :class="{ show: lessonPlanDialog }" aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
@@ -357,10 +364,11 @@ watch(
           </div>
         </div>
       </div>
-    </div>
+    </div>-->
 
 
-    <div class="modal fade" id="lessonPlanDetailsModal" tabindex="-1" :class="{ show: lessonPlanDetailsDialog }" aria-labelledby="" aria-hidden="true">
+
+<!--    <div class="modal fade" id="lessonPlanDetailsModal" tabindex="-1" :class="{ show: lessonPlanDetailsDialog }" aria-labelledby="" aria-hidden="true">
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
           <div class="modal-header text-sm p-0">
@@ -375,7 +383,7 @@ watch(
 
         </div>
       </div>
-    </div>
+    </div>-->
 
 
 <p class="mt-3" style="font-size: 20px;">Scheme of work</p>
@@ -478,9 +486,9 @@ watch(
             <hr />
 
 
-            <div class="row mx-auto">
+            <div class="row">
               <div class="col-3">
-            <div class="mb-3">
+                  <div class="mb-3">
               <label class="text-sm"><small>Sort by Subject</small></label>
               <select
                   style="box-shadow: none;"
@@ -497,7 +505,6 @@ watch(
               </div>
 
               <div class="col-3">
-
                 <div class="mb-2">
                   <label class="text-sm"><small>Sort by Academic Year</small></label>
                   <select
@@ -512,7 +519,6 @@ watch(
                     </option>
                   </select>
                 </div>
-
               </div>
 
             </div>
@@ -568,14 +574,12 @@ watch(
                           type="button"
                           class="btn btn-sm  btn-primary mr-2 m-0 py-0"
                           @click="addLessonPlan(lst)"
-                          data-bs-toggle="modal"
-                          data-bs-target="#lessonPlanModal"
                           v-tooltip.bottom="lst.concept_count+(lst.concept_count <1 ? ' Concept' : ' Concepts')"
                       >
                         <small class="m-0 p-0">Add lesson plan [ {{lst.concept_count}} ]</small>
                       </button>
 
-                      <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="viewLessonPlan(lst)" data-bs-toggle="modal" data-bs-target="#lessonPlanDetailsModal">
+                      <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="viewLessonPlan(lst)">
                         <small class="m-0 p-0">View lesson plan</small>
                       </button>
                     </div>
