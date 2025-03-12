@@ -456,10 +456,10 @@ const openRecordAttendance = (student) => {
                 <input  type="time" class="form-control form-control-sm" v-model="check_inTime">
               </div>
               <br>
-              <div class="col-lg-12 mt-2" >
+              <!-- <div class="col-lg-12 mt-2" >
                 <label>Comment</label>
                 <textarea  class="form-control form-control-sm" v-model="formData.absence_reason"></textarea>
-              </div>
+              </div> -->
 
 
               <div class="col-lg-12 mt-2" >
