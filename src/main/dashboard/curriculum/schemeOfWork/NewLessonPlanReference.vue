@@ -220,18 +220,6 @@ const removeRef = (idx) => {
 }
 
 
-const learningMaterialNumber = ref(null)
-
-
-/*
-const addLearningMaterial = (materialInfo) =>{
-    loader.value = true
-    resourcesStore.newCurriculumSubtopicReference({material_code:materialInfo.code,material_number:materialInfo.number, campus_number:campusNumber, sub_topic_number:subTopicNumber.value})
-}
-
-*/
-
-
 onMounted(
     () =>{
         resourcesStore.fetchLearningMaterials()
