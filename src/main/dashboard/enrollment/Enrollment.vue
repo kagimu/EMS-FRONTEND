@@ -585,7 +585,12 @@ const enrolStudent = (enrolData) => {
                               <i class="bi-person-circle text-[40px] text-[#8a8888]"></i>
                             </div>
                           </div>
-                          <div class="ml-2">{{ enrolData.student_surname + " "+ enrolData.student_second_name + " "  + enrolData.student_other_name }}</div>
+                          <div class="ml-2">
+                            <router-link :to="{name:'student-profile-details', query:{st_id:enrolData.student_number}}"
+                                         class="link link-primary text-decoration-none">
+                              {{ enrolData.student_surname + " "+ enrolData.student_second_name + " "  + enrolData.student_other_name }}
+                            </router-link>
+                          </div>
                         </div>
 
                       </td>
