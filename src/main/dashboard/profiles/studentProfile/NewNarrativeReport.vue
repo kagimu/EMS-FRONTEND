@@ -64,6 +64,7 @@ assessment_area_number:"",
 study_period_number:"",
 campus_class_number:"",
 reference_date:"",
+reference_time:""
 })
 
 const props = defineProps({
@@ -545,7 +546,7 @@ watch(
                 
                 <div class="mb-2">
                   <label class="text-sm"><small>Reference Date</small></label>
-                  <VueDatePicker
+                  <!-- <VueDatePicker
                       placeholder="End date: dd/mm/yyy"
                       text-input
                       auto-apply
@@ -554,7 +555,14 @@ watch(
                       v-model="formData.reference_date"
                       :preview-format="format"
                       @update:modelValue="fetchNarrativeInfo()"
-                  ></VueDatePicker>
+                  ></VueDatePicker> -->
+                  <input type="date" class="form-control" v-model="formData.reference_date">
+
+                </div>
+
+                <div class="mb-2">
+                  <label class="text-xs"><small>Time</small></label>
+                  <input type="time" class="form-control" v-model="formData.reference_time">
                 </div>
 
                 <div class="mb-2">
