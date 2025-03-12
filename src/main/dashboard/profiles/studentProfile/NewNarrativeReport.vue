@@ -13,6 +13,7 @@ import {useBillStore} from "@/main/settings/bills/store/bills.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import api from "@/config/api.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
+import VueDatePicker from "@vuepic/vue-datepicker";
 
 
 const assessmentStore= useAssessmentStore()
@@ -62,6 +63,7 @@ narrative_schedule_number:null,
 assessment_area_number:"",
 study_period_number:"",
 campus_class_number:"",
+reference_date:"",
 })
 
 const props = defineProps({
@@ -539,6 +541,21 @@ watch(
                     </option>
                   </select>
                 </div>-->
+
+                
+                <div class="mb-2">
+                  <label class="text-sm"><small>Reference Date</small></label>
+                  <VueDatePicker
+                      placeholder="End date: dd/mm/yyy"
+                      text-input
+                      auto-apply
+                      :teleport="true"
+                      style="font-size: 7px;"
+                      v-model="formData.reference_date"
+                      :preview-format="format"
+                      @update:modelValue="fetchNarrativeInfo()"
+                  ></VueDatePicker>
+                </div>
 
                 <div class="mb-2">
                   <label class="text-xs"><small>Description</small></label>
