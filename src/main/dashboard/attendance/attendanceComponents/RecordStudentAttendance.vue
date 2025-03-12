@@ -41,6 +41,7 @@ const per_page = ref(20)
 const total_items = ref(0)
 const total_rows = ref(0)
 const studentNumber = ref(null)
+const userNumber= ref(null)
 const isComment = ref(false)
 
 const myModal = ref(false)
@@ -329,7 +330,7 @@ const  setAttendanceStatus = (status,adn,userN,stdN) => {
 
 const saveAttendanceData = () =>{
   formData.school_number = form.school_number
-  alert(JSON.stringify(formData))
+  // alert(JSON.stringify(formData))
   attendanceStore.newStudentAttendance(formData)
 }
 
@@ -354,9 +355,13 @@ watch(
     {deep: true}
 )
 
+const studentName = ref(null)
 
-const openRecordAttendance = (student) => {
+const openRecordAttendance = (student_number,student_sur_name, student_second_name,othername,user_number) => {
   myModal.value = true;
+  studentName.value = student_sur_name + " "+student_second_name+" "+othername
+  studentNumber.value = student_number
+  userNumber.value = user_number
 }
 
 
@@ -367,8 +372,8 @@ const openRecordAttendance = (student) => {
 <template>
   <div>
 
-    <AppModal title="CheckOut => CheckIn" v-model="myModal" xs>
-      <RecordAttendanceModal></RecordAttendanceModal>
+    <AppModal :title="'CheckIn / CheckIn => '+ studentName " v-model="myModal" xl2>
+      <RecordAttendanceModal :userNumber="userNumber" :studentNumber="studentNumber"></RecordAttendanceModal>
     </AppModal>
 
     <!-- end  -->
@@ -547,7 +552,7 @@ const openRecordAttendance = (student) => {
                             </div>
                           </div>
                           <div class="ml-2">
-                           <span class="link link-primary" style="cursor: pointer" @click="openRecordAttendance(enrolData.student_number)">
+                           <span class="link link-primary" style="cursor: pointer" @click="openRecordAttendance(enrolData.student_number,enrolData.student_surname,enrolData.student_second_name,enrolData.student_other_name,enrolData.user_number)">
                              {{ enrolData.student_surname + " "+ enrolData.student_second_name + " "  + enrolData.student_other_name }}
                            </span>
                            </div>
