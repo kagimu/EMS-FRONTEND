@@ -19,8 +19,7 @@
    
    const { can } = useAbility()
    const time = ref("");
-    
-   const enrollmentList = ref( [])
+
    const  notificationStore  = useNotificationStore()
    const enrollmentStore = useEnrolmentStore()
    const promotionStore = usePromotionStore()
@@ -96,18 +95,21 @@
    
    onMounted(() => {
          schoolStore.fetchSchools()
-         doFetchEnrollent()
-   
          const today = new Date();
          formData.date = today.toISOString().split("T")[0] 
 
-         doFetchAttendance()
+        //  doFetchAttendance()
 
        }
    )
 
 
    const doFetchAttendance = () =>{
+
+  if(!form.school_number){
+    return
+  }
+
   let data = {
     page: 1,
     per_page: per_page.value
@@ -121,13 +123,13 @@
    
    const fetchCampuses = (school_number) => {
      campusStore.fetchCampuses(school_number)
-     doFetchEnrollent()
+     doFetchAttendance()
    }
    
    const fetchClasses = (campus_number) => {
      campusStore.fetchClassesByCampus(campus_number)
      levelStore.fetchCampusCurriculum(campus_number)
-     doFetchEnrollent()
+     doFetchAttendance()
    }
    
    const fetchAcademicYear = (campusN) =>{
@@ -142,104 +144,18 @@
        }
        classStore.fetchClassStreams(sData)
    
-     doFetchEnrollent()
+     doFetchAttendance()
    }
    
-   
-   
+    
    const filterByStream = () => {
-     doFetchEnrollent()
+     doFetchAttendance()
    }
    
    const filterByStudyPeriod = () => {
-     doFetchEnrollent()
+     doFetchAttendance()
    }
    
-   
-   const doFetchEnrollent = () =>{
-     if(!form.school_number){
-       return
-     }
-   
-     let data = {
-       page: 1,
-       per_page: per_page.value,
-       study_period_number:form.study_period_number,
-       school_number:form.school_number,
-       campus_number: form.campus_number,
-       campus_class_number:form.campus_class_number,
-       stream_number:form.stream_number,
-       academic_year_number:form.academic_year_number,
-       status:form.status
-     }
-     loading.value = true;
-     enrollmentList.value = []
-     enrollmentStore.fetchEnrolment(data)
-   
-   }
-   
-
-   
-   const fetchEnrollmentList = (data) => {
-     if(data) {
-       let current_page = data.page
-       page.value = current_page
-       loading.value = false;
-   
-       let per_page_item = data.per_page;
-       per_page.value = per_page_item;
-   
-       let objArray = data.content
-   
-       let count_items = (current_page * per_page_item)
-       let totalItems = data?.total_rows
-   
-   
-       if(objArray && objArray.length > 0){
-   
-         per_page.value = per_page_item;
-         page.value = current_page
-         total_rows.value = totalItems
-   
-         total_items.value = (count_items > totalItems) ? totalItems : count_items
-         objArray.forEach((list, i) => {
-   
-           list.key =  (current_page - 1) * per_page_item + i + 1
-   
-           // const index = enrollmentList.value.findIndex(object => object.number === list.number);
-           //
-           // if (index === -1) {
-           //   enrollmentList.value.push(list);
-           // }
-   
-   
-           const index = enrollmentList.value.findIndex(object => object.number === list.number);
-           if (index === -1) {
-             list.present = "";
-             list.check_in_time = getCurrentTime()
-             list.absence_reason = ""
-             // isComment.value = false
-             // formData.present="YES"
-             // Add status property
-             enrollmentList.value.push(list);
-           }
-   
-         })
-       }
-   
-     }
-   }
-   
-   watch (
-       () => enrollmentStore.enrolmentResponse,
-       async (data) => {
-         if(data){
-           promDialog.value = false;
-           fetchEnrollmentList(data)
-         }
-       },
-       {deep:true}
-   )
    
    
    watch(
@@ -288,9 +204,6 @@
        {deep: true}
    )
    
-   
-   
-   
    watch(
        () => schoolStore.schoolsResponse,
        async (data) => {
@@ -333,31 +246,7 @@
    )
    
    
-   
-   watch(
-       () => enrollmentStore.errorMessage,
-       async (data) => {
-         if (data) {
-           promDialog.value = false;
-           notificationStore.errorToast("Error", data.message)
-         }
-       },
-       {deep: true}
-   )
-   
-   
-   watch(
-       () => promotionStore.newPromotionsResponse,
-       async (data) => {
-         if (data) {
-           promDialog.value = false;
-         }
-       },
-       {deep: true}
-   )
-   
-
-   
+     
    watch(
        () => academicYearStore.academicYearByLevelResponse,
        async (data) => {
@@ -390,44 +279,9 @@
            class_number:classNumber,
            school_number:form.school_number
          } )
-   
-   
    }
    
-   
-   const  setAttendanceStatus = (status,adn,userN,stdN) => {
-     adn_no.value = adn
-     formData.user_number = userN
-     formData.student_number = stdN
-   
-   
-     if(status === "present"){
-       isComment.value = false
-       formData.present="YES"
-     }else {
-       isComment.value = true
-       formData.present="NO"
-     }
-   }
-   
-   
-   const saveAttendanceData = () =>{
-     formData.school_number = form.school_number
-     alert(JSON.stringify(formData))
-     attendanceStore.newStudentAttendance(formData)
-   }
-
-   const recordAttendance = (checkInTime,present,user_number,student_number,absence_reason) =>{
-     formData.school_number = form.school_number
-     formData.check_in_time = checkInTime
-     formData.present = present
-     formData.user_number = user_number
-     formData.student_number = student_number
-     formData.absence_reason = absence_reason
-    //  alert(JSON.stringify(formData))
-     attendanceStore.newStudentAttendance(formData)
-   }
-   
+ 
    
    watch(
        () => attendanceStore.newStudentAttendanceResponse,
@@ -661,12 +515,14 @@ watch(
                      📅 Select Date: <input type="date" class="border border-primary text-center fw-bold" id="attendanceDate" v-model="formData.date">
                   </div>
                   <div class="col-lg-4">
+
                      <PaginationTemplate
                         v-model:perPage="per_page"
                         :per_page="per_page"
                         :total_items="total_items"
                         :total_rows="total_rows"
                         @perPageChanged="doFetchAttendance"></PaginationTemplate>
+
                   </div>
                </div>
                <div v-if="loading" class="text-center my-4">
@@ -674,7 +530,7 @@ watch(
                      <span class="sr-only">Loading...</span>
                   </div>
                </div>
-               <div v-else-if="enrollmentList.length === 0" class="text-center my-4">
+               <div v-else-if="studentAttendanceList.length === 0" class="text-center my-4">
                   <p>There is no data found</p>
                </div>
                <div v-else>
@@ -686,7 +542,7 @@ watch(
                               <th style="width: 2px;">#</th>
                               <th>Name</th>
                               <th>Date</th>
-                              <th>Time</th>
+                              <th>Check InTime</th>
                               <th>Present</th>
                               <th>Absent</th>
                               <th>Reason (if absent)</th>
@@ -703,7 +559,7 @@ watch(
                               </td>
 
                               <td>
-                                 <input  type="time" class="form-control" v-model="list.check_in_time">
+                                 <input disabled type="time" class="form-control" v-model="list.check_in_time">
                               </td>
                               <td class="text-center">
                                 <!-- {{ list.present }} -->
@@ -715,7 +571,7 @@ watch(
                               </td>
                               <td>
                                  <textarea  v-if="list.present === 'NO'" class="form-control" 
-                                 v-model="list.absence_reason" placeholder="Enter reason" disabled></textarea>
+                                 v-model="list.absence_reason"  disabled></textarea>
                               </td>
                            </tr>
                         </tbody>
