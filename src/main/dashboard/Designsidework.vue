@@ -1,172 +1,165 @@
-
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import {onMounted,reactive, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useAttendanceStore} from "@/main/dashboard/attendance/store/attendance.js";
+import { useAbility } from '@casl/vue';
+import PaginationTemplate from "@/components/PaginationTemplate.vue";
+const { can } = useAbility()
+const  notificationStore  = useNotificationStore()
+const attendanceStore = useAttendanceStore()
 
-// Default date (today)
-const attendanceDate = ref("");
+const page = ref(1)
+const per_page = ref(20)
+const total_items = ref(0)
+const total_rows = ref(0)
 
-// Get current time in HH:MM format
-const getCurrentTime = () => {
-  const now = new Date();
-  return now.toTimeString().slice(0, 5);
-};
+const studentAttendanceList = ref([])
+
+onMounted(
+     () => {
+       doFetchAttendance()
+    } )
 
 
 
-// Attendance records with default time
-const attendanceRecords = ref([
-  { id: 1, name: "John Doe", role: "student", time: getCurrentTime(), attendance: "", absentReason: "" },
-  { id: 2, name: "Jane Smith", role: "student", time: getCurrentTime(), attendance: "", absentReason: "" },
-  { id: 3, name: "Mr. Wilson", role: "staff", time: getCurrentTime(), attendance: "", absentReason: "" },
-  { id: 4, name: "Ms. Alice", role: "staff", time: getCurrentTime(), attendance: "", absentReason: "" }
-]);
+const doFetchAttendance = () =>{
+  let data = {
+    page: 1,
+    per_page: per_page.value,
+  }
+  // loading.value = true;
+  // studentAttendanceList.value = []
+  attendanceStore.fetchStudentAttendance(data)
+}
 
-// Role filter
-const selectedRole = ref("all");
+const fetchAttendanceList = (data) => {
+  if(data) {
+    let current_page = data.page
+    page.value = current_page
+    // loading.value = false;
 
-// Compute filtered list based on role
-const filteredAttendance = computed(() => {
-  return selectedRole.value === "all"
-    ? attendanceRecords.value
-    : attendanceRecords.value.filter(person => person.role === selectedRole.value);
-});
+    let per_page_item = data.per_page;
+    per_page.value = per_page_item;
 
-// Capitalize first letter
-const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+    let objArray = data.content
 
-// Set today's date on component mount
-onMounted(() => {
-  const today = new Date();
-  attendanceDate.value = today.toISOString().split("T")[0]; // YYYY-MM-DD format
-});
+    let count_items = (current_page * per_page_item)
+    let totalItems = data?.total_rows
 
-// Submit function
-const submitAttendance = () => {
-  console.log("Attendance Submitted", {
-    date: attendanceDate.value,
-    records: attendanceRecords.value
-  });
-  alert("Attendance recorded successfully!");
-};
+
+    if(objArray && objArray.length > 0){
+
+      per_page.value = per_page_item;
+      page.value = current_page
+      total_rows.value = totalItems
+
+      total_items.value = (count_items > totalItems) ? totalItems : count_items
+      objArray.forEach((list, i) => {
+
+        list.key =  (current_page - 1) * per_page_item + i + 1
+
+        const index = studentAttendanceList.value.findIndex(object => object.number === list.number);
+
+        if (index === -1) {
+          studentAttendanceList.value.push(list);
+        }
+      })
+    }
+
+  }
+}
+
+
+function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
+  if (scrollTop + clientHeight >= scrollHeight) {
+    let data = {
+      page: (page.value+1),
+      per_page: per_page.value,
+    }
+    attendanceStore.fetchStudentAttendance(data)
+  }
+}
+
+
+watch(
+    () => attendanceStore.attendanceStudentResponse,
+    async (data) => {
+      if (data) {
+        // studentAttendanceList.value = data?.data
+        fetchAttendanceList(data?.data)
+      }
+    },
+    {deep: true}
+)
+
+watch(
+    () => attendanceStore.errorMessage,
+    async (data) => {
+      if (data) {
+        notificationStore.errorToast("Error", data.message)
+      }
+    },
+    {deep: true}
+)
+
 </script>
 
+
+
 <template>
-  <div class="container mt-4">
-    <div class="card shadow-lg p-4">
-      <h2 class="text-center mb-4 text-primary">Attendance System</h2>
+  <div>
 
-      <!-- General Date Selection (Larger & Centered) -->
-      <div class="row justify-content-center mb-4">
-        <div class="col-md-6 text-center">
-          <label for="attendanceDate" class="form-label fs-5 fw-bold text-dark">📅 Select Date:</label>
-          <input type="date" class="form-control form-control-lg border border-primary text-center fw-bold" id="attendanceDate" v-model="attendanceDate">
-        </div>
-      </div>
 
-      <!-- Role Filter -->
-      <div class="row mb-4">
-        <div class="col-md-6">
-          <label for="roleFilter" class="form-label"><strong>Filter by Role:</strong></label>
-          <select class="form-select form-select-lg" v-model="selectedRole">
-            <option value="all">All</option>
-            <option value="student">Students</option>
-            <option value="staff">Staff</option>
-          </select>
-        </div>
-      </div>
+    <!-- end  -->
+    <div class="row">
+<!--      {{studentAttendanceList}}-->
 
-      <!-- Attendance List -->
-      <div class="table-responsive">
-        <table class="table table-hover align-middle">
-          <thead class="table-dark">
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Role</th>
-              <th>Time</th>
-              <th>Present</th>
-              <th>Absent</th>
-              <th>Reason (if absent)</th>
-            </tr>
+      <PaginationTemplate
+          @perPageChanged="doFetchAttendance"
+          v-model:perPage="per_page"
+          :per_page="per_page"
+          :total_items="total_items"
+          :total_rows="total_rows"></PaginationTemplate>
+      <div
+          class="w-full overflow-auto max-h-[520px] scrollbar-thin"
+          @scroll="onScroll">
+        <table
+            id="datatable"
+            class="table table-hover caption-top mt-4 table-sm table-striped"
+            style="font-size: 14px !important;"
+        >
+          <thead >
+          <tr>
+            <th>#</th>
+            <th>Student</th>
+            <th>check In Time</th>
+            <th>check Out Time</th>
+            <th>Status</th>
+            <th>Reason</th>
+            <th>Action</th>
+          </tr>
           </thead>
           <tbody>
-            <tr v-for="(person, index) in filteredAttendance" :key="person.id">
-              <td>{{ index + 1 }}</td>
-              <td><strong>{{ person.name }}</strong></td>
-              <td>{{ capitalize(person.role) }}</td>
-              <td>
-                <input type="time" class="form-control" v-model="person.time">
-              </td>
-              <td class="text-center">
-                <input type="radio" :name="'attendance' + person.id" value="present" v-model="person.attendance" class="square-radio">
-              </td>
-              <td class="text-center">
-                <input type="radio" :name="'attendance' + person.id" value="absent" v-model="person.attendance" class="square-radio">
-              </td>
-              <td>
-                <textarea v-if="person.attendance === 'absent'" class="form-control" v-model="person.absentReason" placeholder="Enter reason"></textarea>
-              </td>
-            </tr>
+          <tr v-for="(lst , index) in studentAttendanceList" :key="index">
+             <td>{{index+1}}</td>
+            <td style="text-transform: capitalize">{{lst.name	}}</td>
+            <td>{{lst.check_in_time	}}</td>
+            <td>{{lst.check_out_time	}}</td>
+            <td>{{lst.present}}</td>
+            <td>{{lst.absence_reason}}</td>
+            <td></td>
+
+          </tr>
           </tbody>
         </table>
       </div>
-
-      <!-- Submit Button -->
-      <div class="text-center mt-3">
-        <button class="btn btn-success btn-lg px-4" @click="submitAttendance">Submit Attendance</button>
-      </div>
     </div>
+
   </div>
 </template>
 
 
+
 <style scoped>
-/* Square Radio Buttons with Checkmark */
-.square-radio {
-  appearance: none;
-  width: 25px;
-  height: 25px;
-  border: 2px solid #007bff;
-  background-color: white;
-  cursor: pointer;
-  display: inline-block;
-  position: relative;
-  margin: 5px;
-  border-radius: 5px; /* Slight rounding for softer look */
-}
 
-/* Checkmark when selected */
-.square-radio:checked::after {
-  content: "✔";
-  font-size: 18px;
-  color: white;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-weight: bold;
-}
-
-/* Change background color when checked */
-.square-radio:checked {
-  background-color: #007bff;
-  border-color: #0056b3;
-}
-
-/* Bigger Date Picker */
-#attendanceDate {
-  font-size: 1.2rem;
-  padding: 10px;
-}
-
-/* Styling textareas */
-textarea {
-  min-width: 200px;
-  min-height: 40px;
-}
-
-/* Center table text */
-th, td {
-  text-align: center;
-}
 </style>

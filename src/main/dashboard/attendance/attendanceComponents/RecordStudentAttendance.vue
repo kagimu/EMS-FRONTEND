@@ -777,6 +777,6 @@
    }
    /* Center table text */
    th, td {
-   text-align: center;
+   text-align: left;
    }
 </style>
