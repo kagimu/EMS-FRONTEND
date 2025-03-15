@@ -24,7 +24,13 @@ export const useAttendanceStore = defineStore("attendance", () => {
     }
 
     async function fetchStudentAttendance(data) {
-        return await api.get("main/attendances?page="+data?.page+"&per_page="+ data?.per_page)
+        return await api.get("main/attendances?page="+data?.page+"&per_page="+ data?.per_page+"&school_number="+data?.school_number
+            +"&campus_number="+data?.campus_number
+            +"&campus_class_number="+data?.campus_class_number
+            +"&study_period_number="+data?.study_period_number
+            +"&stream_number="+data?.stream_number
+            +"&date="+data.date
+        )
             .then((response) => {
                 attendanceStudentResponse.value = response.data
             })

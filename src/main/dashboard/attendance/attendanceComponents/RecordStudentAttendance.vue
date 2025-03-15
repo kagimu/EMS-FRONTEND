@@ -685,13 +685,13 @@
                   </div>
                   <div class="table-responsive w-full overflow-auto max-h-[520px] scrollbar-thin ">
                      <table class="table table-hover  caption-top mt-1 table-sm table-striped text-sm">
-                        <thead class="table-dark">
+                        <thead class="table-dark" style="position: sticky; top: 0;z-index: 12;" >
                            <tr>
                               <th>#</th>
                               <th>Name</th>
                               <th>Time</th>
-                              <th>Present</th>
-                              <th>Absent</th>
+                              <th style="text-align: center;">Present</th>
+                              <th style="text-align: center;">Absent</th>
                               <th>Reason (if absent)</th>
                            </tr>
                         </thead>

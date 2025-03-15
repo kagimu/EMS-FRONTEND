@@ -112,7 +112,13 @@
 
   let data = {
     page: 1,
-    per_page: per_page.value
+    per_page: per_page.value,
+    school_number:form.school_number,
+    study_period_number: form.study_period_number,
+     campus_class_number: form.campus_class_number,
+     campus_number: form.campus_number,
+     stream_number:form.stream_number,
+     date:formData.date
   }
   attendanceStore.fetchStudentAttendance(data)
 }
@@ -537,14 +543,14 @@ watch(
                
                   <div class="table-responsive w-full overflow-auto max-h-[520px] scrollbar-thin ">
                      <table class="table table-hover  caption-top mt-1 table-sm table-striped text-sm">
-                        <thead class="table-dark">
+                        <thead class="table-dark" style="position: sticky; top: 0;z-index: 12;">
                            <tr>
                               <th style="width: 2px;">#</th>
                               <th>Name</th>
                               <th>Date</th>
                               <th>Check InTime</th>
-                              <th>Present</th>
-                              <th>Absent</th>
+                              <th style="text-align: center;">Present</th>
+                              <th style="text-align: center;">Absent</th>
                               <th>Reason (if absent)</th>
                            </tr>
                         </thead>

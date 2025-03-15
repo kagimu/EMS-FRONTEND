@@ -10,6 +10,7 @@ import ScoreSetup from "@/main/dashboard/manageLevel/report_setup/ScoreSetup.vue
 import Grading from "@/main/dashboard/assessment/Grading.vue";
 import AssessmentSchedulePage from "@/main/dashboard/assessment/AssessmentSchedulePage.vue";
 import ManagePromotions from "@/main/settings/promotion/ManagePromotions.vue";
+import NarrativeSchedule from "@/main/dashboard/narrative/NarrativeSchedule.vue";
 
 const router = useRouter()
 const levelStore = useLevelStore()
@@ -45,6 +46,11 @@ const campusSetupMenu = ref([
     name:"Assessment Schedule",
     router_name:"assessment-schedule",
      action:"view_assessment_schedule"
+  },
+  {
+    name:"Narrative Schedule",
+    router_name:"narrative-schedule",
+     action:"view_narrative_schedule"
   },
   {
     name:"Report Card Settings",
@@ -205,6 +211,15 @@ const switchCurriculum = (curriculum) => {
           </div>
         </div>
       </div>
+
+      <div class="col-9" v-if="campusSetupQuery === 'narrative-schedule'">
+
+<div class="card mt-3">
+  <div class="card-body" style="padding: 0;">
+    <narrative-schedule></narrative-schedule>
+  </div>
+</div>
+</div>
 
 
 
