@@ -160,8 +160,6 @@ const createNarrativeReportInfo = () => {
 
 
 const  saveNarrativeReport = async (data) => {
-  // await api.patch("main/report-settings/narrative/"+number, data)
-  // await api.delete("main/report-settings/narrative/"+number)
   await api.post("main/report-settings/narrative", data)
       .then((response) => {
         if(response){
@@ -505,16 +503,6 @@ watch(
                 
                 <div class="mb-2">
                   <label class="text-sm"><small>Reference Date</small></label>
-                  <!-- <VueDatePicker
-                      placeholder="End date: dd/mm/yyy"
-                      text-input
-                      auto-apply
-                      :teleport="true"
-                      style="font-size: 7px;"
-                      v-model="formData.reference_date"
-                      :preview-format="format"
-                      @update:modelValue="fetchNarrativeInfo()"
-                  ></VueDatePicker> -->
                   <input type="date" class="form-control" v-model="formData.reference_date">
 
                 </div>
