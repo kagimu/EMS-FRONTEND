@@ -18,7 +18,8 @@ const props = defineProps({
   xl4: Boolean,
   xl6: Boolean,
   xl8: Boolean,
-  title: String
+  title: String,
+  removeBorder: String
 })
 const emit = defineEmits(["update:modelValue"])
 const modalClass = computed(() => {
@@ -72,7 +73,8 @@ const closeModal = () => {
             enter-to="opacity-100 scale-100" leave="duration-200 ease-in" leave-from="opacity-100 scale-100"
             leave-to="opacity-0 scale-95">
             <DialogPanel :class="modalClass">
-              <div class="w-full p-0 border-b border-neutral-300 flex flex-row justify-between">
+<!--              <div class="w-full p-0 border-b border-neutral-300 flex flex-row justify-between">-->
+                <div :class="removeBorder?'':'border-b border-neutral-300 py-1'" class="w-full px-0 flex flex-row justify-between">
                 <DialogTitle as="h3" class="text-sm flex-grow leading-6 text-neutral-900 capitalize">
                   <slot name="title">
                    <div class="mt-1 ml-3 text-gray-700">

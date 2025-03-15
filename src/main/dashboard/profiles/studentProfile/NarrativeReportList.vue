@@ -15,6 +15,9 @@ import api from "@/config/api.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
 import {useUserStore} from "@/main/dashboard/profiles/store/users.js";
 import VueDatePicker from "@vuepic/vue-datepicker";
+import NewNarrativeReport from "@/main/dashboard/profiles/studentProfile/NewNarrativeReport.vue";
+import AppModal from "@/components/AppModal.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
 
 
 const assessmentStore= useAssessmentStore()
@@ -50,6 +53,8 @@ const servicesData = ref([]);
 const ServiceOptions = ref([])
 const unfilteredServicesData = ref([])
 const bills_number = ref(null)
+const reportDialog = ref(false)
+const narrativeInfo = ref({})
 
 
 const school_number = ref("")
@@ -59,43 +64,60 @@ const start_date = ref("")
 const end_date = ref("")
 const assessmentListData = ref([])
 
+const deletionLoader = ref( undefined)
+const confirmationRef = ref(null);
 
-// const   description  = ref("")
-// const   student_number = ref("")
-// const   narrative_schedule_number = ref("")
 const   assessment_area_number = ref("")
-const   study_period_number = ref("")
-const   campus_class_number = ref("")
 
 
-/*const formData = ref({
-  description:"",
-  student_number:"",
-  narrative_schedule_number:null,
-  assessment_area_number:"",
-  study_period_number:"",
-  campus_class_number:"",
-})*/
+
 
 const props = defineProps({
   student_number:String,
+  studentProfileData:{},
 })
 
 
 onMounted(
     async () => {
+      fetchDraft()
       fetchNarrativeInfo()
     }
 )
 
 
+watch(
+    () => props.studentProfileData,
+    async (data) => {
+      if (data) {
+        fetchDraft()
+      }
+    }
+)
+
+const fetchDraft = () => {
+  let draft = props.studentProfileData
+
+  if(draft && draft?.current_enrollment && draft?.current_enrollment?.curriculum_number){
+    let info = {
+      curriculum_number: draft?.current_enrollment?.curriculum_number	, //curriculum ? curriculum?.curriculum_number : null,
+      class_number: draft?.current_enrollment.class_number //classNumber, //campus_class_number
+    }
+
+    assessmentStore.fetchAssessmentArea(info)
+  }
+
+}
+
+
 const fetchNarrativeInfo = () => {
+  let draft = props.studentProfileData
   let data = {
     student_number:props.student_number,
     assessment_area_number:assessment_area_number.value,
-    study_period_number:study_period_number.value,
-    campus_class_number:campus_class_number.value,
-    academic_year_number:academic_year_number.value,
+    study_period_number: draft?.current_enrollment?.study_period_number,
+    campus_class_number:draft?.current_enrollment?.campus_class_number,
+    academic_year_number:draft?.current_enrollment?.academic_year_number,
     start_date:start_date.value,
     end_date:end_date.value
   }
@@ -210,7 +232,7 @@ watch (
 
 
 const studyPeriodData = (campus_class_number) => {
-  let classNumber = campusClassList.value ? campusClassList.value.find(item => item.number === campus_class_number)?.class_number : null
+  /*let classNumber = campusClassList.value ? campusClassList.value.find(item => item.number === campus_class_number)?.class_number : null
   studyPeriodStore.fetchStudyPeriod(
       {
         campus_curriculum_number:curriculumNumber.value,
@@ -229,7 +251,7 @@ const studyPeriodData = (campus_class_number) => {
   }
 
   assessmentStore.fetchAssessmentArea(info)
-
+*/
 }
 
 
@@ -378,10 +400,60 @@ const format = (date) => {
   return `Selected date is ${day}/${month}/${year}`;
 }
 
+const editNarrative = (date) => {
+  if(date){
+    narrativeInfo.value = date;
+    reportDialog.value = true
+  }
+}
+
+const closeDialog = () => {
+  reportDialog.value = false
+}
+
+const deleteNarrative = async (data, index) => {
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+data.name);
+  if (agreed) {
+    deletionLoader.value = index
+    await deleteNarrativeReport(data.number)
+  }
+
+}
+
+
+const  deleteNarrativeReport = async (number) => {
+  await api.delete("main/report-settings/narrative/"+number)
+      .then((response) => {
+        if(response){
+          deletionLoader.value = undefined
+          fetchDraft()
+        }
+
+      })
+      .catch((error) => {
+        if(error && error.response) {
+          deletionLoader.value = undefined
+        }
+      });
+}
+
+
+
 </script>
 <template>
 
   <div>
+
+    <ConfirmationModal removeBorder="remove" ref="confirmationRef"></ConfirmationModal>
+
+    <AppModal title="Edit Narrative Report" v-model="reportDialog" lg>
+      <new-narrative-report
+          v-on:next="closeDialog"
+          :narrativeInfo="narrativeInfo"
+          :studentProfileData="studentProfileData"
+          :student_number="student_number"></new-narrative-report>
+    </AppModal>
+
     <div class="row">
       <div class="card-body" style="padding: 0;">
         <div class="container mt-4">
@@ -389,108 +461,23 @@ const format = (date) => {
 
               <div class="grid grid-cols-4 gap-2">
 
-                <div class="mb-1">
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="school_number"
-                      @change="fetchCampuses(school_number)"
-                  >
-                    <option disabled value="">--Select School--</option>
-                    <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-                    </option>
-                  </select>
-                </div>
 
-
-                <div class="mb-1">
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
-                      v-model="campus_number"
-                      required
-                      @change="fetchCurriculum(campus_number)">
-                    <option disabled value="">--Select campus--</option>
-                    <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}</option>
-                  </select>
-                </div>
-
-                <div class="mb-1">
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
-                      v-model="curriculumNumber"
-                      @change="fetchClassLevels(curriculumNumber)"
-                  >
-                    <option disabled value="" >--Select Curriculum--</option>
-                    <option  v-for="(lvl, index) in curriculumList" :key="index" :value="lvl.number">{{lvl.name}}</option>
-                  </select>
-                </div>
-
-                <div class="mb-1">
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
-                      v-model="campus_level_number"
-                      @change="fetchClasses(campus_level_number)"
-
-                  >
-                    <option disabled value="">--Select Level--</option>
-                    <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-                  </select>
-                </div>
-
-                <div class="mb-1">
-
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="academic_year_number"
-                      @change="fetchNarrativeInfo"
-                  >
-                    <option disabled value="">--Select AcademicYear--</option>
-                    <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
-                  </select>
-                </div>
-
-
-                <div class="mb-1">
-                  <select
-                      class="form-select form-select-sm shadow-none" required
-                      v-model="campus_class_number"
-                      @change="studyPeriodData(campus_class_number)"
-
-                  >
-                    <option disabled value="">--Select Class--</option>
-                    <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
-                  </select>
-                </div>
-
-
-                <div class="mb-1">
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="study_period_number"
-                      @change="fetchNarrativeInfo"
-                  >
-                    <option disabled value="">--Select Study period--</option>
-                    <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
-                  </select>
-                </div>
-
-                <div class="mb-1">
+                <div class="mb-3">
                   <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
                       v-model="assessment_area_number"
                       @change="fetchNarrativeInfo"
                   >
-                    <option disabled value="">--Select Assessment Area -- </option>
+                    <option disabled value="">--Filter by Assessment Area -- </option>
                     <option v-for="(list, index) in assessmentListData" :key="index" :value="list.number">{{ list.name }}
                     </option>
                   </select>
                 </div>
+
+              </div>
+
+          <div class="grid grid-cols-4 gap-2">
 
                 <div>
                   <VueDatePicker
@@ -523,45 +510,47 @@ const format = (date) => {
 
 
 
-          <table class="table table-hover caption-top mt-3 table-sm" style="font-size: 14px;">
+          <table class="table table-hover caption-top mt-3 table-sm text-sm" style="font-size: 14px;">
             <thead>
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">Date</th>
-              <th scope="col">Teacher</th>
-              <th scope="col">Academic Year</th>
-              <th scope="col">Study Period</th>
-              <th scope="col">Class</th>
-              <th scope="col">Assessment Area</th>
-              <th scope="col">Narration</th>
-              <!--      <th scope="col">Action</th>-->
+              <td class="font-semibold">#</td>
+              <td class="font-semibold">Reference Date</td>
+              <td class="font-semibold">Reference Time</td>
+              <td class="font-semibold">Teacher</td>
+              <td class="font-semibold">Academic Year</td>
+              <td class="font-semibold">Study Period</td>
+              <td class="font-semibold">Class</td>
+              <td class="font-semibold">Assessment Area</td>
+              <td class="font-semibold">Narration</td>
+              <th scope="col">Action</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(info, index) in narrativeList" :key="index">
               <td> {{(index + 1)}}</td>
-              <td> {{info?.date ?? ""}}</td>
+              <td> {{info?.reference_date	 ?? ""}}</td>
+              <td> {{info?.reference_time		 ?? ""}}</td>
               <td> {{info?.teacher ?? ""}}</td>
-              <td> {{info?.academic_year ?? ""}}</td>
+              <td>
+              {{info?.academic_year ?? ""}}
+              </td>
               <td> {{info?.study_period ?? ""}}</td>
               <td> {{info?.class ?? ""}}</td>
               <td> {{info?.assessment_area ?? ""}}</td>
               <td> {{info?.narration ?? ""}}</td>
-              <!--      <td>
+                    <td>
                       <div>
                         <i
-                            v-if="can('edit_level','general')"
                             style="font-size: 13px;"
                             data-bs-toggle="modal" data-bs-target="#levelModal"
-                            class="bi-pencil mr-2 cursor-pointer" @click="editLevel(levelInfo)"></i>
-                        <i
-                            v-if="can('delete_level','general')"
-                            style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteLevel(levelInfo, index)"></i>
+                            class="bi-pencil mr-2 cursor-pointer" @click="editNarrative(info)"></i>
+<!--                        <i
+                            style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteNarrative(info, index)"></i>-->
                         <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
                           <span class="visually-hidden">Loading...</span>
                         </div>
                       </div>
-                    </td>-->
+                    </td>
             </tr>
             </tbody>
           </table>

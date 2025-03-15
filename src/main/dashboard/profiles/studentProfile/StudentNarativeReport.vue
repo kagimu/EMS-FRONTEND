@@ -47,6 +47,13 @@ const academicYearList = ref([])
 const studyPeriodList = ref([])
 const assessmentListData = ref([])
 
+
+
+const props = defineProps({
+  studentProfileData:{},
+})
+
+
 onMounted(
     async () => {
       fetchNarrativeInfo()
@@ -200,7 +207,7 @@ const closeDialog = () => {
 
 
   <AppModal title="Add Narrative Report" v-model="reportDialog" lg>
-      <new-narrative-report v-on:next="closeDialog" :student_number="student_number"></new-narrative-report>
+      <new-narrative-report v-on:next="closeDialog" :studentProfileData="studentProfileData" :student_number="student_number"></new-narrative-report>
   </AppModal>
 
 
@@ -215,6 +222,7 @@ const closeDialog = () => {
 
 
   <narrative-report-list
+      :studentProfileData="studentProfileData"
       :student_number="student_number"
   ></narrative-report-list>
 

@@ -34,6 +34,7 @@ const school = ref(null)
 const actionType = ref(null)
 const cateringStore = useCateringStore()
 const errorMessage  = ref(null)
+const studentProfileData  = ref(null)
 
 const uploadDialog = ref( false)
 
@@ -48,6 +49,7 @@ watch (
     () => applicationStore.studentDataResponse,
     async (data) => {
       if (data) {
+        studentProfileData.value = data
         studentName.value = data.surname + " " + data.second_name+" "+ data.other_name
         dob.value = data.date_of_birth
         className.value = data.current_enrollment.class
@@ -315,7 +317,8 @@ const successUpload = async (data) => {
                         </div>
 
                         <div v-if="studentQuery === 'narrative'">
-                          <StudentNarativeReport></StudentNarativeReport>
+                          <StudentNarativeReport
+                              :studentProfileData="studentProfileData"></StudentNarativeReport>
                         </div>
 
 

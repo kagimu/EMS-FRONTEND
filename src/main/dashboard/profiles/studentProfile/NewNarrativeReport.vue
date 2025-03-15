@@ -53,6 +53,7 @@ const school_number = ref("")
 const campus_number = ref("")
 const academic_year_number = ref("")
 const assessmentListData = ref([])
+const narrativeNumber = ref(null)
 
 
 
@@ -69,70 +70,69 @@ reference_time:""
 
 const props = defineProps({
   student_number:String,
+  studentProfileData:{},
+  narrativeInfo:{},
 })
 
-
-watch(
-    () => billStore.billableDetailsResponse,
-    async (data) => {
-      if (data) {
-        let draft = data.data
-        billableData.value = draft
-        if(draft){
-          bills_number.value=draft.billable_number
-          campus_number.value = draft.campus_number
-          if(draft?.campus_number){
-            fetchCurriculum(draft?.campus_number)
-            curriculumNumber.value = draft.campus_curriculum_number
-          }
-          if(draft?.campus_curriculum_number){
-            fetchClassLevels(draft?.campus_curriculum_number)
-            campus_level_number.value = draft?.campus_level_number
-          }
-          if(draft?.campus_level_number){
-            fetchClasses(draft?.campus_level_number)
-            academic_year_number.value = draft?.academic_year_number
-            formData.campus_class_number = draft?.class_number
-          }
-          if(formData.class_number){
-            studyPeriodData(draft?.class_number)
-            formData.study_period_number = draft.study_period_number
-          }
-          formData.description = draft.description,
-              formData.mode_of_study_number=draft.mode_of_study_number,
-
-              formData.bill_type = draft.bill_type
-              academic_year_number.value = draft.academic_year_number
-
-          if(draft?.billable_items?.length > 0) {
-            let items = draft?.billable_items
-            let arr = []
-            items.forEach(lst => {
-              let obj = {
-                number:lst?.item_number,
-                name: lst?.name,
-                quantity: lst?.quantity,
-                cost: lst?.unit_cost,
-                amount: lst?.total_cost
-              }
-              arr.push(obj)
-            })
-            servicesData.value = arr
-          }
-        }
-
-      }
-    },
-    { deep: true }
-)
 
 
 
 onMounted(
     async () => {
+
+      filterDraftData()
+
+
       await schoolStore.fetchSchools()
       getSchoolInfo()
     } )
+
+
+
+
+
+
+watch(
+    () => props.studentProfileData,
+    async (data) => {
+      if (data) {
+        filterDraftData()
+      }
+    }
+)
+
+const filterDraftData = () => {
+  let draft = props.studentProfileData
+  let info = {
+    curriculum_number: draft?.current_enrollment?.curriculum_number	,
+    class_number: draft?.current_enrollment.class_number
+  }
+
+  assessmentStore.fetchAssessmentArea(info)
+
+
+
+  let editDraft = props.narrativeInfo
+  if(editDraft && editDraft?.number){
+
+
+    narrativeNumber.value = editDraft?.number
+
+    formData.value.description = editDraft?.narration
+    // formData.value.student_number  = editDraft
+    // formData.value.narrative_schedule_number  = editDraft
+    formData.value.assessment_area_number  = editDraft?.assessment_area_number
+    // formData.value.study_period_number  = editDraft
+    // formData.value.campus_class_number  = editDraft
+    formData.value.reference_date  = editDraft?.reference_date
+    formData.value.reference_time  = editDraft?.reference_time
+
+
+
+  }
+
+
+}
 
 
 const getSchoolInfo = () =>{
@@ -151,13 +151,38 @@ const createNarrativeReportInfo = () => {
 
   let data  = formData.value
     data.student_number = props.student_number
-    saveNarrativeReport(data)
+    data.study_period_number = props.studentProfileData?.current_enrollment?.study_period_number
+    data.campus_class_number = props.studentProfileData?.current_enrollment?.campus_class_number
+    if(narrativeNumber.value){
+      updateNarrativeReport(data)
+    }else {
+      saveNarrativeReport(data)
+    }
 
 }
 
 
 const  saveNarrativeReport = async (data) => {
+  // await api.patch("main/report-settings/narrative/"+number, data)
+  // await api.delete("main/report-settings/narrative/"+number)
   await api.post("main/report-settings/narrative", data)
+      .then((response) => {
+        if(response){
+          buttonLoader.value = false;
+          emit("next")
+        }
+
+      })
+      .catch((error) => {
+        if(error && error.response) {
+          buttonLoader.value = false;
+        }
+      });
+}
+
+
+const  updateNarrativeReport = async (data) => {
+  await api.patch("main/report-settings/narrative/"+narrativeNumber.value, data)
       .then((response) => {
         if(response){
           buttonLoader.value = false;
@@ -418,12 +443,15 @@ watch(
 <template>
 
   <div>
+<!--    {{narrativeInfo}}-->
     <div class="row">
       <div class="card-body" style="padding: 0;">
         <div class="container mt-4">
           <form @submit.prevent="createNarrativeReportInfo">
             <div class="">
               <div class="">
+<!--
+
                 <div class="mb-2">
                   <label class="text-xs"><small>School</small></label>
                   <select
@@ -432,7 +460,7 @@ watch(
                       v-model="school_number"
                       @change="fetchCampuses(school_number)"
                   >
-                    <option disabled value="">--Select School--</option>
+                    <option disabled value="">&#45;&#45;Select School&#45;&#45;</option>
                     <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
                     </option>
                   </select>
@@ -447,7 +475,7 @@ watch(
                       v-model="campus_number"
                       required
                       @change="fetchCurriculum(campus_number)">
-                    <option disabled value="">--Select campus--</option>
+                    <option disabled value="">&#45;&#45;Select campus&#45;&#45;</option>
                     <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}</option>
                   </select>
                 </div>
@@ -460,7 +488,7 @@ watch(
                       v-model="curriculumNumber"
                       @change="fetchClassLevels(curriculumNumber)"
                   >
-                    <option disabled value="" >--Select Curriculum--</option>
+                    <option disabled value="" >&#45;&#45;Select Curriculum&#45;&#45;</option>
                     <option  v-for="(lvl, index) in curriculumList" :key="index" :value="lvl.number">{{lvl.name}}</option>
                   </select>
                 </div>
@@ -473,7 +501,7 @@ watch(
                       v-model="campus_level_number"
                       @change="fetchClasses(campus_level_number)"
                   >
-                    <option disabled value="">--Select Level--</option>
+                    <option disabled value="">&#45;&#45;Select Level&#45;&#45;</option>
                     <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
                   </select>
                 </div>
@@ -486,7 +514,7 @@ watch(
                       class="form-select form-select-sm" required
                       v-model="academic_year_number"
                   >
-                    <option disabled value="">--Select AcademicYear--</option>
+                    <option disabled value="">&#45;&#45;Select AcademicYear&#45;&#45;</option>
                     <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
                   </select>
                 </div>
@@ -498,7 +526,7 @@ watch(
                       class="form-select form-select-sm shadow-none" required
                       v-model="formData.campus_class_number"
                       @change="studyPeriodData(formData.campus_class_number)">
-                    <option disabled value="">--Select Class--</option>
+                    <option disabled value="">&#45;&#45;Select Class&#45;&#45;</option>
                     <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
                   </select>
                 </div>
@@ -511,10 +539,11 @@ watch(
                       class="form-select form-select-sm" required
                       v-model="formData.study_period_number"
                   >
-                    <option disabled value="">--Select Study period--</option>
+                    <option disabled value="">&#45;&#45;Select Study period&#45;&#45;</option>
                     <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
                   </select>
                 </div>
+-->
 
                 <div class="mb-2">
                   <label class="text-sm"><small>Assessment Area</small></label>
@@ -582,10 +611,12 @@ watch(
 
               <div class="flex justify-end ">
                 <button type="submit" class="btn btn-sm btn-primary mb-2 mt-1 mr-3">
-                  <small>Submit</small>
+                 <span class="mx-3">
+                    <small>{{narrativeNumber ? "Edit" : "Submit"}}</small>
                   <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
                     <span class="visually-hidden">Loading...</span>
                   </div>
+                 </span>
                 </button>
               </div>
 
