@@ -15,8 +15,9 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import MarkingGuideFileUploader from "@/main/dashboard/assessment/assessmentComponents/MarkingGuideFileUploader.vue";
 import AssessmentSchedulePreview from "@/main/dashboard/assessment/assessmentComponents/AssessmentSchedulePreview.vue";
 import NewNarrativeSchedule from "@/main/dashboard/narrative/narrativeComponents/NewNarrativeSchedule.vue";
-import NarrativeSchedule from "../NarrativeSchedule.vue";
 const confirmationRef = ref(null);
+import { useNarrativeStore } from "@/main/dashboard/narrative/narrativeComponents/store/narrativeStore.js";
+
 
 
 const { can } = useAbility()
@@ -37,6 +38,7 @@ const uploadDialog = ref(false)
 const assessmentScheduleDialog = ref(false)
 const metricNumber = ref(null)
 const assessmentScheduleData = ref(null)
+
 
 
 const page = ref(1)
@@ -70,12 +72,13 @@ const showModal = () => {
 }
 
 const buttonLoader = ref(false)
-const assessmentMetricsData = ref([])
+const narrativeSchedulesList = ref([])
 ref(false);
 let errorMessage = ref(null)
 
 const assessmentStore= useAssessmentStore()
 const  notificationStore  = useNotificationStore()
+const narrativeStore = useNarrativeStore()
 
 onMounted(
     async () => {
@@ -85,22 +88,20 @@ onMounted(
     } )
 
 
-const doFetchAssessmentMetric = async () => {
-  assessmentMetricsData.value.splice(0)
+const doFetchNarrativeSchedules = async () => {
+  narrativeSchedulesList.value.splice(0)
   tableLoader.value = true
   let data = {
-    page: 1,
-    per_page: per_page.value,
     class_number:campus_class_number.value,
     academic_year_number:academic_year_number.value,
     study_period_number:study_period_number.value,
     metric_number:metric_number.value,
     assessment_area_number:assessment_area_number.value,
     campus_number:campusNumber,
-    paginated:"yes"
+    curriculum_number:curriculumNumberParent,
   }
 
-  await assessmentStore.fetchAssessmentMetrics(data)
+  await narrativeStore.fetchNarrativeSchedules(data)
 }
 
 
@@ -118,7 +119,8 @@ function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
       paginated:"yes"
     }
 
-  assessmentStore.fetchAssessmentMetrics(data)
+    narrativeStore.fetchNarrativeSchedules(data)
+  
 
   }
 }
@@ -126,7 +128,6 @@ function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
 
 
 const fetchClass = () =>{
-  // classStore.fetchClassByLevel(campus_curriculum_number,campus_level_number.value)
   academicYearStore.fetchAcademicYearByLevel(campus_level_number.value)
 
   let data = {
@@ -144,7 +145,7 @@ const  fetchAssessmentAreaList = (classN) => {
     class_number:classN
   }
   assessmentStore.fetchAssessmentArea(data)
-  doFetchAssessmentMetric()
+  doFetchNarrativeSchedules()
 
 
   studyPeriodStore.fetchStudyPeriod(
@@ -228,10 +229,10 @@ const filterAssessmentMetric = (data) => {
 
         list.key =  (current_page - 1) * per_page_item + i + 1
 
-        const index = assessmentMetricsData.value.findIndex(object => object.number === list.number);
+        const index = narrativeSchedulesList.value.findIndex(object => object.number === list.number);
 
         if (index === -1) {
-          assessmentMetricsData.value.push(list);
+          narrativeSchedulesList.value.push(list);
         }
 
       })
@@ -274,23 +275,23 @@ watch(
     () => assessmentStore.newAssessmentMetricResponse,
     async (data) => {
       if(data){
-        await doFetchAssessmentMetric()
+        await doFetchNarrativeSchedules()
         showingModal.value = false
         notificationStore.successToast("Success", data.message)
       }
     }
 )
 
-watch(
-    () => assessmentStore.updateAssessmentMetricResponse,
-    async (data) => {
-      if(data){
-        await doFetchAssessmentMetric()
-        showingModal.value = false
-        notificationStore.successToast("Success", data.message)
-      }
-    }
-)
+// watch(
+//     () => assessmentStore.updateAssessmentMetricResponse,
+//     async (data) => {
+//       if(data){
+//         await doFetchNarrativeSchedules()
+//         showingModal.value = false
+//         notificationStore.successToast("Success", data.message)
+//       }
+//     }
+// )
 
 watch(
     () => assessmentStore.metricResponse,
@@ -301,31 +302,15 @@ watch(
     }
 )
 
-const editThisData = (List) => {
-  editModel.value = true
-  assessmentMetricList.value = List
-  namee.value = List.metric_name
-  showingModal.value = true
-}
+// const editThisData = (List) => {
+//   editModel.value = true
+//   assessmentMetricList.value = List
+//   namee.value = List.metric_name
+//   showingModal.value = true
+// }
 
-const uploadMarkingGuide = (metricsData) => {
-  if(metricsData) {
-      uploadDialog.value = true
-      metricNumber.value = metricsData.number
-    }
-}
 
-/*const uploadTestScript = (metricsData) => {
-  if(metricsData) {
-      testScriptDialog.value = true
-      metricNumber.value = metricsData.number
-    }
-}*/
 
-const viewAssessmentSchedule = (metricsData) => {
-  assessmentScheduleData.value = metricsData
-  assessmentScheduleDialog.value = true
-}
 
 const deleteThisData = async (id,name) => {
 
@@ -340,37 +325,33 @@ const deleteThisData = async (id,name) => {
 
 }
 
+
 watch(
-    () => assessmentStore.markingGuideResponse,
+    () => narrativeStore.narrativeResponse,
     async (data) => {
       if(data){
-        uploadDialog.value = false
-        // testScriptDialog.value = false
-        notificationStore.successToast("Success", data.message)
+        narrativeSchedulesList.value = data.data
       }
     }
 )
 
+watch (
+    () => narrativeStore.newNarrativeResponse,
+    async (data) => {
+      if(data){
+        showingModal.value = false
+      }
+    }
+  )
 
 </script>
 <template>
   <div>
 
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
-    
-
 
     <AppModal  :title="editModel ? 'Edit Narative Schedule ':'Add Narrative Schedule'" v-model="showingModal" xl2>
       <NewNarrativeSchedule :assessmentMetricList="assessmentMetricList"></NewNarrativeSchedule>
-    </AppModal>
-
-    <AppModal title="Upload Marking Guide / Script" v-model="uploadDialog" xl>
-      <marking-guide-file-uploader fileType="testMarkingGuide" :metricNumber="metricNumber"></marking-guide-file-uploader>
-    </AppModal>
-
-
-    <AppModal title="Assessment Schedule" v-model="assessmentScheduleDialog" xl6>
-      <assessment-schedule-preview :assessmentScheduleData="assessmentScheduleData"></assessment-schedule-preview>
     </AppModal>
 
     <div class="col-12 mt-2" >
@@ -439,7 +420,7 @@ watch(
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="study_period_number"
-                  @change="doFetchAssessmentMetric()"
+                  @change="doFetchNarrativeSchedules()"
               >
                 <option disabled value="">--Filter by Study Period--</option>
                 <option v-for="(list, index) in studyPeriodList" :key="index" :value="list.study_period_number">{{ list.study_period_name }}
@@ -448,20 +429,20 @@ watch(
             </div>
           </div>
 
-          <div class="col-lg-3">
+          <!-- <div class="col-lg-3">
             <div class="mb-2">
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="metric_number"
-                  @change="doFetchAssessmentMetric()"
+                  @change="doFetchNarrativeSchedules()"
               >
                 <option disabled value="">--Filter by metric--</option>
                 <option v-for="(list, index) in metricListData" :key="index" :value="list.number">{{ list.name }}
                 </option>
               </select>
             </div>
-          </div>
+          </div> -->
 
           <div class="col-lg-3">
             <div class="mb-2">
@@ -469,7 +450,7 @@ watch(
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="assessment_area_number"
-                  @change="doFetchAssessmentMetric()"
+                  @change="doFetchNarrativeSchedules()"
               >
                 <option disabled value="">--Filter by assessment area--</option>
                 <option v-for="(list, index) in assessmentListData" :key="index" :value="list.number">{{ list.name }}
@@ -485,12 +466,12 @@ watch(
         <div class="card-body" >
           <div >
 
-            <PaginationTemplate
-                    @perPageChanged="doFetchAssessmentMetric"
+            <!-- <PaginationTemplate
+                    @perPageChanged="doFetchNarrativeSchedules"
                     v-model:perPage="per_page"
                     :per_page="per_page"
                     :total_items="total_items"
-                    :total_rows="total_rows"></PaginationTemplate>
+                    :total_rows="total_rows"></PaginationTemplate> -->
 
               <div
                     class="w-full overflow-auto max-h-[520px] scrollbar-thin"
@@ -504,58 +485,33 @@ watch(
               <thead>
               <tr>
                 <th>#</th>
-                <th>Name</th>
-                <th>Date</th>
+                <th>Assessment Schedule</th>
+                <th>Scheduled On</th>
                 <th>Class</th>
                 <th>Description</th>
                 <th class="w-[12%]">Action</th>
               </tr>
               </thead>
               <tbody>
-                <!-- {{ assessmentMetricsData }} -->
-              <tr v-for="(metricsData, index) in assessmentMetricsData " :key="index">
+                <!-- {{ narrativeSchedulesList }} -->
+              <tr v-for="(narrativeData, index) in narrativeSchedulesList " :key="index">
                 <td>
                   {{ index+1 }}
                 </td>
                 <td>
-                  {{ metricsData.metric_name + " - " + metricsData.assessment_area	}}
+                  {{ narrativeData.metric_name + " - " + narrativeData.assessment_area	}}
                 </td>
-                <td>{{ metricsData.scheduled_on }}</td>
-                <td>{{ metricsData.class }}</td>
-                <td>{{ metricsData.description }}</td>
+                <td>{{ narrativeData.scheduled_on }}</td>
+                <td>{{ narrativeData.class }}</td>
+                <td>{{ narrativeData.description }}</td>
                 <td>
 
-
-
-                  <button
-                      class="mr-1"
-                      title="Upload Marking Guide / Script"
-                      @click="uploadMarkingGuide(metricsData)"
-                      type="button">
-                    <i class="bi bi-filetype-pdf text-[16px]" style="color:rgb(3, 85, 148)"></i>
-                  </button>
-
-<!--                  <button
-                      class="mr-1"
-                      title="Upload Test Script"
-                      @click="uploadTestScript(metricsData)"
-                      type="button">
-                    <i class="bi bi-file text-[16px]" style="color:rgb(3, 85, 148)"></i>
-                  </button>-->
-
-                  <button
-                      class="mr-1"
-                      title="View Assessment Schedule"
-                      @click="viewAssessmentSchedule(metricsData)"
-                      type="button">
-                    <i class="bi bi-eye text-[16px]" style="color:rgb(3, 85, 148)"></i>
-                  </button>
 
                   <button
                       class="mr-1"
                       title="Edit Assessment Schedule"
                     v-if="can('edit_assessment_schedule','general')"
-                   @click="editThisData(metricsData)" type="button">
+                   @click="editThisData(narrativeData)" type="button">
                     <i class="bi bi-pencil-square text-[15px]" style="color:rgb(3, 85, 148)"></i>
                   </button>
 
@@ -564,7 +520,7 @@ watch(
                   title="Delete Assessment Schedule"
                   class="mr-1"
                   v-if="can('delete_assessment_schedule','general')"
-                  type="button" @click="deleteThisData(metricsData.number,metricsData.name)">
+                  type="button" @click="deleteThisData(narrativeData.number,narrativeData.name)">
                     <i class="bi bi-trash text-[15px]" style="color:rgb(201, 10, 10)"></i>
                   </button>
                 </td>

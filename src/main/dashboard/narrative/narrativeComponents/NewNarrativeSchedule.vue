@@ -10,10 +10,16 @@
   import {useRouter} from "vue-router";
   import { useAbility } from '@casl/vue';
   import useCommonsStore from "@/composables/useCommons.js";
+  import VueDatePicker from "@vuepic/vue-datepicker";
+  import { useNarrativeStore } from "@/main/dashboard/narrative/narrativeComponents/store/narrativeStore.js";
+  import StudentNarativeReport from "@/main/dashboard/profiles/studentProfile/StudentNarativeReport.vue";
+
+
   const routerData = useRouter()
   const commons = useCommonsStore()
   const  notificationStore  = useNotificationStore()
   const { can } = useAbility()
+  
 
   let  curriculumNumberParent = routerData.currentRoute.value.query.cr
   const campus_curriculum_number = routerData.currentRoute.value.query.crr
@@ -26,6 +32,7 @@
   const studyPeriodStore = useStudyPeriodStore()
   const schoolStore = useSchoolStore()
   const campusStore = useCampusStore()
+  const narrativeStore = useNarrativeStore()
   
   const buttonLoader = ref(false)
   const narrativeDialog= ref(false)
@@ -47,6 +54,7 @@
   const assessment_schedule_number = ref(null)
   const academic_year_number = ref(null)
   const campusNumber = routerData.currentRoute.value.query.id
+
 
 
   const format = (date) => {
@@ -207,35 +215,27 @@
   )
   
 
-    const addInterviewAssesmentMetrics = () => {
+    const addInterviewNarrativeStore = () => {
       narrativeDialog.value = true;
       buttonLoader.value = true
-      assessmentStore.createAssessmentMetrics(form)
+      narrativeStore.newNarrativeSchedule(form)
    
     }
 
 
   
     watch (
-    () => assessmentStore.newAssessmentMetricResponse,
+    () => narrativeStore.newNarrativeResponse,
     async (data) => {
       if(data){
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-       form.assessment_area_number=null
-       form.description=null
-       form.max_score=null
-       form.metric_number=null
-       form.class_number=null
-       // form.grading_standard_number=null
-       form.study_period_number=null
-       form.scheduled_on=null
       }
     }
   )
   
   watch (
-    () => assessmentStore.errorMessage,
+    () => narrativeStore.errorMessage,
     async (data) => {
       if(data){
         errorMessage.value = data.message
@@ -255,8 +255,6 @@
   // const fetchClasses = (campus_number) => {
   //     campusStore.fetchClassesByCampus(campus_number)
   // }
-  
-
   
 
   
@@ -349,7 +347,7 @@
 <template>
   <div>
 <!-- {{ assessmentMetricList }} -->
-     <form @submit.prevent="addInterviewAssesmentMetrics">
+     <form @submit.prevent="addInterviewNarrativeStore">
         <div class="row">
            <div class="col-lg-6">
 
@@ -474,12 +472,22 @@
       
 
               <div class="mb-2">
-                 <label class="text-sm">Date</label>
-                 <input type="date" class="form-control shadow-none" v-model="form.scheduled_on">
+                 <label class="text-sm">Scheduled On</label>
+                 <!-- <VueDatePicker
+                      placeholder="Start date: dd/mm/yyy"
+                      text-input
+                      auto-apply
+                      :teleport="true"
+                      style="font-size: 7px;"
+                      v-model="form.scheduled_on"
+                  ></VueDatePicker> -->
+                  
+                  <input type="date" v-model="form.scheduled_on"  class="form-control">
+
               </div>
            
           <div class="mb-2">
-            <label class="text-sm">Title</label>
+            <label class="text-sm">Description</label>
              <textarea
                  class="form-control shadow-none text-sm"
                  rows="3"

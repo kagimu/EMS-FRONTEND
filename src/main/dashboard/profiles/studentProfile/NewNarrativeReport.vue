@@ -14,8 +14,10 @@ import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/stor
 import api from "@/config/api.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
 import VueDatePicker from "@vuepic/vue-datepicker";
+import { useNarrativeStore } from "@/main/dashboard/narrative/narrativeComponents/store/narrativeStore.js";
 
 
+const narrativeStore = useNarrativeStore()
 const assessmentStore= useAssessmentStore()
 const serviceStore= useServiceStore()
 let errorMessage = ref(null)
@@ -54,8 +56,7 @@ const campus_number = ref("")
 const academic_year_number = ref("")
 const assessmentListData = ref([])
 const narrativeNumber = ref(null)
-
-
+const narrativeSchedulesList = ref([])
 
 const formData = ref({
 description:"",
@@ -72,6 +73,7 @@ const props = defineProps({
   student_number:String,
   studentProfileData:{},
   narrativeInfo:{},
+  narrativeWithSchedule:String
 })
 
 
@@ -81,8 +83,6 @@ onMounted(
     async () => {
 
       filterDraftData()
-
-
       await schoolStore.fetchSchools()
       getSchoolInfo()
     } )
@@ -145,9 +145,6 @@ const getSchoolInfo = () =>{
 
 const createNarrativeReportInfo = () => {
   buttonLoader.value=true
-
-
-
 
   let data  = formData.value
     data.student_number = props.student_number
@@ -437,120 +434,53 @@ watch(
 )
 
 
+const doFetchNarrativeSchedule = (areaNumber) => {
+  let data = {
+    class_number:props.studentProfileData?.current_enrollment?.class_number,
+    // academic_year_number:academic_year_number.value,
+    study_period_number:props.studentProfileData?.current_enrollment?.study_period_number,
+    assessment_area_number:areaNumber,
+    campus_number:props.studentProfileData?.current_enrollment?.campus_number,
+    curriculum_number:props.studentProfileData?.current_enrollment?.curriculum_number,
+  }
+
+   narrativeStore.fetchNarrativeSchedules(data)
+}
+
+
+
+watch(
+    () => narrativeStore.narrativeResponse,
+    async (data) => {
+      if(data){
+        narrativeSchedulesList.value = data.data
+      }
+    }
+)
+
 
 
 </script>
 <template>
 
+<!-- {{ studentProfileData }} -->
   <div>
 <!--    {{narrativeInfo}}-->
+    <!-- {{ narrativeWithSchedule }} -->
+      
     <div class="row">
       <div class="card-body" style="padding: 0;">
         <div class="container mt-4">
           <form @submit.prevent="createNarrativeReportInfo">
             <div class="">
               <div class="">
-<!--
-
-                <div class="mb-2">
-                  <label class="text-xs"><small>School</small></label>
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="school_number"
-                      @change="fetchCampuses(school_number)"
-                  >
-                    <option disabled value="">&#45;&#45;Select School&#45;&#45;</option>
-                    <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-                    </option>
-                  </select>
-                </div>
-
-
-                <div class="mb-2">
-                  <label class="text-xs"><small>Campus</small></label>
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
-                      v-model="campus_number"
-                      required
-                      @change="fetchCurriculum(campus_number)">
-                    <option disabled value="">&#45;&#45;Select campus&#45;&#45;</option>
-                    <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}</option>
-                  </select>
-                </div>
-
-                <div class="mb-2">
-                  <label class="text-xs"><small>Curriculum</small></label>
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
-                      v-model="curriculumNumber"
-                      @change="fetchClassLevels(curriculumNumber)"
-                  >
-                    <option disabled value="" >&#45;&#45;Select Curriculum&#45;&#45;</option>
-                    <option  v-for="(lvl, index) in curriculumList" :key="index" :value="lvl.number">{{lvl.name}}</option>
-                  </select>
-                </div>
-
-                <div class="mb-2">
-                  <label class="text-xs"><small>Level</small></label>
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
-                      v-model="campus_level_number"
-                      @change="fetchClasses(campus_level_number)"
-                  >
-                    <option disabled value="">&#45;&#45;Select Level&#45;&#45;</option>
-                    <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-                  </select>
-                </div>
-
-                <div class="mb-2">
-                  <label class="text-xs"><small>AcademicYear</small></label>
-
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="academic_year_number"
-                  >
-                    <option disabled value="">&#45;&#45;Select AcademicYear&#45;&#45;</option>
-                    <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
-                  </select>
-                </div>
-
-
-                <div class="mb-2">
-                  <label class="text-xs"><small>Class</small></label>
-                  <select
-                      class="form-select form-select-sm shadow-none" required
-                      v-model="formData.campus_class_number"
-                      @change="studyPeriodData(formData.campus_class_number)">
-                    <option disabled value="">&#45;&#45;Select Class&#45;&#45;</option>
-                    <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
-                  </select>
-                </div>
-
-
-                <div class="mb-2">
-                  <label class="text-xs"><small>Study Period</small></label>
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="formData.study_period_number"
-                  >
-                    <option disabled value="">&#45;&#45;Select Study period&#45;&#45;</option>
-                    <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
-                  </select>
-                </div>
--->
-
-                <div class="mb-2">
+            <div class="mb-2">
                   <label class="text-sm"><small>Assessment Area</small></label>
                   <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
                       v-model="formData.assessment_area_number"
+                      @change="doFetchNarrativeSchedule(formData.assessment_area_number)"
                   >
                     <option disabled value="">--Select Assessment Area -- </option>
                     <option v-for="(list, index) in assessmentListData" :key="index" :value="list.number">{{ list.name }}
@@ -558,8 +488,7 @@ watch(
                   </select>
                 </div>
 
-
-<!--                <div class="mb-2">
+               <div class="mb-2" v-if="narrativeWithSchedule">
                   <label class="text-sm"><small>Narrative Schedule</small></label>
                   <select
                       style="box-shadow: none;"
@@ -567,10 +496,11 @@ watch(
                       v-model="formData.narrative_schedule_number	"
                   >
                     <option disabled :value="null">&#45;&#45;Select Narrative Schedule&#45;&#45;</option>
-                    <option v-for="(list, index) in assessmentListData" :key="index" :value="list.number">{{ list.name }}
+                    <option v-for="(narrativeData, index) in narrativeSchedulesList " :key="index" :value="narrativeData.number">
+                      {{ narrativeData.description }}
                     </option>
                   </select>
-                </div>-->
+                </div>
 
                 
                 <div class="mb-2">
