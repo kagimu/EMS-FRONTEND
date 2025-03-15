@@ -163,8 +163,6 @@ const createNarrativeReportInfo = () => {
 
 
 const  saveNarrativeReport = async (data) => {
-  // await api.patch("main/report-settings/narrative/"+number, data)
-  // await api.delete("main/report-settings/narrative/"+number)
   await api.post("main/report-settings/narrative", data)
       .then((response) => {
         if(response){
@@ -450,100 +448,7 @@ watch(
           <form @submit.prevent="createNarrativeReportInfo">
             <div class="">
               <div class="">
-<!--
 
-                <div class="mb-2">
-                  <label class="text-xs"><small>School</small></label>
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="school_number"
-                      @change="fetchCampuses(school_number)"
-                  >
-                    <option disabled value="">&#45;&#45;Select School&#45;&#45;</option>
-                    <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-                    </option>
-                  </select>
-                </div>
-
-
-                <div class="mb-2">
-                  <label class="text-xs"><small>Campus</small></label>
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
-                      v-model="campus_number"
-                      required
-                      @change="fetchCurriculum(campus_number)">
-                    <option disabled value="">&#45;&#45;Select campus&#45;&#45;</option>
-                    <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}</option>
-                  </select>
-                </div>
-
-                <div class="mb-2">
-                  <label class="text-xs"><small>Curriculum</small></label>
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
-                      v-model="curriculumNumber"
-                      @change="fetchClassLevels(curriculumNumber)"
-                  >
-                    <option disabled value="" >&#45;&#45;Select Curriculum&#45;&#45;</option>
-                    <option  v-for="(lvl, index) in curriculumList" :key="index" :value="lvl.number">{{lvl.name}}</option>
-                  </select>
-                </div>
-
-                <div class="mb-2">
-                  <label class="text-xs"><small>Level</small></label>
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
-                      v-model="campus_level_number"
-                      @change="fetchClasses(campus_level_number)"
-                  >
-                    <option disabled value="">&#45;&#45;Select Level&#45;&#45;</option>
-                    <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
-                  </select>
-                </div>
-
-                <div class="mb-2">
-                  <label class="text-xs"><small>AcademicYear</small></label>
-
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="academic_year_number"
-                  >
-                    <option disabled value="">&#45;&#45;Select AcademicYear&#45;&#45;</option>
-                    <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
-                  </select>
-                </div>
-
-
-                <div class="mb-2">
-                  <label class="text-xs"><small>Class</small></label>
-                  <select
-                      class="form-select form-select-sm shadow-none" required
-                      v-model="formData.campus_class_number"
-                      @change="studyPeriodData(formData.campus_class_number)">
-                    <option disabled value="">&#45;&#45;Select Class&#45;&#45;</option>
-                    <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
-                  </select>
-                </div>
-
-
-                <div class="mb-2">
-                  <label class="text-xs"><small>Study Period</small></label>
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="formData.study_period_number"
-                  >
-                    <option disabled value="">&#45;&#45;Select Study period&#45;&#45;</option>
-                    <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
-                  </select>
-                </div>
--->
 
                 <div class="mb-2">
                   <label class="text-sm"><small>Assessment Area</small></label>
@@ -559,32 +464,8 @@ watch(
                 </div>
 
 
-<!--                <div class="mb-2">
-                  <label class="text-sm"><small>Narrative Schedule</small></label>
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
-                      v-model="formData.narrative_schedule_number	"
-                  >
-                    <option disabled :value="null">&#45;&#45;Select Narrative Schedule&#45;&#45;</option>
-                    <option v-for="(list, index) in assessmentListData" :key="index" :value="list.number">{{ list.name }}
-                    </option>
-                  </select>
-                </div>-->
-
-                
                 <div class="mb-2">
                   <label class="text-sm"><small>Reference Date</small></label>
-                  <!-- <VueDatePicker
-                      placeholder="End date: dd/mm/yyy"
-                      text-input
-                      auto-apply
-                      :teleport="true"
-                      style="font-size: 7px;"
-                      v-model="formData.reference_date"
-                      :preview-format="format"
-                      @update:modelValue="fetchNarrativeInfo()"
-                  ></VueDatePicker> -->
                   <input type="date" class="form-control" v-model="formData.reference_date">
 
                 </div>
