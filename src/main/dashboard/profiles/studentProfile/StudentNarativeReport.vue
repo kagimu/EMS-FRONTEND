@@ -13,6 +13,8 @@ import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.j
 import AppModal from "@/components/AppModal.vue";
 import NewNarrativeReport from "@/main/dashboard/profiles/studentProfile/NewNarrativeReport.vue";
 import NarrativeReportList from "@/main/dashboard/profiles/studentProfile/NarrativeReportList.vue";
+import { useNarrativeStore } from "@/main/dashboard/narrative/narrativeComponents/store/narrativeStore.js";
+
 const routerData = useRouter()
 
 const userStore = useUserStore()
@@ -23,6 +25,7 @@ const classStore = useClassesStore()
 const academicYearStore = useAcademicYearStore()
 const studyPeriodStore = useStudyPeriodStore()
 const assessmentStore= useAssessmentStore()
+const narrativeStore = useNarrativeStore()
 // const student_number = routerData.currentRoute.value.query.st_id
 const student_number = ref(null)
 
@@ -209,6 +212,15 @@ const closeDialog = () => {
   reportDialog.value = false
 }
 
+
+watch (
+    () => narrativeStore.updateNarrativeReportResponse,
+    async (data) => {
+      if (data) {
+        closeDialog()
+      }
+    }
+)
 </script>
 
 <template>

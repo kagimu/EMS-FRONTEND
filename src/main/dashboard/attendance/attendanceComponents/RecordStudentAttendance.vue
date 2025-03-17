@@ -689,7 +689,7 @@
                            <tr>
                               <th>#</th>
                               <th>Name</th>
-                              <th>Time</th>
+                              <th>Check In Time</th>
                               <th style="text-align: center;">Present</th>
                               <th style="text-align: center;">Absent</th>
                               <th>Reason (if absent)</th>

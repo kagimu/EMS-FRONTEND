@@ -6,6 +6,7 @@ export const useNarrativeStore = defineStore("narrative", () => {
     let newNarrativeResponse = ref(null)
     let errorMessage = ref(null)
     let narrativeResponse = ref(null)
+    let updateNarrativeReportResponse = ref(null)
 
     async function newNarrativeSchedule(data) {
         return await api.post("main/report-settings/narrative/scheduled", data)
@@ -49,12 +50,28 @@ export const useNarrativeStore = defineStore("narrative", () => {
             })
     }
 
+
+    async function updateNarrativeReport(data) {
+        return await api.patch("main/report-settings/narrative/"+data?.narrativeNumber, data)
+            .then((response) => {
+                updateNarrativeReportResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
     return {
         errorMessage,
         newNarrativeResponse,
         narrativeResponse,
+        updateNarrativeReportResponse,
         newNarrativeSchedule,
-        fetchNarrativeSchedules
+        fetchNarrativeSchedules,
+        updateNarrativeReport
   
     }
 })

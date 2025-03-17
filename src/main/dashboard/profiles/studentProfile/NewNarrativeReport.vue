@@ -15,8 +15,9 @@ import api from "@/config/api.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import { useNarrativeStore } from "@/main/dashboard/narrative/narrativeComponents/store/narrativeStore.js";
+import {useUserStore} from "@/main/dashboard/profiles/store/users.js";
 
-
+const userStore = useUserStore()
 const narrativeStore = useNarrativeStore()
 const assessmentStore= useAssessmentStore()
 const serviceStore= useServiceStore()
@@ -90,6 +91,19 @@ onMounted(
 
 
 
+    const fetchNarrativeInfo = () => {
+  let draft = props.studentProfileData
+  let data = {
+    student_number:props.student_number,
+    assessment_area_number:formData.assessment_area_number,
+    study_period_number: draft?.current_enrollment?.study_period_number,
+    campus_class_number:draft?.current_enrollment?.campus_class_number,
+    academic_year_number:draft?.current_enrollment?.academic_year_number,
+  }
+
+  userStore.fetchNarrativeReport(data)
+}
+
 
 
 watch(
@@ -150,8 +164,11 @@ const createNarrativeReportInfo = () => {
     data.student_number = props.student_number
     data.study_period_number = props.studentProfileData?.current_enrollment?.study_period_number
     data.campus_class_number = props.studentProfileData?.current_enrollment?.campus_class_number
+    data.narrativeNumber = narrativeNumber.value
     if(narrativeNumber.value){
-      updateNarrativeReport(data)
+      // updateNarrativeReport(data)
+      narrativeStore.updateNarrativeReport(data)
+      
     }else {
       saveNarrativeReport(data)
     }
@@ -343,28 +360,28 @@ watch(
     }
 )
 
-watch (
-    () => billStore.newBillableResponse,
-    async (data) => {
-      if (data) {
-        notificationStore.successToast("Success", data.message)
-        buttonLoader.value=false
-      }
-    },
-    { deep: true }
-)
+// watch (
+//     () => billStore.newBillableResponse,
+//     async (data) => {
+//       if (data) {
+//         notificationStore.successToast("Success", data.message)
+//         buttonLoader.value=false
+//       }
+//     },
+//     { deep: true }
+// )
 
 
-watch (
-    () => billStore.updateBillableResponse,
-    async (data) => {
-      if (data) {
-        notificationStore.successToast("Success", data.message)
-        buttonLoader.value=false
-      }
-    },
-    { deep: true }
-)
+// watch (
+//     () => billStore.updateBillableResponse,
+//     async (data) => {
+//       if (data) {
+//         notificationStore.successToast("Success", data.message)
+//         buttonLoader.value=false
+//       }
+//     },
+//     { deep: true }
+// )
 
 watch(
     () => levelStore.campusCurriculumResponse,
@@ -411,13 +428,13 @@ watch(
 
 
 
-watch(
-    () => modeStudyStore.modeOfStudyInfoResponse,
-    async (data) => {
-      modeOfSchoolData.value = data.data
-    },
-    {deep: true}
-)
+// watch(
+//     () => modeStudyStore.modeOfStudyInfoResponse,
+//     async (data) => {
+//       modeOfSchoolData.value = data.data
+//     },
+//     {deep: true}
+// )
 
 
 
@@ -457,6 +474,18 @@ watch(
 )
 
 
+watch (
+    () => narrativeStore.updateNarrativeReportResponse,
+    async (data) => {
+      if (data) {
+        notificationStore.successToast("Success", data.message)
+        buttonLoader.value=false
+        fetchNarrativeInfo()
+        emit("next")
+      
+      }
+    }
+)
 
 </script>
 <template>
