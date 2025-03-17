@@ -67,7 +67,8 @@
 
 
   const props = defineProps({
-    assessmentMetricList:{}
+    assessmentMetricList:{},
+    narrativeScheduleDataInfo:{}
    })
 
   const date = ref();
@@ -77,6 +78,7 @@
         await classStore.fetchCampusLevel(campus_curriculum_number)
         await assessmentStore.fetchMetrics(curriculumNumberParent)
         getAssessmentScheduleInfo()
+        getNarrativeScheduleDataInfo()
       })
   
     const form = reactive({ 
@@ -89,6 +91,40 @@
       campus_number:campusNumber,
       curriculum_number:curriculumNumberParent
     })
+
+
+    const getNarrativeScheduleDataInfo = () =>{
+      let draftDataInfo = props.narrativeScheduleDataInfo[0]
+      if(draftDataInfo) {
+        campus_level_number.value = draftDataInfo.campus_level_number
+        fetchCurriculumClass(draftDataInfo.campus_level_number)
+
+        if(draftDataInfo.academic_year_number) {
+          academic_year_number.value = draftDataInfo.academic_year_number
+        }
+        if(draftDataInfo.class_number) {
+          form.class_number = draftDataInfo.class_number
+          form.assessment_area_number = draftDataInfo.assessment_area_number
+          fetchAssessmentAreaList(draftDataInfo.class_number)
+        }
+        if(draftDataInfo.study_period_number) {
+          form.study_period_number = draftDataInfo.study_period_number
+        }
+        form.scheduled_on = draftDataInfo.scheduled_on
+        form.description = draftDataInfo.description
+
+      }
+    }
+
+    watch(
+      () => props.narrativeScheduleDataInfo,
+      async (data) => {
+        if(data){
+          getNarrativeScheduleDataInfo()
+        }
+      }
+  )
+
 
   watch(
       () => props.assessmentMetricList,
@@ -218,7 +254,15 @@
     const addInterviewNarrativeStore = () => {
       narrativeDialog.value = true;
       buttonLoader.value = true
-      narrativeStore.newNarrativeSchedule(form)
+
+      if(props.narrativeScheduleDataInfo){
+        form.narrative_schedule_number = props.narrativeScheduleDataInfo[0].number
+        // alert(JSON.stringify(form))
+        narrativeStore.updateNarrativeSchedule(form)
+      }else {
+        narrativeStore.newNarrativeSchedule(form)
+      }
+     
    
     }
 
@@ -233,6 +277,17 @@
       }
     }
   )
+
+  watch (
+    () => narrativeStore.updateNarrativeResponse,
+    async (data) => {
+      if(data){
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+  )
+
   
   watch (
     () => narrativeStore.errorMessage,
@@ -346,21 +401,10 @@
 
 <template>
   <div>
-<!-- {{ assessmentMetricList }} -->
+<!-- {{ narrativeScheduleDataInfo }} -->
      <form @submit.prevent="addInterviewNarrativeStore">
         <div class="row">
            <div class="col-lg-6">
-
-             <!-- <div class="mb-2">
-               <label class="text-sm"><small>Code</small></label>
-               <input
-                   @keypress="commons.codeValidator($event)"
-                   maxlength="10"
-                   type="text"
-                   v-model="form.code"
-                   required
-                   class="form-control form-select-sm shadow-none">
-             </div> -->
 
               <div class="mb-2">
                  <label class="text-sm"><small>Level</small></label>
@@ -417,7 +461,7 @@
                  </select>
         </div>
 
-        <div class="mb-2">
+        <!-- <div class="mb-2">
                  <label class="text-sm"><small>Metric</small> <span class="star">*</span></label>
                  <select
                     style="box-shadow: none;"
@@ -428,7 +472,7 @@
                     <option v-for="(list, index) in metricListData" :key="index" :value="list.number">{{ list.name }}
                     </option>
                  </select>
-              </div>
+              </div> -->
 
 
 

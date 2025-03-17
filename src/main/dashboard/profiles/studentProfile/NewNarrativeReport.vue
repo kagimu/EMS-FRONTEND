@@ -524,7 +524,7 @@ watch (
                   >
                     <option disabled :value="null">&#45;&#45;Select Narrative Schedule&#45;&#45;</option>
                     <option v-for="(narrativeData, index) in narrativeSchedulesList " :key="index" :value="narrativeData.number">
-                      {{ narrativeData.description }}
+                      {{ narrativeData.description }} - {{  narrativeData.class }} - {{ narrativeData.scheduled_on }} - {{ narrativeData.study_period	 }}
                     </option>
                   </select>
                 </div>

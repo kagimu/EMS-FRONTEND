@@ -550,7 +550,7 @@ watch(
                               <th>Date</th>
                               <th>Check InTime</th>
                               <th style="text-align: center;">Present</th>
-                              <th style="text-align: center;">Absent</th>
+                              <!-- <th style="text-align: center;">Absent</th> -->
                               <th>Reason (if absent)</th>
                            </tr>
                         </thead>
@@ -569,12 +569,14 @@ watch(
                               </td>
                               <td class="text-center">
                                 <!-- {{ list.present }} -->
-                                 <input disabled  type="radio" :name="'attendance' + list.number" value="YES" v-model="list.present" class="square-radio">
+                              
+                                 <input title="Absent" v-if="list.present=='NO'" style="background-color: transparent  !important;border-color: transparent;pointer-events: none;" disabled  type="radio" :name="'attendance' + list.number" value="NO" v-model="list.present" class="square-radio2">
+                                 <input title="Present" v-else style="background-color: transparent  !important;border-color: transparent;pointer-events: none;" disabled  type="radio" :name="'attendance' + list.number" value="YES" v-model="list.present" class="square-radio">
                               </td>
-                              <td class="text-center">
-                                <!-- {{ list.present }} -->
-                                 <input  disabled type="radio" :name="'attendance' + list.number" value="NO" v-model="list.present" class="square-radio">
-                              </td>
+                              <!-- <td class="text-center">
+                           
+                                 <input  style="background-color: transparent  !important;border-color: transparent;pointer-events: none;" disabled type="radio" :name="'attendance' + list.number" value="NO" v-model="list.present" class="square-radio">
+                              </td> -->
                               <td>
                                  <textarea  v-if="list.present === 'NO'" class="form-control" 
                                  v-model="list.absence_reason"  disabled></textarea>
@@ -603,11 +605,33 @@ watch(
    margin: 5px;
    border-radius: 5px; /* Slight rounding for softer look */
    }
+   .square-radio2 {
+   appearance: none;
+   width: 25px;
+   height: 25px;
+   border: 2px solid #ff0000;
+   background-color: white;
+   cursor: pointer;
+   display: inline-block;
+   position: relative;
+   margin: 5px;
+   border-radius: 5px; /* Slight rounding for softer look */
+   }
    /* Checkmark when selected */
    .square-radio:checked::after {
    content: "✔";
    font-size: 18px;
    color: white;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   font-weight: bold;
+   }
+   .square-radio2:checked::after {
+   content: "x";
+   font-size: 18px;
+   color: rgb(251, 3, 3);
    position: absolute;
    top: 50%;
    left: 50%;

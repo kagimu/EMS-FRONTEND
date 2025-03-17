@@ -17,6 +17,7 @@ import AssessmentSchedulePreview from "@/main/dashboard/assessment/assessmentCom
 import NewNarrativeSchedule from "@/main/dashboard/narrative/narrativeComponents/NewNarrativeSchedule.vue";
 const confirmationRef = ref(null);
 import { useNarrativeStore } from "@/main/dashboard/narrative/narrativeComponents/store/narrativeStore.js";
+import { formToJSON } from "axios";
 
 
 
@@ -58,14 +59,15 @@ const namee = ref(null)
 const assessmentMetricList = ref([])
 const editModel = ref(false)
 const per_page = ref(20)
-  const total_items = ref(0)
-  const total_rows = ref(0)
- const tableLoader = ref(true)
-
+const total_items = ref(0)
+const total_rows = ref(0)
+const tableLoader = ref(true)
+const narrativeScheduleDataInfo = ref([])
 
 
 const showModal = () => {
   editModel.value = false
+  narrativeScheduleDataInfo.value = ""
   assessmentMetricList.value = ""
   showingModal.value = true
  
@@ -302,24 +304,31 @@ watch(
     }
 )
 
-// const editThisData = (List) => {
-//   editModel.value = true
-//   assessmentMetricList.value = List
-//   namee.value = List.metric_name
-//   showingModal.value = true
-// }
+
+const editThisData = (list) => {
+
+  narrativeScheduleDataInfo?.value.push({
+    ...list,
+    academic_year_number: academic_year_number.value, 
+    campus_level_number: campus_level_number.value, 
+    class_number:campus_class_number.value
+  })
+  showingModal.value = true;
+  editModel.value = true
+
+}
 
 
 
 
-const deleteThisData = async (id,name) => {
+const deleteThisData = async (narrativeScheduleData) => {
 
-  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete Assessment Schedule ? ");
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete  ? ");
   if (agreed) {
     let data = {
-     
+      narrative_schedule_number:narrativeScheduleData.number
     }
-   //delete endpoint
+    narrativeStore.deleteNarrativeSchedule(data)
   }
   
 
@@ -344,6 +353,26 @@ watch (
     }
   )
 
+  watch (
+    () => narrativeStore.updateNarrativeResponse,
+    async (data) => {
+      if(data){
+        showingModal.value = false
+        doFetchNarrativeSchedules()
+      }
+    }
+  )
+
+  watch (
+    () => narrativeStore.deleteNarrativeResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+        doFetchNarrativeSchedules()
+      }
+    }
+  )
+
 </script>
 <template>
   <div>
@@ -351,7 +380,7 @@ watch (
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal  :title="editModel ? 'Edit Narative Schedule ':'Add Narrative Schedule'" v-model="showingModal" xl2>
-      <NewNarrativeSchedule :assessmentMetricList="assessmentMetricList"></NewNarrativeSchedule>
+      <NewNarrativeSchedule :assessmentMetricList="assessmentMetricList" :narrativeScheduleDataInfo="narrativeScheduleDataInfo"></NewNarrativeSchedule>
     </AppModal>
 
     <div class="col-12 mt-2" >
@@ -420,7 +449,6 @@ watch (
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="study_period_number"
-                  @change="doFetchNarrativeSchedules()"
               >
                 <option disabled value="">--Filter by Study Period--</option>
                 <option v-for="(list, index) in studyPeriodList" :key="index" :value="list.study_period_number">{{ list.study_period_name }}
@@ -485,10 +513,12 @@ watch (
               <thead>
               <tr>
                 <th>#</th>
+                <th>Description</th>
                 <th>Assessment Schedule</th>
+                <th>Study Period</th>
                 <th>Scheduled On</th>
                 <th>Class</th>
-                <th>Description</th>
+               
                 <th class="w-[12%]">Action</th>
               </tr>
               </thead>
@@ -498,12 +528,16 @@ watch (
                 <td>
                   {{ index+1 }}
                 </td>
+                <td>{{ narrativeData.description }}</td>
                 <td>
-                  {{ narrativeData.metric_name + " - " + narrativeData.assessment_area	}}
+                  {{narrativeData.assessment_area	}}
+                </td>
+                <td>
+                  {{narrativeData.study_period	}}
                 </td>
                 <td>{{ narrativeData.scheduled_on }}</td>
                 <td>{{ narrativeData.class }}</td>
-                <td>{{ narrativeData.description }}</td>
+               
                 <td>
 
 
@@ -520,7 +554,7 @@ watch (
                   title="Delete Assessment Schedule"
                   class="mr-1"
                   v-if="can('delete_assessment_schedule','general')"
-                  type="button" @click="deleteThisData(narrativeData.number,narrativeData.name)">
+                  type="button" @click="deleteThisData(narrativeData)">
                     <i class="bi bi-trash text-[15px]" style="color:rgb(201, 10, 10)"></i>
                   </button>
                 </td>
