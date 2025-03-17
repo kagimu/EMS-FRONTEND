@@ -31,12 +31,14 @@ export const useUserStore = defineStore("users", () => {
                     let academic_year_number = data?.academic_year_number ?? ""
                     let start_date = data?.start_date ?? ""
                     let end_date = data?.end_date ?? ""
+                    let narrative_schedule_number = data?.narrative_schedule_number  ?? ""
 
             return await api.get("main/report-settings/narrative?student_number="+student_number+
                     "&assessment_area_number="+assessment_area_number+
                     "&study_period_number="+study_period_number+
                     "&campus_class_number="+campus_class_number+
                     "&academic_year_number="+academic_year_number+
+                    "&narrative_schedule_number="+narrative_schedule_number,
                     "&start_date="+start_date+
                     "&end_date="+end_date
                 )

@@ -18,8 +18,10 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import NewNarrativeReport from "@/main/dashboard/profiles/studentProfile/NewNarrativeReport.vue";
 import AppModal from "@/components/AppModal.vue";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import { useNarrativeStore } from "@/main/dashboard/narrative/narrativeComponents/store/narrativeStore.js";
 
 
+const narrativeStore = useNarrativeStore()
 const assessmentStore= useAssessmentStore()
 const serviceStore= useServiceStore()
 let errorMessage = ref(null)
@@ -63,11 +65,13 @@ const academic_year_number = ref("")
 const start_date = ref("")
 const end_date = ref("")
 const assessmentListData = ref([])
+const narrativeSchedulesList = ref("")
 
 const deletionLoader = ref( undefined)
 const confirmationRef = ref(null);
 
 const   assessment_area_number = ref("")
+const narrative_schedule_number = ref("")
 
 
 
@@ -75,6 +79,7 @@ const   assessment_area_number = ref("")
 const props = defineProps({
   student_number:String,
   studentProfileData:{},
+  narrativeWithSchedule:String
 })
 
 
@@ -118,11 +123,13 @@ const fetchNarrativeInfo = () => {
     study_period_number: draft?.current_enrollment?.study_period_number,
     campus_class_number:draft?.current_enrollment?.campus_class_number,
     academic_year_number:draft?.current_enrollment?.academic_year_number,
+    narrative_schedule_number:narrative_schedule_number?.value,
     start_date:start_date.value,
     end_date:end_date.value
   }
 
   userStore.fetchNarrativeReport(data)
+  doFetchNarrativeSchedule()
 }
 
 watch(
@@ -437,6 +444,44 @@ const  deleteNarrativeReport = async (number) => {
       });
 }
 
+const doFetchNarrativeSchedule = () => {
+  let data = {
+    class_number:props.studentProfileData?.current_enrollment?.class_number,
+    // academic_year_number:academic_year_number.value,
+    study_period_number:props.studentProfileData?.current_enrollment?.study_period_number,
+    assessment_area_number:assessment_area_number.value,
+    campus_number:props.studentProfileData?.current_enrollment?.campus_number,
+    curriculum_number:props.studentProfileData?.current_enrollment?.curriculum_number,
+  }
+
+   narrativeStore.fetchNarrativeSchedules(data)
+}
+
+watch(
+    () => narrativeStore.narrativeResponse,
+    async (data) => {
+      if(data){
+        narrativeSchedulesList.value = data.data
+      }
+    }
+)
+
+
+const filterNarrativeReportBySchedule = (scheduleNumber) => {
+  let draft = props.studentProfileData
+  let data = {
+    student_number:props.student_number,
+    assessment_area_number:assessment_area_number.value,
+    study_period_number: draft?.current_enrollment?.study_period_number,
+    campus_class_number:draft?.current_enrollment?.campus_class_number,
+    academic_year_number:draft?.current_enrollment?.academic_year_number,
+    narrative_schedule_number:scheduleNumber,
+    start_date:start_date.value,
+    end_date:end_date.value
+  }
+  userStore.fetchNarrativeReport(data)
+
+}
 
 
 </script>
@@ -471,6 +516,21 @@ const  deleteNarrativeReport = async (number) => {
                   >
                     <option disabled value="">--Filter by Assessment Area -- </option>
                     <option v-for="(list, index) in assessmentListData" :key="index" :value="list.number">{{ list.name }}
+                    </option>
+                  </select>
+                </div>
+
+
+                <div class="mb-2" v-if="narrativeWithSchedule">
+                  <select
+                      style="box-shadow: none;"
+                      class="form-select form-select-sm"
+                      v-model="narrative_schedule_number"
+                      @change="filterNarrativeReportBySchedule(narrative_schedule_number)"
+                  >
+                    <option disabled :value="null">&#45;&#45;Filter By Narrative Schedule&#45;&#45;</option>
+                    <option v-for="(narrativeData, index) in narrativeSchedulesList " :key="index" :value="narrativeData.number">
+                      {{ narrativeData.description }} - {{  narrativeData.class }} - {{ narrativeData.scheduled_on }}
                     </option>
                   </select>
                 </div>

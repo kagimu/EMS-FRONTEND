@@ -245,6 +245,7 @@ watch (
   <narrative-report-list
       :studentProfileData="studentProfileData"
       :student_number="student_number"
+      :narrativeWithSchedule="narrativeWithSchedule"
   ></narrative-report-list>
 
 </div>
