@@ -548,7 +548,7 @@ watch(
                               <th style="width: 2px;">#</th>
                               <th>Name</th>
                               <th>Date</th>
-                              <th>Check InTime</th>
+                              <th style="text-align: center;">Check InTime</th>
                               <th style="text-align: center;">Present</th>
                               <!-- <th style="text-align: center;">Absent</th> -->
                               <th>Reason (if absent)</th>
@@ -564,8 +564,10 @@ watch(
                                 {{list.date}}
                               </td>
 
-                              <td>
-                                 <input disabled type="time" class="form-control" v-model="list.check_in_time">
+                              <td style="text-align:center">
+                                 <!-- <input v-if="list.present=='YES'" disabled type="time" class="form-control" v-model="list.check_in_time"> -->
+                                 <span  v-if="list.present=='YES'">{{ list.check_in_time }}</span>
+                                 <span v-else>-</span>
                               </td>
                               <td class="text-center">
                                 <!-- {{ list.present }} -->
