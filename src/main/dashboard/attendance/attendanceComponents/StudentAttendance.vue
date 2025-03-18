@@ -580,7 +580,7 @@ watch(
                                  <input  style="background-color: transparent  !important;border-color: transparent;pointer-events: none;" disabled type="radio" :name="'attendance' + list.number" value="NO" v-model="list.present" class="square-radio">
                               </td> -->
                               <td>
-                                 <textarea  v-if="list.present === 'NO'" class="form-control" 
+                                 <textarea style="border:0px;background-color: transparent;"  v-if="list.present === 'NO'" class="form-control" 
                                  v-model="list.absence_reason"  disabled></textarea>
                               </td>
                            </tr>
