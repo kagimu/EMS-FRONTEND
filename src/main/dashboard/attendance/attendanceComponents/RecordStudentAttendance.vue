@@ -49,6 +49,7 @@
    const curriculumList = ref("")
    const levelList = ref("")
    const myModal = ref(false)
+   const buttonLoader = ref(false)
    
    //sample dammy
    const attendanceDate = ref("");
@@ -439,6 +440,7 @@
      formData.student_number = student_number
      formData.absence_reason = absence_reason
    //   alert(JSON.stringify(formData))
+   buttonLoader.value = true
      attendanceStore.newStudentAttendance(formData)
    }
    
@@ -448,6 +450,7 @@
        async (data) => {
          if (data) {
            notificationStore.successToast("Success", data.message)
+           buttonLoader.value = false
          }
        },
        {deep: true}
@@ -733,24 +736,31 @@
                                  <input  type="radio" :name="'attendance' + enrolData.adn" value="NO" v-model="enrolData.present" class="square-radio">
                               </td>
                               <td>
-                                 <textarea v-on:blur="recordAttendance(enrolData.check_in_time,enrolData.present,enrolData.user_number,enrolData.student_number,enrolData.absence_reason)" v-if="enrolData.present === 'NO'" class="form-control" v-model="enrolData.absence_reason" placeholder="Enter reason "></textarea>
                                  
+                                 <textarea v-on:blur="recordAttendance(enrolData.check_in_time,enrolData.present,enrolData.user_number,enrolData.student_number,enrolData.absence_reason)" v-if="enrolData.present === 'NO'" class="form-control" v-model="enrolData.absence_reason" placeholder="Enter reason "></textarea>
+                                 <span   style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
+                                 role="status" v-if="buttonLoader && enrolData.student_number ==formData.student_number && enrolData.present === 'NO'"><span class="visually-hidden">Loading...</span></span> 
+
                                  <div class="row" v-if="enrolData.present === 'YES'">
                                     <div class="col-lg-6">
-    <div class="input-group input-group-sm">
-        <input 
-            type="time" 
-            class="form-control form-control-sm" 
-            v-model="enrolData.check_in_time">
-        <button 
-            @click="recordAttendance(enrolData.check_in_time, enrolData.present, enrolData.user_number, enrolData.student_number, null)"
-            class="btn btn-outline-primary btn-sm">
-            <i class="bi bi-check2"></i>
-        </button>
-    </div>
-</div>
+                                 <div class="input-group input-group-sm">
+                                 <input 
+                                 type="time" 
+                                 class="form-control form-control-sm" 
+                                 v-model="enrolData.check_in_time">
+                                 <button 
+                                 @click="recordAttendance(enrolData.check_in_time, enrolData.present, enrolData.user_number, enrolData.student_number, null)"
+                                 class="btn btn-outline-primary btn-sm">
+                                 <i class="bi bi-check2"></i>
 
-</div>
+                                 <span   style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
+                                 role="status" v-if="buttonLoader && enrolData.student_number ==formData.student_number"><span class="visually-hidden">Loading...</span></span> 
+
+                                 </button>
+                                 </div>
+                                 </div>
+
+                              </div>
                                 
 
                               </td>

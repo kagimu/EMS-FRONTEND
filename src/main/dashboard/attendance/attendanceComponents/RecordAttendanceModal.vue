@@ -42,6 +42,7 @@ const total_rows = ref(0)
 const studentNumber = ref(null)
 const isComment = ref(false)
 const mymodal = ref(false)
+const buttonLoader = ref(false)
 
 
 const form = reactive({
@@ -356,6 +357,7 @@ const saveAttendanceData = () =>{
   formData.present="NO"
   formData.checkout_time = check_inTime
   formData.number = props.attendance_number
+  buttonLoader.value = true
   
   // if(check.value == "checkIn"){
   //  formData.check_in_time = check_inTime
@@ -374,6 +376,7 @@ watch(
     async (data) => {
       if (data) {
         notificationStore.successToast("Success", data.message)
+        buttonLoader.value = false
       }
     }
 )
@@ -457,7 +460,9 @@ const openRecordAttendance = (student) => {
 
               <div class="col-lg-12 mt-2" >
                 <button style="float: right;" class="btn btn-primary mb-2" @click="saveAttendanceData" >Submit</button>
-                
+                <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
+               role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span> 
+            </span>
               </div>
             </div>
 
