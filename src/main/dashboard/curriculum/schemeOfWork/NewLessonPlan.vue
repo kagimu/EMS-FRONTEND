@@ -252,8 +252,8 @@ const downloadLessonPlanByTemplate = (event) => {
     token:localStorage.getItem("token"),
     scheme_sub_topic_number:props.schemeDataInfo.number
   }
- let  downloadUrl = "https://wholesome-api.noregrets.ug/main/lesson-plan/export-template/"+data.scheme_sub_topic_number+"?token="+data.token;
- 
+
+  let downloadUrl = import.meta.env.VITE_APP_BASE_URL + "main/lesson-plan/export-template/" + data.scheme_sub_topic_number + "?token=" + data.token;
  const link = document.createElement('a')
   link.href = downloadUrl
   link.setAttribute('download', downloadUrl)

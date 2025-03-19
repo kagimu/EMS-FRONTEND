@@ -38,6 +38,7 @@ const campus_class_number = ref("")
 const study_period_number = ref("")
 const assessment_area_number = ref("")
 const reportDialog = ref( false)
+const narrativeListRef = ref( null)
 
 
 
@@ -210,6 +211,7 @@ const addANarrativeReport = () => {
 
 const closeDialog = () => {
   reportDialog.value = false
+  narrativeListRef.value.reloadDraft()
 }
 
 
@@ -228,7 +230,11 @@ watch (
 
 <!-- {{ studentProfileData }} -->
   <AppModal title="Add Narrative Report" v-model="reportDialog" lg>
-      <new-narrative-report :narrativeWithSchedule="narrativeWithSchedule" v-on:next="closeDialog" :studentProfileData="studentProfileData" :student_number="student_number"></new-narrative-report>
+      <new-narrative-report
+          :narrativeWithSchedule="narrativeWithSchedule"
+          v-on:next="closeDialog"
+          :studentProfileData="studentProfileData"
+          :student_number="student_number"></new-narrative-report>
   </AppModal>
 
 
@@ -243,6 +249,7 @@ watch (
 
 
   <narrative-report-list
+      ref="narrativeListRef"
       :studentProfileData="studentProfileData"
       :student_number="student_number"
       :narrativeWithSchedule="narrativeWithSchedule"

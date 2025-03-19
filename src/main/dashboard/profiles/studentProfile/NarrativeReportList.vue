@@ -96,6 +96,7 @@ watch(
     async (data) => {
       if (data) {
         fetchDraft()
+        fetchNarrativeInfo()
       }
     }
 )
@@ -131,6 +132,17 @@ const fetchNarrativeInfo = () => {
   userStore.fetchNarrativeReport(data)
   doFetchNarrativeSchedule()
 }
+
+
+
+const reloadDraft = () => {
+  fetchNarrativeInfo()
+}
+
+defineExpose({
+  reloadDraft
+});
+
 
 watch(
     () => userStore.narrativeReportResponse,
@@ -416,6 +428,7 @@ const editNarrative = (date) => {
 
 const closeDialog = () => {
   reportDialog.value = false
+  reloadDraft()
 }
 
 const deleteNarrative = async (data, index) => {
