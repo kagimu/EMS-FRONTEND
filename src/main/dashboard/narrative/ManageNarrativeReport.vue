@@ -13,7 +13,6 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import AppModal from "@/components/AppModal.vue";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
-import NarrativeReportList from "@/main/dashboard/profiles/studentProfile/NarrativeReportList.vue";
 
 import StudentNarativeReport from "@/main/dashboard/profiles/studentProfile/StudentNarativeReport.vue";
 
@@ -56,6 +55,7 @@ const studentProfileData = ref(null)
 const showDialog = ref(false)
 const applicationStore = useApplicationStore()
 const student_number = ref(null)
+const studentCheckerList = ref(false)
 
 
 
@@ -246,7 +246,10 @@ watch(
     () => reportSetupStore.studentsByAssessmentMetricResponse,
     async (data) => {
       if(data){
-       studentsList.value = data.data
+        let info = data.data
+
+       studentsList.value = info
+       studentCheckerList.value = !info
       }
     },
     {deep:true}
@@ -329,6 +332,9 @@ watch(
 
   <div>
 
+    <div class="flex justify-content-between mb-3">
+      <div class="ml-2">Narrative Report</div>
+    </div>
 
     <div class="row bg-white mx-auto mt-2">
 
@@ -374,7 +380,7 @@ watch(
         </select>
       </div>
 
-      <div class="col-2">
+      <div class="col-3">
         <label class="text-sm"><small>Study Period</small>
         </label>
         <select
@@ -422,14 +428,11 @@ watch(
 
     </div>
 
-    <hr />
+
 
     <div class="row">
 
       <div class="col-12">
-        <div class="flex justify-content-between mt-3">
-          <div class="ml-4">Narrative Report</div>
-        </div>
 
 
         <table class="table table-hover caption-top mt-5 table-sm text-sm" style="font-size: 14px;">
@@ -455,12 +458,11 @@ watch(
             </td>
           </tr>        
           </tbody>
-     
         </table>
-        <p class="alert alert-danger m-2 p-3" v-if="assessmentMetricNumber && studentsList.length  === 0 ">
-        No Student data found !
 
-          </p>
+        <p class="alert alert-danger m-2 p-3" v-if="studentCheckerList">
+              No Student data found !
+       </p>
 
       </div>
     </div>
