@@ -166,8 +166,8 @@ const createNarrativeReportInfo = () => {
     data.campus_class_number = props.studentProfileData?.current_enrollment?.campus_class_number
     data.narrativeNumber = narrativeNumber.value
     if(narrativeNumber.value){
-      // updateNarrativeReport(data)
-      narrativeStore.updateNarrativeReport(data)
+      updateNarrativeReport(data)
+      // narrativeStore.updateNarrativeReport(data)
       
     }else {
       saveNarrativeReport(data)
@@ -188,6 +188,7 @@ const  saveNarrativeReport = async (data) => {
       .catch((error) => {
         if(error && error.response) {
           buttonLoader.value = false;
+          notificationStore.errorToast("Error",data.error)
         }
       });
 }
@@ -205,6 +206,7 @@ const  updateNarrativeReport = async (data) => {
       .catch((error) => {
         if(error && error.response) {
           buttonLoader.value = false;
+          notificationStore.errorToast("Error",data.error)
         }
       });
 }
@@ -224,24 +226,6 @@ const getModeOfStudyInfo = (schoolN) =>{
 
 
 
-const updateAmount = (index) => {
-  const Service = servicesData.value[index];
-  Service.amount = Service.quantity * Service.cost;
-}
-
-function addService() {
-  servicesData.value.push({number:"", name: "", quantity: 1, cost: 0, amount: 0 });
-}
-
-function removeService(index) {
-  servicesData.value.splice(index, 1);
-}
-
-const  calculateTotal = () => {
-  return servicesData.value.reduce((total, Service) => total + Service.amount, 0);
-}
-
-
 watch(
     () => serviceStore.servicesListResponse,
     async (data) => {
@@ -259,11 +243,11 @@ watch(
 
 
 watch (
-    () => billStore.errorMessage,
+    () => narrativeStore.errorMessage,
     async (data) => {
       if (data) {
-        errorMessage.value = data.message
-        //notificationStore.errorToast("Error",data.message)
+        buttonLoader.value = false;
+        notificationStore.errorToast("Error",data.error)
       }
     }
 )
