@@ -25,7 +25,7 @@ export const useEnrolmentStore = defineStore("enrolment", () => {
 
 // "main/admissions?page="+data.page+"&per_page="+ data.per_page+"&school_number="+data.school_number+"&campus_number="+data.campus_number+"&campus_class_number="+data.campus_class_number+"&stream_number="+data.stream_number+"&academic_year_number="+data.academic_year_number+"&study_period_number="+data.study_period_number)
     async function fetchEnrolment(data) {
-        return await api.get("main/enrollment?page="+data?.page+"&per_page="+ data?.per_page+"&school_number="+data?.school_number+"&campus_number="+data?.campus_number+"&campus_class_number="+data?.campus_class_number+"&stream_number="+data?.stream_number+"&academic_year_number="+data?.academic_year_number+"&study_period_number="+data?.study_period_number+"&status="+data?.status)
+        return await api.get("main/enrollment?page="+data?.page+"&per_page="+ data?.per_page+"&school_number="+data?.school_number+"&campus_number="+data?.campus_number+"&class_number="+data?.class_number+"&stream_number="+data?.stream_number+"&academic_year_number="+data?.academic_year_number+"&study_period_number="+data?.study_period_number+"&curriculum_number="+data.curriculum_number+"&status="+data?.status)
             .then((response) => {
                 enrolmentResponse.value = response.data
             })

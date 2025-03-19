@@ -57,17 +57,14 @@ const form = reactive({
 const props = defineProps({
      userNumber: String,
      studentNumber:String,
+     attendance_number:String
    })
 
 
 const formData = reactive({
-  check_in_time: "",
-  check_out_time: "",
-  present: "",
+  checkout_time: "",
   user_number: "",
-  campus_class_number: "",
-  campus_number: "",
-  absence_reason: "",
+  comment: "",
   date: "",
   student_number:""
 
@@ -78,7 +75,7 @@ const adn_no = ref(null)
 
 onMounted(() => {
       schoolStore.fetchSchools()
-      doFetchEnrollent()
+      // doFetchEnrollent()
       getStudentInfo();
     }
 )
@@ -89,6 +86,7 @@ const getStudentInfo = () => {
   }
   if(props.userNumber){
     formData.user_number = props.userNumber
+    
   }
 }
 
@@ -106,12 +104,12 @@ watch(
 
 const fetchCampuses = (school_number) => {
   campusStore.fetchCampuses(school_number)
-  doFetchEnrollent()
+  // doFetchEnrollent()
 }
 
 const fetchClasses = (campus_number) => {
   campusStore.fetchClassesByCampus(campus_number)
-  doFetchEnrollent()
+  // doFetchEnrollent()
 }
 
 const fetchAcademicYear = (campusN) =>{
@@ -126,13 +124,13 @@ const fetchAcademicYear = (campusN) =>{
     }
     classStore.fetchClassStreams(sData)
 
-  doFetchEnrollent()
+  // doFetchEnrollent()
 }
 
 
 
 const filterByStream = () => {
-  doFetchEnrollent()
+  // doFetchEnrollent()
 }
 
 const filterByStudyPeriod = () => {
@@ -141,7 +139,7 @@ const filterByStudyPeriod = () => {
 
 
 const doFetchEnrollent = () =>{
-  if(!form.school_number){
+  if(!form.study_period_number){
     return
   }
 
@@ -355,33 +353,29 @@ const check = ref(null)
 const check_inTime = ref(null)
 
 const saveAttendanceData = () =>{
-  formData.school_number = form.school_number
-  formData.present="YES"
-
-  if(check.value == "checkIn"){
-   formData.check_in_time = check_inTime
-  }else {
-   formData.check_out_time = check_inTime
-  }
+  formData.present="NO"
+  formData.checkout_time = check_inTime
+  formData.number = props.attendance_number
+  
+  // if(check.value == "checkIn"){
+  //  formData.check_in_time = check_inTime
+  // }else {
+   
+  // }
 
 
   // alert(JSON.stringify(formData))
-  attendanceStore.newStudentAttendance(formData)
+  attendanceStore.updateStudentAttendance(formData)
 }
 
 
 watch(
-    () => attendanceStore.newStudentAttendanceResponse,
+    () => attendanceStore.updateStudentAttendanceResponse,
     async (data) => {
       if (data) {
         notificationStore.successToast("Success", data.message)
-        formData.check_in_time = ""
-        formData.check_out_time = ""
-        formData.absence_reason = ""
-
       }
-    },
-    {deep: true}
+    }
 )
 
 watch(
@@ -411,16 +405,15 @@ const openRecordAttendance = (student) => {
     <div class="row">
         <div class="col-12">
           <div class="mt-2 ml-3">
-      <nav>
+      <!-- <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-          <button class="nav-link navColor active" id="scope-tab" data-bs-toggle="tab" data-bs-target="#scope" type="button" role="tab" aria-controls="scope" aria-selected="false"><small>CheckIn/CheckOut</small></button>
+          <button class="nav-link navColor active" id="scope-tab" data-bs-toggle="tab" data-bs-target="#scope" type="button" role="tab" aria-controls="scope" aria-selected="false"><small>CheckOut</small></button>
           <button class="nav-link navColor " id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab" aria-controls="scope" aria-selected="false"><small>Attendance History</small></button>
-
         </div>
-      </nav>
+      </nav> -->
       <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="scope" role="tabpanel" aria-labelledby="scope-tab" tabindex="0">
-          <div class="row mt-4 mb-2">
+          <div class="row mb-2">
       <div class="col-12">
         <div class="">
           <div class="" style="padding: 0;">
@@ -429,14 +422,14 @@ const openRecordAttendance = (student) => {
                 <div class="row">
 
 <div class="col-lg-12 d-flex align-items-center gap-3">
-  <div class="form-check">
+  <!-- <div class="form-check">
     <input class="form-check-input" type="radio" name="check_option" id="check_in" v-model="check" value="checkIn" style="width: 20px; height: 20px;">
     <label class="ms-2 xs" for="check_in">Check In</label>
-  </div>
-  <div class="form-check">
+  </div> -->
+  <!-- <div class="form-check">
     <input class="form-check-input" type="radio" name="check_option" id="check_out" v-model="check" value="checkOut" style="width: 20px; height: 20px;">
     <label class="ms-2 xs" for="check_out">Check Out</label>
-  </div>
+  </div> -->
 </div>
 
 
@@ -447,19 +440,19 @@ const openRecordAttendance = (student) => {
               
               
   
-              <div class="col-lg-3 mt-2" >
+              <div class="col-lg-12 " >
                 <label><small>Date</small></label>
                 <input  type="date" class="form-control form-control-sm" v-model="formData.date">
               </div>
-              <div class="col-lg-3 mt-2" >
+              <div class="col-lg-12 mt-2" >
                 <label><small>Time</small></label>
                 <input  type="time" class="form-control form-control-sm" v-model="check_inTime">
               </div>
               <br>
-              <!-- <div class="col-lg-12 mt-2" >
-                <label>Comment</label>
-                <textarea  class="form-control form-control-sm" v-model="formData.absence_reason"></textarea>
-              </div> -->
+              <div class="col-lg-12 mt-2" >
+                <label>Reason</label>
+                <textarea  class="form-control form-control-sm" v-model="formData.comment"></textarea>
+              </div>
 
 
               <div class="col-lg-12 mt-2" >

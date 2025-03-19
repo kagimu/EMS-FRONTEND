@@ -9,12 +9,25 @@ export const useAttendanceStore = defineStore("attendance", () => {
     const errorMessage = ref(null)
     let attendanceStaffResponse = ref(null)
     let newStaffAttendanceResponse = ref(null)
+    let updateStudentAttendanceResponse= ref(null)
 
 
     async function newStudentAttendance(data) {
         return await api.post("main/attendances", data)
             .then((response) => {
                 newStudentAttendanceResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function updateStudentAttendance(data) {
+        return await api.post("main/attendances/checkout", data)
+            .then((response) => {
+                updateStudentAttendanceResponse.value = response.data
             })
             .catch((error) => {
                 if(error && error.response){
@@ -77,6 +90,8 @@ export const useAttendanceStore = defineStore("attendance", () => {
         newStaffAttendance,
         fetchStaffAttendance,
         attendanceStaffResponse,
-        newStaffAttendanceResponse
+        newStaffAttendanceResponse,
+        updateStudentAttendanceResponse,
+        updateStudentAttendance
     }
 })

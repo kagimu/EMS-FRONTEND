@@ -68,7 +68,7 @@
    
    const form = reactive({
      study_period_number: "",
-     campus_class_number: "",
+     class_number: "",
      campus_number: "",
      stream_number:"",
      school_number:"",
@@ -86,7 +86,7 @@
      check_out_time: "",
      present: "",
      user_number: "",
-     campus_class_number: "",
+     class_number: "",
      campus_number: "",
      absence_reason: "",
      date: "",
@@ -99,7 +99,7 @@
    
    onMounted(() => {
          schoolStore.fetchSchools()
-         doFetchEnrollent()
+         // doFetchEnrollent()
    
          const today = new Date();
          formData.date = today.toISOString().split("T")[0]; // YYYY-MM-DD format
@@ -108,13 +108,13 @@
    
    const fetchCampuses = (school_number) => {
      campusStore.fetchCampuses(school_number)
-     doFetchEnrollent()
+   //   doFetchEnrollent()
    }
    
    const fetchClasses = (campus_number) => {
      campusStore.fetchClassesByCampus(campus_number)
      levelStore.fetchCampusCurriculum(campus_number)
-     doFetchEnrollent()
+   //   doFetchEnrollent()
    }
    
    const fetchAcademicYear = (campusN) =>{
@@ -129,7 +129,7 @@
        }
        classStore.fetchClassStreams(sData)
    
-     doFetchEnrollent()
+   //   doFetchEnrollent()
    }
    
    
@@ -139,12 +139,12 @@
    }
    
    const filterByStudyPeriod = () => {
-     doFetchEnrollent()
+   //   doFetchEnrollent()
    }
    
    
    const doFetchEnrollent = () =>{
-     if(!form.school_number){
+     if(!form.study_period_number){
        return
      }
    
@@ -154,9 +154,10 @@
        study_period_number:form.study_period_number,
        school_number:form.school_number,
        campus_number: form.campus_number,
-       campus_class_number:form.campus_class_number,
+       class_number:form.class_number,
        stream_number:form.stream_number,
        academic_year_number:form.academic_year_number,
+       curriculum_number:form.curriculumNumber,
        status:form.status
      }
      loading.value = true;
@@ -173,9 +174,10 @@
          study_period_number:form.study_period_number,
          school_number:form.school_number,
          campus_number: form.campus_number,
-         campus_class_number:form.campus_class_number,
+         class_number:form.class_number,
          stream_number:form.stream_number,
          academic_year_number:form.academic_year_number,
+         curriculum_number:form.curriculumNumber,
          status:form.status
        }
    
@@ -403,8 +405,7 @@
      adn_no.value = adn
      formData.user_number = userN
      formData.student_number = stdN
-   
-   
+      
      if(status === "present"){
        isComment.value = false
        formData.present="YES"
@@ -416,19 +417,28 @@
    
    
    const saveAttendanceData = () =>{
-     formData.school_number = form.school_number
-     alert(JSON.stringify(formData))
+
+
+
+   //   alert(JSON.stringify(formData))
      attendanceStore.newStudentAttendance(formData)
    }
 
    const recordAttendance = (checkInTime,present,user_number,student_number,absence_reason) =>{
      formData.school_number = form.school_number
+     formData.school_number = form.school_number
+     formData.study_period_number= form.school_number
+      formData.campus_class_number= form.class_number
+      formData.campus_number= form.campus_number
+      formData.stream_number= form.stream_number
+      formData.academic_year_number= form.academic_year_number
+
      formData.check_in_time = checkInTime
      formData.present = present
      formData.user_number = user_number
      formData.student_number = student_number
      formData.absence_reason = absence_reason
-    //  alert(JSON.stringify(formData))
+   //   alert(JSON.stringify(formData))
      attendanceStore.newStudentAttendance(formData)
    }
    
@@ -562,7 +572,21 @@
                      </div>
                      <div class="col-2">
                         <div class="mb-2">
+                           <select
+                              style="box-shadow: none;"
+                              class="form-select form-select-sm" required
+                              v-model="form.study_period_number"
+                              @change="filterByStudyPeriod()"
+                              >
+                              <option disabled value="">filter by Study period -</option>
+                              <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="col-2">
+                        <div class="mb-2">
                            <!-- <label class="text-sm"><small>Stream</small> </label> -->
+                            <!-- {{ streamList }} -->
                            <select
                               style="box-shadow: none;"
                               class="form-select form-select-sm" required
@@ -575,19 +599,7 @@
                            </select>
                         </div>
                      </div>
-                     <div class="col-2">
-                        <div class="mb-2">
-                           <select
-                              style="box-shadow: none;"
-                              class="form-select form-select-sm" required
-                              v-model="form.study_period_number"
-                              @change="filterByStudyPeriod()"
-                              >
-                              <option disabled value="">filter by Study period -</option>
-                              <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
-                           </select>
-                        </div>
-                     </div>
+                    
                      <div class="col-3">
                         <div class="mb-2">
                            <input
@@ -619,7 +631,7 @@
                   </div>
                </div>
                <div v-else-if="enrollmentList.length === 0" class="text-center my-4">
-                  <p>There is no data found</p>
+                  <p class="alert alert-success">Please select stream to view students !</p>
                </div>
                <div v-else>
                   <div
@@ -655,7 +667,7 @@
                                        </div>
                                     </div>
                                     <div class="ml-2">
-                                       <span class="link link-primary" style="cursor: pointer" @click="openRecordAttendance(enrolData.student_number,enrolData.student_surname,enrolData.student_second_name,enrolData.student_other_name,enrolData.user_number)">
+                                       <span class="link link-primary" style="cursor: pointer" >
                                        {{ enrolData.student_surname + " "+ enrolData.student_second_name + " "  + enrolData.student_other_name }}
                                        </span>
                                     </div>
@@ -689,10 +701,9 @@
                            <tr>
                               <th>#</th>
                               <th>Name</th>
-                              <th>Check In Time</th>
                               <th style="text-align: center;">Present</th>
                               <th style="text-align: center;">Absent</th>
-                              <th>Reason (if absent)</th>
+                              <th>Check In Time / Reason (if absent)</th>
                            </tr>
                         </thead>
                         <tbody>
@@ -706,25 +717,46 @@
                                           <i class="bi-person-circle text-[40px] text-[#8a8888]"></i>
                                        </div>
                                     </div>
-                                    <div class="ml-2">
-                                       <span  class="link link-primary" style="cursor: pointer;text-transform: capitalize;" @click="openRecordAttendance(enrolData.student_number,enrolData.student_surname,enrolData.student_second_name,enrolData.student_other_name,enrolData.user_number)">
+                                    <div class="ml-2" style="text-transform: capitalize;" >
+                                       
                                        {{ enrolData.student_surname + " "+ enrolData.student_second_name + " "  + enrolData.student_other_name }}
-                                       </span>
+
                                     </div>
                                  </div>
                               </td>
-                              <td>
-                                 <input  type="time" class="form-control" v-model="enrolData.check_in_time">
-                              </td>
+                          
                               <td class="text-center">
-                                 <input @change="recordAttendance(enrolData.check_in_time,enrolData.present,enrolData.user_number,enrolData.student_number,null)" type="radio" :name="'attendance' + enrolData.adn" value="YES" v-model="enrolData.present" class="square-radio">
+                                 <input
+                                  type="radio" :name="'attendance' + enrolData.adn" value="YES" v-model="enrolData.present" class="square-radio">
                               </td>
                               <td class="text-center">
                                  <input  type="radio" :name="'attendance' + enrolData.adn" value="NO" v-model="enrolData.present" class="square-radio">
                               </td>
                               <td>
-                                 <textarea v-on:blur="recordAttendance(enrolData.check_in_time,enrolData.present,enrolData.user_number,enrolData.student_number,enrolData.absence_reason)" v-if="enrolData.present === 'NO'" class="form-control" v-model="enrolData.absence_reason" placeholder="Enter reason"></textarea>
+                                 <textarea v-on:blur="recordAttendance(enrolData.check_in_time,enrolData.present,enrolData.user_number,enrolData.student_number,enrolData.absence_reason)" v-if="enrolData.present === 'NO'" class="form-control" v-model="enrolData.absence_reason" placeholder="Enter reason "></textarea>
+                                 
+                                 <div class="row" v-if="enrolData.present === 'YES'">
+                                    <div class="col-lg-6">
+    <div class="input-group input-group-sm">
+        <input 
+            type="time" 
+            class="form-control form-control-sm" 
+            v-model="enrolData.check_in_time">
+        <button 
+            @click="recordAttendance(enrolData.check_in_time, enrolData.present, enrolData.user_number, enrolData.student_number, null)"
+            class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-check2"></i>
+        </button>
+    </div>
+</div>
+
+</div>
+                                
+
                               </td>
+                              <!-- <td>
+                                 <textarea v-on:blur="recordAttendance(enrolData.check_in_time,enrolData.present,enrolData.user_number,enrolData.student_number,enrolData.absence_reason)" v-if="enrolData.present === 'NO'" class="form-control" v-model="enrolData.absence_reason" placeholder="Enter reason"></textarea>
+                              </td> -->
                            </tr>
                         </tbody>
                      </table>

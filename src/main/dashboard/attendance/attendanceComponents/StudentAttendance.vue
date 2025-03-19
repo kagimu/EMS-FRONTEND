@@ -97,7 +97,6 @@
          schoolStore.fetchSchools()
          const today = new Date();
          formData.date = today.toISOString().split("T")[0] 
-
         //  doFetchAttendance()
 
        }
@@ -115,12 +114,13 @@
     per_page: per_page.value,
     school_number:form.school_number,
     study_period_number: form.study_period_number,
-     campus_class_number: form.campus_class_number,
+     campus_class_number: form.class_number,
      campus_number: form.campus_number,
      stream_number:form.stream_number,
      date:formData.date
   }
   attendanceStore.fetchStudentAttendance(data)
+  studentAttendanceList.value = []
 }
 
 
@@ -150,12 +150,12 @@
        }
        classStore.fetchClassStreams(sData)
    
-     doFetchAttendance()
+     //doFetchAttendance()
    }
    
     
    const filterByStream = () => {
-     doFetchAttendance()
+     //doFetchAttendance()
    }
    
    const filterByStudyPeriod = () => {
@@ -177,6 +177,7 @@
    
    const fetchCampusLevel = (curriculumNumber) => {
      classStore.fetchCampusLevel(curriculumNumber)
+     doFetchAttendance()
    }
    
    
@@ -187,6 +188,7 @@
      }
      campusStore.fetchClassesBySchool(data)
      academicYearStore.fetchAcademicYearByLevel(levelNumber)
+     doFetchAttendance()
    }
    
    watch(
@@ -285,6 +287,8 @@
            class_number:classNumber,
            school_number:form.school_number
          } )
+
+         doFetchAttendance()
    }
    
  
@@ -311,12 +315,12 @@
    
    const studentName = ref(null)
    
-   const openRecordAttendance = (student_number,student_sur_name, student_second_name,othername,user_number) => {
-     myModal.value = true;
-     studentName.value = student_sur_name + " "+student_second_name+" "+othername
-     studentNumber.value = student_number
-     userNumber.value = user_number
-   }
+   // const openRecordAttendance = (student_number,student_sur_name, student_second_name,othername,user_number) => {
+   //   myModal.value = true;
+   //   studentName.value = student_sur_name + " "+student_second_name+" "+othername
+   //   studentNumber.value = student_number
+   //   userNumber.value = user_number
+   // }
    
 
 
@@ -374,16 +378,41 @@ watch(
     async (data) => {
       if (data) {
         fetchAttendanceList(data?.data)
+        
       }
     },
     {deep: true}
 )
+   const attendance_number = ref(null)
    
+   const openRecordAttendance = (student_number,name,user_number,number) => {
+     myModal.value = true;
+     studentName.value = name
+     studentNumber.value = student_number
+     userNumber.value = user_number
+     attendance_number.value = number
+   }
+
+
+   watch(
+    () => attendanceStore.updateStudentAttendanceResponse,
+    async (data) => {
+      if (data) {
+         myModal.value = false
+         doFetchAttendance()
+      }
+    }
+)
+
 </script>
 <template>
    <div>
-      <AppModal :title="'CheckIn / CheckIn => '+ studentName " v-model="myModal" xl2>
+      <!-- <AppModal :title="'CheckIn / CheckIn => '+ studentName " v-model="myModal" xl2>
          <RecordAttendanceModal :userNumber="userNumber" :studentNumber="studentNumber"></RecordAttendanceModal>
+      </AppModal> -->
+
+      <AppModal :title="'Checkout => '+ studentName " v-model="myModal" md>
+         <RecordAttendanceModal :userNumber="userNumber" :studentNumber="studentNumber" :attendance_number="attendance_number"></RecordAttendanceModal>
       </AppModal>
       <!-- end  -->
       <div class="row">
@@ -453,7 +482,7 @@ watch(
                               style="box-shadow: none;"
                               class="form-select form-select-sm" required
                               v-model="form.academic_year_number"
-                              @change=""
+                              @change="doFetchAttendance()"
                               >
                               <option disabled value="">-filter AcademicYear-</option>
                               <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
@@ -478,6 +507,20 @@ watch(
                      </div>
                      <div class="col-2">
                         <div class="mb-2">
+                           <select
+                              style="box-shadow: none;"
+                              class="form-select form-select-sm" required
+                              v-model="form.study_period_number"
+                              @change="filterByStudyPeriod()"
+                              >
+                              <option disabled value="">filter by Study period -</option>
+                              <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
+                           </select>
+                        </div>
+                     </div>
+
+                     <div class="col-2">
+                        <div class="mb-2">
                            <!-- <label class="text-sm"><small>Stream</small> </label> -->
                            <select
                               style="box-shadow: none;"
@@ -491,19 +534,7 @@ watch(
                            </select>
                         </div>
                      </div>
-                     <div class="col-2">
-                        <div class="mb-2">
-                           <select
-                              style="box-shadow: none;"
-                              class="form-select form-select-sm" required
-                              v-model="form.study_period_number"
-                              @change="filterByStudyPeriod()"
-                              >
-                              <option disabled value="">filter by Study period -</option>
-                              <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
-                           </select>
-                        </div>
-                     </div>
+                   
                      <div class="col-3">
                         <div class="mb-2">
                            <input
@@ -549,16 +580,18 @@ watch(
                               <th>Name</th>
                               <th>Date</th>
                               <th style="text-align: center;">Check InTime</th>
+                              <th style="text-align: center;">Check OutTime</th>
                               <th style="text-align: center;">Present</th>
                               <!-- <th style="text-align: center;">Absent</th> -->
-                              <th>Reason (if absent)</th>
+                              <th>Checkout / Reason (if absent)</th>
                            </tr>
                         </thead>
                         <tbody>
                            <tr v-for="(list,index) in studentAttendanceList" :key="index">
                               <td>{{ index + 1 }}</td>
-                              <td style="text-transform: capitalize;">
-                               {{ list.name }}
+                              <td >
+                               <span style="pointer-events: fill;text-transform: capitalize;" class="link link-primary" 
+                               @click="openRecordAttendance(list.student_number,list.name,list.user_number)">{{ list.name }}</span>
                               </td>
                               <td>
                                 {{list.date}}
@@ -569,19 +602,24 @@ watch(
                                  <span  v-if="list.present=='YES'">{{ list.check_in_time }}</span>
                                  <span v-else>-</span>
                               </td>
-                              <td class="text-center">
-                                <!-- {{ list.present }} -->
+
+                              <td style="text-align:center">
+                                 <!-- <input v-if="list.present=='YES'" disabled type="time" class="form-control" v-model="list.check_in_time"> -->
+                                 <span  >{{ list.check_out_time }}</span>
+                                
+                              </td>
                               
+                              <td class="text-center">
                                  <input title="Absent" v-if="list.present=='NO'" style="background-color: transparent  !important;border-color: transparent;pointer-events: none;" disabled  type="radio" :name="'attendance' + list.number" value="NO" v-model="list.present" class="square-radio2">
                                  <input title="Present" v-else style="background-color: transparent  !important;border-color: transparent;pointer-events: none;" disabled  type="radio" :name="'attendance' + list.number" value="YES" v-model="list.present" class="square-radio">
                               </td>
-                              <!-- <td class="text-center">
-                           
-                                 <input  style="background-color: transparent  !important;border-color: transparent;pointer-events: none;" disabled type="radio" :name="'attendance' + list.number" value="NO" v-model="list.present" class="square-radio">
-                              </td> -->
+                          
                               <td>
-                                 <textarea style="border:0px;background-color: transparent;"  v-if="list.present === 'NO'" class="form-control" 
-                                 v-model="list.absence_reason"  disabled></textarea>
+                                 <span v-if="list.check_out_time !=''"></span>
+                                 <span v-else><button  v-if="list.present === 'YES'"  class="btn btn-primary btn-sm mb-2" @click="openRecordAttendance(list.student_number,list.name,list.user_number,list.number)">
+                                    Check Out
+                                 </button></span>
+                                 <i v-if="list.present === 'NO'" class="text-xs pt-1"> <b>{{ list.absence_reason }}</b> </i>                             
                               </td>
                            </tr>
                         </tbody>

@@ -59,7 +59,6 @@ const studentData = ref(null)
 
 const form = reactive({
   study_period_number: "",
-  campus_class_number: "",
   campus_number: "",
   stream_number:"",
   school_number:"",
@@ -128,9 +127,10 @@ const doFetchEnrollent = () =>{
     study_period_number:form.study_period_number,
     school_number:form.school_number,
     campus_number: form.campus_number,
-    campus_class_number:form.campus_class_number,
+    class_number:form.class_number,
     stream_number:form.stream_number,
     academic_year_number:form.academic_year_number,
+    curriculum_number:form.curriculumNumber,
     status:form.status
   }
   loading.value = true;
@@ -147,7 +147,7 @@ function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
       study_period_number:form.study_period_number,
       school_number:form.school_number,
       campus_number: form.campus_number,
-      campus_class_number:form.campus_class_number,
+      class_number:form.class_number,
       stream_number:form.stream_number,
       academic_year_number:form.academic_year_number,
       status:form.status
@@ -211,7 +211,7 @@ const fetchStreamsAndStudyPeriod = (classNumber) =>{
         school_number:form.school_number
       } )
 
-
+doFetchEnrollent()
 }
 
 
@@ -476,6 +476,7 @@ const enrolStudent = (enrolData) => {
                     <div class="col-2">
                       <div class="mb-2">
                         <!-- {{ classList }} -->
+                          <!-- {{ classList }} -->
                         <select
                             style="box-shadow: none;"
                             class="form-select form-select-sm" required
