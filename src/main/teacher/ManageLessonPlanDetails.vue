@@ -550,7 +550,7 @@ const toggleMaximize = () => {
                                     <div class="row">
                                        <div class="col-lg-8">
                                           <!-- {{ selectedStep }} -->
-                                            {{ form.students }}
+                                            <!-- {{ form.students }} -->
                                           <table
                                              class="table table-hover caption-top mt-1 table-sm table-striped"
                                              style="font-size: 13px !important;"
