@@ -23,14 +23,14 @@ const goToAttendancePage = (type) => {
         </div>
       </div>
 
-      <!-- <div class="col-md-6">
+      <div class="col-md-6">
         <div class="card attendance-card" @click="goToAttendancePage('staff')">
           <div class="card-body text-center">
             <Users size="88" class="icon text-success" />
             <h5 class="mt-3">Staff Attendance</h5>
           </div>
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
