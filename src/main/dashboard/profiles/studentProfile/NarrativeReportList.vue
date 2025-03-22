@@ -611,19 +611,19 @@ const filterNarrativeReportBySchedule = (scheduleNumber) => {
               <td> {{info?.class ?? ""}}</td>
               <td> {{info?.assessment_area ?? ""}}</td>
               <td> {{info?.narration ?? ""}}</td>
-                    <td>
-                      <div>
-                        <i
-                            style="font-size: 13px;"
-                            data-bs-toggle="modal" data-bs-target="#levelModal"
-                            class="bi-pencil mr-2 cursor-pointer" @click="editNarrative(info)"></i>
+              <td>
+                <div>
+                  <i
+                      style="font-size: 13px;"
+                      data-bs-toggle="modal" data-bs-target="#levelModal"
+                      class="bi-pencil mr-2 cursor-pointer" @click="editNarrative(info)"></i>
 <!--                        <i
-                            style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteNarrative(info, index)"></i>-->
-                        <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
-                          <span class="visually-hidden">Loading...</span>
-                        </div>
-                      </div>
-                    </td>
+                      style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteNarrative(info, index)"></i>-->
+                  <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              </td>
             </tr>
             </tbody>
           </table>
