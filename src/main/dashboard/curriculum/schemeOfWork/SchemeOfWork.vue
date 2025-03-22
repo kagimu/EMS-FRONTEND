@@ -350,41 +350,6 @@ watch(
       <lesson-plan-details :lessonPlanInfo="lessonPlanInfo"></lesson-plan-details>
     </AppModal>
 
-<!--    <div class="modal fade" id="lessonPlanModal" tabindex="-1" :class="{ show: lessonPlanDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">New Lesson Plan: <b>{{schemeDataInfo.name}}</b> </h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-              <new-lesson-plan :schemeDataInfo="schemeDataInfo" ref="lessonPlanRef"></new-lesson-plan>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>-->
-
-
-
-<!--    <div class="modal fade" id="lessonPlanDetailsModal" tabindex="-1" :class="{ show: lessonPlanDetailsDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Lesson Plan: <b>{{lessonPlanInfo.name}}</b> </h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-2">
-              <lesson-plan-details :lessonPlanInfo="lessonPlanInfo"></lesson-plan-details>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>-->
-
 
 <p class="mt-3" style="font-size: 20px;">Scheme of work</p>
 
