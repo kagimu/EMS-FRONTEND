@@ -12,6 +12,7 @@
    import AppModal from "@/components/AppModal.vue";
    import ClassLessonDetails from "./ClassLessonDetails.vue";
    import moment from "moment";
+   import StudentsInParticularSession from "./StudentsInParticularSession.vue";
    
    const levelStore = useLevelStore()
    const  notificationStore  = useNotificationStore()
@@ -292,6 +293,13 @@ const fetchLessonsDataList = (data) => {
       openModal.value = true
      }
    
+     const openStudentModal = ref(false)
+
+  const viewStudents = (stp) => {
+    stepsData.value = stp
+    openStudentModal.value = true
+   }
+
 </script>
 <template>
 
@@ -299,6 +307,9 @@ const fetchLessonsDataList = (data) => {
     <ClassLessonDetails :stepsData="stepsData"></ClassLessonDetails>
     </AppModal>
 
+    <AppModal title="Students" v-model="openStudentModal" xl6>
+    <StudentsInParticularSession :stepsData="stepsData"></StudentsInParticularSession>
+    </AppModal>
 
    <div class="bg-white  rounded-md py-3 px-2">
       <div class="row mt-1">
@@ -444,8 +455,18 @@ const fetchLessonsDataList = (data) => {
             <td>
                <button 
                @click="viewLessonDetails(lst.steps)"
-              class="bg-[#0d6efd] rounded-sm text-white px-4 btn-primary btn-sm ml-3">
-            <small>view</small>
+              class="bg-[#0d6efd] rounded-sm text-white px-4 btn-primary btn-sm m-2">
+            <small>view Steps
+              <i class="bi bi-book"></i>
+
+            </small>
+          </button>
+          <button 
+               @click="viewStudents(lst)"
+              class="bg-[#0d6efd] rounded-sm text-white px-4 btn-primary btn-sm">
+            <small>view Students 
+              <i class="bi bi-person"></i>
+            </small>
           </button>
             </td>
           </tr>  

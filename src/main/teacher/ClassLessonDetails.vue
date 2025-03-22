@@ -184,7 +184,9 @@ const toggleStep = (stepNumber) => {
           <p>{{ lsn.concept || "No concept provided" }}</p>
           <ul class="list-group">
             <li class="list-group-item">
-              Students go here ........
+             <!-- [ { "number": "972eb62e-ac77-430e-aab6-d4ae0178c490", "name": "step two", "concept": "External Parts of the Human Body.", "topic": "Introduce the Human Body", "subject": "", "sub_topic": "Growing in the Body",
+              "date": "2025-03-29 03:00:00 +0300 EAT", "time": "11:01", "comment": "Very Good Class" } ] -->
+              Date : {{ lsn.date }} <br>Time : {{ lsn.time }}
             </li>
           </ul>
         </div>
