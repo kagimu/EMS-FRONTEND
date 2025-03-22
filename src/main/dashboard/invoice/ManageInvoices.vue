@@ -3,16 +3,37 @@ import FinancialStatement from "@/main/dashboard/invoice/FinancialStatement.vue"
 import Invoice from "@/main/dashboard/invoice/Invoice.vue";
 import Transactions from "@/main/dashboard/transactions/Transactions.vue";
 import Statement from "@/main/dashboard/profiles/studentProfile/statement/Statement.vue";
-import {ref} from "vue";
+import {onMounted, ref, watch} from "vue"
+import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
+import {useRouter} from "vue-router";
 
-
+const routerData = useRouter()
+const student_number = routerData.currentRoute.value.query.st_id
 const selectedTab = ref("invoices")
 
-
+const applicationStore = useApplicationStore()
+// const student_number = ref(null)
+const studentDataInfo = ref([])
 
 const switchTabs = (tab) => {
    selectedTab.value = tab
 }
+
+onMounted(
+    async () => {
+      applicationStore.fetchStudent(routerData.currentRoute.value.query.st_id)
+    }
+)
+
+watch (
+    () => applicationStore.studentDataResponse,
+    async (data) => {
+      if (data) {
+        studentDataInfo.value = data
+      }
+    },
+    { deep: true }
+)
 
 </script>
 <template>
@@ -20,7 +41,6 @@ const switchTabs = (tab) => {
 
 
       <FinancialStatement></FinancialStatement>
-
 
 
       <div>
@@ -46,13 +66,13 @@ const switchTabs = (tab) => {
         </div>
 
         <div v-if="selectedTab === 'invoices'">
-          <Invoice></Invoice>
+          <Invoice :studentDataInfo="studentDataInfo"></Invoice>
         </div>
         <div v-if="selectedTab === 'transactions'">
-          <Transactions></Transactions>
+          <Transactions :studentDataInfo="studentDataInfo"></Transactions>
         </div>
         <div v-if="selectedTab === 'statements'">
-         <Statement></Statement>
+         <Statement :studentDataInfo="studentDataInfo"></Statement>
         </div>
 
       </div>

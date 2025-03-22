@@ -45,6 +45,11 @@ const showModal = () =>{
   mymodal.value = true
 }
 
+const props = defineProps({
+     studentDataInfo:[]
+   })
+
+
 const form = reactive({
   statusData:"",
   start_date:"",
@@ -55,10 +60,29 @@ const userType = ref(null)
 
 onMounted(
     async () => {
+      doFetchInvoices()
       await schoolStore.fetchSchools()
       await serviceStore.fetchAllItems()
        let user = JSON.parse(profile)
         userType.value = user.type
+
+        fetchCurrentSchoolInfo()
+    }
+)
+
+
+
+const fetchCurrentSchoolInfo = () => {
+  let draft = props.studentDataInfo
+  campus_number.value = draft?.current_enrollment?.campus_number
+}
+
+watch (
+    () => props.studentDataInfo,
+    async (data) => {
+      if (data) {
+        fetchCurrentSchoolInfo()
+      }
     }
 )
 
@@ -73,8 +97,8 @@ const doFetchInvoices = () =>{
   let data = {
     status:form.statusData,
     school_number:school_number.value,
-    campus_number:campus_number.value,
-    user_number:userNumber.value,
+    campus_number:props.studentDataInfo.current_enrollment.campus_number,
+    user_number:props.studentDataInfo.user_number,
     start_date:form.start_date,
     end_date:form.end_date,
     items:form.items,
@@ -159,6 +183,8 @@ watch(
     async (data) => {
       if (data) {
         schoolList.value = data.data
+
+        
       }
     }
 )
@@ -200,7 +226,7 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
 <template>
   <div>
 
-
+<!-- {{ campus_number }} -->
     <AppModal title="Creating New Invoice" v-model="mymodal" xl6>
     <NewInvoice :userNumber="userNumber"></NewInvoice>
     </AppModal>
@@ -226,9 +252,9 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
   <div class="mt-4">
 
 
-    <div class="grid grid-cols-5 gap-2 px-2">
+    <div class="grid grid-cols-3 gap-2 px-2">
 
-      <div>
+      <!-- <div>
         <div class="mb-2">
           <select
               style="box-shadow: none;"
@@ -241,9 +267,9 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
             </option>
           </select>
         </div>
-      </div>
+      </div> -->
 
-      <div>
+      <!-- <div>
         <div class="mb-2">
           <select
               style="box-shadow: none;"
@@ -256,7 +282,7 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
             </option>
           </select>
         </div>
-      </div>
+      </div> -->
 
     <div>
           <div class="mb-2">

@@ -28,11 +28,30 @@ const mymodal = ref(false)
 const transactionStore = useTransactionStore()
 const transactionList = ref(null)
 
+const props = defineProps({
+     studentDataInfo:[]
+   })
 
 
 onMounted(async () => {
   await applicationStore.fetchStudent(studentNumber)
     schoolStore.fetchSchools()
+    }
+)
+
+
+const fetchCurrentSchoolInfo = () => {
+  let draft = props.studentDataInfo
+  campus_number.value = draft?.current_enrollment?.campus_number
+}
+
+
+watch (
+    () => props.studentDataInfo,
+    async (data) => {
+      if (data) {
+        fetchCurrentSchoolInfo()
+      }
     }
 )
 
@@ -45,7 +64,8 @@ const fetchTransactionData = () => {
   let data = {
     school_number:school_number.value,
     campus_number:campus_number.value,
-    userNumber:userNumber.value,
+    campus_number:props.studentDataInfo.current_enrollment.campus_number,
+    userNumber:props.studentDataInfo.user_number,
     start_date:start_date.value,
     end_date:end_date.value
   }
@@ -114,8 +134,8 @@ watch (
       </AppModal>
 
 
-      <div class="grid grid-cols-4 gap-2 px-2 mt-4">
-        <div class="">
+      <div class="grid grid-cols-2 gap-2 px-2 mt-4">
+        <!-- <div class="">
           <div class="mb-2">
             <select
                 style="box-shadow: none;"
@@ -142,7 +162,7 @@ watch (
               </option>
             </select>
           </div>
-        </div>
+        </div> -->
 
         <div>
           <div class="mb-2">

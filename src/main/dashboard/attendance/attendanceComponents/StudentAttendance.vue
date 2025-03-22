@@ -49,6 +49,7 @@
    const levelList = ref("")
    const myModal = ref(false)
    const studentAttendanceList = ref([])
+   const searchtxt = ref(null)
    
    //sample dammy
    const attendanceDate = ref("");
@@ -117,7 +118,9 @@
      campus_class_number: form.class_number,
      campus_number: form.campus_number,
      stream_number:form.stream_number,
-     date:formData.date
+     date:formData.date,
+      type:"Student",
+      search:searchtxt.value
   }
   attendanceStore.fetchStudentAttendance(data)
   studentAttendanceList.value = []
@@ -404,6 +407,30 @@ watch(
     }
 )
 
+// doSearchAttendance
+const doSearchAttendance = (search) =>{
+
+if(!form.school_number){
+  return
+}
+
+let data = {
+  page: 1,
+  per_page: per_page.value,
+  school_number:form.school_number,
+  study_period_number: form.study_period_number,
+   campus_class_number: form.class_number,
+   campus_number: form.campus_number,
+   stream_number:form.stream_number,
+   date:formData.date,
+    type:"Student",
+    search:search
+}
+attendanceStore.fetchStudentAttendance(data)
+studentAttendanceList.value = []
+}
+
+
 </script>
 <template>
    <div>
@@ -539,9 +566,10 @@ watch(
                         <div class="mb-2">
                            <input
                               type="text"
-                              v-model="searchQuery"
+                              v-model="searchtxt"
                               class="form-control"
                               placeholder="Search ....."
+                              @change="doSearchAttendance(searchtxt)"
                               >
                         </div>
                      </div>
@@ -549,7 +577,10 @@ watch(
                </div>
                <div class="row">
                   <div class="col-lg-8">
-                     📅 Select Date: <input type="date" class="border border-primary text-center fw-bold" id="attendanceDate" v-model="formData.date">
+                     📅 Select Date: <input type="date" class="border border-primary text-center fw-bold" id="attendanceDate"
+                      v-model="formData.date"
+                      @change="doFetchAttendance"
+                      >
                   </div>
                   <div class="col-lg-4">
 
