@@ -575,6 +575,7 @@ const enrolStudent = (enrolData) => {
 
                     </thead>
                     <tbody>
+                    <!-- {{ enrollmentList }} -->
                     <tr v-for="(enrolData,index) in enrollmentList" :key="index" >
                       <td>{{ index+1 }}</td>
                       <td>{{ enrolData.adn }}</td>
