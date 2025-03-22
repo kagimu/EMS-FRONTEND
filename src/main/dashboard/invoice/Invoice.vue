@@ -228,7 +228,7 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
 
 <!-- {{ campus_number }} -->
     <AppModal title="Creating New Invoice" v-model="mymodal" xl6>
-    <NewInvoice :userNumber="userNumber"></NewInvoice>
+    <NewInvoice :userNumber="userNumber"  :studentDataInfo="studentDataInfo"></NewInvoice>
     </AppModal>
 
     <AppModal title="Invoice Details" v-model="showInvoiceDetails" xl6>

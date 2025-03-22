@@ -20,7 +20,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     const classSessionStudentsResponse = ref(null)
     const curriculumDeliveryProgressResponse = ref(null)
     const updateCurriculumDeliveryResponse = ref(null)
-
+    const lessonsResponse = ref(null)
 
     async function newSchemeOfWorkData(data) {
         return await api.post("main/new-scheme-of-work", data)
@@ -83,6 +83,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
                 }
             })
     }
+
 
 
 
@@ -246,6 +247,18 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
                 }
             })
     }
+
+    async function fetchLessons(data) {
+        return await api.get("main/curriculum-delivery/lessons?stream_number="+data?.stream_number)
+            .then((response) => {
+                lessonsResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
     return {
         newSchemeOfWorkResponse,
         updateSchemeOfWorkResponse,
@@ -277,6 +290,8 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         curriculumDeliveryProgressResponse,
         fetchCurriculumDeliveryProgress,
         updateCurriculumDeliveryResponse,
-        updateCurriculumDelivery
+        updateCurriculumDelivery,
+        lessonsResponse,
+        fetchLessons
     }
 })
