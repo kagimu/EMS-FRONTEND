@@ -74,6 +74,8 @@
    teacher_number:null,
    step_number:null,
    students: [],
+   subject_number:props.schoolInfo.subject_number,
+   generalComment:null
    })
    
    
@@ -332,15 +334,17 @@
          date: form.date,
          time: form.time,
          teacher_number: form.teacher_number,
+         subject_number:props.schoolInfo.subject_number,
+         comment: form.generalComment,
          sessions : [ {
          comment: form.comment,
          time: form.time,
          step_number: selectedStep.value,
-         students: form.students 
+         students: form.students,
       } ]
    
       }
-     
+
 
       schemeOfWorkStore.newCurriculumDelivery(formData)
    }
@@ -500,9 +504,16 @@ const toggleMaximize = () => {
               </div>
             </div>
             <div class="col-3">
-              <button class="btn btn-outline-primary mt-4 " @click="toggleMaximize" style="float: right">
+              <!-- <button class="btn btn-outline-primary mt-4 " @click="toggleMaximize" style="float: right">
          <i :class="isMaximized ? 'bi bi-fullscreen-exit' : 'bi bi-fullscreen ' "></i> 
-        </button>
+        </button> -->
+
+            <textarea
+               v-model="form.generalComment"
+               class="form-control"
+               style="height: 100px"
+               placeholder="General Comment"
+               ></textarea>
 
             </div>
     

@@ -1,165 +1,103 @@
-<script setup>
-import {onMounted,reactive, ref, watch} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import {useAttendanceStore} from "@/main/dashboard/attendance/store/attendance.js";
-import { useAbility } from '@casl/vue';
-import PaginationTemplate from "@/components/PaginationTemplate.vue";
-const { can } = useAbility()
-const  notificationStore  = useNotificationStore()
-const attendanceStore = useAttendanceStore()
-
-const page = ref(1)
-const per_page = ref(20)
-const total_items = ref(0)
-const total_rows = ref(0)
-
-const studentAttendanceList = ref([])
-
-onMounted(
-     () => {
-       doFetchAttendance()
-    } )
-
-
-
-const doFetchAttendance = () =>{
-  let data = {
-    page: 1,
-    per_page: per_page.value,
-  }
-  // loading.value = true;
-  // studentAttendanceList.value = []
-  attendanceStore.fetchStudentAttendance(data)
-}
-
-const fetchAttendanceList = (data) => {
-  if(data) {
-    let current_page = data.page
-    page.value = current_page
-    // loading.value = false;
-
-    let per_page_item = data.per_page;
-    per_page.value = per_page_item;
-
-    let objArray = data.content
-
-    let count_items = (current_page * per_page_item)
-    let totalItems = data?.total_rows
-
-
-    if(objArray && objArray.length > 0){
-
-      per_page.value = per_page_item;
-      page.value = current_page
-      total_rows.value = totalItems
-
-      total_items.value = (count_items > totalItems) ? totalItems : count_items
-      objArray.forEach((list, i) => {
-
-        list.key =  (current_page - 1) * per_page_item + i + 1
-
-        const index = studentAttendanceList.value.findIndex(object => object.number === list.number);
-
-        if (index === -1) {
-          studentAttendanceList.value.push(list);
-        }
-      })
-    }
-
-  }
-}
-
-
-function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
-  if (scrollTop + clientHeight >= scrollHeight) {
-    let data = {
-      page: (page.value+1),
-      per_page: per_page.value,
-    }
-    attendanceStore.fetchStudentAttendance(data)
-  }
-}
-
-
-watch(
-    () => attendanceStore.attendanceStudentResponse,
-    async (data) => {
-      if (data) {
-        // studentAttendanceList.value = data?.data
-        fetchAttendanceList(data?.data)
-      }
-    },
-    {deep: true}
-)
-
-watch(
-    () => attendanceStore.errorMessage,
-    async (data) => {
-      if (data) {
-        notificationStore.errorToast("Error", data.message)
-      }
-    },
-    {deep: true}
-)
-
-</script>
-
-
-
 <template>
-  <div>
-
-
-    <!-- end  -->
-    <div class="row">
-<!--      {{studentAttendanceList}}-->
-
-      <PaginationTemplate
-          @perPageChanged="doFetchAttendance"
-          v-model:perPage="per_page"
-          :per_page="per_page"
-          :total_items="total_items"
-          :total_rows="total_rows"></PaginationTemplate>
-      <div
-          class="w-full overflow-auto max-h-[520px] scrollbar-thin"
-          @scroll="onScroll">
-        <table
-            id="datatable"
-            class="table table-hover caption-top mt-4 table-sm table-striped"
-            style="font-size: 14px !important;"
-        >
-          <thead >
-          <tr>
-            <th>#</th>
-            <th>Student</th>
-            <th>check In Time</th>
-            <th>check Out Time</th>
-            <th>Status</th>
-            <th>Reason</th>
-            <th>Action</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="(lst , index) in studentAttendanceList" :key="index">
-             <td>{{index+1}}</td>
-            <td style="text-transform: capitalize">{{lst.name	}}</td>
-            <td>{{lst.check_in_time	}}</td>
-            <td>{{lst.check_out_time	}}</td>
-            <td>{{lst.present}}</td>
-            <td>{{lst.absence_reason}}</td>
-            <td></td>
-
-          </tr>
-          </tbody>
-        </table>
+  <div class="accordion" id="topicsAccordion">
+    <div v-for="(dt, idx) in lessonsDataList" :key="idx" class="accordion-item">
+      <h2 class="accordion-header">
+        <button 
+          class="accordion-button" 
+          type="button" 
+          data-bs-toggle="collapse" 
+          :data-bs-target="'#topic-' + dt.number"
+          :aria-controls="'topic-' + dt.number"
+          :class="{ 'collapsed': idx !== 0 }">
+          {{ dt.topic || "No Topic Available" }}
+        </button>
+      </h2>
+      <div 
+        :id="'topic-' + dt.number" 
+        class="accordion-collapse collapse"
+        :class="{ 'show': idx === 0 }"
+        data-bs-parent="#topicsAccordion">
+        <div class="accordion-body">
+          <p><strong>Concept:</strong> {{ dt.concept || "No Concept Provided" }}</p>
+          <p><strong>Sub-Topic:</strong> {{ dt.sub_topic || "N/A" }}</p>
+          <p><strong>Time:</strong> {{ dt.time }}</p>
+          <p><strong>Comment:</strong> {{ dt.comment || "No Comments" }}</p>
+        </div>
       </div>
     </div>
-
   </div>
 </template>
 
+<script setup>
+import { ref } from "vue";
 
-
-<style scoped>
-
-</style>
+// ✅ Your Data Sample
+const lessonsDataList = ref([
+  {
+    number: "972eb62e-ac77-430e-aab6-d4ae0178c490",
+    name: "step two",
+    concept: "External Parts of the Human Body.",
+    topic: "Introduce the Human Body",
+    subject: "",
+    sub_topic: "Growing in the Body",
+    date: "2024-11-22 03:00:00 +0300 EAT",
+    time: "22:22",
+    comment: "",
+  },
+  {
+    number: "4b1d6bab-d6d2-4a32-b545-d1f9063f0a30",
+    name: "step one",
+    concept: "Become aware that we grow little by little.",
+    topic: "Introduce the Human Body",
+    subject: "",
+    sub_topic: "Growing in the Body",
+    date: "2024-11-22 03:00:00 +0300 EAT",
+    time: "22:22",
+    comment: "",
+  },
+  {
+    number: "17fa477c-fe17-4e89-9c33-adb421cb0454",
+    name: "",
+    concept: "",
+    topic: "",
+    subject: "",
+    sub_topic: "",
+    date: "2024-11-22 03:00:00 +0300 EAT",
+    time: "12:02",
+    comment: "none",
+  },
+  {
+    number: "6b8ca664-8f27-4f4b-b485-31136059a9d2",
+    name: "",
+    concept: "",
+    topic: "",
+    subject: "",
+    sub_topic: "",
+    date: "2024-11-22 03:00:00 +0300 EAT",
+    time: "11:11",
+    comment: "ass",
+  },
+  {
+    number: "4d0e5d90-4936-4630-a642-a2abb18bc714",
+    name: "",
+    concept: "",
+    topic: "",
+    subject: "",
+    sub_topic: "",
+    date: "2024-11-22 03:00:00 +0300 EAT",
+    time: "11:01",
+    comment: "None",
+  },
+  {
+    number: "b3795077-3760-436e-9e0c-5fd285d61f89",
+    name: "",
+    concept: "",
+    topic: "",
+    subject: "",
+    sub_topic: "",
+    date: "2024-11-22 03:00:00 +0300 EAT",
+    time: "11:11",
+    comment: "Dozing",
+  },
+]);
+</script>

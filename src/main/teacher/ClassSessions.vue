@@ -10,20 +10,22 @@
    import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
    import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
    import AppModal from "@/components/AppModal.vue";
-     
-     const levelStore = useLevelStore()
-     const  notificationStore  = useNotificationStore()
-     const schoolStore = useSchoolStore()
-     const campusStore = useCampusStore()
-     const classStore = useClassesStore()
-     const schemeOfWorkStore = useSchemeOfWorkStore();
+   import ClassLessonDetails from "./ClassLessonDetails.vue";
+   import moment from "moment";
    
-     const { can } = useAbility()
-     const campusList = ref([])
-     const schoolList = ref([])
-     const classList = ref([])
-     const curriculumList = ref([])
-     const levelList = ref([])
+   const levelStore = useLevelStore()
+   const  notificationStore  = useNotificationStore()
+   const schoolStore = useSchoolStore()
+   const campusStore = useCampusStore()
+   const classStore = useClassesStore()
+   const schemeOfWorkStore = useSchemeOfWorkStore();
+
+   const { can } = useAbility()
+   const campusList = ref([])
+   const schoolList = ref([])
+   const classList = ref([])
+   const curriculumList = ref([])
+   const levelList = ref([])
    
    const academicYearList = ref([])
    const commons = useCommonsStore()
@@ -37,6 +39,9 @@
    let classNo = ""
    const sessionListData = ref([])
    const lessonsDataList = ref([])
+   const loading = ref(false)
+   const openModal = ref(false)
+
     
    
    if(classNo){
@@ -70,11 +75,86 @@
      }
 
 
+
+
+const doFetchLessons = () =>{
+//   if(!form.school_number){
+//     return
+//   }
+  let data = {
+    page: 1,
+    per_page: per_page.value,
+    school_number:form.school_number,
+    campus_number: form.campus_number,
+    class_number:form.class_number,
+    stream_number:form.stream_number,
+    curriculum_number:form.curriculumNumber,
+  }
+  loading.value = true;
+  lessonsDataList.value = []
+  schemeOfWorkStore.fetchLessons(data)
+
+}
+
+
+function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
+  if (scrollTop + clientHeight >= scrollHeight) {
+    let data = {
+      page: (page.value+1),
+      school_number:form.school_number,
+      campus_number: form.campus_number,
+      class_number:form.class_number,
+      stream_number:form.stream_number,
+      curriculum_number:form.curriculumNumber
+    
+    }
+    schemeOfWorkStore.fetchLessons(data)
+  }
+}
+
+
+const fetchLessonsDataList = (data) => {
+  if(data) {
+    let current_page = data.page
+    page.value = current_page
+    loading.value = false;
+
+    let per_page_item = data.per_page;
+    per_page.value = per_page_item;
+
+    let objArray = data.content
+
+    let count_items = (current_page * per_page_item)
+    let totalItems = data?.total_rows
+
+
+    if(objArray && objArray.length > 0){
+
+      per_page.value = per_page_item;
+      page.value = current_page
+      total_rows.value = totalItems
+
+      total_items.value = (count_items > totalItems) ? totalItems : count_items
+      objArray.forEach((list, i) => {
+
+        list.key =  (current_page - 1) * per_page_item + i + 1
+
+        const index = lessonsDataList.value.findIndex(object => object.number === list.number);
+
+        if (index === -1) {
+         lessonsDataList.value.push(list);
+        }
+      })
+    }
+
+  }
+}
+
      watch(
        () => schemeOfWorkStore.lessonsResponse,
        async (data) => {
          if(data){
-            lessonsDataList.value = data.data
+            fetchLessonsDataList(data)
          }
        },
        {deep:true}
@@ -187,7 +267,7 @@
    
        const classObj = classList.value.find(cls => cls.number === classN)
        streamListData.value = classObj.streams
-       alert(JSON.stringify(streamListData.value))
+      //  alert(JSON.stringify(streamListData.value))
        return classObj.streams
    
      }
@@ -203,9 +283,22 @@
        },
        {deep: true}
      )
+
+     const stepsData = ref([])
+
+     const viewLessonDetails = (steps) => {
+      // alert(JSON.stringify(steps))
+      stepsData.value = steps
+      openModal.value = true
+     }
    
 </script>
 <template>
+
+    <AppModal title="Lesson Details" v-model="openModal" xl6>
+    <ClassLessonDetails :stepsData="stepsData"></ClassLessonDetails>
+    </AppModal>
+
 
    <div class="bg-white  rounded-md py-3 px-2">
       <div class="row mt-1">
@@ -291,7 +384,7 @@
                   v-model="form.stream_number"
                   class="form-select form-select-sm" required
                   style="box-shadow: none;"
-                  @change="filterByStream(form.stream_number)"
+                  @change="doFetchLessons()"
                   >
                   <option disabled value="">-Filter By Stream-</option>
                   <option v-for="(slist, index) in streamListData" :key="index" :value="slist.stream_number">{{ slist.name }}
@@ -300,34 +393,57 @@
             </div>
          </div>
        
+         <PaginationTemplate
+                  v-model:perPage="per_page"
+                  :per_page="per_page"
+                  :total_items="total_items"
+                  :total_rows="total_rows"
+                  @perPageChanged="doFetchLessons"></PaginationTemplate>
+
+              <div v-if="loading" class="text-center my-4">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+              <div v-else-if="lessonsDataList.length === 0" class="text-center my-4">
+                <p>There is no data found</p>
+              </div>
+              <div v-else>
+                <div
+                    class="w-full overflow-auto max-h-[520px] scrollbar-thin"
+                    @scroll="onScroll">
 
          <table
         class="table table-hover caption-top mt-4  table-striped text-sm">
         <thead>
           <tr>
             <th>Date</th>
+            <th>Time</th>
             <th>Subject</th>
             <th>Class</th>
             <th>Stream</th>
+            <th>Students</th>
             <th>Teacher</th>
             <th>Comment</th>
             <th>Action</th>
           </tr>
      </thead>
        <tbody>
-         {{ lessonsDataList }}
-          <tr>
-            <td>12/03/2025</td>
-            <td>Mathematics</td>
-            <td>Primary One</td>
-            <td>East</td>
-            <td>Mr. Bwooyi</td>
+    
+          <tr v-for="(lst,index) in lessonsDataList" :key="index">
+            <td>{{ lst.date.split(" ")[0] }}</td>
+            <td>{{ lst.time }} {{ moment(lst.time, "HH:mm").format("A") }}</td>
+            <td>{{ lst.subject }}</td>
+            <td>{{ lst.class }}</td>
+            <td>{{ lst.stream }}</td>
+            <td>{{ lst.number_of_students }}</td>
+            <td>{{ lst.teacher }}</td>
             <td><i><small>
-               All lessons taught
+               {{ lst.comment }}
             </small></i></td>
             <td>
                <button 
-               @click="viewLessonDetails()"
+               @click="viewLessonDetails(lst.steps)"
               class="bg-[#0d6efd] rounded-sm text-white px-4 btn-primary btn-sm ml-3">
             <small>view</small>
           </button>
@@ -335,6 +451,8 @@
           </tr>  
         </tbody>
       </table>
+      </div>
+      </div>
 
       </div>
 
