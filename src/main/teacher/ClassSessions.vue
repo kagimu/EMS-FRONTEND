@@ -6,13 +6,10 @@
    import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
    import {useLevelStore} from "@/main/settings/level/store/level.js";
    import { useAbility } from '@casl/vue';
-   import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
    import useCommonsStore from "@/composables/useCommons.js";
    import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
    import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
    import AppModal from "@/components/AppModal.vue";
-   import StudentsInASession from "@/main/teacher/StudentsInASession.vue"
-   import EditStudentsInASessionAndAttendance from "@/main/teacher/EditStudentsInASessionAndAttendance.vue"
      
      const levelStore = useLevelStore()
      const  notificationStore  = useNotificationStore()
@@ -39,6 +36,7 @@
    const total_rows = ref(0)
    let classNo = ""
    const sessionListData = ref([])
+   const lessonsDataList = ref([])
     
    
    if(classNo){
@@ -48,8 +46,7 @@
    
      onMounted(() => {
        schoolStore.fetchSchools()
-       dofetchSessions()
-      
+       getLessonDetails()
       }
      )
    
@@ -64,6 +61,25 @@
      stream_number:""
      })
      
+
+     const getLessonDetails = () => {
+      let data = {
+         stream_number:form.stream_number
+      }
+      schemeOfWorkStore.fetchLessons(data)
+     }
+
+
+     watch(
+       () => schemeOfWorkStore.lessonsResponse,
+       async (data) => {
+         if(data){
+            lessonsDataList.value = data.data
+         }
+       },
+       {deep:true}
+     )
+
      
      const fetchCampuses = (school_number) => {
        campusStore.fetchCampuses(school_number)
@@ -176,128 +192,31 @@
    
      }
    
-     const dofetchSessions = () => {
-         let data = {
-           page: 1,
-           per_page: per_page.value,
-           stream_number:form.stream_number
-         }
-         schemeOfWorkStore.fetchClassSessions(data)
-     }
-   
-   
-     function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
-     if (scrollTop + clientHeight >= scrollHeight) {
-       let data = {
-         page: (page.value+1),
-         per_page: per_page.value,
-         stream_number:form.stream_number
-       }
-       schemeOfWorkStore.fetchClassSessions(data)
-     }
-   }
-   
-   
-   const fetchSessionList = (data) => {
-     if(data) {
-       let current_page = data.page
-       page.value = current_page
-     
-       let per_page_item = data.per_page;
-       per_page.value = per_page_item;
-   
-       let objArray = data.content
-   
-       let count_items = (current_page * per_page_item)
-       let totalItems = data?.total_rows
-   
-   
-       if(objArray && objArray.length > 0){
-   
-         per_page.value = per_page_item;
-         page.value = current_page
-         total_rows.value = totalItems
-   
-         total_items.value = (count_items > totalItems) ? totalItems : count_items
-         objArray.forEach((list, i) => {
-   
-           list.key =  (current_page - 1) * per_page_item + i + 1
-   
-           const index = sessionListData.value.findIndex(object => object.number === list.number);
-   
-           if (index === -1) {
-             sessionListData.value.push(list);
-           }
-         })
-       }
-   
-     }
-   }
-   
-   const filterByStream = (streamN) => {
-    dofetchSessions()
-     let data = {
-      stream_number:streamN
-     }
-       schemeOfWorkStore.fetchCurriculumDeliveryProgress(data)
-   }
-   
-   watch (
-       () => schemeOfWorkStore.classSessionResponse,
+
+
+     watch(
+       () => schemeOfWorkStore.errorMessage,
        async (data) => {
-         if(data){
-           fetchSessionList(data)
-         }
+             if (data) {
+                 notificationStore.errorToast("Error", data.message)
+             }
        },
-       {deep:true}
-   )
-   
-   const viewStudentModal = ref(false)
-   const session_number = ref(null)
-   
-   const openViewStudents = (number) => {
-     session_number.value = number
-     viewStudentModal.value = true
-   }
-   
-   
-   const editModal = ref(false)
-   const sessionDataList = ref(null)
-   
-   const openViewEditModal = (num) => {
-   editModal.value = true
-   sessionDataList.value = num
-   }
-   
-   
-   // State for tracking the expanded panel
-   const expandedPanel = ref(null)
-   
-   // Function to toggle a panel
-   const togglePanel = (panelId) => {
-     expandedPanel.value = expandedPanel.value === panelId ? null : panelId;
-   
-   
-   }
+       {deep: true}
+     )
    
 </script>
 <template>
-   <AppModal v-model="viewStudentModal"  title="Students In A Class Session" xl4>
-      <StudentsInASession :sessionNumber="session_number"></StudentsInASession>
-   </AppModal>
-   <AppModal v-model="editModal"  title="Edit Class Session Attendance" xl8>
-      <EditStudentsInASessionAndAttendance :sessionInfo="sessionDataList"></EditStudentsInASessionAndAttendance>
-   </AppModal>
+
    <div class="bg-white  rounded-md py-3 px-2">
       <div class="row mt-1">
          <div class="col-lg-11">
-            <h5 style="font-size: 14px;margin-top: 2px;">Class Sessions</h5>
+            <h5 style="font-size: 14px;margin-top: 2px;">Lessons</h5>
          </div>
          <div class="col-lg-1">
          </div>
       </div>
       <div class="row">
-         <div class="col-3">
+         <div class="col-2">
             <div class="mb-2">
                <select
                   style="box-shadow: none;"
@@ -311,7 +230,7 @@
                </select>
             </div>
          </div>
-         <div class="col-3">
+         <div class="col-2">
             <div class="mb-2">
                <select
                   style="box-shadow: none;"
@@ -380,51 +299,46 @@
                </select>
             </div>
          </div>
-         <PaginationTemplate
-            v-model:perPage="per_page"
-            :per_page="per_page"
-            :total_items="total_items"
-            :total_rows="total_rows"
-            @perPageChanged="dofetchSessions">
-         </PaginationTemplate>
+       
+
+         <table
+        class="table table-hover caption-top mt-4  table-striped text-sm">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Subject</th>
+            <th>Class</th>
+            <th>Stream</th>
+            <th>Teacher</th>
+            <th>Comment</th>
+            <th>Action</th>
+          </tr>
+     </thead>
+       <tbody>
+         {{ lessonsDataList }}
+          <tr>
+            <td>12/03/2025</td>
+            <td>Mathematics</td>
+            <td>Primary One</td>
+            <td>East</td>
+            <td>Mr. Bwooyi</td>
+            <td><i><small>
+               All lessons taught
+            </small></i></td>
+            <td>
+               <button 
+               @click="viewLessonDetails()"
+              class="bg-[#0d6efd] rounded-sm text-white px-4 btn-primary btn-sm ml-3">
+            <small>view</small>
+          </button>
+            </td>
+          </tr>  
+        </tbody>
+      </table>
+
       </div>
 
-      <div class="accordion mt-4">
-         <div 
-            v-for="(item, index) in sessionListData" 
-            :key="item.number" 
-            class="accordion-group"
-            >
-            <div
-               v-for="(step, stepIndex) in item.steps"
-               :key="`${item.number}-${stepIndex}`"
-               class="accordion-item"
-               >
-               <button
-                  class="accordion-header"
-                  @click="togglePanel(`${item.number}-${stepIndex}`)"
-                  >
-                  <div class="header-info">
-                     <h4 class="text-xs">{{index+1}}. {{ step.name }}</h4>
-                     <span>{{ expandedPanel === `${item.number}-${stepIndex}` ? '▲' : '▼' }}</span>
-                  </div>
-               </button>
-               <!-- Accordion Content -->
-               <div
-                  v-if="expandedPanel === `${item.number}-${stepIndex}`"
-                  class="accordion-body text-xs"
-                  >
-                  <!-- <p><strong>Concept:</strong> {{ step.concept }}</p>
-                     <p><strong>Topic:</strong> {{ step.topic }}</p>
-                     <p><strong>Sub-topic:</strong> {{ step.sub_topic }}</p>
-                     <p><strong>Date:</strong> {{ step.date }}</p>
-                     <p><strong>Comment:</strong> {{ step.comment || 'None' }}</p>-->
-                  <!-- <StudentsInASession :sessionNumber="item.number"></StudentsInASession> -->
-                  <EditStudentsInASessionAndAttendance :sessionInfo="item"></EditStudentsInASessionAndAttendance>
-               </div>
-            </div>
-         </div>
-      </div>
+  
    </div>
 </template>
 <style scoped>

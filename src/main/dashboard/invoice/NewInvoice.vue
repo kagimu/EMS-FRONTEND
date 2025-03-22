@@ -26,9 +26,11 @@ const campusStore = useCampusStore()
 const studentNumber = routerData.currentRoute.value.query.st_id;
 const user_number = ref(null)
 const buttonLoader = ref(false)
+const school_number = ref(null)
 
 const props = defineProps({
-  userNumber:String
+  userNumber:String,
+  studentDataInfo:{}
 })
 
 // Creating invoice Logic =========================================================
@@ -51,11 +53,39 @@ watch(
 )
 
 
+
 onMounted(
     async () => {
-      await serviceStore.fetchServicesList()
-      await applicationStore.fetchApplicationList()
+      // await serviceStore.fetchServicesList()
+      // await applicationStore.fetchApplicationList()
+      fetchCurrentSchoolInfo()
+      fetchServicesData()
     } )
+
+
+    const fetchCurrentSchoolInfo = () => {
+  let draft = props.studentDataInfo
+  school_number.value = draft?.current_enrollment?.school_number
+}
+
+watch (
+    () => props.studentDataInfo,
+    async (data) => {
+      if (data) {
+        fetchCurrentSchoolInfo()
+      }
+    }
+)
+
+
+const fetchServicesData = () => {
+  let data = {
+    school_number:school_number.value
+  }
+
+  serviceStore.fetchServicesList(data)
+}
+
 
 
 

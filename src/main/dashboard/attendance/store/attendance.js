@@ -43,6 +43,8 @@ export const useAttendanceStore = defineStore("attendance", () => {
             +"&study_period_number="+data?.study_period_number
             +"&stream_number="+data?.stream_number
             +"&date="+data.date
+            +"&type="+data.type
+            +"&search="+data.search
         )
             .then((response) => {
                 attendanceStudentResponse.value = response.data
