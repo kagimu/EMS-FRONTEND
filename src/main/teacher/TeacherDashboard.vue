@@ -102,7 +102,7 @@
     //  {title:"Class Routines", name:"my-classes", icon:"bi-files" ,action:"my-classes"}, 
      // {title:"Students", name:"students", icon:"bi-people" ,action:"view_students"},
     //  {title:"My Subjects", name:"manage-subjects", icon:"bi-bookmarks-fill" ,action:"manage-subjects"},
-    {title:"Student Attendance", name:"manage-attendance-tr", icon:"bi-users" ,action:""}, 
+    {title:"Student Attendance", name:"manage-attendance-tr", icon:"bi-people" ,action:""}, 
      {title:"Scheme Of Work", name:"manage-scheme-and-sessions", icon:"bi-journals" ,action:"manage-scheme-and-sessions"}, //create scheme of work, ...etc
     //  {title:"Attendance", name:"", icon:"bi-journal-richtext" ,action:""},
      {title:"Assessment", name:"manage-assessment", icon:"bi-file-earmark-spreadsheet" ,action:"manage-assessment"}, //exams, entermarks,reports, marksheet, 
