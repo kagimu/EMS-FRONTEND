@@ -16,7 +16,6 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
 import SchemeOfWorkPdfTemplate from "@/main/dashboard/curriculum/schemeOfWork/SchemeOfWorkPdfTemplate.vue";
 import AppModal from "@/components/AppModal.vue";
-import AggregateScaleFileUploader from "@/components/AggregateScaleFileUploader.vue";
 
 const level = ref( "")
 const curriculumNumber = ref( "")
