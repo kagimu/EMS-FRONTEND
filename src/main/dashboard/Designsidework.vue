@@ -1,103 +1,178 @@
+
 <template>
-  <div class="accordion" id="topicsAccordion">
-    <div v-for="(dt, idx) in lessonsDataList" :key="idx" class="accordion-item">
-      <h2 class="accordion-header">
-        <button 
-          class="accordion-button" 
-          type="button" 
-          data-bs-toggle="collapse" 
-          :data-bs-target="'#topic-' + dt.number"
-          :aria-controls="'topic-' + dt.number"
-          :class="{ 'collapsed': idx !== 0 }">
-          {{ dt.topic || "No Topic Available" }}
-        </button>
-      </h2>
-      <div 
-        :id="'topic-' + dt.number" 
-        class="accordion-collapse collapse"
-        :class="{ 'show': idx === 0 }"
-        data-bs-parent="#topicsAccordion">
-        <div class="accordion-body">
-          <p><strong>Concept:</strong> {{ dt.concept || "No Concept Provided" }}</p>
-          <p><strong>Sub-Topic:</strong> {{ dt.sub_topic || "N/A" }}</p>
-          <p><strong>Time:</strong> {{ dt.time }}</p>
-          <p><strong>Comment:</strong> {{ dt.comment || "No Comments" }}</p>
-        </div>
+    <div style="text-align: center; position: relative;">
+      <div style="position: absolute; top: 0; right: 0; font-size: 12px; font-weight: bold;">
+        Wholesome Report No. ......
       </div>
+      <h1 style="font-size: 28px; font-weight: bold; color: #ffff00; -webkit-text-stroke: 1px black;">
+        WHOLESOME EDUCATION ASSESSMENT
+      </h1>
+      <h2 style="font-size: 24px; font-weight: bold; color: #99cc66;">
+        Growth Progress Report
+      </h2>
     </div>
+
+    <div style="width: 100%; border: 1px solid black; font-family: Arial, sans-serif;">
+    <div style="background-color: #99cc66; font-weight: bold; padding: 5px; border-bottom: 1px solid black;">
+      PERSONAL INFORMATION OF LEARNER
+    </div>
+    <table style="width: 100%; border-collapse: collapse;">
+      <tr>
+        <td style="border: 1px solid black; padding: 5px; font-weight: bold;">Child’s Surname:</td>
+        <td style="border: 1px solid black; padding: 5px; background-color: #ffff99;">:</td>
+        <td style="border: 1px solid black; padding: 5px; background-color: #ffff99;"></td>
+        <td style="border: 1px solid black; padding: 5px; font-weight: bold;">Second name:</td>
+        <td style="border: 1px solid black; padding: 5px;">:</td>
+        <td style="border: 1px solid black; padding: 5px;"></td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid black; padding: 5px; font-weight: bold;">Registration Number:</td>
+        <td style="border: 1px solid black; padding: 5px;">:</td>
+        <td style="border: 1px solid black; padding: 5px;"></td>
+        <td style="border: 1px solid black; padding: 5px; font-weight: bold;">Date of Conference:</td>
+        <td style="border: 1px solid black; padding: 5px;">:</td>
+        <td style="border: 1px solid black; padding: 5px;"></td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid black; padding: 5px; font-weight: bold;">School</td>
+        <td style="border: 1px solid black; padding: 5px; background-color: #ffff99;">:</td>
+        <td style="border: 1px solid black; padding: 5px; background-color: #ffff99;"></td>
+        <td style="border: 1px solid black; padding: 5px;"></td>
+        <td style="border: 1px solid black; padding: 5px;"></td>
+        <td style="border: 1px solid black; padding: 5px;"></td>
+      </tr>
+    </table>
+
+    <p style="font-family: Arial, sans-serif; font-size: 14px; text-align: justify;">
+        This form describes the learner’s growth progress in achieving four broad desired results for all learners according to the age group. Namely;
+    </p>
+    <ol style="font-family: Arial, sans-serif; font-size: 14px;">
+        <li>A person grows in mind, which means, learning to care for his mind.</li>
+        <li>A person grows in body, which means, learning to care for his body.</li>
+        <li>A person grows in spirit, which means, learning to care for his spirit.</li>
+        <li>A person grows in friendship, which means, learning to care for his relationships.</li>
+    </ol>
+    <p style="font-family: Arial, sans-serif; font-size: 14px; text-align: justify;">
+        We observe and make assessments about what a learner has become (patterns developed in him) along with what the learner knows, understands and can do well. The following detail is part of the information we have analysed and are presenting to the parent and sponsor of the learner.
+    </p>
+
+    <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif;">
+        <tr>
+            <th style="background-color: yellow; border: 1px solid black; padding: 5px;">LEARNING AREA</th>
+            <th style="background-color: yellow; border: 1px solid black; padding: 5px;">SUBJECT CLUSTER</th>
+            <th style="background-color: yellow; border: 1px solid black; padding: 5px;">SUBJECT CODE</th>
+            <th style="background-color: green; border: 1px solid black; padding: 5px;">SUBJECT</th>
+            <th style="border: 1px solid black; padding: 5px;">REFERENCE DATE</th>
+            <th style="border: 1px solid black; padding: 5px;">STATUS</th>
+            <th style="border: 1px solid black; padding: 5px;">CURRENT DATE</th>
+            <th style="border: 1px solid black; padding: 5px;">CURRENT STATUS</th>
+            <th style="border: 1px solid black; padding: 5px;">SUGGESTED ACTION</th>
+        </tr>
+        <tr>
+            <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Learning to Care for the Mind (MENTAL STUDIES)</td>
+            <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Acquire Knowledge Properly</td>
+            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.1</td>
+            <td style="background-color: green; border: 1px solid black; padding: 5px;">Listen</td>
+            <td colspan="5" style="border: 1px solid black; padding: 5px;"></td>
+        </tr>
+        <tr>
+            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.2</td>
+            <td style="background-color: green; border: 1px solid black; padding: 5px;">History</td>
+            <td colspan="5" style="border: 1px solid black; padding: 5px;"></td>
+        </tr>
+        <tr>
+            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.3</td>
+            <td style="background-color: green; border: 1px solid black; padding: 5px;">Geography</td>
+            <td colspan="5" style="border: 1px solid black; padding: 5px;"></td>
+        </tr>
+
+       
+        <tr>
+            <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Learning to Care for the Mind (MENTAL STUDIES)</td>
+            <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Acquire Knowledge Properly</td>
+            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.1</td>
+            <td style="background-color: green; border: 1px solid black; padding: 5px;">Listen</td>
+            <td colspan="5" style="border: 1px solid black; padding: 5px;"></td>
+        </tr>
+        <tr>
+            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.2</td>
+            <td style="background-color: green; border: 1px solid black; padding: 5px;">History</td>
+            <td colspan="5" style="border: 1px solid black; padding: 5px;"></td>
+        </tr>
+        <tr>
+            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.3</td>
+            <td style="background-color: green; border: 1px solid black; padding: 5px;">Geography</td>
+            <td colspan="5" style="border: 1px solid black; padding: 5px;"></td>
+        </tr>
+
+        <tr>
+            <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Learning to Care for the Mind (MENTAL STUDIES)</td>
+            <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Acquire Knowledge Properly</td>
+            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.1</td>
+            <td style="background-color: green; border: 1px solid black; padding: 5px;">Listen</td>
+            <td colspan="5" style="border: 1px solid black; padding: 5px;"></td>
+        </tr>
+        <tr>
+            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.2</td>
+            <td style="background-color: green; border: 1px solid black; padding: 5px;">History</td>
+            <td colspan="5" style="border: 1px solid black; padding: 5px;"></td>
+        </tr>
+        <tr>
+            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.3</td>
+            <td style="background-color: green; border: 1px solid black; padding: 5px;">Geography</td>
+            <td colspan="5" style="border: 1px solid black; padding: 5px;"></td>
+        </tr>
+
+        <tr>
+            <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Learning to Care for the Mind (MENTAL STUDIES)</td>
+            <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Acquire Knowledge Properly</td>
+            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.1</td>
+            <td style="background-color: green; border: 1px solid black; padding: 5px;">Listen</td>
+            <td colspan="5" style="border: 1px solid black; padding: 5px;"></td>
+        </tr>
+        <tr>
+            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.2</td>
+            <td style="background-color: green; border: 1px solid black; padding: 5px;">History</td>
+            <td colspan="5" style="border: 1px solid black; padding: 5px;"></td>
+        </tr>
+        <tr>
+            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.3</td>
+            <td style="background-color: green; border: 1px solid black; padding: 5px;">Geography</td>
+            <td colspan="5" style="border: 1px solid black; padding: 5px;"></td>
+        </tr>
+    </table>
   </div>
-</template>
 
-<script setup>
-import { ref } from "vue";
+  <div style="display: flex; justify-content: space-between; border-bottom: 2px solid black; padding-bottom: 5px;">
+        <strong>PERSON CONDUCTING CONFERENCE</strong>
+        <strong>PARENT/GUARDIAN/CAREGIVER</strong>
+    </div>
+    <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+        <!-- Left Side -->
+        <div style="width: 48%;">
+            <label>Name:</label>
+            <div style="background-color: #f7f75c; height: 30px; width: 100%; margin-bottom: 10px;"></div>
+            
+            <label>Title:</label>
+            <div style="background-color: white; height: 30px; width: 100%; margin-bottom: 10px; border-bottom: 1px solid black;"></div>
+            
+            <label>Signature:</label>
+            <div style="background-color: #f7f75c; height: 30px; width: 100%; margin-bottom: 10px;"></div>
+        </div>
+        
+        <!-- Right Side -->
+        <div style="width: 48%;">
+            <label>Name:</label>
+            <div style="background-color: #f7f75c; height: 30px; width: 100%; margin-bottom: 10px;"></div>
+            
+            <label>Signature:</label>
+            <div style="background-color: #f7f75c; height: 30px; width: 100%; margin-bottom: 10px;"></div>
+        </div>
+    </div>
+    
+    <p style="margin-top: 20px; font-size: 14px;">
+        This report should be printed, discussed with parent/guardian/caregiver. Printed copy should be signed up, scanned and uploaded after discussion.
+    </p>
+  </template>
 
-// ✅ Your Data Sample
-const lessonsDataList = ref([
-  {
-    number: "972eb62e-ac77-430e-aab6-d4ae0178c490",
-    name: "step two",
-    concept: "External Parts of the Human Body.",
-    topic: "Introduce the Human Body",
-    subject: "",
-    sub_topic: "Growing in the Body",
-    date: "2024-11-22 03:00:00 +0300 EAT",
-    time: "22:22",
-    comment: "",
-  },
-  {
-    number: "4b1d6bab-d6d2-4a32-b545-d1f9063f0a30",
-    name: "step one",
-    concept: "Become aware that we grow little by little.",
-    topic: "Introduce the Human Body",
-    subject: "",
-    sub_topic: "Growing in the Body",
-    date: "2024-11-22 03:00:00 +0300 EAT",
-    time: "22:22",
-    comment: "",
-  },
-  {
-    number: "17fa477c-fe17-4e89-9c33-adb421cb0454",
-    name: "",
-    concept: "",
-    topic: "",
-    subject: "",
-    sub_topic: "",
-    date: "2024-11-22 03:00:00 +0300 EAT",
-    time: "12:02",
-    comment: "none",
-  },
-  {
-    number: "6b8ca664-8f27-4f4b-b485-31136059a9d2",
-    name: "",
-    concept: "",
-    topic: "",
-    subject: "",
-    sub_topic: "",
-    date: "2024-11-22 03:00:00 +0300 EAT",
-    time: "11:11",
-    comment: "ass",
-  },
-  {
-    number: "4d0e5d90-4936-4630-a642-a2abb18bc714",
-    name: "",
-    concept: "",
-    topic: "",
-    subject: "",
-    sub_topic: "",
-    date: "2024-11-22 03:00:00 +0300 EAT",
-    time: "11:01",
-    comment: "None",
-  },
-  {
-    number: "b3795077-3760-436e-9e0c-5fd285d61f89",
-    name: "",
-    concept: "",
-    topic: "",
-    subject: "",
-    sub_topic: "",
-    date: "2024-11-22 03:00:00 +0300 EAT",
-    time: "11:11",
-    comment: "Dozing",
-  },
-]);
-</script>
+  <script setup></script>

@@ -49,7 +49,7 @@
    const levelList = ref("")
    const myModal = ref(false)
    const studentAttendanceList = ref([])
-   const searchtxt = ref(null)
+   const searchtxt = ref("")
    
    //sample dammy
    const attendanceDate = ref("");
