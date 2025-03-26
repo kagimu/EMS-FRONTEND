@@ -626,7 +626,10 @@ studentAttendanceList.value = []
                                @click="openRecordAttendance(list.student_number,list.name,list.user_number)">{{ list.name }}</span>
                               </td>
                               <td>
-                                {{list.date}}
+                                {{list.date.split(" ")[0]}}
+                              </td>
+                              <td>
+                                 {{ list.campus }}
                               </td>
 
                               <td style="text-align:center">
