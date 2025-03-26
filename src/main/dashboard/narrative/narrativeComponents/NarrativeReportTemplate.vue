@@ -28,7 +28,7 @@
       </tr>
       <tr>
         <td style="border: 0px solid black; border-left: solid white; padding: 5px; font-weight: bold;width: 20%;">Registration Number:</td>
-        <td style="border: 1px solid black; padding: 5px; background-color: #ffff99;width: 30%;border-left: 0px;">:</td>
+        <td style="border: 1px solid black; padding: 5px; width: 30%;border-left: 0px;">:</td>
         <td style="border: 1px solid black; padding: 5px; font-weight: bold;">Date of Conference:</td>
         <td style="border: 1px solid black; padding: 5px;">:</td>
       
@@ -36,7 +36,7 @@
       <tr>
         <td style="border: 0px solid black; padding: 5px; font-weight: bold;">School</td>
         <td style="border: 1px solid black; padding: 5px; background-color: #ffff99;border-left: 0px;">:</td>
-        <td style="border: 1px solid black; padding: 5px; background-color: #ffff99;"></td>
+        <td style="border: 1px solid black; padding: 5px; "></td>
         <td style="border: 1px solid black; padding: 5px;"></td>
      
       </tr>

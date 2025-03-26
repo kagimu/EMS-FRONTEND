@@ -610,6 +610,7 @@ studentAttendanceList.value = []
                               <th style="width: 2px;">#</th>
                               <th>Name</th>
                               <th>Date</th>
+                              <th>Campus</th>
                               <th style="text-align: center;">Check InTime</th>
                               <th style="text-align: center;">Check OutTime</th>
                               <th style="text-align: center;">Present</th>
