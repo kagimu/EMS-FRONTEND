@@ -88,6 +88,8 @@ import ClientInvoices from '@/main/application/applicationComponents/ClientInvoi
 import ManageAttendance from '@/main/dashboard/attendance/ManageAttendance.vue';
 import ManageStudentAttendance from '@/main/dashboard/attendance/ManageStudentAttendance.vue';
 import ManageStaffAttendance from '@/main/dashboard/attendance/ManageStaffAttendance.vue';
+import ManageAttendanceByTr  from '@/main/teacher/ManageAttendanceByTr.vue';
+import ManageStudentAttendanceTr from '@/main/teacher/students/ManageStudentAttendanceTr.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -634,7 +636,18 @@ const router = createRouter({
                 {path: 'manage-scheme-of-work', component: ManageSchemeOfWork, name:'manage-scheme-of-work'},
                 {path: 'manage-assessment', component: ManageAssessment, name:'manage-assessment'},
                 {path: 'manage-scheme-and-sessions', component: ManageSchemeOfWorkAndSessions, name:'manage-scheme-and-sessions'},
-                { path: 'choose-school', component: SelectSchoolDetails, name:'choose-school',}
+                { path: 'choose-school', component: SelectSchoolDetails, name:'choose-school',},
+                
+                {
+                    path: 'manage-attendance-tr',
+                    component: ManageAttendanceByTr,
+                    name: "manage-attendance-tr",
+                },
+                {
+                    path: 'manage-student-attendance-tr',
+                    component: ManageStudentAttendanceTr,
+                    name: "manage-student-attendance-tr",
+                }
                 
             ],
              
