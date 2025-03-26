@@ -14,22 +14,22 @@
       </h2>
     </div>
 
-    <div style="width: 100%; border: 1px solid black; font-family: Arial, sans-serif;">
+    <div style="width: 100%; ; font-family: Arial, sans-serif;">
     <div style="background-color: #99cc66; font-weight: bold; padding: 5px; border-bottom: 1px solid black;">
       PERSONAL INFORMATION OF LEARNER
     </div>
-    <table style="width: 100%; border-collapse: collapse;">
+    <table style="width: 100%; border-collapse: collapse; margin-top: 2px;">
       <tr>
-        <td style="border: 1px solid black; padding: 5px; font-weight: bold;">Child’s Surname:</td>
-        <td style="border: 1px solid black; padding: 5px; background-color: #ffff99;">:</td>
+        <td style="border: 0px solid black; border-left: solid white; padding: 5px; font-weight: bold;width: 20%;">Child’s Surname:</td>
+        <td style="border: 0px solid black; padding: 5px; background-color: #ffff99;width: 30%;">:</td>
         <td style="border: 1px solid black; padding: 5px; background-color: #ffff99;"></td>
         <td style="border: 1px solid black; padding: 5px; font-weight: bold;">Second name:</td>
         <td style="border: 1px solid black; padding: 5px;">:</td>
         <td style="border: 1px solid black; padding: 5px;"></td>
       </tr>
       <tr>
-        <td style="border: 1px solid black; padding: 5px; font-weight: bold;">Registration Number:</td>
-        <td style="border: 1px solid black; padding: 5px;">:</td>
+        <td style="border: 0px solid black; border-left: solid white; padding: 5px; font-weight: bold;width: 20%;">Registration Number:</td>
+        <td style="border: 1px solid black; padding: 5px; background-color: #ffff99;width: 30%;">:</td>
         <td style="border: 1px solid black; padding: 5px;"></td>
         <td style="border: 1px solid black; padding: 5px; font-weight: bold;">Date of Conference:</td>
         <td style="border: 1px solid black; padding: 5px;">:</td>
