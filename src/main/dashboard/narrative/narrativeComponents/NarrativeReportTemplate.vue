@@ -5,10 +5,11 @@
       <div style="position: absolute; top: 0; right: 0; font-size: 12px; font-weight: bold;">
         Wholesome Report No. ......
       </div>
-      <h1 style="font-size: 28px; font-weight: bold; color: #ffff00; -webkit-text-stroke: 1px black;">
+      <br>
+      <h1 style="font-size: 41px; font-weight: bold; color: #ffff00; -webkit-text-stroke: 2px green;">
         WHOLESOME EDUCATION ASSESSMENT
       </h1>
-      <h2 style="font-size: 24px; font-weight: bold; color: #99cc66;">
+      <h2 style="font-size: 40px; font-weight: bold; color: #99cc66; padding-bottom: 20px;">
         Growth Progress Report
       </h2>
     </div>
