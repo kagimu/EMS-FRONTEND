@@ -1,5 +1,6 @@
 
 <template>
+    <div class="p-8 m-1">
     <div style="text-align: center; position: relative;">
       <div style="position: absolute; top: 0; right: 0; font-size: 12px; font-weight: bold;">
         Wholesome Report No. ......
@@ -173,6 +174,7 @@
     <p style="margin-top: 20px; font-size: 14px;">
         This report should be printed, discussed with parent/guardian/caregiver. Printed copy should be signed up, scanned and uploaded after discussion.
     </p>
+</div>
   </template>
 
   <script setup></script>
