@@ -1,15 +1,82 @@
+<script setup>
+
+import {ref, watch} from "vue";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import {useRouter} from "vue-router";
+import api from "@/config/api.js";
+
+
+const level = ref( "")
+const academic_year_number = ref( "")
+const learningAreaList = ref( [])
+const classList = ref( [])
+const levelList = ref( [])
+const classStore = useClassesStore()
+const routerData = useRouter()
+
+let imagePath = api.defaults.baseURL + "/attachments/download/"
+
+
+const schemeOfWorkList = ref([])
+
+const props = defineProps({
+  schemeOfWorkList: {},
+})
+
+
+
+watch(
+    () => props.schemeOfWorkList,
+    async (data) => {
+      if(data){
+        schemeOfWorkList.value = data
+      }
+    },
+    {deep:true}
+)
+
+
+
+</script>
 <template>
   <div>
 
           <div>
             <div style="font-size: 8px;">
-                <div><b>Scheme of Work</b></div><br />
-                <div style="margin-bottom: 4px;" v-if="schemeOfWorkList.name"><small><b>Title:</b> {{schemeOfWorkList.name}}</small></div>
-                <div style="margin-bottom: 4px;" v-if="schemeOfWorkList.academic_year_name"><small><b>Class:</b> {{schemeOfWorkList.academic_year_name}}</small></div>
-                <div style="margin-bottom: 4px;" v-if="schemeOfWorkList.class_name"><small><b>Class:</b> {{schemeOfWorkList.class_name}}</small></div>
-                <div style="margin-bottom: 4px;" v-if="schemeOfWorkList.subject_name"><small><b>Subject:</b> {{schemeOfWorkList.subject_name}}</small></div>
-                <div style="margin-bottom: 4px;" v-if="schemeOfWorkList.status"><small><b>Status:</b> {{schemeOfWorkList.status}}</small></div>
+                <div style="text-transform: uppercase;"><b>Scheme of Work</b></div><br />
             </div>
+
+            <table style="width: 100%; font-size: 8px; margin-bottom: 20px;">
+              <tr>
+                <td style="width: 15%;">
+                  <img alt="img" style="width: 70px; margin: 0 auto;" :src="imagePath+schemeOfWorkList?.school_badge"/>
+                </td>
+                <td>
+                  <div style="text-transform: uppercase; margin-bottom: 2px;"><b>{{schemeOfWorkList?.school_name}}</b></div>
+
+                  <div style="margin-top: 1px;text-transform: uppercase; margin-bottom: 2px;">{{schemeOfWorkList?.campus_name}}</div>
+
+                  <div style="margin-top: 1px; margin-bottom: 2px;">
+                    <small>
+                      {{schemeOfWorkList?.campus_location	}} |
+                      {{schemeOfWorkList?.campus_phone}} |
+                      {{schemeOfWorkList?.campus_email}}
+                    </small></div>
+                  <span style="background-color: green; color: #ffffff; text-transform: uppercase; padding-left: 15px; padding-right: 15px;">
+                     {{schemeOfWorkList?.name}}
+                  </span>
+
+                  <div style="margin-top: 2px;">
+                    <span style="margin-right: 10px;"  v-if="schemeOfWorkList.academic_year_name"><small><!--<b>Academic Year:</b>--> {{schemeOfWorkList.academic_year_name}}</small></span> |
+                    <span style="margin-left: 10px; margin-right: 10px;"  v-if="schemeOfWorkList.class_name"><small><!--<b>Class:</b>--> {{schemeOfWorkList.class_name}}</small></span> |
+                    <span style="margin-left: 10px; margin-right: 10px;"  v-if="schemeOfWorkList.subject_name"><small><!--<b>Subject:</b>--> {{schemeOfWorkList.subject_name}}</small></span> |
+                    <span style="margin-left: 10px; margin-right: 10px;"  v-if="schemeOfWorkList.status"><small><!--<b>Status:</b>--> {{schemeOfWorkList.status}}</small></span>
+                  </div>
+
+                </td>
+
+              </tr>
+            </table>
 
 
 <br />
@@ -65,43 +132,7 @@
 
 </template>
 
-<script setup>
 
-import {ref, watch} from "vue";
-import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
-import {useRouter} from "vue-router";
-
-
-const level = ref( "")
-const academic_year_number = ref( "")
-const learningAreaList = ref( [])
-const classList = ref( [])
-const levelList = ref( [])
-const classStore = useClassesStore()
-const routerData = useRouter()
-
-
-const schemeOfWorkList = ref([])
-
-const props = defineProps({
-  schemeOfWorkList: {},
-})
-
-
-
-watch(
-    () => props.schemeOfWorkList,
-    async (data) => {
-      if(data){
-        schemeOfWorkList.value = data
-      }
-    },
-    {deep:true}
-)
-
-
-
-</script>
 
 <style scoped>
 
