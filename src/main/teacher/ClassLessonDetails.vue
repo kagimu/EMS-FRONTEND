@@ -11,6 +11,7 @@
    import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
    import AppModal from "@/components/AppModal.vue";
    import moment from "moment";
+import { data } from "autoprefixer";
    
    const levelStore = useLevelStore()
    const  notificationStore  = useNotificationStore()
@@ -81,96 +82,71 @@ const toggleStep = (stepNumber) => {
   }
 };
 
+
+const concepts = ref([
+  {
+    concept_name: "Number Sense",
+    concept_number: "NS-001",
+    steps_delivered: [
+      { name: "Understanding Numbers", number: "ns1" },
+      { name: "Basic Operations", number: "ns3" }
+    ],
+    all_steps: [
+      { name: "Understanding Numbers", number: "ns1" },
+      { name: "Place Value", number: "ns2" },
+      { name: "Basic Operations", number: "ns3" },
+      { name: "Fractions", number: "ns4" }
+    ]
+  },
+  {
+    concept_name: "Geometry",
+    concept_number: "GEO-002",
+    steps_delivered: [
+      { name: "Shapes", number: "geo1" }
+    ],
+    all_steps: [
+      { name: "Shapes", number: "geo1" },
+      { name: "Angles", number: "geo2" },
+      { name: "Symmetry", number: "geo3" }
+    ]
+  },
+  {
+    concept_name: "Algebra",
+    concept_number: "ALG-003",
+    steps_delivered: [
+      { name: "Expressions", number: "alg1" },
+      { name: "Equations", number: "alg2" }
+    ],
+    all_steps: [
+      { name: "Expressions", number: "alg1" },
+      { name: "Equations", number: "alg2" },
+      { name: "Inequalities", number: "alg3" },
+      { name: "Functions", number: "alg4" }
+    ]
+  },
+  {
+    concept_name: "Probability & Statistics",
+    concept_number: "PS-004",
+    steps_delivered: [
+      { name: "Data Collection", number: "ps1" }
+    ],
+    all_steps: [
+      { name: "Data Collection", number: "ps1" },
+      { name: "Mean, Median, Mode", number: "ps2" },
+      { name: "Probability Rules", number: "ps3" }
+    ]
+  }
+]);
+
+const isDelivered = (stepNumber, stepsDelivered) => {
+  return stepsDelivered.some(step => step.number === stepNumber);
+};
+
 </script>
+
 <template>
 
-   <!-- <div class="bg-white  rounded-md py-3 px-2">
-      <div class="row mt-1">
-         <div class="col-lg-11">
-            <h5 style="font-size: 14px;margin-top: 2px;"> 
-                <template v-for="(dt,indx) in lessonsDataList" :key="indx">
-                       {{ dt.steps[0].concept }} / {{ dt.steps[0].topic }}
-                </template>
-            </h5>
-         </div>
-         <div class="col-lg-1">
-         </div>
-      </div>
-      <div class="row">
-                <div
-                    class="w-full overflow-auto max-h-[520px] scrollbar-thin">
-
-                <template v-for="(dat,inx) in lessonsDataList" :key="inx">
-                    <div class="accordion" id="topicsAccordion">
-    <div v-for="(dt, idx) in dat.steps" :key="idx" class="accordion-item">
-      <h2 class="accordion-header">
-        <button 
-          class="accordion-button" 
-          type="button" 
-          data-bs-toggle="collapse" 
-          :data-bs-target="'#topic-' + dt.number"
-          :aria-controls="'topic-' + dt.number"
-         >
-          {{ dt.name || "-" }}
-        </button>
-      </h2>
-      <div 
-        :id="'topic-' + dt.number" 
-        class="accordion-collapse collapse"
-        :class="{ 'show': idx === 0 }"
-        data-bs-parent="#topicsAccordion">
-        <div class="accordion-body">
-          <p><strong>Concept:</strong> {{ dt.concept || "No Concept Provided" }}</p>
-          <p><strong>Sub-Topic:</strong> {{ dt.sub_topic || "N/A" }}</p>
-          <p><strong>Time:</strong> {{ dt.time }}</p>
-          <p><strong>Comment:</strong> {{ dt.comment || "No Comments" }}</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-
-      </div>
-      </div>
-
-     
-   </div> -->
-
-
-
-
-
-  <!-- <div v-for="(dt, idx) in lessonsDataList" :key="dt.number" class="accordion" :id="'topicsAccordion-' + idx">
-    <div v-for="(lsn, index) in dt.steps" :key="lsn.number" class="accordion-item">
-      <h2 class="accordion-header">
-        <button 
-          class="accordion-button" 
-          type="button" 
-          data-bs-toggle="collapse" 
-          :data-bs-target="'#collapse-' + lsn.number"
-          :aria-controls="'collapse-' + lsn.number"
-          :class="{ '': index !== 0 }">
-          {{ lsn.name || 'Unnamed Step' }}
-        </button>
-      </h2>
-      <div 
-        :id="'collapse-' + lsn.number"
-        class="accordion-collapse "
-        :class="{ 'show': index === 0 }"
-        :data-bs-parent="'#topicsAccordion-' + idx">
-        <div class="accordion-body">
-          <p>{{ lsn.concept || 'No Concept Provided' }}</p>
-          <ul class="list-group">
-            <li class="list-group-item">Students</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
-
-  <div>
+  <!-- <div>
     <div  class="lesson-container">
       <div v-for="(lsn, index) in lessonsDataList" :key="lsn.number" class="lesson-card">
         <div 
@@ -184,17 +160,31 @@ const toggleStep = (stepNumber) => {
           <p>{{ lsn.concept || "No concept provided" }}</p>
           <ul class="list-group">
             <li class="list-group-item">
-             <!-- [ { "number": "972eb62e-ac77-430e-aab6-d4ae0178c490", "name": "step two", "concept": "External Parts of the Human Body.", "topic": "Introduce the Human Body", "subject": "", "sub_topic": "Growing in the Body",
-              "date": "2025-03-29 03:00:00 +0300 EAT", "time": "11:01", "comment": "Very Good Class" } ] -->
               Date : {{ lsn.date }} <br>Time : {{ lsn.time }}
             </li>
           </ul>
         </div>
       </div>
     </div>
+  </div> -->
+
+
+  <div class="p-4 h-96 overflow-y-auto border rounded-lg shadow-md">
+    <div v-for="(item, index) in concepts" :key="index" class="mb-6">
+      <h2 class="text-xl font-bold mb-4">{{ item.concept_name }} ({{ item.concept_number }})</h2>
+      <ul class="space-y-2">
+        <li 
+          v-for="step in item.all_steps" 
+          :key="step.number" 
+          class="flex items-center p-2 border rounded-lg" 
+          :class="{'bg-green-100': isDelivered(step.number, item.steps_delivered)}"
+        >
+          <span class="flex-1">{{ step.name }} ({{ step.number }})</span>
+          <span v-if="isDelivered(step.number, item.steps_delivered)" class="text-green-600 font-bold">✔</span>
+        </li>
+      </ul>
+    </div>
   </div>
-
-
 </template>
 
 <style scoped>

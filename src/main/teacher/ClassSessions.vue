@@ -455,9 +455,9 @@ const fetchLessonsDataList = (data) => {
             <td>
                <button 
                @click="viewLessonDetails(lst.steps)"
-              class="bg-[#0d6efd] rounded-sm text-white px-4 btn-primary btn-sm m-2">
+              class="bg-[#0d6efd] rounded-sm text-white px-4 btn-success btn-sm m-2">
             <small>view Steps
-              <i class="bi bi-book"></i>
+             
 
             </small>
           </button>
@@ -465,7 +465,7 @@ const fetchLessonsDataList = (data) => {
                @click="viewStudents(lst)"
               class="bg-[#0d6efd] rounded-sm text-white px-4 btn-primary btn-sm">
             <small>view Students 
-              <i class="bi bi-person"></i>
+           
             </small>
           </button>
             </td>
