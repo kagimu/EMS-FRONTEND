@@ -5,42 +5,40 @@
       <div style="position: absolute; top: 0; right: 0; font-size: 12px; font-weight: bold;">
         Wholesome Report No. ......
       </div>
-      <h1 style="font-size: 28px; font-weight: bold; color: #ffff00; -webkit-text-stroke: 1px black;">
+      <br>
+      <h1 style="font-size: 41px; font-weight: bold; color: #ffff00; -webkit-text-stroke: 2px green;">
         WHOLESOME EDUCATION ASSESSMENT
       </h1>
-      <h2 style="font-size: 24px; font-weight: bold; color: #99cc66;">
+      <h2 style="font-size: 40px; font-weight: bold; color: #99cc66; padding-bottom: 20px;">
         Growth Progress Report
       </h2>
     </div>
 
-    <div style="width: 100%; border: 1px solid black; font-family: Arial, sans-serif;">
+    <div style="width: 100%; ; font-family: Arial, sans-serif;">
     <div style="background-color: #99cc66; font-weight: bold; padding: 5px; border-bottom: 1px solid black;">
       PERSONAL INFORMATION OF LEARNER
     </div>
-    <table style="width: 100%; border-collapse: collapse;">
+    <table style="width: 100%; border-collapse: collapse; margin-top: 4px;margin-bottom: 7px;">
       <tr>
-        <td style="border: 1px solid black; padding: 5px; font-weight: bold;">Child’s Surname:</td>
-        <td style="border: 1px solid black; padding: 5px; background-color: #ffff99;">:</td>
-        <td style="border: 1px solid black; padding: 5px; background-color: #ffff99;"></td>
-        <td style="border: 1px solid black; padding: 5px; font-weight: bold;">Second name:</td>
-        <td style="border: 1px solid black; padding: 5px;">:</td>
-        <td style="border: 1px solid black; padding: 5px;"></td>
+        <td style="border: 0px solid black; border-left: solid white; padding: 5px; font-weight: bold;width: 20%;">Child’s Surname:</td>
+        <td style="border: 0px solid black; padding: 5px; background-color: #ffff99;width: 30%;">:</td>
+        <td style="border: 1px solid black; padding: 5px; font-weight: bold;width: 20%;">Second name:</td>
+        <td style="border: 1px solid black; padding: 5px;width: 30%;">:</td>
+
       </tr>
       <tr>
-        <td style="border: 1px solid black; padding: 5px; font-weight: bold;">Registration Number:</td>
-        <td style="border: 1px solid black; padding: 5px;">:</td>
-        <td style="border: 1px solid black; padding: 5px;"></td>
+        <td style="border: 0px solid black; border-left: solid white; padding: 5px; font-weight: bold;width: 20%;">Registration Number:</td>
+        <td style="border: 1px solid black; padding: 5px; width: 30%;border-left: 0px;">:</td>
         <td style="border: 1px solid black; padding: 5px; font-weight: bold;">Date of Conference:</td>
         <td style="border: 1px solid black; padding: 5px;">:</td>
-        <td style="border: 1px solid black; padding: 5px;"></td>
+      
       </tr>
       <tr>
-        <td style="border: 1px solid black; padding: 5px; font-weight: bold;">School</td>
-        <td style="border: 1px solid black; padding: 5px; background-color: #ffff99;">:</td>
-        <td style="border: 1px solid black; padding: 5px; background-color: #ffff99;"></td>
+        <td style="border: 0px solid black; padding: 5px; font-weight: bold;">School</td>
+        <td style="border: 1px solid black; padding: 5px; background-color: #ffff99;border-left: 0px;">:</td>
+        <td style="border: 1px solid black; padding: 5px; "></td>
         <td style="border: 1px solid black; padding: 5px;"></td>
-        <td style="border: 1px solid black; padding: 5px;"></td>
-        <td style="border: 1px solid black; padding: 5px;"></td>
+     
       </tr>
     </table>
 
