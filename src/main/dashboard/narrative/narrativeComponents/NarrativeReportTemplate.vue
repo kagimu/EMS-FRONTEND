@@ -74,17 +74,30 @@
             <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Acquire Knowledge Properly</td>
             <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.1</td>
             <td style="background-color: #99cc66; border: 1px solid black; padding: 5px;">Listen</td>
-            <td colspan="5" style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+          
         </tr>
         <tr style="font-size: 13px;">
             <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.2</td>
             <td style="background-color: #99cc66; border: 1px solid black; padding: 5px;">History</td>
-            <td colspan="5" style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
         </tr>
         <tr style="font-size: 13px;">
             <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.3</td>
             <td style="background-color: #99cc66; border: 1px solid black; padding: 5px;">Geography</td>
-            <td colspan="5" style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
         </tr>
 
        
@@ -93,19 +106,31 @@
             <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Acquire Knowledge Properly</td>
             <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.1</td>
             <td style="background-color: #99cc66; border: 1px solid black; padding: 5px;">Listen</td>
-            <td colspan="5" style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
         </tr>
        
 
         <tr style="font-size: 13px;">
             <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.2</td>
             <td style="background-color: #99cc66; border: 1px solid black; padding: 5px;">History</td>
-            <td colspan="5" style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
         </tr>
         <tr style="font-size: 13px;">
             <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.3</td>
             <td style="background-color: #99cc66; border: 1px solid black; padding: 5px;">Geography</td>
-            <td colspan="5" style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
         </tr>
     </table>
   </div>
