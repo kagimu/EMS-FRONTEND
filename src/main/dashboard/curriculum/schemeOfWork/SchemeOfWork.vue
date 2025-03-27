@@ -615,8 +615,7 @@ watch(
     </div>
 
 
-<!--    <div style="display: none">-->
-    <div>
+    <div style="display: none">
         <div ref="schemeOfWorkRef">
           <SchemeOfWorkPdfTemplate
               :schemeOfWorkList="schemeOfWorkList"
