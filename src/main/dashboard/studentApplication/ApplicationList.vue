@@ -77,30 +77,35 @@
   })
 
   onMounted(() => {
-        doFetchApplication()
+        // doFetchApplication()
         schoolStore.fetchSchools()
       }
   )
   
   const fetchCampuses = (school_number) => {
     campusStore.fetchCampuses(school_number)
+    doFetchApplication()
   }
   
   const fetchClasses = (campus_number) => {
+    doFetchApplication()
     campusStore.fetchClassesByCampus(campus_number)
     levelStore.fetchCampusCurriculum(campus_number)
   }
 
   const fetchCampusLevel = (curriculumNumber) => {
+    doFetchApplication()
    classStore.fetchCampusLevel(curriculumNumber)
 }
   
   const fetchAcademicYear = (campusN) =>{
+    doFetchApplication()
   academicYearStore.fetchAcademicYearByCampus(campusN)
   classStore.fetchClassStreams(campusN)
   }
 
   const fetchLevelClasses = (levelNumber) => {
+    doFetchApplication()
    classStore.fetchClassLevel({campusCurriculumNumber: form.curriculumNumber, campusLevelNumber: levelNumber})
 }
 
@@ -169,10 +174,21 @@
 
 
   const doFetchApplication = () =>{
+
+    if(!form.school_number){
+      return
+    }
+
    let data = {
       page: 1,
       per_page: per_page.value,   
-      status: form.statusData 
+      status: form.statusData,
+     school_number:form.school_number,
+     campus_number:form.campus_number,
+     curriculum_number:form.curriculumNumber,
+      level_number:form.level,
+     campus_class_number:form.campus_class_number
+     
    }
    loading.value = true;
    applicationInfoList.value = []
@@ -200,6 +216,7 @@
 
 
   const fetchApplications = (data) => {
+
     if(data) {
       let current_page = data.page
       page.value = current_page
@@ -408,6 +425,33 @@ watch(
     }
   }
 );
+
+const columns = ref([
+{ label: 'ADN', key: 'adn' },
+  { label: 'Name', key: 'surname	' },
+  { label: 'second_name	', key: 'second_name	' },
+  { label: 'Gender', key: 'gender' },
+
+]);
+
+
+
+const exportToCSV = () => {
+  const csvContent = [
+    columns.value.map((col) => col.label).join(','),
+    ...applicationInfoList.value.map((row) =>
+      columns.value.map((col) => `"${row[col.key]}"`).join(',')
+    ),
+  ].join('\n');
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'data.csv';
+  link.click();
+  URL.revokeObjectURL(url);
+};
 </script>
 
 <template>
@@ -577,6 +621,9 @@ watch(
                     </div>
                  </div>
               </div>
+
+<!--              <button @click="exportToCSV" class="link link-primary mr-4"> <i class="bi bi-filetype-csv"></i> CSV    -->
+<!--              </button>-->
 
               <PaginationTemplate
                     @perPageChanged="doFetchApplication"

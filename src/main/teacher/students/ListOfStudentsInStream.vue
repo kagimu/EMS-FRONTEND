@@ -14,21 +14,14 @@ import AppModal from "@/components/AppModal.vue";
 import FileUploader from "@/components/FileUploader.vue";
 import {useRouter} from "vue-router";
 import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
-
-const routerData = useRouter()
-
-let streamNumber = "Hhheheh"
-let campusClassNumber = "hdhdhdhdh"
-
 import { useAbility } from '@casl/vue';
 
+const routerData = useRouter()
 const { can } = useAbility()
-
 const enrollmentList = ref( [])
 const  notificationStore  = useNotificationStore()
 const enrollmentStore = useEnrolmentStore()
 const promotionStore = usePromotionStore()
-
 const campusList = ref([])
 const schoolList = ref([])
 const classList = ref([])
@@ -52,16 +45,28 @@ const schoolData = ref(null)
 const schemeOfWorkStore = useSchemeOfWorkStore()
 let profile = localStorage.getItem("userProfile")
 const comment = ref(null)
+const session = ref(null)
+const adn_no = ref(null)
+const showV = ref(false)
+const openCommentField = (adn) =>{
+adn_no.value = adn
+showV.value = true
+}
+
+const closeCommentField = (adn) =>{
+adn_no.value = adn
+showV.value = false
+}
+
 
 const form = reactive({
 stream_number:"",
-// student_number:[],
 comment:null,
 date:null,
 time:null,
 teacher_number:null,
-step_numbers:null,
-students: []
+step_number:null,
+students: [],
 })
 
 
@@ -73,7 +78,6 @@ selectedStepNumbers:[]
 
 onMounted(() => {
 schoolStore.fetchSchools()
-// doFetchEnrollent()
 getSchoolInfo()
 getSteps()
 getTeacherNumber()
@@ -91,7 +95,7 @@ getStream(draft.class_number)
 const getSteps = () =>{
    let draftData = props.selectedStepNumbers
    if(draftData){
-      form.step_numbers = draftData
+      form.step_number = draftData
    }
 }
 
@@ -136,7 +140,7 @@ let data = {
 page: 1,
 per_page: per_page.value,
 study_period_number:"",
-school_number:schoolInfo.number,
+school_number:props.schoolInfoData.school_number,
 campus_number: "",
 campus_class_number:"",
 stream_number:form.stream_number,
@@ -155,7 +159,7 @@ let data = {
 page: (page.value+1),
 per_page: per_page.value,
 study_period_number:"",
-school_number:schoolInfo.number,
+school_number:props.schoolInfoData.school_number,
 campus_number: "",
 campus_class_number:"",
 stream_number:streamNumber,
@@ -211,6 +215,7 @@ async (data) => {
 if(data){
 promDialog.value = false;
 fetchEnrollmentList(data)
+// alert(JSON.string(data))
 }
 },
 {deep:true}
@@ -255,7 +260,7 @@ watch(
     async (data) => {
       if(data){
         classList.value = data.data
-        alert(JSON.stringify(data.data))
+      //   alert(JSON.stringify(data.data))
         const curriculum =data.data.find(item => 
         item.classes.some(classItem => classItem.number === classNumber)
     );
@@ -325,7 +330,6 @@ studyPeriodList.value = studyData[0].studyPeriod
 
 
 
-
 watch(
 () => schemeOfWorkStore.errorMessage,
 async (data) => {
@@ -346,7 +350,7 @@ if (data) {
 {deep: true}
 )
 
-// Toggle a student in form.students based on checkbox
+
 function toggleStudent(student_number) {
   const index = form.students.findIndex(student => student.student_number === student_number);
   if (index === -1) {
@@ -356,13 +360,7 @@ function toggleStudent(student_number) {
   }
 }
 
-// Retrieve the comment for a specific student
-function getStudentComment(student_number) {
-  const student = form.students.find(student => student.student_number === student_number);
-  return student ? student.comment : "";
-}
 
-// Update the comment for a specific student
 function updateStudentComment(student_number, comment) {
   const student = form.students.find(student => student.student_number === student_number);
   if (student) {
@@ -374,37 +372,39 @@ function updateStudentComment(student_number, comment) {
 
 
 const submitSchemeOfWorkDelivery = () =>{
-   // alert(JSON.stringify(form)) 
-   schemeOfWorkStore.newCurriculumDelivery(form)
-}
-const adn_no = ref(null)
-const showV = ref(false)
 
-const openCommentField = (adn) =>{
-adn_no.value = adn
-showV.value = true
+   let formData = {
+      stream_number: form.stream_number,
+      date: form.date,
+      time: form.time,
+      teacher_number: form.teacher_number,
+      sessions : [ {
+      comment: form.comment,
+      time: form.time,
+      step_number: form.step_number,
+      students: form.students 
+   } ]
+
+   }
+  
+ alert(JSON.stringify(formData)) 
+   schemeOfWorkStore.newCurriculumDelivery(formData)
 }
 
-const closeCommentField = (adn) =>{
-adn_no.value = adn
-showV.value = false
-}
+
 
 </script>
 <template>
 
 <div>
 <!-- {{ schoolData }} -->
-  <!-- {{ form.step_numbers }} -->
-<div class="row mt-3">
-<div class="col-12">
-   <div class="row">
-      <div class="col-12">
-         <div class="mt-3">
+  <!-- {{ schoolInfoData }} -->
+  <!-- {{ form.step_number }} -->
+
             <div class="row mx-auto">
                <div class="row">
                   <div class="col-3">
-                     <div class="mb-2">
+                     <div class="mb-0 mt-4">
                         <select
                            v-model="form.stream_number"
                            class="form-select form-select-sm" required
@@ -417,40 +417,41 @@ showV.value = false
                         </select>
                      </div>
                   </div>
-                  <div class="col-3"></div>
-                  <div class="col-3"></div>
+                  <div class="col-3 mt-3">
+                    
+                  </div>
+                  <div class="col-3">
+
+                  </div>
                   <div class="col-3">
                      <PaginationTemplate
                         v-model:perPage="per_page"
                         :per_page="per_page"
                         :total_items="total_items"
                         :total_rows="total_rows"
-                        @perPageChanged="doFetchEnrollent"></PaginationTemplate>
+                        ></PaginationTemplate>
+                        <!-- @perPageChanged="doFetchEnrollent" -->
                   </div>
                </div>
             </div>
          </div>
-      </div>
-   </div>
-</div>
-</div>
-</div>
+
 <div v-if="loading" class="text-center my-1">
 <div class="spinner-border" role="status">
 <span class="sr-only">Loading...</span>
 </div>
 </div>
 <div v-else-if="enrollmentList.length === 0" class="text-center my-4">
-<p>There is no data found</p>
+<p class="alert alert-warning">No stream is selected ..!</p>
 </div>
 <div v-else>
+
 <div
 class="w-full overflow-auto max-h-[520px] scrollbar-thin"
 @scroll="onScroll">
-   <!-- {{ form.students }} -->
 
 <div class="row">
-   <div class="col-lg-9">
+   <div class="col-lg-8">
  <table
    class="table table-hover caption-top mt-1 table-sm table-striped"
    style="font-size: 13px !important;"
@@ -504,46 +505,56 @@ class="w-full overflow-auto max-h-[520px] scrollbar-thin"
 </table>
    </div>
 
-<div class="col-lg-3">
-   <div class="card shadow-sm mb-4 mt-6">
-      <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">..</h5>
+   <div class="col-lg-4 pt-4">
+      <div class="m-2 ">
+      <label  class="form-label">Date</label>
+          <input
+            type="date"
+            class="form-control"
+            placeholder="Enter Date"
+            v-model="form.date"
+            required
+
+          />
       </div>
-      <form @submit.prevent="submitSchemeOfWorkDelivery">
-      <div class="card-body">
-        <div class="mb-3">
-          <label class="form-label">Date</label>
-          <input placeholder="" type="date" v-model="form.date" required class="form-control">
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Time</label>
-          <input placeholder="" type="time" v-model="form.time" required class="form-control">
-        </div>
 
-        <div class="mb-3">
-          <label class="form-label">Comment</label>
-          <textarea v-model="form.comment" class="form-control" style="height: 100px"></textarea>
-        </div>
-
-          <!-- Save Button -->
-    <div class="text-end mt-4">
-      <button type="submit" class="btn btn-primary" >
-        Submit
-        <div class="spinner-border spinner-border-sm ms-2" role="status" v-if="buttonLoader">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </button>
-    </div>
+      <div class="m-2 ">
+      <label  class="form-label">Time</label>
+          <input
+            type="time"
+            class="form-control"
+            placeholder="Enter time"
+            v-model="form.time"
+            required
+          />
       </div>
-   </form>
-    </div>
-</div>
+      <div class="m-2">
+         <label  class="form-label">General Comment</label>
+          <textarea            
+            class="form-control"
+            rows="2"
+            v-model="form.comment"
+            placeholder="Enter comment"
+          ></textarea>
+      </div>
 
+      <div class="m-2">
+         <button
+            class="btn btn-primary mb-2 btn-sm text-sm"
+            style="float: right"
+            @click="submitSchemeOfWorkDelivery"
+            >
+            Submit
+         </button>
+      </div>
    </div>
 
 
 
+   </div>
+   
 </div>
+
 </div>
 </template>
 <style scoped>

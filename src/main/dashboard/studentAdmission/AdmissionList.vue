@@ -59,7 +59,7 @@
    
    onMounted(() => {
      schoolStore.fetchSchools()
-     doFetchAdmission()
+     // doFetchAdmission()
     }
    )
    
@@ -180,6 +180,10 @@
    }
    
    const doFetchAdmission = () =>{
+     if(!form.school_number){
+       return
+     }
+
     let data = {
        page: 1,
        per_page: per_page.value,
@@ -369,15 +373,15 @@
    </AppModal>
    <div>
       <!-- end  -->
-      <div class="row mt-4">
+      <div class="row">
          <div class="col-12">
             <div class="card">
-               <div class="card-body" style="padding: 0;">
-                  <div class=" mx-3">
+               <div class="" style="padding: 0;">
+                  <div class="">
                      <div class="row">
                         <div class="col-lg-12">
                            <div class="">
-                              <div class="card-body">
+                              <div class="card-bod">
                                  <div class="row">
                                     <div class="col-lg-11">
                                        <h5 style="font-size: 14px;margin-top: 2px;">ADMISSION OFFERS </h5>
@@ -389,7 +393,7 @@
                                  <div class="row">
                                     <div class="col-12">
                                        <div class="mt-4">
-                                          <div class="row mx-auto">
+                                          <div class="row">
                                              <div class="row">
                                                 <div class="col-3">
                                                    <div class="mb-2">

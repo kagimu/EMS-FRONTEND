@@ -440,9 +440,8 @@ export const useAssessmentStore = defineStore("assessment", () => {
     }
 
     async function fetchGrades(data) {
-        let grade_group_number = data?.grade_group_number
         let school_number = data?.school_number
-        return await api.get("main/assessments/grades?school_number="+school_number+"&grade_group_number="+grade_group_number)
+        return await api.get("main/assessments/grades?school_number="+school_number)
             .then((response) => {
                 gradeResponse.value = response.data
             })

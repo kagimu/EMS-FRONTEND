@@ -157,6 +157,46 @@ export default function useCommonsStore() {
         return Object.keys(objectToParse).map(key => key + '=' + objectToParse[key]).join('&');
     }
 
+    const formatNumbersWithComma = (value) => {
+        if (value != null) {
+            return new Intl.NumberFormat().format(value);
+        }
+        return value;
+    }
+
+    const ageCalculator = (dob) => {
+        const now = new Date();
+        const birthDate = new Date(dob);
+
+        if (isNaN(birthDate)) {
+            throw new Error("Invalid date format. Please provide a valid date.");
+        }
+
+        let years = now.getFullYear() - birthDate.getFullYear();
+        let months = now.getMonth() - birthDate.getMonth();
+        let days = now.getDate() - birthDate.getDate();
+
+        // Adjust for negative days
+        if (days < 0) {
+            months--;
+            const previousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+            days += previousMonth.getDate();
+        }
+
+        // Adjust for negative months
+        if (months < 0) {
+            years--;
+            months += 12;
+        }
+
+        let result = "";
+        if (years > 0) result += `${years}yrs`;
+        if (months > 0) result += result ? `, ${months}mth` : `${months}mth`;
+        if (days > 0) result += result ? `, ${days}dys` : `${days}dys`;
+
+        return result || "0dys"; // Return "0dys" if all are zero
+    }
+
     return {
         onlyNumberValidator,
         numbersOnlyValidator,
@@ -167,6 +207,8 @@ export default function useCommonsStore() {
         base64ToBinary,
         formatDate,
         initializePdfData,
-        wellFormatedDate
+        wellFormatedDate,
+        formatNumbersWithComma,
+        ageCalculator
     }
 }

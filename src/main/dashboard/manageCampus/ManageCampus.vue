@@ -6,13 +6,13 @@ import useNotificationStore from "@/composables/useNotification.js";
 import NewCampus from "@/main/dashboard/manageCampus/NewCampus.vue";
 import {useRouter} from "vue-router";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-
-
 import AppModal from "@/components/AppModal.vue";
 import CampusListInfo from "@/main/dashboard/manageCampus/CampusListInfo.vue";
 import SchoolReportTemplates from "@/main/dashboard/manageLevel/report_setup/reportTemplate/SchoolReportTemplates.vue";
 import FileUploader from "@/components/FileUploader.vue";
 import { useAbility } from '@casl/vue';
+import NarrativeReportTemplate from "@/main/dashboard/narrative/narrativeComponents/NarrativeReportTemplate.vue";
+
 
 const { can } = useAbility()
 const routerData = useRouter()
@@ -38,6 +38,10 @@ const campusMenu = ref([
   {
     name:"Report Templates",
     router_name:"report-template"
+  },
+  {
+    name:"Narrative Templates",
+    router_name:"narrative-template"
   }
 ])
 
@@ -171,9 +175,9 @@ const successUpload = (data) => {
     <div class="row">
       <div class="col-2">
 
-        <div class="card mt-3">
+        <div class="card mt-3 p-0">
           <div class="card-body" style="padding: 0;">
-            <div class="list-group list-group-flush mb-1 rounded-0" >
+            <div class="list-group list-group-flush rounded" >
               <router-link
                   v-for="(item, idx) in  campusMenu" :key="idx"
                   class="list-group-item list-group-item-action"
@@ -185,6 +189,7 @@ const successUpload = (data) => {
           </div>
         </div>
 
+
       </div>
       <div class="col-10">
           <div v-if=" campusQuery==='campus'">
@@ -192,8 +197,13 @@ const successUpload = (data) => {
           </div>
           <div v-if=" campusQuery==='report-template'">
             <div class="rounded  border bg-white mt-3">
-
               <school-report-templates :schoolData="schoolData"></school-report-templates>
+            </div>
+          </div>
+
+          <div v-if=" campusQuery==='narrative-template'">
+            <div class="rounded  border bg-white mt-3">
+              <NarrativeReportTemplate></NarrativeReportTemplate>
             </div>
           </div>
       </div>

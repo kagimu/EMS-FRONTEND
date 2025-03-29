@@ -108,10 +108,13 @@ watch(
 
         <div class="col-3">
             <div class="w-full h-screen overflow-y-auto scrollbar-thin">
-              <div class="card mt-3">
+              <div class="card p-0 mt-3">
                 <div class="card-body" style="padding: 0;">
-                    <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Curriculum Setup</div>
-           <hr />
+
+                    <div class="mb-2  border-b text-gray-500" style="font-size: 16px;">
+                     <div class="ml-3 my-2">Curriculum Setup</div>
+                    </div>
+
 
  
             <div class="list-group list-group-flush mb-1 rounded-0" >
@@ -126,18 +129,10 @@ watch(
                 </div>
               </div>
 
-              <div class="card mt-3">
+              <div class="card p-0 mt-3">
                 <div class="card-body" style="padding: 0;">
-                  <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-                    <!-- <div
-                        v-for="(item, idx) in  curriculumMenu"
-                        :key="idx"
-                        class="list-group-item list-group-item-action cursor-pointer"
-                        :class="item.value === menuSelected ? 'active' : ''"
-                        @click="changeMenu(item.value)"
-                    >
-                      <small style="font-size:12px;">{{item.text}}</small>
-                    </div> -->
+                  <div class="list-group list-group-flush my-1" style="border-radius: 0 0 0 0;">
+
 
                     <router-link
                   v-for="(item, idx) in  curriculumMenu" :key="idx"
@@ -151,10 +146,14 @@ watch(
                 </div>
               </div>
 
-              <div class="card mt-3">
+              <div class="card p-0 mt-3">
                 <div class="card-body" style="padding: 0;">
-                  <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Import Curriculum</div>
-                  <hr />
+
+
+                  <div class="mb-2  border-b text-gray-500" style="font-size: 16px;">
+                    <div class="ml-3 my-2"> Import Curriculum</div>
+                  </div>
+
                   <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
                     
                     <!-- <div
@@ -177,21 +176,16 @@ watch(
               </div>
 
 
-              <div class="card mt-3">
-                <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Assessment Setup</div>
-                <hr />
+              <div class="card p-0 mt-3">
+
+
+                <div class="mb-2  border-b text-gray-500" style="font-size: 16px;">
+                  <div class="ml-3 my-2">Assessment Setup</div>
+                </div>
 
                 <div class="card-body" style="padding: 0;">
                   <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-                    <!-- <div
-                        v-for="(item, idx) in  assessmentMenu"
-                        :key="idx"
-                        class="list-group-item list-group-item-action cursor-pointer"
-                        :class="item.value === menuSelected ? 'active' : ''"
-                        @click="changeMenu(item.value)"
-                    >
-                      <small style="font-size:12px;">{{item.text}}</small>
-                    </div> -->
+
 
                     <router-link
                   v-for="(item, idx) in  assessmentMenu" :key="idx"

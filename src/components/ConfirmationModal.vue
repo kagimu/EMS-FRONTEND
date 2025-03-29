@@ -21,6 +21,12 @@ const confirm = (title: string)  => {
   });
 };
 
+const props = defineProps({
+  removeBorder:String,
+})
+
+
+
 
 const rejectAction = () => {
   rejectConfirmationDialog.value = false;
@@ -41,7 +47,7 @@ defineExpose({
 
 <template>
 <div>
-  <AppModal title="&nbsp" v-model="rejectConfirmationDialog" lg>
+  <AppModal title="&nbsp" :removeBorder="props.removeBorder" v-model="rejectConfirmationDialog" lg>
     <div class="rounded-md p-2">
 
       <div>

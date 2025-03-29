@@ -125,7 +125,14 @@ export const useApplicationStore = defineStore("application", () => {
         let page = data?.page ?? "1"
         let per_page = data?.per_page ?? "15"
         let status = data?.status ?? ""
-        return await api.get("main/applications/all?page="+page+"&per_page="+per_page+"&status="+status)
+        let school_number = data?.school_number ?? ""
+        let campus_number = data?.campus_number ?? ""
+        let curriculum_number = data?.curriculum_number ?? ""
+        let campus_class_number = data?.campus_class_number ?? ""
+        let level_number = data?.level_number ?? ""
+        return await api.get("main/applications/all?page="+page+"&per_page="+per_page+"&status="+status+
+            "&school_number="+school_number+"&campus_number="+campus_number+"&curriculum_number="+curriculum_number+
+            "&campus_class_number="+campus_class_number+"&level_number="+level_number)
             .then((response) => {
                 applicationListResponse.value = response.data
             })

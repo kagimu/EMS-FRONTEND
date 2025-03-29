@@ -1,5 +1,153 @@
+<script setup>
+
+import NewLessonPlanReference from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPlanReference.vue";
+import {onMounted, ref, watch} from "vue";
+import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
+import LessonPlanDetailsPdf from "@/main/dashboard/curriculum/schemeOfWork/LessonPlanDetailsPdf.vue";
+import useCommonsStore from "@/composables/useCommons.js";
+import api from "@/config/api.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import EditLessonPlanReference from "@/main/dashboard/curriculum/schemeOfWork/EditLessonPlanReference.vue";
+
+const commons = useCommonsStore()
+const  notificationStore  = useNotificationStore()
+
+const referenceDialog = ref(false)
+const exportLoader = ref(false)
+const lessonPlanRef = ref(null)
+const lessonPlanDetailsInfo = ref(null)
+const scheme_sub_topic_number = ref(null)
+const confirmationRef = ref(null);
+const deletionLoader = ref(undefined)
+const referenceInfo = ref(null)
+
+const schemeOfWorkStore = useSchemeOfWorkStore()
+
+
+const props = defineProps({
+  lessonPlanInfo: {}
+})
+
+
+const exportLessonPlanPdf = () => {
+
+  exportLoader.value = true
+  schemeOfWorkStore.exportPdf(commons.initializePdfData("Lesson Plan", lessonPlanRef.value.innerHTML));
+}
+
+onMounted(() => {
+  fetchLessonInfo()
+})
+
+
+watch(
+    () => props.lessonPlanInfo,
+    async (data) => {
+      if (data) {
+        await fetchLessonInfo()
+      }
+    }
+)
+
+const fetchLessonInfo = async () => {
+  lessonPlanDetailsInfo.value = null
+  scheme_sub_topic_number.value = props.lessonPlanInfo.number
+  await schemeOfWorkStore.fetchLessonPlanDetails(props.lessonPlanInfo.number)
+}
+
+const showHideReferenceForm = () => {
+  referenceDialog.value = !referenceDialog.value
+}
+
+
+watch(
+    () => schemeOfWorkStore.lessonPlanResponse,
+    async (data) => {
+      if (data) {
+        lessonPlanDetailsInfo.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+watch(
+    () => schemeOfWorkStore.exportPdfResponse,
+    async (data) => {
+      if(data){
+        exportLoader.value = false
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => schemeOfWorkStore.addReferenceResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success",data.message)
+        await fetchLessonInfo()
+      }
+    }
+)
+
+
+watch(
+    () => schemeOfWorkStore.updateReferenceResponse,
+    async (data) => {
+      if(data){
+        referenceInfo.value = null
+        referenceDialog.value = false
+        notificationStore.successToast("Success",data.message)
+        await fetchLessonInfo()
+      }
+    }
+)
+
+
+
+const editReference = async (data) => {
+  referenceDialog.value = true
+  referenceInfo.value = data
+}
+
+const deleteReference = async (data, index) => {
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+data.name);
+  if (agreed) {
+    deletionLoader.value = index
+    await deleteNarrativeReport(data.lesson_plan_reference_number	)
+  }
+
+}
+
+
+const  deleteNarrativeReport = async (number) => {
+  await api.delete("main/lesson-plan/delete-reference/"+number)
+      .then((response) => {
+        if(response){
+          deletionLoader.value = undefined
+          notificationStore.successToast("Success",response.message)
+          fetchLessonInfo()
+        }
+
+      })
+      .catch((error) => {
+        if(error && error.response) {
+          notificationStore.errorToast("Error",error.response.data.message)
+          deletionLoader.value = undefined
+        }
+      });
+}
+
+
+
+</script>
+
 <template>
 <div class="text-sm">
+  <ConfirmationModal removeBorder="remove" ref="confirmationRef"></ConfirmationModal>
+
   <div class="flex justify-content-between" style="border-bottom: 1px solid #dee2e6; padding-bottom: 15px; margin-bottom: 25px;">
     &nbsp;
   <button type="button"  class="btn btn-sm buttonStyle btn-success mr-2" style="margin-right: 5px;"  @click="exportLessonPlanPdf">
@@ -49,25 +197,47 @@
         </button>
 
         <div v-if="referenceDialog">
-            <new-lesson-plan-reference v-if="lessonPlanDetailsInfo"
-                                       :lesson_plan_number="lessonPlanDetailsInfo.number"></new-lesson-plan-reference>
+
+            <new-lesson-plan-reference
+                v-if="lessonPlanDetailsInfo && !referenceInfo"
+                :lesson_plan_number="lessonPlanDetailsInfo?.number"></new-lesson-plan-reference>
+
+          <edit-lesson-plan-reference
+              v-else
+              :lesson_plan_number="lessonPlanDetailsInfo?.number"
+              :referenceInfo="referenceInfo"
+          ></edit-lesson-plan-reference>
         </div>
-        <div>
+        <div class="border border-1 mt-3 rounded-lg p-3" >
             <table style="width: 100%; margin-top: 3px"  v-if="lessonPlanDetailsInfo">
-                <thead >
+                <thead>
 
                 <tr>
-                    <td>#</td>
+<!--                    <td>#</td>-->
                     <td>Code</td>
                     <td>Name</td>
+                    <td>Action</td>
                 </tr>
 
                 </thead>
 
                 <tr v-for="(reference,idx) in lessonPlanDetailsInfo.references" :key="idx">
-                    <td>{{ idx + 1 }}</td>
+<!--                    <td>{{ idx + 1 }}</td>-->
                     <td>{{ reference.code }}</td>
                     <td>{{ reference.name }}</td>
+                    <td>
+                      <div>
+                        <i
+                            style="font-size: 13px;"
+                            data-bs-toggle="modal" data-bs-target="#levelModal"
+                            class="bi-pencil mr-2 cursor-pointer" @click="editReference(reference)"></i>
+                            <i
+                          style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteReference(reference, idx)"></i>
+                        <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === idx">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                      </div>
+                    </td>
                 </tr>
             </table>
         </div>
@@ -117,76 +287,7 @@
 </div>
 </template>
 
-<script setup>
 
-import NewLessonPlanReference from "@/main/dashboard/curriculum/schemeOfWork/NewLessonPlanReference.vue";
-import {ref, watch} from "vue";
-import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
-import LessonPlanDetailsPdf from "@/main/dashboard/curriculum/schemeOfWork/LessonPlanDetailsPdf.vue";
-import useCommonsStore from "@/composables/useCommons.js";
-
-const referenceDialog = ref(false)
-const exportLoader = ref(false)
-const lessonPlanRef = ref(null)
-const lessonPlanDetailsInfo = ref(null)
-const scheme_sub_topic_number = ref(null)
-const schemeOfWorkStore = useSchemeOfWorkStore()
-const commons = useCommonsStore()
-
-const props = defineProps({
-  lessonPlanInfo: {}
-})
-
-
-const exportLessonPlanPdf = () => {
-
-  exportLoader.value = true
-  schemeOfWorkStore.exportPdf(commons.initializePdfData("Lesson Plan", lessonPlanRef.value.innerHTML));
-}
-
-
-
-watch(
-    () => props.lessonPlanInfo,
-    async (data) => {
-      if (data) {
-        lessonPlanDetailsInfo.value = null
-        scheme_sub_topic_number.value = props.lessonPlanInfo.number
-        await schemeOfWorkStore.fetchLessonPlanDetails(props.lessonPlanInfo.number)
-      }
-    },
-    {deep: true}
-)
-
-
-const showHideReferenceForm = () => {
-    referenceDialog.value = !referenceDialog.value
-}
-
-
-watch(
-    () => schemeOfWorkStore.lessonPlanResponse,
-    async (data) => {
-      if (data) {
-       lessonPlanDetailsInfo.value = data.data
-      }
-    },
-    {deep: true}
-)
-
-watch(
-    () => schemeOfWorkStore.exportPdfResponse,
-    async (data) => {
-      if(data){
-        exportLoader.value = false
-      }
-    },
-    {deep:true}
-)
-
-
-
-</script>
 
 <style scoped>
 .buttonStyle{

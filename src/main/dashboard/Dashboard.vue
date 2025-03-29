@@ -50,13 +50,14 @@ const menuList = ref([
   {title:"Home", name:"home", icon:"bi-house",action:"view_dashboard"},
   {title:"Curriculum", name:"curriculum", icon:"bi-pen", action:"view_curriculum"},
   {title:"School", name:"school", icon:"bi-house-add" , action:"view_school"},
-  {title:"Time table", name:"timetable", icon:"bi-pen",action:"view_timetable-details"},
+  // {title:"Time table", name:"timetable", icon:"bi-pen",action:"view_timetable-details"},
   {title:"Student Application", name:"student-application", icon:"bi-person-plus",action:"view_applications"},
   {title:"Student Admission", name:"admission-list", icon:"bi-database-down",action:"view_admissions"},
   {title:"Financial Records", name:"financial-records", icon:"bi-receipt",action:"view_financial_records"},
   {title:"Student Enrolment", name:"enrolment", icon:"bi-database-down",action:"view_enrollments"},
   {title:"Catering", name:"catering", icon:"bi-egg-fried",action:"view_catering_menu" },
-  {title:"Calendar", name:"general-calendar", icon:"bi-calendar3",action:"view_calendar"},
+  // {title:"Calendar", name:"general-calendar", icon:"bi-calendar3",action:"view_calendar"},
+       {title:"Attendance", name:"manage-attendance", icon:"bi-journal-richtext" ,action:""},
   {title:"Account Management", name:"account-management", icon:"bi-people",action:"view_account-management"},
   {title:"Settings", name:"settings", icon:"bi-gear",action:"access_settings_menu"},
 ])
@@ -146,8 +147,11 @@ name.value = p.first_name+" "+p.second_name+" "+p.last_name
 
 
 const userLogout = () =>{
+  let landT = localStorage.getItem("landingPageTitle")
 
   localStorage.clear();
+
+  localStorage.setItem("landingPageTitle", landT)
 
   let r = router.resolve({
     name: "login"
@@ -344,7 +348,7 @@ const toggleContactDetails = () => {
 
 
 
-    <div class="flex-1 h-screen overflow-y-scroll scrollbar-thin pb-[120px] bg-[#ecf0f5]">
+    <div class="flex-1 h-screen overflow-y-scroll scrollbar-thin pb-[120px]">
       <div class="px-3 pt-[50px]">
 
 

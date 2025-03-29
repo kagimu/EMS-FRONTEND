@@ -11,11 +11,13 @@ import ConfirmationModal from "@/components/ConfirmationModal.vue";
 const confirmationRef = ref(null);
 
 import { useAbility } from '@casl/vue';
+import { errorMessages } from "vue/compiler-sfc";
 const { can } = useAbility()
 
 
 const routerData = useRouter()
 const levelStore = useLevelStore()
+const stream_number = ref(null)
 
 
 const classStore = useClassesStore()
@@ -27,6 +29,7 @@ const classList = ref([])
 const streamClass = ref(null)
 const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
+const buttonLoader = ref(false)
 
 const streamForm = reactive({
   name: "",
@@ -44,13 +47,32 @@ const editClass = (data) => {
 
 const addStream = (data) => {
 //  alert(JSON.stringify(data))
+
+ streamClass.value = data.name
   streamDialog.value = true
   streamForm.class_level_number = data.number
   streamForm.campus_class_number = data.number
+  streamForm.name = ""
+  stream_number.value = ""
+}
+
+const editStream = (lst,cls,classN) => {
+  streamClass.value = cls
+  streamDialog.value = true
+  stream_number.value = lst.stream_number
+  streamForm.name = lst.name
+  streamForm.campus_class_number = classN
 }
 
 const saveStream = () => {
+  buttonLoader.value = true
+  if(stream_number.value){
+    streamForm.stream_number = stream_number.value
+    streamForm.status = "ACTIVE"
+    classStore.updateStream(streamForm)
+  }else{
   classStore.addStream(streamForm)
+  }
 }
 
 
@@ -60,8 +82,10 @@ const deleteStream = async (lst) => {
 
 const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+lst.name);
 if (agreed) {
-  
-  alert(JSON.stringify(lst))
+  let data = {
+    stream_number: lst.stream_number
+  }
+  await classStore.deleteClassStream(data)
 }
 
 
@@ -110,6 +134,7 @@ watch(
     () => classStore.newStreamSuccess,
     async (data) => {
       if (data) {
+        buttonLoader.value = false
         streamForm.name = ""
         filterClassInfo()
         notificationStore.successToast("Success", data.message)
@@ -118,6 +143,44 @@ watch(
     {deep: true}
 )
 
+
+
+watch(
+    () => classStore.updateStreamSuccess,
+    async (data) => {
+      if (data) {
+        streamDialog.value = false
+        buttonLoader.value = false
+        streamForm.name = ""
+        notificationStore.successToast("Success", data.message)
+        filterClassInfo()
+      }
+    },
+    {deep: true}
+)
+
+watch (
+    () => classStore.errorMessage,
+    async (data) => {
+      if(data){
+        // filterClassInfo()
+        buttonLoader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => classStore.deleteStreamResponse,
+    async (data) => {
+      if (data) {
+        filterClassInfo()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep: true}
+)
 
 
 </script>
@@ -157,7 +220,12 @@ watch(
                 data-bs-target="#streamModal"
 
                 style="font-size: 13px;"
-                @click="saveStream">Save Stream(s)
+                @click="saveStream">
+                <span v-if="stream_number != ''">Update Stream</span>
+                <span v-else>Save Stream(s)</span>
+              <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
+                <span class="visually-hidden">Loading...</span>
+              </div>
             </button>
 
           </div>
@@ -202,7 +270,8 @@ watch(
                         <div v-for="(lst,idx) in list.streams" :key="idx">
                         <small class="capitalize">
                           {{lst.name}}
-                          <i class="bi bi-x-circle cursor-pointer" style="font-size: 13px;" @click="deleteStream(lst)"></i>
+                          <i class="bi bi-x-circle cursor-pointer" style="font-size: 13px;color:red" @click="deleteStream(lst)"></i>
+                          <i class="bi bi-pencil cursor-pointer ml-2" style="font-size: 11px;color:#0d6efd" @click="editStream(lst,list.name,list.number)"></i>
                         </small>
                       </div>
                       </td>

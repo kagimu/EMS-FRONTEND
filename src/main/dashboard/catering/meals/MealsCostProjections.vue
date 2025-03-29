@@ -5,11 +5,13 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import useNotificationStore from "@/composables/useNotification.js";
+import useCommonsStore from "@/composables/useCommons.js";
 
 const notificationStore  = useNotificationStore()
 const cateringStore = useCateringStore()
 const campusStore = useCampusStore()
 const schoolStore = useSchoolStore()
+const commons = useCommonsStore()
 
 
 const schoolsList = ref([])

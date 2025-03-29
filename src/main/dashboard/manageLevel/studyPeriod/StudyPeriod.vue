@@ -10,6 +10,7 @@ import AppModal from "@/components/AppModal.vue";
 import { useAbility } from '@casl/vue';
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import { reactive } from "vue";
 const confirmationRef = ref(null);
 
 const { can } = useAbility()
@@ -40,6 +41,10 @@ onMounted(
       classStore.fetchCampusLevel(campus_curriculum_number)
     }
 )
+
+const formData = reactive({
+  next_term_begins: ""
+})
 
 const fetchAcademicYear = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
@@ -175,6 +180,39 @@ watch(
     }
 )
 
+const studyPeriodN = ref(null)
+const loader = ref(false)
+
+const configNextTerm = (dat,study_period_number) => {
+  studyPeriodN.value = study_period_number
+
+  const date = new Date(dat);
+  const formattedDate = date.toISOString().split('T')[0];
+
+  formData.next_term_begins = formattedDate
+}
+
+const setNextTermDate = async (academic_year_number) => {
+  loader.value = true
+  const data = {
+    academic_year_number:academic_year_number,
+    next_term_begins:formData.next_term_begins
+  }
+studyPeriodStore.setNextTermDate(data)
+ alert(JSON.stringify(data))
+}
+
+
+
+watch(
+    () => studyPeriodStore.setNextTermDateResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success","Next Study Period configured successfully")
+      }
+    }
+)
+
 </script>
 <template>
   <div>
@@ -248,16 +286,15 @@ watch(
     <table class="table table-hover caption-top text-sm" style="font-size: 14px;" v-if="can('view_term','manage')">
       <thead>
       <tr>
-        <th class="w-[5%]" scope="col">#</th>
+        <th class="w-[2%]" scope="col">#</th>
         <th class="w-[15%]"  scope="col">Level</th>
         <th class="w-[20%]"  scope="col">Academic Year</th>
-        <th class="w-[25%]"  scope="col">Study Period</th>
-        <th class="w-[15%]"  scope="col">Classes</th>
+        <th class="w-[33%]"  scope="col">Study Period</th>
+        <th class="w-[10%]"  scope="col">Classes</th>
         <th class="w-[5%]"  scope="col">Action</th>
       </tr>
       </thead>
       <tbody>
-
       <tr v-for="(studyPeriod, index) in studyPeriodList" :key="index">
         <td> {{index+1}}</td>
         <td class="capitalize"> {{studyPeriod?.level_name}}</td>
@@ -270,6 +307,30 @@ watch(
 
            <div class="mb-1">From: <span class="border px-3 rounded-md text-[green]">{{studyPeriod?.study_period_start_date	}}</span></div>
            <div>To: <span class="border px-3 rounded-md text-[green]">{{studyPeriod?.study_period_end_date	}}</span> </div>
+           <div class="mt-2" style="cursor: pointer;" @click="configNextTerm(studyPeriod?.study_period_end_date,studyPeriod?.study_period_number)">Next Term Begins: <span class="border px-3 rounded-md text-[orange]">
+            <b>{{studyPeriod?.study_period_end_date}}</b></span> 
+            
+            <div class="row" v-if="studyPeriodN ==studyPeriod.study_period_number">
+              <div class="col-12">
+                <input  type="date" class="border px-3 rounded-md text-[orange] mt-2 form-control" v-model="formData.next_term_begins"/>
+              </div>
+              <div class="">
+                <button  type="button" class="btn btn-sm buttonStyle btn-outline-primary mt-2 btn-sm text-xs"
+                 @click="setNextTermDate(studyPeriod?.academic_year_number)">
+                 <i class="bi bi-gear"></i>&nbsp;Config
+                 
+            <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </span>
+
+                </button>
+
+              </div>
+
+            </div>
+
+
+          </div>
          </div>
         </td>
         <td class="capitalize">

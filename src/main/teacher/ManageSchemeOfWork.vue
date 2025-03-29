@@ -168,9 +168,13 @@ const viewLessonPlan = (lst) => {
   campus_number: form.campus_number,
   school_number:form.school_number,
   curriculumNumber:form.curriculumNumber,
-  level:form.level
+  level:form.level,
+  subject_number:scheme_subject_number.value
   }
+
   schoolInfo.value = schoolData
+
+  // alert(JSON.stringify(schoolInfo.value))
 
   lessonPlanDetailsDialog.value = true
   lessonPlanInfo.value = lst

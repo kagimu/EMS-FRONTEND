@@ -7,7 +7,11 @@ import PaginationTemplate from "@/components/PaginationTemplate.vue";
 import StudentApplicationDetails from '@/main/dashboard/studentApplication/StudentApplicationDetails.vue';
 import AppModal from "@/components/AppModal.vue";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import NewApplication from "@/main/dashboard/studentApplication/NewApplication.vue"
+
 const confirmationRef = ref(null);
+
+
 
 const showingModal = ref(false)
 const tableLoader = ref(true)
@@ -24,6 +28,7 @@ const page = ref(1)
 const per_page = ref(20)
 const total_items = ref(0)
 const total_rows = ref(0)
+const isStaff = ref("")
 
 
 const setApplicationNumber = (ap) =>{
@@ -137,10 +142,13 @@ watch (
     },
     {deep:true}
 )
+const applicationN = ref(null)
+const showAppmodal = ref(false)
 
 const goToResume = (applicationId) => {
-// alert(applicationId)q
-localStorage.setItem("application-id", applicationId)
+  showAppmodal.value = true
+  applicationN.value = applicationId
+// localStorage.setItem("application-id", applicationId)
 }
 
   //delete
@@ -184,6 +192,11 @@ watch (
       <StudentApplicationDetails :application-number="applications" />
     </AppModal>
 
+
+    <AppModal title="New Application" v-model="showAppmodal" xl4>
+      <NewApplication :applicationNumb="applicationN" :applicationMode="isStaff"></NewApplication>
+    </AppModal>
+
     <ConfirmationModal ref="confirmationRef" />
 
     <!-- Loader -->
@@ -198,14 +211,15 @@ watch (
       <div class="row">
         <div class="col-12">
           <div class=" p-4 bg-white">
-            <p class="mt-3 ml-3 text-lg font-bold">Applications</p>
-            <PaginationTemplate
+            <p class="mt-3 ml-3 text-sm mb-2">
+             <i class="bi bi-book"></i>&nbsp;&nbsp;APPLICATIONS</p>
+            <!-- <PaginationTemplate
               @perPageChanged="doFetchApplication"
               v-model:perPage="per_page"
               :per_page="per_page"
               :total_items="total_items"
               :total_rows="total_rows"
-            />
+            /> -->
 
             <div class="row mt-3">
               <div v-for="(applist, index) in applicationInfoList" :key="index" class="col-md-6 mb-3">
@@ -237,13 +251,13 @@ watch (
                         <small><i class="bi bi-eye"></i> View Details</small>
                       </button>
 
-                      <button
+                      <!-- <button
                         @click="deleteThisData(applist)"
                         class="ml-2 text-red-600"
                         title="Delete"
                       >
                         <small><i class="bi bi-trash"></i></small>
-                      </button>
+                      </button> -->
                     </div>
                   </div>
                 </div>

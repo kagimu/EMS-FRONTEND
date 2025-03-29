@@ -39,15 +39,14 @@ const editComments = (comm) => {
 
 
 const deleteThisData = async (id,name) => {
-
   const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
   if (agreed) {
     let data = {
-   
+   id : id
     }
-  }
-  
 
+    await teacherCommentStore.deleteHeadTeacherComment(data)
+  }
 }
 
 watch(
@@ -70,6 +69,26 @@ watch(
 )
 
 
+watch(
+    () => teacherCommentStore.deleteHeadTeacherCommentResponse,
+    async (data) => {
+      if(data){
+        await teacherCommentStore.fetchTeacherComments()
+        notificationStore.successToast("success",data.message)
+      }
+    }
+)
+
+watch(
+    () => teacherCommentStore.errorMessage,
+    async (data) => {
+      if(data){
+        await teacherCommentStore.fetchTeacherComments()
+        notificationStore.errorToast("error",data.error)
+
+      }
+    }
+)
 
 </script>
 
@@ -119,7 +138,7 @@ watch(
           <td>{{ com.study_period  }}</td>
           <td>
               <button  class="link-primary" style="border-width: 0px;text-decoration: none;" @click="editComments(com)"><small><i  style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small></button>
-              <button @click="deleteThisData(com.number,com.comment)"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>
+              <button @click="deleteThisData(com.id,com.comment)"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>
             </td>
           </tr>
           </tbody>

@@ -1,0 +1,62 @@
+<script setup>
+
+import {useRouter} from "vue-router";
+import AssessmentMetrics from "@/main/dashboard/assessment/assessmentComponents/AssessmentMetrics.vue";
+import router from "@/config/router.js";
+import ManageNarrativeSchedule from "@/main/dashboard/narrative/narrativeComponents/ManageNarrativeSchedule.vue";
+
+const routerData = useRouter()
+const campusNumber = routerData.currentRoute.value.query.id
+const schoolNumber = routerData.currentRoute.value.query.sch
+let campusCurriculumNumber = routerData.currentRoute.value.query.crr
+let curriculumNumberParent = routerData.currentRoute.value.query.cr
+
+
+
+const selectedPage = routerData.currentRoute.value.query.type
+const selectedTab = routerData.currentRoute.value.query.tab ?? 'manage-narrative'
+
+const switchTabs = (tab) => {
+  router.push({name: "campus-curriculum-setup", query: {id:campusNumber,sch:schoolNumber, crr:campusCurriculumNumber, cr:curriculumNumberParent,type:selectedPage,tab:tab}});
+}
+
+</script>
+<template>
+    <div>
+
+    <div class="flex border-b mt-1">
+
+      <div
+          class="cursor-pointer text-sm rounded-t-md ml-1 mr-1"
+          :class="selectedTab === 'manage-narrative' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb] bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'"
+          @click="switchTabs('manage-narrative')">
+          <div class="py-1 px-3">
+            <i class="bi bi-box-arrow-in-right mr-1"></i>
+            Narrative Schedule
+          </div>
+        </div>
+
+      </div>
+
+            <div class="card-body" style="padding: 0;">
+
+                <div v-if="selectedTab === 'manage-narrative'">
+                <ManageNarrativeSchedule></ManageNarrativeSchedule>
+                </div>
+
+            </div>
+
+  
+    </div>
+  </template>
+  
+
+  
+  <style scoped>
+  
+  input:focus {
+    box-shadow: none;
+  }
+  
+
+  </style>

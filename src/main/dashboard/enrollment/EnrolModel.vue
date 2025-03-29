@@ -626,11 +626,11 @@ watch(
                                     type="checkbox" 
                                     checked
                                     disabled
-                                    style="width: 15px; height: 15px; font-size: 13px; text-align: center;"
+                                    style="width: 15px; height: 15px; font-size: 13px; text-align: center;display:none"
                                     />
                               </td>
                               <td style="font-size: 12px;">{{ itemData.item_name }}</td>
-                              <td style="font-size: 12px;">{{ itemData.unit_cost }}</td>
+                              <td style="font-size: 12px;">{{ itemData.unit_cost.toLocaleString() }}</td>
                               <td>
                                  <input type="text" 
                                     @keypress="commons.numbersOnlyValidator($event)" 
@@ -669,7 +669,7 @@ watch(
                                     style="width: 15px; height: 15px; font-size: 13px; text-align: center;"/>
                               </td>
                               <td style="font-size: 12px;">{{ item.item_name }}</td>
-                              <td style="font-size: 12px;">{{ item.cost }}</td>
+                              <td style="font-size: 12px;">{{ item.cost.toLocaleString() }}</td>
                               <td>
                                  <input type="text" 
                                     @keypress="commons.numbersOnlyValidator($event)" 
@@ -691,7 +691,7 @@ watch(
              <!-- {{ billableData.length }} -->
       <div class="card mb-2 mt-4 shadow-sm" v-if="billableData.length != 0">
          <div class="card-header bg-primary text-white p-2">
-            <h6 class="m-0"><i class="bi bi-cash"></i>&nbsp;Paid Details</h6>
+            <h6 class="m-0"><i class="bi bi-cash"></i>&nbsp;Payment Details</h6>
          </div>
          <div class="card-body p-3">
             <div class="mb-2">

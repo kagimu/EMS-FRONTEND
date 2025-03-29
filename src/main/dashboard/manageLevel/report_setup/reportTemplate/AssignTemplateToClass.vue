@@ -1,14 +1,12 @@
 <script setup>
 import {onMounted, reactive, ref, watch} from "vue";
-import useCommonsStore from "@/composables/useCommons.js";
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useRouter} from "vue-router";
 
-const commons = useCommonsStore()
+
 const reportSetupStore = useReportSetupStore()
 const notificationStore  = useNotificationStore()
 const routerData = useRouter()
@@ -16,9 +14,7 @@ const campusStore = useCampusStore()
 const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const schoolN = routerData.currentRoute.value.query.sch
-const levelStore = useLevelStore()
 const campusLevelList = ref([])
-const campusClassList = ref([])
 const classStore = useClassesStore()
 const campus_level_number = ref("")
 const addedClassData = ref([])
@@ -47,7 +43,7 @@ watch(
 const filterAddedClasses = () => {
   let draft = props.addedClasses
   if(draft) {
-    addedClassData.value = draft[0].classes.map(item => item.number);
+    addedClassData.value = draft[0]?.classes?.map(item => item.number);
   }
 }
 
@@ -61,7 +57,8 @@ const classList = ref([])
 const form = reactive({
   report_template_number:props.reportTemplateNumber,
   classes:[],
-  campus_number:campusNumber
+  campus_number:campusNumber,
+  campus_curriculum_number:routerData.currentRoute.value.query.crr
 })
 
 const toggleClass = (selectedClass) => {
@@ -140,9 +137,7 @@ watch(
 
 <template>
   <div>
-<!--    {{addedClasses}}&#45;&#45;&#45;&#45;&#45;&#45;
-{{addedClassData}} -&#45;&#45;
-    {{form.classes}}-->
+
   <form @submit.prevent="addClassToReportTemplate">
 
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">

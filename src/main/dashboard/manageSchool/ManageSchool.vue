@@ -138,6 +138,10 @@ const successUpload = (data) => {
 }
 
 
+const curriculums = ref([
+  { id: 1, name: 'Wholesome', completedPercentage: 100 },
+])
+
 </script>
 
 <template>
@@ -184,7 +188,7 @@ const successUpload = (data) => {
                   <i v-else class="bi bi-card-image w-[50px] text-[30px] border rounded-md p-[10px] bg-[#e4e6eb] text-gray-600"></i>
                 </div>
                 <div class="px-2">
-                  <div class="text-gray-600">{{school?.name}}</div>
+                  <div class="text-gray-700">{{school?.name}}</div>
                 </div>
               </div>
               <div class="flex">
@@ -222,8 +226,26 @@ const successUpload = (data) => {
               </div>
 
               <div class="mt-2" v-show="showSelected === school.number">
-                <div class="ml-2" v-for="(curr, idx) in school.school_curriculum" key="idx">
-                  <div class="text-[13px] text-[#575656]">{{idx+1}}. {{curr.name}}</div>
+                <!-- <div class="ml-2" v-for="(curr, idx) in school.school_curriculum" key="idx"> -->
+                  <!-- <div class="text-[13px] text-[#575656]">{{idx+1}}. {{curr.name}}</div> -->
+
+                
+                <div v-for="(curr, idx) in school.school_curriculum" :key="idx" class="curriculum">
+                <div class="curriculum-header">
+                <h3 class="text-sm">{{idx+1}}. {{curr.name}}</h3>
+<!--                <span>{{ 90 }}%</span>-->
+                </div>
+<!--                <div class="progress-bar">-->
+<!--                <div-->
+<!--                class="progress-fill"-->
+<!--                :class="{ 'complete': 90 === 100 }"-->
+<!--                :style="{ width: 90 + '%' }"-->
+<!--                ></div>-->
+<!--                </div>-->
+             
+              
+
+
                 </div>
               </div>
 
@@ -246,7 +268,6 @@ const successUpload = (data) => {
                       </span>
                 </button>
               </router-link>
-
 
             </div>
 
@@ -289,4 +310,43 @@ const successUpload = (data) => {
   color: #ffffff;
 }
 
+.curriculum-progress {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 600px;
+  margin: 3px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.curriculum {
+  margin-bottom: 0px;
+}
+
+.curriculum-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #4caf50;
+  transition: width 0.3s ease;
+}
+
+.progress-fill.complete {
+  background: #2196f3; /* Blue color for 100% completion */
+}
 </style>

@@ -101,7 +101,8 @@ if (agreed) {
   let data = {
   report_template_id:id
   }
-  reportSetupStore.deleteReportTemplate(data)
+  alert(id)
+  await reportSetupStore.deleteReportTemplate(id)
 }
 }
 
@@ -120,6 +121,7 @@ watch(
     async (data) => {
           if (data) {
               notificationStore.successToast("Success", data.message)
+              filterReportTemplate()
           }
     },
     {deep: true}
@@ -136,10 +138,10 @@ watch(
     </AppModal>
     
     <AppModal title="Assign Class To Template" v-model="showAssignModal" lg>
-        <AssignTemplateToClass :reportTemplateNumber="reportTemplateNumber"></AssignTemplateToClass>
+        <AssignTemplateToClass :addedClasses="classOnTemplateList" :reportTemplateNumber="reportTemplateNumber"></AssignTemplateToClass>
     </AppModal>
 
-    <AppModal title="Comfirm !" v-model="showClearClassModal" xs>
+    <AppModal title="Confirm !" v-model="showClearClassModal" xs>
         <clearClassModal :classListData="classListData"></clearClassModal>
     </AppModal>
 
@@ -181,11 +183,12 @@ watch(
             </td>
             <td>
              <div>
+              <!-- {{ repoData }} -->
                 <i
                     style="font-size: 14px;"
                     class="bi-pencil mr-2 cursor-pointer " @click="editReportTemplate(repoData,repoData.name)"></i> &nbsp;
                 <i
-                    style="font-size: 14px;" class="bi-trash cursor-pointer" @click="deleteThisData(repoData.number,repoData.name)"></i>
+                    style="font-size: 14px;" class="bi-trash cursor-pointer" @click="deleteThisData(repoData.report_template_id,repoData.name)"></i>
               </div>
             </td>
           </tr>

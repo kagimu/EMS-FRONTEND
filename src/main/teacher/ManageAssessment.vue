@@ -5,14 +5,14 @@ import {onMounted, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 import { useAbility } from '@casl/vue';
-import StudentScore from "@/main/dashboard/manageLevel/report_setup/report_forms/StudentScore.vue";
-import GenerateReport from "@/main/dashboard/report-card/GenerateReport.vue";
-import ReportSummary from "@/main/dashboard/manageLevel/report_setup/report_forms/ReportSummary.vue";
+import StudentScoreByTeacher from "@/main/dashboard/manageLevel/report_setup/report_forms/StudentScoreByTeacher.vue";
+import GenerateReportByTeacher from "@/main/dashboard/report-card/GenerateReportByTeacher.vue";
+import ReportSummaryByTeacher from "@/main/dashboard/manageLevel/report_setup/report_forms/ReportSummaryByTeacher.vue";
 import AssessmentMetrics from "@/main/dashboard/assessment/assessmentComponents/AssessmentMetrics.vue";
 
 const { can } = useAbility()
 const routerData = useRouter()
-const selectedTab = routerData.currentRoute.value.query.tab ?? 'assessment-schedules'
+const selectedTab = routerData.currentRoute.value.query.tab ?? 'enter-marks'
 const curriculumStore = useCurriculumStore()
 const curriculumList = ref([])
  const curriculumNumber = ref("")
@@ -59,16 +59,16 @@ watch(curriculumNumber, (newValue) => {
     <div class="bg-white border rounded-md py-3 px-2 mt-3">
   
   <div class="flex border-b mt-1">
-    <div class="cursor-pointer text-sm rounded-t-md ml-1 mr-1" :class="selectedTab === 'assessment-schedules' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('assessment-schedules')">
+    <!-- <div class="cursor-pointer text-sm rounded-t-md ml-1 mr-1" :class="selectedTab === 'assessment-schedules' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('assessment-schedules')">
       <div class="py-1 px-3">
         <i class="bi bi-box-arrow-in-right mr-1"></i>
       Assessment Schedules
       </div>
-    </div>
+    </div> -->
     <div class="cursor-pointer text-sm  rounded-t-md mr-1" :class="selectedTab === 'enter-marks' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('enter-marks')">
       <div class="py-1 px-3">
         <i class="bi bi-box-arrow-in-right mr-1"></i>
-       Enter Marks
+       Enter Student Scores
       </div>
     </div>
     <div class="cursor-pointer text-sm  rounded-t-md mr-1" :class="selectedTab === 'generate-reports' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('generate-reports')">
@@ -85,23 +85,23 @@ watch(curriculumNumber, (newValue) => {
     </div>
   </div>
 
-  <div v-if="selectedTab === 'assessment-schedules'">
+  <!-- <div v-if="selectedTab === 'assessment-schedules'">
    <AssessmentMetrics></AssessmentMetrics>
-  </div>
+  </div> -->
   <div v-if="selectedTab === 'assessment'">
    
   </div>
 
   <div v-if=" selectedTab === 'enter-marks'">
-              <StudentScore></StudentScore>
+              <StudentScoreByTeacher></StudentScoreByTeacher>
                 </div>
 
                 <div v-if=" selectedTab === 'generate-reports'">
-                 <GenerateReport></GenerateReport>
+                 <GenerateReportByTeacher></GenerateReportByTeacher>
                 </div>
 
                 <div v-if=" selectedTab === 'report-summary'">
-                  <ReportSummary></ReportSummary>
+                  <ReportSummaryByTeacher></ReportSummaryByTeacher>
                    </div>
 </div>
   </div>

@@ -13,6 +13,9 @@ export const usePromotionStore = defineStore("promotion", () => {
     let promotionByCampusClassNumberResponse = ref(null)
     const errorMessage = ref(null)
     let promotionsResponse = ref(null)
+    let promotedStudentsResponse = ref(null)
+    let promotionSettingDetailsResponse = ref(null)
+    let promotionSettingGradesResponse = ref(null)
 
     async function newPromotionSetting(data) {
         return await api.post("main/promotions/settings", data)
@@ -26,8 +29,8 @@ export const usePromotionStore = defineStore("promotion", () => {
             })
     }
 
-    async function fetchPromotionSetting() {
-        return await api.get("main/promotions/settings")
+    async function fetchPromotionSetting(data) {
+        return await api.get("main/promotions/settings?study_period_number="+data?.study_period_number)
             .then((response) => {
                 PromotionSettingResponse.value = response.data
             })
@@ -73,10 +76,34 @@ export const usePromotionStore = defineStore("promotion", () => {
             })
     }
 
-    async function fetchPromotionSettingValue() {
-        return await api.get("main/promotions/settings-values")
+    async function fetchPromotionSettingValue(promotion_setting_number) {
+        return await api.get("main/promotions/settings-values?promotion_setting_number=" + (promotion_setting_number ?  promotion_setting_number : ""))
             .then((response) => {
                 promotionSettingValueResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchPromotionSettingDetails(promotion_setting_number) {
+        return await api.get("main/promotions/settings/details?promotion_setting_number="+promotion_setting_number)
+            .then((response) => {
+                promotionSettingDetailsResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchPromotionSettingGrades(promotion_setting_number) {
+        return await api.get("main/promotions/settings/grades?promotion_setting_number="+promotion_setting_number)
+            .then((response) => {
+                promotionSettingGradesResponse.value = response.data
             })
             .catch((response) => {
                 if(response && response.response){
@@ -121,25 +148,41 @@ export const usePromotionStore = defineStore("promotion", () => {
             })
     }
 
+    async function fetchPromotedStudents() {
+        return await api.get("main/promotions/promotedStudents")
+            .then((response) => {
+                promotedStudentsResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     return {
         newPromotionSettingResponse,
         errorMessage,
-        updatePromotionSetting,
-        deletePromotionSetting,
         PromotionSettingResponse,
         updatePromotionSettingResponse,
         deletePromotionSettingResponse,
-        newPromotionSetting,
         promotionSettingValueResponse,
+        newPromotionSettingValueResponse,
+        promotionByCampusClassNumberResponse,
+        newPromotionsResponse,
+        promotionsResponse,
+        promotedStudentsResponse,
+        promotionSettingDetailsResponse,
+        promotionSettingGradesResponse,
+        newPromotionSetting,
         fetchPromotionSetting,
         fetchPromotionSettingValue,
         newPromotionSettingValue,
-        newPromotionSettingValueResponse,
         newPromotion,
-        promotionByCampusClassNumberResponse,
         fetchPromotionByCampusClassNumber,
-        newPromotionsResponse,
-        promotionsResponse,
-        fetchPromotions
+        fetchPromotions,
+        fetchPromotedStudents,
+        fetchPromotionSettingDetails,
+        fetchPromotionSettingGrades
     }
 } )

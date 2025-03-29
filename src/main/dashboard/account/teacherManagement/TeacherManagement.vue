@@ -225,6 +225,16 @@ watch(
     }
 )
 
+watch(
+    () => teacherStore.assignTeacherResponse,
+    async (data) => {
+      if (data) {
+        teacherDialog.value = false
+        notificationStore.successToast("Success",data.message)
+      }
+    }
+)
+
 </script>
 
 <template>

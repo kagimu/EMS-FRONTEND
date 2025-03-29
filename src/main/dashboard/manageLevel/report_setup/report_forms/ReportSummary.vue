@@ -57,10 +57,9 @@ const showStudentReport = (summary) => {
   if(summary) {
     showStudentsMarks.value = true
     reportSummaryData.value = summary
+
     let data = {
       report_summary_number:summary.number,
-      html_report_template:"victorious-report-primary"
-      // html_report_template:" noregrets-report-primary"
     }
     reportStore.fetchReportDetailsInfo(data)
   }
@@ -73,12 +72,15 @@ const doFilterReportSummary = () =>{
   let options = {
     page: 1,
     per_page: per_page.value,
-    student_number: "",
-    study_period_number: study_period_number.value,
-    class_number: class_number.value,
     campus_number:campusNumber,
+    campus_level_number: campus_level_number.value,
+    academic_year_number: academic_year_number.value,
+    class_number: class_number.value,
+    study_period_number: study_period_number.value,
+    student_number: "",
     stream_number: "",
     grade: "",
+    curriculum_number:routerData.currentRoute.value.query.cr
   }
 
   reportStore.fetchReportSummary(options)
@@ -102,13 +104,16 @@ function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
 
     tableLoader.value = true
     let options = {
-    page: (page.value+1),
-    per_page: per_page.value,
-    student_number: "",
-    study_period_number: study_period_number.value,
-    class_number: class_number.value,
-    stream_number: "",
-    grade: "",
+      page: (page.value+1),
+      per_page: per_page.value,
+      campus_number:campusNumber,
+      campus_level_number: campus_level_number.value,
+      academic_year_number: academic_year_number.value,
+      class_number: class_number.value,
+      study_period_number: study_period_number.value,
+      student_number: "",
+      stream_number: "",
+      grade: "",
   }
 
   reportStore.fetchReportSummary(options)
@@ -125,12 +130,14 @@ const fetchCampusLevel = () => {
 const fetchAcademicYea = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
 
-
   let data = {
     school_number:schoolN,
     campus_level_number:campus_level_number
   }
   campusStore.fetchClassesBySchool(data)
+
+  doFilterReportSummary()
+
 }
 
 
@@ -262,7 +269,6 @@ watch(
      <AppModal title="Add Teachers Comment" v-model="showAddCommentModal" lg>
         <NewCommentFromTeacher :reportSummaryNumber="reportSummaryNumber"></NewCommentFromTeacher>
     </AppModal>
-
 
 
      <div class="row">

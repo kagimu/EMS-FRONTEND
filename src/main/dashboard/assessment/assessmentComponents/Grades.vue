@@ -23,7 +23,6 @@ const showGradeModal = ref(false)
 const gradeDataInfo = ref([])
 const editModel = ref(false)
 const deletionLoader = ref(undefined)
-const grade_group_number = ref("")
 const aggregateGroupData = ref([])
 
 
@@ -41,7 +40,6 @@ onMounted(
 
 const doFetchGrades = () => {
   let data = {
-    grade_group_number:grade_group_number.value,
     school_number:schoolNumber
   }
   assessmentStore.fetchGrades(data)
@@ -159,22 +157,6 @@ const deleteGrade = async (data, index) => {
 
 
 
-
-      <div class="grid grid-cols-3 gap-2 mt-4 px-3">
-        <div>
-          <div class="mb-2">
-            <select
-                class="form-select form-select-sm shadow-none" required
-                v-model="grade_group_number"
-                @change="doFetchGrades"
-            >
-              <option disabled value="">--Filter by aggregate group--</option>
-              <option v-for="(list,index) in aggregateGroupData" :key="index" :value="list.number">{{ list.name }}</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
       <div class="mt-1">
         <table
           class="table table-striped"
@@ -182,7 +164,7 @@ const deleteGrade = async (data, index) => {
         <thead>
         <tr>
           <th class="w-[5%]">#</th>
-          <th class="w-[15%]">Group</th>
+          <!-- <th class="w-[15%]">Group</th> -->
           <th scope="col">Name</th>
           <th scope="col">Short Name</th>
           <th scope="col">Status</th>
@@ -192,7 +174,7 @@ const deleteGrade = async (data, index) => {
         <tbody>
         <tr v-for="(gradeList, index) in gradeData " :key="index">
           <td>{{ gradeList?.code }}</td>
-          <td>{{ gradeList?.grade_group }}</td>
+          <!-- <td>{{ gradeList?.grade_group }}</td> -->
           <td>{{ gradeList?.name }}</td>
           <td>{{ gradeList?.short_name }}</td>
           <td><span class="border px-2 rounded-md">{{ gradeList.status }}</span></td>

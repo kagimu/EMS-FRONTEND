@@ -60,7 +60,7 @@ const form = reactive({
   
       <div class="row">
         <div class="col-3">
-          <div class="card mt-3">
+          <div class="card p-0 mt-3">
             <div class="card-body" style="padding: 0;">
               <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Account</div>
   

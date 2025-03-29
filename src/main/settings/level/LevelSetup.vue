@@ -63,8 +63,7 @@ if (agreed) {
   let info = {
     number:data.number
   }
-
-  levelStore.deleteLevelSetUp(info)
+  await levelStore.deleteLevelSetUp(info)
 }
 
 
@@ -143,10 +142,6 @@ watch(
     <AppModal :title="levelEditMode ? 'Edit Level' : 'Add Level'" v-model="levelDialog" lg>
       <new-level ref="levelRef"></new-level>
     </AppModal>
-
-
-
-
 
 
     <div class="row">

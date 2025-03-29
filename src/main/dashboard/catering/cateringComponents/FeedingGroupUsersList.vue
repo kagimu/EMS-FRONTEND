@@ -68,7 +68,7 @@ watch(
 const doFetchUsers = () =>{
   let data = {
      school_number:formData.school_number,
-     group_number:formData.group_number, 
+     group_number:formData.feeding_group_number, 
      campus_number:formData.campus_number
   }
   cateringStore.fetchGroupUsersList(data)
@@ -193,7 +193,7 @@ watch(
             <!-- {{ userList }} -->
          <tr v-for="(list,index) in userList" :key="index">
             <td>{{ index+1 }}</td>
-            <td>{{ list.name }}</td>
+            <td style="text-transform: capitalize;">{{ list.name }}</td>
             <td>{{list.gender  }}</td>
             <td>{{ list.feeding_group_name }}</td>
             <td>{{ list.campus_name }}</td>

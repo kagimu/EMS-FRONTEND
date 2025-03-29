@@ -11,12 +11,13 @@ const  notificationStore  = useNotificationStore()
 const showSelected = ref(null)
 let entityN = localStorage.getItem("entity_number")
 let campusListData = ref([])
-
 const schoolsList = ref( [])
 const authStore = useAuthStore();
 const todayDate = ref('');
 const currentTime = ref('');
-const streamList = ref([])
+const streamList = ref([]);
+const schoolListData = ref([])
+
   
   const updateTime = () => {
     const now = new Date();
@@ -33,6 +34,7 @@ const streamList = ref([])
     updateTime();
     setInterval(updateTime, 1000);
     campusListData.value = JSON.parse(localStorage.getItem("Campus"))
+    schoolListData.value = JSON.parse(localStorage.getItem("SchoolInfo"))
   })
 
 
@@ -115,8 +117,8 @@ watch(
             <select
                 class="form-select form-select-sm"
                 style="box-shadow: none;">
-                <option disabled value="">--Select Campus--</option>
-                <option v-for="(list,index) in campusListData" :key="index">{{ list.campus_name }}
+                <option disabled value="">--Select School--</option>
+                <option v-for="(list,index) in schoolListData" :key="index">{{ list.name }}
                 </option>
             </select>
             </div>
@@ -124,6 +126,13 @@ watch(
 
         <div class="col-4">
             <div class="mb-2">
+              <select
+                class="form-select form-select-sm"
+                style="box-shadow: none;">
+                <option disabled value="">--Select Campus--</option>
+                <option v-for="(list,index) in campusListData" :key="index">{{ list.campus_name }}
+                </option>
+            </select>
             </div>
         </div>
 

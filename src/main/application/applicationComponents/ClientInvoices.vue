@@ -1,3 +1,4 @@
+
 <script setup>
 
 import router from "@/config/router.js";
@@ -10,7 +11,7 @@ const routerData = useRouter()
 const selectedTab = routerData.currentRoute.value.query.tab ?? 'invoices'
 
 const switchTabs = (tab) => {
-  router.push({name: "financial-records", query: {tab:tab}});
+  router.push({name: "client_dashboard", query: {s:tab}});
 }
 
 

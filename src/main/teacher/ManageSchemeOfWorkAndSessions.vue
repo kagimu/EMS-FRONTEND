@@ -4,6 +4,7 @@ import {onMounted, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import ManageSchemeOfWork from "./ManageSchemeOfWork.vue";
 import ClassSessions from "./ClassSessions.vue";
+import Sessions from "./Sessions.vue";
 
 import { useAbility } from '@casl/vue';
 const { can } = useAbility()
@@ -26,13 +27,19 @@ const switchTabs = (tab) => {
     <div class="cursor-pointer text-sm rounded-t-md ml-1 mr-1" :class="selectedTab === 'new-class-session' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('new-class-session')">
       <div class="py-1 px-3">
         <i class="bi bi-box-arrow-in-right mr-1"></i>
-       New Class Session
+       New Lesson
       </div>
     </div>
+    <!-- <div class="cursor-pointer text-sm rounded-t-md ml-1 mr-1" :class="selectedTab === 'sessions' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('sessions')">
+      <div class="py-1 px-3">
+        <i class="bi bi-box-arrow-in-right mr-1"></i>
+      Lessons
+      </div>
+    </div> -->
     <div class="cursor-pointer text-sm  rounded-t-md mr-1" :class="selectedTab === 'class-session' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('class-session')">
       <div class="py-1 px-3">
         <i class="bi bi-box-arrow-in-right mr-1"></i>
-       Class Sessions
+     Lessons
       </div>
     </div>
 
@@ -41,6 +48,10 @@ const switchTabs = (tab) => {
 
   <div v-if="selectedTab === 'new-class-session'">
  <ManageSchemeOfWork></ManageSchemeOfWork>
+  </div>
+
+  <div v-if="selectedTab === 'sessions'">
+ <Sessions></Sessions>
   </div>
   <div v-if="selectedTab === 'class-session'">
 <ClassSessions></ClassSessions>

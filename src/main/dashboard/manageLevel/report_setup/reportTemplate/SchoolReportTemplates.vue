@@ -12,10 +12,8 @@ import {useRouter} from "vue-router";
 import SchoolReportPreviewTemplate
   from "@/main/dashboard/manageLevel/report_setup/reportTemplate/SchoolReportPreviewTemplate.vue";
 
-  import ConfirmationModal from "@/components/ConfirmationModal.vue";
-  const confirmationRef = ref(null);
-
-
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
 
 const routerData = useRouter()
 const reportSetupStore = useReportSetupStore()
@@ -97,10 +95,7 @@ const deleteReportTemplate = async (reportD) => {
 
 const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + reportD.name);
 if (agreed) {
-  let data = {
-   report_template_number:reportD.report_template_id
-  }
-  reportSetupStore.deleteReportTemplate(data)
+  await reportSetupStore.deleteReportTemplate(reportD.report_template_id)
 }
 }
 // deleteReportTemplateResponse
@@ -109,7 +104,7 @@ watch (
   async (data) => {
     if(data){
       notificationStore.successToast("Success", data.message)
-      await reportSetupStore.fetchReportTemplate()
+      await reportSetupStore.fetchReportTemplate(schoolNumber)
       loader.value=false
     }
   },
@@ -170,6 +165,7 @@ watch(
           <tr>
             <th class="w-[10%]" scope="col">#</th>
             <th>Name</th>
+            <th>School</th>
             <th>Preview Template2</th>
             <th>Action</th>
           </tr>
@@ -178,6 +174,7 @@ watch(
           <tr v-for="(report,index) in reportTemplateList" :key="index">
             <td>{{ index+1 }}</td>
             <td>{{ report.name }}</td>
+            <td>{{ report.school_name	 }}</td>
             <td>
               <button class="bg-green-700 text-white text-sm px-3 rounded-md" @click="previewTemplate(report)" type="button">
                 Preview

@@ -28,10 +28,30 @@ const mymodal = ref(false)
 const transactionStore = useTransactionStore()
 const transactionList = ref(null)
 
+const props = defineProps({
+     studentDataInfo:[]
+   })
 
 
-onMounted(() => {
-      schoolStore.fetchSchools()
+onMounted(async () => {
+  await applicationStore.fetchStudent(studentNumber)
+    schoolStore.fetchSchools()
+    }
+)
+
+
+const fetchCurrentSchoolInfo = () => {
+  let draft = props.studentDataInfo
+  campus_number.value = draft?.current_enrollment?.campus_number
+}
+
+
+watch (
+    () => props.studentDataInfo,
+    async (data) => {
+      if (data) {
+        fetchCurrentSchoolInfo()
+      }
     }
 )
 
@@ -44,7 +64,8 @@ const fetchTransactionData = () => {
   let data = {
     school_number:school_number.value,
     campus_number:campus_number.value,
-    userNumber:userNumber.value,
+    campus_number:props.studentDataInfo.current_enrollment.campus_number,
+    userNumber:props.studentDataInfo.user_number,
     start_date:start_date.value,
     end_date:end_date.value
   }
@@ -96,6 +117,7 @@ watch (
       if (data) {
 
         userNumber.value = data.user_number
+    
         fetchTransactionData()
 
       }
@@ -112,8 +134,8 @@ watch (
       </AppModal>
 
 
-      <div class="grid grid-cols-4 gap-2 px-2 mt-4">
-        <div class="">
+      <div class="grid grid-cols-2 gap-2 px-2 mt-4">
+        <!-- <div class="">
           <div class="mb-2">
             <select
                 style="box-shadow: none;"
@@ -140,7 +162,7 @@ watch (
               </option>
             </select>
           </div>
-        </div>
+        </div> -->
 
         <div>
           <div class="mb-2">
@@ -183,42 +205,37 @@ watch (
           <small><i class="bi bi-plus"> Add New Transaction</i></small></button> -->
         </div>
        </div>
-         
-            <div class="card-body" style="padding: 0;">
-    <div class="container mt-1">
+
       <!-- {{ transactionList }} -->
       <table
-        id="datatable"
-        class="table table-hover caption-top mt-4 table-sm table-striped"
-        style="font-size: 13px !important;"
+        class="table table-hover caption-top mt-4  table-striped text-sm"
       >
         <thead>
           <tr>
-            <th>#</th>
-            <th>No</th>
+            <!-- <th>#</th> -->
+            <th>Receipt No.</th>
             <th>Amount</th>
             <th>Description</th>
             <th>PaidBy</th>
             <th>RecievedBy</th>
-            <th>Date Recieved</th>
+            <th>Recieved On</th>
             
           </tr>
      </thead>
      <tbody>
           <tr v-for="(list,index) in transactionList" :key="index">
-          <td>{{ (index + 1) }}</td>
+          <!-- <td>{{ (index + 1) }}</td> -->
           <td>{{ list.receipt_number	 }}</td>
           <td>{{ list.amount?.toLocaleString() }}</td>
           <td>{{ list.description	 }}</td>
-          <td>{{ list.paid_by }}</td>
-          <td>{{ list.received_by	 }}</td>
+          <td style="text-transform: capitalize;">{{ list.paid_by }}</td>
+          <td style="text-transform: capitalize;">{{ list.received_by	 }}</td>
           <td>{{ list.date_received	 }}</td>
       
           </tr>  
         </tbody>
       </table>
-    </div>
-    </div>
+
     </div>
     </div>
   

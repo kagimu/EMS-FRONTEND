@@ -1,5 +1,5 @@
 <script setup>
-import {ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
 import useCommonsStore from "@/composables/useCommons.js";
 import ImportLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/ImportLessonPlan.vue";
@@ -71,6 +71,27 @@ if((form.value.length + 1) <= (conceptListData.value.length)){
 }
 
 
+onMounted(() => {
+  fetchConceptInfo()
+})
+
+
+
+
+watch(
+    () => props.schemeDataInfo,
+    async (data) => {
+      if (data) {
+        await fetchConceptInfo()
+      }
+    }
+)
+
+const fetchConceptInfo = async () => {
+  scheme_sub_topic_number.value = props.schemeDataInfo.number
+  await schemeOfWorkStore.fetchConceptsBySubTopic(props.schemeDataInfo.sub_topic_number)
+  await schemeOfWorkStore.fetchLessonPlanDetails(props.schemeDataInfo.number)
+}
 
 const addStep = (idx) => {
   let data = {
@@ -91,6 +112,22 @@ const removeConcept = (index) => {
 
 
 const addLessonPlan = () => {
+
+  let formInfo = form.value
+
+  const lessonPlanConceptNumbers = formInfo.map(item => item.lesson_plan_concept_number);
+
+  const duplicates = lessonPlanConceptNumbers.filter((item, index, self) =>
+      item && self.indexOf(item) !== index
+  );
+
+  if(duplicates.length > 0){
+    notificationStore.errorToast("Error","Check Duplicates in Concepts")
+    return
+  }
+
+
+
     loader.value = true
 
     let formData = {}
@@ -110,33 +147,8 @@ const addLessonPlan = () => {
   schemeOfWorkStore.saveLessonPlan(formData)
 }
 
-watch(
-    () => props.schemeDataInfo,
-    async (data) => {
-      if (data) {
-        resetFormData()
-        scheme_sub_topic_number.value = props.schemeDataInfo.number
-        await schemeOfWorkStore.fetchConceptsBySubTopic(props.schemeDataInfo.sub_topic_number)
-        // fetch lesson plan draftData
-        await schemeOfWorkStore.fetchLessonPlanDetails(props.schemeDataInfo.number)
-      }
-    },
-    {deep: true}
-)
 
-const resetFormData = () => {
-   form.value = [{
-    number: "",
-    code: 1,
-    lesson_plan_concept_number: "",
-    concept_name: "",
-    steps: [{
-      number: "",
-      code: "1",
-      step: ""
-    }]
-  }]
-}
+
 
 watch(
     () => schemeOfWorkStore.conceptsBySubtopicResponse,
@@ -240,8 +252,8 @@ const downloadLessonPlanByTemplate = (event) => {
     token:localStorage.getItem("token"),
     scheme_sub_topic_number:props.schemeDataInfo.number
   }
- let  downloadUrl = "https://wholesome-api.noregrets.ug/main/lesson-plan/export-template/"+data.scheme_sub_topic_number+"?token="+data.token;
- 
+
+  let downloadUrl = import.meta.env.VITE_APP_BASE_URL + "/main/lesson-plan/export-template/" + data.scheme_sub_topic_number + "?token=" + data.token;
  const link = document.createElement('a')
   link.href = downloadUrl
   link.setAttribute('download', downloadUrl)
@@ -314,21 +326,21 @@ watch(
       <div class="row mx-auto mb-4" >
         <div class="col-lg-5 content">
 
-          <label class="text-sm text-sm">
+          <label class="text-sm">
             <b>Concepts</b>
           </label>
           <div class="row mt-2">
             <div class="col-lg-4">
-              <label class="text-sm text-sm">Code</label>
+              <label class="text-sm">Code</label>
             </div>
             <div class="col-lg-8">
-              <label class="text-sm text-sm">Concept</label>
+              <label class="text-sm">Concept</label>
             </div>
           </div>
         </div>
         <div class="col-lg-1 content"></div>
         <div class="col-lg-6 content">
-          <label class="text-sm text-sm">
+          <label class="text-sm">
           <b>Teaching steps</b>
         </label>
           <div class="row mt-2">
@@ -367,7 +379,7 @@ watch(
             <div class="col-lg-8">
               <div class="mb-2 flex justify-content-between">
                 <select
-                    :disabled="!!form[0].number"
+                    :disabled="!!list.number"
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
                     v-model="list.lesson_plan_concept_number"
@@ -378,7 +390,7 @@ watch(
                   </option>
                 </select>
                 <button
-                    v-if="index !== 0 && !form[0].number"
+                    v-if="index !== 0 && !list.number"
                     @click="removeConcept(index)"
                     type="button"
                     class="btn-close btn-sm border-0 mt-1">
@@ -470,7 +482,7 @@ watch(
 
   </div>
 
-  <div class="row mx-auto" v-if="type == 'template'">
+  <div class="row mx-auto" v-if="type === 'template'">
         <div class="col-lg-12 content">
           <div>
             <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="downloadLessonPlanByTemplate">

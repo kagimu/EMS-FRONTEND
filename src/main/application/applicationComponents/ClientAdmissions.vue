@@ -401,9 +401,9 @@ const showStudentProfile = (std) => {
               </div>
               <div class="d-flex justify-content-center align-items-center mt-3">
              
-                <button class="btn btn-primary btn-sm" @click="showStudentProfile(adm.student.number)">
+                <!-- <button class="btn btn-primary btn-sm" @click="showStudentProfile(adm.student.number)">
                             View Profile
-                      </button>
+                      </button> -->
               </div>
             </div>
           </div>

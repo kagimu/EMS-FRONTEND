@@ -310,6 +310,7 @@ async function newFeedingGroupUsers(data) {
 async function fetchFeedingGroupUserById(userId) {
     return await api.get("main/catering/feeding-group-users?User-Number="+userId)
         .then((response) => {
+         
             feedingGroupUsersResponse.value = response.data
         })
         .catch((response) => {
@@ -459,11 +460,11 @@ async function fetchMeals(campusNumber,meal_courseNumber) {
 async function fetchGroupUsersList(data) {
     // let  page = data?.page ?? ""
     // let  per_page =  data?.per_page ?? ""
-    let  feeding_group_number =   data?.feeding_group_number ?? ""
+    let  feeding_group_number =   data?.group_number ?? ""
     let  school_number =   data?.school_number ?? ""
     let  campus_number =   data?.campus_number ?? ""
 
-    return await api.get("main/catering/feeding-group-users?school_number="+school_number+"&campus_number="+campus_number+"&feeding-group_number="+feeding_group_number)
+    return await api.get("main/catering/feeding-group-users?school_number="+school_number+"&campus_number="+campus_number+"&group_number="+feeding_group_number)
         .then((response) => {
             feedingGroupUsersListResponse.value = response.data
         })

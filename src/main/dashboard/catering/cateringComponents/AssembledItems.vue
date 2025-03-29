@@ -10,6 +10,7 @@ import AppModal from "@/components/AppModal.vue";
 import MenuParts from "@/main/dashboard/catering/cateringComponents/MenuParts.vue";
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import useCommonsStore from "@/composables/useCommons.js";
 const confirmationRef = ref(null);
 
 const showingModal = ref(false)
@@ -18,6 +19,7 @@ const loading = ref(true)
 const tableLoader = ref(true)
 
 const notificationStore = useNotificationStore()
+const commons = useCommonsStore()
 const cateringStore = useCateringStore()
 const thisDialog = ref(false)
 
@@ -353,8 +355,8 @@ if (agreed) {
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.name }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.unit_of_measure_name }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.purchase_unit_of_measure_name }}</td>
-                        <td   v-if="list.type==='ASSEMBLED'">{{ list?.current_quantity }}</td>
-                        <td   v-if="list.type==='ASSEMBLED'">{{ list?.unit_cost }}</td>
+                        <td   v-if="list.type==='ASSEMBLED'">{{ commons.formatNumbersWithComma(list?.current_quantity) }}</td>
+                        <td   v-if="list.type==='ASSEMBLED'">{{ commons.formatNumbersWithComma(list?.unit_cost) }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">
                           <div  v-if="list.type==='ASSEMBLED'">
 

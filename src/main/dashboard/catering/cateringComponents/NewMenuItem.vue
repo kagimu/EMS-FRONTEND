@@ -158,6 +158,7 @@ const addMenuItem = () =>{
    const secondaryItemNumbers = menuItems.value.map(menu => {
       return {
         secondary_item_number: menu.secondary_item_number,
+        // qty:parseFloat(menu.qty.toString().replace(/,/g, "")),
         quantity:parseFloat(menu.quantity.toString().replace(/,/g, ""))
       }
     })
@@ -260,7 +261,7 @@ watch(
 
 
 function addItem() {
-  menuItems.value.push( { "name": "", "quantity": null, "secondary_item_number": "", "unit_of_measure_name": "", "unit_cost": null } )
+  menuItems.value.push( { "name": "", "qty":null, "quantity": null, "secondary_item_number": "", "unit_of_measure_name": "", "unit_cost": null } )
 }
 
 function removeMenuItem(index) {
@@ -286,7 +287,7 @@ const compute = (value, type, index) => {
   }
 
   if(type === 'assembled-item') {
-    menuItems.value[index].quantity = calculator >= 0 ? calculator.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null;
+    menuItems.value[index].qty = calculator >= 0 ? calculator.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null;
   }
 
 }
@@ -348,7 +349,7 @@ const handleMenuChange = (data) => {
     if(info) {
       menuItems.value[index].unit_of_measure_name = info?.unit_of_measure_name
       menuItems.value[index].unit_cost = info?.unit_cost
-      menuItems.value[index].quantity = info?.current_quantity
+      menuItems.value[index].qty = info?.current_quantity
 
     }
   }
@@ -475,7 +476,7 @@ const handleMenuChange = (data) => {
       
 
       <div class="mb-2" v-if="menuForm.type === 'ITEM'">
-        <label class="text-sm"><small>User Unit Price</small></label>
+        <label class="text-sm"><small> Number of User UOM in Purchase UOM</small></label>
         <input
             v-model="menuForm.base_price"
             class="form-control shadow-none"
@@ -506,6 +507,7 @@ const handleMenuChange = (data) => {
               <th>No</th>
               <th>Item</th>
               <th><div class="text-sm">Quantity</div></th>
+              <th><div class="text-sm">Available Quantity</div></th>
               <th><div class="text-sm">Unit Of Use</div></th>
               <th><div class="text-sm">Unit Cost</div></th>
               <th><div class="text-sm">#</div></th>
@@ -538,10 +540,28 @@ const handleMenuChange = (data) => {
                     maxlength="10"
                     placeholder="1.0"
                     type="text"
+                    @keypress="commons.onlyNumberValidator($event)"
+                    v-on:blur="compute(menu.quantity, 'assembled-item', index)"
+                    required
+                    >
+                  
+              </td>
+              
+
+              <td>
+                <input
+                    v-model="menu.qty"
+                    class="form-control shadow-none ml-5"
+                    style="width: 80px;"
+                    maxlength="10"
+                    placeholder="1.0"
+                    type="text"
                     disabled
                     @keypress="commons.onlyNumberValidator($event)"
-                    v-on:blur="compute(menu.quantity, 'assembled-item', index)">
+                    v-on:blur="compute(menu.qty, 'assembled-item', index)">
               </td>
+
+             
               <td class="border-r">
                 <input
                     v-model="menu.unit_of_measure_name"

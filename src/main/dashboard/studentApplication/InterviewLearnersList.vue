@@ -118,7 +118,8 @@
               <span style="width: 60px;"><b>&times;</b></span>
             </button>
           </div>
-          <AdmitModel :selectedStudentNumber="selectedStudentNumber" :interviewInfo="interviewInfoDataa" :admissionDetails="admissionLearnerDetailsInfo" class="app-modal"></AdmitModel>
+          <AdmitModel :selectedStudentNumber="selectedStudentNumber" :interviewInfo="interviewInfoDataa" 
+          :admissionDetails="admissionLearnerDetailsInfo" class="app-modal"></AdmitModel>
         </div>
       </div>
     </div>
@@ -202,7 +203,7 @@ const showAdmitModal = () => {
 const dialog = ref(false);
 
 const openAdmitModal = (studentNumber) => {
-  selectedStudentNumber.value = [studentNumber]; // Set the selected student for admission
+  selectedStudentNumber.value = [studentNumber]; 
   dialog.value = true;
 };
 
@@ -220,7 +221,7 @@ watch(() => applicationStore.StudentsOnInterviewResponse, (data) => {
   }
 });
 
-// Other watches and methods...
+
 
 watch (
     () => admissionStore.admitStudentResponse,
@@ -236,7 +237,7 @@ watch (
 
 <style scoped>
 .app-modal {
-  z-index: 1090; /* Higher than Bootstrap's 1050 */
+  z-index: 1090; 
 }
 .modal-overlay {
   position: fixed;
@@ -244,8 +245,8 @@ watch (
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-  z-index: 1010; /* Lower than app-modal's z-index */
-  display: block; /* Ensure it covers the whole screen */
+  background-color: rgba(0, 0, 0, 0.5); 
+  z-index: 1010;
+  display: block;
 }
 </style>

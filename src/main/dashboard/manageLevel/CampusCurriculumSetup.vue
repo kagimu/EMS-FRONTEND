@@ -9,8 +9,10 @@ import ReportSetup from "@/main/dashboard/manageLevel/report_setup/ReportSetup.v
 import ScoreSetup from "@/main/dashboard/manageLevel/report_setup/ScoreSetup.vue";
 import Grading from "@/main/dashboard/assessment/Grading.vue";
 import AssessmentSchedulePage from "@/main/dashboard/assessment/AssessmentSchedulePage.vue";
-import { useAbility } from '@casl/vue';
-const { can } = useAbility()
+import ManagePromotions from "@/main/settings/promotion/ManagePromotions.vue";
+import NarrativeSchedule from "@/main/dashboard/narrative/NarrativeSchedule.vue";
+import ManageNarrativeReport from "@/main/dashboard/narrative/ManageNarrativeReport.vue";
+
 const router = useRouter()
 const levelStore = useLevelStore()
 const campusCurriculumDataInfo = ref(null)
@@ -47,10 +49,25 @@ const campusSetupMenu = ref([
      action:"view_assessment_schedule"
   },
   {
+    name:"Narrative Schedule",
+    router_name:"narrative-schedule",
+     action:"view_narrative_schedule"
+  },
+  {
+    name:"Narrative Report",
+    router_name:"narrative-report",
+    action:"view_narrative_report"
+  },
+  {
     name:"Report Card Settings",
     router_name:"report-card-settings",
     action:"view_report_card_settings"
   },
+  // {
+  //   name:"Promotion",
+  //   router_name:"promotion",
+  //   action:"view_promotions"
+  // },
   {
     name:"Student Score",
     router_name:"student-score",
@@ -131,9 +148,10 @@ const switchCurriculum = (curriculum) => {
         <div class="w-full mb-10">
 
 
-          <div class="card mt-3">
+          <div class="card p-0 mt-3">
             <div class="card-body p-0">
-              <div class="mb-2 mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
+
+              <div class=" mt-2 text-[14px] border-b border-[#dfe1e3] rounded-0">
                 <div class="ml-3 mb-2">Assessment</div>
               </div>
 
@@ -200,6 +218,24 @@ const switchCurriculum = (curriculum) => {
         </div>
       </div>
 
+      <div class="col-9" v-if="campusSetupQuery === 'narrative-schedule'">
+
+<div class="card mt-3">
+  <div class="card-body" style="padding: 0;">
+    <narrative-schedule></narrative-schedule>
+  </div>
+</div>
+</div>
+
+<div class="col-9" v-if="campusSetupQuery === 'narrative-report'">
+
+<div class="card mt-3">
+  <div class="card-body" style="padding: 0;">
+    <manage-narrative-report></manage-narrative-report>
+  </div>
+</div>
+</div>
+
 
 
       <div class="col-9" v-if="campusSetupQuery === 'report-card-settings'" >
@@ -219,6 +255,13 @@ const switchCurriculum = (curriculum) => {
         </div>
       </div>
 
+      <div class="col-9" v-if="campusSetupQuery === 'promotion'">
+        <div class="card mt-3">
+          <div class="card-body" style="padding: 0;">
+            <manage-promotions></manage-promotions>
+          </div>
+        </div>
+        </div>
 
     </div>
 </div>

@@ -17,6 +17,8 @@
    const buttonLoader = ref(false)
    let show = ref(false)
    const rolesInfo = ref([])
+   const userInfoData = ref({})
+   const userRolesData = ref([])
    // const role_numbers = ref([])
    let entityN = localStorage.getItem("entity_number")
 
@@ -24,23 +26,44 @@ const props = defineProps({
   userInfo:String
 })
 
-   
    const form = reactive({
      user_number:null,
      expiry_date:null,
      role_numbers:null
    })
 
+
+   let myData = reactive({
+     entity_number:localStorage.getItem('entity_number')
+   })
+
+
    onMounted(
        async () => {
+         filterDraft()
          await accountStore.fetchUsersToAssign(entityN)
-         roleStore.fetchRoles(myData)
+         await roleStore.fetchRoles(myData)
        } )
-   
-   let myData = reactive({
-    entity_number:localStorage.getItem('entity_number')
-    })  
-   
+
+   watch(
+       () => props.userInfo,
+       async (data) => {
+         if(data){
+           filterDraft()
+         }
+       }
+   )
+
+
+
+   const filterDraft = () => {
+     let user = props.userInfo
+      userInfoData.value = user
+      userRolesData.value = user.roles
+   }
+
+
+
        watch(
        () => accountStore.userResponse,
        async (data) => {
@@ -51,15 +74,13 @@ const props = defineProps({
        {deep:true}
        )
 
-   const addRoleNumber = (number, idx) => {
-     rolesInfo.value[idx].role_number = rolesInfo.value?.[idx]?.role_number === number ? "" : number
-   }
+
    
    function addUser(){
      buttonLoader.value = true
-     form.user_number=props.userInfo
-     form.roles=rolesInfo.value
-        //  alert(JSON.stringify(form))
+     let roles  = rolesInfo.value.filter(lst => lst.checkRole)
+     form.user_number=userInfoData.value.number
+     form.roles = roles
     accountStore.createNewAccount(form)
    
    }
@@ -71,8 +92,8 @@ watch (
       if(data){
         // buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        formData.role_number = null
-        formData.user_number = null
+        // formData.role_number = null
+        // formData.user_number = null
 
       }
     },
@@ -85,8 +106,8 @@ watch (
       if(data){
         // buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        formData.role_number = null
-        formData.user_number = null
+        // formData.role_number = null
+        // formData.user_number = null
 
       }
     },
@@ -97,7 +118,7 @@ watch (
 //fetch
 onMounted(
     async () => {
-       accountStore.fetchAllUsers()
+       await accountStore.fetchAllUsers()
     } )
 
 
@@ -105,6 +126,7 @@ watch (
     () => accountStore.errorMessage,
     async (data) => {
       if(data){
+        buttonLoader.value = false
         errorMessage.value = data.message
         notificationStore.errorToast("Error",data.message)
       }
@@ -122,8 +144,22 @@ watch (
 
            let arr = []
             draft.forEach(lst => {
-              arr.push({expiry_date:"", role_number:"",number:lst.number,role_name:lst.name})
+              arr.push({expiry_date:"", role_number:lst.number,role_name:lst.name,checkRole:false})
             })
+
+
+           arr = arr.map(item => {
+             // Check if the item role_number exists in userRolesData.value
+             let matchingRole = userRolesData.value?.find(a => a.role_number === item.role_number);
+
+             // If a match is found, update the checkRole and expiry_date
+             if (matchingRole) {
+               item.checkRole = true;
+               item.expiry_date = matchingRole.expiry_date;
+             }
+             return item;
+           });
+
 
            rolesInfo.value = arr
            
@@ -150,20 +186,20 @@ watch (
                         <div class="row">
                            <div class="col-lg-1">
                              <input
-                            @change="addRoleNumber(lst.number, idx)"
-                            :value="lst.number"
-                            :id="lst.number"
+                              v-model="lst.checkRole"
+                            :value="lst.role_number"
+                            :id="lst.role_number"
                             class="shadow-none"
                             type="checkbox">
                            </div>
                            <div class="col-lg-4">
-                              <label style="float: left;" class="text-sm cursor-pointer" :for="lst.number">{{lst.role_name}}</label>
+                              <label style="float: left;" class="text-sm cursor-pointer" :for="lst.role_number">{{lst.role_name}}</label>
                            </div>
                            <div class="col-lg-6">
                            <input
                             v-model="lst.expiry_date"
                             style="outline: none 0 !important; box-shadow: none;"
-                            class="form-control" type="date" required>
+                            class="form-control" type="date">
                            </div>
                         </div>
                       

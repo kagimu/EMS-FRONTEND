@@ -7,6 +7,7 @@ import CampusLevel from "@/main/dashboard/manageLevel/class/CampusLevel.vue";
 import ClassList from "@/main/dashboard/manageLevel/class/ClassList.vue";
 import StudyPeriodGroup from "@/main/dashboard/manageLevel/studyPeriod/StudyPeriodGroup.vue";
 import router from "@/config/router.js";
+import NextStudyPeriodConfig from "@/main/dashboard/manageLevel/studyPeriod/NextStudyPeriodConfig.vue";
 const routerData = useRouter()
 
 import { useAbility } from '@casl/vue';
@@ -64,6 +65,14 @@ const switchTabs = (tab) => {
           Study Periods
         </div>
       </div>
+
+      <!-- <div v-if="can('view_next_study_period','general')" class="cursor-pointer text-sm  rounded-t-md mr-1" :class="selectedTab === 'next-study-period' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('next-study-period')">
+        <div class="py-1 px-3">
+          <i class="bi bi-box-arrow-in-right mr-1"></i>
+          NextTerm Begins
+        </div>
+      </div> -->
+
     </div>
 
 
@@ -89,6 +98,10 @@ const switchTabs = (tab) => {
 
         <div v-if="selectedTab === 'study-period'">
           <study-period></study-period>
+        </div>
+
+        <div v-if="selectedTab === 'next-study-period'">
+          <next-study-period-config></next-study-period-config>
         </div>
 
       </div>

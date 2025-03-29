@@ -132,8 +132,18 @@ const fetchLevelClasses = (levelNumber) => {
 }
 
 const editThisData = (List) => {
+  
   editMode.value = true
-  interviewListData.value = List
+  
+  interviewListData.value = {
+    school_number : school_number.value,
+    campus_number:campus_number.value,
+    level_number:form.level,
+    curriculum_number:form.curriculumNumber,
+    campus_class_number:form.campus_class_number,
+    interview_number:List.interview_number
+  }
+  
   namee.value = List.name
   showingModal.value = true
 }
@@ -453,7 +463,7 @@ document.addEventListener("fullscreenchange", () => {
           <th  class="w-[10%]">ScheduledOn</th>
           <th  class="w-[10%]">Venue</th>
           <th class="w-[35%]">Comment</th>
-          <th class="w-[25%]">Actions</th>
+          <th class="w-[5%]">Actions</th>
         </tr>
 
       </thead>
@@ -466,10 +476,9 @@ document.addEventListener("fullscreenchange", () => {
           <td>{{ interview.message }}</td>
           <td>
             <div class="flex justify-content-between">
-              <button class="mr-1 link-primary" @click="openModal(interview)">
-                <!-- <i style="font-size: 13px;color:#0ddd" class="bi bi-eye cursor-pointer"></i> -->
+              <!-- <button class="mr-1 link-primary" @click="openModal(interview)">
                 <i class="bi bi-box-arrow-in-right mr-1"></i> Manage Applicants
-              </button>
+              </button> -->
 
             <button @click="editThisData(interview)"  class="link-primary" style="border-width: 0px;text-decoration: none;"><small>
               <i  style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small>
@@ -477,16 +486,6 @@ document.addEventListener("fullscreenchange", () => {
               <button class="mr-1" @click="deleteThisData(interview)">
                 <i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i>
               </button>
-
-            
-
-              <!-- <router-link
-                  class="text-decoration-none"
-                  :to="{name:'manage-interviews', query:{interview_id:interview.interview_number, interview:interview.name}}">
-                <button class="text-[#0d6efd] border border-primary p-1 rounded-sm hover:bg-[#0d6efd] hover:text-white">
-                <small>Enter interview scores</small>
-                </button>
-              </router-link> -->
             </div>
 
             <div>

@@ -514,7 +514,7 @@ watch(
                   {{ index+1 }}
                 </td>
                 <td>
-                  {{ metricsData.metric_name + " - " + metricsData.class}}
+                  {{ metricsData.metric_name + " - " + metricsData.assessment_area	}}
                 </td>
                 <td>{{ metricsData.scheduled_on }}</td>
                 <td>{{ metricsData.class }}</td>
@@ -541,7 +541,7 @@ watch(
 
                   <button
                       class="mr-1"
-                      title="Upload Marking Guide"
+                      title="View Assessment Schedule"
                       @click="viewAssessmentSchedule(metricsData)"
                       type="button">
                     <i class="bi bi-eye text-[16px]" style="color:rgb(3, 85, 148)"></i>

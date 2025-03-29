@@ -56,11 +56,18 @@
     onMounted( async () => {
     schoolStore.fetchSchools()  
      applicationStore.fetchApplicationList()
-     await serviceStore.fetchAllItems()
+     // await serviceStore.fetchAllItems()
      getAdmissionInfo()
     //  alert(props.interviewInfo.interview_number)
       }
   )
+
+  const fetchItemsData = (schoolN) => {
+    let data = {
+      school_number:schoolN
+    }
+    serviceStore.fetchAllItems(data)
+  }
 
     watch (
       () => props.selectedStudentNumber,
@@ -101,6 +108,7 @@
       form.school_number = props.admissionDetails.school_number
       if(form.school_number){
         fetchCampuses(form.school_number)
+
       }
       form.campus_number = props.admissionDetails.campus_number
       if(form.campus_number){
@@ -160,6 +168,7 @@ campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_c
   
   const fetchCampuses = (school_number) => {
       campusStore.fetchCampuses(school_number)
+    fetchItemsData(school_number)
   }
   
   const fetchClasses = (campus_number) => {
@@ -399,7 +408,7 @@ watch(
       campus_class_number: campusClassNumber.value,
       school_number:form.school_number,
       campus_number: form.campus_number,
-      interview_number:props.interviewInfo.interview_number,
+      interview_number:props.admissionDetails.interview_number,
       stream_number:form.stream_number,
       items
     }
@@ -408,6 +417,7 @@ watch(
   }
   
 
+
   
 </script>
 
@@ -415,6 +425,7 @@ watch(
   <div class="m-4">
     <!-- {{ selectedStudentNumber }} -->
     <!-- {{ interviewInfo }} -->
+      <!-- {{admissionDetails}} -->
     <form @submit.prevent="Admit()">
       <div class="row">
         <div class="col-lg-4">

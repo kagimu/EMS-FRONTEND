@@ -8,6 +8,7 @@ export const useTeacherCommentStore = defineStore("teacherComment", () => {
     const errorMessage = ref(null)
     const newCommentFromTeacherResponse = ref(null)
     const commentFromTeachersResponse = ref(null)
+    let deleteHeadTeacherCommentResponse = ref(null);
 
     async function newTeacherComment(data) {
         return await api.post("main/report-settings/add-head-teachers-comment/"+data.report_setting_number, data)
@@ -57,6 +58,17 @@ export const useTeacherCommentStore = defineStore("teacherComment", () => {
             })
     }
 
+    async function deleteHeadTeacherComment(data) {
+        return await api.delete("main/report-settings/head-teacher-comment/"+data.id)
+            .then((response) => {
+            deleteHeadTeacherCommentResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
 
     return {
         errorMessage,
@@ -67,7 +79,9 @@ export const useTeacherCommentStore = defineStore("teacherComment", () => {
         newCommentFromTeacherResponse,
         newCommentFromTeacher,
         fetchCommentsFromTeachers,
-        commentFromTeachersResponse
+        commentFromTeachersResponse,
+        deleteHeadTeacherCommentResponse,
+        deleteHeadTeacherComment
       
     }
 } )

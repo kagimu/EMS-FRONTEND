@@ -8,8 +8,6 @@ const props = defineProps({
 })
 
 const baseUrl = `${window.location.protocol}//${window.location.host}`;
-const StudentImage =  baseUrl+"/src/assets/images/studentId.png";
-const SchoolBadge = baseUrl+"/src/assets/images/victorius-budge.png";
 
 const reportFilteredData = ref([])
 
@@ -57,26 +55,12 @@ const filterReportData = () => {
 
 const printableContent = ref(null);
 
-// const printContent = () => {
-//   const printContents = printableContent.value.innerHTML;
-//   const originalContents = document.body.innerHTML;
-//   const printWindow = window.open('', '', 'height=600,width=800');
-//   printWindow.document.write('<html><head><title>Print</title>');
-//   printWindow.document.write(
-//     '<style>body { font-family: Arial, sans-serif; } </style>'); 
-//   printWindow.document.write('</head><body>');
-//   printWindow.document.write(printContents);
-//   printWindow.document.write('</body></html>');
-//   printWindow.document.close();
-//   printWindow.print();
-// }
 
 
 </script>
 
 <template>
-<!-- {{reportDataInfo}} -->
-<!-- {{ reportDetails.school.logo }} -->
+
 <div ref="printableContent" class="printable">
   <table style="width: 100%;">
     <tr>
@@ -285,12 +269,12 @@ const printableContent = ref(null);
         <table style="width: 100%; font-size: 13px; margin-top: 20px;">
           <tr style="border-bottom: 1px solid #b8babb;">
             <td style="width: 30%; padding: 5px;"><b>Promotion Status</b></td>
-            <td style="padding: 5px; text-align: center;"></td>
+            <td style="padding: 5px; text-align: center;">{{reportDetails?.promotion_status}}</td>
           </tr>
           <tr style="border-bottom: 1px solid #b8babb;">
             <td style="padding: 5px;">Next Term Begins on</td>
             <td style="padding: 5px;">
-              Monday, May 27, 2024
+              {{reportDetails?.next_term_begins	}}
             </td>
           </tr>
 

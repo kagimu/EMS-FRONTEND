@@ -16,6 +16,8 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
 import SchemeOfWorkPdfTemplate from "@/main/dashboard/curriculum/schemeOfWork/SchemeOfWorkPdfTemplate.vue";
 import AppModal from "@/components/AppModal.vue";
+import api from "@/config/api.js";
+const routerData = useRouter()
 
 const level = ref( "")
 const curriculumNumber = ref( "")
@@ -31,7 +33,9 @@ const classList = ref( [])
 const levelList = ref( [])
 const classStore = useClassesStore()
 let selectedClass = ref( "")
-const routerData = useRouter()
+
+
+let imagePath = api.defaults.baseURL + "/attachments/download/"
 
 
 const learningAreaStore = useLearningAreaStore()
@@ -338,44 +342,16 @@ watch(
   <div>
 
     <AppModal :title="(schemeOfWorkList.number && (schemeOfWorkList.status === 'Pending')) ? 'Edit Scheme of work' : 'Add Scheme of work'" v-model="curriculumDialog" xl8>
-      <new-scheme-of-work :schemeOfWorkList="schemeOfWorkList" ref="schemeOfWorkRef"></new-scheme-of-work>
+      <new-scheme-of-work :schemeOfWorkList="schemeOfWorkList" ref=""></new-scheme-of-work>
     </AppModal>
 
+    <AppModal :title="'New Lesson Plan: '+ schemeDataInfo.name" v-model="lessonPlanDialog" xl8>
+      <new-lesson-plan :schemeDataInfo="schemeDataInfo" ref="lessonPlanRef"></new-lesson-plan>
+    </AppModal>
 
-
-    <div class="modal fade" id="lessonPlanModal" tabindex="-1" :class="{ show: lessonPlanDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">New Lesson Plan: <b>{{schemeDataInfo.name}}</b> </h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-              <new-lesson-plan :schemeDataInfo="schemeDataInfo" ref="lessonPlanRef"></new-lesson-plan>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="modal fade" id="lessonPlanDetailsModal" tabindex="-1" :class="{ show: lessonPlanDetailsDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Lesson Plan: <b>{{lessonPlanInfo.name}}</b> </h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-2">
-              <lesson-plan-details :lessonPlanInfo="lessonPlanInfo"></lesson-plan-details>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
+    <AppModal :title="'Lesson Plan: '+ lessonPlanInfo.name" v-model="lessonPlanDetailsDialog" xl8>
+      <lesson-plan-details :lessonPlanInfo="lessonPlanInfo"></lesson-plan-details>
+    </AppModal>
 
 
 <p class="mt-3" style="font-size: 20px;">Scheme of work</p>
@@ -450,14 +426,18 @@ watch(
 
             <div class="flex justify-content-between mt-3">
 
-              <div>
+            <div>
+<!--              <div>
                 <div class="ml-4"><b>Scheme of works</b></div>
                 <div class="ml-7" v-if="schemeOfWorkList.name"><small><b>Title:</b> {{schemeOfWorkList.name}}</small></div>
+                <div class="ml-7"><small><b>School	:</b> {{schemeOfWorkList.school_name}}</small></div>
+                <div class="ml-7"><small><b>Campus	:</b> {{schemeOfWorkList.campus_name}}</small></div>
                 <div class="ml-7" v-if="schemeOfWorkList.academic_year_name"><small><b>Class:</b> {{schemeOfWorkList.academic_year_name}}</small></div>
                 <div class="ml-7" v-if="schemeOfWorkList.class_name"><small><b>Class:</b> {{schemeOfWorkList.class_name}}</small></div>
                 <div class="ml-7" v-if="schemeOfWorkList.subject_name"><small><b>Subject:</b> {{schemeOfWorkList.subject_name}}</small></div>
                 <div class="ml-7" v-if="schemeOfWorkList.status"><small><b>Status:</b> {{schemeOfWorkList.status}}</small></div>
-              </div>
+              </div>-->
+            </div>
 
                 <div>
                   <button type="button"  class="btn btn-sm buttonStyle btn-success mr-2"  @click="exportSchemeOfWorkPdf">
@@ -475,12 +455,54 @@ watch(
 
             </div>
 
-            <hr />
 
 
-            <div class="row mx-auto">
+            <table style="width: 100%;">
+              <tr>
+                <td style="width: 14%;">
+                  <img alt="img" style="width: 120px; margin: 0 auto;" :src="imagePath+schemeOfWorkList?.school_badge"/>
+                </td>
+                <td>
+                  <!--        <div style="font-size: 30px;"><b>NOREGRETS LIFE SCHOOL</b></div>-->
+                  <div style="font-size: 20px; text-transform: uppercase;"><b>{{schemeOfWorkList?.school_name}}</b></div>
+
+                  <!--        <div style="font-size: 20px; margin-top: 5px;">BUNAMWAYA CAMPUS</div>-->
+                  <div style="font-size: 15px; margin-top: 1px;text-transform: uppercase;">{{schemeOfWorkList?.campus_name}}</div>
+
+                  <div style="margin-top: 1px; margin-bottom: 1px;">
+                    <small>
+                      {{schemeOfWorkList?.campus_location	}} |
+                      {{schemeOfWorkList?.campus_phone}} |
+                      {{schemeOfWorkList?.campus_email}}
+                    </small></div>
+                  <span style="font-size: 15px; background-color: green; color: #ffffff; text-transform: uppercase; padding-left: 15px; padding-right: 15px;">
+                     {{schemeOfWorkList?.name}}
+                  </span>
+
+                  <div style="display: flex; margin-bottom: 20px; margin-top: 15px;">
+                    <div style="margin-right: 10px;"  v-if="schemeOfWorkList.academic_year_name"><small><!--<b>Academic Year:</b>--> {{schemeOfWorkList.academic_year_name}}</small></div> |
+                    <div style="margin-left: 10px; margin-right: 10px;"  v-if="schemeOfWorkList.class_name"><small><!--<b>Class:</b>--> {{schemeOfWorkList.class_name}}</small></div> |
+                    <div style="margin-left: 10px; margin-right: 10px;"  v-if="schemeOfWorkList.subject_name"><small><!--<b>Subject:</b>--> {{schemeOfWorkList.subject_name}}</small></div> |
+                    <div style="margin-left: 10px; margin-right: 10px;"  v-if="schemeOfWorkList.status"><small><!--<b>Status:</b>--> {{schemeOfWorkList.status}}</small></div>
+                  </div>
+
+                </td>
+
+              </tr>
+            </table>
+
+
+
+
+
+
+
+<!--            <hr />-->
+
+
+            <div class="row">
               <div class="col-3">
-            <div class="mb-3">
+                  <div class="mb-3">
               <label class="text-sm"><small>Sort by Subject</small></label>
               <select
                   style="box-shadow: none;"
@@ -497,7 +519,6 @@ watch(
               </div>
 
               <div class="col-3">
-
                 <div class="mb-2">
                   <label class="text-sm"><small>Sort by Academic Year</small></label>
                   <select
@@ -512,7 +533,6 @@ watch(
                     </option>
                   </select>
                 </div>
-
               </div>
 
             </div>
@@ -538,21 +558,21 @@ watch(
               <tr v-for="(lst,index) in schemeOfWorkList.subtopic" :key="index" >
                 <td scope="row">{{index+1}}</td>
                 <td>
-                  {{lst.strand_name}}
+                  <div v-html="lst?.strand_name"></div>
                 </td>
                 <td>
-                  {{lst.topic_name}}
+                  <div v-html="lst?.topic_name"></div>
                 </td>
                 <td>
-                  {{lst.code}}
+                  {{lst?.code}}
                 </td>
                 <td>
                   <div style="width: 200px; white-space: break-spaces">
-                    {{lst.name}}
+                    <div v-html="lst?.name"></div>
                   </div>
                 </td>
                 <td>
-                  {{lst.estimated_time}}
+                  <div v-html="lst?.estimated_time"></div>
                 </td>
                 <td>
 
@@ -568,14 +588,12 @@ watch(
                           type="button"
                           class="btn btn-sm  btn-primary mr-2 m-0 py-0"
                           @click="addLessonPlan(lst)"
-                          data-bs-toggle="modal"
-                          data-bs-target="#lessonPlanModal"
                           v-tooltip.bottom="lst.concept_count+(lst.concept_count <1 ? ' Concept' : ' Concepts')"
                       >
                         <small class="m-0 p-0">Add lesson plan [ {{lst.concept_count}} ]</small>
                       </button>
 
-                      <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="viewLessonPlan(lst)" data-bs-toggle="modal" data-bs-target="#lessonPlanDetailsModal">
+                      <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="viewLessonPlan(lst)">
                         <small class="m-0 p-0">View lesson plan</small>
                       </button>
                     </div>

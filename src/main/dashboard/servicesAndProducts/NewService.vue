@@ -20,6 +20,7 @@ const schoolList = ref([])
 const school_number = ref("")
 const showDialog = ref(false)
 const item_number = ref("")
+const formattedCost = ref('');
 
 const props = defineProps({
   serviceDetails:{},
@@ -56,6 +57,7 @@ watch (
 const checkDraftData = () => {
   let draft = props.serviceDetails
   if(draft){
+  //  alert(JSON.stringify(draft))
     formData.description = draft?.item?.description ?? null
     formData.cost = draft?.item?.cost ?? null
     formData.name = draft?.item?.name ?? null
@@ -64,11 +66,14 @@ const checkDraftData = () => {
     formData.payment_mode = draft?.item?.payment_mode
     formData.school_number = draft?.item?.school_number ?? ""
     item_number.value = draft?.item?.number
+
+    formattedCost.value = draft?.item?.cost.toLocaleString();
+
     if(draft?.item?.school_number) {
       fetchCampuses(draft?.item?.school_number)
     }
     if(draft?.campus_services){
-      formData.campus_numbers = (draft?.campus_services ?? []).map(item => item.campus_number);
+      formData.campus_numbers = draft.campus_services.map(service => service.campus_number)
     }
   }
 }
@@ -86,16 +91,27 @@ const fetchClasses = (campus_number) => {
 
 
 
+function updateCost(event) {
+  const rawValue = event.target.value.replace(/,/g, '');
+  formattedCost.value = Number(rawValue).toLocaleString();
+  formData.cost = rawValue;
+
+}
+
+
+
 const createNewService = () =>{
   buttonLoader.value = true
 
   let data = formData
-  data.cost = parseInt(data.cost)
+  data.cost = parseInt(formData.cost)
 
   if(props.productType === 'service') {
     if (item_number.value) {
+      // alert(JSON.stringify(data))
       serviceStore.updateService(data, item_number.value)
     } else {
+     
       serviceStore.createNewService(data)
     }
   }
@@ -148,7 +164,7 @@ watch(
       if (data) {
         // campusList.value = data.data
         campusList.value = []
-        formData.campus_numbers = []
+       // formData.campus_numbers = []
         let draft = data.data
         if (draft) {
           if(draft && (draft.length > 0)){
@@ -163,6 +179,10 @@ watch(
     },
     {deep: true}
 )
+
+
+
+
 
 </script>
 <template>
@@ -188,6 +208,7 @@ watch(
 
               <div class="mb-2">
                 <label class="text-sm">Campus</label>
+
                 <combo-box
                     v-model:optionResponse="formData.campus_numbers"
                     :optionList="campusList"
@@ -218,7 +239,8 @@ watch(
               <div class="mb-2">
                 <label class="text-sm">Cost</label>
                 <input
-                    v-model="formData.cost"
+                     v-model="formattedCost"
+                  @input="updateCost"
                     @keypress="commons.onlyNumberValidator($event)"
                     maxlength="19"
                     style="outline: none 0 !important; box-shadow: none;"
@@ -229,7 +251,8 @@ watch(
 
 
               <div class="mb-2">
-                <label class="text-sm">Service is ?</label>
+                <label class="text-sm" v-if="productType === 'service'">Service is ?</label>
+                <label class="text-sm" v-else >Product is ?</label>
 
                  <div class="flex">
                    <div class="mr-4">

@@ -9,7 +9,10 @@
         <div class="mx-auto h-screen flex justify-center items-center">
         <div class="bg-white p-4 w-[40%] rounded-md border">
         <div class="mt-4" style="text-align: center;">
-          <div class="text-[20px] mb-3">Victorious Education Services</div>
+          <img v-if="logoNumber" alt="logo" style="width: 100px; margin: 0 auto" class="mb-3" :src="logoUrl"/>
+          <div class="text-[#2c2f8c] text-center text-[20px]" >
+            {{ title }}
+          </div>
           <small style="color: #4b4b4b;">
             ---- Set Your Password---- <br />
             You can now enter your password below.
@@ -90,12 +93,14 @@
 </template>
 
 <script setup>
-import {ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import useCommonsStore from "@/composables/useCommons.js";
 import {useRouter} from "vue-router";
 import router from "@/config/router.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useAuthStore} from "@/main/auth/store/auth.js";
+import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
+import api from "@/config/api.js";
 
 const routerData = useRouter()
 const show = ref(false)
@@ -105,14 +110,34 @@ const password = ref(null)
 const confirm_password = ref(null)
 const commons = useCommonsStore()
 const authStore = useAuthStore()
+const entityStore = useEntityStore()
 
 const notificationStore  = useNotificationStore()
 
 const token = routerData.currentRoute.value.params.id
+const title  = ref(null)
+const logoNumber = ref(null)
+const logoUrl = ref(null)
 
+onMounted(() => {
+  entityStore.getConfigureLanding()
+})
 
+watch (
+    () => entityStore.landPageResponse,
+    async (data) => {
+      if(data){
 
+        let path = api.defaults.baseURL + "/attachments/download/"
+        title.value = data?.title
+        logoNumber.value = data?.logo_attachment_number
+        logoUrl.value = path+logoNumber.value
 
+        localStorage.setItem("landingPageTitle", title.value)
+        localStorage.setItem("logo",logoUrl.value)
+      }
+    }
+)
 
 
 function doSetPassword(){

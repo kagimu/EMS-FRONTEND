@@ -132,7 +132,6 @@ watch(
 
 onMounted(
     async () => {
-      serviceStore.fetchServicesList()
        schoolStore.fetchSchools()
        getSchoolInfo()
       doFetchBillablesDetails(props.billablesInfo)
@@ -274,6 +273,11 @@ watch(
 
 
 const fetchCampuses = (school) => {
+  let data = {
+    school_number:school
+  }
+  serviceStore.fetchServicesList(data)
+
       campusStore.fetchCampuses(school)
       getModeOfStudyInfo(school)
   }

@@ -2,7 +2,6 @@
 import {onMounted, ref, watch} from "vue"
 import {useRouter} from "vue-router";
 import ManageInvoices from "@/main/dashboard/invoice/ManageInvoices.vue"
-import useNotificationStore from "@/composables/useNotification.js"
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import StudentReports from "@/main/dashboard/report-card/studentReports/StudentReports.vue"
 import Comfirm from "@/main/dashboard/enrollment/Comfirm.vue"
@@ -13,23 +12,16 @@ import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 import router from "@/config/router.js";
 import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
 import StudentNarativeReport from "@/main/dashboard/profiles/studentProfile/StudentNarativeReport.vue";
-import SchoolBadge from "@/assets/images/victorius-budge.png";
 import FileUploader from "@/components/FileUploader.vue";
 const enrollmentStore = useEnrolmentStore()
 
-
+confirm
 
 const studentNum = ref(null)
 const routerData = useRouter()
-const menuSelected = ref("financial-situation")
 const student_number = routerData.currentRoute.value.query.st_id
 const applicationStore = useApplicationStore()
-const notificationStore = useNotificationStore()
 const studentName = ref(null)
-const Sex = ref(null)
-const School= ref(null)
-const Campus= ref(null)
-const Level= ref(null)
 const className= ref(null)
 const dob = ref(null)
 const academicYear = ref(null)
@@ -42,20 +34,22 @@ const school = ref(null)
 const actionType = ref(null)
 const cateringStore = useCateringStore()
 const errorMessage  = ref(null)
+const studentProfileData  = ref(null)
 
 const uploadDialog = ref( false)
+
+const studentCateringData = ref([])
 
 onMounted(
     async () => {
       await applicationStore.fetchStudent(student_number)
-      await cateringStore.FeedingGroupByUserId(student_number)
-
     } )
 
 watch (
     () => applicationStore.studentDataResponse,
     async (data) => {
       if (data) {
+        studentProfileData.value = data
         studentName.value = data.surname + " " + data.second_name+" "+ data.other_name
         dob.value = data.date_of_birth
         className.value = data.current_enrollment.class
@@ -66,6 +60,19 @@ watch (
         school.value = data.current_enrollment.school
         academicYear.value = data.current_enrollment.academic_year
         studentPhoto.value = data.photo
+        await cateringStore.FeedingGroupByUserId(data.user_number)
+      }
+    },
+    { deep: true }
+)
+
+
+watch (
+    () => cateringStore.feedingGroupByUserIResponse,
+    async (data) => {
+      if (data) {
+        studentCateringData.value = data.data.group_name
+
       }
     },
     { deep: true }
@@ -174,6 +181,7 @@ const successUpload = async (data) => {
   }
 }
 
+
 </script>
 <template>
 
@@ -265,6 +273,11 @@ const successUpload = async (data) => {
                       <button type="button" class="text-sm text-uppercase mb-1 btn btn-dark">STREAM</button>
                       <button type="button" class="text-sm fw-bold text-white text-uppercase mb-1 btn btn-danger">{{ stream }}</button>
                    </div>
+
+                   <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status">
+                      <button type="button" class="text-sm text-uppercase mb-1 btn btn-dark">FEEDING GROUP.</button>
+                      <button type="button" class="text-sm fw-bold text-white text-uppercase mb-1 btn btn-info">{{ studentCateringData }}</button>
+                   </div>
                    <div role="group" class="rounded-0 me-2 btn-group btn-group-sm academic-status" style="float: right;">
 
                   <div v-if="can('re-instate_enrollment','manage')"></div>  <button v-if="status === 'TERMINATED'" class="btn btn-success btn-sm mb-2 mx-1" @click="reEnroll(student_number)">
@@ -304,7 +317,8 @@ const successUpload = async (data) => {
                         </div>
 
                         <div v-if="studentQuery === 'narrative'">
-                          <StudentNarativeReport></StudentNarativeReport>
+                          <StudentNarativeReport
+                              :studentProfileData="studentProfileData"></StudentNarativeReport>
                         </div>
 
 

@@ -291,13 +291,11 @@
                   <div style="padding-left: 5px; padding-bottom: 10px;">HEAD TEACHER'S SIGNATURE:</div>
                   <div style="padding-left: 5px; padding-bottom: 10px;">NEXT TERM BEGINS:</div>
                 </td>
-
                 <td>
 
                   <div style="padding-left: 5px; padding-bottom: 10px;"> ________________________________________________________________</div>
                   <div style="padding-left: 5px; padding-bottom: 10px;"> ________________________________________________________________</div>
                   <div style="padding-left: 5px; padding-bottom: 10px;"> 18th/May/2020</div>
-
                 </td>
               </tr>
             </table>

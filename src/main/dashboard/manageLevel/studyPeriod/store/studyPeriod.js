@@ -15,6 +15,7 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
     const studyPeriodGroupNameResponse = ref(null)
     const deleteStudyPeriodGroupNameResponse = ref(null)
     const editStudyPeriodGroupNameResponse = ref(null)
+    const setNextTermDateResponse = ref(null)
 
 
 
@@ -155,6 +156,18 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
             })
     }
 
+    async function setNextTermDate(data) {
+        return await api.post("main/study-period/next", data)
+            .then((response) => {
+                setNextTermDateResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     return {
         newStudyPeriodResponse,
         academicYearResponse,
@@ -177,7 +190,9 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
         newStudyPeriodGroupName,
         fetchStudyPeriodGroupName,
         deleteStudyPeriodGroupName,
-        editStudyPeriodGroupName
+        editStudyPeriodGroupName,
+        setNextTermDateResponse,
+        setNextTermDate
         
     }
 })

@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import {createRouter, createWebHistory} from 'vue-router';
 import Login from "../main/auth/Login.vue";
 import Register from "../main/auth/Register.vue";
 import Home from "../main/dashboard/home/Home.vue";
@@ -65,8 +65,8 @@ import ResetPassword from "@/main/auth/ResetPassword.vue";
 import Promotions from "@/main/dashboard/promotions/Promotions.vue"
 import InterviewManagement from "@/main/dashboard/studentApplication/InterviewManagement.vue"
 import Catering from "@/main/dashboard/catering/Catering.vue"
-import FoodMenuItem  from "@/main/dashboard/catering/cateringComponents/FoodMenuItem.vue"
-import FeedingGroupUserDetails  from "@/main/dashboard/catering/cateringComponents/FeedingGroupUserDetails.vue"
+import FoodMenuItem from "@/main/dashboard/catering/cateringComponents/FoodMenuItem.vue"
+import FeedingGroupUserDetails from "@/main/dashboard/catering/cateringComponents/FeedingGroupUserDetails.vue"
 import ApplicationSuccessPage from "@/main/application/applicationComponents/ApplicationSuccessPage.vue"
 import CampusCurriculumSetup from "@/main/dashboard/manageLevel/CampusCurriculumSetup.vue";
 import StudentProfileDetails from "@/main/dashboard/profiles/studentProfile/StudentProfileDetails.vue"
@@ -84,6 +84,12 @@ import ManageSchemeOfWork from '@/main/teacher/ManageSchemeOfWork.vue';
 import ManageAssessment from '@/main/teacher/ManageAssessment.vue';
 import ManageSchemeOfWorkAndSessions from '@/main/teacher/ManageSchemeOfWorkAndSessions.vue';
 import SelectSchoolDetails from '@/main/auth/SelectSchoolDetails.vue';
+import ClientInvoices from '@/main/application/applicationComponents/ClientInvoices.vue';
+import ManageAttendance from '@/main/dashboard/attendance/ManageAttendance.vue';
+import ManageStudentAttendance from '@/main/dashboard/attendance/ManageStudentAttendance.vue';
+import ManageStaffAttendance from '@/main/dashboard/attendance/ManageStaffAttendance.vue';
+import ManageAttendanceByTr  from '@/main/teacher/ManageAttendanceByTr.vue';
+import ManageStudentAttendanceTr from '@/main/teacher/students/ManageStudentAttendanceTr.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -216,6 +222,40 @@ const router = createRouter({
 
                     }
                     },
+
+                    {
+                        path: 'manage-attendance',
+                        component: ManageAttendance,
+                        name: "manage-attendance",
+                        meta: {
+                            resource: "manage-attendance",
+                            action: "view_manage-attendance",
+    
+                        }
+                        },
+
+                        {
+                            path: 'manage-student-attendance',
+                            component: ManageStudentAttendance,
+                            name: "manage-student-attendance",
+                            meta: {
+                                resource: "manage-student-attendance",
+                                action: "view_manage-student-attendance",
+        
+                            }
+                            },
+
+                            {
+                                path: 'manage-staff-attendance',
+                                component: ManageStaffAttendance,
+                                name: "manage-staff-attendance",
+                                meta: {
+                                    resource: "manage-staff-attendance",
+                                    action: "view_manage-staff-attendance",
+            
+                                }
+                                },
+
                 {path: 'profiles', component: userProfiles, name: "profiles",
                     meta: {
                         resource: "profiles",
@@ -234,18 +274,25 @@ const router = createRouter({
                         action: "view_report-center",
                     }
                 },
-                {path: 'settings', component: settings, name: "settings",
+                {
+                    path: 'settings',
+                    component: settings,
+                    name: "settings",
                     meta: {
                         resource: "settings",
                         action: "view_settings",
-                    }},
+                    }
+                },
                 {path: 'curriculum', component: Curriculum, name: "curriculum",
                     meta: {
                         resource: "campus",
                         action: "view_curriculum",
 
                     }},
-                {path: 'curriculum-setup', component: CurriculumSetup, name: "curriculum-setup",
+                {
+                    path: 'curriculum-setup',
+                    component: CurriculumSetup,
+                    name: "curriculum-setup",
                     meta: {
                         resource: "curriculum-setup",
                         action: "view_curriculum-setup",
@@ -547,6 +594,9 @@ const router = createRouter({
             }
         },
 
+    
+
+
         {
             path: '/client-dashboard',
             component: UserDashboard,
@@ -562,7 +612,8 @@ const router = createRouter({
                 {path: 'admission', component: Application, name:'admission_history'},
                 {path: 'applications', component: ClientApplications, name:'application_history'},
                 {path: 'application-success', component: ApplicationSuccessPage, name: "application-success"},
-                {path: 'student-profile', component: StudentProfile, name:'student-profile'}
+                {path: 'student-profile', component: StudentProfile, name:'student-profile'},
+                {path:'client-invoices', component: ClientInvoices, name: "client-invoices"},
             ]
         },
 
@@ -585,7 +636,18 @@ const router = createRouter({
                 {path: 'manage-scheme-of-work', component: ManageSchemeOfWork, name:'manage-scheme-of-work'},
                 {path: 'manage-assessment', component: ManageAssessment, name:'manage-assessment'},
                 {path: 'manage-scheme-and-sessions', component: ManageSchemeOfWorkAndSessions, name:'manage-scheme-and-sessions'},
-                { path: 'choose-school', component: SelectSchoolDetails, name:'choose-school',}
+                { path: 'choose-school', component: SelectSchoolDetails, name:'choose-school',},
+                
+                {
+                    path: 'manage-attendance-tr',
+                    component: ManageAttendanceByTr,
+                    name: "manage-attendance-tr",
+                },
+                {
+                    path: 'manage-student-attendance-tr',
+                    component: ManageStudentAttendanceTr,
+                    name: "manage-student-attendance-tr",
+                }
                 
             ],
              
@@ -653,11 +715,28 @@ router.beforeEach((to, from, next) => {
 });
 
 
-/*const DEFAULT_TITLE = "Wholesome Education";
-router.afterEach(to => {
-  Vue.nextTick(() => {
-        document.title = to.meta.title || DEFAULT_TITLE;
-    });
-});*/
+// const DEFAULT_TITLE = localStorage.getItem("landingPageTitle")
+// const DEFAULT_TITLED = "Victorious Education Services";
+// router.afterEach(to => {
+//     document.title = DEFAULT_TITLE == "" ?  DEFAULT_TITLED
+//     alert(JSON.stringify(DEFAULT_TITLE))
+//   Vue.nextTick(() => {
+       
+//     });
+// });
+
+
+// const DEFAULT_TITLED = "Victorious Education Services";
+const DEFAULT_TITLED = "WholesomeEd";
+
+router.afterEach((to) => {
+    document.title = localStorage.getItem("landingPageTitle") || DEFAULT_TITLED;
+//   alert(`Document title set to: ${DEFAULT_TITLE}`);
+//   Vue.nextTick(() => {
+    // document.title = DEFAULT_TITLE;
+  // });
+  
+});
+
 
 export default router;

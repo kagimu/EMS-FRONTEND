@@ -8,7 +8,9 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 import { useAbility } from '@casl/vue';
+import useCommonsStore from "@/composables/useCommons.js";
 const { can } = useAbility()
+const commons = useCommonsStore()
 
 const confirmationRef = ref(null);
 
@@ -120,7 +122,7 @@ if (agreed) {
      let data = {
       feeding_session_number:id
     }
-     mealStore.deleteMealCourseFeedingSessions(data)
+     await mealStore.deleteMealCourseFeedingSessions(data)
 }
 }
 
@@ -148,6 +150,7 @@ watch(
 
 <template>
   <div>
+
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="mealEditMode ? 'Edit Meal Course Menu Pack' : 'Add Meal Course Menu Pack'" v-model="mealCourseFeedingSessionsDialog" lg>
@@ -238,7 +241,7 @@ watch(
               <div class="flex flex-grow justify-between text-xs text-gray-600">
               <div>
                 <div class="font-bold">{{ list?.name }}</div>
-                <div class="text-red-800 ">Cost: Shs {{ list?.pack_cost }}</div>
+                <div class="text-red-800 ">Cost: Shs {{ commons.formatNumbersWithComma(list?.pack_cost) }}</div>
                
               </div>
 
@@ -271,9 +274,9 @@ watch(
               <th> Unit Of Use</th>
               <tbody>
             <tr v-for="menuItem in list.pack_items" :key="menuItem.number" class="m-1">
-              <td>{{ menuItem.name }}</td>
-              <td>{{ menuItem.consumption_quantity }}</td>
-              <td>{{ menuItem.unit_of_consumption.name }}</td>
+              <td>{{ menuItem?.name }}</td>
+              <td>{{ commons.formatNumbersWithComma(menuItem?.consumption_quantity) }}</td>
+              <td>{{ menuItem?.unit_of_consumption?.name }}</td>
             </tr>
           </tbody>
           </table>

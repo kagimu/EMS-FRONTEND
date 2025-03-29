@@ -4,6 +4,8 @@ import {useAuthStore} from "@/main/auth/store/auth.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import VictoriousLogo from "@/assets/images/victorious-logo.png";
 import useCommonsStore from "@/composables/useCommons.js";
+import {useEntityStore} from "@/main/dashboard/entity/store/entity.js";
+import api from "@/config/api.js";
 
 let errorMessage = ref(null)
 let buttonLoader = ref(false)
@@ -13,12 +15,17 @@ const showSuccessPage = ref(false)
 let authStore = useAuthStore()
 const  notificationStore  = useNotificationStore()
 const commons = useCommonsStore()
+const entityStore = useEntityStore()
 
 const landingPage = ref(null);
+const title  = ref(null)
+const logoNumber = ref(null)
+const logoUrl = ref(null)
 
 onMounted(() => {
-  landingPage.value =   localStorage.getItem("landingPageTitle")
+  entityStore.getConfigureLanding()
   })
+
 
 
 const form = reactive({
@@ -79,6 +86,21 @@ watch(
     {deep:true}
 )
 
+watch (
+    () => entityStore.landPageResponse,
+    async (data) => {
+      if(data){
+
+        let path = api.defaults.baseURL + "/attachments/download/"
+        title.value = data?.title
+        logoNumber.value = data?.logo_attachment_number
+        logoUrl.value = path+logoNumber.value
+
+        localStorage.setItem("landingPageTitle", title.value)
+      }
+    }
+)
+
 
 
 </script>
@@ -89,9 +111,9 @@ watch(
       <div class="col-lg-4">
         <div class="align-centre mt-2 h6 font500 text-uppercase mb-2">
 
-          <img alt="logo" style="width: 100px; margin: 0 auto" :src="VictoriousLogo"/>
+          <img v-if="logoNumber" alt="logo" style="width: 100px; margin: 0 auto" class="mb-3" :src="logoUrl"/>
           <div class="text-[#2c2f8c] text-center text-[20px]">
-          {{landingPage}}
+          {{title}}
           </div>
 
 
@@ -105,7 +127,7 @@ watch(
           <div class="card-body">
             <div v-if="showSuccessPage" class="text-center mt-8" style="font-size: 16px; color: #757575;">
               <p style="color: green; font-size: 38px; font-weight: bold;" class="mb-9">Success</p>
-              <p>You have successfully created an account with Victorious Education Services,<br />
+              <p>You have successfully created an account ,<br />
                 We have sent an emil on : <span class="text-decoration-none" style="color: green; font-weight: bold;">{{form.email}}</span> with instructions on how to activate your account. </p>
               <p>Please login to your email, find the activation link, click on it and set password </p>
               <br />

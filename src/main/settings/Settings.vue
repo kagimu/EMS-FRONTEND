@@ -30,11 +30,11 @@ const settingsList = ref([
     id:"profile",
     action:"view_profile"
   },
-  {
-    name:"Contact Info",
-    id:"contact-info",
-    action:"view_contactInfo"
-  },
+  // {
+  //   name:"Contact Info",
+  //   id:"contact-info",
+  //   action:"view_contactInfo"
+  // },
   {
     name:"Level",
     id:"level",
@@ -80,11 +80,11 @@ const settingsList = ref([
     id:"promotion-settings",
     action:"view_promotion_settings"
   },
-  {
+/*  {
     name:"Promotion Value",
     id:"promotion-value",
     action:"view_promotion_value"
-  }
+  }*/
 ])
 const form = reactive({
   name:null
@@ -98,7 +98,7 @@ const form = reactive({
 
     <div class="row">
       <div class="col-3">
-        <div class="card mt-3">
+        <div class="card p-0 mt-3">
           <div class="card-body" style="padding: 0;">
             <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Settings</div>
 

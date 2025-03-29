@@ -13,6 +13,8 @@ const switchTabs = (data) => {
   router.push({name: "catering", query: {m:menu,type: data}});
 }
 
+
+
 </script>
 <template>
     <div>
