@@ -15,7 +15,8 @@
    import {useLevelStore} from "@/main/settings/level/store/level.js";
    import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
    import SelectSchoolDetails from "@/main/auth/SelectSchoolDetails.vue"
-   
+   import ConfirmationModal from "@/components/ConfirmationModal.vue";
+   const confirmationRef = ref(null);
    
    const currentSchool = ref(null)
    const currentSchoolName = ref(null)
@@ -389,11 +390,19 @@
          }
        }
    )
-   
+
+
+   const switchUser = async () => {
+     const agreed = await confirmationRef.value.confirm("Confirm that you want to switch to Admin portal!");
+     if (agreed) {
+       router.push({name:'entity-dashboard'})
+     }
+   }
+
 
 </script>
 <template>
-
+  <ConfirmationModal removeBorder="remove" ref="confirmationRef"></ConfirmationModal>
     <!-- <div class="overlay" v-if="isOpen" @click.self="stopPropagation">
       <div class="dialog">
          <p>Select Options</p>
@@ -413,7 +422,7 @@
          <div class="col-12 col-sm-12 col-md-12 col-lg-12 bg-[#2c2f8c]">
             <nav class="navbar navbar-expand-lg bg-body-tertiary">
                <div class="container-fluid">
-                  <div class="flex" style="width: 12%; margin-right: 4%; color: #ffffff;">
+                  <div class="flex" style="margin-right: 4%; color: #ffffff;">
                      <i
                         @click="defaultMenuSize = !defaultMenuSize"
                         style="font-size: 27px; cursor: pointer;"
@@ -421,11 +430,21 @@
                         :class="defaultMenuSize ? 'transition ease-in-out rotate-0 duration-700' : 'transition ease-in-out -rotate-180 duration-700'"
                         ></i>
                      <router-link class="navbar-brand text-white" :to="{name:'home'}">
-                        <div class="text-[17px]">
+                        <div>
                            <!-- <span v-for="(lt, index) in schoolLists" :key="index">{{ lt.name }}</span>  -->
-                           <span v-for="(sch,index) in currentSchoolInfoData" :key="index">{{sch.name}}</span>
+                           <span class="text-[17px]" v-for="(sch,index) in currentSchoolInfoData" :key="index">{{sch.name}}</span>
                         </div>
                      </router-link>
+
+                    <div>
+                        <span v-if="can('can_serve_as_teacher_and_admin','general')">
+                      <button
+                          class="text-[#2c2f8c] bg-white text-xs rounded-sm ml-4 px-2 py-1 cursor-pointer mt-2" type="button"  @click="switchUser">
+                        <i class="bi bi-plus"></i>Switch to Admin
+                      </button>
+                    </span>
+                    </div>
+
                   </div>
                   <div class="navbar-collapse">
                      <ul class="navbar-nav me-auto my-lg-0 navbar-nav-scroll" style="font-size: 13px;">
