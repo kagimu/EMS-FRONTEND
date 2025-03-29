@@ -171,7 +171,7 @@
                </div>
 
 
-              <div class="grid grid-cols-2 gap-4">
+<!--              <div class="grid grid-cols-2 gap-4">
               <div class="mb-2">
                <label class="text-sm"><small>Password</small></label>
                <div class="input-group mb-3">
@@ -198,7 +198,7 @@
                   </div>
                </div>
               </div>
-              </div>
+              </div>-->
 
 
             </div>

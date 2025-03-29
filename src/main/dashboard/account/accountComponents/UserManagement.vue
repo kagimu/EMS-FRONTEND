@@ -341,14 +341,19 @@ watch (
             <td>{{ index+1 }}</td>
             <td style="text-transform: capitalize;">{{ user.first_name + " " +user.last_name + " " + user.second_name }}</td>
             <td>
-              <span v-for="(rol,indx) in user.roles"  :key="indx" >
-               {{ rol.role_name }} 
-               <button 
+              <div class="mb-1 flex justify-between hover:bg-white hover:rounded hover:px-2" v-for="(rol,indx) in user.roles"  :key="indx" >
+              <div>
+                {{ rol.role_name }}
+              </div>
+               <button
+                   style="border: red solid 1px; border-radius: 1px;"
+                   class="text-red-400 rounded px-2 ml-2"
                     v-if="can('remove_assigned_role','general')"
                      @click="removeRole(rol.role_number,user.number,rol.role_name,user.first_name)">
-                  &nbsp;<i  class="bi bi-x-circle-fill" style="color:rgb(228, 23, 23)"></i>
+                  &nbsp;<i  class="bi bi-x-circle-fill"></i>
+                 Delete
                 </button>
-              </span>
+              </div>
             </td>
             <td>{{ user.type }}</td>
             <td>{{ user.gender }}</td>
