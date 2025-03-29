@@ -19,6 +19,8 @@ import NewNarrativeReport from "@/main/dashboard/profiles/studentProfile/NewNarr
 import AppModal from "@/components/AppModal.vue";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 import { useNarrativeStore } from "@/main/dashboard/narrative/narrativeComponents/store/narrativeStore.js";
+import NarrativeReportTemplate from "@/main/dashboard/narrative/narrativeComponents/NarrativeReportTemplate.vue";
+
 
 
 const narrativeStore = useNarrativeStore()
@@ -72,6 +74,7 @@ const confirmationRef = ref(null);
 
 const   assessment_area_number = ref("")
 const narrative_schedule_number = ref("")
+const narrativeModel = ref(false)
 
 
 
@@ -496,6 +499,9 @@ const filterNarrativeReportBySchedule = (scheduleNumber) => {
 
 }
 
+const previewNarrativeReport = () => {
+  narrativeModel.value = true
+}
 
 </script>
 <template>
@@ -510,6 +516,10 @@ const filterNarrativeReportBySchedule = (scheduleNumber) => {
           :narrativeInfo="narrativeInfo"
           :studentProfileData="studentProfileData"
           :student_number="student_number"></new-narrative-report>
+    </AppModal>
+
+    <AppModal title="PreviewReport" v-model="narrativeModel" xl6>
+     <NarrativeReportTemplate></NarrativeReportTemplate>
     </AppModal>
 
     <div class="row">
@@ -550,7 +560,7 @@ const filterNarrativeReportBySchedule = (scheduleNumber) => {
 
               </div>
 
-          <div class="grid grid-cols-4 gap-2">
+          <div class="grid grid-cols-3 gap-2">
 
                 <div>
                   <VueDatePicker
@@ -578,6 +588,13 @@ const filterNarrativeReportBySchedule = (scheduleNumber) => {
                   ></VueDatePicker>
                 </div>
 
+                <div>
+                
+                <button style="float: right;"
+                  type="button"  class="btn btn-sm buttonStyle btn-success mr-2"  @click="previewNarrativeReport()">
+                  <i style="font-size: 15px;"  class="bi-printer mr-2"></i>
+                  Print</button>
+                </div>
 
               </div>
 
