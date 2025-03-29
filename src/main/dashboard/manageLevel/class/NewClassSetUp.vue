@@ -68,6 +68,7 @@ watch(
     async (data) => {
       if(data){
         form.name = null
+        form.code = null
         form.abbreviation = null
         form.level = ""
         loader.value = false

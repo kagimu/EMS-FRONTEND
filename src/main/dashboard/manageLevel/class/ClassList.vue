@@ -187,6 +187,7 @@ watch(
 <template>
     <div>
       <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+
       <AppModal title="Add Class" v-model="classDialog" lg>
         <new-campus-class :classListInfo="classList"></new-campus-class>
       </AppModal>
