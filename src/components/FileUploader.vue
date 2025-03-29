@@ -159,6 +159,7 @@ const  saveFile = async (data) => {
           />
         </div>
 
+
         <VueCropper
             v-if="showCropper"
             class="mx-auto w-[90%] h-[400px]"
@@ -166,6 +167,7 @@ const  saveFile = async (data) => {
             :aspect-ratio="10 / 9"
             :src="selectedFile"
             alt="Source Image"></VueCropper>
+<div v-if="showCropper" class="text-gray-500 italic text-xs text-center">Please drag the cropper (blue border) or pinch to zoom and fit the image in the frame</div>
 
 
         <input
