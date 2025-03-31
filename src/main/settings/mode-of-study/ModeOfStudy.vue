@@ -36,7 +36,7 @@ const showModeOfStudy = () => {
 
 onMounted(
     () => {
-      getModeOfStudyInfo()
+      // getModeOfStudyInfo()
       schoolStore.fetchSchools()
     } )
 

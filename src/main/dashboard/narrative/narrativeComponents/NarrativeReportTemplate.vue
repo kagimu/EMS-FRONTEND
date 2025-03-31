@@ -195,7 +195,95 @@
 
   </template>
 
-  <script setup></script>
+  <script setup>
+  import {onMounted, reactive, ref, watch, watchEffect, computed} from "vue"
+
+const narrativeData = ref([
+  {
+    "learningArea": "Learning to Care for the Mind (MENTAL STUDIES)",
+    "subjectCluster": "Acquire Knowledge Properly",
+    "subjects": [
+      {
+        "subjectCode": "1.1.1",
+        "subject": "Listen",
+        "referenceDate": "",
+        "status": "",
+        "currentDate": "",
+        "currentStatus": "",
+        "suggestedAction": ""
+      },
+      {
+        "subjectCode": "1.1.2",
+        "subject": "History",
+        "referenceDate": "",
+        "status": "",
+        "currentDate": "",
+        "currentStatus": "",
+        "suggestedAction": ""
+      },
+      {
+        "subjectCode": "1.1.3",
+        "subject": "Geography",
+        "referenceDate": "",
+        "status": "",
+        "currentDate": "",
+        "currentStatus": "",
+        "suggestedAction": ""
+      }
+    ]
+  },
+  {
+    "learningArea": "Environmental Awareness",
+    "subjectCluster": "Nature Studies",
+    "subjects": [
+      {
+        "subjectCode": "2.1.1",
+        "subject": "Climate Change",
+        "referenceDate": "",
+        "status": "",
+        "currentDate": "",
+        "currentStatus": "",
+        "suggestedAction": ""
+      },
+      {
+        "subjectCode": "2.1.2",
+        "subject": "Ecosystem",
+        "referenceDate": "",
+        "status": "",
+        "currentDate": "",
+        "currentStatus": "",
+        "suggestedAction": ""
+      }
+    ]
+  },
+  {
+    "learningArea": "Health and Well-being",
+    "subjectCluster": "Physical Education",
+    "subjects": [
+      {
+        "subjectCode": "3.1.1",
+        "subject": "Exercise & Fitness",
+        "referenceDate": "",
+        "status": "",
+        "currentDate": "",
+        "currentStatus": "",
+        "suggestedAction": ""
+      },
+      {
+        "subjectCode": "3.1.2",
+        "subject": "Healthy Eating",
+        "referenceDate": "",
+        "status": "",
+        "currentDate": "",
+        "currentStatus": "",
+        "suggestedAction": ""
+      }
+    ]
+  }
+] )
+
+
+</script>
 
   <style>
 
