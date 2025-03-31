@@ -49,11 +49,15 @@ const rolesData= ref([])
 //fetch
 onMounted(
     async () => {
-       doFetchTeacherOnboarding()
+      //  doFetchTeacherOnboarding()
     } )
 
 //fetch
 const doFetchTeacherOnboarding = () =>{
+
+  if(!filterData.value?.school_number){
+    return
+  }
 
   let data = {
     page: 1,
