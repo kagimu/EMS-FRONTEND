@@ -76,7 +76,7 @@ const form = reactive({
 onMounted(
     async () => {
      loading.value = true
-     getInterviewList()
+    //  getInterviewList()
      await schoolStore.fetchSchools()
     } )
 
@@ -562,7 +562,7 @@ watch (
                 class="btn btn-primary btn-sm ml-1 mr-4 mt-2 text-xs p-1"
                 style="float: right;"
               >
-               Offer Admission <i class="bi bi-box-arrow-in-right mr-1"></i>
+               Offer Admission<i class="bi bi-box-arrow-in-right mr-1"></i>
               </button>
               </div>
 

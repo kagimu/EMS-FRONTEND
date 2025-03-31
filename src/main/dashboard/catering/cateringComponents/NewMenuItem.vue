@@ -430,7 +430,7 @@ const handleMenuChange = (data) => {
 
           
           <div class="mb-2" v-if="menuForm.type && menuForm.school_number">
-            <label class="text-sm"><small> Unit of use</small></label>
+            <label class="text-sm"><small> User UOM</small></label>
             <div class="input-group">
             <select
                 v-model="menuForm.unit_of_measure_number"

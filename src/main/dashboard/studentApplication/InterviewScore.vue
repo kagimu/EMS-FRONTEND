@@ -82,7 +82,7 @@ const form = reactive({
 onMounted(
     async () => {
      loading.value = true
-     getInterviewList()
+    //  getInterviewList()
      await schoolStore.fetchSchools()
     } )
 
