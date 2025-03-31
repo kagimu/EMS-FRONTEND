@@ -33,7 +33,7 @@ const campusStore = useCampusStore()
 
 
 onMounted(() => {
-  fetchAllStock()
+  // fetchAllStock()
     }
 )
 
