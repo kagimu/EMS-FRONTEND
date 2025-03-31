@@ -329,7 +329,7 @@ if (agreed) {
                     @scroll="onScroll">
                   <table 
                     id="datatable"
-                    class="table table-hover caption-top mt-4 table-sm text-[12px]"
+                    class="table table-hover caption-top mt-4 table-sm text-[12px] table-striped "
                     >
                     <thead >
                       <tr>
@@ -339,7 +339,7 @@ if (agreed) {
                         <th>Unit Of Use</th>
                         <th>Purchase Unit</th>
                         <th>Qty</th>
-                        <th>Unit Cost</th>
+                        <th class="w-[5%]">Unit Cost of Purchase</th>
                         <th>Parts</th>
                         <th class="w-[5%]">Action</th>
                       </tr>

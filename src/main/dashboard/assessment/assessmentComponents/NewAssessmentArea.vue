@@ -144,7 +144,7 @@ const preferred_campus_number = ref(null)
 
   onMounted(
   async () => {
-    assessmentStore.fetchAssessmentArea()
+    // assessmentStore.fetchAssessmentArea()
     levelStore.fetchCurriculumLevels(curriculumNumber)
     schoolStore.fetchSchools()
   } )

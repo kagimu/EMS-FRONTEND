@@ -84,6 +84,11 @@ onMounted(
 
 
 const doFetchAssessmentMetric = async () => {
+
+  if(!campus_class_number.value){
+    return
+  }
+
   assessmentMetricsData.value.splice(0)
   tableLoader.value = true
   let data = {

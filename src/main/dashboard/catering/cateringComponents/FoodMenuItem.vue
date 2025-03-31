@@ -355,7 +355,7 @@ watch(
                       <th>Unit Of Use</th>
                       <th>Unit of Purchase</th>
                       <th>Current Quantity</th>
-                      <th>Unit Cost</th>
+                      <th>Unit Cost of Purchase</th>
                       <th>Action</th>
                     </tr>
                     </thead>
