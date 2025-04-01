@@ -336,7 +336,7 @@ if (agreed) {
                         <th>#</th>
                         <th>Code</th>
                         <th>Name</th>
-                        <th>Unit Of Use</th>
+                        <th>User UOM</th>
                         <th>Purchase Unit</th>
                         <th>Qty</th>
                         <th class="w-[5%]">Unit Cost of Purchase</th>

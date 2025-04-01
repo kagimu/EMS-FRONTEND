@@ -352,7 +352,7 @@ watch(
                       <th>#</th>
 <!--                      <th>Code</th>-->
                       <th>Name</th>
-                      <th>Unit Of Use</th>
+                      <th>User UOM</th>
                       <th>Unit of Purchase</th>
                       <th>Current Quantity</th>
                       <th>Unit Cost of Purchase</th>

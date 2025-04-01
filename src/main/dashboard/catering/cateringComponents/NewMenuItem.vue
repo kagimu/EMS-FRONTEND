@@ -447,7 +447,7 @@ const handleMenuChange = (data) => {
 <!--          <div v-if="menuForm.type && (menuForm.type === 'ITEM')">-->
 
                   <div class="mb-2" >
-                <label class="text-sm"><small>Conversion Purchase Unit</small></label>
+                <label class="text-sm"><small>User UOM Conversion to Purchase Units</small></label>
                     <input
                         v-model="menuForm.conversion_to_purchase_unit"
                         @keypress="commons.onlyNumberValidator($event)"
@@ -508,7 +508,7 @@ const handleMenuChange = (data) => {
               <th>Item</th>
               <th><div class="text-sm">Quantity</div></th>
               <th><div class="text-sm">Available Quantity</div></th>
-              <th><div class="text-sm">Unit Of Use</div></th>
+              <th><div class="text-sm">User UOM</div></th>
               <th><div class="text-sm">Unit Cost</div></th>
               <th><div class="text-sm">#</div></th>
             </tr>
