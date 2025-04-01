@@ -365,7 +365,7 @@ watch(
       <NewAssessmentMetric :assessmentMetricList="assessmentMetricList"></NewAssessmentMetric>
     </AppModal>
 
-    <AppModal title="Upload Marking Guide / Script" v-model="uploadDialog" xl>
+    <AppModal title="Upload Assessment Guide / Script" v-model="uploadDialog" xl>
       <marking-guide-file-uploader fileType="testMarkingGuide" :metricNumber="metricNumber"></marking-guide-file-uploader>
     </AppModal>
 

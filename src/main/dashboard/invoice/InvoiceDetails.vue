@@ -326,20 +326,20 @@ const printContent = () => {
                                   <tr v-for="(payment, index) in invoiceData.items" :key="index">
                                     <th scope="row">{{ payment.quantity }}</th>
                                     <td>{{ payment.item_name }}</td>
-                                    <td class="text-end">{{ payment.unit_cost }}</td>
-                                    <td class="text-end">{{ payment.unit_cost }}</td>
+                                    <td class="text-end">{{ payment.unit_cost?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
+                                    <td class="text-end">{{ payment.unit_cost?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
                                   </tr>
                                   <tr>
                                     <th scope="row" colspan="3" class="text-uppercase text-end">Total</th>
-                                    <td class="text-end">{{ myData.total_amount }}</td>
+                                    <td class="text-end">{{ myData.total_amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")  }}</td>
                                   </tr>
                                   <tr>
                                     <th scope="row" colspan="3" class="text-uppercase text-end">Paid</th>
-                                    <td class="text-end">{{ myData.paid_amount }}</td>
+                                    <td class="text-end">{{ myData.paid_amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")  }}</td>
                                   </tr>
                                   <tr>
                                     <th scope="row" colspan="3" class="text-uppercase text-end">Balance</th>
-                                    <td class="text-end">{{ myData.balance }}</td>
+                                    <td class="text-end">{{ myData.balance?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")  }}</td>
                                   </tr>
                                 </tbody>
                               </table>
@@ -376,7 +376,7 @@ const printContent = () => {
                   <td>{{ payment.invoice_ref_number }}</td>
                   <td>{{ payment.date_time }}</td>
                   <td>{{ payment.recorded_by }}</td>
-                  <td>{{ payment.amount }}</td>
+                  <td>{{ payment.amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")  }}</td>
                   <td v-if="can('cancel_payment', 'general')">
                     <button @click="cancelInvoicePayment(payment.payment_number)" class="btn btn-warning btn-sm mb-2 mr-2">
                       <small><i class="bi bi-cancel">&nbsp;Cancel</i></small>

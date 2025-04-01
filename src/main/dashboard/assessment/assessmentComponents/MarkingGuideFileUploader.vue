@@ -64,7 +64,7 @@ watch(
         </div>
 
         <div class="mb-3">
-          <label for="formFileSm" class="form-label">Marking Guide</label>
+          <label for="formFileSm" class="form-label">Assessment Guide</label>
           <input
               ref="markingGuideRef"
               class="form-control form-control-sm noFocus"
