@@ -530,7 +530,7 @@ watch(
 
                   <button
                       class="mr-1"
-                      title="Upload Marking Guide / Script"
+                      title="Upload Assessment Guide / Script"
                       @click="uploadMarkingGuide(metricsData)"
                       type="button">
                     <i class="bi bi-filetype-pdf text-[16px]" style="color:rgb(3, 85, 148)"></i>

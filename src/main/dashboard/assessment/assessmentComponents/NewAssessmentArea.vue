@@ -1,93 +1,3 @@
-<template>
-<div>
-    <form @submit.prevent="addAssessmentArea">
-           
-           <div class="mb-2">
-             <label class="text-sm"><small>Level</small> <span class="star">*</span></label>
-                 <select
-                     style="box-shadow: none;"
-                     class="form-select form-select-sm"
-                     v-model="level"
-                     @change="filterClasses()">
-                   <option disabled value="">Select Level</option>
-                   <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.level_number">{{lvl.code+". "+lvl.name}}</option>
-                 </select>
-             </div>
-
-
-               
-         <div class="mb-2">
-           <label class="text-sm"><small>Class</small> <span class="star">*</span></label>
-           <select
-                     style="box-shadow: none;"
-                     class="form-select form-select-sm"
-                     v-model="form.curriculum_class_number"
-                     @change="fetchSubject(form.curriculum_class_number)">
-                   <option disabled value="">Select Class</option>
-                   <option v-for="(cls, index) in classList" :key="index" :value="cls.number">{{cls.name}}</option>
-                 </select>
-         </div>
-
-
-             <div class="mb-2">
-             <label class="text-sm"><small>Subjects</small> <span class="star">*</span></label>
-             <!-- <select
-                     style="box-shadow: none;"
-                     class="form-select form-select-sm" 
-                     v-model="form.subject_number"
-             >                
-                 <option v-for="(sbj, index) in subjectList" :key="index" :value="sbj.number">{{sbj.name}}</option>
-                 <option  value="">Other</option>
-             </select> -->
-
-
-          <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-          <li class="list-group-item" v-for="(subject_numbers, index) in subjectList">
-            <input
-                v-model="form.subjects"
-                style="outline: none 0 !important; box-shadow: none;"
-                class="form-check-input me-1" type="checkbox" :value="subject_numbers.number" :id="index">
-            <label class="form-check-label cursor-pointer" :for="index">{{subject_numbers.name}}</label>
-          </li>
-          </ul>
-
-             <!-- <table style="width: 100%;">
-                <tr v-for="(subject_numbers, index) in form.subject_numbers" :key="index">
-                  <td>
-                    <select v-model="subject_numbers.number" class="form-select form-select-sm">
-                      <option v-for="option in subjectList" :key="option" :value="option.number">{{ option.name }}</option>
-                    </select>
-                  </td>
-                  <td style="width: 2%;">
-                   <i @click="removeSubject(index)"  class="bi bi-x" style="color: red;pointer-events:auto;"></i>
-                  </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button type="button" @click="addSubject" class="btn btn-primary mb-2 btn-sm p-0 mt-1" style="color:white !important"><i class="bi bi-plus"></i></button>
-                    </td>
-                    <td></td>
-                </tr>
-              </table> -->
-         </div>
-        
-
-         <div class="mb-2" v-if="form.subject_number === ''">
-               <label class="text-sm"><small>Specify Name</small></label>
-               <input v-model="form.name"  type="text" required class="form-control">
-             </div>
-
-             
-             <div class="text-right mt-4">
-               <button  style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
-                 <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader" >
-                   <span class="visually-hidden">Loading...</span>
-                 </div></button>
-             </div>
-           </form>
-</div>
-</template>
-
 <script setup>
 import {onMounted,reactive, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
@@ -124,6 +34,13 @@ const subjectList = ref([])
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 const preferred_campus_number = ref(null)
+
+const props = defineProps({
+  closeAreaDialog: Function,
+})
+
+
+const emit = defineEmits(["closeDialog"]);
 
   const form = reactive({ 
     curriculum_class_number:[],
@@ -291,7 +208,102 @@ watch(
 
 </script>
 
+<template>
+<div>
+    <form @submit.prevent="addAssessmentArea">
+           
+           <div class="mb-2">
+             <label class="text-sm"><small>Level</small> <span class="star">*</span></label>
+                 <select
+                     style="box-shadow: none;"
+                     class="form-select form-select-sm"
+                     v-model="level"
+                     @change="filterClasses()"  required>
+                   <option disabled value="">Select Level</option>
+                   <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.level_number">{{lvl.code+". "+lvl.name}}</option>
+                 </select>
+             </div>
 
+
+               
+         <div class="mb-2">
+           <label class="text-sm"><small>Class</small> <span class="star">*</span></label>
+           <select
+                     style="box-shadow: none;"
+                     class="form-select form-select-sm"
+                     v-model="form.curriculum_class_number"
+                     @change="fetchSubject(form.curriculum_class_number)" required>
+                   <option disabled value="">Select Class</option>
+                   <option v-for="(cls, index) in classList" :key="index" :value="cls.number">{{cls.name}}</option>
+                 </select>
+         </div>
+
+
+             <div class="mb-2">
+             <label class="text-sm"><small>Subjects</small> <span class="star">*</span></label>
+             <!-- <select
+                     style="box-shadow: none;"
+                     class="form-select form-select-sm" 
+                     v-model="form.subject_number"
+             >                
+                 <option v-for="(sbj, index) in subjectList" :key="index" :value="sbj.number">{{sbj.name}}</option>
+                 <option  value="">Other</option>
+             </select> -->
+
+
+          <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+          <li class="list-group-item" v-for="(subject_numbers, index) in subjectList">
+            <input
+                v-model="form.subjects"
+                style="outline: none 0 !important; box-shadow: none;"
+                class="form-check-input me-1" type="checkbox" :value="subject_numbers.number" :id="index">
+            <label class="form-check-label cursor-pointer" :for="index">{{subject_numbers.name}}</label>
+          </li>
+          </ul>
+
+             <!-- <table style="width: 100%;">
+                <tr v-for="(subject_numbers, index) in form.subject_numbers" :key="index">
+                  <td>
+                    <select v-model="subject_numbers.number" class="form-select form-select-sm">
+                      <option v-for="option in subjectList" :key="option" :value="option.number">{{ option.name }}</option>
+                    </select>
+                  </td>
+                  <td style="width: 2%;">
+                   <i @click="removeSubject(index)"  class="bi bi-x" style="color: red;pointer-events:auto;"></i>
+                  </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="button" @click="addSubject" class="btn btn-primary mb-2 btn-sm p-0 mt-1" style="color:white !important"><i class="bi bi-plus"></i></button>
+                    </td>
+                    <td></td>
+                </tr>
+              </table> -->
+         </div>
+        
+
+         <div class="mb-2" v-if="form.subject_number === ''">
+               <label class="text-sm"><small>Specify Name</small></label>
+               <input v-model="form.name"  type="text" required class="form-control">
+             </div>
+
+             
+             <div class="row">
+             <div class="mt-4 col-lg-6">
+               <button  @click="$emit('closeDialog')" style="float: left" type="button" class="btn btn-danger btn-sm
+                 mb-2 mr-4"><i class="bi bi-warning"></i>&nbsp;<small>cancel</small>
+                 </button>
+             </div>
+             <div class="mt-4 col-lg-6">
+               <button  style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog"><i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
+                 <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader" >
+                   <span class="visually-hidden">Loading...</span>
+                 </div></button>
+             </div>
+            </div>
+           </form>
+</div>
+</template>
 
 <style>
 

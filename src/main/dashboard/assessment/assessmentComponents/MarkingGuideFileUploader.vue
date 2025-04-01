@@ -62,7 +62,17 @@ watch(
         <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="uploadError">
           {{ uploadError }}
         </div>
+        <div class="mb-3">
+          <label for="formFileSm" class="form-label">Script</label>
+          <input
+              ref="ScriptRef"
+              class="form-control form-control-sm noFocus"
+              id="formFileSm"
+              accept=".pdf,application/pdf"
+              type="file">
+        </div>
 
+        
         <div class="mb-3">
           <label for="formFileSm" class="form-label">Assessment Guide</label>
           <input
@@ -74,16 +84,7 @@ watch(
         </div>
 
 
-        <div class="mb-3">
-          <label for="formFileSm" class="form-label">Script</label>
-          <input
-              ref="ScriptRef"
-              class="form-control form-control-sm noFocus"
-              id="formFileSm"
-              accept=".pdf,application/pdf"
-              type="file">
-        </div>
-
+      
 
 
 

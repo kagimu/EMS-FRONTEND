@@ -42,12 +42,10 @@ const addCampus = () => {
 
 const editClass = (data) => {
   alert(JSON.stringify(data))
-
 }
 
 const addStream = (data) => {
 //  alert(JSON.stringify(data))
-
  streamClass.value = data.name
   streamDialog.value = true
   streamForm.class_level_number = data.number

@@ -339,7 +339,7 @@ if (agreed) {
                         <th>User UOM</th>
                         <th>Purchase Unit</th>
                         <th>Qty</th>
-                        <th class="w-[5%]">Unit Cost of Purchase</th>
+                        <th class="w-[10%]">Unit Cost of Purchase</th>
                         <th>Parts</th>
                         <th class="w-[5%]">Action</th>
                       </tr>
@@ -350,7 +350,7 @@ if (agreed) {
                     <tbody>
                      
                       <tr v-if="isLoading===false" v-for="(list, index) in menuItemData" :key="index">
-                        <td   v-if="list.type==='ASSEMBLED'">{{ list?.key }}</td>
+                        <td   v-if="list.type==='ASSEMBLED'">{{ index+1}}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.code }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.name }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.unit_of_measure_name }}</td>
@@ -366,6 +366,7 @@ if (agreed) {
                            <div class="flex flex-grow justify-between px-3 py-1">
                              <div>{{(idx+1)}}. {{ ldData.name }} </div>
                              <div>{{ ldData.quantity }} {{ ldData.unit_of_measure }}</div>
+                             <div>{{ ldData.unit_cost.replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</div>
                            </div>
                          </div>
                        </div>

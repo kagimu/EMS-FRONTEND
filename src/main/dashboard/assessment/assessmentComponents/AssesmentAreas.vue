@@ -38,6 +38,10 @@ const areaDialog = ref(false)
     } )
 
 
+    const closeDialog = () => {
+      areaDialog.value = false
+}
+
   const fetchAssessmentAreaInfo = () => {
   if(curriculum_class_number.value){
     let data = {
@@ -143,12 +147,12 @@ const openEditModel = (num,name) =>{
 
     <!-- :title="mealEditMode ? 'Edit Meal' : 'Add Meal Course'" -->
     <AppModal  :title="editMode ? 'Edit Assessment Area '+ namee : 'New Assessment Area'" v-model="areaDialog" xl2>
-      <NewAssessmentArea></NewAssessmentArea>
+      <NewAssessmentArea @closeDialog="closeDialog"></NewAssessmentArea>
     </AppModal>
 
     <div class="col-12">
-              <div class="card">
-                <div class="card-header">
+              <div class="">
+                <div class="">
            <div class="flex flex-grow justify-between">
 
               <div class="text-sm">Assessment Area</div>
