@@ -72,6 +72,10 @@ onMounted(
     }
 )
 
+const closeDialog = () => {
+  campusDialog.value = false
+}
+
 const fetchCampusInfo = (schoolNumber) => {
   if(schoolNumber) {
     campusStore.fetchCampuses(schoolNumber)
@@ -161,7 +165,7 @@ watch (
   <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
   <AppModal :title="campusEditMode ? 'Edit Campus' : 'New Campus'" v-model="campusDialog" xl6>
-    <new-campus ref="campusRef"></new-campus>
+    <new-campus ref="campusRef"  @closeDialog="closeDialog"></new-campus>
   </AppModal>
 
 <div>

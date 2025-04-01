@@ -23,6 +23,7 @@ const levelList = ref([])
 const curriculumList = ref([])
 
 
+const emit = defineEmits(["closeDialog"]);
 
 
 let schoolNumber = routerData.currentRoute.value.query.id
@@ -286,6 +287,12 @@ watch(
 
 
       <div class="flex justify-content-end" style="width: 100%;">
+        <button
+            type="button"
+            class="btn btn-danger border-0 mr-2"
+            @click="$emit('closeDialog')">
+          Cancel
+        </button>
         <button
             type="submit"
             class="btn btn-primary border-0">

@@ -29,6 +29,12 @@ const campusRef = ref( null)
 
 let schoolNumber = routerData.currentRoute.value.query.id
 
+const closeDialog = () => {
+  campusDialog.value = false
+}
+
+
+
 let campusQuery = routerData.currentRoute.value.query.type ? routerData.currentRoute.value.query.type : "campus"
 const campusMenu = ref([
   {
@@ -103,7 +109,7 @@ const successUpload = (data) => {
   <div>
 
     <AppModal :title="campusEditMode ? 'Edit Campus' : 'New Campus'" v-model="campusDialog" xl6>
-      <new-campus ref="campusRef"></new-campus>
+      <new-campus ref="campusRef" @closeDialog="closeDialog"></new-campus>
     </AppModal>
 
     <AppModal title="Upload School Badge" v-model="uploadDialog" xl>
