@@ -29,6 +29,10 @@ let entityN = localStorage.getItem("entity_number")
 const schoolDialog = ref( false)
 const schoolsList = ref( [])
 
+const closeDialog = () => {
+  schoolDialog.value = false
+}
+
 
 const addSchool = () => {
   editMode.value = false
@@ -150,7 +154,7 @@ const curriculums = ref([
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="editMode ? 'Edit School' : 'New School'" v-model="schoolDialog" lg>
-      <new-school ref="schoolRef"></new-school>
+      <new-school @closeDialog="closeDialog" ref="schoolRef"></new-school>
     </AppModal>
 
     <AppModal title="Upload School Badge" v-model="uploadDialog" xl>

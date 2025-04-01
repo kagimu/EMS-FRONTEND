@@ -17,6 +17,7 @@ const curriculumStore = useCurriculumStore()
 const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
 let entityN = localStorage.getItem("entity_number")
+const emit = defineEmits(["closeDialog"]);
 
 const form = reactive({
   name:null,
@@ -147,7 +148,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="text-sm text-sm">School Name</label>
+        <label class="text-sm text-sm">School Nameff</label>
         <input
             style="outline: none 0 !important; box-shadow: none;"
             type="text"
@@ -182,6 +183,12 @@ watch(
 
 
       <div class="flex justify-content-end" style="width: 100%;">
+        <button
+            type="button"
+            class="btn btn-danger border-0 mr-2"
+            @click="$emit('closeDialog')">
+          Cancel
+        </button>
         <button
             type="submit"
             class="btn btn-primary border-0">
