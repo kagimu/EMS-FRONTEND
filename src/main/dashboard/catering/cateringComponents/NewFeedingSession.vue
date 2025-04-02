@@ -38,6 +38,9 @@
        }
    )
 
+   const emit = defineEmits(["closeDialog"]);
+
+
    const getFeedingPackInfo = () => {
     let draftData = props.groupData
     if(draftData.feeding_session_number){
@@ -320,12 +323,20 @@
             </div>
          </div>
          <div>
-            <button  style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2 mt-3"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog">
+            <div class="flex justify-between" style="width: 100%;">
+        <button
+            type="button"
+            class="btn btn-danger  btn-sm  mb-2 mt-3"
+            @click="$emit('closeDialog')">
+          Cancel
+        </button>
+            <button  style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2 mt-3"  >
                <i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
                <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader" >
                   <span class="visually-hidden">Loading...</span>
                </div>
             </button>
+            </div>
          </div>
       </form>
    </div>

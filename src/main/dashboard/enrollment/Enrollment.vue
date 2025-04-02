@@ -385,7 +385,7 @@ const closeDialog = () => {
     </AppModal>
 
     <AppModal title="Upload Student Photo" v-model="uploadDialog" xl>
-      <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload"  :studentNumber="studentNumber" :imageUrl="studentPhoto"></file-uploader>
+      <file-uploader  ref="profileUploadComponents" v-on:nextAction="successUpload"  :studentNumber="studentNumber" :imageUrl="studentPhoto"></file-uploader>
     </AppModal>
 
     <div id="promoteModal" :class="{ show: promDialog }" class="modal fade"  tabindex="-1">
