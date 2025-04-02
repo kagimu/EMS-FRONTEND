@@ -19,6 +19,9 @@
    const rolesInfo = ref([])
    let entityN = localStorage.getItem("entity_number")
    
+   
+const emit = defineEmits(["closeDialog"]);
+
    const form = reactive({
      first_name:null,
      second_name:null,
@@ -242,9 +245,15 @@
                </div>
             </div>
          </div>
-         <div class="text-right mt-4">
-            <button type="submit" class="btn btn-primary mb-2">
-               save
+         <div class="flex justify-between" style="width: 100%;">
+      <button
+          type="button"
+          class="btn btn-danger border-0 mr-2 btn-sm mb-2"
+          @click="$emit('closeDialog')">
+        Cancel
+      </button>
+            <button type="submit" class="btn btn-primary mb-2 btn-sm ">
+               Submit
                <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
                   <span class="visually-hidden">Loading...</span>
                </div>

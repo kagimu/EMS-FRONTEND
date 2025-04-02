@@ -119,6 +119,10 @@ watch (
     {deep:true}
 )
 
+const closeDialog = () => {
+  showModal.value = false
+}
+
 </script>
 
 
@@ -128,7 +132,7 @@ watch (
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="editMode ? 'Edit Role' : 'Add New Role'" v-model="showModal" xl4>
-      <NewRole ref="roleRef" :roleData="roleData"></NewRole>
+      <NewRole ref="roleRef" :roleData="roleData" @closeDialog="closeDialog"></NewRole>
     </AppModal>
 
 
