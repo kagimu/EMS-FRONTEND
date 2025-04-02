@@ -61,6 +61,7 @@
    const selectedItems = ref([])
    const selectedBillableItems = ref([])
 
+   const emit = defineEmits(["closeDialog"]);
    
    const props = defineProps({
      studN: String,
@@ -720,7 +721,13 @@ watch(
             </div>
          </div>
          <hr>
-         <div class="flex justify-content-end mt-2" style="width: 100%;">
+         <div class="flex justify-between" style="width: 100%;">
+        <button
+            type="button"
+            class="btn btn-danger border-0 mr-2"
+            @click="$emit('closeDialog')">
+          Cancel
+        </button>
             <button type="submit" class="btn btn-primary border-0 btn-sm">
             <small>Enrol <i class="bi bi-box-arrow-in-right"></i></small>
             <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"

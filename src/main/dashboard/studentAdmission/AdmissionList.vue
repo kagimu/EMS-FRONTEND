@@ -363,10 +363,15 @@
      }
    }
    
+   const closeDialog = () => {
+      mymodal.value = false
+}
+
+
 </script>
 <template>
    <AppModal title="Enrol" v-model="mymodal" xl6>
-      <EnrolModel :studentNumber="studentNum" :admissionData="admissionInfoData" :studentDataInfo="studentData"></EnrolModel>
+      <EnrolModel :studentNumber="studentNum" :admissionData="admissionInfoData" :studentDataInfo="studentData" @closeDialog="closeDialog"></EnrolModel>
    </AppModal>
    <AppModal title="Upload Student Photo" v-model="uploadDialog" xl>
       <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload"  :studentNumber="studentNumber" :imageUrl="studentPhoto"></file-uploader>
