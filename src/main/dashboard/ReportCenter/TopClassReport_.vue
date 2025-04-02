@@ -1,3 +1,9 @@
+<script setup>
+
+import schoolBadge from "@/assets/images/school_badge.png";
+import studentImage from "@/assets/images/student.png";
+
+</script>
 <template>
   <div>
     <div class="mx-auto mt-10" style="width: 98%">
@@ -17,20 +23,23 @@
             <table style="width: 100%;">
               <tr>
                 <td style="width: 20%; text-align: center;">
-                  <img alt="logo" style="width: 150px; margin: 0 auto" src="../../../../public/img/badge.png"/>
+                  <img alt="logo" style="width: 150px; margin: 0 auto" :src="schoolBadge"/>
                 </td>
                 <td style="width: 60%;" class="text-center">
-                  <div style="font-size: 30px;"><b>NOREGRETS LIFE SCHOOL</b></div>
+<!--                  <div style="font-size: 30px;"><b>NOREGRETS LIFE SCHOOL</b></div>-->
+                  <div style="font-size: 30px;"><b>SCHOOL NAME</b></div>
 
-                  <div style="font-size: 20px; margin-top: 5px;">BUNAMWAYA CAMPUS</div>
+<!--                  <div style="font-size: 20px; margin-top: 5px;">BUNAMWAYA CAMPUS</div>-->
+                  <div style="font-size: 20px; margin-top: 5px;">CAMPUS NAME</div>
 
-                  <div style="margin-top: 6px; margin-bottom: 10px;"><small>Bunamwaya, P.O.BOX 21671 Kampala | +256752698545 | mwesigwa.noregrets@gmail.com</small></div>
+<!--                  <div style="margin-top: 6px; margin-bottom: 10px;"><small>Bunamwaya, P.O.BOX 21671 Kampala | +256752698545 | mwesigwa.noregrets@gmail.com</small></div>-->
+                  <div style="margin-top: 6px; margin-bottom: 10px;"><small>Address, P.O.BOX 00000 district | +25670000000 | example@gmail.com</small></div>
 
                   <div style="background-color: green; color: #ffffff;">PROGRESS REPORT FOR KINDERGARTEN</div>
                 </td>
                 <td style="width: 20%;">
                   <div style="text-align: center; margin-top: 10px;">
-                    <img alt="logo" style="width: 130px; margin: 0 auto;" src="../../../../public/img/pic.jpg"/>
+                    <img alt="logo" style="width: 130px; margin: 0 auto;" :src="studentImage"/>
                   </div>
                 </td>
               </tr>
@@ -322,12 +331,7 @@
   </div>
 </template>
 
-<script setup>
-const printReport = () => {
-  // alert("Print pdf now man")
-}
 
-</script>
 
 <style scoped>
 
