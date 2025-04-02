@@ -106,6 +106,9 @@ const removeItem = (idx:number) => {
   selectedItems.value.splice(idx, 1)
 }
 
+const markDone = () => {
+  dropdownOpen.value = false;
+}
 
 </script>
 
@@ -167,6 +170,7 @@ const removeItem = (idx:number) => {
                  :for="'item-'+(idx+1)">{{item?.text}}</label>
             </div>
           </div>
+          <button style="float: right;" class="btn btn-success btn-sm m-2 mt-2" @click="markDone">Done <i class="bi bi-check-lg"></i></button>
       </div>
 
     </div>
