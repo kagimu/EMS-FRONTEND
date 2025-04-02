@@ -18,6 +18,7 @@ const props = defineProps({
    applicationNumb:String
    })
 
+const emit = defineEmits(["closeDialog"]);
 
 
 onMounted(() => {
@@ -139,6 +140,12 @@ const fetchApplicationData = (applicationNumber) => {
                     </div>
 
                   </div>
+
+                  <!-- @click="$emit('closeDialog')" -->
+                  <div class="flex justify-left mb-10">
+                    <button type="button" class="btn btn-danger btn-sm" @click="$emit('closeDialog')">Close</button>
+                  </div>
+
                 </div>
 
 

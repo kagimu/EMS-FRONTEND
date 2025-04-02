@@ -286,16 +286,16 @@ watch(
 
 
 
-      <div class="flex justify-content-end" style="width: 100%;">
+      <div class="flex justify-between" style="width: 100%;">
         <button
             type="button"
             class="btn btn-danger border-0 mr-2"
-            @click="$emit('closeDialog')">
+            @click="$emit('closeDialog')" style="float: left;">
           Cancel
         </button>
         <button
             type="submit"
-            class="btn btn-primary border-0">
+            class="btn btn-primary border-0" style="float: right;">
           {{campus_number ? "Edit":"Save"}}
           <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>

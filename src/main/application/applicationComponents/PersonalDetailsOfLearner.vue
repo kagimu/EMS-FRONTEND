@@ -164,9 +164,10 @@ watch (
         let dataa = {
           page: page.value,
           per_page: per_page.value,
-          status: "SUBMITTED"
+          status: "SUBMITTED",
+          school_number: "",
         }
-        await applicationStore.fetchApplicationList(dataa)
+        // await applicationStore.fetchApplicationList(dataa)
       }
     }
 )

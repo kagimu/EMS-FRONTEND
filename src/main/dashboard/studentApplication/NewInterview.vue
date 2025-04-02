@@ -43,6 +43,9 @@
    const levelList = ref([])
    const curriculumNumber = ref(null)
 
+  
+const emit = defineEmits(["closeDialog"]);
+
     const sectionPart = reactive([{ assessment_metric_number: ""}]);
     
     const showModal = () => {
@@ -464,8 +467,12 @@ watch (
 
 </div>
 
-
           <div class="text-right mt-4">
+            <!-- @click="$emit('closeDialog')" -->
+            <button style="float: left" type="button" class="btn btn-danger btn-sm  mb-2 mr-4" @click="$emit('closeDialog')">
+                <i class="bi bi-arrow-left-circle"></i>&nbsp;<small>cancel</small>
+            </button>
+
              <button style="float: right" type="submit" class="btn btn-primary btn-sm float-end mb-2 mr-4"  data-bs-toggle="offcanvas" data-bs-target="#rolesDialog" aria-controls="rolesDialog">
                 <i class="bi bi-arrow-right-circle"></i>&nbsp;<small>submit</small>
                 <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader" >

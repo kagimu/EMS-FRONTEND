@@ -25,6 +25,7 @@ const openModal = (interviewInfoD) => {
   dialog.value = true
   interviewInfoData.value = interviewInfoD
 
+
   admissionLearnerDetails.value = {
     school_number : school_number.value,
     campus_number:campus_number.value,
@@ -32,6 +33,10 @@ const openModal = (interviewInfoD) => {
     curriculum_number:form.curriculumNumber,
     campus_class_number:form.campus_class_number,
   }
+}
+
+const closeDialog = () => {
+    showingModal.value = false
 }
 
 const levelStore = useLevelStore()
@@ -323,7 +328,7 @@ document.addEventListener("fullscreenchange", () => {
     
     
     <AppModal :title="editMode ? 'Edit ' + namee:'Create Interview'" v-model="showingModal" xl4>
-      <NewInterview :interviewListData="interviewListData"></NewInterview>
+      <NewInterview :interviewListData="interviewListData" @closeDialog="closeDialog"></NewInterview>
     </AppModal>
 
 

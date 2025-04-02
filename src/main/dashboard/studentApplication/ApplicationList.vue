@@ -76,6 +76,12 @@
   level:""
   })
 
+  const closeDialog = () => {
+      showAppmodal.value = false
+}
+
+
+
   onMounted(() => {
         // doFetchApplication()
         schoolStore.fetchSchools()
@@ -357,12 +363,14 @@ watch (
     async (data) => {
               if(data){
 
-           let data = {
-              page: page.value,
-              per_page: per_page.value,
-              status: form.statusData
-           }
-           await applicationStore.fetchApplicationList(data)
+          //  let data = {
+          //     page: page.value,
+          //     per_page: per_page.value,
+          //     status: form.statusData
+          //  }
+          //  await applicationStore.fetchApplicationList(data)
+
+          doFetchApplication()
         }
     },
     {deep:true}
@@ -461,7 +469,7 @@ const exportToCSV = () => {
   </AppModal>
 
   <AppModal title="New Application" v-model="showAppmodal" xl4>
-    <NewApplication :applicationNumb="applicationN" :applicationMode="isStaff"></NewApplication>
+    <NewApplication :applicationNumb="applicationN" :applicationMode="isStaff" @closeDialog="closeDialog"></NewApplication>
   </AppModal>
 
   <div class="row ml-2 mt-3">
