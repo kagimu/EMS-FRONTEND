@@ -315,14 +315,27 @@ watch(
       {deep:true}
   )
 
+  const max_score_mark = ref(null)
 
   const fetchStudentOnInterviewDetails = (assNumber) => {
+
    let data = reactive({
       interview_number:form.interview_number,
       assessment_metric_number:assNumber
    })
       applicationStore.fetchStudentsOnInterview(data) 
+
+//find max-score from assessmentDataData by assNumber
+    let maxScore = assessmentDataData.value.find(item => item.number === assNumber)?.max_score
+    if(maxScore){
+      max_score_mark.value = maxScore
+    }else{
+      max_score_mark.value = null
+    }
+
   }
+
+
 
 
     
@@ -466,22 +479,21 @@ watch(
                                              </div>
                                              </div> 
 
-                                             
-                                            <div class="col-2" >
-                                                <div class="mb-2">
-                                                  <label class="text-sm"><small>Level</small></label>
-                                                   <select
-                                                   style="box-shadow: none;"
-                                                   class="form-select form-select-sm"
-                                                      v-model="form.level"
-                                                      @change="fetchLevelClasses(form.level)"
-                                                   >
-                                                      <option disabled value="">-Filter by level-</option>
-                                                      <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
-                                                   </select>
-                                                   
-                                                </div>
-                                                </div>
+        <div class="col-2" >
+            <div class="mb-2">
+              <label class="text-sm"><small>Level</small></label>
+                <select
+                style="box-shadow: none;"
+                class="form-select form-select-sm"
+                  v-model="form.level"
+                  @change="fetchLevelClasses(form.level)"
+                >
+                  <option disabled value="">-Filter by level-</option>
+                  <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
+                </select>
+                
+            </div>
+            </div>
 
 
         <div class="col-2"> 
@@ -533,7 +545,11 @@ watch(
                  @change="fetchStudentOnInterviewDetails(form.assessment_number)"
                  >
                  <option disabled value=""> - Select Assessment Schedule- </option>
-                 <option v-for="(assessment, index) in assessmentDataData" :key="index" :value="assessment.number">{{assessment.metric_name  }} - [{{ assessment.assessment_area }}] ({{ assessment.description }} [{{ assessment.scheduled_on }}])</option>
+                 <option v-for="(assessment, index) in assessmentDataData" :key="index" 
+                 :value="assessment.number">
+                 {{assessment.metric_name  }} - [{{ assessment.assessment_area }}] ({{ assessment.description }} [{{ assessment.scheduled_on }}])
+                 Max-score{{ assessment.max_score }}
+                </option>
               </select>
 
           </div>
@@ -543,13 +559,14 @@ watch(
 
    </h6>
  <div>
-   
+<!--    
+  {{ assessmentDataData }} -->
     <table   id="data"
         class="table table-striped table-hover caption-top table-sm text-sm">
         <thead>
            <tr>
               <th>Name</th>
-              <th scope="col">Score</th>
+              <th scope="col">Score/ (<b>{{ max_score_mark }}</b>)</th>
               <th scope="col">Comment <span v-if="buttonLoader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-dark" role="status">
                  <span class="visually-hidden">Loading...</span>
                  </span></th>
