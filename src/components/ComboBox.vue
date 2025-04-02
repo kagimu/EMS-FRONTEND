@@ -141,18 +141,15 @@ const markDone = () => {
         v-if="dropdownOpen"
         class="absolute mt-1  border border-gray-300 rounded-lg bg-white shadow-lg z-10 w-full"
     >
-      <div class="px-2 pt-2">
+      <div class="px-2 pt-2 flex justify-between">
         <input
             v-model="search"
             @input="filterItems"
             type="text"
             placeholder="Search"
             class="form-control form-select-sm shadow-none">
+           <span class="p-0 ml-2" @click="markDone" style="color: red;cursor: pointer; border: 1px solid red; border-radius: 8px; border-color: red;width: 25px;text-align: center;padding: 0px;"><i class="bi bi-x " ></i></span>
       </div>
-
-
-
-
 
       <div class="max-h-[200px] overflow-y-scroll scrollbar-thin my-2">
           <div
@@ -170,7 +167,7 @@ const markDone = () => {
                  :for="'item-'+(idx+1)">{{item?.text}}</label>
             </div>
           </div>
-          <button style="float: right;" class="btn btn-secondary btn-sm m-2 mt-2" @click="markDone">Close <i class="bi bi-check-lg"></i></button>
+          <!-- <button style="float: right;" class="btn btn-secondary btn-sm m-2 mt-2" @click="markDone">Close <i class="bi bi-check-lg"></i></button> -->
       </div>
 
     </div>
