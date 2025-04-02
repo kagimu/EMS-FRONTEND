@@ -5,6 +5,7 @@ import useCommons from "@/composables/useCommons.js";
 import { useApplicationStore } from "@/main/application/applicationComponents/store/application.js";
 import { useSchoolStore } from "@/main/dashboard/manageSchool/store/school.js";
 import { useCampusStore } from "@/main/dashboard/manageCampus/store/campus.js";
+import {useBillStore} from "@/main/settings/bills/store/bills.js";
 
 const applicationStore = useApplicationStore();
 const notificationStore = useNotificationStore();
@@ -18,6 +19,9 @@ const schoolList = ref([]);
 const schoolStore = useSchoolStore();
 const campusStore = useCampusStore();
 const school_number = ref(null);
+const billStore = useBillStore()
+const billableData  = ref([])
+
 
 onMounted(async () => {
   // applicationStore.fetchApplicationList();
@@ -98,10 +102,26 @@ watch(
     campus_class_number:data.student.campus_class_number ,
   }
   applicationStore.fetchInterviewList(dataInfo)
+
+
+  let data2 = {
+      student_number:data.student.number,
+      study_period_number: data.student.study_period_number,
+     class_number: data.student.class_number                                                                    ,
+     campus_number:data.student.campus_level_number,
+     mode_of_study_number:data.student.mode_of_study_number,
+     campus_curriculum_number:data.student.campus_level_number
+  }
+  billStore.fetchDeterminateBillables(data2)
+
+
     }
   },
   { deep: true }
-);
+)
+
+
+   
 
 // const getInterviewListData = (campusClassNumber) => {
 //   let data = {

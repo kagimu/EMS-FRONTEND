@@ -97,6 +97,14 @@ const closeDialog = () => {
   showAssignModal.value = false
 }
 
+watch (
+  () => reportSetupStore.classToReportTemplateResponse,
+  async (data) => {
+    if(data){
+      showAssignModal.value = false
+    }
+  }
+)
 
 </script>
 
