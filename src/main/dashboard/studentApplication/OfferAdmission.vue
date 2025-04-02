@@ -416,6 +416,11 @@ watch (
     }
   )
 
+  const closeDialog = () => {
+      myAdmitModal.value = false
+}
+
+
 
   </script>
 
@@ -425,7 +430,7 @@ watch (
     <AppModal title="Admit" v-model="myAdmitModal" xl6 class="app-modal">
       <!-- <AdmitModel :selectedStudentNumber="selectedStudentNumber" class="app-modal"></AdmitModel> -->
       <AdmitModel :selectedStudentNumber="selectedStudentNumber" 
-      :interviewInfo="form.interview_number" :admissionDetails="admissionLearnerDetails"  class="app-modal"></AdmitModel>
+      :interviewInfo="form.interview_number" :admissionDetails="admissionLearnerDetails"  class="app-modal" @closeDialog="closeDialog"></AdmitModel>
 
     </AppModal>
 

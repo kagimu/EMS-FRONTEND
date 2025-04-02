@@ -29,6 +29,7 @@ const addCurriculum = () => {
   CurriculumDialog.value = true
 }
 
+
 const editCurriculum = (curriculum) => {
   if(curriculum) {
     curiculumEditMode.value = true
@@ -59,6 +60,11 @@ onMounted(
       await  curriculumStore.fetchCurriculum()
     }
 )
+
+const closeDialog = () => {
+  CurriculumDialog.value = false
+}
+
 
 
 watch (
@@ -125,7 +131,7 @@ watch(
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="curiculumEditMode ? 'Edit Curriculum' : 'New Curriculum'" v-model="CurriculumDialog" lg>
-      <new-curriculum></new-curriculum>
+      <new-curriculum @closeDialog="closeDialog"></new-curriculum>
     </AppModal>
 
 

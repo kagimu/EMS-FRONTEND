@@ -182,7 +182,7 @@ watch(
 
 
 
-      <div class="flex justify-content-end" style="width: 100%;">
+      <div class="flex justify-between" style="width: 100%;">
         <button
             type="button"
             class="btn btn-danger border-0 mr-2"
