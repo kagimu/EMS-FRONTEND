@@ -148,8 +148,12 @@ const markDone = () => {
             type="text"
             placeholder="Search"
             class="form-control form-select-sm shadow-none">
-           <span class="p-0 ml-2" @click="markDone" style="color: red;cursor: pointer; border: 1px solid red; border-radius: 8px; border-color: red;width: 25px;text-align: center;padding: 0px;"><i class="bi bi-x " ></i></span>
-      </div>
+           <!-- <span class="p-0 ml-2" @click="markDone" style="color: red;cursor: pointer; border: 1px solid red; border-radius: 8px; border-color: red;width: 15px; height: 15px; text-align: center;padding: 0px;"><i class="bi bi-x " ></i></span> -->
+     
+           <span class="p-0 ml-2" @click="markDone" style="color: red; cursor: pointer; border: 1px solid red; border-radius: 8px; width: 17px; height: 17px; display: flex; align-items: center; justify-content: center; font-size: 14px; padding: 0;"><i class="bi bi-x"></i></span>
+
+     
+          </div>
 
       <div class="max-h-[200px] overflow-y-scroll scrollbar-thin my-2">
           <div
