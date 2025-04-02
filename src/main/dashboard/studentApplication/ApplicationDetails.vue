@@ -194,7 +194,7 @@ watch(
   <div class="container mt-2 mb-2">
     <div class="row mx-auto">
       <!-- Guardian/parent Details Card -->
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="card mb-3">
           <div class="card-header">Guardian/parent Details</div>
           <ul class="list-group list-group-flush">
@@ -210,7 +210,7 @@ watch(
       </div>
       
       <!-- Learner Details Card -->
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="card mb-3">
           <div class="card-header">Learner Details</div>
           <ul class="list-group list-group-flush">
@@ -226,8 +226,8 @@ watch(
         </div>
       </div>
       
-      <!-- Previous School Details Card -->
-      <div class="col-md-3">
+
+      <!-- <div class="col-md-3">
         <div class="card mb-3">
           <div class="card-header">Previous School Details</div>
           <ul class="list-group list-group-flush">
@@ -265,9 +265,9 @@ watch(
 </div>
 
         </div>
-      </div>
+      </div> -->
 
-      <div class="col-md-3" v-if="appDatails.status === 'INTERVIEW_SCHEDULED'">
+      <div class="col-md-4" v-if="appDatails.status === 'INTERVIEW_SCHEDULED'">
         <div class="card mb-3">
           <div class="card-header" style="background-color: #198754;"><b>STUDENT SCHEDULED FOR INTERVIEW ...</b> </div>
      
