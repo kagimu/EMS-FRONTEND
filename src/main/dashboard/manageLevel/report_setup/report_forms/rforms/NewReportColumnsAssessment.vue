@@ -26,6 +26,7 @@ const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const schoolN = routerData.currentRoute.value.query.sch
 let  curriculumNumberParent = routerData.currentRoute.value.query.cr
+const emit = defineEmits(["closeDialog"]);
 
 const errorMessage = ref("")
 const loader = ref(false)
@@ -244,16 +245,6 @@ watch(
     }
 )
 
-
-// watch(
-//     () => academicYearStore.campusClassByLevelResponse,
-//     async (data) => {
-//       if(data){
-//         campusClassList.value = data.data
-//       }
-//     }
-// )
-
 watch(
     () => campusStore.schoolClassesResponse,
     async (data) => {
@@ -413,19 +404,6 @@ watch(
 
       <div class="mb-2">
         <label class="text-sm"><small>Assessment Schedule</small></label>
-        <!-- <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-          <li class="list-group-item" v-for="(lvl,idx) in assessmentMetricList">
-            <input
-                v-model="form.assessment_schedule"
-                style="outline: none 0 !important; box-shadow: none;"
-                class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="idx">
-            <label class="form-check-label cursor-pointer" :for="idx" style="font-size: 13px;">
-              {{lvl.description + " [ " +lvl.metric_name + " ] " + " ( "+ lvl.assessment_area +" ) "}}
-            </label>
-          </li>
-
-        </ul> -->
-
          
         <combo-box
             v-model:optionResponse="form.assessment_schedule"
@@ -433,23 +411,19 @@ watch(
             :optionDraft="form?.assessment_schedule"
         ></combo-box>
       </div>
-
-      <!-- <div class="mb-2">
-        <label class="text-sm"><small>Assessment Schedule</small></label>
-        <select
-            class="form-control form-select form-control-sm shadow-none"
-            v-model="form.assessment_metric_number"
-            aria-label="Default select example">
-          <option disabled value="">--Select Assessment--</option>
-          <option v-for="(list, index) in assessmentMetricList" :key="index" :value="list.number">
-            {{list.description + " [ " +list.name + " ] " + " ( "+ list.assessment_area_name +" ) "}}</option>
-        </select>
-      </div> -->
       </div>
 
     </div>
 
-      <div class="flex justify-content-end mt-4" style="width: 100%;">
+  
+
+<div class="flex justify-between" style="width: 100%;">
+      <button
+          type="button"
+          class="btn btn-danger border-0 mr-2"
+          @click="$emit('closeDialog')">
+        Cancel
+      </button>
         <button
             type="submit"
             class="btn btn-primary border-0">

@@ -326,6 +326,13 @@ watch(
     }
 )
 
+const closeDialog = () => {
+  showReportColumn.value = false
+}
+
+
+
+
 </script>
 
 <template>
@@ -333,7 +340,7 @@ watch(
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal v-model="showReportColumn" title="Add Report Column Assessment" xl4>
-      <new-report-columns-assessment></new-report-columns-assessment>
+      <new-report-columns-assessment @closeDialog="closeDialog"></new-report-columns-assessment>
     </AppModal>
 
 
