@@ -20,7 +20,7 @@ const campusStore = useCampusStore();
 const school_number = ref(null);
 
 onMounted(async () => {
-  applicationStore.fetchApplicationList();
+  // applicationStore.fetchApplicationList();
   // applicationStore.fetchPreviousSchoolResultsAll();
   applicationStore.fetchApplicationById(props.applicationNumber);
   schoolStore.fetchSchools();
@@ -130,7 +130,7 @@ watch(
     if (data) {
       formData.interview_number = null;
       buttonLoader.value = false;
-      applicationStore.fetchApplicationList();
+      // applicationStore.fetchApplicationList();
       notificationStore.successToast("Success", data.message);
     }
   },
