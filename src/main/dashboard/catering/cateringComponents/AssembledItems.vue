@@ -366,7 +366,7 @@ if (agreed) {
                            <div class="flex flex-grow justify-between px-3 py-1">
                              <div>{{(idx+1)}}. {{ ldData.name }} </div>
                              <div>{{ ldData.quantity }} {{ ldData.unit_of_measure }}</div>
-                             <div>{{ ldData.unit_cost.replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</div>
+                             <div>{{ ldData?.unit_cost?.toLocaleString() }}</div>
                            </div>
                          </div>
                        </div>
