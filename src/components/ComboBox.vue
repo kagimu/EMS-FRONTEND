@@ -170,7 +170,7 @@ const markDone = () => {
                  :for="'item-'+(idx+1)">{{item?.text}}</label>
             </div>
           </div>
-          <button style="float: right;" class="btn btn-success btn-sm m-2 mt-2" @click="markDone">Done <i class="bi bi-check-lg"></i></button>
+          <button style="float: right;" class="btn btn-secondary btn-sm m-2 mt-2" @click="markDone">Close <i class="bi bi-check-lg"></i></button>
       </div>
 
     </div>
