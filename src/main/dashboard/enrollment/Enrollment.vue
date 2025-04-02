@@ -366,7 +366,14 @@ const enrolStudent = (enrolData) => {
   studentData.value = enrolData
   enrolDialog.value = true
 }
+
+const closeDialog = () => {
+  enrolDialog.value = false
+}
+
+
 </script>
+
 
 
 
@@ -374,7 +381,7 @@ const enrolStudent = (enrolData) => {
   <div class="card p-1">
 
     <AppModal title="Enrol" v-model="enrolDialog" xl6>
-      <NewEnrollmentModel :studentNumber="studentNum" :studentDataInfo="studentData"></NewEnrollmentModel>
+      <NewEnrollmentModel :studentNumber="studentNum" :studentDataInfo="studentData" @closeDialog="closeDialog"></NewEnrollmentModel>
     </AppModal>
 
     <AppModal title="Upload Student Photo" v-model="uploadDialog" xl>

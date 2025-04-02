@@ -579,7 +579,8 @@ watch(
          
         </div>
       </div>
-      <div class="flex justify-between" style="width: 100%;">
+      <hr style="color: whitesmoke;">
+      <div class="flex justify-between mt-3" style="width: 100%;box-shadow: 1cap;">
         <button
             type="button"
             class="btn btn-danger border-0 mr-2"
@@ -588,7 +589,7 @@ watch(
         </button>
 
         <button type="submit" class="btn btn-primary border-0 mb-2">
-          <b>Admit ! &nbsp;<i class="bi bi-box-arrow-in-right mr-1"></i></b>
+          <b>Admit &nbsp;<i class="bi bi-box-arrow-in-right mr-1"></i></b>
           <span style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span></span>
         </button>
       </div>
