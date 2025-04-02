@@ -263,21 +263,29 @@ watch (
     }
 )
 
+const closeDialog = () => {
+      showingModalUser.value = false
+      assignDialog.value = false
+      showingEntity.value = false
+}
+
+
+
 </script>
 
 <template>
     <div>
 
     <AppModal title="New User" v-model="showingModalUser" xl6>
-      <NewStaff></NewStaff>
+      <NewStaff @closeDialog="closeDialog"></NewStaff>
     </AppModal>
 
     <AppModal title="Assign Role" v-model="assignDialog" xl2>
-      <new-account :userInfo="userInfo"></new-account>
+      <new-account  :userInfo="userInfo" @closeDialog="closeDialog"></new-account>
     </AppModal>
 
     <AppModal title="Assign Entity" v-model="showingEntity" xs>
-      <AssignUserEntity :userNumber="userNumber"></AssignUserEntity>
+      <AssignUserEntity :userNumber="userNumber" @closeDialog="closeDialog"></AssignUserEntity>
     </AppModal>
 
       <div class="row">

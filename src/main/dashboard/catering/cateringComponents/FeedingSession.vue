@@ -155,6 +155,11 @@ watch (
         },
         {deep:true}
     )
+
+    const closeDialogModal = () => {
+      showingModal.value = false
+}
+
   </script>
 
 
@@ -164,7 +169,7 @@ watch (
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
       <AppModal :title="editModel ? 'Edit ' + namee:'New Feeding Pack'" v-model="showingModal" xl4>
-        <NewFeedingSession :groupData="dataList"></NewFeedingSession>
+        <NewFeedingSession :groupData="dataList" @closeDialog="closeDialogModal"></NewFeedingSession>
       </AppModal>
 
              

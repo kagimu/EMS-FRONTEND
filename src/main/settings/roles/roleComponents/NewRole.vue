@@ -99,6 +99,9 @@
             notificationStore.successToast("Success", data.message);
           }
     }, { deep: true });*/
+
+const emit = defineEmits(["closeDialog"]);
+
 </script>
 
 <!-- <template>
@@ -222,7 +225,14 @@
     </div>
 
     <!-- Save Button -->
-    <div class="text-end mt-4">
+   
+  <div class="flex justify-between mt-2" style="width: 100%; ">
+        <button
+            type="button"
+            class="btn btn-danger border-0 mr-2 btn-sm"
+            @click="$emit('closeDialog')">
+          Cancel
+        </button>
       <button type="submit" class="btn btn-sm btn-primary px-4" @click.prevent="addRoles">
          {{role_number ? "Edit" : "Save"}}
         <div class="spinner-border spinner-border-sm ms-2" role="status" v-if="buttonLoader">

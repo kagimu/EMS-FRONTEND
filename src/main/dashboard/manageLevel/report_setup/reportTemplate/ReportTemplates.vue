@@ -126,6 +126,21 @@ watch(
     },
     {deep: true}
 )
+
+watch (
+  () => reportSetupStore.classToReportTemplateResponse,
+  async (data) => {
+    if(data){
+      showAssignModal.value = false
+    }
+  }
+)
+
+const closeDialog = () => {
+  showAssignModal.value = false
+}
+
+
 </script>
 
 <template>
@@ -138,7 +153,7 @@ watch(
     </AppModal>
     
     <AppModal title="Assign Class To Template" v-model="showAssignModal" lg>
-        <AssignTemplateToClass :addedClasses="classOnTemplateList" :reportTemplateNumber="reportTemplateNumber"></AssignTemplateToClass>
+        <AssignTemplateToClass :addedClasses="classOnTemplateList" :reportTemplateNumber="reportTemplateNumber" @closeDialog="closeDialog"></AssignTemplateToClass>
     </AppModal>
 
     <AppModal title="Confirm !" v-model="showClearClassModal" xs>

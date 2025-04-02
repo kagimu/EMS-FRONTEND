@@ -210,6 +210,8 @@
        }
    )
 
+   const emit = defineEmits(["closeDialog"]);
+
 </script>
 <template>
    <div>
@@ -329,7 +331,13 @@
 
             </div>
          </div>
-         <div class="text-right mt-1">
+         <div class="flex justify-between" style="width: 100%;">
+      <button
+          type="button"
+          class="btn btn-danger border-0 mr-2 btn-sm"
+          @click="$emit('closeDialog')">
+        Cancel
+      </button>
             <button type="submit" class="btn btn-primary mb-2 btn-sm">
                Submit
                <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">

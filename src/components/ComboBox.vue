@@ -106,6 +106,9 @@ const removeItem = (idx:number) => {
   selectedItems.value.splice(idx, 1)
 }
 
+const markDone = () => {
+  dropdownOpen.value = false;
+}
 
 </script>
 
@@ -138,18 +141,19 @@ const removeItem = (idx:number) => {
         v-if="dropdownOpen"
         class="absolute mt-1  border border-gray-300 rounded-lg bg-white shadow-lg z-10 w-full"
     >
-      <div class="px-2 pt-2">
+      <div class="px-2 pt-2 flex justify-between">
         <input
             v-model="search"
             @input="filterItems"
             type="text"
             placeholder="Search"
             class="form-control form-select-sm shadow-none">
-      </div>
+           <!-- <span class="p-0 ml-2" @click="markDone" style="color: red;cursor: pointer; border: 1px solid red; border-radius: 8px; border-color: red;width: 15px; height: 15px; text-align: center;padding: 0px;"><i class="bi bi-x " ></i></span> -->
+     
+           <span class="p-0 ml-2" @click="markDone" style="color: red; cursor: pointer; border: 1px solid red; border-radius: 8px; width: 17px; height: 17px; display: flex; align-items: center; justify-content: center; font-size: 14px; padding: 0;"><i class="bi bi-x"></i></span>
 
-
-
-
+     
+          </div>
 
       <div class="max-h-[200px] overflow-y-scroll scrollbar-thin my-2">
           <div
@@ -167,6 +171,7 @@ const removeItem = (idx:number) => {
                  :for="'item-'+(idx+1)">{{item?.text}}</label>
             </div>
           </div>
+          <!-- <button style="float: right;" class="btn btn-secondary btn-sm m-2 mt-2" @click="markDone">Close <i class="bi bi-check-lg"></i></button> -->
       </div>
 
     </div>

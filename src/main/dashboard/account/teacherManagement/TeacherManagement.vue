@@ -239,6 +239,12 @@ watch(
     }
 )
 
+
+const closeDialog = () => {
+  teacherDialog.value = false
+}
+
+
 </script>
 
 <template>
@@ -247,7 +253,7 @@ watch(
       <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal title="Teacher Onboarding" v-model="teacherDialog" xl>
-      <new-teacher></new-teacher>
+      <new-teacher @closeDialog="closeDialog"></new-teacher>
     </AppModal>
 
 

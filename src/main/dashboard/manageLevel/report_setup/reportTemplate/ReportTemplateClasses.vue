@@ -93,7 +93,9 @@ const assignClass = () => {
   showAssignModal.value = true
 }
 
-
+const closeDialog = () => {
+  showAssignModal.value = false
+}
 
 
 </script>
@@ -102,7 +104,7 @@ const assignClass = () => {
 <div>
 
   <AppModal title="Assign Class To Template" v-model="showAssignModal" lg>
-    <AssignTemplateToClass :addedClasses="classOnTemplateList" :reportTemplateNumber="reportTemplateNumber"></AssignTemplateToClass>
+    <AssignTemplateToClass :addedClasses="classOnTemplateList" :reportTemplateNumber="reportTemplateNumber" @closeDialog="closeDialog"></AssignTemplateToClass>
   </AppModal>
 
     <AppModal title="Confirm !" v-model="showClearClassModal" xs>
