@@ -65,6 +65,22 @@ onMounted(
     () => {
 
         schoolStore.fetchSchools()
+
+        let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+  let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
+  let defaultCampusCurriculumNo =   localStorage.getItem("defaultCampusCurriculumNo")
+
+
+ if(defaultSchoolNo){
+    form.school_number = defaultSchoolNo
+    fetchCampuses(form.school_number)
+  }
+
+  if(defaultCampusNo){
+    form.campus_number = defaultCampusNo
+  }
+  doFetchMenuItem(form.school_number)
+
     }
 
 )

@@ -31,11 +31,26 @@ const campusStore = useCampusStore()
   const  menu_item_number = ref("")
 
 
+  onMounted(() => {
+      schoolStore.fetchSchools()
+      
+  let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+  let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
+  let defaultCampusCurriculumNo =   localStorage.getItem("defaultCampusCurriculumNo")
 
-onMounted(() => {
-  // fetchAllStock()
+
+ if(defaultSchoolNo){
+    school_number.value = defaultSchoolNo
+    fetchCampuses(school_number.value)
+  }
+
+  if(defaultCampusNo){
+    campus_number.value = defaultCampusNo
+  }
+  fetchAllStock()
     }
 )
+
 
 const fetchCampuses = () => {
   campusStore.fetchCampuses(school_number.value)
@@ -88,10 +103,7 @@ watch(
 )
 
 
-onMounted(() => {
-      schoolStore.fetchSchools()
-    }
-)
+
 
 watch(
     () => schoolStore.schoolsResponse,

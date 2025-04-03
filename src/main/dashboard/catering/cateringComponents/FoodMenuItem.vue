@@ -53,6 +53,16 @@ const form = reactive({
 
 onMounted(() => {
       schoolStore.fetchSchools()
+
+      let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+
+
+ if(defaultSchoolNo){
+    form.school_number = defaultSchoolNo
+  }
+
+  doFetchMenuItem(form.school_number)
+    
     }
 )
 

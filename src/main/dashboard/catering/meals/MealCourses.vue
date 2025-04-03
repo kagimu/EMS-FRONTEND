@@ -35,8 +35,17 @@ const addCourse = () => {
 
 onMounted(
     async () => {
-      doFetchMealCourses()
+    
       await schoolStore.fetchSchools()
+
+      
+  let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+ if(defaultSchoolNo){
+    school_number.value = defaultSchoolNo
+  }
+
+  doFetchMealCourses()
+
     }
 )
 

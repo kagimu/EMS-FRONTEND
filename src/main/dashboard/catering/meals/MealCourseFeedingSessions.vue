@@ -37,6 +37,12 @@ const addMeal = () => {
 onMounted(
     async () => {
       await schoolStore.fetchSchools()
+
+      let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+ if(defaultSchoolNo){
+    school_number.value = defaultSchoolNo
+  }
+
     }
 )
 

@@ -44,8 +44,22 @@ const form = reactive({
 
 
 const userList = ref([])
+
 onMounted(() => {
   schoolStore.fetchSchools()
+  let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+  let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
+
+ if(defaultSchoolNo){
+  school_number.value = defaultSchoolNo
+  doFetchMealCourses(school_number.value)
+  }
+
+  if(defaultCampusNo){
+    form.campus_number = defaultCampusNo
+  }
+  
+  doGetUsersList()
 })
 
 const doGetUsersList = () =>{
@@ -142,7 +156,7 @@ watch(
 
 const doFetchMealCourses = (schoolN) => {
 
-  mealStore.fetchMealCourses({school_number:schoolN,status:'ACTIVE'})
+  // mealStore.fetchMealCourses({school_number:schoolN,status:'ACTIVE'})
   campusStore.fetchCampuses(schoolN)
 
 }

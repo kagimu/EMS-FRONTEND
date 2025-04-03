@@ -29,6 +29,19 @@ onMounted(
     async () => {
       await schoolStore.fetchSchools()
 
+      let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+  let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
+
+ if(defaultSchoolNo){
+  school_number.value = defaultSchoolNo
+  fetchCampusBySchool(school_number.value)
+  }
+
+  if(defaultCampusNo){
+    campus_number.value = defaultCampusNo
+    doFetchCostProjections()
+  }
+
     }
 )
 
