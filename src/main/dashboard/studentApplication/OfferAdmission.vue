@@ -662,9 +662,9 @@ watch (
                     </span>
                   </td>
                   <td>
-                    <button type="button" @click="removeStudentFromInterview(student.number, student.student_second_name)">
+                    <!-- <button type="button" @click="removeStudentFromInterview(student.number, student.student_second_name)">
                       <i class="bi bi-trash" style="color: red;"></i>
-                    </button>
+                    </button> -->
                     <button v-if="student.status !== 'ADMITTED'" class="btn btn-outline-primary ml-6"
                      @click="openAdmitModal(student.number)">Admit   <i class="bi bi-box-arrow-in-right mr-1"></i></button>
                   </td>
