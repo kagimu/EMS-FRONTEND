@@ -98,7 +98,29 @@
          schoolStore.fetchSchools()
          const today = new Date();
          formData.date = today.toISOString().split("T")[0] 
-        //  doFetchAttendance()
+
+
+         let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+  let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
+  let defaultCampusCurriculumNo =   localStorage.getItem("defaultCampusCurriculumNo")
+
+
+ if(defaultSchoolNo){
+    form.school_number = defaultSchoolNo
+    fetchCampuses(form.school_number)
+  }
+
+  if(defaultCampusNo){
+    form.campus_number = defaultCampusNo
+    fetchClasses(form.campus_number)
+  }
+
+  if(defaultCampusCurriculumNo){
+    form.curriculumNumber = defaultCampusCurriculumNo
+    fetchCampusLevel(form.curriculumNumber)
+  }
+
+         // doFetchAttendance()
 
        }
    )
