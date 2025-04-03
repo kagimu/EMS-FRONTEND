@@ -27,10 +27,7 @@
    const curriculumList = ref([])
    const levelList = ref([])
    
-   onMounted(() => {
-     schoolStore.fetchSchools()
-    }
-   )
+ 
    
    const form = reactive({
    study_period_number: "",
@@ -44,6 +41,31 @@
    level:""
    })
    
+   onMounted(() => {
+     schoolStore.fetchSchools()
+     
+     let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+  let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
+  let defaultCampusCurriculumNo =   localStorage.getItem("defaultCampusCurriculumNo")
+
+
+ if(defaultSchoolNo){
+    form.school_number = defaultSchoolNo
+    fetchCampuses(form.school_number)
+  }
+
+  if(defaultCampusNo){
+    form.campus_number = defaultCampusNo
+    fetchClasses(form.campus_number)
+  }
+
+  if(defaultCampusCurriculumNo){
+    form.curriculumNumber = defaultCampusCurriculumNo
+    fetchCampusLevel(form.curriculumNumber)
+  }
+  
+    }
+   )
    
    const fetchCampuses = (school_number) => {
      campusStore.fetchCampuses(school_number)
