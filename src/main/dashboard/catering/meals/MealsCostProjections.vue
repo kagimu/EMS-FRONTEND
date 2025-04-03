@@ -39,8 +39,9 @@ onMounted(
 
   if(defaultCampusNo){
     campus_number.value = defaultCampusNo
-    doFetchCostProjections()
   }
+
+  // doFetchCostProjections()
 
     }
 )
