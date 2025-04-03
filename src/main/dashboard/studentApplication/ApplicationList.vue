@@ -85,6 +85,27 @@
   onMounted(() => {
         // doFetchApplication()
         schoolStore.fetchSchools()
+
+
+        let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+  let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
+  let defaultCampusCurriculumNo =   localStorage.getItem("defaultCampusCurriculumNo")
+
+
+ if(defaultSchoolNo){
+    form.school_number = defaultSchoolNo
+    fetchCampuses(form.school_number)
+  }
+
+  if(defaultCampusNo){
+    form.campus_number = defaultCampusNo
+    fetchClasses(form.campus_number)
+  }
+
+  if(defaultCampusCurriculumNo){
+    form.curriculumNumber = defaultCampusCurriculumNo
+    fetchCampusLevel(form.curriculumNumber)
+  }
       }
   )
   
@@ -485,23 +506,7 @@ const exportToCSV = () => {
                                    <div class="row mx-auto">
 
                                          <div class="row">
-                                          <div class="col-3">
-                                               <div class="mb-2">
-                                                  <select
-                                                     style="box-shadow: none;"
-                                                     class="form-select form-select-sm"
-                                                     v-model="form.statusData"
-                                                     @change="doFetchApplication()"
-                                                     >
-                                                     <option disabled value="">-filter By Status</option>
-                                                     <option value="DRAFT">DRAFT</option>
-                                                    <option value="SUBMITTED">SUBMITTED</option>
-                                                    <option value="INTERVIEW_SCHEDULED">Scheduled For Interview</option>
-                                                    <option value="ADMITTED" >Admitted</option>
-                                                    <option value="ENROLLED">Enrolled</option>
-                                                  </select>
-                                               </div>
-                                            </div>
+                                       
 
                                             <div class="col-3">
                                                <div class="mb-2">                                              
@@ -619,8 +624,26 @@ const exportToCSV = () => {
                                                   </select>
                                                </div>
                                             </div>
-                                            </div>
+                                           
 
+                                            <div class="col-3">
+                                               <div class="mb-2">
+                                                  <select
+                                                     style="box-shadow: none;"
+                                                     class="form-select form-select-sm"
+                                                     v-model="form.statusData"
+                                                     @change="doFetchApplication()"
+                                                     >
+                                                     <option disabled value="">-filter By Status</option>
+                                                     <option value="DRAFT">DRAFT</option>
+                                                    <option value="SUBMITTED">SUBMITTED</option>
+                                                    <option value="INTERVIEW_SCHEDULED">Scheduled For Interview</option>
+                                                    <option value="ADMITTED" >Admitted</option>
+                                                    <option value="ENROLLED">Enrolled</option>
+                                                  </select>
+                                               </div>
+                                            </div>
+                                          </div>
                                    </div>
                                 </div>
                              </div>

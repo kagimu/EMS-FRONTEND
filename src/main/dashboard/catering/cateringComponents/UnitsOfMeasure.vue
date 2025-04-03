@@ -36,8 +36,15 @@ const showUnitMeasurement = () => {
 
 onMounted(
     () => {
-      getMenuItemInfo()
+      
       schoolStore.fetchSchools()
+
+  let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+ if(defaultSchoolNo){
+    schoolNumber.value = defaultSchoolNo
+  }
+
+  getMenuItemInfo()
     } )
 
 const getMenuItemInfo = () =>{

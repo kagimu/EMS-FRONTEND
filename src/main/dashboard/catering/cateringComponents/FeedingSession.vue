@@ -46,6 +46,12 @@ const confirmationRef = ref(null);
   onMounted(() => {
       // cateringStore.fetchFeedingGroupSessions()
       schoolStore.fetchSchools()
+
+      let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+ if(defaultSchoolNo){
+    form.school_number= defaultSchoolNo
+  }
+  doFetchFeedingSessions()
   }
 )
 
@@ -185,7 +191,7 @@ watch (
                <div class="">
                   <div class="row">
                   <div class="col-lg-8">
-                  <h5 style="font-size: 14px;margin-top: 2px;">Menu Packs </h5>
+                  <h5 style="font-size: 14px;margin-top: 2px;">Menu Packs</h5>
                   </div>
   
               <div class="col-lg-4">

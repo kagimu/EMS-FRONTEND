@@ -20,6 +20,7 @@ const sound = ref(true)
 const widgets = ref(false)
 const interviewInfoData = ref([])
 const admissionLearnerDetails = ref({})
+const campus_number = ref("")
 
 const openModal = (interviewInfoD) => {
   dialog.value = true
@@ -60,7 +61,7 @@ const interviewListData = ref([])
 const editMode = ref(false)
 const namee = ref(null)
 const school_number = ref("")
-const campus_number = ref("")
+// const campus_number = ref("")
 const curriculumList = ref([])
 const levelList = ref([])
 const classStore = useClassesStore()
@@ -81,8 +82,31 @@ const form = reactive({
 onMounted(
     async () => {
      loading.value = true
-     getInterviewList()
-     await schoolStore.fetchSchools()
+    
+      schoolStore.fetchSchools()
+
+
+  let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+  let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
+  let defaultCampusCurriculumNo =   localStorage.getItem("defaultCampusCurriculumNo")
+
+  if(defaultSchoolNo){
+    school_number.value = defaultSchoolNo
+    fetchCampuses(school_number.value)
+  }
+
+  
+  if(defaultCampusNo){
+    campus_number.value = defaultCampusNo
+    fetchClasses(campus_number.value)
+  }
+
+  if(defaultCampusCurriculumNo){
+    form.curriculumNumber = defaultCampusCurriculumNo
+    fetchCampusLevel(form.curriculumNumber)
+  }
+
+  getInterviewList()
     } )
 
 
@@ -453,7 +477,7 @@ document.addEventListener("fullscreenchange", () => {
         </div>
 
       <div v-else-if="interviewList.length === 0" class="text-center my-4">
-                <span class="text-[12px]"><i>Nothing to show</i></span>
+                <span class="text-[12px] alert alert-success p-1" ><i>select  Class to view Interview List</i></span>
        </div>
 
  <div v-else>

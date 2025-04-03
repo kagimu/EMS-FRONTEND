@@ -75,6 +75,12 @@ watch(
 
 onMounted(() => {
       schoolStore.fetchSchools()
+
+      let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+ if(defaultSchoolNo){
+    form.school_number= defaultSchoolNo
+  }
+  cateringStore.fetchFeedingGroup(form?.school_number)
     }
 )
 

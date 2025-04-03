@@ -77,7 +77,27 @@ onMounted(
     async () => {
      loading.value = true
     //  getInterviewList()
-     await schoolStore.fetchSchools()
+      schoolStore.fetchSchools()
+
+let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+  let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
+  let defaultCampusCurriculumNo =   localStorage.getItem("defaultCampusCurriculumNo")
+
+  if(defaultSchoolNo){
+    school_number.value = defaultSchoolNo
+    fetchCampuses(school_number.value)
+  }
+
+  
+  if(defaultCampusNo){
+    campus_number.value = defaultCampusNo
+    fetchClasses(campus_number.value)
+  }
+
+  if(defaultCampusCurriculumNo){
+    form.curriculumNumber = defaultCampusCurriculumNo
+    fetchCampusLevel(form.curriculumNumber)
+  }
     } )
 
 
