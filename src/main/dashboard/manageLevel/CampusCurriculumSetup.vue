@@ -19,8 +19,8 @@ const campusCurriculumDataInfo = ref(null)
 
 const routerData = useRouter()
 
-const campusNumber = routerData.currentRoute.value.query.id
 const schoolNumber = routerData.currentRoute.value.query.sch
+const campusNumber = routerData.currentRoute.value.query.id
 let campusCurriculumNumber = routerData.currentRoute.value.query.crr
 let curriculumNumberParent = routerData.currentRoute.value.query.cr
 let campusSetupQuery = routerData.currentRoute.value.query.type
@@ -79,6 +79,11 @@ const campusSetupMenu = ref([
 
 onMounted(
     () => {
+
+      localStorage.setItem("defaultSchoolNo", schoolNumber)
+      localStorage.setItem("defaultCampusNo", campusNumber)
+      localStorage.setItem("defaultCampusCurriculumNo", campusCurriculumNumber)
+
       levelStore.fetchCampusCurriculum(campusNumber)
     }
 )

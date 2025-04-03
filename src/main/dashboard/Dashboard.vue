@@ -9,8 +9,7 @@ import { useAbility } from '@casl/vue';
 import {breakpointsTailwind, useBreakpoints, useStorage} from "@vueuse/core";
 import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
-// const isDark = useDark()
-// const toggleDark = useToggle(isDark)
+
 
 const entityStore = useEntityStore()
 

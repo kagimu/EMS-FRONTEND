@@ -3,12 +3,10 @@ import {onMounted,reactive, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
 import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
 import PromoteStudent from "@/main/settings/promotion/PromoteStudent.vue";
-// import {usePromotionStore} from "@/main/settings/promotion/store/promotion.js"
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
 import AppModal from "@/components/AppModal.vue";
 import FileUploader from "@/components/FileUploader.vue";
@@ -71,8 +69,32 @@ const form = reactive({
 
 
 onMounted(() => {
-      schoolStore.fetchSchools()
-      // doFetchEnrollent()
+
+  schoolStore.fetchSchools()
+
+  let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+  let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
+  let defaultCampusCurriculumNo =   localStorage.getItem("defaultCampusCurriculumNo")
+
+
+ if(defaultSchoolNo){
+    form.school_number = defaultSchoolNo
+    fetchCampuses(form.school_number)
+  }
+
+  if(defaultCampusNo){
+    form.campus_number = defaultCampusNo
+    fetchClasses(form.campus_number)
+  }
+
+  if(defaultCampusCurriculumNo){
+    form.curriculumNumber = defaultCampusCurriculumNo
+    fetchCampusLevel(form.curriculumNumber)
+  }
+
+  doFetchEnrollent()
+
+
     }
 )
 
