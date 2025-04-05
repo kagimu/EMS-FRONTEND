@@ -12,7 +12,9 @@
    import {useLevelStore} from "@/main/settings/level/store/level.js";
    import PaginationTemplate from "@/components/PaginationTemplate.vue";
    import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
+   import useCommonsStore from "@/composables/useCommons.js";
    
+   const commons = useCommonsStore()
    import { useAbility } from '@casl/vue';
    import FileUploader from "@/components/FileUploader.vue";
    const { can } = useAbility()
@@ -56,6 +58,18 @@
    
    const curriculumList = ref([])
    const levelList = ref([])
+
+   const form = reactive({
+   study_period_number: "",
+   class_number: "",
+   campus_class_number: "",
+   campus_number: "",
+   stream_number:"",
+   school_number:"",
+   academic_year_number:"",
+   curriculumNumber:"",
+   level:""
+   })
    
    onMounted(() => {
      schoolStore.fetchSchools()
@@ -81,21 +95,19 @@
   }
 
   doFetchAdmission()
-
+  updateDefaultFilters()
     }
    )
+
+   const updateDefaultFilters = () => {
+  commons.updateDefaultFilters({
+    schoolNumber: form.school_number,
+    campusNumber: form.campus_number,
+    campusCurriculumNumber: form.curriculumNumber
+  })
+}
    
-   const form = reactive({
-   study_period_number: "",
-   class_number: "",
-   campus_class_number: "",
-   campus_number: "",
-   stream_number:"",
-   school_number:"",
-   academic_year_number:"",
-   curriculumNumber:"",
-   level:""
-   })
+
    
    
    const fetchCampuses = (school_number) => {

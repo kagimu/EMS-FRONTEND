@@ -45,6 +45,7 @@ const reportSettingsList = ref([])
 const academicYearList = ref([])
 const studyPeriodList = ref([])
 const assessment_area_number = ref("")
+const editMode = ref(false)
 
 const form = reactive({
   code:null,
@@ -54,14 +55,37 @@ const form = reactive({
   assessment_schedule:[]
 })
 
+const props = defineProps({
+  reportColumnAssData:[]
+})
 
 
 onMounted(
     async () => {
      levelStore.fetchCampusCurriculum(campusNumber)
       fetchCampusLevel()
+      getReportColumnAssData()
     }
 )
+
+const getReportColumnAssData = () => {
+  editMode.value = false
+  if(props.reportColumnAssData){
+    campus_level_number.value = props.reportColumnAssData.campus_level_number
+    fetchAcademicYear(campus_level_number.value)
+    academic_year_number.value = props.reportColumnAssData.academic_year_number
+    class_number.value = props.reportColumnAssData.class_number
+    fetchAssessmentArea(class_number.value)
+    report_setting_number.value = props.reportColumnAssData.report_setting_number,
+    doFetchReportColumns()
+    form.report_column_number = props.reportColumnAssData.report_column_number
+    form.assessment_area_number = props.reportColumnAssData.assessment_area_number
+    study_period_number.value = props.reportColumnAssData.study_period_number
+    fetchAssessmentMetrics()
+    editMode.value = true
+  }
+}
+
 
 const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
@@ -115,9 +139,15 @@ watch(
 
 const addReportColumnAssessment = () => {
   loader.value = true
+  if(props.reportColumnAssData){
+    form.report_column_assessment_number = props.reportColumnAssData.report_column_assessment_number
+    reportSetupStore.updateReportColumnAssessment(form)
+
+  }else {
   form.code = form.code ? parseInt(form.code) : form.code
-  // alert(JSON.stringify(form))
   reportSetupStore.newReportColumnAssessment(form)
+  }
+
 }
 
 const fetchAssessmentArea = (class_number) =>{
@@ -274,10 +304,21 @@ watch(
     }
 )
 
+watch(
+    () => reportSetupStore.updateReportColumnAssessmentResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.successToast("Success",data.message)
+      }
+    }
+)
+
 </script>
 
 <template>
   <div>
+    <!-- {{ reportColumnAssData }} -->
     <form @submit.prevent="addReportColumnAssessment">
 
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
@@ -287,7 +328,7 @@ watch(
       <div class="row">
         <div class="col-lg-4">
 
-      <div class="mb-2">
+      <div class="mb-2" v-if="!editMode">
         <label class="text-sm"><small>Code</small></label>
         <input
             @keypress="commons.codeValidator($event)"
@@ -427,7 +468,7 @@ watch(
         <button
             type="submit"
             class="btn btn-primary border-0">
-          Save
+          <span v-if="!editMode">Save</span><span v-else>Update</span>
           <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>

@@ -47,6 +47,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const deleteAggregateNameGroupResponse = ref(null)
     const makeDefaultGradingScaleResponse = ref(null)
     const updateAssessmentMetricResponse = ref(null)
+    const deleteAssessmentMetricResponse = ref(null)
 
     async function createAssessmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -267,6 +268,19 @@ export const useAssessmentStore = defineStore("assessment", () => {
                 }
             })
     }
+
+    async function deleteAssessmentMetrics(data) {
+        return await api.delete("main/assessments/assessment-metrics/"+data.assessment_schedule_number)
+            .then((response) => {
+                deleteAssessmentMetricResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
     async function updateAssessmentMetrics(data) {
         return await api.post("main/assessments/update",data)
@@ -680,6 +694,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
         makeDefaultGradingScaleResponse,
         updateAssessmentMetricResponse,
         markingGuideResponse,
+        deleteAssessmentMetricResponse,
         createAssessmentAreas,
         fetchAssessmentArea,
         fetchAssessments,
@@ -719,6 +734,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
         fetchClassGradeStandardList,
         doMakeGradingStandardDefault,
         updateAssessmentMetrics,
-        uploadMarkingGuideFile
+        uploadMarkingGuideFile,
+        deleteAssessmentMetrics
     }
 })

@@ -203,6 +203,7 @@ export default function useCommonsStore() {
         localStorage.setItem("defaultCampusCurriculumNo", data.campusCurriculumNumber)
     }
 
+
     return {
         onlyNumberValidator,
         numbersOnlyValidator,
@@ -216,6 +217,6 @@ export default function useCommonsStore() {
         wellFormatedDate,
         formatNumbersWithComma,
         ageCalculator,
-        updateDefaultFilters
+        updateDefaultFilters,
     }
 }

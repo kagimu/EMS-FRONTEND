@@ -31,6 +31,7 @@ export const useReportSetupStore = defineStore("report_setup", () => {
     const updateReportTemplateResponse = ref(null)
     const deleteReportTemplateResponse = ref(null)
     const deleteReportTemplateInfoResponse = ref(null)
+    const updateReportColumnAssessmentResponse = ref(null)
 
     async function newReportSettings(data) {
         return await api.post("main/report-settings", data)
@@ -85,6 +86,19 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         return await api.post("main/report-settings/report-column-assessment", data)
             .then((response) => {
                 reportColumnAssessmentResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    
+    async function updateReportColumnAssessment(data) {
+        return await api.put("main/report-settings/report-column-assessment/"+data.report_column_assessment_number, data)
+            .then((response) => {
+                updateReportColumnAssessmentResponse.value = response.data
             })
             .catch((error) => {
                 if(error && error.response){
@@ -406,6 +420,7 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         updateReportTemplateResponse,
         deleteReportTemplateResponse,
         deleteReportTemplateInfoResponse,
+        updateReportColumnAssessmentResponse,
         deleteReportTemplateInfo,
         newReportSettings,
         newReportColumn,
@@ -430,6 +445,7 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         deleteReportSettings,
         deleteReportColumnAssessment,
         updateReportTemplate,
-        deleteReportTemplate
+        deleteReportTemplate,
+        updateReportColumnAssessment
     }
 })

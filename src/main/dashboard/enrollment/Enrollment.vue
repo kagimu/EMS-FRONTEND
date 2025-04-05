@@ -93,12 +93,12 @@ onMounted(() => {
     form.curriculumNumber = defaultCampusCurriculumNo
     fetchCampusLevel(form.curriculumNumber)
   }
-
   doFetchEnrollent()
-
-
     }
 )
+
+
+
 
 const fetchCampuses = (school_number) => {
   campusStore.fetchCampuses(school_number)
