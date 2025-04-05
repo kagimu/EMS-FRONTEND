@@ -25,6 +25,12 @@ const searchQuery = ref(""); // Search query ref
 
 onMounted(async () => {
   schoolStore.fetchSchools();
+
+       let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+      if(defaultSchoolNo){
+        school_number.value = defaultSchoolNo
+        }
+        doFetchBillables(school_number.value)
 });
 
 const showModal = () => {

@@ -47,7 +47,7 @@ const campusStore = useCampusStore()
   if(defaultCampusNo){
     campus_number.value = defaultCampusNo
   }
-  fetchAllStock()
+
     }
 )
 

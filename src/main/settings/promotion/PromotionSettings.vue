@@ -39,10 +39,6 @@ const  promotionSettingData = ref(null)
 const  promotionSettingDialog = ref(false)
 const  newPromotionValueDialog = ref(false)
 
-onMounted(() => {
-  schoolStore.fetchSchools()
-  }
-)
 
 
 const form = reactive({
@@ -57,6 +53,31 @@ const form = reactive({
   level:""
 })
 
+onMounted(() => {
+  schoolStore.fetchSchools()
+
+  let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+  let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
+  let defaultCampusCurriculumNo =   localStorage.getItem("defaultCampusCurriculumNo")
+
+
+ if(defaultSchoolNo){
+    form.school_number = defaultSchoolNo
+    fetchCampuses(form.school_number)
+  }
+
+  if(defaultCampusNo){
+    form.campus_number = defaultCampusNo
+    fetchClasses(form.campus_number)
+  }
+
+  if(defaultCampusCurriculumNo){
+    form.curriculumNumber = defaultCampusCurriculumNo
+    fetchCampusLevel(form.curriculumNumber)
+  }
+  promotionStore.fetchPromotionSetting()
+  }
+)
 
 
 const openModal = () =>{

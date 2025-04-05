@@ -38,6 +38,13 @@ onMounted(
     () => {
       // getModeOfStudyInfo()
       schoolStore.fetchSchools()
+
+      let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+      if(defaultSchoolNo){
+        schoolNumber.value = defaultSchoolNo
+        }
+        getModeOfStudyInfo()
+
     } )
 
 const getModeOfStudyInfo = () =>{
