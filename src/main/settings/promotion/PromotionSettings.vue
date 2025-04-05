@@ -14,6 +14,9 @@ import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/st
 import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
+import useCommonsStore from "@/composables/useCommons.js";
+   
+   const commons = useCommonsStore()
 
 const studyPeriodStore = useStudyPeriodStore()
 const levelStore = useLevelStore()
@@ -201,8 +204,16 @@ watch(
 
 const fetchCampusLevel = (curriculumNumber) => {
   classStore.fetchCampusLevel(curriculumNumber)
+  updateDefaultFilters()
 }
 
+const updateDefaultFilters = () => {
+  commons.updateDefaultFilters({
+    schoolNumber: form.school_number,
+    campusNumber: form.campus_number,
+    campusCurriculumNumber: form.curriculumNumber
+  })
+}
 
 
 const fetchLevelClasses = (levelNumber) => {

@@ -12,6 +12,9 @@
   import NewApplication from "@/main/dashboard/studentApplication/NewApplication.vue"
   import PaginationTemplate from "@/components/PaginationTemplate.vue";
   import {useLevelStore} from "@/main/settings/level/store/level.js";
+  import useCommonsStore from "@/composables/useCommons.js";
+   
+   const commons = useCommonsStore()
 
   const showingModal = ref(false)
   const showAppmodal = ref(false)
@@ -123,8 +126,17 @@
   const fetchCampusLevel = (curriculumNumber) => {
     doFetchApplication()
    classStore.fetchCampusLevel(curriculumNumber)
+   updateDefaultFilters()
 }
   
+const updateDefaultFilters = () => {
+  commons.updateDefaultFilters({
+    schoolNumber: form.school_number,
+    campusNumber: form.campus_number,
+    campusCurriculumNumber: form.curriculumNumber
+  })
+}
+
   const fetchAcademicYear = (campusN) =>{
     doFetchApplication()
   academicYearStore.fetchAcademicYearByCampus(campusN)

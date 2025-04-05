@@ -51,6 +51,7 @@ const assessment_area_number  = ref("")
 const assessment_metric_number  = ref("")
 const report_setting_number  = ref("")
 const report_column_number  = ref("")
+const reportColumnAssData = ref([])
 
 
 onMounted(
@@ -82,6 +83,7 @@ const fetchCampusLevel = () => {
 }
 
 const addReportColumn = () => {
+  reportColumnAssData.value = ""
   showReportColumn.value = true
 }
 
@@ -331,7 +333,23 @@ const closeDialog = () => {
 }
 
 
+const showEditModal = (data) => {
 
+    reportColumnAssData.value = {
+    report_column_assessment_number:data.number,
+    study_period_number:study_period_number.value,
+    academic_year_number:academic_year_number.value,
+    class_number:class_number,
+    campus_level_number:campus_level_number.value,
+    assessment_area_number:assessment_area_number.value,
+    report_setting_number:report_setting_number.value,
+    report_column_number:report_column_number.value,
+    assessment_metric_number:assessment_metric_number.value
+  }
+
+  showReportColumn.value = true
+
+}
 
 </script>
 
@@ -340,7 +358,7 @@ const closeDialog = () => {
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal v-model="showReportColumn" title="Add Report Column Assessment" xl4>
-      <new-report-columns-assessment @closeDialog="closeDialog"></new-report-columns-assessment>
+      <new-report-columns-assessment @closeDialog="closeDialog" :reportColumnAssData="reportColumnAssData"></new-report-columns-assessment>
     </AppModal>
 
 
@@ -427,10 +445,6 @@ const closeDialog = () => {
             </select>
           </div>
 
-
-
-        
-
           <div class="mb-2">
             <select
                 style="box-shadow: none;"
@@ -497,8 +511,8 @@ const closeDialog = () => {
             <td>{{ useCommon.wellFormatedDate(column.scheduled_on) }}</td>
             <td> {{column.report_column}}</td>
             <td>
-              <button @click="editThisData(column, index)">
-                <b><i style="font-size: 12px;color:green" class="bi-pencil cursor-pointer mr-2"></i></b>
+              <button @click="showEditModal(column, index)">
+                <b><i style="color:rgb(3, 85, 148)" class="bi bi-pencil-square mr-2"></i></b>
               </button>
               <button @click="deleteThisData(column, index)">
                 <i style="font-size: 12px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i>
