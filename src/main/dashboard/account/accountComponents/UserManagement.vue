@@ -292,10 +292,9 @@ const closeDialog = () => {
             <div class="col-12">
               <div class="card">
                 <div class="mt-2">
-           <div class="row">
-            <div class="col-lg-6 "> 
-            </div>
-            <div class="col-lg-6">
+           <div class="flex justify-between">
+             <div>User Management</div>
+            <div>
                 <button  style="float: right;border: none;"
                   v-if="can('create_user','general')"
                   class="btn btn-primary btn-sm mr-3" type="button"  @click="showModalUser"><i class="bi bi-plus"></i>Add New User</button>

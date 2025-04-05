@@ -449,7 +449,10 @@ const router = createRouter({
                         action: "view_examtype",
 
                     }},
-                {path: 'account-management', component: Account, name: "account-management",
+                {
+                    path: 'account-management',
+                    component: Account,
+                    name: "account-management",
                     meta: {
                         resource: "account-management",
                         action: "view_account-management",
