@@ -17,12 +17,14 @@ import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/stor
 const studyPeriodStore = useStudyPeriodStore()
 
 import { useAbility } from '@casl/vue';
+import useCommonsStore from "@/composables/useCommons.js";
 
 const { can } = useAbility()
 
 const enrollmentList = ref( [])
 const  notificationStore  = useNotificationStore()
 const enrollmentStore = useEnrolmentStore()
+const commons = useCommonsStore()
 
 
 const campusList = ref([])
@@ -135,9 +137,16 @@ const filterByStudyPeriod = () => {
 
 const fetchCampusLevel = (curriculumNumber) => {
   classStore.fetchCampusLevel(curriculumNumber)
+  updateDefaultFilters()
 }
 
-
+const updateDefaultFilters = () => {
+  commons.updateDefaultFilters({
+    schoolNumber: form.school_number,
+    campusNumber: form.campus_number,
+    campusCurriculumNumber: form.curriculumNumber
+  })
+}
 
 const doFetchEnrollent = () =>{
   if(!form.school_number){
@@ -245,6 +254,8 @@ watch(
       }
     }
 )
+
+
 
 const fetchLevelClasses = (levelNumber) => {
   let data = {

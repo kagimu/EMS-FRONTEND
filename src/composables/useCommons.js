@@ -197,6 +197,12 @@ export default function useCommonsStore() {
         return result || "0dys"; // Return "0dys" if all are zero
     }
 
+    const updateDefaultFilters = (data) => {
+        localStorage.setItem("defaultSchoolNo", data.schoolNumber)
+        localStorage.setItem("defaultCampusNo", data.campusNumber)
+        localStorage.setItem("defaultCampusCurriculumNo", data.campusCurriculumNumber)
+    }
+
     return {
         onlyNumberValidator,
         numbersOnlyValidator,
@@ -209,6 +215,7 @@ export default function useCommonsStore() {
         initializePdfData,
         wellFormatedDate,
         formatNumbersWithComma,
-        ageCalculator
+        ageCalculator,
+        updateDefaultFilters
     }
 }
