@@ -12,12 +12,14 @@ import AssessmentSchedulePage from "@/main/dashboard/assessment/AssessmentSchedu
 import ManagePromotions from "@/main/settings/promotion/ManagePromotions.vue";
 import NarrativeSchedule from "@/main/dashboard/narrative/NarrativeSchedule.vue";
 import ManageNarrativeReport from "@/main/dashboard/narrative/ManageNarrativeReport.vue";
+import useCommonsStore from "@/composables/useCommons.js";
 
 const router = useRouter()
 const levelStore = useLevelStore()
 const campusCurriculumDataInfo = ref(null)
 
 const routerData = useRouter()
+const commons = useCommonsStore()
 
 const schoolNumber = routerData.currentRoute.value.query.sch
 const campusNumber = routerData.currentRoute.value.query.id
@@ -80,9 +82,11 @@ const campusSetupMenu = ref([
 onMounted(
     () => {
 
-      localStorage.setItem("defaultSchoolNo", schoolNumber)
-      localStorage.setItem("defaultCampusNo", campusNumber)
-      localStorage.setItem("defaultCampusCurriculumNo", campusCurriculumNumber)
+      commons.updateDefaultFilters({
+        schoolNumber: schoolNumber,
+        campusNumber: campusNumber,
+        campusCurriculumNumber: campusCurriculumNumber
+      })
 
       levelStore.fetchCampusCurriculum(campusNumber)
     }
