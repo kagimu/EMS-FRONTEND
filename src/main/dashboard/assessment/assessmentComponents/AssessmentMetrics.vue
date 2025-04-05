@@ -335,12 +335,11 @@ const deleteThisData = async (id,name) => {
   const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete Assessment Schedule ? ");
   if (agreed) {
     let data = {
-     
+     assessment_schedule_number:id,
     }
-   //delete endpoint
+   assessmentStore.deleteAssessmentMetrics(data)
   }
   
-
 }
 
 watch(
@@ -350,6 +349,17 @@ watch(
         uploadDialog.value = false
         // testScriptDialog.value = false
         notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
+watch(
+    () => assessmentStore.deleteAssessmentMetricResponse,
+    async (data) => {
+      if(data){
+        
+        notificationStore.successToast("Success", data.message)
+        doFetchAssessmentMetric()
       }
     }
 )

@@ -148,9 +148,6 @@
   studentAttendanceList.value = []
 }
 
-
-
-
    
    const fetchCampuses = (school_number) => {
      campusStore.fetchCampuses(school_number)

@@ -497,6 +497,9 @@ const closeDialog = () => {
             <td>{{ useCommon.wellFormatedDate(column.scheduled_on) }}</td>
             <td> {{column.report_column}}</td>
             <td>
+              <button @click="editThisData(column, index)">
+                <b><i style="font-size: 12px;color:green" class="bi-pencil cursor-pointer mr-2"></i></b>
+              </button>
               <button @click="deleteThisData(column, index)">
                 <i style="font-size: 12px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i>
                 <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">

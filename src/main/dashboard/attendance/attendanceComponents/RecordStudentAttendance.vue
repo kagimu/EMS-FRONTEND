@@ -138,6 +138,7 @@
      campusStore.fetchClassesByCampus(campus_number)
      levelStore.fetchCampusCurriculum(campus_number)
    //   doFetchEnrollent()
+
    }
    
    const fetchAcademicYear = (campusN) =>{
@@ -294,6 +295,7 @@
      }
      campusStore.fetchClassesBySchool(data)
      academicYearStore.fetchAcademicYearByLevel(levelNumber)
+    
    }
    
    watch(

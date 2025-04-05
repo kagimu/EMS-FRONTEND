@@ -261,9 +261,9 @@ const printContent = () => {
                 </h6>
               </div>
               <div class="col-lg-5">
-                <button v-if="can('delete_invoice','general')" @click="deleteInvoice()" class="btn btn-danger btn-sm mb-2 mr-4" style="float: right;">
+                <!-- <button v-if="can('delete_invoice','general')" @click="deleteInvoice()" class="btn btn-danger btn-sm mb-2 mr-4" style="float: right;">
                   <small><i class="bi bi-trash">&nbsp;Delete</i></small>
-                </button>
+                </button> -->
                 <button @click="showModal(myData.invoiceN)" class="btn btn-primary btn-sm mb-2 mr-4" style="float: right;" type="button" v-if="can('pay_invoice','general')">
                   <small><i class="bi bi-check-lg"><small>&nbsp;Make Payment</small></i></small>
                 </button>
