@@ -74,9 +74,9 @@ onMounted(() => {
 
   schoolStore.fetchSchools()
 
-  let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
-  let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
-  let defaultCampusCurriculumNo =   localStorage.getItem("defaultCampusCurriculumNo")
+  let defaultSchoolNo =  localStorage.getItem("defaultSchoolNo")
+  let defaultCampusNo =  localStorage.getItem("defaultCampusNo")
+  let defaultCampusCurriculumNo = localStorage.getItem("defaultCampusCurriculumNo")
 
 
  if(defaultSchoolNo){
