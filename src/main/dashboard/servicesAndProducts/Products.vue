@@ -209,7 +209,7 @@ watch (
         <tbody>
           <tr v-for="(productData, index) in productsList" :key="index" >
             <td>{{ productData.item.name}}</td>
-            <td>{{ productData.item.cost}}</td>
+            <td>{{ productData.item.cost.toLocaleString()}}</td>
             <td>{{ productData.item.description}}</td>
             <td>
               <div class="flex">
