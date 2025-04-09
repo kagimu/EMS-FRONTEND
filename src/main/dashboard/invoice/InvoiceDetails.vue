@@ -48,7 +48,7 @@ const showModal = (invoice) => {
 };
 
 onMounted(async () => {
-  await invoiceStore.fetchInvoiceId(props.invoiceN);
+   invoiceStore.fetchInvoiceId(props.invoiceN);
   applicationStore.fetchStudent(props.studentN);
 });
 
@@ -143,7 +143,7 @@ watch(
     if (data) {
       notificationStore.successToast("Success", data.message);
       mymodalpay.value = false;
-      await invoiceStore.fetchInvoiceId(invoice_number);
+      // await invoiceStore.fetchInvoiceId(invoice_number);
     }
   }
 );
@@ -270,7 +270,8 @@ const printContent = () => {
                 <button @click="printContent" class="btn btn-secondary btn-sm mb-2 mr-4" style="float: right;">
                   <small><i class="bi bi-printer">&nbsp;Print</i></small>
                 </button>
-                <button @click="cancelInvoice()" class="btn btn-danger btn-sm mb-2 mr-4" style="float: right;" v-if="can('cancel_invoice','general')">
+                
+                <button  @click="cancelInvoice()" class="btn btn-danger btn-sm mb-2 mr-4" style="float: right;" v-if="can('cancel_invoice','general')">
                   <small><i class="bi bi-x">&nbsp;cancel</i></small>
                 </button>
               </div>
