@@ -225,6 +225,18 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
   showInvoiceDetails.value = true
 }
 
+
+
+watch(
+  () => invoiceStore.cancelInvoiceResponse,
+  async (data) => {
+    if (data) {
+      showInvoiceDetails.value = false
+      doFetchInvoices()
+    }
+  }
+);
+
 </script>
 <template>
   <div>

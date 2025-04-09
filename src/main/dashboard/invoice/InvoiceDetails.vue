@@ -143,7 +143,7 @@ watch(
     if (data) {
       notificationStore.successToast("Success", data.message);
       mymodalpay.value = false;
-      // await invoiceStore.fetchInvoiceId(invoice_number);
+      // await invoiceStore.fetchInvoiceId(props?.invoiceN);
     }
   }
 );
@@ -181,7 +181,8 @@ watch(
   async (data) => {
     if (data) {
       notificationStore.successToast("Success", data.message);
-      await invoiceStore.fetchInvoiceId(invoice_number);
+      await invoiceStore.fetchInvoiceId(props?.invoiceN);
+
     }
   }
 );
@@ -191,7 +192,7 @@ watch(
   async (data) => {
     if (data) {
       notificationStore.successToast("Success", data.message);
-      await invoiceStore.fetchInvoiceId(invoice_number);
+      await invoiceStore.fetchInvoiceId(props?.invoiceN);
     }
   }
 );
@@ -211,7 +212,7 @@ watch(
   async (data) => {
     if (data) {
       notificationStore.successToast("Success", data.message);
-      await invoiceStore.fetchInvoiceId(invoice_number);
+      await invoiceStore.fetchInvoiceId(props?.invoiceN);
     }
   }
 );
@@ -271,9 +272,11 @@ const printContent = () => {
                   <small><i class="bi bi-printer">&nbsp;Print</i></small>
                 </button>
                 
-                <button  @click="cancelInvoice()" class="btn btn-danger btn-sm mb-2 mr-4" style="float: right;" v-if="can('cancel_invoice','general')">
+                <span v-if="myData.status != 'CANCELLED'"> <button   @click="cancelInvoice()" 
+                class="btn btn-danger btn-sm mb-2 mr-4" style="float: right;" v-if="can('cancel_invoice','general')">
                   <small><i class="bi bi-x">&nbsp;cancel</i></small>
                 </button>
+              </span>
               </div>
             </div>
           </div>
