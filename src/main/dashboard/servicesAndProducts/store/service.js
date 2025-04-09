@@ -14,6 +14,7 @@ export const useServiceStore = defineStore("service", () => {
     let deleteProductResponse = ref(null)
     let updateProductResponse = ref(null)
     let allItemsListResponse = ref(null)
+    let servicesItemsListResponse = ref(null)
 
         async function createNewService(data) {
             return await api.post("main/services", data)
@@ -31,6 +32,18 @@ export const useServiceStore = defineStore("service", () => {
             return await api.get("main/services?school_number="+data?.school_number)
                 .then((response) => {
                     servicesListResponse.value = response.data
+                })
+                .catch((response) => {
+                    if(response){
+                        errorMessage.value = response.response.data
+                    }
+                })
+        }
+
+        async function fetchServicesItemsList(data) {
+            return await api.get("main/items?school_number="+data?.school_number)
+                .then((response) => {
+                    servicesItemsListResponse.value = response.data
                 })
                 .catch((response) => {
                     if(response){
@@ -136,6 +149,7 @@ export const useServiceStore = defineStore("service", () => {
         deleteServiceResponse,
         updateServiceResponse,
         newProductResponse,
+        fetchServicesItemsList,
         fetchServicesList,
         deleteService,
         updateService,
@@ -145,7 +159,7 @@ export const useServiceStore = defineStore("service", () => {
         updateProduct,
         fetchAllItems,
         createNewService,
-
+        servicesItemsListResponse
 
 
     }

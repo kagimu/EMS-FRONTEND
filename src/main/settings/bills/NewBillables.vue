@@ -134,7 +134,11 @@ onMounted(
     async () => {
        schoolStore.fetchSchools()
        getSchoolInfo()
-      doFetchBillablesDetails(props.billablesInfo)
+       if(props.billablesInfo != ""){
+        bills_number.value = props.billablesInfo
+        doFetchBillablesDetails(props.billablesInfo)
+       }
+  
     
     } )
 
@@ -223,15 +227,15 @@ const  calculateTotal = () => {
 
 
 watch(
-    () => serviceStore.servicesListResponse,
+    () => serviceStore.servicesItemsListResponse,
     async (data) => {
       if (data) {
         ServiceOptions.value =  data.map(option => ({
-        text: option.item.name,
-        number: option.item.number
+        text: option.name,
+        number: option.number
       }));
       unfilteredServicesData.value = data
-        // ServiceOptions.value = data.map(option => ({ name: option.item.name, cost: option.item.cost,item_number:option.item.number }));
+        // ServiceOptions.value = data.map(option => ({ name: option.name, cost: option.cost,item_number:option.number }));
       }
     },
     { deep: true }
@@ -276,7 +280,7 @@ const fetchCampuses = (school) => {
   let data = {
     school_number:school
   }
-  serviceStore.fetchServicesList(data)
+  serviceStore.fetchServicesItemsList(data)
 
       campusStore.fetchCampuses(school)
       getModeOfStudyInfo(school)
@@ -409,10 +413,10 @@ const handleMenuChange = (data) => {
     let index = draft.index
     let number = draft.number
 
-   let info = unfilteredServicesData.value?.find(item => item?.item?.number === number)
+   let info = unfilteredServicesData.value?.find(item => item?.number === number)
   
     if(info) {
-      servicesData.value[index].cost = info?.item.cost
+      servicesData.value[index].cost = info?.cost
       servicesData.value[index].quantity = 1
     }
     updateAmount(draft.index)

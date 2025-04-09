@@ -298,6 +298,7 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
               <option value="PAID">PAID</option>
               <option value="PARTIALLY_PAID">PARTIALLY PAID</option>
               <option value="NOT_PAID" >NOT PAID</option>
+              <option value="CANCELLED" >CANCELLED</option>
            
             </select>
           </div>
@@ -371,7 +372,7 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
         <td>{{ list?.paid_amount?.toLocaleString()}}</td>
         <td>{{list?.balance?.toLocaleString()}}</td>
         <td>
-          <div :class="{'bg-green-700':list?.status==='PAID', 'bg-red-700':list?.status==='NOT_PAID', 'bg-purple-700':list?.status==='PARTIALLY_PAID'}" class="text-center text-white rounded-md">
+          <div :class="{'bg-green-700':list?.status==='PAID', 'bg-red-700':list?.status==='NOT_PAID', 'bg-purple-700':list?.status==='PARTIALLY_PAID'}" class="textRed">
             {{ list?.status?.replace("_", " ")?.toLowerCase() }}
           </div>
         </td>
@@ -394,12 +395,15 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
               <small>View</small>
             </button>
          
-
+            <div v-if="list.status === 'CANCELLED'" >
+  </div>
+  <div v-else>
           <button
               @click="paymentModal(list.number)" class="bg-[#0d6efd] rounded-sm text-white px-4 btn-primary btn-sm ml-3"
               v-if="can('pay_invoice','general')">
             <small>Pay</small>
           </button>
+        </div>
         </div>
         </td>
         </tr>
@@ -424,5 +428,8 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
 
 
 <style>
+.textRed {
+  color:red !important;
+}
 
 </style>
