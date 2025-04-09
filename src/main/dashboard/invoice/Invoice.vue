@@ -384,9 +384,21 @@ watch(
         <td>{{ list?.paid_amount?.toLocaleString()}}</td>
         <td>{{list?.balance?.toLocaleString()}}</td>
         <td>
-          <div :class="{'bg-green-700':list?.status==='PAID', 'bg-red-700':list?.status==='NOT_PAID', 'bg-purple-700':list?.status==='PARTIALLY_PAID'}" class="textRed">
+          <!-- <div :class="{'bg-green-700':list?.status==='PAID', 'bg-red-700':list?.status==='NOT_PAID', 'bg-purple-700':list?.status==='PARTIALLY_PAID'}" class="textRed">
             {{ list?.status?.replace("_", " ")?.toLowerCase() }}
-          </div>
+          </div> -->
+
+          <div
+  :class="{
+    'bg-green-700': list?.status === 'PAID',
+    'bg-red-700': list?.status === 'NOT_PAID',
+    'bg-blue-700': list?.status === 'PARTIALLY_PAID',
+    'bg-gray-500': list?.status === 'CANCELLED'
+  }"
+  class="text-white px-2 py-1 rounded capitalize"
+>
+  {{ list?.status?.replace('_', ' ')?.toLowerCase() }}
+</div>
         </td>
           <td>{{ list?.due_date }}</td>
           <td>{{ list?.date }}</td>

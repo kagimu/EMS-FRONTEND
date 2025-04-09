@@ -144,7 +144,7 @@ const deleteGrade = async (data, index) => {
             <div>
                 <button
                     @click="addGrade"
-                    v-if="can('add_grade_standard','general')"
+                    v-if="can('create_names_of_aggregate','general')"
                     style="float: right; margin-right: 5px;"
                     type="button"
                     class="btn btn-primary btn-sm">

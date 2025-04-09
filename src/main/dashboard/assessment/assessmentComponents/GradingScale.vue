@@ -249,7 +249,7 @@ const successUpload = async (data) => {
             <div>
               <button
                   @click="addAggregateScale"
-                  v-if="can('add_grade_scale','general')"
+                  v-if="can('create_aggregate_scale','general')"
                   style="float: right; margin-right: 5px;"
                   type="button"
                   class="btn btn-primary btn-sm m-4">
