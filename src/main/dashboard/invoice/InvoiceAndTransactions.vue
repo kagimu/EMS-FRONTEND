@@ -2,9 +2,9 @@
 
 import router from "@/config/router.js";
 import {useRouter} from "vue-router";
-import Invoice from "@/main/dashboard/invoice/Invoice.vue";
-import Transactions from "@/main/dashboard/transactions/Transactions.vue";
 import { useAbility } from '@casl/vue';
+import AllInvoices from "@/main/dashboard/invoice/AllInvoices.vue";
+import AllTransactions from "@/main/dashboard/transactions/AllTransactions.vue";
 const { can } = useAbility()
 const routerData = useRouter()
 const selectedTab = routerData.currentRoute.value.query.tab ?? 'invoices'
@@ -36,10 +36,10 @@ const switchTabs = (tab) => {
   </div>
 
   <div v-if="selectedTab === 'invoices'">
-    <Invoice></Invoice>
+    <AllInvoices></AllInvoices>
   </div>
   <div v-if="selectedTab === 'transactions'">
-    <Transactions></Transactions>
+    <AllTransactions></AllTransactions>
   </div>
 
 

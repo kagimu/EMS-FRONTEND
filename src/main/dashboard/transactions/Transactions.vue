@@ -64,7 +64,7 @@ const fetchTransactionData = () => {
   let data = {
     school_number:school_number.value,
     campus_number:campus_number.value,
-    campus_number:props.studentDataInfo.current_enrollment.campus_number,
+    // campus_number:props.studentDataInfo.current_enrollment.campus_number,
     userNumber:props.studentDataInfo.user_number,
     start_date:start_date.value,
     end_date:end_date.value
