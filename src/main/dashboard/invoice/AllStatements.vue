@@ -137,7 +137,7 @@ watch(
     () => invoiceStore.allStatementResponse,
     async (data) => {
       if(data){
-        statementData.value = data
+        statementData.value = data.data
       }
     },
     {deep:true}
@@ -229,7 +229,7 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
 <template>
   <div>
 
-<!-- {{ campus_number }} -->
+<!-- {{ statementData }}-->
     <AppModal title="Creating New Invoice" v-model="mymodal" xl6>
     <NewInvoice :userNumber="userNumber"  :studentDataInfo="studentDataInfo"></NewInvoice>
     </AppModal>
@@ -255,7 +255,7 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
   <div class="mt-4">
 
 
-    <div class="grid grid-cols-3 gap-2">
+    <div class="grid grid-cols-2 gap-2">
 
        <div>
         <div class="mb-1">
@@ -287,21 +287,21 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
         </div>
       </div>
 
-    <div>
+<!--    <div>
           <div class="mb-1">
             <select
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
                 v-model="form.statusData"
                 @change="doFetchAllStatements()">
-                <option disabled value="">--filter By Status--</option>
+                <option disabled value="">&#45;&#45;filter By Status&#45;&#45;</option>
               <option value="PAID">PAID</option>
               <option value="PARTIALLY_PAID">PARTIALLY PAID</option>
               <option value="NOT_PAID" >NOT PAID</option>
            
             </select>
           </div>
-      </div>
+      </div>-->
 
       <div>
         <div class="mb-1">
@@ -328,14 +328,14 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
         </div>
       </div>
 
-      <div>
+<!--      <div>
         <combo-box
             v-model:optionResponse="form.items"
             :optionList="itemsList"
             :optionDraft="form?.items"
             @change="doFetchAllStatements()"
         ></combo-box>
-      </div>
+      </div>-->
 
       </div>
 
@@ -348,7 +348,7 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
       <tr>
         <th>#</th>
         <th>Date</th>
-        <th>RecievedBy</th>
+        <th>Learner</th>
         <th>Description</th>
         <th>Amount (In)</th>
         <th>Amount (Out)</th>
@@ -359,8 +359,17 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
       <tbody>
       <tr v-for="(list,index) in statementData"  :key="index">
         <td>{{ (index + 1) }}</td>
-        <td>{{ list.date_received }}</td>
-        <td>{{ list.received_by }}</td>
+        <td>{{ list?.date_received }}</td>
+        <td class="capitalize">
+
+          <span class="hover:text-gray-700">
+          <router-link :to="{name:'student-profile-details', query:{st_id:list?.student_number	}}"
+                       class="text-gray-700 text-decoration-none hover:underline">
+            {{ list?.learner_name }}
+          </router-link>
+          </span>
+
+        </td>
         <td>{{ list.description }}</td>
         <td><span v-if="list.type ==='IN'">{{ list.amount?.toLocaleString() }}</span>
           <span v-else> - </span>
