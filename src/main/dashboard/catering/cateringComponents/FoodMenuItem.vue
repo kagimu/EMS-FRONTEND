@@ -363,9 +363,9 @@ watch(
 <!--                      <th>Code</th>-->
                       <th>Name</th>
                       <th>User UOM</th>
-                      <th>Unit of Purchase</th>
+                      <th>Purchase UOM</th>
                       <th>Current Quantity</th>
-                      <th>User Unit Of Measure</th>
+                      <th>Cost Per User UOM</th>
                       <th>Action</th>
                     </tr>
                     </thead>

@@ -355,7 +355,7 @@ if (agreed) {
                         <th>User UOM</th>
                         <th>Purchase Unit</th>
                         <th>Qty</th>
-                        <th >Unit Cost of Purchase</th>
+                        <th >Cost Per User UOM</th>
                         <th>Parts</th>
                         <th class="w-[5%]">Action</th>
                       </tr>
