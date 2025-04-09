@@ -74,7 +74,9 @@ onMounted(
 
 const fetchCurrentSchoolInfo = () => {
   let draft = props.studentDataInfo
-  campus_number.value = draft?.current_enrollment?.campus_number
+  if(draft) {
+    campus_number.value = draft?.current_enrollment?.campus_number
+  }
 }
 
 watch (
@@ -94,11 +96,12 @@ const fetchCampuses = (school_number) => {
 }
 
 const doFetchInvoices = () =>{
+  let studentInfo = props.studentDataInfo
   let data = {
     status:form.statusData,
     school_number:school_number.value,
-    campus_number:props.studentDataInfo.current_enrollment.campus_number,
-    user_number:props.studentDataInfo.user_number,
+    campus_number:studentInfo?.current_enrollment?.campus_number,
+    user_number:studentInfo?.user_number,
     start_date:form.start_date,
     end_date:form.end_date,
     items:form.items,
