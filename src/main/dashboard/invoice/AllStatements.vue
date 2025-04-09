@@ -23,7 +23,7 @@ const routerData = useRouter()
 const applicationStore= useApplicationStore()
 const studentNumber = routerData.currentRoute.value.query.st_id;
 const userNumber = ref(null)
-const invoiceData = ref([])
+const statementData = ref([])
 const invoiceStore = useInvoiceStore()
 const  notificationStore  = useNotificationStore()
 const mymodal = ref(false)
@@ -107,7 +107,7 @@ const doFetchAllStatements = () =>{
     items:form.items,
   }
 
-  invoiceStore.fetchInvoice(data)
+  invoiceStore.fetchAllStatements(data)
 }
 
 const paymentModal = (number) =>{
@@ -134,10 +134,10 @@ watch (
 
 
 watch(
-    () => invoiceStore.invoiceResponse,
+    () => invoiceStore.allStatementResponse,
     async (data) => {
       if(data){
-        invoiceData.value = data
+        statementData.value = data
       }
     },
     {deep:true}
@@ -340,71 +340,45 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
       </div>
 
 
-
-
     <table
-      class="table table-hover caption-top mt-4 table-sm table-striped"
-      style="font-size: 13px !important;width: 100%;"
+        class="table table-hover caption-top mt-4 table-sm table-striped"
+        style="font-size: 13px !important;width: 100%;"
     >
       <thead>
-        <tr>
-          <th>#</th>
-          <th>No.</th>
-          <th>Client</th>
-          <th>Total Amount</th>
-          <th>Paid Amount</th>
-          <th>Balance</th>
-          <th>Status</th>
-          <th>Due Date</th>
-          <th>CreatedOn</th>
-          <th> Actions</th>
-        </tr>
+      <tr>
+        <th>#</th>
+        <th>Date</th>
+        <th>RecievedBy</th>
+        <th>Description</th>
+        <th>Amount (In)</th>
+        <th>Amount (Out)</th>
+        <th>Balance</th>
+        <th> Actions</th>
+      </tr>
       </thead>
       <tbody>
-        <tr v-for="(list,index) in invoiceData"  :key="index">
+      <tr v-for="(list,index) in statementData"  :key="index">
         <td>{{ (index + 1) }}</td>
-        <td>{{ list?.ref_number }}</td>
-        <td style="text-transform: capitalize;">{{ list?.names}}</td>
-        <td>{{ list?.total_amount?.toLocaleString()}}</td>
-        <td>{{ list?.paid_amount?.toLocaleString()}}</td>
-        <td>{{list?.balance?.toLocaleString()}}</td>
-        <td>
-          <div :class="{'bg-green-700':list?.status==='PAID', 'bg-red-700':list?.status==='NOT_PAID', 'bg-purple-700':list?.status==='PARTIALLY_PAID'}" class="text-center text-white rounded-md">
-            {{ list?.status?.replace("_", " ")?.toLowerCase() }}
-          </div>
+        <td>{{ list.date_received }}</td>
+        <td>{{ list.received_by }}</td>
+        <td>{{ list.description }}</td>
+        <td><span v-if="list.type ==='IN'">{{ list.amount?.toLocaleString() }}</span>
+          <span v-else> - </span>
         </td>
-          <td>{{ list?.due_date }}</td>
-          <td>{{ list?.date }}</td>
+        <td><span v-if="list.type ==='OUT'">{{ list.amount?.toLocaleString() }}</span>
+          <span v-else> - </span></td>
+        <td>{{ list.balance?.toLocaleString() }}</td>
         <td>
-        <div>
-          <!-- <router-link
-          v-if="userType != 'User'"
-              class="text-decoration-none"
-              :to="{name:'invoice-details', query:{invoice_id:list.ref_number,st_id:studentNumber}}">
-            <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
-              <small>View</small>
-            </button>
-          </router-link> -->
-
-
-            <button 
-             @click="showInvoiceInfoModal(list.ref_number,studentNumber)" class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
-              <small>View</small>
-            </button>
-         
-
-          <button
-              @click="paymentModal(list.number)" class="bg-[#0d6efd] rounded-sm text-white px-4 btn-primary btn-sm ml-3"
-              v-if="can('pay_invoice','general')">
-            <small>Pay</small>
-          </button>
-        </div>
+          <i class="bi bi-printer"></i>
         </td>
-        </tr>
- 
-          
+
+      </tr>
+
+
       </tbody>
     </table>
+
+
   </div>
   </div>
   </div>

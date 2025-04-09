@@ -35,9 +35,9 @@ const form = reactive({
 
 onMounted(
     async () => {
-     schoolStore.fetchSchools()
-     serviceStore.fetchAllItems()
-     applicationStore.fetchStudent(studentNumber)
+      await schoolStore.fetchSchools()
+      await serviceStore.fetchAllItems()
+      await applicationStore.fetchStudent(studentNumber)
     
     }
 )

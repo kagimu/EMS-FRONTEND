@@ -6,6 +6,7 @@ export const useInvoiceStore = defineStore("invoice", () => {
     const newInvoiceResponse = ref(null)
     const errorMessage = ref(null)
     const invoiceResponse = ref(null)
+    const allStatementResponse = ref(null)
     const invoiceResponseById = ref(null)
     const newInvoicePaymentResponse = ref(null)
     const invoiceUpdateResponse = ref(null)
@@ -51,6 +52,33 @@ export const useInvoiceStore = defineStore("invoice", () => {
             )
             .then((response) => {
                 invoiceResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchAllStatements(data) {
+        let  school_number =   data?.school_number ?? ""
+        let  campus_number =   data?.campus_number ?? ""
+        let  status =   data?.status ?? ""
+        let  user_number =   data?.user_number ?? ""
+        let  start_date =    data?.start_date ?? ""
+        let  end_date =    data?.end_date ?? ""
+        let  items =    data?.items ?? ""
+        return await api.get("main/invoices/general-statement" +
+                "?school_number="+school_number+
+                "&campus_number="+campus_number+
+                "&user_number="+user_number+
+                "&start_date="+start_date+
+                "&end_date="+end_date+
+                "&status="+status+
+                "&items="+items
+            )
+            .then((response) => {
+                allStatementResponse.value = response.data
             })
             .catch((response) => {
                 if(response && response.response){
@@ -199,31 +227,33 @@ export const useInvoiceStore = defineStore("invoice", () => {
 
     return {
        invoiceResponse,
-       fetchInvoice,
        invoiceResponseById,
-       fetchInvoiceId,
        newInvoiceResponse,
-       createInvoicePayment,
-       createNewInvoice,
        newInvoicePaymentResponse,
        updateInvoice,
        invoiceUpdateResponse,
        errorMessage,
        financialSummaryResponseById,
-       fetchFinancialSummary,
        editUpdateResponse,
        updateInvoiceDetails,
        deleteInvoiceResponse,
-       deleteInvoice,
-       cancelInvoiceResponse,
-       cancelInvoice,
        cancelInvoicePaymentResponse,
-       cancelInvoicePayment,
+       cancelInvoiceResponse,
        deleteInvoicePaymentResponse,
-       deleteInvoicePayment,
-       fetchStatements,
        statementsResponse,
        creditResponse,
-       fetchCredits
+        allStatementResponse,
+       fetchInvoice,
+       fetchInvoiceId,
+       createInvoicePayment,
+       createNewInvoice,
+       fetchFinancialSummary,
+       deleteInvoice,
+       cancelInvoice,
+       cancelInvoicePayment,
+       deleteInvoicePayment,
+       fetchStatements,
+       fetchCredits,
+       fetchAllStatements
     }
 })

@@ -21,7 +21,7 @@ const switchTabs = (tab) => {
 
 onMounted(
     async () => {
-      applicationStore.fetchStudent(routerData.currentRoute.value.query.st_id)
+    await  applicationStore.fetchStudent(routerData.currentRoute.value.query.st_id)
     }
 )
 
