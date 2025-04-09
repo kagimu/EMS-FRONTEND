@@ -365,7 +365,7 @@ watch(
                       <th>User UOM</th>
                       <th>Unit of Purchase</th>
                       <th>Current Quantity</th>
-                      <th>Unit Cost of Purchase</th>
+                      <th>User Unit Of Measure</th>
                       <th>Action</th>
                     </tr>
                     </thead>

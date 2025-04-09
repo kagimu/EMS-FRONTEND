@@ -76,6 +76,7 @@ const fetchCurrentSchoolInfo = () => {
   let draft = props.studentDataInfo
   if(draft) {
     campus_number.value = draft?.current_enrollment?.campus_number
+    userNumber.value = draft?.user_number
   }
 }
 
@@ -240,6 +241,7 @@ watch(
 </script>
 <template>
   <div>
+    <!-- {{ userNumber }} -->
 
 <!-- {{ campus_number }} -->
     <AppModal title="Creating New Invoice" v-model="mymodal" xl6>

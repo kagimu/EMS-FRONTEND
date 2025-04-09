@@ -36,6 +36,7 @@ const props = defineProps({
 onMounted(async () => {
   await applicationStore.fetchStudent(studentNumber)
     schoolStore.fetchSchools()
+    fetchCurrentSchoolInfo()
     }
 )
 
@@ -43,6 +44,7 @@ onMounted(async () => {
 const fetchCurrentSchoolInfo = () => {
   let draft = props.studentDataInfo
   campus_number.value = draft?.current_enrollment?.campus_number
+  userNumber.value = draft?.user_number
 }
 
 
@@ -207,6 +209,7 @@ watch (
        </div>
 
       <!-- {{ transactionList }} -->
+        <!-- {{ studentDataInfo }} -->
       <table
         class="table table-hover caption-top mt-4  table-striped text-sm"
       >

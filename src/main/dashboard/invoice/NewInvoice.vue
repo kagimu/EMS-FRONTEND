@@ -42,11 +42,27 @@ const form = reactive({
   description:null
 })
 
+onMounted(
+    async () => {
+      // await serviceStore.fetchServicesList()
+      // await applicationStore.fetchApplicationList()
+      fetchCurrentSchoolInfo()
+      fetchServicesData()
+      getUserName()
+    } )
+
+const getUserName = () => {
+  if(props.userNumber){
+    user_number.value = props.userNumber
+  }
+}
+
 watch(
     () => props.userNumber,
     async (data) => {
       if(data){
-        user_number.value = props.userNumber
+        // user_number.value = props.userNumber
+        getUserName()
       }
     },
     {deep:true}
@@ -54,13 +70,7 @@ watch(
 
 
 
-onMounted(
-    async () => {
-      // await serviceStore.fetchServicesList()
-      // await applicationStore.fetchApplicationList()
-      fetchCurrentSchoolInfo()
-      fetchServicesData()
-    } )
+
 
 
     const fetchCurrentSchoolInfo = () => {
@@ -199,12 +209,13 @@ watch (
 
 </script>
 <template>
-  <div>
+ <div>
     <div class="row">
       <div class="col-12">
           <div class="card-body" style="padding: 0;">
             <div class="container mt-4">
               <form @submit.prevent="createInvoice">
+                <!-- {{ userNumber }}  -->
                 <div class="row">
                   <div class="col-lg-5">
                      <div class="mb-2">
