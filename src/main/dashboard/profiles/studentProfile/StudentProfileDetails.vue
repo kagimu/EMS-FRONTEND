@@ -15,7 +15,6 @@ import StudentNarativeReport from "@/main/dashboard/profiles/studentProfile/Stud
 import FileUploader from "@/components/FileUploader.vue";
 const enrollmentStore = useEnrolmentStore()
 
-confirm
 
 const studentNum = ref(null)
 const routerData = useRouter()
