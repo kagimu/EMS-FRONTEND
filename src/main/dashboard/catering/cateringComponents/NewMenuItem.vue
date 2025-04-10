@@ -578,7 +578,7 @@ const handleMenuChange = (data) => {
                   <!-- {{ parseFloat(menu.unit_cost)*parseFloat(menu.quantity) }} -->
                 </td>
                 <td class="border-r">
-                 <span style="font-size: 12px;"> {{ (parseFloat(menu.unit_cost)*parseFloat(menu.quantity)).toLocaleString() }}</span>
+                 <span v-if="menu.quantity" style="font-size: 12px;"> {{ (parseFloat(menu.unit_cost)*parseFloat(menu.quantity)).toLocaleString() }}</span>
                 </td>
 
               <td> 
