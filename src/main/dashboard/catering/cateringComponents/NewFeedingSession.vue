@@ -119,7 +119,7 @@
    notificationStore.errorToast("Error", "Select School")
    }else{
    isSelected.value = true
-   Items.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
+   Items.value.push({ name: '', quantity: 1, cost: 0, amount: 0 ,consumption_quantity:1});
    }
    
    }
