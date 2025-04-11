@@ -42,6 +42,7 @@ const page = ref(1)
 const per_page = ref(20)
 const total_items = ref(0)
 const total_rows = ref(0)
+const activeUOMView = ref('purchase') 
 
 
 const form = reactive({
@@ -354,43 +355,75 @@ watch(
                     class="w-full overflow-auto max-h-[520px] scrollbar-thin"
                     @scroll="onScroll"
                 >
-                  <table
-                      id="datatable"
-                      class="table table-hover table-sm text-[12px]">
-                    <thead>
-                    <tr>
-                      <th>#</th>
-<!--                      <th>Code</th>-->
-                      <th>Name</th>
-                      <th>User UOM</th>
-                      <th>Purchase UOM</th>
-                      <th>Current Quantity</th>
-                      <th>Cost Per User UOM</th>
-                      <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="(list, index) in menuItemData" v-if="isLoading===false" :key="index">
-                      <td>{{ list?.key }}</td>
-<!--                      <td>{{ list?.code }}</td>-->
-                      <td>{{ list?.name }}</td>
-                      <td>{{ list?.unit_of_measure_name }}</td>
-                      <td>{{ list?.purchase_unit_of_measure_name }}</td>
-                      <td>{{ commons.formatNumbersWithComma(list?.current_quantity) }}</td>
-                      <td>{{ commons.formatNumbersWithComma(list?.unit_cost) }}</td>
-                      <td>
-                        <button v-if="can('edit_menu_item','general')" @click="showUpdateDialog(list)" >
-                          <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
-                        </button>
-                        &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-                        <button v-if="can('remove_menu_item','general')" type="button" @click="deleteThisData(list.number,list.name)">
-                          <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
-                        </button>
-                      </td>
-                    </tr>
+ 
+                
+  <div class="flex space-x-4">
+ 
 
-                    </tbody>
-                  </table>
+   
+  <div class="inline-flex items-center bg-gray-100 p-1 rounded-full shadow-sm">
+    <button
+      @click="activeUOMView = 'purchase'"
+      :class="[
+        'px-5 py-2 text-sm font-semibold rounded-full transition-all duration-200',
+        activeUOMView === 'purchase'
+          ? 'bg-blue-600 text-white shadow'
+          : 'text-gray-600 hover:bg-white hover:text-blue-600'
+      ]"
+    >
+      Purchase UOM
+    </button>
+
+    <button
+      @click="activeUOMView = 'user'"
+      :class="[
+        'px-5 py-2 text-sm font-semibold rounded-full transition-all duration-200',
+        activeUOMView === 'user'
+          ? 'bg-blue-600 text-white shadow'
+          : 'text-gray-600 hover:bg-white hover:text-blue-600'
+      ]"
+    >
+      User UOM
+    </button>
+  </div>
+</div>
+
+
+
+
+
+<table class="table table-hover table-sm text-[12px]">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>{{ activeUOMView === 'purchase' ? 'Purchase UOM' : 'User UOM' }}</th>
+      <th>Current Quantity</th>
+      <th>Cost Per User UOM</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-for="(list, index) in menuItemData" v-if="isLoading === false" :key="index">
+      <td>{{ list?.key }}</td>
+      <td>{{ list?.name }}</td>
+      <td>
+        {{ activeUOMView === 'purchase' ? list?.purchase_unit_of_measure_name : list?.unit_of_measure_name }}
+      </td>
+      <td>{{ commons.formatNumbersWithComma(list?.current_quantity) }}</td>
+      <td>{{ commons.formatNumbersWithComma(list?.unit_cost) }}</td>
+      <td>
+        <button v-if="can('edit_menu_item','general')" @click="showUpdateDialog(list)">
+          <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+        </button>
+        &nbsp;
+        <button v-if="can('remove_menu_item','general')" type="button" @click="deleteThisData(list.number,list.name)">
+          <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
                 </div>
 
