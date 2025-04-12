@@ -261,7 +261,7 @@ const addMarks = (score, comment, number, index) => {
       scoreData = returnComputedData(score) 
      studentsList.value[index].score = scoreData
    }
-  if(score && comment){
+  if(score){
     let data = {
       student_number:number,
       assessment_metric_number:assessmentMetricNumber.value,
@@ -271,6 +271,15 @@ const addMarks = (score, comment, number, index) => {
     reportSetupStore.addStudentMarks(data)
   }
 
+  // if(score && comment){
+  //   let data = {
+  //     student_number:number,
+  //     assessment_metric_number:assessmentMetricNumber.value,
+  //     actual_score:parseInt(String(scoreData).replace(/,/g, "")),
+  //     comment:comment
+  //   }
+  //   reportSetupStore.addStudentMarks(data)
+  // }
 }
 
 const returnComputedData = (data) =>{
