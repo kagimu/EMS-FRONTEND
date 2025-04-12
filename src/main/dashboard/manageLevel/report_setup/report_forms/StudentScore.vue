@@ -261,7 +261,7 @@ const addMarks = (score, comment, number, index) => {
       scoreData = returnComputedData(score) 
      studentsList.value[index].score = scoreData
    }
-  if(score && comment){
+  if(score){
     let data = {
       student_number:number,
       assessment_metric_number:assessmentMetricNumber.value,
@@ -271,6 +271,15 @@ const addMarks = (score, comment, number, index) => {
     reportSetupStore.addStudentMarks(data)
   }
 
+  // if(score && comment){
+  //   let data = {
+  //     student_number:number,
+  //     assessment_metric_number:assessmentMetricNumber.value,
+  //     actual_score:parseInt(String(scoreData).replace(/,/g, "")),
+  //     comment:comment
+  //   }
+  //   reportSetupStore.addStudentMarks(data)
+  // }
 }
 
 const returnComputedData = (data) =>{
@@ -278,7 +287,7 @@ const returnComputedData = (data) =>{
   try {
     // Use Function constructor to safely evaluate the expression
     value = new Function(`return ${value}`)();
-    return value < 0 ? 0 : value > 100 ? 100 : value;
+    return value < 0 ? 0 : value > 100 ? value : value;
   } catch (error) {
     // return "Invalid expression";
   }
@@ -516,7 +525,6 @@ watch(
             </td>
             <td>
               <input
-                  maxlength="3"
                   @keypress="onlyNumberValidator($event)"
                   style="outline: none 0 !important; box-shadow: none;"
                   type="text"

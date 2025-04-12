@@ -476,7 +476,7 @@ const handleMenuChange = (data) => {
       
 
       <div class="mb-2" v-if="menuForm.type === 'ITEM'">
-        <label class="text-sm"><small> Cost Per User UOM</small></label>
+        <label class="text-sm"><small> Cost Per Purchase Unit of measure</small></label>
         <input
             v-model="menuForm.base_price"
             class="form-control shadow-none"
@@ -510,6 +510,7 @@ const handleMenuChange = (data) => {
               <th><div class="text-sm">Available Quantity</div></th>
               <th><div class="text-sm">User UOM</div></th>
               <th><div class="text-sm">Unit Cost</div></th>
+              <th><div class="text-sm">Total Cost</div></th>
               <th><div class="text-sm">#</div></th>
             </tr>
           </thead>
@@ -573,7 +574,12 @@ const handleMenuChange = (data) => {
                   <input
                       v-model="menu.unit_cost"
                       style="width: 100px;" class="form-control shadow-none select-no-border "
-                  type="text"   disabled/></td>
+                  type="text"   disabled/>
+                  <!-- {{ parseFloat(menu.unit_cost)*parseFloat(menu.quantity) }} -->
+                </td>
+                <td class="border-r">
+                 <span v-if="menu.quantity" style="font-size: 12px;"> {{ (parseFloat(menu.unit_cost)*parseFloat(menu.quantity)).toLocaleString() }}</span>
+                </td>
 
               <td> 
                 <div  class="">
@@ -590,9 +596,9 @@ const handleMenuChange = (data) => {
           </tbody>
         </table>
 
-        <ul style="float: right;">
+        <!-- <ul style="float: right;">
                           <li>Total : <span style="color:rgba(173, 12, 12, 0.92)">{{ calculateTotal()?.toLocaleString() }}</span> </li>
-                        </ul>
+                        </ul> -->
           <div>
             <button
                 class="btn btn-primary btn-sm text-sm ml-3"

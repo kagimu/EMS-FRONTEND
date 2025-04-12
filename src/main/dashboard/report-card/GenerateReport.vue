@@ -44,13 +44,13 @@ onMounted(
 
 const filterGeneratedReport = (cla) => {
  
-    let data = {
-      study_period_number: study_period_number.value,
-      class_number: cla,
-      campus_number:campusNumber,
-      campus_curriculum_number:campus_curriculum_number
-    }
-    reportStore.fetchGeneratedReport(data)
+    // let data = {
+    //   study_period_number: study_period_number.value,
+    //   class_number: cla,
+    //   campus_number:campusNumber,
+    //   campus_curriculum_number:campus_curriculum_number
+    // }
+    // reportStore.fetchGeneratedReport(data)
   
 
   studyPeriodStore.fetchStudyPeriod(
@@ -66,6 +66,10 @@ const filterGeneratedReport = (cla) => {
 }
 
 const filterGeneratedReportByPeriod = (studyperiodnumber) => {
+
+  if(!studyperiodnumber){
+    return
+  }
 
     let data = {
       study_period_number: studyperiodnumber,

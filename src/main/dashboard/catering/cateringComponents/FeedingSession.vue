@@ -281,7 +281,10 @@ watch (
               <tr v-for="menuItem in list.pack_items" :key="menuItem.number" class="m-1">
                 <td>{{ menuItem.name }}</td>
                 <td>{{ commons.formatNumbersWithComma(menuItem.consumption_quantity) }}</td>
-                <td>{{ menuItem.unit_of_consumption.name }}</td>
+                <td>
+                  {{ menuItem.unit_of_consumption?.name }}
+
+                </td>
               </tr>
               </tbody>
             </table>

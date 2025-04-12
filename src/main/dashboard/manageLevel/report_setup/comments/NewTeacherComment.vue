@@ -81,7 +81,15 @@ const addComments = () => {
     loader.value = true
 //  alert(JSON.stringify(form))
 if(props.headTeacherCommentList){
-// alert("Halleluhah")
+  let formData = {
+min_aggregate : parseInt(form.min_aggregate),
+max_aggregate : parseInt(form.max_aggregate),
+comment : form.comment,
+report_setting_number : props.headTeacherCommentList.report_setting_number,
+ number : parseInt(props.headTeacherCommentList.id)
+  }
+// alert(JSON.stringify(formData))
+  teacherCommentStore.newTeacherComment(formData)
 }else{
 let formData = {
 min_aggregate : parseInt(form.min_aggregate),
@@ -228,7 +236,7 @@ watch(
 
 <template>
   <div>
-<!--     {{ headTeacherCommentList }}-->
+    <!-- {{ headTeacherCommentList }} -->
   <form @submit.prevent="addComments">
 
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
