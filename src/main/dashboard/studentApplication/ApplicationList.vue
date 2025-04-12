@@ -493,6 +493,10 @@ const exportToCSV = () => {
   link.click();
   URL.revokeObjectURL(url);
 };
+
+const directAdmit = () => {
+
+}
 </script>
 
 <template>
@@ -507,7 +511,12 @@ const exportToCSV = () => {
 
   <div class="row ml-2 mt-3">
    <h5  class="ml-1" style="font-size: 14px;margin-top: 2px;">APPLICATIONS 
-      <button @click="applicationModal" style="float: right;" class="btn btn-primary btn-sm ml-2 mb-2 mt-2 mr-2"><small>New Application</small></button></h5>
+      <button @click="applicationModal" style="float: right;" class="btn btn-primary btn-sm ml-2 mb-2 mt-2 mr-2"><small>New Application</small></button>
+    
+      <button @click="directAdmit" style="float: right;" class="btn btn-success btn-sm ml-2 mb-2 mt-2 mr-2">
+        <small>Direct Admission</small></button>
+
+    </h5>
 
                  <div class="col-lg-12">
                     <div>

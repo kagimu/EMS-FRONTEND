@@ -86,14 +86,17 @@ const form = ref({
   minimum_points:"",
   promotion_setting_number:"",
   assessment_grade_scale_number:"",
-  assessment_areas:"",
+  assessment_areas:[],
 })
 
 
 
 const addPromotionValue = () =>{
   loader.value = true
-  form.value.assessment_areas = assessment_areas.value[0].assessment_area_number ? assessment_areas.value : []
+
+
+  // form.value.assessment_areas = assessment_areas.value[0].assessment_area_number ? assessment_areas.value : []
+
   form.value.score = parseFloat(form.value.score)
   form.value.minimum_points = parseFloat(form.value.minimum_points)
   promotionStore.newPromotionSettingValue(form.value)
