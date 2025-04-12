@@ -161,6 +161,18 @@ const itemMenu = ref([
     value:"narrative"
   },
 
+  {
+    text:"Emmergency Information",
+    value:"emergency-information"
+  },
+  {
+    text:"Family Background",
+    value:"family-background"
+  },
+  {
+    text:"Medical Details",
+    value:"medical-details"
+  },
 ])
 
 
@@ -355,7 +367,18 @@ watch (
                           <StudentNarativeReport></StudentNarativeReport>
                         </div>
 
+                        <div v-if="studentQuery === 'academic-year'">
+                          <h1>Academic Year</h1>
+                        </div>
 
+
+                        <div v-if="studentQuery === 'emergency-information'">
+                          <h1>Emergency Information</h1>
+                        </div>
+
+                        <div v-if="studentQuery === 'family-background'">
+                          <h1>Family Background</h1>
+                          </div>
 
                       </div>
 

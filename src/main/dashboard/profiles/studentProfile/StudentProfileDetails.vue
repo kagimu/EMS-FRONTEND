@@ -13,8 +13,11 @@ import router from "@/config/router.js";
 import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
 import StudentNarativeReport from "@/main/dashboard/profiles/studentProfile/StudentNarativeReport.vue";
 import FileUploader from "@/components/FileUploader.vue";
-const enrollmentStore = useEnrolmentStore()
+import EmergencyInformation from "@/main/dashboard/studentAdmission/newAdmissionComponents/EmergencyInformation.vue";
+import FamilyStructure from "@/main/dashboard/studentAdmission/newAdmissionComponents/FamilyStructure.vue";
+import MedicalRecords from "@/main/dashboard/studentAdmission/newAdmissionComponents/MedicalRecords.vue";
 
+const enrollmentStore = useEnrolmentStore()
 
 const studentNum = ref(null)
 const routerData = useRouter()
@@ -142,7 +145,24 @@ const itemMenu = ref([
   {
     text:"Narrative Report",
     value:"narrative"
+  }
+
+])
+
+const itemMenu2 = ref([
+
+  {
+    text:"Emmergency Information",
+    value:"emergency-information"
   },
+  {
+    text:"Family Background",
+    value:"family-background"
+  },
+  {
+    text:"Medical Details",
+    value:"medical-details"
+  }
 
 ])
 
@@ -232,8 +252,23 @@ const successUpload = async (data) => {
                     :class="item.value === studentQuery ? 'active' : ''"
                     :to="{name:'student-profile-details', query:{st_id:student_number,type:item.value}}">
                   <small style="font-size:12px;">{{item.text}}</small></router-link>
+              </div>
 
 
+            </div>
+          </div>
+
+
+          <div class="border bg-white rounded-md py-[3px] mt-2">
+            <div>
+              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+
+                <router-link
+                    v-for="(item, idx) in  itemMenu2" :key="idx"
+                    class="list-group-item list-group-item-action"
+                    :class="item.value === studentQuery ? 'active' : ''"
+                    :to="{name:'student-profile-details', query:{st_id:student_number,type:item.value}}">
+                  <small style="font-size:12px;">{{item.text}}</small></router-link>
               </div>
 
 
@@ -320,7 +355,23 @@ const successUpload = async (data) => {
                               :studentProfileData="studentProfileData"></StudentNarativeReport>
                         </div>
 
+                        
+                        <div v-if="studentQuery === 'academic-year'">
+                          <h1>Academic Year</h1>
+                        </div>
 
+
+                        <div v-if="studentQuery === 'emergency-information'">
+                          <emergency-information :studentProfileData="studentProfileData"></emergency-information>
+                        </div>
+
+                        <div v-if="studentQuery === 'family-background'">
+                          <family-structure :studentProfileData="studentProfileData"></family-structure>
+                          </div>
+
+                          <div v-if="studentQuery === 'medical-details'">
+                          <medical-records :studentProfileData="studentProfileData"></medical-records>
+                          </div>
 
                       </div>
 
