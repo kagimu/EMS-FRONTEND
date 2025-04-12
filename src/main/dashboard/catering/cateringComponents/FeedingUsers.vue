@@ -6,12 +6,12 @@ import {useAuthStore} from "@/main/auth/store/auth.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
 import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
-import useCommonsStore from "@/composables/useCommons.js";
+
 import { useAbility } from '@casl/vue';
 
 const { can } = useAbility()
 
-const commons = useCommonsStore()
+
 
 const  mealStore  = useMealStore()
 const authStore = useAuthStore()
@@ -19,8 +19,6 @@ const authStore = useAuthStore()
 let p = authStore.profile
 const cateringStore = useCateringStore();
 const feedingSessionGroupData = ref(null);
-let errorMessage = ref(null);
-const buttonLoader = ref(false);
 const notificationStore = useNotificationStore();
 const school_number = ref("")
 const mealCourseList = ref([])
@@ -53,13 +51,16 @@ onMounted(() => {
  if(defaultSchoolNo){
   school_number.value = defaultSchoolNo
   doFetchMealCourses(school_number.value)
+   mealStore.fetchMealCourses({school_number:defaultSchoolNo,status:'ACTIVE'})
   }
 
   if(defaultCampusNo){
     form.campus_number = defaultCampusNo
   }
+
+
   
-  doGetUsersList()
+  // doGetUsersList()
 })
 
 const doGetUsersList = () =>{
@@ -155,8 +156,6 @@ watch(
 
 
 const doFetchMealCourses = (schoolN) => {
-
-  // mealStore.fetchMealCourses({school_number:schoolN,status:'ACTIVE'})
   campusStore.fetchCampuses(schoolN)
 
 }
