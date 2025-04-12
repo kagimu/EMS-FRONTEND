@@ -396,7 +396,11 @@ watch(
       <th>Name</th>
       <th>{{ activeUOMView === 'purchase' ? 'Purchase UOM' : 'User UOM' }}</th>
       <th>Current Quantity</th>
-      <th>Cost Per User UOM</th>
+      <th>
+        <!-- purchase_unit_cost -->
+        <!-- Cost Per User UOM -->
+        {{ activeUOMView === 'purchase' ? 'Purchase Unit Cost' : 'Cost Per User UOM' }}
+      </th>
       <th>Action</th>
     </tr>
   </thead>

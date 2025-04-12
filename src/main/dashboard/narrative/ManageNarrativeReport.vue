@@ -56,6 +56,7 @@ const showDialog = ref(false)
 const applicationStore = useApplicationStore()
 const student_number = ref(null)
 const studentCheckerList = ref(false)
+const NarrativeReportList = ref(false)
 
 
 
@@ -170,8 +171,6 @@ const fetchAssessmentMetricbyStudy = (studyP) =>{
     }
      assessmentStore.fetchAssessmentMetrics(data)
      fetchStudents()
-  
-
  
 }
 
@@ -411,7 +410,7 @@ watch(
 
       <div class="col-3">
         <div class="mb-2">
-          <label class="text-sm"><small>Assessment Schedule</small></label>
+          <label class="text-sm"><small>Narrative Schedule</small></label>
           <select
               style="box-shadow: none;"
               class="form-select py-10"
