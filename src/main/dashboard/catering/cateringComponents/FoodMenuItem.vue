@@ -39,7 +39,7 @@ const campusStore = useCampusStore()
 const menuItemDataParts = ref([])
 const cateringStore = useCateringStore()
 const page = ref(1)
-const per_page = ref(20)
+const per_page = ref(30)
 const total_items = ref(0)
 const total_rows = ref(0)
 const activeUOMView = ref('purchase') 
@@ -347,10 +347,6 @@ watch(
                     :per_page="per_page"
                     :total_items="total_items"
                     :total_rows="total_rows"></PaginationTemplate>
-
-
-
-
                 <div
                     class="w-full overflow-auto max-h-[520px] scrollbar-thin"
                     @scroll="onScroll"
@@ -361,31 +357,32 @@ watch(
  
 
    
-  <div class="inline-flex items-center bg-gray-100 p-1 rounded-full shadow-sm">
-    <button
-      @click="activeUOMView = 'purchase'"
-      :class="[
-        'px-5 py-2 text-sm font-semibold rounded-full transition-all duration-200',
-        activeUOMView === 'purchase'
-          ? 'bg-blue-600 text-white shadow'
-          : 'text-gray-600 hover:bg-white hover:text-blue-600'
-      ]"
-    >
-      Purchase UOM
-    </button>
+    <div class="inline-flex items-center bg-gray-100 p-0.5 rounded-full shadow-sm text-xs">
+  <button
+    @click="activeUOMView = 'purchase'"
+    :class="[
+      'px-3 py-1 rounded-full font-medium transition-all duration-200',
+      activeUOMView === 'purchase'
+        ? 'bg-[#035594] text-white shadow-sm'
+        : 'text-gray-700 hover:bg-white hover:text-[#035594]'
+    ]"
+  >
+    Purchase UOM
+  </button>
 
-    <button
-      @click="activeUOMView = 'user'"
-      :class="[
-        'px-5 py-2 text-sm font-semibold rounded-full transition-all duration-200',
-        activeUOMView === 'user'
-          ? 'bg-blue-600 text-white shadow'
-          : 'text-gray-600 hover:bg-white hover:text-blue-600'
-      ]"
-    >
-      User UOM
-    </button>
-  </div>
+  <button
+    @click="activeUOMView = 'user'"
+    :class="[
+      'px-3 py-1 rounded-full font-medium transition-all duration-200',
+      activeUOMView === 'user'
+        ? 'bg-[#035594] text-white shadow-sm'
+        : 'text-gray-700 hover:bg-white hover:text-[#035594]'
+    ]"
+  >
+    User UOM
+  </button>
+</div>
+
 </div>
 
 
@@ -410,8 +407,14 @@ watch(
       <td>
         {{ activeUOMView === 'purchase' ? list?.purchase_unit_of_measure_name : list?.unit_of_measure_name }}
       </td>
-      <td>{{ commons.formatNumbersWithComma(list?.current_quantity) }}</td>
-      <td>{{ commons.formatNumbersWithComma(list?.unit_cost) }}</td>
+      <td>
+        <!-- {{ commons.formatNumbersWithComma(list?.current_quantity) }} -->
+        {{ activeUOMView === 'purchase' ? commons.formatNumbersWithComma(list?.purchase_current_quantity)	 : commons.formatNumbersWithComma(list?.current_quantity) }}
+      </td>
+      <td>
+        <!-- purchase_unit_cost	3000000 -->
+        {{ activeUOMView === 'purchase' ? commons.formatNumbersWithComma(list?.purchase_unit_cost)	 : commons.formatNumbersWithComma(list?.unit_cost) }}
+      </td>
       <td>
         <button v-if="can('edit_menu_item','general')" @click="showUpdateDialog(list)">
           <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>

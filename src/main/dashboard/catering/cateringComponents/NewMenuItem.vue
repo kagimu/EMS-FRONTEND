@@ -476,7 +476,7 @@ const handleMenuChange = (data) => {
       
 
       <div class="mb-2" v-if="menuForm.type === 'ITEM'">
-        <label class="text-sm"><small> Cost Per User UOM</small></label>
+        <label class="text-sm"><small> Cost Per Purchase Unit of measure</small></label>
         <input
             v-model="menuForm.base_price"
             class="form-control shadow-none"
