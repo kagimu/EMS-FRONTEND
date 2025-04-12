@@ -390,7 +390,7 @@ watch(
 
 
 <table class="table table-hover table-sm text-[12px]">
-  <thead>
+  <thead class="sticky top-0 bg-white z-10 shadow-sm">
     <tr>
       <th>#</th>
       <th>Name</th>
