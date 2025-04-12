@@ -13,6 +13,7 @@
   import PaginationTemplate from "@/components/PaginationTemplate.vue";
   import {useLevelStore} from "@/main/settings/level/store/level.js";
   import useCommonsStore from "@/composables/useCommons.js";
+  import DirectAdmit from "@/main/dashboard/studentApplication/DirectAdmit.vue"
    
    const commons = useCommonsStore()
 
@@ -21,6 +22,7 @@
   const tableLoader = ref(true)
   const isStaff = ref("")
   const applicationN = ref(null)
+  const showDirectAdmitModal = ref(false)
 
   const applicationModal = () =>{
   applicationN.value = ""
@@ -495,11 +497,15 @@ const exportToCSV = () => {
 };
 
 const directAdmit = () => {
-
+  showDirectAdmitModal.value = true
 }
 </script>
 
 <template>
+
+<AppModal title="Application -> Admission" v-model="showDirectAdmitModal" xl4>
+  <DirectAdmit></DirectAdmit>
+  </AppModal> 
 
   <AppModal title="Application Details" v-model="showingModal" xl6>
     <application-details :application-number="applications"></application-details>
