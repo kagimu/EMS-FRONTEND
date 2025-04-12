@@ -16,6 +16,7 @@ import ModeOfStudy from "@/main/settings/mode-of-study/ModeOfStudy.vue"
 import ContactInfo from "@/main/settings/ContactInfo.vue"
 
 import { useAbility } from '@casl/vue';
+import ManageStudents from "@/main/settings/manage-students/ManageStudents.vue";
 
 const { can } = useAbility()
 
@@ -80,6 +81,11 @@ const settingsList = ref([
     id:"promotion-settings",
     action:"view_promotion_settings"
   },
+  {
+    name:"Import Students",
+    id:"import-students",
+    action:"view_promotion_settings"
+  },
 /*  {
     name:"Promotion Value",
     id:"promotion-value",
@@ -104,7 +110,6 @@ const form = reactive({
 
 
             <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-
               <router-link
                   v-for="(item, idx) in  settingsList" :key="idx"
                   v-show="can(item.action,'general')"
@@ -162,6 +167,9 @@ const form = reactive({
                 <div v-if="selectedPage === 'promotion-value'">
                     <PromotionValue></PromotionValue>
                 </div>
+              <div v-if="selectedPage === 'import-students'">
+                   <manage-students></manage-students>
+              </div>
           </div>
         </div>
       </div>

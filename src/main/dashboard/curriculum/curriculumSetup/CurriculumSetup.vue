@@ -20,7 +20,6 @@ import router from "@/config/router.js";
 
 
 const routerData = useRouter()
-const menuSelected = ref( "level")
 const curriculumMenu = ref( [
   {text:"Learning Area", value:"learning-area"},
   {text:"Subject Cluster", value:"subject-cluster"},
@@ -156,13 +155,6 @@ watch(
 
                   <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
                     
-                    <!-- <div
-                        class="list-group-item list-group-item-action cursor-pointer"
-                        :class="menuSelected === 'import-curriculum' ? 'active' : ''"
-                        @click="changeMenu('import-curriculum')"
-                    >
-                      <small style="font-size:12px;">Import Curriculum</small>
-                    </div> -->
 
                     <router-link
                   v-for="(item, idx) in  importCurriculumMenu" :key="idx"
@@ -246,18 +238,14 @@ watch(
                 </div>
 
                 <div v-if=" campusQuery==='classes'">
-                <!-- <curriculum-level></curriculum-level> -->
                 <curriculum-class-set-up ></curriculum-class-set-up>
                 </div>
 
-            
-                <!-- <assesment-areas v-if="menuSelected === 'assessmentArea'"></assesment-areas> -->
+
                 <div v-if=" campusQuery==='assessmentArea'">
                   <assesment-areas></assesment-areas>
                   </div>
 
-
-            <!-- <assessment-metrics v-if="menuSelected == 'assessmentmetric'"></assessment-metrics> -->
             <div v-if=" campusQuery==='metric'">
               <metric></metric>
             </div>
