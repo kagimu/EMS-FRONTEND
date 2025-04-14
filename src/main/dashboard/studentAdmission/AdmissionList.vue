@@ -13,6 +13,7 @@
    import PaginationTemplate from "@/components/PaginationTemplate.vue";
    import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
    import useCommonsStore from "@/composables/useCommons.js";
+    import DirectAdmit from "@/main/dashboard/studentApplication/DirectAdmit.vue"
    
    const commons = useCommonsStore()
    import { useAbility } from '@casl/vue';
@@ -29,6 +30,7 @@
    const uploadDialog = ref(false)
    const studentPhoto = ref(null)
    const studentNumber = ref(null)
+   const showDirectAdmitModal = ref(false)
    
    const showModal = (studentN,adm,stud) =>{
    studentNum.value = studentN
@@ -96,6 +98,12 @@
 
   doFetchAdmission()
   updateDefaultFilters()
+
+  if(showDirectAdmitModal.value === false){
+         localStorage.removeItem('application-id');
+      }
+
+      
     }
    )
 
@@ -157,6 +165,16 @@
       }
     }
 )
+ 
+//watch if showDirectAdmitModal is false, then remove  localStorage 
+
+   watch(
+    () => showDirectAdmitModal.value,
+    async (data) => {
+      if(showDirectAdmitModal.value === false){
+         localStorage.removeItem('application-id');
+      }
+    } )
 
 
    watch(
@@ -402,8 +420,27 @@
 }
 
 
+const directAdmit = () => {
+  showDirectAdmitModal.value = true
+}
+
+watch(
+    () => admissionStore.directAdmitStudentResponse,
+    async (data) => {
+      if(data){
+        showDirectAdmitModal.value = false
+      }
+    },
+    {deep:true}
+)
+
 </script>
 <template>
+
+   <AppModal title="Application -> Admission" v-model="showDirectAdmitModal" xl4>
+  <DirectAdmit></DirectAdmit>
+  </AppModal> 
+
    <AppModal title="Enrol" v-model="mymodal" xl6>
       <EnrolModel :studentNumber="studentNum" :admissionData="admissionInfoData" :studentDataInfo="studentData" @closeDialog="closeDialog"></EnrolModel>
    </AppModal>
@@ -422,11 +459,14 @@
                            <div class="">
                               <div class="card-bod">
                                  <div class="row">
-                                    <div class="col-lg-11">
+                                    <div class="col-lg-9">
                                        <h5 style="font-size: 14px;margin-top: 2px;">ADMISSION OFFERS </h5>
+
                                     </div>
-                                    <div class="col-lg-1">
-                                       <i class="bi bi-printer" style="float: right;"> Print </i>
+                                    <div class="col-lg-3">
+                                       <!-- <i class="bi bi-printer" style="float: right;"> Print </i> -->
+                                       <button @click="directAdmit" style="float: right;" class="btn btn-success btn-sm ml-2 mb-2 mt-2 mr-2">
+                                          <small>Direct Admission</small></button>
                                     </div>
                                  </div>
                                  <div class="row">
