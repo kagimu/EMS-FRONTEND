@@ -98,6 +98,12 @@
 
   doFetchAdmission()
   updateDefaultFilters()
+
+  if(showDirectAdmitModal.value === false){
+         localStorage.removeItem('application-id');
+      }
+
+      
     }
    )
 
@@ -159,6 +165,16 @@
       }
     }
 )
+ 
+//watch if showDirectAdmitModal is false, then remove  localStorage 
+
+   watch(
+    () => showDirectAdmitModal.value,
+    async (data) => {
+      if(showDirectAdmitModal.value === false){
+         localStorage.removeItem('application-id');
+      }
+    } )
 
 
    watch(

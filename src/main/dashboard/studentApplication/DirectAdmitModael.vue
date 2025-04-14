@@ -67,6 +67,12 @@
   
 
  
+  onMounted(() => {
+  
+  }
+   )
+
+
    
 const getCampusN = (streamN) => {
 let data = streamList.value
@@ -309,6 +315,7 @@ watch(
         notificationStore.successToast("Success", data.message)
         buttonLoader.value = false
         localStorage.removeItem('application-id');
+        
       }
     },
     {deep:true}
@@ -323,6 +330,7 @@ watch(
       },
       {deep: true}
   )
+
 
 
 

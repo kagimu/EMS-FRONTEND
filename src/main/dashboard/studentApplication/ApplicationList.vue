@@ -114,7 +114,13 @@
     form.curriculumNumber = defaultCampusCurriculumNo
     fetchCampusLevel(form.curriculumNumber)
   }
+
+  if(showDirectAdmitModal.value === false){
+         localStorage.removeItem('application-id');
+      } 
+
       }
+
   )
   
   const fetchCampuses = (school_number) => {
@@ -512,6 +518,15 @@ watch(
     },
     {deep:true}
 )
+
+watch(
+    () => showDirectAdmitModal.value,
+    async (data) => {
+      if(showDirectAdmitModal.value === false){
+         localStorage.removeItem('application-id');
+      }
+    } )
+    
 </script>
 
 <template>
