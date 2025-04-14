@@ -120,6 +120,7 @@ watch (
 
 const addParentPersonalDetails = () => {
   buttonLoader.value = true
+  // emit("next", {step:2})
   if(!applicationId.value){
     applicationStore.newApplicationDetails(form)
   }else {

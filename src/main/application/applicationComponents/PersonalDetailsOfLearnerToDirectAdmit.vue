@@ -129,6 +129,7 @@ let entity_number = localStorage.getItem('entity_number')
 
 
 const addLearnerDetails = () => {
+  // emit("next", {step:3})
   if(!applicationId.value){
     buttonLoader.value = true
     form.application_number = applicationId.value

@@ -45,6 +45,8 @@
     const emit = defineEmits(["closeDialog"]);
     onMounted( async () => {
     schoolStore.fetchSchools()  
+    // const  = localStorage.getItem("")
+    applicationStore.fetchApplicationById(localStorage.getItem("application-id"));
       }
   )
 
@@ -59,18 +61,37 @@
   stream_number:null,
   school_number:null,
   curriculumNumber:null,
-  level:null
+  level:null,
+  interview_number:null
   })
   
 
-
+ 
    
 const getCampusN = (streamN) => {
 let data = streamList.value
 
 let no = streamN
 campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_class_number;
+getInterviewList(campusClassNumber.value)
 // alert(streamN)
+  }
+
+
+  watch(
+  () => applicationStore.applicationByIdResponse,
+  async (data) => {
+    if (data) {
+      form.student_number = data.student.number;
+    }
+  },
+  { deep: true }
+)
+
+const Admit = () =>{
+    buttonLoader.value = true
+    form.campus_class_number = campusClassNumber.value
+    admissionStore.directAdmitStudent(form)
   }
 
 
@@ -129,12 +150,12 @@ campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_c
         school_number:form.school_number
       } 
   )
-  getInterviewList(clasN)
+  
   }
 
-  const getInterviewList = (clasN) => {
+  const getInterviewList = (cls) => {
      let data = {
-      campus_class_number:clasN
+      campus_class_number:cls
      }
      applicationStore.fetchInterviewList(data).finally(() => {
   
@@ -267,31 +288,52 @@ watch(
       )
  
   
-  const Admit = () =>{
-    buttonLoader.value = true
-    admissionStore.admitStudent(data)
-  }
+
   
   watch(
     () => applicationStore.interviewListResponse,
     async (data) => {
       if(data){
-        assesssmentMetricsDialog.value = false
         interviewList.value = data.data
       }
     },
     {deep:true}
 )
 
-  
+
+
+  watch(
+    () => admissionStore.directAdmitStudentResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+        buttonLoader.value = false
+        localStorage.removeItem('application-id');
+      }
+    },
+    {deep:true}
+)
+
+watch(
+      () => admissionStore.errorMessage,
+      async (data) => {
+            if (data) {
+                notificationStore.errorToast("Error", data.message)
+            }
+      },
+      {deep: true}
+  )
+
+
+
 </script>
 
 <template>
   <div class="m-4">
     <form @submit.prevent="Admit()">
       <div class="row">
-        <div class="col-lg-12">
-          <p class="alert alert-primary p-1" style="" ><small>Please ,Choose a class Your admiting this Student !</small> </p>
+        <div class="col-lg-6">
+        
           <div class="mb-2">
             <label class="text-sm"><small>School</small></label>
             <select
@@ -344,7 +386,6 @@ watch(
             </select>
             
           </div>
-
           <div class="mb-2">
             <label class="text-sm"><small>Academic Year</small></label>
             <select
@@ -355,8 +396,14 @@ watch(
               <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
             </select>
           </div>
+         
 
-
+        </div>
+      
+    
+       
+        <div class="col-lg-6"> 
+         
           <div class="mb-2">
             <label class="text-sm"><small>Class</small></label>
      
@@ -387,10 +434,6 @@ watch(
             
           </div>
      
-
-         
-        
-
       
           <div class="mb-2">
             <label class="text-sm"><small>Study Period</small></label>
@@ -402,11 +445,6 @@ watch(
               <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
             </select>
           </div>
-        </div>
-      
-    
-       
-        <div class="col-4"> 
         <div class="mb-2">
             <label class="text-sm"><small>Interview</small></label>
 
