@@ -84,6 +84,7 @@ onMounted(
      loading.value = true
     
       schoolStore.fetchSchools()
+      getInterviewList()
 
 
   let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
