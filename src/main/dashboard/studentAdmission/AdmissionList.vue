@@ -465,7 +465,9 @@ watch(
                                     </div>
                                     <div class="col-lg-3">
                                        <!-- <i class="bi bi-printer" style="float: right;"> Print </i> -->
-                                       <button @click="directAdmit" style="float: right;" class="btn btn-success btn-sm ml-2 mb-2 mt-2 mr-2">
+                                       <button
+                                           v-if="can('admit_student','manage')"
+                                           @click="directAdmit" style="float: right;" class="btn btn-success btn-sm ml-2 mb-2 mt-2 mr-2">
                                           <small>Direct Admission</small></button>
                                     </div>
                                  </div>
