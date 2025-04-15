@@ -618,6 +618,7 @@ watch (
                     />
                   </td>
                   <td>
+                    {{ student.adn ? student.adn : student.apn }}
                     {{ student.student_surname ? student.student_surname : "" }}
                     {{ student.student_second_name ? " " + student.student_second_name : "" }}
                     {{ student.student_other_name ? " " + student.student_other_name : "" }}

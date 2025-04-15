@@ -526,7 +526,7 @@ watch(
          localStorage.removeItem('application-id');
       }
     } )
-    
+
 </script>
 
 <template>
@@ -744,6 +744,7 @@ watch(
                        <th>APN</th>
                        <th>Student</th>
                        <th>Gender</th>
+                       <th>Class</th>
                        <th>Status</th>
                        <th>Payment</th>
                        <th style="width: 20%;">Action</th>
@@ -755,6 +756,7 @@ watch(
                        <td>{{ appList.Student.apn }}</td>
                        <td style="text-transform: capitalize;">{{ appList.Student.surname+ " "+ appList.Student.second_name+ " "+ appList.Student.other_name  }} </td>
                        <td>{{ appList.Student.gender }}</td>
+                       <td>{{appList.Student.CampusClass.class_name	}}</td>
                        <td>
                           <span v-if="appList.status === 'INTERVIEW_SCHEDULED'">INTERVIEW SCHEDULED</span>
                           <span v-if="appList.status === 'DRAFT'">DRAFT</span>
