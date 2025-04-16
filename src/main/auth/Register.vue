@@ -38,7 +38,7 @@ const form = reactive({
 })
 
 
-function handleInput() {
+const handleInput = () => {
   if (form.phone.length > 15) {
       form.phone = form.phone.slice(0, 15);
   }
