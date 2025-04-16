@@ -2,9 +2,11 @@
 
 import {reactive, ref} from "vue";
 import api from "@/config/api.js";
+import useNotificationStore from "@/composables/useNotification.js";
 
 const buttonLoader = ref(false)
 const emit = defineEmits()
+const notificationStore  = useNotificationStore()
 
 const props = defineProps({
   studentProfileData:{},
