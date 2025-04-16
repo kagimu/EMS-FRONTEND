@@ -19,10 +19,16 @@ const form = ref({
   telephone_contact_of_doctor:null,
 })
 
-const addMedicalRecords = () => {
+const props = defineProps({
+  studentProfileData:{},
+})
+
+
+const addEmergencyInformation = () => {
   // emit("next", 6)
   buttonLoader.value = true
-  saveMedicalRecords(form.value)
+  form.value.student_number = props.studentProfileData?.current_enrollment?.student_number
+  saveEmergencyInformation(form.value)
 }
 
 /*const backPage = () => {
@@ -32,8 +38,8 @@ const addMedicalRecords = () => {
 
 
 
-const  saveMedicalRecords = async (data) => {
-  await api.post("main/assessment-areas", data)
+const  saveEmergencyInformation = async (data) => {
+  await api.post("main/students/medical-records", data)
       .then((response) => {
         buttonLoader.value = false
         // levelResponse.value = response.data
@@ -49,6 +55,12 @@ const  saveMedicalRecords = async (data) => {
       })
 }
 
+
+const handleInput3 = () => {
+  if (form.value.telephone_contact_of_first_person.length > 15) {
+    form.value.telephone_contact_of_first_person = form.value.telephone_contact_of_first_person.slice(0, 15);
+  }
+}
 
 const handleInput2 = () => {
   if (form.value.telephone_contact_of_alternative_person.length > 15) {
@@ -70,7 +82,7 @@ const handleInput = () => {
 
     <p class="ml-4 mt-4 mb-10"> EMERGENCY INFORMATION </p>
 
-    <form @submit.prevent="addMedicalRecords">
+    <form @submit.prevent="addEmergencyInformation">
       <div class="row mx-auto">
         <div class="col-6">
 
@@ -83,7 +95,16 @@ const handleInput = () => {
 
             <div class="mb-2">
               <label class="text-sm">Telephone Contact of first person</label>
-              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.telephone_contact_of_first_person" required class="form-control form-control-sm">
+              <vue-tel-input
+                  @input="handleInput3"
+                  @keypress="commons.onlyNumberValidator($event)"
+                  style="padding:0; outline: none 0 !important; box-shadow: none;"
+                  class="form-control"
+                  :input-options="{placeholder: ''}"
+                  v-model="form.telephone_contact_of_first_person"
+                  :dropdown-options="{ showDialCodeInSelection: true, showFlags: true, showDialCodeInList: true}"
+                  :preferredCountries="['UG']"
+                  mode="international"></vue-tel-input>
             </div>
 
             <div class="mb-2">
