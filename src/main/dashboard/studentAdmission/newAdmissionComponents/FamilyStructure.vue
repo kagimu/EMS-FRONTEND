@@ -1,3 +1,63 @@
+<script setup>
+
+import {ref} from "vue";
+import api from "@/config/api.js";
+const buttonLoader = ref(false)
+const emit = defineEmits()
+const form = ref({
+  family_name_of_father:null,
+  fathers_place_of_employment:null,
+  fathers_phone1:null,
+  fathers_email1:null,
+  father_living:null,
+  fathers_other_names:null,
+  fathers_physical_contact_address:null,
+  fathers_phone2:null,
+  fathers_email2:null,
+  family_name_of_mother:null,
+  mothers_place_of_employment:null,
+  mothers_phone1:null,
+  mothers_email1:null,
+  mother_living:null,
+  mothers_other_names:null,
+  mothers_phone2:null,
+  mothers_email2:null,
+  family_name_of_guardian:null,
+  guardians_place_of_employment:null,
+  guardians_phone1:null,
+  guardians_email1:null,
+  guardians_other_names:null,
+  guardians_physical_contact_address:null,
+  guardians_phone2:null,
+  guardians_email2:null,
+  languages:null,
+})
+
+const addFamilyStructure = () => {
+  // emit("next", 4)
+  form.value.student_number = props.studentProfileData?.current_enrollment?.student_number
+  saveFamilyStructure(form.value)
+}
+
+const  saveFamilyStructure = async (data) => {
+  await api.post("main/students/family-structure", data)
+      .then((response) => {
+        buttonLoader.value = false
+        // levelResponse.value = response.data
+        notificationStore.successToast("Success",response.data.message)
+      })
+      .catch((error) => {
+        if(error && error.response){
+          // errorMessage.value = error.response.data.message
+
+          buttonLoader.value = false
+          notificationStore.errorToast("Error",error.response.data.message)
+        }
+      })
+}
+
+
+</script>
 <template>
 <div>
 
@@ -220,11 +280,11 @@
 
     <hr />
 
-    <div class="flex justify-content-between mt-4">
+    <div class="flex justify-end mt-4">
 
-      <button type="button" @click="backPage" class="btn btn-outline-secondary mb-2 ml-4">
+<!--      <button type="button" @click="backPage" class="btn btn-outline-secondary mb-2 ml-4">
         Back
-      </button>
+      </button>-->
 
       <button type="submit" class="btn btn-primary mb-2 mr-4">
         Next
@@ -242,51 +302,7 @@
 </div>
 </template>
 
-<script setup>
 
-import {reactive, ref} from "vue";
-const buttonLoader = ref(false)
-const emit = defineEmits()
-const form = reactive({
-  family_name_of_father:null,
-  fathers_place_of_employment:null,
-  fathers_phone1:null,
-  fathers_email1:null,
-  father_living:null,
-  fathers_other_names:null,
-  fathers_physical_contact_address:null,
-  fathers_phone2:null,
-  fathers_email2:null,
-  family_name_of_mother:null,
-  mothers_place_of_employment:null,
-  mothers_phone1:null,
-  mothers_email1:null,
-  mother_living:null,
-  mothers_other_names:null,
-  mothers_phone2:null,
-  mothers_email2:null,
-  family_name_of_guardian:null,
-  guardians_place_of_employment:null,
-  guardians_phone1:null,
-  guardians_email1:null,
-  guardians_other_names:null,
-  guardians_physical_contact_address:null,
-  guardians_phone2:null,
-  guardians_email2:null,
-  languages:null,
-})
-
-const addFamilyStructure = () => {
-  emit("next", 4)
-}
-
-
-const backPage = () => {
-  emit("next", 2 )
-}
-
-
-</script>
 
 <style scoped>
 
