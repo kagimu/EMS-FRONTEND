@@ -442,7 +442,7 @@ watch(
                   v-model="form.study_period_number"
                   @change="filterByStudyPeriod()"
               >
-                <option disabled value="">filter by Study period -</option>
+                <option disabled value="">--Filter by Study Period--</option>
                 <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
 
               </select>
