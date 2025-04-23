@@ -51,7 +51,7 @@ report_setting_number:""
 
 onMounted(
     async () => {
-        teacherCommentStore.fetchTeacherComments()
+        await teacherCommentStore.fetchTeacherComments()
         await doFetchReportSettings()
         fetchCampusLevel()
         getCommentInfo()
