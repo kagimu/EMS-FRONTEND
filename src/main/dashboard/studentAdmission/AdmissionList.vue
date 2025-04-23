@@ -485,7 +485,7 @@ watch(
                                                          v-model="form.school_number"
                                                          @change="fetchCampuses(form.school_number)"
                                                          >
-                                                         <option disabled  value="">-filter by School-</option>
+                                                         <option disabled  value="">--Filter by School--</option>
                                                          <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
                                                          </option>
                                                       </select>
@@ -500,7 +500,7 @@ watch(
                                                          v-model="form.campus_number" required
                                                          @change="fetchClasses(form.campus_number)"
                                                          >
-                                                         <option disabled value="">-filter by Campus-</option>
+                                                         <option disabled value="">--Filter by Campus--</option>
                                                          <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
                                                          </option>
                                                       </select>
@@ -527,7 +527,7 @@ watch(
                                                          v-model="form.level"
                                                          @change="fetchLevelClasses(form.level)"
                                                          >
-                                                         <option disabled value="">-Filter by level-</option>
+                                                         <option disabled value="">--Filter by Level--</option>
                                                          <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
                                                       </select>
                                                    </div>
@@ -541,7 +541,7 @@ watch(
                                                          v-model="form.academic_year_number"
                                                          @change="doFetchAdmission()"
                                                          >
-                                                         <option disabled value="">-filter AcademicYear-</option>
+                                                         <option disabled value="">--Filter AcademicYear--</option>
                                                          <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
                                                       </select>
                                                    </div>
@@ -556,7 +556,7 @@ watch(
                                                          v-model="form.class_number"
                                                          @change="fetchStreamsAndStudyPeriod(form.class_number)"
                                                          >
-                                                         <option disabled value="">-filter by class-</option>
+                                                         <option disabled value="">--Filter by Class--</option>
                                                          <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">
                                                             {{claslist?.name+" [ "+claslist?.abbreviation+" ]"}}
                                                          </option>
@@ -572,7 +572,7 @@ watch(
                                                          v-model="form.stream_number"
                                                          @change="filterByStream()"
                                                          >
-                                                         <option disabled value="">-filter by Stream-</option>
+                                                         <option disabled value="">--Filter by Stream--</option>
                                                          <option v-for="(slist, index) in streamList" :key="index" :value="slist.stream_number">{{ slist.name }}
                                                          </option>
                                                       </select>
@@ -587,9 +587,8 @@ watch(
                                                          v-model="form.study_period_number"
                                                          @change="filterByStudyPeriod()"
                                                          >
-                                                         <option disabled value="">filter by Study period -</option>
+                                                         <option disabled value="">--Filter by Study Period--</option>
                                                          <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
-
                                                       </select>
                                                    </div>
                                                 </div>
@@ -625,6 +624,7 @@ watch(
                                  <th>Class</th>
                                  <th>Stream</th>
                                  <th>Study Period</th>
+                                 <th>Status</th>
                                  <th>Action</th>
                               </tr>
                            </thead>
@@ -652,26 +652,41 @@ watch(
                                  <td>{{ adm.stream.name }}</td>
                                  <td>{{ adm.studyPeriod.study_period_name }}</td>
                                  <td>
-                                    <div class="flex">
+                                  <div
+                                      :class="(adm.status === 'Enrolled') ? 'bg-success-100 text-success-900':'bg-gray-100 text-gray-800'"
+                                      class="border rounded-md  text-center text-xs px-3 py-[1px]">
+                                    {{ adm.status }}
+                                  </div>
+                                 </td>
+                                 <td>
+                                    <div class="text-center">
                                        <!--                                 <div class="mr-2 rounded-sm px-2 text-[#0d6dfa] cursor-pointer" style="border: 1px solid #0d6dfa;" @click="uploadStudentPhoto(adm)">
                                           <i class="bi bi-card-image cursor-pointer mr-1"></i>
                                           Upload Photo
                                           </div>-->
+
                                        <div v-if="can('enroll_student','manage')">
                                           <button  v-if="adm.status !== 'Enrolled'" @click="showModal(adm.student.number,adm.admission_number,adm)"
-                                             type="button" class="btn btn-sm btn-primary mb-2 mr-4 "
+                                             type="button" class="btn btn-sm btn-primary"
                                              style="color: white;">
-                                          <small>Enrol&nbsp;<i class="bi bi-box-arrow-in-right"></i></small>
+                                              <small class="font-normal flex">Enrol <i class="bi bi-box-arrow-in-right ml-1"></i></small>
                                           </button>
                                        </div>
-                                       <router-link  v-if="adm.status === 'Enrolled'" style=""
-                                          class="text-decoration-none"
-                                          :to="{name:'student-profile-details', query:{st_id:adm.student.number}}">
-                                          <button type="button"
-                                             class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white"
-                                             >view Details</button>
-                                       </router-link>
-                                       <span  v-if="adm.status === 'Enrolled'" class="link link-success"><i class="bi bi-check"></i>enrolled</span>
+
+                                         <router-link  v-if="adm.status === 'Enrolled'"
+                                            class="text-decoration-none"
+                                            :to="{name:'student-profile-details', query:{st_id:adm.student.number}}">
+                                            <button
+                                                type="button"
+                                               class="text-[#0d6efd] border border-primary px-2 py-[3px] rounded-md hover:bg-[#0d6efd] hover:text-white"
+                                               >
+                                              <div class="flex font-normal">view <i class="bi bi-eye ml-1"></i></div>
+                                            </button>
+                                         </router-link>
+
+<!--                                       <span  v-if="adm.status === 'Enrolled'" class="link link-success">
+                                         <i class="bi bi-check"></i>enrolled
+                                       </span>-->
                                     </div>
                                  </td>
                               </tr>
