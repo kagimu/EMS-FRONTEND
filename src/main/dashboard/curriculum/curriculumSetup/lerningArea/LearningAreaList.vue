@@ -121,6 +121,7 @@ watch(
     async (data) => {
       if(data){
        deletionLoader.value = undefined
+       notificationStore.errorToast("Error", data.message)
       }
     },
     {deep:true}
