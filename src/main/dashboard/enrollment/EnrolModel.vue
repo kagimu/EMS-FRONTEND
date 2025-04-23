@@ -93,7 +93,7 @@
    onMounted(() => {
            schoolStore.fetchSchools()
            enrolmentStore.fetchCheckListItems(props?.admissionData?.admission_number)
-           getStudentInfoData()
+         //   getStudentInfoData()
            getModeOfStudyInfo()
 
        }
@@ -133,15 +133,12 @@
             campusStore.fetchClassesByCampus(form.campus_number)
             form.class_number = draftData.class.number
             form.curriculumNumber = draftData.student.campus_curriculum_number
-            fetchCurriculum(form.campus_number)
-
-           
+            fetchCurriculum(form.campus_number) 
          }
 
          if(form.curriculumNumber){
             classStore.fetchCampusLevel(form.curriculumNumber)
-            form.level = draftData.studyPeriod.campus_level_number
-           
+            form.level = draftData.studyPeriod.campus_level_number    
          }
 
          if(form.level){

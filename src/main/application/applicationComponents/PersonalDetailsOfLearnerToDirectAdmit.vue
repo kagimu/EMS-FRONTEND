@@ -239,46 +239,46 @@ watch (
       if(data){
         let draft = data.student
         applicationId.value = data.number
-        form.surname= draft.surname
-        form.second_name=draft.second_name
-        form.other_name=draft.other_name
-        form.gender= draft.gender
-        form.date_of_birth=draft.date_of_birth
-        form.preferred_campus_number=draft.preferred_campus_number
-        form.class_number=draft.class_number
-        form.reason_for_choosing_school=draft.reason_for_choosing_school
-        form.source_of_school_info = draft.source_of_school_info
-        form.learner_number = draft.number
-        form.school_number = draft.school_number
-        form.lin = draft?.lin
-        student_number.value = draft.number
-        if(draft?.school_number) {
-        let dataa = {
-    school_number:draft?.school_number,
-  }
-  modeStudyStore.fetchModeOfStudy(dataa)
-}
+        // form.surname= draft.surname
+        // form.second_name=draft.second_name
+        // form.other_name=draft.other_name
+        // form.gender= draft.gender
+        // form.date_of_birth=draft.date_of_birth
+        // form.preferred_campus_number=draft.preferred_campus_number
+        // form.class_number=draft.class_number
+        // form.reason_for_choosing_school=draft.reason_for_choosing_school
+        // form.source_of_school_info = draft.source_of_school_info
+        // form.learner_number = draft.number
+        // form.school_number = draft.school_number
+        // form.lin = draft?.lin
+        // student_number.value = draft.number
+//         if(draft?.school_number) {
+//         let dataa = {
+//     school_number:draft?.school_number,
+//   }
+//   modeStudyStore.fetchModeOfStudy(dataa)
+// }
 
-        form.mode_of_study_number = draft.mode_of_study_number
+        // form.mode_of_study_number = draft.mode_of_study_number
 
-        if(draft?.school_number) {
-          fetchCampuses(draft.school_number)
-        }
+        // if(draft?.school_number) {
+        //   fetchCampuses(draft.school_number)
+        // }
 
-        if(draft?.preferred_campus_number) {
-          fetchClasses(draft?.preferred_campus_number)
-          form.campus_curriculum_number = draft?.campus_curriculum_number
-        }
+        // if(draft?.preferred_campus_number) {
+        //   fetchClasses(draft?.preferred_campus_number)
+        //   form.campus_curriculum_number = draft?.campus_curriculum_number
+        // }
 
-        if(draft?.campus_curriculum_number){
-          fetchCampusLevel(draft?.campus_curriculum_number)
-          form.level = draft?.campus_level_number
-        }
+        // if(draft?.campus_curriculum_number){
+        //   fetchCampusLevel(draft?.campus_curriculum_number)
+        //   form.level = draft?.campus_level_number
+        // }
 
-        if(draft?.campus_level_number){
-          fetchLevelClasses(draft?.campus_level_number)
-          form.class_number = draft?.class_number
-        }
+        // if(draft?.campus_level_number){
+        //   fetchLevelClasses(draft?.campus_level_number)
+        //   form.class_number = draft?.class_number
+        // }
   
         }
       

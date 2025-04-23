@@ -648,7 +648,7 @@ watch(
                                     </div>
                                  </td>
                                  <td>{{ adm.campus.name }}</td>
-                                 <td>{{ adm.student.campus_class }}</td>
+                                 <td>{{ adm.class.name }} ({{ adm.class.abbreviation }})</td>
                                  <td>{{ adm.stream.name }}</td>
                                  <td>{{ adm.studyPeriod.study_period_name }}</td>
                                  <td>
