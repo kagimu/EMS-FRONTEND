@@ -318,6 +318,17 @@ watch(
   <div>
 
     <div>
+      <div class="flex justify-between">
+        <div class="text-gray-600">
+          Promotion Settings
+        </div>
+        <div>
+          <button @click="openModal()"
+                  type="button"  class="btn btn-sm buttonStyle btn-primary mr-2" >
+            New Setup
+          </button>
+        </div>
+      </div>
       <div class="row mt-4">
         <div class="row">
           <div class="col-3">
@@ -329,7 +340,7 @@ watch(
                   v-model="form.school_number"
                   @change="fetchCampuses(form.school_number)"
               >
-                <option disabled  value="">-filter by School-</option>
+                <option disabled  value="">--Filter by School--</option>
                 <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
                 </option>
               </select>
@@ -344,7 +355,7 @@ watch(
                   v-model="form.campus_number" required
                   @change="fetchClasses(form.campus_number)"
               >
-                <option disabled value="">-filter by Campus-</option>
+                <option disabled value="">--Filter by Campus--</option>
                 <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
                 </option>
               </select>
@@ -371,7 +382,7 @@ watch(
                   v-model="form.level"
                   @change="fetchLevelClasses(form.level)"
               >
-                <option disabled value="">-Filter by level-</option>
+                <option disabled value="">--Filter by Level-</option>
                 <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
               </select>
             </div>
@@ -385,7 +396,7 @@ watch(
                   v-model="form.academic_year_number"
                   @change=""
               >
-                <option disabled value="">-filter AcademicYear-</option>
+                <option disabled value="">--Filter Academic Year---</option>
                 <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
               </select>
             </div>
@@ -400,7 +411,7 @@ watch(
                   v-model="form.class_number"
                   @change="fetchStreamsAndStudyPeriod(form.class_number)"
               >
-                <option disabled value="">-filter by class-</option>
+                <option disabled value="">--Filter by Class--</option>
                 <option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">
                   {{claslist?.name+" [ "+claslist?.abbreviation+" ]"}}
                 </option>
@@ -416,7 +427,7 @@ watch(
                   v-model="form.stream_number"
                   @change="filterByStream()"
               >
-                <option disabled value="">-filter by Stream-</option>
+                <option disabled value="">--Filter by Stream--</option>
                 <option v-for="(slist, index) in streamList" :key="index" :value="slist.stream_number">{{ slist.name }}
                 </option>
               </select>
@@ -444,16 +455,7 @@ watch(
       <div class="row">
   
         <div class="col-12">
-              <div class="flex justify-content-between mt-3">
-                <div class="ml-4">Settings</div>
-                <button @click="openModal()"
-                 type="button"  class="btn btn-sm buttonStyle btn-primary mr-2" >
-                  New Setup
-                </button>
-              </div>
-  
-  
-  
+
               <table class="table table-hover caption-top mt-5 table-striped" style="font-size: 13px;">
                 <thead>
                 <tr>
