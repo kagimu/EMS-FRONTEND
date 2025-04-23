@@ -101,7 +101,7 @@ watch(
       buttonLoader.value = false
       clearFormData()
       notificationStore.successToast("Success", data.message)
-      cateringStore.fetchStock()
+      // cateringStore.fetchStock()
      
     },
     {deep: true}

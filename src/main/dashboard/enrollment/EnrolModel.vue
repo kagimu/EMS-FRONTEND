@@ -141,6 +141,7 @@
          if(form.curriculumNumber){
             classStore.fetchCampusLevel(form.curriculumNumber)
             form.level = draftData.studyPeriod.campus_level_number
+            alert(JSON.stringify(form.level))
            
          }
 

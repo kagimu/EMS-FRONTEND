@@ -1,9 +1,11 @@
 <script setup>
 
 import {ref} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
 import api from "@/config/api.js";
 const buttonLoader = ref(false)
 const emit = defineEmits()
+const notificationStore  = useNotificationStore()
 const form = ref({
   family_name_of_father:null,
   fathers_place_of_employment:null,
@@ -31,6 +33,10 @@ const form = ref({
   guardians_phone2:null,
   guardians_email2:null,
   languages:null,
+})
+
+const props = defineProps({
+  studentProfileData:{},
 })
 
 const addFamilyStructure = () => {

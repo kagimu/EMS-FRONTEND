@@ -140,12 +140,23 @@ const deleteThisData = async (id,name) => {
 const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete this item " + name);
 if (agreed) {
   let data = {
- 
+ stock_number:id
   }
+  cateringStore.deleteStock(data)
+}
 }
 
 
-}
+watch(
+    () => cateringStore.deleteStockResponse,
+    async (data) => {
+      if (data) {
+        notificationStore.successToast("Success", data.message)
+        fetchAllStock()
+      }
+    },
+    {deep: true}
+)
 
 
 watch(
@@ -250,10 +261,13 @@ watch(
     >
     <thead>
         <tr class="font-bold">
-        <td>#</td>
+        <!-- <td>#</td> -->
         <td>Menu Item</td>
         <td>Quantity</td>
-        <td>Unit Price</td>
+        <td>Unit Cost</td>
+        <td>Purchase Qty</td>
+        <td>Purchase Unit</td>
+        <td>Purchase Unit Cost</td>
         <td>Campus</td>
         </tr>
     <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
@@ -262,10 +276,13 @@ watch(
     </thead>
     <tbody>
     <tr v-for="(list, index) in stockData" :key="index">
-      <td>{{ index+1 }}</td>
+      <!-- <td>{{ index+1 }}</td> -->
       <td>{{ list.menu_item_name }}</td>
      <td> {{ commons.formatNumbersWithComma(list.quantity) }}</td>
      <td>{{ commons.formatNumbersWithComma(list.unit_cost) }}</td>
+      <td>{{ commons.formatNumbersWithComma(list.purchase_quantity) }}</td>
+      <td>{{ list.purchase_unit_name }}</td>
+     <td>{{ commons.formatNumbersWithComma(list.purchase_unit_cost) }}</td>
      <td>{{ list.campus_name }}</td>
      <td>
           <!-- <button >
