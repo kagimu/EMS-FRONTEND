@@ -41,6 +41,7 @@ const  shDialog = ref(false)
 const  promotionSettingData = ref(null)
 const  promotionSettingDialog = ref(false)
 const  newPromotionValueDialog = ref(false)
+const promotionDataInfo = ref(null)
 
 
 
@@ -84,7 +85,9 @@ onMounted(() => {
 
 
 const openModal = () =>{
+promotionDataInfo.value = null
 shDialog.value = true
+
 }
 
 watch(
@@ -294,6 +297,11 @@ watch(
     {deep: true}
 )
 
+const openEditModal = (dataL) => {
+  shDialog.value = true
+  promotionDataInfo.value = dataL
+}
+
 </script>
 
 
@@ -310,7 +318,7 @@ watch(
 
 
       <AppModal title="Auto Promotion Setting" v-model="shDialog" xl2>
-        <PromotionSetupModal :promotionSettingInfo="promotionSettingInfo"></PromotionSetupModal>
+        <PromotionSetupModal :promotionSettingInfo="promotionSettingInfo" :promotionDataInfo="promotionDataInfo"></PromotionSetupModal>
       </AppModal>
 
       <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
@@ -508,6 +516,14 @@ watch(
                      <i class="bi bi-eye mr-2"></i>
                      Promotion Value
                    </button>
+
+                   <button
+                       @click="openEditModal(prom)"
+                       class="rounded text-[#198754] font-normal px-2 ml-2"
+                       style="border: 0px solid orange;">
+                     <i class="bi bi-pencil mr-2"></i>
+                   </button>
+
                  </td>
                 </tr>
                 </tbody>

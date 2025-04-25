@@ -33,10 +33,15 @@ const curriculumList = ref([])
 const levelList = ref([])
 const studyPeriodList  = ref([])
 
+const props = defineProps({
+    promotionSettingInfo: String,
+    promotionDataInfo:{}
+  })
 
 onMounted(() => {
       schoolStore.fetchSchools()
       getPromotionSettingInfo()
+      getPromoInfo()
   }
 )
 
@@ -49,6 +54,7 @@ const form = reactive({
   academic_year_number:'',
   study_period_number:''
 })
+
 
 const formData = reactive({
    study_period_number: "",
@@ -63,15 +69,34 @@ const formData = reactive({
    })
 
 
-  //  "name": "Sample Name",
-  // "status": "Active",
-  // "type": "Regular",
-  // "next_class_number": "12345",
-  // "previous_class_number": "12344",
-  // "study_period_number": "SP001",
-  // "campus_number": "CAMP001",
-  // "curriculum_number": "CUR001",
-  // "campus_curriculum_number": "CCN001"
+   const getPromoInfo = () => {
+  let promoData = props.promotionDataInfo
+  if(promoData){
+    form.name = promoData.name
+    form.type = promoData.type
+    formData.school_number = promoData.school_number
+    if(formData.school_number){
+      fetchCampuses(formData.school_number)
+      formData.campus_number = promoData.campus_number
+    }
+    if(formData.campus_number){
+      fetchCurriculum(formData.campus_number)
+      formData.curriculumNumber = promoData.curriculum.curriculum_number
+    }
+    // if(formData.curriculumNumber){
+    //   fetchCampusLevel(formData.curriculumNumber)
+    // }
+    // if(formData.level){
+    //   fetchLevelClasses(formData.level)
+    // }
+
+   
+   
+    
+  }
+
+}
+
 
 const addPromotionSetting = () =>{
   loader.value = true
@@ -83,9 +108,7 @@ const addPromotionSetting = () =>{
 } 
 
 
-const props = defineProps({
-    promotionSettingInfo: String
-  })
+
 
   const getPromotionSettingInfo = () => {
     let promoData = props.promotionSettingInfo
@@ -299,7 +322,8 @@ const fetchCampusLevel = (curriculumNumber) => {
 
 <template>
     <div>
-      <!-- {{promotionSettingInfo}} -->
+     <!-- {{promotionSettingInfo}} -->
+       {{ promotionDataInfo }}
 
       <form @submit.prevent="addPromotionSetting">
   
