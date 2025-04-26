@@ -318,8 +318,7 @@ watch(
   <div>
   <p class="ml-4 mt-4 mb-10" style="text-align: center !important;">DETAILS OF THE LEARNER</p>
     <form @submit.prevent="addLearnerDetails" style="margin-top: 15px;">
-    <div class="row">
-      <div class="col-12">
+  
         <div class="row">
         <div class="col-6">
         <div class="mb-2">
@@ -327,59 +326,59 @@ watch(
             <input type="text" style="outline: none 0 !important; box-shadow: none;"  v-model="form.adn" 
              required class="form-control form-control-sm">
           </div>
-        </div>
 
-        <div class="col-6">
           <div class="mb-2">
             <label class="text-sm text-sm"><small>Surname</small> <span class="star">*</span></label>
             <input type="text" style="outline: none 0 !important; box-shadow: none;"  v-model="form.surname"  required class="form-control form-control-sm">
           </div>
-        </div>
-        </div>
 
-        <div class="row">
-          <div class="col-6">
-            <div class="mb-2">
+          <div class="mb-2">
               <label class="text-sm text-sm"><small>Second name</small> <span class="star">*</span></label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.second_name"  required class="form-control form-control-sm">
             </div>
-          </div>
-          <div class="col-6">
+
             <div class="mb-2">
               <label class="text-sm text-sm"><small>Other names</small> </label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" class="form-control form-control-sm">
             </div>
+
+
+            <div class="row">
+              <div class="col-6">
+                <div class="mb-2">
+              <label class="text-sm text-sm"><small>DOB</small> <span class="star">*</span></label>
+            <input type="date" style="outline: none 0 !important; box-shadow: none;" v-model="form.date_of_birth"  required
+             class="form-control form-control-sm">
+            </div>
+              </div>
+              <div class="col-6">
+                <div class="mb-2">
+              <label class="text-sm text-sm"><small>gender</small> <span class="star">*</span></label>
+            <select class="form-control form-control-sm"
+             v-model="form.gender" style="outline: none 0 !important; box-shadow: none;">
+              <option value="" disabled>-Select Gender-</option>
+              <option value="Male">Male</option>
+              <option value="Female" >Female</option>
+            </select>
+            </div>
+              </div>
+            </div>
+          
+
+        <div class="mb-2">
+              <label class="text-sm"><small>LIN</small></label>
+              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.lin" 
+             class="form-control form-control-sm" >
           </div>
-        </div>
 
-
-
-        <div class="row">
-          <div class="col-6">
-            <div class="mb-2">
+          
+          <div class="mb-2">
               <label class="text-sm text-sm"><small>Reason to enroll </small> </label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.reason_for_choosing_school" class="form-control form-control-sm">
             </div>
-          </div>
-          <div class="col-6">
-            <div class="mb-2">
-              <label class="text-sm text-sm"><small>How did you know about us ? </small> </label>
-              <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm"
-                  v-model="form.source_of_school_info">
-                <option value="News paper" >News paper</option>
-                <option value="Old parent">Old parent</option>
-                <option value="Television">Television</option>
-                <option value="Internet">Internet</option>
-              </select>
-            </div>
-          </div>
-        </div>
+    </div>
 
-        
-
-        <div class="row">
+    
           <div class="col-6">
             <div class="mb-2">
               <label class="text-sm"><small>School</small> <span class="star">*</span></label>
@@ -394,8 +393,7 @@ watch(
                 </option>
               </select>
             </div>
-          </div>
-          <div class="col-6">
+         
             <div class="mb-2">
               <label class="text-sm"><small>Campus</small>  <span class="star">*</span></label>
               <select
@@ -409,15 +407,7 @@ watch(
                 </option>
               </select>
             </div>
-          </div>
-        </div>
-
-
-
-
-
-        <div class="row">
-          <div class="col-6">
+       
       <div class="mb-2">
           <label class="text-sm"><small>Curriculum</small></label>
             <select
@@ -429,9 +419,9 @@ watch(
                 <option disabled value="" >--Select Curriculum--</option>
                 <option  v-for="(lvl, index) in curriculumList" :key="index" :value="lvl.number">{{lvl.name}}</option>
             </select>
-          </div>
-          </div>
-          <div class="col-6">
+           </div>
+        
+         
             <div class="mb-2">
               <label class="text-sm"><small>Level</small></label>
               <select
@@ -444,15 +434,8 @@ watch(
                 <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
               </select>
             </div>
-          </div>
+          
 
-          </div>
-
-
-
-        <div class="row">
-         
-          <div class="col-6">
             <div class="mb-2">
               <label class="text-sm"><small>Preferred Class</small> <span class="star">*</span></label>
               <select
@@ -466,9 +449,7 @@ watch(
                 </option>
               </select>
             </div>
-          </div>
-
-          <div class="col-6">
+          
           <div class="mb-2">
               <label class="text-sm"><small>Mode Of Study</small>  <span class="star">*</span></label>
               <select
@@ -481,49 +462,25 @@ watch(
                   </option>
               </select>
           </div>
+
+            <div class="mb-2">
+              <label class="text-sm text-sm"><small>How did you know about us ? </small> </label>
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="form.source_of_school_info">
+                <option value="News paper" >News paper</option>
+                <option value="Old parent">Old parent</option>
+                <option value="Television">Television</option>
+                <option value="Internet">Internet</option>
+              </select>
+            
           </div>
-        </div>
-
-
-
-
-        <div class="row">
-       
-
-          <div class="col-4">
-          <div class="mb-2">
-              <label class="text-sm"><small>LIN</small></label>
-              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.lin" 
-             class="form-control form-control-sm" >
-          </div>
-          </div>
-
-          <div class="col-lg-4">
-              <label class="text-sm text-sm"><small>DOB</small> <span class="star">*</span></label>
-            <input type="date" style="outline: none 0 !important; box-shadow: none;" v-model="form.date_of_birth"  required
-             class="form-control form-control-sm">
-            </div>
-
-            <div class="col-lg-4">
-              <label class="text-sm text-sm"><small>gender</small> <span class="star">*</span></label>
-            <select class="form-control form-control-sm"
-             v-model="form.gender" style="outline: none 0 !important; box-shadow: none;">
-              <option value="" disabled>-Select Gender-</option>
-              <option value="Male">Male</option>
-              <option value="Female" >Female</option>
-            </select>
-            </div>
-          </div>
-
-          <div class="row">
-          
-         
-
           </div>
       </div>   
    
-        <div class="text- mt-4">
-          <div class="row" >
+        
+          <div class="row mt-4">
             <div class="col-lg-4">
               <button type="button" @click="goBack()" class="btn btn-sm btn-success mb-2 mr-4" style="color: white;">
            <small><i class="bi bi-box-arrow-in-left"></i> Back</small>
@@ -538,12 +495,11 @@ watch(
           <span class="visually-hidden">Loading...</span>
         </div>
       </button>
-            </div>
-            
-          </div>
-        </div>
+            </div> 
     </div>
+
     </form>
+  
   </div>
   </template>
   
