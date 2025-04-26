@@ -77,7 +77,7 @@ const formData = reactive({
     formData.school_number = promoData.school_number
     if(formData.school_number){
       fetchCampuses(formData.school_number)
-      formData.campus_number = promoData.campus_number
+      formData.campus_number = promoData.campus.number
     }
     if(formData.campus_number){
       fetchCurriculum(formData.campus_number)
@@ -89,9 +89,6 @@ const formData = reactive({
     // if(formData.level){
     //   fetchLevelClasses(formData.level)
     // }
-
-   
-   
     
   }
 
@@ -323,7 +320,7 @@ const fetchCampusLevel = (curriculumNumber) => {
 <template>
     <div>
      <!-- {{promotionSettingInfo}} -->
-       {{ promotionDataInfo }}
+       <!-- {{ promotionDataInfo }} -->
 
       <form @submit.prevent="addPromotionSetting">
   

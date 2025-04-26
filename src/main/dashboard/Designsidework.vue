@@ -1,453 +1,507 @@
 <script setup>
-import {onMounted,reactive, ref, watch} from "vue";
+
+import {ref} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
-import NewMenuItem from "@/main/dashboard/catering/cateringComponents/NewMenuItem.vue";
-import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+import api from "@/config/api.js";
+const buttonLoader = ref(false)
+const emit = defineEmits()
+const notificationStore  = useNotificationStore()
 
-import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-import AppModal from "@/components/AppModal.vue";
-import PaginationTemplate from "@/components/PaginationTemplate.vue";
+const phoneList = ref([
+  {phone_number: ""}
+])
 
-import ConfirmationModal from "@/components/ConfirmationModal.vue";
-const confirmationRef = ref(null);
+const emailList = ref([
+  {email: ""}
+])
 
+const phoneMotherList = ref([
+  {mothers_phone: ""}
+])
 
+const emailMotherList = ref([
+  {mothers_email: ""}
+])
+// LanguagesList
 
-import { useAbility } from '@casl/vue';
-import useCommonsStore from "@/composables/useCommons.js";
+const LanguagesList = ref([
+  {languages: ""}
+])
 
-const { can } = useAbility()
-const notificationStore = useNotificationStore()
-const commons = useCommonsStore()
-
-
-const showingModal = ref(false)
-const isLoading = ref(true);
-const loading = ref(true)
-const tableLoader = ref(true)
-
-
-
-const menuItemsinfoData = ref(null)
-const errorMessage = ref(null)
-const campusList = ref([])
-const schoolList = ref([])
-const classList = ref([])
-const schoolStore = useSchoolStore()
-const campusStore = useCampusStore()
-const menuItemDataParts = ref([])
-const cateringStore = useCateringStore()
-const page = ref(1)
-const per_page = ref(20)
-const total_items = ref(0)
-const total_rows = ref(0)
-const activeUOMView = ref('purchase') 
+const phoneGuadianList = ref([
+  {guardians_phone: ""}
+])
 
 
-const form = reactive({
-  school_number:"",
-  campus_number: "",
-  type:""
+const emailGuadianList = ref([
+  {guardians_email: ""}
+])
+
+const form = ref({
+  surname:null,
+  place_of_employment:null,
+  parent_living:null,
+  other_name:null,
+  physical_contact_address:null,
+  family_name_of_mother:null,
+  mothers_place_of_employment:null,
+  mother_living:null,
+  mothers_other_names:null,
+  family_name_of_guardian:null,
+  guardians_place_of_employment:null,
+  guardians_other_names:null,
+  guardians_physical_contact_address:null,
+})
+
+const props = defineProps({
+  studentProfileData:{},
 })
 
 
-onMounted(() => {
-      schoolStore.fetchSchools()
-
-      let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
-
-
- if(defaultSchoolNo){
-    form.school_number = defaultSchoolNo
-  }
-
-  doFetchMenuItem(form.school_number)
-    
-    }
-)
-
-
-const filterBySchool = (school_number) => {
-  if(school_number) {
-    campusStore.fetchCampuses(school_number)
-    doFetchMenuItem(school_number)
-  }
-}
-
-
-const doFetchMenuItem = (school_number) => {
-  if(!form.school_number){
-    return
-  }
-  menuItemData.value = []
-  let data = {
-    page: 1,
-    per_page: per_page.value,
-    school_number:school_number,
-    campus_number:form.campus_number,
-    type:"ITEM"
-  }
-  cateringStore.fetchMenuItemPaginated(data)
-}
-
-
-function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
-  if (scrollTop + clientHeight >= scrollHeight) {
-    if(!form.school_number){
-      return
-    }
-    let data = {
-      page: (page.value+1),
-      per_page: per_page.value,
-      school_number:form.school_number,
-      campus_number:form.campus_number,
-      type:"ITEM"
-    }
-    cateringStore.fetchMenuItemPaginated(data)
-
-  }
-}
-
-
-
-
-const fetchFoodMenuItem = (data) => {
-  if(data) {
-    let current_page = data.page
-    tableLoader.value = false
-
-    let per_page_item = data.per_page;
-
-    let objArray = data.content
-    let totalItems = data?.total_rows
-
-
-    if(objArray && objArray.length > 0){
-
-      per_page.value = per_page_item;
-      page.value = current_page
-      total_rows.value = totalItems
-
-      let count_items = (current_page * per_page_item)
-
-      total_items.value = (count_items > totalItems) ? totalItems : count_items
-
-      objArray.forEach((list, i) => {
-
-        list.key =  (current_page - 1) * per_page_item + i + 1
-
-        const index = menuItemData.value.findIndex(object => object.number === list.number);
-
-        if (index === -1) {
-          menuItemData.value.push(list);
-        }
-
+const  saveFamilyStructure = async (data) => {
+  await api.post("main/students/family-structure", data)
+      .then((response) => {
+        buttonLoader.value = false
+        // levelResponse.value = response.data
+        notificationStore.successToast("Success",response.data.message)
       })
-    }
+      .catch((error) => {
+        if(error && error.response){
+          // errorMessage.value = error.response.data.message
 
-
-  }
+          buttonLoader.value = false
+          notificationStore.errorToast("Error",error.response.data.message)
+        }
+      })
 }
 
-watch(
-    () => cateringStore.menuItemPaginatedResponse,
-    async (data) => {
-      fetchFoodMenuItem(data)
-      isLoading.value = false;
-    }
-)
-
-
-const filterByCampus = () =>{
-  doFetchMenuItem()
+const addPhone = () => {
+  phoneList.value.push({"phone_number":""})
 }
 
-const menuItemData=ref([])
+const removePhone = (index) => {
+  phoneList.value.splice(index,1)
+}
 
+const addEmail = () => {
+  emailList.value.push({"email":""})
+}
 
-const showUpdateDialog = (menuItemInfo) => {
-  menuItemsinfoData.value = menuItemInfo
-  showingModal.value = true
+const removeEmail = (index) => {
+  emailList.value.splice(index,1)
+}
+
+const addMotherEmail = () => {
+  emailMotherList.value.push({"mothers_email":""})
+}
+
+const removeMotherEmail = (index) => {
+  emailMotherList.value.splice(index,1)
+}
+
+const addMotherPhone = () => {
+  phoneMotherList.value.push({"mothers_phone":""})
+}
+
+const removeMotherPhone = (index) => {
+  phoneMotherList.value.splice(index,1)
+}
+
+const addLanguage = () => {
+  LanguagesList.value.push({"languages":""})
+}
+
+const removeLanguage = (index) => {
+  LanguagesList.value.splice(index,1)
 }
 
 
+const addGuadianPhone = () => {
+  phoneGuadianList.value.push({"languages":""})
+}
+
+const removeGuadianPhone = (index) => {
+  phoneGuadianList.value.splice(index,1)
+}
 
 
+const addGuadianEmail = () => {
+  emailGuadianList.value.push({"guardians_email":""})
+}
 
-watch(
-    () => cateringStore.menuItemDetailsResponse,
-    async (data) => {
-      menuItemDataParts.value = data
-      loading.value=false;
-    }
-)
-
-
-watch(
-    () => cateringStore.errorMessage,
-    async (data) => {
-      if (data) {
-        notificationStore.errorToast("Error", data.message)
-      }
-    }
-)
+const removeGuadianEmail = (index) => {
+  emailGuadianList.value.splice(index,1)
+}
 
 
+const addFamilyStructure = () => {
+  // form.value.student_number = props.studentProfileData?.current_enrollment?.student_number
+  // form.phone_number = phoneList.value
+  // form.email = emailList.value
+  // form.mothers_phone = phoneMotherList.value
+  // form.mothers_email = emailMotherList.value
+  // form.guardians_phone = phoneGuadianList.value
+  // form.guardians_email = emailGuadianList.value
+  // form.languages = LanguagesList.value
 
-watch(
-    () => schoolStore.schoolsResponse,
-    async (data) => {
-      if (data) {
-        schoolList.value = data.data
-      }
-    }
-)
-
-watch(
-    () => campusStore.campusListResponse,
-    async (data) => {
-      if (data) {
-        campusList.value = data.data
-      }
-    }
-)
-
-watch(
-    () => campusStore.campusClassesResponse,
-    async (data) => {
-      if (data) {
-        classList.value = data.data
-      }
-    }
-)
-
-
-watch(
-    () => cateringStore.updateMenuItemResponse,
-    async (data) => {
-      if (data) {
-        showingModal.value = false
-        menuItemData.value = []
-        doFetchMenuItem()
-      }
-    }
-)
-
-
-// const deleteThisData = (id,name) => {
-//   if(!confirm("Are you sure, you want to delete: " + name)){
-//     return
-//   }
-
-//   let data = {
-//     menu_item_number:id
-//   }
-//   cateringStore.deleteMenuItem(data)
-
-// }
-
-const deleteThisData = async (id,name) => {
-
-const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
-if (agreed) {
   let data = {
-    menu_item_number:id
+    surname: form.value.surname,
+    place_of_employment: form.value.place_of_employment,
+    parent_living: form.value.parent_living,
+    other_name: form.value.other_name,
+    physical_contact_address: form.value.physical_contact_address,
+    family_name_of_mother: form.value.family_name_of_mother,
+    mothers_place_of_employment: form.value.mothers_place_of_employment,
+    mother_living: form.value.mother_living,
+    mothers_other_names: form.value.mothers_other_names,
+    family_name_of_guardian: form.value.family_name_of_guardian,
+    guardians_place_of_employment: form.value.guardians_place_of_employment,
+    guardians_other_names: form.value.guardians_other_names,
+    guardians_physical_contact_address: form.value.guardians_physical_contact_address,
+    student_number: props.studentProfileData?.current_enrollment?.student_number,
+    phone_number:phoneList.value,
+    email:emailList.value,
+    mothers_phone:phoneMotherList.value,
+    mothers_email:emailMotherList.value,
+    guadian_phone:phoneGuadianList.value,
+    guadian_email:emailGuadianList.value,
+    language:LanguagesList.value
+
   }
-  cateringStore.deleteMenuItem(data)
+
+  alert(JSON.stringify(data))
+
+  // saveFamilyStructure(form.value)
 }
 
-
-}
-
-
-watch(
-    () => cateringStore.deleteMenuItemResponse,
-    async (data) => {
-      doFetchMenuItem()
-      notificationStore.successToast("Success", data.message)
-    }
-)
 
 
 </script>
 <template>
-  <div>
-    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+<div>
 
-    <AppModal v-model="showingModal"  title="Update Menu Item" xl4>
-      <NewMenuItem :menuItemsInfo="menuItemsinfoData"></NewMenuItem>
-    </AppModal>
+  <p class="ml-4 mt-4 mb-10"> FAMILY STRUCTURE </p>
+
+  <form @submit.prevent="addFamilyStructure">
+    <div class="row mx-auto">
+      <div class="col-6">
+
+<p>Father</p>
+        <hr />
+        <div class="row mx-auto">
+          <div class="col-12">
+
+            <div class="mb-2">
+              <label class="text-sm">Family Name of Father *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" 
+              v-model="form.surname" required class="form-control form-control-sm">
+            </div>
+
+            <div class="mb-2">
+              <label class="text-sm">Fathers Other names  *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.other_name" required class="form-control form-control-sm">
+            </div>
+
+            
+            <div class="mb-2">
+              <label class="text-sm">Is Father Living *</label>
+              <select style="font-size: 13px; outline: none 0 !important; box-shadow: none;" class="form-select form-control-sm" v-model="form.parent_living" aria-label="Default select example">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+
+            <div class="mb-2">
+              <label class="text-sm">Father's Place of Employment *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.place_of_employment" required class="form-control form-control-sm">
+            </div>
+
+            <div class="mb-2">
+              <label class="text-sm">Father's Physical Contact Address  *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.physical_contact_address" required class="form-control form-control-sm">
+            </div>
+          </div>
 
 
-    <!-- wnd  -->
+         <div>
+            <div class="mb-2" >
+              <label class="text-sm">Father's Phone</label>
+              <table>
+                <tr v-for="(lst, index) in phoneList" :key="index">
+                  <td><input  style="outline: none 0 !important; box-shadow: none;" type="text" v-model="lst.phone_number" 
+                  required class="form-control form-control-sm" placeholder="Phone number "> </td>
+                  <td>
+                   
+                    <button
+                class="link link-danger btn-sm text-xs"
+                @click.prevent="removePhone(index)" style="color:red; border:1px solid red;border-radius:16px;">
+                <i class="bi bi-x"></i>
+            </button>
+                  </td>
+                </tr>
+                <button
+                class="btn btn-primary btn-sm text-xs"
+                @click.prevent="addPhone">
+                <i class="bi bi-plus"></i>
+            </button>
+              </table>
+            </div>
 
-    <!-- end  -->
-    <div class="row mt-3">
+            <div class="mb-2">
+              <label class="text-sm">Father's Email </label>
+
+              <table>
+                <tr v-for="(lst, index) in emailList" :key="index">
+                  <td><input  style="outline: none 0 !important; box-shadow: none;" type="email" v-model="lst.email" 
+                  required class="form-control form-control-sm" placeholder="Phone number "> </td>
+                  <td>
+                   
+                    <button
+                class="link link-danger btn-sm text-xs"
+                @click.prevent="removeEmail(index)" style="color:red; border:1px solid red;border-radius:16px;">
+                <i class="bi bi-x"></i>
+            </button>
+                  </td>
+                </tr>
+                <button
+                class="btn btn-primary btn-sm text-xs"
+                @click.prevent="addEmail">
+                <i class="bi bi-plus"></i>
+            </button>
+              </table>
+            </div>
+
+
+          </div>
+        
+        </div>
+
+      </div>
+      <div class="col-6">
+        <p>Mother</p>
+        <hr />
+
+
+        <div class="row mx-auto">
+          <div class="col-12">
+
+            <div class="mb-2">
+              <label class="text-sm">Family Name of Mother *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.family_name_of_mother" required class="form-control form-control-sm">
+            </div>
+
+            <div class="mb-2">
+              <label class="text-sm">Mother Other names  *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_other_names" required class="form-control form-control-sm">
+            </div>
+
+            
+            <div class="mb-2">
+              <label class="text-sm">Is Mother Living *</label>
+              <select style="font-size: 13px; outline: none 0 !important; box-shadow: none;" class="form-select form-control-sm" v-model="form.mother_living" aria-label="Default select example">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+
+            <div class="mb-2">
+              <label class="text-sm">Mother's Place of Employment *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_place_of_employment" required class="form-control form-control-sm">
+            </div>
+
+            <div class="mb-2">
+              <label class="text-sm">Mother's Physical Contact Address  *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_physical_contact_address" required class="form-control form-control-sm">
+            </div>
+          </div>
+
+
+         <div>
+            <div class="mb-2" >
+              <label class="text-sm">Mother's Phone</label>
+              <table>
+                <tr v-for="(lst, index) in phoneMotherList" :key="index">
+                  <td><input  style="outline: none 0 !important; box-shadow: none;" type="text" v-model="lst.mothers_phone" 
+                  required class="form-control form-control-sm" placeholder="Phone number "> </td>
+                  <td>
+                   
+                    <button
+                class="link link-danger btn-sm text-xs"
+                @click.prevent="removeMotherPhone(index)" style="color:red; border:1px solid red;border-radius:16px;">
+                <i class="bi bi-x"></i>
+            </button>
+                  </td>
+                </tr>
+                <button
+                class="btn btn-primary btn-sm text-xs"
+                @click.prevent="addMotherPhone">
+                <i class="bi bi-plus"></i>
+            </button>
+              </table>
+            </div>
+
+            <div class="mb-2">
+              <label class="text-sm">Mother's Email </label>
+
+              <table>
+                <tr v-for="(lst, index) in emailMotherList" :key="index">
+                  <td><input  style="outline: none 0 !important; box-shadow: none;" type="email" v-model="lst.mother_email" 
+                  required class="form-control form-control-sm" placeholder="Email .."> </td>
+                  <td>
+                   
+                    <button
+                class="link link-danger btn-sm text-xs"
+                @click.prevent="removeMotherEmail(index)" style="color:red; border:1px solid red;border-radius:16px;">
+                <i class="bi bi-x"></i>
+            </button>
+                  </td>
+                </tr>
+                <button
+                class="btn btn-primary btn-sm text-xs"
+                @click.prevent="addMotherEmail">
+                <i class="bi bi-plus"></i>
+            </button>
+              </table>
+            </div>
+
+
+          </div>
+        
+        </div>
+
+      </div>
+
       <div class="col-12">
-        <div class="">
-          <div class="" style="padding: 0;">
-            <div class="container mt-4">
+        <div class="mt-5">
+            <p>Guardian</p>
+            <hr />
+            <div class="row mx-auto">
+              <div class="col-6">
 
-
-
-              <div>
-                <h5 style="font-size: 14px;margin-top: 2px;">Menu Items </h5>
-              </div>
-
-
-              <!-- filters -->
-              <div class="row">
-                <div class="col-4">
-                  <div class="mb-2">
-
-
-                    <select
-                        v-model="form.school_number"
-                        class="form-select form-select-sm"
-                        style="box-shadow: none;"
-                        @change="filterBySchool(form.school_number)"
-                    >
-                      <option disabled value="">--Select School--</option>
-                      <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-4">
-                  <div class="mb-2">
-
-
-                  </div>
-                </div>
-
-
-
-
-
-                <div class="col-4">
-                  <div class="mb-2">
-                    <input
-                     class="form-control mb-0" placeholder="Search..." type="text">
-                  </div>
-                </div>
-
-              </div>
-
-              <div>
-                <div v-if="errorMessage" class="alert alert-danger" role="alert" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-                  {{errorMessage}}
-                </div>
-
-
-                <PaginationTemplate
-                    @perPageChanged="doFetchMenuItem"
-                    v-model:perPage="per_page"
-                    :per_page="per_page"
-                    :total_items="total_items"
-                    :total_rows="total_rows"></PaginationTemplate>
-
-
-
-
-                <div
-                    class="w-full overflow-auto max-h-[520px] scrollbar-thin"
-                    @scroll="onScroll"
-                >
- 
-              
                 <div class="mb-2">
-  <button @click="activeUOMView = 'purchase'" :class="{'btn-primary': activeUOMView === 'purchase'}" class="btn btn-sm">Purchase UOM</button>
-  <button @click="activeUOMView = 'user'" :class="{'btn-primary': activeUOMView === 'user'}" class="btn btn-sm ms-2">User UOM</button>
-</div>
-
-
-<table class="table table-hover table-sm text-[12px]">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Name</th>
-      <th>{{ activeUOMView === 'purchase' ? 'Purchase UOM' : 'User UOM' }}</th>
-      <th>Current Quantity</th>
-      <th>Cost Per User UOM</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr v-for="(list, index) in menuItemData" v-if="isLoading === false" :key="index">
-      <td>{{ list?.key }}</td>
-      <td>{{ list?.name }}</td>
-      <td>
-        {{ activeUOMView === 'purchase' ? list?.purchase_unit_of_measure_name : list?.unit_of_measure_name }}
-      </td>
-      <td>{{ commons.formatNumbersWithComma(list?.current_quantity) }}</td>
-      <td>{{ commons.formatNumbersWithComma(list?.unit_cost) }}</td>
-      <td>
-        <button v-if="can('edit_menu_item','general')" @click="showUpdateDialog(list)">
-          <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
-        </button>
-        &nbsp;
-        <button v-if="can('remove_menu_item','general')" type="button" @click="deleteThisData(list.number,list.name)">
-          <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-
-                  <table
-                      id="datatable"
-                      class="table table-hover table-sm text-[12px]">
-                    <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Name</th>
-                      <th>User UOM</th>
-                      <th>Purchase UOM</th>
-                      <th>Current Quantity</th>
-                      <th>Cost Per User UOM</th>
-                      <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="(list, index) in menuItemData" v-if="isLoading===false" :key="index">
-                      <td>{{ list?.key }}</td>
-<!--                      <td>{{ list?.code }}</td>-->
-                      <td>{{ list?.name }}</td>
-                      <td>{{ list?.unit_of_measure_name }}</td>
-                      <td>{{ list?.purchase_unit_of_measure_name }}</td>
-                      <td>{{ commons.formatNumbersWithComma(list?.current_quantity) }}</td>
-                      <td>{{ commons.formatNumbersWithComma(list?.unit_cost) }}</td>
-                      <td>
-                        <button v-if="can('edit_menu_item','general')" @click="showUpdateDialog(list)" >
-                          <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
-                        </button>
-                        &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-                        <button v-if="can('remove_menu_item','general')" type="button" @click="deleteThisData(list.number,list.name)">
-                          <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
-                        </button>
-                      </td>
-                    </tr>
-
-                    </tbody>
-                  </table>
-
+                  <label class="text-sm">Family Name of Guardian</label>
+                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.family_name_of_guardian" required class="form-control form-control-sm">
                 </div>
+
+                <div class="mb-2">
+                  <label class="text-sm">Guardian's Other names</label>
+                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_other_names" required class="form-control form-control-sm">
+                </div>
+
+                <div class="mb-2">
+                  <label class="text-sm">Guardian's Physical Contact Address</label>
+                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_physical_contact_address" required class="form-control form-control-sm">
+                </div>
+
+                <div class="mb-2">
+                  <label class="text-sm">Guardian's Place of Employment</label>
+                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_place_of_employment" required class="form-control form-control-sm">
+                </div>
+
+                <div class="mb-2">
+                  <label class="text-sm">Guardian's Phone</label>
+                </div>
+                <table>
+                <tr v-for="(lst, index) in phoneGuadianList" :key="index">
+                  <td><input  style="outline: none 0 !important; box-shadow: none;" type="text" v-model="lst.guardians_phone" 
+                  required class="form-control form-control-sm" placeholder="Phone number "> </td>
+                  <td>
+                   
+                    <button
+                class="link link-danger btn-sm text-xs"
+                @click.prevent="removeGuadianPhone(index)" style="color:red; border:1px solid red;border-radius:16px;">
+                <i class="bi bi-x"></i>
+            </button>
+                  </td>
+                </tr>
+                <button
+                class="btn btn-primary btn-sm text-xs"
+                @click.prevent="addGuadianPhone">
+                <i class="bi bi-plus"></i>
+            </button>
+              </table>
+
+                <div class="mb-2">
+                  <label class="text-sm">Guardian's Email</label>
+                                
+                  <table>
+                <tr v-for="(lst, index) in emailGuadianList" :key="index">
+                  <td><input  style="outline: none 0 !important; box-shadow: none;" type="text" v-model="lst.guardians_email" 
+                  required class="form-control form-control-sm" placeholder="Phone number "> </td>
+                  <td>
+                   
+                    <button
+                class="link link-danger btn-sm text-xs"
+                @click.prevent="removeGuadianEmail(index)" style="color:red; border:1px solid red;border-radius:16px;">
+                <i class="bi bi-x"></i>
+            </button>
+                  </td>
+                </tr>
+                <button
+                class="btn btn-primary btn-sm text-xs"
+                @click.prevent="addGuadianEmail">
+                <i class="bi bi-plus"></i>
+            </button>
+              </table> 
+                </div>
+              </div>
+              <div class="col-6">
+                <p>Language</p>
+                <hr />
+
+                <table>
+                <tr v-for="(lst, index) in LanguagesList" :key="index">
+                  <td><input  style="outline: none 0 !important; box-shadow: none;" type="text" v-model="lst.languages" 
+                  required class="form-control form-control-sm" placeholder="Enter Lanaguage"> </td>
+                  <td>
+                   
+                    <button
+                class="link link-danger btn-sm text-xs"
+                @click.prevent="removeLanguage(index)" style="color:red; border:1px solid red;border-radius:16px;">
+                <i class="bi bi-x"></i>
+            </button>
+                  </td>
+                </tr>
+                <button
+                class="btn btn-primary btn-sm text-xs"
+                @click.prevent="addLanguage">
+                <i class="bi bi-plus"></i>
+            </button>
+          </table>
 
               </div>
             </div>
-          </div>
+           
         </div>
       </div>
+
+     
+
+    </div>
+
+    <hr />
+
+    <div class="flex justify-end mt-4">
+
+<!--      <button type="button" @click="backPage" class="btn btn-outline-secondary mb-2 ml-4">
+        Back
+      </button>-->
+
+      <button type="submit" class="btn btn-primary mb-2 mr-4">
+        Next
+        <span class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
+          <span class="visually-hidden">Loading...</span>
+        </span>
+      </button>
+
     </div>
 
 
-  </div>
+
+  </form>
+
+</div>
 </template>
-
-
 
 
 
