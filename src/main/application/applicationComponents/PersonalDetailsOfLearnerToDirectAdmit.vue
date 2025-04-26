@@ -40,20 +40,20 @@ const form = reactive({
   other_name:null,
   preferred_type_of_enrollment:null,
   date_of_birth:null,
-  school_number:null,
-  gender:null,
-  reason_for_choosing_school:null,
-  preferred_campus_number: null,
-  source_of_school_info: null,
+  school_number:"",
+  gender:"",
+  reason_for_choosing_school:"",
+  preferred_campus_number: "",
+  source_of_school_info: "",
   application_number: applicationId.value,
-  class_number: null,
+  class_number: "",
   learner_number:null,
    mode_of_study_number:"",
    campus_curriculum_number:"",
    level:"",
    lin:null,
    adn:null,
-   interview_number:null
+   interview_number:""
 })
 
 onMounted(() => {
@@ -353,7 +353,7 @@ watch(
               </div>
               <div class="col-6">
                 <div class="mb-2">
-              <label class="text-sm text-sm"><small>gender</small> <span class="star">*</span></label>
+              <label class="text-sm text-sm"><small>Gender</small> <span class="star">*</span></label>
             <select class="form-control form-control-sm"
              v-model="form.gender" style="outline: none 0 !important; box-shadow: none;">
               <option value="" disabled>-Select Gender-</option>
@@ -469,6 +469,7 @@ watch(
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="form.source_of_school_info">
+                <option disabled value="">-Select Source of School Info-</option>
                 <option value="News paper" >News paper</option>
                 <option value="Old parent">Old parent</option>
                 <option value="Television">Television</option>
