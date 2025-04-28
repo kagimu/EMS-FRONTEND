@@ -170,11 +170,8 @@ const addFamilyStructure = () => {
   }
 
   alert(JSON.stringify(data))
-
   // saveFamilyStructure(form.value)
 }
-
-
 
 </script>
 <template>
