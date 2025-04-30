@@ -365,7 +365,15 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
         <tr v-for="(list,index) in invoiceData"  :key="index">
         <td>{{ (index + 1) }}</td>
         <td>{{ list?.ref_number }}</td>
-        <td style="text-transform: capitalize;">{{ list?.names}}</td>
+<!--        <td style="text-transform: capitalize;">{{ list?.names}}</td>-->
+          <td class="capitalize">
+          <span class="hover:text-gray-700">
+          <router-link :to="{name:'student-profile-details', query:{st_id:list?.student_number	}}"
+                       class="text-gray-700 text-decoration-none hover:underline">
+            {{ list?.names }}
+          </router-link>
+          </span>
+          </td>
         <td>{{ list?.total_amount?.toLocaleString()}}</td>
         <td>{{ list?.paid_amount?.toLocaleString()}}</td>
         <td>{{list?.balance?.toLocaleString()}}</td>

@@ -405,16 +405,7 @@ watch(
           <td>{{ list?.due_date }}</td>
           <td>{{ list?.date }}</td>
         <td>
-        <div>
-          <!-- <router-link
-          v-if="userType != 'User'"
-              class="text-decoration-none"
-              :to="{name:'invoice-details', query:{invoice_id:list.ref_number,st_id:studentNumber}}">
-            <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
-              <small>View</small>
-            </button>
-          </router-link> -->
-
+        <div class="flex">
 
             <button 
              @click="showInvoiceInfoModal(list.ref_number,studentNumber)" class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
@@ -425,7 +416,7 @@ watch(
   </div>
   <div v-else>
           <button
-              @click="paymentModal(list.number)" class="bg-[#0d6efd] rounded-sm text-white px-4 btn-primary btn-sm ml-3"
+              @click="paymentModal(list.number)" class="bg-[#0d6efd] rounded-sm text-white px-4 btn-primary btn-sm ml-1"
               v-if="can('pay_invoice','general')">
             <small>Pay</small>
           </button>
