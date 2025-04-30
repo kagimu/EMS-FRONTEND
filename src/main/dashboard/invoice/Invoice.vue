@@ -413,8 +413,8 @@ watch(
             </button>
          
             <div v-if="list.status === 'CANCELLED'" >
-  </div>
-  <div v-else>
+          </div>
+          <div v-else>
           <button
               @click="paymentModal(list.number)" class="bg-[#0d6efd] rounded-sm text-white px-4 btn-primary btn-sm ml-1"
               v-if="can('pay_invoice','general')">

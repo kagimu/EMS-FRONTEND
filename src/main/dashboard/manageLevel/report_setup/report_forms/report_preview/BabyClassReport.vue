@@ -32,7 +32,7 @@ onMounted(
 <template>
 
   <!-- {{ reportDataInfo }} -->
-  <!-- {{ reportDetails }} -->
+<!--   {{ reportDetails }}-->
 <div>
   <div class="mx-auto mt-10" style="width: 98%">
 
@@ -87,7 +87,7 @@ onMounted(
               </td>
               <td style="width: 40%;">
                 <div style="padding-left: 60px; padding-bottom: 10px;"><span class="capitalize">{{reportDetails?.student?.surname}}</span> <span class="capitalize">{{reportDetails?.student?.second_name}}</span> <span class="capitalize">{{reportDetails?.student?.other_name}}</span></div>
-                <div style="padding-left: 60px; padding-bottom: 10px;"><span>{{reportDetails?.class_abbreviation}}<span v-if="reportDetails?.stream">, {{reportDetails?.stream}}</span></span></div>
+                <div style="padding-left: 60px; padding-bottom: 10px;"><span>{{reportDetails?.class_abbreviation}}<!--<span v-if="reportDetails?.stream">, {{reportDetails?.stream}}</span>--></span></div>
                 <div style="padding-left: 60px; padding-bottom: 10px;"><span class="capitalize">{{reportDetails?.student?.gender}}</span></div>
                 <div style="padding-left: 60px; padding-bottom: 10px;"><!--6yrs , 8mth-->{{commons.ageCalculator(reportDetails?.student?.date_of_birth)}}</div>
               </td>
@@ -290,7 +290,7 @@ onMounted(
             </tr>
             <tr style="border-bottom: 1px solid #f4f4f4;">
               <td style="padding: 5px; border-right: 1px solid #f4f4f4;">&nbsp;</td>
-              <td style="padding: 5px; border-right: 1px solid #f4f4f4;">great work done</td>
+              <td style="padding: 5px; border-right: 1px solid #f4f4f4;">&nbsp;</td>
               <td style="padding: 5px; border-right: 1px solid #f4f4f4;">&nbsp;</td>
               <td style="padding: 5px;">&nbsp;</td>
             </tr>

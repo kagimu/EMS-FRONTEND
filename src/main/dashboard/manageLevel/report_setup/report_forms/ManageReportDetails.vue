@@ -8,7 +8,6 @@ import TopClassReport from "@/main/dashboard/manageLevel/report_setup/report_for
 import VictoriousReportCard
   from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/victorious/VictoriousReportCard.vue";
 import {usePrintStore} from "@/main/dashboard/print/print.js";
-import ReportSummary from "./ReportSummary.vue";
 const reportStore = useReportCardStore()
 const printStore = usePrintStore()
 
