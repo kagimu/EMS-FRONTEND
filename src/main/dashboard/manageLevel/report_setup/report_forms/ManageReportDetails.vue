@@ -9,8 +9,11 @@ import VictoriousReportCard
   from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/victorious/VictoriousReportCard.vue";
 import {usePrintStore} from "@/main/dashboard/print/print.js";
 import ReportSummary from "./ReportSummary.vue";
+import useNotificationStore from "@/composables/useNotification.js";
+
 const reportStore = useReportCardStore()
 const printStore = usePrintStore()
+const notificationStore = useNotificationStore()
 
 const reportDetails = ref(null)
 
@@ -68,6 +71,23 @@ if(navigator.userAgent.indexOf("Firefox") !== -1 ) {
 }
 }
 
+watch(
+    () => printStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error", data.message)
+      }
+    }
+)
+
+watch(
+    () => reportStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error", data.message)
+      }
+    }
+)
 
 </script>
 
