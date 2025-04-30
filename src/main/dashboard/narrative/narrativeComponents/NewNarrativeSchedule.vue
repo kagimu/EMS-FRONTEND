@@ -57,6 +57,7 @@
 
 
 
+
   const format = (date) => {
   const day = date.getDate();
   const month = date.getMonth() + 1;
@@ -65,7 +66,9 @@
   return `Selected date is ${day}/${month}/${year}`;
   }
 
-
+const dateList = ref([
+  {date: ""}
+])
   const props = defineProps({
     assessmentMetricList:{},
     narrativeScheduleDataInfo:{}
@@ -80,6 +83,8 @@
         getAssessmentScheduleInfo()
         getNarrativeScheduleDataInfo()
       })
+
+      const dateArr = ref(null)
   
     const form = reactive({ 
       assessment_area_number:null,
@@ -91,6 +96,14 @@
       campus_number:campusNumber,
       curriculum_number:curriculumNumberParent
     })
+
+    const removeDate = (index) => {
+      dateList.value.splice(index,1)
+    }
+
+    const pushDate = () => {
+      dateList.value.push({date: ""})
+    }
 
 
     const getNarrativeScheduleDataInfo = () =>{
@@ -251,6 +264,7 @@
   )
   
 
+
     const addInterviewNarrativeStore = () => {
       narrativeDialog.value = true;
       buttonLoader.value = true
@@ -260,11 +274,13 @@
         // alert(JSON.stringify(form))
         narrativeStore.updateNarrativeSchedule(form)
       }else {
+        form.scheduled_on = dateList.value.map(item => item.date);
+        // alert(JSON.stringify(form))
         narrativeStore.newNarrativeSchedule(form)
       }
      
-   
     }
+
 
 
   
@@ -516,17 +532,19 @@
       
 
               <div class="mb-2">
-                 <label class="text-sm">Scheduled On</label>
-                 <!-- <VueDatePicker
-                      placeholder="Start date: dd/mm/yyy"
-                      text-input
-                      auto-apply
-                      :teleport="true"
-                      style="font-size: 7px;"
-                      v-model="form.scheduled_on"
-                  ></VueDatePicker> -->
-                  
-                  <input type="date" v-model="form.scheduled_on"  class="form-control">
+                 <label class="text-sm">Scheduled On</label>      
+                 
+
+                  <table class="">
+                     <tr v-for="(lst,index) in dateList" :key="index">
+                      <td> <input  type="date" v-model="lst.date"  class="form-control"></td>
+                        <td><button type="button" class="btn btn-danger btn-sm" @click="removeDate(index)">
+                          <i class="bi bi-trash p-0" > </i></button></td>
+                     </tr>
+
+                     <button type="button" class="btn btn-primary btn-sm" @click="pushDate"><i class="bi bi-plus"></i></button>
+
+                  </table>
 
               </div>
            

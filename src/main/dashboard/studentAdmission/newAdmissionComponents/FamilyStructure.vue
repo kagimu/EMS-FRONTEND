@@ -6,44 +6,57 @@ import api from "@/config/api.js";
 const buttonLoader = ref(false)
 const emit = defineEmits()
 const notificationStore  = useNotificationStore()
+
+const phoneList = ref([
+  {phone_number: "",email:""}
+])
+
+const emailList = ref([
+  {email: ""}
+])
+
+const phoneMotherList = ref([
+  {mothers_phone: ""}
+])
+
+const emailMotherList = ref([
+  {mothers_email: ""}
+])
+// LanguagesList
+
+const LanguagesList = ref([
+  {languages: ""}
+])
+
+const phoneGuadianList = ref([
+  {guardians_phone: ""}
+])
+
+
+const emailGuadianList = ref([
+  {guardians_email: ""}
+])
+
 const form = ref({
-  family_name_of_father:null,
-  fathers_place_of_employment:null,
-  fathers_phone1:null,
-  fathers_email1:null,
-  father_living:null,
-  fathers_other_names:null,
-  fathers_physical_contact_address:null,
-  fathers_phone2:null,
-  fathers_email2:null,
+  surname:null,
+  place_of_employment:null,
+  parent_living:null,
+  other_name:null,
+  physical_contact_address:null,
   family_name_of_mother:null,
   mothers_place_of_employment:null,
-  mothers_phone1:null,
-  mothers_email1:null,
   mother_living:null,
   mothers_other_names:null,
-  mothers_phone2:null,
-  mothers_email2:null,
   family_name_of_guardian:null,
   guardians_place_of_employment:null,
-  guardians_phone1:null,
-  guardians_email1:null,
   guardians_other_names:null,
   guardians_physical_contact_address:null,
-  guardians_phone2:null,
-  guardians_email2:null,
-  languages:null,
 })
 
 const props = defineProps({
   studentProfileData:{},
 })
 
-const addFamilyStructure = () => {
-  // emit("next", 4)
-  form.value.student_number = props.studentProfileData?.current_enrollment?.student_number
-  saveFamilyStructure(form.value)
-}
 
 const  saveFamilyStructure = async (data) => {
   await api.post("main/students/family-structure", data)
@@ -62,6 +75,103 @@ const  saveFamilyStructure = async (data) => {
       })
 }
 
+const addPhone = () => {
+  phoneList.value.push({"phone_number":"","email":""})
+}
+
+const removePhone = (index) => {
+  phoneList.value.splice(index,1)
+}
+
+const addEmail = () => {
+  emailList.value.push({"email":""})
+}
+
+const removeEmail = (index) => {
+  emailList.value.splice(index,1)
+}
+
+const addMotherEmail = () => {
+  emailMotherList.value.push({"mothers_email":""})
+}
+
+const removeMotherEmail = (index) => {
+  emailMotherList.value.splice(index,1)
+}
+
+const addMotherPhone = () => {
+  phoneMotherList.value.push({"mothers_phone":""})
+}
+
+const removeMotherPhone = (index) => {
+  phoneMotherList.value.splice(index,1)
+}
+
+const addLanguage = () => {
+  LanguagesList.value.push({"languages":""})
+}
+
+const removeLanguage = (index) => {
+  LanguagesList.value.splice(index,1)
+}
+
+
+const addGuadianPhone = () => {
+  phoneGuadianList.value.push({"languages":""})
+}
+
+const removeGuadianPhone = (index) => {
+  phoneGuadianList.value.splice(index,1)
+}
+
+
+const addGuadianEmail = () => {
+  emailGuadianList.value.push({"guardians_email":""})
+}
+
+const removeGuadianEmail = (index) => {
+  emailGuadianList.value.splice(index,1)
+}
+
+
+const addFamilyStructure = () => {
+  // form.value.student_number = props.studentProfileData?.current_enrollment?.student_number
+  // form.phone_number = phoneList.value
+  // form.email = emailList.value
+  // form.mothers_phone = phoneMotherList.value
+  // form.mothers_email = emailMotherList.value
+  // form.guardians_phone = phoneGuadianList.value
+  // form.guardians_email = emailGuadianList.value
+  // form.languages = LanguagesList.value
+
+  let data = {
+    surname: form.value.surname,
+    place_of_employment: form.value.place_of_employment,
+    parent_living: form.value.parent_living,
+    other_name: form.value.other_name,
+    physical_contact_address: form.value.physical_contact_address,
+    family_name_of_mother: form.value.family_name_of_mother,
+    mothers_place_of_employment: form.value.mothers_place_of_employment,
+    mother_living: form.value.mother_living,
+    mothers_other_names: form.value.mothers_other_names,
+    family_name_of_guardian: form.value.family_name_of_guardian,
+    guardians_place_of_employment: form.value.guardians_place_of_employment,
+    guardians_other_names: form.value.guardians_other_names,
+    guardians_physical_contact_address: form.value.guardians_physical_contact_address,
+    student_number: props.studentProfileData?.current_enrollment?.student_number,
+    phone_number:phoneList.value,
+    email:emailList.value,
+    mothers_phone:phoneMotherList.value,
+    mothers_email:emailMotherList.value,
+    guadian_phone:phoneGuadianList.value,
+    guadian_email:emailGuadianList.value,
+    language:LanguagesList.value
+
+  }
+
+  alert(JSON.stringify(data))
+  // saveFamilyStructure(form.value)
+}
 
 </script>
 <template>
@@ -71,216 +181,111 @@ const  saveFamilyStructure = async (data) => {
 
   <form @submit.prevent="addFamilyStructure">
     <div class="row mx-auto">
-      <div class="col-6">
+      <div class="col-12">
 
-<p>Father</p>
+<p>Father | Mother | Guadian</p> 
         <hr />
         <div class="row mx-auto">
           <div class="col-6">
-
             <div class="mb-2">
-              <label class="text-sm">Family Name of Father *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.family_name_of_father" required class="form-control form-control-sm">
+              <label class="text-sm">Surname Name *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" 
+              v-model="form.surname" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
-              <label class="text-sm">Father's Place of Employment *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_place_of_employment" required class="form-control form-control-sm">
+              <label class="text-sm"> Other names  *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.other_name" required class="form-control form-control-sm">
             </div>
 
+            
             <div class="mb-2">
-              <label class="text-sm">Father's Phone 1  *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_phone1" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="text-sm">Father's Email 1</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_email1" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="text-sm">Is Father Living *</label>
-              <select style="font-size: 13px; outline: none 0 !important; box-shadow: none;" class="form-select form-control-sm" v-model="form.father_living" aria-label="Default select example">
+              <label class="text-sm">Is Living *</label>
+              <select style="font-size: 13px; outline: none 0 !important; box-shadow: none;" class="form-select form-control-sm" v-model="form.parent_living" aria-label="Default select example">
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
               </select>
             </div>
 
+            <div class="mb-2">
+              <label class="text-sm"> Place of Employment *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.place_of_employment" required class="form-control form-control-sm">
+            </div>
           </div>
-          <div class="col-6">
 
+            <div class="col-6">
             <div class="mb-2">
-              <label class="text-sm">Fathers Other names  *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_other_names" required class="form-control form-control-sm">
+              <label class="text-sm">Physical Contact Address  *</label>
+              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.physical_contact_address" required class="form-control form-control-sm">
             </div>
+         
 
-            <div class="mb-2">
-              <label class="text-sm">Father's Physical Contact Address  *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_physical_contact_address" required class="form-control form-control-sm">
+
+         
+            <div class="mb-2" >
+              <label class="text-sm">Contact Details</label>
+              <table>
+                <tr v-for="(lst, index) in phoneList" :key="index">
+                  <td><input  style="outline: none 0 !important; box-shadow: none;" type="text" v-model="lst.phone_number" 
+                  required class="form-control form-control-sm" placeholder="Phone number "> </td>
+
+                  <td><input  style="outline: none 0 !important; box-shadow: none;" type="email" v-model="lst.email" 
+                  required class="form-control form-control-sm" placeholder="Enter Email Address "> </td>
+                  <td>
+                  
+                    <button
+                class="link link-danger btn-sm text-xs"
+                @click.prevent="removePhone(index)" style="color:red; border:1px solid red;border-radius:16px;">
+                <i class="bi bi-x"></i>
+            </button>
+                  </td>
+                </tr>
+                <button
+                class="btn btn-primary btn-sm text-xs"
+                @click.prevent="addPhone">
+                <i class="bi bi-plus"></i>
+            </button>
+              </table>
             </div>
-
-            <div class="mb-2">
-              <label class="text-sm">Father's Phone 2</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_phone2" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="text-sm">Fathers Email 2</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_email2" required class="form-control form-control-sm">
-            </div>
-
           </div>
-        </div>
-
-      </div>
-      <div class="col-6">
-        <p>Mother</p>
-        <hr />
-        <div class="row mx-auto">
-          <div class="col-6">
-
-            <div class="mb-2">
-              <label class="text-sm">Family Name of Mother *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.family_name_of_mother" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="text-sm">Mother's Place of Employment  *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_place_of_employment" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="text-sm">Mothers Phone 1  *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_phone1" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="text-sm">Mother's Email 1</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_email1" required class="form-control form-control-sm">
-            </div>
-
-
-            <div class="mb-2">
-              <label class="text-sm">Is Mother Living *</label>
-              <select style="font-size: 13px; outline: none 0 !important; box-shadow: none;" class="form-select form-control-sm" v-model="form.mother_living" aria-label="Default select example">
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-              </select>
-            </div>
-
-
-          </div>
-          <div class="col-6">
-
-            <div class="mb-2">
-              <label class="text-sm">Mothers Other names *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_other_names" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="text-sm">Mother's Physical Contact Address  *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_other_names" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="text-sm">Mother's Phone 2</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_phone2" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="text-sm">Mother's Email 2</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_email2" required class="form-control form-control-sm">
-            </div>
-
-          </div>
+        
         </div>
 
       </div>
 
-      <div class="col-6">
-        <div class="mt-5">
-            <p>Guardian</p>
-            <hr />
+      <div class="col-12">
+        <div class="">
             <div class="row mx-auto">
-              <div class="col-6">
-
-                <div class="mb-2">
-                  <label class="text-sm">Family Name of Guardian</label>
-                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.family_name_of_guardian" required class="form-control form-control-sm">
-                </div>
-
-                <div class="mb-2">
-                  <label class="text-sm">Guardian's Place of Employment</label>
-                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_place_of_employment" required class="form-control form-control-sm">
-                </div>
-
-                <div class="mb-2">
-                  <label class="text-sm">Guardian's Phone 1</label>
-                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_phone1" required class="form-control form-control-sm">
-                </div>
-
-                <div class="mb-2">
-                  <label class="text-sm">Guardian's Email 1</label>
-                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_email1" required class="form-control form-control-sm">
-                </div>
-
-
-              </div>
-              <div class="col-6">
-
-                <div class="mb-2">
-                  <label class="text-sm">Guardian's Other names</label>
-                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_other_names" required class="form-control form-control-sm">
-                </div>
-
-                <div class="mb-2">
-                  <label class="text-sm">Guardian's Physical Contact Address</label>
-                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_physical_contact_address" required class="form-control form-control-sm">
-                </div>
-
-                <div class="mb-2">
-                  <label class="text-sm">Guardian's Phone 2</label>
-                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_phone2" required class="form-control form-control-sm">
-                </div>
-
-                <div class="mb-2">
-                  <label class="text-sm">Guardian's Email 2</label>
-                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_email2" required class="form-control form-control-sm">
-                </div>
+              <div class="col-8">
+                <label class="text-sm">Language</label>
+             
+                <table>
+                <tr v-for="(lst, index) in LanguagesList" :key="index">
+                  <td><input  style="outline: none 0 !important; box-shadow: none;" type="text" v-model="lst.languages" 
+                  required class="form-control " placeholder="Enter Lanaguage"> </td>
+                  <td>
+                   
+                    <button
+                class="link link-danger btn-sm text-xs"
+                @click.prevent="removeLanguage(index)" style="color:red; border:1px solid red;border-radius:16px;">
+                <i class="bi bi-x"></i>
+            </button>
+                  </td>
+                </tr>
+                <button
+                class="btn btn-primary btn-sm text-xs"
+                @click.prevent="addLanguage">
+                <i class="bi bi-plus"></i>
+            </button>
+          </table>
 
               </div>
             </div>
+           
         </div>
       </div>
 
-      <div class="col-6">
-        <div class="mt-5">
-          <p>Language</p>
-          <hr />
-          <div>
-          <div class="mb-2">
-            <label class="text-sm">1st Language at Home  *</label>
-            <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.languages" required class="form-control form-control-sm">
-          </div>
-
-          <div class="mb-2">
-            <label class="text-sm">2nd Language at Home</label>
-            <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.languages" required class="form-control form-control-sm">
-          </div>
-
-          <div class="mb-2">
-            <label class="text-sm">3rd Language at Home</label>
-            <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.languages" required class="form-control form-control-sm">
-          </div>
-
-          <div class="mb-2">
-            <label class="text-sm">4th Language at Home</label>
-            <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.languages" required class="form-control form-control-sm">
-          </div>
-
-      </div>
-        </div>
-      </div>
+     
 
     </div>
 
