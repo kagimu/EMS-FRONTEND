@@ -8,10 +8,16 @@ import TopClassReport from "@/main/dashboard/manageLevel/report_setup/report_for
 import VictoriousReportCard
   from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/victorious/VictoriousReportCard.vue";
 import {usePrintStore} from "@/main/dashboard/print/print.js";
+import AppModal from "@/components/AppModal.vue";
+import NewClassTeacherOverallRemark
+  from "@/main/dashboard/manageLevel/report_setup/comments/NewClassTeacherOverallRemark.vue";
 const reportStore = useReportCardStore()
 const printStore = usePrintStore()
 
+
+
 const reportDetails = ref(null)
+const showOverAllMarksModal = ref(false)
 
 
 const props = defineProps({
@@ -40,6 +46,15 @@ const print = () => {
   printStore.printReport(data)
 }
 
+const addRemarks = () => {
+  showOverAllMarksModal.value = true
+  /*let data = {
+    report_template_name: reportDetails.value.report_template_name,
+    student_number: props.reportData.student_number,
+    class_teacher_remarks: props.reportData.class_teacher_remarks
+  }
+  printStore.addClassTeacherRemarks(data)*/
+}
 
 watch(
     () => printStore.printResponse,
@@ -74,10 +89,21 @@ if(navigator.userAgent.indexOf("Firefox") !== -1 ) {
 
 <div>
 
+  <AppModal title="Add Class Teacher's Overall Remarks" v-model="showOverAllMarksModal" xl8>
+    <new-class-teacher-overall-remark :reportDataInfo="reportData" :reportDetails="reportDetails"></new-class-teacher-overall-remark>
+  </AppModal>
 
 
-  <button class="btn btn-success mb-2 " @click="print"><i class="bi bi-printer"></i></button>
-<div ref="myDiv">
+  <button class="btn btn-sm btn-success mb-2" @click="print"><i class="bi bi-printer"></i></button>
+
+  <button
+      v-if="reportDetails?.report_template_name.trim() === 'wholesome-early-learning-report-baby-class'"
+      class="btn btn-sm btn-primary mb-2 ml-3" @click="addRemarks">
+        <i class="bi bi-pencil"></i>
+        Add Class Teacher's Overall Remarks
+  </button>
+
+  <div ref="myDiv">
 
   <div v-if="reportDetails?.report_template_name.trim() === 'wholesome-early-learning-report-baby-class'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
     <baby-class-report :reportDataInfo="reportData" :reportDetails="reportDetails"></baby-class-report>
