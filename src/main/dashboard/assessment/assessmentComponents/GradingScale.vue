@@ -198,15 +198,12 @@ const  deleteAggregateScaleImage = async (data) => {
   return await api.post(url, data)
       .then((response) => {
         if(response && response.data){
-          // loader.value = false
-          // emit("nextAction", "success")
           fetchGradeScale()
           notificationStore.successToast("Success", response.data.message)
         }
       })
       .catch((response) => {
         if(response && response.response){
-          // loader.value = false
           notificationStore.errorToast("Error",response.response.data.message)
         }
       })
