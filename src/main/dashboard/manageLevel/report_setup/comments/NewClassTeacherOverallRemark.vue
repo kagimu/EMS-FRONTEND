@@ -37,8 +37,12 @@ const addOverAllRemark = () => {
       report_summary_number: item?.name
     }
   })
+  let data = {
+    student_number:  props.reportDataInfo.student_number,
+    comment: commentDraft
+  }
 
-  alert(JSON.stringify(commentDraft))
+  alert(JSON.stringify(data))
 
 /*loader.value = true
 let formData = {
