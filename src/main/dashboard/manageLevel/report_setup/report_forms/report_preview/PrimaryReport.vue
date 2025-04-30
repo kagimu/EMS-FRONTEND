@@ -138,7 +138,7 @@ onMounted(
                     <tr>
                       <td style="width: 30%; padding: 4px; border-right: 1px solid #45484c;"><div style="margin-left: 4px;">SUBJECT UNIT</div></td>
                       <td style="width: 10%; border-right: 1px solid #45484c;" v-for="(column,column_index) in reportDetails?.report_columns" :key="column_index"><div style="margin-left: 4px;">{{column}}</div></td>
-                      <td style="width: 10%; border-right: 1px solid #45484c;"><div style="margin-left: 4px;">Average</div></td>
+                      <td style="width: 10%; border-right: 1px solid #45484c;"><div style="margin-left: 4px;">Total</div></td>
                       <td style="width: 5%; border-right: 1px solid #45484c;"><div style="margin-left: 4px;">Aggr</div></td>
                       <td style="width: 25%; border-right: 1px solid #45484c;"><div style="margin-left: 4px;">Remark</div></td>
                       <td style="width: 5%; border-right: 1px solid #45484c;"><div style="margin-left: 4px;">Initial</div></td>
