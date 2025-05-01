@@ -97,6 +97,9 @@ const fetchStudyPeriod = (academic_num) =>{
 
 const fetchAssessmentMetrics = () =>{
   if(study_period_number.value && assessment_area_number) {
+
+    form.assessment_schedule = ""
+
     let data = {
       class_number:class_number.value,
       academic_year_number:academic_year_number.value,
