@@ -16,6 +16,7 @@ const errorMessage = ref("")
 
 
 const props = defineProps({
+  reportTemplateName:String,
   reportDetails:{},
   reportDataInfo:{}
 })
@@ -56,7 +57,7 @@ watch(
 <template>
   <div>
 <!--    {{reportDataInfo}}-->
-<!--    {{reportDetails}}-->
+<!--    {{reportDetails?.learning_areas[0]}}-->
   <form @submit.prevent="addOverAllRemark">
 
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
@@ -81,10 +82,25 @@ watch(
               <td style="padding: 5px; border-right: 1px solid #f4f4f4; width: 70%;">{{lst?.name}}</td>
               <td style="padding: 5px; border-right: 1px solid #f4f4f4;">
                 <img
-                    v-if="lst?.report_score_summary?.illustration"
+                    v-if="lst?.report_score_summary?.illustration && (reportTemplateName !== 'wholesome-report-primary')"
                     alt="logo"
                     style="width: 40px;"
                     :src="imagePath+lst?.report_score_summary?.illustration"/>
+                <div v-else>
+
+                 <div class="flex">
+                    <span class="text-primary-700 font-semibold mr-2">
+                    {{ lst?.report_score_summary?.summation }}%
+                  </span>
+                   <span v-if="lst?.report_score_summary?.grade !== 'N/A'" class="text-primary-700 font-semibold mr-2">
+                    {{ lst?.report_score_summary?.grade }}
+                  </span>
+                   <span class="text-primary-700 font-semibold">
+                    {{ lst?.report_score_summary?.comment }}
+                  </span>
+                 </div>
+
+                </div>
               </td>
             </tr>
           </table>
