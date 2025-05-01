@@ -187,16 +187,16 @@ const ageCalculator = (dob) => {
             </td>
 
             <!-- Subject Information Cells -->
-            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 10px;">{{ subject.name }}</td>
+            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 10px;">{{ subject?.name }}</td>
             <td
                 v-for="(item,idx) in subject?.report_scores" :key="idx"
                 style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 5px;" >
                   {{ item?.score > 0 ? item?.score : '-' }}
             </td>
-            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px;padding-top: 5px;padding-bottom: 5px;">{{ subject.report_score_summary.summation }}</td>
-            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 5px;">{{ subject.report_score_summary.grade }}</td>
-            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 5px;">{{ subject.report_score_summary.comment }}</td>
-            <td style="border-top: 1px solid  #f4f4f4;border-bottom: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:13px; padding: 0px;"></td>
+            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px;padding-top: 5px;padding-bottom: 5px;">{{ subject?.report_score_summary?.summation }}</td>
+            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 5px;">{{ subject?.report_score_summary?.grade }}</td>
+            <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 5px;">{{ subject?.report_score_summary?.comment }}</td>
+            <td style="border-top: 1px solid  #f4f4f4;border-bottom: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:13px; padding: 0px;">{{subject?.report_score_summary?.teacher_initial}}</td>
           </tr>
         </template>
       </template>
