@@ -7,6 +7,7 @@ export const useTeacherCommentStore = defineStore("teacherComment", () => {
     let  teacherCommentResponse= ref(null)
     const errorMessage = ref(null)
     const newCommentFromTeacherResponse = ref(null)
+    const newOverallRemarkFromTeacherResponse = ref(null)
     const commentFromTeachersResponse = ref(null)
     let deleteHeadTeacherCommentResponse = ref(null);
 
@@ -46,6 +47,18 @@ export const useTeacherCommentStore = defineStore("teacherComment", () => {
             })
     }
 
+    async function newOverallRemarkFromTeacher(data) {
+        return await api.post("main/report-settings/add-teacher-overall-remark", data)
+            .then((response) => {
+                newOverallRemarkFromTeacherResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
     async function fetchCommentsFromTeachers() {
         return await api.get("main/report-settings/teachers-comments")
             .then((response) => {
@@ -72,16 +85,17 @@ export const useTeacherCommentStore = defineStore("teacherComment", () => {
 
     return {
         errorMessage,
-        fetchTeacherComments,
-        newTeacherComment,
         teacherCommentResponse,
         newTeacherCommentResponse,
         newCommentFromTeacherResponse,
-        newCommentFromTeacher,
-        fetchCommentsFromTeachers,
         commentFromTeachersResponse,
+        newOverallRemarkFromTeacherResponse,
         deleteHeadTeacherCommentResponse,
-        deleteHeadTeacherComment
-      
+        fetchTeacherComments,
+        newTeacherComment,
+        newCommentFromTeacher,
+        deleteHeadTeacherComment,
+        newOverallRemarkFromTeacher
+
     }
 } )
