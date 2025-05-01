@@ -167,7 +167,7 @@ const ageCalculator = (dob) => {
         >
           {{item}}
         </th>
-        <th style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:11px;padding-top:5px;padding-bottom:5px">Average</th>
+        <th style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:11px;padding-top:5px;padding-bottom:5px">Total</th>
         <th style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:11px;padding-top:5px;padding-bottom:5px">Aggr</th>
         <th style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:11px;padding-top:5px;padding-bottom:5px">Remark</th>
         <th style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:11px;padding-top:5px;padding-bottom:5px">Initial</th>
@@ -233,7 +233,7 @@ const ageCalculator = (dob) => {
               </tr>
               <tr style="border-bottom: 1px solid #f4f4f4;">
                 <td style="padding: 5px; border-right: 1px solid #f4f4f4;">&nbsp;</td>
-                <td style="padding: 5px; border-right: 1px solid #f4f4f4;">&nbsp;</td>
+                <td style="padding: 5px; border-right: 1px solid #f4f4f4;"></td>
                 <td style="padding: 5px; border-right: 1px solid #f4f4f4;">&nbsp;</td>
                 <td style="padding: 5px;">&nbsp;</td>
               </tr>

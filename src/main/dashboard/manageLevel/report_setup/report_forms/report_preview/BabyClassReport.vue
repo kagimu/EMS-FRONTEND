@@ -288,7 +288,7 @@ onMounted(
               <td style="width: 25%; padding: 5px; border-right: 1px solid #f4f4f4;">ON RELIGIOUS STUDIES</td>
               <td style="width: 25%; padding: 5px; border-right: 1px solid #f4f4f4;">ON SOCIAL STUDIES</td>
             </tr>
-            <tr style="border-bottom: 1px solid #f4f4f4;">
+            <tr style="border-bottom: 1px solid #f4f4f4;text-align: center;">
               <td style="padding: 5px; border-right: 1px solid #f4f4f4;">&nbsp;</td>
               <td style="padding: 5px; border-right: 1px solid #f4f4f4;">&nbsp;</td>
               <td style="padding: 5px; border-right: 1px solid #f4f4f4;">&nbsp;</td>

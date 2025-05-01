@@ -11,8 +11,11 @@ import {usePrintStore} from "@/main/dashboard/print/print.js";
 import AppModal from "@/components/AppModal.vue";
 import NewClassTeacherOverallRemark
   from "@/main/dashboard/manageLevel/report_setup/comments/NewClassTeacherOverallRemark.vue";
+import useNotificationStore from "@/composables/useNotification.js";
+
 const reportStore = useReportCardStore()
 const printStore = usePrintStore()
+const notificationStore = useNotificationStore()
 
 
 
@@ -82,6 +85,23 @@ if(navigator.userAgent.indexOf("Firefox") !== -1 ) {
 }
 }
 
+watch(
+    () => printStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error", data.message)
+      }
+    }
+)
+
+watch(
+    () => reportStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error", data.message)
+      }
+    }
+)
 
 </script>
 
