@@ -97,7 +97,9 @@ if(navigator.userAgent.indexOf("Firefox") !== -1 ) {
   <button class="btn btn-sm btn-success mb-2" @click="print"><i class="bi bi-printer"></i></button>
 
   <button
-      v-if="reportDetails?.report_template_name.trim() === 'wholesome-early-learning-report-baby-class'"
+      v-if="
+      (reportDetails?.report_template_name.trim() === 'wholesome-early-learning-report-baby-class') ||
+      (reportDetails?.report_template_name.trim() === 'wholesome-report-primary')"
       class="btn btn-sm btn-primary mb-2 ml-3" @click="addRemarks">
         <i class="bi bi-pencil"></i>
         Add Class Teacher's Overall Remarks
