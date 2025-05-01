@@ -29,20 +29,16 @@ const addOverAllRemark = () => {
   let commentDraft = props.reportDetails?.learning_areas?.map((item) => {
     return {
       comment: item?.comment,
-      // report_summary_number: props.reportDataInfo.report_summary_number
-      report_summary_number: item?.name
+      learning_area_number: item?.learning_area_number,
     }
   })
-  let data = {
-    student_number:  props.reportDataInfo.student_number,
-    comment: commentDraft
-  }
+    let data = {
+      report_summary_number: props.reportDataInfo?.number,
+      learning_area_comments: commentDraft
+    }
 
   teacherCommentStore.newOverallRemarkFromTeacher(data)
 }
-
-
-
 
 
 
@@ -59,6 +55,7 @@ watch(
 
 <template>
   <div>
+<!--    {{reportDataInfo}}-->
 <!--    {{reportDetails}}-->
   <form @submit.prevent="addOverAllRemark">
 

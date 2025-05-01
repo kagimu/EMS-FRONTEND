@@ -281,7 +281,26 @@ onMounted(
       <tr>
         <td>
 
-          <table style="width: 100%; border: 1px solid #f4f4f4; font-size: 13px; margin-bottom: 20px;">
+
+
+
+          <table style="width: 100%; border: 1px solid #f4f4f4; font-size: 13px;">
+                  <tr style="border-bottom: 1px solid #f4f4f4;">
+                    <td v-for="(item,idx) in reportDetails?.learning_areas" :key="idx" style="width: 25%; padding: 5px; border-right: 1px solid #f4f4f4; text-transform: uppercase;">ON {{item?.name}}</td>
+                  </tr>
+            <tr  style="border-bottom: 1px solid #f4f4f4;">
+              <td style="padding: 5px; border-right: 1px solid #f4f4f4;  vertical-align: top;" v-for="(item,idx) in reportDetails?.learning_areas" :key="idx">
+
+              <div class="text-sm p-2">{{item.comment}}</div>
+
+              </td>
+
+            </tr>
+
+          </table>
+
+
+<!--          <table style="width: 100%; border: 1px solid #f4f4f4; font-size: 13px; margin-bottom: 20px;">
             <tr style="text-align: center; border-bottom: 1px solid #f4f4f4;">
               <td style="width: 25%; padding: 5px; border-right: 1px solid #f4f4f4;">ON MENTAL STUDIES</td>
               <td style="width: 25%; padding: 5px; border-right: 1px solid #f4f4f4;">ON PHYSICAL STUDIES</td>
@@ -294,7 +313,7 @@ onMounted(
               <td style="padding: 5px; border-right: 1px solid #f4f4f4;">&nbsp;</td>
               <td style="padding: 5px;">&nbsp;</td>
             </tr>
-          </table>
+          </table>-->
 
         </td>
       </tr>
@@ -304,29 +323,57 @@ onMounted(
         <td>
 
 
+
+
           <table style="width: 100%; font-size: 13px; margin-top: 20px; margin-bottom: 30px;">
             <tr>
               <td style="width: 25%;">
-                <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">CLASS TEACHER'S SIGNATURE:</div>
-                <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">HEAD TEACHER'S SIGNATURE:</div>
-                <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">NEXT TERM BEGINS:</div>
-                <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;"></div>
+                CLASS TEACHER'S SIGNATURE:
               </td>
-
               <td>
+                <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top:20px;"></div>
+              </td>
+            </tr>
 
-                <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top:28px;"></div>
+
+            <tr>
+              <td>
+                HEAD TEACHER'S SIGNATURE:
+              </td>
+              <td>
                 <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 12px;"> {{reportDetails?.head_teachers_comment}}</div>
-                <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;"> <!--18th/May/2020--> 
+              </td>
+            </tr>
 
+
+            <tr>
+              <td>
+                NEXT TERM BEGINS:
+              </td>
+              <td>
+                <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;"> <!--18th/May/2020-->
                   {{ nextTermBegins }}
                 </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+
+              </td>
+              <td>
                 <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top:28px;">
                   {{reportDetails?.promotion_status}}
                 </div>
               </td>
             </tr>
+
           </table>
+
+
+
+
+
 
 
 <!--          <table style="width: 100%; font-size: 13px; margin-top: 20px; margin-bottom: 30px;">

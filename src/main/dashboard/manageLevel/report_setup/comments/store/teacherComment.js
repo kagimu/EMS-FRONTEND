@@ -48,7 +48,7 @@ export const useTeacherCommentStore = defineStore("teacherComment", () => {
     }
 
     async function newOverallRemarkFromTeacher(data) {
-        return await api.post("main/report-settings/add-teacher-overall-remark", data)
+        return await api.post("main/report-settings/learning-area-comments", data)
             .then((response) => {
                 newOverallRemarkFromTeacherResponse.value = response.data
             })
