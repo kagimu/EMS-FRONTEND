@@ -196,7 +196,7 @@ const ageCalculator = (dob) => {
             <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px;padding-top: 5px;padding-bottom: 5px;">{{ subject.report_score_summary.summation }}</td>
             <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 5px;">{{ subject.report_score_summary.grade }}</td>
             <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 5px;">{{ subject.report_score_summary.comment }}</td>
-            <td style="border-top: 1px solid  #f4f4f4;border-bottom: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:13px; padding: 0px;">M.O</td>
+            <td style="border-top: 1px solid  #f4f4f4;border-bottom: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:13px; padding: 0px;"></td>
           </tr>
         </template>
       </template>
