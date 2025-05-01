@@ -180,7 +180,7 @@ const ageCalculator = (dob) => {
           <tr>
             <!-- Subject Group Name with Rowspan -->
             <td v-if="index === 0" :rowspan="Number(subjectGroup.assessments.length)"
-                style="transform: rotate(270deg); white-space: nowrap; overflow: hidden;
+                style="transform: rotate(3600deg); white-space: nowrap; overflow: hidden;
                 text-overflow: ellipsis; border-top: 1px solid  #f4f4f4;color:#4b5563; font-size:10px; vertical-align: middle;
                 letter-spacing: 0.05em; height: auto;text-transform: uppercase; font-weight: bold;">
            {{ subjectGroup.name }}
