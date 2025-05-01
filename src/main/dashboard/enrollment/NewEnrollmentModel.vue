@@ -225,7 +225,7 @@ campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_c
      ...ItemDataToSubmit
    })
    
-       alert(JSON.stringify(enrollmentData))
+      //  alert(JSON.stringify(enrollmentData))
        enrolmentStore.newEnrolment(enrollmentData)
      }
    

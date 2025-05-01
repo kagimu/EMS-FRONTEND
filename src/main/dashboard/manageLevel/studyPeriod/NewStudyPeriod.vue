@@ -10,6 +10,7 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useRouter} from "vue-router";
 import ComboBox from "@/components/ComboBox.vue";
+import { Siren } from "lucide-vue-next";
 
 
 const academicYearStore = useAcademicYearStore()
@@ -77,10 +78,29 @@ onMounted(
     () =>{
       classStore.fetchCampusLevel(campus_curriculum_number)
       studyPeriodStore.fetchStudyPeriodGroupName(schoolNumber)
+      getnextTermBegins()
     }
 )
 
 
+const props = defineProps({
+  nextTermBegins:String,
+})
+
+const  getnextTermBegins = () => {
+  if(props.nextTermBegins){
+    form.next_term_begins_on = props.nextTermBegins
+  }
+}
+
+watch(
+    () => props.nextTermBegins,
+    async (data) => {
+      if(data){
+        getnextTermBegins()
+      }
+    }
+)
 
 const addStudyPeriod = () => {
   loader.value = true
@@ -89,6 +109,7 @@ const addStudyPeriod = () => {
   form.code = parseInt(form.code)
   form.study_period_start_date = commons.formatDate(form.study_period_start_date)
   form.study_period_end_date = commons.formatDate(form.study_period_end_date)
+  form.next_term_begins_on = commons.formatDate(form.next_term_begins_on)
 
   if(study_period_number.value){
     form.study_period_number = study_period_number.value
@@ -208,6 +229,7 @@ watch(
 </script>
 <template>
 
+
   <div>
     <form @submit.prevent="addStudyPeriod">
 
@@ -267,6 +289,7 @@ watch(
         </div>
         <div>
           <label class="text-sm"><small>Next Term Begins</small></label>
+          <!-- {{ nextTermBegins }} -->
           <VueDatePicker
               text-input
               auto-apply

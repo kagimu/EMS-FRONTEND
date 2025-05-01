@@ -10,6 +10,7 @@ export const useUserStore = defineStore("users", () => {
     let updateUserResponse = ref(null)
     let narrativeReportResponse = ref(null)
     let userResponse = ref(null)
+    let updateStudentBioResponse = ref(null)
 
         async function createNewUser(data) {
             return await api.post("main/users", data)
@@ -88,6 +89,19 @@ export const useUserStore = defineStore("users", () => {
         }
 
 
+        async function updateStudentBioDetails(data) {
+            return await api.put("main/applications/students/"+data.student_number,data)
+                .then((response) => {
+                    updateStudentBioResponse.value = response.data
+                })
+                .catch((response) => {
+                    if(response && response.response){
+                        errorMessage.value = response.response.data
+                    }
+                })
+        }
+
+
     return {
      errorMessage,
      userListResponse,
@@ -100,7 +114,9 @@ export const useUserStore = defineStore("users", () => {
      createNewUser,
      fetchUsersList,
      deleteUser,
-     updateUsers
+     updateUsers,
+     updateStudentBioDetails,
+     updateStudentBioResponse
   
     }
 })

@@ -90,7 +90,7 @@ const assignRolePlease = () =>{
   stream_number:form.stream_number,
   user_number:props.user_number
 }
-alert(JSON.stringify(data))
+// alert(JSON.stringify(data))
 scopeStore.createNewScope(data)
 }
 

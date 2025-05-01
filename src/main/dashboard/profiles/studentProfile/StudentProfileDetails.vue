@@ -16,9 +16,12 @@ import FileUploader from "@/components/FileUploader.vue";
 import EmergencyInformation from "@/main/dashboard/studentAdmission/newAdmissionComponents/EmergencyInformation.vue";
 import FamilyStructure from "@/main/dashboard/studentAdmission/newAdmissionComponents/FamilyStructure.vue";
 import MedicalRecords from "@/main/dashboard/studentAdmission/newAdmissionComponents/MedicalRecords.vue";
+import StudentBioData from "@/main/dashboard/profiles/studentProfile/StudentBioData.vue";
 
+import { useUserStore } from "@/main/dashboard/profiles/store/users.js"
+   
+const userStore = useUserStore()
 const enrollmentStore = useEnrolmentStore()
-
 const studentNum = ref(null)
 const routerData = useRouter()
 const student_number = routerData.currentRoute.value.query.st_id
@@ -200,9 +203,31 @@ const successUpload = async (data) => {
   }
 }
 
+const showStudentBio = ref(false)
+
+const updateProfile = () => {
+showStudentBio.value = true
+}
+
+
+watch (
+    () => userStore.updateStudentBioResponse,    
+    async (data) => {
+      if(data){
+        showStudentBio.value = false
+        applicationStore.fetchStudent(student_number)
+      }
+    },
+    {deep:true}
+)
 
 </script>
 <template>
+
+<AppModal title="Edit Student Details" v-model="showStudentBio" xl>
+    <StudentBioData :studentProfileData="studentProfileData"></StudentBioData>
+  </AppModal>
+
 
   <AppModal title="Confirm" v-model="showActionDialog" xs>
     <Comfirm :studentNumber="studentNum" :action="actionType" @nedda="cancelled"></Comfirm>
@@ -232,6 +257,12 @@ const successUpload = async (data) => {
                   class="border-2 rounded-md px-2  border-[#2c2f8c] text-[#2c2f8c] text-sm"
                   @click="uploadBadge">
                 <i class="cursor-pointer mx-1 text-xs fa-solid fa-pencil"></i> Upload Student photo
+              </button>
+
+              <button
+                  class="border-0 rounded-md px-2 mt-2  text-[green] text-sm"
+                  @click="updateProfile">
+                <i class="cursor-pointer mx-1 text-xs fa-solid fa-pencil"></i> Update Profile
               </button>
             </div>
 
