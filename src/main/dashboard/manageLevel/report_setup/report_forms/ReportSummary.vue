@@ -257,6 +257,17 @@ watch(
     }
 )
 
+
+watch(
+    () => teacherCommentStore.newOverallRemarkFromTeacherResponse,
+    async (data) => {
+      if(data){
+        showStudentReport(reportSummaryData.value)
+      }
+    }
+)
+
+
 </script>
 <template>
    <div>
