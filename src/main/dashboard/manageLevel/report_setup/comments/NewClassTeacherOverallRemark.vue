@@ -21,10 +21,6 @@ const props = defineProps({
 })
 
 
-const form = reactive({
-comment : null,
-report_summary_number:props.reportSummaryNumber
-})
 
 const addOverAllRemark = () => {
 
@@ -42,26 +38,11 @@ const addOverAllRemark = () => {
     comment: commentDraft
   }
 
-  alert(JSON.stringify(data))
-
-/*loader.value = true
-let formData = {
-comment : form.comment,
-report_summary_number : form.report_summary_number
- }
- teacherCommentStore.newCommentFromTeacher(formData)*/
+  teacherCommentStore.newOverallRemarkFromTeacher(data)
 }
 
 
-watch(
-    () => teacherCommentStore.newCommentFromTeacherResponse,
-    async (data) => {
-      if(data){
-        notificationStore.successToast("Success",data.message)
-        loader.value=false
-      }
-    }
-)
+
 
 
 

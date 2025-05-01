@@ -12,10 +12,12 @@ import AppModal from "@/components/AppModal.vue";
 import NewClassTeacherOverallRemark
   from "@/main/dashboard/manageLevel/report_setup/comments/NewClassTeacherOverallRemark.vue";
 import useNotificationStore from "@/composables/useNotification.js";
+import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.js";
 
 const reportStore = useReportCardStore()
 const printStore = usePrintStore()
 const notificationStore = useNotificationStore()
+const teacherCommentStore = useTeacherCommentStore()
 
 
 
@@ -99,6 +101,16 @@ watch(
     async (data) => {
       if(data){
         notificationStore.errorToast("Error", data.message)
+      }
+    }
+)
+
+watch(
+    () => teacherCommentStore.newOverallRemarkFromTeacherResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success",data.message)
+        showOverAllMarksModal.value = false
       }
     }
 )
