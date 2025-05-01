@@ -82,7 +82,7 @@ const props = defineProps({
                 <td style="width: 30%;">
                   <div style="padding-left: 60px; padding-bottom: 10px;">{{reportDetails?.study_period}}</div>
                   <div style="padding-left: 60px; padding-bottom: 10px;">{{reportDetails?.stream	}}</div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">{{new Date().toLocaleDateString()}}</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">{{reportDetails?.study_period_end_date}}</div>
                   <div style="padding-left: 60px; padding-bottom: 10px; color:#008000;">{{reportDetails?.grade}}</div>
                 </td>
               </tr>

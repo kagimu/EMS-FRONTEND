@@ -122,7 +122,10 @@ watch(
 <div>
 
   <AppModal title="Add Class Teacher's Overall Remarks" v-model="showOverAllMarksModal" xl8>
-    <new-class-teacher-overall-remark :reportDataInfo="reportData" :reportDetails="reportDetails"></new-class-teacher-overall-remark>
+    <new-class-teacher-overall-remark
+        :reportTemplateName="reportDetails?.report_template_name.trim()"
+        :reportDataInfo="reportData"
+        :reportDetails="reportDetails"></new-class-teacher-overall-remark>
   </AppModal>
 
 
