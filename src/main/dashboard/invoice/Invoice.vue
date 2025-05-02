@@ -60,7 +60,7 @@ const userType = ref(null)
 
 onMounted(
     async () => {
-      doFetchInvoices()
+      // doFetchInvoices()
       await schoolStore.fetchSchools()
       await serviceStore.fetchAllItems()
        let user = JSON.parse(profile)
