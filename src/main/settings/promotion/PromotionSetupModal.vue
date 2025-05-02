@@ -47,7 +47,7 @@ onMounted(() => {
 
 const form = reactive({
   name:null,
-  status:"ACTIVE",
+  status:"",
   type:"",
   next_class_number:'',
   previous_class_number:'',
@@ -349,6 +349,15 @@ const fetchCampusLevel = (curriculumNumber) => {
           <input
               style="outline: none 0 !important; box-shadow: none;"
               type="text" v-model="form.name"
+              required
+              class="form-control form-select-sm">
+        </div>
+
+        <div class="mb-2">
+          <label class="text-sm"><small>Status</small></label>
+          <input
+              style="outline: none 0 !important; box-shadow: none;"
+              type="text" v-model="form.status"
               required
               class="form-control form-select-sm">
         </div>
