@@ -41,7 +41,7 @@ const addCampus = () => {
 }
 
 const editClass = (data) => {
-  alert(JSON.stringify(data))
+  // alert(JSON.stringify(data))
 }
 
 const addStream = (data) => {

@@ -100,7 +100,7 @@ const createScale = () =>{
   if(form.assessment_grade_number){
     assessmentStore.updateAssessmentGrade(form)
   }else{
-    alert(JSON.stringify(form))
+    // alert(JSON.stringify(form))
     // assessmentStore.createAssessmentGrade(form)
   }
 

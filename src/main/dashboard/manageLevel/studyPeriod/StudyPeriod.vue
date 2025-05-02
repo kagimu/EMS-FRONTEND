@@ -34,6 +34,7 @@ const campus_level_number = ref("")
 const campusLevelList = ref([])
 const campusStore = useCampusStore()
 const campusClassList = ref(null)
+const nextTermBegins = ref(null)
 
 onMounted(
     () => {
@@ -62,8 +63,9 @@ const addStudyPeriod = () => {
 }
 
 
-const editStudyPeriod = (styPeriod)  => {
+const editStudyPeriod = (styPeriod,nextD)  => {
   if(styPeriod) {
+    nextTermBegins.value = nextD
     editMode.value = true
     newStudyPeriodDialog.value = true
     studyPeriodStore.fetchStudyPeriodData(styPeriod.study_period_number	)
@@ -199,7 +201,7 @@ const setNextTermDate = async (academic_year_number) => {
     next_term_begins:formData.next_term_begins
   }
 studyPeriodStore.setNextTermDate(data)
- alert(JSON.stringify(data))
+//  alert(JSON.stringify(data))
 }
 
 
@@ -220,7 +222,7 @@ watch(
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="editMode ? 'Edit Study Period' : 'Add Study Period'" v-model="newStudyPeriodDialog" lg>
-      <new-study-period></new-study-period>
+      <new-study-period :nextTermBegins="nextTermBegins"></new-study-period>
     </AppModal>
 
 
@@ -312,10 +314,10 @@ watch(
             
             <div class="row" v-if="studyPeriodN ==studyPeriod.study_period_number">
               <div class="col-12">
-                <input  type="date" class="border px-3 rounded-md text-[orange] mt-2 form-control" v-model="formData.next_term_begins"/>
+                <!-- <input  type="date" class="border px-3 rounded-md text-[orange] mt-2 form-control" v-model="formData.next_term_begins"/> -->
               </div>
               <div class="">
-                <button  type="button" class="btn btn-sm buttonStyle btn-outline-primary mt-2 btn-sm text-xs"
+                <!-- <button  type="button" class="btn btn-sm buttonStyle btn-outline-primary mt-2 btn-sm text-xs"
                  @click="setNextTermDate(studyPeriod?.academic_year_number)">
                  <i class="bi bi-gear"></i>&nbsp;Config
                  
@@ -323,7 +325,7 @@ watch(
               <span class="visually-hidden">Loading...</span>
             </span>
 
-                </button>
+                </button> -->
 
               </div>
 
@@ -343,7 +345,7 @@ watch(
             <i
                 style="font-size: 13px;"
                 data-bs-toggle="modal" data-bs-target="#levelModal"
-                class="bi-pencil mr-2 cursor-pointer" @click="editStudyPeriod(studyPeriod)"></i>
+                class="bi-pencil mr-2 cursor-pointer" @click="editStudyPeriod(studyPeriod,studyPeriod?.study_period_end_date)"></i>
             <i
                 style="font-size: 13px;" class="bi-trash cursor-pointer text-[red]"  @click="deleteStudyPeriod(studyPeriod, index)"></i>
             <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">

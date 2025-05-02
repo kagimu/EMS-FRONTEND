@@ -387,7 +387,7 @@ const submitSchemeOfWorkDelivery = () =>{
 
    }
   
- alert(JSON.stringify(formData)) 
+//  alert(JSON.stringify(formData)) 
    schemeOfWorkStore.newCurriculumDelivery(formData)
 }
 

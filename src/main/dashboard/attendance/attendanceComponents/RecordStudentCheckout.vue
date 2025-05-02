@@ -312,7 +312,7 @@ const adn_no = ref(null)
 
 
 const saveAttendanceData = () =>{
-  alert(JSON.stringify(formData))
+  // alert(JSON.stringify(formData))
   attendanceStore.newStudentAttendance(formData)
 }
 
