@@ -285,7 +285,7 @@ const ageCalculator = (dob) => {
             <table style="width: 100%; font-size: 12px; margin-top: 15px; margin-bottom: 10px;">
               <tr>
                 <td style="width: 25%;">
-                  CLASS TEACHER'S:
+                  CLASS TEACHER'S COMMENT:
                 </td>
                 <td>
                   <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top:10px;">{{reportDetails?.teacher_comment}}</div>
@@ -304,7 +304,7 @@ const ageCalculator = (dob) => {
 
               <tr>
                 <td>
-                  HEAD TEACHER'S:
+                  HEAD TEACHER'S COMMENT:
                 </td>
                 <td>
                   <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 9px;"> {{reportDetails?.head_teachers_comment}}</div>
