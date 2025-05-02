@@ -66,6 +66,7 @@ const ageCalculator = (dob) => {
 <template>
   
   <div>
+
     <div class="mx-auto mt-10" style="width: 98%; ">
         <table style="width: 100%; border: 1px solid #f4f4f4; margin-bottom: 20px;">
         <tr>
@@ -281,23 +282,41 @@ const ageCalculator = (dob) => {
 
 
 
-            <table style="width: 100%; font-size: 13px; margin-top: 20px; margin-bottom: 30px;">
+            <table style="width: 100%; font-size: 12px; margin-top: 15px; margin-bottom: 10px;">
               <tr>
                 <td style="width: 25%;">
-                  CLASS TEACHER'S SIGNATURE:
+                  CLASS TEACHER'S:
                 </td>
                 <td>
-                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top:20px;"></div>
+                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top:10px;">{{reportDetails?.teacher_comment}}</div>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="width: 25%;">
+                  SIGNATURE:
+                </td>
+                <td>
+                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top:9px;"></div>
                 </td>
               </tr>
 
 
               <tr>
                 <td>
-                  HEAD TEACHER'S SIGNATURE:
+                  HEAD TEACHER'S:
                 </td>
                 <td>
-                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 12px;"> {{reportDetails?.head_teachers_comment}}</div>
+                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 9px;"> {{reportDetails?.head_teachers_comment}}</div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  SIGNATURE:
+                </td>
+                <td>
+                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 7px;">&nbsp;</div>
                 </td>
               </tr>
 
@@ -307,7 +326,7 @@ const ageCalculator = (dob) => {
                   NEXT TERM BEGINS:
                 </td>
                 <td>
-                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;"> <!--18th/May/2020-->
+                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 9px;"> <!--18th/May/2020-->
                     {{ nextTermBegins }}
                   </div>
                 </td>
@@ -318,7 +337,7 @@ const ageCalculator = (dob) => {
 
                 </td>
                 <td>
-                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top:28px;">
+                  <div v-if="reportDetails?.promotion_status !== 'N/A'" style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top:9px;">
                     {{reportDetails?.promotion_status}}
                   </div>
                 </td>
@@ -328,37 +347,14 @@ const ageCalculator = (dob) => {
 
 
 
-<!--            <table style="width: 100%; font-size: 13px; margin-top: 20px; margin-bottom: 30px;">
-              <tr>
-                <td style="width: 25%;">
-                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">CLASS TEACHER'S SIGNATURE:</div>
-                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">HEAD TEACHER'S SIGNATURE:</div>
-                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">NEXT TERM BEGINS:</div>
-                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;"></div>
-                </td>
 
-                <td>
-
-                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 28px;"></div>
-                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 12px;"> {{reportDetails?.head_teachers_comment}}</div>
-                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;"> &lt;!&ndash;18th/May/2020&ndash;&gt;
-                    &lt;!&ndash; {{reportDetails?.next_term_begins	}} &ndash;&gt;
-                    {{nextTermBegins}}
-                  </div>
-                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top:28px;">
-                    {{reportDetails?.promotion_status}}
-                  </div>
-
-                </td>
-              </tr>
-            </table>-->
 
           </td>
         </tr>
 
         <tr>
           <td>
-            <div style="text-align: center; margin-bottom: 15px;">
+            <div style="text-align: center; margin-bottom: 10px;">
               <small><i>This report is valid if it bears the Head Teacher's Signature and school seal.</i></small>
             </div>
           </td>
