@@ -49,7 +49,7 @@
                       </td>
                     </tr>
                   </table>
-                  <button class="btn btn-primary btn-sm mt-2" @click.prevent="addPhone">+ Add Phone</button>
+                  <button class="btn btn-primary btn-sm mt-2" @click.prevent="addPhone">+ Add Contacts</button>
                 </div>
               </div>
             </div>

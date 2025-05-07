@@ -64,6 +64,8 @@ const ageCalculator = (dob) => {
 </script>
 
 <template>
+
+  <!-- {{reportDetails}} -->
   
   <div>
 
@@ -340,6 +342,11 @@ const ageCalculator = (dob) => {
                   <div v-if="reportDetails?.promotion_status !== 'N/A'" style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top:9px;">
                     {{reportDetails?.promotion_status}}
                   </div>
+                 
+
+                  <!-- <div  style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top:9px;">
+                    {{reportDetails?.promotion_status}}
+                  </div> -->
                 </td>
               </tr>
 
