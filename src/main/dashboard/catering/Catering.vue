@@ -105,11 +105,11 @@ const changeMenu = (value) => {
 
       <div class="row">
         <div class="col-3">
-          <div class="card mt-3">
-            <div class="card-body" style="padding: 0;">
-              <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">CATERING SERVICE</div>
+          <div class="">
+            <div class="card" style="padding: 0;">
+              <div class="mb-2 mt-3 pl-2" style="font-size: 16px;text-align: left;">CATERING SERVICE</div>
   
-              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+              <div class="list-group " style="border-radius: 0 0 0 0;">
                   <div
                     v-for="(item, idx) in menu" :key="idx"
                     v-show="can(item.action,'general')"
@@ -122,10 +122,10 @@ const changeMenu = (value) => {
             </div>
           </div>
 
-          <div class="card mt-3"    v-if="can('view_stock','general')">
-            <div class="card-body" style="padding: 0;">
+          <div class="mt-4"    v-if="can('view_stock','general')">
+            <div class="card" style="padding: 0;">
 
-              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+              <div class="list-group " style="border-radius: 0 0 0 0;">
                 <div
                     :class="menuSelected === 'manage-stock' ? 'active' : ''"
                     class="list-group-item list-group-item-action cursor-pointer"
@@ -140,9 +140,9 @@ const changeMenu = (value) => {
 
 
 
-          <div class="card mt-3">
-            <div class="card-body" style="padding: 0;">
-              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+          <div class="mt-3">
+            <div class="card" style="padding: 0;">
+              <div class="list-group " style="border-radius: 0 0 0 0;">
                 <div
                     v-for="(item, idx) in mealMenu" :key="idx"
                     v-show="can(item.action,'general')"
