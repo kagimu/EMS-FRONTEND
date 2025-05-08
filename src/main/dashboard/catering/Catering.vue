@@ -107,7 +107,13 @@ const changeMenu = (value) => {
         <div class="col-3">
           <div class="">
             <div class="card" style="padding: 0;">
-              <div class="mb-2 mt-3 pl-2" style="font-size: 16px;text-align: left;">CATERING SERVICE</div>
+              <div class="flex items-center gap-2 mb-2 mt-3 pl-4 text-[15px] font-semibold text-gray-800">
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#0d6efd]" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M12 3C7.589 3 4 6.589 4 11v1H2v2h20v-2h-2v-1c0-4.411-3.589-8-8-8zm0 2c3.309 0 6 2.691 6 6v1H6v-1c0-3.309 2.691-6 6-6zm-8 9v1c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-1H4z"/>
+  </svg>
+  <span>CATERING</span>
+</div>
+
   
               <div class="list-group " style="border-radius: 0 0 0 0;">
                   <div
