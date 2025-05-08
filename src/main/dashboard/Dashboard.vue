@@ -9,9 +9,11 @@ import { useAbility } from '@casl/vue';
 import {breakpointsTailwind, useBreakpoints, useStorage} from "@vueuse/core";
 import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
-
+import AppModal from "@/components/AppModal.vue";
+import FiltersModal from "@/main/dashboard/FiltersModal.vue";
 
 const entityStore = useEntityStore()
+const showConfigModal = ref(false)
 
 let routerName = ""
  routerName = useRouter().currentRoute.value.name;
@@ -195,9 +197,17 @@ const toggleContactDetails = () => {
   showContactDetails.value = !showContactDetails.value;
 }
 
+const openConfigModal = () => {
+  showConfigModal.value = true
+}
+
 
 </script>
 <template>
+
+<AppModal title="Configuration" v-model="showConfigModal" xl6>
+<FiltersModal></FiltersModal>
+    </AppModal>
 
 <div class="p-0 h-screen w-screen dark">
 
@@ -269,6 +279,10 @@ const toggleContactDetails = () => {
         </router-link>
         <div class="floating-help-button text-xs p-2 ml-3" @click="toggleContactDetails">
       Need Help ?
+    </div>
+
+    <div class="floating-setup-button text-xs p-2 ml-3" @click="openConfigModal">
+     <i class="bi bi-gear"></i> Configuration
     </div>
 
     <div v-if="showContactDetails" class="contact-details ">
@@ -444,4 +458,21 @@ const toggleContactDetails = () => {
   /* font-size: 20px; */
 }
 
+.floating-setup-button {
+  position: fixed;
+  bottom: 45px;
+  left: 1100px;
+  background-color: #043a10;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 25px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  font-weight: bold;
+  z-index: 1100;
+  transition: background-color 0.3s;
+}
+.floating-setup-button:hover {
+  background-color: #0056b3;
+}
 </style>

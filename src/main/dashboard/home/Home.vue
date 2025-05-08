@@ -26,7 +26,7 @@ const count = ref(0)
 
  <div>
 
-<FiltersModal></FiltersModal>
+<!-- <FiltersModal></FiltersModal> -->
 
 <div>
   <analytics></analytics>
@@ -45,7 +45,7 @@ const count = ref(0)
 
 
    
-   <div class="mx-auto mt-3" style="width: 100%;">
+   <!-- <div class="mx-auto mt-3" style="width: 100%;">
      <div class="card mx-auto" style="width: 100%;">
        <div class="card-body">
          <div style="height: 400px; width: 100%; display: flex; justify-content: left;">
@@ -53,10 +53,7 @@ const count = ref(0)
          </div>
        </div>
      </div>
-   </div>
-
-
-
+   </div> -->
 
 
 <!--
