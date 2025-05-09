@@ -201,12 +201,16 @@ const openConfigModal = () => {
   showConfigModal.value = true
 }
 
+const closeDialog = () => {
+  showConfigModal.value = false
+}
+
 
 </script>
 <template>
 
 <AppModal title="Configuration" v-model="showConfigModal" xl6>
-<FiltersModal></FiltersModal>
+<FiltersModal @closeDialog="closeDialog"></FiltersModal>
     </AppModal>
 
 <div class="p-0 h-screen w-screen dark">

@@ -14,6 +14,7 @@
    const studyPeriodStore = useStudyPeriodStore()
    const levelStore = useLevelStore()
    const  notificationStore  = useNotificationStore()
+   const emit = defineEmits(["closeDialog"]);
     
    const campusList = ref([])
    const schoolList = ref([])
@@ -31,6 +32,7 @@
    const levelList = ref([])
    
  
+ 
    
    const form = reactive({
    study_period_number: "",
@@ -47,9 +49,13 @@
    onMounted(() => {
      schoolStore.fetchSchools()
      
-     let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+  let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
   let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
   let defaultCampusCurriculumNo =   localStorage.getItem("defaultCampusCurriculumNo")
+  let defaultAccademicYear = localStorage.getItem("defaultAccademicYear")
+  let defaultLevel = localStorage.getItem("defaultLevel")
+  let defaultClassNumber = localStorage.getItem("defaultClassNumber")
+  let defaultStudyPeriodNumber = localStorage.getItem("defaultStudyPeriodNumber")
 
 
  if(defaultSchoolNo){
@@ -66,8 +72,24 @@
     form.curriculumNumber = defaultCampusCurriculumNo
     fetchCampusLevel(form.curriculumNumber)
   }
+  if(defaultLevel){
+    form.level = defaultLevel
+    fetchLevelClasses(form.level)
+  }
+  if(defaultClassNumber){
+    form.class_number = defaultClassNumber
+    fetchStreamsAndStudyPeriod(form.class_number)
+  }
+  if(defaultStudyPeriodNumber){
+    form.study_period_number = defaultStudyPeriodNumber
+  }
   
-    }
+  
+  if(defaultAccademicYear){
+    form.academic_year_number = defaultAccademicYear
+   
+  }
+}
    )
    
    const fetchCampuses = (school_number) => {
@@ -137,7 +159,13 @@
   commons.updateDefaultFilters({
     schoolNumber: form.school_number,
     campusNumber: form.campus_number,
-    campusCurriculumNumber: form.curriculumNumber
+    campusCurriculumNumber: form.curriculumNumber,
+    levelNumber: form.level,
+    classNumber: form.class_number,
+    academicYearNumber: form.academic_year_number,
+    studyPeriodNumber: form.study_period_number,
+    streamNumber: form.stream_number
+
   })
 }
    
@@ -171,8 +199,8 @@
      {deep:true}
    )
    
-   const filterByStudyPeriod = () => {
-    
+   const filterByStudyPeriod = (stdy) => {
+    updateDefaultFilters()
    }
  
 
@@ -216,7 +244,7 @@
      },
      {deep: true}
    )
-   
+
    
 </script>
 
@@ -291,7 +319,16 @@
         </select>
       </div>
 
-      <!-- Stream -->
+      <div class="col-md-3">
+        <label class="form-label small fw-bold">
+          <i class="bi bi-clock me-1"></i> Study Period
+        </label>
+        <select class="form-select form-select-sm" v-model="form.study_period_number" @change="filterByStudyPeriod(form.study_period_number)">
+          <option disabled value="">Select Period</option>
+          <option v-for="(item, index) in studyPeriodList" :key="index" :value="item.study_period_number">{{ item.study_period_name }}</option>
+        </select>
+      </div>
+
       <div class="col-md-3">
         <label class="form-label small fw-bold">
           <i class="bi bi-diagram-3 me-1"></i> Stream
@@ -301,17 +338,22 @@
           <option v-for="(item, index) in streamList" :key="index" :value="item.stream_number">{{ item.name }}</option>
         </select>
       </div>
-
-      <!-- Study Period -->
+    
+      <!-- Filter Button -->
       <div class="col-md-3">
-        <label class="form-label small fw-bold">
-          <i class="bi bi-clock me-1"></i> Study Period
-        </label>
-        <select class="form-select form-select-sm" v-model="form.study_period_number" @change="filterByStudyPeriod()">
-          <option disabled value="">Select Period</option>
-          <option v-for="(item, index) in studyPeriodList" :key="index" :value="item.study_period_number">{{ item.study_period_name }}</option>
-        </select>
-      </div>
+        </div>
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-3">
+
+          </div>
+        <div class="col-md-3">
+          <button style="float: right;" class="btn btn-outline-success btn-sm mb-2" @click="$emit('closeDialog')">
+            <i class="bi bi-funnel me-1"></i><small>Done</small></button>
+
+        </div>
+
     </div>
   </div>
 

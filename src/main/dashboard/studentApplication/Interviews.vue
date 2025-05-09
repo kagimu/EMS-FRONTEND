@@ -90,6 +90,10 @@ onMounted(
   let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
   let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
   let defaultCampusCurriculumNo =   localStorage.getItem("defaultCampusCurriculumNo")
+  let defaultAccademicYear = localStorage.getItem("defaultAccademicYear")
+  let defaultLevel = localStorage.getItem("defaultLevel")
+  let defaultClassNumber = localStorage.getItem("defaultClassNumber")
+  let defaultStudyPeriodNumber = localStorage.getItem("defaultStudyPeriodNumber")
 
   if(defaultSchoolNo){
     school_number.value = defaultSchoolNo
@@ -106,6 +110,12 @@ onMounted(
     form.curriculumNumber = defaultCampusCurriculumNo
     fetchCampusLevel(form.curriculumNumber)
   }
+
+  if(defaultLevel){
+    form.level = defaultLevel
+    fetchLevelClasses(form.level)
+  }
+ 
 
   getInterviewList()
     } )
@@ -449,7 +459,6 @@ document.addEventListener("fullscreenchange", () => {
         <div class="col-2"> 
         <div class="mb-2">
             <label class="text-sm"><small>Class</small></label>
-
                 <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm" required
