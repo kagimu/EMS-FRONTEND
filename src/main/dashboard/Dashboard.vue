@@ -281,9 +281,13 @@ const openConfigModal = () => {
       Need Help ?
     </div>
 
-    <div class="floating-setup-button text-xs p-2 ml-3" @click="openConfigModal">
+    <!-- <div class="floating-setup-button text-xs p-2 ml-3" @click="openConfigModal">
      <i class="bi bi-gear"></i> Configuration
-    </div>
+    </div> -->
+
+    <div class="floating-setup-button text-xs p-2 ml-3" @click="openConfigModal">
+  <i class="bi bi-gear spinning-gear"></i> <small>configuration</small>
+</div>
 
     <div v-if="showContactDetails" class="contact-details ">
       <div class="row" style="border-bottom: 1px  #f1f1f1 solid;">
@@ -474,5 +478,17 @@ const openConfigModal = () => {
 }
 .floating-setup-button:hover {
   background-color: #0056b3;
+}
+.spinning-gear {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

@@ -1,3 +1,4 @@
+
 <script setup>
    import {onMounted,reactive, ref, watch} from "vue";
    import useNotificationStore from "@/composables/useNotification.js";
@@ -217,137 +218,119 @@
    )
    
    
-
-   
 </script>
+
 <template>
-<div>
-<div class="row mt-4">
-<div class="row">
-<div class="col-3">
-<div class="mb-2">
-<!-- <label class="text-sm"><small>School</small> </label> -->
-<select
-style="box-shadow: none;"
-class="form-select form-select-sm" required
-v-model="form.school_number"
-@change="fetchCampuses(form.school_number)"
->
-<option disabled  value="">-filter by School-</option>
-<option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
-</option>
-</select>
-</div>
-</div>
-<div class="col-3">
-<div class="mb-2">
-<!-- <label class="text-sm"><small>Campus</small>  </label> -->
-<select
-style="box-shadow: none;"
-class="form-select form-select-sm"
-v-model="form.campus_number" required
-@change="fetchClasses(form.campus_number)"
->
-<option disabled value="">-filter by Campus-</option>
-<option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-</option>
-</select>
-</div>
-</div>
-<div class="col-3">
-<div class="mb-2">
-<select
-style="box-shadow: none;"
-class="form-select form-select-sm"
-v-model="form.curriculumNumber"  
-@change="fetchCampusLevel(form.curriculumNumber)"                                         
->
-<option disabled value="" >--Select Curriculum--</option>
-<option  v-for="(lvl, index) in curriculumList" :key="index" :value="lvl.number">{{lvl.name}}</option>
-</select>
-</div>
-</div>
-<div class="col-3" >
-<div class="mb-2">
-<select
-style="box-shadow: none;"
-class="form-select form-select-sm"
-v-model="form.level"
-@change="fetchLevelClasses(form.level)"
->
-<option disabled value="">-Filter by level-</option>
-<option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
-</select>
-</div>
-</div>
+  <div class="filters-container p-3 rounded shadow-sm bg-white">
+    <div class="row g-3">
+      <!-- School -->
+      <div class="col-md-3">
+        <label class="form-label small fw-bold">
+          <i class="bi bi-building me-1"></i> School
+        </label>
+        <select class="form-select form-select-sm" v-model="form.school_number" @change="fetchCampuses(form.school_number)">
+          <option disabled value="">Select School</option>
+          <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}</option>
+        </select>
+      </div>
 
-<div class="col-3">
-<div class="mb-2">
-<select
-style="box-shadow: none;"
-class="form-select form-select-sm" required
-v-model="form.academic_year_number"
-@change=""
->
-<option disabled value="">-filter AcademicYear-</option>
-<option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
-</select>
-</div>
-</div>
+      <!-- Campus -->
+      <div class="col-md-3">
+        <label class="form-label small fw-bold">
+          <i class="bi bi-geo-alt me-1"></i> Campus
+        </label>
+        <select class="form-select form-select-sm" v-model="form.campus_number" @change="fetchClasses(form.campus_number)">
+          <option disabled value="">Select Campus</option>
+          <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}</option>
+        </select>
+      </div>
 
-<div class="col-3">
-<div class="mb-2">
-<!-- {{ classList }} -->
-<select
-style="box-shadow: none;"
-class="form-select form-select-sm" required
-v-model="form.class_number"
-@change="fetchStreamsAndStudyPeriod(form.class_number)"
->
-<option disabled value="">-filter by class-</option>
-<option v-for="(claslist, index) in classList" :key="index" :value="claslist.number">
-{{claslist?.name+" [ "+claslist?.abbreviation+" ]"}}
-</option>
-</select>
-</div>
-</div>
-<div class="col-3">
-<div class="mb-2">
-<!-- <label class="text-sm"><small>Stream</small> </label> -->
-<select
-style="box-shadow: none;"
-class="form-select form-select-sm" required
-v-model="form.stream_number"
-@change="filterByStream()"
->
-<option disabled value="">-filter by Stream-</option>
-<option v-for="(slist, index) in streamList" :key="index" :value="slist.stream_number">{{ slist.name }}
-</option>
-</select>
-</div>
-</div>
+      <!-- Curriculum -->
+      <div class="col-md-3">
+        <label class="form-label small fw-bold">
+          <i class="bi bi-journal-text me-1"></i> Curriculum
+        </label>
+        <select class="form-select form-select-sm" v-model="form.curriculumNumber" @change="fetchCampusLevel(form.curriculumNumber)">
+          <option disabled value="">Select Curriculum</option>
+          <option v-for="(lvl, index) in curriculumList" :key="index" :value="lvl.number">{{ lvl.name }}</option>
+        </select>
+      </div>
 
-<div class="col-3">
-<div class="mb-2">
-<select
-style="box-shadow: none;"
-class="form-select form-select-sm" required
-v-model="form.study_period_number"
-@change="filterByStudyPeriod()"
->
-<option disabled value="">filter by Study period -</option>
-<option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
+      <!-- Level -->
+      <div class="col-md-3">
+        <label class="form-label small fw-bold">
+          <i class="bi bi-layers me-1"></i> Level
+        </label>
+        <select class="form-select form-select-sm" v-model="form.level" @change="fetchLevelClasses(form.level)">
+          <option disabled value="">Select Level</option>
+          <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{ lvl.code + ". " + lvl.name }}</option>
+        </select>
+      </div>
 
-</select>
-</div>
-</div>
-</div>
-</div>
-</div>
-                
-           
-    
+      <!-- Academic Year -->
+      <div class="col-md-3">
+        <label class="form-label small fw-bold">
+          <i class="bi bi-calendar me-1"></i> Academic Year
+        </label>
+        <select class="form-select form-select-sm" v-model="form.academic_year_number">
+          <option disabled value="">Select Year</option>
+          <option v-for="(item, index) in academicYearList" :key="index" :value="item.number">{{ item.academic_year_name }}</option>
+        </select>
+      </div>
 
-            
+      <!-- Class -->
+      <div class="col-md-3">
+        <label class="form-label small fw-bold">
+          <i class="bi bi-easel2 me-1"></i> Class
+        </label>
+        <select class="form-select form-select-sm" v-model="form.class_number" @change="fetchStreamsAndStudyPeriod(form.class_number)">
+          <option disabled value="">Select Class</option>
+          <option v-for="(item, index) in classList" :key="index" :value="item.number">
+            {{ item.name + " [" + item.abbreviation + "]" }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Stream -->
+      <div class="col-md-3">
+        <label class="form-label small fw-bold">
+          <i class="bi bi-diagram-3 me-1"></i> Stream
+        </label>
+        <select class="form-select form-select-sm" v-model="form.stream_number" @change="filterByStream()">
+          <option disabled value="">Select Stream</option>
+          <option v-for="(item, index) in streamList" :key="index" :value="item.stream_number">{{ item.name }}</option>
+        </select>
+      </div>
+
+      <!-- Study Period -->
+      <div class="col-md-3">
+        <label class="form-label small fw-bold">
+          <i class="bi bi-clock me-1"></i> Study Period
+        </label>
+        <select class="form-select form-select-sm" v-model="form.study_period_number" @change="filterByStudyPeriod()">
+          <option disabled value="">Select Period</option>
+          <option v-for="(item, index) in studyPeriodList" :key="index" :value="item.study_period_number">{{ item.study_period_name }}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+
 </template>
-<style scoped></style>
+
+<style scoped>
+.filters-container {
+  background-color: #fefefe;
+  /* border: 1px solid #e0e0e0; */
+  border-radius: 0.5rem;
+}
+
+.form-label {
+  color: #333;
+}
+.form-select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
+}
+
+</style>
