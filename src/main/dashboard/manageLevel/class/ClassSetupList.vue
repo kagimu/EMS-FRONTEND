@@ -30,6 +30,7 @@ const classEditMode = ref( false)
 const classList = ref( [])
 const levelList = ref( [])
 let  curriculumNumber = routerData.currentRoute.value.query.id
+let entityN = localStorage.getItem("entity_number")
 
 
 const addClass = () => {
@@ -92,6 +93,7 @@ onMounted(
 const fetchClassList = () => {
   let data = {
     level:level.value,
+    entity_number: entityN,
   }
   classStore.fetchClasses(data)
 }
@@ -100,7 +102,7 @@ watch(
     () => classStore.classResponse,
     async (data) => {
       if(data){
-        await fetchClassList()
+         fetchClassList()
         notificationStore.successToast("Success", data.message)
       }
     },

@@ -97,7 +97,7 @@ export const useClassesStore = defineStore("classes", () => {
 
     async function fetchClasses(data) {
         data = data ? data : ""
-        return await api.get("main/classes?level="+data.level)
+        return await api.get("main/classes?level="+data.level+"&entity_number="+data.entity_number)
             .then((response) => {
                 classInfoResponse.value = response.data
             })

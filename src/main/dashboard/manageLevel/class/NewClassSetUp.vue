@@ -20,6 +20,7 @@ const  notificationStore  = useNotificationStore()
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 const classNumber = ref(null)
+let entityN = localStorage.getItem("entity_number")
 
 
 
@@ -28,6 +29,7 @@ const form = reactive({
   name:null,
   abbreviation:null,
   level:"",
+  entity_number: entityN,
 })
 
 
@@ -39,6 +41,7 @@ const addClass = () =>{
     classStore.editClassData(form)
   }else {
     classStore.newClassData(form)
+    // alert(JSON.stringify(form))
   }
 
 }

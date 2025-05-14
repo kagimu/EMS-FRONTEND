@@ -65,12 +65,14 @@ const routerData = useRouter()
 const levelStore = useLevelStore()
 const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
+let entityN = localStorage.getItem("entity_number")
 
 const levelNumber = ref("")
 
 const form = reactive({
   code:null,
   name:null,
+  entity_number: entityN,
 })
 
 

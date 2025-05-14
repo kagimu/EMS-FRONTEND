@@ -16,6 +16,7 @@ export const usePromotionStore = defineStore("promotion", () => {
     let promotedStudentsResponse = ref(null)
     let promotionSettingDetailsResponse = ref(null)
     let promotionSettingGradesResponse = ref(null)
+    
 
     async function newPromotionSetting(data) {
         return await api.post("main/promotions/settings", data)
@@ -28,6 +29,18 @@ export const usePromotionStore = defineStore("promotion", () => {
                 }
             })
     }
+
+    //  async function updatePromotionSetting(data) {
+    //     return await api.put("main/promotions/settings", data)
+    //         .then((response) => {
+    //             updatePromotionSettingResponse.value = response.data
+    //         })
+    //         .catch((response) => {
+    //             if(response && response.response){
+    //                 errorMessage.value = response.response.data
+    //             }
+    //         })
+    // }
 
     async function fetchPromotionSetting(data) {
         return await api.get("main/promotions/settings?study_period_number="+data?.study_period_number)
@@ -51,8 +64,8 @@ export const usePromotionStore = defineStore("promotion", () => {
                 }
             })
     }
-    async function updatePromotionSetting(PromotionSettingId,data) {
-        return await api.put("main/"+PromotionSettingId,data)
+    async function updatePromotionSetting(data) {
+        return await api.put("main/promotions/settings/"+data.promotion_settings_number, data)    
             .then((response) => {
                 updatePromotionSettingResponse.value = response.data
             })
@@ -183,6 +196,8 @@ export const usePromotionStore = defineStore("promotion", () => {
         fetchPromotions,
         fetchPromotedStudents,
         fetchPromotionSettingDetails,
-        fetchPromotionSettingGrades
+        fetchPromotionSettingGrades,
+        updatePromotionSettingResponse,
+        updatePromotionSetting
     }
 } )

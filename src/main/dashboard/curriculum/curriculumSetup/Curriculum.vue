@@ -11,8 +11,7 @@ import AppModal from "@/components/AppModal.vue";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 const confirmationRef = ref(null);
 
- let entityN = localStorage.getItem("entity_number")
-
+//  let entityN = localStorage.getItem("entity_number")
 const { can } = useAbility()
 
 
@@ -58,10 +57,7 @@ await curriculumStore.deleteCurriculum(info)
 
 onMounted(
     async () => {
-      let data = {
-        entity_number:entityN
-      }
-      await  curriculumStore.fetchCurriculum(data)
+      await  curriculumStore.fetchCurriculum()
     }
 )
 
@@ -75,10 +71,7 @@ watch (
     () => curriculumStore.curriculumResponse,
     async (data) => {
       if(data){
-         let data = {
-        entity_number:entityN
-      }
-      await  curriculumStore.fetchCurriculum(data)
+        await curriculumStore.fetchCurriculum()
         notificationStore.successToast("Success", data.message)
       }
     },
@@ -89,10 +82,7 @@ watch (
     () => curriculumStore.curriculumEditResponse,
     async (data) => {
       if(data){
-          let data = {
-        entity_number:entityN
-      }
-      await  curriculumStore.fetchCurriculum(data)
+        await curriculumStore.fetchCurriculum()
         notificationStore.successToast("Success", data.message)
       }
     },
@@ -103,10 +93,7 @@ watch (
     () => curriculumStore.deleteCurriculumResponse,
     async (data) => {
       if(data){
-       let data = {
-        entity_number:entityN
-      }
-      await  curriculumStore.fetchCurriculum(data)
+        await curriculumStore.fetchCurriculum()
         notificationStore.successToast("Success", data.message)
       }
     },

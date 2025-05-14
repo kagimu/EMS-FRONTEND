@@ -75,6 +75,7 @@ const formData = reactive({
     form.name = promoData.name
     form.type = promoData.type
     formData.school_number = promoData.school_number
+    form.status = promoData.status
     if(formData.school_number){
       fetchCampuses(formData.school_number)
       formData.campus_number = promoData.campus.number
@@ -101,7 +102,15 @@ const addPromotionSetting = () =>{
   form.campus_number = formData.campus_number
   // form.curriculum_number = formData.curriculumNumber
   form.campus_curriculum_number = formData.curriculumNumber
+
+  if(props.promotionDataInfo){
+    form.promotion_settings_number = props.promotionDataInfo.promotion_settings_number
+    alert(JSON.stringify(form))
+    promotionStore.updatePromotionSetting(form)
+  }else {
   promotionStore.newPromotionSetting(form)
+  }
+
 } 
 
 
@@ -112,11 +121,6 @@ const addPromotionSetting = () =>{
     if(promoData){
       form.name = promoData.name
       form.type = promoData.type
-      // form.next_class_number = promoData.next_class_number
-      // form.previous_class_number = promoData.previous_class_number
-      // form.academic_year_number = promoData.academic_year_number
-      // form.study_period_number = promoData.study_period_number
-      // promNumber.value = promoData.number
     }
   }
 
@@ -230,6 +234,19 @@ watch(
   },
   {deep: true}
 )
+
+watch(
+  () => promotionStore.updatePromotionSettingResponse,
+  async (data) => {
+      if (data) {
+        loader.value = false
+        notificationStore.successToast("Success application submitted", data.message)
+        promotionStore.fetchPromotionSetting()
+      }
+  },
+  {deep: true}
+)
+
 
 watch(
   () => promotionStore.errorMessage,
