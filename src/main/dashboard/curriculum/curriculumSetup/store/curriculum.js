@@ -43,8 +43,8 @@ export const useCurriculumStore = defineStore("curriculum", () => {
     }
 
 
-    async function fetchCurriculum() {
-        return await api.get("main/curriculum/all")
+    async function fetchCurriculum(data) {
+        return await api.get("main/curriculum/all?entity_number="+data.entity_number)
             .then((response) => {
                 curriculumDataResponse.value = response.data
             })

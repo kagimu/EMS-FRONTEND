@@ -148,7 +148,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="text-sm text-sm">School Nameff</label>
+        <label class="text-sm text-sm">School Name</label>
         <input
             style="outline: none 0 !important; box-shadow: none;"
             type="text"

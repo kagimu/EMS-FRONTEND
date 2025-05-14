@@ -209,7 +209,7 @@ const closeDialog = () => {
 </script>
 <template>
 
-<AppModal title="Configuration" v-model="showConfigModal" xl6>
+<AppModal title="Switch" v-model="showConfigModal" xl6>
 <FiltersModal @closeDialog="closeDialog"></FiltersModal>
     </AppModal>
 
@@ -290,7 +290,7 @@ const closeDialog = () => {
     </div> -->
 
     <div class="floating-setup-button text-xs p-2 ml-3" @click="openConfigModal">
-  <i class="bi bi-gear spinning-gear"></i> <small>configuration</small>
+  <i class="bi bi-nintendo-switch"></i> <small>Quick Switch</small>
 </div>
 
     <div v-if="showContactDetails" class="contact-details ">
