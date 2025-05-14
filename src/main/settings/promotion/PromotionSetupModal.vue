@@ -104,8 +104,8 @@ const addPromotionSetting = () =>{
   form.campus_curriculum_number = formData.curriculumNumber
 
   if(props.promotionDataInfo){
-    form.promotion_settings_number = props.promotionDataInfo.promotion_settings_number
-    alert(JSON.stringify(form))
+    form.promotion_setting_number = props.promotionDataInfo.promotion_settings_number
+    // alert(JSON.stringify(form))
     promotionStore.updatePromotionSetting(form)
   }else {
   promotionStore.newPromotionSetting(form)
