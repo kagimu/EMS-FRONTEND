@@ -156,22 +156,22 @@ watch (
               <div class="row mt-3">
                 <div class="col-lg-6">
                   <div class="mb-2">
-                    <div class="text-[#76787a] text-sm">First name</div>
+                    <div class="text-[#76787a] text-sm">Surname</div>
                     <input type="text" v-model="form.first_name" required class="form-control shadow-none">
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="mb-2">
-                    <div class="text-[#76787a] text-sm">Second name</div>
-                    <input type="text" v-model="form.second_name" class="form-control shadow-none">
+                    <div class="text-[#76787a] text-sm">Second Name</div>
+                    <input type="text" v-model="form.last_name" class="form-control shadow-none">
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-lg-6">
                   <div class="mb-2">
-                <div class="text-[#76787a] text-sm">Last name</div>
-                <input type="text" v-model="form.last_name" class="form-control shadow-none">
+                    <div class="text-[#76787a] text-sm">Other name</div>
+                    <input type="text" v-model="form.second_name" class="form-control shadow-none">
               </div>
                 </div>
                 <div class="col-lg-6">

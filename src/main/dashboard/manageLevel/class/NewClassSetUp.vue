@@ -165,6 +165,7 @@ watch(
 
 
       <div class="mb-2">
+
         <label class="text-sm"><small>Class Name</small></label>
         <input
             style="outline: none 0 !important; box-shadow: none;"

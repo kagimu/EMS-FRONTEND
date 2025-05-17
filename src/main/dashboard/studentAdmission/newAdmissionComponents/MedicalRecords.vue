@@ -15,10 +15,10 @@ const props = defineProps({
 const form = ref({
   blood_type_group:null,
   allergies:null,
-  existing_conditions:null,
+  existing_condition:null,
   regular_medication:null,
-  doctors_name:null,
-  doctors_phone:null,
+  doctor_name:null,
+  doctor_phone:null,
 })
 
 const addMedicalRecords = () => {
@@ -29,7 +29,7 @@ const addMedicalRecords = () => {
 }
 
 const  saveMedicalRecords = async (data) => {
-  await api.post("main/students/emergency-information", data)
+  await api.post("main/students/medical-records", data)
       .then((response) => {
         buttonLoader.value = false
         // levelResponse.value = response.data
@@ -73,7 +73,7 @@ const  saveMedicalRecords = async (data) => {
 
             <div class="mb-2">
               <label class="text-sm">Existing Conditions</label>
-              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.existing_conditions" required class="form-control form-control-sm">
+              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.existing_condition" required class="form-control form-control-sm">
             </div>
 
           </div>
@@ -90,12 +90,12 @@ const  saveMedicalRecords = async (data) => {
 
             <div class="mb-2">
               <label class="text-sm">Doctor's Name</label>
-              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.doctors_name" required class="form-control form-control-sm">
+              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.doctor_name" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
               <label class="text-sm">Doctor's Phone</label>
-              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.doctors_phone" required class="form-control form-control-sm">
+              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.doctor_phone" required class="form-control form-control-sm">
             </div>
 
           </div>

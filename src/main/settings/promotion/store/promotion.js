@@ -65,7 +65,7 @@ export const usePromotionStore = defineStore("promotion", () => {
             })
     }
     async function updatePromotionSetting(data) {
-        return await api.put("main/promotions/settings/"+data.promotion_settings_number, data)    
+        return await api.put("main/promotions/settings/"+data.promotion_setting_number, data)    
             .then((response) => {
                 updatePromotionSettingResponse.value = response.data
             })

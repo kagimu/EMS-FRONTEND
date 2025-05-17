@@ -671,6 +671,7 @@ watch(
                                  <input type="text" 
                                     @keypress="commons.numbersOnlyValidator($event)" 
                                     maxlength="10"
+                                        readonly="true"
                                     class="form-control shadow-none"
                                     placeholder="1"
                                     style="width: 50px; font-size: 13px; text-align: center;" 

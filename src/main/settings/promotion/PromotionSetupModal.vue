@@ -330,6 +330,10 @@ const fetchCampusLevel = (curriculumNumber) => {
     }
 )
 
+const generateStatus = (std) => {
+  form.status = std + form.type + " - " + form.previous_class_number + " to " + form.next_class_number
+}
+
 </script>
 
 
@@ -370,14 +374,7 @@ const fetchCampusLevel = (curriculumNumber) => {
               class="form-control form-select-sm">
         </div>
 
-        <div class="mb-2">
-          <label class="text-sm"><small>Status</small></label>
-          <input
-              style="outline: none 0 !important; box-shadow: none;"
-              type="text" v-model="form.status"
-              required
-              class="form-control form-select-sm">
-        </div>
+
 
         <div class="mb-2">
             <label class="text-sm"><small>School</small> </label>
@@ -492,14 +489,28 @@ const fetchCampusLevel = (curriculumNumber) => {
                 <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required
-              v-model="form.study_period_number"          
+              v-model="form.study_period_number"
+              @click="generateStatus(form.study_period_number)"
               >
               <option disabled value="">filter by Study period -</option>
               <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
               </select>
               </div>
+
+              <div class="mb-2">
+                <label class="text-sm"><small>Status</small></label>
+                <input
+                    style="outline: none 0 !important; box-shadow: none;"
+                    type="text" v-model="form.status"
+                    required
+                    class="form-control form-select-sm">
+              </div>
           </div>
+
+
+
           </div>
+
 
 
         <div class="flex justify-content-end mt-2" style="width: 100%;">

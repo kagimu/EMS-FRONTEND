@@ -17,6 +17,7 @@ const classStore = useClassesStore()
 
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const campusNumber = routerData.currentRoute.value.query.id
+const allSelected = ref(false)
 
 onMounted(
     () => {
@@ -66,6 +67,10 @@ watch(
     async (data) => {
       if(data){
         classList.value = data.data
+        // Add 'selected' flag to each class
+        classList.value.forEach(cls => {
+          cls.selected = false
+        })
       }
     },
     {deep:true}
@@ -94,6 +99,13 @@ watch(
 )
 
 
+const toggleSelectAll = () => {
+  allSelected.value = !allSelected.value
+  classList.value.forEach(cls => {
+    cls.selected = allSelected.value
+  })
+}
+
 </script>
 
 <template>
@@ -119,7 +131,19 @@ watch(
 
 
       <label class="text-sm mt-3 mb-2"><small>Add Classes to Levels</small></label>
+
+
       <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+        <li class="mb-2">
+          <input
+              type="checkbox"
+              v-model="allSelected"
+              @change="toggleSelectAll"
+          />
+          <label class="ms-1">All</label>
+
+        </li>
+
 
         <li class="list-group-item" v-for="(cls,idx) in classList" :key="idx">
           <input
