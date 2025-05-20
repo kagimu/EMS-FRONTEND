@@ -682,9 +682,6 @@ watch(
                         </tbody>
                      </table>
                   </div>
-
-
-
             <!-- Payment Section (Styled as a Card) -->
              <!-- {{ billableData.length }} -->
       <div class="card mb-2 mt-4 shadow-sm" v-if="billableData.length != 0">
