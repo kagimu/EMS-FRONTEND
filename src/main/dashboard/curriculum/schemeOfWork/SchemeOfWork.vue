@@ -377,6 +377,7 @@ watch(
           <div class="text-[12px]">Filter by Curriculum</div>
         </div>
       </div>
+
       <div class="col-3" v-if="curriculumNo">
         <div class="mb-2">
           <select
@@ -427,16 +428,7 @@ watch(
             <div class="flex justify-content-between mt-3">
 
             <div>
-<!--              <div>
-                <div class="ml-4"><b>Scheme of works</b></div>
-                <div class="ml-7" v-if="schemeOfWorkList.name"><small><b>Title:</b> {{schemeOfWorkList.name}}</small></div>
-                <div class="ml-7"><small><b>School	:</b> {{schemeOfWorkList.school_name}}</small></div>
-                <div class="ml-7"><small><b>Campus	:</b> {{schemeOfWorkList.campus_name}}</small></div>
-                <div class="ml-7" v-if="schemeOfWorkList.academic_year_name"><small><b>Class:</b> {{schemeOfWorkList.academic_year_name}}</small></div>
-                <div class="ml-7" v-if="schemeOfWorkList.class_name"><small><b>Class:</b> {{schemeOfWorkList.class_name}}</small></div>
-                <div class="ml-7" v-if="schemeOfWorkList.subject_name"><small><b>Subject:</b> {{schemeOfWorkList.subject_name}}</small></div>
-                <div class="ml-7" v-if="schemeOfWorkList.status"><small><b>Status:</b> {{schemeOfWorkList.status}}</small></div>
-              </div>-->
+
             </div>
 
                 <div>
@@ -460,30 +452,33 @@ watch(
             <table style="width: 100%;">
               <tr>
                 <td style="width: 14%;">
-                  <img alt="img" style="width: 120px; margin: 0 auto;" :src="imagePath+schemeOfWorkList?.school_badge"/>
+
+                  <span v-if="schemeOfWorkList?.school_badge">
+                      <img alt="img" style="width: 120px; margin: 0 auto;" :src="imagePath+schemeOfWorkList?.school_badge"/>
+                  </span>
+
                 </td>
                 <td>
-                  <!--        <div style="font-size: 30px;"><b>NOREGRETS LIFE SCHOOL</b></div>-->
                   <div style="font-size: 20px; text-transform: uppercase;"><b>{{schemeOfWorkList?.school_name}}</b></div>
-
-                  <!--        <div style="font-size: 20px; margin-top: 5px;">BUNAMWAYA CAMPUS</div>-->
                   <div style="font-size: 15px; margin-top: 1px;text-transform: uppercase;">{{schemeOfWorkList?.campus_name}}</div>
 
                   <div style="margin-top: 1px; margin-bottom: 1px;">
                     <small>
-                      {{schemeOfWorkList?.campus_location	}} |
-                      {{schemeOfWorkList?.campus_phone}} |
-                      {{schemeOfWorkList?.campus_email}}
-                    </small></div>
-                  <span style="font-size: 15px; background-color: green; color: #ffffff; text-transform: uppercase; padding-left: 15px; padding-right: 15px;">
+                      {{schemeOfWorkList?.campus_location ? schemeOfWorkList?.campus_location+" | " : ""	}}
+                      {{schemeOfWorkList?.campus_phone ? schemeOfWorkList?.campus_phone+" | " : ""}}
+                      {{schemeOfWorkList?.campus_email ? schemeOfWorkList?.campus_email+" | " : ""}}
+                    </small>
+                  </div>
+
+                  <span v-if="schemeOfWorkList?.name" style="font-size: 15px; background-color: green; color: #ffffff; text-transform: uppercase; padding-left: 15px; padding-right: 15px;">
                      {{schemeOfWorkList?.name}}
                   </span>
 
                   <div style="display: flex; margin-bottom: 20px; margin-top: 15px;">
-                    <div style="margin-right: 10px;"  v-if="schemeOfWorkList.academic_year_name"><small><!--<b>Academic Year:</b>--> {{schemeOfWorkList.academic_year_name}}</small></div> |
-                    <div style="margin-left: 10px; margin-right: 10px;"  v-if="schemeOfWorkList.class_name"><small><!--<b>Class:</b>--> {{schemeOfWorkList.class_name}}</small></div> |
-                    <div style="margin-left: 10px; margin-right: 10px;"  v-if="schemeOfWorkList.subject_name"><small><!--<b>Subject:</b>--> {{schemeOfWorkList.subject_name}}</small></div> |
-                    <div style="margin-left: 10px; margin-right: 10px;"  v-if="schemeOfWorkList.status"><small><!--<b>Status:</b>--> {{schemeOfWorkList.status}}</small></div>
+                    <div style="margin-right: 10px;"  v-if="schemeOfWorkList.academic_year_name"><small>{{schemeOfWorkList.academic_year_name}}</small>|</div>
+                    <div style="margin-left: 10px; margin-right: 10px;"  v-if="schemeOfWorkList.class_name"><small>{{schemeOfWorkList.class_name}}</small>|</div>
+                    <div style="margin-left: 10px; margin-right: 10px;"  v-if="schemeOfWorkList.subject_name"><small>{{schemeOfWorkList.subject_name}}</small>|</div>
+                    <div style="margin-left: 10px; margin-right: 10px;"  v-if="schemeOfWorkList.status"><small>{{schemeOfWorkList.status}}</small></div>
                   </div>
 
                 </td>
