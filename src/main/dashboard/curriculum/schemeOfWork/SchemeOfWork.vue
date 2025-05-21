@@ -17,6 +17,7 @@ import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
 import SchemeOfWorkPdfTemplate from "@/main/dashboard/curriculum/schemeOfWork/SchemeOfWorkPdfTemplate.vue";
 import AppModal from "@/components/AppModal.vue";
 import api from "@/config/api.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
 const routerData = useRouter()
 
 const level = ref( "")
@@ -56,6 +57,7 @@ let classNo = routerData.currentRoute.value.query.c
 let campusNumber = routerData.currentRoute.value.query.id
 let curriculumNo = routerData.currentRoute.value.query.crr
 let levelNo = routerData.currentRoute.value.query.lv
+const confirmationRef = ref(null);
 
 if(classNo){
   selectedClass.value =  classNo
@@ -74,6 +76,32 @@ const viewLessonPlan = (lst) => {
 const addSchemeOfWork = () => {
   curriculumDialog.value = true
 }
+
+const deactivateSchemeOfWork = async () => {
+
+  const agreed = await confirmationRef.value.confirm("This action will deactivate the scheme of work and cannot be reversed. Are you sure you want to continue?");
+  if (agreed) {
+     await deactivateSchemeOfWorkStatus(schemeOfWorkList.value?.number)
+  }
+
+}
+
+
+const  deactivateSchemeOfWorkStatus = async (data) => {
+  return await api.patch("main/scheme-of-work/invalidate/"+data)
+      .then((response) => {
+        if(response && response.data){
+          filterSchemeSubject()
+          notificationStore.successToast("Success", response.data.message)
+        }
+      })
+      .catch((response) => {
+        if(response && response.response){
+          notificationStore.errorToast("Error",response.response.data.message)
+        }
+      })
+}
+
 
 const exportSchemeOfWorkPdf = () => {
   if(schemeOfWorkList.value && schemeOfWorkList.value.length < 1){
@@ -117,14 +145,14 @@ onMounted(
       if(levelNo){
         level.value = levelNo
         await classStore.fetchClassLevel({campusCurriculumNumber: curriculumNumber.value, campusLevelNumber: levelNo})
-        await fetchSchemeClasses(levelNo)
+         fetchSchemeClasses(levelNo)
       }
 
       await levelStore.fetchCampusCurriculum(campusNumber)
       // await levelStore.fetchCampusLevelList(campusNumber)
 
       if(selectedClass.value) {
-        await fetchAcademicYrList(selectedClass.value)
+         fetchAcademicYrList(selectedClass.value)
         await subjectStore.fetchSchemeSubjectByClass(selectedClass.value)
       }
     }
@@ -341,7 +369,9 @@ watch(
 <template>
   <div>
 
-    <AppModal :title="(schemeOfWorkList.number && (schemeOfWorkList.status === 'Pending')) ? 'Edit Scheme of work' : 'Add Scheme of work'" v-model="curriculumDialog" xl8>
+    <ConfirmationModal removeBorder="remove" title="Warning" ref="confirmationRef"></ConfirmationModal>
+
+    <AppModal :title="(schemeOfWorkList.number && (schemeOfWorkList.status === 'ACTIVE')) ? 'Edit Scheme of work' : 'Add Scheme of work'" v-model="curriculumDialog" xl8>
       <new-scheme-of-work :schemeOfWorkList="schemeOfWorkList" ref=""></new-scheme-of-work>
     </AppModal>
 
@@ -432,6 +462,12 @@ watch(
             </div>
 
                 <div>
+
+                  <button v-if="schemeOfWorkList?.number" type="button"  class="btn btn-sm buttonStyle btn-danger mr-2"  @click="deactivateSchemeOfWork" data-bs-toggle="modal" data-bs-target="#schemeOfWorkModal">
+                    <i style="font-size: 15px;"  class="bi-x mr-2"></i>
+                    Deactivate
+                  </button>
+
                   <button type="button"  class="btn btn-sm buttonStyle btn-success mr-2"  @click="exportSchemeOfWorkPdf">
                     <i style="font-size: 15px;"  class="bi-file-earmark-pdf mr-2"></i>
                     Export PDF
@@ -439,10 +475,12 @@ watch(
                       <span class="visually-hidden">Loading...</span>
                     </div>
                   </button>
+
                   <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSchemeOfWork" data-bs-toggle="modal" data-bs-target="#schemeOfWorkModal">
                     <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-                    {{(schemeOfWorkList.number && (schemeOfWorkList.status === "Pending")) ? " Edit Scheme" : " Add Scheme"}}
+                    {{(schemeOfWorkList.number && (schemeOfWorkList.status === "ACTIVE")) ? " Edit Scheme" : " Add Scheme"}}
                   </button>
+
                 </div>
 
             </div>
@@ -475,10 +513,10 @@ watch(
                   </span>
 
                   <div style="display: flex; margin-bottom: 20px; margin-top: 15px;">
-                    <div style="margin-right: 10px;"  v-if="schemeOfWorkList.academic_year_name"><small>{{schemeOfWorkList.academic_year_name}}</small>|</div>
-                    <div style="margin-left: 10px; margin-right: 10px;"  v-if="schemeOfWorkList.class_name"><small>{{schemeOfWorkList.class_name}}</small>|</div>
-                    <div style="margin-left: 10px; margin-right: 10px;"  v-if="schemeOfWorkList.subject_name"><small>{{schemeOfWorkList.subject_name}}</small>|</div>
-                    <div style="margin-left: 10px; margin-right: 10px;"  v-if="schemeOfWorkList.status"><small>{{schemeOfWorkList.status}}</small></div>
+                    <div style="margin-right: 0px;"  v-if="schemeOfWorkList.academic_year_name"><small>{{schemeOfWorkList.academic_year_name}}</small> |</div>
+                    <div style="margin-left: 10px;"  v-if="schemeOfWorkList.class_name"><small>{{schemeOfWorkList.class_name}}</small> |</div>
+                    <div style="margin-left: 10px; "  v-if="schemeOfWorkList.subject_name"><small>{{schemeOfWorkList.subject_name}}</small> |</div>
+                    <div style="margin-left: 10px; "  v-if="schemeOfWorkList.status"><small>{{schemeOfWorkList.status}}</small></div>
                   </div>
 
                 </td>

@@ -23,6 +23,7 @@ const confirm = (title: string)  => {
 
 const props = defineProps({
   removeBorder:String,
+  title:String,
 })
 
 
@@ -48,14 +49,13 @@ defineExpose({
 <template>
 <div>
   <AppModal title="&nbsp" :removeBorder="props.removeBorder" v-model="rejectConfirmationDialog" lg>
-    <div class="rounded-md p-2">
+    <div class="rounded-md pb-3">
 
       <div>
          <div class="text-[17px] font-bold ml-3">
 
-
            <i class="text-[orange] text-[20px] fa-solid fa-exclamation-triangle"></i>
-             Confirm!
+             {{title ? title : "Confirm"}}!
            </div>
 
           <div class="ml-3 pb-3 pt-2 text-[15px]">
