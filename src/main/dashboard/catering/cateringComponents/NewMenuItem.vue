@@ -584,7 +584,6 @@ const handleMenuChange = (data) => {
               <td> 
                 <div  class="">
                   <button
-                      v-if="index > 0"
                       type="button"
                       @click="removeMenuItem(index)">
                     <i class="bi bi-trash" style="color:red"></i>
