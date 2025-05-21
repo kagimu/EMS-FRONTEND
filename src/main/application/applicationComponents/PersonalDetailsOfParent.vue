@@ -52,7 +52,7 @@ watch (
         let id = data.application_number
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        emit("next", {id:data.application_number, step:2})
+        emit("next", {id:data.application_number, step:3})
       }
     }
 )
@@ -64,7 +64,7 @@ watch (
       if(data){
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        emit("next", {id:data.application_number, step:2})
+        emit("next", {id:data.application_number, step:3})
       }
     }
 )
@@ -99,7 +99,7 @@ watch(
 )
 
 
-
+const yesResume = ref(false)
 watch (
     () => applicationStore.applicationByIdResponse,
     async (data) => {
@@ -113,6 +113,10 @@ watch (
         form.email= data?.parent?.email
         form.alternative_email=data?.parent?.alternative_email
         formData.application= data?.parent?.number
+
+        if(data.parent.surname !== "") {
+          yesResume.value = true
+        }
       }
     },
     {deep:true}
@@ -120,10 +124,19 @@ watch (
 
 const addParentPersonalDetails = () => {
   buttonLoader.value = true
-  if(!applicationId.value){
-    applicationStore.newApplicationDetails(form)
-  }else {
+ form.application_number = applicationId.value
+
+  // if(!applicationId.value){
+  //   applicationStore.newApplicationDetails(form)
+  // }
+  // else {
+  //   applicationStore.updateParentDetails(applicationId.value,form)
+  // }
+
+  if(applicationId.value && yesResume.value){
     applicationStore.updateParentDetails(applicationId.value,form)
+  }else {
+    applicationStore.newApplicationDetails(form)
   }
 
 }
@@ -136,6 +149,7 @@ const addParentPersonalDetails = () => {
 <p class="ml-4 mt-4 mb-1" style="text-align: center !important;">GUARDIAN/PARENT DETAILS
 
 </p>
+<!--  {{applicationId}}-->
 
   <form  @submit.prevent="addParentPersonalDetails" style="margin-top: 12px;">
   <div class="row mx-auto">

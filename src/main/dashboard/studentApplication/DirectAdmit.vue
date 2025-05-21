@@ -14,10 +14,12 @@ const step = ref(1)
 const isStaff = ref(null)
 const checkApplicationStatus = ref(true)
 const application_number = ref(null)
+const resumeYes = ref(null)
 
 const props = defineProps({
    applicationMode:String,
-   applicationNumb:String
+   applicationNumb:String,
+  resume:String
    })
 
 const emit = defineEmits(["closeDialog"]);
@@ -34,6 +36,10 @@ onMounted(() => {
 
         if(props.applicationMode){
           isStaff.value = "isStaffApplying"
+        }
+
+        if(props.resume){
+          resumeYes.value = props.resume
         }
     }
 )
@@ -74,6 +80,7 @@ const fetchApplicationData = (applicationNumber) => {
 </script>
 <template>
   <div class="temp">
+
     <div class="row">
       <div style="padding-top: 20px;">
       <div  class="text-center font-bold text-[#2c2f8c]"> APPLICATION -> ADMISSION</div>
@@ -87,15 +94,19 @@ const fetchApplicationData = (applicationNumber) => {
               <div>
                 <div class="w-full flex flex-col space-y-2 pt-10">
                   <div style="margin-top: 20px;">
+
+
                     <div class="flex relative space-x-2 justify-around text-[#414548] border-2 border-primary border-l-0 border-r-0 border-b-0 z-10">
                       <div style="margin-top:-20px" class="text-center -mt-5 z-0" :class="step === 1 ? 'font-bold':'italic'">
                         <i class="text-[30px] bg-white" :class="step === 1 ? 'animate-bounce fa-solid fa-arrow-circle-down step-wizard-current' : step <= 1 ? 'fa-solid fa-clock step-wizard-default' : 'fa-solid fa-check-circle step-wizard-success'"></i>
-                        <p class="text-sm">GUARDIAN/PARENT</p>
-                      </div>
-                      <div style="margin-top:-20px" class="text-center -mt-5 z-0" :class="step === 2 ? 'font-bold':'italic'">
-                        <i class="text-[30px] bg-white" :class="step === 2 ? 'animate-bounce fa-solid fa-arrow-circle-down step-wizard-current' : step <= 2 ? 'fa-solid fa-clock step-wizard-default' : 'fa-solid fa-check-circle step-wizard-success'"></i>
                         <p class="text-sm">LEARNER</p>
                       </div>
+
+                      <div style="margin-top:-20px" class="text-center -mt-5 z-0" :class="step === 2 ? 'font-bold':'italic'">
+                        <i class="text-[30px] bg-white" :class="step === 2 ? 'animate-bounce fa-solid fa-arrow-circle-down step-wizard-current' : step <= 2 ? 'fa-solid fa-clock step-wizard-default' : 'fa-solid fa-check-circle step-wizard-success'"></i>
+                        <p class="text-sm">GUARDIAN/PARENT</p>
+                      </div>
+
 
                       <div style="margin-top:-20px"  class="text-center -mt-5 z-0" :class="step === 3 ? 'font-bold':'italic'">
                         <i class="text-[30px] bg-white p-6"  :class="step === 3 ? 'animate-bounce fa-solid fa-arrow-circle-down step-wizard-current' : step < 3 ? 'fa-solid fa-clock step-wizard-default' : 'fa-solid fa-check-circle step-wizard-success'"></i>
@@ -108,14 +119,16 @@ const fetchApplicationData = (applicationNumber) => {
                   <div class="mb-10">
 
                     <div v-show="step === 1">
-                      <personal-details-of-parent-to-direct-admit
-                          v-on:next="nextPage"
-                      ></personal-details-of-parent-to-direct-admit>
-                    </div>
-                    <div v-show="step === 2">
                       <personal-details-of-learner-to-direct-admit
                           v-on:next="nextPage"
                       ></personal-details-of-learner-to-direct-admit>
+                    </div>
+
+                    <div v-show="step === 2">
+                      <personal-details-of-parent-to-direct-admit
+                          v-on:next="nextPage"
+                          :resume="resumeYes"
+                      ></personal-details-of-parent-to-direct-admit>
                     </div>
                  
                     <div v-show="step === 3">

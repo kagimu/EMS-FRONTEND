@@ -56,6 +56,10 @@ const form = reactive({
    interview_number:""
 })
 
+const props = defineProps({
+  resume:String
+})
+
 onMounted(() => {
       schoolStore.fetchSchools(entity_number)
       // getModeOfStudyInfo()
@@ -133,6 +137,8 @@ const addLearnerDetails = () => {
   if(!applicationId.value){
     buttonLoader.value = true
     form.application_number = applicationId.value
+    form.campus_number = form.preferred_campus_number
+    form.type = "direct-application"
     applicationStore.newApplicationLeanerDetails(form)
   }else{
     buttonLoader.value = true
@@ -141,6 +147,7 @@ const addLearnerDetails = () => {
       applicationStore.updateLearnerDetails(form.learner_number,form)
     }else{
       localStorage.setItem('campus_curriculum_number', form.campus_curriculum_number)
+      form.type = "direct-application"
       form.campus_number = form.preferred_campus_number
       applicationStore.newApplicationLeanerDetails(form)
     }
@@ -160,8 +167,7 @@ watch (
         buttonLoader.value = false
         // assessmentStore.fetchAssessmentAreaByClass(form.class_number)
 
-        emit("next", {id:applicationId.value, step:3})
-
+        emit("next", {id:data.data.application_number, step:2})
 
         let dataa = {
           page: page.value,
@@ -239,46 +245,47 @@ watch (
       if(data){
         let draft = data.student
         applicationId.value = data.number
-        // form.surname= draft.surname
-        // form.second_name=draft.second_name
-        // form.other_name=draft.other_name
-        // form.gender= draft.gender
-        // form.date_of_birth=draft.date_of_birth
-        // form.preferred_campus_number=draft.preferred_campus_number
-        // form.class_number=draft.class_number
-        // form.reason_for_choosing_school=draft.reason_for_choosing_school
-        // form.source_of_school_info = draft.source_of_school_info
-        // form.learner_number = draft.number
-        // form.school_number = draft.school_number
-        // form.lin = draft?.lin
-        // student_number.value = draft.number
-//         if(draft?.school_number) {
-//         let dataa = {
-//     school_number:draft?.school_number,
-//   }
-//   modeStudyStore.fetchModeOfStudy(dataa)
-// }
+        form.surname= draft.surname
+        form.second_name=draft.second_name
+        form.other_name=draft.other_name
+        form.gender= draft.gender
+        form.date_of_birth=draft.date_of_birth
+        form.preferred_campus_number=draft.preferred_campus_number
+        form.class_number=draft.class_number
+        form.reason_for_choosing_school=draft.reason_for_choosing_school
+        form.source_of_school_info = draft.source_of_school_info
+        form.learner_number = draft.number
+        form.school_number = draft.school_number
+        form.lin = draft?.lin
+        student_number.value = draft.number
+        form.adn = draft.adn
+        if(draft?.school_number) {
+        let dataa = {
+    school_number:draft?.school_number,
+  }
+  modeStudyStore.fetchModeOfStudy(dataa)
+}
 
-        // form.mode_of_study_number = draft.mode_of_study_number
+        form.mode_of_study_number = draft.mode_of_study_number
 
-        // if(draft?.school_number) {
-        //   fetchCampuses(draft.school_number)
-        // }
+        if(draft?.school_number) {
+          fetchCampuses(draft.school_number)
+        }
 
-        // if(draft?.preferred_campus_number) {
-        //   fetchClasses(draft?.preferred_campus_number)
-        //   form.campus_curriculum_number = draft?.campus_curriculum_number
-        // }
+        if(draft?.preferred_campus_number) {
+          fetchClasses(draft?.preferred_campus_number)
+          form.campus_curriculum_number = draft?.campus_curriculum_number
+        }
 
-        // if(draft?.campus_curriculum_number){
-        //   fetchCampusLevel(draft?.campus_curriculum_number)
-        //   form.level = draft?.campus_level_number
-        // }
+        if(draft?.campus_curriculum_number){
+          fetchCampusLevel(draft?.campus_curriculum_number)
+          form.level = draft?.campus_level_number
+        }
 
-        // if(draft?.campus_level_number){
-        //   fetchLevelClasses(draft?.campus_level_number)
-        //   form.class_number = draft?.class_number
-        // }
+        if(draft?.campus_level_number){
+          fetchLevelClasses(draft?.campus_level_number)
+          form.class_number = draft?.class_number
+        }
   
         }
       
@@ -295,7 +302,7 @@ watch (
         localStorage.setItem("studentNumber", student_number.value)
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        emit("next", {id:applicationId.value, step:3})
+        emit("next", {id:applicationId.value, step:2})
       }
     }
 )
@@ -316,7 +323,7 @@ watch(
 
 <template>
   <div>
-  <p class="ml-4 mt-4 mb-10" style="text-align: center !important;">DETAILS OF THE LEARNER</p>
+  <p class="ml-4 mt-4 mb-10" style="text-align: center !important;">DETAILS OF THE LEARNER {{resume}}</p>
     <form @submit.prevent="addLearnerDetails" style="margin-top: 15px;">
   
         <div class="row">
@@ -396,6 +403,8 @@ watch(
          
             <div class="mb-2">
               <label class="text-sm"><small>Campus</small>  <span class="star">*</span></label>
+<!--              {{form.preferred_campus_number}}-->
+<!--              {{campusList}}-->
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
@@ -483,9 +492,9 @@ watch(
         
           <div class="row mt-4">
             <div class="col-lg-4">
-              <button type="button" @click="goBack()" class="btn btn-sm btn-success mb-2 mr-4" style="color: white;">
-           <small><i class="bi bi-box-arrow-in-left"></i> Back</small>
-          </button>
+<!--              <button type="button" @click="goBack()" class="btn btn-sm btn-success mb-2 mr-4" style="color: white;">-->
+<!--           <small><i class="bi bi-box-arrow-in-left"></i> Back</small>-->
+<!--          </button>-->
             </div>
             <div class="col-lg-4"></div>
             <div class="col-lg-4">

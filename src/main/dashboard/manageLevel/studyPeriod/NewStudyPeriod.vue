@@ -289,7 +289,8 @@ watch(
         </div>
         <div>
           <label class="text-sm"><small>Next Term Begins</small></label>
-          <!-- {{ nextTermBegins }} -->
+<!--           {{ nextTermBegins }}-->
+<!--          {{form.next_term_begins_on}}-->
           <VueDatePicker
               text-input
               auto-apply

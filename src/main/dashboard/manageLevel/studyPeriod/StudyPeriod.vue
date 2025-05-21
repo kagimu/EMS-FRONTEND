@@ -310,7 +310,7 @@ watch(
            <div class="mb-1">From: <span class="border px-3 rounded-md text-[green]">{{studyPeriod?.study_period_start_date	}}</span></div>
            <div>To: <span class="border px-3 rounded-md text-[green]">{{studyPeriod?.study_period_end_date	}}</span> </div>
            <div class="mt-2" style="cursor: pointer;" @click="configNextTerm(studyPeriod?.study_period_end_date,studyPeriod?.study_period_number)">Next Term Begins: <span class="border px-3 rounded-md text-[orange]">
-            <b>{{studyPeriod?.study_period_end_date}}</b></span> 
+            <b>{{studyPeriod?.next_term_begins	}}</b></span>
             
             <div class="row" v-if="studyPeriodN ==studyPeriod.study_period_number">
               <div class="col-12">
@@ -345,7 +345,7 @@ watch(
             <i
                 style="font-size: 13px;"
                 data-bs-toggle="modal" data-bs-target="#levelModal"
-                class="bi-pencil mr-2 cursor-pointer" @click="editStudyPeriod(studyPeriod,studyPeriod?.study_period_end_date)"></i>
+                class="bi-pencil mr-2 cursor-pointer" @click="editStudyPeriod(studyPeriod,studyPeriod?.next_term_begins)"></i>
             <i
                 style="font-size: 13px;" class="bi-trash cursor-pointer text-[red]"  @click="deleteStudyPeriod(studyPeriod, index)"></i>
             <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">

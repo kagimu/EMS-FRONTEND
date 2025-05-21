@@ -26,21 +26,33 @@
   const applicationN = ref(null)
   const showDirectAdmitModal = ref(false)
   const admissionStore = useAdmissionStore()
+  const showDirectAppmodal = ref(false)
 
   const applicationModal = () =>{
   applicationN.value = ""
+    resumeYes.value = ""
    showAppmodal.value = true
    isStaff.value = "staff"
   }
 
+  const resumeYes = ref(null)
   const resumeApplicationModal = (application_number) =>{
    showAppmodal.value = true
+    resumeYes.value = "resume"
    isStaff.value = "staff"
    applicationN.value = application_number
 
   }
 
-  
+  const resumeDirectApplicationModal = (application_number) =>{
+    showDirectAdmitModal.value = true
+    resumeYes.value = "resume"
+    isStaff.value = "staff"
+    applicationN.value = application_number
+
+  }
+
+
 
   const applicationInfoList = ref( [])
   let errorMessage = ref(null)
@@ -506,6 +518,8 @@ const exportToCSV = () => {
 };
 
 const directAdmit = () => {
+  resumeYes.value = ""
+  applicationN.value = ""
   showDirectAdmitModal.value = true
 }
 
@@ -532,7 +546,7 @@ watch(
 <template>
 
 <AppModal title="Application -> Admission" v-model="showDirectAdmitModal" xl4>
-  <DirectAdmit></DirectAdmit>
+  <DirectAdmit :applicationNumb="applicationN" :applicationMode="isStaff" @closeDialog="closeDialog" :resume="resumeYes"></DirectAdmit>
   </AppModal> 
 
   <AppModal title="Application Details" v-model="showingModal" xl6>
@@ -540,7 +554,7 @@ watch(
   </AppModal>
 
   <AppModal title="New Application" v-model="showAppmodal" xl4>
-    <NewApplication :applicationNumb="applicationN" :applicationMode="isStaff" @closeDialog="closeDialog"></NewApplication>
+    <NewApplication :applicationNumb="applicationN" :applicationMode="isStaff" @closeDialog="closeDialog" :resume="resumeYes"></NewApplication>
   </AppModal>
 
   <div class="row ml-2 mt-3">
@@ -790,12 +804,20 @@ watch(
                           View Details
                           </small>
                           </button>
-                          <button v-if="appList.status === 'DRAFT'" @click="resumeApplicationModal(appList.number)"
+                          <button v-if="appList.status === 'DRAFT' && appList.type === 'NEW'" @click="resumeApplicationModal(appList.number)"
                              class="btn btn-primary btn-sm text-sm" style="border-width: 0px;text-decoration: none;" title="Resume Application">
                             <small>
                             Resume
                             </small>
                           </button>
+
+                         <button v-if="appList.status === 'DRAFT' && appList.type === 'direct-application'" @click="resumeDirectApplicationModal(appList.number)"
+                                 class="btn btn-warning btn-sm text-sm ml-1" style="border-width: 0px;text-decoration: none;" title="Resume Direct Application">
+                           <small>
+                             Resume
+                           </small>
+                         </button>
+
                        </td>
                     </tr>
                  </tbody>

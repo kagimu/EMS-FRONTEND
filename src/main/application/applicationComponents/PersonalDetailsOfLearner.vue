@@ -131,6 +131,8 @@ const addLearnerDetails = () => {
   if(!applicationId.value){
     buttonLoader.value = true
     form.application_number = applicationId.value
+    form.campus_number = form.preferred_campus_number
+    form.type = "NEW"
     applicationStore.newApplicationLeanerDetails(form)
   }else{
     buttonLoader.value = true
@@ -140,6 +142,7 @@ const addLearnerDetails = () => {
     }else{
       localStorage.setItem('campus_curriculum_number', form.campus_curriculum_number)
       form.campus_number = form.preferred_campus_number
+      form.type = "NEW"
       applicationStore.newApplicationLeanerDetails(form)
     }
 
@@ -157,9 +160,8 @@ watch (
         localStorage.setItem("studentNumber", data.data.number)
         buttonLoader.value = false
         // assessmentStore.fetchAssessmentAreaByClass(form.class_number)
-
-        emit("next", {id:applicationId.value, step:3})
-
+        //         alert(JSON.stringify(data.data.application_number))
+        emit("next", {id:data.data.application_number, step:2})
 
         let dataa = {
           page: page.value,
@@ -293,7 +295,7 @@ watch (
         localStorage.setItem("studentNumber", student_number.value)
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        emit("next", {id:applicationId.value, step:3})
+        emit("next", {id:applicationId.value, step:2})
       }
     }
 )

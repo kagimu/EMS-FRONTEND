@@ -28,6 +28,17 @@ const form = reactive({
   alternative_telephone_number:null
 })
 
+const props = defineProps({
+  resume:String
+})
+
+
+onMounted(
+    () => {
+
+    }
+)
+
 const formData = reactive ({
   parent_number:null
 })
@@ -52,7 +63,7 @@ watch (
         let id = data.application_number
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        emit("next", {id:data.application_number, step:2})
+        emit("next", {id:data.application_number, step:3})
       }
     }
 )
@@ -64,7 +75,7 @@ watch (
       if(data){
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        emit("next", {id:data.application_number, step:2})
+        emit("next", {id:data.application_number, step:3})
       }
     }
 )
@@ -82,11 +93,6 @@ watch (
 )
 
 
-onMounted(
-    () => {
-     
-    }
-)
 
 watch(
     () => routerData.currentRoute.value.query.applicationId,
@@ -98,7 +104,7 @@ watch(
     { deep: true }
 )
 
-
+const yesResume = ref(false)
 
 watch (
     () => applicationStore.applicationByIdResponse,
@@ -113,6 +119,10 @@ watch (
         form.email= data?.parent?.email
         form.alternative_email=data?.parent?.alternative_email
         formData.application= data?.parent?.number
+
+        if(data.parent.surname !== "") {
+          yesResume.value = true
+        }
       }
     },
     {deep:true}
@@ -121,15 +131,20 @@ watch (
 const addParentPersonalDetails = () => {
   buttonLoader.value = true
   // emit("next", {step:2})
-  if(!applicationId.value){
-    applicationStore.newApplicationDetails(form)
-  }else {
+  form.application_number = applicationId.value
+  if(applicationId.value && yesResume.value){
     applicationStore.updateParentDetails(applicationId.value,form)
+  }else {
+    form.type = "direct-application"
+    applicationStore.newApplicationDetails(form)
   }
 
 }
 
 
+const goBack = () =>{
+  emit("next", {id:applicationId.value, step:1})
+}
 
 </script>
 <template>
@@ -137,7 +152,7 @@ const addParentPersonalDetails = () => {
 <p class="ml-4 mt-4 mb-1" style="text-align: center !important;">GUARDIAN/PARENT DETAILS
 
 </p>
-
+<!--{{resume}}-->
   <form  @submit.prevent="addParentPersonalDetails" style="margin-top: 12px;">
   <div class="row mx-auto">
     <div class="col-6">
@@ -221,7 +236,12 @@ const addParentPersonalDetails = () => {
     </div>
         <div class="text- mt-2">
           <div class="row">
-            <div class="col-lg-8"></div>
+            <div class="col-lg-4">
+                  <button type="button" @click="goBack()" class="btn btn-sm btn-success mb-2 mr-4" style="color: white;">
+               <small><i class="bi bi-box-arrow-in-left"></i> Back</small>
+              </button>
+            </div>
+            <div class="col-lg-4"></div>
             <div class="col-lg-4">
               <button type="submit" class="btn btn-sm btn-primary mb-2 mr-0" style="color: white;float: right;">
                 <small>Next &nbsp;<i class="bi bi-box-arrow-in-right"></i></small> 
