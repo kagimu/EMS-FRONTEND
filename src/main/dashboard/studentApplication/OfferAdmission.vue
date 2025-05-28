@@ -13,6 +13,7 @@ import { useAdmissionStore } from "@/main/dashboard/studentAdmission/newAdmissio
 
 
 import { useAbility } from '@casl/vue';
+import AdmissionForm from "../studentAdmission/AdmissionForm.vue";
 
 const { can } = useAbility();
 
@@ -56,6 +57,9 @@ const levelList = ref([])
 const classStore = useClassesStore()
 const errM = ref(false)
 const selectedStudentNumber = ref([])
+const openAdmissionLetterModel = ref(false)
+const schoolData = ref([])
+const studentDataInfo = ref([])
 
 
 const showModal = () => {
@@ -86,6 +90,7 @@ let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
   if(defaultSchoolNo){
     school_number.value = defaultSchoolNo
     fetchCampuses(school_number.value)
+    schoolStore.fetchSchoolData(school_number.value)
   }
 
   
@@ -103,6 +108,7 @@ let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
 
     const fetchCampuses = (school) => {
       campusStore.fetchCampuses(school)
+      schoolStore.fetchSchoolData(school)
   }
 
     const getInterviewList = () => {
@@ -441,17 +447,37 @@ watch (
 }
 
 
+const openAdmissionLetter = (list,std) => {
+  openAdmissionLetterModel.value = true
+  studentDataInfo.value = std
+}
+
+
+watch (
+    () => schoolStore.schoolInfoResponse,
+    async (data) => {
+      if(data){
+        schoolData.value = data.data
+      }
+    },
+    {deep:true}
+)
 
   </script>
 
 <template>
   <div>
 
+
+    <AppModal title="Admission Letter" v-model="openAdmissionLetterModel" xl4 class="app-modal">
+      <AdmissionForm :schoolData="schoolData" :studentDataInfo="studentDataInfo"></AdmissionForm>
+    </AppModal>
+
+
     <AppModal title="Admit" v-model="myAdmitModal" xl6 class="app-modal">
       <!-- <AdmitModel :selectedStudentNumber="selectedStudentNumber" class="app-modal"></AdmitModel> -->
       <AdmitModel :selectedStudentNumber="selectedStudentNumber" 
       :interviewInfo="form.interview_number" :admissionDetails="admissionLearnerDetails"  class="app-modal" @closeDialog="closeDialog"></AdmitModel>
-
     </AppModal>
 
 
@@ -662,12 +688,18 @@ watch (
                       <span>{{ listD.actual_score }}</span>
                     </span>
                   </td>
+
                   <td>
                     <!-- <button type="button" @click="removeStudentFromInterview(student.number, student.student_second_name)">
                       <i class="bi bi-trash" style="color: red;"></i>
                     </button> -->
                     <button v-if="student.status !== 'ADMITTED'" class="btn btn-outline-primary ml-6"
                      @click="openAdmitModal(student.number)">Admit   <i class="bi bi-box-arrow-in-right mr-1"></i></button>
+                  </td>
+                  <td>
+                    <button style="font-size:12px"  v-if="student.status === 'ADMITTED'" @click="openAdmissionLetter(listD,student)"
+                             class="btn btn-outline-primary mb-2 btn-sm p-0"><i class="bi bi-printer"></i> <small>Admission Letter
+                    </small></button>
                   </td>
                 </tr>
               </tbody>
