@@ -73,6 +73,29 @@ const viewLessonPlan = (lst) => {
   lessonPlanInfo.value = lst
 }
 
+const deactivateLessonPlan = async (lst) => {
+  const agreed = await confirmationRef.value.confirm("This action will deactivate the Lesson plan and cannot be reversed. Are you sure you want to continue?");
+  if (agreed) {
+    await deactivateLessonPlanStatus(lst?.number)
+  }
+}
+
+const  deactivateLessonPlanStatus = async (data) => {
+  return await api.patch("main/lesson-plan/invalidate/"+data)
+      .then((response) => {
+        if(response && response.data){
+          filterSchemeSubject()
+          notificationStore.successToast("Success", response.data.message)
+        }
+      })
+      .catch((response) => {
+        if(response && response.response){
+          notificationStore.errorToast("Error",response.response.data.message)
+        }
+      })
+}
+
+
 const addSchemeOfWork = () => {
   curriculumDialog.value = true
 }
@@ -616,7 +639,7 @@ watch(
                       {{lsn.code+". "+lsn.concept_name}}
                     </div>
 
-                    <div class="flex justify-between mt-4 mb-2" style="width: 350px;">
+                    <div class="flex mt-4 mb-2" style="width: 350px;">
                       <button
                           type="button"
                           class="btn btn-sm  btn-primary mr-2 m-0 py-0"
@@ -626,9 +649,20 @@ watch(
                         <small class="m-0 p-0">Add lesson plan [ {{lst.concept_count}} ]</small>
                       </button>
 
-                      <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="viewLessonPlan(lst)">
-                        <small class="m-0 p-0">View lesson plan</small>
+
+                      <span class="mx-1">
+                          <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="viewLessonPlan(lst)">
+                            <small class="m-0 p-0">View lesson plan</small>
+                          </button>
+                      </span>
+
+
+                      <span>
+                        <button type="button"  class="btn btn-sm  btn-danger mr-2 m-0 py-0"  @click="deactivateLessonPlan(lst)">
+                        <small class="m-0 p-0">Deactivate lesson plan</small>
                       </button>
+                    </span>
+
                     </div>
                   </div>
 
