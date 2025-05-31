@@ -657,11 +657,11 @@ watch(
                       </span>
 
 
-                      <span>
-                        <button type="button"  class="btn btn-sm  btn-danger mr-2 m-0 py-0"  @click="deactivateLessonPlan(lst)">
-                        <small class="m-0 p-0">Deactivate lesson plan</small>
-                      </button>
-                    </span>
+<!--                      <span>-->
+<!--                        <button type="button"  class="btn btn-sm  btn-danger mr-2 m-0 py-0"  @click="deactivateLessonPlan(lst)">-->
+<!--                        <small class="m-0 p-0">Deactivate lesson plan</small>-->
+<!--                      </button>-->
+<!--                    </span>-->
 
                     </div>
                   </div>

@@ -378,9 +378,29 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
         <td>{{ list?.paid_amount?.toLocaleString()}}</td>
         <td>{{list?.balance?.toLocaleString()}}</td>
         <td>
-          <div :class="{'bg-green-700':list?.status==='PAID', 'bg-red-700':list?.status==='NOT_PAID', 'bg-purple-700':list?.status==='PARTIALLY_PAID'}" class="text-center text-white rounded-md">
-            {{ list?.status?.replace("_", " ")?.toLowerCase() }}
+<!--          <div :class="{'bg-green-700':list?.status==='PAID', 'bg-red-700':list?.status==='NOT_PAID', 'bg-purple-700':list?.status==='PARTIALLY_PAID'}"-->
+<!--               class="text-center text-black rounded-md">-->
+<!--            {{ list?.status?.replace("_", " ")?.toLowerCase() }}-->
+<!--          </div>-->
+
+          <div
+              :class="[
+    'inline-block text-xs font-semibold px-3 py-1 rounded-full border',
+    list?.status === 'PAID'
+      ? 'bg-green-100 text-green-700 border-green-300'
+      : list?.status === 'NOT_PAID'
+      ? 'bg-red-100 text-red-700 border-red-300'
+      : list?.status === 'PARTIALLY_PAID'
+      ? 'bg-yellow-100 text-yellow-700 border-yellow-300'
+      : list?.status === 'CANCELLED'
+      ? 'bg-gray-100 text-red-600 border-red-300'
+      : 'bg-gray-100 text-gray-600 border-gray-300'
+  ]"
+          >
+            {{ list?.status?.replace('_', ' ')?.toLowerCase() }}
           </div>
+
+
         </td>
           <td>{{ list?.due_date }}</td>
           <td>{{ list?.date }}</td>

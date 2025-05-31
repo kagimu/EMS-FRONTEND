@@ -36,7 +36,7 @@ watch(
     }
 )
 
-const form = ref({
+const form = reactive({
   blood_type_group:null,
   allergies:null,
   existing_condition:null,
@@ -77,7 +77,7 @@ const  fetchMedicalData = async (data) => {
         buttonLoader.value = false
         // notificationStore.successToast("Success",response.data.message)
         medicalRecordsData.value = response.data.data
-        form.blood_type_group = response.data.data.blood_type_group
+        form.blood_type_group = medicalRecordsData.value.blood_type_group
             form.allergies = response.data.data.allergies
             form.existing_condition = response.data.data.existing_condition
             form.regular_medication = response.data.data.regular_medication
@@ -92,10 +92,43 @@ const  fetchMedicalData = async (data) => {
       })
 }
 
+const medicalFields = {
+  blood_type_group: "Blood Type",
+  allergies: "Allergies",
+  existing_condition: "Existing Condition",
+  regular_medication: "Regular Medication",
+  doctor_name: "Doctor's Name",
+  doctor_phone: "Doctor's Phone"
+};
+
 </script>
 <template>
-  <div>
-{{medicalRecordsData}}
+
+
+  <section class="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-md space-y-10" v-if="medicalRecordsData.length !== 0">
+    <!-- Medical Records -->
+    <div>
+      <div class="flex items-center justify-between mb-6 border-b pb-2">
+        <h3 class="text-xs font-semibold text-gray-800">Medical Records</h3>
+        <button class="text-xs text-white bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-md shadow-sm transition">
+          Update
+        </button>
+      </div>
+      <div class="overflow-x-auto bg-gray-50 border rounded-xl p-5 shadow-sm">
+        <table class="min-w-full text-sm text-left text-gray-700">
+          <tbody>
+          <tr v-for="(label, key) in medicalFields" :key="key" class="border-b">
+            <th class="py-3 pr-6 font-medium text-gray-600 w-1/3">{{ label }}</th>
+            <td class="py-3 text-gray-800">{{ medicalRecordsData[key] || 'N/A' }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+
+  <div v-else>
     <p class="ml-4 mt-4 mb-10"> MEDICAL RECORDS </p>
 
     <form @submit.prevent="addMedicalRecords">
@@ -106,7 +139,7 @@ const  fetchMedicalData = async (data) => {
           <div>
             <div class="mb-2">
               <label class="text-sm">Blood Type/Group</label>
-              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.blood_type_group" required class="form-control form-control-sm">
+              <input type="text" style="outline: none 0 !important; box-shadow: none;"  v-model="form.blood_type_group" required class="form-control form-control-sm">
             </div>
 
             <div class="mb-2">
@@ -155,12 +188,19 @@ const  fetchMedicalData = async (data) => {
           Back
         </button>-->
 
-        <button type="submit" class="btn btn-primary mb-2 mr-4">
-          Next
+        <button type="submit" class="btn btn-primary mb-2 mr-4" v-if="medicalRecordsData.length === 0">
+          Submit
           <span class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
           <span class="visually-hidden">Loading...</span>
         </span>
         </button>
+        <button type="submit" class="btn btn-secondary mb-2 mr-4" v-else>
+          Update
+          <span class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
+          <span class="visually-hidden">Loading...</span>
+        </span>
+        </button>
+
 
       </div>
 

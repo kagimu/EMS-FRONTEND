@@ -196,7 +196,7 @@ const  saveFamilyStructure = async (data) => {
 
 
 const  fetchFamilyStructure = async (data) => {
-  await api.get("main/students/family-structure/:"+data)
+  await api.get("main/students/family-structure/"+data)
     .then((response) => {
       buttonLoader.value = false
       // notificationStore.successToast("Success",response.data.message)
@@ -208,12 +208,72 @@ const  fetchFamilyStructure = async (data) => {
       }
     })
 }
+
+// Label map for clean looping
+const familyFields = {
+  surname: "Surname",
+  other_name: "Other Name",
+  place_of_employment: "Place of Employment",
+  physical_contact_address: "Address",
+  contacts: "Contacts",
+};
 </script>
 
 
 <template>
-  {{familyStructureData}}
-  <div>
+<!--  {{familyStructureData}}-->
+
+  <section class="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-md space-y-10" v-if="familyStructureData.length !== 0">
+
+    <!-- Family Members -->
+    <div>
+      <div class="flex items-center justify-between mb-6 border-b pb-2">
+        <h3 class="text-xs font-semibold text-gray-800">Family Members</h3>
+        <button class="text-xs text-white bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-md shadow-sm transition">
+          Update
+        </button>
+      </div>
+      <div
+          v-for="member in familyStructureData.family_members"
+          :key="member.number"
+          class="border border-gray-200 rounded-xl p-5 mb-6 shadow-sm bg-gray-50"
+      >
+        <!-- Relationship Label Highlight -->
+        <div class="mb-4">
+        <span
+            class="inline-block bg-blue-100 text-blue-800 text-xs font-bold uppercase tracking-wide rounded-full px-3 py-1"
+        >
+          {{ member.relationship }}
+        </span>
+        </div>
+
+        <!-- Member Details -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700">
+          <div v-for="(label, key) in familyFields" :key="key" v-if="key !== 'relationship'">
+            <span class="block font-medium text-gray-600">{{ label }}:</span>
+            <span class="text-gray-800">{{ member[key] || 'N/A' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Languages -->
+    <div>
+      <h3 class="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">Languages</h3>
+      <ul class="space-y-2 text-sm text-gray-700">
+        <li
+            v-for="(lang, index) in familyStructureData.languages"
+            :key="index"
+            class="bg-gray-50 border rounded-lg px-4 py-2"
+        >
+          <span class="font-medium text-gray-600">Code:</span> {{ lang.Code }} —
+          <span class="font-medium text-gray-600">Name:</span> {{ lang.Name || 'N/A' }}
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <div v-else>
     <p class="ml-4 mt-4 mb-10">FAMILY STRUCTURE</p>
 
     <form @submit.prevent="nextStep">
