@@ -40,21 +40,43 @@ const actionType = ref(null)
 const cateringStore = useCateringStore()
 const errorMessage  = ref(null)
 const studentProfileData  = ref(null)
-
 const uploadDialog = ref( false)
-
 const studentCateringData = ref([])
+const studentProfileDataInLocalStorage = ref(null)
+
 
 onMounted(
-    async () => {
-      await applicationStore.fetchStudent(student_number)
+     () => {
+      getStudentProfileInfo()
     } )
+
+const getStudentProfileInfo = () => {
+  if(localStorage.getItem("studentProfileData")) {
+    studentProfileDataInLocalStorage.value = JSON.parse(localStorage.getItem("studentProfileData"))
+    studentProfileData.value = JSON.parse(localStorage.getItem("studentProfileData"))
+    studentName.value = studentProfileDataInLocalStorage.value.surname + " " + studentProfileDataInLocalStorage.value.second_name+" "+ studentProfileDataInLocalStorage.value.other_name
+    dob.value = studentProfileDataInLocalStorage.value.date_of_birth
+    className.value = studentProfileDataInLocalStorage.value.current_enrollment.class
+    studyPeriod.value = studentProfileDataInLocalStorage.value.current_enrollment.study_period
+    stream.value = studentProfileDataInLocalStorage.value.current_enrollment.stream
+    status.value = studentProfileDataInLocalStorage.value.current_enrollment.status
+    campus.value = studentProfileDataInLocalStorage.value.current_enrollment.campus
+    school.value = studentProfileDataInLocalStorage.value.current_enrollment.school
+    academicYear.value = studentProfileDataInLocalStorage.value.current_enrollment.academic_year
+    studentPhoto.value = studentProfileDataInLocalStorage.value.photo
+    studentCateringData.value = localStorage.getItem("feedingGroupName")
+
+  }else {
+     applicationStore.fetchStudent(student_number)
+  }
+}
 
 watch (
     () => applicationStore.studentDataResponse,
     async (data) => {
       if (data) {
         studentProfileData.value = data
+        localStorage.setItem("studentProfileData", JSON.stringify(data))
         studentName.value = data.surname + " " + data.second_name+" "+ data.other_name
         dob.value = data.date_of_birth
         className.value = data.current_enrollment.class
@@ -65,7 +87,7 @@ watch (
         school.value = data.current_enrollment.school
         academicYear.value = data.current_enrollment.academic_year
         studentPhoto.value = data.photo
-        await cateringStore.FeedingGroupByUserId(data.user_number)
+         cateringStore.FeedingGroupByUserId(data.user_number)
       }
     },
     { deep: true }
@@ -77,6 +99,7 @@ watch (
     async (data) => {
       if (data) {
         studentCateringData.value = data.data.group_name
+        localStorage.setItem("feedingGroupName",studentCateringData.value)
 
       }
     },
@@ -89,7 +112,6 @@ const terminateEnrollment = (studentNo) =>{
   studentNum.value = studentNo
   actionType.value = "terminate"
   showActionDialog.value=true
-
 }
 
 
@@ -137,14 +159,14 @@ const itemMenu = ref([
     text:"Report Cards",
     value:"report-cards"
   },
-  {
-    text:"Academic Calendar",
-    value:"academic-year"
-  },
-  {
-    text:"Meals",
-    value:"meals"
-  },
+  // {
+  //   text:"Academic Calendar",
+  //   value:"academic-year"
+  // },
+  // {
+  //   text:"Meals",
+  //   value:"meals"
+  // },
   {
     text:"Narrative Report",
     value:"narrative"
@@ -264,6 +286,7 @@ watch (
                   @click="updateProfile">
                 <i class="cursor-pointer mx-1 text-xs fa-solid fa-pencil"></i> Update Profile
               </button>
+
             </div>
 
             <div class="mb-3">

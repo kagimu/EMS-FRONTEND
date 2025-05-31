@@ -31,9 +31,7 @@
    const curriculumList = ref([])
    const levelList = ref([])
    
- 
- 
-   
+
    const form = reactive({
    study_period_number: "",
    class_number: "",
@@ -83,8 +81,7 @@
   if(defaultStudyPeriodNumber){
     form.study_period_number = defaultStudyPeriodNumber
   }
-  
-  
+
   if(defaultAccademicYear){
     form.academic_year_number = defaultAccademicYear
    

@@ -1,16 +1,40 @@
 <script setup>
 
-import {reactive, ref} from "vue";
+import {reactive, ref, onMounted, watch} from "vue";
 import api from "@/config/api.js";
 import useNotificationStore from "@/composables/useNotification.js";
 
 const buttonLoader = ref(false)
 const emit = defineEmits()
 const notificationStore  = useNotificationStore()
+const medicalRecordsData = ref([])
 
 const props = defineProps({
   studentProfileData:{},
 })
+
+
+onMounted(() => {
+  getStudentNumber()
+} )
+
+
+const getStudentNumber = () => {
+  let draftData = props.studentProfileData?.current_enrollment?.student_number
+  if(draftData) {
+    fetchMedicalData(draftData)
+  }
+}
+
+
+watch(
+    () => props.studentProfileData,
+    async (data) => {
+      if(data){
+        getStudentNumber()
+      }
+    }
+)
 
 const form = ref({
   blood_type_group:null,
@@ -37,9 +61,6 @@ const  saveMedicalRecords = async (data) => {
       })
       .catch((error) => {
         if(error && error.response){
-          // errorMessage.value = error.response.data.message
-
-          buttonLoader.value = false
           notificationStore.errorToast("Error",error.response.data.message)
         }
       })
@@ -49,10 +70,32 @@ const  saveMedicalRecords = async (data) => {
   emit("next", 3 )
 }*/
 
+
+const  fetchMedicalData = async (data) => {
+  await api.get("main/students/medical-records/"+data)
+      .then((response) => {
+        buttonLoader.value = false
+        // notificationStore.successToast("Success",response.data.message)
+        medicalRecordsData.value = response.data.data
+        form.blood_type_group = response.data.data.blood_type_group
+            form.allergies = response.data.data.allergies
+            form.existing_condition = response.data.data.existing_condition
+            form.regular_medication = response.data.data.regular_medication
+            form.doctor_name = response.data.data.doctor_name
+            form.doctor_phone = response.data.data.doctor_phone
+
+      })
+      .catch((error) => {
+        if(error && error.response){
+          notificationStore.errorToast("Error",error.response.data.message)
+        }
+      })
+}
+
 </script>
 <template>
   <div>
-
+{{medicalRecordsData}}
     <p class="ml-4 mt-4 mb-10"> MEDICAL RECORDS </p>
 
     <form @submit.prevent="addMedicalRecords">

@@ -1,6 +1,6 @@
 <script setup>
 
-import {reactive, ref} from "vue";
+import {reactive, ref,onMounted,watch} from "vue";
 import api from "@/config/api.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import useCommonsStore from "@/composables/useCommons.js";
@@ -9,6 +9,7 @@ const buttonLoader = ref(false)
 const emit = defineEmits()
 const commons = useCommonsStore()
 const notificationStore  = useNotificationStore()
+const emergencyData = ref([])
 
 const form = ref({
   full_name_of_person_to_be_contacted_first_in_case_of_emergency:null,
@@ -24,6 +25,28 @@ const props = defineProps({
 })
 
 
+onMounted(() => {
+  getStudentNumber()
+} )
+
+
+const getStudentNumber = () => {
+  let draftData = props.studentProfileData?.current_enrollment?.student_number
+  if(draftData) {
+    fetchEmergencyData(draftData)
+  }
+}
+
+
+watch(
+    () => props.studentProfileData,
+    async (data) => {
+      if(data){
+        getStudentNumber()
+      }
+    }
+)
+
 const addEmergencyInformation = () => {
   // emit("next", 6)
   buttonLoader.value = true
@@ -36,10 +59,8 @@ const addEmergencyInformation = () => {
 }*/
 
 
-
-
 const  saveEmergencyInformation = async (data) => {
-  await api.post("main/students/medical-records", data)
+  await api.post("main/students/emergency-information", data)
       .then((response) => {
         buttonLoader.value = false
         // levelResponse.value = response.data
@@ -54,8 +75,6 @@ const  saveEmergencyInformation = async (data) => {
         }
       })
 }
-
-
 const handleInput3 = () => {
   if (form.value.telephone_contact_of_first_person.length > 15) {
     form.value.telephone_contact_of_first_person = form.value.telephone_contact_of_first_person.slice(0, 15);
@@ -75,11 +94,25 @@ const handleInput = () => {
 }
 
 
+const  fetchEmergencyData = async (data) => {
+  await api.get("main/students/emergency-information/:"+data)
+      .then((response) => {
+        buttonLoader.value = false
+        // notificationStore.successToast("Success",response.data.message)
+        emergencyData.value = response.data.data
+      })
+      .catch((error) => {
+        if(error && error.response){
+          notificationStore.errorToast("Error",error.response.data.message)
+        }
+      })
+}
+
 
 </script>
 <template>
   <div>
-
+{{emergencyData}}
     <p class="ml-4 mt-4 mb-10"> EMERGENCY INFORMATION </p>
 
     <form @submit.prevent="addEmergencyInformation">

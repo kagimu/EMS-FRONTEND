@@ -10,6 +10,7 @@ import ConfirmationModal from "@/components/ConfirmationModal.vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import EditLessonPlanReference from "@/main/dashboard/curriculum/schemeOfWork/EditLessonPlanReference.vue";
 
+
 const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
 
@@ -23,6 +24,8 @@ const deletionLoader = ref(undefined)
 const referenceInfo = ref(null)
 
 const schemeOfWorkStore = useSchemeOfWorkStore()
+const lessonPlanNumber = ref(null)
+const planStatus = ref(null)
 
 
 const props = defineProps({
@@ -66,6 +69,9 @@ watch(
     async (data) => {
       if (data) {
         lessonPlanDetailsInfo.value = data.data
+        lessonPlanNumber.value = data.data.number
+        planStatus.value = data.data.status
+
       }
     },
     {deep: true}
@@ -126,7 +132,6 @@ const  deleteNarrativeReport = async (number) => {
   await api.delete("main/lesson-plan/delete-reference/"+number)
       .then((response) => {
         if(response){
-          deletionLoader.value = undefined
           notificationStore.successToast("Success",response.message)
           fetchLessonInfo()
         }
@@ -135,21 +140,53 @@ const  deleteNarrativeReport = async (number) => {
       .catch((error) => {
         if(error && error.response) {
           notificationStore.errorToast("Error",error.response.data.message)
-          deletionLoader.value = undefined
         }
       });
 }
 
+const deactivateLessonPlan = async () => {
+  const agreed = await confirmationRef.value.confirm("This action will deactivate the Lesson plan and cannot be reversed. Are you sure you want to continue?");
+  if (agreed) {
+    await deactivateLessonPlanStatus(lessonPlanNumber.value)
+  }
+}
+
+
+
+const  deactivateLessonPlanStatus = async (data) => {
+  return await api.patch("main/lesson-plan/invalidate/"+data)
+      .then((response) => {
+        if(response && response.data){
+          filterSchemeSubject()
+          notificationStore.successToast("Success", response.data.message)
+        }
+      })
+      .catch((response) => {
+        if(response && response.response){
+          notificationStore.errorToast("Error",response.response.data.message)
+        }
+      })
+}
 
 
 </script>
 
 <template>
+
 <div class="text-sm">
   <ConfirmationModal removeBorder="remove" ref="confirmationRef"></ConfirmationModal>
 
-  <div class="flex justify-content-between" style="border-bottom: 1px solid #dee2e6; padding-bottom: 15px; margin-bottom: 25px;">
+  <div class="flex justify-content-end" style="border-bottom: 1px solid #dee2e6; padding-bottom: 15px; margin-bottom: 25px;">
     &nbsp;
+<span v-if="planStatus !== 'INACTIVE'">
+<button type="button"  class="btn btn-sm  btn-danger mr-2 m-0 py-0"  @click="deactivateLessonPlan">
+<small class="m-0 p-0">Deactivate lesson plan</small>
+</button>
+</span>
+    <span v-else class="m-2">
+      <span class="alert alert-danger p-1">This Lesson Plan was Invalidated</span>
+    </span>
+
   <button type="button"  class="btn btn-sm buttonStyle btn-success mr-2" style="margin-right: 5px;"  @click="exportLessonPlanPdf">
     <i style="font-size: 15px;"  class="bi-file-earmark-pdf mr-2"></i>
     Export PDF
