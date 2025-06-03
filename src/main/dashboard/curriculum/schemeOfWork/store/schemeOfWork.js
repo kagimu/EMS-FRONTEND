@@ -24,7 +24,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     const lessonsResponse = ref(null)
 
     async function newSchemeOfWorkData(data) {
-        return await api.post("main/new-scheme-of-work", data)
+        return await api.post("main/scheme-of-work", data)
             .then((response) => {
                 newSchemeOfWorkResponse.value = response.data
             })
@@ -36,7 +36,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     }
 
     async function updateSchemeOfWorkData(data) {
-        return await api.post("main/update-scheme-of-work", data)
+        return await api.put("main/scheme-of-work", data)
             .then((response) => {
                 updateSchemeOfWorkResponse.value = response.data
             })
