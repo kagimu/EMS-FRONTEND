@@ -3,10 +3,9 @@ import {onMounted, ref, watch} from "vue";
 import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
 import useCommonsStore from "@/composables/useCommons.js";
 import ImportLessonPlan from "@/main/dashboard/curriculum/schemeOfWork/ImportLessonPlan.vue";
-import {useSubtopicStore} from "@/main/dashboard/curriculum/curriculumSetup/subTopic/store/subTopic.js";
 import useNotificationStore from "@/composables/useNotification.js"
 
-const subtopicStore = useSubtopicStore()
+
 const  notificationStore  = useNotificationStore()
 const schemeOfWorkStore = useSchemeOfWorkStore()
 const conceptListData = ref([])
@@ -155,30 +154,6 @@ watch(
     async (data) => {
       if (data) {
         conceptListData.value = data.data
-
-     /*   let obj = {}
-        let arr = []
-        if(conceptInfo && (conceptInfo.length > 0)) {
-          form.value = []
-          conceptInfo.forEach((lst, index) => {
-            obj = {
-              number: "",
-              code: (index + 1),
-              lesson_plan_concept_number: lst.number,
-              concept_name: lst.name,
-              steps: [{
-                number:"",
-                code: "1",
-                step: ""
-              }]
-            }
-            arr.push(obj)
-          })
-        }*/
-
-        // form.value = arr
-
-
       }
     },
     {deep: true}
@@ -189,6 +164,7 @@ watch(
     async (data) => {
       if (data) {
         loader.value = false
+
       }
     },
     {deep: true}

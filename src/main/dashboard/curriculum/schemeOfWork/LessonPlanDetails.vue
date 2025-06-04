@@ -157,7 +157,6 @@ const  deactivateLessonPlanStatus = async (data) => {
   return await api.patch("main/lesson-plan/invalidate/"+data)
       .then((response) => {
         if(response && response.data){
-          filterSchemeSubject()
           notificationStore.successToast("Success", response.data.message)
         }
       })
@@ -177,15 +176,16 @@ const  deactivateLessonPlanStatus = async (data) => {
   <ConfirmationModal removeBorder="remove" ref="confirmationRef"></ConfirmationModal>
 
   <div class="flex justify-content-end" style="border-bottom: 1px solid #dee2e6; padding-bottom: 15px; margin-bottom: 25px;">
-    &nbsp;
+
 <span v-if="planStatus !== 'INACTIVE'">
 <button type="button"  class="btn btn-sm  btn-danger mr-2 m-0 py-0"  @click="deactivateLessonPlan">
 <small class="m-0 p-0">Deactivate lesson plan</small>
 </button>
 </span>
-    <span v-else class="m-2">
-      <span class="alert alert-danger p-1">This Lesson Plan was Invalidated</span>
-    </span>
+
+<span v-else class="m-2">
+  <span class="alert alert-danger p-1">This Lesson Plan was Invalidated</span>
+</span>
 
   <button type="button"  class="btn btn-sm buttonStyle btn-success mr-2" style="margin-right: 5px;"  @click="exportLessonPlanPdf">
     <i style="font-size: 15px;"  class="bi-file-earmark-pdf mr-2"></i>

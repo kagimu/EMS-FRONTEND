@@ -295,6 +295,7 @@ watch(
     () => schemeOfWorkStore.updateSchemeOfWorkResponse,
     async (data) => {
       if(data){
+        notificationStore.successToast("Success",data.message)
         if(selectedClass.value) {
           let data = {
             academic_year_number:academic_year_number.value,
@@ -303,7 +304,6 @@ watch(
           }
           await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
         }
-        notificationStore.successToast("Success",data.message)
       }
     },
     {deep:true}
