@@ -14,6 +14,7 @@
    import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
    import useCommonsStore from "@/composables/useCommons.js";
     import DirectAdmit from "@/main/dashboard/studentApplication/DirectAdmit.vue"
+   import CompleteStudentProfile from "@/main/dashboard/studentAdmission/CompleteStudentProfile.vue";
    
    const commons = useCommonsStore()
    import { useAbility } from '@casl/vue';
@@ -434,10 +435,23 @@ watch(
     {deep:true}
 )
 
+   const showCompleteModal = ref(false)
+
+   const showProfileModal = (studentNumber,admissionNumber,adm) => {
+          showCompleteModal.value = true
+   }
+
 </script>
 <template>
 
-   <AppModal title="Application -> Admission" v-model="showDirectAdmitModal" xl4>
+
+
+  <AppModal title="Complete Student Profile" v-model="showCompleteModal" xl4>
+    <CompleteStudentProfile></CompleteStudentProfile>
+  </AppModal>
+
+
+  <AppModal title="Application -> Admission" v-model="showDirectAdmitModal" xl4>
   <DirectAdmit></DirectAdmit>
   </AppModal> 
 
@@ -644,7 +658,15 @@ watch(
                                              <i class="bi-person-circle text-[45px] text-[#8a8888]"></i>
                                           </div>
                                        </div>
-                                       <div class="ml-2">{{ adm.student.surname + " " + adm.student.second_name+ " " + adm.student.other_name }}</div>
+                                       <div class="ml-2">{{ adm.student.surname + " " + adm.student.second_name+ " " + adm.student.other_name }}
+                                         <button  v-if="adm.status !== 'Enrolled'"
+                                                  @click="showProfileModal(adm.student.number,adm.admission_number,adm)"
+                                                  type="button" class="btn btn-sm btn-outline-primary"
+                                                  >
+                                           <small class="font-normal flex text-xs">Complete Profile <i class="bi bi-person ml-1"></i></small>
+                                         </button>
+                                       </div>
+
                                     </div>
                                  </td>
                                  <td>{{ adm.campus.name }}</td>
@@ -657,6 +679,8 @@ watch(
                                       class="border rounded-md  text-center text-xs px-3 py-[1px]">
                                     {{ adm.status }}
                                   </div>
+
+
                                  </td>
                                  <td>
                                     <div class="text-center">
