@@ -47,8 +47,8 @@ const form = reactive({
 
 const addMedicalRecords = () => {
   buttonLoader.value = true
-  form.value.student_number = props.studentProfileData?.current_enrollment?.student_number
-  saveMedicalRecords(form.value)
+  form.student_number = props.studentProfileData?.current_enrollment?.student_number
+  saveMedicalRecords(form)
   // emit("next", 5)
 }
 
@@ -58,6 +58,7 @@ const  saveMedicalRecords = async (data) => {
         buttonLoader.value = false
         // levelResponse.value = response.data
         notificationStore.successToast("Success",response.data.message)
+        emit("next", {step:3})
       })
       .catch((error) => {
         if(error && error.response){
