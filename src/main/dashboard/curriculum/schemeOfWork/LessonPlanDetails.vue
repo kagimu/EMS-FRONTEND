@@ -158,6 +158,7 @@ const  deactivateLessonPlanStatus = async (data) => {
       .then((response) => {
         if(response && response.data){
           notificationStore.successToast("Success", response.data.message)
+          planStatus.value = "INACTIVE"
         }
       })
       .catch((response) => {

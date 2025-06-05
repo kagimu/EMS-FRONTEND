@@ -156,14 +156,14 @@ watch (
               <div class="row mt-3">
                 <div class="col-lg-6">
                   <div class="mb-2">
-                    <div class="text-[#76787a] text-sm">Surname</div>
+                    <div class="text-[#76787a] text-sm">Surname <span class="must">*</span></div>
                     <input type="text" v-model="form.first_name" required class="form-control shadow-none">
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="mb-2">
-                    <div class="text-[#76787a] text-sm">Second Name</div>
-                    <input type="text" v-model="form.last_name" class="form-control shadow-none">
+                    <div class="text-[#76787a] text-sm">Second Name <span class="must">*</span></div>
+                    <input type="text" v-model="form.second_name" class="form-control shadow-none">
                   </div>
                 </div>
               </div>
@@ -171,12 +171,12 @@ watch (
                 <div class="col-lg-6">
                   <div class="mb-2">
                     <div class="text-[#76787a] text-sm">Other name</div>
-                    <input type="text" v-model="form.second_name" class="form-control shadow-none">
+                    <input type="text" v-model="form.last_name" class="form-control shadow-none">
               </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="mb-2">
-                        <div class="text-[#76787a] text-sm">Gender</div>
+                        <div class="text-[#76787a] text-sm">Gender <span class="must">*</span></div>
                         <select class="form-control form-select shadow-none" v-model="form.gender" aria-label="Default select example">
                           <option disabled value="">--Select Gender--</option>
                           <option value="Male">Male</option>
@@ -188,7 +188,7 @@ watch (
 
 
               <div class="mb-2">
-                <div class="text-[#76787a] text-sm">Phone</div>
+                <div class="text-[#76787a] text-sm">Phone <span class="must">*</span></div>
                 <div class="input-group">
                   <vue-tel-input
                       @input="handleInput"
@@ -204,7 +204,7 @@ watch (
               </div>
 
               <div class="mb-10">
-                <div class="text-[#76787a] text-sm">Email</div>
+                <div class="text-[#76787a] text-sm">Email <span class="must">*</span></div>
                 <input type="email" v-model="form.email" required class="form-control shadow-none">
               </div>
 
@@ -237,5 +237,7 @@ watch (
 
 
 <style scoped>
-
+.must {
+  color:red;
+}
 </style>
