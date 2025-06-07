@@ -383,10 +383,10 @@ const printContent = () => {
                   <td>{{ payment.amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")  }}</td>
                   <td v-if="can('cancel_payment', 'general')">
                     <button @click="cancelInvoicePayment(payment.payment_number)" class="btn btn-warning btn-sm mb-2 mr-2">
-                      <small><i class="bi bi-cancel">&nbsp;Cancel</i></small>
+                      <small><i class="bi bi-x">&nbsp;Cancel</i></small>
                     </button>
                     <button v-if="can('delete_payment', 'general')" @click="deleteInvoicePayment(payment.payment_number)" class="btn btn-danger btn-sm mb-2">
-                      <small><i class="bi bi-trash"></i></small>
+                      <small><i class="bi bi-trash"></i> Delete</small>
                     </button>
                   </td>
                 </tr>

@@ -4,75 +4,40 @@ import {useApplicationStore} from "@/main/application/applicationComponents/stor
 import FamilyRecords from "@/main/dashboard/studentAdmission/newAdmissionComponents/FamilyRecords.vue";
 import MedicalRecords from "@/main/dashboard/studentAdmission/newAdmissionComponents/MedicalRecords.vue";
 import EmergencyInformation from "@/main/dashboard/studentAdmission/newAdmissionComponents/EmergencyInformation.vue";
+import FamilyRecordsForm from "./newAdmissionComponents/FamilyRecordsForm.vue";
 
-const applicationStore= useApplicationStore()
 const step = ref(1)
-const isStaff = ref(null)
-const application_number = ref(null)
-const resumeYes = ref(null)
+const emit = defineEmits(["closeDialog"]);
+const studentNo = ref(null)
 
 const props = defineProps({
-  applicationMode:String,
-  applicationNumb:String,
-  resume:String
+  studentNumber:String
 })
 
-const emit = defineEmits(["closeDialog"]);
+
 
 onMounted(() => {
-      if (localStorage.getItem("application-id")) {
-        let applicationId = localStorage.getItem("application-id")
-        fetchApplicationData(applicationId)
-      }else if(props.applicationNumb) {
-        checkApplication()
-        localStorage.setItem("application-id", props.applicationNumb)
-      }
+  getStudentNumber()
+    })
 
-      if(props.applicationMode){
-        isStaff.value = "isStaffApplying"
-      }
+const getStudentNumber = () => {
+  if (props.studentNumber) {
+   studentNo.value = props.studentNumber
+  }
+}
 
-      if(props.resume){
-        resumeYes.value = props.resume
-      }
-    }
-)
-
-watch (
-    () => props.applicationNumb,
+watch(
+    () => props.studentNumber,
     async (data) => {
       if(data){
-        checkApplication()
-        localStorage.setItem("application-id", props.applicationNumb)
+        getStudentNumber()
       }
     }
 )
-
-const checkApplication = () => {
-  if(props.applicationNumb){
-    fetchApplicationData(props.applicationNumb)
-  }
-}
-
-const nextPage = (data) =>{
-  if(data) {
-    step.value = data?.step
-    if(data?.id) {
-      fetchApplicationData(data?.id)
-    }
-  }
-}
-
-const fetchApplicationData = (applicationNumber) => {
-
-  if(applicationNumber){
-    applicationStore.fetchApplicationById(applicationNumber)
-  }
-}
-
 
 </script>
 <template>
+<!--  {{studentNumber}}-->
   <div class="temp">
 
     <div class="row">
@@ -113,9 +78,10 @@ const fetchApplicationData = (applicationNumber) => {
                     <div class="mb-10">
 
                       <div v-show="step === 1">
-                        <family-records  v-on:next="nextPage">
+                        <family-records  v-on:next="nextPage"
+                                         :studentNumber="studentNo"
+                        >
                         </family-records>
-
                       </div>
 
                       <div v-show="step === 2">
