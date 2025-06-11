@@ -9,6 +9,7 @@ export const useNarrativeStore = defineStore("narrative", () => {
     let updateNarrativeReportResponse = ref(null)
     let updateNarrativeResponse = ref(null)
     let deleteNarrativeResponse = ref(null)
+    let printNarrativeResponse = ref(null)
 
     async function newNarrativeSchedule(data) {
         return await api.post("main/report-settings/narrative/scheduled", data)
@@ -90,6 +91,28 @@ export const useNarrativeStore = defineStore("narrative", () => {
             })
     }
 
+    async function printPreviewNarrativeReport(data) {
+        let student_number = data?.student_number ?? ""
+        let assessment_area_number = data?.assessment_area_number ?? ""
+        let study_period_number = data?.study_period_number ?? ""
+        let campus_class_number = data?.campus_class_number ?? ""
+        let academic_year_number = data?.academic_year_number ?? ""
+
+        return await api.get("main/report-settings/narrative/print-preview?student_number="+student_number+
+            "&assessment_area_number="+assessment_area_number+
+            "&study_period_number="+study_period_number+
+            "&campus_class_number="+campus_class_number+
+            "&academic_year_number="+academic_year_number
+           )
+            .then((response) => {
+                printNarrativeResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
     return {
         errorMessage,
@@ -102,7 +125,9 @@ export const useNarrativeStore = defineStore("narrative", () => {
         updateNarrativeReport,
         updateNarrativeResponse,
         deleteNarrativeSchedule,
-        updateNarrativeSchedule
+        updateNarrativeSchedule,
+        printNarrativeResponse,
+        printPreviewNarrativeReport
   
     }
 })

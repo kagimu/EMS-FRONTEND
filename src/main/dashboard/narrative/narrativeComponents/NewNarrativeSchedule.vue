@@ -94,7 +94,11 @@ const dateList = ref([
       study_period_number:null,
       scheduled_on:null,
       campus_number:campusNumber,
-      curriculum_number:curriculumNumberParent
+      curriculum_number:curriculumNumberParent,
+      suggested_solution:null,
+      status :null,
+      current_date :null,
+      current_status:null
     })
 
     const removeDate = (index) => {
@@ -547,8 +551,9 @@ const dateList = ref([
                   </table>
 
               </div>
-           
-          <div class="mb-2">
+
+
+               <div class="mb-2">
             <label class="text-sm">Description</label>
              <textarea
                  class="form-control shadow-none text-sm"
@@ -556,6 +561,15 @@ const dateList = ref([
                  v-model="form.description">
              </textarea>
           </div>
+
+             <div class="mb-2">
+               <label class="text-sm">Suggested Solution</label>
+               <textarea
+                   class="form-control shadow-none text-sm"
+                   rows="3"
+                   v-model="form.suggested_solution">
+             </textarea>
+             </div>
 
         </div>
         </div>

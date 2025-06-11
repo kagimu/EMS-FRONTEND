@@ -89,6 +89,7 @@ defineExpose({
 
 const addLevel = () =>{
   loader.value = true
+  form.code = parseInt(form.code)
   if(levelNumber.value){
     form.level_number = levelNumber.value
     levelStore.editLevelData(form)

@@ -76,7 +76,8 @@ const removeLanguage = (index) => {
 
 const submitForm = () => {
   // alert(JSON.stringify(form.value))
-  saveFamilyStructure(form.value)
+  emit("next", {step:2})
+  // saveFamilyStructure(form.value)
 }
 
 const  saveFamilyStructure = async (data) => {
@@ -84,6 +85,7 @@ const  saveFamilyStructure = async (data) => {
       .then((response) => {
         buttonLoader.value = false
         notificationStore.successToast("Success",response.data.message)
+        familyStructureData.value = response.data
         emit("next", {step:2})
       })
       .catch((error) => {
@@ -136,6 +138,7 @@ const updateGuardianDetails = (data) => {
 
 <template>
 <!--{{form}}-->
+  {{familyStructureData}}
   <div>
     <!--father-->
     <family-records-form
