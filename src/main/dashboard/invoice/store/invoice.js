@@ -177,8 +177,8 @@ export const useInvoiceStore = defineStore("invoice", () => {
                 }
             })
     }
-    async function cancelInvoicePayment(payment_number) {
-        return await api.post("main/invoices/payments/cancel?payment_number="+payment_number)
+    async function cancelInvoicePayment(transaction_number) {
+        return await api.post("main/invoices/payments/cancel?payment_number="+transaction_number)
             .then((response) => {
                 cancelInvoicePaymentResponse.value = response.data
             })
