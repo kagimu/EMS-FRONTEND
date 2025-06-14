@@ -216,7 +216,7 @@ const openEditModel = (num,name) =>{
       <thead>
         <tr>
           <!-- <th>Interview</th> -->
-          <th>Name</th>
+          <th>Subject</th>
           <th>#</th>
         </tr>
       </thead>
