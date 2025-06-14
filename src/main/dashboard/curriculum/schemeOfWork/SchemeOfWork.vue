@@ -452,7 +452,7 @@ watch(
 
 
       <div :class="classNo ? 'col-3' : 'col-12'" v-if="level">
-        <div class="card mt-3">
+        <div class="card mt-3 p-0">
           <div class="card-body" style="padding: 0;">
             <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Classes</div>
             <hr />
@@ -639,6 +639,7 @@ watch(
                       {{lsn.code+". "+lsn.concept_name}}
                     </div>
 
+<!--                    {{lst}}-->
                     <div class="flex mt-4 mb-2" style="width: 350px;">
                       <button
                           type="button"
@@ -648,6 +649,7 @@ watch(
                       >
                         <small class="m-0 p-0">Add lesson plan [ {{lst.concept_count}} ]</small>
                       </button>
+
 
 
                       <span class="mx-1">
