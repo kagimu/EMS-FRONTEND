@@ -185,8 +185,8 @@ const fetchAssessmentMetricsByArea = (assessmentArrea) =>{
 
     }
      assessmentStore.fetchAssessmentMetrics(data)
-  
- 
+
+
 }
 
 
@@ -417,7 +417,7 @@ watch(
               v-model="assessmentMetricNumber"
               @change="fetchStudents(assessmentMetricNumber)">
             <option class="text-[13px]" disabled value="">--Select Assessment Schedule--</option>
-        
+
             <option class="text-[13px]" v-for="(list, index) in metricListData" :key="index" :value="list.number">
               {{list.description + " [ " +list.metric_name + " ] " + " ( "+ list.assessment_area +" ) "}}
             </option>

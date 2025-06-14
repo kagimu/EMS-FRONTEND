@@ -8,6 +8,9 @@ import {useApplicationStore} from "@/main/application/applicationComponents/stor
 import {useRouter} from "vue-router"
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import { useInvoiceStore } from "@/main/dashboard/invoice/store/invoice.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+
 
 const routerData = useRouter()
 const schoolStore = useSchoolStore()
@@ -21,12 +24,13 @@ const start_date = ref("")
 const end_date = ref("")
 const schoolList = ref([])
 const campusList = ref([])
-
+const invoiceStore = useInvoiceStore();
 
 const  notificationStore  = useNotificationStore()
 const mymodal = ref(false)
 const transactionStore = useTransactionStore()
 const transactionList = ref(null)
+const confirmationRef = ref(null);
 
 const props = defineProps({
      studentDataInfo:[]
@@ -126,11 +130,36 @@ watch (
     }
 )
 
+const cancelInvoicePayment = async (transaction_number) => {
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to cancel this Payment?");
+  if (agreed) {
+    invoiceStore.cancelInvoicePayment(transaction_number);
+  }
+}
+
+watch(
+    () => invoiceStore.cancelInvoicePaymentResponse,
+    async (data) => {
+      if (data) {
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
+watch(
+    () => invoiceStore.errorMessage,
+    async (data) => {
+      if (data) {
+        errorMessage.value = data.message;
+        notificationStore.errorToast("Error", data.message);
+      }
+    }
+)
 </script>
 <template>
     <div>
-  
-  
+
+      <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
       <AppModal title="Creating New Transaction" v-model="mymodal" xl6>
       <NewTransaction></NewTransaction>
       </AppModal>
@@ -222,6 +251,7 @@ watch (
             <th>PaidBy</th>
             <th>RecievedBy</th>
             <th>Recieved On</th>
+            <th>Action</th>
             
           </tr>
      </thead>
@@ -234,6 +264,11 @@ watch (
           <td style="text-transform: capitalize;">{{ list.paid_by }}</td>
           <td style="text-transform: capitalize;">{{ list.received_by	 }}</td>
           <td>{{ list.date_received	 }}</td>
+            <td>
+              <button @click="cancelInvoicePayment(list.transaction_number)" class="btn btn-danger btn-sm mb-2 mr-2">
+                <small><i class="bi bi-x">&nbsp;Cancel</i></small>
+              </button>
+            </td>
       
           </tr>  
         </tbody>

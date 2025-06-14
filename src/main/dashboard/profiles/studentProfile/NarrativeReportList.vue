@@ -501,7 +501,22 @@ const filterNarrativeReportBySchedule = (scheduleNumber) => {
 
 const previewNarrativeReport = () => {
   narrativeModel.value = true
+  printPreviewNarrative()
 }
+
+
+const printPreviewNarrative = () => {
+  let draft = props.studentProfileData
+  let data = {
+    student_number:props.student_number,
+    assessment_area_number:assessment_area_number.value,
+    study_period_number: draft?.current_enrollment?.study_period_number,
+    campus_class_number:draft?.current_enrollment?.campus_class_number,
+  }
+  narrativeStore.printPreviewNarrativeReport(data)
+
+}
+
 
 </script>
 <template>

@@ -12,7 +12,6 @@ import NewApplication from "@/main/dashboard/studentApplication/NewApplication.v
 const confirmationRef = ref(null);
 
 
-
 const showingModal = ref(false)
 const tableLoader = ref(true)
 
