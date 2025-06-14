@@ -380,7 +380,7 @@ const showStudentProfile = (std) => {
   
     <div>
       <h5 class="card-title mb-3" style="font-size: 14px; margin-top: 2px;">ADMISSION OFFERS</h5>
-      <div class=" grid grid-cols-4 gap-4 mx-4 mt-3">
+      <div class=" grid grid-cols-4 gap-4 mx-4 mt-3" v-if="admissionList.length > 0">
         <div v-for="(adm, index) in admissionList" :key="index" >
           <div class="card admission-card">
             <div class="card-body ">
@@ -407,6 +407,13 @@ const showStudentProfile = (std) => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div v-if="admissionList.length === 0" class="text-center mt-5 border rounded-md py-5 shadow">
+        <div class="text-muted text-lg flex justify-center">
+          No admission found
+          <i class="bi bi-exclamation text-[30px]"></i>
         </div>
       </div>
 

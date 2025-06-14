@@ -50,7 +50,7 @@ const fetchApplicationData = (applicationNumber) => {
         <div class="card sect mx-auto" style="margin-bottom:60px;margin-top:50px;border-radius: 16px; width: 80%;">
           <div class="card-body" >
            <div class="row">
-           
+
             <div class="col-lg-12">
               <div>
 
@@ -90,16 +90,15 @@ const fetchApplicationData = (applicationNumber) => {
                   </div>
 
                   <div class="mb-10">
-
-                    <div v-show="step === 2">
-                      <personal-details-of-student
-                          v-on:next="nextPage"
-                      ></personal-details-of-student>
-                    </div>
                     <div v-show="step === 1">
                       <personal-details-of-learner
                           v-on:next="nextPage"
                       ></personal-details-of-learner>
+                    </div>
+                    <div v-show="step === 2">
+                      <personal-details-of-student
+                          v-on:next="nextPage"
+                      ></personal-details-of-student>
                     </div>
                     <div v-show="step === 3">
                       <previous-school-details
@@ -125,7 +124,7 @@ const fetchApplicationData = (applicationNumber) => {
           </div>
         </div>
       </div>
- 
+
    </div>
   </div>
             </div>

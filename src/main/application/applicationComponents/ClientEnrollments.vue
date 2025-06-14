@@ -3,7 +3,6 @@ import {onMounted,reactive, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
 import { useEnrolmentStore } from "@/main/dashboard/enrollment/store/enrollment";
@@ -349,8 +348,12 @@ const showStudentProfile = (std) => {
                 </div>
               </div>
               
-              <div v-else-if="enrollmentList.length === 0" class="text-center my-4">
-                <p>No students enrolled.</p>
+
+              <div v-if="enrollmentList.length === 0" class="text-center mt-5 border rounded-md py-5 shadow">
+                <div class="text-muted text-lg flex justify-center">
+                  No students enrolled.
+                  <i class="bi bi-exclamation text-[30px]"></i>
+                </div>
               </div>
 
               <!-- Profile Grid Layout -->

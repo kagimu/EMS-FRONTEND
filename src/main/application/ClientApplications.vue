@@ -2,8 +2,6 @@
 import {onMounted, ref, watch} from "vue";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import useNotificationStore from "@/composables/useNotification.js";
-import ClientApplicationDetails from "@/main/application/ClientApplicationDetails.vue";
-import PaginationTemplate from "@/components/PaginationTemplate.vue";
 import StudentApplicationDetails from '@/main/dashboard/studentApplication/StudentApplicationDetails.vue';
 import AppModal from "@/components/AppModal.vue";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
@@ -187,6 +185,7 @@ watch (
 
 <template>
   <div>
+
     <AppModal title="Application Details" v-model="showingModal" xl6>
       <StudentApplicationDetails :application-number="applications" />
     </AppModal>
@@ -220,7 +219,7 @@ watch (
               :total_rows="total_rows"
             /> -->
 
-            <div class="row mt-3">
+            <div class="row mt-3" v-if="applicationInfoList.length > 0">
               <div v-for="(applist, index) in applicationInfoList" :key="index" class="col-md-6 mb-3">
                 <div class="profile-card p-3 bg-gray-100 rounded-lg shadow">
                   <div class="flex justify-between">
@@ -262,6 +261,14 @@ watch (
                 </div>
               </div>
             </div>
+
+            <div v-if="applicationInfoList.length === 0" class="text-center mt-5 border rounded-md py-5 shadow">
+              <div class="text-muted text-lg flex justify-center">
+                No application found
+                <i class="bi bi-exclamation text-[30px]"></i>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
