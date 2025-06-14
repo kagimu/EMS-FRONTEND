@@ -50,7 +50,7 @@ const fetchApplicationData = (applicationNumber) => {
         <div class="card sect mx-auto" style="margin-bottom:60px;margin-top:50px;border-radius: 16px; width: 80%;">
           <div class="card-body" >
            <div class="row">
-           
+
             <div class="col-lg-12">
               <div>
 
@@ -125,7 +125,7 @@ const fetchApplicationData = (applicationNumber) => {
           </div>
         </div>
       </div>
- 
+
    </div>
   </div>
             </div>

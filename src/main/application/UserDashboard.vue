@@ -65,7 +65,7 @@ const menuItems = ref([
 { name: 'applications', label: 'Applications', icon: 'bi-book' },
 { name: 'admissions', label: 'Admissions', icon: 'bi-cash' },
 { name: 'enrollments', label: 'Enrollments', icon: 'bi-book' },
-  { name: 'financial-records', label: 'financial-records', icon: 'bi-book' },
+{ name: 'financial-records', label: 'financial-records', icon: 'bi-book' },
   // { name: 'changePassword', label: 'CHANGE PASSWORD', icon: 'bi-key' },
   // { name: 'applicationHistory', label: 'APPLICATION HISTORY', icon: 'bi-file-earmark-text' },
 ])
