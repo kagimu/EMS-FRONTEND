@@ -65,7 +65,7 @@ const convertFormValuesToInt = () => {
       field.code = parseInt(field.code);
     }
     if (field.percentage_share !== null) {
-      field.percentage_share = parseInt(field.percentage_share);
+      field.percentage_share = parseFloat(field.percentage_share);
     }
   });
 };
