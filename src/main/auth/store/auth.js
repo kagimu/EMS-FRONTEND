@@ -18,8 +18,7 @@ export const useAuthStore = defineStore("auth", () => {
             .then((response) => {
                 if(response && response.data) {
                     let dataInfo = response.data
-                    // localStorage.setItem("token", dataInfo.access_token)
-                    // localStorage.clear()
+
                    
                     localStorage.setItem("token", dataInfo.token)
                     let permissions = []
