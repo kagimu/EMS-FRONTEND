@@ -76,8 +76,7 @@ const removeLanguage = (index) => {
 
 const submitForm = () => {
   // alert(JSON.stringify(form.value))
-  emit("next", {step:2})
-  // saveFamilyStructure(form.value)
+  saveFamilyStructure(form.value)
 }
 
 const  saveFamilyStructure = async (data) => {
@@ -95,6 +94,10 @@ const  saveFamilyStructure = async (data) => {
       })
 }
 
+const familyStructureDataFather = ref([])
+const familyStructureDataMother = ref([])
+const familyStructureDataGuardian = ref([])
+const languagesData = ref([])
 
 const  fetchFamilyStructure = async (data) => {
   await api.get("main/students/family-structure/"+data)
@@ -102,6 +105,17 @@ const  fetchFamilyStructure = async (data) => {
       buttonLoader.value = false
       // notificationStore.successToast("Success",response.data.message)
       familyStructureData.value = response.data.data
+      familyStructureDataFather.value = response.data.data.family_members.filter((item) => item.relationship === "FATHER")
+      familyStructureDataMother.value = response.data.data.family_members.filter((item) => item.relationship === "MOTHER")
+      familyStructureDataGuardian.value = response.data.data.family_members.filter((item) => item.relationship === "GUARDIAN")
+      languagesData.value = response.data.data.languages
+
+      form.value.languages  = languagesData.value.map(lang => ({
+        name: lang.Name,
+        code: lang.Code
+      }));
+
+
     })
     .catch((error) => {
       if(error && error.response){
@@ -138,28 +152,34 @@ const updateGuardianDetails = (data) => {
 
 <template>
 <!--{{form}}-->
-  {{familyStructureData}}
+<!--  {{familyStructureData}}-->
+<!--  {{languagesData}}-->
   <div>
     <!--father-->
     <family-records-form
         title="Father"
         @parentInfo="updateFatherDetails"
+        :familyStructureData="familyStructureDataFather"
     >
     </family-records-form>
     <!-- mother-->
     <family-records-form
         title="Mother"
         @parentInfo="updateMotherDetails"
+        :familyStructureData="familyStructureDataMother"
     >
     </family-records-form>
     <!-- guardian-->
     <family-records-form
         title="Guardian"
         @parentInfo="updateGuardianDetails"
+        :familyStructureData="familyStructureDataGuardian"
     >
     </family-records-form>
     <div class="row mx-auto mt-2">
       <div class="col-12">
+<!--        {{form.languages }}-->
+<!--        {{form.languages}}-->
         <label class="text-sm">Languages</label>
         <table>
           <tr v-for="(lst, index) in form.languages" :key="index">
@@ -173,8 +193,9 @@ const updateGuardianDetails = (data) => {
       </div>
     </div>
 
-    <div class="flex justify-between mt-4">
-      <button  type="button" @click="" class="btn btn-outline-secondary">Back</button>
+    <div class="flex justify-end mt-4">
+<!--      <button  type="button" @click="" class="btn btn-outline-secondary">Back</button>-->
+
       <button type="submit" class="btn btn-primary" @click.prevent="submitForm">NEXT
         <span v-if="buttonLoader" class="spinner-border spinner-border-sm"></span>
       </button>

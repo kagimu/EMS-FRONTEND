@@ -14,6 +14,7 @@ export const useAdmissionStore = defineStore("admission", () => {
     const admitStudentResponse = ref(null)
     const admissionByStudentResponse = ref(null)
     const directAdmitStudentResponse = ref(null)
+    const admissionLetterPhraseResponse = ref()
 
     async function newStudentDetailsAdmission(data) {
         return await api.post("main/new-student-details-admission", data)
@@ -141,6 +142,17 @@ export const useAdmissionStore = defineStore("admission", () => {
             })
     }
 
+    async function admissionLetterPhrase(data) {
+        return await api.post("main/admissions/templates/new",data)
+            .then((response) => {
+                admissionLetterPhraseResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
 
     return {
@@ -164,6 +176,8 @@ export const useAdmissionStore = defineStore("admission", () => {
         admissionByStudentResponse,
         fetchAdmissionByStudentId  ,
         directAdmitStudentResponse,
-        directAdmitStudent      
+        directAdmitStudent,
+        admissionLetterPhrase,
+        admissionLetterPhraseResponse
     }
 })

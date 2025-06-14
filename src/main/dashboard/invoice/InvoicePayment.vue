@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref, watch, defineProps,onMounted } from "vue";
+import { reactive, ref, watch, defineProps,onMounted,computed } from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import { useInvoiceStore } from "@/main/dashboard/invoice/store/invoice.js";
 import useCommonsStore from "@/composables/useCommons.js";
@@ -7,6 +7,8 @@ import useCommonsStore from "@/composables/useCommons.js";
 const commons = useCommonsStore();
 const selectedTab = ref("cash")
 const creditsData = ref([])
+const selectedCredit = ref([])
+const selectedAmounts = ref([])
 
 const switchTabs = (tab) => {
    selectedTab.value = tab
@@ -35,7 +37,8 @@ const formData = reactive({
   amount: null,
   date: null,
   selectedAmounts:[]
-});
+})
+
 
 const invoicePayment = () => {
   let myData = {
@@ -48,12 +51,36 @@ const invoicePayment = () => {
   if (!confirm("Are you sure?")) {
     return;
   }
-  
+  loader.value = true;
+  invoiceStore.createInvoicePayment(myData);
+};
+
+const invoicePaymentUsingCredit = () => {
+
+  selectedAmounts.value = [];
+  for (const id of selectedCredit.value) {
+    const match = creditsData.value.find(item => item.transaction_number === id);
+    if (match) {
+      selectedAmounts.value.push(match.amount);
+    }
+  }
+
+  let totalAm = selectedAmounts.value.reduce((acc, amount) => acc + amount, 0);
+
+  let myData = {
+    invoice_number: formData.invoice_number,
+    amount: parseInt(totalAm),
+    date: formData.date,
+    credits:selectedCredit.value
+  };
+
+  if (!confirm("Are you sure?")) {
+    return;
+  }
   loader.value = true;
   // alert(JSON.stringify(myData))
   invoiceStore.createInvoicePayment(myData);
 };
-
 
 watch(
     () => invoiceStore.creditResponse,
@@ -64,7 +91,6 @@ watch(
     },
     {deep:true}
 )
-
 
 watch(
   () => invoiceStore.newInvoicePaymentResponse,
@@ -77,8 +103,6 @@ watch(
 )
 
 
-
-// Toggle amount selection
 const toggleAmount = (amount) => {
   const index = formData.selectedAmounts.indexOf(amount);
   if (index === -1) {
@@ -94,6 +118,10 @@ const doFetchCredits = () =>{
   }
   invoiceStore.fetchCredits(data)
 }
+
+const total = computed(() => {
+  return selectedAmounts.value.reduce((acc, amount) => acc + amount, 0);
+});
 
 
 </script>
@@ -118,7 +146,7 @@ const doFetchCredits = () =>{
 
         <div v-if="selectedTab === 'cash'">
           <form @submit.prevent="invoicePayment">
-  
+
   <!-- Amount -->
   <div class="mb-2">
     <label class="text-sm text-sm">Amount</label>
@@ -165,20 +193,47 @@ const doFetchCredits = () =>{
 </form>
         </div>
         <div v-if="selectedTab === 'credits'">
-          <form @submit.prevent="invoicePayment">
+          <form @submit.prevent="invoicePaymentUsingCredit">
 
 <div class="options-menu mt-2">
-  <button 
-    v-for="option in creditsData" 
-    :key="option.amount" 
-    @click="toggleAmount(option.amount_in_credit)"
-    :class="{'selected': formData.selectedAmounts.includes(option.amount_in_credit)}"
-    type="button" 
-    class="payment-option"
-  >
-    <span>Credit : {{ option.amount_in_credit?.toLocaleString() }}<br>
-    </span>
-  </button>
+<!--  <button -->
+<!--    v-for="option in creditsData" -->
+<!--    :key="option.amount" -->
+<!--    @click="toggleAmount(option.amount_in_credit)"-->
+<!--    :class="{'selected': formData.selectedAmounts.includes(option.amount_in_credit)}"-->
+<!--    type="button" -->
+<!--    class="payment-option"-->
+<!--  >-->
+<!--    <span>Credit : {{ option.amount_in_credit?.toLocaleString() }}<br>-->
+<!--    </span>-->
+<!--  </button>-->
+
+
+<!--  // use checkbox  creditsData-->
+  <table id="" class="table table-sm table-bordered rounded-md" style="font-size: 13px;">
+    <tbody>
+    <tr>
+      <td class="p-3">
+        <ul class="list-unstyled">
+<!--          {{selectedCredit}}-->
+<!--          {{creditsData}}-->
+<!--          {{selectedAmounts}}-->
+          <li v-for="(lst, index) in creditsData" :key="index" >
+            <input
+                type="checkbox"
+                v-model="selectedCredit"
+                :value="lst.transaction_number"
+            >
+            &nbsp;<label class="text-sm cursor-pointer" >{{ lst.amount }}</label>
+          </li>
+        </ul>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+
+
 </div>
  
 

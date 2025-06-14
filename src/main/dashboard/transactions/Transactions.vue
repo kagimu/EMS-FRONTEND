@@ -142,6 +142,7 @@ watch(
     async (data) => {
       if (data) {
         notificationStore.successToast("Success", data.message)
+        fetchTransactionData();
       }
     }
 )
@@ -155,6 +156,7 @@ watch(
       }
     }
 )
+
 </script>
 <template>
     <div>
@@ -265,7 +267,10 @@ watch(
           <td style="text-transform: capitalize;">{{ list.received_by	 }}</td>
           <td>{{ list.date_received	 }}</td>
             <td>
-              <button @click="cancelInvoicePayment(list.transaction_number)" class="btn btn-danger btn-sm mb-2 mr-2">
+              <span v-if="list.status === 'CANCELLED'" class="alert alert-danger pt-1 pb-1 pl-0 pr-1">
+                <small>CANCELLED</small>
+              </span>
+              <button v-else @click="cancelInvoicePayment(list.transaction_number)" class="btn btn-danger btn-sm mb-2 mr-2">
                 <small><i class="bi bi-x">&nbsp;Cancel</i></small>
               </button>
             </td>

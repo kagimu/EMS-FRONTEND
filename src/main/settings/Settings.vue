@@ -17,6 +17,7 @@ import ContactInfo from "@/main/settings/ContactInfo.vue"
 
 import { useAbility } from '@casl/vue';
 import ManageStudents from "@/main/settings/manage-students/ManageStudents.vue";
+import AdmissionTemplate from "../dashboard/studentAdmission/admissionTemplate/admissionTemplate.vue";
 
 const { can } = useAbility()
 
@@ -86,11 +87,10 @@ const settingsList = ref([
     id:"import-students",
     action:"view_promotion_settings"
   },
-/*  {
-    name:"Promotion Value",
-    id:"promotion-value",
-    action:"view_promotion_value"
-  }*/
+ {
+    name:"Admission Letter",
+    id:"admission-letter",
+  }
 ])
 const form = reactive({
   name:null
@@ -170,6 +170,10 @@ const form = reactive({
               <div v-if="selectedPage === 'import-students'">
                    <manage-students></manage-students>
               </div>
+            <div v-if="selectedPage === 'admission-letter'">
+              <admission-template></admission-template>
+            </div>
+
           </div>
         </div>
       </div>

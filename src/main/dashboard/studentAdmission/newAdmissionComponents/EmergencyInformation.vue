@@ -10,6 +10,7 @@ const emit = defineEmits()
 const commons = useCommonsStore()
 const notificationStore  = useNotificationStore()
 const emergencyData = ref([])
+const studentNo = ref(null)
 
 const form = reactive({
   contact_person:null,
@@ -22,6 +23,7 @@ const form = reactive({
 
 const props = defineProps({
   studentProfileData:{},
+  studentNumber:String
 })
 
 
@@ -31,15 +33,17 @@ onMounted(() => {
 
 
 const getStudentNumber = () => {
-  let draftData = props.studentProfileData?.current_enrollment?.student_number
-  if(draftData) {
-    fetchEmergencyData(draftData)
+  let no = props.studentNumber
+  if(no) {
+    studentNo.value = no
+    // form.value.student_number = no
+    fetchEmergencyData(no)
   }
 }
 
 
 watch(
-    () => props.studentProfileData,
+    () => props.studentNumber,
     async (data) => {
       if(data){
         getStudentNumber()
@@ -50,14 +54,13 @@ watch(
 const addEmergencyInformation = () => {
   // emit("next", 6)
   buttonLoader.value = true
-  form.student_number = props.studentProfileData?.current_enrollment?.student_number
+  form.student_number = studentNo.value
   saveEmergencyInformation(form)
 }
 
-/*const backPage = () => {
-  // emit("next", 4 )
-}*/
-
+const backPage = () => {
+  emit("next", {step:2})
+}
 
 const  saveEmergencyInformation = async (data) => {
   await api.post("main/students/emergency-information", data)
@@ -69,7 +72,6 @@ const  saveEmergencyInformation = async (data) => {
       .catch((error) => {
         if(error && error.response){
           // errorMessage.value = error.response.data.message
-
           buttonLoader.value = false
           notificationStore.errorToast("Error",error.response.data.message)
         }
@@ -100,8 +102,13 @@ const  fetchEmergencyData = async (data) => {
         buttonLoader.value = false
         // notificationStore.successToast("Success",response.data.message)
         emergencyData.value = response.data.data
-        
-        
+        form.contact_person = emergencyData.value.contact_person
+        form.contact_person_phone = emergencyData.value.contact_person_phone
+        form.contact_person_alternative = emergencyData.value.contact_person_alternative
+        form.contact_person_alternative_phone = emergencyData.value.contact_person_alternative_phone
+        form.contact_doctor_name = emergencyData.value.contact_doctor_name
+        form.contact_doctor_phone = emergencyData.value.contact_doctor_phone
+
       })
       .catch((error) => {
         if(error && error.response){
@@ -126,31 +133,7 @@ const emergencyFields = {
 </script>
 <template>
 
-  <section class="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-md space-y-10" v-if="emergencyData.length !== 0">
-    <!-- Emergency Contacts -->
-    <div>
-      <div class="flex items-center justify-between mb-6 border-b pb-2">
-        <h3 class="text-xs font-semibold text-gray-800">Emergency Contact Information</h3>
-        <button class="text-xs text-white bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-md shadow-sm transition">
-          Update
-        </button>
-      </div>
-      <div class="overflow-x-auto bg-gray-50 border rounded-xl p-5 shadow-sm">
-        <table class="min-w-full text-sm text-left text-gray-700">
-          <tbody>
-          <tr v-for="(label, key) in emergencyFields" :key="key" class="border-b">
-            <th class="py-3 pr-6 font-medium text-gray-600 w-1/3">{{ label }}</th>
-            <td class="py-3 text-gray-800">{{ emergencyData[key] || 'N/A' }}</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-
-
-  <div v-else>
+  <div >
     <p class="ml-4 mt-4 mb-10"> EMERGENCY INFORMATION </p>
 
 
@@ -234,13 +217,14 @@ const emergencyFields = {
 
 
 
-      <div class="flex justify-end mt-4 w-full">
+      <div >
 
 <!--        <button type="button" @click="backPage" class="btn btn-outline-secondary mb-2 ml-4">
           Back
         </button>-->
 
-       <div>
+       <div class="flex justify-between mt-4 w-full">
+               <button  type="button" @click="backPage" class="btn btn-outline-secondary">Back</button>
          <button type="submit" class="btn btn-primary mb-2 mr-4">
            Save
            <span class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">

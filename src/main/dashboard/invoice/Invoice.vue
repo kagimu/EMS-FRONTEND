@@ -67,6 +67,7 @@ onMounted(
         userType.value = user.type
 
         fetchCurrentSchoolInfo()
+      doFetchInvoices()
     }
 )
 
@@ -165,7 +166,7 @@ watch (
       if(data){
         notificationStore.successToast("Success", data.message)
         showPayment.value = false
-        // fetchAllInvoices()
+        doFetchInvoices()
       }
     }
 )

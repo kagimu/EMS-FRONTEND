@@ -339,7 +339,7 @@ const closeDialog = () => {
           <th scope="col">Role (s)</th>
           <th>Type</th>
           <th scope="col">Gender</th>
-          <th scope="col">Status</th>
+          <th scope="col">Staff Status</th>
           <th>Actions</th>
         </tr>
         </thead>
@@ -350,7 +350,7 @@ const closeDialog = () => {
             <td>
               <div class="mb-1 flex justify-between hover:bg-white hover:rounded hover:px-2" v-for="(rol,indx) in user.roles"  :key="indx" >
               <div>
-                {{ rol.role_name }}
+                {{ rol.role_name }} <span :class="rol.status==='Active'?'alert alert-success p-0':'alert alert-danger p-0'">({{rol.status}})</span>
               </div>
                <button
                    style="border: red solid 1px; border-radius: 1px;"
@@ -370,8 +370,8 @@ const closeDialog = () => {
             <td>
           <button 
           v-if="can('update_assigned_role','general')"
-           data-bs-toggle="modal" data-bs-target="#updateRoleModel" type="button" aria-controls="rolesDialog">
-            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+          type="button" class="btn btn-danger">
+            De-activate
           </button>
           &nbsp;&nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>
           <button @click="openModal(user)" type="button" class="btn btn-outline-primary mb-2 btn-small py-0 px-3 text-sm">

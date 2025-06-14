@@ -135,6 +135,14 @@ watch (
         </div>
         </div>
 
+
+          <div class="col-span-12 sm:col-span-6 md:col-span-6 lg:col-span-3">
+            <div class="bg-white border rounded-md text-xs text-center py-3 shadow-md">
+              <div class="font-bold text-[#063070] text-[13px]">{{financialSummary?.most_recent?.paid_amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</div>
+              <div>Total Credit:</div>
+            </div>
+          </div>
+
           <div class="col-span-12 sm:col-span-6 md:col-span-6 lg:col-span-3">
             <div class="bg-white border rounded-md text-xs text-center py-3 shadow-md">
           <div class="font-bold text-[#063070] text-[13px]">{{financialSummary?.most_recent?.paid_date}}</div>

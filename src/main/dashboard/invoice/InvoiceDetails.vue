@@ -359,41 +359,41 @@ const printContent = () => {
           </div>
         </div>
 
-        <div class="card mt-2">
-          <div class="card-header">
-            Payments
-            <hr />
-            <table class="table table-hover caption-top mt-5 table-sm payments-table">
-              <thead>
-                <tr>
-                  <th scope="col" style="width: 10%;">#</th>
-                  <th scope="col">Invoice Number</th>
-                  <th scope="col">Date</th>
-                  <th scope="col">By</th>
-                  <th scope="col">Amount</th>
-                  <th v-if="can('cancel_payment', 'general')">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(payment, index) in invoiceData.payments" :key="index">
-                  <td>{{ index + 1 }}</td>
-                  <td>{{ payment.invoice_ref_number }}</td>
-                  <td>{{ payment.date_time }}</td>
-                  <td>{{ payment.recorded_by }}</td>
-                  <td>{{ payment.amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")  }}</td>
-                  <td v-if="can('cancel_payment', 'general')">
-                    <button @click="cancelInvoicePayment(payment.payment_number)" class="btn btn-warning btn-sm mb-2 mr-2">
-                      <small><i class="bi bi-x">&nbsp;Cancel</i></small>
-                    </button>
-                    <button v-if="can('delete_payment', 'general')" @click="deleteInvoicePayment(payment.payment_number)" class="btn btn-danger btn-sm mb-2">
-                      <small><i class="bi bi-trash"></i> Delete</small>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+<!--        <div class="card mt-2">-->
+<!--          <div class="card-header">-->
+<!--            Payments-->
+<!--            <hr />-->
+<!--            <table class="table table-hover caption-top mt-5 table-sm payments-table">-->
+<!--              <thead>-->
+<!--                <tr>-->
+<!--                  <th scope="col" style="width: 10%;">#</th>-->
+<!--                  <th scope="col">Invoice Number</th>-->
+<!--                  <th scope="col">Date</th>-->
+<!--                  <th scope="col">By</th>-->
+<!--                  <th scope="col">Amount</th>-->
+<!--                  <th v-if="can('cancel_payment', 'general')">Action</th>-->
+<!--                </tr>-->
+<!--              </thead>-->
+<!--              <tbody>-->
+<!--                <tr v-for="(payment, index) in invoiceData.payments" :key="index">-->
+<!--                  <td>{{ index + 1 }}</td>-->
+<!--                  <td>{{ payment.invoice_ref_number }}</td>-->
+<!--                  <td>{{ payment.date_time }}</td>-->
+<!--                  <td>{{ payment.recorded_by }}</td>-->
+<!--                  <td>{{ payment.amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")  }}</td>-->
+<!--                  <td v-if="can('cancel_payment', 'general')">-->
+<!--                    <button @click="cancelInvoicePayment(payment.payment_number)" class="btn btn-warning btn-sm mb-2 mr-2">-->
+<!--                      <small><i class="bi bi-x">&nbsp;Cancel</i></small>-->
+<!--                    </button>-->
+<!--                    <button v-if="can('delete_payment', 'general')" @click="deleteInvoicePayment(payment.payment_number)" class="btn btn-danger btn-sm mb-2">-->
+<!--                      <small><i class="bi bi-trash"></i> Delete</small>-->
+<!--                    </button>-->
+<!--                  </td>-->
+<!--                </tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
+<!--          </div>-->
+<!--        </div>-->
       </div>
     </div>
   </div>

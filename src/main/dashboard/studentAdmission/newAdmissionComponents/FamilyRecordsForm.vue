@@ -11,7 +11,8 @@ const buttonLoader = ref(false)
 
 const props = defineProps({
   studentProfileData:{},
-  title:String
+  title:String,
+  familyStructureData:{}
 })
 
 const studentNumber = props.studentProfileData?.current_enrollment?.student_number
@@ -35,6 +36,7 @@ const removePhone = (index) => {
 }
 
 onMounted(() => {
+  getFamilyData()
 } )
 
 
@@ -48,11 +50,35 @@ watch(
     { deep: true }
 )
 
+const getFamilyData = () => {
+  let draft = props.familyStructureData[0]
+  if (draft) {
+    // alert(draft.relationship)
+    form.value.relationship = draft.relationship
+    form.value.surname = draft.surname
+    form.value.other_name = draft.other_name
+    form.value.parent_living = draft.parent_living
+    form.value.place_of_employment = draft.place_of_employment
+    form.value.physical_contact_address = draft.physical_contact_address
+    form.value.contacts = draft.contacts || []
+  }
+}
+
+watch(
+    () => props.familyStructureData,
+    async (data) => {
+      if(data){
+        getFamilyData()
+      }
+    },
+    { deep: true }
+)
 </script>
 
 <template>
   <div>
     {{title}}
+<!--    {{familyStructureData}}-->
     <form @submit.prevent="submitForm">
       <div class="row mx-auto">
         <div class="col-12">

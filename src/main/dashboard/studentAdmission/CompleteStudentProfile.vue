@@ -34,7 +34,12 @@ watch(
       }
     }
 )
+const nextPage= (data) => {
+  if(data){
+    step.value = data.step
+  }
 
+}
 </script>
 <template>
 <!--  {{studentNumber}}-->
@@ -78,8 +83,9 @@ watch(
                     <div class="mb-10">
 
                       <div v-show="step === 1">
-                        <family-records  v-on:next="nextPage"
-                                         :studentNumber="studentNo"
+                        <family-records
+                            v-on:next="nextPage"
+                            :studentNumber="studentNo"
                         >
                         </family-records>
                       </div>
@@ -87,13 +93,16 @@ watch(
                       <div v-show="step === 2">
                         <medical-records
                             v-on:next="nextPage"
-                            :resume="resumeYes">
+                            :resume="resumeYes"
+                            :studentNumber="studentNo">
                         </medical-records>
 
                       </div>
 
                       <div v-show="step === 3">
-                        <emergency-information>
+                        <emergency-information
+                            :studentNumber="studentNo"
+                            v-on:next="nextPage">
 
                         </emergency-information>
                       </div>
