@@ -4,15 +4,11 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-import api from "@/config/api.js";
-import {useRouter} from "vue-router";
-import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
 import {useStudyModeStore} from "@/main/settings/mode-of-study/store/studyMode.js";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
 
 const levelStore = useLevelStore()
-const assessmentStore = useAssessmentStore()
 const modeStudyStore = useStudyModeStore()
 const modeOfSchoolData = ref([])
 const classStore = useClassesStore()
@@ -32,6 +28,8 @@ const campusStore = useCampusStore()
 const applicationId = ref(null)
 const curriculumList = ref([])
 const student_number = ref(null)
+
+const today = new Date().toISOString().split('T')[0]
 
 
 const form = reactive({
@@ -321,20 +319,20 @@ watch(
     <div class="row">
       <div class="col-12">
           <div class="mb-2">
-            <label class="text-sm text-sm"><small>Surname</small> <span class="star">*</span></label>
+            <label class="text-sm"><small>Surname</small> <span class="star">*</span></label>
             <input type="text" style="outline: none 0 !important; box-shadow: none;"  v-model="form.surname"  required class="form-control form-control-sm">
           </div>
 
         <div class="row">
           <div class="col-6">
             <div class="mb-2">
-              <label class="text-sm text-sm"><small>Second name</small> <span class="star">*</span></label>
+              <label class="text-sm"><small>Second name</small> <span class="star">*</span></label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.second_name"  required class="form-control form-control-sm">
             </div>
           </div>
           <div class="col-6">
             <div class="mb-2">
-              <label class="text-sm text-sm"><small>Other names</small> </label>
+              <label class="text-sm"><small>Other names</small> </label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" class="form-control form-control-sm">
             </div>
           </div>
@@ -345,13 +343,13 @@ watch(
         <div class="row">
           <div class="col-6">
             <div class="mb-2">
-              <label class="text-sm text-sm"><small>Reason to enroll </small> </label>
+              <label class="text-sm"><small>Reason to enroll </small> </label>
               <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.reason_for_choosing_school" class="form-control form-control-sm">
             </div>
           </div>
           <div class="col-6">
             <div class="mb-2">
-              <label class="text-sm text-sm"><small>How did you know about us ? </small> </label>
+              <label class="text-sm"><small>How did you know about us ? </small> </label>
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
@@ -482,12 +480,17 @@ watch(
 
           <div class="row">
             <div class="col-lg-6">
-              <label class="text-sm text-sm"><small>DOB</small> <span class="star">*</span></label>
-            <input type="date" style="outline: none 0 !important; box-shadow: none;" v-model="form.date_of_birth"  required
-             class="form-control form-control-sm">
+              <label class="text-sm"><small>DOB</small> <span class="star">*</span></label>
+             <input
+                 type="date"
+                 style="outline: none 0 !important; box-shadow: none;"
+                 v-model="form.date_of_birth"
+                 :max="today"
+                 required
+                 class="form-control form-control-sm">
             </div>
             <div class="col-lg-6">
-              <label class="text-sm text-sm"><small>gender</small> <span class="star">*</span></label>
+              <label class="text-sm"><small>gender</small> <span class="star">*</span></label>
             <select class="form-control form-control-sm"
              v-model="form.gender" style="outline: none 0 !important; box-shadow: none;">
               <option value="" disabled>-Select Gender-</option>
