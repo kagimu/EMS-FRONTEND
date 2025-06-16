@@ -15,7 +15,6 @@ const props = defineProps({
 })
 
 
-
 onMounted(() => {
   getStudentNumber()
     })
@@ -38,11 +37,13 @@ const nextPage= (data) => {
   if(data){
     step.value = data.step
   }
-
 }
+
 </script>
 <template>
 <!--  {{studentNumber}}-->
+  <button style="float: right;" class="btn btn-danger btn-sm mb-2" @click="$emit('closeDialog')">
+    <i class="bi bi-x me-1"></i><small>CLOSE</small></button>
   <div class="temp">
 
     <div class="row">

@@ -3,88 +3,61 @@ import {onMounted, reactive, ref, watch} from "vue";
 import api from "@/config/api.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import useCommonsStore from "@/composables/useCommons.js";
+import FamilyRecordsForm from "./FamilyRecordsForm.vue";
+import {useRouter} from "vue-router";
 
+const routerData = useRouter()
+const student_number = routerData.currentRoute.value.query.st_id
 
 const emit = defineEmits()
 const commons = useCommonsStore()
 const notificationStore  = useNotificationStore()
 const familyStructureData = ref([])
-
-
-
 const buttonLoader = ref(false)
-const step = ref(1)
-const totalSteps = 4
-
-const form = ref({
-  surname: null,
-  other_name: null,
-  parent_living: null,
-  place_of_employment: null,
-  physical_contact_address: null,
-  family_name_of_mother: null,
-  mothers_place_of_employment: null,
-  mother_living: null,
-  mothers_other_names: null,
-
-  // Guardian
-  family_name_of_guardian: null,
-  guardian_other_names: null,
-  guardian_living: null,
-  guardian_place_of_employment: null,
-  guardian_relationship: null,
-  guardian_contact: null,
-})
-
-// Dynamic fields
 const phoneList = ref([{ phone_number: "", email: "" }])
-const phoneMotherList = ref([{ mothers_phone: "",mothers_email:"" }])
-const emailMotherList = ref([{ mothers_email: "" }])
 const LanguagesList = ref([{ code:1,languages: "" }])
-const phoneGuardianList = ref([{ guardian_phone: "",guardian_email:"" }])
-
-const nextStep = () => {
-  if (step.value < totalSteps) {
-    step.value++
-  } else {
-    submitForm()
-  }
-}
-const prevStep = () => step.value--
-
 const addPhone = () => phoneList.value.push({ phone_number: "", email: "" })
 const removePhone = (index) => phoneList.value.splice(index, 1)
-const addMotherPhone = () => phoneMotherList.value.push({ mothers_phone: "", mothers_email1:"" })
-const removeMotherPhone = (index) => phoneMotherList.value.splice(index, 1)
-const addMotherEmail = () => emailMotherList.value.push({ mothers_email: "" })
-const removeMotherEmail = (index) => emailMotherList.value.splice(index, 1)
-const addLanguage = () => LanguagesList.value.push({ code:1,languages: "" })
-const removeLanguage = (index) => LanguagesList.value.splice(index, 1)
+const familyMembers = []
 
-const addGuardianPhone = () => phoneGuardianList.value.push({ guardian_phone: "", guardian_email:"" })
-const removeGuardianPhone = (index) => phoneGuardianList.value.splice(index, 1)
-const student_num  = ref(null)
+const studentNo = ref(null)
 const props = defineProps({
   studentProfileData:{},
+  studentNumber:String
 })
 
 
-const studentNumber = props.studentProfileData?.current_enrollment?.student_number
+const form = ref({
+  student_number:null,
+  family_members :[
+    // {
+    //   relationship:null,
+    //   student_number:null,
+    //   surname:null,
+    //   other_name:null,
+    //   place_of_employment:null,
+    //   physical_contact_address:null,
+    //   contacts:[]
+    // }
+  ],
+  languages:[{code:1,name:null}]
+})
 
 onMounted(() => {
   getStudentNumber()
 } )
 
 
+
 const getStudentNumber = () => {
-let draftData = props.studentProfileData?.current_enrollment?.student_number
-  if(draftData) {
-    fetchFamilyStructure(draftData)
-  }
+    studentNo.value = routerData.currentRoute.value.query.st_id
+    form.value.student_number = routerData.currentRoute.value.query.st_id
+    fetchFamilyStructure(routerData.currentRoute.value.query.st_id)
 }
 
+
 watch(
-    () => props.studentProfileData,
+    () => routerData.currentRoute.value.query.st_id,
     async (data) => {
       if(data){
         getStudentNumber()
@@ -92,100 +65,27 @@ watch(
     }
 )
 
+const addLanguage = () => {
+  form.value.languages.push({code:(form.value.languages.length + 1),name: null })
+}
+
+const removeLanguage = (index) => {
+  form.value.languages.splice(index, 1)
+}
 
 
 const submitForm = () => {
-  buttonLoader.value = true
-
-
-
-  const fatherContacts = []
-  phoneList.value.forEach(p => {
-    if (p.phone_number) fatherContacts.push(p.phone_number)
-    if (p.email) fatherContacts.push(p.email)
-  })
-
-  const motherContacts = []
-  phoneMotherList.value.forEach(p => {
-    if (p.mothers_phone) motherContacts.push(p.mothers_phone)
-    if (p.mothers_email) motherContacts.push(p.mothers_email)
-  })
-
-
-  const guardianContacts = []
-  phoneGuardianList.value.forEach(p => {
-    if (p.guardian_phone) guardianContacts.push(p.guardian_phone)
-    if (p.guardian_email) guardianContacts.push(p.guardian_email)
-  })
-
-  const LanguageListData = []
-
-  LanguagesList.value.forEach(p => {
-    if (p.code) LanguageListData.push(p.code)
-    if (p.languages) LanguageListData.push(p.languages)
-  })
-
-  // const langs = LanguagesList.value.map(l =>
-  //     l.languages
-  // )
-
-  const familyMembers = []
-
-  if (form.value.surname || form.value.other_name) {
-    familyMembers.push({
-      relationship: "FATHER",
-      student_number: studentNumber,
-      surname: form.value.surname,
-      other_name: form.value.other_name,
-      place_of_employment: form.value.place_of_employment,
-      physical_contact_address: form.value.physical_contact_address,
-      contacts: fatherContacts
-    })
-  }
-
-  if (form.value.family_name_of_mother || form.value.mothers_other_names) {
-    familyMembers.push({
-      relationship: "MOTHER",
-      student_number: studentNumber,
-      surname: form.value.family_name_of_mother,
-      other_name: form.value.mothers_other_names,
-      place_of_employment: form.value.mothers_place_of_employment,
-      physical_contact_address: form.value.physical_contact_address,
-      contacts: motherContacts
-    })
-  }
-
-  if (form.value.family_name_of_guardian) {
-    familyMembers.push({
-      relationship: "GUARDIAN",
-      student_number: studentNumber,
-      surname: form.value.family_name_of_guardian,
-      other_name: form.value.guardian_other_names,
-      place_of_employment: form.value.guardian_place_of_employment,
-      physical_contact_address: form.value.physical_contact_address,
-      contacts: guardianContacts
-    })
-  }
-
-  const finalData = {
-    student_number: studentNumber,
-    family_members: familyMembers,
-    languages: LanguagesList.value
-  }
-
-
-  buttonLoader.value = true
-  form.value.student_number = props.studentProfileData?.current_enrollment?.student_number
-  saveFamilyStructure(finalData)
-  // alert("Final Submission:\n" + JSON.stringify(finalData, null, 2))
-  buttonLoader.value = false
+  // alert(JSON.stringify(form.value))
+  saveFamilyStructure(form.value)
 }
 
 const  saveFamilyStructure = async (data) => {
   await api.post("main/students/family-structure", data)
       .then((response) => {
-        buttonLoader.value = false
+        buttonLoader.value = true
         notificationStore.successToast("Success",response.data.message)
+        familyStructureData.value = response.data
+        emit("next", {step:2})
       })
       .catch((error) => {
         if(error && error.response){
@@ -194,312 +94,126 @@ const  saveFamilyStructure = async (data) => {
       })
 }
 
+const familyStructureDataFather = ref([])
+const familyStructureDataMother = ref([])
+const familyStructureDataGuardian = ref([])
+const languagesData = ref([])
 
 const  fetchFamilyStructure = async (data) => {
   await api.get("main/students/family-structure/"+data)
-    .then((response) => {
-      buttonLoader.value = false
-      // notificationStore.successToast("Success",response.data.message)
-      familyStructureData.value = response.data.data
-    })
-    .catch((error) => {
-      if(error && error.response){
-        notificationStore.errorToast("Error",error.response.data.message)
-      }
-    })
+      .then((response) => {
+        buttonLoader.value = false
+        // notificationStore.successToast("Success",response.data.message)
+        familyStructureData.value = response.data.data
+        familyStructureDataFather.value = response.data.data.family_members.filter((item) => item.relationship === "FATHER")
+        familyStructureDataMother.value = response.data.data.family_members.filter((item) => item.relationship === "MOTHER")
+        familyStructureDataGuardian.value = response.data.data.family_members.filter((item) => item.relationship === "GUARDIAN")
+        languagesData.value = response.data.data.languages
+
+        form.value.languages  = languagesData.value.map(lang => ({
+          name: lang.Name,
+          code: lang.Code
+        }));
+
+
+      })
+      .catch((error) => {
+        if(error && error.response){
+          // notificationStore.errorToast("Error",error.response.data.message)
+        }
+      })
 }
 
-// Label map for clean looping
-const familyFields = {
-  surname: "Surname",
-  other_name: "Other Name",
-  place_of_employment: "Place of Employment",
-  physical_contact_address: "Address",
-  contacts: "Contacts",
-};
+const updateFatherDetails = (data) => {
+
+  if(data){
+    data.relationship = "FATHER"
+    data.student_number = studentNo.value
+    form.value.family_members[0] = data
+  }
+
+}
+const updateMotherDetails = (data) => {
+  if(data){
+    data.relationship = "MOTHER"
+    data.student_number = studentNo.value
+    form.value.family_members[1] = data
+  }
+}
+const updateGuardianDetails = (data) => {
+  if(data){
+    data.relationship = "GUARDIAN"
+    data.student_number = studentNo.value
+    form.value.family_members[2] = data
+  }
+}
+
 </script>
 
-
 <template>
-<!--  {{familyStructureData}}-->
-
-  <section class="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-md space-y-10" v-if="familyStructureData.length !== 0">
-
-    <!-- Family Members -->
-    <div>
-      <div class="flex items-center justify-between mb-6 border-b pb-2">
-        <h3 class="text-xs font-semibold text-gray-800">Family Members</h3>
-        <button class="text-xs text-white bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-md shadow-sm transition">
-          Update
-        </button>
-      </div>
-      <div
-          v-for="member in familyStructureData.family_members"
-          :key="member.number"
-          class="border border-gray-200 rounded-xl p-5 mb-6 shadow-sm bg-gray-50"
-      >
-        <!-- Relationship Label Highlight -->
-        <div class="mb-4">
-        <span
-            class="inline-block bg-blue-100 text-blue-800 text-xs font-bold uppercase tracking-wide rounded-full px-3 py-1"
-        >
-          {{ member.relationship }}
-        </span>
-        </div>
-
-        <!-- Member Details -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700">
-          <div v-for="(label, key) in familyFields" :key="key" v-if="key !== 'relationship'">
-            <span class="block font-medium text-gray-600">{{ label }}:</span>
-            <span class="text-gray-800">{{ member[key] || 'N/A' }}</span>
-          </div>
-        </div>
+  <!--{{form}}-->
+  <!--  {{familyStructureData}}-->
+  <!--  {{languagesData}}-->
+  <div>
+    <!--father-->
+    <family-records-form
+        title="Father"
+        @parentInfo="updateFatherDetails"
+        :familyStructureData="familyStructureDataFather"
+    >
+    </family-records-form>
+    <!-- mother-->
+    <family-records-form
+        title="Mother"
+        @parentInfo="updateMotherDetails"
+        :familyStructureData="familyStructureDataMother"
+    >
+    </family-records-form>
+    <!-- guardian-->
+    <family-records-form
+        title="Guardian"
+        @parentInfo="updateGuardianDetails"
+        :familyStructureData="familyStructureDataGuardian"
+    >
+    </family-records-form>
+    <div class="row mx-auto mt-2">
+      <div class="col-12">
+        <!--        {{form.languages }}-->
+        <!--        {{form.languages}}-->
+        <label class="text-sm">Languages</label>
+        <table>
+          <tr v-for="(lst, index) in form.languages" :key="index">
+            <td class="w-[25%]"><input  type="number" v-model="lst.code" required class="form-control" placeholder="code"></td>
+            <td><input type="text" v-model="lst.name" required class="form-control" placeholder="Language"></td>
+            <td><button class="btn-sm" @click.prevent="removeLanguage(index)">x
+            </button></td>
+          </tr>
+        </table>
+        <button class="btn btn-primary btn-sm mt-2 " @click.prevent="addLanguage">+ Add Language</button>
       </div>
     </div>
 
-    <!-- Languages -->
-    <div>
-      <h3 class="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">Languages</h3>
-      <ul class="space-y-2 text-sm text-gray-700">
-        <li
-            v-for="(lang, index) in familyStructureData.languages"
-            :key="index"
-            class="bg-gray-50 border rounded-lg px-4 py-2"
-        >
-          <span class="font-medium text-gray-600">Code:</span> {{ lang.Code }} —
-          <span class="font-medium text-gray-600">Name:</span> {{ lang.Name || 'N/A' }}
-        </li>
-      </ul>
+    <div class="flex justify-end mt-4">
+      <!--      <button  type="button" @click="" class="btn btn-outline-secondary">Back</button>-->
+
+      <button type="submit" class="btn btn-sm btn-primary mb-2" @click.prevent="submitForm"><small>Update</small>
+        <span v-if="buttonLoader" class="spinner-border spinner-border-sm"></span>
+      </button>
     </div>
-  </section>
-
-  <div v-else>
-    <p class="ml-4 mt-4 mb-10">FAMILY STRUCTURE</p>
-
-    <form @submit.prevent="nextStep">
-      <div class="row mx-auto">
-        <div class="col-12">
-
-          <!-- Step 1: Father Info -->
-          <div v-if="step === 1">
-            <p><strong>Father</strong></p>
-            <hr />
-            <div class="row mx-auto">
-              <div class="col-6">
-                <div class="mb-2">
-                  <label class="text-sm">Surname Name *</label>
-                  <input type="text" v-model="form.surname" required class="form-control form-control-sm">
-                </div>
-                <div class="mb-2">
-                  <label class="text-sm">Other Names *</label>
-                  <input type="text" v-model="form.other_name" required class="form-control form-control-sm">
-                </div>
-                <div class="mb-2">
-                  <label class="text-sm">Is Living *</label>
-                  <select class="form-select form-control-sm" v-model="form.parent_living" required>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                  </select>
-                </div>
-                <div class="mb-2">
-                  <label class="text-sm">Place of Employment *</label>
-                  <input type="text" v-model="form.place_of_employment" required class="form-control form-control-sm">
-                </div>
-              </div>
-
-              <div class="col-6">
-                <div class="mb-2">
-                  <label class="text-sm">Physical Contact Address *</label>
-                  <input type="text" v-model="form.physical_contact_address" required class="form-control form-control-sm">
-                </div>
-                <div class="mb-2">
-                  <label class="text-sm">Contact Details</label>
-                  <table>
-                    <tr v-for="(lst, index) in phoneList" :key="index">
-                      <td><input type="text" v-model="lst.phone_number" required class="form-control form-control-sm" placeholder="Phone number"></td>
-                      <td><input type="email" v-model="lst.email" required class="form-control form-control-sm" placeholder="Email"></td>
-                      <td>
-                        <button class="btn-sm" @click.prevent="removePhone(index)">🗑</button>
-                      </td>
-                    </tr>
-                  </table>
-                  <button class="btn btn-primary btn-sm mt-2" @click.prevent="addPhone">+ Add Contacts</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Step 2: Mother Info -->
-          <div v-if="step === 2">
-            <p><strong>Mother</strong></p>
-            <hr />
-            <div class="row mx-auto">
-              <div class="col-6">
-                <div class="mb-2">
-                  <label class="text-sm">Family Name *</label>
-                  <input type="text" v-model="form.family_name_of_mother" required class="form-control form-control-sm">
-                </div>
-                <div class="mb-2">
-                  <label class="text-sm">Other Names *</label>
-                  <input type="text" v-model="form.mothers_other_names" required class="form-control form-control-sm">
-                </div>
-                <div class="mb-2">
-                  <label class="text-sm">Is Living *</label>
-                  <select class="form-select form-control-sm" v-model="form.mother_living" required>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                  </select>
-                </div>
-                <div class="mb-2">
-                  <label class="text-sm">Place of Employment *</label>
-                  <input type="text" v-model="form.mothers_place_of_employment" required class="form-control form-control-sm">
-                </div>
-              </div>
-
-              <div class="col-6">
-
-
-                <div class="mb-2">
-                  <label class="text-sm">Contact Details</label>
-                  <table>
-                    <tr v-for="(lst, index) in phoneMotherList" :key="index">
-                      <td><input type="text" v-model="lst.mothers_phone" required class="form-control form-control-sm" placeholder="Phone number"></td>
-                      <td><input type="email" v-model="lst.mothers_email" required class="form-control form-control-sm" placeholder="Email"></td>
-                      <td>
-                        <button class="btn-sm" @click.prevent="removeMotherPhone(index)">🗑</button>
-                      </td>
-                    </tr>
-                  </table>
-                  <button class="btn btn-primary btn-sm mt-2" @click.prevent="addMotherPhone">+ Add Contacts</button>
-                </div>
-
-
-
-<!--                <div class="mb-2">-->
-<!--                  <label class="text-sm">Mother Contact Info</label>-->
-<!--                  <table>-->
-<!--                    <tr v-for="(lst, index) in phoneMotherList" :key="index">-->
-<!--                      <td><input type="text" v-model="lst.mothers_phone" required class="form-control form-control-sm" placeholder="Phone"></td>-->
-<!--                      <td><button class="btn-sm" @click.prevent="removeMotherPhone(index)">🗑</button></td>-->
-<!--                    </tr>-->
-<!--                  </table>-->
-<!--                  <button class="btn btn-primary btn-sm mt-2" @click.prevent="addMotherPhone">+ Add Phone</button>-->
-
-<!--                  <table class="mt-2">-->
-<!--                    <tr v-for="(lst, index) in emailMotherList" :key="index">-->
-<!--                      <td><input type="email" v-model="lst.mothers_email" required class="form-control form-control-sm" placeholder="Email"></td>-->
-<!--                      <td><button class="btn-sm" @click.prevent="removeMotherEmail(index)">🗑</button></td>-->
-<!--                    </tr>-->
-<!--                  </table>-->
-<!--                  <button class="btn btn-primary btn-sm mt-2" @click.prevent="addMotherEmail">+ Add Email</button>-->
-<!--                </div>-->
-
-              </div>
-            </div>
-          </div>
-
-          <!-- Step 3: Guardian Info -->
-          <div v-if="step === 3">
-            <p><strong>Guardian</strong></p>
-            <hr />
-            <div class="row mx-auto">
-              <div class="col-6">
-                <div class="mb-2">
-                  <label class="text-sm">Family Name *</label>
-                  <input type="text" v-model="form.family_name_of_guardian" required class="form-control form-control-sm">
-                </div>
-                <div class="mb-2">
-                  <label class="text-sm">Other Names *</label>
-                  <input type="text" v-model="form.guardian_other_names" required class="form-control form-control-sm">
-                </div>
-                <div class="mb-2">
-                  <label class="text-sm">Is Living *</label>
-                  <select class="form-select form-control-sm" v-model="form.guardian_living" required>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                  </select>
-                </div>
-                <div class="mb-2">
-                  <label class="text-sm">Place of Employment *</label>
-                  <input type="text" v-model="form.guardian_place_of_employment" required class="form-control form-control-sm">
-                </div>
-              </div>
-
-              <div class="col-6">
-
-
-                <div class="mb-2">
-                  <label class="text-sm">Contact Details</label>
-                  <table>
-                    <tr v-for="(lst, index) in phoneGuardianList" :key="index">
-                      <td><input type="text" v-model="lst.guardian_phone" required class="form-control form-control-sm" placeholder="Phone number"></td>
-                      <td><input type="email" v-model="lst.guardian_email" required class="form-control form-control-sm" placeholder="Email"></td>
-                      <td>
-                        <button class="btn-sm" @click.prevent="removeGuardianPhone(index)">🗑</button>
-                      </td>
-                    </tr>
-                  </table>
-                  <button class="btn btn-primary btn-sm mt-2" @click.prevent="addGuardianPhone">+ Add Contacts</button>
-                </div>
-
-
-
-                <!--                <div class="mb-2">-->
-                <!--                  <label class="text-sm">Mother Contact Info</label>-->
-                <!--                  <table>-->
-                <!--                    <tr v-for="(lst, index) in phoneMotherList" :key="index">-->
-                <!--                      <td><input type="text" v-model="lst.mothers_phone" required class="form-control form-control-sm" placeholder="Phone"></td>-->
-                <!--                      <td><button class="btn-sm" @click.prevent="removeMotherPhone(index)">🗑</button></td>-->
-                <!--                    </tr>-->
-                <!--                  </table>-->
-                <!--                  <button class="btn btn-primary btn-sm mt-2" @click.prevent="addMotherPhone">+ Add Phone</button>-->
-
-                <!--                  <table class="mt-2">-->
-                <!--                    <tr v-for="(lst, index) in emailMotherList" :key="index">-->
-                <!--                      <td><input type="email" v-model="lst.mothers_email" required class="form-control form-control-sm" placeholder="Email"></td>-->
-                <!--                      <td><button class="btn-sm" @click.prevent="removeMotherEmail(index)">🗑</button></td>-->
-                <!--                    </tr>-->
-                <!--                  </table>-->
-                <!--                  <button class="btn btn-primary btn-sm mt-2" @click.prevent="addMotherEmail">+ Add Email</button>-->
-                <!--                </div>-->
-
-              </div>
-            </div>
-          </div>
-
-          <!-- Step 4: Languages -->
-          <div v-if="step === 4">
-            <label class="text-sm">Languages</label>
-            <table>
-              <tr v-for="(lst, index) in LanguagesList" :key="index">
-                <td><input type="number" v-model="lst.code" required class="form-control" placeholder="code"></td>
-                <td><input type="text" v-model="lst.languages" required class="form-control" placeholder="Language"></td>
-                <td><button class="btn-sm" @click.prevent="removeLanguage(index)">🗑</button></td>
-              </tr>
-            </table>
-            <button class="btn btn-primary btn-sm mt-2" @click.prevent="addLanguage">+ Add Language</button>
-          </div>
-
-        </div>
-      </div>
-
-      <hr />
-      <div class="flex justify-between mt-4">
-        <button v-if="step > 1" type="button" @click="prevStep" class="btn btn-outline-secondary">Back</button>
-        <button type="submit" class="btn btn-primary">
-          {{ step === totalSteps ? 'Submit' : 'Next' }}
-          <span v-if="buttonLoader" class="spinner-border spinner-border-sm"></span>
-        </button>
-      </div>
-    </form>
   </div>
+
+
 </template>
 
 
 <style scoped>
 button.btn-sm {
-  background-color: transparent;
+  font-size: 13px;
+}
+
+button.btn-sm2 {
+  //background-color: transparent;
   border: none;
-  color: red;
+  font-size: 13px;
 }
 </style>
