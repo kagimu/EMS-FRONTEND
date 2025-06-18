@@ -19,6 +19,7 @@ const  notificationStore  = useNotificationStore()
 const schoolList = ref([])
 const school_number = ref("")
 const admissionLetterTempleteData = ref([])
+const phrase = ref([])
 
 
 const addNewPhrase = () => {
@@ -53,8 +54,8 @@ watch(
     () => admissionStore.admissionLetterResponse,
     async (data) => {
       if (data) {
-        admissionLetterTempleteData.value = data.phrase
-        formData.phrase = data.phrase
+        admissionLetterTempleteData.value = data.phase
+        phrase.value = data.phase
       }
     },
     {deep: true}
@@ -102,12 +103,9 @@ watch(
         </div>
 
         <div class="w-full">
-          <text-area-editor
-              v-model:textResponse="formData.phrase"
-              :textInfo="formData.phrase"
-              textAreaMinHeight="min-h-[130px]"
-              noBoarder="no"
-          ></text-area-editor>
+
+          <div v-html="phrase"></div>
+
         </div>
 
 
