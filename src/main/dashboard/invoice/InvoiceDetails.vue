@@ -247,7 +247,7 @@ const printContent = () => {
 
 <template>
   <div>
-    <AppModal title="Pay" v-model="mymodalpay" xs>
+    <AppModal title="Pay" v-model="mymodalpay" xl>
       <InvoicePayment :invoiceNumber="thisInvoiceNumber"></InvoicePayment>
     </AppModal>
 
