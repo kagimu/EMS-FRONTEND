@@ -235,7 +235,7 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
     <NewInvoice :userNumber="userNumber"  :studentDataInfo="studentDataInfo"></NewInvoice>
     </AppModal>
 
-    <AppModal title="Invoice Details" v-model="showInvoiceDetails" xl6>
+    <AppModal title="Promissory Note Details" v-model="showInvoiceDetails" xl6>
     <InvoiceDetails :invoiceNumber="invoiceNumber" :studentN="studentN" :invoiceN="invoiceN"></InvoiceDetails>
     </AppModal>
 
@@ -249,7 +249,7 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
      <div class="flex flex-grow justify-end">
       <div v-if="studentNumber">
         <button  @click="showModal()" class="btn btn-primary btn-sm mb-2" style="float: right;" v-if="can('add_custom_invoice','general')">
-        <small><i class="bi bi-plus"> Add New Invoice</i></small></button></div>
+        <small><i class="bi bi-plus">Add New Promissory Note</i></small></button></div>
      </div>
        
           <div class="card-bdy" style="padding: 0;">
@@ -406,27 +406,19 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
           <td>{{ list?.date }}</td>
         <td>
         <div>
-          <!-- <router-link
-          v-if="userType != 'User'"
-              class="text-decoration-none"
-              :to="{name:'invoice-details', query:{invoice_id:list.ref_number,st_id:studentNumber}}">
-            <button class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
-              <small>View</small>
-            </button>
-          </router-link> -->
-
-
-            <button 
-             @click="showInvoiceInfoModal(list.ref_number,studentNumber)" class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
-              <small>View</small>
-            </button>
-         
 
           <button
-              @click="paymentModal(list.number)" class="bg-[#0d6efd] rounded-sm text-white px-4 btn-primary btn-sm ml-3"
+              @click="paymentModal(list.number)" class="bg-[#0d6efd] rounded-sm text-white px-4 btn-primary btn-sm mr-3"
               v-if="can('pay_invoice','general')">
             <small>Pay</small>
           </button>
+
+          <button
+              v-if="list?.status !== 'CANCELLED'"
+              @click="showInvoiceInfoModal(list.ref_number,studentNumber)" class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
+            <small>View</small>
+          </button>
+
         </div>
         </td>
         </tr>

@@ -151,28 +151,28 @@ watch(
 const deleteInvoice = async () => {
   const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete this Invoice?");
   if (agreed) {
-    invoiceStore.deleteInvoice(myData.invoiceN);
+    await invoiceStore.deleteInvoice(myData.invoiceN);
   }
 };
 
 const cancelInvoice = async () => {
   const agreed = await confirmationRef.value.confirm("Are you sure, you want to cancel this Invoice?");
   if (agreed) {
-    invoiceStore.cancelInvoice(myData.invoiceN);
+    await invoiceStore.cancelInvoice(myData.invoiceN);
   }
 };
 
 const cancelInvoicePayment = async (payment_number) => {
   const agreed = await confirmationRef.value.confirm("Are you sure, you want to cancel this Payment?");
   if (agreed) {
-    invoiceStore.cancelInvoicePayment(payment_number);
+    await invoiceStore.cancelInvoicePayment(payment_number);
   }
 };
 
 const deleteInvoicePayment = async (payment_number) => {
   const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete this Payment?");
   if (agreed) {
-    invoiceStore.deleteInvoicePayment(payment_number);
+    await invoiceStore.deleteInvoicePayment(payment_number);
   }
 };
 
@@ -258,7 +258,7 @@ const printContent = () => {
             <div class="row">
               <div class="col-lg-7">
                 <h6 style="margin-top:20px; text-align: left;font-size: 15px;">
-                  Invoice<b></b>
+                  Promissory Note<b></b>
                 </h6>
               </div>
               <div class="col-lg-5">
@@ -300,7 +300,7 @@ const printContent = () => {
                           </div>
                           <div class="col-12 col-sm-6 col-md-4 invoice-details">
                             <h4 class="row">
-                              <span class="col-6">Invoice #</span>
+                              <span class="col-6">Note#</span>
                               <span class="col-6 text-sm-end">{{ myData.ref_number }}</span>
                             </h4>
                             <div class="row">

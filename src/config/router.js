@@ -202,7 +202,6 @@ const router = createRouter({
                         meta: {
                             resource: "admission-list",
                             action: "view_financial_records",
-
                         }
                     },
                 {path: 'admission-details', component: AdmissionDetails, name: "admission-details",
