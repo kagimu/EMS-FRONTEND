@@ -4,6 +4,7 @@ import useNotificationStore from "@/composables/useNotification.js";
 import { useAbility } from '@casl/vue';
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import { useAdmissionStore } from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
+import TextAreaEditor from "./TextAreaEditor.vue";
 
 const confirmationRef = ref(null);
 const { can } = useAbility()
@@ -80,17 +81,30 @@ watch(
             </select>
           </div>
 
-          <div class="mb-2">
-            <label class="text-sm">Phrase <span class="star">*</span></label>
-            <textarea
-                v-model="formData.phrase"
-                style="font-size: 12px; color: #4e5866;"
-                class="form-control shadow-none"
-                rows="4"
-                required
-            >
+<!--          <div class="mb-2">-->
+<!--            <label class="text-sm">Phrase <span class="star">*</span></label>-->
+<!--            <textarea-->
+<!--                v-model="formData.phrase"-->
+<!--                style="font-size: 12px; color: #4e5866;"-->
+<!--                class="form-control shadow-none"-->
+<!--                rows="4"-->
+<!--                required-->
+<!--            >-->
 
-            </textarea>
+<!--            </textarea>-->
+<!--          </div>-->
+<!--          <div v-html="formData.phrase"></div>-->
+          <div class="p-0 border rounded-md mb-2">
+            <div class="text-[11px] text-gray-600 mt-[1px] ml-[7px]">Description</div>
+            <div class="w-full">
+              <text-area-editor
+                  v-model:textResponse="formData.phrase"
+                  :textInfo="formData.phrase"
+                  textAreaMinHeight="min-h-[130px]"
+                  noBoarder="no"
+              ></text-area-editor>
+            </div>
+
           </div>
 
 

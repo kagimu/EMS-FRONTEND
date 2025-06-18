@@ -2,20 +2,63 @@
 
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
-import NewLevel from "@/main/settings/level/NewLevel.vue";
 import { useAbility } from '@casl/vue';
 import AppModal from "@/components/AppModal.vue";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 import newAdmissionPhrase from "@/main/dashboard/studentAdmission/admissionTemplate/newAdmissionPhrase.vue";
+import { useSchoolStore } from "@/main/dashboard/manageSchool/store/school.js";
+import { useAdmissionStore } from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
+import TextAreaEditor from "./TextAreaEditor.vue";
 
+const schoolStore = useSchoolStore()
+const admissionStore = useAdmissionStore()
 const confirmationRef = ref(null);
 const admissionPhrase = ref(false)
 const { can } = useAbility()
 const  notificationStore  = useNotificationStore()
+const schoolList = ref([])
+const school_number = ref("")
+const admissionLetterTempleteData = ref([])
+
+
 const addNewPhrase = () => {
   admissionPhrase.value = true
 }
 
+onMounted(
+     () => {
+       schoolStore.fetchSchools()
+    } )
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        schoolList.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+const fetchTemplates = (schoolN) => {
+  if(schoolN){
+    let data = {
+      school_number: schoolN
+    }
+    admissionStore.fetchAdmissionTemplates(data)
+  }
+}
+
+watch(
+    () => admissionStore.admissionLetterResponse,
+    async (data) => {
+      if (data) {
+        admissionLetterTempleteData.value = data.phrase
+        formData.phrase = data.phrase
+      }
+    },
+    {deep: true}
+)
 </script>
 <template>
   <div>
@@ -23,41 +66,51 @@ const addNewPhrase = () => {
 
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
-    <AppModal title="" v-model="admissionPhrase" lg>
+    <AppModal title="" v-model="admissionPhrase" xl6>
       <new-admission-phrase></new-admission-phrase>
     </AppModal>
 
 
+    <div class="">Admission Template</div>
     <div class="row">
-
       <div class="col-12">
 
         <div class="flex justify-content-between mt-3">
-          <div class="ml-4">Admission Template</div>
-          <button
+
+            <div class="mb-2">
+              <label class="text-sm">School <span class="star">*</span></label>
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm" required
+                  v-model="school_number"
+                  @change="fetchTemplates(school_number)"
+              >
+                <option disabled value="">--Select School--</option>
+                <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+                </option>
+              </select>
+            </div>
+
+
+          <div><button
               v-if="can('add_level','general')"
-              type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addNewPhrase">
-            <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+              type="button"  class="btn btn-sm btn-primary mb-2"  @click="addNewPhrase">
+            <i style="font-size: 13px;"  class="bi-plus"></i>
             Add New
           </button>
+          </div>
+        </div>
+
+        <div class="w-full">
+          <text-area-editor
+              v-model:textResponse="formData.phrase"
+              :textInfo="formData.phrase"
+              textAreaMinHeight="min-h-[130px]"
+              noBoarder="no"
+          ></text-area-editor>
         </div>
 
 
-
-        <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
-          <thead>
-          <tr>
-            <th scope="col" style="width: 30%;">Codes</th>
-            <th scope="col">Name</th>
-            <th scope="col">Action</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="(levelInfo, index) in levelList" :key="index">
-
-          </tr>
-          </tbody>
-        </table>
 
       </div>
     </div>
@@ -65,33 +118,13 @@ const addNewPhrase = () => {
 
 
   </div>
+
 </template>
 
 
 
 <style scoped>
 
-.linkStyle {
-  text-decoration: none;
-  color: #1867c0;
-  font-size: 16px;
-}
 
-.linkStyle:hover {
-  font-size: 16px;
-  color: green;
-  text-decoration: underline;
-}
-
-.viewButtonStyle{
-  background-color: #2c6fb9;
-  color: #ffffff;
-  border-radius: 0;
-}
-
-.viewButtonStyle:hover {
-  background-color: #0557b4;
-  color: #ffffff;
-}
 
 </style>

@@ -15,6 +15,8 @@ export const useAdmissionStore = defineStore("admission", () => {
     const admissionByStudentResponse = ref(null)
     const directAdmitStudentResponse = ref(null)
     const admissionLetterPhraseResponse = ref()
+    const admissionLetterResponse = ref(null)
+    const decodeAdmissionLetterResponse = ref(null)
 
     async function newStudentDetailsAdmission(data) {
         return await api.post("main/new-student-details-admission", data)
@@ -154,6 +156,30 @@ export const useAdmissionStore = defineStore("admission", () => {
             })
     }
 
+    async function fetchAdmissionTemplates(data) {
+        return await api.get("main/admissions/templates/"+data.school_number)
+            .then((response) => {
+                admissionLetterResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function decodeTemplates(data) {
+        return await api.get("main/admissions/templates/decode?student_number="+data.student_number)
+            .then((response) => {
+                decodeAdmissionLetterResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
     return {
         newStudentDetailsAdmissionResponse,
@@ -178,6 +204,10 @@ export const useAdmissionStore = defineStore("admission", () => {
         directAdmitStudentResponse,
         directAdmitStudent,
         admissionLetterPhrase,
-        admissionLetterPhraseResponse
+        admissionLetterPhraseResponse,
+        fetchAdmissionTemplates,
+        admissionLetterResponse,
+        decodeTemplates,
+        decodeAdmissionLetterResponse
     }
 })
