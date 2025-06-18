@@ -442,6 +442,10 @@ watch(
           showCompleteModal.value = true
    }
 
+   const closeCompleteDialog = () => {
+     showCompleteModal.value = false
+   }
+
 </script>
 <template>
 
@@ -449,7 +453,8 @@ watch(
 
   <AppModal title="Complete Student Profile" v-model="showCompleteModal" xl4>
     <CompleteStudentProfile
-        :studentNumber="studentNum" ></CompleteStudentProfile>
+        :studentNumber="studentNum"
+        @closeDialog="closeCompleteDialog" ></CompleteStudentProfile>
   </AppModal>
 
 

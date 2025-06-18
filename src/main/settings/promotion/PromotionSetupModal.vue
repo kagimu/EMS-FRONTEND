@@ -485,7 +485,7 @@ const generateStatus = (std) => {
         </div>
 
             <div class="mb-2">
-                <label class="text-sm"><small>Study period</small> </label>
+                <label class="text-sm"><small>Next Study period</small> </label>
                 <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required

@@ -111,14 +111,17 @@ let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
       schoolStore.fetchSchoolData(school)
   }
 
+  const className = ref(null)
     const getInterviewList = () => {
      let data = {
       campus_class_number:form.campus_class_number
      }
      applicationStore.fetchInterviewList(data).finally(() => {
-  
   })
-     
+
+      let cls = classList.value.flatMap(grade => grade.classes).find(c => c.number === form.campus_class_number)
+      className.value = cls.name
+
     }
 
 
@@ -149,6 +152,7 @@ const fetchCampusLevel = (curriculumNumber) => {
 
 const fetchLevelClasses = (levelNumber) => {
    classStore.fetchClassLevel({campusCurriculumNumber: form.curriculumNumber, campusLevelNumber: levelNumber})
+
 }
 
 
@@ -468,7 +472,6 @@ watch (
 <template>
   <div>
 
-
     <AppModal title="Admission Letter" v-model="openAdmissionLetterModel" xl4 class="app-modal">
       <AdmissionForm :schoolData="schoolData" :studentDataInfo="studentDataInfo"></AdmissionForm>
     </AppModal>
@@ -549,7 +552,6 @@ watch (
         <div class="col-2"> 
         <div class="mb-2">
             <label class="text-sm"><small>Class</small></label>
-
                 <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm" required
@@ -625,6 +627,7 @@ watch (
                 <tr>
                   <th style="width: 1px;">#</th>
                   <th>Name</th>
+                  <th>Class</th>
                   <th>Scores</th>
                   <th>Status</th>
                   <th >#</th>
@@ -643,11 +646,16 @@ watch (
                       style="outline: none 0 !important; box-shadow: none;width: 20px;height: 20px;"
                     />
                   </td>
+
                   <td>
                     {{ student.adn ? student.adn : student.apn }}
                     {{ student.student_surname ? student.student_surname : "" }}
                     {{ student.student_second_name ? " " + student.student_second_name : "" }}
                     {{ student.student_other_name ? " " + student.student_other_name : "" }}
+                  </td>
+
+                  <td>
+                    {{className}}
                   </td>
                   <td>
                     <table

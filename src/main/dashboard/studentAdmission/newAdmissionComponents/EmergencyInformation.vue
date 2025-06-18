@@ -4,6 +4,9 @@ import {reactive, ref,onMounted,watch} from "vue";
 import api from "@/config/api.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import useCommonsStore from "@/composables/useCommons.js";
+import {useRouter} from "vue-router";
+const routerData = useRouter()
+const student_number = routerData.currentRoute.value.query.st_id
 
 const buttonLoader = ref(false)
 const emit = defineEmits()
@@ -11,6 +14,8 @@ const commons = useCommonsStore()
 const notificationStore  = useNotificationStore()
 const emergencyData = ref([])
 const studentNo = ref(null)
+
+
 
 const form = reactive({
   contact_person:null,
@@ -38,6 +43,10 @@ const getStudentNumber = () => {
     studentNo.value = no
     // form.value.student_number = no
     fetchEmergencyData(no)
+  }else if(student_number){
+     studentNo.value = student_number
+    // form.value.student_number = no
+    fetchEmergencyData(student_number)
   }
 }
 
@@ -112,7 +121,7 @@ const  fetchEmergencyData = async (data) => {
       })
       .catch((error) => {
         if(error && error.response){
-          notificationStore.errorToast("Error",error.response.data.message)
+          // notificationStore.errorToast("Error",error.response.data.message)
         }
       })
 }
@@ -223,15 +232,24 @@ const emergencyFields = {
           Back
         </button>-->
 
-       <div class="flex justify-between mt-4 w-full">
-               <button  type="button" @click="backPage" class="btn btn-outline-secondary">Back</button>
+       <div class="flex justify-end mt-4 w-full" v-if="student_number" >
+
          <button type="submit" class="btn btn-primary mb-2 mr-4">
-           Save
+           <small>Update</small>
            <span class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
           <span class="visually-hidden">Loading...</span>
         </span>
          </button>
        </div>
+        <div class="flex justify-between mt-4 w-full" v-else >
+          <button  type="button" @click="backPage" class="btn btn-outline-secondary">Back</button>
+          <button type="submit" class="btn btn-primary mb-2 mr-4">
+            Submit
+            <span class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
+          <span class="visually-hidden">Loading...</span>
+        </span>
+          </button>
+        </div>
 
       </div>
 

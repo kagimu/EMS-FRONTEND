@@ -3,7 +3,10 @@
 import {reactive, ref, onMounted, watch} from "vue";
 import api from "@/config/api.js";
 import useNotificationStore from "@/composables/useNotification.js";
+import {useRouter} from "vue-router";
 
+const routerData = useRouter()
+const student_number = routerData.currentRoute.value.query.st_id
 const buttonLoader = ref(false)
 const emit = defineEmits()
 const notificationStore  = useNotificationStore()
@@ -27,6 +30,9 @@ const getStudentNumber = () => {
     studentNo.value = no
     // form.value.student_number = no
     fetchMedicalData(no)
+  }else if(student_number){
+    studentNo.value = student_number
+    fetchMedicalData(student_number)
   }
 }
 
@@ -93,7 +99,7 @@ const  fetchMedicalData = async (data) => {
       })
       .catch((error) => {
         if(error && error.response){
-          notificationStore.errorToast("Error",error.response.data.message)
+          // notificationStore.errorToast("Error",error.response.data.message)
         }
       })
 }
@@ -168,20 +174,14 @@ const backPage = () => {
 
       <hr />
 
-      <div class="flex justify-between mt-4">
+      <div :class="!student_number ? 'flex justify-between mt-4':'flex justify-end mt-4'" >
 
-     <button type="button" @click="backPage" class="btn btn-outline-secondary mb-2 ml-4">
+     <button v-if="!student_number" type="button" @click="backPage" class="btn btn-outline-secondary mb-2 ml-4">
           Back
         </button>
 
-        <button type="submit" class="btn btn-primary mb-2 mr-4" v-if="medicalRecordsData.length === 0">
-          Submit
-          <span class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
-          <span class="visually-hidden">Loading...</span>
-        </span>
-        </button>
-        <button type="submit" class="btn btn-secondary mb-2 mr-4" v-else>
-          Update
+        <button type="submit" class="btn btn-primary mb-2 mr-4" >
+         <span v-if="!student_number"> <small>Submit</small></span><span v-else><small>Update</small></span>
           <span class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
           <span class="visually-hidden">Loading...</span>
         </span>

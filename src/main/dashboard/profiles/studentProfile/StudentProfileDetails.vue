@@ -175,20 +175,18 @@ const itemMenu = ref([
 ])
 
 const itemMenu2 = ref([
-
-  {
-    text:"Emmergency Information",
-    value:"emergency-information"
-  },
   {
     text:"Family Background",
     value:"family-background"
   },
   {
+    text:"Emergency Information",
+    value:"emergency-information"
+  },
+  {
     text:"Medical Details",
     value:"medical-details"
   }
-
 ])
 
 

@@ -12,7 +12,6 @@ const confirmationRef = ref(null);
 const admissionPhrase = ref(false)
 const { can } = useAbility()
 const  notificationStore  = useNotificationStore()
-
 const addNewPhrase = () => {
   admissionPhrase.value = true
 }
