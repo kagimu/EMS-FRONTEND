@@ -108,10 +108,8 @@ const createNewService = () =>{
 
   if(props.productType === 'service') {
     if (item_number.value) {
-      // alert(JSON.stringify(data))
       serviceStore.updateService(data, item_number.value)
     } else {
-     
       serviceStore.createNewService(data)
     }
   }
@@ -137,6 +135,27 @@ watch (
     },
     {deep:true}
 )
+
+watch (
+    () => serviceStore.updateServiceResponse,
+    async (data) => {
+      if(data){
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
+watch (
+    () => serviceStore.updateProductResponse,
+    async (data) => {
+      if(data){
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
 
 watch (
     () => serviceStore.errorMessage,

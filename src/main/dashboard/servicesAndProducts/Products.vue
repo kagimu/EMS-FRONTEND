@@ -41,13 +41,19 @@ onMounted(
     async () => {
       await schoolStore.fetchSchools()
 
-      let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
-      if(defaultSchoolNo){
-          school_number.value = defaultSchoolNo
-        }
-        filterProducts(school_number.value)
+      fetchProductsList()
 
     } )
+
+const fetchProductsList = () => {
+  let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+  if(defaultSchoolNo){
+    school_number.value = defaultSchoolNo
+  }
+  if(school_number.value) {
+    filterProducts(school_number.value)
+  }
+}
 
 
 watch(
@@ -149,11 +155,21 @@ watch (
 )
 
 
+watch (
+    () => serviceStore.updateProductResponse,
+    async (data) => {
+      if(data){
+        showActionDialog.value = false
+         fetchProductsList()
+      }
+    }
+)
+
 </script>
 <template>
  
 
-      <AppModal title="New Product" v-model="showActionDialog" xl4>
+      <AppModal :title="productListData? 'Update Product' : 'New Product'" v-model="showActionDialog" xl4>
         <NewService :serviceDetails="productListData" productType="product"></NewService>
       </AppModal>
 
