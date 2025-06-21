@@ -14,7 +14,6 @@
    import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
    import {useLevelStore} from "@/main/settings/level/store/level.js";
    import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
-   import SelectSchoolDetails from "@/main/auth/SelectSchoolDetails.vue"
    import ConfirmationModal from "@/components/ConfirmationModal.vue";
    const confirmationRef = ref(null);
    
@@ -395,27 +394,15 @@
    const switchUser = async () => {
      const agreed = await confirmationRef.value.confirm("Confirm that you want to switch to Admin portal!");
      if (agreed) {
-       router.push({name:'entity-dashboard'})
+       await router.push({name: 'entity-dashboard'})
      }
    }
 
 
 </script>
 <template>
-  <ConfirmationModal removeBorder="remove" ref="confirmationRef"></ConfirmationModal>
-    <!-- <div class="overlay" v-if="isOpen" @click.self="stopPropagation">
-      <div class="dialog">
-         <p>Select Options</p>
-         <select class="form-select " v-model="schoolName" @change="setSchool(schoolName)">
-            <option disabled value=""> -select-</option>
-            <option v-for="(school, index) in schoolLists" :key="index" :value="school">
-               {{ school.name }}
-            </option>
-         </select>
-         <button @click="goToDashboard" :disabled="!schoolName" class="btn btn-primary btn-sm ml-2 mt-2 ">continue <i class="bi bi-arrow-right-circle"></i></button>
-      </div>
-   </div>  -->
 
+  <ConfirmationModal removeBorder="remove" ref="confirmationRef"></ConfirmationModal>
 
    <div class="p-0 h-screen w-screen dark" >
       <div class="row fixed w-screen mx-auto z-50">

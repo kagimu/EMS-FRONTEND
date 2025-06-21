@@ -11,9 +11,11 @@ import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 import AppModal from "@/components/AppModal.vue";
 import FiltersModal from "@/main/dashboard/FiltersModal.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
 
 const entityStore = useEntityStore()
 const showConfigModal = ref(false)
+const confirmationRef = ref(null);
 
 let routerName = ""
  routerName = useRouter().currentRoute.value.name;
@@ -205,13 +207,21 @@ const closeDialog = () => {
   showConfigModal.value = false
 }
 
+const switchUser = async () => {
+  const agreed = await confirmationRef.value.confirm("Confirm that you want to switch to Teachers Portal!");
+  if (agreed) {
+    await router.push({name: 'teacher-dashboard'})
+  }
+}
 
 </script>
 <template>
 
+  <ConfirmationModal removeBorder="remove" ref="confirmationRef"></ConfirmationModal>
+
 <AppModal title="Switch" v-model="showConfigModal" xl6>
-<FiltersModal @closeDialog="closeDialog"></FiltersModal>
-    </AppModal>
+  <FiltersModal @closeDialog="closeDialog"></FiltersModal>
+</AppModal>
 
 <div class="p-0 h-screen w-screen dark">
 
@@ -219,7 +229,7 @@ const closeDialog = () => {
       <div class="col-12 col-sm-12 col-md-12 col-lg-12 bg-[#2c2f8c]">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
           <div class="container-fluid">
-            <div class="flex" style="width: 12%; margin-right: 4%; color: #ffffff;">
+            <div class="flex" style="margin-right: 4%; color: #ffffff;">
               <i
                   @click="defaultMenuSize = !defaultMenuSize"
                   style="font-size: 27px; cursor: pointer;"
@@ -227,6 +237,14 @@ const closeDialog = () => {
                   :class="defaultMenuSize ? 'transition ease-in-out rotate-0 duration-700' : 'transition ease-in-out -rotate-180 duration-700'"
               ></i>
               <router-link class="navbar-brand text-white" :to="{name:'home'}"><div class="text-[17px]">{{ entityName }}</div> </router-link>
+              <div>
+                        <span v-if="can('can_serve_as_teacher_and_admin','general')">
+                      <button
+                          class="text-[#2c2f8c] bg-white text-xs rounded-sm ml-4 px-2 py-1 cursor-pointer mt-2" type="button"  @click="switchUser">
+                        <i class="bi bi-plus"></i>Switch to Teacher
+                      </button>
+                    </span>
+              </div>
             </div>
             <div class="navbar-collapse">
               <ul class="navbar-nav me-auto my-lg-0 navbar-nav-scroll" style="font-size: 13px;">
