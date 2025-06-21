@@ -48,9 +48,30 @@ const showModal = (invoice) => {
 };
 
 onMounted(async () => {
-   invoiceStore.fetchInvoiceId(props.invoiceN);
-  applicationStore.fetchStudent(props.studentN);
+   doFetchInvoices()
 });
+
+
+watch(
+    () => props.studentN,
+    async (data) => {
+      if (data) {
+        doFetchInvoices()
+      }
+    }
+);
+
+
+const  doFetchInvoices = () => {
+  let invoice_number = props.invoiceN;
+  let student_number = props.studentN;
+  if(invoice_number){
+    invoiceStore.fetchInvoiceId(invoice_number);
+  }
+  if(student_number){
+    applicationStore.fetchStudent(student_number);
+  }
+}
 
 watch(
   () => applicationStore.studentDataResponse,
@@ -240,6 +261,19 @@ const printContent = () => {
   printWindow.print();
   // printWindow.close();
 };
+
+
+watch (
+    () => invoiceStore.newInvoicePaymentResponse,
+    async (data) => {
+      if(data){
+        mymodalpay.value = false
+        doFetchInvoices()
+      }
+    }
+)
+
+
 </script>
 
 
