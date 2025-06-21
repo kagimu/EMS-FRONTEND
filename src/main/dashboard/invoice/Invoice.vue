@@ -242,20 +242,18 @@ watch(
 </script>
 <template>
   <div>
-    <!-- {{ userNumber }} -->
 
-<!-- {{ campus_number }} -->
-    <AppModal title="Creating New Invoice" v-model="mymodal" xl6>
-    <NewInvoice :userNumber="userNumber"  :studentDataInfo="studentDataInfo"></NewInvoice>
+    <AppModal title="Creating New Promissory Note" v-model="mymodal" xl6>
+      <NewInvoice :userNumber="userNumber"  :studentDataInfo="studentDataInfo"></NewInvoice>
     </AppModal>
 
-    <AppModal title="Invoice Details" v-model="showInvoiceDetails" xl6>
-    <InvoiceDetails  :studentN="studentN" :invoiceN="invoiceN"></InvoiceDetails>
+    <AppModal title="Promissory Note Details" v-model="showInvoiceDetails" xl6>
+      <InvoiceDetails  :studentN="studentN" :invoiceN="invoiceN"></InvoiceDetails>
     </AppModal>
 
 
-    <AppModal title="Pay Invoice" v-model="showPayment" xl>
-    <InvoicePayment :invoiceNumber="invoiceNumber" :userNum="userNumber"></InvoicePayment>
+    <AppModal title="Add Payment" v-model="showPayment" xl>
+      <InvoicePayment :invoiceNumber="invoiceNumber" :userNum="userNumber"></InvoicePayment>
     </AppModal>
 
     <div class="rw mt-3">

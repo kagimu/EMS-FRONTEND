@@ -306,8 +306,8 @@ watch (
                   <small><i class="bi bi-printer">&nbsp;Print</i></small>
                 </button>
                 
-                <span v-if="myData.status != 'CANCELLED'"> <button   @click="cancelInvoice()" 
-                class="btn btn-danger btn-sm mb-2 mr-4" style="float: right;" v-if="can('cancel_invoice','general')">
+                <span v-if="myData.status !== 'CANCELLED'"> <button @click="cancelInvoice()"
+                                                                    class="btn btn-danger btn-sm mb-2 mr-4" style="float: right;" v-if="can('cancel_invoice','general')">
                   <small><i class="bi bi-x">&nbsp;cancel</i></small>
                 </button>
               </span>
@@ -354,6 +354,7 @@ watch (
                               <table class="table table-striped table-hover table-bordered invoice-table">
                                 <thead>
                                   <tr>
+                                    <th scope="col" class="text-uppercase">#</th>
                                     <th scope="col" class="text-uppercase">Qty</th>
                                     <th scope="col" class="text-uppercase">Item</th>
                                     <th scope="col" class="text-uppercase text-end">Unit Price</th>
@@ -361,8 +362,9 @@ watch (
                                   </tr>
                                 </thead>
                                 <tbody class="table-group-divider">
-                                  <tr v-for="(payment, index) in invoiceData.items" :key="index">
-                                    <th scope="row">{{ payment.quantity }}</th>
+                                  <tr v-for="(payment, index) in invoiceData?.items" :key="index">
+                                    <td scope="row">{{ (index + 1) }}</td>
+                                    <td scope="row">{{ payment.quantity }}</td>
                                     <td>{{ payment.item_name }}</td>
                                     <td class="text-end">{{ payment.unit_cost?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
                                     <td class="text-end">{{ payment.unit_cost?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
