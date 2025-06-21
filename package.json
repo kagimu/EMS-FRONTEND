@@ -1,7 +1,7 @@
 {
   "name": "wholesomeeducationui",
   "private": true,
-  "version": "2.5.4n",
+  "version": "2.5.5",
   "type": "module",
   "scripts": {
     "dev": "vite",
