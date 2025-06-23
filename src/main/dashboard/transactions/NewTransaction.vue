@@ -161,7 +161,7 @@
   // =
   onMounted(
     async () => {
-      await serviceStore.fetchServicesList()
+      // await serviceStore.fetchServicesList()
     } )
   
   watch(

@@ -6,8 +6,6 @@ import {useRouter} from "vue-router";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 
-const classError = ref(null)
-const name = ref(null)
 const classList = ref([])
 const routerData = useRouter()
 const  notificationStore  = useNotificationStore()
@@ -108,7 +106,7 @@ watch(
               @click="addCurriculumLevel(lvl)"
               style="outline: none 0 !important; box-shadow: none;"
               class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="lvl.number">
-          <label class="form-check-label cursor-pointer ml-2" :for="lvl.number">{{lvl.code+". "+lvl.name}}</label>
+          <label class="form-check-label cursor-pointer ml-2" :for="lvl.number"><div v-html="lvl.code+' '+lvl.name"></div></label>
         </li>
 
       </ul>

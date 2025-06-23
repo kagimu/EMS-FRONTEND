@@ -126,7 +126,7 @@ serviceStore.updateService(props.service.number,formData)
 
 onMounted(
     () => {
-      serviceStore.fetchServicesList()
+      // serviceStore.fetchServicesList()
       buttonLoader.value = false
     }
 )
@@ -137,7 +137,7 @@ watch(
       if(data){
          notificationStore.successToast("Success", data.message)
        buttonLoader.value=false
-       await serviceStore.fetchServicesList()
+       // await serviceStore.fetchServicesList()
       }
     },
     {deep:true}

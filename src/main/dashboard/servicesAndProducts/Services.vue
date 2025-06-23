@@ -14,18 +14,15 @@ const confirmationRef = ref(null);
 
 const { can } = useAbility()
 const servicesList = ref( [])
-let errorMessage = ref(null)
 const serviceDetails = ref(null)
 const serviceStore= useServiceStore()
 const  notificationStore  = useNotificationStore()
-const servId = ref(null)
 const showDialog = ref(false)
 
 // Pagination variables
 const itemsPerPage = 15 // Number of items per page
 const currentPage = ref(1) // Current page
 const totalPages = ref(1) // Total pages
-const paginatedConditionList = ref([]) // Paginated condition list
 const editMode = ref(false)
 const schoolStore = useSchoolStore()
 const school_number = ref("")
@@ -35,14 +32,30 @@ onMounted(
     async () => {
       await schoolStore.fetchSchools()
 
-    let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
- if(defaultSchoolNo){
-    school_number.value = defaultSchoolNo
-  }
-  filterServices(school_number.value)
+      fetchServices()
 
     } )
 
+
+const fetchServices = () => {
+
+  let defaultSchoolNo =  localStorage.getItem("defaultSchoolNo")
+  if(defaultSchoolNo){
+    school_number.value = defaultSchoolNo
+  }
+  if(school_number.value) {
+    filterServices()
+  }
+}
+
+const filterServices = () =>{
+  if(school_number.value){
+  let data = {
+    school_number:school_number.value
+  }
+  serviceStore.fetchServicesList(data)
+    }
+}
 
 watch(
     () => schoolStore.schoolsResponse,
@@ -54,19 +67,13 @@ watch(
     {deep: true}
 )
 
-const filterServices = (schoolN) =>{
-  let data = {
-    school_number:school_number.value
-  }
-   serviceStore.fetchServicesList(data)
-}
+
 
 watch (
     () => serviceStore.newServiceResponse,
     async (data) => {
       if(data){
-        await serviceStore.fetchServicesList()
-
+       fetchServices()
       }
     }
 )
@@ -99,7 +106,7 @@ watch (
     async (data) => {
       if(data){
         notificationStore.successToast("Success", data.message)
-        await serviceStore.fetchServicesList()
+        fetchServices()
         showDialog.value = false
       }
     },
@@ -152,7 +159,7 @@ watch (
     () => serviceStore.updateServiceResponse,
     async (data) => {
       if(data){
-        await serviceStore.fetchServicesList()
+        fetchServices()
         showDialog.value = false
         notificationStore.successToast("Success", data.message)
       }
@@ -163,7 +170,7 @@ watch (
     () => serviceStore.newServiceResponse,
     async (data) => {
       if(data){
-        await serviceStore.fetchServicesList()
+        fetchServices()
         showDialog.value = false
         notificationStore.successToast("Success", data.message)
       }
@@ -190,7 +197,7 @@ watch (
             v-model="school_number"
             @change="filterServices(school_number)"
         >
-          <option disabled value=""> - filter By School -</option>
+          <option disabled value=""> --Filter By School--</option>
           <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
           </option>
         </select>
