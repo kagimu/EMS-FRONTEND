@@ -177,7 +177,9 @@ const narrativeData = ref([
 
 
           <tr style="font-size: 13px;" v-for="(info,idx) in draftInfo?.narrative_response_data" :key="key">
-            <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Learning to Care for the Mind (MENTAL STUDIES)</td>
+            <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">
+              {{info?.learning_area}}
+            </td>
             <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Acquire Knowledge Properly</td>
             <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.1</td>
             <td style="background-color: #99cc66; border: 1px solid black; padding: 5px;">Listen</td>
