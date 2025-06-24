@@ -60,7 +60,8 @@ watch(
         study_period_name: billableData.value.study_period_name,
         campus_name: billableData.value.campus_name,
         type: billableData.value.type,
-        total_amount: billableData.value.total_amount
+        total_amount: billableData.value.total_amount,
+        academic_year_name:billableData.value.academic_year_name
       });
     }
   },
@@ -143,6 +144,7 @@ const printContent = () => {
 </script>
 
 <template>
+<!--  {{billableData}}-->
   <div>
     <button style="float: right" class="btn btn-secondary btn-sm mb-2" @click="printContent">
       <i class="bi bi-printer"></i> Print
@@ -172,6 +174,7 @@ const printContent = () => {
                       <!-- <strong>Bill No:</strong> <u>{{ billableData.billable_number }}</u><br> -->
                       <strong>Class:</strong> {{ billableData.class_name }}<br>
                       <strong>Campus:</strong> {{ billableData.campus_name }}<br>
+                      <strong>Academic Year:</strong> {{ billableData.academic_year_name }}<br>
                       <strong>Study Period:</strong> {{ billableData.study_period_name }}<br>
                       <strong>Status:</strong> <span :class="{'text-success': billableData.status === 'Paid', 'text-danger': billableData.status !== 'Paid'}">{{ billableData.status }}</span>
                     </address>
