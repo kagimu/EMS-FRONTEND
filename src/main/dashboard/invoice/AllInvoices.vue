@@ -239,7 +239,7 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
     </AppModal>
 
 
-    <AppModal title="Pay Invoice" v-model="showPayment" xl>
+    <AppModal title="Pay Promissory Note" v-model="showPayment" xl>
       <InvoicePayment :invoiceNumber="invoiceNumber" :userNum="userNumber"></InvoicePayment>
     </AppModal>
 

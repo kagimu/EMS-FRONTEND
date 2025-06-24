@@ -8,7 +8,7 @@
       <div class="col-12">
         <div class="row gy-3 mb-3">
           <div class="col-6">
-            <h2 class="text-uppercase text-endx m-0">Invoice</h2>
+            <h2 class="text-uppercase text-endx m-0">Promissory Note</h2>
           </div>
           <div class="col-6">
             <a class="d-block text-end" href="#!" style="float: right;">
@@ -41,7 +41,7 @@
           </div>
           <div class="col-12 col-sm-6 col-md-4">
             <h4 class="row">
-              <span class="col-6">Invoice #</span>
+              <span class="col-6">Promissory Note #</span>
               <span class="col-6 text-sm-end">INT-001</span>
             </h4>
             <div class="row">
@@ -49,7 +49,7 @@
               <span class="col-6 text-sm-end">786-54984</span>
               <span class="col-6">Order ID</span>
               <span class="col-6 text-sm-end">#9742</span>
-              <span class="col-6">Invoice Date</span>
+              <span class="col-6">Promissory Note Date</span>
               <span class="col-6 text-sm-end">12/10/2025</span>
               <span class="col-6">Due Date</span>
               <span class="col-6 text-sm-end">18/12/2025</span>
@@ -116,7 +116,7 @@
         </div>
         <div class="row">
           <div class="col-12 text-end">
-            <button type="submit" class="btn btn-primary mb-3">Download Invoice</button>
+            <button type="submit" class="btn btn-primary mb-3">Download Promissory Note</button>
             <button type="submit" class="btn btn-danger mb-3">Submit Payment</button>
           </div>
         </div>
