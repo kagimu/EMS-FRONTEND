@@ -19,6 +19,8 @@ const school_number = ref("")
 const formData = reactive({
   school_number: "",
   phrase: null,
+  principal_name:null,
+  principal_title:null
 })
 
 
@@ -108,17 +110,17 @@ watch(
           </div>
 
           <div class="mb-2 row">
-            <div class="col-lg-4">
-              <label class="text-sm"><small>Specify Due Date For Reporting To School </small></label>
-              <input  type="text" required class="form-control">
-            </div>
+<!--            <div class="col-lg-4">-->
+<!--              <label class="text-sm"><small>Specify Due Date For Reporting To School </small></label>-->
+<!--              <input  type="text" required class="form-control">-->
+<!--            </div>-->
             <div class="col-lg-4">
               <label class="text-sm"><small>Principal Full Names </small></label>
-              <input  type="text" required class="form-control">
+              <input v-model="formData.principal_name" type="text" required class="form-control">
             </div>
             <div class="col-lg-4">
               <label class="text-sm"><small>Principal Title</small></label>
-              <input  type="text" required class="form-control">
+              <input v-model="formData.principal_title"  type="text" required class="form-control">
             </div>
 
           </div>
