@@ -91,11 +91,32 @@ const fetchClasses = (campus_number) => {
 
 
 
-function updateCost(event) {
+function updateCosts(event) {
   const rawValue = event.target.value.replace(/,/g, '');
   formattedCost.value = Number(rawValue).toLocaleString();
   formData.cost = rawValue;
 
+}
+
+
+const updateCost = () => {
+  const rawValue = event.target.value.replace(/,/g, '');
+  const numericValue = parseFloat(formattedCost.value)
+  formattedCost.value = Number(rawValue).toLocaleString();
+  // Strip non-numeric characters (optional, based on your formatting needs)
+  if (isNaN(numericValue)) {
+    return
+  }
+
+  if (numericValue === 0) {
+    const confirmed = confirm("Are you sure you want to set the cost to 0?")
+    if (!confirmed) {
+      formattedCost.value = ''
+    }
+  }
+
+
+  formData.cost = rawValue;
 }
 
 

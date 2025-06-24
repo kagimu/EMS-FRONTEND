@@ -180,6 +180,9 @@ watch(
     {deep: true}
 )
 
+const closeThisDialog = () => {
+  classDialog.value = false
+}
 
 </script>
 <template>
@@ -188,6 +191,8 @@ watch(
 
       <AppModal title="Add Class" v-model="classDialog" lg>
         <new-campus-class :classListInfo="classList"></new-campus-class>
+        <button @click="closeThisDialog" style="float: right" class="btn btn-danger btn-sm  mb-2">
+          <i class="bi bi-x"></i>exit</button>
       </AppModal>
 
 

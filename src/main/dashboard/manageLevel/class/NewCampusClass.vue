@@ -99,11 +99,19 @@ watch(
 )
 
 
+// const toggleSelectAll = () => {
+//   allSelected.value = !allSelected.value
+//   classList.value.forEach(cls => {
+//     cls.selected = allSelected.value
+//   })
+// }
+
 const toggleSelectAll = () => {
-  allSelected.value = !allSelected.value
-  classList.value.forEach(cls => {
-    cls.selected = allSelected.value
-  })
+  if (allSelected.value) {
+    classId.value = classList.value.map(cls => cls.number)
+  } else {
+    classId.value = []
+  }
 }
 
 </script>
@@ -134,15 +142,15 @@ const toggleSelectAll = () => {
 
 
       <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-        <li class="mb-2" v-if="classList.length > 0">
-          <input
-              type="checkbox"
-              v-model="allSelected"
-              @change="toggleSelectAll"
-          />
-          <label class="ms-1">Select All</label>
+<!--        <li class="mb-2" v-if="classList.length > 0">-->
+<!--          <input-->
+<!--              type="checkbox"-->
+<!--              v-model="allSelected"-->
+<!--              @change="toggleSelectAll"-->
+<!--          />-->
+<!--          <label class="ms-1">Select All</label>-->
 
-        </li>
+<!--        </li>-->
 
 
         <li class="list-group-item" v-for="(cls,idx) in classList" :key="idx">

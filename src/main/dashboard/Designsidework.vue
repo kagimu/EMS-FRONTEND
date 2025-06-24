@@ -1,84 +1,62 @@
 <template>
-  <section class="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow space-y-8">
-    <!-- Student Info -->
-    <div>
-      <h2 class="text-2xl font-semibold text-gray-800 mb-1">Student Profile</h2>
-      <p class="text-sm text-gray-600">
-        <span class="font-medium">Student Number:</span> {{ student.student_number }}
-      </p>
-    </div>
+  <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+    <li class="mb-2" v-if="classList.length > 0">
+      <input
+          type="checkbox"
+          v-model="allSelected"
+          @change="toggleSelectAll"
+      />
+      <label class="ms-1">Select All</label>
+    </li>
 
-    <!-- Family Members -->
-    <div>
-      <h3 class="text-xl font-semibold text-gray-800 mb-4">Family Members</h3>
-      <div v-for="member in student.family_members" :key="member.number" class="bg-gray-50 border rounded-xl p-4 mb-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
-          <div v-for="(label, key) in familyFields" :key="key">
-            <span class="font-medium">{{ label }}:</span>
-            {{ member[key] || 'N/A' }}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Languages -->
-    <div>
-      <h3 class="text-xl font-semibold text-gray-800 mb-4">Languages</h3>
-      <ul class="list-disc pl-5 text-sm text-gray-700 space-y-1">
-        <li v-for="(lang, index) in student.languages" :key="index">
-          <span class="font-medium">Code:</span> {{ lang.Code }} —
-          <span class="font-medium">Name:</span> {{ lang.Name || 'N/A' }}
-        </li>
-      </ul>
-    </div>
-  </section>
+    <li
+        class="list-group-item"
+        v-for="(cls, idx) in classList"
+        :key="idx"
+    >
+      <input
+          class="form-check-input me-1"
+          type="checkbox"
+          :value="cls.number"
+          :id="cls.number"
+          v-model="classId"
+          style="outline: none 0 !important; box-shadow: none;"
+          @click="addClass(cls)"
+      />
+      <label class="form-check-label cursor-pointer ml-2" :for="cls.number">
+        {{ cls.code + ". " + cls.name + "    [" + cls.abbreviation + "]" }}
+      </label>
+    </li>
+  </ul>
 </template>
 
 <script setup>
-const student = {
-  student_number: "2bced8f4-b26e-4a16-805d-12e10927cdf7",
-  family_members: [
-    {
-      number: "79175128-f525-444d-9e48-cd3320997499",
-      surname: "Aliqua Eos aut veri",
-      other_name: "Commodi odio cillum ",
-      place_of_employment: "Amet iure quia accu",
-      physical_contact_address: "",
-      contacts: null,
-      relationship: "GUARDIAN",
-    },
-    {
-      number: "7c8740ff-21d6-4ff7-8aac-f52f25c71fa3",
-      surname: "Quisquam consequatur",
-      other_name: "In quas quo temporib",
-      place_of_employment: "Voluptate minima sim",
-      physical_contact_address: "",
-      contacts: null,
-      relationship: "FATHER",
-    },
-    {
-      number: "ca7200e9-4480-4e24-9f92-886758c5a520",
-      surname: "Repellendus Sint m",
-      other_name: "Dolor voluptas aut i",
-      place_of_employment: "Ut totam laudantium",
-      physical_contact_address: "",
-      contacts: null,
-      relationship: "MOTHER",
-    },
-  ],
-  languages: [
-    { Name: "", Code: 8 },
-    { Name: "", Code: 42 },
-  ],
-};
+import { ref, watch } from 'vue'
 
-// Label map for clean looping
-const familyFields = {
-  relationship: "Relationship",
-  surname: "Surname",
-  other_name: "Other Name",
-  place_of_employment: "Place of Employment",
-  physical_contact_address: "Address",
-  contacts: "Contacts",
-};
+const classList = ref([
+  { number: '1', code: 101, name: 'Nursery', abbreviation: 'NRS' },
+  { number: '2', code: 102, name: 'Primary One', abbreviation: 'P1' },
+  { number: '3', code: 103, name: 'Primary Two', abbreviation: 'P2' }
+  // Add more classes as needed
+])
+
+const classId = ref([]) // Selected class numbers
+const allSelected = ref(false)
+
+const toggleSelectAll = () => {
+  if (allSelected.value) {
+    classId.value = classList.value.map(cls => cls.number)
+  } else {
+    classId.value = []
+  }
+}
+
+const addClass = (cls) => {
+  // Optional logic when a class is toggled individually
+}
+
+// Sync `allSelected` with individual checkbox selection
+watch(classId, (newVal) => {
+  allSelected.value = newVal.length === classList.value.length
+})
 </script>
