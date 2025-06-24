@@ -86,6 +86,7 @@ const fetchNarrativeInfo = () => {
    userStore.fetchNarrativeReport(data)
 }
 
+/*
 const fetchCampusBySchool = () => {
   campus_number.value = ""
   campusStore.fetchCampuses(school_number.value)
@@ -120,6 +121,7 @@ const fetchAssessmentArea = (campus_class_number) =>{
     assessmentStore.fetchAssessmentArea(data)
   }
 }
+*/
 
 watch(
     () => schoolStore.schoolsResponse,
@@ -228,7 +230,7 @@ watch (
 <template>
 <div>
 
-<!-- {{ studentProfileData }} -->
+
   <AppModal title="Add Narrative Report" v-model="reportDialog" lg>
       <new-narrative-report
           :narrativeWithSchedule="narrativeWithSchedule"

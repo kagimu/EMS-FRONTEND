@@ -1,4 +1,108 @@
+<script setup>
 
+import {ref, watch} from "vue";
+import {useNarrativeStore} from "@/main/dashboard/narrative/narrativeComponents/store/narrativeStore.js";
+const narrativeStore = useNarrativeStore()
+
+const draftInfo = ref(null)
+
+
+watch (
+    () => narrativeStore.printNarrativeResponse,
+    async (data) => {
+      if (data) {
+        draftInfo.value = data.data
+      }
+    }
+)
+
+
+const narrativeData = ref([
+  {
+    "learningArea": "Learning to Care for the Mind (MENTAL STUDIES)",
+    "subjectCluster": "Acquire Knowledge Properly",
+    "subjects": [
+      {
+        "subjectCode": "1.1.1",
+        "subject": "Listen",
+        "referenceDate": "",
+        "status": "",
+        "currentDate": "",
+        "currentStatus": "",
+        "suggestedAction": ""
+      },
+      {
+        "subjectCode": "1.1.2",
+        "subject": "History",
+        "referenceDate": "",
+        "status": "",
+        "currentDate": "",
+        "currentStatus": "",
+        "suggestedAction": ""
+      },
+      {
+        "subjectCode": "1.1.3",
+        "subject": "Geography",
+        "referenceDate": "",
+        "status": "",
+        "currentDate": "",
+        "currentStatus": "",
+        "suggestedAction": ""
+      }
+    ]
+  },
+  {
+    "learningArea": "Environmental Awareness",
+    "subjectCluster": "Nature Studies",
+    "subjects": [
+      {
+        "subjectCode": "2.1.1",
+        "subject": "Climate Change",
+        "referenceDate": "",
+        "status": "",
+        "currentDate": "",
+        "currentStatus": "",
+        "suggestedAction": ""
+      },
+      {
+        "subjectCode": "2.1.2",
+        "subject": "Ecosystem",
+        "referenceDate": "",
+        "status": "",
+        "currentDate": "",
+        "currentStatus": "",
+        "suggestedAction": ""
+      }
+    ]
+  },
+  {
+    "learningArea": "Health and Well-being",
+    "subjectCluster": "Physical Education",
+    "subjects": [
+      {
+        "subjectCode": "3.1.1",
+        "subject": "Exercise & Fitness",
+        "referenceDate": "",
+        "status": "",
+        "currentDate": "",
+        "currentStatus": "",
+        "suggestedAction": ""
+      },
+      {
+        "subjectCode": "3.1.2",
+        "subject": "Healthy Eating",
+        "referenceDate": "",
+        "status": "",
+        "currentDate": "",
+        "currentStatus": "",
+        "suggestedAction": ""
+      }
+    ]
+  }
+] )
+
+
+</script>
 <template>
     <div style="padding-left:38px;padding-right:38px;">
     <div style="text-align: center; position: relative;">
@@ -23,21 +127,21 @@
     <table style="width: 100%; border-collapse: collapse; margin-top: 4px;margin-bottom: 7px;">
       <tr>
         <td style="border: 0px solid black; border-left: solid white; padding: 5px; font-weight: bold;width: 20%;">Child’s Surname:</td>
-        <td style="border: 0px solid black; padding: 5px; background-color: #ffff99;width: 30%;">:</td>
+        <td style="border: 0px solid black; padding: 5px; background-color: #ffff99;width: 30%;">{{draftInfo?.child_first_name}}</td>
         <td style="border: 1px solid black; padding: 5px; font-weight: bold;width: 20%;">Second name:</td>
-        <td style="border: 1px solid black; padding: 5px;width: 30%;">:</td>
+        <td style="border: 1px solid black; padding: 5px;width: 30%;">{{draftInfo?.child_second_name}}</td>
 
       </tr>
       <tr>
         <td style="border: 0px solid black; border-left: solid white; padding: 5px; font-weight: bold;width: 20%;">Registration Number:</td>
-        <td style="border: 1px solid black; padding: 5px; width: 30%;border-left: 0px;">:</td>
+        <td style="border: 1px solid black; padding: 5px; width: 30%;border-left: 0px;">{{draftInfo?.registration_number}}</td>
         <td style="border: 1px solid black; padding: 5px; font-weight: bold;">Date of Conference:</td>
-        <td style="border: 1px solid black; padding: 5px;">:</td>
+        <td style="border: 1px solid black; padding: 5px;">{{draftInfo?.date_of_conference}}</td>
       
       </tr>
       <tr>
-        <td style="border: 0px solid black; padding: 5px; font-weight: bold;">School</td>
-        <td style="border: 1px solid black; padding: 5px; background-color: #ffff99;border-left: 0px;">:</td>
+        <td style="border: 0px solid black; padding: 5px; font-weight: bold;">School:</td>
+        <td style="border: 1px solid black; padding: 5px; background-color: #ffff99;border-left: 0px;">{{draftInfo?.school}}</td>
         <td style="border: 1px solid black; padding: 5px; "></td>
         <td style="border: 1px solid black; padding: 5px;"></td>
      
@@ -195,95 +299,7 @@
 
   </template>
 
-  <script setup>
-  import {onMounted, reactive, ref, watch, watchEffect, computed} from "vue"
 
-const narrativeData = ref([
-  {
-    "learningArea": "Learning to Care for the Mind (MENTAL STUDIES)",
-    "subjectCluster": "Acquire Knowledge Properly",
-    "subjects": [
-      {
-        "subjectCode": "1.1.1",
-        "subject": "Listen",
-        "referenceDate": "",
-        "status": "",
-        "currentDate": "",
-        "currentStatus": "",
-        "suggestedAction": ""
-      },
-      {
-        "subjectCode": "1.1.2",
-        "subject": "History",
-        "referenceDate": "",
-        "status": "",
-        "currentDate": "",
-        "currentStatus": "",
-        "suggestedAction": ""
-      },
-      {
-        "subjectCode": "1.1.3",
-        "subject": "Geography",
-        "referenceDate": "",
-        "status": "",
-        "currentDate": "",
-        "currentStatus": "",
-        "suggestedAction": ""
-      }
-    ]
-  },
-  {
-    "learningArea": "Environmental Awareness",
-    "subjectCluster": "Nature Studies",
-    "subjects": [
-      {
-        "subjectCode": "2.1.1",
-        "subject": "Climate Change",
-        "referenceDate": "",
-        "status": "",
-        "currentDate": "",
-        "currentStatus": "",
-        "suggestedAction": ""
-      },
-      {
-        "subjectCode": "2.1.2",
-        "subject": "Ecosystem",
-        "referenceDate": "",
-        "status": "",
-        "currentDate": "",
-        "currentStatus": "",
-        "suggestedAction": ""
-      }
-    ]
-  },
-  {
-    "learningArea": "Health and Well-being",
-    "subjectCluster": "Physical Education",
-    "subjects": [
-      {
-        "subjectCode": "3.1.1",
-        "subject": "Exercise & Fitness",
-        "referenceDate": "",
-        "status": "",
-        "currentDate": "",
-        "currentStatus": "",
-        "suggestedAction": ""
-      },
-      {
-        "subjectCode": "3.1.2",
-        "subject": "Healthy Eating",
-        "referenceDate": "",
-        "status": "",
-        "currentDate": "",
-        "currentStatus": "",
-        "suggestedAction": ""
-      }
-    ]
-  }
-] )
-
-
-</script>
 
   <style>
 
