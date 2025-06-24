@@ -29,8 +29,9 @@ onMounted(async () => {
        let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
       if(defaultSchoolNo){
         school_number.value = defaultSchoolNo
-        }
         doFetchBillables(school_number.value)
+        }
+
 });
 
 const showModal = () => {
@@ -183,15 +184,15 @@ const filteredBillableData = computed(() => {
      </div>
   
       <table
-        class="table table-hover caption-top mt-4 table-sm table-striped"
-        style="font-size: 13px !important;width: 100%;"
+        class="table table-hover caption-top mt-4 table-sm table-striped text-xs"
+        style="width: 100%;"
       >
         <thead>
           <tr>
             <th>No.</th>
             <th>Amount</th>
             <th>Campus</th>
-            <!-- <th>Academic Year</th> -->
+             <th>Academic Year</th>
             <th>StudyPeriod</th>
             <th>Class</th>
             <th>Curriculum</th>
@@ -207,9 +208,10 @@ const filteredBillableData = computed(() => {
           <!-- {{ billableData }} -->
          <tr  v-for="(list, index) in  filteredBillableData" :key="index" >
         
-          <td>{{ index+1 }}</td>
+          <td class="w-2">{{ index+1 }}</td>
           <td>{{ list.total_amount?.toLocaleString() }}</td>
           <td>{{ list.campus_name }}</td>
+           <td>{{list.academic_year_name}}</td>
           <td>{{ list.study_period_name }}</td>
           <td>{{ list.class_name }}</td>
           <td>{{ list.curriculum_name }}</td>

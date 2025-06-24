@@ -67,7 +67,8 @@ assessment_area_number:"",
 study_period_number:"",
 campus_class_number:"",
 reference_date:"",
-reference_time:""
+reference_time:"",
+  current_status:null
 })
 
 const props = defineProps({
@@ -523,6 +524,10 @@ watch (
                 <div class="mb-2">
                   <label class="text-xs"><small>Time</small></label>
                   <input type="time" class="form-control" v-model="formData.reference_time">
+                </div>
+                <div class="mb-2">
+                  <label class="text-xs"><small>Status</small></label>
+                  <input type="text" class="form-control" v-model="formData.current_status">
                 </div>
 
                 <div class="mb-2">
