@@ -200,8 +200,8 @@ watch(
             <li class="list-group-item"><strong>Other names:</strong> {{ appDatails.other_name }}</li>
             <li class="list-group-item"><strong>Telephone No.:</strong> {{ appDatails.main_telephone_number }}</li>
             <li class="list-group-item"><strong>Alternative No.:</strong> {{ appDatails.alternative_telephone_number }}</li>
-            <li class="list-group-item"><strong>Email:</strong> {{ appDatails.email }}</li>
-            <li class="list-group-item"><strong>Alternative Email:</strong> {{ appDatails.alternative_email }}</li>
+            <li class="list-group-item"><strong>Email:</strong><span class="lowercase">{{ appDatails.email}}</span></li>
+            <li class="list-group-item"><strong>Alternative Email:</strong><span class="lowercase">{{ appDatails.alternative_email }}</span></li>
           </ul>
         </div>
       </div>
