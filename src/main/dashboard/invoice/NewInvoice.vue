@@ -319,7 +319,7 @@ watch (
            <div class="col-lg-4"></div>
            <div class="col-lg-4 ">
              <button type="submit" class="btn btn-sm btn-primary mb-2 mt-1" style="float: right !important;margin-right: 0px;">
-               <small>Create Invoice</small>
+               <small>Create Promissory Note</small>
            <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
              <span class="visually-hidden">Loading...</span>
            </div>

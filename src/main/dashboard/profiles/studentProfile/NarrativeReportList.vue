@@ -692,7 +692,6 @@ const printPreviewNarrative = () => {
 input{
   background-color: #f8f9fa;
   border-radius: 2px;
-  /* font-size: 10px !important; */
 }
 select{
   background-color: transparent;

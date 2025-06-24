@@ -32,7 +32,7 @@
         </div>
          <div class="row">
             <div class="mb-2">
-          <span class="text-sm text-sm"><small>Email: <span class="details">{{ appDatails.email }}</span></small></span>
+          <span class="text-sm text-sm"><small>Email: <span class="details lowercase">{{ appDatails.email }}</span></small></span>
         </div>
             <div class="mb-2">
           <span class="text-sm text-sm"><small>Alternative Email: <span class="details">{{ appDatails.alternative_email }}</span></small></span>
