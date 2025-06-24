@@ -242,28 +242,26 @@ watch(
 </script>
 <template>
   <div>
-    <!-- {{ userNumber }} -->
 
-<!-- {{ campus_number }} -->
-    <AppModal title="Creating New Invoice" v-model="mymodal" xl6>
-    <NewInvoice :userNumber="userNumber"  :studentDataInfo="studentDataInfo"></NewInvoice>
+    <AppModal title="Creating New Promissory Note" v-model="mymodal" xl6>
+      <NewInvoice :userNumber="userNumber"  :studentDataInfo="studentDataInfo"></NewInvoice>
     </AppModal>
 
-    <AppModal title="Invoice Details" v-model="showInvoiceDetails" xl6>
-    <InvoiceDetails :invoiceNumber="invoiceNumber" :studentN="studentN" :invoiceN="invoiceN"></InvoiceDetails>
+    <AppModal title="Promissory Note Details" v-model="showInvoiceDetails" xl6>
+      <InvoiceDetails  :studentN="studentN" :invoiceN="invoiceN"></InvoiceDetails>
     </AppModal>
 
 
-    <AppModal title="Pay Invoice" v-model="showPayment" xl>
-    <InvoicePayment :invoiceNumber="invoiceNumber" :userNum="userNumber"></InvoicePayment>
+    <AppModal title="Add Payment" v-model="showPayment" xl>
+      <InvoicePayment :invoiceNumber="invoiceNumber" :userNum="userNumber"></InvoicePayment>
     </AppModal>
 
-    <div class="rw mt-3"  >
+    <div class="rw mt-3">
       <div class="">
      <div class="flex flex-grow justify-end">
       <div v-if="studentNumber">
         <button  @click="showModal()" class="btn btn-primary btn-sm mb-2" style="float: right;" v-if="can('add_custom_invoice','general')">
-        <small><i class="bi bi-plus"> Add New Invoice</i></small></button></div>
+        <small><i class="bi bi-plus"> Add Promissory Note </i></small></button></div>
      </div>
        
           <div class="card-bdy" style="padding: 0;">

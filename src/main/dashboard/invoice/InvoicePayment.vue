@@ -9,6 +9,7 @@ const selectedTab = ref("cash")
 const creditsData = ref([])
 const selectedCredit = ref([])
 const selectedAmounts = ref([])
+const today = new Date().toISOString().split('T')[0]
 
 const switchTabs = (tab) => {
    selectedTab.value = tab
@@ -97,9 +98,9 @@ watch(
   (data) => {
     if (data) {
       loader.value = false;
+      notificationStore.successToast("Success", data.message)
     }
-  },
-  { deep: true }
+  }
 )
 
 
@@ -145,52 +146,57 @@ const total = computed(() => {
         </div>
 
         <div v-if="selectedTab === 'cash'">
-          <form @submit.prevent="invoicePayment">
+            <div class="mt-4">
+              <form @submit.prevent="invoicePayment">
 
-  <!-- Amount -->
-  <div class="mb-2">
-    <label class="text-sm text-sm">Amount</label>
-    <input
-      @keypress="commons.numbersOnlyValidator($event)"
-      maxlength="10"
-      v-model="formData.amount"
-      style="outline: none 0 !important; box-shadow: none;"
-      type="text"
-      required
-      class="form-control form-control-sm"
-    />
-  </div>
+                <!-- Amount -->
+                <div class="mb-2">
+                  <label class="text-sm">Amount</label>
+                  <input
+                      @keypress="commons.numbersOnlyValidator($event)"
+                      maxlength="10"
+                      v-model="formData.amount"
+                      style="outline: none 0 !important; box-shadow: none;"
+                      type="text"
+                      required
+                      class="form-control form-control-sm"
+                  />
+                </div>
 
 
-  <div class="mb-2">
-    <label class="text-sm text-sm">Date</label>
-    <input
-      v-model="formData.date"
-      style="outline: none 0 !important; box-shadow: none;"
-      type="date"
-      required
-      class="form-control form-control-sm"
-    />
-  </div>
+                <div class="mb-2">
+                  <label class="text-sm">Date</label>
+                  <input
+                      v-model="formData.date"
+                      style="outline: none 0 !important; box-shadow: none;"
+                      type="date"
+                      :max="today"
+                      required
+                      class="form-control form-control-sm"
+                  />
+                </div>
 
-  <!-- Submit Button -->
-  <div class="flex justify-content-end mt-3" style="width: 100%;">
-    <button
-      type="submit"
-      class="btn btn-primary border-0 btn-sm"
-    >
-      <small>Pay</small>
+                <!-- Submit Button -->
+                <div class="flex justify-content-end mt-3" style="width: 100%;">
+                  <button
+                      type="submit"
+                      class="btn btn-primary border-0 btn-sm"
+                  >
+      <span class="px-10">
+         <small>Pay</small>
       <span
-        v-if="loader"
-        style="width: 1.2rem; height: 1.2rem;"
-        class="spinner-border text-light"
-        role="status"
+          v-if="loader"
+          style="width: 1.2rem; height: 1.2rem;"
+          class="spinner-border text-light"
+          role="status"
       >
         <span class="visually-hidden">Loading...</span>
       </span>
-    </button>
-  </div>
-</form>
+      </span>
+                  </button>
+                </div>
+              </form>
+            </div>
         </div>
         <div v-if="selectedTab === 'credits'">
           <form @submit.prevent="invoicePaymentUsingCredit">

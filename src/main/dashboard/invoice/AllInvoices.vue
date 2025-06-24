@@ -163,9 +163,8 @@ watch (
     () => invoiceStore.newInvoicePaymentResponse,
     async (data) => {
       if(data){
-        notificationStore.successToast("Success", data.message)
         showPayment.value = false
-        // fetchAllInvoices()
+        doFetchInvoices()
       }
     }
 )
@@ -236,12 +235,12 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
     </AppModal>
 
     <AppModal title="Promissory Note Details" v-model="showInvoiceDetails" xl6>
-    <InvoiceDetails :invoiceNumber="invoiceNumber" :studentN="studentN" :invoiceN="invoiceN"></InvoiceDetails>
+    <InvoiceDetails :studentN="studentN" :invoiceN="invoiceN"></InvoiceDetails>
     </AppModal>
 
 
     <AppModal title="Pay Invoice" v-model="showPayment" xl>
-    <InvoicePayment :invoiceNumber="invoiceNumber" :userNum="userNumber"></InvoicePayment>
+      <InvoicePayment :invoiceNumber="invoiceNumber" :userNum="userNumber"></InvoicePayment>
     </AppModal>
 
     <div class="rw mt-3"  >
@@ -405,19 +404,21 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
           <td>{{ list?.due_date }}</td>
           <td>{{ list?.date }}</td>
         <td>
-        <div>
+
+        <div v-if="list?.status !== 'CANCELLED'">
 
           <button
-              @click="paymentModal(list.number)" class="bg-[#0d6efd] rounded-sm text-white px-4 btn-primary btn-sm mr-3"
+              @click="showInvoiceInfoModal(list.ref_number,studentNumber ? studentNumber : list?.student_number)" class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
+            <small>View</small>
+          </button>
+
+          <button
+              @click="paymentModal(list.number)" class="bg-[#0d6efd] rounded-sm text-white px-4 btn-primary btn-sm ml-3"
               v-if="can('pay_invoice','general')">
             <small>Pay</small>
           </button>
 
-          <button
-              v-if="list?.status !== 'CANCELLED'"
-              @click="showInvoiceInfoModal(list.ref_number,studentNumber)" class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
-            <small>View</small>
-          </button>
+
 
         </div>
         </td>

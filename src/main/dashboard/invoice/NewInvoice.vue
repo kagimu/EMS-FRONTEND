@@ -89,11 +89,13 @@ watch (
 
 
 const fetchServicesData = () => {
-  let data = {
-    school_number:school_number.value
-  }
+  if(school_number.value) {
+    let data = {
+      school_number: school_number.value
+    }
 
-  serviceStore.fetchServicesList(data)
+    serviceStore.fetchServicesList(data)
+  }
 }
 
 

@@ -173,7 +173,9 @@ watch(
               <tbody>
               <tr v-for="(levelInfo, index) in levelList" :key="index">
                 <td> {{levelInfo.code}}</td>
-                <td> {{levelInfo.name}}</td>
+                <td>
+                  <div v-html="levelInfo.name"></div>
+                </td>
                 <td>
                   <div>
                     <i

@@ -48,9 +48,30 @@ const showModal = (invoice) => {
 };
 
 onMounted(async () => {
-   invoiceStore.fetchInvoiceId(props.invoiceN);
-  applicationStore.fetchStudent(props.studentN);
+   doFetchInvoices()
 });
+
+
+watch(
+    () => props.studentN,
+    async (data) => {
+      if (data) {
+        doFetchInvoices()
+      }
+    }
+);
+
+
+const  doFetchInvoices = () => {
+  let invoice_number = props.invoiceN;
+  let student_number = props.studentN;
+  if(invoice_number){
+    invoiceStore.fetchInvoiceId(invoice_number);
+  }
+  if(student_number){
+    applicationStore.fetchStudent(student_number);
+  }
+}
 
 watch(
   () => applicationStore.studentDataResponse,
@@ -240,6 +261,19 @@ const printContent = () => {
   printWindow.print();
   // printWindow.close();
 };
+
+
+watch (
+    () => invoiceStore.newInvoicePaymentResponse,
+    async (data) => {
+      if(data){
+        mymodalpay.value = false
+        doFetchInvoices()
+      }
+    }
+)
+
+
 </script>
 
 
@@ -272,8 +306,8 @@ const printContent = () => {
                   <small><i class="bi bi-printer">&nbsp;Print</i></small>
                 </button>
                 
-                <span v-if="myData.status != 'CANCELLED'"> <button   @click="cancelInvoice()" 
-                class="btn btn-danger btn-sm mb-2 mr-4" style="float: right;" v-if="can('cancel_invoice','general')">
+                <span v-if="myData.status !== 'CANCELLED'"> <button @click="cancelInvoice()"
+                                                                    class="btn btn-danger btn-sm mb-2 mr-4" style="float: right;" v-if="can('cancel_invoice','general')">
                   <small><i class="bi bi-x">&nbsp;cancel</i></small>
                 </button>
               </span>
@@ -320,6 +354,7 @@ const printContent = () => {
                               <table class="table table-striped table-hover table-bordered invoice-table">
                                 <thead>
                                   <tr>
+                                    <th scope="col" class="text-uppercase">#</th>
                                     <th scope="col" class="text-uppercase">Qty</th>
                                     <th scope="col" class="text-uppercase">Item</th>
                                     <th scope="col" class="text-uppercase text-end">Unit Price</th>
@@ -327,8 +362,9 @@ const printContent = () => {
                                   </tr>
                                 </thead>
                                 <tbody class="table-group-divider">
-                                  <tr v-for="(payment, index) in invoiceData.items" :key="index">
-                                    <th scope="row">{{ payment.quantity }}</th>
+                                  <tr v-for="(payment, index) in invoiceData?.items" :key="index">
+                                    <td scope="row">{{ (index + 1) }}</td>
+                                    <td scope="row">{{ payment.quantity }}</td>
                                     <td>{{ payment.item_name }}</td>
                                     <td class="text-end">{{ payment.unit_cost?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
                                     <td class="text-end">{{ payment.unit_cost?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
@@ -359,41 +395,6 @@ const printContent = () => {
           </div>
         </div>
 
-<!--        <div class="card mt-2">-->
-<!--          <div class="card-header">-->
-<!--            Payments-->
-<!--            <hr />-->
-<!--            <table class="table table-hover caption-top mt-5 table-sm payments-table">-->
-<!--              <thead>-->
-<!--                <tr>-->
-<!--                  <th scope="col" style="width: 10%;">#</th>-->
-<!--                  <th scope="col">Invoice Number</th>-->
-<!--                  <th scope="col">Date</th>-->
-<!--                  <th scope="col">By</th>-->
-<!--                  <th scope="col">Amount</th>-->
-<!--                  <th v-if="can('cancel_payment', 'general')">Action</th>-->
-<!--                </tr>-->
-<!--              </thead>-->
-<!--              <tbody>-->
-<!--                <tr v-for="(payment, index) in invoiceData.payments" :key="index">-->
-<!--                  <td>{{ index + 1 }}</td>-->
-<!--                  <td>{{ payment.invoice_ref_number }}</td>-->
-<!--                  <td>{{ payment.date_time }}</td>-->
-<!--                  <td>{{ payment.recorded_by }}</td>-->
-<!--                  <td>{{ payment.amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")  }}</td>-->
-<!--                  <td v-if="can('cancel_payment', 'general')">-->
-<!--                    <button @click="cancelInvoicePayment(payment.payment_number)" class="btn btn-warning btn-sm mb-2 mr-2">-->
-<!--                      <small><i class="bi bi-x">&nbsp;Cancel</i></small>-->
-<!--                    </button>-->
-<!--                    <button v-if="can('delete_payment', 'general')" @click="deleteInvoicePayment(payment.payment_number)" class="btn btn-danger btn-sm mb-2">-->
-<!--                      <small><i class="bi bi-trash"></i> Delete</small>-->
-<!--                    </button>-->
-<!--                  </td>-->
-<!--                </tr>-->
-<!--              </tbody>-->
-<!--            </table>-->
-<!--          </div>-->
-<!--        </div>-->
       </div>
     </div>
   </div>
