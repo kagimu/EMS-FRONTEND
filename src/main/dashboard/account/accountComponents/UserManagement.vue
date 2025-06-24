@@ -188,7 +188,7 @@ const selectedIndex = ref(null);
 
 const removeRole = (roleN,userN,rolename,userName) => {
     if(!confirm("Are you sure, you want to remove: " + rolename +" role from " + userName)){
-      notificationStore.errorToast("Cancelled","Action Cancelled Successfully !")
+     // notificationStore.errorToast("Cancelled","Action Cancelled Successfully !")
       return
     }
 
@@ -354,7 +354,7 @@ const closeDialog = () => {
               </div>
                <button
                    style="border: red solid 1px; border-radius: 1px;"
-                   class="text-red-400 rounded px-2 ml-2"
+                   class="text-red-400 rounded px-1 "
                     v-if="can('remove_assigned_role','general')"
                      @click="removeRole(rol.role_number,user.number,rol.role_name,user.first_name)">
                   &nbsp;<i  class="bi bi-x-circle-fill"></i>
@@ -370,12 +370,12 @@ const closeDialog = () => {
             <td>
           <button 
           v-if="can('update_assigned_role','general')"
-          type="button" class="btn btn-danger">
+          type="button" class="btn btn-sm btn-danger py-0 px-2 text-sm mb-2">
             De-activate
           </button>
           &nbsp;&nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>
-          <button @click="openModal(user)" type="button" class="btn btn-outline-primary mb-2 btn-small py-0 px-3 text-sm">
-           <small>Assign Role</small>
+          <button @click="openModal(user)" type="button" class="btn btn-sm btn-outline-primary mb-2 btn-small py-0 px-2 text-sm ">
+           <small>Assign or Update Role</small>
           </button>
 
         </td>

@@ -130,17 +130,17 @@ const toggleSelectAll = () => {
 
 
 
-      <label class="text-sm mt-3 mb-2"><small>Add Classes to Levels</small></label>
+      <label class="text-sm mt-3 mb-2" v-if="classList.length > 0"><small>Add Classes to Levels</small></label>
 
 
       <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-        <li class="mb-2">
+        <li class="mb-2" v-if="classList.length > 0">
           <input
               type="checkbox"
               v-model="allSelected"
               @change="toggleSelectAll"
           />
-          <label class="ms-1">All</label>
+          <label class="ms-1">Select All</label>
 
         </li>
 
