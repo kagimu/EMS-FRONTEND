@@ -173,6 +173,21 @@ const narrativeData = ref([
             <th style="background-color: #a6a6a6;border: 1px solid black; padding: 5px;">CURRENT STATUS</th>
             <th style="background-color: #a6a6a6;border: 1px solid black; padding: 5px;">SUGGESTED ACTION</th>
         </tr>
+
+
+
+          <tr style="font-size: 13px;" v-for="(info,idx) in draftInfo?.narrative_response_data" :key="key">
+            <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Learning to Care for the Mind (MENTAL STUDIES)</td>
+            <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Acquire Knowledge Properly</td>
+            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.1</td>
+            <td style="background-color: #99cc66; border: 1px solid black; padding: 5px;">Listen</td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+            <td  style="border: 1px solid black; padding: 5px;"></td>
+          </tr>
+<!--
         <tr style="font-size: 13px;">
             <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Learning to Care for the Mind (MENTAL STUDIES)</td>
             <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Acquire Knowledge Properly</td>
@@ -183,8 +198,8 @@ const narrativeData = ref([
             <td  style="border: 1px solid black; padding: 5px;"></td>
             <td  style="border: 1px solid black; padding: 5px;"></td>
             <td  style="border: 1px solid black; padding: 5px;"></td>
-          
         </tr>
+
         <tr style="font-size: 13px;">
             <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.2</td>
             <td style="background-color: #99cc66; border: 1px solid black; padding: 5px;">History</td>
@@ -235,7 +250,7 @@ const narrativeData = ref([
             <td  style="border: 1px solid black; padding: 5px;"></td>
             <td  style="border: 1px solid black; padding: 5px;"></td>
             <td  style="border: 1px solid black; padding: 5px;"></td>
-        </tr>
+        </tr>-->
     </table>
   </div>
 
