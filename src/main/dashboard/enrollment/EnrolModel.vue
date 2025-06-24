@@ -48,6 +48,7 @@
    const campusClassNumber = ref(null)
    const billStore = useBillStore()
    const billableData  = ref([])
+   const formattedCost = ref('');
 
    const format = (date) => {
      const item = date.getDate();
@@ -86,7 +87,7 @@
      billable_number:"",
      description:null,
      client_reference:null,
-     paid_amount:0,
+     paid_amount:null,
      date_paid:null
    })
    
@@ -181,10 +182,28 @@ campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_c
        },
        {deep:true}
    )
-   
 
-        
-   
+   const updateCost = () => {
+     const rawValue = event.target.value.replace(/,/g, '');
+     const numericValue = parseFloat(formattedCost.value)
+     formattedCost.value = Number(rawValue).toLocaleString();
+     // Strip non-numeric characters (optional, based on your formatting needs)
+     if (isNaN(numericValue)) {
+       return
+     }
+
+     if (numericValue === 0) {
+       const confirmed = confirm("Are you sure you want to set the cost to 0?")
+       if (!confirmed) {
+         formattedCost.value = ''
+       }
+     }
+     form.paid_amount = rawValue;
+   }
+
+
+
+
    //enrol student function
      const Enrol = () =>{
       buttonLoader.value=true
@@ -214,10 +233,9 @@ campusClassNumber.value = data.find(item => item.stream_number === no)?.campus_c
      billable_number:form.billable_number,
      description:form.description,
      client_reference:form.client_reference,
-     paid_amount:form.paid_amount,
+     paid_amount:parseInt(form.paid_amount),
      date_paid:form.date_paid,
      status:"ACTIVE",
-     billable_number:form.billable_number,
      ...ItemDataToSubmit
    })
    
@@ -691,7 +709,13 @@ watch(
          <div class="card-body p-3">
             <div class="mb-2">
                <label class="text-sm"><small>Paid Amount</small></label>
-               <input type="number" class="form-control form-control-sm" v-model="form.paid_amount" required>
+               <input type="text"
+                      class="form-control form-control-sm"
+                      v-model="formattedCost"
+                      @input="updateCost"
+                      @keypress="commons.onlyNumberValidator($event)"
+                      maxlength="19"
+                      required>
             </div>
 
             <div class="mb-2">
