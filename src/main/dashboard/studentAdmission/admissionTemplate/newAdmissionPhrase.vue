@@ -107,6 +107,22 @@ watch(
 
           </div>
 
+          <div class="mb-2 row">
+            <div class="col-lg-4">
+              <label class="text-sm"><small>Specify Due Date For Reporting To School </small></label>
+              <input  type="text" required class="form-control">
+            </div>
+            <div class="col-lg-4">
+              <label class="text-sm"><small>Principal Full Names </small></label>
+              <input  type="text" required class="form-control">
+            </div>
+            <div class="col-lg-4">
+              <label class="text-sm"><small>Principal Title</small></label>
+              <input  type="text" required class="form-control">
+            </div>
+
+          </div>
+
 
       <div class="flex justify-content-end mt-2">
         <button type="submit" class="btn btn-primary border-0 btn-sm">

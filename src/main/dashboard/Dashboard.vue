@@ -228,6 +228,15 @@ const closeDialog = () => {
               ></i>
               <router-link class="navbar-brand text-white" :to="{name:'home'}"><div class="text-[17px]">{{ entityName }}</div> </router-link>
             </div>
+            <div>
+                        <span v-if="can('can_serve_as_teacher_and_admin','general')">
+                      <button
+                          class="text-[#2c2f8c] bg-white text-xs rounded-sm ml-4 px-2 py-1 cursor-pointer mt-2" type="button"
+                          @click="switchUser">
+                        <i class="bi bi-plus"></i>Switch to Teacher Dashboard
+                      </button>
+                    </span>
+            </div>
             <div class="navbar-collapse">
               <ul class="navbar-nav me-auto my-lg-0 navbar-nav-scroll" style="font-size: 13px;">
               </ul>
@@ -360,7 +369,9 @@ const closeDialog = () => {
               <small>{{lst.title}}</small>
             </div>
           </router-link>
-     
+
+
+
           </div>
 
         </div>
@@ -378,6 +389,8 @@ const closeDialog = () => {
          <div class="text-gray-600 text-[13px]">
            {{schoolName}} / {{campusName}}
          </div>
+
+
        </div>
 
         <router-view></router-view>
