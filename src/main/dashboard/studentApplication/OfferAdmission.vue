@@ -472,6 +472,7 @@ watch (
 <template>
   <div>
 
+
     <AppModal title="Admission Letter" v-model="openAdmissionLetterModel" xl4 class="app-modal">
       <AdmissionForm :schoolData="schoolData" :studentDataInfo="studentDataInfo"></AdmissionForm>
     </AppModal>
@@ -630,7 +631,7 @@ watch (
                   <th>Class</th>
                   <th>Scores</th>
                   <th>Status</th>
-                  <th >#</th>
+                  <th style="width: 20%" >#</th>
                 </tr>
               </thead>
               <tbody>
@@ -701,12 +702,11 @@ watch (
                     <!-- <button type="button" @click="removeStudentFromInterview(student.number, student.student_second_name)">
                       <i class="bi bi-trash" style="color: red;"></i>
                     </button> -->
-                    <button v-if="student.status !== 'ADMITTED'" class="btn btn-outline-primary ml-6"
+                    <button v-if="student.status !== 'ADMITTED'" class="btn btn-outline-primary btn-sm"
                      @click="openAdmitModal(student.number)">Admit   <i class="bi bi-box-arrow-in-right mr-1"></i></button>
-                  </td>
-                  <td>
-                    <button style="font-size:12px"  v-if="student.status === 'ADMITTED'" @click="openAdmissionLetter(listD,student)"
-                             class="btn btn-outline-primary mb-2 btn-sm p-0"><i class="bi bi-printer"></i> <small>Admission Letter
+
+                    <button   v-if="student.status === 'ADMITTED'" @click="openAdmissionLetter(listD,student)"
+                             class="btn btn-outline-primary mb-2 btn-sm"> <small>Admission Letter <i class="bi bi-box-arrow-in-right mr-1"></i>
                     </small></button>
                   </td>
                 </tr>

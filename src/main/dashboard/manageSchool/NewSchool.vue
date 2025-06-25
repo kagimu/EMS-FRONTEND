@@ -24,7 +24,9 @@ const form = reactive({
   name:null,
   commencement_date:null,
   curriculum:[],
-  entity_number:entityN
+  entity_number:entityN,
+  principal_title:null,
+  principal_name:null
 })
 
 const clearSchoolForm = () => {
@@ -75,6 +77,8 @@ watch (
         form.name = info.name
         form.commencement_date = info.commencement_date
         school_number.value = info.number
+        form.principal_title = info.principal_title
+        form.principal_name = info.principal_name
 
         let arr = []
         info.school_curriculum.forEach(lst => {
@@ -182,6 +186,26 @@ watch(
       </div>
 
 
+      <div class="mb-2">
+        <label class="text-sm font-medium text-gray-700">Principal Full Name <span class="text-danger">*</span></label>
+        <input
+            v-model="form.principal_name"
+            type="text"
+            class="form-control form-control-sm shadow-none mt-1"
+            placeholder="e.g. Collins Mpiima"
+            required
+        />
+      </div>
+      <div class="mb-2">
+        <label class="text-sm font-medium text-gray-700">Principal Title <span class="text-danger">*</span></label>
+        <input
+            v-model="form.principal_title"
+            type="text"
+            class="form-control form-control-sm shadow-none mt-1"
+            placeholder="e.g. Head Teacher"
+            required
+        />
+      </div>
 
       <div class="flex justify-between" style="width: 100%;">
         <button

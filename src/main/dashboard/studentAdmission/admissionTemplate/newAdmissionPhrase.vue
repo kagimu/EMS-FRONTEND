@@ -19,8 +19,8 @@ const school_number = ref("")
 const formData = reactive({
   school_number: "",
   phrase: "",
-  principal_name: null,
-  principal_title: null
+  // principal_name: null,
+  // principal_title: null
 })
 
 // Reference to the editor component
@@ -104,26 +104,26 @@ const tags = [
           </div>
 
         </div>
-        <div class="col-lg-4">
-          <label class="text-sm font-medium text-gray-700">Principal Full Name <span class="text-danger">*</span></label>
-          <input
-              v-model="formData.principal_name"
-              type="text"
-              class="form-control form-control-sm shadow-none mt-1"
-              placeholder="e.g. Collins Mpiima"
-              required
-          />
-        </div>
-        <div class="col-lg-4">
-          <label class="text-sm font-medium text-gray-700">Principal Title <span class="text-danger">*</span></label>
-          <input
-              v-model="formData.principal_title"
-              type="text"
-              class="form-control form-control-sm shadow-none mt-1"
-              placeholder="e.g. Head Teacher"
-              required
-          />
-        </div>
+<!--        <div class="col-lg-4">-->
+<!--          <label class="text-sm font-medium text-gray-700">Principal Full Name <span class="text-danger">*</span></label>-->
+<!--          <input-->
+<!--              v-model="formData.principal_name"-->
+<!--              type="text"-->
+<!--              class="form-control form-control-sm shadow-none mt-1"-->
+<!--              placeholder="e.g. Collins Mpiima"-->
+<!--              required-->
+<!--          />-->
+<!--        </div>-->
+<!--        <div class="col-lg-4">-->
+<!--          <label class="text-sm font-medium text-gray-700">Principal Title <span class="text-danger">*</span></label>-->
+<!--          <input-->
+<!--              v-model="formData.principal_title"-->
+<!--              type="text"-->
+<!--              class="form-control form-control-sm shadow-none mt-1"-->
+<!--              placeholder="e.g. Head Teacher"-->
+<!--              required-->
+<!--          />-->
+<!--        </div>-->
       </div>
 
       <!-- Description (Phrase) -->

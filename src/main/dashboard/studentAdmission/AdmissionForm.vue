@@ -2,7 +2,7 @@
 import {onMounted,reactive, ref, watch} from "vue";
 import printJS from "print-js";
 import { useAdmissionStore } from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
-
+import AppModal from "@/components/AppModal.vue";
 const logo = ref(null)
 const fullname = ref(null)
 const adn = ref(null)
@@ -18,6 +18,9 @@ const instagram = ref(null)
 const student_number = ref(null)
 const decodedAdmissionLetterData = ref([])
 const school_number = ref(null)
+const reportingDate = ref(null)
+const reportDateModel = ref(false)
+const decodedAdmissionLetterDataInfo = ref([])
 
 const props = defineProps({
   schoolData: {},
@@ -40,6 +43,13 @@ onMounted(() => {
   }
 
 })
+
+
+const setReportDate = () => {
+  reportDateModel.value = true
+}
+
+
 
 const getStudentDataInfo = () => {
   let draft = props.studentDataInfo
@@ -66,15 +76,30 @@ const getDecodedData = () => {
   admissionStore.decodeTemplates(data)
 }
 
+
+
 watch (
     () => admissionStore.decodeAdmissionLetterResponse,
     (data) => {
       if (data) {
         decodedAdmissionLetterData.value = data.phrase
+        // alert(JSON.stringify(decodedAdmissionLetterData.value))
       }
     },
     { deep: true }
 );
+
+
+const setReportingDate = (rpd) => {
+  alert(`Reporting Date: ${rpd}`)
+  const confirmed = window.confirm(`Are you sure you want to set the reporting date to ${rpd}?`)
+  if (!confirmed) return
+  reportingDate.value = rpd
+  decodedAdmissionLetterDataInfo.value = decodedAdmissionLetterData.value.replace('{{REPORTING_DUE_DATE}}', rpd)
+  decodedAdmissionLetterData.value = decodedAdmissionLetterDataInfo.value
+  reportDateModel.value = false
+}
+
 
 watch (
   () => props.schoolData,
@@ -132,17 +157,33 @@ const downloadAdmissionLetter = () => {
     showModal: true,
   });
 };
+
+
 </script>
 <template>
 
+<!--  {{decodedAdmissionLetterDataInfo}}-->
+  <AppModal title="Set Reporting Date" v-model="reportDateModel" md class="app-modal">
+    <form>
+      <label class="mb-2 mt-2">Date :</label>
+      <input @change="setReportingDate(reportingDate)" type="date" class="form-control" required v-model="reportingDate">
+      <button @click="setReportingDate(reportingDate)" class="btn btn-primary btn-sm mb-2 mt-2" type="button" style="float: right">Set</button>
+    </form>
+
+  </AppModal>
+
 <!--  download and Print-->
 <div style="display: flex; justify-content: flex-end; padding: 0px 10px;">
-  <button @click="downloadAdmissionLetter" style="padding: 5px 10px; background-color: #2e2487; color: white; border: none; border-radius: 5px; cursor: pointer;">
-    <i class="bi bi-printer"></i> Print
+  <button  @click="setReportDate"
+          style="padding: 5px 10px;" class="btn btn-secondary mr-3">
+    <i class="bi bi-calendar mr-1"></i>
+    <span v-if="reportingDate === null">Set</span> <span  v-else>Reset</span>  Reporting Date
   </button>
-<!--  <button @click="printAdmissionLetter" style="padding: 10px 20px; background-color: #2e2487; color: white; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px;">-->
-<!--    Print-->
-<!--  </button>-->
+
+  <button  v-if="reportingDate != null" @click="downloadAdmissionLetter" style="padding: 5px 10px; background-color: #2e2487; color: white; border: none; border-radius: 5px; cursor: pointer;">
+    <i class="bi bi-printer"></i>  Print
+  </button>
+
 </div>
 
 
