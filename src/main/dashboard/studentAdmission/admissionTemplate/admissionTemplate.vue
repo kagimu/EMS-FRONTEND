@@ -60,6 +60,17 @@ watch(
     },
     {deep: true}
 )
+
+watch(
+    () => admissionStore.admissionLetterPhraseResponse,
+    (data) => {
+      if (data) {
+        admissionPhrase.value = false
+        fetchTemplates(school_number.value)
+      }
+    }
+)
+
 </script>
 <template>
   <div>
@@ -67,7 +78,7 @@ watch(
 
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
-    <AppModal title="" v-model="admissionPhrase" xl6>
+    <AppModal title="Create Admission Template" v-model="admissionPhrase" xl6>
       <new-admission-phrase></new-admission-phrase>
     </AppModal>
 
