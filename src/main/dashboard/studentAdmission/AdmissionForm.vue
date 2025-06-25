@@ -91,7 +91,6 @@ watch (
 
 
 const setReportingDate = (rpd) => {
-  alert(`Reporting Date: ${rpd}`)
   const confirmed = window.confirm(`Are you sure you want to set the reporting date to ${rpd}?`)
   if (!confirmed) return
   reportingDate.value = rpd
