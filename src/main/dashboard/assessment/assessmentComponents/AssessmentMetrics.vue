@@ -387,7 +387,7 @@ watch(() => assessmentStore.newAssessmentSchedulesResponse, async (data) => {
       <NewAssessmentMetric :assessmentMetricList="assessmentMetricList"></NewAssessmentMetric>
     </AppModal>
 
-    <AppModal  :title="editModel ? 'Edit Assessment Schedule ':'Add Assessment Schedule'" v-model="multiAssessmentModal" xl2>
+    <AppModal  :title="editModel ? 'Edit Assessment Schedule ':'Add Assessment Schedule'" v-model="multiAssessmentModal" xl6>
       <NewAssessmentMultiSchedule :assessmentMetricList="assessmentMetricList"></NewAssessmentMultiSchedule>
     </AppModal>
 

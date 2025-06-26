@@ -106,13 +106,17 @@ const getAssessmentScheduleInfo = () => {
   }
 }
 
-watch(() => props.assessmentMetricList, async (data) => {
+watch(() => props.assessmentMetricList,
+    async (data) => {
   if (data) {
     getAssessmentScheduleInfo()
   }
-})
+}
+)
 
-watch(() => assessmentStore.assessmentAreaResponse, async (data) => {
+watch(
+    () => assessmentStore.assessmentAreaResponse,
+    async (data) => {
   if (data) AsessmentListData.value = data.data
 })
 
@@ -193,7 +197,7 @@ const  fetchAssessmentAreaList = (class_number) => {
 
 <template>
   <form @submit.prevent="addInterviewAssesmentMetrics" class="p-3 bg-white rounded shadow-sm">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
       <div>
         <label class="text-sm font-medium">Code</label>
         <input type="text" v-model="form.code" class="form-control form-control-sm shadow-none" required @keypress="commons.codeValidator($event)" />
@@ -214,14 +218,6 @@ const  fetchAssessmentAreaList = (class_number) => {
           <option v-for="item in academicYearList" :key="item.number" :value="item.number">{{ item.code }} - {{ item.academic_year_name }}</option>
         </select>
       </div>
-
-<!--      <div>-->
-<!--        <label class="text-sm font-medium">Class</label>-->
-<!--        <select class="form-select form-select-sm shadow-none" v-model="form.class_number">-->
-<!--          <option disabled value="">Select Class</option>-->
-<!--          <option v-for="item in classList" :key="item.number" :value="item.number">{{ item.name }}</option>-->
-<!--        </select>-->
-<!--      </div>-->
 
       <div class="mb-2">
         <label class="text-sm"><small>Class</small> <span class="star">*</span></label>
@@ -251,50 +247,111 @@ const  fetchAssessmentAreaList = (class_number) => {
         </select>
       </div>
 
-      <div class="md:col-span-2">
-        <label class="text-sm font-medium">Title</label>
-        <textarea class="form-control form-control-sm shadow-none" rows="3" v-model="form.description"></textarea>
+
+    </div>
+
+
+<!--    <div class="grid grid-cols-6 md:grid-cols-6 gap-6 mt-4">-->
+<!--      <div class="md:col-span-2">-->
+<!--        <label class="text-sm font-medium">Schedules</label>-->
+<!--        <div v-for="(schedule, index) in form.schedules" :key="index" class="border rounded p-3 mb-3 bg-light">-->
+<!--          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">-->
+<!--            <div>-->
+<!--              <label class="text-sm">Assessment Area</label>-->
+<!--              <select class="form-select form-select-sm" v-model="schedule.assessment_area_number">-->
+<!--                <option disabled value="">Select</option>-->
+<!--                <option v-for="item in AsessmentListData" :key="item.number" :value="item.number">{{ item.name }}</option>-->
+<!--              </select>-->
+<!--            </div>-->
+
+<!--            <div>-->
+<!--              <label class="text-sm">Max Score</label>-->
+<!--              <input type="number" class="form-control form-control-sm" v-model="schedule.max_score" @keypress="commons.numbersOnlyValidator($event)" />-->
+<!--            </div>-->
+
+<!--            <div>-->
+<!--              <label class="text-sm">Scheduled On</label>-->
+<!--              <input type="date" class="form-control form-control-sm" v-model="schedule.scheduled_on" />-->
+<!--            </div>-->
+
+<!--            <div>-->
+<!--              <label class="text-sm">Require Comment?</label>-->
+<!--              <select class="form-select form-select-sm" v-model="schedule.require_comment">-->
+<!--                <option value="YES">Mandatory</option>-->
+<!--                <option value="NO">Optional</option>-->
+<!--              </select>-->
+<!--            </div>-->
+
+<!--            <div class="md:col-span-2 text-right">-->
+<!--              <button class="btn btn-sm btn-danger" @click.prevent="removeSchedule(index)">Remove</button>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        <button class="btn btn-sm btn-secondary" @click.prevent="addSchedule">+ Add Schedule</button>-->
+<!--      </div>-->
+<!--    </div>-->
+
+    <div class="mt-2">
+      <label class="text-sm font-medium mb-2 block">Schedules</label>
+
+      <div class="grid grid-cols-12 gap-2 bg-gray-100 rounded-t px-3 py-2 text-sm font-semibold">
+        <div class="col-span-3">Assessment Area</div>
+        <div class="col-span-2">Max Score</div>
+        <div class="col-span-3">Scheduled On</div>
+        <div class="col-span-2">Require Comment?</div>
+        <div class="col-span-2 text-right">Action</div>
       </div>
 
-      <div class="md:col-span-2">
-        <label class="text-sm font-medium">Schedules</label>
-        <div v-for="(schedule, index) in form.schedules" :key="index" class="border rounded p-3 mb-3 bg-light">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div>
-              <label class="text-sm">Assessment Area</label>
-              <select class="form-select form-select-sm" v-model="schedule.assessment_area_number">
-                <option disabled value="">Select</option>
-                <option v-for="item in AsessmentListData" :key="item.number" :value="item.number">{{ item.name }}</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="text-sm">Max Score</label>
-              <input type="number" class="form-control form-control-sm" v-model="schedule.max_score" @keypress="commons.numbersOnlyValidator($event)" />
-            </div>
-
-            <div>
-              <label class="text-sm">Scheduled On</label>
-              <input type="date" class="form-control form-control-sm" v-model="schedule.scheduled_on" />
-            </div>
-
-            <div>
-              <label class="text-sm">Require Comment?</label>
-              <select class="form-select form-select-sm" v-model="schedule.require_comment">
-                <option value="YES">Mandatory</option>
-                <option value="NO">Optional</option>
-              </select>
-            </div>
-
-            <div class="md:col-span-2 text-right">
-              <button class="btn btn-sm btn-danger" @click.prevent="removeSchedule(index)">Remove</button>
-            </div>
-          </div>
+      <div
+          v-for="(schedule, index) in form.schedules"
+          :key="index"
+          class="grid grid-cols-12 gap-2 items-center border-b px-3 py-2 bg-white"
+      >
+        <div class="col-span-3">
+          <select class="form-select form-select-sm w-full" v-model="schedule.assessment_area_number">
+            <option disabled value="">Select</option>
+            <option v-for="item in AsessmentListData" :key="item.number" :value="item.number">
+              {{ item.name }}
+            </option>
+          </select>
         </div>
 
+        <div class="col-span-2">
+          <input
+              type="number"
+              class="form-control form-control-sm w-full"
+              v-model="schedule.max_score"
+              @keypress="commons.numbersOnlyValidator($event)"
+          />
+        </div>
+
+        <div class="col-span-3">
+          <input type="date" class="form-control form-control-sm w-full" v-model="schedule.scheduled_on" />
+        </div>
+
+        <div class="col-span-2">
+          <select class="form-select form-select-sm w-full" v-model="schedule.require_comment">
+            <option value="YES">Mandatory</option>
+            <option value="NO">Optional</option>
+          </select>
+        </div>
+
+        <div class="col-span-2 text-right">
+          <button class="btn btn-sm btn-danger" @click.prevent="removeSchedule(index)">Remove</button>
+        </div>
+      </div>
+
+      <div class="text-left mt-3">
         <button class="btn btn-sm btn-secondary" @click.prevent="addSchedule">+ Add Schedule</button>
       </div>
     </div>
+
+    <div class="mt-2">
+      <label class="text-sm font-medium">Title</label>
+      <textarea class="form-control form-control-sm shadow-none" rows="3" v-model="form.description"></textarea>
+    </div>
+
 
     <div class="text-end mt-4">
       <button type="submit" class="btn btn-primary btn-sm">
