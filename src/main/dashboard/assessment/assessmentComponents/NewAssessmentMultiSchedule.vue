@@ -306,7 +306,7 @@ const  fetchAssessmentAreaList = (class_number) => {
       <div
           v-for="(schedule, index) in form.schedules"
           :key="index"
-          class="grid grid-cols-12 gap-2 items-center border-b px-3 py-2 bg-white"
+          class="grid grid-cols-12 gap-2 items-center  px-3 py-2 bg-white"
       >
         <div class="col-span-3">
           <select class="form-select form-select-sm w-full" v-model="schedule.assessment_area_number">
