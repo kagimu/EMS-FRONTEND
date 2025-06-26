@@ -48,6 +48,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const makeDefaultGradingScaleResponse = ref(null)
     const updateAssessmentMetricResponse = ref(null)
     const deleteAssessmentMetricResponse = ref(null)
+    const newAssessmentSchedulesResponse = ref(null)
 
     async function createAssessmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -646,6 +647,17 @@ export const useAssessmentStore = defineStore("assessment", () => {
             })
     }
 
+    async function createAssessmentMultiSchedule(data) {
+        return await api.post("main/assessments/schedules",data)
+            .then((response) => {
+                newAssessmentSchedulesResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
     return {
         newAssessmentAreasResponse,
@@ -735,6 +747,8 @@ export const useAssessmentStore = defineStore("assessment", () => {
         doMakeGradingStandardDefault,
         updateAssessmentMetrics,
         uploadMarkingGuideFile,
-        deleteAssessmentMetrics
+        deleteAssessmentMetrics,
+        newAssessmentSchedulesResponse,
+        createAssessmentMultiSchedule
     }
 })

@@ -15,8 +15,10 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import MarkingGuideFileUploader from "@/main/dashboard/assessment/assessmentComponents/MarkingGuideFileUploader.vue";
 import AssessmentSchedulePreview from "@/main/dashboard/assessment/assessmentComponents/AssessmentSchedulePreview.vue";
 const confirmationRef = ref(null);
+import NewAssessmentMultiSchedule from "./NewAssessmentMultiSchedule.vue";
 
 
+const multiAssessmentModal = ref(false)
 const { can } = useAbility()
 
 const routerData = useRouter()
@@ -364,6 +366,16 @@ watch(
     }
 )
 
+const showMultiSchedule = () => {
+  multiAssessmentModal.value = true
+}
+
+watch(() => assessmentStore.newAssessmentSchedulesResponse, async (data) => {
+  if (data) {
+    multiAssessmentModal.value = false
+    doFetchAssessmentMetric()
+  }
+})
 
 </script>
 <template>
@@ -373,6 +385,10 @@ watch(
     
     <AppModal  :title="editModel ? 'Edit Assessment Schedule ':'Add Assessment Schedule'" v-model="showingModal" xl2>
       <NewAssessmentMetric :assessmentMetricList="assessmentMetricList"></NewAssessmentMetric>
+    </AppModal>
+
+    <AppModal  :title="editModel ? 'Edit Assessment Schedule ':'Add Assessment Schedule'" v-model="multiAssessmentModal" xl2>
+      <NewAssessmentMultiSchedule :assessmentMetricList="assessmentMetricList"></NewAssessmentMultiSchedule>
     </AppModal>
 
     <AppModal title="Upload Assessment Guide / Script" v-model="uploadDialog" xl>
@@ -394,6 +410,12 @@ watch(
                   class="btn btn-primary btn-sm float-end mb-0 mr-4" style="float: right" type="button"  @click="showModal">
                 <b><i class="bi bi-plus"></i></b> <small>
                 Add Assessment Schedule</small></button>
+
+            <button
+                v-if="can('add_assessment_schedule','general')"
+                class="btn btn-primary btn-sm float-end mb-0 mr-4" style="float: right" type="button"  @click="showMultiSchedule">
+              <b><i class="bi bi-plus"></i></b> <small>
+              Multi-Schedule</small></button>
           </div>
 
 
