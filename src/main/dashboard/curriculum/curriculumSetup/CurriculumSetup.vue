@@ -50,9 +50,6 @@ let  curriculumNumber = routerData.currentRoute.value.query.id
 let curriculumInfo = ref(null)
 let campusQuery = routerData.currentRoute.value.query.type ? routerData.currentRoute.value.query.type : "level"
 
-// const changeMenu = (value) => {
-//   menuSelected.value = value
-// }
 
 const changeMenu = (value) => {
   router.push({ name: "curriculum-setup", query:{m:value} })
@@ -246,9 +243,9 @@ watch(
                   <assesment-areas></assesment-areas>
                   </div>
 
-            <div v-if=" campusQuery==='metric'">
-              <metric></metric>
-            </div>
+                  <div v-if=" campusQuery==='metric'">
+                    <metric></metric>
+                  </div>
 
           </div>
         </div>

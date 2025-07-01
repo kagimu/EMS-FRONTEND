@@ -14,7 +14,6 @@ import { useAbility } from '@casl/vue';
 const { can } = useAbility()
 
 const buttonLoader = ref(false)
-const interviewDialog= ref(false)
 let errorMessage = ref(null)
 const levelStore = useLevelStore()
 const classStore = useClassesStore()
@@ -26,14 +25,13 @@ const schoolList = ref([])
 const classList = ref([])
 const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
-const school_number = ref(null)
 const levelList = ref( [])
 const level = ref( "")
 const subjectList = ref([])
 
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
-const preferred_campus_number = ref(null)
+
 
 const props = defineProps({
   closeAreaDialog: Function,
@@ -49,31 +47,49 @@ const emit = defineEmits(["closeDialog"]);
 
   const addAssessmentArea = () => {
    buttonLoader.value = true
-  // const subjectNumbers = form.subject_numbers.map(subject => subject.number);
-  
-  // let formData = {
-  // curriculum_class_number:form.curriculum_class_number,
-  // subjects: subjectNumbers
-  // }
-  //  alert(JSON.stringify(form))
    assessmentStore.createAssessmentAreas(form)
   }
 
   onMounted(
   async () => {
-    // assessmentStore.fetchAssessmentArea()
-    levelStore.fetchCurriculumLevels(curriculumNumber)
-    schoolStore.fetchSchools()
+    await levelStore.fetchCurriculumLevels(curriculumNumber)
+    await schoolStore.fetchSchools()
   } )
 
-  
+
+
+const checkedAssessmentAreaInfo = () => {
+    let data = {
+      curriculum_number:curriculumNumber,
+      curriculum_class_number:form.curriculum_class_number,
+      level_number:level.value
+    }
+    assessmentStore.fetchAssessmentArea(data)
+}
+
+
+watch(
+    () => assessmentStore.assessmentAreaResponse,
+    async (data) => {
+      if(data){
+        let info = data.data
+        if(info && info.length > 0){
+          form.subjects = info.map(item => item.subject_number)
+        }
+      }
+    }
+)
 
 const subject_n = ref(null)
 
 //fetching class
 const fetchSubject = (a) =>{
-subject_n.value = a
-classStore.fetchCurriculumClassesByID(subject_n.value )
+
+  //fetch checked assessment area info
+  checkedAssessmentAreaInfo()
+
+  subject_n.value = a
+  classStore.fetchCurriculumClassesByID(subject_n.value )
 }
 
   watch(
@@ -241,15 +257,6 @@ watch(
 
              <div class="mb-2">
              <label class="text-sm"><small>Subjects</small> <span class="star">*</span></label>
-             <!-- <select
-                     style="box-shadow: none;"
-                     class="form-select form-select-sm" 
-                     v-model="form.subject_number"
-             >                
-                 <option v-for="(sbj, index) in subjectList" :key="index" :value="sbj.number">{{sbj.name}}</option>
-                 <option  value="">Other</option>
-             </select> -->
-
 
           <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
           <li class="list-group-item" v-for="(subject_numbers, index) in subjectList">
