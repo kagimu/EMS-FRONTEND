@@ -79,7 +79,7 @@ watch(
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal title="Create Admission Template" v-model="admissionPhrase" xl6>
-      <new-admission-phrase></new-admission-phrase>
+      <new-admission-phrase :AdmissionPhrase="phrase" :school_number="school_number"></new-admission-phrase>
     </AppModal>
 
 
@@ -104,12 +104,21 @@ watch(
             </div>
 
 
-          <div><button
-              v-if="can('add_level','general')"
+          <div>
+            <button
+              v-if="phrase.length === 0"
               type="button"  class="btn btn-sm btn-primary mb-2"  @click="addNewPhrase">
             <i style="font-size: 13px;"  class="bi-plus"></i>
             Add New
           </button>
+
+            <button
+                v-else
+                type="button"  class="btn btn-sm btn-outline-primary mb-2"  @click="addNewPhrase">
+              <i style="font-size: 13px;"  class="bi-pencil"></i>
+              UPDATE
+            </button>
+
           </div>
         </div>
 

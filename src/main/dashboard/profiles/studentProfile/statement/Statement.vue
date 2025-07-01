@@ -180,8 +180,8 @@ watch(
           <th>Date</th>
           <th>RecievedBy</th>
           <th>Description</th>
-          <th>Amount (In)</th>
-          <th>Amount (Out)</th>
+          <th>Amount Paid</th>
+          <th>Amount Due</th>
           <th>Balance</th>
           <th> Actions</th>
         </tr>

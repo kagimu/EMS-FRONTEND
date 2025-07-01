@@ -754,7 +754,7 @@ watch(
                  >
                  <thead>
                     <tr>
-                      <th>#</th>
+<!--                      <th>#</th>-->
                        <th>APN</th>
                        <th>Student</th>
                        <th>Gender</th>
@@ -766,7 +766,7 @@ watch(
                  </thead>
                  <tbody>
                     <tr v-for="(appList, index) in applicationInfoList" :key="index">
-                      <td>{{ appList.key }}</td>
+<!--                      <td>{{ appList.key }}</td>-->
                        <td>{{ appList.Student.apn }}</td>
                        <td style="text-transform: capitalize;">{{ appList.Student.surname+ " "+ appList.Student.second_name+ " "+ appList.Student.other_name  }} </td>
                        <td>{{ appList.Student.gender }}</td>
@@ -812,7 +812,7 @@ watch(
                           </button>
 
                          <button v-if="appList.status === 'DRAFT' && appList.type === 'direct-application'" @click="resumeDirectApplicationModal(appList.number)"
-                                 class="btn btn-warning btn-sm text-sm ml-1" style="border-width: 0px;text-decoration: none;" title="Resume Direct Application">
+                                 class="btn btn-primary btn-sm text-sm ml-1" style="border-width: 0px;text-decoration: none;" title="Resume Direct Application">
                            <small>
                              Resume
                            </small>

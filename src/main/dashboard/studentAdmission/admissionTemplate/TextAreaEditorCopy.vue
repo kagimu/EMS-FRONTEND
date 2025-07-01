@@ -29,13 +29,24 @@ watch(comment, (newVal) => {
   emits("update:textResponse", newVal);
 });
 
-const checkDraft = () => {
+const checkDraft2 = () => {
   if (props.textInfo && props.textInfo.length > 0 && !hasProcessed.value) {
     hasProcessed.value = true;
     comment.value = props.textInfo;
     // commentTextEditor.value.innerHTML = commons.commentAlteration(props.textInfo);
   }
 };
+
+const checkDraft = () => {
+  if (commentTextEditor.value) {
+    comment.value = props.textInfo || ''
+    // commentTextEditor.value.innerHTML = comment.value
+  }
+}
+
+watch(() => props.textInfo, () => {
+  checkDraft()
+})
 
 const onInputChange = (event) => {
   comment.value = event.target.innerHTML;

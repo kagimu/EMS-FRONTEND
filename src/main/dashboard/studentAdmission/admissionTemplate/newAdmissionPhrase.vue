@@ -26,9 +26,48 @@ const formData = reactive({
 // Reference to the editor component
 const textEditorRef = ref(null)
 
+const props = defineProps({
+  AdmissionPhrase:String,
+  school_number:String
+})
+
 onMounted(() => {
   schoolStore.fetchSchools()
+  getAdmissionPhrase()
+  getSchoolNumber()
 })
+
+
+const getSchoolNumber = () => {
+  if(props.school_number){
+    formData.school_number = props.school_number
+  }
+}
+
+const getAdmissionPhrase = () => {
+  formData.phrase = props.AdmissionPhrase
+}
+
+watch(
+    () => props.AdmissionPhrase,
+    (data) => {
+      if (data) {
+        getAdmissionPhrase()
+      }
+    },
+    { deep: true }
+)
+
+watch(
+    () => props.school_number,
+    (data) => {
+      if (data) {
+        getSchoolNumber()
+      }
+    },
+    { deep: true }
+)
+
 
 watch(
     () => schoolStore.schoolsResponse,
@@ -78,11 +117,13 @@ const tags = [
   '{{PRINCIPAL_NAME}}',
   '{{PRINCIPAL_TITLE}}',
 ]
+
+
 </script>
 
 <template>
   <div class="bg-white p-2 ">
-
+<!--{{AdmissionPhrase}}-->
     <form @submit.prevent="createNewTemplate">
       <!-- Principal Info -->
       <div class="row mb-4">
@@ -137,6 +178,7 @@ const tags = [
               textAreaMinHeight="min-height:350px"
               noBoarder="no"
           />
+
 
           <!-- Tags -->
           <div class="mt-2">

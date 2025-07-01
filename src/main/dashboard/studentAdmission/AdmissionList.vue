@@ -189,6 +189,7 @@
    
    const fetchCampusLevel = (curriculumNumber) => {
     classStore.fetchCampusLevel(curriculumNumber)
+     doFetchAdmission()
    }
    
    
@@ -246,7 +247,8 @@
        class_number:form.class_number,
        stream_number:form.stream_number,
        campus_class_number:form.campus_class_number,
-       academic_year_number:form.academic_year_number
+       academic_year_number:form.academic_year_number,
+      level_number:form.level
     }
     loading.value = true;
     admissionList.value = []
@@ -693,18 +695,21 @@ watch(
 
                                        <div v-if="can('enroll_student','manage')">
 
-                                         <button  v-if="adm.status !== 'Enrolled'" @click="showModal(adm.student.number,adm.admission_number,adm)"
+                                         <button
+                                             v-if="adm.profile_completed === 'NO'"
+                                             @click="showProfileModal(adm.student.number,adm.admission_number,adm)"
+                                             type="button" class="btn btn-sm btn-outline-primary"
+                                         >
+                                           <small class="font-normal flex text-xs">Complete Profile <i class="bi bi-person ml-1"></i></small>
+                                         </button>
+
+                                         <button  v-if="adm.status !== 'Enrolled' && adm.profile_completed === 'YES' " @click="showModal(adm.student.number,adm.admission_number,adm)"
                                                   type="button" class="btn btn-sm btn-primary mb-1"
                                                   style="color: white;">
                                            <small class="font-normal flex">Enrol <i class="bi bi-box-arrow-in-right ml-1"></i></small>
                                          </button>
 
-                                         <button
-                                                  @click="showProfileModal(adm.student.number,adm.admission_number,adm)"
-                                                  type="button" class="btn btn-sm btn-outline-primary"
-                                         >
-                                           <small class="font-normal flex text-xs">Complete Profile <i class="bi bi-person ml-1"></i></small>
-                                         </button>
+
 
                                        </div>
 

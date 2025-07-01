@@ -14,18 +14,18 @@ const { can } = useAbility()
 const routerData = useRouter()
 
 const route = routerData.currentRoute.value.query.s
-const selectedPage = route ? route : "interviews"
+const selectedPage = route ? route : "application-list"
 
 const application = ref([
+    {
+    name:"Applicants",
+    id:"application-list",
+    action:"view_application_list"
+  },
 {
     name:"Interview pool",
     id:"interviews",
     action:"view_interviews"
-  },
-  {
-    name:"Applicants",
-    id:"application-list",
-    action:"view_application_list"
   },
   {
     name:"Enter Interview Scores",
