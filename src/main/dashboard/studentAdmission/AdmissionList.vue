@@ -189,6 +189,7 @@
    
    const fetchCampusLevel = (curriculumNumber) => {
     classStore.fetchCampusLevel(curriculumNumber)
+     doFetchAdmission()
    }
    
    
@@ -246,7 +247,8 @@
        class_number:form.class_number,
        stream_number:form.stream_number,
        campus_class_number:form.campus_class_number,
-       academic_year_number:form.academic_year_number
+       academic_year_number:form.academic_year_number,
+      level_number:form.level
     }
     loading.value = true;
     admissionList.value = []

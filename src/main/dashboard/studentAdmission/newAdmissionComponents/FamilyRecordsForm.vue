@@ -57,7 +57,7 @@ const getFamilyData = () => {
     form.value.relationship = draft.relationship
     form.value.surname = draft.surname
     form.value.other_name = draft.other_name
-    form.value.parent_living = draft.parent_living
+    form.value.parent_living = draft.is_living
     form.value.place_of_employment = draft.place_of_employment
     form.value.physical_contact_address = draft.physical_contact_address
     form.value.contacts = draft.contacts || []
