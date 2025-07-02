@@ -15,6 +15,8 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import MarkingGuideFileUploader from "@/main/dashboard/assessment/assessmentComponents/MarkingGuideFileUploader.vue";
 import AssessmentSchedulePreview from "@/main/dashboard/assessment/assessmentComponents/AssessmentSchedulePreview.vue";
 import NewNarrativeSchedule from "@/main/dashboard/narrative/narrativeComponents/NewNarrativeSchedule.vue";
+import NewMultiNarrativeSchedule from "./NewMultiNarrativeSchedule.vue";
+
 const confirmationRef = ref(null);
 import { useNarrativeStore } from "@/main/dashboard/narrative/narrativeComponents/store/narrativeStore.js";
 import { formToJSON } from "axios";
@@ -372,6 +374,11 @@ watch (
       }
     }
   )
+const showMulti = ref(false)
+
+const showMultiModal = () => {
+  showMulti.value = true
+}
 
 </script>
 <template>
@@ -381,6 +388,10 @@ watch (
 
     <AppModal  :title="editModel ? 'Edit Narative Schedule ':'Add Narrative Schedule'" v-model="showingModal" xl2>
       <NewNarrativeSchedule :assessmentMetricList="assessmentMetricList" :narrativeScheduleDataInfo="narrativeScheduleDataInfo"></NewNarrativeSchedule>
+    </AppModal>
+
+    <AppModal  title="Multi Narrative Scheduling" v-model="showMulti" xl4>
+      <NewMultiNarrativeSchedule :assessmentMetricList="assessmentMetricList" :narrativeScheduleDataInfo="narrativeScheduleDataInfo"></NewMultiNarrativeSchedule>
     </AppModal>
 
     <div class="col-12 mt-2" >
@@ -393,6 +404,13 @@ watch (
                   class="btn btn-primary btn-sm float-end mb-0 mr-4" style="float: right" type="button"  @click="showModal">
                 <b><i class="bi bi-plus"></i></b> <small>
                 Add narrative Schedule</small></button>
+
+            <button
+                v-if="can('add_assessment_schedule','general')"
+                class="btn btn-primary btn-sm float-end mb-0 mr-4" style="float: right" type="button"
+                @click="showMultiModal">
+              <b><i class="bi bi-plus"></i></b> <small>
+              Multi Narrative Schedule</small></button>
           </div>
 
 
