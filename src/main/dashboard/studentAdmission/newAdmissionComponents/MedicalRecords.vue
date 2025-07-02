@@ -116,6 +116,14 @@ const medicalFields = {
 const backPage = () => {
   emit("next", {step:1})
 }
+
+
+function handleInput(data) {
+  if (form.doctor_phone.length > 15) {
+    form.doctor_phone = form.doctor_phone.slice(0, 15);
+  }
+}
+
 </script>
 <template>
 
@@ -163,7 +171,17 @@ const backPage = () => {
 
             <div class="mb-2">
               <label class="text-sm">Doctor's Phone</label>
-              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.doctor_phone" required class="form-control form-control-sm">
+              <vue-tel-input
+                  @input="handleInput('contacts')"
+                  @keypress="commons.onlyNumberValidator($event)"
+                  style="padding:0; outline: none 0 !important; box-shadow: none;"
+                  class="form-control"
+                  :input-options="{placeholder: ''}"
+                  v-model="form.doctor_phone"
+                  :dropdown-options="{ showDialCodeInSelection: true, showFlags: true, showDialCodeInList: true}"
+                  :preferredCountries="['UG']"
+                  mode="international"></vue-tel-input>
+
             </div>
 
           </div>

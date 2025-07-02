@@ -40,6 +40,12 @@ onMounted(() => {
 } )
 
 
+// function handleInput(data) {
+//   if (data ==="contacts" && form.value.contacts[0].phone_number.length > 15) {
+//     form.main_telephone_number = form.main_telephone_number.slice(0, 15);
+//   }
+// }
+
 watch(
     () => form.value,
     async (data) => {
@@ -127,10 +133,20 @@ watch(
                 </div>
                 <div class="mb-2">
                   <label class="text-sm">Contact Details</label>
-                  <table>
+                  <table >
                     <tr v-for="(lst, index) in form.contacts" :key="index">
-                      <td><input type="text" v-model="lst.phone_number" required class="form-control form-control-sm" placeholder="Phone number"></td>
-                      <td><input type="email" v-model="lst.email" required class="form-control form-control-sm" placeholder="Email"></td>
+<!--                      <td><input type="text" v-model="lst.phone_number" required class="form-control form-control-sm" placeholder="Phone number"></td>-->
+                      <td><vue-tel-input
+                          @input="handleInput('contacts')"
+                          @keypress="commons.onlyNumberValidator($event)"
+                          style="padding:0; outline: none 0 !important; box-shadow: none;"
+                          class="form-control"
+                          :input-options="{placeholder: ''}"
+                          v-model="lst.phone_number"
+                          :dropdown-options="{ showDialCodeInSelection: true, showFlags: true, showDialCodeInList: true}"
+                          :preferredCountries="['UG']"
+                          mode="international"></vue-tel-input></td>
+                      <td><input type="email"  v-model="lst.email" required class="form-control " placeholder="Email"></td>
                       <td>
                         <button class="btn-sm" @click.prevent="removePhone(index)">x
                         </button>

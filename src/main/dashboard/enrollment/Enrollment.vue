@@ -602,7 +602,7 @@ const closeDialog = () => {
                   >
                     <thead >
                     <tr>
-<!--                      <th style="width: 2px;">#</th>-->
+                      <th style="width: 2px;">#</th>
                       <th>ADN</th>
                       <th>Student</th>
                       <th>School</th>
@@ -617,7 +617,7 @@ const closeDialog = () => {
                     <tbody>
                     <!-- {{ enrollmentList }} -->
                     <tr v-for="(enrolData,index) in enrollmentList" :key="index" >
-<!--                      <td>{{ index+1 }}</td>-->
+                      <td>{{ index+1 }}</td>
                       <td>{{ enrolData.adn }}</td>
                       <td style="text-transform: capitalize;">
                         <div class="flex flex-row items-center">
