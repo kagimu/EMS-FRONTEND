@@ -165,7 +165,7 @@ const goToResume = (applicationId) => {
     let data = {
       application_number:applicationData.number
     }
-    applicationStore.deleteApplication(data)
+    await applicationStore.deleteApplication(data)
   }
 }
 

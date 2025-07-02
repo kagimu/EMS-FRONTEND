@@ -3,6 +3,7 @@ import {onMounted,reactive, ref, watch} from "vue";
 import printJS from "print-js";
 import { useAdmissionStore } from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
 import AppModal from "@/components/AppModal.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
 const logo = ref(null)
 const fullname = ref(null)
 const adn = ref(null)
@@ -21,6 +22,10 @@ const school_number = ref(null)
 const reportingDate = ref(null)
 const reportDateModel = ref(false)
 const decodedAdmissionLetterDataInfo = ref([])
+
+const confirmationRef = ref(null);
+
+const today = new Date().toISOString().split('T')[0]
 
 const props = defineProps({
   schoolData: {},
@@ -90,13 +95,17 @@ watch (
 );
 
 
-const setReportingDate = (rpd) => {
-  const confirmed = window.confirm(`Are you sure you want to set the reporting date to ${rpd}?`)
-  if (!confirmed) return
-  reportingDate.value = rpd
-  decodedAdmissionLetterDataInfo.value = decodedAdmissionLetterData.value.replace('{{REPORTING_DUE_DATE}}', rpd)
-  decodedAdmissionLetterData.value = decodedAdmissionLetterDataInfo.value
-  reportDateModel.value = false
+const setReportingDate = async (rpd) => {
+
+  const agreed = await confirmationRef.value.confirm(`Are you sure you want to set the reporting date to ${rpd}?`);
+  if (agreed) {
+    // const confirmed = window.confirm(`Are you sure you want to set the reporting date to ${rpd}?`)
+    // if (!confirmed) return
+    reportingDate.value = rpd
+    decodedAdmissionLetterDataInfo.value = decodedAdmissionLetterData.value.replace('{{REPORTING_DUE_DATE}}', rpd)
+    decodedAdmissionLetterData.value = decodedAdmissionLetterDataInfo.value
+    // reportDateModel.value = false
+  }
 }
 
 
@@ -161,12 +170,14 @@ const downloadAdmissionLetter = () => {
 </script>
 <template>
 
+  <ConfirmationModal removeBorder="remove" ref="confirmationRef" />
+
 <!--  {{decodedAdmissionLetterDataInfo}}-->
   <AppModal title="Set Reporting Date" v-model="reportDateModel" md class="app-modal">
     <form>
       <label class="mb-2 mt-2">Date :</label>
-      <input @change="setReportingDate(reportingDate)" type="date" class="form-control" required v-model="reportingDate">
-      <button @click="setReportingDate(reportingDate)" class="btn btn-primary btn-sm mb-2 mt-2" type="button" style="float: right">Set</button>
+      <input  :min="today" type="date" class="form-control" required v-model="reportingDate">
+      <button @click="setReportingDate(reportingDate)" class="btn btn-primary btn-sm mb-3 mt-3 px-3 text-sm" type="button" style="float: right">Set Date</button>
     </form>
 
   </AppModal>
