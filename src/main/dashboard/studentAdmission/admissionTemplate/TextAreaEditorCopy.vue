@@ -5,6 +5,7 @@ import useCommonsStore from "@/composables/useCommons.js";
 const commentTextEditor = ref(null);
 const comment = ref('');
 const hasProcessed = ref(false);
+const monitorPhraseUpdate = ref(false);
 const commons = useCommonsStore();
 
 const emits = defineEmits(["update:textResponse"]);
@@ -37,16 +38,20 @@ const checkDraft2 = () => {
   }
 };
 
-const checkDraft = () => {
-  if (commentTextEditor.value) {
-    comment.value = props.textInfo || ''
-    commentTextEditor.value.innerHTML = comment.value
-  }
-}
 
 watch(() => props.textInfo, () => {
   checkDraft()
 })
+
+const checkDraft = () => {
+  if (props.textInfo && !monitorPhraseUpdate.value) {
+    comment.value = props.textInfo || ''
+    commentTextEditor.value.innerHTML = commons.commentAlteration(props.textInfo);
+    monitorPhraseUpdate.value = true
+  }
+}
+
+
 
 const onInputChange = (event) => {
   comment.value = event.target.innerHTML;
@@ -69,12 +74,12 @@ const storeCursor = () => {
 };
 
 const execCommand = (command, value = null) => {
-  commentTextEditor.value?.focus()
+  // commentTextEditor.value?.focus()
   document.execCommand(command, false, value)
 }
 
 const execCommands = (command, value = null) => {
-  commentTextEditor.value?.focus();
+  // commentTextEditor.value?.focus();
   if (value) {
     document.execCommand(command, false, value);
   } else {
@@ -85,7 +90,7 @@ const execCommands = (command, value = null) => {
 
 
 const insertAtCursor = (text) => {
-  commentTextEditor.value.focus();
+  // commentTextEditor.value.focus();
   nextTick(() => {
     const sel = window.getSelection();
     if (cursorSelection.value) {

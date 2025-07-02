@@ -1,25 +1,23 @@
 <script setup>
 
 import {onMounted, ref, watch} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import { useAbility } from '@casl/vue';
 import AppModal from "@/components/AppModal.vue";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 import newAdmissionPhrase from "@/main/dashboard/studentAdmission/admissionTemplate/newAdmissionPhrase.vue";
 import { useSchoolStore } from "@/main/dashboard/manageSchool/store/school.js";
 import { useAdmissionStore } from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js";
-import TextAreaEditor from "./TextAreaEditor.vue";
 
+import useCommonsStore from "@/composables/useCommons.js";
+const commons = useCommonsStore();
 const schoolStore = useSchoolStore()
 const admissionStore = useAdmissionStore()
 const confirmationRef = ref(null);
 const admissionPhrase = ref(false)
-const { can } = useAbility()
-const  notificationStore  = useNotificationStore()
 const schoolList = ref([])
 const school_number = ref("")
 const admissionLetterTempleteData = ref([])
-const phrase = ref([])
+const phrase = ref(null)
+
 
 
 const addNewPhrase = () => {
@@ -79,7 +77,7 @@ watch(
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal title="Create Admission Template" v-model="admissionPhrase" xl6>
-      <new-admission-phrase :AdmissionPhrase="phrase" :school_number="school_number"></new-admission-phrase>
+      <new-admission-phrase :admissionPhrase="phrase" :school_number="school_number"></new-admission-phrase>
     </AppModal>
 
 
@@ -105,26 +103,29 @@ watch(
 
 
           <div>
+
             <button
-              v-if="phrase.length === 0"
+                v-if="phrase"
+                type="button"  class="btn btn-sm btn-outline-primary mb-2"  @click="addNewPhrase">
+              <i style="font-size: 13px;"  class="bi-pencil"></i>
+              UPDATE
+            </button>
+
+            <button
+                v-else
               type="button"  class="btn btn-sm btn-primary mb-2"  @click="addNewPhrase">
             <i style="font-size: 13px;"  class="bi-plus"></i>
             Add New
           </button>
 
-            <button
-                v-else
-                type="button"  class="btn btn-sm btn-outline-primary mb-2"  @click="addNewPhrase">
-              <i style="font-size: 13px;"  class="bi-pencil"></i>
-              UPDATE
-            </button>
+
 
           </div>
         </div>
 
         <div class="w-full">
 
-          <div v-html="phrase"></div>
+          <div v-html="commons.commentAlteration(phrase)"></div>
 
         </div>
 

@@ -208,6 +208,36 @@ export default function useCommonsStore() {
     }
 
 
+    const commentAlteration = (comment) => {
+        if (!comment) return '';
+
+        // Dynamically add a CSS style for hover effect
+        if (!document.getElementById('hover-link-style')) {
+            const style = document.createElement('style');
+            style.id = 'hover-link-style';
+            style.textContent = `
+            a.hover-link {
+                text-decoration: none;
+                cursor:pointer;
+                color: #153d77;
+            }
+            a.hover-link:hover {
+                text-decoration: underline;
+            }
+        `;
+            document.head.appendChild(style);
+        }
+
+        // Convert URLs to clickable links with a hover effect class
+        comment = comment.replace(
+            /(https?:\/\/[^\s<]+)/g,
+            '<a class="hover-link" href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+        );
+
+
+        return comment;
+    };
+
     return {
         onlyNumberValidator,
         numbersOnlyValidator,
@@ -222,5 +252,6 @@ export default function useCommonsStore() {
         formatNumbersWithComma,
         ageCalculator,
         updateDefaultFilters,
+        commentAlteration,
     }
 }

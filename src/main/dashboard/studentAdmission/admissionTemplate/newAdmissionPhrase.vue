@@ -6,7 +6,7 @@ import { useSchoolStore } from "@/main/dashboard/manageSchool/store/school.js"
 import { useAdmissionStore } from "@/main/dashboard/studentAdmission/newAdmissionComponents/store/adminission.js"
 import TextAreaEditorCopy from "./TextAreaEditorCopy.vue";
 
-const confirmationRef = ref(null)
+
 const { can } = useAbility()
 const notificationStore = useNotificationStore()
 const schoolStore = useSchoolStore()
@@ -14,20 +14,17 @@ const buttonLoader = ref(false)
 const admissionStore = useAdmissionStore()
 
 const schoolList = ref([])
-const school_number = ref("")
 
 const formData = reactive({
   school_number: "",
   phrase: "",
-  // principal_name: null,
-  // principal_title: null
 })
 
 // Reference to the editor component
 const textEditorRef = ref(null)
 
 const props = defineProps({
-  AdmissionPhrase:String,
+  admissionPhrase:String,
   school_number:String
 })
 
@@ -44,19 +41,20 @@ const getSchoolNumber = () => {
   }
 }
 
-const getAdmissionPhrase = () => {
-  formData.phrase = props.AdmissionPhrase
-}
+
 
 watch(
-    () => props.AdmissionPhrase,
+    () => props.admissionPhrase,
     (data) => {
       if (data) {
         getAdmissionPhrase()
       }
-    },
-    { deep: true }
+    }
 )
+
+const getAdmissionPhrase = () => {
+  formData.phrase = props.admissionPhrase
+}
 
 watch(
     () => props.school_number,
@@ -64,8 +62,7 @@ watch(
       if (data) {
         getSchoolNumber()
       }
-    },
-    { deep: true }
+    }
 )
 
 
@@ -75,8 +72,7 @@ watch(
       if (data) {
         schoolList.value = data.data
       }
-    },
-    { deep: true }
+    }
 )
 
 const createNewTemplate = () => {
