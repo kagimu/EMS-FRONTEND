@@ -640,7 +640,7 @@ watch(
                            >
                            <thead >
                               <tr>
-                                 <th>#</th>
+<!--                                 <th>#</th>-->
                                  <th>ADN</th>
                                  <th>Student</th>
                                  <th>Campus</th>
@@ -653,9 +653,9 @@ watch(
                            </thead>
                            <tbody>
                               <tr v-for="(adm , index) in admissionList" :key="index">
-                                 <td>
-                                    {{adm.key}}
-                                 </td>
+<!--                                 <td>-->
+<!--                                    {{adm.key}}-->
+<!--                                 </td>-->
                                  <td>
                                     {{adm.student.adn}}
                                  </td>

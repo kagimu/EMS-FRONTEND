@@ -40,7 +40,7 @@ const checkDraft2 = () => {
 const checkDraft = () => {
   if (commentTextEditor.value) {
     comment.value = props.textInfo || ''
-    // commentTextEditor.value.innerHTML = comment.value
+    commentTextEditor.value.innerHTML = comment.value
   }
 }
 
