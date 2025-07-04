@@ -752,8 +752,8 @@
                                  v-model="enrolData.check_in_time">
                                  <button 
                                  @click="recordAttendance(enrolData.check_in_time, enrolData.present, enrolData.user_number, enrolData.student_number, null)"
-                                 class="btn btn-outline-primary btn-sm">
-                                 <i class="bi bi-check2"></i>
+                                 class="btn btn-primary btn-sm">
+                                 <i class="bi bi-save2"></i> save
 
                                  <span   style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
                                  role="status" v-if="buttonLoader && enrolData.student_number ==formData.student_number"><span class="visually-hidden">Loading...</span></span> 

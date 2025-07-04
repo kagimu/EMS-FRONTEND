@@ -304,13 +304,10 @@ const switchUser = async () => {
       Need Help ?
     </div>
 
-    <!-- <div class="floating-setup-button text-xs p-2 ml-3" @click="openConfigModal">
-     <i class="bi bi-gear"></i> Configuration
-    </div> -->
 
-    <div class="floating-setup-button text-xs p-2 ml-3" @click="openConfigModal">
-  <i class="bi bi-nintendo-switch"></i> <small>Quick Switch</small>
-</div>
+<!--    <div class="floating-setup-button text-xs p-2 ml-3" @click="openConfigModal">-->
+<!--  <i class="bi bi-nintendo-switch"></i> <small>Quick Switch</small>-->
+<!--</div>-->
 
     <div v-if="showContactDetails" class="contact-details ">
       <div class="row" style="border-bottom: 1px  #f1f1f1 solid;">

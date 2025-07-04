@@ -12,6 +12,7 @@ import AssessmentSchedulePage from "@/main/dashboard/assessment/AssessmentSchedu
 import ManagePromotions from "@/main/settings/promotion/ManagePromotions.vue";
 import NarrativeSchedule from "@/main/dashboard/narrative/NarrativeSchedule.vue";
 import ManageNarrativeReport from "@/main/dashboard/narrative/ManageNarrativeReport.vue";
+import StandardComments from "@/main/dashboard/comments/StandardComments.vue";
 import useCommonsStore from "@/composables/useCommons.js";
 
 const router = useRouter()
@@ -61,15 +62,16 @@ const campusSetupMenu = ref([
     action:"view_narrative_report"
   },
   {
+    name:"Standard Comments",
+    router_name:"comments",
+    action:"view_comments"
+  },
+  {
     name:"Report Card Settings",
     router_name:"report-card-settings",
     action:"view_report_card_settings"
   },
-  // {
-  //   name:"Promotion",
-  //   router_name:"promotion",
-  //   action:"view_promotions"
-  // },
+
   {
     name:"Student Score",
     router_name:"student-score",
@@ -271,6 +273,14 @@ const switchCurriculum = (curriculum) => {
           </div>
         </div>
         </div>
+
+      <div class="col-9" v-if="campusSetupQuery === 'comments'">
+        <div class="card mt-3">
+          <div class="card-body" style="padding: 0;">
+            <standard-comments></standard-comments>
+          </div>
+        </div>
+      </div>
 
     </div>
 </div>
