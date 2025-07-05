@@ -118,7 +118,7 @@ const printComments = () => {
 
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
-    <AppModal :title="editMode?'Edit Comment':'Add Head Teachers Comment'" v-model="showCommentModal" lg>
+    <AppModal :title="editMode?'Edit Comment':'Add Subject Teachers Comment'" v-model="showCommentModal" lg>
       <NewSubjectTeacherComment :headTeacherCommentList="headTeacherCommentList"></NewSubjectTeacherComment>
     </AppModal>
 

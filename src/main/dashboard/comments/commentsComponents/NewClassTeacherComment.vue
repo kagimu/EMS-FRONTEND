@@ -79,7 +79,7 @@ watch(
 
 const addComments = () => {
   loader.value = true
-//  alert(JSON.stringify(form))
+ alert(JSON.stringify(form))
   if (props.headTeacherCommentList) {
     let formData = {
       min_aggregate: parseInt(form.min_aggregate),
@@ -88,8 +88,7 @@ const addComments = () => {
       report_setting_number: props.headTeacherCommentList.report_setting_number,
       number: parseInt(props.headTeacherCommentList.id)
     }
-// alert(JSON.stringify(formData))
-    teacherCommentStore.newTeacherComment(formData)
+    // teacherCommentStore.newTeacherComment(formData)
   } else {
     let formData = {
       min_aggregate: parseInt(form.min_aggregate),
@@ -97,7 +96,7 @@ const addComments = () => {
       comment: form.comment,
       report_setting_number: form.report_setting_number
     }
-    teacherCommentStore.newTeacherComment(formData)
+    // teacherCommentStore.newTeacherComment(formData)
   }
 }
 

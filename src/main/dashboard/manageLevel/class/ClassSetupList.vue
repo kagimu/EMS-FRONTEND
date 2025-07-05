@@ -152,6 +152,15 @@ watch(
     {deep:true}
 )
 
+watch(
+    () => classStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error", data.message)
+      }
+    },
+    {deep:true}
+)
 
 </script>
 <template>
