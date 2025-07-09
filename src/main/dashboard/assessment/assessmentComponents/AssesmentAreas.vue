@@ -94,10 +94,16 @@ watch (
     }
 )
 
+  const curriculumClassNumber = ref(null)
+  const curriculumLevel = ref(null)
+
 const showAreaDialog = () =>{
   assessmentAreaInfo.value = ""
   editMode.value = false
   areaDialog.value = true
+  namee.value = null
+  curriculumClassNumber.value = null
+  curriculumLevel.value = null
 }
 
 const closeAreaDialog = () =>{
@@ -136,6 +142,9 @@ const openEditModel = (num,name) =>{
   editMode.value = true
   areaDialog.value = true
   namee.value = name
+
+  curriculumClassNumber.value = curriculum_class_number.value
+  curriculumLevel.value = level.value
 }
   </script>
 
@@ -146,7 +155,7 @@ const openEditModel = (num,name) =>{
 
     <!-- :title="mealEditMode ? 'Edit Meal' : 'Add Meal Course'" -->
     <AppModal  :title="editMode ? 'Edit Assessment Area '+ namee : 'New Assessment Area'" v-model="areaDialog" xl2>
-      <NewAssessmentArea @closeDialog="closeDialog"></NewAssessmentArea>
+      <NewAssessmentArea @closeDialog="closeDialog" :levelNum="curriculumLevel" :curriculum_class_number="curriculumClassNumber"></NewAssessmentArea>
     </AppModal>
 
     <div class="col-12">
@@ -226,10 +235,11 @@ const openEditModel = (num,name) =>{
           <button  type="button" @click="openEditModel(assessmentData.number,assessmentData.name)">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
-          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
-          <button type="button" @click="deleteThisData(assessmentData.number,assessmentData.name)">
-            <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
-          </button></td>
+<!--          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;-->
+<!--          <button type="button" @click="deleteThisData(assessmentData.number,assessmentData.name)">-->
+<!--            <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>-->
+<!--          </button>-->
+          </td>
         </tr>  
 
       </tbody>

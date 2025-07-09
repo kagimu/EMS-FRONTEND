@@ -752,6 +752,7 @@ watch(
                  class="table table-striped"
                  style="font-size: 13px !important;"
                  >
+<!--                {{applicationInfoList}}-->
                  <thead>
                     <tr>
                       <th>#</th>

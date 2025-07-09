@@ -23,6 +23,7 @@ const admissionLearnerDetails = ref({})
 const assessmentDataData = ref([])
 const studentApplicationStore = useStudentApplicationStore()
 const interviewStudentListInfo = ref( [])
+const numberCheck = ref(null)
 
 const openModal = (interviewInfoD) => {
   dialog.value = true
@@ -373,6 +374,8 @@ watch(
 
   const submitMarks = (a,b,c) =>{
       buttonLoader.value=true
+      numberCheck.value = c
+
       let formDat = reactive({
       assessment_metric_number:form.assessment_number,
       comment:b,
@@ -588,9 +591,7 @@ watch(
            <tr>
               <th>Name</th>
               <th scope="col">Score/ (<b>{{ max_score_mark }}</b>)</th>
-              <th scope="col">Comment <span v-if="buttonLoader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-dark" role="status">
-                 <span class="visually-hidden">Loading...</span>
-                 </span></th>
+              <th scope="col">Comment</th>
                  <th></th>
            </tr>
         </thead>
@@ -638,8 +639,21 @@ watch(
                     class="form-control form-select-sm h-1 shadow-none"></textarea>
               </td>
               <td>
-                <span style="font-size: 11px;color:green;font-style: italic" v-if="std.status === 'Active'">Active</span>
-                <span  style="font-size: 11px;color:cadetblue;font-style: italic" v-else > Admitted</span>
+                <button
+                    v-if="std.status != 'ADMITTED'"
+                    class="btn btn-sm btn-primary mb-2"
+                    :disabled="buttonLoader"
+                    @click="submitMarks(std.score, std.comment, std.number)"
+                >
+                  <i class="bi bi-check2-circle me-1"></i>
+                  submit
+                  <span v-if="buttonLoader && std.number === numberCheck" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-dark" role="status">
+                 <span class="visually-hidden">Loading...</span>
+                 </span>
+                </button>
+
+                <span  class="alert alert-secondary ml-2 p-1" v-if="std.status === 'Active'">Active</span>
+                <span class="alert alert-success ml-2 p-1"  v-else > Admitted</span>
               </td>
            </tr>
         </tbody>
@@ -649,26 +663,6 @@ watch(
 
   </div>
   </div>
-
-
-  <div v-if="dialog" class="modal fade show" style="display: block;" tabindex="-1" role="dialog" >
-      <div class="modal-dialog modal-fullscreen" role="document" >
-        <div class="modal-content" style="">
-          <div class="modal-header" style="height: 15px;border: 0px;">
-            <span class="modal-title"></span>
-            <button style="width: 90px;font-size: 12px" @click="toggleFullscreen" class="btn btn-secondary btn-sm mb-3 p-0">
-      {{ fullscreenMode ? 'Exit Fullscreen' : 'Enter Fullscreen' }}
-    </button>
-           
-            <button class="btn btn-danger" type="button "   @click="dialog = false" 
-            style="border: 1 solid red; border-radius: 8px;padding: 2px; font-weight: 600;">
-            <span style="width: 60px;">&times;</span>close
-            </button>
-          </div>
-         <InterviewScoreOfferAdmission :interviewInfo="interviewInfoData" :admissionLearnerDetails="admissionLearnerDetails"></InterviewScoreOfferAdmission>
-        </div>
-      </div>
-    </div>
 
   </div>
   </template>

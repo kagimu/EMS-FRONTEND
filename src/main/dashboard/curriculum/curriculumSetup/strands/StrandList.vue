@@ -3,7 +3,7 @@
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="strandEditMode ? 'Edit Strand' : 'Add Strand'" v-model="strandDialog" lg>
-      <new-strand></new-strand>
+      <new-strand @closeDialog="closeStrand"></new-strand>
     </AppModal>
 
 
@@ -371,6 +371,10 @@ watch(
     },
     {deep:true}
 )
+
+const closeStrand = () => {
+  strandDialog.value = false
+}
 
 </script>
 

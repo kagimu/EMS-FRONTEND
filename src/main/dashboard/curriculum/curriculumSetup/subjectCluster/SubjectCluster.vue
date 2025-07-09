@@ -156,15 +156,19 @@ watch(
     {deep:true}
 )
 
+const closeSubjectCluster = () => {
+  curriculumDialog.value = false
+}
+
 
 </script>
 <template>
   <div>
 
-    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+    <ConfirmationModal ref="confirmationRef" ></ConfirmationModal>
 
     <AppModal :title="subjectClusterEditMode ? 'Edit' : 'Add'" v-model="curriculumDialog" lg>
-      <new-subject-cluster></new-subject-cluster>
+      <new-subject-cluster @closeDialog="closeSubjectCluster"></new-subject-cluster>
     </AppModal>
 
 

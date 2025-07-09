@@ -39,6 +39,7 @@ const subject_number = ref("")
 const strand_number = ref("")
 const subTopicNumber = ref("")
 let  curriculumNumber = routerData.currentRoute.value.query.id
+const emit = defineEmits(['closeDialog'])
 
 
 const form = reactive({
@@ -221,7 +222,9 @@ watch(
     {deep:true}
 )
 
-
+const closeSubTDialog = () => {
+  emit("closeDialog")
+}
 </script>
 <template>
   <div>
@@ -335,7 +338,13 @@ watch(
 
 
 
-      <div class="flex justify-content-end" style="width: 100%;">
+      <div class="flex justify-content-between" style="width: 100%;">
+        <button
+            type="button"
+            class="btn btn-danger btn-sm mb-2 border-0"
+            @click="closeSubTDialog">
+          Close
+        </button>
         <button
             type="submit"
             class="btn btn-primary border-0">

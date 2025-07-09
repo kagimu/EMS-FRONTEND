@@ -1,3 +1,106 @@
+<script setup>
+
+import {onMounted, reactive, ref, watch} from "vue";
+import {useRouter} from "vue-router";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
+import useCommonsStore from "@/composables/useCommons.js";
+import useNotificationStore from "@/composables/useNotification.js";
+const commons = useCommonsStore()
+const classError = ref(null)
+const name = ref(null)
+const loader = ref(false)
+const nameRef = ref(null)
+const routerData = useRouter()
+const  notificationStore  = useNotificationStore()
+const learningAreaStore = useLearningAreaStore()
+let  curriculumNumber = routerData.currentRoute.value.query.id
+const learningAreaNumber = ref(null)
+const emit = defineEmits(["closeDialog"])
+
+const form = reactive({
+  name:null,
+  code:null,
+  curriculum_number:curriculumNumber,
+})
+
+
+const addLearningArea = () =>{
+  loader.value = true
+  if(learningAreaNumber.value){
+    form.learning_area_number = learningAreaNumber.value
+    learningAreaStore.editLearningAreaData(form)
+  }else {
+    learningAreaStore.newLearningAreaData(form)
+  }
+
+}
+
+const  autoInputFocusInfo =  () => {
+  nameRef.value.focus()
+}
+
+defineExpose({
+  autoInputFocusInfo
+});
+
+onMounted(
+    () =>{
+
+    }
+)
+
+watch(
+    () => learningAreaStore.learningAreaResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+        form.name = null
+        form.code = null
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => learningAreaStore.learningAreaEditResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => learningAreaStore.errorMessage,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => learningAreaStore.learningAreaDataInfoResponse,
+    async (data) => {
+      if(data){
+        let info = data.data
+        form.name = info.name ? info.name : ""
+        form.code = info.code ? String(info.code) : ""
+        learningAreaNumber.value = info.number ? info.number : ""
+      }
+    },
+    {deep:true}
+)
+
+const closeLearningAreaDialog = () => {
+  emit("closeDialog")
+}
+</script>
+
 <template>
   <div>
 
@@ -36,7 +139,13 @@
 
 
 
-      <div class="flex justify-content-end" style="width: 100%;">
+      <div class="flex justify-content-between" style="width: 100%;">
+        <button
+            type="button"
+            class="btn btn-danger border-0"
+            @click="closeLearningAreaDialog">
+          Close
+        </button>
         <button
             type="submit"
             class="btn btn-primary border-0">
@@ -53,105 +162,6 @@
   </div>
 </template>
 
-<script setup>
-
-import {onMounted, reactive, ref, watch} from "vue";
-import {useRouter} from "vue-router";
-import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
-import useCommonsStore from "@/composables/useCommons.js";
-import useNotificationStore from "@/composables/useNotification.js";
-const commons = useCommonsStore()
-const classError = ref(null)
-const name = ref(null)
-const loader = ref(false)
-const nameRef = ref(null)
-const routerData = useRouter()
-const  notificationStore  = useNotificationStore()
-const learningAreaStore = useLearningAreaStore()
-let  curriculumNumber = routerData.currentRoute.value.query.id
-const learningAreaNumber = ref(null)
-
-const form = reactive({
-  name:null,
-  code:null,
-  curriculum_number:curriculumNumber,
-})
-
-
-const addLearningArea = () =>{
-  loader.value = true
-  if(learningAreaNumber.value){
-   form.learning_area_number = learningAreaNumber.value
-    learningAreaStore.editLearningAreaData(form)
-  }else {
-    learningAreaStore.newLearningAreaData(form)
-  }
-
-}
-
-const  autoInputFocusInfo =  () => {
-  nameRef.value.focus()
-}
-
- defineExpose({
-  autoInputFocusInfo
-});
-
-onMounted(
-    () =>{
-
-    }
-)
-
-watch(
-    () => learningAreaStore.learningAreaResponse,
-    async (data) => {
-      if(data){
-        loader.value = false
-        form.name = null
-        form.code = null
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => learningAreaStore.learningAreaEditResponse,
-    async (data) => {
-      if(data){
-        loader.value = false
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => learningAreaStore.errorMessage,
-    async (data) => {
-      if(data){
-        loader.value = false
-          notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => learningAreaStore.learningAreaDataInfoResponse,
-    async (data) => {
-      if(data){
-        let info = data.data
-        form.name = info.name ? info.name : ""
-        form.code = info.code ? String(info.code) : ""
-        learningAreaNumber.value = info.number ? info.number : ""
-      }
-    },
-    {deep:true}
-)
-
-
-</script>
 
 <style scoped>
 .noFocus:focus {

@@ -7,13 +7,13 @@ import useCommonsStore from "@/composables/useCommons.js";
 import {useRouter} from "vue-router";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
+const emit = defineEmits(["closeGrade"])
 const routerData = useRouter()
 let schoolNumber = routerData.currentRoute.value.query.sch
 const commons = useCommonsStore()
 const assessmentStore = useAssessmentStore()
 const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
-
 
 
 
@@ -109,6 +109,10 @@ watch(
     async (data) => {
       if(data){
             form.name = null
+            form.code = null
+            form.short_name = null
+            buttonLoader.value = false
+
       }
     }
 )
@@ -132,6 +136,10 @@ watch(
       }
     }
 )
+
+const closeGradeModal = () => {
+  emit("closeGrade")
+}
 </script>
 
 <template>
@@ -184,7 +192,12 @@ watch(
 
 
 
-        <div class="flex justify-content-end mt-4" style="width: 100%;">
+        <div class="flex justify-content-between mt-4" style="width: 100%;">
+          <button type="button" class="btn btn-danger border-0 btn-sm" @click="closeGradeModal">
+            <div class="px-3">
+              <small>Close</small>
+            </div>
+          </button>
             <button type="submit" class="btn btn-primary border-0 btn-sm">
               <div class="px-3">
                 <small> {{gradeDataInfo?.number ? "Edit" : "Submit"}} </small>
@@ -192,7 +205,6 @@ watch(
                        role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span>
                     </span>
               </div>
-
             </button>
         </div>
     </form>

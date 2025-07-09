@@ -242,7 +242,7 @@ const fetchStreamsAndStudyPeriod = (classNumber) =>{
         school_number:form.school_number
       } )
 
-doFetchEnrollent()
+      doFetchEnrollent()
 }
 
 
@@ -264,6 +264,8 @@ const fetchLevelClasses = (levelNumber) => {
   }
   campusStore.fetchClassesBySchool(data)
   academicYearStore.fetchAcademicYearByLevel(levelNumber)
+
+  doFetchEnrollent()
 }
 
 
@@ -493,7 +495,7 @@ const closeDialog = () => {
                             v-model="form.level"
                             @change="fetchLevelClasses(form.level)"
                         >
-                          <option disabled value="">-Filter by level-</option>
+                          <option disabled value="">-Filter by levels-</option>
                           <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
                         </select>
                       </div>
@@ -505,7 +507,7 @@ const closeDialog = () => {
                             style="box-shadow: none;"
                             class="form-select form-select-sm" required
                             v-model="form.academic_year_number"
-                            @change=""
+                            @change="doFetchEnrollent"
                         >
                           <option disabled value="">-filter AcademicYear-</option>
                           <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
@@ -642,23 +644,6 @@ const closeDialog = () => {
                       <td>{{ enrolData.class }}</td>
                       <td>{{ enrolData.enrollment_date }}</td>
                       <td>
-<!--                           <div v-if="can('upload_student_photo','manage')" >-->
-<!--                             <div class="mr-2 rounded-sm px-2 text-[#0d6dfa] cursor-pointer m-1" style="border: 1px solid #0d6dfa;" @click="uploadStudentPhoto(enrolData)">-->
-<!--                               <i class="bi bi-card-image cursor-pointer mr-1"></i>-->
-<!--                               Upload Photo-->
-<!--                             </div>-->
-<!--                             <router-link-->
-<!--                                 v-if="can('view_profile','manage')"-->
-<!--                                 :to="{name:'student-profile-details', query:{st_id:enrolData.student_number}}"-->
-<!--                                 class="text-decoration-none">-->
-<!--                                   <div class="mr-2 rounded-sm px-2 text-[#0d6dfa] cursor-pointer m-1" style="border: 1px solid #0d6dfa;">-->
-<!--                                     <i class="bi bi-person cursor-pointer mr-1"></i>-->
-<!--                                     View Profile-->
-<!--                                   </div>-->
-<!--                             </router-link>-->
-<!--                           </div>-->
-
-
 
                         <div v-if="can('upload_student_photo','manage')" >
                           <div class="dropdown text-xs">

@@ -15,8 +15,6 @@ const notificationStore  = useNotificationStore()
 const emergencyData = ref([])
 const studentNo = ref(null)
 
-
-
 const form = reactive({
   contact_person:null,
   contact_person_phone:null,
@@ -71,12 +69,17 @@ const backPage = () => {
   emit("next", {step:2})
 }
 
+const closeDia = () => {
+  emit("closeDialog")
+}
+
 const  saveEmergencyInformation = async (data) => {
   await api.post("main/students/emergency-information", data)
       .then((response) => {
         buttonLoader.value = false
         // levelResponse.value = response.data
         notificationStore.successToast("Success",response.data.message)
+        closeDia()
       })
       .catch((error) => {
         if(error && error.response){

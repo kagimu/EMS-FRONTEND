@@ -183,6 +183,10 @@ watch(
     {deep:true}
 )
 
+const closeSubject = () => {
+  subjectDialog.value = false
+}
+
 </script>
 <template>
   <div>
@@ -191,7 +195,7 @@ watch(
 <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="subjectEditMode ? 'Edit Subject' : 'Add Subject'" v-model="subjectDialog" lg>
-      <new-subject></new-subject>
+      <new-subject @closeDialog="closeSubject"></new-subject>
     </AppModal>
 
 

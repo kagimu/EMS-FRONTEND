@@ -127,7 +127,9 @@ watch(
     {deep:true}
 )
 
-
+const closeLearningArea = () =>{
+  curriculumDialog.value = false
+}
 
 </script>
 
@@ -136,7 +138,7 @@ watch(
 <div>
 
   <AppModal :title="learningAreaEditMode ? 'Edit Learning Area' : 'Add Learning Area'" v-model="curriculumDialog" lg>
-    <new-learning-area ref="learningAreaRef"></new-learning-area>
+    <new-learning-area ref="learningAreaRef" @closeDialog="closeLearningArea"></new-learning-area>
   </AppModal>
 
 <!--  <div class="modal fade" id="learningAreaModal" tabindex="-1" :class="{ show: curriculumDialog }" aria-labelledby="" aria-hidden="true">

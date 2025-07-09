@@ -258,13 +258,16 @@ watch(
     {deep:true}
 )
 
+const  closeTopicDialog = () => {
+  strandDialog.value = false
+}
 
 </script>
 <template>
   <div>
 
     <AppModal :title="topicEditMode ? 'Edit Topic' : 'Add Topic'" v-model="strandDialog" lg>
-      <new-topic></new-topic>
+      <new-topic @closeDialog="closeTopicDialog"></new-topic>
     </AppModal>
 
 

@@ -157,7 +157,7 @@ const toggleSelectAll = () => {
           <input
               v-model="classId"
               @click="addClass(cls)"
-              style="outline: none 0 !important; box-shadow: none;"
+              style="outline: none 0 !important; box-shadow: none; width:20px; height: 20px"
               class="form-check-input me-1" type="checkbox" :value="cls.number" :id="cls.number">
           <label class="form-check-label cursor-pointer ml-2" :for="cls.number">{{cls.code+". "+cls.name+" &nbsp;&nbsp;&nbsp; ["+cls.abbreviation+"]"}}</label>
         </li>

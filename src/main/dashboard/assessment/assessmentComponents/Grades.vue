@@ -74,7 +74,7 @@ watch(
     () => assessmentStore.newGradeResponse,
     async (data) => {
       if(data){
-        showGradeModal.value = false
+        // showGradeModal.value = false
          doFetchGrades()
         notificationStore.successToast("Success", data.message)
       }
@@ -124,6 +124,11 @@ const deleteGrade = async (data, index) => {
   
 }
 
+const closeGradeModal = () => {
+  showGradeModal.value = false
+  gradeDataInfo.value = []
+  editModel.value = false
+}
 
 </script>
 <template>
@@ -132,7 +137,7 @@ const deleteGrade = async (data, index) => {
  <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
       <AppModal :title="editModel ? 'Edit Name Of Aggregates ' : 'Add Name Of Aggregates'  " v-model="showGradeModal" lg>
-        <NewGrade :gradeDataInfo="gradeDataInfo"></NewGrade>
+        <NewGrade :gradeDataInfo="gradeDataInfo" @closeGrade="closeGradeModal"></NewGrade>
       </AppModal>
 
      <div class="px-2 py-2 border-b">

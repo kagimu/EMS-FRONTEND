@@ -222,15 +222,15 @@ watch (
                 <div v-for="(curr, idx) in campus.curriculum" key="idx" class="curriculum ml-2">
                   <div class="curriculum-header">
                       <h3 class="text-sm">{{idx+1}}. {{curr.name}}</h3>
-                      <span>{{ 90 }}%</span>
+<!--                      <span>{{ 90 }}%</span>-->
                   </div>
-                  <div class="progress-bar">
-                     <div
-                      class="progress-fill"
-                      :class="{ 'complete': 90 === 100 }"
-                      :style="{ width: 90 + '%' }" >
-                    </div>
-                </div>
+<!--                  <div class="progress-bar">-->
+<!--                     <div-->
+<!--                      class="progress-fill"-->
+<!--                      :class="{ 'complete': 90 === 100 }"-->
+<!--                      :style="{ width: 90 + '%' }" >-->
+<!--                    </div>-->
+<!--                </div>-->
 
 
                 </div>
