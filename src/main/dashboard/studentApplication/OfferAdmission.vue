@@ -636,6 +636,7 @@ watch (
               </thead>
               <tbody>
                 <tr style="text-transform: capitalize;" v-for="(student, index) in interviewStudentListInfo.students" :key="index">
+                  <td>{{index+1}}</td>
                   <td>
                     <input
                       v-if="student.status !== 'ADMITTED'"

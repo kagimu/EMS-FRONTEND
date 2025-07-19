@@ -146,7 +146,7 @@ const markDone = () => {
             v-model="search"
             @input="filterItems"
             type="text"
-            placeholder="Search"
+            placeholder="Search ..."
             class="form-control form-select-sm shadow-none">
            <!-- <span class="p-0 ml-2" @click="markDone" style="color: red;cursor: pointer; border: 1px solid red; border-radius: 8px; border-color: red;width: 15px; height: 15px; text-align: center;padding: 0px;"><i class="bi bi-x " ></i></span> -->
      
@@ -165,6 +165,7 @@ const markDone = () => {
                 class="form-check-input shadow-none"
                 type="checkbox"
                 :value="item?.value"
+                style="height: 17px;width: 17px"
                 :id="'item-'+(idx+1)">
             <label
                 class="form-check-label cursor-pointer capitalize ml-3 text-sm text-gray-600 whitespace-nowrap overflow-hidden text-ellipsis"

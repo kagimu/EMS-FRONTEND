@@ -7,13 +7,13 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useStudyModeStore} from "@/main/settings/mode-of-study/store/studyMode.js";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
 import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
+import {useSosStore} from  "@/main/settings/sosinfo/store/sos.js";
 
 const levelStore = useLevelStore()
 const modeStudyStore = useStudyModeStore()
 const modeOfSchoolData = ref([])
 const classStore = useClassesStore()
 const levelList = ref([])
-
 const buttonLoader = ref(false)
 let errorMessage = ref(null)
 const emit = defineEmits()
@@ -28,8 +28,10 @@ const campusStore = useCampusStore()
 const applicationId = ref(null)
 const curriculumList = ref([])
 const student_number = ref(null)
-
 const today = new Date().toISOString().split('T')[0]
+const sosInfoList = ref( [])
+
+const sosInfo= useSosStore()
 
 
 const form = reactive({
@@ -54,7 +56,7 @@ const form = reactive({
 
 onMounted(() => {
       schoolStore.fetchSchools(entity_number)
-
+      sosInfo.fetchSosInfo()
       // getModeOfStudyInfo()
     }
 )
@@ -307,8 +309,15 @@ watch(
     }
 )
 
-
-  
+watch(
+    () => sosInfo.sosInfoResponse,
+    async (data) => {
+      if(data){
+        sosInfoList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 </script>
 
@@ -342,10 +351,37 @@ watch(
 
         <div class="row">
           <div class="col-6">
+<!--            <div class="mb-2">-->
+<!--              <label class="text-sm"><small>Reason to enroll </small> </label>-->
+<!--              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.reason_for_choosing_school" class="form-control form-control-sm">-->
+<!--            </div>-->
+
             <div class="mb-2">
-              <label class="text-sm"><small>Reason to enroll </small> </label>
-              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.reason_for_choosing_school" class="form-control form-control-sm">
+              <label class="text-sm"><small>Reason to enroll</small></label>
+              <input
+                  type="text"
+                  list="enrollReasons"
+                  v-model="form.reason_for_choosing_school"
+                  class="form-control form-control-sm"
+                  placeholder="e.g. Academic Excellence"
+                  style="outline: none 0 !important; box-shadow: none;"
+              >
+
+              <!-- Suggestion List -->
+              <datalist id="enrollReasons">
+                <option value="Academic Excellence"></option>
+                <option value="Discipline and Morals"></option>
+                <option value="Christian Values"></option>
+                <option value="Near Home"></option>
+                <option value="Reputation"></option>
+                <option value="Teacher Quality"></option>
+                <option value="Sports Facilities"></option>
+                <option value="Recommendation from a Friend"></option>
+                <option value="Affordable Fees"></option>
+              </datalist>
             </div>
+
+
           </div>
           <div class="col-6">
             <div class="mb-2">
@@ -354,10 +390,13 @@ watch(
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="form.source_of_school_info">
-                <option value="News paper" >News paper</option>
-                <option value="Old parent">Old parent</option>
-                <option value="Television">Television</option>
-                <option value="Internet">Internet</option>
+                <option v-for="(sos, index) in sosInfoList" :key="index" :value="sos.number">
+                  {{ sos.name }}
+                </option>
+<!--                <option value="News paper" >News paper</option>-->
+<!--                <option value="Old parent">Old parent</option>-->
+<!--                <option value="Television">Television</option>-->
+<!--                <option value="Internet">Internet</option>-->
               </select>
             </div>
           </div>
@@ -494,8 +533,8 @@ watch(
             <select class="form-control form-control-sm"
              v-model="form.gender" style="outline: none 0 !important; box-shadow: none;">
               <option value="" disabled>-Select Gender-</option>
-              <option value="Male">Male</option>
-              <option value="Female" >Female</option>
+              <option value="male">Male</option>
+              <option value="female" >Female</option>
             </select>
             </div>
 

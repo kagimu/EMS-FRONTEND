@@ -57,7 +57,9 @@ const expandConceptUi = () => {
   showExpandConceptModal.value = true
 }
 
-
+const closeConcept = ()=> {
+  conceptDialog.value = false
+}
 
 
 </script>
@@ -70,7 +72,7 @@ const expandConceptUi = () => {
 
 
     <AppModal :title="conceptEditMode ? 'Edit' : 'Add'" v-model="conceptDialog" lg>
-      <new-concept></new-concept>
+      <new-concept @closeDialog="closeConcept"></new-concept>
     </AppModal>
 
 

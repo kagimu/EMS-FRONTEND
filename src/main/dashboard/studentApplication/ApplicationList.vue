@@ -752,9 +752,10 @@ watch(
                  class="table table-striped"
                  style="font-size: 13px !important;"
                  >
+<!--                {{applicationInfoList}}-->
                  <thead>
                     <tr>
-<!--                      <th>#</th>-->
+                      <th>#</th>
                        <th>APN</th>
                        <th>Student</th>
                        <th>Gender</th>
@@ -766,7 +767,7 @@ watch(
                  </thead>
                  <tbody>
                     <tr v-for="(appList, index) in applicationInfoList" :key="index">
-<!--                      <td>{{ appList.key }}</td>-->
+                      <td>{{ appList.key }}</td>
                        <td>{{ appList.Student.apn }}</td>
                        <td style="text-transform: capitalize;">{{ appList.Student.surname+ " "+ appList.Student.second_name+ " "+ appList.Student.other_name  }} </td>
                        <td>{{ appList.Student.gender }}</td>

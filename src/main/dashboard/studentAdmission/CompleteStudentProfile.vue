@@ -39,6 +39,10 @@ const nextPage= (data) => {
   }
 }
 
+const closeCompleteDialog = () => {
+  emit("closeDialog")
+}
+
 </script>
 <template>
 <!--  {{studentNumber}}-->
@@ -103,7 +107,9 @@ const nextPage= (data) => {
                       <div v-show="step === 3">
                         <emergency-information
                             :studentNumber="studentNo"
-                            v-on:next="nextPage">
+                            v-on:next="nextPage"
+                            @closeDialog="closeCompleteDialog"
+                        >
 
                         </emergency-information>
                       </div>

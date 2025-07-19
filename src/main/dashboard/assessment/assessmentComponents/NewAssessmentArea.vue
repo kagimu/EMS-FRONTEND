@@ -35,6 +35,8 @@ let  curriculumNumber = routerData.currentRoute.value.query.id
 
 const props = defineProps({
   closeAreaDialog: Function,
+  curriculum_class_number:String,
+  levelNum:String
 })
 
 
@@ -54,8 +56,20 @@ const emit = defineEmits(["closeDialog"]);
   async () => {
     await levelStore.fetchCurriculumLevels(curriculumNumber)
     await schoolStore.fetchSchools()
+    getAssessmentAreaDetails()
   } )
 
+const getAssessmentAreaDetails = () => {
+  if(props.levelNum){
+    level.value = props.levelNum
+  }
+  fetchClassList()
+
+  if(props.curriculum_class_number){
+    form.curriculum_class_number = props.curriculum_class_number
+  }
+  fetchSubject(props.curriculum_class_number)
+}
 
 
 const checkedAssessmentAreaInfo = () => {
@@ -86,7 +100,13 @@ const subject_n = ref(null)
 const fetchSubject = (a) =>{
 
   //fetch checked assessment area info
-  checkedAssessmentAreaInfo()
+// alert(form.curriculum_class_number)
+
+  if(form.curriculum_class_number != "") {
+    checkedAssessmentAreaInfo()
+  }
+
+
 
   subject_n.value = a
   classStore.fetchCurriculumClassesByID(subject_n.value )
@@ -226,6 +246,7 @@ watch(
 
 <template>
 <div>
+<!--  {{curriculum_class_number}}-&#45;&#45;{{levelNum}}-->
     <form @submit.prevent="addAssessmentArea">
            
            <div class="mb-2">
@@ -262,8 +283,8 @@ watch(
           <li class="list-group-item" v-for="(subject_numbers, index) in subjectList">
             <input
                 v-model="form.subjects"
-                style="outline: none 0 !important; box-shadow: none;"
-                class="form-check-input me-1" type="checkbox" :value="subject_numbers.number" :id="index">
+                style="outline: none 0 !important; box-shadow: none; width:17px; height:17px"
+                class="form-check-input me-2 mr-2" type="checkbox" :value="subject_numbers.number" :id="index">
             <label class="form-check-label cursor-pointer" :for="index">{{subject_numbers.name}}</label>
           </li>
           </ul>
@@ -298,7 +319,7 @@ watch(
              <div class="row">
              <div class="mt-4 col-lg-6">
                <button  @click="$emit('closeDialog')" style="float: left" type="button" class="btn btn-danger btn-sm
-                 mb-2 mr-4"><i class="bi bi-warning"></i>&nbsp;<small>cancel</small>
+                 mb-2 mr-4"><i class="bi bi-warning"></i>&nbsp;<small>close</small>
                  </button>
              </div>
              <div class="mt-4 col-lg-6">

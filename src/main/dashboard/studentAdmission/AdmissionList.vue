@@ -446,7 +446,9 @@ watch(
 
    const closeCompleteDialog = () => {
      showCompleteModal.value = false
+     doFetchAdmission()
    }
+
 
 </script>
 <template>
@@ -640,7 +642,7 @@ watch(
                            >
                            <thead >
                               <tr>
-<!--                                 <th>#</th>-->
+                                 <th>#</th>
                                  <th>ADN</th>
                                  <th>Student</th>
                                  <th>Campus</th>
@@ -653,9 +655,9 @@ watch(
                            </thead>
                            <tbody>
                               <tr v-for="(adm , index) in admissionList" :key="index">
-<!--                                 <td>-->
-<!--                                    {{adm.key}}-->
-<!--                                 </td>-->
+                                 <td>
+                                    {{adm.key}}
+                                 </td>
                                  <td>
                                     {{adm.student.adn}}
                                  </td>
@@ -703,11 +705,20 @@ watch(
                                            <small class="font-normal flex text-xs">Complete Profile <i class="bi bi-person ml-1"></i></small>
                                          </button>
 
-                                         <button  v-if="adm.status !== 'Enrolled' && adm.profile_completed === 'YES' " @click="showModal(adm.student.number,adm.admission_number,adm)"
+                                         <span v-if="adm.status !== 'Enrolled' && adm.profile_completed === 'YES' ">
+                                         <button  @click="showModal(adm.student.number,adm.admission_number,adm)"
                                                   type="button" class="btn btn-sm btn-primary mb-1"
                                                   style="color: white;">
                                            <small class="font-normal flex">Enrol <i class="bi bi-box-arrow-in-right ml-1"></i></small>
                                          </button>
+
+                                         <button
+                                             @click="showProfileModal(adm.student.number,adm.admission_number,adm)"
+                                             type="button" class="btn btn-sm btn-secondary"
+                                         >
+                                           <small class="font-normal flex text-xs"> <i class="bi bi-pencil mr-1"></i> edit profile</small>
+                                         </button>
+                                           </span>
 
 
 

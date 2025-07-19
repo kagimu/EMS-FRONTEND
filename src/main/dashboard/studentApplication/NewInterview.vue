@@ -209,14 +209,24 @@ const checked = ref(false)
 //       }
 //     }
 // )
+
+ const classNumb = ref(null)
+
 watch(
     () => classStore.classLevelInfoResponse,
     async (data) => {
       if(data){
         classList.value = data.data
+
+        if(props.interviewListData) {
+          const classObj = classList.value.flatMap(level => level.classes).find(cls => cls.number === props.interviewListData.campus_class_number);
+          classNumb.value = classObj ? classObj.class_number : null;
+          formData.class_number =  classNumb.value
+          doFetchAssessmentMetrics(classNumb.value)
+        }
+
       }
-    },
-    {deep:true}
+    }
 )
 
 
@@ -353,7 +363,8 @@ watch (
  </script>
 
 <template>
-  <!-- {{ interviewListData }} -->
+<!--   {{ interviewListData }}-->
+<!--  {{classNumb}}-->
     <div>
        <form @submit.prevent="createInterview">
 
@@ -414,6 +425,8 @@ watch (
          
         <div class="mb-2">
             <label class="text-sm"><small>Class</small></label>
+<!--          {{classList}}-->
+<!--          {{formData.class_number}}-->
           <select
             style="box-shadow: none;"
             class="form-select form-select-sm" required

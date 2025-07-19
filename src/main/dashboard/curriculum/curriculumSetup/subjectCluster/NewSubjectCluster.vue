@@ -38,7 +38,13 @@
       </div>
 
 
-      <div class="flex justify-content-end" style="width: 100%;">
+      <div class="flex justify-content-between" style="width: 100%;">
+        <button
+            type="button"
+            class="btn btn-danger border-0"
+            @click="closeD">
+          Close
+        </button>
         <button
             type="submit"
             class="btn btn-primary border-0">
@@ -69,7 +75,7 @@ const name = ref(null)
 const loader = ref(false)
 
 const routerData = useRouter()
-
+const emit = defineEmits(["closeDialog"])
 const subjectClusterStore = useSubjectClusterStore()
 const  notificationStore  = useNotificationStore()
 const learningAreaList = ref([])
@@ -165,6 +171,9 @@ watch(
     {deep:true}
 )
 
+const  closeD = () => {
+  emit("closeDialog")
+}
 
 </script>
 

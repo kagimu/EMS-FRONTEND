@@ -298,6 +298,9 @@ watch(
     {deep:true}
 )
 
+const closeSubTopic =()=> {
+  subtopicDialog.value = false
+}
 
 </script>
 <template>
@@ -305,7 +308,7 @@ watch(
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="subTopicEditMode ? 'Edit Sub Topic' : 'Add Sub Topic'" v-model="subtopicDialog" lg>
-      <new-sub-topic></new-sub-topic>
+      <new-sub-topic @closeDialog="closeSubTopic"></new-sub-topic>
     </AppModal>
 
 

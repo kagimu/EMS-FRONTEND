@@ -45,6 +45,7 @@ const strand_number = ref("")
 const topic_number = ref("")
 const conceptNumber = ref("")
 let  curriculumNumber = routerData.currentRoute.value.query.id
+const emit = defineEmits(['closeDialog'])
 
 
 const props = defineProps({
@@ -257,6 +258,9 @@ watch(
     {deep:true}
 )
 
+const closeD = () => {
+  emit("closeDialog")
+}
 </script>
 
 <template>
@@ -370,7 +374,13 @@ watch(
 
 
 
-      <div class="flex justify-content-end" style="width: 100%;">
+      <div class="flex justify-content-between" style="width: 100%;">
+        <button
+            type="button"
+            class="btn btn-danger mb-2 btn-sm border-0"
+            @click="closeD">
+          Close
+        </button>
         <button
             type="submit"
             class="btn btn-primary border-0">

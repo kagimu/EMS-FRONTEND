@@ -67,7 +67,13 @@
 
 
 
-      <div class="flex justify-content-end" style="width: 100%;">
+      <div class="flex justify-content-between" style="width: 100%;">
+        <button
+            type="button"
+            class="btn btn-danger btn-sm mb-2 border-0"
+            @click="closeD">
+          Close
+        </button>
         <button
             type="submit"
             class="btn btn-primary border-0">
@@ -113,6 +119,7 @@ const learning_area_number = ref("")
 const subject_cluster_number = ref("")
 const strandNumber = ref(null)
 let  curriculumNumber = routerData.currentRoute.value.query.id
+const emit = defineEmits(['closeDialog'])
 
 
 const form = reactive({
@@ -241,6 +248,9 @@ watch(
     {deep:true}
 )
 
+const closeD = () => {
+  emit("closeDialog")
+}
 </script>
 
 <style scoped>
