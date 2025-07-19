@@ -60,7 +60,11 @@ watch(
   () => billStore.newBillableResponse,
   async (data) => {
     if (data) {
-      billStore.fetchBillable(data);
+      let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+      if(defaultSchoolNo || school_number.value){
+        school_number.value = defaultSchoolNo
+        doFetchBillables(school_number.value)
+      }
     }
   },
   { deep: true }

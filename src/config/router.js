@@ -90,6 +90,8 @@ import ManageStudentAttendance from '@/main/dashboard/attendance/ManageStudentAt
 import ManageStaffAttendance from '@/main/dashboard/attendance/ManageStaffAttendance.vue';
 import ManageAttendanceByTr  from '@/main/teacher/ManageAttendanceByTr.vue';
 import ManageStudentAttendanceTr from '@/main/teacher/students/ManageStudentAttendanceTr.vue';
+import ClientEnrollments from "@/main/application/applicationComponents/ClientEnrollments.vue";
+import ClientAdmissions from "@/main/application/applicationComponents/ClientAdmissions.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -607,11 +609,12 @@ const router = createRouter({
             children:[
                 {path: 'user-dash', component: UserDash, name:'user-dash'},
                 {path: 'application', component: Application, name:'application'},
-                {path: 'start', component: Application, name:'application'},
-                {path: 'admission', component: Application, name:'admission_history'},
-                {path: 'applications', component: ClientApplications, name:'application_history'},
+                // {path: 'start', component: Application, name:'application'},
+                {path: 'admission_history', component: ClientAdmissions, name:'admission_history'},
+                {path: 'application_history', component: ClientApplications, name:'application_history'},
                 {path: 'application-success', component: ApplicationSuccessPage, name: "application-success"},
                 {path: 'student-profile', component: StudentProfile, name:'student-profile'},
+                {path:'client-enrollments', component: ClientEnrollments, name: "client-enrollments"},
                 {path:'client-invoices', component: ClientInvoices, name: "client-invoices"},
             ]
         },

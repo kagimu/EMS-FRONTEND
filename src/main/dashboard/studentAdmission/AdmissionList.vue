@@ -707,14 +707,14 @@ watch(
 
                                          <span v-if="adm.status !== 'Enrolled' && adm.profile_completed === 'YES' ">
                                          <button  @click="showModal(adm.student.number,adm.admission_number,adm)"
-                                                  type="button" class="btn btn-sm btn-primary mb-1"
+                                                  type="button" class="btn btn-sm btn-primary mb-1 mr-2"
                                                   style="color: white;">
                                            <small class="font-normal flex">Enrol <i class="bi bi-box-arrow-in-right ml-1"></i></small>
                                          </button>
 
                                          <button
                                              @click="showProfileModal(adm.student.number,adm.admission_number,adm)"
-                                             type="button" class="btn btn-sm btn-secondary"
+                                             type="button" class="btn btn-sm btn-secondary mb-1"
                                          >
                                            <small class="font-normal flex text-xs"> <i class="bi bi-pencil mr-1"></i> edit profile</small>
                                          </button>

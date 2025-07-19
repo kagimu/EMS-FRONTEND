@@ -260,7 +260,6 @@ const updateDefaultFilters = () => {
 
   }
 
-
   function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
   if (scrollTop + clientHeight >= scrollHeight) {
 

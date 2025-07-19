@@ -35,6 +35,7 @@ const form = reactive({
 
 const addClass = () =>{
   loader.value = true
+  form.code = parseInt(form.code)
 
   if(classNumber.value){
     form.class_number = classNumber.value

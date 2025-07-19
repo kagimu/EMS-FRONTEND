@@ -89,11 +89,16 @@ export const useBillStore = defineStore("billStore", () => {
     let campus_number = data.campus_number ?? ""
    return await api.get("main/invoices/billable/determine?student_number="+student_number+"&study_period_number="+study_period_number+"&class_number="+class_number+"&mode_of_study_number="+mode_of_study_number+"&curriculum_number="+curriculum_number+"&campus_number="+campus_number+"&campus_curriculum_number="+campus_curriculum_number)
        .then((response) => {
+           // alert(response)
            billableDeterminateResponse.value = response.data
        })
        .catch((error) => {
-           if(error && error.response){
-               errorMessage.value = error.response.data
+           if (error.response.message) {
+
+               errorMessage.value = error.response.data.message;
+           } else {
+               console.error("Unexpected error format", error);
+               errorMessage.value = "An unknown error occurred.";
            }
        })
 }
