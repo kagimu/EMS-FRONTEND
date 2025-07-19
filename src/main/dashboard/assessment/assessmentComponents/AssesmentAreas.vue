@@ -223,14 +223,17 @@ const openEditModel = (num,name) =>{
     >
       <thead>
         <tr>
-          <!-- <th>Interview</th> -->
+           <th>#</th>
+           <th>Curriculum</th>
           <th>Subject</th>
           <th>#</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(assessmentData, index) in assessmentListData " :key="index">
-          <td>{{ assessmentData.name}}</td>
+          <td>{{(index+1)}}</td>
+          <td>{{ assessmentData?.curriculum_name}}</td>
+          <td>{{ assessmentData?.name}}</td>
           <td>
           <button  type="button" @click="openEditModel(assessmentData.number,assessmentData.name)">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
