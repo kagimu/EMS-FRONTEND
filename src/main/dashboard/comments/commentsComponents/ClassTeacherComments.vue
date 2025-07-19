@@ -7,6 +7,7 @@ import AppModal from "@/components/AppModal.vue";
 import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.js";
 import NewClassTeacherComment from "@/main/dashboard/comments/commentsComponents/NewClassTeacherComment.vue";
 
+
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 const confirmationRef = ref(null);
 import printJS from "print-js";
@@ -22,7 +23,7 @@ const editMode = ref(false)
 
 onMounted(
     async () => {
-      await teacherCommentStore.fetchTeacherComments()
+      await  teacherCommentStore.fetchClassTeacherComment()
     }
 )
 
@@ -52,7 +53,7 @@ const deleteThisData = async (id,name) => {
 }
 
 watch(
-    () => teacherCommentStore.newTeacherCommentResponse,
+    () => teacherCommentStore.newClassTeacherCommentResponse,
     async (data) => {
       if(data){
         showCommentModal.value = false
@@ -62,10 +63,10 @@ watch(
 )
 
 watch(
-    () => teacherCommentStore.teacherCommentResponse,
+    () => teacherCommentStore.classTeacherCommentResponse,
     async (data) => {
       if(data){
-        commentsList.value = data
+        commentsList.value = data.data
       }
     }
 )
@@ -171,11 +172,12 @@ const printComments = () => {
         <!--        </div>-->
 
         <div id="teacher-comments" style="margin: 0px; font-family: Arial, sans-serif;">
+<!--          {{commentsList}}-->
           <table class="table table-hover caption-top mt-5 table-sm text-sm"
                  style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #ccc;">
             <thead>
             <tr style="background-color: #f2f2f2; border-bottom: 2px solid #ccc;">
-              <th style="padding: 8px; text-align: left; border: 0px solid #ccc;">(Min - Max) Aggregate</th>
+              <th>#</th>
               <th style="padding: 8px; text-align: left; border: 0px solid #ccc;">Comment</th>
               <th style="padding: 8px; text-align: left; border: 0px solid #ccc;">Class</th>
               <th style="padding: 8px; text-align: left; border: 0px solid #ccc;">Academic Year</th>
@@ -186,7 +188,7 @@ const printComments = () => {
             <tbody>
             <tr v-for="(com, index) in commentsList" :key="index"
                 style="border-bottom: 1px solid #e0e0e0;">
-              <td style="padding: 8px; border: 0px solid #ccc;">{{ "(" + com.min_aggregate + " - " + com.max_aggregate + ")" }}</td>
+              <td style="padding: 8px; border: 0px solid #ccc;">{{index+1}}</td>
               <td style="padding: 8px; border: 0px solid #ccc;">{{ com.comment }}</td>
               <td style="padding: 8px; border: 0px solid #ccc;">{{ com.class }}</td>
               <td style="padding: 8px; border: 0px solid #ccc;">{{ com.academic_year }}</td>

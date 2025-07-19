@@ -82,11 +82,11 @@ const settingsList = ref([
     id:"promotion-settings",
     action:"view_promotion_settings"
   },
-  {
-    name:"Import Students",
-    id:"import-students",
-    action:"view_promotion_settings"
-  },
+  // {
+  //   name:"Import Students",
+  //   id:"import-students",
+  //   action:"view_promotion_settings"
+  // },
  {
     name:"Admission Letter",
     id:"admission-letter",

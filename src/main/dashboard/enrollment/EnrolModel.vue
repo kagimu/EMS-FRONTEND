@@ -442,17 +442,36 @@ watch(
     },
     {deep: true}
 )
+
+
 watch(
     () => billStore.billableDeterminateResponse,
     async (data) => {
       if(data){
-        let draftData = data.data 
-        billableData.value = draftData.billable_items	
-        form.billable_number = draftData.billable_number
+        if(data){
+          let draftData = data.data
+          billableData.value = draftData.billable_items
+          form.billable_number = draftData.billable_number
+        }else {
+          billableData.value = []
+        }
+
+
       }
     },
     {deep:true}
 )
+
+   watch(
+       () => billStore.errorMessage,
+       async (data) => {
+         if (data) {
+           notificationStore.errorToast("Error", data.message)
+           billableData.value = null
+         }
+       },
+       {deep: true}
+   )
 
 </script>
 <template>
@@ -701,7 +720,7 @@ watch(
                      </table>
                   </div>
             <!-- Payment Section (Styled as a Card) -->
-             <!-- {{ billableData.length }} -->
+<!--              {{ billableData }}-->
       <div class="card mb-2 mt-4 shadow-sm" v-if="billableData.length != 0">
          <div class="card-header bg-primary text-white p-2">
             <h6 class="m-0"><i class="bi bi-cash"></i>&nbsp;Payment Details</h6>
@@ -764,6 +783,6 @@ watch(
    -webkit-box-shadow: none;
    }
    .text-sm {
-      font-size: 13px I !important;
+      font-size: 13px !important;
    }
 </style>

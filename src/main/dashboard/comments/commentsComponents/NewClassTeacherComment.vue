@@ -1,344 +1,463 @@
 <script setup>
 
-import {onMounted, ref, watch, reactive} from "vue";
+import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
+import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
-import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.js";
-import useCommonsStore from "@/composables/useCommons.js";
+import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
-import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
-import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
-import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
 import {useRouter} from "vue-router";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
+import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import {useTeacherCommentStore} from "../../manageLevel/report_setup/comments/store/teacherComment.js";
+// import { max } from "moment";
 
-
-const notificationStore = useNotificationStore()
-const campusStore = useCampusStore()
-const teacherCommentStore = useTeacherCommentStore()
-const commons = useCommonsStore()
+const schoolStore = useSchoolStore()
+const notificationStore  = useNotificationStore()
 const routerData = useRouter()
-const reportSetupStore = useReportSetupStore()
-const studyPeriodStore = useStudyPeriodStore()
-const classStore = useClassesStore()
-const academicYearStore = useAcademicYearStore()
-const campus_curriculum_number = routerData.currentRoute.value.query.crr
-const schoolN = routerData.currentRoute.value.query.sch
-const campusNumber = routerData.currentRoute.value.query.id
-const reportSettingsList = ref(null)
-const campusLevelList = ref([])
-const academicYearList = ref([])
-const studyPeriodList = ref([])
-const campusClassList = ref([])
+const campusStore = useCampusStore()
 
+const levelStore = useLevelStore()
+const classStore = useClassesStore()
+const studyPeriodStore = useStudyPeriodStore()
+const academicYearStore = useAcademicYearStore()
+const reportSetupStore = useReportSetupStore()
+const assessmentStore= useAssessmentStore()
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
+let  curriculumNumberParent = routerData.currentRoute.value.query.cr
+const assessmentListData = ref([])
+const metricListData = ref(null)
+const assessmentMetricNumber = ref("")
+const studentsList = ref([])
+const campusCurriculumDataInfo = ref(null)
 const campus_level_number = ref("")
 const academic_year_number = ref("")
 const study_period_number = ref("")
-const campus_class_number = ref("")
-const commentsList = ref(null)
-const loader = ref(false)
-const isUpdate = ref(false)
+const class_number = ref("")
+const assessment_area_number = ref("")
+const campusLevelList = ref(null)
+const academicYearList = ref(null)
+const studyPeriodList = ref([])
+const campusClassList = ref(null)
+const schoolN = routerData.currentRoute.value.query.sch
+const campusNumber = routerData.currentRoute.value.query.id
+const schoolList = ref([])
+const school_number = ref("")
+const campus_number = ref("")
+const campusList = ref([])
+const curriculumList = ref([])
+const curriculumNumber = ref("")
+const buttonLoader = ref(false)
+const teacherCommentStore = useTeacherCommentStore()
+const date = ref(null)
+const comment = ref(null)
 
-const props = defineProps({
-  headTeacherCommentList: {}
-})
-
-const form = reactive({
-  min_aggregate: 0,
-  max_aggregate: 0,
-  comment: null,
-  report_setting_number: ""
-})
 
 onMounted(
     async () => {
-      await teacherCommentStore.fetchTeacherComments()
-      await doFetchReportSettings()
+      schoolStore.fetchSchools()
       fetchCampusLevel()
-      getCommentInfo()
     }
 )
 
-const getCommentInfo = () => {
-  if (props.headTeacherCommentList) {
-    form.min_aggregate = props.headTeacherCommentList.min_aggregate
-    form.max_aggregate = props.headTeacherCommentList.max_aggregate
-    form.comment = props.headTeacherCommentList.comment
+const maxScore = ref(null)
 
-    isUpdate.value = true
+const fetchStudents = (assessmentMetricNumber) => {
+  if(assessmentMetricNumber){
+    let result = metricListData.value.find((item) => item.number === assessmentMetricNumber)
+    maxScore.value = result.max_score
+
+    reportSetupStore.fetchStudentByAssessmentMetric(assessmentMetricNumber)
   }
 }
 
-watch(
-    () => props.headTeacherCommentList,
-    async (data) => {
-      if (data) {
-        getCommentInfo()
-      }
-    }
-)
-
-const addComments = () => {
-  loader.value = true
- alert(JSON.stringify(form))
-  if (props.headTeacherCommentList) {
-    let formData = {
-      min_aggregate: parseInt(form.min_aggregate),
-      max_aggregate: parseInt(form.max_aggregate),
-      comment: form.comment,
-      report_setting_number: props.headTeacherCommentList.report_setting_number,
-      number: parseInt(props.headTeacherCommentList.id)
-    }
-    // teacherCommentStore.newTeacherComment(formData)
-  } else {
-    let formData = {
-      min_aggregate: parseInt(form.min_aggregate),
-      max_aggregate: parseInt(form.max_aggregate),
-      comment: form.comment,
-      report_setting_number: form.report_setting_number
-    }
-    // teacherCommentStore.newTeacherComment(formData)
-  }
-}
-
-const doFetchReportSettings = async () => {
-  let data = {
-    academic_year_number: academic_year_number.value,
-    study_period_number: study_period_number.value,
-    campus_number: campusNumber,
-    class_number: campus_class_number.value
-  }
-  reportSetupStore.fetchReportSettings(data)
-}
 
 const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
 }
 
 
-const fetchAcademicYear = (campus_level_number) => {
+const fetchClassesByLevel = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
-  // academicYearStore.fetchCampusClassByLevel(campus_level_number)
 
   let data = {
-    school_number: schoolN,
-    campus_level_number: campus_level_number
+    school_number:schoolN,
+    campus_level_number:campus_level_number
   }
   campusStore.fetchClassesBySchool(data)
 }
 
 
-// const fetchStudyPeriod = (academic_num) =>{
-//   studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
-//   doFetchReportSettings()
-// }
-
-
 watch(
-    () => classStore.campusLevelResponse,
+    () => schoolStore.schoolsResponse,
     async (data) => {
       if (data) {
-        campusLevelList.value = data.data
+        schoolList.value = data.data
       }
-    }
-)
-
-watch(
-    () => academicYearStore.academicYearByLevelResponse,
-    async (data) => {
-      if (data) {
-        academicYearList.value = data.data
-      }
-    }
+    },
+    {deep: true}
 )
 
 
 watch(
-    () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+    () => campusStore.schoolClassesResponse,
     async (data) => {
-      if (data) {
+      if(data){
+        campusClassList.value = data.data
+      }
+    }
+)
+
+const fetchAssessmentAreaAndStudyPeriod = (classNumber) =>{
+
+
+  let data = {
+    curriculum_number:curriculumNumberParent,
+    class_number:classNumber
+  }
+  assessmentStore.fetchAssessmentArea(data)
+
+
+  studyPeriodStore.fetchStudyPeriod(
+      {
+        campus_curriculum_number:campus_curriculum_number,
+        academic_year_number:academic_year_number.value,
+        class_number:classNumber,
+        school_number:schoolN
+      }
+  )
+  fetchStudents()
+}
+
+const fetchAssessmentMetricbyStudy = (studyP) =>{
+  let data = {
+    study_period_number:studyP,
+    assessment_area_number:assessment_area_number.value,
+    class_number:class_number.value,
+    campus_number:campusNumber
+
+  }
+  assessmentStore.fetchAssessmentMetrics(data)
+  fetchStudents()
+
+
+
+}
+
+
+const fetchAssessmentMetricsByArea = (assessmentArrea) =>{
+
+  let data = {
+    study_period_number:study_period_number.value,
+    assessment_area_number:assessmentArrea,
+    class_number:class_number.value,
+    campus_number:campusNumber
+
+  }
+  assessmentStore.fetchAssessmentMetrics(data)
+
+
+}
+
+
+
+const fetchCampuses = (school_number) => {
+  campusStore.fetchCampuses(school_number)
+}
+
+
+const fetchCurriculum = (campus_level_number) => {
+  levelStore.fetchCampusCurriculum(campus_level_number)
+}
+
+watch(
+    () => studyPeriodStore.studyPeriodResponse,
+    async (data) => {
+      if(data){
         studyPeriodList.value = data.data
       }
     }
 )
 
 watch(
-    () => campusStore.schoolClassesResponse,
+    () => levelStore.campusCurriculumResponse,
     async (data) => {
-      if (data) {
-        campusClassList.value = data.data
-      }
-    }
-)
+      if(data){
+        campusCurriculumDataInfo.value = data.data
 
-// watch(
-//     () => academicYearStore.campusClassByLevelResponse,
-//     async (data) => {
-//       if(data){
-//         campusClassList.value = data.data
-//       }
-//     }
-// )
-
-
-watch(
-    () => reportSetupStore.reportSettingsResponse,
-    async (data) => {
-      if (data) {
-        showReportSettingsModal.value = false
-        await doFetchReportSettings()
-        notificationStore.successToast("Success", data.message)
       }
     }
 )
 
 watch(
-    () => reportSetupStore.reportSettingsListResponse,
+    () => classStore.campusLevelResponse,
     async (data) => {
-      if (data) {
-        reportSettingsList.value = data.data
+      if(data){
+        campusLevelList.value = data.data
       }
     }
 )
 
 
+
 watch(
-    () => teacherCommentStore.newTeacherCommentResponse,
+    () => assessmentStore.assessmentMetricsResponse,
     async (data) => {
-      if (data) {
-        notificationStore.successToast("Success", data.message)
-        loader.value = false
+      if(data){
+        metricListData.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => reportSetupStore.studentsByAssessmentMetricResponse,
+    async (data) => {
+      if(data){
+        studentsList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => academicYearStore.academicYearByLevelResponse,
+    async (data) => {
+      if(data){
+        academicYearList.value = data.data
+      }
+    }
+)
+
+
+const onlyNumberValidator = (event) => {
+  const validChars = /^[0-9+\-*/.\s]+$/;
+  if (!validChars.test(event.key)) return event.preventDefault();
+}
+
+const checkIfScore = (score) => {
+  if(score > maxScore.value){
+    notificationStore.errorToast("Error","Score cannot be greater than the maximum score (" + maxScore.value+")")
+    return
+  }
+}
+
+const addMarks = (score, comment, number, index) => {
+  let scoreData = ""
+  if(score){
+    scoreData = returnComputedData(score)
+    studentsList.value[index].score = scoreData
+  }
+  if(score){
+    let data = {
+      student_number:number,
+      assessment_metric_number:assessmentMetricNumber.value,
+      actual_score:parseInt(String(scoreData).replace(/,/g, "")),
+      comment:comment
+    }
+    reportSetupStore.addStudentMarks(data)
+  }
+
+}
+
+const returnComputedData = (data) =>{
+  let value = String(data).replace(/,/g, "");
+  try {
+    // Use Function constructor to safely evaluate the expression
+    value = new Function(`return ${value}`)();
+    return value < 0 ? 0 : value > 100 ? value : value;
+  } catch (error) {
+    // return "Invalid expression";
+  }
+}
+
+watch(
+    () => assessmentStore.assessmentAreaResponse,
+    async (data) => {
+      if(data){
+        assessmentListData.value = data.data
       }
     }
 )
 
 watch(
-    () => teacherCommentStore.teacherCommentResponse,
+    () => reportSetupStore.studentMarksResponse,
     async (data) => {
-      if (data) {
-        commentsList.value = data.data
+      if(data){
+        notificationStore.successToast("Success",data.message)
       }
-    }
+    },
+    {deep:true}
 )
 
 watch(
-    () => teacherCommentStore.errorMessage,
+    () => reportSetupStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => campusStore.campusListResponse,
     async (data) => {
       if (data) {
-        notificationStore.errorToast("Error", data.message)
+        campusList.value = data.data
       }
     },
     {deep: true}
 )
+
+watch(
+    () => levelStore.campusCurriculumResponse,
+    async (data) => {
+      if(data){
+        curriculumList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+const addNewClassTeacherComment = () => {
+  buttonLoader.value = true
+  let data = {
+    study_period_number:study_period_number.value,
+    campus_class_number:class_number.value,
+    comment:comment.value,
+    date:date.value
+  }
+  teacherCommentStore.newClassTeacherComment(data)
+}
+
+
+watch(
+    () => teacherCommentStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+watch(
+    () => teacherCommentStore.newClassTeacherCommentResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success",data.message)
+      }
+    },
+    {deep:true}
+)
 </script>
 
 <template>
+
   <div>
-    <!-- {{ headTeacherCommentList }} -->
-    <form @submit.prevent="addComments">
 
-      <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
-        {{ errorMessage }}
-      </div>
-
-      <div v-if="!isUpdate" class="row">
-
+    <form @submit.prevent="addNewClassTeacherComment()">
+      <div class="row bg-white mx-auto mt-2">
         <div class="mb-2">
-          <label class="text-sm text-gray-600">Level</label>
+          <label class="text-sm"><small>Level</small></label>
           <select
-              class="form-select form-select-sm shadow-none"
+              style="box-shadow: none;"
+              class="form-select form-select-sm"
               v-model="campus_level_number"
-              @change="fetchAcademicYear(campus_level_number)"
+              @change="fetchClassesByLevel(campus_level_number)"
           >
-            <option disabled value="">--select--</option>
-            <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">
-              {{ list.code + ". " + list.name }}
+            <option disabled value="">--Select Level--</option>
+            <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+          </select>
+        </div>
+
+        <div class="mb-2">
+          <label class="text-sm"><small>Academic Year</small></label>
+          <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm"
+              v-model="academic_year_number"
+          >
+            <option disabled value="">--Select Academic Year--</option>
+            <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
+              {{list.code+". "+list.academic_year_name}}
             </option>
           </select>
         </div>
 
         <div class="mb-2">
-          <label class="text-sm text-gray-600">Class</label>
+          <label class="text-sm"><small>Class</small>
+          </label>
           <select
-              class="form-select form-select-sm shadow-none" required
-              v-model="campus_class_number"
-              @change="doFetchReportSettings()"
+              style="box-shadow: none;"
+              class="form-select form-select-sm" required
+              v-model="class_number"
+              @change="fetchAssessmentAreaAndStudyPeriod(class_number)"
+
           >
-            <option disabled value="">--select--</option>
-            <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">
-              {{ list.name + " [ " + list.abbreviation + " ]" }}
-            </option>
+            <option disabled value="">Select</option>
+            <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.name+" [ "+list.abbreviation+" ]"}}</option>
           </select>
         </div>
+
+        <div class="mb-2">
+          <label class="text-sm"><small>Study Period</small>
+          </label>
+          <select
+              style="box-shadow: none;"
+              class="form-select form-select-sm" required
+              v-model="study_period_number"
+              @change="fetchAssessmentMetricbyStudy(study_period_number)"
+          >
+            <option disabled value="">Select</option>
+            <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
+          </select>
+        </div>
+
 
 
         <div class="mb-2">
-          <label class="text-sm text-gray-600">ReportSetting</label>
-          <select
-              class="form-select form-select-sm shadow-none"
-              v-model="form.report_setting_number"
-          >
-            <option disabled value="">--select--</option>
-            <option v-for="(list, index) in reportSettingsList" :key="index" :value="list.report_setting_number">
-              {{ list.name }}
-            </option>
-          </select>
+          <label class="text-sm"><small> Comment </small></label>
+          <textarea
+              class="form-control form-control-sm"
+              v-model="comment"
+              placeholder="Enter comment here..."
+              rows="3"
+          ></textarea>
         </div>
 
-      </div>
+        <div class="mb-2">
 
-      <div class="row">
-        <div class="col-6">
-          <div class="mb-2">
-            <label class="text-sm text-gray-600">Minimum Aggregate</label>
-            <input
-                @keypress="commons.numbersOnlyValidator($event)"
-                maxlength="10"
-                type="text"
-                style="outline: none 0 !important;
-               box-shadow: none;"
-                v-model="form.min_aggregate"
-                required
-                class="form-control form-select-sm">
-          </div>
+          <label class="text-sm"><small>Comment Date</small></label>
+          <input type="date" class="form-control form-control-sm" v-model="date">
+
         </div>
 
-        <div class="col-6">
-          <div class="mb-2">
-            <label class="text-sm text-gray-600">Maximum Aggregate</label>
-            <input
-                @keypress="commons.numbersOnlyValidator($event)"
-                maxlength="10"
-                type="text"
-                style="outline: none 0 !important;
-               box-shadow: none;"
-                v-model="form.max_aggregate"
-                required
-                class="form-control form-select-sm">
-          </div>
-        </div>
-      </div>
 
-      <div class="mb-2">
-        <label class="text-sm text-gray-600">Comment</label>
-        <textarea
-            class="form-control shadow-none"
-            v-model="form.comment"></textarea>
-      </div>
-
-
-      <div class="flex justify-content-end mt-4" style="width: 100%;">
-        <button
-            type="submit"
-            class="btn btn-primary border-0">
-          Submit
-          <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
-              <span class="visually-hidden">Loading...</span>
+        <div class="flex justify-between" style="width: 100%;">
+          <button
+              type="button"
+              class="btn btn-danger border-0 mr-2"
+              @click="$emit('closeDialog')">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary border-0 btn-sm">
+            <small>Submit <i class="bi bi-box-arrow-in-right"></i></small>
+            <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light"
+                   role="status" v-if="buttonLoader"><span class="visually-hidden">Loading...</span>
             </span>
-        </button>
-      </div>
+          </button>
+        </div>
 
+      </div>
     </form>
   </div>
+
 </template>
 
 <style scoped>
