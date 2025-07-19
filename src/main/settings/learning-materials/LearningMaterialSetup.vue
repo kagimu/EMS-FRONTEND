@@ -39,37 +39,37 @@
         </div>
 
 
+      <div class="flex justify-between">
+        <div>Learning Materials</div>
+        <div class="flex justify-end">
+          <div>
+            <button
+                v-if="can('add_resource','general')"
+                class="btn btn-sm buttonStyle btn-primary mr-2" data-bs-target="#levelModal"
+                data-bs-toggle="modal"
+                type="button" @click="addMaterial">
+              <i class="bi-plus mr-2" style="font-size: 15px;"></i>
+              Add resource
+            </button>
+          </div>
+          <div>
+            <button
+                v-if="can('add_material_sub_category','general')"
+                class="btn btn-sm buttonStyle btn-primary mr-2" data-bs-target="#subTypeModal"
+                data-bs-toggle="modal"
+                type="button" @click="addSubType">
+              <i class="bi-plus mr-2" style="font-size: 15px;"></i>
+              Add sub category
+            </button>
+          </div>
+        </div>
+
+      </div>
+
 
         <div class="row">
 
             <div class="col-12">
-
-                    <div class="row  mt-2">
-                   <div class="col-lg-4">Learning Materials</div>
-                   <div class="col-lg-4"></div>
-                   <div class="col-lg-2">
-                     <button
-                     v-if="can('add_resource','general')" 
-                     class="btn btn-sm buttonStyle btn-primary mr-2" data-bs-target="#levelModal"
-                                          data-bs-toggle="modal"
-                                          type="button" @click="addMaterial">
-                       <i class="bi-plus mr-2" style="font-size: 15px;"></i>
-                       Add resource
-                   </button>
-                   </div>
-                   <div  class="col-lg-2"> 
-                    <button
-                    v-if="can('add_material_sub_category','general')" 
-                     class="btn btn-sm buttonStyle btn-primary mr-2" data-bs-target="#subTypeModal"
-                                         data-bs-toggle="modal"
-                                         type="button" @click="addSubType">
-                       <i class="bi-plus mr-2" style="font-size: 15px;"></i>
-                       Add sub category
-                   </button></div>
-
-                    </div>
-
-
 
                 <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
                     <thead>
