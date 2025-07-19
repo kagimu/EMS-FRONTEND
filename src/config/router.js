@@ -618,24 +618,55 @@ const router = createRouter({
 
         
         {
-            path: '/admin',
+            path: '/teacher',
             component: TeacherDashboard,
             name :"teacher",
             redirect:{ name: 'teacher-dashboard' },
-         
-            meta: {
-                requiresAuth: true,
-            },
+            meta: {requiresAuth: true},
             children:[
-                {path: 'teacher-dashboard', component: HelloTeacher, name:'teacher-dashboard'},
-                {path: 'students', component: Students, name:'students'},
-                {path: 'manage-stream', component: ManageStream, name:'manage-stream'},
-                {path: 'my-classes', component: TeacherClasses, name:'my-classes'},
-                {path: 'manage-subjects', component: Subjects, name:'manage-subjects'},
-                {path: 'manage-scheme-of-work', component: ManageSchemeOfWork, name:'manage-scheme-of-work'},
-                {path: 'manage-assessment', component: ManageAssessment, name:'manage-assessment'},
-                {path: 'manage-scheme-and-sessions', component: ManageSchemeOfWorkAndSessions, name:'manage-scheme-and-sessions'},
-                { path: 'choose-school', component: SelectSchoolDetails, name:'choose-school',},
+                {
+                    path: 'teacher-dashboard',
+                    component: HelloTeacher,
+                    name:'teacher-dashboard'
+                },
+                {
+                    path: 'students',
+                    component: Students,
+                    name:'students'
+                },
+                {
+                    path: 'manage-stream',
+                    component: ManageStream,
+                    name:'manage-stream'
+                },
+                {
+                    path: 'my-classes',
+                    component: TeacherClasses,
+                    name:'my-classes'
+                },
+                {
+                    path: 'manage-subjects',
+                    component: Subjects,
+                    name:'manage-subjects'
+                },
+                {
+                    path: 'manage-scheme-of-work',
+                    component: ManageSchemeOfWork,
+                    name:'manage-scheme-of-work'
+                },
+                {
+                    path: 'manage-assessment',
+                    component: ManageAssessment,
+                    name:'manage-assessment'},
+                {
+                    path: 'manage-scheme-and-sessions',
+                    component: ManageSchemeOfWorkAndSessions,
+                    name:'manage-scheme-and-sessions'
+                },
+                {
+                    path: 'choose-school',
+                    component: SelectSchoolDetails,
+                    name:'choose-school',},
                 
                 {
                     path: 'manage-attendance-tr',
