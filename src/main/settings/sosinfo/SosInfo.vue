@@ -124,6 +124,7 @@ const deleteSosInfo = async (SosInfo) => {
 </script>
 
 <template>
+  <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 <div>
   <!-- source of info bootstrap modal -->
   <div class="modal fade" id="infoModal" tabindex="-1"  aria-labelledby="" aria-hidden="true" :class="{ show: sosInfoDialog }">
@@ -143,7 +144,7 @@ const deleteSosInfo = async (SosInfo) => {
               type="text"
               v-model="form.name"
               required
-              class="form-control form-control-sm"
+              class="form-control form-control-sm shadow-none"
               placeholder="Enter source of info"
           />
         </div>
@@ -159,9 +160,9 @@ const deleteSosInfo = async (SosInfo) => {
     <!-- Right Table Section -->
     <div class="col-lg-8">
       <div class="card shadow-sm border-0 p-3">
-        <h6 class="mb-3">Source of School Information</h6>
+        <h6 class="mb-3 text-gray-600">Source of School Information</h6>
 
-        <table class="table table-hover table-sm align-middle">
+        <table class="table table-hover table-sm align-middle text-sm">
           <thead class="table-light">
           <tr>
             <th>Name</th>
@@ -204,7 +205,7 @@ const deleteSosInfo = async (SosInfo) => {
   </div>
 
 </div>
- <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+
 </template>
 
 
