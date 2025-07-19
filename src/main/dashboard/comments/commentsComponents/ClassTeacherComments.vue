@@ -182,6 +182,7 @@ const printComments = () => {
               <th style="padding: 8px; text-align: left; border: 0px solid #ccc;">Class</th>
               <th style="padding: 8px; text-align: left; border: 0px solid #ccc;">Academic Year</th>
               <th style="padding: 8px; text-align: left; border: 0px solid #ccc;">Study Period</th>
+<!--              <th style="padding: 8px; text-align: left; border: 0px solid #ccc;">Teacher</th>-->
               <th style="padding: 8px; text-align: center; border: 0px solid #ccc;">#</th>
             </tr>
             </thead>
@@ -190,9 +191,10 @@ const printComments = () => {
                 style="border-bottom: 1px solid #e0e0e0;">
               <td style="padding: 8px; border: 0px solid #ccc;">{{index+1}}</td>
               <td style="padding: 8px; border: 0px solid #ccc;">{{ com.comment }}</td>
-              <td style="padding: 8px; border: 0px solid #ccc;">{{ com.class }}</td>
+              <td style="padding: 8px; border: 0px solid #ccc;">{{ com.class_name }}</td>
               <td style="padding: 8px; border: 0px solid #ccc;">{{ com.academic_year }}</td>
               <td style="padding: 8px; border: 0px solid #ccc;">{{ com.study_period }}</td>
+<!--              <td style="padding: 8px; border: 0px solid #ccc;">{{com.teacher_name}}</td>-->
               <td style="padding: 8px; text-align: center; border: 0px solid #ccc;">
                 <button @click="editComments(com)"
                         style="background: none; border: none; cursor: pointer; margin-right: 6px;">

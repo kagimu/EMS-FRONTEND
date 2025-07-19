@@ -40,8 +40,7 @@ const switchTabs = (tab) => {
     <Invoice></Invoice>
   </div>
   <div v-if="selectedTab === 'transaction'">
-    wqqqqqqqqqqqqqqqqqq
-<!--    <Transactions></Transactions>-->
+    <Transactions></Transactions>
   </div>
 
 

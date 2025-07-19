@@ -387,7 +387,7 @@ watch(
               <td style="padding: 8px; border: 0px solid #ccc;">{{ index+1}}</td>
               <td style="padding: 8px; border: 0px solid #ccc;">{{ com.comment }}</td>
               <td style="padding: 8px; border: 0px solid #ccc;">{{ com.class }}</td>
-              <td style="padding: 8px; border: 0px solid #ccc;">{{ com.academic_year }}</td>
+              <td style="padding: 8px; border: 0px solid #ccc;">{{ com.academic_year_name	 }}</td>
               <td style="padding: 8px; border: 0px solid #ccc;">{{ com.study_period }}</td>
               <td style="padding: 8px; text-align: center; border: 0px solid #ccc;">
                 <button @click="editComments(com)"

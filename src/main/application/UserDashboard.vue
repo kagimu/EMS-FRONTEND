@@ -115,11 +115,7 @@ onUnmounted(() => {
                   class="bi-list mr-2"
                   :class="defaultMenuSize ? 'transition ease-in-out rotate-0 duration-700' : 'transition ease-in-out -rotate-180 duration-700'"
               ></i>
-<!--              <router-link class="navbar-brand text-white" :to="{name:'apply'}">-->
-<!--                <div>-->
-<!--                  <span class="text-[17px]" v-for="(sch,index) in currentSchoolInfoData" :key="index">{{sch.name}}</span>-->
-<!--                </div>-->
-<!--              </router-link>-->
+              <span style="font-size: 20px; cursor: pointer;" class="mr-2 mt-1">USER DASHBOARD</span>
 
               <div>
               </div>

@@ -378,7 +378,7 @@ const showStudentProfile = (std) => {
       <StudentProfile  :studentNum="studentNumber"></StudentProfile>
     </AppModal>
   
-    <div>
+    <div class="card-body mt-4">
       <h5 class="card-title mb-3" style="font-size: 14px; margin-top: 2px;">ADMISSION OFFERS</h5>
       <div class=" grid grid-cols-4 gap-4 mx-4 mt-3" v-if="admissionList.length > 0">
         <div v-for="(adm, index) in admissionList" :key="index" >

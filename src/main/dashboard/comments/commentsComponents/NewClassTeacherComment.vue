@@ -331,7 +331,8 @@ const addNewClassTeacherComment = () => {
     study_period_number:study_period_number.value,
     campus_class_number:class_number.value,
     comment:comment.value,
-    date:date.value
+    date:date.value,
+    campus_number:campusNumber
   }
   teacherCommentStore.newClassTeacherComment(data)
 }

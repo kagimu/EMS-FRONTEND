@@ -26,7 +26,8 @@ const form = reactive({
   curriculum:[],
   entity_number:entityN,
   principal_title:null,
-  principal_name:null
+  principal_name:null,
+  motto:null
 })
 
 const clearSchoolForm = () => {
@@ -203,6 +204,17 @@ watch(
             type="text"
             class="form-control form-control-sm shadow-none mt-1"
             placeholder="e.g. Head Teacher"
+            required
+        />
+      </div>
+
+      <div class="mb-2">
+        <label class="text-sm font-medium text-gray-700">School Motto <span class="text-danger">*</span></label>
+        <input
+            v-model="form.motto"
+            type="text"
+            class="form-control form-control-sm shadow-none mt-1"
+            placeholder="e.g. FFe tuuli embatto ento"
             required
         />
       </div>

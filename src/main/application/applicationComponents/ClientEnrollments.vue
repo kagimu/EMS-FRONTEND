@@ -322,7 +322,7 @@ const showStudentProfile = (std) => {
       </div>
     </div>
 
-    <div class="row mt-3">
+    <div class="row mt-3 card-body mt-4">
       <div class="col-12">
         <div class="">
           <div class="" style="padding: 0;">
