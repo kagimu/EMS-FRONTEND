@@ -231,6 +231,7 @@ watch (
         <thead>
           <tr>
             <th class="w-[1%]">#</th>
+            <th>Serial Code</th>
             <th>Service Name</th>
             <th>Cost</th>
             <th>Addition Info</th>
@@ -240,6 +241,7 @@ watch (
         <tbody>
           <tr v-for="(serviceData, index) in servicesList" :key="index" >
             <td>{{ index+1 }}</td>
+            <td>{{ serviceData.item.serial_code}}</td>
             <td>{{ serviceData?.item?.name}}</td>
             <td>{{ serviceData?.item?.cost.toLocaleString()}}</td>
             <td>{{ serviceData?.item?.description}}</td>

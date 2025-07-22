@@ -216,6 +216,7 @@ watch (
       >
         <thead>
           <tr>
+            <th>Serial Code</th>
             <th>Product Name</th>
             <th>Cost</th>
             <th>Addition Info</th>
@@ -224,6 +225,7 @@ watch (
         </thead>
         <tbody>
           <tr v-for="(productData, index) in productsList" :key="index" >
+            <td>{{ productData.item.serial_code}}</td>
             <td>{{ productData.item.name}}</td>
             <td>{{ productData.item.cost.toLocaleString()}}</td>
             <td>{{ productData.item.description}}</td>
