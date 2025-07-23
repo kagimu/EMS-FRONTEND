@@ -214,7 +214,7 @@ watch(
             v-model="form.motto"
             type="text"
             class="form-control form-control-sm shadow-none mt-1"
-            placeholder="e.g. FFe tuuli embatto ento"
+            placeholder="e.g. God Is Able"
             required
         />
       </div>

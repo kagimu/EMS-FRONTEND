@@ -45,10 +45,9 @@ const deleteThisData = async (id,name) => {
   const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
   if (agreed) {
     let data = {
-      id : id
+      number : id
     }
-
-    await teacherCommentStore.deleteHeadTeacherComment(data)
+    await teacherCommentStore.deleteClassTeacherComment(data)
   }
 }
 
@@ -73,7 +72,7 @@ watch(
 
 
 watch(
-    () => teacherCommentStore.deleteHeadTeacherCommentResponse,
+    () => teacherCommentStore.deleteClassTeacherCommentResponse,
     async (data) => {
       if(data){
         await teacherCommentStore.fetchTeacherComments()
@@ -172,7 +171,7 @@ const printComments = () => {
                         style="background: none; border: none; cursor: pointer; margin-right: 6px;">
                   <i class="bi-pencil" style="font-size: 13px; color: #0520ab;"></i>
                 </button>
-                <button @click="deleteThisData(com.id, com.comment)"
+                <button @click="deleteThisData(com.number, com.comment)"
                         style="background: none; border: none; cursor: pointer;">
                   <i class="bi-trash" style="font-size: 13px; color: #ca0b0b;"></i>
                 </button>

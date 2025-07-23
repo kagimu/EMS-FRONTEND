@@ -22,7 +22,7 @@ const notificationStore  = useNotificationStore()
 const teacherCommentStore = useTeacherCommentStore()
 const commentsList = ref(null)
 const showCommentModal = ref(false)
-const headTeacherCommentList = ref([])
+const subjectTeacherCommentList = ref([])
 const editMode = ref(false)
 
 const levelStore = useLevelStore()
@@ -63,13 +63,14 @@ onMounted(
 
 
 const addComments = () => {
-  headTeacherCommentList.value = ""
+  subjectTeacherCommentList.value = ""
   editMode.value = false
   showCommentModal.value = true
 }
 
 const editComments = (comm) => {
-  headTeacherCommentList.value = comm
+
+  subjectTeacherCommentList.value = comm
   editMode.value = true
   showCommentModal.value = true
 }
@@ -80,10 +81,10 @@ const deleteThisData = async (id,name) => {
   const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
   if (agreed) {
     let data = {
-      id : id
+      number : id
     }
 
-    await teacherCommentStore.deleteHeadTeacherComment(data)
+    await teacherCommentStore.deleteSubjectTeacherComment(data)
   }
 }
 
@@ -100,7 +101,7 @@ watch(
 
 
 watch(
-    () => teacherCommentStore.deleteHeadTeacherCommentResponse,
+    () => teacherCommentStore.deleteSubjectTeacherCommentResponse,
     async (data) => {
       if(data){
         await teacherCommentStore.fetchTeacherComments()
@@ -289,7 +290,7 @@ watch(
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="editMode?'Edit Comment':'Add Subject Teachers Comment'" v-model="showCommentModal" lg>
-      <NewSubjectTeacherComment :headTeacherCommentList="headTeacherCommentList"></NewSubjectTeacherComment>
+      <NewSubjectTeacherComment :subjectTeacherCommentList="subjectTeacherCommentList"></NewSubjectTeacherComment>
     </AppModal>
 
 
@@ -394,7 +395,7 @@ watch(
                         style="background: none; border: none; cursor: pointer; margin-right: 6px;">
                   <i class="bi-pencil" style="font-size: 13px; color: #0520ab;"></i>
                 </button>
-                <button @click="deleteThisData(com.id, com.comment)"
+                <button @click="deleteThisData(com.number, com.comment)"
                         style="background: none; border: none; cursor: pointer;">
                   <i class="bi-trash" style="font-size: 13px; color: #ca0b0b;"></i>
                 </button>

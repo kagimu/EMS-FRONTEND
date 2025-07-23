@@ -54,13 +54,31 @@ const teacherCommentStore = useTeacherCommentStore()
 const date = ref(null)
 const comment = ref(null)
 
+const props = defineProps({
+  subjectTeacherCommentList:{}
+})
 
 onMounted(
     async () => {
       schoolStore.fetchSchools()
       fetchCampusLevel()
+      getSubjectTeacherCommentData()
     }
 )
+
+watch(
+    () => schoolStore.schoolsResponse,
+    async (data) => {
+      if (data) {
+        getSubjectTeacherCommentData()
+      }
+    }
+)
+
+const getSubjectTeacherCommentData = () =>{
+  let draft = props.subjectTeacherCommentList
+}
+
 
 const maxScore = ref(null)
 
@@ -141,9 +159,6 @@ const fetchAssessmentMetricbyStudy = (studyP) =>{
   }
   assessmentStore.fetchAssessmentMetrics(data)
   fetchStudents()
-
-
-
 }
 
 
@@ -327,15 +342,32 @@ watch(
 
 const addNewSubjectTeacher = () => {
   buttonLoader.value = true
-  let data = {
-    study_period_number:study_period_number.value,
-    campus_class_number:class_number.value,
-    campus_number:campusNumber,
-    assessment_area_number:assessment_area_number.value,
-    comment:comment.value,
-    date:date.value
+
+
+  if(props.subjectTeacherCommentList){
+
+    let data = {
+      study_period_number:study_period_number.value,
+      campus_class_number:class_number.value,
+      campus_number:campusNumber,
+      assessment_area_number:assessment_area_number.value,
+      comment:comment.value,
+      date:date.value,
+      subject_teacher_comment_number:props.subjectTeacherCommentList.number
+    }
+     teacherCommentStore.updateSubjectTeacherComment(data)
+  }else {
+    let data = {
+      study_period_number:study_period_number.value,
+      campus_class_number:class_number.value,
+      campus_number:campusNumber,
+      assessment_area_number:assessment_area_number.value,
+      comment:comment.value,
+      date:date.value
+    }
+    teacherCommentStore.newSubjectTeacherComment(data)
   }
-  teacherCommentStore.newSubjectTeacherComment(data)
+
 }
 
 
@@ -357,11 +389,23 @@ watch(
     },
     {deep:true}
 )
+
+watch(
+    () => teacherCommentStore.updateSubjectTeacherCommentResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success",data.message)
+      }
+    },
+    {deep:true}
+)
 </script>
 
 <template>
 
   <div>
+
+    {{subjectTeacherCommentList}}
 
 <form @submit.prevent="addNewSubjectTeacher()">
     <div class="row bg-white mx-auto mt-2">
