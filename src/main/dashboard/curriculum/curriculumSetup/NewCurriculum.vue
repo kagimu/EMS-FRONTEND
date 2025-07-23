@@ -16,6 +16,7 @@ const curriculumStore = useCurriculumStore()
 
 
 const form = reactive({
+  code:null,
   name:null,
 })
 
@@ -25,6 +26,7 @@ const addCurriculum = () =>{
   loader.value = true
   if(curriculumNumber.value){
     form.curriculum_number = curriculumNumber.value
+    form.code = parseInt(form.code)
     curriculumStore.editCurriculumData(form)
   }else {
     curriculumStore.newCurriculumData(form)
