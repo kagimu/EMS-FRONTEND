@@ -161,7 +161,7 @@ watch(
 
           <div class="p-3 text-[#5e5e5e]">
             <div class="mb-3 flex justify-between" style="font-size: 20px;">
-              {{curr.name}}
+              {{curr?.code ? "#"+curr?.code : ""}} {{curr?.name}}
               <div>
                 <i 
                     v-if="can('edit_curriculum','general')"

@@ -1,50 +1,8 @@
-<template>
-  <div>
-
-    <form @submit.prevent="addCurriculum">
-      <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
-        {{ classError }}
-      </div>
-
-      <div class="mb-2">
-        <label class="text-sm text-sm">Curriculum Name</label>
-        <input
-            style="outline: none 0 !important; box-shadow: none;"
-            type="text"
-            v-model="form.name"
-            required
-            class="form-control form-control-sm">
-      </div>
-
-
-
-      <div class="flex justify-between" style="width: 100%;">
-        <button
-            type="button"
-            class="btn btn-danger border-0 mr-2"
-            @click="$emit('closeDialog')">
-          Cancel
-        </button>
-        <button
-            type="submit"
-            class="btn btn-primary border-0">
-                 {{curriculumNumber ? "Edit" : "Save"}}
-              <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
-                  <span class="visually-hidden">Loading...</span>
-                </span>
-        </button>
-      </div>
-
-    </form>
-
-
-  </div>
-</template>
-
 <script setup>
 
 import {watch, onMounted, reactive, ref} from "vue";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
+import useCommonsStore from "@/composables/useCommons.js";
 
 
 const classError = ref(null)
@@ -52,7 +10,7 @@ const name = ref(null)
 const school_number = ref(null)
 const loader = ref(false)
 const curriculumNumber = ref(null)
-
+const commons = useCommonsStore()
 
 const curriculumStore = useCurriculumStore()
 
@@ -69,7 +27,7 @@ const addCurriculum = () =>{
     form.curriculum_number = curriculumNumber.value
     curriculumStore.editCurriculumData(form)
   }else {
-  curriculumStore.newCurriculumData(form)
+    curriculumStore.newCurriculumData(form)
   }
 
 }
@@ -132,6 +90,62 @@ watch (
 
 
 </script>
+<template>
+  <div>
+
+    <form @submit.prevent="addCurriculum">
+      <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
+        {{ classError }}
+      </div>
+
+      <div class="mb-2">
+        <label class="text-sm">Code</label>
+        <input
+            @keypress="commons.codeValidator($event)"
+            maxlength="10"
+            type="text"
+            v-model="form.code"
+            @paste.prevent
+            required
+            class="form-control form-control-sm shadow-none">
+      </div>
+
+      <div class="mb-2">
+        <label class="text-sm">Curriculum Name</label>
+        <input
+            style="outline: none 0 !important; box-shadow: none;"
+            type="text"
+            v-model="form.name"
+            required
+            class="form-control form-control-sm">
+      </div>
+
+
+
+      <div class="flex justify-between" style="width: 100%;">
+        <button
+            type="button"
+            class="btn btn-danger border-0 mr-2"
+            @click="$emit('closeDialog')">
+          Cancel
+        </button>
+        <button
+            type="submit"
+            class="btn btn-primary border-0">
+                 {{curriculumNumber ? "Edit" : "Save"}}
+              <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </span>
+        </button>
+      </div>
+
+    </form>
+
+
+  </div>
+</template>
+
+
 
 <style scoped>
 .noFocus:focus {
