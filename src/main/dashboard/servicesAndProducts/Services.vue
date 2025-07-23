@@ -240,7 +240,7 @@ watch (
         </thead>
         <tbody>
           <tr v-for="(serviceData, index) in servicesList" :key="index" >
-            <td>{{ index+1 }}</td>
+            <td>{{ serviceData?.item?.code }}</td>
             <td>{{ serviceData.item.serial_code}}</td>
             <td>{{ serviceData?.item?.name}}</td>
             <td>{{ serviceData?.item?.cost.toLocaleString()}}</td>

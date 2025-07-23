@@ -28,6 +28,7 @@ const props = defineProps({
 })
 
 const formData = reactive({
+  code: null,
   school_number: "",
   description: null,
   cost: null,
@@ -59,6 +60,7 @@ const checkDraftData = () => {
   if(draft){
   //  alert(JSON.stringify(draft))
     formData.description = draft?.item?.description ?? null
+    formData.code = draft?.item?.code ?? null
     formData.cost = draft?.item?.cost ?? null
     formData.name = draft?.item?.name ?? null
     formData.mandatory = draft?.item.mandatory
@@ -126,6 +128,7 @@ const createNewService = () =>{
 
   let data = formData
   data.cost = parseInt(formData.cost)
+  data.code = parseInt(formData.code)
 
   if(props.productType === 'service') {
     if (item_number.value) {
@@ -231,6 +234,19 @@ watch(
           <div class="grid grid-cols-2 gap-4 text-gray-600">
 
             <div>
+
+              <div class="mb-2">
+                <label class="text-sm">Code</label>
+                <input
+                    @keypress="commons.codeValidator($event)"
+                    maxlength="10"
+                    type="text"
+                    v-model="formData.code"
+                    @paste.prevent
+                    required
+                    class="form-control form-control-sm shadow-none">
+              </div>
+
               <div class="mb-2">
                 <label class="text-sm">School <span class="star">*</span></label>
                 <select

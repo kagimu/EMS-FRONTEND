@@ -533,7 +533,7 @@ const printPreviewNarrative = () => {
           :student_number="student_number"></new-narrative-report>
     </AppModal>
 
-    <AppModal title="PreviewReport" v-model="narrativeModel" xl6>
+    <AppModal title="Narrative Report" v-model="narrativeModel" xl6>
      <NarrativeReportTemplate></NarrativeReportTemplate>
     </AppModal>
 

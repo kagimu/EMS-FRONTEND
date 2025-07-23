@@ -163,20 +163,21 @@ const narrativeData = ref([
 
     <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif;">
         <tr style="font-size: 13px;">
+            <th style="background-color: yellow; border: 1px solid black; padding: 5px;">#</th>
             <th style="background-color: yellow; border: 1px solid black; padding: 5px;">LEARNING AREA</th>
             <th style="background-color: yellow; border: 1px solid black; padding: 5px;">SUBJECT CLUSTER</th>
             <th style="background-color: yellow; border: 1px solid black; padding: 5px;">SUBJECT CODE</th>
             <th style="background-color: #a6a6a6; border: 1px solid black; padding: 5px;">SUBJECT</th>
-            <th style="background-color: #a6a6a6;border: 1px solid black; padding: 5px;">REFERENCE DATE</th>
+<!--            <th style="background-color: #a6a6a6;border: 1px solid black; padding: 5px;">REFERENCE DATE</th>
             <th style="background-color: #a6a6a6;border: 1px solid black; padding: 5px;">STATUS</th>
             <th style="background-color: #a6a6a6;border: 1px solid black; padding: 5px;">CURRENT DATE</th>
             <th style="background-color: #a6a6a6;border: 1px solid black; padding: 5px;">CURRENT STATUS</th>
-            <th style="background-color: #a6a6a6;border: 1px solid black; padding: 5px;">SUGGESTED ACTION</th>
+            <th style="background-color: #a6a6a6;border: 1px solid black; padding: 5px;">SUGGESTED ACTION</th>-->
         </tr>
 
 
 
-          <tr style="font-size: 13px;" v-for="(info,idx) in draftInfo?.narrative_response_data" :key="key">
+<!--          <tr style="font-size: 13px;" v-for="(info,idx) in draftInfo?.narrative_response_data" :key="key">
             <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">
               {{info?.learning_area}}
             </td>
@@ -188,7 +189,29 @@ const narrativeData = ref([
             <td  style="border: 1px solid black; padding: 5px;"></td>
             <td  style="border: 1px solid black; padding: 5px;"></td>
             <td  style="border: 1px solid black; padding: 5px;"></td>
-          </tr>
+          </tr>-->
+
+      <tr style="font-size: 13px;">
+        <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1</td>
+        <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Learning to Care for the Mind (MENTAL STUDIES)</td>
+        <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Acquire Knowledge Properly</td>
+        <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.1</td>
+        <td style="background-color: #99cc66; border: 1px solid black; padding: 5px;">
+
+          <div class="text-center text-lg">Listen</div>
+          <div style="border-top: 1px solid black; padding: 5px;">REFERENCE DATE: 2nd/7/2025</div>
+          <div style="border-top: 1px solid black; padding: 5px;">STATUS: Active</div>
+          <div style="border-top: 1px solid black; padding: 5px;">CURRENT DATE: 2nd/7/2025 </div>
+          <div style="border-top: 1px solid black; padding: 5px;">CURRENT STATUS: Inactive</div>
+          <div style="border-top: 1px solid black; padding: 5px;">SUGGESTED ACTION: any</div>
+
+        </td>
+<!--        <td  style="border: 1px solid black; padding: 5px;"></td>-->
+<!--        <td  style="border: 1px solid black; padding: 5px;"></td>-->
+<!--        <td  style="border: 1px solid black; padding: 5px;"></td>-->
+<!--        <td  style="border: 1px solid black; padding: 5px;"></td>-->
+<!--        <td  style="border: 1px solid black; padding: 5px;"></td>-->
+      </tr>
 <!--
         <tr style="font-size: 13px;">
             <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Learning to Care for the Mind (MENTAL STUDIES)</td>
