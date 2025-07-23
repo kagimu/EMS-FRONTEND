@@ -17,7 +17,7 @@ const notificationStore  = useNotificationStore()
 const teacherCommentStore = useTeacherCommentStore()
 const commentsList = ref(null)
 const showCommentModal = ref(false)
-const headTeacherCommentList = ref([])
+const classTeacherCommentList = ref([])
 const editMode = ref(false)
 
 
@@ -28,13 +28,13 @@ onMounted(
 )
 
 const addComments = () => {
-  headTeacherCommentList.value = ""
+  classTeacherCommentList.value = ""
   editMode.value = false
   showCommentModal.value = true
 }
 
 const editComments = (comm) => {
-  headTeacherCommentList.value = comm
+  classTeacherCommentList.value = comm
   editMode.value = true
   showCommentModal.value = true
 }
@@ -121,7 +121,7 @@ const printComments = () => {
     <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="editMode?'Edit Comment':'Add Subject Teachers Comment'" v-model="showCommentModal" lg>
-      <NewClassTeacherComment :headTeacherCommentList="headTeacherCommentList"></NewClassTeacherComment>
+      <NewClassTeacherComment :classTeacherCommentList="classTeacherCommentList"></NewClassTeacherComment>
     </AppModal>
 
 
@@ -142,35 +142,7 @@ const printComments = () => {
             <i class="bi bi-printer"></i> Print
           </button>
         </div>
-
-        <!--        <div id="teacher-comments">-->
-        <!--        <table  class="table table-hover caption-top mt-5 table-sm text-sm" style="font-size: 14px;">-->
-        <!--          <thead>-->
-        <!--          <tr>-->
-        <!--            <th>(Min - Max) Aggregate</th>-->
-        <!--            <th>Comment</th>-->
-        <!--            <th>Class</th>-->
-        <!--            <th>Accademic Year</th>-->
-        <!--            <th>Study Period</th>-->
-        <!--            <th>#</th>-->
-        <!--          </tr>-->
-        <!--          </thead>-->
-        <!--          <tbody>-->
-        <!--          <tr v-for="(com, index) in commentsList" :key="index">-->
-        <!--          <td>{{ "("+com.min_aggregate + " - " + com.max_aggregate+")"}}</td>-->
-        <!--          <td>{{ com.comment }}</td>-->
-        <!--            <td>{{com.class}}</td>-->
-        <!--          <td>{{ com.academic_year }}</td>-->
-        <!--          <td>{{ com.study_period  }}</td>-->
-        <!--          <td>-->
-        <!--              <button  class="link-primary" style="border-width: 0px;text-decoration: none;" @click="editComments(com)"><small><i  style="font-size: 13px;color:rgb(5, 32, 171)" class="bi-pencil mr-2 cursor-pointer"></i></small></button>-->
-        <!--              <button @click="deleteThisData(com.id,com.comment)"><i style="font-size: 13px;color:rgb(202, 11, 11)" class="bi-trash cursor-pointer"></i></button>-->
-        <!--            </td>-->
-        <!--          </tr>-->
-        <!--          </tbody>-->
-        <!--        </table>-->
-        <!--        </div>-->
-
+        
         <div id="teacher-comments" style="margin: 0px; font-family: Arial, sans-serif;">
 <!--          {{commentsList}}-->
           <table class="table table-hover caption-top mt-5 table-sm text-sm"

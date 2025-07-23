@@ -54,13 +54,37 @@ const teacherCommentStore = useTeacherCommentStore()
 const date = ref(null)
 const comment = ref(null)
 
+const props = defineProps({
+  classTeacherCommentList:{}
+})
 
 onMounted(
     async () => {
       schoolStore.fetchSchools()
       fetchCampusLevel()
+      getClassTeacherComments()
     }
 )
+
+const getClassTeacherComments = () => {
+  let draft = props.classTeacherCommentList
+  if(draft) {
+    // { "number": "0f17c60c-3ab9-4e03-b39d-47fb7824d29b",
+    //     "comment": "Excellent Performance",
+    //     "user_number": "9691ee13-09f4-4f80-8072-dcc48fc18d3b",
+    //     "study_period": "Term 01",
+    //     "study_period_number": "6cb0216d-4ce1-4f21-bd25-446f9ed30e2c",
+    //     "campus_class_number": "78a6f089-6f7a-4ef9-b6db-94eaa75012e2",
+    //     "class_name": "Primary Three",
+    //     "academic_year": "School Year 2025- Middle and Upper Primary",
+    //     "academic_year_number": "a4ad1fcf-8a5c-4695-b917-c24d87aa268f",
+    //     "teacher_name": "Mwesigwa Inconvenience" }
+        study_period_number.value
+        class_number.value = draft.campus_class_number
+        comment.value = draft.comment
+        date.value = draft
+  }
+}
 
 const maxScore = ref(null)
 
@@ -361,6 +385,7 @@ watch(
 <template>
 
   <div>
+    {{classTeacherCommentList}}
 
     <form @submit.prevent="addNewClassTeacherComment()">
       <div class="row bg-white mx-auto mt-2">

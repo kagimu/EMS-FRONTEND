@@ -329,6 +329,8 @@ const addNewSubjectTeacher = () => {
   buttonLoader.value = true
   let data = {
     study_period_number:study_period_number.value,
+    campus_class_number:class_number.value,
+    campus_number:campusNumber,
     assessment_area_number:assessment_area_number.value,
     comment:comment.value,
     date:date.value

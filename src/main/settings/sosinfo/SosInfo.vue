@@ -116,11 +116,24 @@ const deleteSosInfo = async (SosInfo) => {
   const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+SosInfo.name);
   if (agreed) {
     let data = {
-      sosinfodata:SosInfo.name
+      source_of_school_number:SosInfo
     }
     sosInfo.deleteSos(data)
   }
 }
+
+watch(
+    () => sosInfo.deletesosInfoResponse,
+    async (data) => {
+      if(data){
+        sosInfoDialog.value =false
+        notificationStore.successToast("Success", data.message)
+        sosInfo.fetchSosInfo()
+      }
+    },
+    {deep:true}
+)
+
 </script>
 
 <template>
@@ -170,6 +183,7 @@ const deleteSosInfo = async (SosInfo) => {
           </tr>
           </thead>
           <tbody>
+<!--          {{sosInfoList}}-->
           <tr v-for="(SosInfo, index) in sosInfoList" :key="index">
             <td>{{ SosInfo.name }}</td>
             <td>
@@ -187,7 +201,7 @@ const deleteSosInfo = async (SosInfo) => {
                 <button
                     v-if="can('delete_source_of_school_info','general')"
                     class="btn btn-sm p-0 text-danger"
-                    @click="deleteSosInfo(SosInfo)"
+                    @click="deleteSosInfo(SosInfo.number)"
                     title="Delete"
                 >
                   <i class="bi bi-trash"></i>
