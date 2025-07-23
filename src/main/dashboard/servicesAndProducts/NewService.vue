@@ -60,6 +60,7 @@ const checkDraftData = () => {
   if(draft){
   //  alert(JSON.stringify(draft))
     formData.description = draft?.item?.description ?? null
+    formData.code = draft?.item?.code ?? null
     formData.cost = draft?.item?.cost ?? null
     formData.name = draft?.item?.name ?? null
     formData.mandatory = draft?.item.mandatory
