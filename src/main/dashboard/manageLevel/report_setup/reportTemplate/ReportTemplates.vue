@@ -10,6 +10,9 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import clearClassModal from "@/main/dashboard/manageLevel/report_setup/reportTemplate/clearClassModal.vue";
 import ReportTemplateClasses from "./ReportTemplateClasses.vue";
 import {useRouter} from "vue-router";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 
 const routerData = useRouter()
 const schoolStore = useSchoolStore()
@@ -72,21 +75,10 @@ const editReportTemplate = (repoData,name) => {
 }
 
 const assignClass = (repId) => {
-  // alert(repId)
   reportTemplateNumber.value = repId
   showAssignModal.value = true
 }
 
-const clearClass = (classInfo) => {
-  showClearClassModal.value = true
-  classListData.value = classInfo
-}
-
-
-const showClasses = (TemplateN) =>{
-reportSetupStore.fetchClassesAddedReportTemplate(TemplateN,schoolNumber)
-repoId.value = TemplateN
-}
 
 
 watch (
@@ -94,37 +86,77 @@ watch (
   async (data) => {
     if(data){
       showReportTemplateModal.value = false
-      reportSetupStore.fetchReportTemplate()
+      await reportSetupStore.fetchReportTemplate()
       filterReportTemplate()
     }
   },
   {deep:true}
 )
 
-const deleteThisData = (id,name) => {
-  if(!confirm("Are you sure, you want to delete: " + name)){
-    return
-  }else{
 
+const deleteThisData = async (id,name) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
+if (agreed) {
+  let data = {
+  report_template_id:id
   }
-
+  alert(id)
+  await reportSetupStore.deleteReportTemplate(id)
 }
+}
+
+watch(
+    () => reportSetupStore.errorMessage,
+    async (data) => {
+          if (data) {
+              notificationStore.errorToast("Error", data.message)
+          }
+    },
+    {deep: true}
+)
+
+watch(
+    () => reportSetupStore.deleteReportTemplateInfoResponse,
+    async (data) => {
+          if (data) {
+              notificationStore.successToast("Success", data.message)
+              filterReportTemplate()
+          }
+    },
+    {deep: true}
+)
+
+watch (
+  () => reportSetupStore.classToReportTemplateResponse,
+  async (data) => {
+    if(data){
+      showAssignModal.value = false
+    }
+  }
+)
+
+const closeDialog = () => {
+  showAssignModal.value = false
+}
+
 
 </script>
 
 <template>
 
   <div>
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="editMode ?'Edit Report Template ' +reportName :'Add Report Template'" v-model="showReportTemplateModal" lg>
       <new-report-template :reportTemplateDataInfo="reportTemplateDataInfo"></new-report-template>
     </AppModal>
     
     <AppModal title="Assign Class To Template" v-model="showAssignModal" lg>
-        <AssignTemplateToClass :reportTemplateNumber="reportTemplateNumber"></AssignTemplateToClass>
+        <AssignTemplateToClass :addedClasses="classOnTemplateList" :reportTemplateNumber="reportTemplateNumber" @closeDialog="closeDialog"></AssignTemplateToClass>
     </AppModal>
 
-    <AppModal title="Comfirm !" v-model="showClearClassModal" xs>
+    <AppModal title="Confirm !" v-model="showClearClassModal" xs>
         <clearClassModal :classListData="classListData"></clearClassModal>
     </AppModal>
 
@@ -160,24 +192,18 @@ const deleteThisData = (id,name) => {
             <td>{{ index+1 }}</td>
             <td>{{ repoData.name }}</td>
             <td>
-                <ol>
-                    <b><i
-                    style="font-size: 10px;"
-                    class="bi-plus-circle cursor-pointer link-primary" @click="assignClass(repoData.report_template_id)"></i></b> 
-           
-                      <ReportTemplateClasses :reportTemplateId="repoData.report_template_id"  :school_number="schoolNumber"></ReportTemplateClasses>
 
+             <ReportTemplateClasses :reportTemplateId="repoData.report_template_id"  :school_number="schoolNumber"></ReportTemplateClasses>
 
-                </ol>
-                
             </td>
             <td>
              <div>
+              <!-- {{ repoData }} -->
                 <i
-                    style="font-size: 13px;"
+                    style="font-size: 14px;"
                     class="bi-pencil mr-2 cursor-pointer " @click="editReportTemplate(repoData,repoData.name)"></i> &nbsp;
                 <i
-                    style="font-size: 13px;" class="bi-trash cursor-pointer" @click="deleteThisData(repoData.number,repoData.name)"></i>
+                    style="font-size: 14px;" class="bi-trash cursor-pointer" @click="deleteThisData(repoData.report_template_id,repoData.name)"></i>
               </div>
             </td>
           </tr>
@@ -195,7 +221,7 @@ const deleteThisData = (id,name) => {
 </template>
 
 <style scoped>
-.textSize{
-  font-size: 13px;
+.text-sme{
+  font-size: 14px;
 }
 </style>

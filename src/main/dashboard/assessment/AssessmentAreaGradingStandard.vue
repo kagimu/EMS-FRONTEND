@@ -104,6 +104,7 @@ const fetchGradingStandard = () =>{
   if(campus_class_number.value) {
     let data = {
       campus_number:campusNumber,
+      school_number:schoolNumber,
       campus_class_number:campus_class_number.value
     }
     assessmentStore.fetchGradingStandardData(data)
@@ -119,14 +120,20 @@ watch(
     }
 )
 
-const deleteAssessmentArea = (data, index) => {
-  if(!confirm("Are you sure, you want to delete this assessment area grading standard")){
-    return
+
+
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+const deleteAssessmentArea = async (data, index) => {
+
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete this assessment area grading standard ");
+  if (agreed) {
+    deletionLoader.value = index
+      await assessmentStore.deleteAssessmentAreaGradingStandard(data.number)
   }
+  
 
-  deletionLoader.value = index
-
-  assessmentStore.deleteAssessmentAreaGradingStandard(data.number)
 }
 
 watch(
@@ -150,13 +157,13 @@ watch(
 )
 
 
-
-
 </script>
 
 <template>
 
   <div>
+
+ <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal title="Attach Assessment Area to Grading Standard" v-model="showAssessmentGradingModal" lg>
       <new-assessment-area-grading-standard></new-assessment-area-grading-standard>
@@ -184,7 +191,7 @@ watch(
 
             <div class="mb-2">
               <div>
-                <label class="textColor"><small>Level</small></label>
+                <label class="text-sm"><small>Level</small></label>
                 <select
                     style="box-shadow: none;"
                     class="form-select form-select-sm"
@@ -200,7 +207,7 @@ watch(
 
             <div class="mb-2">
               <div>
-                <label class="textColor"><small>Class</small>
+                <label class="text-sm"><small>Class</small>
                 </label>
                 <select
                     style="box-shadow: none;"
@@ -217,7 +224,7 @@ watch(
 
             <div class="mb-2">
               <div>
-                <label class="textColor"><small>Grading Standards</small></label>
+                <label class="text-sm"><small>Grading Standards</small></label>
                 <select
                     class="form-control form-select form-control-sm shadow-none"
                     v-model="grading_standard_number"

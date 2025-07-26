@@ -8,6 +8,7 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import useCommonsStore from "@/composables/useCommons.js";
+import ComboBox from "@/components/ComboBox.vue";
 
 const campusStore = useCampusStore()
 const schoolStore = useSchoolStore()
@@ -22,6 +23,7 @@ const levelList = ref([])
 const curriculumList = ref([])
 
 
+const emit = defineEmits(["closeDialog"]);
 
 
 let schoolNumber = routerData.currentRoute.value.query.id
@@ -164,7 +166,16 @@ watch(
     () => curriculumStore.schoolCurriculumResponse,
     async (data) => {
       if(data){
-        curriculumList.value = data.data
+        let draft = data?.data
+        if(draft && (draft.length > 0)){
+          let arr = []
+         draft.forEach(lst => {
+          arr.push({text:lst?.name,value:lst?.number})
+         })
+         curriculumList.value = arr
+        }
+       
+
       }
     },
     {deep:true}
@@ -187,7 +198,7 @@ watch(
           <div class="mx-auto" style="width: 95%;">
 
           <div class="mb-2">
-            <label class="textColor"><small>Campus Name</small></label>
+            <label class="text-sm"><small>Campus Name</small></label>
             <input
                 style="outline: none 0 !important; box-shadow: none;"
                 type="text"
@@ -197,7 +208,7 @@ watch(
           </div>
 
           <div class="mb-2">
-            <label class="textColor"><small>Phone</small></label>
+            <label class="text-sm"><small>Phone</small></label>
             <vue-tel-input
                 @input="handleInput"
                 @keypress="commons.onlyNumberValidator($event)"
@@ -211,7 +222,7 @@ watch(
           </div>
 
           <div class="mb-2">
-            <label class="textColor"><small>Email</small></label>
+            <label class="text-sm"><small>Email</small></label>
             <input
                 style="outline: none 0 !important; box-shadow: none;"
                 type="email"
@@ -222,7 +233,7 @@ watch(
 
 
           <div class="mb-2">
-            <label class="textColor text-sm">Location</label>
+            <label class="text-sm text-sm">Location</label>
             <textarea
                 style="outline: none 0 !important; box-shadow: none; height: 60px"
                 class="form-control noFocus form-control-sm"
@@ -236,7 +247,7 @@ watch(
 
 
             <div class="mb-2">
-              <label class="textColor text-sm">Commencement Date</label>
+              <label class="text-sm text-sm">Commencement Date</label>
               <VueDatePicker
                   text-input
                   auto-apply
@@ -249,8 +260,8 @@ watch(
 
 
             <div class="mb-2">
-              <label class="textColor mt-3 mb-2"><small>Select Curriculum(s) to adopt to this campus</small></label>
-              <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+              <label class="text-sm mt-3 mb-2"><small>Select Curriculum(s) to adopt to this campus</small></label>
+              <!-- <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
                 <li class="list-group-item" v-for="(lvl,idx) in curriculumList">
                   <input
                       v-model="form.campus_curriculum"
@@ -259,7 +270,13 @@ watch(
                   <label class="form-check-label cursor-pointer" :for="idx">{{lvl.name}}</label>
                 </li>
 
-              </ul>
+              </ul> -->
+
+              <combo-box
+            v-model:optionResponse="form.campus_curriculum"
+            :optionList="curriculumList"
+            :optionDraft="form?.campus_curriculum"
+        ></combo-box>
             </div>
 
 
@@ -269,10 +286,16 @@ watch(
 
 
 
-      <div class="flex justify-content-end" style="width: 100%;">
+      <div class="flex justify-between" style="width: 100%;">
+        <button
+            type="button"
+            class="btn btn-danger border-0 mr-2"
+            @click="$emit('closeDialog')" style="float: left;">
+          Cancel
+        </button>
         <button
             type="submit"
-            class="btn btn-primary border-0">
+            class="btn btn-primary border-0" style="float: right;">
           {{campus_number ? "Edit":"Save"}}
           <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>

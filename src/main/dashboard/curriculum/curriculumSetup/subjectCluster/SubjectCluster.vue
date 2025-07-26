@@ -7,6 +7,11 @@ import {useSubjectClusterStore} from "@/main/dashboard/curriculum/curriculumSetu
 import {useRouter} from "vue-router";
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
 import AppModal from "@/components/AppModal.vue";
+
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+
 const routerData = useRouter()
 const curriculumDialog = ref( false)
 const subjectClusterEditMode = ref( false)
@@ -17,7 +22,7 @@ const subjectClusterStore = useSubjectClusterStore()
 const  notificationStore  = useNotificationStore()
 const learningAreaStore = useLearningAreaStore()
 const learningAreaList = ref([])
-let  curriculumNumber = routerData.currentRoute.value.query.id
+const  curriculumNumber = routerData.currentRoute.value.query.id
 
 const addCurriculum = () => {
   subjectClusterEditMode.value = false
@@ -30,12 +35,27 @@ const editSubjectCluster = (data) => {
   subjectClusterEditMode.value = true
   subjectClusterStore.subjectClusterData(data.number)
 }
-const deleteSubjectCluster = (data) => {
+// const deleteSubjectCluster = (data) => {
 
-  if(!confirm("Are you sure, you want to delete: "+data.name)){
-    return
-  }
+//   if(!confirm("Are you sure, you want to delete: "+data.name)){
+//     return
+//   }
 
+//   deletionLoader.value = data.number
+
+//   let info = {
+//     number:data.number
+//   }
+
+//   subjectClusterStore.deleteSubjectCluster(info)
+// }
+
+
+
+const deleteSubjectCluster = async (data) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+data.name);
+if (agreed) {
   deletionLoader.value = data.number
 
   let info = {
@@ -46,16 +66,28 @@ const deleteSubjectCluster = (data) => {
 }
 
 
+}
+
+const curriculum_number = localStorage.getItem("CurriculumNum")
+
 onMounted(
     () => {
-      fetchSubjectClusterList()
-      learningAreaStore.fetchLearningArea(curriculumNumber)
+       fetchSubjectClusterList()
+      if(curriculum_number){
+        learningAreaStore.fetchLearningArea(curriculum_number)
+      }else {
+        learningAreaStore.fetchLearningArea(curriculumNumber)
+      }
+      
     }
 )
 
 const fetchSubjectClusterList = () => {
-
+  if(curriculum_number){
+    subjectClusterStore.fetchSubjectCluster({learning_area_number:learning_area_number.value, curriculum_number:curriculum_number})
+      }else {
   subjectClusterStore.fetchSubjectCluster({learning_area_number:learning_area_number.value, curriculum_number:curriculumNumber})
+      }
 }
 
 
@@ -124,14 +156,19 @@ watch(
     {deep:true}
 )
 
+const closeSubjectCluster = () => {
+  curriculumDialog.value = false
+}
+
 
 </script>
 <template>
   <div>
 
+    <ConfirmationModal ref="confirmationRef" ></ConfirmationModal>
 
     <AppModal :title="subjectClusterEditMode ? 'Edit' : 'Add'" v-model="curriculumDialog" lg>
-      <new-subject-cluster></new-subject-cluster>
+      <new-subject-cluster @closeDialog="closeSubjectCluster"></new-subject-cluster>
     </AppModal>
 
 
@@ -236,7 +273,7 @@ input:focus {
   box-shadow: none;
 }
 
-.textColor{
+.text-sm2{
   color: #717375;
 }
 

@@ -6,7 +6,7 @@
 <div class="row mt-5">
     <div class="col-3">
         <div class="mb-2">
-    <label class="textColor"><small>Code</small></label>
+    <label class="text-sm"><small>Code</small></label>
     <input 
     v-model="form.code"
     @keypress="commons.codeValidator($event)"
@@ -17,13 +17,13 @@
     </div>
     <div class="col-4">
         <div class="mb-2">
-    <label class="textColor"><small>ABBREVIATION</small></label>
+    <label class="text-sm"><small>ABBREVIATION</small></label>
     <input  type="text" required class="form-control" v-model="form.abbreviation">
 </div>
     </div>
     <div class="col-lg-5">
         <div class="mb-2">
-    <label class="textColor"><small>Name</small></label>
+    <label class="text-sm"><small>Name</small></label>
     <input v-model="form.name"   type="text"  required class="form-control">
     
 </div>

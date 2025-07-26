@@ -11,6 +11,9 @@ import {useSubjectClusterStore} from "@/main/dashboard/curriculum/curriculumSetu
 import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import AppModal from "@/components/AppModal.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 const routerData = useRouter()
 
 
@@ -38,8 +41,14 @@ const subject_number = ref("")
 const strand_number = ref("")
 const learning_area_number = ref("")
 const class_number = ref("")
-let  curriculumNumber = routerData.currentRoute.value.query.id
+let  curriculumNumber = ""
 
+if(routerData.currentRoute.value.query.id){
+  curriculumNumber = routerData.currentRoute.value.query.id
+}else {
+ curriculumNumber = localStorage.getItem("CurriculumNum")
+}
+// const curriculum_number = localStorage.getItem("CurriculumNum")
 
 const addSubject = () => {
   topicEditMode.value = false
@@ -51,10 +60,26 @@ const editTopic = (data) => {
   topicEditMode.value = true
   topicStore.topicData(data.number)
 }
-const deleteTopic = (data) => {
-  if(!confirm("Are you sure, you want to delete: "+data.name)){
-    return
-  }
+// const deleteTopic = (data) => {
+//   if(!confirm("Are you sure, you want to delete: "+data.name)){
+//     return
+//   }
+
+//   deletionLoader.value = data.number
+
+//   let info = {
+//     number:data.number
+//   }
+
+//   topicStore.deleteTopic(info)
+// }
+
+
+
+const deleteTopic = async (data) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+data.name);
+if (agreed) {
 
   deletionLoader.value = data.number
 
@@ -64,6 +89,10 @@ const deleteTopic = (data) => {
 
   topicStore.deleteTopic(info)
 }
+
+
+}
+
 
 
 const selectSubjectCluster = (learning_area_number) => {
@@ -229,18 +258,21 @@ watch(
     {deep:true}
 )
 
+const  closeTopicDialog = () => {
+  strandDialog.value = false
+}
 
 </script>
 <template>
   <div>
 
     <AppModal :title="topicEditMode ? 'Edit Topic' : 'Add Topic'" v-model="strandDialog" lg>
-      <new-topic></new-topic>
+      <new-topic @closeDialog="closeTopicDialog"></new-topic>
     </AppModal>
 
 
 
-
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <div class="flex justify-content-between mt-3">
       <div class="ml-4">Topic</div>

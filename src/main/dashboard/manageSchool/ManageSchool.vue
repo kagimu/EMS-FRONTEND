@@ -7,13 +7,20 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 
 import AppModal from "@/components/AppModal.vue";
 import { useAbility } from '@casl/vue';
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import FileUploader from "@/components/FileUploader.vue";
 
 const { can } = useAbility()
-
-
 const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
+
+const confirmationRef = ref(null);
+
+
 const schoolRef = ref(null)
+const uploadDialog = ref(false)
+const schoolBudge = ref(null)
+const schoolNumber = ref(null)
 const editMode = ref(false)
 const showSelected = ref(null)
 let entityN = localStorage.getItem("entity_number")
@@ -21,6 +28,10 @@ let entityN = localStorage.getItem("entity_number")
 
 const schoolDialog = ref( false)
 const schoolsList = ref( [])
+
+const closeDialog = () => {
+  schoolDialog.value = false
+}
 
 
 const addSchool = () => {
@@ -37,15 +48,12 @@ const editSchool = (school) => {
 }
 
 
-const deleteSchool = (school) => {
+const deleteSchool = async (school) => {
 
-  if(!confirm("Are you sure, you want to delete: "+school.name)){
-    return
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+school.name);
+  if (agreed) {
+    await schoolStore.deleteSchool(school?.number)
   }
-  let data = {
-    school_number:school.number
-  }
-  schoolStore.deleteSchool(data)
 
 }
 
@@ -58,6 +66,12 @@ onMounted(
       schoolStore.fetchSchools(entityN)
     }
 )
+
+const uploadSchoolBudge = (school) => {
+  schoolBudge.value = school?.logo
+  schoolNumber.value = school?.number
+  uploadDialog.value = true
+}
 
 watch(
     () => schoolStore.newSchoolResponse,
@@ -120,14 +134,31 @@ const toggleCurriculum = (number) =>{
   showSelected.value = (showSelected.value === number) ? undefined : number
 }
 
+const successUpload = (data) => {
+  if(data){
+    uploadDialog.value = false
+    schoolStore.fetchSchools(entityN)
+  }
+}
+
+
+const curriculums = ref([
+  { id: 1, name: 'Wholesome', completedPercentage: 100 },
+])
+
 </script>
 
 <template>
   <div>
 
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="editMode ? 'Edit School' : 'New School'" v-model="schoolDialog" lg>
-      <new-school ref="schoolRef"></new-school>
+      <new-school @closeDialog="closeDialog" ref="schoolRef"></new-school>
+    </AppModal>
+
+    <AppModal title="Upload School Badge" v-model="uploadDialog" xl>
+      <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload"  :schoolNumber="schoolNumber" :imageUrl="schoolBudge"></file-uploader>
     </AppModal>
 
 
@@ -154,10 +185,18 @@ const toggleCurriculum = (number) =>{
           <div class="border rounded-md bg-white mt-3 p-0">
 
             <div class="p-3 text-[#5e5e5e]">
-            <div class="mb-3 flex justify-between text-[20px]">
-              {{school.name}}
-
-              <div>
+            <div class="mb-3 flex justify-between text-[16px]">
+              <div class="flex flex-row items-center">
+                <div >
+                   <img v-if="school?.logo" alt="logo" class="w-[50px] border rounded-md" :src="school?.logo" />
+                  <i v-else class="bi bi-card-image w-[50px] text-[30px] border rounded-md p-[10px] bg-[#e4e6eb] text-gray-600"></i>
+                </div>
+                <div class="px-2">
+                  <div class="text-gray-700">{{school?.name}}</div>
+                </div>
+              </div>
+              <div class="flex">
+                <i v-if="can('upload_school_logo','general')" class="bi bi-card-image cursor-pointer" @click="uploadSchoolBudge(school)" ></i>
               <i
               v-if="can('edit_school','general')"
                   class="bi-pencil ml-2 cursor-pointer"
@@ -191,8 +230,26 @@ const toggleCurriculum = (number) =>{
               </div>
 
               <div class="mt-2" v-show="showSelected === school.number">
-                <div class="ml-2" v-for="(curr, idx) in school.school_curriculum" key="idx">
-                  <div class="text-[13px] text-[#575656]">{{idx+1}}. {{curr.name}}</div>
+                <!-- <div class="ml-2" v-for="(curr, idx) in school.school_curriculum" key="idx"> -->
+                  <!-- <div class="text-[13px] text-[#575656]">{{idx+1}}. {{curr.name}}</div> -->
+
+                
+                <div v-for="(curr, idx) in school.school_curriculum" :key="idx" class="curriculum">
+                <div class="curriculum-header">
+                <h3 class="text-sm">{{idx+1}}. {{curr.name}}</h3>
+<!--                <span>{{ 90 }}%</span>-->
+                </div>
+<!--                <div class="progress-bar">-->
+<!--                <div-->
+<!--                class="progress-fill"-->
+<!--                :class="{ 'complete': 90 === 100 }"-->
+<!--                :style="{ width: 90 + '%' }"-->
+<!--                ></div>-->
+<!--                </div>-->
+             
+              
+
+
                 </div>
               </div>
 
@@ -215,7 +272,6 @@ const toggleCurriculum = (number) =>{
                       </span>
                 </button>
               </router-link>
-
 
             </div>
 
@@ -258,4 +314,43 @@ const toggleCurriculum = (number) =>{
   color: #ffffff;
 }
 
+.curriculum-progress {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 600px;
+  margin: 3px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.curriculum {
+  margin-bottom: 0px;
+}
+
+.curriculum-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #4caf50;
+  transition: width 0.3s ease;
+}
+
+.progress-fill.complete {
+  background: #2196f3; /* Blue color for 100% completion */
+}
 </style>

@@ -37,7 +37,15 @@ const topic_number = ref("")
 const sub_topic_number = ref("")
 const learning_area_number = ref("")
 const class_number = ref("")
-let  curriculumNumber = routerData.currentRoute.value.query.id
+// let  curriculumNumber = routerData.currentRoute.value.query.id
+
+let  curriculumNumber = ""
+
+if(routerData.currentRoute.value.query.id){
+  curriculumNumber = routerData.currentRoute.value.query.id
+}else {
+ curriculumNumber = localStorage.getItem("CurriculumNum")
+}
 
 
 const addConcept = () => {
@@ -49,7 +57,9 @@ const expandConceptUi = () => {
   showExpandConceptModal.value = true
 }
 
-
+const closeConcept = ()=> {
+  conceptDialog.value = false
+}
 
 
 </script>
@@ -62,7 +72,7 @@ const expandConceptUi = () => {
 
 
     <AppModal :title="conceptEditMode ? 'Edit' : 'Add'" v-model="conceptDialog" lg>
-      <new-concept></new-concept>
+      <new-concept @closeDialog="closeConcept"></new-concept>
     </AppModal>
 
 

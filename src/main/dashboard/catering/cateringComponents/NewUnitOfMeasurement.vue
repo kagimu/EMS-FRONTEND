@@ -37,6 +37,15 @@ onMounted(() => {
     }
 )
 
+// const getMenuItemInfo = () =>{
+//   let data = {
+//     school_number:form.school_number,
+//     sort_column:"code",
+//     sort_direction:"asc"
+//   }
+//   cateringStore.fetchUnitOfMeasureInfo(data)
+// }
+
 watch (
     () => props.unitOfMeasureList,
     async (data) => {
@@ -59,7 +68,6 @@ const checkUnitOfMeasureInfo = () => {
 
 
 const unitMeasurement = () => {
-
 
   buttonLoader.value = true
   form.code = parseInt(form.code)
@@ -134,7 +142,7 @@ watch(
 
 
   <div class="mb-2">
-  <label class="textColor"><small>School</small> </label>
+  <label class="text-sm"><small>School</small> </label>
   <select
       v-model="form.school_number"
       class="form-select form-select-sm" required
@@ -146,7 +154,7 @@ watch(
   </select>
 </div>
          <div class="mb-2">
-            <label class="textColor"><small>Code</small></label>
+            <label class="text-sm"><small>Code</small></label>
             <input
             v-model="form.code"
             @keypress="commons.codeValidator($event)"
@@ -160,7 +168,7 @@ watch(
 
 
         <div class="mb-2">
-            <label class="textColor"><small>ABBREVIATION</small></label>
+            <label class="text-sm"><small>ABBREVIATION</small></label>
             <input v-model="form.abbreviation"  type="text" required class="form-control shadow-none">
         </div>
 
@@ -168,7 +176,7 @@ watch(
 
 
             <div class="mb-2">
-            <label class="textColor"><small>Name</small></label>
+            <label class="text-sm"><small>Name</small></label>
             <input v-model="form.name"   type="text" required class="form-control shadow-none">
 
 

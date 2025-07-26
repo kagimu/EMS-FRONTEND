@@ -8,10 +8,12 @@ import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/stor
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
 import {useRouter} from "vue-router";
 
 
 const notificationStore  = useNotificationStore()
+const campusStore = useCampusStore()
 const teacherCommentStore = useTeacherCommentStore()
 const commons = useCommonsStore()
 const routerData = useRouter()
@@ -20,6 +22,8 @@ const studyPeriodStore = useStudyPeriodStore()
 const classStore = useClassesStore()
 const academicYearStore = useAcademicYearStore()
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
+const schoolN = routerData.currentRoute.value.query.sch
+const campusNumber = routerData.currentRoute.value.query.id
 const reportSettingsList = ref(null)
 const campusLevelList = ref([])
 const academicYearList = ref([])
@@ -32,6 +36,7 @@ const study_period_number = ref("")
 const campus_class_number = ref("")
 const commentsList = ref(null)
 const loader = ref(false)
+const isUpdate = ref(false)
 
 const props = defineProps({
   headTeacherCommentList:{}
@@ -46,7 +51,7 @@ report_setting_number:""
 
 onMounted(
     async () => {
-        teacherCommentStore.fetchTeacherComments()
+        await teacherCommentStore.fetchTeacherComments()
         await doFetchReportSettings()
         fetchCampusLevel()
         getCommentInfo()
@@ -55,17 +60,36 @@ onMounted(
 
 const getCommentInfo = () =>{
   if(props.headTeacherCommentList){
-   form.min_aggregate = props.headTeacherCommentList.min_aggregate,
-   form.max_aggregate = props.headTeacherCommentList.max_aggregate,
+   form.min_aggregate = props.headTeacherCommentList.min_aggregate
+   form.max_aggregate = props.headTeacherCommentList.max_aggregate
    form.comment = props.headTeacherCommentList.comment
+
+    isUpdate.value = true
   }
 }
+
+watch(
+    () => props.headTeacherCommentList,
+    async (data) => {
+      if(data){
+        getCommentInfo()
+      }
+    }
+)
 
 const addComments = () => {
     loader.value = true
 //  alert(JSON.stringify(form))
 if(props.headTeacherCommentList){
-alert("Halleluhah")
+  let formData = {
+min_aggregate : parseInt(form.min_aggregate),
+max_aggregate : parseInt(form.max_aggregate),
+comment : form.comment,
+report_setting_number : props.headTeacherCommentList.report_setting_number,
+ number : parseInt(props.headTeacherCommentList.id)
+  }
+// alert(JSON.stringify(formData))
+  teacherCommentStore.newTeacherComment(formData)
 }else{
 let formData = {
 min_aggregate : parseInt(form.min_aggregate),
@@ -81,9 +105,10 @@ const doFetchReportSettings = async () => {
   let data = {
      academic_year_number:academic_year_number.value,
      study_period_number:study_period_number.value,
-     campus_class_number:campus_class_number.value
+     campus_number:campusNumber,
+     class_number:campus_class_number.value
   }
-   await reportSetupStore.fetchReportSettings(data)
+    reportSetupStore.fetchReportSettings(data)
  }
 
 const fetchCampusLevel = () => {
@@ -93,14 +118,20 @@ const fetchCampusLevel = () => {
 
 const fetchAcademicYear = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
-  academicYearStore.fetchCampusClassByLevel(campus_level_number)
+  // academicYearStore.fetchCampusClassByLevel(campus_level_number)
+
+  let data = {
+    school_number:schoolN,
+    campus_level_number:campus_level_number
+  }
+  campusStore.fetchClassesBySchool(data)
 }
 
 
-const fetchStudyPeriod = (academic_num) =>{
-  studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
-  doFetchReportSettings()
-}
+// const fetchStudyPeriod = (academic_num) =>{
+//   studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
+//   doFetchReportSettings()
+// }
 
 
 
@@ -133,13 +164,22 @@ watch(
 )
 
 watch(
-    () => academicYearStore.campusClassByLevelResponse,
+    () => campusStore.schoolClassesResponse,
     async (data) => {
       if(data){
         campusClassList.value = data.data
       }
     }
 )
+
+// watch(
+//     () => academicYearStore.campusClassByLevelResponse,
+//     async (data) => {
+//       if(data){
+//         campusClassList.value = data.data
+//       }
+//     }
+// )
 
 
 watch(
@@ -203,7 +243,7 @@ watch(
       {{ errorMessage }}
     </div>
 
-<div class="row">
+<div v-if="!isUpdate" class="row">
  
           <div class="mb-2">
             <label class="text-sm text-gray-600">Level</label>
@@ -225,7 +265,7 @@ watch(
                 @change="doFetchReportSettings()"
             >
               <option disabled value="">--select--</option>
-              <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+              <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.name+" [ "+list.abbreviation+" ]"}}</option>
             </select>
           </div>
 
@@ -238,11 +278,12 @@ watch(
                 v-model="form.report_setting_number"
             >
               <option disabled value="">--select--</option>
-              <option v-for="(list, index) in reportSettingsList" :key="index" :value="list.number">{{list.name}}</option>
+              <option v-for="(list, index) in reportSettingsList" :key="index" :value="list.report_setting_number">{{list.name}}</option>
             </select>
           </div>
 
         </div>
+
    <div class="row">
     <div class="col-6">
         <div class="mb-2">

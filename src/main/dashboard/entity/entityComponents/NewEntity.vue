@@ -19,7 +19,12 @@ const props = defineProps({
     name:null,
     phone:null,
     address:null,
-    email:null
+    email:null,
+    whatsapp:null,
+    facebook:null,
+    twitter:null,
+    instagram:null,
+    website:null
   })
 
   onMounted(() => {
@@ -44,7 +49,13 @@ const props = defineProps({
     formData.phone = draft?.phone ?? ""
     formData.address = draft?.address ?? ""
     formData.email = draft?.email ?? ""
-
+    formData.website = draft?.website
+    formData.whatsapp = draft?.whatsapp
+    formData.address = draft?.address
+    formData.twitter = draft?.twitter
+    formData.facebook = draft?.facebook
+    formData.instagram = draft?.instagram
+    formData.linkedin = draft?.linkedin
   }
 
   const addEntity = () =>{
@@ -52,6 +63,7 @@ const props = defineProps({
     if(formData.entity_number){
       entityStore.editEntity(formData)
     }else {
+      // formData.whatsapp = parseInt(formData.whatsapp)
       entityStore.newEntity(formData)
     }
 
@@ -94,35 +106,80 @@ watch (
     <div>
 
     <form @submit.prevent="addEntity">
-      
+      <div class="row">
+            <div class="col-lg-6">
+          <h3 class="text-sm font-semibold mb-4 ">Contact Information</h3>
       <div class="mb-2">
-        <label class="textColor text-sm">Name</label>
+        <label class="text-sm">Name</label>
         <input  
            v-model="formData.name"  style="outline: none 0 !important; box-shadow: none;"
-             type="text" required class="form-control form-control-sm">
+             type="text" required  class="form-input mt-1 block w-full border-gray-300 rounded-md">
       </div>
 
          
       <div class="mb-2">
-        <label class="textColor text-sm">Email</label>
+        <label class="text-sm">Email</label>
         <input  
            v-model="formData.email"  style="outline: none 0 !important; box-shadow: none;"
-             type="email" required class="form-control form-control-sm">
+             type="email" required  class="form-input mt-1 block w-full border-gray-300 rounded-md">
       </div>
          
       <div class="mb-2">
-        <label class="textColor text-sm">Phone</label>
+        <label class="text-sm">Phone</label>
         <input  
            v-model="formData.phone"  style="outline: none 0 !important; box-shadow: none;"
-             type="text" required class="form-control form-control-sm">
+             type="text" required  class="form-input mt-1 block w-full border-gray-300 rounded-md">
       </div>
          
       <div class="mb-2">
-        <label class="textColor text-sm">Address</label>
+        <label class="text-sm">Address</label>
         <input  
            v-model="formData.address"  style="outline: none 0 !important; box-shadow: none;"
-             type="text" required class="form-control form-control-sm">
+             type="text" required  class="form-input mt-1 block w-full border-gray-300 rounded-md">
       </div>
+
+      <div class="mb-2">
+        <label class="text-sm">Website</label>
+        <input  
+           v-model="formData.website"  style="outline: none 0 !important; box-shadow: none;"
+             type="text"   class="form-input mt-1 block w-full border-gray-300 rounded-md">
+      </div>
+      </div>
+      <div class="col-lg-6">
+        <h3 class="text-sm font-semibold mt-6 mb-4">Social Media Links</h3>
+      <div class="mb-2">
+            <label for="phone" class="block text-gray-700 text-sm">Whatsapp No.</label>
+            <input  
+           v-model="formData.whatsapp"  style="outline: none 0 !important; box-shadow: none;"
+             type="text"    class="form-input mt-1 block w-full border-gray-300 rounded-md">
+          </div>
+
+                 <div class="mb-3">
+            <label for="facebook" class="block text-gray-700 text-sm">Facebook</label>
+            <input type="url" id="facebook" v-model="formData.facebook"
+                    class="form-input mt-1 block w-full border-gray-300 rounded-md"/>
+          </div>
+
+          <div class="mb-3">
+            <label for="twitter" class="block text-gray-700 text-sm">Twitter</label>
+            <input type="url" id="twitter" v-model="formData.twitter"
+                    class="form-input mt-1 block w-full border-gray-300 rounded-md"/>
+          </div>
+
+          <div class="mb-3">
+            <label for="linkedin" class="block text-gray-700 text-sm">LinkedIn</label>
+            <input type="url" id="linkedin" v-model="formData.linkedin"
+                    class="form-input mt-1 block w-full border-gray-300 rounded-md"/>
+          </div>
+
+          <div class="mb-3">
+            <label for="instagram" class="block text-gray-700 text-sm">Instagram</label>
+            <input type="url" id="instagram" v-model="formData.instagram"
+                    class="form-input mt-1 block w-full border-gray-300 rounded-md"/>
+          </div>
+        </div>
+
+        </div>
     
 
       <div class="flex justify-content-end mt-3" style="width: 100%;">
@@ -142,4 +199,20 @@ watch (
 
 
 <style>
+.form-input {
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus {
+  border-color: #2563eb;
+}
+
+button {
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
 </style>

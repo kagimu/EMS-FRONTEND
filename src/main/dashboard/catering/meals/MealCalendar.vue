@@ -7,6 +7,8 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import AppModal from "@/components/AppModal.vue";
 import ActivateMealCourse from "@/main/dashboard/catering/meals/components/ActivateMealCourse.vue";
 import useNotificationStore from "@/composables/useNotification.js";
+import { useAbility } from '@casl/vue';
+const { can } = useAbility()
 
 const  notificationStore  = useNotificationStore()
 const mealCalendarList = ref([])
@@ -24,6 +26,20 @@ const mealActivateMealCourseDialog = ref(false)
 onMounted(
     async () => {
       await schoolStore.fetchSchools()
+
+      
+  let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+  let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
+
+ if(defaultSchoolNo){
+  school_number.value = defaultSchoolNo
+  fetchCampusBySchool(school_number.value)
+  }
+
+  if(defaultCampusNo){
+    campus_number.value = defaultCampusNo
+  }
+  doFetchMealCourses()
     }
 )
 
@@ -115,6 +131,7 @@ watch(
         <div class="flex justify-content-between mt-3">
           <div class="ml-4">Meal Courses</div>
           <button
+          v-if="can('activate_meal_course','general')" 
               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="doActivateMealCourse">
             <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
             Activate Meal Course

@@ -10,6 +10,7 @@ export const useUserStore = defineStore("users", () => {
     let updateUserResponse = ref(null)
     let narrativeReportResponse = ref(null)
     let userResponse = ref(null)
+    let updateStudentBioResponse = ref(null)
 
         async function createNewUser(data) {
             return await api.post("main/users", data)
@@ -29,11 +30,19 @@ export const useUserStore = defineStore("users", () => {
                     let study_period_number = data?.study_period_number ?? ""
                     let campus_class_number = data?.campus_class_number ?? ""
                     let academic_year_number = data?.academic_year_number ?? ""
+                    let start_date = data?.start_date ?? ""
+                    let end_date = data?.end_date ?? ""
+                    let narrative_schedule_number = data?.narrative_schedule_number  ?? ""
+
             return await api.get("main/report-settings/narrative?student_number="+student_number+
                     "&assessment_area_number="+assessment_area_number+
                     "&study_period_number="+study_period_number+
                     "&campus_class_number="+campus_class_number+
-                    "&academic_year_number="+academic_year_number)
+                    "&academic_year_number="+academic_year_number+
+                    "&narrative_schedule_number="+narrative_schedule_number,
+                    "&start_date="+start_date+
+                    "&end_date="+end_date
+                )
                 .then((response) => {
                     narrativeReportResponse.value = response.data
                 })
@@ -80,6 +89,19 @@ export const useUserStore = defineStore("users", () => {
         }
 
 
+        async function updateStudentBioDetails(data) {
+            return await api.put("main/applications/students/"+data.student_number,data)
+                .then((response) => {
+                    updateStudentBioResponse.value = response.data
+                })
+                .catch((response) => {
+                    if(response && response.response){
+                        errorMessage.value = response.response.data
+                    }
+                })
+        }
+
+
     return {
      errorMessage,
      userListResponse,
@@ -92,7 +114,9 @@ export const useUserStore = defineStore("users", () => {
      createNewUser,
      fetchUsersList,
      deleteUser,
-     updateUsers
+     updateUsers,
+     updateStudentBioDetails,
+     updateStudentBioResponse
   
     }
 })

@@ -6,13 +6,15 @@ import {useRouter} from "vue-router";
 import UserManagement from "./accountComponents/UserManagement.vue";
 import ScopeManager from "../profiles/ScopeManager.vue";
 import Entity from "@/main/dashboard/entity/Entity.vue"
+import TeacherManagement from "@/main/dashboard/account/teacherManagement/TeacherManagement.vue";
 
 import { useAbility } from '@casl/vue';
+
 
 const { can } = useAbility()
 
 const routerData = useRouter()
-const buttonLoader = ref(false)
+
 
 const route = routerData.currentRoute.value.query.s
 const selectedPage = route ? route : "user-management"
@@ -22,7 +24,12 @@ const accountList = ref([
   {
     name: "User Management" ,
     id: "user-management",
-    action:"view_account_management"
+    action:"view_users"
+  },
+  {
+    name: "Teacher Management" ,
+    id: "teacher-management",
+    action:"view_users"
   },
   {
     name:"Roles",
@@ -32,12 +39,12 @@ const accountList = ref([
   {
     name: "User Scope" ,
     id: "scope",
-    action:"view_scope"
+    action:"view_scopes"
   },
   {
     name: "Entity" ,
     id: "entity",
-    action:"view_entity"
+    action:"view_entities"
   },
 
 ])
@@ -53,7 +60,7 @@ const form = reactive({
   
       <div class="row">
         <div class="col-3">
-          <div class="card mt-3">
+          <div class="card p-0 mt-3">
             <div class="card-body" style="padding: 0;">
               <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Account</div>
   
@@ -82,6 +89,9 @@ const form = reactive({
                   <div v-if="selectedPage === 'user-management'">
                     <UserManagement></UserManagement>
                   </div>
+                  <div v-if="selectedPage === 'teacher-management'">
+                    <TeacherManagement></TeacherManagement>
+                  </div>
                   <div v-if="selectedPage === 'role'">
                       <roles></roles>
                   </div>
@@ -108,7 +118,7 @@ const form = reactive({
     box-shadow: none;
   }
   
-  .textColor{
+  .text-sm2{
     color: #717375;
   }
   

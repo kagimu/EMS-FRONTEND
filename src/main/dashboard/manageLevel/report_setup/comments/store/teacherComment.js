@@ -7,7 +7,13 @@ export const useTeacherCommentStore = defineStore("teacherComment", () => {
     let  teacherCommentResponse= ref(null)
     const errorMessage = ref(null)
     const newCommentFromTeacherResponse = ref(null)
+    const newOverallRemarkFromTeacherResponse = ref(null)
     const commentFromTeachersResponse = ref(null)
+    let deleteHeadTeacherCommentResponse = ref(null);
+    const newSubjectTeacherCommentResponse = ref(null)
+    const newClassTeacherCommentResponse = ref(null)
+    const classTeacherCommentResponse = ref(null)
+    const subjectTeacherCommentResponse = ref(null)
 
     async function newTeacherComment(data) {
         return await api.post("main/report-settings/add-head-teachers-comment/"+data.report_setting_number, data)
@@ -45,6 +51,18 @@ export const useTeacherCommentStore = defineStore("teacherComment", () => {
             })
     }
 
+    async function newOverallRemarkFromTeacher(data) {
+        return await api.post("main/report-settings/learning-area-comments", data)
+            .then((response) => {
+                newOverallRemarkFromTeacherResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
     async function fetchCommentsFromTeachers() {
         return await api.get("main/report-settings/teachers-comments")
             .then((response) => {
@@ -57,17 +75,87 @@ export const useTeacherCommentStore = defineStore("teacherComment", () => {
             })
     }
 
+    async function deleteHeadTeacherComment(data) {
+        return await api.delete("main/report-settings/head-teacher-comment/"+data.id)
+            .then((response) => {
+            deleteHeadTeacherCommentResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function newSubjectTeacherComment(data) {
+        return await api.post("main/report-settings/subject-teacher-comment", data)
+            .then((response) => {
+                newSubjectTeacherCommentResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function newClassTeacherComment(data) {
+        return await api.post("main/report-settings/class-teacher-comment", data)
+            .then((response) => {
+                newClassTeacherCommentResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function fetchClassTeacherComment() {
+        return await api.get("main/report-settings/class-teacher-comment")
+            .then((response) => {
+                classTeacherCommentResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function fetchSubjectTeacherComment(data) {
+        let campus_class_number = data.campus_class_number ?? ""
+        return await api.get("main/report-settings/subject-teacher-comment?campus_class_number="+campus_class_number)
+            .then((response) => {
+                subjectTeacherCommentResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
 
     return {
         errorMessage,
-        fetchTeacherComments,
-        newTeacherComment,
         teacherCommentResponse,
         newTeacherCommentResponse,
         newCommentFromTeacherResponse,
+        commentFromTeachersResponse,
+        newOverallRemarkFromTeacherResponse,
+        deleteHeadTeacherCommentResponse,
+        fetchTeacherComments,
+        newTeacherComment,
         newCommentFromTeacher,
-        fetchCommentsFromTeachers,
-        commentFromTeachersResponse
-      
+        deleteHeadTeacherComment,
+        newOverallRemarkFromTeacher,
+        newSubjectTeacherCommentResponse,
+        newSubjectTeacherComment,
+        newClassTeacherComment,
+        newClassTeacherCommentResponse,
+        fetchClassTeacherComment,
+        classTeacherCommentResponse,
+        fetchSubjectTeacherComment,
+        subjectTeacherCommentResponse
     }
 } )

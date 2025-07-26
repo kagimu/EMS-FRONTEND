@@ -29,10 +29,11 @@ export const useApplicationStore = defineStore("application", () => {
     let previousSchoolResultsByStudentResponse = ref(null)
     let previousSchoolResultsAllResponse = ref(null)
     let studentDataResponse = ref(null)
-    let submitApplicationOnSkipPreviousSchoolResponse = ref(null)
+    let submitApplicationResponse = ref(null)
     let interviewListByIdResponse = ref(null)
     let updateInterviewResponse = ref(null)
     let interviewDeleteByIdResponse = ref(null)
+    let deleteApplicationResponse = ref(null)
 
     async function newApplicationDetails(data) {
         return await api.post("main/applications/new-parent", data)
@@ -53,11 +54,10 @@ export const useApplicationStore = defineStore("application", () => {
     }
 
 
-    async function updateParentDetails(parentid,data) {
-        return await api.put("main/applications/parents/"+parentid, data)
+    async function updateParentDetails(applicationId,data) {
+        return await api.put("main/applications/parents/"+applicationId, data)
             .then((response) => {
                 updateParentPersonalDetailsresponse.value = response.data.data
-
             })
             .catch((response) => {
                 if(response && response.response){
@@ -125,7 +125,14 @@ export const useApplicationStore = defineStore("application", () => {
         let page = data?.page ?? "1"
         let per_page = data?.per_page ?? "15"
         let status = data?.status ?? ""
-        return await api.get("main/applications/all?page="+page+"&per_page="+per_page+"&status="+status)
+        let school_number = data?.school_number ?? ""
+        let campus_number = data?.campus_number ?? ""
+        let curriculum_number = data?.curriculum_number ?? ""
+        let campus_class_number = data?.campus_class_number ?? ""
+        let level_number = data?.level_number ?? ""
+        return await api.get("main/applications/all?page="+page+"&per_page="+per_page+"&status="+status+
+            "&school_number="+school_number+"&campus_number="+campus_number+"&curriculum_number="+curriculum_number+
+            "&campus_class_number="+campus_class_number+"&level_number="+level_number)
             .then((response) => {
                 applicationListResponse.value = response.data
             })
@@ -255,11 +262,13 @@ export const useApplicationStore = defineStore("application", () => {
         } )
         }
 
+        // main/interviews/"+interview_number+"/students?assessment_metric_number="+assessment_metric_number
+        // https://wholesome-api.noregrets.ug/main/interviews/students-by-interview/?interview_number=7f7ab8ff-dc31-40e8-9b85-e73f6bae9f9d&assessment_metric_number=0f1a614d-171a-4fbf-8943-2d1db3a3c416
         async function fetchStudentsOnInterview(data) {
             let  interview_number =   data?.interview_number ?? ""
             let assessment_metric_number = data?.assessment_metric_number ?? ""
           
-            return await api.get("main/interviews/"+interview_number+"/students?assessment_metric_number="+assessment_metric_number)
+            return await api.get("main/interviews/students-by-interview?interview_number="+interview_number+"&assessment_metric_number="+assessment_metric_number)
                 .then((response) => {
                     StudentsOnInterviewResponse.value = response.data
                 })
@@ -427,10 +436,10 @@ export const useApplicationStore = defineStore("application", () => {
             })
     }
 
-    async function submitApplicationOnSkipPreviousSchool(applicationNumber) {
+    async function submitApplicationData(applicationNumber) {
         return await api.post("main/applications/submit-application/"+applicationNumber)
             .then((response) => {
-                submitApplicationOnSkipPreviousSchoolResponse.value = response.data
+                submitApplicationResponse.value = response.data
             })
             .catch((response) => {
                 if(response){
@@ -438,6 +447,19 @@ export const useApplicationStore = defineStore("application", () => {
                 }
             })
     }
+
+    async function deleteApplication(data) {
+        return await api.delete("main/applications/"+data.application_number)
+            .then((response) => {
+                deleteApplicationResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
 
 
     return {
@@ -490,14 +512,15 @@ export const useApplicationStore = defineStore("application", () => {
         fetchPreviousSchoolResultsAll,
         studentDataResponse,
         fetchStudent,
-        submitApplicationOnSkipPreviousSchool,
-        submitApplicationOnSkipPreviousSchoolResponse,
+        submitApplicationData,
+        submitApplicationResponse,
         fetchInterviewListById,
         interviewListByIdResponse,
         updateInterview,
         updateInterviewResponse,
         deleteInterviewList,
-        interviewDeleteByIdResponse
-
+        interviewDeleteByIdResponse,
+        deleteApplicationResponse,
+        deleteApplication
     }
 })

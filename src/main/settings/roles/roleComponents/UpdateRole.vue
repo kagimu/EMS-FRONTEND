@@ -24,7 +24,7 @@
                   <ul>
                     <li v-for="(permission, permissionIndex) in Object.values(permissionGroup)[0]" :key="permissionIndex">
                       <input type="checkbox" :id="'permission_' + index + '_' + permissionIndex" v-model="permissionSelected" :value="permission">
-                      &nbsp;<label class="textColor" :for="'permission_' + index + '_' + permissionIndex">{{ permission }}</label>
+                      &nbsp;<label class="text-sm" :for="'permission_' + index + '_' + permissionIndex">{{ permission }}</label>
                     </li>
                   </ul>
                 </td>

@@ -23,12 +23,32 @@ export const useReportSetupStore = defineStore("report_setup", () => {
     const classToReportTemplateResponse = ref(null)
     const classesAddedToReportTemplateListResponse = ref(null)
     const removeClassFromReportTemplateResponse = ref(null)
+    const deleteReportColumnResponse = ref(null)
+    const deleteReportSettingsResponse = ref(null)
     const reportColumnByReportSettingResponse = ref(null)
+    const reportSettingsUpdateResponse= ref(null)
+    const deleteReportColumnAssessmentResponse= ref(null)
+    const updateReportTemplateResponse = ref(null)
+    const deleteReportTemplateResponse = ref(null)
+    const deleteReportTemplateInfoResponse = ref(null)
+    const updateReportColumnAssessmentResponse = ref(null)
 
     async function newReportSettings(data) {
         return await api.post("main/report-settings", data)
             .then((response) => {
                 reportSettingsResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function updateReportSettings(data) {
+        return await api.put("main/report-settings/update", data)
+            .then((response) => {
+                reportSettingsUpdateResponse.value = response.data
             })
             .catch((error) => {
                 if(error && error.response){
@@ -66,6 +86,19 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         return await api.post("main/report-settings/report-column-assessment", data)
             .then((response) => {
                 reportColumnAssessmentResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    
+    async function updateReportColumnAssessment(data) {
+        return await api.put("main/report-settings/report-column-assessment/"+data.report_column_assessment_number, data)
+            .then((response) => {
+                updateReportColumnAssessmentResponse.value = response.data
             })
             .catch((error) => {
                 if(error && error.response){
@@ -114,10 +147,14 @@ export const useReportSetupStore = defineStore("report_setup", () => {
     async function fetchReportSettings(data) {
         let academic_year_number = data?.academic_year_number ?? ""
         let study_period_number = data?.study_period_number ?? ""
-        let campus_class_number = data?.campus_class_number ?? ""
+        let class_number = data?.class_number ?? ""
+        let campus_number = data?.campus_number
+        let campus_curriculum_number = data?.campus_curriculum_number
         return await api.get("main/report-settings?academic_year_number="+academic_year_number+
                 "&study_period_number="+study_period_number+
-                "&campus_class_number="+campus_class_number)
+                "&class_number="+class_number+"&campus_number="+campus_number+
+                "&campus_curriculum_number="+campus_curriculum_number
+            )
             .then((response) => {
                 reportSettingsListResponse.value = response.data
             })
@@ -180,19 +217,23 @@ export const useReportSetupStore = defineStore("report_setup", () => {
     async function fetchReportColumnAssessment(data) {
         let academic_year_number =   data?.academic_year_number ?? ""
         let study_period_number =    data?.study_period_number ?? ""
-        let campus_class_number =   data?.campus_class_number ?? ""
+        let class_number =   data?.class_number ?? ""
         let assessment_area_number =   data?.assessment_area_number ?? ""
         let assessment_metric_number =  data?.assessment_metric_number ?? ""
         let  report_setting_number = data?.report_setting_number ?? ""
         let  report_column_number = data?.report_column_number ?? ""
+        let campus_number = data?.campus_number ?? ""
+        let campus_curriculum_number = data?.campus_curriculum_number ?? ""
         return await api.get("main/report-settings/report-column-assessment"+
                 "?academic_year_number="+academic_year_number+
                 "&study_period_number="+study_period_number+
-                "&campus_class_number="+campus_class_number+
+                "&class_number="+class_number+
                 "&assessment_area_number="+assessment_area_number+
                 "&assessment_metric_number="+assessment_metric_number+
                 "&report_setting_number="+report_setting_number+
-                "&report_column_number="+report_column_number
+                "&report_column_number="+report_column_number+
+                "&campus_number="+campus_number+
+                "&campus_curriculum_number="+campus_curriculum_number
             )
             .then((response) => {
                 reportColumnAssessmentListResponse.value = response.data
@@ -209,6 +250,31 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         return await api.post("main/school/report-templates/new", data)
             .then((response) => {
                 reportTemplateResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function updateReportTemplate(data) {
+        return await api.put("main/school/report-templates/update", data)
+            .then((response) => {
+                updateReportTemplateResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    
+    async function deleteReportTemplate(data) {
+        return await api.delete("main/school/report-templates/delete/"+data)
+            .then((response) => {
+                deleteReportTemplateResponse.value = response.data
             })
             .catch((error) => {
                 if(error && error.response){
@@ -265,6 +331,42 @@ export const useReportSetupStore = defineStore("report_setup", () => {
                 }
             })
     }
+
+    async function deleteReportColumn(data) {
+        return await api.delete("main/report-settings/columns/"+data)
+            .then((response) => {
+                deleteReportColumnResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function deleteReportSettings(data) {
+        return await api.delete("main/report-settings?report_setting_number="+data)
+            .then((response) => {
+                deleteReportSettingsResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function deleteReportColumnAssessment(data) {
+        return await api.delete("main/report-settings/report-column-assessment?report_column_assessment_number="+data)
+            .then((response) => {
+                deleteReportColumnAssessmentResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
     
     async function fetchReportColumnsByReportSettingId(report_setting_number) {
         return await api.get("main/report-settings?report_setting_number="+report_setting_number)
@@ -278,6 +380,18 @@ export const useReportSetupStore = defineStore("report_setup", () => {
             })
     }
 
+    
+    async function deleteReportTemplateInfo(data) {
+        return await api.delete("main/delete/"+data)
+            .then((response) => {
+                deleteReportTemplateInfoResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
     return {
         errorMessage,
         reportSettingsResponse,
@@ -293,6 +407,21 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         studentMarksResponse,
         assessmentAreaGradingStandardResponse,
         assessmentAreaGradingStandardInfoResponse,
+        reportColumnByReportSettingResponse,
+        reportSettingsUpdateResponse,
+        reportTemplateListResponse,
+        reportTemplateResponse,
+        classToReportTemplateResponse,
+        classesAddedToReportTemplateListResponse,
+        removeClassFromReportTemplateResponse,
+        deleteReportColumnResponse,
+        deleteReportSettingsResponse,
+        deleteReportColumnAssessmentResponse,
+        updateReportTemplateResponse,
+        deleteReportTemplateResponse,
+        deleteReportTemplateInfoResponse,
+        updateReportColumnAssessmentResponse,
+        deleteReportTemplateInfo,
         newReportSettings,
         newReportColumn,
         newReportColumnAssessment,
@@ -307,16 +436,16 @@ export const useReportSetupStore = defineStore("report_setup", () => {
         newAssessmentAreaGradingStandard,
         fetchAssessmentAreaGradingStandardInfo,
         addReportTemplate,
-        reportTemplateListResponse,
-        reportTemplateResponse,
         fetchReportTemplate,
         addClassToReportTemplate,
-        classToReportTemplateResponse,
         fetchClassesAddedReportTemplate,
-        classesAddedToReportTemplateListResponse,
         removeClassFromReportTemplate,
-        removeClassFromReportTemplateResponse,
-        fetchReportColumnsByReportSettingId,
-        reportColumnByReportSettingResponse
+        updateReportSettings,
+        deleteReportColumn,
+        deleteReportSettings,
+        deleteReportColumnAssessment,
+        updateReportTemplate,
+        deleteReportTemplate,
+        updateReportColumnAssessment
     }
 })

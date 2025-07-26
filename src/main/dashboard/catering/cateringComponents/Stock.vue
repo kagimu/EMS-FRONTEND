@@ -5,9 +5,15 @@ import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
 
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
+
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import useCommonsStore from "@/composables/useCommons.js";
+const confirmationRef = ref(null);
+
+
 
 const notificationStore = useNotificationStore()
+const commons = useCommonsStore()
 const cateringStore = useCateringStore()
 const errorMessage = ref(null)
 const stockData = ref([])
@@ -25,11 +31,26 @@ const campusStore = useCampusStore()
   const  menu_item_number = ref("")
 
 
+  onMounted(() => {
+      schoolStore.fetchSchools()
+      
+  let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+  let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
+  let defaultCampusCurriculumNo =   localStorage.getItem("defaultCampusCurriculumNo")
 
-onMounted(() => {
-  fetchAllStock()
+
+ if(defaultSchoolNo){
+    school_number.value = defaultSchoolNo
+    fetchCampuses(school_number.value)
+  }
+
+  if(defaultCampusNo){
+    campus_number.value = defaultCampusNo
+  }
+
     }
 )
+
 
 const fetchCampuses = () => {
   campusStore.fetchCampuses(school_number.value)
@@ -82,10 +103,7 @@ watch(
 )
 
 
-onMounted(() => {
-      schoolStore.fetchSchools()
-    }
-)
+
 
 watch(
     () => schoolStore.schoolsResponse,
@@ -116,12 +134,30 @@ watch(
     },
     {deep: true}
 )
-//delete
-const deleteThisData = (id,name) => {
-  if(!confirm("Are you sure, you want to delete: " + name)){
-    return
+
+
+const deleteThisData = async (id,name) => {
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete this item " + name);
+if (agreed) {
+  let data = {
+ stock_number:id
   }
+  cateringStore.deleteStock(data)
 }
+}
+
+
+watch(
+    () => cateringStore.deleteStockResponse,
+    async (data) => {
+      if (data) {
+        notificationStore.successToast("Success", data.message)
+        fetchAllStock()
+      }
+    },
+    {deep: true}
+)
+
 
 watch(
     () => campusStore.campusListResponse,
@@ -146,9 +182,7 @@ watch(
 <template>
     <div>
 
-
-
-
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
     <!-- end  -->
     <div class="row mt-3">
     <div class="col-12">
@@ -178,7 +212,7 @@ watch(
 
              <div>
                <div>
-                 <label class="textColor"><small>School</small> </label>
+                 <label class="text-sm"><small>School</small> </label>
                  <select
                      style="box-shadow: none;"
                      class="form-select form-select-sm" required
@@ -192,7 +226,7 @@ watch(
              </div>
 
              <div>
-               <label class="textColor"><small>Campus</small>  </label>
+               <label class="text-sm"><small>Campus</small>  </label>
                <select
                    style="box-shadow: none;"
                    class="form-select form-select-sm"
@@ -205,7 +239,7 @@ watch(
              </div>
 
              <div>
-               <label class="textColor"><small>Item</small>  </label>
+               <label class="text-sm"><small>Item</small>  </label>
                <select
                    style="box-shadow: none;"
                    class="form-select form-select-sm"
@@ -227,10 +261,13 @@ watch(
     >
     <thead>
         <tr class="font-bold">
-        <td>#</td>
+        <!-- <td>#</td> -->
         <td>Menu Item</td>
         <td>Quantity</td>
-        <td>Unit Price</td>
+        <td>Unit Cost</td>
+        <td>Purchase Qty</td>
+        <td>Purchase Unit</td>
+        <td>Purchase Unit Cost</td>
         <td>Campus</td>
         </tr>
     <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
@@ -239,15 +276,18 @@ watch(
     </thead>
     <tbody>
     <tr v-for="(list, index) in stockData" :key="index">
-      <td>{{ index+1 }}</td>
+      <!-- <td>{{ index+1 }}</td> -->
       <td>{{ list.menu_item_name }}</td>
-     <td> {{ list.quantity }}</td>
-     <td>{{ list.unit_cost }}</td>
+     <td> {{ commons.formatNumbersWithComma(list.quantity) }}</td>
+     <td>{{ commons.formatNumbersWithComma(list.unit_cost) }}</td>
+      <td>{{ commons.formatNumbersWithComma(list.purchase_quantity) }}</td>
+      <td>{{ list.purchase_unit_name }}</td>
+     <td>{{ commons.formatNumbersWithComma(list.purchase_unit_cost) }}</td>
      <td>{{ list.campus_name }}</td>
      <td>
-          <button >
+          <!-- <button >
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
-          </button>
+          </button> -->
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
           <button type="button" @click="deleteThisData(list.number,list.menu_item_name)">
             <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>

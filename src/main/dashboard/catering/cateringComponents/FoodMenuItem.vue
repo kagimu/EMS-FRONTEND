@@ -9,6 +9,18 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import AppModal from "@/components/AppModal.vue";
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
 
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+
+
+import { useAbility } from '@casl/vue';
+import useCommonsStore from "@/composables/useCommons.js";
+
+const { can } = useAbility()
+const notificationStore = useNotificationStore()
+const commons = useCommonsStore()
+
 
 const showingModal = ref(false)
 const isLoading = ref(true);
@@ -16,7 +28,7 @@ const loading = ref(true)
 const tableLoader = ref(true)
 
 
-const notificationStore = useNotificationStore()
+
 const menuItemsinfoData = ref(null)
 const errorMessage = ref(null)
 const campusList = ref([])
@@ -27,9 +39,10 @@ const campusStore = useCampusStore()
 const menuItemDataParts = ref([])
 const cateringStore = useCateringStore()
 const page = ref(1)
-const per_page = ref(20)
+const per_page = ref(30)
 const total_items = ref(0)
 const total_rows = ref(0)
+const activeUOMView = ref('purchase') 
 
 
 const form = reactive({
@@ -41,6 +54,16 @@ const form = reactive({
 
 onMounted(() => {
       schoolStore.fetchSchools()
+
+      let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+
+
+ if(defaultSchoolNo){
+    form.school_number = defaultSchoolNo
+  }
+
+  doFetchMenuItem(form.school_number)
+    
     }
 )
 
@@ -48,16 +71,20 @@ onMounted(() => {
 const filterBySchool = (school_number) => {
   if(school_number) {
     campusStore.fetchCampuses(school_number)
+    doFetchMenuItem(school_number)
   }
 }
 
 
-const doFetchMenuItem = () => {
+const doFetchMenuItem = (school_number) => {
+  if(!form.school_number){
+    return
+  }
   menuItemData.value = []
   let data = {
     page: 1,
     per_page: per_page.value,
-    school_number:form.school_number,
+    school_number:school_number,
     campus_number:form.campus_number,
     type:"ITEM"
   }
@@ -67,8 +94,9 @@ const doFetchMenuItem = () => {
 
 function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
   if (scrollTop + clientHeight >= scrollHeight) {
-
-    tableLoader.value = true
+    if(!form.school_number){
+      return
+    }
     let data = {
       page: (page.value+1),
       per_page: per_page.value,
@@ -207,17 +235,31 @@ watch(
 )
 
 
-const deleteThisData = (id,name) => {
-  if(!confirm("Are you sure, you want to delete: " + name)){
-    return
-  }
+// const deleteThisData = (id,name) => {
+//   if(!confirm("Are you sure, you want to delete: " + name)){
+//     return
+//   }
 
+//   let data = {
+//     menu_item_number:id
+//   }
+//   cateringStore.deleteMenuItem(data)
+
+// }
+
+const deleteThisData = async (id,name) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
+if (agreed) {
   let data = {
     menu_item_number:id
   }
   cateringStore.deleteMenuItem(data)
+}
+
 
 }
+
 
 watch(
     () => cateringStore.deleteMenuItemResponse,
@@ -227,9 +269,11 @@ watch(
     }
 )
 
+
 </script>
 <template>
   <div>
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal v-model="showingModal"  title="Update Menu Item" xl4>
       <NewMenuItem :menuItemsInfo="menuItemsinfoData"></NewMenuItem>
@@ -274,17 +318,9 @@ watch(
                 <div class="col-4">
                   <div class="mb-2">
 
-                    <select
-                        v-model="form.campus_number"
-                        class="form-select form-select-sm"
-                        required style="box-shadow: none;"
-                        @change="filterByCampus(form.campus_number)"
-                    >
-                      <option disabled value="">--Select Campus--</option>
-                      <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-                      </option>
-                    </select>
-                  </div></div>
+
+                  </div>
+                </div>
 
 
 
@@ -292,7 +328,8 @@ watch(
 
                 <div class="col-4">
                   <div class="mb-2">
-                    <input class="form-control mb-0" placeholder="Search..." type="text">
+                    <input
+                     class="form-control mb-0" placeholder="Search..." type="text">
                   </div>
                 </div>
 
@@ -310,47 +347,90 @@ watch(
                     :per_page="per_page"
                     :total_items="total_items"
                     :total_rows="total_rows"></PaginationTemplate>
-
-
-
-
                 <div
                     class="w-full overflow-auto max-h-[520px] scrollbar-thin"
                     @scroll="onScroll"
                 >
-                  <table
-                      id="datatable"
-                      class="table table-hover table-sm text-[12px]">
-                    <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Name</th>
-                      <th>Unit</th>
-                      <th>Purchase Unit</th>
-                      <th>Current Quantity</th>
-                      <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="(list, index) in menuItemData" v-if="isLoading===false" :key="index">
-                      <td>{{ list?.code }}</td>
-                      <td>{{ list?.name }}</td>
-                      <td>{{ list?.unit_of_measure_name }}</td>
-                      <td>{{ list?.purchase_unit_of_measure_name }}</td>
-                      <td>{{ list?.current_quantity }}</td>
-                      <td>
-                        <button @click="showUpdateDialog(list)" >
-                          <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
-                        </button>
-                        &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-                        <button type="button" @click="deleteThisData(list.number,list.name)">
-                          <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
-                        </button>
-                      </td>
-                    </tr>
+ 
+                
+  <div class="flex space-x-4">
+ 
 
-                    </tbody>
-                  </table>
+   
+    <div class="inline-flex items-center bg-gray-100 p-0.5 rounded-full shadow-sm text-xs">
+  <button
+    @click="activeUOMView = 'purchase'"
+    :class="[
+      'px-3 py-1 rounded-full font-medium transition-all duration-200',
+      activeUOMView === 'purchase'
+        ? 'bg-[#035594] text-white shadow-sm'
+        : 'text-gray-700 hover:bg-white hover:text-[#035594]'
+    ]"
+  >
+    Purchase UOM
+  </button>
+
+  <button
+    @click="activeUOMView = 'user'"
+    :class="[
+      'px-3 py-1 rounded-full font-medium transition-all duration-200',
+      activeUOMView === 'user'
+        ? 'bg-[#035594] text-white shadow-sm'
+        : 'text-gray-700 hover:bg-white hover:text-[#035594]'
+    ]"
+  >
+    User UOM
+  </button>
+</div>
+
+</div>
+
+
+
+
+
+<table class="table table-hover table-sm text-[12px]">
+  <thead class="sticky top-0 bg-white z-10 shadow-sm">
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>{{ activeUOMView === 'purchase' ? 'Purchase UOM' : 'User UOM' }}</th>
+      <th>Current Quantity</th>
+      <th>
+        <!-- purchase_unit_cost -->
+        <!-- Cost Per User UOM -->
+        {{ activeUOMView === 'purchase' ? 'Purchase Unit Cost' : 'Cost Per User UOM' }}
+      </th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-for="(list, index) in menuItemData" v-if="isLoading === false" :key="index">
+      <td>{{ list?.key }}</td>
+      <td>{{ list?.name }}</td>
+      <td>
+        {{ activeUOMView === 'purchase' ? list?.purchase_unit_of_measure_name : list?.unit_of_measure_name }}
+      </td>
+      <td>
+        <!-- {{ commons.formatNumbersWithComma(list?.current_quantity) }} -->
+        {{ activeUOMView === 'purchase' ? commons.formatNumbersWithComma(list?.purchase_current_quantity)	 : commons.formatNumbersWithComma(list?.current_quantity) }}
+      </td>
+      <td>
+        <!-- purchase_unit_cost	3000000 -->
+        {{ activeUOMView === 'purchase' ? commons.formatNumbersWithComma(list?.purchase_unit_cost)	 : commons.formatNumbersWithComma(list?.unit_cost) }}
+      </td>
+      <td>
+        <button v-if="can('edit_menu_item','general')" @click="showUpdateDialog(list)">
+          <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+        </button>
+        &nbsp;
+        <button v-if="can('remove_menu_item','general')" type="button" @click="deleteThisData(list.number,list.name)">
+          <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
                 </div>
 

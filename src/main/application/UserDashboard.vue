@@ -1,163 +1,68 @@
-<template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-[#2c2f8c] sticky-top"  style="position: absolute; top: 0; left: 0; width: 100%;">
-    <div class="container-fluid">
-      <router-link :to="{name:'client_dashboard'}" class="navbar-brand" style="margin-left:20px;font-size:14px;
-           font-weight:400"><i class="bi bi-list"></i>&nbsp;<b>Victorious Education Services</b>
-      </router-link>
-      <button class="navbar-toggler" data-bs-target="#navbarCollapse" data-bs-toggle="collapse" type="button">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div id="navbarCollapse" class="navbar navbar-collapse">
-        <div class="navbar-nav">
-        </div>
-        <div class="navbar-nav">
-          <router-link   :class="[ menuSelected('application') ? 'btn btn-outline-success nav-item nav-link text-black' : 'btn btn-outline-success nav-item nav-link text-white']"  :to="{name:'application'}">
-            <b>APPLY NOW</b> </router-link>
-
-          <router-link :class="[ menuSelected('application_history') ? 'btn  btn-outline-danger nav-item nav-link' : 'btn btn-outline-success nav-item nav-link']" :to="{name:'application_history'}" style="border-radius: 0px; color:rgba(16, 54, 135, 0.751)" >
-            APPLICATION HISTORY </router-link>
-
-          <router-link :class="[ menuSelected('admission_history') ? 'btn  btn-light nav-item nav-link text-red' : 'btn btn-outline-success nav-item nav-link']" :to="{name:'admission_history'}">ADMISSION HISTORY</router-link>
-
-          <span class="nav-item dropdown">
-
-<a aria-expanded="false"
-   aria-label="Toggle theme (light)" class="btn btn-link nav-link dropdown-toggle d-flex align-items-center" data-bs-display="static"
-   data-bs-toggle="dropdown" style="border: 0px;">
-    {{name}}
-            </a>
-<ul aria-labelledby="bd-theme-text" class="dropdown-menu dropdown-menu-end">
-<li class="text-sm2">
-    <i class="bi bi-person-circle"></i> &nbsp;My Profile
-</li>
-<li  class="text-sm2">
-    <i class="bi bi-person-fill-lock"></i>&nbsp;Change Password
-</li>
-<li  class="text-sm2">
-    <span class="text-sm2" style="cursor: pointer" @click="userLogout"><i class="bi bi-box-arrow-right"></i>&nbsp;Logout</span>
-</li>
-</ul>
-</span>
-        </div>
-      </div>
-    </div>
-  </nav>
-
-  <div class="row">
-    <router-view></router-view>
-  </div>
-
-
-  <footer class="absolute bottom-0 left-0 w-screen bg-[#2c2f8c] py-0">
-    <div class="flex justify-between px-3 py-1">
-      <div class="text-white text-sm"><small>© 2011 Wholesome Education System, All rights reserved.</small></div>
-      <a  class="text-white no-underline text-sm" href="#"><small><span>Powered by</span> <b>Hamsoft</b></small></a>
-    </div>
-  </footer>
-
-
-
-</template>
-
-
-
-<style scoped>
-.center {
-  padding: 70px 0;
-  /* border: 3px solid green; */
-  text-align: center;
-}
-html, body {
-  height: 100%;
-}
-/* .cd{
-  padding:20px;
-  width:300px;
-  box-shadow: black;
-} */
-div.card {
-  width: 300px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  text-align: center;
-  height: 180px;
-  padding-top: 15px;
-}
-.text-gray {
-  --tw-text-opacity: 1;
-  color: rgba(80, 80, 80, var(--tw-text-opacity));
-}
-.card-title{
-  font-size: 1.25rem;
-
-}
-.hr{
-  display: none;
-  border-top:none;
-  width: 150px;
-  border-bottom: 2px solid rgb(0, 123, 255);
-  border-left: none;
-  border-right: none;
-  margin-left: 30%;
-  margin-right: 30%;
-}
-.navbar-expand-lg .navbar-nav .nav-link{
-  color:white;
-}
-.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
-  padding: 0px !important; }
-.bg-primary{
-  background-color: rgb(13, 86, 195) !important;
-}
-.navbar{
-  padding: 0px;;
-}
-.footer {
-  position: absolute !important;
-  margin-top: 20px;
-  left: 0  !important;;
-  bottom: 0  !important;
-  width: 100%  !important;;
-  background-color:  rgb(13, 86, 195) !important;
-  color: rgb(216, 214, 214);
-  text-align: center;
-  padding-left: 10px;
-  font-size: 12px;
-}
-.nav-link {
-  font-size: 12px !important;
-  line-height: 0.2rem!important;
-  color:rgba(236, 232, 232, 0.831) !important;
-  font-weight: bold !important;
-  border:1px solid rgba(244, 244, 244, 0.251);
-  margin: 5px;
-  border-radius: 0px;
-
-}
-.text-sm2 {
-  font-size: 13px !important;
-  line-height: 0.5rem!important;
-  color:rgba(0, 0, 0, 0.868) !important;
-  font-weight: 900px !important;
-  padding: 4px;
-  text-decoration: none;
-}
-</style>
-
 <script setup>
-
-import {onMounted, ref} from "vue";
 import router from "@/config/router.js";
+import {ref, onMounted, watch,onUnmounted,reactive} from 'vue'
 import {useAuthStore} from "@/main/auth/store/auth.js";
-const  authStore = useAuthStore();
+import {useRouter} from "vue-router";
+import { useAbility } from '@casl/vue';
+import {breakpointsTailwind, useBreakpoints, useStorage} from "@vueuse/core";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import useNotificationStore from "@/composables/useNotification.js";
+
+const confirmationRef = ref(null);
+const notificationStore = useNotificationStore()
+
+const isOpen = ref(true)
+const handleKeydown = (event) => {
+  if (event.key === 'Escape') {
+    event.preventDefault();
+  }
+}
+
+
+let routerName = ""
+routerName = useRouter().currentRoute.value.name;
+
+
+const authStore = useAuthStore()
+const { can } = useAbility();
+
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const xs = breakpoints.smaller('sm')
+const sm = breakpoints.between('sm', 'md')
+const md = breakpoints.between('md', 'lg')
+const menu = ref(null);
+const defaultMenuSize = ref(useStorage("toggle", false))
+
+
+
+const menuList = ref([
+  {title:"Dashboard", name:"application", icon:"bi-house"},
+  { title: 'Applications', name: 'application_history', icon: 'bi-book' },
+  {title:"Admissions", name:"admission_history", icon:"bi-people" ,action:""},
+  {title:"Enrollments", name:"client-enrollments", icon:"bi-people" ,action:""},
+  {title:"Financial Records", name:"client-invoices", icon:"bi-people" ,action:""},
+  // {title:"Scheme Of Work", name:"manage-scheme-and-sessions", icon:"bi-journals" ,action:"manage-scheme-and-sessions"}, //create scheme of work, ...etc
+  // {title:"Assessment", name:"manage-assessment", icon:"bi-file-earmark-spreadsheet" ,action:"manage-assessment"}, //exams, entermarks,reports, marksheet,
+
+])
+
+
+onMounted(
+    async () => {
+      updateOnlineStatus()
+    }
+
+)
+
+
 const name = ref(null)
 let p = authStore.profile
 
 name.value = p.first_name+" "+p.second_name+" "+p.last_name
 
-function userLogout(){
 
+const userLogout = () =>{
   localStorage.clear();
-
   let r = router.resolve({
     name: "login"
   });
@@ -165,13 +70,209 @@ function userLogout(){
 
 }
 
-function  menuSelected(name){
-  return router.currentRoute.value.name === name
+const online = ref(navigator.onLine);
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+const offline = ref(null)
+
+
+function updateOnlineStatus() {
+  online.value = navigator.onLine;
+  if (!online.value) {
+    offline.value = "offline.";
+  }else{
+    offline.value = "Online.";
+  }
 }
 
-onMounted(
-    async () => {
-      // alert(router.currentRoute.value.name)
+watch (
+    () => navigator.onLine,
+    async (data) => {
+      if(data){
+        updateOnlineStatus()
+      }
+    }
+)
 
-    } )
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown);
+})
+
+
 </script>
+<template>
+
+
+  <div class="p-0 h-screen w-screen dark" >
+    <div class="row fixed w-screen mx-auto z-50">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 bg-[#2c2f8c]">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+          <div class="container-fluid">
+            <div class="flex" style="margin-right: 4%; color: #ffffff;">
+              <i
+                  @click="defaultMenuSize = !defaultMenuSize"
+                  style="font-size: 27px; cursor: pointer;"
+                  class="bi-list mr-2"
+                  :class="defaultMenuSize ? 'transition ease-in-out rotate-0 duration-700' : 'transition ease-in-out -rotate-180 duration-700'"
+              ></i>
+              <span style="font-size: 20px; cursor: pointer;" class="mr-2 mt-1">USER DASHBOARD</span>
+
+              <div>
+              </div>
+
+            </div>
+            <div class="navbar-collapse">
+              <ul class="navbar-nav me-auto my-lg-0 navbar-nav-scroll" style="font-size: 13px;">
+              </ul>
+              <div class="d-flex">
+                <ul class="navbar-nav me-auto mb-lg-0" style="font-size: 13px;">
+                  <li class="nav-item dropdown">
+                    <a style="color: #ffffff;" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              <span>
+                              <i class="bi-person-circle"></i>
+                              {{name}}
+                              </span>
+                    </a>
+                    <ul class="dropdown-menu" style="font-size: 13px;">
+                      <li><a class="dropdown-item" style="cursor: pointer;">Profile</a></li>
+                      <li>
+                        <hr class="dropdown-divider">
+                      </li>
+                      <li><a class="dropdown-item" style="cursor: pointer;" @click="userLogout">Logout</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <div class="flex w-screen h-screen overflow-hidden">
+      <div
+          v-if="!xs && !sm"
+          :class="defaultMenuSize ? 'w-[4%] group hover:w-[16%]' : 'w-[16%]'"
+          class="bg-white border-[#dfdfdf] border-r h-screen duration-700">
+        <div class="overflow-y-scroll scrollbar-thin bg-white h-screen mt-[56px]">
+          <div
+              class="list-group list-group-flush text-[13px] pb-[100px] mt-1"
+              :class="defaultMenuSize ? 'flex justify-center group-hover:text-left' : ''"
+          >
+            <router-link
+                v-for="(lst,idx) in menuList" :key="idx"
+                :class="(lst.name === routerName) ? 'active' : ''"
+                class="list-group-item list-group-item-action"
+                :to="{name:lst.name}">
+              <div
+                  v-tooltip.right="lst.name"
+              >
+                <i :class="[lst.icon, (defaultMenuSize ? 'text-[17px] group-hover:text-[13px]' : 'text-[13px]')]"  class="mr-2 duration-700 pl-1"></i>
+                <small :class="{'inline-block': !defaultMenuSize, 'hidden group-hover:inline-block':defaultMenuSize}" class="duration-700">{{lst.title}}</small>
+              </div>
+            </router-link>
+          </div>
+        </div>
+      </div>
+      <div
+          v-else
+          class="bg-white border-[#dfdfdf] border-r h-screen duration-700 flex-none"
+      >
+        <Transition
+            enter-from-class="-translate-x-0"
+            enter-active-class="transition-all duration-100 ease-in-out"
+            leave-to-class="translate-x-0"
+            leave-active-class="transition-all duration-100 ease-in-out"
+        >
+          <div
+              ref="menu"
+              v-if="defaultMenuSize"
+              class="absolute top-0 left-0 h-screen z-50 w-[240px] bg-white border-r border-[#dfdfdf] duration-700"
+              style="font-size: 13px;">
+            <div class="flex justify-between">
+              &nbsp;
+              <i
+                  @click="defaultMenuSize = !defaultMenuSize"
+                  style="font-size: 15px; cursor: pointer;"
+                  class="fa fa-times mr-2 text-black"
+                  :class="!defaultMenuSize ? 'transition ease-in-out rotate-0 duration-700' : 'transition ease-in-out -rotate-180 duration-700'"
+              ></i>
+            </div>
+            <div
+                class="list-group list-group-flush text-[13px] pb-[100px]"
+                :class="defaultMenuSize ? 'flex justify-center group-hover:text-left' : ''"
+            >
+              <router-link
+                  v-for="(lst,idx) in menuList" :key="idx"
+                  :class="(lst.name === routerName) ? 'active' : ''"
+                  class="list-group-item list-group-item-action"
+                  :to="{name:lst.name}">
+                <div
+                    v-tooltip.right="lst.name"
+                >
+                  <i :class="[lst.icon,'text-[13px]']"  class="mr-2 duration-700 pl-1"></i>
+                  <small>{{lst.title}}</small>
+                </div>
+              </router-link>
+            </div>
+          </div>
+        </Transition>
+      </div>
+      <div class="flex-1 h-screen overflow-y-scroll scrollbar-thin pb-[120px] bg-[#ecf0f5]">
+        <div class="px-3 pt-[50px]">
+          <div class="mt-3 flex justify-between">
+            <div>
+              <breadcrumbs></breadcrumbs>
+            </div>
+            <div class="text-gray-600 text-[13px]">
+            </div>
+          </div>
+          <router-view></router-view>
+        </div>
+      </div>
+    </div>
+    <div class="row mx-auto" style="position: fixed; width: 100%; bottom: 0; left: 0; right: 0;">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="background-color: #ffffff; border-top: 1px solid #dfe1e3;">
+        <!-- Footer -->
+        <footer style="padding: 10px;">
+          <div class="row" style="font-size: 13px;">
+            <div class="col-10 text-center">
+              Copyright © 2011 Wholesome Education System . All rights reserved. &nbsp;
+              Status: <span class="alert alert-warning p-1" v-if="!online">
+                     {{ offline  }}
+                     </span>
+              <span class="alert alert-success p-1" v-if="online">
+                     Online
+                     </span>
+            </div>
+            <div class="col-2 text-end">Powered by Hamsoft</div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </div>
+</template>
+<style scoped>
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.dialog {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  text-align: center;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+</style>

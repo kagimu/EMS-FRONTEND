@@ -8,7 +8,11 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
 import {useRouter} from "vue-router";
+import ComboBox from "@/components/ComboBox.vue";
+
+const campusStore = useCampusStore()
 const routerData = useRouter()
 const commons = useCommonsStore()
 const reportSetupStore = useReportSetupStore()
@@ -20,6 +24,9 @@ const studyPeriodStore = useStudyPeriodStore()
 const academicYearStore = useAcademicYearStore()
 const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
+const schoolN = routerData.currentRoute.value.query.sch
+let  curriculumNumberParent = routerData.currentRoute.value.query.cr
+const emit = defineEmits(["closeDialog"]);
 
 const errorMessage = ref("")
 const loader = ref(false)
@@ -31,13 +38,14 @@ const campusLevelList = ref(null)
 const campus_level_number = ref("")
 const academic_year_number = ref("")
 const study_period_number = ref("")
-const campus_class_number = ref("")
+const class_number = ref("")
 const report_setting_number = ref("")
 const campusClassList = ref([])
 const reportSettingsList = ref([])
 const academicYearList = ref([])
 const studyPeriodList = ref([])
 const assessment_area_number = ref("")
+const editMode = ref(false)
 
 const form = reactive({
   code:null,
@@ -47,14 +55,37 @@ const form = reactive({
   assessment_schedule:[]
 })
 
+const props = defineProps({
+  reportColumnAssData:[]
+})
 
 
 onMounted(
     async () => {
      levelStore.fetchCampusCurriculum(campusNumber)
       fetchCampusLevel()
+      getReportColumnAssData()
     }
 )
+
+const getReportColumnAssData = () => {
+  editMode.value = false
+  if(props.reportColumnAssData){
+    campus_level_number.value = props.reportColumnAssData.campus_level_number
+    fetchAcademicYear(campus_level_number.value)
+    academic_year_number.value = props.reportColumnAssData.academic_year_number
+    class_number.value = props.reportColumnAssData.class_number
+    fetchAssessmentArea(class_number.value)
+    report_setting_number.value = props.reportColumnAssData.report_setting_number,
+    doFetchReportColumns()
+    form.report_column_number = props.reportColumnAssData.report_column_number
+    form.assessment_area_number = props.reportColumnAssData.assessment_area_number
+    study_period_number.value = props.reportColumnAssData.study_period_number
+    fetchAssessmentMetrics()
+    editMode.value = true
+  }
+}
+
 
 const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
@@ -66,25 +97,38 @@ const fetchStudyPeriod = (academic_num) =>{
 
 const fetchAssessmentMetrics = () =>{
   if(study_period_number.value && assessment_area_number) {
+
+    form.assessment_schedule = ""
+
     let data = {
-      campus_class_number:campus_class_number.value,
+      class_number:class_number.value,
       academic_year_number:academic_year_number.value,
       study_period_number:study_period_number.value,
-      assessment_area_number:form.assessment_area_number
+      assessment_area_number:form.assessment_area_number,
+      campus_number:campusNumber
     }
     assessmentStore.fetchAssessmentMetrics(data)
   }
 }
 
+// watch(
+//     () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+//     async (data) => {
+//       if(data){
+//         studyPeriodList.value = data.data
+//       }
+//     }
+// )
+
+ 
 watch(
-    () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+    () => studyPeriodStore.studyPeriodResponse,
     async (data) => {
       if(data){
         studyPeriodList.value = data.data
       }
     }
 )
-
 
 watch(
     () => classStore.campusLevelResponse,
@@ -98,20 +142,35 @@ watch(
 
 const addReportColumnAssessment = () => {
   loader.value = true
+  if(props.reportColumnAssData){
+    form.report_column_assessment_number = props.reportColumnAssData.report_column_assessment_number
+    reportSetupStore.updateReportColumnAssessment(form)
+
+  }else {
   form.code = form.code ? parseInt(form.code) : form.code
-  // alert(JSON.stringify(form))
   reportSetupStore.newReportColumnAssessment(form)
+  }
+
 }
 
-const fetchAssessmentArea = (campus_class_number) =>{
-  if(campus_class_number) {
+const fetchAssessmentArea = (class_number) =>{
 
-    doFetchReportSettings(campus_class_number)
-
-    let curriculumClassNumber = campusClassList.value.find(list => list.number === campus_class_number).curriculum_class_number
-    assessmentStore.fetchAssessmentArea(curriculumClassNumber)
-
+   doFetchReportSettings(class_number)
+  let data = {
+    curriculum_number:curriculumNumberParent,
+    class_number:class_number
   }
+  assessmentStore.fetchAssessmentArea(data)
+
+  studyPeriodStore.fetchStudyPeriod(
+      {
+        campus_curriculum_number:campus_curriculum_number,
+        academic_year_number:academic_year_number.value,
+        class_number:class_number,
+        school_number:schoolN
+
+      }
+  )
 }
 
 
@@ -120,11 +179,12 @@ const doFetchReportColumns = () => {
  reportSetupStore.fetchReportColumn(report_setting_number.value)
 }
 
-const doFetchReportSettings = async (campus_class_number) => {
+const doFetchReportSettings = async (class_number) => {
   let data = {
     academic_year_number:"",
     study_period_number:"",
-    campus_class_number:campus_class_number
+    campus_number:campusNumber,
+    class_number:class_number
   }
   await reportSetupStore.fetchReportSettings(data)
 }
@@ -153,7 +213,11 @@ watch(
 
 const fetchAcademicYear = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
-  academicYearStore.fetchCampusClassByLevel(campus_level_number)
+  let data = {
+    school_number:schoolN,
+    campus_level_number:campus_level_number
+  }
+  campusStore.fetchClassesBySchool(data)
 }
 
 
@@ -180,7 +244,17 @@ watch (
     () => assessmentStore.assessmentMetricsResponse,
     async (data) => {
       if(data && data.data){
-        assessmentMetricList.value = data.data
+        // assessmentMetricList.value = data.data
+
+        let draft = data?.data 
+        if(draft && (draft?.length > 0)){
+          assessmentMetricList.value = []
+          let arr = []
+          draft?.forEach(lst => {
+            arr.push({text:lst?.assessment_area+"["+lst?.metric_name+"]"+"("+lst?.description+")",value:lst?.number})
+          })
+          assessmentMetricList.value = arr
+        }
       }
     }
 )
@@ -205,7 +279,7 @@ watch(
 )
 
 watch(
-    () => academicYearStore.campusClassByLevelResponse,
+    () => campusStore.schoolClassesResponse,
     async (data) => {
       if(data){
         campusClassList.value = data.data
@@ -233,10 +307,21 @@ watch(
     }
 )
 
+watch(
+    () => reportSetupStore.updateReportColumnAssessmentResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.successToast("Success",data.message)
+      }
+    }
+)
+
 </script>
 
 <template>
   <div>
+    <!-- {{ reportColumnAssData }} -->
     <form @submit.prevent="addReportColumnAssessment">
 
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
@@ -246,8 +331,8 @@ watch(
       <div class="row">
         <div class="col-lg-4">
 
-      <div class="mb-2">
-        <label class="textColor"><small>Code</small></label>
+      <div class="mb-2" v-if="!editMode">
+        <label class="text-sm"><small>Code</small></label>
         <input
             @keypress="commons.codeValidator($event)"
             maxlength="10"
@@ -259,7 +344,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Level</small></label>
+        <label class="text-sm"><small>Level</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -272,22 +357,35 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Class</small>
-        </label>
+        <label class="text-sm"><small>Academic Year</small></label>
         <select
             style="box-shadow: none;"
-            class="form-select form-select-sm" required
-            v-model="campus_class_number"
-            @change="fetchAssessmentArea(campus_class_number)"
+            class="form-select form-select-sm"
+            v-model="academic_year_number"
         >
-          <option disabled value="">--Select Class--</option>
-          <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
-<!--          <option v-for="(list, index) in campusClassList" :key="index" :value="list.curriculum_class_number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>-->
+          <option disabled value="">--Select Academic Year--</option>
+          <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
+            {{list.code+". "+list.academic_year_name}}
+          </option>
         </select>
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Report Settings</small></label>
+        <label class="text-sm"><small>Class</small>
+        </label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm" required
+            v-model="class_number"
+            @change="fetchAssessmentArea(class_number)"
+        >
+          <option disabled value="">--Select Class--</option>
+          <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.name+" [ "+list.abbreviation+" ]"}}</option>
+        </select>
+      </div>
+
+      <div class="mb-2">
+        <label class="text-sm"><small>Report Settings</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -295,12 +393,12 @@ watch(
             @change="doFetchReportColumns()"
         >
           <option disabled value="">--Filter by report Settings--</option>
-          <option v-for="(list, index) in reportSettingsList" :key="index" :value="list.number">{{list.name}}</option>
+          <option v-for="(list, index) in reportSettingsList" :key="index" :value="list.report_setting_number">{{list.name}}</option>
         </select>
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Report Column</small></label>
+        <label class="text-sm"><small>Report Column</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -311,23 +409,9 @@ watch(
         </select>
       </div>
 
-      <div class="mb-2">
-        <label class="textColor"><small>Academic Year</small></label>
-        <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="academic_year_number"
-            @change="fetchStudyPeriod(academic_year_number)"
-        >
-          <option disabled value="">--Select Class--</option>
-          <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
-            {{list.code+". "+list.academic_year_name}}
-          </option>
-        </select>
-      </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Study Period</small>
+        <label class="text-sm"><small>Study Period</small>
         </label>
         <select
             style="box-shadow: none;"
@@ -336,7 +420,7 @@ watch(
             @change="fetchAssessmentMetrics"
         >
           <option disabled value="">Select</option>
-          <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
+          <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
 
         </select>
       </div>
@@ -348,7 +432,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Assessment Area</small></label>
+        <label class="text-sm"><small>Assessment Area</small></label>
         <select
             required
             class="form-control shadow-none"
@@ -363,41 +447,31 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Assessment Schedule</small></label>
-        <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-          <li class="list-group-item" v-for="(lvl,idx) in assessmentMetricList">
-            <input
-                v-model="form.assessment_schedule"
-                style="outline: none 0 !important; box-shadow: none;"
-                class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="idx">
-            <label class="form-check-label cursor-pointer" :for="idx" style="font-size: 13px;">
-              {{lvl.description + " [ " +lvl.metric_name + " ] " + " ( "+ lvl.assessment_area +" ) "}}
-            </label>
-          </li>
-
-        </ul>
+        <label class="text-sm"><small>Assessment Schedule</small></label>
+         
+        <combo-box
+            v-model:optionResponse="form.assessment_schedule"
+            :optionList="assessmentMetricList"
+            :optionDraft="form?.assessment_schedule"
+        ></combo-box>
       </div>
-
-      <!-- <div class="mb-2">
-        <label class="textColor"><small>Assessment Schedule</small></label>
-        <select
-            class="form-control form-select form-control-sm shadow-none"
-            v-model="form.assessment_metric_number"
-            aria-label="Default select example">
-          <option disabled value="">--Select Assessment--</option>
-          <option v-for="(list, index) in assessmentMetricList" :key="index" :value="list.number">
-            {{list.description + " [ " +list.name + " ] " + " ( "+ list.assessment_area_name +" ) "}}</option>
-        </select>
-      </div> -->
       </div>
 
     </div>
 
-      <div class="flex justify-content-end mt-4" style="width: 100%;">
+  
+
+<div class="flex justify-between" style="width: 100%;">
+      <button
+          type="button"
+          class="btn btn-danger border-0 mr-2"
+          @click="$emit('closeDialog')">
+        Cancel
+      </button>
         <button
             type="submit"
             class="btn btn-primary border-0">
-          Save
+          <span v-if="!editMode">Save</span><span v-else>Update</span>
           <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>

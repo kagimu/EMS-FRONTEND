@@ -11,8 +11,13 @@ import Products from "../dashboard/servicesAndProducts/Products.vue";
 import Profile from "@/main/settings/Profile.vue"
 import PromotionSettings from "./promotion/PromotionSettings.vue";
 import PromotionValue from "./promotion/PromotionValue.vue";
+import Billables from "@/main/settings/bills/Billables.vue"
+import ModeOfStudy from "@/main/settings/mode-of-study/ModeOfStudy.vue"
+import ContactInfo from "@/main/settings/ContactInfo.vue"
 
 import { useAbility } from '@casl/vue';
+import ManageStudents from "@/main/settings/manage-students/ManageStudents.vue";
+import AdmissionTemplate from "../dashboard/studentAdmission/admissionTemplate/admissionTemplate.vue";
 
 const { can } = useAbility()
 
@@ -27,10 +32,15 @@ const settingsList = ref([
     id:"profile",
     action:"view_profile"
   },
+  // {
+  //   name:"Contact Info",
+  //   id:"contact-info",
+  //   action:"view_contactInfo"
+  // },
   {
     name:"Level",
     id:"level",
-    action:"view_level"
+    action:"view_levels"
   },
   {
     name:"Classes",
@@ -58,14 +68,28 @@ const settingsList = ref([
     action:"view_products"
   },
   {
-    name:"Promotion Settings",
-    id:"promotion-settings",
-    action:"view_settings"
+    name:"Mode Of Study",
+    id:"mode-of-study",
+    action:"view_mode_of_study"
   },
   {
-    name:"Promotion Value",
-    id:"promotion-value",
-    action:"view_promotion_value"
+    name:"Billables",
+    id:"billables",
+    action:"view_billables"
+  },
+  {
+    name:"Promotion Settings",
+    id:"promotion-settings",
+    action:"view_promotion_settings"
+  },
+  // {
+  //   name:"Import Students",
+  //   id:"import-students",
+  //   action:"view_promotion_settings"
+  // },
+ {
+    name:"Admission Letter",
+    id:"admission-letter",
   }
 ])
 const form = reactive({
@@ -80,13 +104,12 @@ const form = reactive({
 
     <div class="row">
       <div class="col-3">
-        <div class="card mt-3">
+        <div class="card p-0 mt-3">
           <div class="card-body" style="padding: 0;">
             <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Settings</div>
 
 
             <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-
               <router-link
                   v-for="(item, idx) in  settingsList" :key="idx"
                   v-show="can(item.action,'general')"
@@ -110,6 +133,9 @@ const form = reactive({
                 <div v-if="selectedPage === 'profile'">
                   <Profile></Profile>
                 </div>
+                <div v-if="selectedPage === 'contact-info'">
+                  <ContactInfo></ContactInfo>
+                </div>
                 <div v-if="selectedPage === 'level'">
                   <level-setup></level-setup>
                 </div>
@@ -128,6 +154,12 @@ const form = reactive({
                 <div v-if="selectedPage === 'products'">
                     <Products></Products>
                 </div>
+                <div v-if="selectedPage === 'mode-of-study'">
+                   <ModeOfStudy></ModeOfStudy>
+                </div>
+                <div v-if="selectedPage === 'billables'">
+                   <Billables></Billables>
+                </div>
 
                 <div v-if="selectedPage === 'promotion-settings'">
                     <PromotionSettings></PromotionSettings>
@@ -135,6 +167,13 @@ const form = reactive({
                 <div v-if="selectedPage === 'promotion-value'">
                     <PromotionValue></PromotionValue>
                 </div>
+              <div v-if="selectedPage === 'import-students'">
+                   <manage-students></manage-students>
+              </div>
+            <div v-if="selectedPage === 'admission-letter'">
+              <admission-template></admission-template>
+            </div>
+
           </div>
         </div>
       </div>
@@ -152,7 +191,7 @@ input:focus {
   box-shadow: none;
 }
 
-.textColor{
+.text-sm2{
   color: #717375;
 }
 

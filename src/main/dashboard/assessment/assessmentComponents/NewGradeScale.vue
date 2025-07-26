@@ -32,7 +32,6 @@ const gradeData = ref([])
 const campusCurriculumDataInfo = ref(null)
 
 const campusLevelList = ref(null)
-const campusClassList = ref(null)
 
 const gradeDataInfo = ref([])
 const editM = ref(false)
@@ -57,13 +56,11 @@ const sectionPart = ref([])
 onMounted(
     async () => {
       await assessmentStore.fetchAggregateGroupName(schoolNumber)
-      schoolStore.fetchSchools()
+      await schoolStore.fetchSchools()
       fetchCampusLevel()
       await levelStore.fetchCampusCurriculum(campusNumber)
       doFetchGrades()
-      campusStore.fetchClassesBySchool(schoolNumber)
       fetchGradeScale()
-
       filterDraftData()
   
     }
@@ -313,16 +310,6 @@ watch(
 
 
 watch(
-    () => campusStore.schoolClassesResponse,
-    async (data) => {
-      if(data){
-        campusClassList.value = data.data
-      }
-    }
-)
-
-
-watch(
     () => campusStore.campusClassesResponse,
     async (data) => {
       if (data) {
@@ -478,7 +465,7 @@ watch(
                 <textarea
                     placeholder="Very Good"
                     v-model="field.remark"
-                    class="form-control noFocus text-xs shadow-none textColor"
+                    class="form-control noFocus text-xs shadow-none text-sm"
                     id="floatingTextarea2"
                     style="height: 10px"></textarea>
               </td>
@@ -603,12 +590,12 @@ watch(
     </td>
 
     <td>
-      <textarea v-model="gradeScaleInfo.remarks" class="form-control textColor outline-none shadow-none">
+      <textarea v-model="gradeScaleInfo.remarks" class="form-control text-sm outline-none shadow-none">
       </textarea>
     </td>
 
     <td>
-      <textarea v-model="gradeScaleInfo.description" class="form-control textColor outline-none shadow-none">
+      <textarea v-model="gradeScaleInfo.description" class="form-control text-sm outline-none shadow-none">
       </textarea>
     </td>
 

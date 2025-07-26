@@ -6,6 +6,14 @@ import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
 import NewMealCourseFeedingSessions from "@/main/dashboard/catering/meals/components/NewMealCourseFeedingSessions.vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import { useAbility } from '@casl/vue';
+import useCommonsStore from "@/composables/useCommons.js";
+const { can } = useAbility()
+const commons = useCommonsStore()
+
+const confirmationRef = ref(null);
+
 const  mealStore  = useMealStore()
 const  notificationStore  = useNotificationStore()
 const schoolStore = useSchoolStore()
@@ -20,6 +28,7 @@ const schoolsList = ref([])
 const mealCourseList = ref([])
 
 const addMeal = () => {
+  mealListData.value = ""
   mealCourseFeedingSessionsDialog.value = true
   mealEditMode.value=false
 }
@@ -28,17 +37,25 @@ const addMeal = () => {
 onMounted(
     async () => {
       await schoolStore.fetchSchools()
+
+      let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+ if(defaultSchoolNo){
+    school_number.value = defaultSchoolNo
+  }
+
     }
 )
 
 
 const doCourseFeedingSessionInfo = async () => {
-  await fetchAllMealCourseFeeding()
+  fetchAllMealCourseFeeding()
 }
 
 
 const doFetchMealCourses = () => {
+  fetchAllMealCourseFeeding()
     mealStore.fetchMealCourses({school_number:school_number.value,status:'ACTIVE'})
+   
 }
 
 const fetchAllMealCourseFeeding = async () => {
@@ -92,22 +109,47 @@ watch(
 const dataList = ref([])
  const namee = ref(null)
  const mealListData = ref([])
+ const feedingCourseNumber=ref(null)
 
   const editThisData = (num) => {
+    feedingCourseNumber.value = meal_course_number.value
     mealEditMode.value = true
     namee.value = num.name
     mealCourseFeedingSessionsDialog.value = true
     mealListData.value = num
   }
-//delete
-  const deleteThisData = (id,name) => {
-if(!confirm("Are you sure, you want to delete: " + name)){
-  return
-}
-// delete endpoint
 
+
+
+const deleteThisData = async (id,name) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
+if (agreed) {
+     let data = {
+      feeding_session_number:id
+    }
+     await mealStore.deleteMealCourseFeedingSessions(data)
+}
 }
 
+watch(
+    () => mealStore.deleteMealCourseFeedingSessionsResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
+watch(
+    () => mealStore.errorMessage,
+    async (data) => {
+      if(data){
+        let message = data.message
+        notificationStore.errorToast("Error",message)
+      }
+    }
+)
 
 
 </script>
@@ -115,9 +157,10 @@ if(!confirm("Are you sure, you want to delete: " + name)){
 <template>
   <div>
 
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
-    <AppModal :title="mealEditMode ? 'Edit Meal Course Feeding Sessions' : 'Add Meal Course Feeding Sessions'" v-model="mealCourseFeedingSessionsDialog" lg>
-      <NewMealCourseFeedingSessions :mealListData="mealListData"></NewMealCourseFeedingSessions>
+    <AppModal :title="mealEditMode ? 'Edit Meal Course Menu Pack' : 'Add Meal Course Menu Pack'" v-model="mealCourseFeedingSessionsDialog" lg>
+      <NewMealCourseFeedingSessions :mealListData="mealListData" :feeding_meal_course_number="feedingCourseNumber"></NewMealCourseFeedingSessions>
     </AppModal>
 
 
@@ -126,13 +169,13 @@ if(!confirm("Are you sure, you want to delete: " + name)){
       <div class="col-12">
 
 
-
         <div class="flex justify-content-between mt-3">
-          <div class="ml-4">Meal Course Feeding Sessions</div>
+          <div class="ml-4">Meal Course Menu Pack</div>
           <button
+          v-if="can('create_meal_course_menu_pack','general')" 
               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addMeal">
             <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-            Add Meal Course Feeding Sessions
+            Add Meal Course Menu Pack                                                   
           </button>
         </div>
 
@@ -167,22 +210,19 @@ if(!confirm("Are you sure, you want to delete: " + name)){
         </div>
 
 
-        <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
+        <!-- <table class="table table-hover caption-top mt-5 table-sm" style="font-size: 14px;">
           <thead>
           <tr>
-            <th scope="col" style="width: 30%;">Code</th>
+            <th scope="col" style="width: 30%;">#</th>
             <th scope="col">Name</th>
            <th scope="col">Action</th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="(levelInfo, index) in mealList" :key="index">
-            <td> {{levelInfo.code}}</td>
+            <td> {{index+1}}</td>
             <td> {{levelInfo.name}}</td>
             <td>
-        <!-- <button @click="editThisData(levelInfo)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
-            <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
-          </button> -->
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
           <button type="button" @click="deleteThisData(levelInfo.number,levelInfo.name)">
             <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
@@ -190,11 +230,113 @@ if(!confirm("Are you sure, you want to delete: " + name)){
       </td>
           </tr>
           </tbody>
-        </table>
+        </table> -->
 
       </div>
     </div>
 
+
+
+    <div class="row m-2">
+      <div v-for="(list, index) in mealList" :key="index" class="col-md-4 mb-3 mt-2">
+        <div class="card card-hover">
+          <div class="bg-[#f7f7f7] px-2 py-2 rounded-t-md">
+     
+            <div class="">
+
+              <div class="flex flex-grow justify-between text-xs text-gray-600">
+              <div>
+                <div class="font-bold">{{ list?.name }}</div>
+                <div class="text-red-800 ">Cost: Shs {{ commons.formatNumbersWithComma(list?.pack_cost) }}</div>
+               
+              </div>
+
+              <div>
+              
+                <!-- <button type="button" @click="deleteThisData(list.feeding_session_number,list.name)">
+                  <i class="bi bi-trash" style="color:rgb(201, 10, 10);"></i>
+                </button> -->
+                <button
+        v-if="can('edit_meal_course_menu_pack','general')" 
+          type="button"
+          class="btn btn-outline-success btn-sm"
+          @click="editThisData(list)"
+          aria-label="edit"
+        >
+          <i class="bi bi-pencil"></i>
+        </button>
+              </div>
+
+            </div>
+            
+            </div>
+
+
+
+          </div>
+            <table class="table table-hover table-sm table-striped text-[12px]">
+              <th>Name</th>
+              <th>Qty</th>
+              <th> User UOM</th>
+              <tbody>
+            <tr v-for="menuItem in list.pack_items" :key="menuItem.number" class="m-1">
+              <td>{{ menuItem?.name }}</td>
+              <td>{{ commons.formatNumbersWithComma(menuItem?.consumption_quantity) }}</td>
+              <td>{{ menuItem?.unit_of_consumption?.name }}</td>
+            </tr>
+          </tbody>
+          </table>
+          
+        
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- <div class="row m-2">
+  <div v-for="(list, index) in mealList" :key="index" class="col-md-6 mb-3 mt-2">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-light d-flex justify-content-between align-items-center">
+        <div>
+          <h6 class="mb-1">{{ list?.name }}</h6>
+          <p class="text-danger mb-0">Cost: Shs {{ list?.pack_cost }}</p>
+        </div>
+        <button
+        v-if="can('delete_meal_course_menu_pack','general')" 
+        style="float: right;"
+          type="button"
+          class="btn btn-outline-danger btn-sm"
+          @click="deleteThisData(list.feeding_session_number, list.name)"
+          aria-label="Delete"
+        >
+          <i class="bi bi-trash"></i>
+        </button>
+
+        <button
+        v-if="can('edit_meal_course_menu_pack','general')" 
+          type="button"
+          class="btn btn-outline-success btn-sm"
+          @click="editThisData(list)"
+          aria-label="edit"
+        >
+          <i class="bi bi-pencil"></i>
+        </button>
+      </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li v-for="menuItem in list.pack_items" :key="menuItem.number" class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{ menuItem.name }}</strong>
+              <p class="mb-0 small text-muted">Unit: {{ menuItem.unit_of_consumption.name }}</p>
+            </div>
+            <span class="badge bg-primary rounded-pill">{{ menuItem.consumption_quantity }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div> -->
 
 
   </div>

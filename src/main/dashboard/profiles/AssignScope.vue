@@ -90,7 +90,7 @@ const assignRolePlease = () =>{
   stream_number:form.stream_number,
   user_number:props.user_number
 }
-alert(JSON.stringify(data))
+// alert(JSON.stringify(data))
 scopeStore.createNewScope(data)
 }
 
@@ -217,7 +217,7 @@ watch(
                             <form @submit.prevent="assignRolePlease()">
                           
                                 <div class="mb-2">
-                                    <!-- <label class="textColor"><small>School</small> </label> -->
+                                    <!-- <label class="text-sm"><small>School</small> </label> -->
                                     <select
                                     style="box-shadow: none;"
                                     class="form-select form-select-sm" required
@@ -232,7 +232,7 @@ watch(
                                 </div>
                            
                                 <div class="mb-2">
-                                    <!-- <label class="textColor"><small>Campus</small>  </label> -->
+                                    <!-- <label class="text-sm"><small>Campus</small>  </label> -->
                                     <select
                                     style="box-shadow: none;"
                                     class="form-select form-select-sm"

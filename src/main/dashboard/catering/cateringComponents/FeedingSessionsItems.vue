@@ -5,7 +5,7 @@
       </div>
     <div class="row mt-4 mb-2">
         <div class="col-lg-8 ml-3">
-        <h5 style="font-size: 14px;margin-top: 2px;">Feeding Packs Items </h5>
+        <h5 style="font-size: 14px;margin-top: 2px;">Menu Packs Items </h5>
         </div>
         <div class="col-lg-4">
 

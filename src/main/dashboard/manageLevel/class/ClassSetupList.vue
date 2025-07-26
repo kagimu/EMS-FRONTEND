@@ -7,6 +7,9 @@ import {useRouter} from "vue-router";
 import NewClassSetUp from "@/main/dashboard/manageLevel/class/NewClassSetUp.vue";
 import useCommonsStore from "@/composables/useCommons.js";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 const routerData = useRouter()
 
 import { useAbility } from '@casl/vue';
@@ -27,6 +30,7 @@ const classEditMode = ref( false)
 const classList = ref( [])
 const levelList = ref( [])
 let  curriculumNumber = routerData.currentRoute.value.query.id
+let entityN = localStorage.getItem("entity_number")
 
 
 const addClass = () => {
@@ -41,20 +45,39 @@ const editClass = (data) => {
   classStore.classData(data.number)
 }
 
-const deleteClass = (data) => {
+// const deleteClass = (data) => {
 
-  if(!confirm("Are you sure, you want to delete: "+data.name)){
-    return
-  }
+//   if(!confirm("Are you sure, you want to delete: "+data.name)){
+//     return
+//   }
 
+//   deletionLoader.value = data.number
+
+//   let info = {
+//     number:data.number
+//   }
+
+//   classStore.deleteClassSetUp(info)
+// }
+
+
+
+const deleteClass = async (data) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+data.name);
+if (agreed) {
   deletionLoader.value = data.number
 
-  let info = {
-    number:data.number
-  }
-
-  classStore.deleteClassSetUp(info)
+let info = {
+  number:data.number
 }
+
+classStore.deleteClassSetUp(info)
+}
+
+
+}
+
 
 const filterClasses = () => {
   fetchClassList()
@@ -70,6 +93,7 @@ onMounted(
 const fetchClassList = () => {
   let data = {
     level:level.value,
+    entity_number: entityN,
   }
   classStore.fetchClasses(data)
 }
@@ -78,7 +102,7 @@ watch(
     () => classStore.classResponse,
     async (data) => {
       if(data){
-        await fetchClassList()
+         fetchClassList()
         notificationStore.successToast("Success", data.message)
       }
     },
@@ -128,11 +152,22 @@ watch(
     {deep:true}
 )
 
+watch(
+    () => classStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Error", data.message)
+      }
+    },
+    {deep:true}
+)
 
 </script>
 <template>
   <div>
 
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+    
     <AppModal :title="classEditMode ? 'Edit Class' : 'Add Class'" v-model="classDialog" lg>
       <new-class-set-up ref="classRef"></new-class-set-up>
     </AppModal>

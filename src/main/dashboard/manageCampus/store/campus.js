@@ -101,8 +101,20 @@ export const useCampusStore = defineStore("campus", () => {
             })
     }
 
-    async function fetchClassesBySchool(schoolNumber) {
-        return await api.get("main/class/school?school_number="+schoolNumber)
+    async function fetchClassesBySchool(data) {
+
+           let school_number = data?.school_number ?? ""
+           let campus_level_number = data?.campus_level_number ?? ""
+           let campus_number = data?.campus_number ?? ""
+             let campus_curriculum_number = data?.campus_curriculum_number ?? ""
+
+
+        return await api.get("main/class/school" +
+                "?school_number="+school_number+
+                "&campus_level_number="+campus_level_number+
+                "&campus_number="+campus_number+
+                "&campus_curriculum_number="+campus_curriculum_number
+            )
             .then((response) => {
                 schoolClassesResponse.value = response.data
             })

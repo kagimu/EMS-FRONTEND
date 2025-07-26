@@ -1,7 +1,7 @@
 <template>
         <form @submit.prevent="updateService">
           <div class="mb-2">
-                <label class="textColor"><small>School</small> <span class="star">*</span></label>
+                <label class="text-sm"><small>School</small> <span class="star">*</span></label>
                 <select
                         style="box-shadow: none;"
                         class="form-select form-select-sm" required
@@ -15,7 +15,7 @@
 
 
             <div class="mb-2">
-                <label class="textColor"><small>Campus</small>  <span class="star">*</span></label>
+                <label class="text-sm"><small>Campus</small>  <span class="star">*</span></label>
 
                 <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
 
@@ -33,24 +33,24 @@
 
 
           <div class="mb-2">
-            <label class="textColor"><small>Service Name</small></label>
+            <label class="text-sm"><small>Service Name</small></label>
             <input type="text" style="outline: none 0 !important;box-shadow: none;"
                 required class="form-control form-select-sm" v-model="formData.name">
           </div>
             <div class="mb-2">
-                <label class="textColor"><small>Cost</small></label>
+                <label class="text-sm"><small>Cost</small></label>
                 <input v-model="formData.cost" style="outline: none 0 !important; box-shadow: none;" type="number"  required  class="form-control form-select-sm">
             </div>
             
             <div class="mb-2">
-                <label class="textColor"><small>Service is ?</small></label>
+                <label class="text-sm"><small>Service is ?</small></label>
                 <br/>
                 <input type="radio" v-model="formData.mandatory" :value="true" >&nbsp; Mandatory  &nbsp;&nbsp;&nbsp;
                 <input type="radio" v-model="formData.mandatory" :value="false">&nbsp; Optional
             </div>
             
             <div class="mb-2">
-                <label class="textColor"><small>Addition Info</small></label>
+                <label class="text-sm"><small>Addition Info</small></label>
                 <textarea v-model="formData.description" class="form-control "></textarea>
             </div>
             <div class="flex justify-content-end mt-2" style="width: 100%;">
@@ -126,7 +126,7 @@ serviceStore.updateService(props.service.number,formData)
 
 onMounted(
     () => {
-      serviceStore.fetchServicesList()
+      // serviceStore.fetchServicesList()
       buttonLoader.value = false
     }
 )
@@ -137,7 +137,7 @@ watch(
       if(data){
          notificationStore.successToast("Success", data.message)
        buttonLoader.value=false
-       await serviceStore.fetchServicesList()
+       // await serviceStore.fetchServicesList()
       }
     },
     {deep:true}
@@ -147,7 +147,7 @@ watch (
     async (data) => {
       if(data){
    //error message
-    notificationStore.errorToast("Error",data.message)
+   //  notificationStore.errorToast("Error",data.message)
       }
     },
     {deep:true}

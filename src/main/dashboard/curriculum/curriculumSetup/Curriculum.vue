@@ -2,16 +2,19 @@
 
 import {onMounted, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
-import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import NewCurriculum from "@/main/dashboard/curriculum/curriculumSetup/NewCurriculum.vue";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 
 import { useAbility } from '@casl/vue';
 import AppModal from "@/components/AppModal.vue";
 
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+//  let entityN = localStorage.getItem("entity_number")
 const { can } = useAbility()
 
-const schoolStore = useSchoolStore()
+
 const  notificationStore  = useNotificationStore()
 const curriculumStore = useCurriculumStore()
 
@@ -26,6 +29,7 @@ const addCurriculum = () => {
   CurriculumDialog.value = true
 }
 
+
 const editCurriculum = (curriculum) => {
   if(curriculum) {
     curiculumEditMode.value = true
@@ -35,24 +39,32 @@ const editCurriculum = (curriculum) => {
 }
 
 
-const deleteCurriculum = (data) => {
-  if(!confirm("Are you sure, you want to delete: "+data.name)){
-    return
-  }
+const deleteCurriculum = async (data) => {
 
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+data.name);
+if (agreed) {
   deletionLoader.value = data.number
 
-  let info = {
-    number:data.number
-  }
-  curriculumStore.deleteCurriculum(info)
+let info = {
+  number:data.number
 }
+await curriculumStore.deleteCurriculum(info)
+}
+
+
+}
+
 
 onMounted(
     async () => {
       await  curriculumStore.fetchCurriculum()
     }
 )
+
+const closeDialog = () => {
+  CurriculumDialog.value = false
+}
+
 
 
 watch (
@@ -91,6 +103,7 @@ watch (
 
 
 
+
 watch(
     () => curriculumStore.curriculumDataResponse,
     async (data) => {
@@ -106,22 +119,20 @@ watch(
     async (data) => {
       if(data){
         deletionLoader.value = undefined
+        notificationStore.errorToast("Error",data.message)
       }
-    },
-    {deep:true}
+    }
 )
 
 </script>
 <template>
   <div>
 
-
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="curiculumEditMode ? 'Edit Curriculum' : 'New Curriculum'" v-model="CurriculumDialog" lg>
-      <new-curriculum></new-curriculum>
+      <new-curriculum @closeDialog="closeDialog"></new-curriculum>
     </AppModal>
-
-
 
 
     <div class="mt-3">
@@ -150,8 +161,7 @@ watch(
 
           <div class="p-3 text-[#5e5e5e]">
             <div class="mb-3 flex justify-between" style="font-size: 20px;">
-              {{curr.name}}
-
+              {{curr?.code ? "#"+curr?.code : ""}} {{curr?.name}}
               <div>
                 <i 
                     v-if="can('edit_curriculum','general')"
@@ -182,7 +192,7 @@ watch(
                     type="button"
                 class="bg-[#0d6efd] hover:bg-[#0c62e1] text-white text-sm text-center w-full rounded-b-md py-2">
                       <span class="mx-9 text-sm">
-                        Setup Curriculum
+                        Setup Curriculums
                       </span>
                 </button>
               </router-link>

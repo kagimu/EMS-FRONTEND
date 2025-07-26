@@ -55,6 +55,9 @@ watch(
     {deep:true}
 )
 
+const closeThisDialog = ()=> {
+  levelDialog.value = false
+}
 
 </script>
 <template>
@@ -62,6 +65,8 @@ watch(
 
     <AppModal title="Add Level" v-model="levelDialog" lg>
       <select-curriculum-level :curriculumLevel="levelList"></select-curriculum-level>
+      <button @click="closeThisDialog" style="float: right" class="btn btn-danger btn-sm  mb-2">
+        <i class="bi bi-x"></i>exit</button>
     </AppModal>
 
 

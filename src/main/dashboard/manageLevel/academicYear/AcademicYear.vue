@@ -1,6 +1,9 @@
 <template>
   <div>
 
+
+ <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+
     <AppModal :title="editMode ? 'Edit Academic Year' : 'Add Academic Year'" v-model="newAcademicYearDialog" lg>
       <new-academic-year ref="academicYearRef"></new-academic-year>
     </AppModal>
@@ -83,6 +86,9 @@ import useNotificationStore from "@/composables/useNotification.js";
 import AppModal from "@/components/AppModal.vue";
 import NewCampusClass from "@/main/dashboard/manageLevel/class/NewCampusClass.vue";
 import { useAbility } from '@casl/vue';
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 const { can } = useAbility()
 
 
@@ -112,19 +118,23 @@ const editAcademicYear = (academicYre)  => {
   }
 }
 
-const deleteAcademicYear = (academicYre, idx) => {
 
-  if(!confirm("Are you sure, you want to delete: "+academicYre.academic_year_name)){
-    return
-  }
 
+
+
+const deleteAcademicYear = async (academicYre, idx) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+academicYre.academic_year_name);
+if (agreed) {
   deletionLoader.value = idx
 
-  let data = {
-    number:academicYre.number
-  }
+let data = {
+  number:academicYre.number
+}
 
-  academicYearStore.deleteAcademicYear(data)
+academicYearStore.deleteAcademicYear(data)
+}
+
 
 }
 

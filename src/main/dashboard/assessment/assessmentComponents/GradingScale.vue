@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted,reactive, ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import NewGradeScale from "@/main/dashboard/assessment/assessmentComponents/NewGradeScale.vue"
 import { useAssessmentStore } from "../store/assessment";
 import { useAbility } from '@casl/vue';
@@ -9,6 +9,12 @@ import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useRouter} from "vue-router";
 import useNotificationStore from "@/composables/useNotification.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import AggregateScaleFileUploader from "@/components/AggregateScaleFileUploader.vue";
+import api from "@/config/api.js";
+const confirmationRef = ref(null);
+
+
 const  notificationStore  = useNotificationStore()
 const assessmentStore = useAssessmentStore()
 const levelStore = useLevelStore()
@@ -28,6 +34,9 @@ const editMode = ref(false)
 const gradeScaleDatainfo = ref([])
 let schoolNumber = routerData.currentRoute.value.query.sch
 const deletionLoader = ref(false)
+const uploadDialog = ref( false)
+const scaleDetails = ref( false)
+let imagePath = api.defaults.baseURL + "/attachments/download/"
 
 onMounted(() => {
       fetchGradeScale()
@@ -61,12 +70,15 @@ const fetchCampusLevel = () => {
 
 
 
-const deleteThisData = (info) => {
-  if(!confirm("Are you sure, you want to delete: " + info.scale_name)){
-    return
-  }
+const deleteThisData = async (info) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + info.scale_name);
+if (agreed) {
   deletionLoader.value = true
-  assessmentStore.deleteAggregateScale(info.scale_number)
+  await assessmentStore.deleteAggregateScale(info.scale_number)
+}
+
+
 }
 
 
@@ -98,10 +110,6 @@ watch(
       }
     }
 )
-
-
-
-
 
 
 // aggregateData
@@ -164,9 +172,67 @@ watch (
 )
 
 
+const uploadImage = (list) => {
+  if(list){
+    uploadDialog.value = true
+    scaleDetails.value = list
+  }
+}
+
+const deleteImage = async (list) => {
+
+    const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete this image");
+    if (agreed) {
+      deletionLoader.value = true
+      let data = {
+        attachment_number: list?.illustration,
+        category: "aggregate_scale"
+      }
+      await deleteAggregateScaleImage(data)
+    }
+}
+
+
+const  deleteAggregateScaleImage = async (data) => {
+  let url = api.defaults.baseURL + "/attachments/delete"
+  return await api.post(url, data)
+      .then((response) => {
+        if(response && response.data){
+          fetchGradeScale()
+          notificationStore.successToast("Success", response.data.message)
+        }
+      })
+      .catch((response) => {
+        if(response && response.response){
+          notificationStore.errorToast("Error",response.response.data.message)
+        }
+      })
+}
+
+
+const successUpload = async (data) => {
+  if (data) {
+    uploadDialog.value = false
+    fetchGradeScale()
+  }
+}
+
 </script>
 <template>
   <div>
+
+
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+
+
+    <AppModal title="Upload Aggregate Scale Image" v-model="uploadDialog" xl>
+      <aggregate-scale-file-uploader
+          ref="profileUploadComponents"
+          v-on:nextAction="successUpload"
+          :scaleDetails="scaleDetails"></aggregate-scale-file-uploader>
+    </AppModal>
+
+
     <AppModal :title="editMode? 'Edit Aggregate Scale': 'Add Aggregate Scale'" v-model="showAggregateScaleModal" xl6>
       <NewGradeScale :gradeScaleDataInfo="gradeScaleDatainfo"></NewGradeScale>
     </AppModal>
@@ -180,7 +246,7 @@ watch (
             <div>
               <button
                   @click="addAggregateScale"
-                  v-if="can('add_grade_scale','general')"
+                  v-if="can('create_aggregate_scale','general')"
                   style="float: right; margin-right: 5px;"
                   type="button"
                   class="btn btn-primary btn-sm m-4">
@@ -230,6 +296,8 @@ watch (
                            <th scope="col">weight</th>
                            <th scope="col">Name</th>
                            <th>Remark</th>
+                           <th scope="col">Image</th>
+                           <th scope="col">Action</th>
                          </tr>
                           <tbody>
                           <!-- {{ list?.code }} -->
@@ -238,7 +306,31 @@ watch (
                             <td>{{ list?.weight }}</td>
                             <td>  {{ list?.name }} ( {{ list?.short_name }} )</td>
 
-                            <td>  {{ list?.description }}</td>
+                            <td>{{ list?.description }}</td>
+                            <td>
+                              <img
+                                  v-if="list?.illustration"
+                                  alt="logo"
+                                  style="width: 70px;" class="mb-3"
+                                  :src="imagePath+list?.illustration"/>
+                             </td>
+                            <td>
+                              <span
+                                  style="border: 1px solid #2c2f8c;"
+                                  class="border-1 rounded-md px-2 text-xs cursor-pointer border-[#2c2f8c] text-[#2c2f8c] hover:bg-gray-400"
+                                  @click="uploadImage(list)">
+                                <i class="cursor-pointer mx-1 text-xs fa-solid bi-upload"></i> Upload Scale Image
+                              </span>
+                              <br />
+                              <div v-if="list?.illustration" class="mt-2">
+                                <span
+                                    style="border: 1px solid red;"
+                                    class="border-1 rounded-md px-2 text-xs cursor-pointer border-[red] text-[red] hover:bg-gray-400"
+                                    @click="deleteImage(list)">
+                                <i class="cursor-pointer mx-1 text-xs fa-solid bi-trash"></i> Delete Image
+                              </span>
+                              </div>
+                            </td>
                           </tr>
                           </tbody>
                         </table>

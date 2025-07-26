@@ -31,7 +31,7 @@
     <div class="row mx-auto mb-4">
       <div class="col-3">
     <div class="mb-2">
-<!--      <label class="textColor"><small>Class</small></label>-->
+<!--      <label class="text-sm"><small>Class</small></label>-->
       <select
           style="box-shadow: none;"
           class="form-select form-select-sm"

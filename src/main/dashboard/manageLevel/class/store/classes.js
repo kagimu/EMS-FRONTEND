@@ -25,7 +25,9 @@ export const useClassesStore = defineStore("classes", () => {
     const errorMessage = ref(null)
     const curriculumClassByIdResponse = ref(null)
     const classLevelByLevelResponse = ref(null)
-
+    const byCampusClassStreams = ref(null)
+    const updateStreamSuccess = ref(null)
+    const deleteStreamResponse = ref(null)
 
 
 
@@ -95,7 +97,7 @@ export const useClassesStore = defineStore("classes", () => {
 
     async function fetchClasses(data) {
         data = data ? data : ""
-        return await api.get("main/classes?level="+data.level)
+        return await api.get("main/classes?level="+data.level+"&entity_number="+data.entity_number)
             .then((response) => {
                 classInfoResponse.value = response.data
             })
@@ -219,9 +221,27 @@ export const useClassesStore = defineStore("classes", () => {
     }
 
     async function fetchClassStreams(data) {
-        return await api.get("main/stream/fetch?class_level_number="+data)
+        let class_level_number =  data?.class_level_number ?? ""
+          let campus_number =  data?.campus_number ?? ""
+        let campus_curriculum_number =  data?.campus_curriculum_number ?? ""
+        let class_number = data?.class_number ?? ""
+        return await api.get("main/stream/fetch?class_level_number="+class_level_number+"&class_number="+class_number+"&campus_curriculum_number="+campus_curriculum_number+"&campus_number="+campus_number)
             .then((response) => {
                 classStreams.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
+    async function fetchClassStreamsByCampusClassNumber(data) {
+          let campus_class_number =  data?.campus_class_number ?? ""
+        return await api.get("main/stream/fetch?campus_class_number="+campus_class_number)
+            .then((response) => {
+                byCampusClassStreams.value = response.data
             })
             .catch((response) => {
                 if(response && response.response){
@@ -234,6 +254,18 @@ export const useClassesStore = defineStore("classes", () => {
         return await api.post("main/stream/new",data)
             .then((response) => {
                 newStreamSuccess.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function updateStream(data) {
+        return await api.patch("main/stream/update",data)
+            .then((response) => {
+                updateStreamSuccess.value = response.data
             })
             .catch((response) => {
                 if(response && response.response){
@@ -305,6 +337,19 @@ export const useClassesStore = defineStore("classes", () => {
                 }
             })
     }
+
+    async function deleteClassStream(data) {
+        return await api.delete("main/stream/"+data.stream_number)
+            .then((response) => {
+                deleteStreamResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     return {
         classResponse,
         classStreams,
@@ -328,6 +373,8 @@ export const useClassesStore = defineStore("classes", () => {
         errorMessage,
         classLevelByLevelResponse,
         curriculumClassByIdResponse,
+        byCampusClassStreams,
+        deleteStreamResponse,
         newClassData,
         editClassData,
         fetchClasses,
@@ -349,6 +396,11 @@ export const useClassesStore = defineStore("classes", () => {
         newCampusLevel,
         fetchCampusLevel,
         fetchClassByLevel,
-        fetchCurriculumClassesByID
+        fetchCurriculumClassesByID,
+        fetchClassStreamsByCampusClassNumber,
+        updateStream,
+        updateStreamSuccess,
+        deleteClassStream
+        
     }
 })

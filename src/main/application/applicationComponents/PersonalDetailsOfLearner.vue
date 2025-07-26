@@ -4,15 +4,16 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-import api from "@/config/api.js";
-import {useRouter} from "vue-router";
-import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js"
-const assessmentStore = useAssessmentStore()
+import {useStudyModeStore} from "@/main/settings/mode-of-study/store/studyMode.js";
+import {useLevelStore} from "@/main/settings/level/store/level.js";
+import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
+import {useSosStore} from  "@/main/settings/sosinfo/store/sos.js";
 
-
-// const routerData = useRouter()
-// let  applicationNumber = routerData.currentRoute.value.query.applicationId
-
+const levelStore = useLevelStore()
+const modeStudyStore = useStudyModeStore()
+const modeOfSchoolData = ref([])
+const classStore = useClassesStore()
+const levelList = ref([])
 const buttonLoader = ref(false)
 let errorMessage = ref(null)
 const emit = defineEmits()
@@ -24,8 +25,14 @@ const schoolList = ref([])
 const classList = ref([])
 const schoolStore = useSchoolStore()
 const campusStore = useCampusStore()
-const school_number = ref(null)
 const applicationId = ref(null)
+const curriculumList = ref([])
+const student_number = ref(null)
+const today = new Date().toISOString().split('T')[0]
+const sosInfoList = ref( [])
+
+const sosInfo= useSosStore()
+
 
 const form = reactive({
   surname:null,
@@ -33,22 +40,53 @@ const form = reactive({
   other_name:null,
   preferred_type_of_enrollment:null,
   date_of_birth:null,
-  gender:"",
+  school_number:null,
+  gender:null,
   reason_for_choosing_school:null,
   preferred_campus_number: null,
   source_of_school_info: null,
   application_number: applicationId.value,
-  campus_class_number: null,
-  learner_number:null
+  class_number: null,
+  learner_number:null,
+   mode_of_study_number:"",
+   campus_curriculum_number:"",
+   level:"",
+   lin:null
 })
 
 onMounted(() => {
       schoolStore.fetchSchools(entity_number)
-
-     /* if(applicationNumber !==""){
-        applicationStore.fetchApplicationById(applicationNumber)
-      }*/
+      sosInfo.fetchSosInfo()
+      // getModeOfStudyInfo()
     }
+)
+
+
+const getModeOfStudyInfo = () =>{
+  let data = {
+    school_number:form.school_number,
+  }
+  modeStudyStore.fetchModeOfStudy(data)
+}
+
+
+watch(
+    () => levelStore.campusCurriculumResponse,
+    async (data) => {
+      if(data){
+        curriculumList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => modeStudyStore.modeOfStudyInfoResponse,
+    async (data) => {
+      modeOfSchoolData.value = data.data
+    },
+    {deep: true}
 )
 
 const goBack = () =>{
@@ -57,11 +95,30 @@ const goBack = () =>{
 
 const fetchCampuses = (school_number) => {
   campusStore.fetchCampuses(school_number)
+  getModeOfStudyInfo()
 }
 
 const fetchClasses = (campus_number) => {
-  campusStore.fetchClassesByCampus(campus_number)
+  levelStore.fetchCampusCurriculum(campus_number)
 }
+
+
+const fetchLevelClasses = (levelNumber) => {
+   
+  let data = {
+    school_number:form.school_number,
+    campus_level_number:levelNumber,
+    campus_curriculum_number:form.campus_curriculum_number
+  }
+  campusStore.fetchClassesBySchool(data)
+}
+
+
+
+const fetchCampusLevel = (campus_curriculum_number) => {
+   classStore.fetchCampusLevel(campus_curriculum_number)
+}
+  
 
 let entity_number = localStorage.getItem('entity_number')
 
@@ -74,6 +131,8 @@ const addLearnerDetails = () => {
   if(!applicationId.value){
     buttonLoader.value = true
     form.application_number = applicationId.value
+    form.campus_number = form.preferred_campus_number
+    form.type = "NEW"
     applicationStore.newApplicationLeanerDetails(form)
   }else{
     buttonLoader.value = true
@@ -81,6 +140,9 @@ const addLearnerDetails = () => {
     if(form.learner_number){
       applicationStore.updateLearnerDetails(form.learner_number,form)
     }else{
+      localStorage.setItem('campus_curriculum_number', form.campus_curriculum_number)
+      form.campus_number = form.preferred_campus_number
+      form.type = "NEW"
       applicationStore.newApplicationLeanerDetails(form)
     }
 
@@ -94,35 +156,36 @@ watch (
     () => applicationStore.newApplicationDetailsLearnerResponse,
     async (data) => {
       if(data){
-        localStorage.setItem("CampusClassNumber", form.campus_class_number)
+        localStorage.setItem("CampusClassNumber", form.class_number)
         localStorage.setItem("studentNumber", data.data.number)
         buttonLoader.value = false
-        assessmentStore.fetchAssessmentAreaByClass(form.campus_class_number)
-
-        emit("next", {id:applicationId.value, step:3})
-
+        // assessmentStore.fetchAssessmentAreaByClass(form.class_number)
+        //         alert(JSON.stringify(data.data.application_number))
+        emit("next", {id:data.data.application_number, step:2})
 
         let dataa = {
           page: page.value,
           per_page: per_page.value,
-          status: "SUBMITTED"
+          status: "SUBMITTED",
+          school_number: "",
         }
-        applicationStore.fetchApplicationList(dataa)
+        // await applicationStore.fetchApplicationList(dataa)
       }
     }
 )
 
 
-watch (
-    () => applicationStore.updateLearnerPersonalDetailsresponse,
+watch(
+    () => classStore.campusLevelResponse,
     async (data) => {
       if(data){
-        buttonLoader.value = false
-        notificationStore.successToast("Success", data.message)
-        emit("next", {id:applicationId.value, step:3})
+        levelList.value = data.data
       }
-    }
+    },
+    {deep:true}
 )
+
+
 
 
 watch (
@@ -156,15 +219,7 @@ watch(
     }
 )
 
-watch(
-    () => campusStore.campusClassesResponse,
-    async (data) => {
-      if (data) {
-        classList.value = data.data
-      }
-    },
-    {deep: true}
-)
+
 
 watch(
     () => campusStore.errorMessage,
@@ -182,53 +237,87 @@ watch (
     () => applicationStore.applicationByIdResponse,
     async (data) => {
       if(data){
+        let draft = data.student
         applicationId.value = data.number
-        form.surname= data.Student.surname
-        form.second_name=data.Student.second_name
-        form.other_name=data.Student.other_name
-        form.gender= data.Student.gender
-        form.date_of_birth=data.Student.date_of_birth
-        form.preferred_campus_number=data.Student.preferred_campus_number
-        form.reason_for_choosing_school=data.Student.reason_for_choosing_school
-        form.source_of_school_info = data.Student.source_of_school_info
-        form.learner_number = data.Student.number
-        if(form.learner_number){
-          await setSchoolAndCampus(data)
+        form.surname= draft.surname
+        form.second_name=draft.second_name
+        form.other_name=draft.other_name
+        form.gender= draft.gender
+        form.date_of_birth=draft.date_of_birth
+        form.preferred_campus_number=draft.preferred_campus_number
+        form.class_number=draft.class_number
+        form.reason_for_choosing_school=draft.reason_for_choosing_school
+        form.source_of_school_info = draft.source_of_school_info
+        form.learner_number = draft.number
+        form.school_number = draft.school_number
+        form.lin = draft?.lin
+        student_number.value = draft.number
+        if(draft?.school_number) {
+        let dataa = {
+    school_number:draft?.school_number,
+  }
+  modeStudyStore.fetchModeOfStudy(dataa)
+}
+
+        form.mode_of_study_number = draft.mode_of_study_number
+
+        if(draft?.school_number) {
+          fetchCampuses(draft.school_number)
         }
 
+        if(draft?.preferred_campus_number) {
+          fetchClasses(draft?.preferred_campus_number)
+          form.campus_curriculum_number = draft?.campus_curriculum_number
+        }
+
+        if(draft?.campus_curriculum_number){
+          fetchCampusLevel(draft?.campus_curriculum_number)
+          form.level = draft?.campus_level_number
+        }
+
+        if(draft?.campus_level_number){
+          fetchLevelClasses(draft?.campus_level_number)
+          form.class_number = draft?.class_number
+        }
+  
+        }
+      
+      }
+    
+)
+
+
+watch (
+    () => applicationStore.updateLearnerPersonalDetailsresponse,
+    async (data) => {
+      if(data){
+       
+        localStorage.setItem("studentNumber", student_number.value)
+        buttonLoader.value = false
+        notificationStore.successToast("Success", data.message)
+        emit("next", {id:applicationId.value, step:2})
+      }
+    }
+)
+
+watch(
+    () => campusStore.schoolClassesResponse,
+    async (data) => {
+      if(data){
+        classList.value = data.data
+      }
+    }
+)
+
+watch(
+    () => sosInfo.sosInfoResponse,
+    async (data) => {
+      if(data){
+        sosInfoList.value = data.data
       }
     },
     {deep:true}
 )
-
-
-
-async function setSchoolAndCampus(data) {
-  await api.get("main/school/all")
-      .then((response) => {
-        schoolList.value = response.data.data
-        api.get("main/campus/all")
-            .then((responseData) => {
-              campusList.value = responseData.data.data
-              form.preferred_campus_number = data.Student.preferred_campus_number
-              school_number.value=data.Student.PreferredCampus.school_number
-              campusStore.fetchClassesByCampus(data.Student.preferred_campus_number)
-              form.campus_class_number = data.Student.campus_class_number
-            }).catch((error) => {
-          if(error && error.response){
-            errorMessage.value = error.response.data
-          }
-        })
-
-      })
-      .catch((error) => {
-        if(error && error.response){
-          errorMessage.value = error.response.data
-        }
-      })
-
-
-}
 
 </script>
 
@@ -239,99 +328,213 @@ async function setSchoolAndCampus(data) {
     <div class="row">
       <div class="col-12">
           <div class="mb-2">
-            <label class="textColor text-sm"><small>Surname</small> <span class="star">*</span></label>
+            <label class="text-sm"><small>Surname</small> <span class="star">*</span></label>
             <input type="text" style="outline: none 0 !important; box-shadow: none;"  v-model="form.surname"  required class="form-control form-control-sm">
           </div>
-  
-          <div class="mb-2">
-            <label class="textColor text-sm"><small>Second name</small> <span class="star">*</span></label>
-            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.second_name"  required class="form-control form-control-sm">
+
+        <div class="row">
+          <div class="col-6">
+            <div class="mb-2">
+              <label class="text-sm"><small>Second name</small> <span class="star">*</span></label>
+              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.second_name"  required class="form-control form-control-sm">
+            </div>
           </div>
-  
-          <div class="mb-2">
-            <label class="textColor text-sm"><small>Other names</small> </label>
-            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" class="form-control form-control-sm">
+          <div class="col-6">
+            <div class="mb-2">
+              <label class="text-sm"><small>Other names</small> </label>
+              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" class="form-control form-control-sm">
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="row">
+          <div class="col-6">
+<!--            <div class="mb-2">-->
+<!--              <label class="text-sm"><small>Reason to enroll </small> </label>-->
+<!--              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.reason_for_choosing_school" class="form-control form-control-sm">-->
+<!--            </div>-->
+
+            <div class="mb-2">
+              <label class="text-sm"><small>Reason to enroll</small></label>
+              <input
+                  type="text"
+                  list="enrollReasons"
+                  v-model="form.reason_for_choosing_school"
+                  class="form-control form-control-sm"
+                  placeholder="e.g. Academic Excellence"
+                  style="outline: none 0 !important; box-shadow: none;"
+              >
+
+              <!-- Suggestion List -->
+              <datalist id="enrollReasons">
+                <option value="Academic Excellence"></option>
+                <option value="Discipline and Morals"></option>
+                <option value="Christian Values"></option>
+                <option value="Near Home"></option>
+                <option value="Reputation"></option>
+                <option value="Teacher Quality"></option>
+                <option value="Sports Facilities"></option>
+                <option value="Recommendation from a Friend"></option>
+                <option value="Affordable Fees"></option>
+              </datalist>
+            </div>
+
+
+          </div>
+          <div class="col-6">
+            <div class="mb-2">
+              <label class="text-sm"><small>How did you know about us ? </small> </label>
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="form.source_of_school_info">
+                <option v-for="(sos, index) in sosInfoList" :key="index" :value="sos.number">
+                  {{ sos.name }}
+                </option>
+<!--                <option value="News paper" >News paper</option>-->
+<!--                <option value="Old parent">Old parent</option>-->
+<!--                <option value="Television">Television</option>-->
+<!--                <option value="Internet">Internet</option>-->
+              </select>
+            </div>
+          </div>
+        </div>
+
+        
+
+        <div class="row">
+          <div class="col-6">
+            <div class="mb-2">
+              <label class="text-sm"><small>School</small> <span class="star">*</span></label>
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm" required
+                  v-model="form.school_number"
+                  @change="fetchCampuses(form.school_number)"
+              >
+                <option disabled value="">Select School</option>
+                <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="mb-2">
+              <label class="text-sm"><small>Campus</small>  <span class="star">*</span></label>
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="form.preferred_campus_number" required
+                  @change="fetchClasses(form.preferred_campus_number)"
+              >
+                <option disabled value="">Select campus</option>
+                <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+      <div class="mb-2">
+          <label class="text-sm"><small>Curriculum</small></label>
+            <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+                v-model="form.campus_curriculum_number"  
+                @change="fetchCampusLevel(form.campus_curriculum_number)"                                         
+            >
+                <option disabled value="" >--Select Curriculum--</option>
+                <option  v-for="(lvl, index) in curriculumList" :key="index" :value="lvl.number">{{lvl.name}}</option>
+            </select>
           </div>
 
-          
-          <div class="mb-2">
-            <label class="textColor text-sm"><small>Reason to enroll </small> </label>
-            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.reason_for_choosing_school" class="form-control form-control-sm">
+
+        <div class="row">
+          <div class="col-6">
+            <div class="mb-2">
+              <label class="text-sm"><small>Level</small></label>
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="form.level"
+                  @change="fetchLevelClasses(form.level)"
+              >
+                <option disabled value="">-Filter by level-</option>
+                <option v-for="(lvl, index) in levelList" :key="index" :value="lvl.number">{{lvl.code+". "+lvl.name}}</option>
+              </select>
+            </div>
           </div>
+          <div class="col-6">
+            <div class="mb-2">
+              <label class="text-sm"><small>Preferred Class</small> <span class="star">*</span></label>
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm" required
+                  v-model="form.class_number"
+                
+              >
+                <option disabled value="">Select class</option>
+                <option v-for="(list, index) in classList" :key="index" :value="list.number">{{ list.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
 
 
+
+
+        <div class="row">
+        <div class="col-6">
           <div class="mb-2">
-              <label class="textColor text-sm"><small>How did you know about us ? </small> </label>
+              <label class="text-sm"><small>Mode Of Study</small>  <span class="star">*</span></label>
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
-                      v-model="form.source_of_school_info">
-                  <option value="News paper" >News paper</option>
-                  <option value="Old parent">Old parent</option>
-                  <option value="Television">Television</option>
-                  <option value="Internet">Internet</option>
-              </select>
-          </div>
-
-
-          <div class="mb-2">
-              <label class="textColor"><small>School</small> <span class="star">*</span></label>
-              <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="school_number"
-                      @change="fetchCampuses(school_number)"
+                      v-model="form.mode_of_study_number" required
               >
-                  <option disabled value="">Select School</option>
-                  <option v-for="(list, index) in schoolList" :key="index" :value="list.number">{{ list.name }}
+                  <option disabled value="">Select Mode Of Study</option>
+                  <option v-for="(list, index) in modeOfSchoolData" :key="index" :value="list.mode_of_study_number">{{ list.name }}
                   </option>
               </select>
           </div>
-
-
-          <div class="mb-2">
-              <label class="textColor"><small>Campus</small>  <span class="star">*</span></label>
-              <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
-                      v-model="form.preferred_campus_number" required
-                      @change="fetchClasses(form.preferred_campus_number)"
-              >
-                  <option disabled value="">Select campus</option>
-                  <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
-                  </option>
-              </select>
           </div>
 
-
+          <div class="col-6">
           <div class="mb-2">
-              <label class="textColor"><small>Preferred Class</small> <span class="star">*</span></label>
-              <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm" required
-                      v-model="form.campus_class_number"
-              >
-                  <option disabled value="">Select class</option>
-                  <option v-for="(list, index) in classList" :key="index" :value="list.number">{{ list.class_name }}
-                  </option>
-              </select>
+              <label class="text-sm"><small>LIN</small></label>
+              <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.lin" 
+             class="form-control form-control-sm" >
+          </div>
+          </div>
           </div>
 
 
           <div class="row">
             <div class="col-lg-6">
-              <label class="textColor text-sm"><small>DOB</small> <span class="star">*</span></label>
-            <input type="date" style="outline: none 0 !important; box-shadow: none;" v-model="form.date_of_birth"  required
-             class="form-control form-control-sm">
+              <label class="text-sm"><small>DOB</small> <span class="star">*</span></label>
+             <input
+                 type="date"
+                 style="outline: none 0 !important; box-shadow: none;"
+                 v-model="form.date_of_birth"
+                 :max="today"
+                 required
+                 class="form-control form-control-sm">
             </div>
             <div class="col-lg-6">
-              <label class="textColor text-sm"><small>gender</small> <span class="star">*</span></label>
+              <label class="text-sm"><small>gender</small> <span class="star">*</span></label>
             <select class="form-control form-control-sm"
              v-model="form.gender" style="outline: none 0 !important; box-shadow: none;">
-              <option v-if="!form.gender" disabled>-select-</option>
-              <option v-if="form.gender">{{ form.gender }}</option>
-              <option  v-if="form.gender != 'Male'">Male</option>
-              <option  v-if="form.gender !='Female'">Female</option>
+              <option value="" disabled>-Select Gender-</option>
+              <option value="male">Male</option>
+              <option value="female" >Female</option>
             </select>
             </div>
 

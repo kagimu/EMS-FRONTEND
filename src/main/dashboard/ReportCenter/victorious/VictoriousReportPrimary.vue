@@ -1,7 +1,6 @@
 <script setup>
-
-import StudentImage from "@/assets/images/pic.jpg";
-import SchoolBudge from "@/assets/images/victorius-budge.png";
+import schoolBadge from "@/assets/images/school_badge.png";
+import studentImage from "@/assets/images/student.png";
 </script>
 
 <template>
@@ -11,12 +10,13 @@ import SchoolBudge from "@/assets/images/victorius-budge.png";
     <tr>
       <td style="text-align: center; width: 20%;">
         <div style="text-align: right; margin-top: 10px;">
-          <img alt="logo" style="width: 130px; margin: 0 auto;" :src="SchoolBudge"/>
+          <img alt="logo" style="width: 130px; margin: 0 auto;" :src="schoolBadge"/>
         </div>
       </td>
 
       <td style="text-align: center;">
-        <div style="font-size: 35px; margin-bottom: 5px; color: #393f9f;">VICTORIOUS EDUCATION SERVICES</div>
+<!--        <div style="font-size: 35px; margin-bottom: 5px; color: #393f9f;">VICTORIOUS EDUCATION SERVICES</div>-->
+        <div style="font-size: 35px; margin-bottom: 5px; color: #393f9f;">SCHOOL NAME</div>
         <div style="color: #393f9f; margin-bottom: 10px;">DAY CARE . KINDERGARTEN . BOARDING AND PRIMARY SCHOOL</div>
         <div style="font-size: 20px;">END OF TERM REPORT</div>
       </td>
@@ -59,7 +59,7 @@ import SchoolBudge from "@/assets/images/victorius-budge.png";
 
           <tr>
             <td style="width: 10%">
-              <img alt="logo" style="width: 130px;" :src="StudentImage"/>
+              <img alt="logo" style="width: 130px;" :src="studentImage"/>
             </td>
 
             <td style="width: 80%">

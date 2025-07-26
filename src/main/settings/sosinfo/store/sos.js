@@ -33,8 +33,8 @@ export const useSosStore = defineStore("sos", () => {
                 }
             })
     }
-    async function deleteSos() {
-        return await api.delete("main/applications/source-of-school-info")
+    async function deleteSos(data) {
+        return await api.delete("main/applications/source-of-school-info/"+data.source_of_school_number)
             .then((response) => {
                 deletesosInfoResponse.value = response.data
             })

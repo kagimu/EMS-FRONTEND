@@ -13,6 +13,10 @@ export const useAdmissionStore = defineStore("admission", () => {
     const admissionByFiltersResponse = ref(null)
     const admitStudentResponse = ref(null)
     const admissionByStudentResponse = ref(null)
+    const directAdmitStudentResponse = ref(null)
+    const admissionLetterPhraseResponse = ref()
+    const admissionLetterResponse = ref(null)
+    const decodeAdmissionLetterResponse = ref(null)
 
     async function newStudentDetailsAdmission(data) {
         return await api.post("main/new-student-details-admission", data)
@@ -91,7 +95,9 @@ export const useAdmissionStore = defineStore("admission", () => {
 // ("main/admissions?school_number="+school_number+"&campus_number="+campus_number+"&campus_class_number="+campus_class_number+"&stream_number="+stream_number+"&academic_year_number="+academic_year_number+"&study_period_number="+study_period_number)
 
     async function fetchAdmissionByFilters(data) {
-        return await api.get("main/admissions?page="+data.page+"&per_page="+ data.per_page+"&school_number="+data.school_number+"&campus_number="+data.campus_number+"&campus_class_number="+data.campus_class_number+"&stream_number="+data.stream_number+"&academic_year_number="+data.academic_year_number+"&study_period_number="+data.study_period_number)
+        return await api.get("main/admissions?page="+data.page+"&per_page="+ data.per_page+"&school_number="+data.school_number+"&campus_number="+data.campus_number+"&campus_class_number="+data.campus_class_number+"&stream_number="+data.stream_number+"&academic_year_number="+data.academic_year_number+"&study_period_number="+data.study_period_number
+            +"&class_number="+data.class_number+"&level_number="+data.level_number
+        )
             .then((response) => {
                 admissionByFiltersResponse.value = response.data
             })
@@ -114,6 +120,17 @@ export const useAdmissionStore = defineStore("admission", () => {
             })
     }
 
+    async function directAdmitStudent(data) {
+        return await api.post("main/admissions/existing-admission",data)
+            .then((response) => {
+                directAdmitStudentResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
     async function fetchAdmissionByStudentId(student_number) {
         return await api.get("main/admissions/"+student_number)
@@ -127,6 +144,41 @@ export const useAdmissionStore = defineStore("admission", () => {
             })
     }
 
+    async function admissionLetterPhrase(data) {
+        return await api.post("main/admissions/templates/new",data)
+            .then((response) => {
+                admissionLetterPhraseResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchAdmissionTemplates(data) {
+        return await api.get("main/admissions/templates/"+data.school_number)
+            .then((response) => {
+                admissionLetterResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function decodeTemplates(data) {
+        return await api.get("main/admissions/templates/decode?student_number="+data.student_number)
+            .then((response) => {
+                decodeAdmissionLetterResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
 
     return {
@@ -148,6 +200,14 @@ export const useAdmissionStore = defineStore("admission", () => {
         admitStudentResponse,
         admitStudent,
         admissionByStudentResponse,
-        fetchAdmissionByStudentId        
+        fetchAdmissionByStudentId  ,
+        directAdmitStudentResponse,
+        directAdmitStudent,
+        admissionLetterPhrase,
+        admissionLetterPhraseResponse,
+        fetchAdmissionTemplates,
+        admissionLetterResponse,
+        decodeTemplates,
+        decodeAdmissionLetterResponse
     }
 })

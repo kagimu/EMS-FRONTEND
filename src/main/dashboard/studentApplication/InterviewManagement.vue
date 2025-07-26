@@ -1,22 +1,20 @@
 <script setup>
 import InterviewAssessmentList from './InterviewAssessmentList.vue';
-import {useRouter} from "vue-router";
-import ApplicantsAssessment from "@/main/dashboard/studentApplication/ApplicantsAssessment.vue"
+import { useRouter } from "vue-router";
+import ApplicantsAssessment from "@/main/dashboard/studentApplication/ApplicantsAssessment.vue";
 import InterviewLearnersList from './InterviewLearnersList.vue';
-const routerData = useRouter()
-let  interviewNumber = routerData.currentRoute.value.query.interview_id
-let assessmentricsNumber = routerData.currentRoute.value.query.assessment_metric_id
-let interviewM = routerData.currentRoute.value.query.interview
+const routerData = useRouter();
+let interviewNumber = routerData.currentRoute.value.query.interview_id;
+let assessmentricsNumber = routerData.currentRoute.value.query.assessment_metric_id;
+let interviewM = routerData.currentRoute.value.query.interview;
 import router from "@/config/router.js";
 
 const goBack = () => {
-  window.history.back()
-}
+  window.history.back();
+};
 
-const selectedTab = router.currentRoute.value.query.type ?? 'applicants'
-const menu = router.currentRoute.value.query.m
-
-
+const selectedTab = router.currentRoute.value.query.type ?? 'applicants';
+const menu = router.currentRoute.value.query.m;
 
 const switchTabs = (data) => {
   router.push({
@@ -26,96 +24,95 @@ const switchTabs = (data) => {
       type: data,
       interview_id: interviewNumber,
       assessment_metric_id: assessmentricsNumber,
-      interview: interviewM
-    }
+      interview: interviewM,
+    },
   });
 };
-
 </script>
 
 <template>
-    <div>
-        <div class="row">
-        <div class="col-12">
-          <div class="card mt-3 ">
-           
-            <div class="ca" style="padding: 0;">
-                <div class="mb-10 ml-3 mt-2" style="float: right; margin-right: 10px;"><i @click="goBack()" class="bi bi-x-lg"></i></div>
-
-                <div>
-    <div class="m-3">
-      <div class="card-title mb-4">
-              Interview : <b>{{ interviewM }}</b>
-              <hr>
-            </div>
-
-
-        <div class="flex border-b">
-
-          <!-- <div class="cursor-pointer text-sm" :class="selectedTab === 'assessment' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('assessment')">
-            <div class="py-2 px-3">
-              <i class="bi bi-box-arrow-in-right mr-1"></i>
-              Assessment Schedules On Interview
-            </div>
-          </div> -->
-
-          <div class="cursor-pointer text-sm" :class="selectedTab === 'applicants' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('applicants')">
-            <div class="py-2 px-3">
-              <i class="bi bi-box-arrow-in-right mr-1"></i>
-            Enter Interview Scores
-            </div>
+  <div class="container mt-1">
+    <div class="row">
+      <div class="col-12">
+        <div class="card shadow-sm">
+          <div class="card-header d-flex justify-content-between align-items-center">
+          
+            <div class="mb-2">
+              <div class="d-flex align-items-center mb- text-[13px]">
+                <h6 class="me- mb-0 text-[13px] py-1">Interview: &nbsp;</h6>
+                {{ interviewM }}
+              </div>
+              <!-- <div class="d-flex align-items-center mb-2">
+                <span class="me-2">Scheduled On:</span>
+                <span>12/02/2025</span>
+              </div> -->
+              <!-- <div class="d-flex align-items-center mb-2">
+                <span class="me-2">Venue:</span>
+                <span>Main Hall</span>
+              </div> -->
+              <!-- <div class="d-flex align-items-center mb-2">
+                <span class="me-2">Message:</span>
+                <span>Come early</span>
+              </div> -->
+              </div>
           </div>
+          <div class="card-body">
+           
 
-        <div class="cursor-pointer text-sm" :class="selectedTab === 'admission-offer' ? 'border-b-2 border-[#2c2f8c]' : ''" @click="switchTabs('admission-offer')">
-          <div class="py-2 px-3">
+            <div class="flex border-b mt-1">
+        <div class="cursor-pointer text-sm rounded-t-md ml-1 mr-1" :class="selectedTab === 'applicants' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('applicants')">
+          <div class="py-1 px-3">
+            <i class="bi bi-box-arrow-in-right mr-1"></i>
+            Enter Interview Scores
+          </div>
+        </div>
+        <div  class="cursor-pointer text-sm rounded-t-md mr-1" :class="selectedTab === 'admission-offer' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('admission-offer')">
+          <div class="py-1 px-3">
             <i class="bi bi-box-arrow-in-right mr-1"></i>
             Offer Admission
           </div>
         </div>
       </div>
 
-
-
-
-      <!-- <div v-if="selectedTab === 'assessment'">
-        <div>
-          <InterviewAssessmentList></InterviewAssessmentList>
-        </div>
-      </div> -->
-
-      <div v-if="selectedTab === 'applicants'">
-        <div >
-          <ApplicantsAssessment></ApplicantsAssessment>
-        </div>
-      </div>
-
-      <div v-if="selectedTab === 'admission-offer'">
-        <div >
-          <InterviewLearnersList></InterviewLearnersList>
-        </div>
-      </div>
-
-      <div class="tab-content" id="nav-tabContent">
-        <!-- <div class="tab-pane fade " id="assessment" role="tabpanel" aria-labelledby="assessment_tab" tabindex="0">
-            <InterviewAssessmentList></InterviewAssessmentList>
-        </div> -->
-        <!-- <div class="tab-pane fade show active" id="applicants" role="tabpanel" aria-labelledby="applicants_tab" tabindex="0">
-          <ApplicantsAssessment></ApplicantsAssessment>
-        </div> -->
-        <!-- <div class="tab-pane fade" id="admission-offer" role="tabpanel" aria-labelledby="admission-offer_tab" tabindex="0">
-          <InterviewLearnersList></InterviewLearnersList>
-        </div> -->
-      </div>
-
-    </div>
-  </div>
-  
-  
+      
+            <div class="tab-content mt-4">
+      
+              <div class="tab-pane" :class="{ active: selectedTab === 'applicants' }">
+                <ApplicantsAssessment></ApplicantsAssessment>
+              </div>
+              <div class="tab-pane" :class="{ active: selectedTab === 'admission-offer' }">
+                <InterviewLearnersList></InterviewLearnersList>
+              </div>
             </div>
           </div>
         </div>
-  
-  
       </div>
     </div>
+  </div>
 </template>
+
+<style scoped>
+.card {
+  border-radius: 8px;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+}
+
+.nav-tabs .nav-link {
+  cursor: pointer;
+}
+
+.nav-tabs .nav-link.active {
+  border-color: #dee2e6 #dee2e6 #f8f9fa;
+}
+
+.tab-content .tab-pane {
+  display: none;
+}
+
+.tab-content .tab-pane.active {
+  display: block;
+}
+</style>

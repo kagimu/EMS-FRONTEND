@@ -45,6 +45,8 @@ export const useCateringStore = defineStore("catering", () => {
     const errorMessage = ref(null)
     const deleteMenuItemResponse = ref(null)
     const commonsStore = useCommonsStore()
+    let feedingGroupByUserIResponse = ref(null)
+    let deleteStockResponse = ref(null)
 
     async function newUnitOfMeasureInfo(data) {
         return await api.post("main/catering/units-of-measure", data)
@@ -275,6 +277,18 @@ async function newStock(data) {
         })
 }
 
+async function deleteStock(data) {
+    return await api.post("main/catering/stocking?stock_number="+data.stock_number)
+        .then((response) => {
+            deleteStockResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response && response.response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
 async function fetchStock(data) {
 
         let school_number = data?.school_number ?? ""
@@ -309,6 +323,7 @@ async function newFeedingGroupUsers(data) {
 async function fetchFeedingGroupUserById(userId) {
     return await api.get("main/catering/feeding-group-users?User-Number="+userId)
         .then((response) => {
+         
             feedingGroupUsersResponse.value = response.data
         })
         .catch((response) => {
@@ -458,11 +473,11 @@ async function fetchMeals(campusNumber,meal_courseNumber) {
 async function fetchGroupUsersList(data) {
     // let  page = data?.page ?? ""
     // let  per_page =  data?.per_page ?? ""
-    let  feeding_group_number =   data?.feeding_group_number ?? ""
+    let  feeding_group_number =   data?.group_number ?? ""
     let  school_number =   data?.school_number ?? ""
     let  campus_number =   data?.campus_number ?? ""
 
-    return await api.get("main/catering/feeding-group-users?school_number="+school_number+"&campus_number="+campus_number+"&feeding-group_number="+feeding_group_number)
+    return await api.get("main/catering/feeding-group-users?school_number="+school_number+"&campus_number="+campus_number+"&group_number="+feeding_group_number)
         .then((response) => {
             feedingGroupUsersListResponse.value = response.data
         })
@@ -535,6 +550,19 @@ async function deleteMenuItem(data) {
         })
 }
 
+//feedingGroupUsers
+async function FeedingGroupByUserId(user_number) {
+    return await api.get("main/users/meals?user_number="+user_number)
+        .then((response) => {
+            feedingGroupByUserIResponse.value = response.data
+        })
+        .catch((response) => {
+            if(response && response.response){
+                errorMessage.value = response.response.data
+            }
+        })
+}
+
     return {
         newUnitOfMeasureInfoResponse,
         errorMessage,
@@ -575,6 +603,8 @@ async function deleteMenuItem(data) {
         deleteFeedingGroupResponse,
         updateFeedingSessionResponse,
         deleteMenuItemResponse,
+        deleteStockResponse,
+        deleteStock,
         newUnitOfMeasureInfo,
         fetchUnitOfMeasureInfo,
         deleteUnitOfMeasure,
@@ -613,5 +643,7 @@ async function deleteMenuItem(data) {
         deleteFeedingSession,
         deleteFeedingGroup,
         deleteMenuItem,
+        feedingGroupByUserIResponse,
+        FeedingGroupByUserId
     }
 } )

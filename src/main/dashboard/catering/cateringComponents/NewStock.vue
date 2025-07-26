@@ -4,7 +4,7 @@ import useNotificationStore from "@/composables/useNotification.js"
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js"
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
 import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
-
+import ComboMenuItemBox from "@/components/ComboMenuItemBox.vue";
 import useCommonsStore from "@/composables/useCommons.js";
 const commons = useCommonsStore()
 
@@ -57,7 +57,7 @@ function removeItem(index) {
 }
 
 function calculateTotal() {
-  return Items.value.reduce((total, item) => total + item.amount, 0);
+  return Items.value.reduce((total, item) => total + item.amount, 0)?.toLocaleString();
 }
 
 function availableOptions(index) {
@@ -101,7 +101,7 @@ watch(
       buttonLoader.value = false
       clearFormData()
       notificationStore.successToast("Success", data.message)
-      cateringStore.fetchStock()
+      // cateringStore.fetchStock()
      
     },
     {deep: true}
@@ -143,7 +143,7 @@ watch(
     () => cateringStore.menuItemResponse,
     async (data) => {
 
-      itemOption.value = data.map(option => ({ name: option.name, number: option.number }));
+      itemOption.value = data.map(option => ({ name: option.name, number: option.number,purchase_unit_of_measure_name:option.purchase_unit_of_measure_name }));
 
       isSelected.value = true
       Items.value.push({ name: '', quantity: 1, cost: 0, amount: 0 });
@@ -168,7 +168,11 @@ watch(
     }
 )
 
-
+   
+const getUnitOfMeasure = (itemNumber) => {
+  const selectedItem = itemOption.value.find(option => option.number === itemNumber);
+  return selectedItem ? selectedItem.purchase_unit_of_measure_name : '';
+}
 
 </script>
 <template>
@@ -183,7 +187,7 @@ watch(
 
                     <div>
                       <div>
-                        <label class="textColor"><small>School</small> </label>
+                        <label class="text-sm"><small>School</small> </label>
                         <select
                             style="box-shadow: none;"
                             class="form-select form-select-sm" required
@@ -198,7 +202,7 @@ watch(
                     </div>
 
                     <div>
-                        <label class="textColor"><small>Campus</small>  </label>
+                        <label class="text-sm"><small>Campus</small>  </label>
                         <select
                             :style="!isSelected ? 'border:1px solid red' : '' "
                             style="box-shadow: none;"
@@ -218,19 +222,22 @@ watch(
 
             <div>
               <!-- New Design -->
-                <table class="table table-hover mt-1 table-sm text-xs">
+                <table class="table table-hove mt-1 table-sm text-xs">
                   <thead>
                     <tr class="font-bold text-gray-600">
-                      <td class="w-[5%]">#</td>
-                      <td class="w-[30%]">Item</td>
-                      <td class="w-[20%]">Qty</td>
-                      <td class="w-[20%]">Unit Price</td>
-                      <td>Amount</td>
-                      <td></td>
+                      <th class="w-[1%]">#</th>
+                      <th class="w-[25%]">Item</th>
+                      <th class="w-[10%]">Qty</th>
+                      <th class="w-[24%]">Purchase Unit Of Measure</th>
+                      <th class="w-[15%]">Unit Price</th>
+                      <th>Amount</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="(itemData, index) in Items" :key="index" >
+                      <!-- {{itemData}} -->   
+                   
                       <td class="border-l border-r">{{(index + 1)}}</td>
                       <td class="border-r">
                         <select
@@ -239,6 +246,14 @@ watch(
                             @change="updateItem(index)">
                           <option :value="option.number" v-for="option in availableOptions(index)">{{ option.name }}</option>
                         </select>
+                           
+                       
+                      <!-- <ComboMenuItemBox
+                      v-model:optionResponse="itemData.menu_item_number"
+                      :optionList="availableOptions(index)"
+                      :optionDraft="itemData.menu_item_number"
+                     ></ComboMenuItemBox> -->
+
                       </td>
                       <td class="border-r">
                         <input
@@ -248,8 +263,10 @@ watch(
                             v-model="itemData.quantity"
                             @input="updateAmount(index)"
                             placeholder="1.0"
-                            class="form-control select-no-border">
+                            class="form-control select-no-border text-xs">
                       </td>
+                      <td class="border-r"> <input class="form-control shadow-none select-no-border" 
+                        type="text" :value="getUnitOfMeasure(itemData.menu_item_number)"  readonly/></td>
                       <td class="border-r">
                         <input
                             @keypress="commons.numbersOnlyValidator($event)"
@@ -259,8 +276,10 @@ watch(
                             placeholder="Unit Price"
                             class="form-control select-no-border">
                       </td>
-                      <td>
-                        {{ itemData.amount }}
+                      <td class="border-r">
+                        <input class="form-control shadow-none select-no-border" 
+                        type="text" :value="itemData.amount?.toLocaleString()"  readonly/>
+                        
                       </td>
                       <td class="border-r">
                        <div class="flex justify-end">
@@ -278,7 +297,7 @@ watch(
 
               <div>
                 <button
-                    class="btn btn-primary btn-sm textColor ml-3"
+                    class="btn btn-primary btn-sm text-sm ml-3"
                     @click.prevent="addItem"
                     :disabled="isAddButtonDisabled">
                   <small><i class="bi bi-plus-lg"></i></small>

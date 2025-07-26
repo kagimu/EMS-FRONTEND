@@ -61,6 +61,7 @@ watch (
     {deep:true}
 )
 
+const emit = defineEmits(["closeDialog"]);
 </script>
 <template>
     <div>
@@ -68,7 +69,7 @@ watch (
     <form @submit.prevent="addEntity">
       
       <div class="mb-2">
-        <label class="textColor text-sm">Entity</label>
+        <label class="text-sm text-sm">Entity</label>
         <select
               style="box-shadow: none;"
               class="form-select form-select-sm" required
@@ -79,7 +80,13 @@ watch (
       </div>
 
 
-      <div class="flex justify-content-end mt-3" style="width: 100%;">
+      <div class="flex justify-between" style="width: 100%;">
+        <button
+            type="button"
+            class="btn btn-danger border-0 mr-2 btns"
+            @click="$emit('closeDialog')">
+          Cancel
+        </button>
         <button
             type="submit"
             class="btn btn-primary border-0 btn-sm">

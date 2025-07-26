@@ -17,6 +17,7 @@ const classStore = useClassesStore()
 
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const campusNumber = routerData.currentRoute.value.query.id
+const allSelected = ref(false)
 
 onMounted(
     () => {
@@ -66,6 +67,10 @@ watch(
     async (data) => {
       if(data){
         classList.value = data.data
+        // Add 'selected' flag to each class
+        classList.value.forEach(cls => {
+          cls.selected = false
+        })
       }
     },
     {deep:true}
@@ -94,6 +99,21 @@ watch(
 )
 
 
+// const toggleSelectAll = () => {
+//   allSelected.value = !allSelected.value
+//   classList.value.forEach(cls => {
+//     cls.selected = allSelected.value
+//   })
+// }
+
+const toggleSelectAll = () => {
+  if (allSelected.value) {
+    classId.value = classList.value.map(cls => cls.number)
+  } else {
+    classId.value = []
+  }
+}
+
 </script>
 
 <template>
@@ -104,7 +124,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Level</small></label>
+        <label class="text-sm"><small>Level</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -118,14 +138,26 @@ watch(
 
 
 
-      <label class="textColor mt-3 mb-2"><small>Add Classes to Levels</small></label>
+      <label class="text-sm mt-3 mb-2" v-if="classList.length > 0"><small>Add Classes to Levels</small></label>
+
+
       <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+<!--        <li class="mb-2" v-if="classList.length > 0">-->
+<!--          <input-->
+<!--              type="checkbox"-->
+<!--              v-model="allSelected"-->
+<!--              @change="toggleSelectAll"-->
+<!--          />-->
+<!--          <label class="ms-1">Select All</label>-->
+
+<!--        </li>-->
+
 
         <li class="list-group-item" v-for="(cls,idx) in classList" :key="idx">
           <input
               v-model="classId"
               @click="addClass(cls)"
-              style="outline: none 0 !important; box-shadow: none;"
+              style="outline: none 0 !important; box-shadow: none; width:20px; height: 20px"
               class="form-check-input me-1" type="checkbox" :value="cls.number" :id="cls.number">
           <label class="form-check-label cursor-pointer ml-2" :for="cls.number">{{cls.code+". "+cls.name+" &nbsp;&nbsp;&nbsp; ["+cls.abbreviation+"]"}}</label>
         </li>

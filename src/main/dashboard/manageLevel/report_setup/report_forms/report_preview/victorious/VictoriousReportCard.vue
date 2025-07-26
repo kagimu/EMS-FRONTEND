@@ -1,12 +1,13 @@
 <script setup>
 
-import StudentImage from "@/assets/images/studentId.png";
-import SchoolBudge from "@/assets/images/victorius-budge.png";
 import {onMounted, ref, watch} from "vue";
 
 const props = defineProps({
-  reportDetails:{}
+  reportDetails:{},
+  reportDataInfo:{}
 })
+
+const baseUrl = `${window.location.protocol}//${window.location.host}`;
 
 const reportFilteredData = ref([])
 
@@ -50,16 +51,22 @@ const filterReportData = () => {
   }
 }
 
+
+
+const printableContent = ref(null);
+
+
+
 </script>
 
 <template>
-<div>
 
+<div ref="printableContent" class="printable">
   <table style="width: 100%;">
     <tr>
       <td style="text-align: center; width: 20%;">
         <div style="text-align: right; margin-top: 10px;">
-          <img alt="logo" style="width: 130px; margin: 0 auto;" :src="SchoolBudge"/>
+          <img alt="logo" style="width: 130px; margin: 0 auto;" :src="reportDetails.school.logo"/>
         </div>
       </td>
 
@@ -110,7 +117,7 @@ const filterReportData = () => {
 
           <tr>
             <td style="width: 10%">
-              <img alt="logo" style="width: 130px;" :src="StudentImage"/>
+              <img alt="logo" style="width: 130px;" :src="reportDataInfo.photo"/>
             </td>
 
             <td style="width: 80%">
@@ -262,12 +269,12 @@ const filterReportData = () => {
         <table style="width: 100%; font-size: 13px; margin-top: 20px;">
           <tr style="border-bottom: 1px solid #b8babb;">
             <td style="width: 30%; padding: 5px;"><b>Promotion Status</b></td>
-            <td style="padding: 5px; text-align: center;"></td>
+            <td style="padding: 5px; text-align: center;">{{reportDetails?.promotion_status}}</td>
           </tr>
           <tr style="border-bottom: 1px solid #b8babb;">
             <td style="padding: 5px;">Next Term Begins on</td>
             <td style="padding: 5px;">
-              Monday, May 27, 2024
+              {{reportDetails?.next_term_begins	}}
             </td>
           </tr>
 
@@ -302,6 +309,27 @@ const filterReportData = () => {
 </div>
 </template>
 
+
 <style scoped>
 
+.printable {
+  padding: 0px;
+  /* border: 1px solid #2e0404;? */
+  margin-top: 0px;
+}
+
+img {
+  display: block;
+  margin-top: 20px;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.capitalize{
+  text-transform: capitalize !important;
+}
 </style>

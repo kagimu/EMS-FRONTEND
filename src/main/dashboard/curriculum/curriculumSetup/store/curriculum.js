@@ -17,6 +17,8 @@ export const useCurriculumStore = defineStore("curriculum", () => {
     const errorMessage = ref(null)
     const newMetricResponse = ref(null)
 
+    let entityN = localStorage.getItem("entity_number")
+
 
     async function newCurriculumData(data) {
         return await api.post("main/curriculum/new", data)
@@ -43,8 +45,9 @@ export const useCurriculumStore = defineStore("curriculum", () => {
     }
 
 
-    async function fetchCurriculum() {
-        return await api.get("main/curriculum/all")
+    async function fetchCurriculum(data) {
+
+        return await api.get("main/curriculum/all?entity_number="+entityN)
             .then((response) => {
                 curriculumDataResponse.value = response.data
             })

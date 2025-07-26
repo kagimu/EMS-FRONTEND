@@ -7,6 +7,11 @@ import AppModal from "@/components/AppModal.vue";
 import EditUnitsOfMeasure from "@/main/dashboard/catering/cateringComponents/EditUnitsOfMeasure.vue";
 
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+import { useAbility } from '@casl/vue';
+const { can } = useAbility()
+
 const schoolStore = useSchoolStore()
 const schoolList = ref([])
 
@@ -31,8 +36,15 @@ const showUnitMeasurement = () => {
 
 onMounted(
     () => {
-      getMenuItemInfo()
+      
       schoolStore.fetchSchools()
+
+  let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+ if(defaultSchoolNo){
+    schoolNumber.value = defaultSchoolNo
+  }
+
+  getMenuItemInfo()
     } )
 
 const getMenuItemInfo = () =>{
@@ -64,15 +76,25 @@ const editUnit = (unitInfo) => {
 }
 
 
-//delete
-const deleteUnitOfMeasurer = (id,name) => {
+// const deleteUnitOfMeasurer = (id,name) => {
+//   deleteLoader.value = true;
+//   if(!confirm("Are you sure, you want to delete: " + name)){
+//     return
+//   }
+//   cateringStore.deleteUnitOfMeasure(id)
+// }
+
+
+const deleteUnitOfMeasurer = async (id,name) => {
   deleteLoader.value = true;
-  if(!confirm("Are you sure, you want to delete: " + name)){
-    return
-  }
-// delete endpoint
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
+if (agreed) {
   cateringStore.deleteUnitOfMeasure(id)
 }
+
+}
+
+
 
 watch(
     () => cateringStore.deleteUnitOfMeasureInfoResponse,
@@ -101,11 +123,20 @@ watch (
       }
     }
 )
+
+watch (
+    () => cateringStore.newUnitOfMeasureInfoResponse,
+    async (data) => {
+      if(data){
+        getMenuItemInfo()
+      }
+    }
+)
 </script>
 <template>
     <div>
 
-
+      <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
   
     <AppModal :title="unitOfMeasureList ? 'Edit Unit of Measure' : 'Add Unit of Measure'" v-model="showUnitModal" lg>
       <NewUnitOfMeasurement :unitOfMeasureList="unitOfMeasureList"></NewUnitOfMeasurement>
@@ -152,7 +183,7 @@ watch (
         </div>
         </div>
     </div>
-    
+    <!-- {{ unitMeasurementData }} -->
     <table
     id="datatable"
     class="table table-striped"
@@ -172,11 +203,11 @@ watch (
       <td>{{ list?.name }}</td>
       <td>{{ list?.abbreviation }}</td>
       <td>
-        <button @click="editUnit(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
+        <button v-if="can('edit_unit_of_measure','manage')" @click="editUnit(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-          <button type="button" @click="deleteUnitOfMeasurer(list.unit_of_measure_number,list.name)">
+          <button v-if="can('delete_unit_of_measure','manage')" type="button" @click="deleteUnitOfMeasurer(list.unit_of_measure_number,list.name)">
             <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
             <!-- <div class="spinner-border spinner-border-sm" role="status" v-if="deleteLoader" >
         <span class="visually-hidden">Loading...</span>

@@ -29,6 +29,7 @@ const campusNumber = routerData.currentRoute.value.query.id
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const schoolNumber = routerData.currentRoute.value.query.sch
 const class_number = ref(null)
+const campus_level_number = ref("")
 const campusCurriculumDataInfo = ref(null)
 const campusLevelList = ref(null)
 const campusClassList = ref(null)
@@ -42,16 +43,38 @@ const deletionLoader = ref(undefined)
 onMounted(
     async () => {
         doFetchGradingStandard()
-        campusStore.fetchClassesBySchool(schoolNumber)
+        await classStore.fetchCampusLevel(campus_curriculum_number)
+
     } )
+
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        campusLevelList.value = data.data
+      }
+    }
+)
+
+const fetchCampusClass = async () => {
+  let data = {
+    school_number:schoolNumber,
+    campus_level_number:campus_level_number.value
+  }
+  await campusStore.fetchClassesBySchool(data)
+}
+
 
 const doFetchGradingStandard = () => {
   let data = {
-    campus_number:campusNumber,
-    class_number:class_number.value
+    school_number:schoolNumber,
+    class_number:class_number.value,
+
   }
   assessmentStore.fetchGradeStandard(data)
 }
+
 
 const addGradingStandard = () => {
   gradeDataList.value = ""
@@ -146,19 +169,22 @@ const editThisData = (gradeList) => {
   showGradeStandardModal.value = true
 }
 
-const deleteThisData = (info,index) => {
 
-  if(!confirm("Are you sure, you want to delete: " + info.name)){
-    return
+
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+const deleteThisData = async (info,index) => {
+
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + info.name);
+  if (agreed) {
+    deletionLoader.value = index
+
+    await assessmentStore.deleteGradeStandard(info.number)
   }
-
-  deletionLoader.value = index
-
-  assessmentStore.deleteGradeStandard(info.number)
+  
 
 }
-
-
 
 watch(
     () => assessmentStore.changeStatusGradingScaleResponse,
@@ -196,6 +222,8 @@ watch(
 <template>
     <div>
 
+
+      <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
       <AppModal  title="Grade Standard Details" v-model="gradeStandardInfoModel" lg>
         <GradeStandardDetails :gradeDataList="gradeDataList"></GradeStandardDetails>
       </AppModal>
@@ -226,8 +254,21 @@ watch(
       <div class="mt-[50px]">
         <div class="row mx-auto">
 
+          <div class="col-lg-3">
+            <div class="mb-2">
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="campus_level_number"
+                  @change="fetchCampusClass()"
+              >
+                <option disabled value="">--Filter by Level--</option>
+                <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+              </select>
+            </div>
+          </div>
 
-          <div class="col-lg-4 mb-2">
+          <div class="col-lg-3 mb-2">
             <select
                 class="form-select form-select-sm shadow-none" required
                 v-model="class_number"
@@ -253,31 +294,29 @@ watch(
         <tr>
           <th scope="col">#</th>
           <th scope="col">Name</th>
-          <th scope="col">Type</th>
-          <th>Descriptions</th>
           <th>Status</th>
+          <th>Descriptions</th>
           <th>Change status</th>
-          <th>Actions</th>
+          <th class="w-[10%]">Actions</th>
         </tr>
         </thead>
         <tbody>
             <tr v-for="(gradeList, index) in gradeStandardData " :key="index">
               <td>{{ gradeList.code }}</td>
               <td>{{ gradeList.name }}</td>
-              <td>{{ gradeList.type }}</td>
-              <td>{{ gradeList.description }}</td>
               <td>
                 <span class="border px-2 rounded-sm">
                   {{ gradeList.status }}
                 </span>
               </td>
+              <td>{{ gradeList.description }}</td>
               <td>
                 <button
                     @click="changeGradingStatus(gradeList, index)"
                     type="button"
                     :class="gradeList.status === 'ACTIVE' ? 'bg-[red]' : 'bg-[#0d6efd]'"
                     class="text-white text-xs px-2 rounded-sm">
-                  {{ gradeList.status === "ACTIVE" ? "Inactivate" : "Activate" }}
+                  {{ gradeList.status === "ACTIVE" ? "Deactivate" : "Activate" }}
                 </button>
               </td>
               <td>

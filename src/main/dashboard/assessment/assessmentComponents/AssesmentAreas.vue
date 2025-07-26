@@ -38,9 +38,18 @@ const areaDialog = ref(false)
     } )
 
 
+    const closeDialog = () => {
+      areaDialog.value = false
+}
+
   const fetchAssessmentAreaInfo = () => {
   if(curriculum_class_number.value){
-     assessmentStore.fetchAssessmentArea(curriculum_class_number.value)
+    let data = {
+      curriculum_number:curriculumNumber,
+      curriculum_class_number:curriculum_class_number.value,
+      level_number:level.value
+    }
+     assessmentStore.fetchAssessmentArea(data)
     }
   }
 
@@ -81,15 +90,20 @@ watch (
     async (data) => {
       if(data){
         assessmentListData.value = data.data
-      //  notificationStore.successToast("Success", data.message)
       }
     }
 )
+
+  const curriculumClassNumber = ref(null)
+  const curriculumLevel = ref(null)
 
 const showAreaDialog = () =>{
   assessmentAreaInfo.value = ""
   editMode.value = false
   areaDialog.value = true
+  namee.value = null
+  curriculumClassNumber.value = null
+  curriculumLevel.value = null
 }
 
 const closeAreaDialog = () =>{
@@ -119,15 +133,18 @@ const closeAreaDialog = () =>{
 
 
   const deleteThisData = (id,name) => {
-if(!confirm("Are you sure, you want to delete: " + name)){
-  return
-}
+    if(!confirm("Are you sure, you want to delete: " + name)){
+      return
+    }
 }
 
 const openEditModel = (num,name) =>{
   editMode.value = true
   areaDialog.value = true
   namee.value = name
+
+  curriculumClassNumber.value = curriculum_class_number.value
+  curriculumLevel.value = level.value
 }
   </script>
 
@@ -138,24 +155,25 @@ const openEditModel = (num,name) =>{
 
     <!-- :title="mealEditMode ? 'Edit Meal' : 'Add Meal Course'" -->
     <AppModal  :title="editMode ? 'Edit Assessment Area '+ namee : 'New Assessment Area'" v-model="areaDialog" xl2>
-      <NewAssessmentArea></NewAssessmentArea>
+      <NewAssessmentArea @closeDialog="closeDialog" :levelNum="curriculumLevel" :curriculum_class_number="curriculumClassNumber"></NewAssessmentArea>
     </AppModal>
 
     <div class="col-12">
-              <div class="card">
-                <div class="card-header">
-           <div class="row">
-            <div class="col-lg-6 "> 
-            </div>
-            <div class="col-lg-6">
-              <button
-                  v-if="can('add_assessment_area','general')"
-                  style="float: right" type="button"
-                  class="btn btn-primary btn-sm float-end mb-2 mr-4"
-                  @click="showAreaDialog">
-                <b><i class="bi bi-plus"></i></b>
-                <small>Add Assessment Area</small>
-              </button>
+              <div class="">
+                <div class="">
+           <div class="flex flex-grow justify-between">
+
+              <div class="text-sm">Assessment Area</div>
+
+             <div>
+               <button
+                   v-if="can('add_assessment_area','general')"
+                   style="float: right" type="button"
+                   class="btn btn-primary btn-sm float-end mr-4"
+                   @click="showAreaDialog">
+                 <b><i class="bi bi-plus"></i></b>
+                 <small>Add Assessment Area</small>
+               </button>
             </div>
     
            </div>
@@ -205,22 +223,26 @@ const openEditModel = (num,name) =>{
     >
       <thead>
         <tr>
-          <!-- <th>Interview</th> -->
-          <th>Name</th>
+           <th>#</th>
+           <th>Curriculum</th>
+          <th>Subject</th>
           <th>#</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(assessmentData, index) in assessmentListData " :key="index">
-          <td>{{ assessmentData.name}}</td>
+          <td>{{(index+1)}}</td>
+          <td>{{ assessmentData?.curriculum_name}}</td>
+          <td>{{ assessmentData?.name}}</td>
           <td>
           <button  type="button" @click="openEditModel(assessmentData.number,assessmentData.name)">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
-          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
-          <button type="button" @click="deleteThisData(assessmentData.number,assessmentData.name)">
-            <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
-          </button></td>
+<!--          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;-->
+<!--          <button type="button" @click="deleteThisData(assessmentData.number,assessmentData.name)">-->
+<!--            <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>-->
+<!--          </button>-->
+          </td>
         </tr>  
 
       </tbody>
@@ -233,7 +255,7 @@ const openEditModel = (num,name) =>{
   </template>
   
   <style scoped>
-  .textColor{
+  .text-sm2{
     font-size: 11px;
   }
   

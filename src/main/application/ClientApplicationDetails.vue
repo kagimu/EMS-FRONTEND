@@ -13,29 +13,29 @@
     <div class="col-4" style="border-right: 1px solid rgba(128, 128, 128, 0.137);">
         <p class="ml-4 mt-4 mb-10" style="text-align: left !important;">GUARDIAN/PARENT DETAILS</p>
         <div class="mb-2">
-          <span class="textColor text-sm"><small>Surname : <span class="details">{{appDatails.surname}}</span></small></span>
+          <span class="text-sm text-sm"><small>Surname : <span class="details">{{appDatails.surname}}</span></small></span>
         </div>
         <div class="mb-2">
-          <span class="textColor text-sm"><small>Second name : <span class="details">{{appDatails.second_name}}</span></small></span>
-        </div>
-
-        <div class="mb-2">
-          <span class="textColor text-sm"><small>Other names: <span class="details">{{ appDatails.other_name}}</span></small> </span>
+          <span class="text-sm text-sm"><small>Second name : <span class="details">{{appDatails.second_name}}</span></small></span>
         </div>
 
         <div class="mb-2">
-          <span class="textColor text-sm"> <small>Telephone No. : <span class="details">{{  appDatails.main_telephone_number}}</span></small></span>
+          <span class="text-sm text-sm"><small>Other names: <span class="details">{{ appDatails.other_name}}</span></small> </span>
         </div>
 
         <div class="mb-2">
-          <span class="textColor text-sm"><small>Alternative No.: <span class="details">{{ appDatails.alternative_telephone_number }}</span></small> </span>
+          <span class="text-sm text-sm"> <small>Telephone No. : <span class="details">{{  appDatails.main_telephone_number}}</span></small></span>
+        </div>
+
+        <div class="mb-2">
+          <span class="text-sm text-sm"><small>Alternative No.: <span class="details">{{ appDatails.alternative_telephone_number }}</span></small> </span>
         </div>
          <div class="row">
             <div class="mb-2">
-          <span class="textColor text-sm"><small>Email: <span class="details">{{ appDatails.email }}</span></small></span>
+          <span class="text-sm text-sm"><small>Email: <span class="details lowercase">{{ appDatails.email }}</span></small></span>
         </div>
             <div class="mb-2">
-          <span class="textColor text-sm"><small>Alternative Email: <span class="details">{{ appDatails.alternative_email }}</span></small></span>
+          <span class="text-sm text-sm"><small>Alternative Email: <span class="details">{{ appDatails.alternative_email }}</span></small></span>
         </div>
           </div>
         
@@ -45,31 +45,31 @@
     <div class="col-4" style="border-right: 1px solid rgba(128, 128, 128, 0.137);">
         <p class="ml-4 mt-4 mb-10" style="text-align: left !important;">LEARNER DETAILS</p>
         <div class="mb-2">
-          <span class="textColor text-sm"><small>Surname: <span class="details">{{ appDatails.studentSurname }}</span></small> </span>
+          <span class="text-sm text-sm"><small>Surname: <span class="details">{{ appDatails.studentSurname }}</span></small> </span>
         </div>
 
         <div class="mb-2">
-          <span class="textColor text-sm"><small>Second name: <span class="details">{{ appDatails.Studentsecond_name }}</span> </small></span>
+          <span class="text-sm text-sm"><small>Second name: <span class="details">{{ appDatails.Studentsecond_name }}</span> </small></span>
         </div>
 
         <div class="mb-2">
-          <span class="textColor text-sm"><small>Other names</small>: <span class="details">{{ appDatails.StudentOther_name}}</span> </span>
+          <span class="text-sm text-sm"><small>Other names</small>: <span class="details">{{ appDatails.StudentOther_name}}</span> </span>
         </div>
 
         <div class="mb-2">
-          <span class="textColor text-sm"> <small>Prefered Class: <span class="details">{{ appDatails.preferred_type_of_enrollment }}</span> </small></span>
+          <span class="text-sm text-sm"> <small>Prefered Class: <span class="details">{{ appDatails.preferred_type_of_enrollment }}</span> </small></span>
         </div>
 
       
          <div class="row">
           
             <div class="mb-2">
-          <span class="textColor text-sm"><small>Reason</small>: <span class="details"><i>{{ appDatails.reason}}</i></span> </span>
+          <span class="text-sm text-sm"><small>Reason</small>: <span class="details"><i>{{ appDatails.reason}}</i></span> </span>
         </div>
          
           
             <div class="mb-2">
-          <span class="textColor text-sm"><small>Age: <span class="details">{{getAge(appDatails.StudentDate_of_birth) }}</span></small></span>
+          <span class="text-sm text-sm"><small>Age: <span class="details">{{getAge(appDatails.StudentDate_of_birth) }}</span></small></span>
         </div>
           </div>
         
@@ -84,17 +84,17 @@
         
           <div class="row">
           <div class="col-lg-12">
-          <span class="textColor text-sm" ><small><span class="details">{{ school.name}} </span></small> </span>
+          <span class="text-sm text-sm" ><small><span class="details">{{ school.name}} </span></small> </span>
         </div>
         </div>
 
         <div v-for="(cls,idx) in school.Classes" :key="idx">
         <div class="row" style="width: 80px;">
         <div class="col-lg-4">
-          <span class="textColor text-sm" ><small> {{cls.class}}</small></span>
+          <span class="text-sm text-sm" ><small> {{cls.class}}</small></span>
         </div>
         <div class="col-lg-4">
-          <span class="textColor text-sm" ><small> {{cls.year}}</small></span>
+          <span class="text-sm text-sm" ><small> {{cls.year}}</small></span>
         </div>
         </div>
       </div>
@@ -131,11 +131,11 @@
               {{ applicationNumber }}
             <form @submit.prevent="scheduleInterview" >
               <div class="mb-2">
-                <label class="textColor"><small>Date</small></label>
+                <label class="text-sm"><small>Date</small></label>
                 <input v-model="formData.scheduled_on" type="datetime-local" required class="form-control">
               </div>
               <div class="mb-2">
-                <label class="textColor"><small>Message</small></label>
+                <label class="text-sm"><small>Message</small></label>
                 <textarea  v-model="formData.message" required class="form-control noFocus" id="floatingTextarea2" style="height: 100px"></textarea>
               </div>
               <div class="text-right mt-4">

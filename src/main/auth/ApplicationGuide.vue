@@ -1,5 +1,8 @@
 <script setup>
 import VictoriousLogo from "@/assets/images/victorious-logo.png";
+let logoUrl = localStorage.getItem("logo")
+
+
 </script>
 <template>
  <div>
@@ -8,7 +11,7 @@ import VictoriousLogo from "@/assets/images/victorious-logo.png";
       <div class="col-lg-6">
         <div class="align-centre mt-2 h6 font500 text-uppercase mb-2">
 
-          <img alt="logo" style="width: 100px; margin: 0 auto" :src="VictoriousLogo"/>
+          <img alt="logo" style="width: 100px; margin: 0 auto" :src="logoUrl"/>
           <div class="text-[#2c2f8c] text-center text-[20px]">
             Victorious Education Services
           </div>

@@ -5,7 +5,7 @@
           <div class="row">
             <div class="col-lg-12">
                 <div class="mb-2 mr-5 ml-5">
-            <label class="textColor mt-3 mb-2">Assessment Area | Subject</label>
+            <label class="text-sm mt-3 mb-2">Assessment Area | Subject</label>
             <select class="form-select form-select-sm form-control">
                 <option>- select -</option>
                 <option>Math</option>

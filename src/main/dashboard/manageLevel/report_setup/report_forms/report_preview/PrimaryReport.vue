@@ -1,24 +1,37 @@
 <script setup>
+import {onMounted} from "vue";
+import useCommonsStore from "@/composables/useCommons.js";
+import { ref } from "vue";
 
-import Badge from "@/assets/images/badge.png";
-import StudentImage from "@/assets/images/pic.jpg";
+const commons = useCommonsStore()
+const nextTermBegins = ref(null)
 
 const printReport = () => {
   // alert("Print pdf now man")
 }
 
 const props = defineProps({
-  reportDetails:{}
+  reportDetails:{},
+  reportDataInfo:{}
 })
+
+onMounted(
+    () =>{
+      // alert(JSON.stringify(props.reportDetails))
+    
+    }
+)
+
 
 
 </script>
 
 <template>
   <div>
-    <div class="mx-auto mt-10" style="width: 98%">
 
-      <div class="mt-4 mb-2 flex justify-content-between">
+    <div class="mx-auto mt-10" style="width: 98%; ">
+
+   <div class="mt-4 mb-2 flex justify-content-between">
         &nbsp;
         <button type="button" @click="printReport" class="btn btn-primary btn-sm mr-3" style="border-radius: 0;">
           <i class="bi-printer"></i>
@@ -32,14 +45,14 @@ const props = defineProps({
 
 
 
-            <table style="width: 100%;">
+            <table style="width: 100%; text-align: center;">
               <tr>
                 <td style="width: 20%; text-align: center;">
-                  <img alt="logo" style="width: 150px; margin: 0 auto" :src="Badge"/>
+                  <img alt="logo" style="width: 130px; margin: 0 auto;" :src="reportDetails?.school?.logo"/>
                 </td>
                 <td style="width: 60%;" class="text-center">
                   <!--        <div style="font-size: 30px;"><b>NOREGRETS LIFE SCHOOL</b></div>-->
-                  <div style="font-size: 30px; text-transform: uppercase;"><b>{{reportDetails?.school?.name}}</b></div>
+                  <div style="font-size: 30px; text-transform: uppercase;text-align: center;"><b>{{reportDetails?.school?.name}}</b></div>
 
                   <!--        <div style="font-size: 20px; margin-top: 5px;">BUNAMWAYA CAMPUS</div>-->
                   <div style="font-size: 20px; margin-top: 5px;text-transform: uppercase;">{{reportDetails?.campus?.name}}</div>
@@ -52,11 +65,13 @@ const props = defineProps({
                       <!--            Bunamwaya, P.O.BOX 21671 Kampala | +256752698545 | mwesigwa.noregrets@gmail.com-->
                     </small></div>
 
-                  <div style="background-color: green; color: #ffffff;">PROGRESS REPORT FOR KINDERGARTEN</div>
+<!--                  <div style="background-color: green; color: #ffffff;">PROGRESS REPORT FOR KINDERGARTEN</div>-->
+                  <div style="background-color: green; color: #ffffff; text-transform: uppercase; text-align: center;">PROGRESS REPORT FOR {{reportDetails?.level_name}}</div>
                 </td>
                 <td style="width: 20%;">
-                  <div style="text-align: center; margin-top: 10px;">
-                    <img alt="logo" style="width: 130px; margin: 0 auto;" :src="StudentImage"/>
+                  <div style="text-align: center; margin-top: 10px;padding-left:20px">
+<!--                    <img alt="logo" style="width: 130px; margin: 0 auto;" :src="StudentImage"/>-->
+                    <img alt="logo" style="width: 130px;" :src="reportDataInfo?.photo"/>
                   </div>
                 </td>
               </tr>
@@ -69,35 +84,31 @@ const props = defineProps({
           <td>
 
 
-            <table style="width: 100%; font-size: 13px; margin-top: 30px; margin-bottom: 30px;">
+            <table style="width: 100%; font-size: 13px; margin-top: 30px; margin-bottom: 30px; color: #45484c;">
               <tr>
                 <td style="width: 15%;">
                   <div style="padding-left: 60px; padding-bottom: 10px;">Name:</div>
                   <div style="padding-left: 60px; padding-bottom: 10px;">Class:</div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;"> Days Present:</div>
                   <div style="padding-left: 60px; padding-bottom: 10px;">Sex:</div>
                   <div style="padding-left: 60px; padding-bottom: 10px;">Age:</div>
                 </td>
                 <td style="width: 40%;">
                   <div style="padding-left: 60px; padding-bottom: 10px;"><span class="capitalize">{{reportDetails?.student?.surname}}</span> <span class="capitalize">{{reportDetails?.student?.second_name}}</span> <span class="capitalize">{{reportDetails?.student?.other_name}}</span></div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;"><span>{{reportDetails?.class_abbreviation}}</span></div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;"><span>{{reportDetails?.class_abbreviation}}<!--<span v-if="reportDetails?.stream">, {{reportDetails?.stream}}</span>--></span></div>
                   <div style="padding-left: 60px; padding-bottom: 10px;"><span class="capitalize">{{reportDetails?.student?.gender}}</span></div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">6yrs , 8mth</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;"><!--6yrs , 8mth-->{{commons.ageCalculator(reportDetails?.student?.date_of_birth)}}</div>
                 </td>
                 <td style="width: 15%;">
                   <div style="padding-left: 60px; padding-bottom: 10px;">Term:</div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">School Team:</div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">Days Absent:</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">Stream:</div>
                   <div style="padding-left: 60px; padding-bottom: 10px;">Date:</div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">Grade</div>
                 </td>
                 <td style="width: 30%;">
                   <div style="padding-left: 60px; padding-bottom: 10px;">{{reportDetails?.study_period}}</div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
-                  <div style="padding-left: 60px; padding-bottom: 10px;">&nbsp;</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">{{reportDetails?.stream	}}</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px;">{{new Date().toLocaleDateString()}}</div>
+                  <div style="padding-left: 60px; padding-bottom: 10px; color:#008000;">{{reportDetails?.grade}}</div>
                 </td>
               </tr>
             </table>
@@ -119,55 +130,47 @@ const props = defineProps({
 
 
 
-            <table class="w-full text-[13px]" style="border: 1px solid #eef0f2" cellspacing="0" cellpadding="0">
+            <table class="w-full text-[13px]" style="border: 1px solid #45484c;" cellspacing="0" cellpadding="0">
               <tr>
-                <td style="width: 5%; border-right: 1px solid #eef0f2;">&nbsp;</td>
-                <td :colspan="(5 + Number(reportDetails?.report_columns.length))">
+                <td style="width: 5%; border-right: 1px solid #45484c;">&nbsp;</td>
+                <td :colspan="(5 + Number(reportDetails?.report_columns?.length))">
                   <table cellspacing="0" cellpadding="0" style="width: 100%; font-size: 13px; border-top: 1px solid #eef0f2;">
                     <tr>
-                      <td style="width: 30%; padding: 4px; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">SUBJECT UNIT</div></td>
-                      <td style="width: 10%; border-right: 1px solid #eef0f2;" v-for="(column,column_index) in reportDetails?.report_columns" :key="column_index"><div style="margin-left: 4px;">{{column}}</div></td>
-                      <td style="width: 10%; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">Average</div></td>
-                      <td style="width: 5%; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">Aggr</div></td>
-                      <td style="width: 25%; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">Remark</div></td>
-                      <td style="width: 5%; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">Initial</div></td>
+                      <td style="width: 30%; padding: 4px; border-right: 1px solid #45484c;"><div style="margin-left: 4px;">SUBJECT UNIT</div></td>
+                      <td style="width: 10%; border-right: 1px solid #45484c;" v-for="(column,column_index) in reportDetails?.report_columns" :key="column_index"><div style="margin-left: 4px;">{{column}}</div></td>
+                      <td style="width: 10%; border-right: 1px solid #45484c;"><div style="margin-left: 4px;">Total</div></td>
+                      <td style="width: 5%; border-right: 1px solid #45484c;"><div style="margin-left: 4px;">Aggr</div></td>
+                      <td style="width: 25%; border-right: 1px solid #45484c;"><div style="margin-left: 4px;">Remark</div></td>
+                      <td style="width: 5%; border-right: 1px solid #45484c;"><div style="margin-left: 4px;">Initial</div></td>
                     </tr>
                   </table>
                 </td>
-
               </tr>
 
-
-
               <tr v-for="(learning_area,learning_area_index) in reportDetails?.learning_areas" :key="learning_area_index">
-                <td
-                    class="border-r border-t"
-                >
-                  <div
-                      style="
-                      transform: rotate(270deg);
-                      white-space: nowrap;
-                      font-size: 14px;"
-                  >
-                {{learning_area.name}}
+                <td style="border-top: 1px solid #45484c; border-right: 1px solid #45484c;">
+                 <div style="transform: rotate(270deg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: auto;">
+                  <div>
+                    {{learning_area?.name}}
                   </div>
-
+                </div>
                 </td>
 
                 <td :colspan="(5 + Number(reportDetails?.report_columns.length))">
-                  <table cellspacing="0" cellpadding="0" style="width: 100%; font-size: 13px; border-top: 1px solid #eef0f2;">
-                  <tr v-for="(assessment,assessment_index) in learning_area?.assessments" :key="assessment_index" style="border-bottom: 1px solid #f4f4f4;">
-                    <td style="width: 30%; padding: 4px; border-right: 1px solid #eef0f2;"><div style="margin-left: 4px;">{{assessment.name}}</div></td>
-                    <td style="width: 10%; padding: 4px; border-right: 1px solid #eef0f2;" v-for="(report_score,report_score_index) in assessment.report_scores" :key="report_score_index">
+
+                  <table cellspacing="0" cellpadding="0" style="width: 100%; font-size: 13px; border-top: 1px solid #45484c;">
+                  <tr v-for="(assessment,assessment_index) in learning_area?.assessments" :key="assessment_index">
+                    <td style="width: 30%; padding: 4px; border-right: 1px solid #45484c;"><div style="margin-left: 4px;">{{assessment.name}}</div></td>
+                    <td style="width: 10%; padding: 4px; border-right: 1px solid #45484c;" v-for="(report_score,report_score_index) in assessment.report_scores" :key="report_score_index">
                       {{report_score.score >= 0 ? report_score.score.toFixed(1) : '-'}}
                     </td>
-                    <td style="width: 10%; padding: 4px; border-right: 1px solid #eef0f2;">{{assessment.report_score_summary.summation}}</td>
-                    <td style="width: 5%; padding: 4px; border-right: 1px solid #eef0f2;">{{assessment.report_score_summary.grade}}</td>
-                    <td style="width: 25%; padding: 4px; border-right: 1px solid #eef0f2;">{{assessment.report_score_summary.comment}}</td>
-                    <td style="width: 5%; padding: 4px; border-right: 1px solid #eef0f2;">M.O</td>
+                    <td style="width: 10%; padding: 4px; border-right: 1px solid #45484c;">{{assessment.report_score_summary.summation}}</td>
+                    <td style="width: 5%; padding: 4px; border-right: 1px solid #45484c;">{{assessment.report_score_summary.grade}}</td>
+                    <td style="width: 25%; padding: 4px; border-right: 1px solid #45484c;">{{assessment.report_score_summary.comment}}</td>
+                    <td style="width: 5%; padding: 4px; border-right: 1px solid #45484c;">M.O</td>
                   </tr>
-
                   </table>
+
 
                 </td>
               </tr>
@@ -175,25 +178,30 @@ const props = defineProps({
 
             </table>
 
-<!--            <table  v-for="(lst,idx) in reportDetails?.learning_areas" :key="idx" class="w-full text-[13px] border">
-              <tr style="border-bottom: 1px solid #f4f4f4;">
-                <td class="w-[10%] bg-amber-200" rowspan="4" style="transform: rotate(270deg); white-space: nowrap;"> <small>{{lst.name}}</small></td>
-                <td class="p-[5px]">
-                 <table class="w-full">
-                   <tr v-for="(list,idx) in lst?.assessments" :key="idx">
-                     <td class="p-[5px] w-[10%]" style="padding: 5px;">
-                       {{list.name}}
-                     </td>
-                     <td class="p-[5px] w-[10%]" v-for="(report_score,idx) in list?.report_scores" :key="idx" style="padding: 5px;">50</td>
-                     <td class="p-[5px] w-[10%]">{{list.report_score_summary.summation}} &lt;!&ndash;aggregate&ndash;&gt;</td>
-                     <td class="p-[5px] w-[10%]">{{list.report_score_summary.comment}} &lt;!&ndash;remarks&ndash;&gt;</td>
-                     <td class="p-[5px] w-[10%]">M.O &lt;!&ndash;remarks&ndash;&gt;</td>
-                   </tr>
-                 </table>
-                </td>
 
-              </tr>
-            </table>-->
+
+
+
+
+            <!--            <table  v-for="(lst,idx) in reportDetails?.learning_areas" :key="idx" class="w-full text-[13px] border">
+                          <tr style="border-bottom: 1px solid #f4f4f4;">
+                            <td class="w-[10%] bg-amber-200" rowspan="4" style="transform: rotate(270deg); white-space: nowrap;"> <small>{{lst.name}}</small></td>
+                            <td class="p-[5px]">
+                             <table class="w-full">
+                               <tr v-for="(list,idx) in lst?.assessments" :key="idx">
+                                 <td class="p-[5px] w-[10%]" style="padding: 5px;">
+                                   {{list.name}}
+                                 </td>
+                                 <td class="p-[5px] w-[10%]" v-for="(report_score,idx) in list?.report_scores" :key="idx" style="padding: 5px;">50</td>
+                                 <td class="p-[5px] w-[10%]">{{list.report_score_summary.summation}} &lt;!&ndash;aggregate&ndash;&gt;</td>
+                                 <td class="p-[5px] w-[10%]">{{list.report_score_summary.comment}} &lt;!&ndash;remarks&ndash;&gt;</td>
+                                 <td class="p-[5px] w-[10%]">M.O &lt;!&ndash;remarks&ndash;&gt;</td>
+                               </tr>
+                             </table>
+                            </td>
+
+                          </tr>
+                        </table>-->
 
 
 
@@ -490,19 +498,36 @@ const props = defineProps({
         <tr>
           <td>
 
+            <table style="width: 100%; border: 1px solid #b8babb; font-size: 13px; margin-top: 10px;">
+
+              <tr style="border-bottom: 1px solid #b8babb;">
+                <td style="width: 28%; padding: 5px;" rowspan="2">GRADING</td>
+                <td style="width: 8%; padding: 5px; text-align: center;" v-for="(scale,idx) in reportDetails?.aggregate_scale" :key="idx">
+                  {{scale?.short_name}}
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid #b8babb;">
+                <td style="width: 8%; padding: 5px; text-align: center;" v-for="(scale,idx) in reportDetails?.aggregate_scale" :key="idx">
+                  {{scale?.min+" - "+scale?.max}}
+                </td>
+              </tr>
+
+            </table>
+
+
             <table style="width: 100%; font-size: 13px; margin-top: 20px; margin-bottom: 30px;">
               <tr>
                 <td style="width: 25%;">
-                  <div style="padding-left: 5px; padding-bottom: 10px;">CLASS TEACHER'S SIGNATURE:</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">HEAD TEACHER'S SIGNATURE:</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;">NEXT TERM BEGINS:</div>
+                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">CLASS TEACHER'S SIGNATURE:</div>
+                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">HEAD TEACHER'S SIGNATURE:</div>
+                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;">NEXT TERM BEGINS:</div>
                 </td>
 
                 <td>
 
-                  <div style="padding-left: 5px; padding-bottom: 10px;"> ________________________________________________________________</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;"> ________________________________________________________________</div>
-                  <div style="padding-left: 5px; padding-bottom: 10px;"> 18th/May/2020</div>
+                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 12px;"></div>
+                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top: 12px;"> {{reportDetails?.head_teachers_comment}}</div>
+                  <div style="padding-left: 5px; padding-bottom: 0; color: #4b5563; padding-top: 12px;"> <!--18th/May/2020--> {{reportDetails?.next_term_begins	}}</div>
 
                 </td>
               </tr>
@@ -525,13 +550,41 @@ const props = defineProps({
 
 
     </div>
-
-
   </div>
+
+
+ 
 </template>
 
 
 
-<style scoped>
 
+<style>
+  /* table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 13px;
+        } */
+        th, td {
+            /* border: 1px solid #ddd; */
+            /* padding: 5px; */
+        }
+        .vertical-header {
+            writing-mode: sideways-lr;
+            text-orientation:mixed;
+            /* font-weight: bold; */
+            text-align: center;
+        }
+        .section-header {
+            background-color: #f4f4f4;
+            /* font-weight: bold; */
+        }
+        .data-row td {
+            padding: 0px;
+        }
+        thead th {
+            background-color: #e6e6e6;
+            /* font-weight: bold; */
+        }
 </style>

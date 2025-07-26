@@ -1,10 +1,10 @@
 <template>
   <div>
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="strandEditMode ? 'Edit Strand' : 'Add Strand'" v-model="strandDialog" lg>
-      <new-strand></new-strand>
+      <new-strand @closeDialog="closeStrand"></new-strand>
     </AppModal>
-
 
 
     <div class="flex justify-content-between mt-3">
@@ -168,6 +168,10 @@ import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/
 import {useSubjectClusterStore} from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/store/subjectCluster.js";
 import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
 import AppModal from "@/components/AppModal.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+
 const routerData = useRouter()
 
 
@@ -199,11 +203,25 @@ const editStrand = (data) => {
   strandEditMode.value = true
   strandStore.strandData(data.number)
 }
-const deleteStrand = (data) => {
-  if(!confirm("Are you sure, you want to delete: "+data.name)){
-    return
-  }
+// const deleteStrand = (data) => {
+//   if(!confirm("Are you sure, you want to delete: "+data.name)){
+//     return
+//   }
 
+//   deletionLoader.value = data.number
+
+//   let info = {
+//     number:data.number
+//   }
+
+//   strandStore.deleteStrand(info)
+// }
+
+
+const deleteStrand = async (data) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+data.name);
+if (agreed) {
   deletionLoader.value = data.number
 
   let info = {
@@ -211,6 +229,9 @@ const deleteStrand = (data) => {
   }
 
   strandStore.deleteStrand(info)
+}
+
+
 }
 
 
@@ -235,17 +256,29 @@ const selectSubject = (subject_cluster_number) => {
   subjectStore.fetchSubjectList({subject_cluster_number:subject_cluster_number, curriculum_number:curriculumNumber})
 }
 
+const curriculum_number = localStorage.getItem("CurriculumNum")
 
 onMounted(
     () => {
       filterStrandList()
-      learningAreaStore.fetchLearningArea(curriculumNumber)
+
+
+      if(curriculum_number){
+        learningAreaStore.fetchLearningArea(curriculum_number)
+      }else{
+        learningAreaStore.fetchLearningArea(curriculumNumber)
+      }
+      
       selectSubjectCluster("")
       selectSubject("")
     }
 )
 
 const filterStrandList = () => {
+  if(curriculum_number){
+   curriculumNumber = curriculum_number
+  }
+
   let data = {
     learning_area_number:learning_area_number.value,
     subject_cluster_number:subject_cluster_number.value,
@@ -338,6 +371,10 @@ watch(
     },
     {deep:true}
 )
+
+const closeStrand = () => {
+  strandDialog.value = false
+}
 
 </script>
 

@@ -7,6 +7,7 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+import ComboBox from "@/components/ComboBox.vue";
 
 const classError = ref(null)
 const name = ref(null)
@@ -31,15 +32,29 @@ const form = reactive({
 })
 
 const props = defineProps({
-  mealListData:{}
+  mealListData:{},
+  feeding_meal_course_number:String
 })
 
+const getMealCourseMenuParkInfo = () => {
+  let draftData = props.mealListData
+  if(draftData.feeding_session_number){
+    school_number.value = draftData.school_number
+    if(draftData.school_number){
+    doFetchMealCourses()
+    }
+  
+    form.meal_course_number=props.feeding_meal_course_number,
+    form.feeding_sessions = [draftData.feeding_session_number];
+  }
+}
 
 
 
 onMounted(
     async () =>{
       await schoolStore.fetchSchools()
+      getMealCourseMenuParkInfo()
     }
 )
 
@@ -56,15 +71,34 @@ const doFetchFeedingSessions = () => {
 const addMealCourseFeedingSessionsDialog = () =>{
   loader.value = true
   mealStore.createMealCourseFeedingSessions(form)
+ 
 }
 
+
+watch(
+    () => mealStore.updateMealCourseFeedingSessionsResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
 
 
 
 watch(
     () => cateringStore.feedingGroupSessionsInfoResponse,
     async (data) => {
-      feedingSessionGroupList.value = data.data
+  
+      let draft = data?.data 
+        if(draft && (draft?.length > 0)){
+          feedingSessionGroupList.value = []
+          let arr = []
+          draft?.forEach(lst => {
+            arr.push({text:lst?.name,value:lst?.feeding_session_number})
+          })
+          feedingSessionGroupList.value = arr
+        }
     }
 )
 
@@ -118,7 +152,6 @@ watch(
 </script>
 <template>
   <div>
-    <!-- {{ mealListData }} -->
 
     <form @submit.prevent="addMealCourseFeedingSessionsDialog">
 
@@ -128,7 +161,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>School</small></label>
+        <label class="text-sm"><small>School</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -141,7 +174,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Meal Course</small></label>
+        <label class="text-sm"><small>Meal Course</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -153,17 +186,23 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor mt-3 mb-2"><small>Select Feeding Session(s)</small></label>
-        <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+        <label class="text-sm mt-3 mb-2"><small>Select Menu Packs</small></label>
+        <!-- <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
           <li class="list-group-item" v-for="(lvl,idx) in feedingSessionGroupList">
             <input
                 v-model="form.feeding_sessions"
                 style="outline: none 0 !important; box-shadow: none;"
-                class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="idx">
+                class="form-check-input me-1" type="checkbox" :value="lvl.feeding_session_number" :id="idx">
             <label class="form-check-label cursor-pointer" :for="idx">{{lvl.name}}</label>
           </li>
+        </ul> -->
 
-        </ul>
+     
+        <combo-box
+            v-model:optionResponse="form.feeding_sessions"
+            :optionList="feedingSessionGroupList"
+            :optionDraft="form?.feeding_sessions"
+        ></combo-box>
       </div>
 
 

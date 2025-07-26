@@ -20,7 +20,6 @@ import router from "@/config/router.js";
 
 
 const routerData = useRouter()
-const menuSelected = ref( "level")
 const curriculumMenu = ref( [
   {text:"Learning Area", value:"learning-area"},
   {text:"Subject Cluster", value:"subject-cluster"},
@@ -51,9 +50,6 @@ let  curriculumNumber = routerData.currentRoute.value.query.id
 let curriculumInfo = ref(null)
 let campusQuery = routerData.currentRoute.value.query.type ? routerData.currentRoute.value.query.type : "level"
 
-// const changeMenu = (value) => {
-//   menuSelected.value = value
-// }
 
 const changeMenu = (value) => {
   router.push({ name: "curriculum-setup", query:{m:value} })
@@ -108,10 +104,13 @@ watch(
 
         <div class="col-3">
             <div class="w-full h-screen overflow-y-auto scrollbar-thin">
-              <div class="card mt-3">
+              <div class="card p-0 mt-3">
                 <div class="card-body" style="padding: 0;">
-                    <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Curriculum Setup</div>
-           <hr />
+
+                    <div class="mb-2  border-b text-gray-500" style="font-size: 16px;">
+                     <div class="ml-3 my-2">Curriculum Setup</div>
+                    </div>
+
 
  
             <div class="list-group list-group-flush mb-1 rounded-0" >
@@ -126,18 +125,10 @@ watch(
                 </div>
               </div>
 
-              <div class="card mt-3">
+              <div class="card p-0 mt-3">
                 <div class="card-body" style="padding: 0;">
-                  <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-                    <!-- <div
-                        v-for="(item, idx) in  curriculumMenu"
-                        :key="idx"
-                        class="list-group-item list-group-item-action cursor-pointer"
-                        :class="item.value === menuSelected ? 'active' : ''"
-                        @click="changeMenu(item.value)"
-                    >
-                      <small style="font-size:12px;">{{item.text}}</small>
-                    </div> -->
+                  <div class="list-group list-group-flush my-1" style="border-radius: 0 0 0 0;">
+
 
                     <router-link
                   v-for="(item, idx) in  curriculumMenu" :key="idx"
@@ -151,19 +142,16 @@ watch(
                 </div>
               </div>
 
-              <div class="card mt-3">
+              <div class="card p-0 mt-3">
                 <div class="card-body" style="padding: 0;">
-                  <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Import Curriculum</div>
-                  <hr />
+
+
+                  <div class="mb-2  border-b text-gray-500" style="font-size: 16px;">
+                    <div class="ml-3 my-2"> Import Curriculum</div>
+                  </div>
+
                   <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
                     
-                    <!-- <div
-                        class="list-group-item list-group-item-action cursor-pointer"
-                        :class="menuSelected === 'import-curriculum' ? 'active' : ''"
-                        @click="changeMenu('import-curriculum')"
-                    >
-                      <small style="font-size:12px;">Import Curriculum</small>
-                    </div> -->
 
                     <router-link
                   v-for="(item, idx) in  importCurriculumMenu" :key="idx"
@@ -177,21 +165,16 @@ watch(
               </div>
 
 
-              <div class="card mt-3">
-                <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Assessment Setup</div>
-                <hr />
+              <div class="card p-0 mt-3">
+
+
+                <div class="mb-2  border-b text-gray-500" style="font-size: 16px;">
+                  <div class="ml-3 my-2">Assessment Setup</div>
+                </div>
 
                 <div class="card-body" style="padding: 0;">
                   <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
-                    <!-- <div
-                        v-for="(item, idx) in  assessmentMenu"
-                        :key="idx"
-                        class="list-group-item list-group-item-action cursor-pointer"
-                        :class="item.value === menuSelected ? 'active' : ''"
-                        @click="changeMenu(item.value)"
-                    >
-                      <small style="font-size:12px;">{{item.text}}</small>
-                    </div> -->
+
 
                     <router-link
                   v-for="(item, idx) in  assessmentMenu" :key="idx"
@@ -213,14 +196,6 @@ watch(
         <div class="h-screen overflow-y-auto scrollbar-thin">
           <div class="card mt-3">
           <div class="card-body" style="padding: 0;">
-         
-            <!-- <learning-area-list v-if="menuSelected==='learning-area'"> </learning-area-list> -->
-            <!-- <subject-cluster v-if="menuSelected==='subject-cluster'"></subject-cluster> -->
-            <!-- <subject-list  v-if="menuSelected==='subject'"></subject-list> -->
-            <!-- <strand-list v-if="menuSelected==='strand'"></strand-list>
-            <topic-list v-if="menuSelected==='topic'"></topic-list>
-            <sub-topic-list v-if="menuSelected==='subtopic'"></sub-topic-list> -->
-            <!-- <concept-list v-if="menuSelected==='concept'"></concept-list> -->
 
              <div v-if=" campusQuery === 'import-curriculum'">
                <manage-curriculum></manage-curriculum>
@@ -260,21 +235,17 @@ watch(
                 </div>
 
                 <div v-if=" campusQuery==='classes'">
-                <!-- <curriculum-level></curriculum-level> -->
                 <curriculum-class-set-up ></curriculum-class-set-up>
                 </div>
 
-            
-                <!-- <assesment-areas v-if="menuSelected === 'assessmentArea'"></assesment-areas> -->
+
                 <div v-if=" campusQuery==='assessmentArea'">
                   <assesment-areas></assesment-areas>
                   </div>
 
-
-            <!-- <assessment-metrics v-if="menuSelected == 'assessmentmetric'"></assessment-metrics> -->
-            <div v-if=" campusQuery==='metric'">
-              <metric></metric>
-            </div>
+                  <div v-if=" campusQuery==='metric'">
+                    <metric></metric>
+                  </div>
 
           </div>
         </div>
@@ -295,7 +266,7 @@ input:focus {
   box-shadow: none;
 }
 
-.textColor{
+.text-sm2{
   color: #717375;
 }
 

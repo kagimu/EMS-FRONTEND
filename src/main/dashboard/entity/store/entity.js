@@ -100,13 +100,17 @@ export const useEntityStore = defineStore("entity", () => {
     }
 
     async function configureLanding(data) {
-        return await api.post("main/landing-page/new", data)
+        return await api.post("main/landing-page/new", data, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })
             .then((response) => {
                 newLandingPageResponse.value = response.data
             })
-            .catch((error) => {
-                if(error && error.response){
-                    errorMessage.value = error.response.data
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
                 }
             })
     }

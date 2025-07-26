@@ -12,11 +12,12 @@ const email = ref(null)
 const commons = useCommonsStore()
 const  notificationStore  = useNotificationStore()
 const authStore = useAuthStore()
-
+const logoUrl = ref(null)
 const landingPage = ref(null);
 
 onMounted(() => {
   landingPage.value =   localStorage.getItem("landingPageTitle")
+  logoUrl.value =   localStorage.getItem("logo")
   })
 
 
@@ -62,7 +63,7 @@ watch(
 <div class="bg-white p-4 w-[30%] rounded-md border">
 
 
-  <img  alt="logo" style="width: 100px; margin: 0 auto" :src="VictoriousLogo"/>
+  <img  alt="logo" style="width: 100px; margin: 0 auto" :src="logoUrl"/>
   <div class="text-[#2c2f8c] text-center text-[20px]">
    {{landingPage}}
   </div>

@@ -9,6 +9,9 @@ import ActivateMealCourse from "@/main/dashboard/catering/meals/components/Activ
 import useNotificationStore from "@/composables/useNotification.js";
 import ActivateGroupsOnCalendar from "@/main/dashboard/catering/meals/components/ActivateGroupsOnCalendar.vue";
 
+import { useAbility } from '@casl/vue';
+const { can } = useAbility()
+
 const  notificationStore  = useNotificationStore()
 const groupCalendarList = ref([])
 const  mealStore  = useMealStore()
@@ -29,21 +32,22 @@ const doActivateGroupOnCalendar = () =>{
 onMounted(
     async () => {
       await schoolStore.fetchSchools()
+
+      let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+ if(defaultSchoolNo){
+    school_number.value = defaultSchoolNo
+  }
+  doFetchGroupCalendarList()
+    
     }
 )
 
-const fetchCampusBySchool = () => {
-  campus_number.value = ""
-  campusStore.fetchCampuses(school_number.value)
-}
 
 const doFetchGroupCalendarList = () => {
-  // if(groupCalendarList.value && groupCalendarList.value.length > 0) {
     groupCalendarList.value = []
-  // }
-  let data = {
-    school_number:school_number.value,
-  }
+    let data = {
+      school_number:school_number.value,
+    }
   mealStore.fetchGroupOnCalendar(data)
 }
 
@@ -70,7 +74,6 @@ watch(
     () => mealStore.groupOnCalendarResponse,
     async (data) => {
       if(data){
-        doFetchGroupCalendarList()
         groupCalendarList.value = data.data
       }
     }
@@ -103,6 +106,7 @@ watch(
         <div class="flex justify-content-between mt-3">
           <div class="ml-4">Groups On Calendar</div>
           <button
+          v-if="can('activate_groups_on_calendar','general')" 
               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="doActivateGroupOnCalendar">
             Activate Groups on Calendar
           </button>

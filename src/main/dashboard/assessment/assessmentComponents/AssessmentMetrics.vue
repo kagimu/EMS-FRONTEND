@@ -10,20 +10,34 @@ import {useRouter} from "vue-router";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
+import MarkingGuideFileUploader from "@/main/dashboard/assessment/assessmentComponents/MarkingGuideFileUploader.vue";
+import AssessmentSchedulePreview from "@/main/dashboard/assessment/assessmentComponents/AssessmentSchedulePreview.vue";
+const confirmationRef = ref(null);
+import NewAssessmentMultiSchedule from "./NewAssessmentMultiSchedule.vue";
 
+
+const multiAssessmentModal = ref(false)
 const { can } = useAbility()
 
 const routerData = useRouter()
-
+const campusStore = useCampusStore()
 const academicYearStore = useAcademicYearStore()
 const classStore = useClassesStore()
 const studyPeriodStore = useStudyPeriodStore()
-
 let  curriculumNumberParent = routerData.currentRoute.value.query.cr
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
-
+const schoolN = routerData.currentRoute.value.query.sch
+const campusNumber = routerData.currentRoute.value.query.id
 const showingModal = ref(false)
 const campus_level_number = ref("")
+const uploadDialog = ref(false)
+// const testScriptDialog = ref(false)
+const assessmentScheduleDialog = ref(false)
+const metricNumber = ref(null)
+const assessmentScheduleData = ref(null)
+
 
 const page = ref(1)
 const campus_class_number = ref("")
@@ -37,7 +51,7 @@ const academicYearList = ref([])
 const studyPeriodList = ref([])
 const campusLevelList = ref([])
 const classLevelList = ref([])
-const AsessmentListData = ref([])
+const assessmentListData = ref([])
 const namee = ref(null)
 const assessmentMetricList = ref([])
 const editModel = ref(false)
@@ -72,15 +86,22 @@ onMounted(
 
 
 const doFetchAssessmentMetric = async () => {
+
+  if(!campus_class_number.value){
+    return
+  }
+
   assessmentMetricsData.value.splice(0)
+  tableLoader.value = true
   let data = {
     page: 1,
     per_page: per_page.value,
-    campus_class_number:campus_class_number.value,
+    class_number:campus_class_number.value,
     academic_year_number:academic_year_number.value,
     study_period_number:study_period_number.value,
     metric_number:metric_number.value,
     assessment_area_number:assessment_area_number.value,
+    campus_number:campusNumber,
     paginated:"yes"
   }
 
@@ -90,19 +111,17 @@ const doFetchAssessmentMetric = async () => {
 
 function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
   if (scrollTop + clientHeight >= scrollHeight) {
-
-    tableLoader.value = true
-    assessmentMetricsData.value.splice(0)
     let data = {
-    page: (page.value+1),
-    per_page: per_page.value,
-    campus_class_number:campus_class_number.value,
-    academic_year_number:academic_year_number.value,
-    study_period_number:study_period_number.value,
-    metric_number:metric_number.value,
-    assessment_area_number:assessment_area_number.value,
-    paginated:"yes"
-  }
+      page: (page.value+1),
+      per_page: per_page.value,
+      class_number:campus_class_number.value,
+      academic_year_number:academic_year_number.value,
+      study_period_number:study_period_number.value,
+      metric_number:metric_number.value,
+      assessment_area_number:assessment_area_number.value,
+      campus_number:campusNumber,
+      paginated:"yes"
+    }
 
   assessmentStore.fetchAssessmentMetrics(data)
 
@@ -111,27 +130,44 @@ function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
 
 
 
-const fetchCurriculumClass = () =>{
-  classStore.fetchClassByLevel(campus_curriculum_number,campus_level_number.value)
+const fetchClass = () =>{
+  // classStore.fetchClassByLevel(campus_curriculum_number,campus_level_number.value)
   academicYearStore.fetchAcademicYearByLevel(campus_level_number.value)
-}
 
-const  fetchAssessmentAreaList = () => {
-  if(campus_class_number.value) {
-    let curriculum_class_number = classLevelList.value.find(item => item.number === campus_class_number.value).curriculum_class_number
-    assessmentStore.fetchAssessmentArea(curriculum_class_number)
-    doFetchAssessmentMetric()
+  let data = {
+    school_number:schoolN,
+    campus_level_number:campus_level_number.value
   }
+  campusStore.fetchClassesBySchool(data)
+
 }
 
-const fetchStudyPeriod = () =>{
-  studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_year_number.value)
+const  fetchAssessmentAreaList = (classN) => {
+
+  let data = {
+    curriculum_number:curriculumNumberParent,
+    class_number:classN
+  }
+  assessmentStore.fetchAssessmentArea(data)
   doFetchAssessmentMetric()
+
+
+  studyPeriodStore.fetchStudyPeriod(
+      {
+        campus_curriculum_number:campus_curriculum_number,
+        academic_year_number:academic_year_number.value,
+        class_number:classN,
+        school_number:schoolN
+      }
+    )
+
 }
+
+
 
 
 watch(
-    () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+    () => studyPeriodStore.studyPeriodResponse,
     async (data) => {
       if(data){
         studyPeriodList.value = data.data
@@ -154,7 +190,7 @@ watch(
     () => assessmentStore.assessmentAreaResponse,
     async (data) => {
       if(data){
-        AsessmentListData.value = data.data
+        assessmentListData.value = data.data
       }
     }
 )
@@ -164,7 +200,6 @@ watch(
     async (data) => {
       if(data){
         filterAssessmentMetric(data)
-        // assessmentMetricsData.value = data.data
       }
     }
 )
@@ -229,20 +264,38 @@ watch(
     }
 )
 
+
 watch(
-    () => classStore.classLevelByLevelResponse,
+    () => campusStore.schoolClassesResponse,
     async (data) => {
-      if (data) {
-        if(data && data.data){
-          let classData = data.data
-          if(classData && (classData.length > 0)){
-            classLevelList.value = classData[0].classes
-          }
-        }
+      if(data){
+        classLevelList.value = data.data
       }
     }
 )
 
+
+watch(
+    () => assessmentStore.newAssessmentMetricResponse,
+    async (data) => {
+      if(data){
+        await doFetchAssessmentMetric()
+        showingModal.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
+watch(
+    () => assessmentStore.updateAssessmentMetricResponse,
+    async (data) => {
+      if(data){
+        await doFetchAssessmentMetric()
+        showingModal.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
 
 watch(
     () => assessmentStore.metricResponse,
@@ -256,53 +309,125 @@ watch(
 const editThisData = (List) => {
   editModel.value = true
   assessmentMetricList.value = List
-  namee.value = List.name
+  namee.value = List.metric_name
   showingModal.value = true
 }
 
-const deleteThisData = (id,name) => {
-  if(!confirm("Are you sure, you want to delete: " + name)){
-    return
-  }else{
-    // let data = {
-    //  assessment_metric_number:id
-    // }
-
-     
-  }
-
+const uploadMarkingGuide = (metricsData) => {
+  if(metricsData) {
+      uploadDialog.value = true
+      metricNumber.value = metricsData.number
+    }
 }
+
+/*const uploadTestScript = (metricsData) => {
+  if(metricsData) {
+      testScriptDialog.value = true
+      metricNumber.value = metricsData.number
+    }
+}*/
+
+const viewAssessmentSchedule = (metricsData) => {
+  assessmentScheduleData.value = metricsData
+  assessmentScheduleDialog.value = true
+}
+
+const deleteThisData = async (id,name) => {
+
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete Assessment Schedule ? ");
+  if (agreed) {
+    let data = {
+     assessment_schedule_number:id,
+    }
+   assessmentStore.deleteAssessmentMetrics(data)
+  }
+  
+}
+
+watch(
+    () => assessmentStore.markingGuideResponse,
+    async (data) => {
+      if(data){
+        uploadDialog.value = false
+        // testScriptDialog.value = false
+        notificationStore.successToast("Success", data.message)
+      }
+    }
+)
+
+watch(
+    () => assessmentStore.deleteAssessmentMetricResponse,
+    async (data) => {
+      if(data){
+        
+        notificationStore.successToast("Success", data.message)
+        doFetchAssessmentMetric()
+      }
+    }
+)
+
+const showMultiSchedule = () => {
+  multiAssessmentModal.value = true
+}
+
+watch(() => assessmentStore.newAssessmentSchedulesResponse, async (data) => {
+  if (data) {
+    multiAssessmentModal.value = false
+    doFetchAssessmentMetric()
+  }
+})
 
 </script>
 <template>
   <div>
 
-    <AppModal  :title="editModel ? 'Edit ' + namee:'Add Assessment Schedule'" v-model="showingModal" xl2>
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+    
+    <AppModal  :title="editModel ? 'Edit Assessment Schedule ':'Add Assessment Schedule'" v-model="showingModal" xl2>
       <NewAssessmentMetric :assessmentMetricList="assessmentMetricList"></NewAssessmentMetric>
+    </AppModal>
+
+    <AppModal  :title="editModel ? 'Edit Assessment Schedule ':'Add Assessment Schedule'" v-model="multiAssessmentModal" xl6>
+      <NewAssessmentMultiSchedule :assessmentMetricList="assessmentMetricList"></NewAssessmentMultiSchedule>
+    </AppModal>
+
+    <AppModal title="Upload Assessment Guide / Script" v-model="uploadDialog" xl>
+      <marking-guide-file-uploader fileType="testMarkingGuide" :metricNumber="metricNumber"></marking-guide-file-uploader>
+    </AppModal>
+
+
+    <AppModal title="Assessment Schedule" v-model="assessmentScheduleDialog" xl6>
+      <assessment-schedule-preview :assessmentScheduleData="assessmentScheduleData"></assessment-schedule-preview>
     </AppModal>
 
     <div class="col-12 mt-2" >
 
       <div class="">
 
-          <div class="flex justify-between mb-4">
-            &nbsp;
+          <div class="flex justify-between mb-4 ml-2">
               <button
-                  v-if="can('add_assessment_area','general')"
+                  v-if="can('add_assessment_schedule','general')"
                   class="btn btn-primary btn-sm float-end mb-0 mr-4" style="float: right" type="button"  @click="showModal">
                 <b><i class="bi bi-plus"></i></b> <small>
                 Add Assessment Schedule</small></button>
+
+            <button
+                v-if="can('add_assessment_schedule','general')"
+                class="btn btn-primary btn-sm float-end mb-0 mr-4" style="float: right" type="button"  @click="showMultiSchedule">
+              <b><i class="bi bi-plus"></i></b> <small>
+              Multi-Schedule</small></button>
           </div>
 
 
         <div class="row mx-auto">
+
           <div class="col-lg-3">
             <div class="mb-2">
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="campus_level_number"
-                  @change="fetchCurriculumClass()"
+                  @change="fetchClass()"
               >
                 <option disabled value="">--Filter by Level--</option>
                 <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
@@ -315,21 +440,8 @@ const deleteThisData = (id,name) => {
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
-                  v-model="campus_class_number"
-                  @change="fetchAssessmentAreaList()"
-              >
-                <option disabled value="">--Filter by Class--</option>
-                <option v-for="(clist, index) in classLevelList" :key="index" :value="clist.number">{{clist.name}}</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-lg-3">
-            <div class="mb-2">
-              <select
-                  style="box-shadow: none;"
-                  class="form-select form-select-sm"
                   v-model="academic_year_number"
-                  @change="fetchStudyPeriod()" >
+                  >
                 <option disabled value="">--Filter by Academic Year--</option>
                 <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
                   {{list.code+". "+list.academic_year_name}}
@@ -337,6 +449,23 @@ const deleteThisData = (id,name) => {
               </select>
             </div>
           </div>
+          
+
+          <div class="col-lg-3">
+            <div class="mb-2">
+              <select
+                  style="box-shadow: none;"
+                  class="form-select form-select-sm"
+                  v-model="campus_class_number"
+                  @change="fetchAssessmentAreaList(campus_class_number)"
+              >
+                <option disabled value="">--Filter by Class--</option>
+                <option v-for="(clist, index) in classLevelList" :key="index" :value="clist.number">{{clist.name}}</option>
+              </select>
+            </div>
+          </div>
+       
+
           <div class="col-lg-3">
             <div class="mb-2">
               <select
@@ -346,7 +475,7 @@ const deleteThisData = (id,name) => {
                   @change="doFetchAssessmentMetric()"
               >
                 <option disabled value="">--Filter by Study Period--</option>
-                <option v-for="(list, index) in studyPeriodList" :key="index" :value="list.number">{{ list.study_period_name }}
+                <option v-for="(list, index) in studyPeriodList" :key="index" :value="list.study_period_number">{{ list.study_period_name }}
                 </option>
               </select>
             </div>
@@ -376,7 +505,7 @@ const deleteThisData = (id,name) => {
                   @change="doFetchAssessmentMetric()"
               >
                 <option disabled value="">--Filter by assessment area--</option>
-                <option v-for="(list, index) in AsessmentListData" :key="index" :value="list.number">{{ list.name }}
+                <option v-for="(list, index) in assessmentListData" :key="index" :value="list.number">{{ list.name }}
                 </option>
               </select>
             </div>
@@ -409,29 +538,69 @@ const deleteThisData = (id,name) => {
               <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Decription</th>
-                <th>Action</th>
+                <th>Scheduled On</th>
+                <th>Class</th>
+                <th>Description</th>
+                <th class="w-[12%]">Action</th>
               </tr>
               </thead>
               <tbody>
-                <!-- {{assessmentMetricsData}} -->
+                <!-- {{ assessmentMetricsData }} -->
               <tr v-for="(metricsData, index) in assessmentMetricsData " :key="index">
                 <td>
-                  <!-- {{metricsData?.code ?? ""}} -->
                   {{ index+1 }}
                 </td>
                 <td>
-                  {{ metricsData.metric_name + " - " + metricsData.class}}
+                  {{ metricsData.metric_name + " - " + metricsData.assessment_area	}}
                 </td>
+                <td>{{ metricsData.scheduled_on }}</td>
+                <td>{{ metricsData.class }}</td>
                 <td>{{ metricsData.description }}</td>
                 <td>
-                  <button  @click="editThisData(metricsData)" type="button">
-                    <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
+
+
+
+                  <button
+                      class="mr-1"
+                      title="Upload Assessment Guide / Script"
+                      @click="uploadMarkingGuide(metricsData)"
+                      type="button">
+                    <i class="bi bi-filetype-pdf text-[16px]" style="color:rgb(3, 85, 148)"></i>
                   </button>
-                  &nbsp;<span style="color: rgba(200, 195, 195, 0.363);">|</span>&nbsp;
-                  <button type="button" @click="deleteThisData(metricsData.number,metricsData.name)">
-                    <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
-                  </button></td>
+
+<!--                  <button
+                      class="mr-1"
+                      title="Upload Test Script"
+                      @click="uploadTestScript(metricsData)"
+                      type="button">
+                    <i class="bi bi-file text-[16px]" style="color:rgb(3, 85, 148)"></i>
+                  </button>-->
+
+                  <button
+                      class="mr-1"
+                      title="View Assessment Schedule"
+                      @click="viewAssessmentSchedule(metricsData)"
+                      type="button">
+                    <i class="bi bi-eye text-[16px]" style="color:rgb(3, 85, 148)"></i>
+                  </button>
+
+                  <button
+                      class="mr-1"
+                      title="Edit Assessment Schedule"
+                    v-if="can('edit_assessment_schedule','general')"
+                   @click="editThisData(metricsData)" type="button">
+                    <i class="bi bi-pencil-square text-[15px]" style="color:rgb(3, 85, 148)"></i>
+                  </button>
+
+
+                  <button
+                  title="Delete Assessment Schedule"
+                  class="mr-1"
+                  v-if="can('delete_assessment_schedule','general')"
+                  type="button" @click="deleteThisData(metricsData.number,metricsData.name)">
+                    <i class="bi bi-trash text-[15px]" style="color:rgb(201, 10, 10)"></i>
+                  </button>
+                </td>
               </tr>
 
               </tbody>
@@ -451,7 +620,7 @@ const deleteThisData = (id,name) => {
 
 
 <style scoped>
-.textColor{
+.text-sm2{
   font-size: 11px;
 }
 

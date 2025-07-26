@@ -13,6 +13,8 @@ const switchTabs = (data) => {
   router.push({name: "catering", query: {m:menu,type: data}});
 }
 
+
+
 </script>
 <template>
     <div>
@@ -25,7 +27,7 @@ const switchTabs = (data) => {
             Unit Of Measurement
           </div>
         </div>
-        <div class="cursor-pointer text-sm rounded-t-md mr-1" :class="selectedTab === 'new-unit' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('new-unit')">
+        <div v-if="can('create_unit_of_measure','general')" class="cursor-pointer text-sm rounded-t-md mr-1" :class="selectedTab === 'new-unit' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('new-unit')">
           <div class="py-1 px-3">
             <i class="bi bi-box-arrow-in-right mr-1"></i>
             New Unit Of Measure

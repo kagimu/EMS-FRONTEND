@@ -12,8 +12,8 @@ import {useRouter} from "vue-router";
 import SchoolReportPreviewTemplate
   from "@/main/dashboard/manageLevel/report_setup/reportTemplate/SchoolReportPreviewTemplate.vue";
 
-
-
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
 
 const routerData = useRouter()
 const reportSetupStore = useReportSetupStore()
@@ -26,8 +26,9 @@ const reportTemplatePreviewModal = ref(false)
 const classOnTemplateList = ref([])
 let schoolNumber = routerData.currentRoute.value.query.id
 const classListData = ref(null)
-
 const reportTemplateName = ref(null)
+const reportTemplateDetails = ref([])
+const notificationStore = useNotificationStore()
 
 
 const props = defineProps({
@@ -73,6 +74,7 @@ watch(
 
 
 const addReportTemplate = () => {
+  reportTemplateDetails.value = ref([])
   showReportTemplateModal.value = true
 }
 
@@ -83,14 +85,51 @@ const previewTemplate = (report) => {
   }
 }
 
+const openEditModal = (reportTemplate) => {
+   reportTemplateDetails.value = reportTemplate
+   showReportTemplateModal.value = true
+}
+
+
+const deleteReportTemplate = async (reportD) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + reportD.name);
+if (agreed) {
+  await reportSetupStore.deleteReportTemplate(reportD.report_template_id)
+}
+}
+// deleteReportTemplateResponse
+watch (
+  () => reportSetupStore.deleteReportTemplateResponse,
+  async (data) => {
+    if(data){
+      notificationStore.successToast("Success", data.message)
+      await reportSetupStore.fetchReportTemplate(schoolNumber)
+      loader.value=false
+    }
+  },
+  {deep:true}
+)
+
+watch(
+    () => reportSetupStore.errorMessage,
+    async (data) => {
+          if (data) {
+              notificationStore.errorToast("Error", data.message)
+          }
+    },
+    {deep: true}
+)
+
 </script>
 
 <template>
 
   <div>
+    <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
     <AppModal :title="'Add Report Template for: '+schoolData?.name" v-model="showReportTemplateModal" lg>
-      <new-report-template></new-report-template>
+      <new-report-template :reportTemplateDataInfo="reportTemplateDetails"></new-report-template>
     </AppModal>
     
     <AppModal title="Assign Class To Template1" v-model="showAssignModal" lg>
@@ -126,7 +165,8 @@ const previewTemplate = (report) => {
           <tr>
             <th class="w-[10%]" scope="col">#</th>
             <th>Name</th>
-            <th>Preview Template</th>
+            <th>School</th>
+            <th>Preview Template2</th>
             <th>Action</th>
           </tr>
           </thead>
@@ -134,6 +174,7 @@ const previewTemplate = (report) => {
           <tr v-for="(report,index) in reportTemplateList" :key="index">
             <td>{{ index+1 }}</td>
             <td>{{ report.name }}</td>
+            <td>{{ report.school_name	 }}</td>
             <td>
               <button class="bg-green-700 text-white text-sm px-3 rounded-md" @click="previewTemplate(report)" type="button">
                 Preview
@@ -143,9 +184,9 @@ const previewTemplate = (report) => {
              <div>
                 <i
                     style="font-size: 13px;"
-                    class="bi-pencil mr-2 cursor-pointer "></i> &nbsp;
+                    class="bi-pencil mr-2 cursor-pointer" @click="openEditModal(report)"></i> &nbsp;
                 <i
-                    style="font-size: 13px;" class="bi-trash cursor-pointer"></i>
+                    style="font-size: 13px;" class="bi-trash cursor-pointer" @click="deleteReportTemplate(report)"></i>
               </div>
             </td>
           </tr>
@@ -162,7 +203,7 @@ const previewTemplate = (report) => {
 </template>
 
 <style scoped>
-.textSize{
-  font-size: 13px;
+.text-sme{
+  font-size: 14px;
 }
 </style>

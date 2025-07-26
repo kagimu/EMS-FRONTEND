@@ -12,7 +12,7 @@
 </div>
 
 <div class="mb-2">
-    <label class="textColor"><small>Day</small></label>
+    <label class="text-sm"><small>Day</small></label>
     <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
         <li v-for="(day, index) in daysOfWeek" :key="index" class="list-group-item">
             <input
@@ -21,56 +21,56 @@
                 type="checkbox"
                 :value="day"
                 v-model="form.day">
-            <label class="textColor"><small>{{ day }}</small></label>
+            <label class="text-sm"><small>{{ day }}</small></label>
         </li>
     </ul>
     </div>
 
 <!-- <div class="mb-2">
-    <label class="textColor"><small>Day</small></label>
+    <label class="text-sm"><small>Day</small></label>
  <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
 
 <li class="list-group-item">
     <input
             style="outline: none 0 !important; box-shadow: none;" 
             class="form-check-input me-1" type="checkbox" :value="Monday" v-model="form.day" >
-    <label class="textColor" ><small>Monday</small></label>
+    <label class="text-sm" ><small>Monday</small></label>
 </li>
 <li class="list-group-item">
     <input
             style="outline: none 0 !important; box-shadow: none;"
             class="form-check-input me-1" type="checkbox" >
-    <label class="textColor" ><small>Tuesday</small></label>
+    <label class="text-sm" ><small>Tuesday</small></label>
 </li>
 <li class="list-group-item">
     <input
             style="outline: none 0 !important; box-shadow: none;"
             class="form-check-input me-1" type="checkbox" >
-    <label class="textColor" ><small>Wednesday</small></label>
+    <label class="text-sm" ><small>Wednesday</small></label>
 </li>
 <li class="list-group-item">
     <input
             style="outline: none 0 !important; box-shadow: none;"
             class="form-check-input me-1" type="checkbox" >
-    <label class="textColor" ><small>Thursday</small></label>
+    <label class="text-sm" ><small>Thursday</small></label>
 </li>
 <li class="list-group-item">
     <input
             style="outline: none 0 !important; box-shadow: none;"
             class="form-check-input me-1" type="checkbox" >
-    <label class="textColor" ><small>Friday</small></label>
+    <label class="text-sm" ><small>Friday</small></label>
 </li>
 <li class="list-group-item">
     <input
             style="outline: none 0 !important; box-shadow: none;"
             class="form-check-input me-1" type="checkbox" >
-    <label class="textColor" ><small>Saturday</small></label>
+    <label class="text-sm" ><small>Saturday</small></label>
 </li>
 <li class="list-group-item">
     <input
             style="outline: none 0 !important; box-shadow: none;"
             class="form-check-input me-1" type="checkbox" >
-    <label class="textColor" ><small>Sunday</small></label>
+    <label class="text-sm" ><small>Sunday</small></label>
 </li>
 </ul>
 </div> -->

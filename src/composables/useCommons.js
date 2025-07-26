@@ -20,7 +20,45 @@ export default function useCommonsStore() {
         document.head.appendChild(script);
     };
 
+    const initializePdfData = (
+        fileName = "no content",
+        html = " <div style='margin-left: 40px;margin-right: 40px'><h2 style='text-align: center'>" +
+        "Document can't be generated for download  " +
+        "</h2> <br/> " +
+        "<p style='color: #343434; text-align: center'> You haven't filled out some fields on this form ,refresh the page and make sure you have filled all the fields " +
+        "if this persits please contact support</p>" +
+        "</div>",
+        options = {
+            "format": "A4",
+            "orientation": "portrait",
+            "header": {
+                "height": "5mm",
+                //"contents": '<div style="text-align: center;">Author: Marc Bachmann</div>'
+            },
+            "footer": {
+                "height": "10mm",
+                "contents": {
+                    default: '<small style="color: #444; font-size: 8px; width: 100%; text-align:right"><i>Page {{page}} of  {{pages}}</i></small>', // fallback value
+                }
+            },
+        }
+    ) => {
+        let htmlWithFormatting = "<html><head> <meta charset=\"utf-8\" /></head><body>"+html+" </body> </html>"
+        return { "html": htmlWithFormatting, "options": options, "fileName": fileName };
+    }
 
+    function base64ToBinary(base64String, filename) {
+        let arr = base64String.split(","),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]),
+            n = bstr.length,
+            u8arr = new Uint8Array(n)
+
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n)
+        }
+        return new File([u8arr], filename, {type: mime})
+    }
 
    function onlyNumberValidator(event) {
         if (!/[+-/*()\d]/.test(event.key)) return event.preventDefault();
@@ -55,33 +93,6 @@ export default function useCommonsStore() {
 
 
 
-     const initializePdfData = (
-        fileName = "no content",
-        html = " <div style='margin-left: 40px;margin-right: 40px'><h2 style='text-align: center'>" +
-        "Document can't be generated for download  " +
-        "</h2> <br/> " +
-        "<p style='color: #343434; text-align: center'> You haven't filled out some fields on this form ,refresh the page and make sure you have filled all the fields " +
-        "if this persits please contact support</p>" +
-        "</div>",
-        options = {
-            "format": "A4",
-            "orientation": "portrait",
-            "header": {
-                "height": "5mm",
-                //"contents": '<div style="text-align: center;">Author: Marc Bachmann</div>'
-            },
-            "footer": {
-                "height": "10mm",
-                "contents": {
-                    default: '<small style="color: #444; font-size: 8px; width: 100%; text-align:right"><i>Page {{page}} of  {{pages}}</i></small>', // fallback value
-                }
-            },
-        }
-    ) => {
-        let htmlWithFormatting = "<html><head> <meta charset=\"utf-8\" /></head><body>"+html+" </body> </html>"
-        return { "html": htmlWithFormatting, "options": options, "fileName": fileName };
-    }
-
 
 
     const formatDate = (dateString) => {
@@ -96,6 +107,48 @@ export default function useCommonsStore() {
         return `${year}-${month}-${day}T${hour}:${minute}:${second}.000Z`;
     }
 
+
+  /*  const  wellFormatedDate = (dateString) => {
+        const date = new Date(dateString);
+        return new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        }).format(date);
+    }*/
+
+
+
+
+    const    wellFormatedDate = (dateString) => {
+            const date = new Date(dateString);
+
+            // Get day, month, and year
+            const day = date.getDate();
+            const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
+            const year = date.getFullYear();
+
+            // Add ordinal suffix to the day
+            const ordinalSuffix = getOrdinalSuffix(day);
+
+            // Return formatted date
+            return `${day}${ordinalSuffix} ${month} ${year}`;
+        }
+        const getOrdinalSuffix = (day) => {
+            if (day > 3 && day < 21) return 'th'; // for 11th - 20th
+            switch (day % 10) {
+                case 1: return 'st';
+                case 2: return 'nd';
+                case 3: return 'rd';
+                default: return 'th';
+            }
+        }
+
+
+
+
+
+
     const padZero = (value) => {
         return value < 10 ? '0' + value : value;
     }
@@ -104,12 +157,101 @@ export default function useCommonsStore() {
         return Object.keys(objectToParse).map(key => key + '=' + objectToParse[key]).join('&');
     }
 
+    const formatNumbersWithComma = (value) => {
+        if (value != null) {
+            return new Intl.NumberFormat().format(value);
+        }
+        return value;
+    }
+
+    const ageCalculator = (dob) => {
+        const now = new Date();
+        const birthDate = new Date(dob);
+
+        if (isNaN(birthDate)) {
+            throw new Error("Invalid date format. Please provide a valid date.");
+        }
+
+        let years = now.getFullYear() - birthDate.getFullYear();
+        let months = now.getMonth() - birthDate.getMonth();
+        let days = now.getDate() - birthDate.getDate();
+
+        // Adjust for negative days
+        if (days < 0) {
+            months--;
+            const previousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+            days += previousMonth.getDate();
+        }
+
+        // Adjust for negative months
+        if (months < 0) {
+            years--;
+            months += 12;
+        }
+
+        let result = "";
+        if (years > 0) result += `${years}yrs`;
+        if (months > 0) result += result ? `, ${months}mth` : `${months}mth`;
+        if (days > 0) result += result ? `, ${days}dys` : `${days}dys`;
+
+        return result || "0dys"; // Return "0dys" if all are zero
+    }
+
+    const updateDefaultFilters = (data) => {
+        localStorage.setItem("defaultSchoolNo", data.schoolNumber)
+        localStorage.setItem("defaultCampusNo", data.campusNumber)
+        localStorage.setItem("defaultCampusCurriculumNo", data.campusCurriculumNumber)
+        localStorage.setItem("defaultAccademicYear", data.academicYearNumber)
+        localStorage.setItem("defaultLevel", data.levelNumber)
+        localStorage.setItem("defaultClassNumber", data.classNumber)
+        localStorage.setItem("defaultStudyPeriodNumber", data.studyPeriodNumber)
+    }
+
+
+    const commentAlteration = (comment) => {
+        if (!comment) return '';
+
+        // Dynamically add a CSS style for hover effect
+        if (!document.getElementById('hover-link-style')) {
+            const style = document.createElement('style');
+            style.id = 'hover-link-style';
+            style.textContent = `
+            a.hover-link {
+                text-decoration: none;
+                cursor:pointer;
+                color: #153d77;
+            }
+            a.hover-link:hover {
+                text-decoration: underline;
+            }
+        `;
+            document.head.appendChild(style);
+        }
+
+        // Convert URLs to clickable links with a hover effect class
+        comment = comment.replace(
+            /(https?:\/\/[^\s<]+)/g,
+            '<a class="hover-link" href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+        );
+
+
+        return comment;
+    };
+
     return {
         onlyNumberValidator,
         numbersOnlyValidator,
         codeValidator,
         getOrdinalDate,
         getAgeFromDateOfBirth,
-        objectToQueryParams
+        objectToQueryParams,
+        base64ToBinary,
+        formatDate,
+        initializePdfData,
+        wellFormatedDate,
+        formatNumbersWithComma,
+        ageCalculator,
+        updateDefaultFilters,
+        commentAlteration,
     }
 }

@@ -6,6 +6,7 @@ export const useInvoiceStore = defineStore("invoice", () => {
     const newInvoiceResponse = ref(null)
     const errorMessage = ref(null)
     const invoiceResponse = ref(null)
+    const allStatementResponse = ref(null)
     const invoiceResponseById = ref(null)
     const newInvoicePaymentResponse = ref(null)
     const invoiceUpdateResponse = ref(null)
@@ -15,6 +16,8 @@ export const useInvoiceStore = defineStore("invoice", () => {
     const cancelInvoiceResponse = ref(null)
     const cancelInvoicePaymentResponse = ref(null)
     const deleteInvoicePaymentResponse = ref(null)
+    const statementsResponse = ref(null)
+    const creditResponse = ref(null)
 
     async function createNewInvoice(data) {
         return await api.post("main/invoices", data)
@@ -35,9 +38,47 @@ export const useInvoiceStore = defineStore("invoice", () => {
         let  campus_number =   data?.campus_number ?? ""
         let  status =   data?.status ?? ""
         let  user_number =   data?.user_number ?? ""
-        return await api.get("main/invoices?school_number="+school_number+"&campus_number="+campus_number+"&user_number="+user_number+"&status="+status)
+        let  start_date =    data?.start_date ?? ""
+        let  end_date =    data?.end_date ?? ""
+        let  items =    data?.items ?? ""
+        return await api.get("main/invoices" +
+                "?school_number="+school_number+
+                "&campus_number="+campus_number+
+                "&user_number="+user_number+
+                "&start_date="+start_date+
+                "&end_date="+end_date+
+                "&status="+status+
+                "&items="+items
+            )
             .then((response) => {
                 invoiceResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchAllStatements(data) {
+        let  school_number =   data?.school_number ?? ""
+        let  campus_number =   data?.campus_number ?? ""
+        let  status =   data?.status ?? ""
+        let  user_number =   data?.user_number ?? ""
+        let  start_date =    data?.start_date ?? ""
+        let  end_date =    data?.end_date ?? ""
+        let  items =    data?.items ?? ""
+        return await api.get("main/invoices/general-statement" +
+                "?school_number="+school_number+
+                "&campus_number="+campus_number+
+                "&user_number="+user_number+
+                "&start_date="+start_date+
+                "&end_date="+end_date+
+                "&status="+status+
+                "&items="+items
+            )
+            .then((response) => {
+                allStatementResponse.value = response.data
             })
             .catch((response) => {
                 if(response && response.response){
@@ -136,8 +177,8 @@ export const useInvoiceStore = defineStore("invoice", () => {
                 }
             })
     }
-    async function cancelInvoicePayment(payment_number) {
-        return await api.post("main/invoices/payments/cancel?payment_number="+payment_number)
+    async function cancelInvoicePayment(transaction_number) {
+        return await api.post("main/invoices/payments/cancel?payment_number="+transaction_number)
             .then((response) => {
                 cancelInvoicePaymentResponse.value = response.data
             })
@@ -159,29 +200,60 @@ export const useInvoiceStore = defineStore("invoice", () => {
                 }
             })
     }
+
+    async function fetchStatements(data) {
+        return await api.get("main/invoices/payments/statements?user_number="+data?.user_number+"&start_date="+data.start_date+"&end_date="+data.end_date)
+            .then((response) => {
+                statementsResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchCredits(data) {
+        return await api.get("main/invoices/payments/credits?user_number="+data?.user_number)
+            .then((response) => {
+                creditResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
     return {
        invoiceResponse,
-       fetchInvoice,
        invoiceResponseById,
-       fetchInvoiceId,
        newInvoiceResponse,
-       createInvoicePayment,
-       createNewInvoice,
        newInvoicePaymentResponse,
        updateInvoice,
        invoiceUpdateResponse,
        errorMessage,
        financialSummaryResponseById,
-       fetchFinancialSummary,
        editUpdateResponse,
        updateInvoiceDetails,
        deleteInvoiceResponse,
-       deleteInvoice,
-       cancelInvoiceResponse,
-       cancelInvoice,
        cancelInvoicePaymentResponse,
-       cancelInvoicePayment,
+       cancelInvoiceResponse,
        deleteInvoicePaymentResponse,
-       deleteInvoicePayment
+       statementsResponse,
+       creditResponse,
+        allStatementResponse,
+       fetchInvoice,
+       fetchInvoiceId,
+       createInvoicePayment,
+       createNewInvoice,
+       fetchFinancialSummary,
+       deleteInvoice,
+       cancelInvoice,
+       cancelInvoicePayment,
+       deleteInvoicePayment,
+       fetchStatements,
+       fetchCredits,
+       fetchAllStatements
     }
 })

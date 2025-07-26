@@ -1,68 +1,3 @@
-<template>
-  <div>
-
-    <form @submit.prevent="addSchool">
-      <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
-        {{ classError }}
-      </div>
-
-      <div class="mb-2">
-        <label class="textColor text-sm">School Name</label>
-        <input
-            style="outline: none 0 !important; box-shadow: none;"
-            type="text"
-            v-model="form.name"
-            required
-            class="form-control form-control-sm">
-      </div>
-
-      <div class="mb-2">
-        <label class="textColor text-sm">Commencement Date</label>
-        <VueDatePicker
-            text-input
-            auto-apply
-            style="font-size: 7px;"
-            v-model="form.commencement_date"
-            :preview-format="format"
-            :teleport="true"
-        ></VueDatePicker>
-      </div>
-
-
-
-      <div class="mb-2">
-        <label class="textColor mt-3 mb-2"><small>Select Curriculum(s) to adopt to this School</small></label>
-        <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
-          <li class="list-group-item" v-for="(lvl,idx) in curriculumList">
-            <input
-                v-model="form.curriculum"
-                style="outline: none 0 !important; box-shadow: none;"
-                class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="idx">
-            <label class="form-check-label cursor-pointer" :for="idx">{{lvl.name}}</label>
-          </li>
-
-        </ul>
-      </div>
-
-
-
-      <div class="flex justify-content-end" style="width: 100%;">
-        <button
-            type="submit"
-            class="btn btn-primary border-0">
-            {{school_number ? "Edit":"Save"}}
-          <div v-if="loader" class="spinner-border text-light spinner-border-sm" role="status">
-              <span class="visually-hidden">&nbsp;Loading...</span>
-            </div>
-        </button>
-      </div>
-
-    </form>
-
-
-  </div>
-</template>
-
 <script setup>
 
 import {watch, onMounted, reactive, ref} from "vue";
@@ -70,6 +5,7 @@ import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import VueDatePicker from "@vuepic/vue-datepicker";
+import ComboBox from "@/components/ComboBox.vue";
 
 const classError = ref(null)
 const name = ref(null)
@@ -82,11 +18,16 @@ const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
 let entityN = localStorage.getItem("entity_number")
 
+const emit = defineEmits(["closeDialog"]);
+
 const form = reactive({
   name:null,
   commencement_date:null,
   curriculum:[],
-  entity_number:entityN
+  entity_number:entityN,
+  principal_title:null,
+  principal_name:null,
+  motto:null
 })
 
 const clearSchoolForm = () => {
@@ -137,6 +78,8 @@ watch (
         form.name = info.name
         form.commencement_date = info.commencement_date
         school_number.value = info.number
+        form.principal_title = info.principal_title
+        form.principal_name = info.principal_name
 
         let arr = []
         info.school_curriculum.forEach(lst => {
@@ -185,13 +128,121 @@ watch(
     () => curriculumStore.curriculumDataResponse,
     async (data) => {
       if(data){
-        curriculumList.value = data.data
+        let draft = data?.data 
+        if(draft && (draft?.length > 0)){
+          curriculumList.value = []
+          let arr = []
+          draft?.forEach(lst => {
+            arr.push({text:lst?.name,value:lst?.number})
+          })
+          curriculumList.value = arr
+        }
+        
       }
     },
     {deep:true}
 )
 
 </script>
+
+<template>
+  <div>
+
+    <form @submit.prevent="addSchool">
+      <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
+        {{ classError }}
+      </div>
+
+      <div class="mb-2">
+        <label class="text-sm text-sm">School Name</label>
+        <input
+            style="outline: none 0 !important; box-shadow: none;"
+            type="text"
+            v-model="form.name"
+            required
+            class="form-control form-control-sm">
+      </div>
+
+      <div class="mb-2">
+        <label class="text-sm text-sm">Commencement Date</label>
+        <VueDatePicker
+            text-input
+            auto-apply
+            style="font-size: 7px;"
+            v-model="form.commencement_date"
+            :preview-format="format"
+            :teleport="true"
+        ></VueDatePicker>
+      </div>
+
+
+
+      <div class="mb-2">
+        <label class="text-sm mt-3 mb-2"><small>Select Curriculum(s) to adopt to this School</small></label>
+        <combo-box
+            v-model:optionResponse="form.curriculum"
+            :optionList="curriculumList"
+            :optionDraft="form?.curriculum"
+        ></combo-box>
+      </div>
+
+
+      <div class="mb-2">
+        <label class="text-sm font-medium text-gray-700">Principal Full Name <span class="text-danger">*</span></label>
+        <input
+            v-model="form.principal_name"
+            type="text"
+            class="form-control form-control-sm shadow-none mt-1"
+            placeholder="e.g. Collins Mpiima"
+            required
+        />
+      </div>
+      <div class="mb-2">
+        <label class="text-sm font-medium text-gray-700">Principal Title <span class="text-danger">*</span></label>
+        <input
+            v-model="form.principal_title"
+            type="text"
+            class="form-control form-control-sm shadow-none mt-1"
+            placeholder="e.g. Head Teacher"
+            required
+        />
+      </div>
+
+      <div class="mb-2">
+        <label class="text-sm font-medium text-gray-700">School Motto <span class="text-danger">*</span></label>
+        <input
+            v-model="form.motto"
+            type="text"
+            class="form-control form-control-sm shadow-none mt-1"
+            placeholder="e.g. FFe tuuli embatto ento"
+            required
+        />
+      </div>
+
+      <div class="flex justify-between" style="width: 100%;">
+        <button
+            type="button"
+            class="btn btn-danger border-0 mr-2"
+            @click="$emit('closeDialog')">
+          Cancel
+        </button>
+        <button
+            type="submit"
+            class="btn btn-primary border-0">
+            {{school_number ? "Edit":"Save"}}
+          <div v-if="loader" class="spinner-border text-light spinner-border-sm" role="status">
+              <span class="visually-hidden">&nbsp;Loading...</span>
+            </div>
+        </button>
+      </div>
+
+    </form>
+
+
+  </div>
+</template>
+
+
 
 <style scoped>
 .noFocus:focus {

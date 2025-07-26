@@ -10,7 +10,7 @@
 <div class="col-lg-5">
                   
                         <div class="mb-3">
-                          <label class="textColor">School</label>
+                          <label class="text-sm">School</label>
                             <select
                                 v-model="form.school_number"
                                 class="form-select form-select-sm shadow-none"
@@ -26,7 +26,7 @@
     
 
               <div class="mb-3">
-                <label class="textColor">Campus</label>
+                <label class="text-sm">Campus</label>
                   <select
                   class="form-select form-select-sm shadow-none"  :style="!isSelected ? 'border:1px solid red' : '' "
                   v-model="form.campus_number" required
@@ -40,9 +40,9 @@
        
 
             <div class="mb-3"> 
-              <label class="textColor">Feeding Session</label>
+              <label class="text-sm">Feeding Session</label>
                 <select v-model="form.feeding_session_number" class="form-control form-select shadow-none">
-                    <option disabled value="">Select Feeding Sessions</option>
+                    <option disabled value="">Select Menu Pack</option>
                     <option v-for="(list, index) in feedingSessionGroupData" :key="index" :value="list.number">{{list.name}}</option>
                 </select>
             </div>
@@ -91,7 +91,7 @@
 
               <div>
                 <button
-                    class="btn btn-primary btn-sm textColor ml-3"
+                    class="btn btn-primary btn-sm text-sm ml-3"
                     @click.prevent="addItem"
                     :disabled="isAddButtonDisabled">
                   <small><i class="bi bi-plus-lg"></i></small>

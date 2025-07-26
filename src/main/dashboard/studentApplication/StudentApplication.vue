@@ -1,10 +1,57 @@
+<script setup>
+
+import {reactive, ref} from "vue";
+import {useRouter} from "vue-router";
+import ApplicationList from "./ApplicationList.vue";
+import Interviews from "./Interviews.vue";
+import { useAbility } from '@casl/vue'
+import InterviewScore from "./InterviewScore.vue"
+import OfferAdmission from "./OfferAdmission.vue"
+
+
+const { can } = useAbility()
+
+const routerData = useRouter()
+
+const route = routerData.currentRoute.value.query.s
+const selectedPage = route ? route : "application-list"
+
+const application = ref([
+    {
+    name:"Applicants",
+    id:"application-list",
+    action:"view_application_list"
+  },
+{
+    name:"Interview pool",
+    id:"interviews",
+    action:"view_interviews"
+  },
+  {
+    name:"Enter Interview Scores",
+    id:"enter-interview-score",
+    action:"view_interview_score"
+  },
+  {
+    name:"Offer Admissions",
+    id:"offer-admission",
+    action:"view_offer_admission"
+  },
+
+])
+const form = reactive({
+  name:null
+})
+
+
+</script>
 <template>
     <div>
 
     
       <div class="row">
         <div class="col-3">
-          <div class="card mt-3">
+          <div class="card mt-3 p-0">
             <div class="card-body" style="padding: 0;">
               <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Application</div>
   
@@ -36,8 +83,13 @@
                   <div v-if="selectedPage === 'interviews'">
                     <interviews></interviews>
                   </div>
-                  <div v-if="selectedPage === 'interviewquestions'">
-                    <interviews-questions></interviews-questions>
+                  
+                  <div v-if="selectedPage === 'enter-interview-score'">
+                  <interview-score></interview-score>
+                  </div>
+
+                  <div v-if="selectedPage === 'offer-admission'">
+                  <OfferAdmission></OfferAdmission>
                   </div>
               </div>
   
@@ -51,42 +103,7 @@
     </div>
   </template>
   
-  <script setup>
-  
-  import {reactive, ref} from "vue";
-  import {useRouter} from "vue-router";
-  import ApplicationList from "./ApplicationList.vue";
-  import Interviews from "./Interviews.vue";
-  import InterviewsQuestions from "./InterviewsQuestions.vue";
-  import { useAbility } from '@casl/vue'
 
-
-  const { can } = useAbility()
-
-  const routerData = useRouter()
-  const buttonLoader = ref(false)
-  
-  const route = routerData.currentRoute.value.query.s
-  const selectedPage = route ? route : "application-list"
-  
-  const application = ref([
-    {
-      name:"Applicants",
-      id:"application-list",
-      action:"view_application_list"
-    },
-    {
-      name:"Create Interview",
-      id:"interviews",
-      action:"view_interviews"
-    },
-  ])
-  const form = reactive({
-    name:null
-  })
-  
-  
-  </script>
   
   <style scoped>
   
@@ -94,7 +111,7 @@
     box-shadow: none;
   }
   
-  .textColor{
+  .text-sm2{
     color: #717375;
   }
   

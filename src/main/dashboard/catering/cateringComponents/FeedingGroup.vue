@@ -8,6 +8,9 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes";
 import AppModal from "@/components/AppModal.vue";
 
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 import { useAbility } from '@casl/vue';
 const { can } = useAbility()
 
@@ -72,6 +75,13 @@ watch(
 
 onMounted(() => {
       schoolStore.fetchSchools()
+
+      let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+ if(defaultSchoolNo){
+    form.school_number= defaultSchoolNo
+    cateringStore.fetchFeedingGroup(form?.school_number)
+  }
+  
     }
 )
 
@@ -115,20 +125,20 @@ const editThisData = (num) => {
   namee.value = num.name
   showingModal.value = true
 }
-//delete
-const deleteThisData = (id,name) => {
-  if(!confirm("Are you sure, you want to delete: " + name)){
-    return
-  }else{
-    // delete endpoint
-    let data = {
+
+const deleteThisData = async (id,name) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: " + name);
+if (agreed) {
+  let data = {
      feeding_group_number:id
     }
      cateringStore.deleteFeedingGroup(data)
-  }
+}
 
 
 }
+
 
 watch (
     () => cateringStore.deleteFeedingGroupResponse,
@@ -158,7 +168,7 @@ watch (
 </script>
 <template>
     <div>
-
+      <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
   <AppModal :title="editModel ? 'Edit ' + namee:'New Feeding Group'" v-model="showingModal" lg>
     <NewFeedingGroup :groupData="dataList"></NewFeedingGroup>
     </AppModal>
@@ -240,11 +250,11 @@ watch (
       <td>{{ list.status }}</td>
       <td>{{ list.school_name }}</td>
       <td>
-        <button @click="editThisData(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
+        <button v-if="can('edit_feeding_group','general')" @click="editThisData(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">
             <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
           </button>
           &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-          <button type="button" @click="deleteThisData(list.number,list.name)">
+          <button v-if="can('delete_feeding_group','general')" type="button" @click="deleteThisData(list.number,list.name)">
             <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
           </button>
       </td>

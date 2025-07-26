@@ -1,293 +1,219 @@
-<template>
-<div>
-
-  <p class="ml-4 mt-4 mb-10"> FAMILY STRUCTURE </p>
-
-  <form @submit.prevent="addFamilyStructure">
-    <div class="row mx-auto">
-      <div class="col-6">
-
-<p>Father</p>
-        <hr />
-        <div class="row mx-auto">
-          <div class="col-6">
-
-            <div class="mb-2">
-              <label class="textColor text-sm">Family Name of Father *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.family_name_of_father" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="textColor text-sm">Father's Place of Employment *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_place_of_employment" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="textColor text-sm">Father's Phone 1  *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_phone1" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="textColor text-sm">Father's Email 1</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_email1" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="textColor">Is Father Living *</label>
-              <select style="font-size: 13px; outline: none 0 !important; box-shadow: none;" class="form-select form-control-sm" v-model="form.father_living" aria-label="Default select example">
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-              </select>
-            </div>
-
-          </div>
-          <div class="col-6">
-
-            <div class="mb-2">
-              <label class="textColor text-sm">Fathers Other names  *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_other_names" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="textColor text-sm">Father's Physical Contact Address  *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_physical_contact_address" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="textColor text-sm">Father's Phone 2</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_phone2" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="textColor text-sm">Fathers Email 2</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.fathers_email2" required class="form-control form-control-sm">
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-      <div class="col-6">
-        <p>Mother</p>
-        <hr />
-        <div class="row mx-auto">
-          <div class="col-6">
-
-            <div class="mb-2">
-              <label class="textColor text-sm">Family Name of Mother *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.family_name_of_mother" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="textColor text-sm">Mother's Place of Employment  *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_place_of_employment" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="textColor text-sm">Mothers Phone 1  *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_phone1" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="textColor text-sm">Mother's Email 1</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_email1" required class="form-control form-control-sm">
-            </div>
-
-
-            <div class="mb-2">
-              <label class="textColor text-sm">Is Mother Living *</label>
-              <select style="font-size: 13px; outline: none 0 !important; box-shadow: none;" class="form-select form-control-sm" v-model="form.mother_living" aria-label="Default select example">
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-              </select>
-            </div>
-
-
-          </div>
-          <div class="col-6">
-
-            <div class="mb-2">
-              <label class="textColor text-sm">Mothers Other names *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_other_names" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="textColor text-sm">Mother's Physical Contact Address  *</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_other_names" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="textColor text-sm">Mother's Phone 2</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_phone2" required class="form-control form-control-sm">
-            </div>
-
-            <div class="mb-2">
-              <label class="textColor text-sm">Mother's Email 2</label>
-              <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.mothers_email2" required class="form-control form-control-sm">
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-
-      <div class="col-6">
-        <div class="mt-5">
-            <p>Guardian</p>
-            <hr />
-            <div class="row mx-auto">
-              <div class="col-6">
-
-                <div class="mb-2">
-                  <label class="textColor text-sm">Family Name of Guardian</label>
-                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.family_name_of_guardian" required class="form-control form-control-sm">
-                </div>
-
-                <div class="mb-2">
-                  <label class="textColor text-sm">Guardian's Place of Employment</label>
-                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_place_of_employment" required class="form-control form-control-sm">
-                </div>
-
-                <div class="mb-2">
-                  <label class="textColor text-sm">Guardian's Phone 1</label>
-                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_phone1" required class="form-control form-control-sm">
-                </div>
-
-                <div class="mb-2">
-                  <label class="textColor text-sm">Guardian's Email 1</label>
-                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_email1" required class="form-control form-control-sm">
-                </div>
-
-
-              </div>
-              <div class="col-6">
-
-                <div class="mb-2">
-                  <label class="textColor text-sm">Guardian's Other names</label>
-                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_other_names" required class="form-control form-control-sm">
-                </div>
-
-                <div class="mb-2">
-                  <label class="textColor text-sm">Guardian's Physical Contact Address</label>
-                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_physical_contact_address" required class="form-control form-control-sm">
-                </div>
-
-                <div class="mb-2">
-                  <label class="textColor text-sm">Guardian's Phone 2</label>
-                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_phone2" required class="form-control form-control-sm">
-                </div>
-
-                <div class="mb-2">
-                  <label class="textColor text-sm">Guardian's Email 2</label>
-                  <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.guardians_email2" required class="form-control form-control-sm">
-                </div>
-
-              </div>
-            </div>
-        </div>
-      </div>
-
-      <div class="col-6">
-        <div class="mt-5">
-          <p>Language</p>
-          <hr />
-          <div>
-          <div class="mb-2">
-            <label class="textColor text-sm">1st Language at Home  *</label>
-            <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.languages" required class="form-control form-control-sm">
-          </div>
-
-          <div class="mb-2">
-            <label class="textColor text-sm">2nd Language at Home</label>
-            <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.languages" required class="form-control form-control-sm">
-          </div>
-
-          <div class="mb-2">
-            <label class="textColor text-sm">3rd Language at Home</label>
-            <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.languages" required class="form-control form-control-sm">
-          </div>
-
-          <div class="mb-2">
-            <label class="textColor text-sm">4th Language at Home</label>
-            <input style="outline: none 0 !important; box-shadow: none;" type="text" v-model="form.languages" required class="form-control form-control-sm">
-          </div>
-
-      </div>
-        </div>
-      </div>
-
-    </div>
-
-    <hr />
-
-    <div class="flex justify-content-between mt-4">
-
-      <button type="button" @click="backPage" class="btn btn-outline-secondary mb-2 ml-4">
-        Back
-      </button>
-
-      <button type="submit" class="btn btn-primary mb-2 mr-4">
-        Next
-        <span class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
-          <span class="visually-hidden">Loading...</span>
-        </span>
-      </button>
-
-    </div>
-
-
-
-  </form>
-
-</div>
-</template>
-
 <script setup>
+import {onMounted, reactive, ref, watch} from "vue";
+import api from "@/config/api.js";
+import useNotificationStore from "@/composables/useNotification.js";
+import useCommonsStore from "@/composables/useCommons.js";
+import FamilyRecordsForm from "./FamilyRecordsForm.vue";
+import {useRouter} from "vue-router";
 
-import {reactive, ref} from "vue";
-const buttonLoader = ref(false)
+const routerData = useRouter()
+const student_number = routerData.currentRoute.value.query.st_id
+
 const emit = defineEmits()
-const form = reactive({
-  family_name_of_father:null,
-  fathers_place_of_employment:null,
-  fathers_phone1:null,
-  fathers_email1:null,
-  father_living:null,
-  fathers_other_names:null,
-  fathers_physical_contact_address:null,
-  fathers_phone2:null,
-  fathers_email2:null,
-  family_name_of_mother:null,
-  mothers_place_of_employment:null,
-  mothers_phone1:null,
-  mothers_email1:null,
-  mother_living:null,
-  mothers_other_names:null,
-  mothers_phone2:null,
-  mothers_email2:null,
-  family_name_of_guardian:null,
-  guardians_place_of_employment:null,
-  guardians_phone1:null,
-  guardians_email1:null,
-  guardians_other_names:null,
-  guardians_physical_contact_address:null,
-  guardians_phone2:null,
-  guardians_email2:null,
-  languages:null,
+const commons = useCommonsStore()
+const notificationStore  = useNotificationStore()
+const familyStructureData = ref([])
+const buttonLoader = ref(false)
+const phoneList = ref([{ phone_number: "", email: "" }])
+const LanguagesList = ref([{ code:1,languages: "" }])
+const addPhone = () => phoneList.value.push({ phone_number: "", email: "" })
+const removePhone = (index) => phoneList.value.splice(index, 1)
+const familyMembers = []
+
+const studentNo = ref(null)
+const props = defineProps({
+  studentProfileData:{},
+  studentNumber:String
 })
 
-const addFamilyStructure = () => {
-  emit("next", 4)
+
+const form = ref({
+  student_number:null,
+  family_members :[
+    // {
+    //   relationship:null,
+    //   student_number:null,
+    //   surname:null,
+    //   other_name:null,
+    //   place_of_employment:null,
+    //   physical_contact_address:null,
+    //   contacts:[]
+    // }
+  ],
+  languages:[{code:1,name:null}]
+})
+
+onMounted(() => {
+  getStudentNumber()
+} )
+
+
+
+const getStudentNumber = () => {
+    studentNo.value = routerData.currentRoute.value.query.st_id
+    form.value.student_number = routerData.currentRoute.value.query.st_id
+    fetchFamilyStructure(routerData.currentRoute.value.query.st_id)
 }
 
 
-const backPage = () => {
-  emit("next", 2 )
+watch(
+    () => routerData.currentRoute.value.query.st_id,
+    async (data) => {
+      if(data){
+        getStudentNumber()
+      }
+    }
+)
+
+const addLanguage = () => {
+  form.value.languages.push({code:(form.value.languages.length + 1),name: null })
 }
 
+const removeLanguage = (index) => {
+  form.value.languages.splice(index, 1)
+}
+
+
+const submitForm = () => {
+  // alert(JSON.stringify(form.value))
+  saveFamilyStructure(form.value)
+}
+
+const  saveFamilyStructure = async (data) => {
+  await api.post("main/students/family-structure", data)
+      .then((response) => {
+        buttonLoader.value = true
+        notificationStore.successToast("Success",response.data.message)
+        familyStructureData.value = response.data
+        emit("next", {step:2})
+      })
+      .catch((error) => {
+        if(error && error.response){
+          notificationStore.errorToast("Error",error.response.data.message)
+        }
+      })
+}
+
+const familyStructureDataFather = ref([])
+const familyStructureDataMother = ref([])
+const familyStructureDataGuardian = ref([])
+const languagesData = ref([])
+
+const  fetchFamilyStructure = async (data) => {
+  await api.get("main/students/family-structure/"+data)
+      .then((response) => {
+        buttonLoader.value = false
+        // notificationStore.successToast("Success",response.data.message)
+        familyStructureData.value = response.data.data
+        familyStructureDataFather.value = response.data.data.family_members.filter((item) => item.relationship === "FATHER")
+        familyStructureDataMother.value = response.data.data.family_members.filter((item) => item.relationship === "MOTHER")
+        familyStructureDataGuardian.value = response.data.data.family_members.filter((item) => item.relationship === "GUARDIAN")
+        languagesData.value = response.data.data.languages
+
+        form.value.languages  = languagesData.value.map(lang => ({
+          name: lang.Name,
+          code: lang.Code
+        }));
+
+
+      })
+      .catch((error) => {
+        if(error && error.response){
+          // notificationStore.errorToast("Error",error.response.data.message)
+        }
+      })
+}
+
+const updateFatherDetails = (data) => {
+
+  if(data){
+    data.relationship = "FATHER"
+    data.student_number = studentNo.value
+    form.value.family_members[0] = data
+  }
+
+}
+const updateMotherDetails = (data) => {
+  if(data){
+    data.relationship = "MOTHER"
+    data.student_number = studentNo.value
+    form.value.family_members[1] = data
+  }
+}
+const updateGuardianDetails = (data) => {
+  if(data){
+    data.relationship = "GUARDIAN"
+    data.student_number = studentNo.value
+    form.value.family_members[2] = data
+  }
+}
 
 </script>
 
-<style scoped>
+<template>
+  <!--{{form}}-->
+  <!--  {{familyStructureData}}-->
+  <!--  {{languagesData}}-->
+  <div>
+    <!--father-->
+    <family-records-form
+        title="Father"
+        @parentInfo="updateFatherDetails"
+        :familyStructureData="familyStructureDataFather"
+    >
+    </family-records-form>
+    <!-- mother-->
+    <family-records-form
+        title="Mother"
+        @parentInfo="updateMotherDetails"
+        :familyStructureData="familyStructureDataMother"
+    >
+    </family-records-form>
+    <!-- guardian-->
+    <family-records-form
+        title="Guardian"
+        @parentInfo="updateGuardianDetails"
+        :familyStructureData="familyStructureDataGuardian"
+    >
+    </family-records-form>
+    <div class="row mx-auto mt-2">
+      <div class="col-12">
+        <!--        {{form.languages }}-->
+        <!--        {{form.languages}}-->
+        <label class="text-sm">Languages</label>
+        <table>
+          <tr v-for="(lst, index) in form.languages" :key="index">
+            <td class="w-[25%]"><input  type="number" v-model="lst.code" required class="form-control" placeholder="code"></td>
+            <td><input type="text" v-model="lst.name" required class="form-control" placeholder="Language"></td>
+            <td><button class="btn-sm" @click.prevent="removeLanguage(index)">x
+            </button></td>
+          </tr>
+        </table>
+        <button class="btn btn-primary btn-sm mt-2 " @click.prevent="addLanguage">+ Add Language</button>
+      </div>
+    </div>
 
+    <div class="flex justify-end mt-4">
+      <!--      <button  type="button" @click="" class="btn btn-outline-secondary">Back</button>-->
+
+      <button type="submit" class="btn btn-sm btn-primary mb-2" @click.prevent="submitForm"><small>Update</small>
+        <span v-if="buttonLoader" class="spinner-border spinner-border-sm"></span>
+      </button>
+    </div>
+  </div>
+
+
+</template>
+
+
+<style scoped>
+button.btn-sm {
+  font-size: 13px;
+}
+
+button.btn-sm2 {
+  //background-color: transparent;
+  border: none;
+  font-size: 13px;
+}
 </style>

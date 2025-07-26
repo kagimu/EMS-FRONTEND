@@ -20,6 +20,7 @@ const  notificationStore  = useNotificationStore()
 let  curriculumNumber = routerData.currentRoute.value.query.id
 
 const classNumber = ref(null)
+let entityN = localStorage.getItem("entity_number")
 
 
 
@@ -28,17 +29,20 @@ const form = reactive({
   name:null,
   abbreviation:null,
   level:"",
+  entity_number: entityN,
 })
 
 
 const addClass = () =>{
   loader.value = true
+  form.code = parseInt(form.code)
 
   if(classNumber.value){
     form.class_number = classNumber.value
     classStore.editClassData(form)
   }else {
     classStore.newClassData(form)
+    // alert(JSON.stringify(form))
   }
 
 }
@@ -68,6 +72,7 @@ watch(
     async (data) => {
       if(data){
         form.name = null
+        form.code = null
         form.abbreviation = null
         form.level = ""
         loader.value = false
@@ -136,7 +141,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Study Level</small></label>
+        <label class="text-sm"><small>Study Level</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -148,7 +153,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Code</small></label>
+        <label class="text-sm"><small>Code</small></label>
         <input
             @keypress="commons.codeValidator($event)"
             maxlength="10"
@@ -161,7 +166,8 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Class Name</small></label>
+
+        <label class="text-sm"><small>Class Name</small></label>
         <input
             style="outline: none 0 !important; box-shadow: none;"
             type="text" v-model="form.name"
@@ -170,7 +176,7 @@ watch(
       </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Abbreviation</small></label>
+        <label class="text-sm"><small>Abbreviation</small></label>
         <input
             style="outline: none 0 !important; box-shadow: none;"
             type="text" v-model="form.abbreviation"

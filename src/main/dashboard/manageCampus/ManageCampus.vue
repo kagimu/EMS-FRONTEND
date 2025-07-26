@@ -6,23 +6,34 @@ import useNotificationStore from "@/composables/useNotification.js";
 import NewCampus from "@/main/dashboard/manageCampus/NewCampus.vue";
 import {useRouter} from "vue-router";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
-
 import AppModal from "@/components/AppModal.vue";
 import CampusListInfo from "@/main/dashboard/manageCampus/CampusListInfo.vue";
 import SchoolReportTemplates from "@/main/dashboard/manageLevel/report_setup/reportTemplate/SchoolReportTemplates.vue";
+import FileUploader from "@/components/FileUploader.vue";
+import { useAbility } from '@casl/vue';
+import NarrativeReportTemplate from "@/main/dashboard/narrative/narrativeComponents/NarrativeReportTemplate.vue";
+
+
+const { can } = useAbility()
 const routerData = useRouter()
 const campusStore = useCampusStore()
 const schoolStore = useSchoolStore()
 const  notificationStore  = useNotificationStore()
 
 const campusDialog = ref( false)
+const uploadDialog = ref( false)
 const campusEditMode = ref( false)
-const campusList = ref( [])
 const schoolData = ref( null)
 const campusRef = ref( null)
 
 
 let schoolNumber = routerData.currentRoute.value.query.id
+
+const closeDialog = () => {
+  campusDialog.value = false
+}
+
+
 
 let campusQuery = routerData.currentRoute.value.query.type ? routerData.currentRoute.value.query.type : "campus"
 const campusMenu = ref([
@@ -33,6 +44,10 @@ const campusMenu = ref([
   {
     name:"Report Templates",
     router_name:"report-template"
+  },
+  {
+    name:"Narrative Templates",
+    router_name:"narrative-template"
   }
 ])
 
@@ -58,7 +73,7 @@ watch(
       if(data){
         campusDialog.value = false
         notificationStore.successToast("Success", data.message)
-        await fetchCampusInfo(schoolNumber)
+         fetchCampusInfo(schoolNumber)
       }
     },
     {deep:true}
@@ -76,7 +91,16 @@ watch (
     {deep:true}
 )
 
+const uploadBadge = () => {
+  uploadDialog.value = true
+}
 
+const successUpload = (data) => {
+  if(data){
+    uploadDialog.value = false
+    schoolStore.fetchSchoolData(schoolNumber)
+  }
+}
 
 
 </script>
@@ -85,15 +109,36 @@ watch (
   <div>
 
     <AppModal :title="campusEditMode ? 'Edit Campus' : 'New Campus'" v-model="campusDialog" xl6>
-      <new-campus ref="campusRef"></new-campus>
+      <new-campus ref="campusRef" @closeDialog="closeDialog"></new-campus>
+    </AppModal>
+
+    <AppModal title="Upload School Badge" v-model="uploadDialog" xl>
+       <file-uploader ref="profileUploadComponents" v-on:nextAction="successUpload" :imageUrl="schoolData?.logo"></file-uploader>
     </AppModal>
 
 
 
     <div class="border rounded-md bg-white mt-3 py-4 px-3 text-[#5e5e5e]">
 
-      <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
+
+        <div>
+          <div class="text-[18px]">School Badge:</div>
+          <div class="text-[14px] text-[#575656]">
+            <div style="text-align: right; margin-top: 10px;">
+              <img  alt="logo" class="w-[130px] border-2 rounded-lg" :src="schoolData?.logo"/>
+            </div>
+
+            <button
+                v-if="can('upload_school_logo','general')"
+                class="border-2 rounded-md px-2 mt-2 border-[#2c2f8c] text-[#2c2f8c]"
+                @click="uploadBadge">
+              <i class="cursor-pointer mx-1 text-xs fa-solid fa-pencil"></i> Upload Badge
+            </button>
+
+          </div>
+        </div>
 
           <div>
            <div class="text-[18px]">School:</div>
@@ -136,9 +181,9 @@ watch (
     <div class="row">
       <div class="col-2">
 
-        <div class="card mt-3">
+        <div class="card mt-3 p-0">
           <div class="card-body" style="padding: 0;">
-            <div class="list-group list-group-flush mb-1 rounded-0" >
+            <div class="list-group list-group-flush rounded" >
               <router-link
                   v-for="(item, idx) in  campusMenu" :key="idx"
                   class="list-group-item list-group-item-action"
@@ -150,6 +195,7 @@ watch (
           </div>
         </div>
 
+
       </div>
       <div class="col-10">
           <div v-if=" campusQuery==='campus'">
@@ -157,8 +203,13 @@ watch (
           </div>
           <div v-if=" campusQuery==='report-template'">
             <div class="rounded  border bg-white mt-3">
-
               <school-report-templates :schoolData="schoolData"></school-report-templates>
+            </div>
+          </div>
+
+          <div v-if=" campusQuery==='narrative-template'">
+            <div class="rounded  border bg-white mt-3">
+              <NarrativeReportTemplate></NarrativeReportTemplate>
             </div>
           </div>
       </div>
@@ -176,7 +227,7 @@ input:focus {
   box-shadow: none;
 }
 
-.textColor{
+.text-sm2{
   color: #717375;
 }
 

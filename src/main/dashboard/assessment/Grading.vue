@@ -1,16 +1,10 @@
 <script setup>
 
 import {useRouter} from "vue-router";
-import AssessmentList from "@/main/dashboard/assessment/assessmentComponents/AssessmentList.vue";
-import ExamType from "@/main/dashboard/assessment/assessmentComponents/ExamType.vue"
-import GradingScale from "@/main/dashboard/assessment/assessmentComponents/GradingScale.vue";
 import GradingStandards from "@/main/dashboard/assessment/assessmentComponents/GradingStandards.vue";
-import AssessmentScale from "@/main/dashboard/assessment/assessmentComponents/AssessmentGrade.vue";
 import AssessmentAreaGradingStandard from "@/main/dashboard/assessment/AssessmentAreaGradingStandard.vue";
-import AssessmentMetrics from "@/main/dashboard/assessment/assessmentComponents/AssessmentMetrics.vue";
-import Grades from "@/main/dashboard/assessment/assessmentComponents/Grades.vue";
-import AggregateNameGroup from "@/main/dashboard/assessment/assessmentComponents/AggregateNameGroup.vue";
 import router from "@/config/router.js";
+import ClassGradingStandards from "@/main/dashboard/assessment/assessmentComponents/ClassGradingStandards.vue";
 
 
 const routerData = useRouter()
@@ -42,12 +36,19 @@ const switchTabs = (tab) => {
           </div>
         </div>
 
-        <div class="cursor-pointer text-sm  rounded-t-md mr-1" :class="selectedTab === 'assessment-area-grading-standard' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('assessment-area-grading-standard')">
+        <div class="cursor-pointer text-sm rounded-t-md ml-1 mr-1" :class="selectedTab === 'class-grade-standards' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('class-grade-standards')">
+          <div class="py-1 px-3">
+            <i class="bi bi-box-arrow-in-right mr-1"></i>
+           Class Grade Standards
+          </div>
+        </div>
+
+<!--        <div class="cursor-pointer text-sm  rounded-t-md mr-1" :class="selectedTab === 'assessment-area-grading-standard' ? 'border-b-2 border-[#2c2f8c] text-[#2c2f8c] font-bold bg-[#f1f8fe]' : 'border-b border-[#bbbbbb]   bg-[#f1f1f1] hover:border-b hover:border-[#2c2f8c] hover:text-[#2c2f8c] hover:font-bold'" @click="switchTabs('assessment-area-grading-standard')">
           <div class="py-1 px-3">
             <i class="bi bi-box-arrow-in-right mr-1"></i>
             Assessment Area Grading Standard
           </div>
-        </div>
+        </div>-->
 
 
 
@@ -57,44 +58,20 @@ const switchTabs = (tab) => {
   
               <div>
 
-                <div v-if="selectedTab === 'aggregate-name-group'">
-                  <AggregateNameGroup></AggregateNameGroup>
+                <div v-if="selectedTab === 'grade-standards'">
+                  <GradingStandards></GradingStandards>
                 </div>
 
-
-  
-                  <div v-if="selectedTab === 'assessments'">
-                    <AssessmentList></AssessmentList>
-                  </div>
-          
-
-                  <div v-if="selectedTab === 'examtype'">
-                    <ExamType></ExamType>
-                  </div>
-                  <div v-if="selectedTab === 'grade-standards'">
-                      <GradingStandards></GradingStandards>
-                  </div>
-
-                <div v-if="selectedTab === 'assessment-metrics'">
-                  <assessment-metrics></assessment-metrics>
+                <div v-if="selectedTab === 'class-grade-standards'">
+                  <class-grading-standards></class-grading-standards>
                 </div>
 
-                  <div v-if="selectedTab === 'grade-scale'">
-                    <GradingScale></GradingScale>
-                  </div>
-
-                  <div v-if="selectedTab === 'grades'">
-                    <Grades></Grades>
-                  </div>
-
-                  <div v-if="selectedTab === 'assessment-scale'">
-                   <AssessmentScale></AssessmentScale>
-                  </div>
 
                 <div v-if="selectedTab === 'assessment-area-grading-standard'">
                   <assessment-area-grading-standard></assessment-area-grading-standard>
                 </div>
-                  
+
+
 
                   
               </div>

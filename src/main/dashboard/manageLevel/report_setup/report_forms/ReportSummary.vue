@@ -6,14 +6,15 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useAcademicYearStore} from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
 import {useStudyPeriodStore} from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
-import useNotificationStore from "@/composables/useNotification.js";
 import ManageReportDetails from "@/main/dashboard/manageLevel/report_setup/report_forms/ManageReportDetails.vue";
 import AppModal from "@/components/AppModal.vue";
 import {useRouter} from "vue-router";
-import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
 import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.js";
 import NewCommentFromTeacher from "@/main/dashboard/manageLevel/report_setup/comments/NewCommentFromTeacher.vue";
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
+import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
+
+const campusStore = useCampusStore()
 
 const reportStore = useReportCardStore()    
 const levelStore = useLevelStore()
@@ -24,14 +25,15 @@ const teacherCommentStore = useTeacherCommentStore()
 const routerData = useRouter()
 const showStudentsMarks = ref(false)
 const reportSummaryNumber = ref("")
-
+const schoolN = routerData.currentRoute.value.query.sch
+const campusNumber = routerData.currentRoute.value.query.id
 
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
 const campusCurriculumDataInfo = ref(null)
 const campus_level_number = ref("")
 const academic_year_number = ref("")
 const study_period_number = ref("")
-const campus_class_number = ref("")
+const class_number = ref("")
 const campusLevelList = ref(null)
 const academicYearList = ref(null)
 const studyPeriodList = ref(null)
@@ -42,7 +44,7 @@ const per_page = ref(20)
 const total_items = ref(0)
 const total_rows = ref(0)
  const tableLoader = ref(true)
-
+const reportSummaryData = ref([])
 
 onMounted(
     async () => {
@@ -54,10 +56,10 @@ onMounted(
 const showStudentReport = (summary) => {
   if(summary) {
     showStudentsMarks.value = true
+    reportSummaryData.value = summary
+
     let data = {
       report_summary_number:summary.number,
-      html_report_template:"victorious-report-primary"
-      // html_report_template:" noregrets-report-primary"
     }
     reportStore.fetchReportDetailsInfo(data)
   }
@@ -70,14 +72,30 @@ const doFilterReportSummary = () =>{
   let options = {
     page: 1,
     per_page: per_page.value,
-    student_number: "",
+    campus_number:campusNumber,
+    campus_level_number: campus_level_number.value,
+    academic_year_number: academic_year_number.value,
+    class_number: class_number.value,
     study_period_number: study_period_number.value,
-    campus_class_number: campus_class_number.value,
+    student_number: "",
     stream_number: "",
     grade: "",
+    curriculum_number:routerData.currentRoute.value.query.cr
   }
 
   reportStore.fetchReportSummary(options)
+
+
+  //get studyPeriod
+  studyPeriodStore.fetchStudyPeriod(
+      {
+        campus_curriculum_number:campus_curriculum_number,
+        academic_year_number:academic_year_number.value,
+        class_number:class_number.value,
+        school_number:schoolN
+      } 
+    )
+
 }
 
 
@@ -86,13 +104,16 @@ function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
 
     tableLoader.value = true
     let options = {
-    page: (page.value+1),
-    per_page: per_page.value,
-    student_number: "",
-    study_period_number: study_period_number.value,
-    campus_class_number: campus_class_number.value,
-    stream_number: "",
-    grade: "",
+      page: (page.value+1),
+      per_page: per_page.value,
+      campus_number:campusNumber,
+      campus_level_number: campus_level_number.value,
+      academic_year_number: academic_year_number.value,
+      class_number: class_number.value,
+      study_period_number: study_period_number.value,
+      student_number: "",
+      stream_number: "",
+      grade: "",
   }
 
   reportStore.fetchReportSummary(options)
@@ -103,15 +124,20 @@ function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
 
 const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
+  
 }
 
 const fetchAcademicYea = (campus_level_number) => {
   academicYearStore.fetchAcademicYearByLevel(campus_level_number)
-  academicYearStore.fetchCampusClassByLevel(campus_level_number)
-}
 
-const fetchStudyPeriod = (academic_num) =>{
-  studyPeriodStore.fetchStudyPeriodByAcademicYear(academic_num)
+  let data = {
+    school_number:schoolN,
+    campus_level_number:campus_level_number
+  }
+  campusStore.fetchClassesBySchool(data)
+
+  doFilterReportSummary()
+
 }
 
 
@@ -147,7 +173,7 @@ watch(
 
 
 watch(
-    () => studyPeriodStore.studyPeriodByAcademicYearResponse,
+    () => studyPeriodStore.studyPeriodResponse,
     async (data) => {
       if(data){
         studyPeriodList.value = data.data
@@ -155,14 +181,17 @@ watch(
     }
 )
 
+
 watch(
-    () => academicYearStore.campusClassByLevelResponse,
+    () => campusStore.schoolClassesResponse,
     async (data) => {
       if(data){
         campusClassList.value = data.data
       }
     }
 )
+
+
 
 
 const filterSummaryReport = (data) => {
@@ -228,19 +257,29 @@ watch(
     }
 )
 
+
+watch(
+    () => teacherCommentStore.newOverallRemarkFromTeacherResponse,
+    async (data) => {
+      if(data){
+        showStudentReport(reportSummaryData.value)
+      }
+    }
+)
+
+
 </script>
 <template>
    <div>
 
-
+ 
      <AppModal title="Preview Report" v-model="showStudentsMarks" xl6>
-       <manage-report-details></manage-report-details>
+       <manage-report-details :reportData="reportSummaryData"></manage-report-details>
      </AppModal>
 
      <AppModal title="Add Teachers Comment" v-model="showAddCommentModal" lg>
         <NewCommentFromTeacher :reportSummaryNumber="reportSummaryNumber"></NewCommentFromTeacher>
     </AppModal>
-
 
 
      <div class="row">
@@ -249,7 +288,7 @@ watch(
                <div class="row mx-auto">
                  
     <div class="col-3">
-      <label class="textColor"><small>Level</small></label>
+      <label class="text-sm"><small>Level</small></label>
       <select
           style="box-shadow: none;"
           class="form-select form-select-sm"
@@ -262,12 +301,11 @@ watch(
     </div>
 
     <div class="col-3">
-      <label class="textColor">Academic Year</label>
+      <label class="text-sm">Academic Year</label>
       <select
           style="box-shadow: none;"
           class="form-select form-select-sm"
           v-model="academic_year_number"
-          @change="fetchStudyPeriod(academic_year_number)"
       >
         <option disabled value="">--Select Academic Year--</option>
         <option v-for="(list, index) in academicYearList" :key="index" :value="list.number">
@@ -277,7 +315,21 @@ watch(
     </div>
 
     <div class="col-3">
-      <label class="textColor"><small>Study Period</small>
+      <label class="text-sm"><small>Class</small>
+      </label>
+      <select
+          style="box-shadow: none;"
+          class="form-select form-select-sm" required
+          v-model="class_number"
+          @change="doFilterReportSummary()"
+      >
+        <option disabled value="">Select</option>
+        <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.name+" [ "+list.abbreviation+" ]"}}</option>
+      </select>
+    </div>
+
+    <div class="col-3">
+      <label class="text-sm"><small>Study Period</small>
       </label>
       <select
           style="box-shadow: none;"
@@ -286,23 +338,10 @@ watch(
           @change="doFilterReportSummary"
       >
         <option disabled value="">Select</option>
-        <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.number">{{ studyPeriod.study_period_name }}</option>
-
+        <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
       </select>
     </div>
-    <div class="col-3">
-      <label class="textColor"><small>Class</small>
-      </label>
-      <select
-          style="box-shadow: none;"
-          class="form-select form-select-sm" required
-          v-model="campus_class_number"
-          @change="doFilterReportSummary"
-      >
-        <option disabled value="">Select</option>
-        <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
-      </select>
-    </div>
+  
                </div>
             </div>
          </div>
@@ -313,6 +352,7 @@ watch(
          <div class="col-12">
             <div class="flex justify-content-between mt-3">
                <div class="ml-4">Student Report Summary</div>
+           
             </div>
             <PaginationTemplate
                     @perPageChanged="doFilterReportSummary"
@@ -352,7 +392,7 @@ watch(
                               @click="showAddComment(summary.number)"
                               type="button"
                               class="bg-[#1062da] text-white rounded-sm px-3 text-[12px] mb-2 mr-1">
-                             Add Teachers Comment
+                             Add Class Teacher's Comment
                            </button>
 
                            <button

@@ -11,12 +11,20 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     let conceptsBySubtopicResponse = ref(null)
     let references = ref([])
     let addReferenceResponse = ref(null)
+    let updateReferenceResponse = ref(null)
     const errorMessage = ref(null)
     const lessonPlanResponse = ref(null)
-
+    const importLessonPlanResponse = ref(null)
+    const exportLessonPlanResponse = ref(null)
+    const curriculumDeliveryResponse = ref(null)
+    const classSessionResponse = ref(null)
+    const classSessionStudentsResponse = ref(null)
+    const curriculumDeliveryProgressResponse = ref(null)
+    const updateCurriculumDeliveryResponse = ref(null)
+    const lessonsResponse = ref(null)
 
     async function newSchemeOfWorkData(data) {
-        return await api.post("main/new-scheme-of-work", data)
+        return await api.post("main/scheme-of-work", data)
             .then((response) => {
                 newSchemeOfWorkResponse.value = response.data
             })
@@ -28,7 +36,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     }
 
     async function updateSchemeOfWorkData(data) {
-        return await api.post("main/update-scheme-of-work", data)
+        return await api.put("main/scheme-of-work", data)
             .then((response) => {
                 updateSchemeOfWorkResponse.value = response.data
             })
@@ -51,6 +59,18 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
             })
     }
 
+
+    async function updateLessonPlanReference(data) {
+        return await api.patch("main/lesson-plan/update-reference/"+data?.lesson_plan_reference_number, data)
+            .then((response) => {
+                updateReferenceResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
 
     async function saveLessonPlanReference(data) {
         return await api.post("main/lesson-plan/add-reference", data)
@@ -76,6 +96,7 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
                 }
             })
     }
+
 
 
 
@@ -149,8 +170,108 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
     }
 
 
+    async function importLessonPlan(data) {
+        return await api.post("main/lesson-plan/import", data,{
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        }
+        )
+            .then((response) => {
+                importLessonPlanResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
 
 
+    async function exportLessonPlan(data) {
+        return await api.get("main/lesson-plan/export-template/"+data.scheme_sub_topic_number+"?token="+data.token)
+            .then((response) => {
+                exportLessonPlanResponse.value = response.data
+               
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function newCurriculumDelivery(data) {
+        return await api.post("main/curriculum-delivery/add-session", data)
+            .then((response) => {
+                curriculumDeliveryResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function fetchClassSessions(data) {
+        return await api.get("main/curriculum-delivery/sessions?page="+data?.page+"&per_page="+ data?.per_page+"&stream_number="+data.stream_number)
+            .then((response) => {
+                classSessionResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function fetchStudentsInSession(data) {
+        return await api.get("main/curriculum-delivery/students/"+data.session_number+"?page ="+data?.page+"&per_page="+ data?.per_page)
+            .then((response) => {
+                classSessionStudentsResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function fetchCurriculumDeliveryProgress(data) {
+        return await api.get("main/curriculum-delivery/percentage-by-stream/"+data.stream_number)
+            .then((response) => {
+                curriculumDeliveryProgressResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function updateCurriculumDelivery(data) {
+        return await api.put("main/curriculum-delivery/update-session", data)
+            .then((response) => {
+                updateCurriculumDeliveryResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function fetchLessons(data) {
+        return await api.get("main/curriculum-delivery/lessons?stream_number="+data?.stream_number)
+            .then((response) => {
+                lessonsResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
     return {
         newSchemeOfWorkResponse,
         updateSchemeOfWorkResponse,
@@ -161,13 +282,31 @@ export const useSchemeOfWorkStore = defineStore("schemeOfWork", () => {
         errorMessage,
         lessonPlanResponse,
         addReferenceResponse,
+        importLessonPlanResponse,
+        updateReferenceResponse,
+        exportLessonPlan,
         newSchemeOfWorkData,
         fetchSchemeOfWorkByClass,
         updateSchemeOfWorkData,
         fetchConceptsBySubTopic,
         saveLessonPlan,
         saveLessonPlanReference,
+        updateLessonPlanReference,
         fetchLessonPlanDetails,
         exportPdf,
+        importLessonPlan,
+        newCurriculumDelivery,
+        fetchClassSessions,
+        curriculumDeliveryResponse,
+        exportLessonPlanResponse,
+        classSessionResponse,
+        classSessionStudentsResponse,
+        fetchStudentsInSession,
+        curriculumDeliveryProgressResponse,
+        fetchCurriculumDeliveryProgress,
+        updateCurriculumDeliveryResponse,
+        updateCurriculumDelivery,
+        lessonsResponse,
+        fetchLessons
     }
 })

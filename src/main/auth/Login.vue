@@ -3,8 +3,8 @@ import {onMounted,reactive, ref, watch} from 'vue'
 import {useAuthStore} from "@/main/auth/store/auth.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import router from "@/config/router.js";
-import VictoriousLogo from "@/assets/images/victorious-logo.png";
 import {useEntityStore}  from "@/main/dashboard/entity/store/entity.js"
+import api from "@/config/api.js";
 
 const  notificationStore  = useNotificationStore()
 const authStore = useAuthStore()
@@ -13,7 +13,11 @@ const entityStore = useEntityStore()
 let errorMessage = ref(null)
 let buttonLoader = ref(false)
 let show = ref(false)
+const scope = ref(null)
+
 const title  = ref(null)
+const logoNumber = ref(null)
+const logoUrl = ref(null)
 
 onMounted(() => {
   entityStore.getConfigureLanding()
@@ -38,8 +42,14 @@ watch (
     () => entityStore.landPageResponse,
     async (data) => {
       if(data){
-       title.value = data.title  
+
+        let path = api.defaults.baseURL + "/attachments/download/"
+        title.value = data?.title
+        logoNumber.value = data?.logo_attachment_number
+        logoUrl.value = path+logoNumber.value
+
        localStorage.setItem("landingPageTitle", title.value)
+       localStorage.setItem("logo",logoUrl.value)
       }
     }
 )
@@ -49,6 +59,16 @@ watch(
     () => authStore.loginResponse,
     async (data) => {
       if(data){
+        scope.value = data.data.scopes
+     let camp = JSON.stringify(data.data.campuses)
+        localStorage.setItem("Campus", camp)
+
+     let school = JSON.stringify(data.data.Schools)
+        localStorage.setItem("SchoolInfo", school)
+      
+
+        localStorage.setItem("currentSchoolInfo",school)
+
         await authStore.userProfile()
       }
     }
@@ -63,11 +83,24 @@ watch(
         });
 
 
-        if (data.type === "User"){
+        if (data.type === "User" && scope.value.length === 0){
           r = router.resolve({
             name: "client_dashboard"
           });
+
+        } else {
+          localStorage.setItem("schoolSelectStatus", "NO")
+          r = router.resolve({
+            name: "teacher"
+          })
         }
+     
+        // if (!scope.value){
+        //   localStorage.setItem("schoolSelectStatus", "NO")
+        //   r = router.resolve({
+        //     name: "teacher"
+        //   })
+        // }
 
         window.location.assign(r.href);
 
@@ -95,7 +128,7 @@ watch(
       <div class="col-lg-4"></div>
       <div class="col-lg-4">
         <div class="align-centre mt-2 h6 font500 text-uppercase mb-2">
-          <img alt="logo" style="width: 100px; margin: 0 auto" :src="VictoriousLogo"/>
+          <img v-if="logoNumber" alt="logo" style="width: 100px; margin: 0 auto" class="mb-3" :src="logoUrl"/>
           <div class="text-[#2c2f8c] text-center text-[20px]" >
            {{ title }}
           </div>

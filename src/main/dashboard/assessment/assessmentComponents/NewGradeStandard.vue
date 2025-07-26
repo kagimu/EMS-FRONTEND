@@ -45,9 +45,8 @@ const form = reactive({
 
 onMounted(
     async () => {
-        campusStore.fetchClassesBySchool(schoolNumber)
-        // campusStore.fetchClassesByCampus(campusNumber)
-        campusStore.fetchAggregateScales(schoolNumber)
+        await campusStore.fetchClassesBySchool({school_number:schoolNumber})
+        await campusStore.fetchAggregateScales(schoolNumber)
         fetchCampusLevel()
         getGradeInfo()
     }
@@ -229,7 +228,7 @@ const newClass = () => {
 
           <div class="mb-2">
             <div class="text-[13px] text-[#505050]"> Description</div>
-            <textarea class="form-control shadow-none text-[13px] text-[#505050] textColor" v-model="form.description"></textarea>
+            <textarea class="form-control shadow-none text-[13px] text-[#505050] text-sm" v-model="form.description"></textarea>
           </div>
 
 
@@ -259,7 +258,7 @@ const newClass = () => {
                         v-model="classInfo.class_number"
                     >
                       <option disabled value="">--Select Class--</option>
-                      <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.name+" [ "+list?.abbreviation+" ]"}}</option>
+                      <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list?.code+". "+list?.name+" [ "+list?.abbreviation+" ]"}}</option>
                     </select>
                   </div>
                 </td>

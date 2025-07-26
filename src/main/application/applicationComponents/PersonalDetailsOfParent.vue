@@ -10,13 +10,12 @@ const routerData = useRouter()
 const applicationStore= useApplicationStore()
 const  notificationStore  = useNotificationStore()
 const commons = useCommonsStore()
+const applicationId = ref(null)
 
-let  applicationNumber = routerData.currentRoute.value.query.applicationId
 
 const buttonLoader = ref(false)
 let errorMessage = ref(null)
 const emit = defineEmits()
-
 
 
 const form = reactive({
@@ -53,14 +52,7 @@ watch (
         let id = data.application_number
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        emit("next", {id:data.application_number, step:2})
-      /*  let dataa = {
-          page: page.value,
-          per_page: per_page.value,
-          status: "SUBMITTED"
-        }
-        applicationStore.fetchApplicationList(dataa)*/
-
+        emit("next", {id:data.application_number, step:3})
       }
     }
 )
@@ -72,7 +64,7 @@ watch (
       if(data){
         buttonLoader.value = false
         notificationStore.successToast("Success", data.message)
-        emit("next", {id:data.application_number, step:2})
+        emit("next", {id:data.application_number, step:3})
       }
     }
 )
@@ -92,9 +84,7 @@ watch (
 
 onMounted(
     () => {
-      if(applicationNumber !=""){
-        applicationStore.fetchApplicationById(applicationNumber)
-      }
+     
     }
 )
 
@@ -102,29 +92,31 @@ watch(
     () => routerData.currentRoute.value.query.applicationId,
     async (data) => {
       if (data) {
-        // localStorage.removeItem('applicationId')
-        applicationStore.fetchApplicationById(data)
+        await applicationStore.fetchApplicationById(data)
       }
     },
     { deep: true }
 )
 
 
-
+const yesResume = ref(false)
 watch (
     () => applicationStore.applicationByIdResponse,
     async (data) => {
       if(data){
-        form.surname = data.Parent.surname
-        form.second_name = data.Parent.second_name
-        form.other_name = data.Parent.other_name
-        form.main_telephone_number = data.Parent.main_telephone_number
-        form.alternative_telephone_number= data.Parent.alternative_telephone_number
-        form.email= data.Parent.email
-        form.alternative_email=data.Parent.alternative_email
-        formData.parent_number= data.Parent.number
-        // alert(JSON.stringify(data))
-        // notificationStore.successToast("Success", data.message)
+        applicationId.value = data?.number
+        form.surname = data?.parent?.surname
+        form.second_name = data?.parent?.second_name
+        form.other_name = data?.parent?.other_names
+        form.main_telephone_number = data?.parent?.telephone_number
+        form.alternative_telephone_number= data?.parent?.alternative_number
+        form.email= data?.parent?.email
+        form.alternative_email=data?.parent?.alternative_email
+        formData.application= data?.parent?.number
+
+        if(data.parent.surname !== "") {
+          yesResume.value = true
+        }
       }
     },
     {deep:true}
@@ -132,11 +124,19 @@ watch (
 
 const addParentPersonalDetails = () => {
   buttonLoader.value = true
-  if(!formData.parent_number){
-    applicationStore.newApplicationDetails(form)
+ form.application_number = applicationId.value
+
+  // if(!applicationId.value){
+  //   applicationStore.newApplicationDetails(form)
+  // }
+  // else {
+  //   applicationStore.updateParentDetails(applicationId.value,form)
+  // }
+
+  if(applicationId.value && yesResume.value){
+    applicationStore.updateParentDetails(applicationId.value,form)
   }else {
-    applicationStore.updateParentDetails(formData.parent_number,form)
-//  nextGo()
+    applicationStore.newApplicationDetails(form)
   }
 
 }
@@ -147,42 +147,56 @@ const addParentPersonalDetails = () => {
 <template>
 <div>
 <p class="ml-4 mt-4 mb-1" style="text-align: center !important;">GUARDIAN/PARENT DETAILS
-  <!-- {{ applicationNumber }} -->
+
 </p>
 
-  <form  @submit.prevent="addParentPersonalDetails" style="margin-top: 6px;"> 
+
+  <form  @submit.prevent="addParentPersonalDetails" style="margin-top: 12px;">
   <div class="row mx-auto">
     <div class="col-12">
+
         <div class="mb-8">
           <input type="hidden"  v-model="formData.parent_number">
-          <label class="textColor text-sm"><small>Surname/Family name</small> <span class="star">*</span></label>
+          <label class="text-sm"><small>Surname/Family name </small> <span class="star">*</span></label>
           <input type="text" style="outline: none 0 !important; box-shadow: none; font-size: 10px;;" v-model="form.surname" required class="form-control form-control-sm">
         </div>
-
-        <div class="mb-8">
-          <label class="textColor text-sm"><small>Second name </small><span class="star">*</span></label>
-          <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.second_name"  required class="form-control form-control-sm">
+      <div class="row">
+        <div class="col-6">
+          <div class="mb-8">
+            <label class="text-sm"><small>Second name </small><span class="star">*</span></label>
+            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.second_name"  required class="form-control form-control-sm">
+          </div>
         </div>
+        <div class="col-6">
+          <div class="mb-8">
+            <label class="text-sm"><small>Other names</small> </label>
+            <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" class="form-control form-control-sm">
+          </div>
 
-        <div class="mb-8">
-          <label class="textColor text-sm"><small>Other names</small> </label>
-          <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.other_name" class="form-control form-control-sm">
         </div>
-
-      <div class="mb-2">
-        <label class="textColor text-sm"><small>Email</small> <span class="star">*</span></label>
-        <input type="email" style="outline: none 0 !important; box-shadow: none;" v-model="form.email"  required class="form-control form-control-sm">
       </div>
 
 
-      <div class="mb-2">
-        <label class="textColor text-sm"><small>Alternative Email</small></label>
-        <input type="email" style="outline: none 0 !important; box-shadow: none;" v-model="form.alternative_email" class="form-control form-control-sm">
+      <div class="row">
+        <div class="col-6">
+          <div class="mb-2">
+            <label class="text-sm"><small>Email</small> <span class="star">*</span></label>
+            <input type="email" style="outline: none 0 !important; box-shadow: none;" v-model="form.email"  required class="form-control form-control-sm">
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="mb-2">
+            <label class="text-sm"><small>Alternative Email</small></label>
+            <input type="email" style="outline: none 0 !important; box-shadow: none;" v-model="form.alternative_email" class="form-control form-control-sm">
+          </div>
+        </div>
       </div>
-    </div>
 
-      <div class="mb-2">
-        <label class="textColor text-sm"> <small>Telephone No </small><span class="star">*</span></label>
+
+      <div class="row">
+        <div class="col-6">
+          <div class="mb-2">
+        <label class="text-sm"> <small>Telephone No </small><span class="star">*</span></label>
         <div class="input-group">
           <vue-tel-input
               @input="handleInput('main')"
@@ -196,9 +210,11 @@ const addParentPersonalDetails = () => {
               mode="international"></vue-tel-input>
         </div>
       </div>
+        </div>
 
-      <div class="mb-2">
-        <label class="textColor text-sm"> <small>Alternative Telephone No </small></label>
+        <div class="col-6">
+          <div class="mb-2">
+        <label class="text-sm"> <small>Alternative Telephone No </small></label>
         <div class="input-group">
           <vue-tel-input
               @input="handleInput('alternative')"
@@ -212,6 +228,14 @@ const addParentPersonalDetails = () => {
               mode="international"></vue-tel-input>
         </div>
       </div>
+        </div>
+      </div>
+
+
+
+    </div>
+
+
 
          <div class="row">
           

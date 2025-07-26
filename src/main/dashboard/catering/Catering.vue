@@ -35,15 +35,18 @@ const menu = ref([
   },
   {
     text:"Menu Items",
-    value:"menu-items"
+    value:"menu-items",
+     action:"view_menu_items"
   },
   {
     text:"Menu Packs",
-    value:"feeding-session"
+    value:"feeding-session",
+     action:"view_menu_packs"
   },
   {
     text:"Feeding Group",
-    value:"feeding-group"
+    value:"feeding-group",
+     action:"view_feeding_groups"
   },
 
 
@@ -53,33 +56,40 @@ const menu = ref([
 const mealMenu = ref([
   {
     text:"Meal Courses",
-    value:"meal-courses"
+    value:"meal-courses",
+     action:"view_meal_courses"
   },
 
   {
-    text:"Meal Course Feeding Sessions",
-    value:"meal-course-feeding-sessions"
+    text:"Meal Course Menu Pack",
+    value:"meal-course-feeding-sessions",
+     action:"view_meal_course_menu_packs"
   },
   {
     text:"Daily group courses",
-    value:"meal-courses-per-day"
+    value:"meal-courses-per-day",
+     action:"view_daily_group_courses"
   },
   {
     text:"Groups On Calendar",
-    value:"groups-on-calendar"
+    value:"groups-on-calendar",
+     action:"view_groups_on_calendar"
   },
   {
     text:"Weekly Meal Items",
-    value:"meal-calendar"
+    value:"meal-calendar",
+     action:"view_weekly_meal_items"
   },
   {
     text:"Meals Delivery",
     value:"feeding",
-    action:"record_meals"
+    action:"record_meals",
+     action:"view_meals_delivery"
   },
   {
     text:"Meals Cost Projections",
-    value:"meals-cost-projections"
+    value:"meals-cost-projections",
+     action:"view_meal_cost_projections"
   },
 ])
 
@@ -95,13 +105,20 @@ const changeMenu = (value) => {
 
       <div class="row">
         <div class="col-3">
-          <div class="card mt-3">
-            <div class="card-body" style="padding: 0;">
-              <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">CATERING SERVICE</div>
+          <div class="">
+            <div class="card" style="padding: 0;">
+              <div class="flex items-center gap-2 mb-2 mt-3 pl-4 text-[15px] font-semibold text-gray-800">
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#0d6efd]" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M12 3C7.589 3 4 6.589 4 11v1H2v2h20v-2h-2v-1c0-4.411-3.589-8-8-8zm0 2c3.309 0 6 2.691 6 6v1H6v-1c0-3.309 2.691-6 6-6zm-8 9v1c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-1H4z"/>
+  </svg>
+  <span>CATERING</span>
+</div>
+
   
-              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+              <div class="list-group " style="border-radius: 0 0 0 0;">
                   <div
                     v-for="(item, idx) in menu" :key="idx"
+                    v-show="can(item.action,'general')"
                     :class="item.value === menuSelected ? 'active' : ''"
                     class="list-group-item list-group-item-action cursor-pointer"
                     @click="changeMenu(item.value)">
@@ -111,10 +128,10 @@ const changeMenu = (value) => {
             </div>
           </div>
 
-          <div class="card mt-3">
-            <div class="card-body" style="padding: 0;">
+          <div class="mt-4"    v-if="can('view_stock','general')">
+            <div class="card" style="padding: 0;">
 
-              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+              <div class="list-group " style="border-radius: 0 0 0 0;">
                 <div
                     :class="menuSelected === 'manage-stock' ? 'active' : ''"
                     class="list-group-item list-group-item-action cursor-pointer"
@@ -129,11 +146,12 @@ const changeMenu = (value) => {
 
 
 
-          <div class="card mt-3">
-            <div class="card-body" style="padding: 0;">
-              <div class="list-group list-group-flush mb-1" style="border-radius: 0 0 0 0;">
+          <div class="mt-3">
+            <div class="card" style="padding: 0;">
+              <div class="list-group " style="border-radius: 0 0 0 0;">
                 <div
                     v-for="(item, idx) in mealMenu" :key="idx"
+                    v-show="can(item.action,'general')"
                     :class="item.value === menuSelected ? 'active' : ''"
                     class="list-group-item list-group-item-action cursor-pointer"
                     @click="changeMenu(item.value)">
@@ -223,7 +241,7 @@ const changeMenu = (value) => {
     box-shadow: none;
   }
   
-  .textColor{
+  .text-sm2{
     color: #717375;
   }
   

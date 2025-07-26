@@ -8,7 +8,7 @@
             </div>
 
             <div class="mb-2">
-                <label class="textColor"><small>Company Name</small></label>
+                <label class="text-sm"><small>Company Name</small></label>
                 <input
                         style="outline: none 0 !important; box-shadow: none;"
                         type="text" v-model="form.name"
@@ -17,7 +17,7 @@
             </div>
 
             <div class="mb-2">
-                <label class="textColor"><small>Address</small></label>
+                <label class="text-sm"><small>Address</small></label>
                 <textarea
                         style="outline: none 0 !important; box-shadow: none;"
                         type="text" v-model="form.description"
@@ -27,12 +27,12 @@
 
             <div class="row">
                 <div class="col">
-                    <label class="textColor"><small>Phone</small></label>
+                    <label class="text-sm"><small>Phone</small></label>
 
                     <input class="form-control" type="text" v-model="form.phone" placeholder="Phone">
                 </div>
                 <div class="col">
-                    <label class="textColor"><small>Email</small></label>
+                    <label class="text-sm"><small>Email</small></label>
                     <input class="form-control" type="text" v-model="form.email" placeholder="Email">
                 </div>
             </div>

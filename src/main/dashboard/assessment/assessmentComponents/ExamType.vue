@@ -69,11 +69,11 @@
           <div class="offcanvas-body">
             <form @submit.prevent="addExamType">
              <div class="mb-2">
-                <label class="textColor"><small>Name</small></label>
+                <label class="text-sm"><small>Name</small></label>
                 <input v-model="form.name"  type="text" required class="form-control">
               </div>
               <div class="mb-2">
-                <label class="textColor"><small>Description</small></label>
+                <label class="text-sm"><small>Description</small></label>
                 <input v-model="form.description"  type="text" required class="form-control">
               </div>
 
@@ -186,7 +186,7 @@ watch (
 
   
   <style scoped>
-  .textColor{
+  .text-sm2{
     font-size: 11px;
   }
   

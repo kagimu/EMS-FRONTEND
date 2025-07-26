@@ -1,53 +1,112 @@
 <script setup>
 import {onMounted, reactive, ref, watch} from "vue";
-import useCommonsStore from "@/composables/useCommons.js";
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
-
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
 import {useRouter} from "vue-router";
 
-const commons = useCommonsStore()
+
 const reportSetupStore = useReportSetupStore()
 const notificationStore  = useNotificationStore()
 const routerData = useRouter()
 const campusStore = useCampusStore()
 const campusNumber = routerData.currentRoute.value.query.id
-// const campus_curriculum_number = routerData.currentRoute.value.query.crr
+const campus_curriculum_number = routerData.currentRoute.value.query.crr
+const schoolN = routerData.currentRoute.value.query.sch
+const campusLevelList = ref([])
+const classStore = useClassesStore()
+const campus_level_number = ref("")
+const addedClassData = ref([])
 
 const props = defineProps({
-    reportTemplateNumber:String
+    reportTemplateNumber:String,
+    addedClasses:{}
   })
 
+  onMounted(() => {
+    fetchCampusLevel()
+    filterAddedClasses()
+    }
+)
 
+
+watch(
+    () => props.addedClasses,
+    async (data) => {
+      if(data){
+        filterAddedClasses()
+      }
+    }
+)
+
+const filterAddedClasses = () => {
+  let draft = props.addedClasses
+  if(draft) {
+    addedClassData.value = draft[0]?.classes?.map(item => item.number);
+  }
+}
+
+const fetchCampusLevel = () => {
+  classStore.fetchCampusLevel(campus_curriculum_number)
+}
 const errorMessage = ref("")
 const loader = ref(false)
 const classList = ref([])
 
 const form = reactive({
   report_template_number:props.reportTemplateNumber,
-  campus_classes:[]
+  classes:[],
+  campus_number:campusNumber,
+  campus_curriculum_number:routerData.currentRoute.value.query.crr
 })
 
 const toggleClass = (selectedClass) => {
-    const index = form.campus_classes.indexOf(selectedClass);
+    const index = form.classes.indexOf(selectedClass);
     if (index === -1) {
-        form.campus_classes.push(selectedClass);
+        form.classes.push(selectedClass);
     } else {
-        form.campus_classes.splice(index, 1);
+        form.classes.splice(index, 1);
     }
 }
 
-onMounted(() => {
-    campusStore.fetchClassesByCampus(campusNumber)
-    }
-)
+
 
 const addClassToReportTemplate = () => {
   loader.value = true
   form.code = form.code ? parseInt(form.code) : form.code
   reportSetupStore.addClassToReportTemplate(form)
 }
+
+
+const fetchClasses = (campus_level_number) => {
+  let data = {
+    school_number:schoolN,
+    campus_level_number:campus_level_number
+  }
+  campusStore.fetchClassesBySchool(data)
+}
+
+
+watch(
+    () => campusStore.schoolClassesResponse,
+    async (data) => {
+      if(data){
+        classList.value = data.data
+      }
+    }
+)
+
+
+watch(
+    () => classStore.campusLevelResponse,
+    async (data) => {
+      if(data){
+        campusLevelList.value = data.data
+      }
+    },
+    {deep:true}
+)
 
 
 watch (
@@ -71,40 +130,45 @@ watch(
 )
 
 
-
-watch(
-    () => campusStore.campusClassesResponse,
-    async (data) => {
-        if (data) {
-            classList.value = data.data
-        }
-    },
-    {deep: true}
-)
+const emit = defineEmits(["closeDialog"]);
 
 </script>
 
 <template>
   <div>
-    <!-- {{reportTemplateNumber}} -->
+
   <form @submit.prevent="addClassToReportTemplate">
+
     <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
       {{ errorMessage }}
     </div>
 
     <div class="mb-2">
-    <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+      <label class="text-sm"><small>Level</small></label>
+      <select
+          style="box-shadow: none;"
+          class="form-select form-select-sm"
+          v-model="campus_level_number"
+          @change="fetchClasses(campus_level_number)"
+      >
+        <option disabled value="">--Select Level--</option>
+        <option v-for="(list, index) in campusLevelList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+      </select>
+    </div>
 
+    <div class="mb-2">
+    <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
 <li class="list-group-item" v-for="(list, index) in classList" :key="index" :value="list.number">
     <div class="row">
-            <div class="col-lg-1" style="width: 5px;">
+            <div class="col-lg-2 mr-2" style="width: 5px;">
                 <input
-            v-model="form.campus_classes"
-            style="outline: none 0 !important; box-shadow: none;"
-            class="form-check-input me-1 " type="checkbox" :value="list.number" :id="list.number">
+            v-model="form.classes"
+            style="outline: none 0 !important; box-shadow: none;width: 20px;height: 20px;"
+            class="form-check-input form-control mr-2" type="checkbox" :value="list.number" :id="list.number"
+            >
             </div>
-            <div class="col-lg-11" style="float: left;">
-                <label class="textSize" :for="list.number"><small>{{list.class_name}} [{{ list.class_abbreviation }}]</small></label>
+            <div class="col-lg-10" style="float: left;">
+                <label class="text-sm" :for="list.number"><small>{{list.name}} [{{ list.abbreviation }}]</small></label>
             </div>
     </div>
                 
@@ -114,11 +178,17 @@ watch(
 </div>
 
 
-    <div class="flex justify-content-end mt-4" style="width: 100%;">
+<div class="flex justify-between" style="width: 100%;">
+        <button
+            type="button"
+            class="btn btn-danger border-0 mr-2"
+            @click="$emit('closeDialog')">
+          Cancel
+        </button>
       <button
           type="submit"
           class="btn btn-primary border-0">
-        Save
+        Submit
         <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>
@@ -130,7 +200,7 @@ watch(
 </template>
 
 <style scoped>
-.textSize{
+.text-sm{
     font-size: 13px;
 }
 </style>

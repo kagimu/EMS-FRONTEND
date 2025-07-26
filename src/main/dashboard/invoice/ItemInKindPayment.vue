@@ -4,26 +4,26 @@
         <div class="row">
             <div class="col-lg-3">
             <div class="mb-2">
-            <label class="textColor text-sm">Payer</label>
+            <label class="text-sm text-sm">Payer</label>
             <input  style="outline: none 0 !important; box-shadow: none;" type="text" required class="form-control form-control-sm">
             </div>
             </div>
             <div class="col-lg-3">
             <div class="mb-2">
-            <label class="textColor text-sm">Payment Reference</label>
+            <label class="text-sm text-sm">Payment Reference</label>
             <input  style="outline: none 0 !important; box-shadow: none;" type="text" required class="form-control form-control-sm">
             </div>
             </div>
           
             <div class="col-lg-3">
             <div class="mb-2">
-            <label class="textColor text-sm">Date</label>
+            <label class="text-sm text-sm">Date</label>
             <input  style="outline: none 0 !important; box-shadow: none;" type="date" required class="form-control form-control-sm">
             </div>
             </div>
             <div class="col-lg-3">
             <div class="mb-2">
-            <label class="textColor text-sm">Item Amount Value</label>
+            <label class="text-sm text-sm">Item Amount Value</label>
             <input v-model="total" style="outline: none 0 !important; box-shadow: none;" type="number" required class="form-control form-control-sm">
             </div>
             </div>
@@ -47,7 +47,7 @@
             <ul>
             <li class="list-group-item">
                 <input class="form-check-input me-1" type="checkbox" :id="'selectAllCheckbox' + columnIndex" v-model="selectAllAll" @change="selectAllItems">
-                <label class="form-check-label cursor-pointer textColor" :for="'selectAllCheckbox' + columnIndex">Select All</label>
+                <label class="form-check-label cursor-pointer text-sm" :for="'selectAllCheckbox' + columnIndex">Select All</label>
               </li>
           </ul>
 
@@ -56,7 +56,7 @@
               
               <li class="list-group-item" v-for="(item, index) in column" :key="index">
                 <input class="form-check-input me-1" type="checkbox" :id="'itemCheckbox' + index" v-model="selectedItems" :value="(columnIndex * 7) + index">
-                <label class="form-check-label cursor-pointer textColor" :for="'itemCheckbox' + index">{{ item.description }} - [ ugshs {{ item.price }} ]</label>
+                <label class="form-check-label cursor-pointer text-sm" :for="'itemCheckbox' + index">{{ item.description }} - [ ugshs {{ item.price }} ]</label>
               </li>
             </ul>
           </div>

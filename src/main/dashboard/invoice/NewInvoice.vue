@@ -26,9 +26,11 @@ const campusStore = useCampusStore()
 const studentNumber = routerData.currentRoute.value.query.st_id;
 const user_number = ref(null)
 const buttonLoader = ref(false)
+const school_number = ref(null)
 
 const props = defineProps({
-  userNumber:String
+  userNumber:String,
+  studentDataInfo:{}
 })
 
 // Creating invoice Logic =========================================================
@@ -40,22 +42,62 @@ const form = reactive({
   description:null
 })
 
+onMounted(
+    async () => {
+      // await serviceStore.fetchServicesList()
+      // await applicationStore.fetchApplicationList()
+      fetchCurrentSchoolInfo()
+      fetchServicesData()
+      getUserName()
+    } )
+
+const getUserName = () => {
+  if(props.userNumber){
+    user_number.value = props.userNumber
+  }
+}
+
 watch(
     () => props.userNumber,
     async (data) => {
       if(data){
-        user_number.value = props.userNumber
+        // user_number.value = props.userNumber
+        getUserName()
       }
     },
     {deep:true}
 )
 
 
-onMounted(
-    async () => {
-      await serviceStore.fetchServicesList()
-      await applicationStore.fetchApplicationList()
-    } )
+
+
+
+
+    const fetchCurrentSchoolInfo = () => {
+  let draft = props.studentDataInfo
+  school_number.value = draft?.current_enrollment?.school_number
+}
+
+watch (
+    () => props.studentDataInfo,
+    async (data) => {
+      if (data) {
+        fetchCurrentSchoolInfo()
+      }
+    }
+)
+
+
+const fetchServicesData = () => {
+  if(school_number.value) {
+    let data = {
+      school_number: school_number.value
+    }
+
+    serviceStore.fetchServicesList(data)
+  }
+}
+
 
 
 
@@ -113,7 +155,7 @@ watch(
     () => serviceStore.servicesListResponse,
     async (data) => {
       if (data) {
-        ServiceOptions.value = data.map(option => ({ name: option.Item.name, cost: option.Item.cost,item_number:option.Item.number }));
+        ServiceOptions.value = data.map(option => ({ name: option.item.name, cost: option.item.cost,item_number:option.item.number }));
       }
     },
     { deep: true }
@@ -169,16 +211,17 @@ watch (
 
 </script>
 <template>
-  <div>
+ <div>
     <div class="row">
       <div class="col-12">
           <div class="card-body" style="padding: 0;">
             <div class="container mt-4">
               <form @submit.prevent="createInvoice">
+                <!-- {{ userNumber }}  -->
                 <div class="row">
                   <div class="col-lg-5">
                      <div class="mb-2">
-                      <label class="textSize">Due Date</label>
+                      <label class="text-sm">Due Date</label>
                       <input
                       type="date"
                       v-model="form.due_date"
@@ -189,7 +232,7 @@ watch (
                   </div>
                   <div class="col-lg-7">
                     <div class="mb-2">
-                    <label class="textSize">Description</label>
+                    <label class="text-sm">Description</label>
                     <textarea
                         v-model="form.description"
                         required
@@ -250,7 +293,7 @@ watch (
                       </tbody>
                     </table>
                     <button
-                        class="btn btn-primary btn-sm textColor"
+                        class="btn btn-primary btn-sm text-sm"
                         @click.prevent="addService"
                         :disabled="isAddButtonDisabled">
                         <small class="px-4">
@@ -276,7 +319,7 @@ watch (
            <div class="col-lg-4"></div>
            <div class="col-lg-4 ">
              <button type="submit" class="btn btn-sm btn-primary mb-2 mt-1" style="float: right !important;margin-right: 0px;">
-               <small>Create Invoice</small>
+               <small>Create Promissory Note</small>
            <div class="spinner-border spinner-border-sm" role="status" v-if="buttonLoader">
              <span class="visually-hidden">Loading...</span>
            </div>
@@ -323,7 +366,7 @@ select{
 .star{
   color:red;
 }
-.textColor{
+.text-sm2{
   /* font-size: 1px !important; */
 }
   .select-no-border {

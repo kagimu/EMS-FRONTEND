@@ -13,7 +13,7 @@ export const useLevelStore = defineStore("level", () => {
     const levelDataInfoResponse = ref(null)
     const levelEditResponse = ref(null)
     const errorMessage = ref(null)
-
+     let entityN = localStorage.getItem("entity_number")
 
 
     async function newLevelData(data) {
@@ -56,7 +56,7 @@ export const useLevelStore = defineStore("level", () => {
 
 
     async function fetchLevels() {
-        return await api.get("main/fetch-level")
+        return await api.get("main/fetch-level?entity_number="+entityN)
             .then((response) => {
                 levelInfoResponse.value = response.data
             })

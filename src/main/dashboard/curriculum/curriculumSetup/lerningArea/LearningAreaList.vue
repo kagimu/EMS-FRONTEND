@@ -1,8 +1,144 @@
+<script setup>
+
+import {onMounted, ref, watch} from "vue";
+import NewLearningArea from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/NewLearningArea.vue";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useRouter} from "vue-router";
+import AppModal from "@/components/AppModal.vue";
+
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
+const routerData = useRouter()
+
+
+const curriculumDialog = ref( false)
+const learningAreaEditMode = ref( false)
+const learningAreaList = ref( [])
+const deletionLoader = ref( undefined)
+
+let  curriculumNumber = routerData.currentRoute.value.query.id
+
+
+const learningAreaStore = useLearningAreaStore()
+const  notificationStore  = useNotificationStore()
+
+const learningAreaRef = ref(null)
+
+
+const addCurriculum = () => {
+  learningAreaEditMode.value = false
+  curriculumDialog.value = true
+}
+
+const editLearningArea = (data) => {
+  curriculumDialog.value = true
+  learningAreaEditMode.value = true
+  learningAreaStore.learningAreaData(data.number)
+}
+
+
+
+
+const deleteLearningArea = async (data) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+data.name);
+if (agreed) {
+  deletionLoader.value = data.number
+
+  let info = {
+    number:data.number
+  }
+
+  learningAreaStore.deleteLearningArea(info)
+}
+
+}
+
+
+onMounted(
+    () => {
+
+      if(localStorage.getItem("CurriculumNum")){
+        let curriculum_number = localStorage.getItem("CurriculumNum")
+        learningAreaStore.fetchLearningArea(curriculum_number)
+      }else {
+        learningAreaStore.fetchLearningArea(curriculumNumber)
+      }
+      
+
+    }
+)
+
+
+watch(
+    () => learningAreaStore.learningAreaResponse,
+    async (data) => {
+      if(data){
+        await learningAreaStore.fetchLearningArea(curriculumNumber)
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => learningAreaStore.learningAreaEditResponse,
+    async (data) => {
+      if(data){
+        await learningAreaStore.fetchLearningArea(curriculumNumber)
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => learningAreaStore.deleteLearningAreaResponse,
+    async (data) => {
+      if(data){
+        await learningAreaStore.fetchLearningArea(curriculumNumber)
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => learningAreaStore.learningAreaInfResponse,
+    async (data) => {
+      if(data){
+        learningAreaList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => learningAreaStore.errorMessage,
+    async (data) => {
+      if(data){
+       deletionLoader.value = undefined
+       notificationStore.errorToast("Error", data.message)
+      }
+    },
+    {deep:true}
+)
+
+const closeLearningArea = () =>{
+  curriculumDialog.value = false
+}
+
+</script>
+
+
 <template>
 <div>
 
   <AppModal :title="learningAreaEditMode ? 'Edit Learning Area' : 'Add Learning Area'" v-model="curriculumDialog" lg>
-    <new-learning-area ref="learningAreaRef"></new-learning-area>
+    <new-learning-area ref="learningAreaRef" @closeDialog="closeLearningArea"></new-learning-area>
   </AppModal>
 
 <!--  <div class="modal fade" id="learningAreaModal" tabindex="-1" :class="{ show: curriculumDialog }" aria-labelledby="" aria-hidden="true">
@@ -66,124 +202,12 @@
   </table>
 
 
-
+  <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
 </div>
 </template>
 
-<script setup>
 
-import {onMounted, ref, watch} from "vue";
-import NewLearningArea from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/NewLearningArea.vue";
-import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
-import useNotificationStore from "@/composables/useNotification.js";
-import {useRouter} from "vue-router";
-import AppModal from "@/components/AppModal.vue";
-const routerData = useRouter()
-
-
-const curriculumDialog = ref( false)
-const learningAreaEditMode = ref( false)
-const learningAreaList = ref( [])
-const deletionLoader = ref( undefined)
-let  curriculumNumber = routerData.currentRoute.value.query.id
-
-
-const learningAreaStore = useLearningAreaStore()
-const  notificationStore  = useNotificationStore()
-
-const learningAreaRef = ref(null)
-
-
-const addCurriculum = () => {
-  learningAreaEditMode.value = false
-  curriculumDialog.value = true
-}
-
-const editLearningArea = (data) => {
-  curriculumDialog.value = true
-  learningAreaEditMode.value = true
-  learningAreaStore.learningAreaData(data.number)
-}
-
-const deleteLearningArea = (data) => {
-
-  if(!confirm("Are you sure, you want to delete: "+data.name)){
-    return
-  }
-
-  deletionLoader.value = data.number
-
-  let info = {
-    number:data.number
-  }
-
-  learningAreaStore.deleteLearningArea(info)
-}
-
-onMounted(
-    () => {
-      learningAreaStore.fetchLearningArea(curriculumNumber)
-    }
-)
-
-
-watch(
-    () => learningAreaStore.learningAreaResponse,
-    async (data) => {
-      if(data){
-        await learningAreaStore.fetchLearningArea(curriculumNumber)
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => learningAreaStore.learningAreaEditResponse,
-    async (data) => {
-      if(data){
-        await learningAreaStore.fetchLearningArea(curriculumNumber)
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => learningAreaStore.deleteLearningAreaResponse,
-    async (data) => {
-      if(data){
-        await learningAreaStore.fetchLearningArea(curriculumNumber)
-        notificationStore.successToast("Success", data.message)
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => learningAreaStore.learningAreaInfResponse,
-    async (data) => {
-      if(data){
-        learningAreaList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => learningAreaStore.errorMessage,
-    async (data) => {
-      if(data){
-       deletionLoader.value = undefined
-      }
-    },
-    {deep:true}
-)
-
-
-</script>
 
 <style scoped>
 

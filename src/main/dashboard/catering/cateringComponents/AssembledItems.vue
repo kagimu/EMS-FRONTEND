@@ -9,8 +9,9 @@ import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import AppModal from "@/components/AppModal.vue";
 import MenuParts from "@/main/dashboard/catering/cateringComponents/MenuParts.vue";
 import PaginationTemplate from "@/components/PaginationTemplate.vue";
-
-
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import useCommonsStore from "@/composables/useCommons.js";
+const confirmationRef = ref(null);
 
 const showingModal = ref(false)
 const isLoading = ref(false);
@@ -18,9 +19,10 @@ const loading = ref(true)
 const tableLoader = ref(true)
 
 const notificationStore = useNotificationStore()
+const commons = useCommonsStore()
 const cateringStore = useCateringStore()
 const thisDialog = ref(false)
-const updateMenuDialog = ref(false)
+
 const menuItemsinfoData = ref(null)
 const errorMessage = ref(null)
 const campusList = ref([])
@@ -44,11 +46,12 @@ const form = reactive({
 
 const fetchCampuses = (school_number) => {
     campusStore.fetchCampuses(school_number ?? "")
+    doFetchMenuItem(school_number)
 }
 
-const filter = (campusN) =>{
-    doFetchMenuItem()
-}
+// const filter = (campusN) =>{
+//     doFetchMenuItem()
+// }
 
 const showUpdateDialog = (menuList) => {
     menuItemsinfoData.value = menuList
@@ -62,19 +65,38 @@ onMounted(
     () => {
 
         schoolStore.fetchSchools()
+
+        let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
+  let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
+  let defaultCampusCurriculumNo =   localStorage.getItem("defaultCampusCurriculumNo")
+
+
+ if(defaultSchoolNo){
+    form.school_number = defaultSchoolNo
+    fetchCampuses(form.school_number)
+  }
+
+  if(defaultCampusNo){
+    form.campus_number = defaultCampusNo
+  }
+  doFetchMenuItem(form.school_number)
+
     }
 
 )
 
 
 
-const doFetchMenuItem = () => {
-    let data = {
-    page: 1,
-    per_page: per_page.value, 
-     school_number:form.school_number,
-     campus_number:form.campus_number,
-     type:"ASSEMBLED"
+const doFetchMenuItem = (schoolNumber) => {
+      if(!form.school_number){
+        return
+      }
+      let data = {
+      page: 1,
+      per_page: per_page.value,
+      school_number:schoolNumber,
+      campus_number:form.campus_number,
+      type:"ASSEMBLED"
     }
     isLoading.value = true
     cateringStore.fetchMenuItemPaginated(data)
@@ -84,8 +106,9 @@ const doFetchMenuItem = () => {
 
 function  onScroll({ target: { scrollTop, clientHeight, scrollHeight }}) {
   if (scrollTop + clientHeight >= scrollHeight) {
-
-    tableLoader.value = true
+    if(!form.school_number){
+      return
+    }
     let data = {
       page: (page.value+1),
       per_page: per_page.value,
@@ -224,9 +247,24 @@ watch(
     }
 )
 
+
+const deleteThisData = async (id,name) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete this Item ? ");
+if (agreed) {
+  let data = {
+ 
+  }
+}
+
+
+}
+
+
 </script>
 <template>
     <div>  
+      <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
       <AppModal title="Update Menu Item" v-model="showingModal" xl4>
         <NewMenuItem :menuItemsInfo="menuItemsinfoData"></NewMenuItem>
@@ -258,7 +296,7 @@ watch(
                 <div class="row">
                   <div class="col-4">
                     <div class="mb-2">
-                      <label class="textColor"><small>School</small>  </label>
+                      <label class="text-sm"><small>School</small>  </label>
                       <select
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
@@ -273,7 +311,7 @@ watch(
                   </div>
                   <div class="col-4">
                     <div class="mb-2">
-                      <label class="textColor"><small>Campus</small>  </label>
+                      <!-- <label class="text-sm"><small>Campus</small>  </label>
                       <select
                         style="box-shadow: none;"
                         class="form-select form-select-sm"
@@ -283,7 +321,7 @@ watch(
                          <option disabled value="">--Select campus--</option>
                         <option v-for="(list, index) in campusList" :key="index" :value="list.number">{{ list.name }}
                         </option>
-                      </select>
+                      </select> -->
                     </div>
                   </div>
                   <div class="col-4">
@@ -307,15 +345,17 @@ watch(
                     @scroll="onScroll">
                   <table 
                     id="datatable"
-                    class="table table-hover caption-top mt-4 table-sm text-[12px]"
+                    class="table table-hover caption-top mt-4 table-sm text-[12px] table-striped "
                     >
                     <thead >
                       <tr>
                         <th>#</th>
+                        <th>Code</th>
                         <th>Name</th>
-                        <th>Unit</th>
+                        <th>User UOM</th>
                         <th>Purchase Unit</th>
                         <th>Qty</th>
+                        <th >Cost Per User UOM</th>
                         <th>Parts</th>
                         <th class="w-[5%]">Action</th>
                       </tr>
@@ -326,11 +366,13 @@ watch(
                     <tbody>
                      
                       <tr v-if="isLoading===false" v-for="(list, index) in menuItemData" :key="index">
+                        <td   v-if="list.type==='ASSEMBLED'">{{ index+1}}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.code }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.name }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.unit_of_measure_name }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">{{ list?.purchase_unit_of_measure_name }}</td>
-                        <td   v-if="list.type==='ASSEMBLED'">{{ list?.current_quantity }}</td>
+                        <td   v-if="list.type==='ASSEMBLED'">{{ commons.formatNumbersWithComma(list?.current_quantity) }}</td>
+                        <td   v-if="list.type==='ASSEMBLED'">{{ commons.formatNumbersWithComma(list?.unit_cost) }}</td>
                         <td   v-if="list.type==='ASSEMBLED'">
                           <div  v-if="list.type==='ASSEMBLED'">
 
@@ -340,6 +382,7 @@ watch(
                            <div class="flex flex-grow justify-between px-3 py-1">
                              <div>{{(idx+1)}}. {{ ldData.name }} </div>
                              <div>{{ ldData.quantity }} {{ ldData.unit_of_measure }}</div>
+                             <div>{{ ldData?.unit_cost?.toLocaleString() }}</div>
                            </div>
                          </div>
                        </div>
@@ -348,23 +391,17 @@ watch(
                           </div>
                         </td>
                         <td   v-if="list.type==='ASSEMBLED'">
-                          <button @click="showUpdateDialog(list)" >
+                          <button @click="showUpdateDialog(list)" class="mr-1" >
                           <i class="bi bi-pencil-square" style="color:rgb(3, 85, 148)"></i>
                           </button>
-                          &nbsp;<span style="color: rgba(200, 195, 195, 0.363);"></span>&nbsp;
-                          <button type="button">
+
+                          <button type="button" @click="deleteThisData(list)">
                           <i class="bi bi-trash" style="color:rgb(201, 10, 10)"></i>
                           </button>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-
-                  <!-- <div v-if="isLoading" class="flex justify-center" >
-                        <div class="spinner-border text-primary" role="status">
-                          <span class="visually-hidden">Loading...</span>
-                        </div>
-                      </div> -->
                       
                  </div>
                       

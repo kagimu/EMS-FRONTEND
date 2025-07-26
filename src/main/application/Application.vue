@@ -9,8 +9,8 @@ import {useApplicationStore} from "@/main/application/applicationComponents/stor
 
 const applicationStore= useApplicationStore()
 
-const step = ref(1)
 
+const step = ref(1)
 
 onMounted(() => {
 
@@ -32,84 +32,99 @@ const nextPage = (data) =>{
 }
 
 const fetchApplicationData = (applicationNumber) => {
-  applicationStore.fetchApplicationById(applicationNumber)
+
+  if(applicationNumber){
+    applicationStore.fetchApplicationById(applicationNumber)
+  }
 }
 
 </script>
 <template>
   <div class="temp">
     <div class="row">
-      <div style="padding-top: 140px;">
-      <h5 class="txt" >APPLY</h5>
-      <h1  class="txt2">STUDENT APPLICATION</h1>
-      <h5  class="txt">Get Started Today With Few Steps </h5>
+      <div style="padding-top: 50px;">
+      <div  class="text-center font-bold text-[#2c2f8c]">STUDENT APPLICATION</div>
+      <div  class="text-center">Get Started Today With Few Steps </div>
     </div>
       <div class="col-lg-12">
         <div class="card sect mx-auto" style="margin-bottom:60px;margin-top:50px;border-radius: 16px; width: 80%;">
           <div class="card-body" >
            <div class="row">
-            <div class="col-lg-6" style="text-align: center;padding-top:15px;">
-              <p class="txt4">You are applying for</p>
-              <h1 class="txt3">Victorious Education Services</h1>
-              <p class="txt4">To continue your application, please fill out the form below.</p>
-            </div>
-            <div class="col-lg-6">
-              <div>
-            <div class="text-center">
-              <ul class="nav nav-tabs text-xs" style="margin-top: 50px;">
-              <li class="nav-item cursor-pointer">
-                <a style="color: black;font-family: Roboto, sans-serif !important;" class="nav-link" @click="" :class="step === 1 ? 'active activeTab' : ''"><small>GUARDIAN/PARENT</small></a>
-              </li>
-              <li class="nav-item cursor-pointer">
-                <a style="color: black;" class="nav-link" @click="" :class="step === 2 ? 'active activeTab' : ''"><small>LEARNER</small></a>
-              </li>
-              <li class="nav-item cursor-pointer">
-                <a style="color: black;" class="nav-link" @click="" :class="step === 3 ? 'active activeTab' : ''">
-                  <small>PREVIOUS SCHOOL</small>
-                </a>
-              </li>
-              <li class="nav-item cursor-pointer">
-                <a style="color: black;" class="nav-link" @click="nextPage(4)" :class="step === 4 ? 'active activeTab' : ''">
-                  <small>PREVIOUS SCHOOL RESULTS</small>
-                </a>
-              </li>            
 
-              <li class="nav-item cursor-pointer">
-                <a style="color: black;" class="nav-link" @click="nextPage(5)" :class="step === 5 ? 'active activeTab' : ''">
-                  <small>PAYMENT</small>
-                </a>
-              </li>
-            </ul>
-           
-          </div>
-        
-  <div v-show="step === 1">
-    <personal-details-of-student  
-        v-on:next="nextPage" 
-    ></personal-details-of-student>
-  </div>
-  <div v-show="step === 2">
-    <personal-details-of-learner
-        v-on:next="nextPage"
-    ></personal-details-of-learner>
-  </div>
-  <div v-show="step === 3">
-    <previous-school-details
-        v-on:next="nextPage"
-    ></previous-school-details>
-  </div>
-  <div v-show="step === 4">
-  <PreviousSchoolResults v-on:next="nextPage"></PreviousSchoolResults>
-  </div>
-  <div v-show="step === 5">
-    <application-payement  v-on:next="nextPage">
-  </application-payement>
-  </div>
+            <div class="col-lg-12">
+              <div>
+
+
+                <div class="w-full flex flex-col space-y-2 pt-10">
+
+                  <div style="margin-top: 20px;">
+
+
+
+                    <div class="flex relative space-x-2 justify-around text-[#414548] border-2 border-primary border-l-0 border-r-0 border-b-0 z-10">
+                      <div style="margin-top:-20px" class="text-center -mt-5 z-0" :class="step === 1 ? 'font-bold':'italic'">
+                        <i class="text-[30px] bg-white" :class="step === 1 ? 'animate-bounce fa-solid fa-arrow-circle-down step-wizard-current' : step <= 1 ? 'fa-solid fa-clock step-wizard-default' : 'fa-solid fa-check-circle step-wizard-success'"></i>
+                        <p class="text-sm">LEARNER</p>
+                      </div>
+
+                      <div style="margin-top:-20px" class="text-center -mt-5 z-0" :class="step === 2 ? 'font-bold':'italic'">
+                        <i class="text-[30px] bg-white" :class="step === 2 ? 'animate-bounce fa-solid fa-arrow-circle-down step-wizard-current' : step <= 2 ? 'fa-solid fa-clock step-wizard-default' : 'fa-solid fa-check-circle step-wizard-success'"></i>
+                        <p class="text-sm">GUARDIAN/PARENT</p>
+                      </div>
+
+                      <div style="margin-top:-20px"  class="text-center -mt-5 z-0" :class="step === 3 ? 'font-bold':'italic'">
+                        <i class="text-[30px] bg-white p-6"  :class="step === 3 ? 'animate-bounce fa-solid fa-arrow-circle-down step-wizard-current' : step < 3 ? 'fa-solid fa-clock step-wizard-default' : 'fa-solid fa-check-circle step-wizard-success'"></i>
+                        <p class="text-sm">PREVIOUS SCHOOL</p>
+                      </div>
+                      <div style="margin-top:-20px"  class="text-center -mt-5 z-0" :class="step === 4 ? 'font-bold':'italic'">
+                        <i class="text-[30px] bg-white p-6"  :class="step === 4 ? 'animate-bounce fa-solid fa-arrow-circle-down step-wizard-current' : step < 4 ? 'fa-solid fa-clock step-wizard-default' : 'fa-solid fa-check-circle step-wizard-success'"></i>
+                        <p class="text-sm">PREVIOUS SCHOOL RESULTS</p>
+                      </div>
+                      <div style="margin-top:-20px" class="text-center -mt-5 z-0" :class="step === 5 ? 'font-bold' : 'italic'">
+                        <i class="text-[30px] bg-white" :class="step === 5 ? 'animate-bounce fa-solid fa-arrow-circle-down step-wizard-current' : step < 5 ? 'fa-solid fa-clock step-wizard-default' : 'fa-solid fa-check-circle step-wizard-success'"></i>
+                        <p class="text-sm">PAYMENT</p>
+                      </div>
+
+
+                    </div>
+                  </div>
+
+                  <div class="mb-10">
+                    <div v-show="step === 1">
+                      <personal-details-of-learner
+                          v-on:next="nextPage"
+                      ></personal-details-of-learner>
+                    </div>
+                    <div v-show="step === 2">
+                      <personal-details-of-student
+                          v-on:next="nextPage"
+                      ></personal-details-of-student>
+                    </div>
+                    <div v-show="step === 3">
+                      <previous-school-details
+                          v-on:next="nextPage"
+                      ></previous-school-details>
+                    </div>
+                    <div v-show="step === 4">
+                      <PreviousSchoolResults
+                          v-on:next="nextPage"></PreviousSchoolResults>
+                    </div>
+                    <div v-show="step === 5">
+                      <application-payement  v-on:next="nextPage">
+                      </application-payement>
+                    </div>
+
+                  </div>
+                </div>
+
+
+
+
  </div>
           </div>
         </div>
       </div>
- 
+
    </div>
   </div>
             </div>
@@ -142,7 +157,7 @@ input:focus {
   box-shadow: none;
 }
 
-.textColor{
+.text-sm2{
   color: #070707;
   float: left !important;
 }.txt{
@@ -205,6 +220,19 @@ input:focus {
 * {
   margin: 0;
   padding: 0;
+}
+
+
+.step-wizard-success {
+  @apply text-green-600 z-0 border-green-600 rounded-full p-[2px];
+}
+
+.step-wizard-current {
+  @apply text-primary z-0 border-primary rounded-full p-[2px];
+}
+
+.step-wizard-default {
+  @apply text-gray-600 z-0 border-[#565656] rounded-full p-[2px];
 }
 
 

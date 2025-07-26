@@ -14,12 +14,15 @@
   const commons = useCommonsStore()
   const studentsList = ref(null)
   const showingModal = ref(false)
-  const assessmentNumber = ref("")
-  const interviewStudentListData = ref( [])
+  const assessment_numberumber = ref("")
+  const interviewStudentListInfo = ref( [])
   const assessmentStore = useAssessmentStore()
   const studentApplicationStore = useStudentApplicationStore()
   const routerData = useRouter()
-  let  interviewNumber = routerData.currentRoute.value.query.interview_id
+  // let  interviewNumber = routerData.currentRoute.value.query.interview_id
+
+  const  interviewNumber = ref(null)
+
   let interviewM = routerData.currentRoute.value.query.interview_m
   const notificationStore = useNotificationStore()
   const applicationStore= useApplicationStore()
@@ -32,24 +35,32 @@
   const studentNumber = ref(null)
   const errM = ref(false)
 
+const props = defineProps({
+  interviewInfoData: {}
+})
+
+
+onMounted( async () => {
+
+  if(props.interviewInfoData){
+    interviewNumber.value = props.interviewInfoData.interview_number
+    studentApplicationStore.fetchAssessmentMetricsOnInterview(interviewNumber.value)
+  }
+
+  })
+
   const showModal = () => {
       showingModal.value = true
   }  
 
   const form = reactive({
-   assessmentN : ""
+   assessment_number : ""
   })
 
-  onMounted(
-    () => {
-      studentApplicationStore.fetchAssessmentMetricsOnInterview(interviewNumber)
-    }
-)
-
   
-  const fetchStudentOnInterview = (assNumber) =>{
+  const fetchStudentOnInterviewDetails = (assNumber) => {
    let data = reactive({
-      interview_number:interviewNumber,
+      interview_number:props.interviewInfoData.interview_number,
       assessment_metric_number:assNumber
    })
       applicationStore.fetchStudentsOnInterview(data) 
@@ -61,11 +72,11 @@
       async (data) => {
         if(data){
           assessmentDataData.value = data.data
-         
         }
       },
       {deep:true}
   )
+  
   
   
   watch(
@@ -73,17 +84,16 @@
       async (data) => {
         if(data){
          errM.value = false
-          interviewStudentListData.value = data.data
+          interviewStudentListInfo.value = data.data
         }
-      },
-      {deep:true}
+      }
   )
   
 
   const submitMarks = (a,b,c) =>{
       buttonLoader.value=true
       let formDat = reactive({
-      assessment_metric_number:form.assessmentN,
+      assessment_metric_number:form.assessment_number,
       comment:b,
       student_number:c,
       assessment_date:null,
@@ -132,24 +142,20 @@
 
 
 <template>
-  <div>
-     <AppModal title="Attach Assessment Schedules To An Interview" v-model="showingModal" lg>
-        <interview-assessment :interviewNumber="interviewNumber"></interview-assessment>
-     </AppModal>
-     <div class="row mt-4">
+  <div style="background-color: white;" class="m-3">
+          <div class="row mt-4">
         <div class="col-lg-4">
            <div class="mb-2">
             <label style="font-size: 11px;"  class="alert alert-primary p-0">* Please Select Assessment Schedule to Enter/view Marks</label>
             <div class="input-group mt-1">
           <select
                  class="form-select form-select-sm shadow-none"  id="inputGroupSelect02" required
-                 v-model="form.assessmentN"
-                 @change="fetchStudentOnInterview(form.assessmentN)"
+                 v-model="form.assessment_number"
+                 @change="fetchStudentOnInterviewDetails(form.assessment_number)"
                  >
                  <option disabled value=""> - Select Assessment Schedule- </option>
-                 <option v-for="(assessment, index) in assessmentDataData" :key="index" :value="assessment.AssessmentMetric.number">{{assessment.AssessmentMetric.name  }}</option>
+                 <option v-for="(assessment, index) in assessmentDataData" :key="index" :value="assessment.number">{{assessment.metric_name  }} - [{{ assessment.assessment_area }}] ({{ assessment.description }} [{{ assessment.scheduled_on }}])</option>
               </select>
-  <label class="input-group-text" for="inputGroupSelect02"><i  class="bi bi-plus-circle" @click="showModal()"></i></label>
 </div>
            </div>
         </div>
@@ -164,11 +170,12 @@
      <div>
 
       
-     <div class="alert alert-danger p-1 mt-3 mb-3 textColor" v-if="errM" >
+     <div class="alert alert-danger p-1 mt-3 mb-3 text-sm" v-if="errM" >
        {{ errorMessage }}
      </div>
       
-     <div v-else>
+     <div>
+      <!-- {{ interviewInfoData }} -->
      <table   id="data"
         class="table table-striped table-hover caption-top table-sm text-sm">
         <thead>
@@ -181,10 +188,9 @@
            </tr>
         </thead>
         <tbody>
-           <tr v-for="(std,index) in interviewStudentListData.students" :key="index" >
-            <!-- {{ interviewStudentListData.students }} -->
+           <tr v-for="(std,index) in interviewStudentListInfo.students" :key="index" >
               <td style="text-transform: capitalize;">
-                 {{std.student_second_name +" " +std.student_second_name + " "+ std.student_other_name}}
+                 {{std.student_surname +" " +std.student_second_name + " "+ std.student_other_name}}
               </td>
               <td scope="col" style="width: 150px;">
                  <input

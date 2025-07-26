@@ -16,6 +16,9 @@ import {useLevelStore} from "@/main/settings/level/store/level.js";
 import LevelInfo from "@/main/dashboard/manageLevel/LevelInfo.vue";
 import SchemeOfWorkPdfTemplate from "@/main/dashboard/curriculum/schemeOfWork/SchemeOfWorkPdfTemplate.vue";
 import AppModal from "@/components/AppModal.vue";
+import api from "@/config/api.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const routerData = useRouter()
 
 const level = ref( "")
 const curriculumNumber = ref( "")
@@ -27,12 +30,13 @@ const exportLoader = ref( false)
 const lessonPlanDialog = ref( false)
 const lessonPlanDetailsDialog = ref( false)
 const lessonPlanInfo = ref( "")
-const learningAreaList = ref( [])
 const classList = ref( [])
 const levelList = ref( [])
 const classStore = useClassesStore()
 let selectedClass = ref( "")
-const routerData = useRouter()
+
+
+let imagePath = api.defaults.baseURL + "/attachments/download/"
 
 
 const learningAreaStore = useLearningAreaStore()
@@ -53,6 +57,7 @@ let classNo = routerData.currentRoute.value.query.c
 let campusNumber = routerData.currentRoute.value.query.id
 let curriculumNo = routerData.currentRoute.value.query.crr
 let levelNo = routerData.currentRoute.value.query.lv
+const confirmationRef = ref(null);
 
 if(classNo){
   selectedClass.value =  classNo
@@ -68,12 +73,60 @@ const viewLessonPlan = (lst) => {
   lessonPlanInfo.value = lst
 }
 
+const deactivateLessonPlan = async (lst) => {
+  const agreed = await confirmationRef.value.confirm("This action will deactivate the Lesson plan and cannot be reversed. Are you sure you want to continue?");
+  if (agreed) {
+    await deactivateLessonPlanStatus(lst?.number)
+  }
+}
+
+const  deactivateLessonPlanStatus = async (data) => {
+  return await api.patch("main/lesson-plan/invalidate/"+data)
+      .then((response) => {
+        if(response && response.data){
+          filterSchemeSubject()
+          notificationStore.successToast("Success", response.data.message)
+        }
+      })
+      .catch((response) => {
+        if(response && response.response){
+          notificationStore.errorToast("Error",response.response.data.message)
+        }
+      })
+}
+
+
 const addSchemeOfWork = () => {
   curriculumDialog.value = true
 }
 
-const exportSchemeOfWorkPdf = () => {
+const deactivateSchemeOfWork = async () => {
 
+  const agreed = await confirmationRef.value.confirm("This action will deactivate the scheme of work and cannot be reversed. Are you sure you want to continue?");
+  if (agreed) {
+     await deactivateSchemeOfWorkStatus(schemeOfWorkList.value?.number)
+  }
+
+}
+
+
+const  deactivateSchemeOfWorkStatus = async (data) => {
+  return await api.patch("main/scheme-of-work/invalidate/"+data)
+      .then((response) => {
+        if(response && response.data){
+          filterSchemeSubject()
+          notificationStore.successToast("Success", response.data.message)
+        }
+      })
+      .catch((response) => {
+        if(response && response.response){
+          notificationStore.errorToast("Error",response.response.data.message)
+        }
+      })
+}
+
+
+const exportSchemeOfWorkPdf = () => {
   if(schemeOfWorkList.value && schemeOfWorkList.value.length < 1){
     notificationStore.warningToast("Warning", "No details found on scheme of work")
     return
@@ -115,14 +168,14 @@ onMounted(
       if(levelNo){
         level.value = levelNo
         await classStore.fetchClassLevel({campusCurriculumNumber: curriculumNumber.value, campusLevelNumber: levelNo})
-        await fetchSchemeClasses(levelNo)
+         fetchSchemeClasses(levelNo)
       }
 
       await levelStore.fetchCampusCurriculum(campusNumber)
       // await levelStore.fetchCampusLevelList(campusNumber)
 
       if(selectedClass.value) {
-        await fetchAcademicYrList(selectedClass.value)
+         fetchAcademicYrList(selectedClass.value)
         await subjectStore.fetchSchemeSubjectByClass(selectedClass.value)
       }
     }
@@ -159,7 +212,7 @@ watch(
             // selectedClass.value = classNo
             await subjectStore.fetchSchemeSubjectByClass(classNo)
             // await subjectStore.fetchAcademicYearByClass(classNo)
-            await fetchAcademicYrList(classNo)
+             fetchAcademicYrList(classNo)
 
             // fetch scheme of work
             if(academic_year_number.value && scheme_subject_number.value) {
@@ -242,6 +295,7 @@ watch(
     () => schemeOfWorkStore.updateSchemeOfWorkResponse,
     async (data) => {
       if(data){
+        notificationStore.successToast("Success",data.message)
         if(selectedClass.value) {
           let data = {
             academic_year_number:academic_year_number.value,
@@ -250,7 +304,6 @@ watch(
           }
           await schemeOfWorkStore.fetchSchemeOfWorkByClass(data)
         }
-        notificationStore.successToast("Success",data.message)
       }
     },
     {deep:true}
@@ -307,7 +360,7 @@ watch(
     () => classStore.campusLevelResponse,
     async (data) => {
       if(data){
-        levelList.value = data.data ///---------------
+        levelList.value = data.data
       }
     },
     {deep:true}
@@ -329,9 +382,6 @@ watch(
     async (data) => {
       if(data){
         curriculumList.value = data.data
-        /* if(!campusCurriculumNumber){
-           campusCurriculumNumber = curriculumInfo[0].number
-         }*/
       }
     },
     {deep:true}
@@ -342,45 +392,19 @@ watch(
 <template>
   <div>
 
-    <AppModal :title="(schemeOfWorkList.number && (schemeOfWorkList.status === 'Pending')) ? 'Edit Scheme of work' : 'Add Scheme of work'" v-model="curriculumDialog" xl8>
-      <new-scheme-of-work :schemeOfWorkList="schemeOfWorkList" ref="schemeOfWorkRef"></new-scheme-of-work>
+    <ConfirmationModal removeBorder="remove" title="Warning" ref="confirmationRef"></ConfirmationModal>
+
+    <AppModal :title="(schemeOfWorkList.number && (schemeOfWorkList.status === 'ACTIVE')) ? 'Edit Scheme of work' : 'Add Scheme of work'" v-model="curriculumDialog" xl8>
+      <new-scheme-of-work :schemeOfWorkList="schemeOfWorkList" ref=""></new-scheme-of-work>
     </AppModal>
 
+    <AppModal :title="'New Lesson Plan: '+ schemeDataInfo.name" v-model="lessonPlanDialog" xl8>
+      <new-lesson-plan :schemeDataInfo="schemeDataInfo" ref="lessonPlanRef"></new-lesson-plan>
+    </AppModal>
 
-
-    <div class="modal fade" id="lessonPlanModal" tabindex="-1" :class="{ show: lessonPlanDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">New Lesson Plan: <b>{{schemeDataInfo.name}}</b> </h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-              <new-lesson-plan :schemeDataInfo="schemeDataInfo" ref="lessonPlanRef"></new-lesson-plan>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="modal fade" id="lessonPlanDetailsModal" tabindex="-1" :class="{ show: lessonPlanDetailsDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">Lesson Plan: <b>{{lessonPlanInfo.name}}</b> </h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-2">
-              <lesson-plan-details :lessonPlanInfo="lessonPlanInfo"></lesson-plan-details>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
+    <AppModal :title="'Lesson Plan: '+ lessonPlanInfo.name" v-model="lessonPlanDetailsDialog" xl8>
+      <lesson-plan-details :lessonPlanInfo="lessonPlanInfo"></lesson-plan-details>
+    </AppModal>
 
 
 <p class="mt-3" style="font-size: 20px;">Scheme of work</p>
@@ -406,6 +430,7 @@ watch(
           <div class="text-[12px]">Filter by Curriculum</div>
         </div>
       </div>
+
       <div class="col-3" v-if="curriculumNo">
         <div class="mb-2">
           <select
@@ -427,7 +452,7 @@ watch(
 
 
       <div :class="classNo ? 'col-3' : 'col-12'" v-if="level">
-        <div class="card mt-3">
+        <div class="card mt-3 p-0">
           <div class="card-body" style="padding: 0;">
             <div class="mb-2 ml-3 mt-2" style="font-size: 16px;">Classes</div>
             <hr />
@@ -455,16 +480,17 @@ watch(
 
             <div class="flex justify-content-between mt-3">
 
-              <div>
-                <div class="ml-4"><b>Scheme of work</b></div>
-                <div class="ml-7" v-if="schemeOfWorkList.name"><small><b>Title:</b> {{schemeOfWorkList.name}}</small></div>
-                <div class="ml-7" v-if="schemeOfWorkList.academic_year_name"><small><b>Class:</b> {{schemeOfWorkList.academic_year_name}}</small></div>
-                <div class="ml-7" v-if="schemeOfWorkList.class_name"><small><b>Class:</b> {{schemeOfWorkList.class_name}}</small></div>
-                <div class="ml-7" v-if="schemeOfWorkList.subject_name"><small><b>Subject:</b> {{schemeOfWorkList.subject_name}}</small></div>
-                <div class="ml-7" v-if="schemeOfWorkList.status"><small><b>Status:</b> {{schemeOfWorkList.status}}</small></div>
-              </div>
+            <div>
+
+            </div>
 
                 <div>
+
+                  <button v-if="schemeOfWorkList?.number" type="button"  class="btn btn-sm buttonStyle btn-danger mr-2"  @click="deactivateSchemeOfWork" data-bs-toggle="modal" data-bs-target="#schemeOfWorkModal">
+                    <i style="font-size: 15px;"  class="bi-x mr-2"></i>
+                    Deactivate
+                  </button>
+
                   <button type="button"  class="btn btn-sm buttonStyle btn-success mr-2"  @click="exportSchemeOfWorkPdf">
                     <i style="font-size: 15px;"  class="bi-file-earmark-pdf mr-2"></i>
                     Export PDF
@@ -472,21 +498,68 @@ watch(
                       <span class="visually-hidden">Loading...</span>
                     </div>
                   </button>
+
                   <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addSchemeOfWork" data-bs-toggle="modal" data-bs-target="#schemeOfWorkModal">
                     <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-                    {{(schemeOfWorkList.number && (schemeOfWorkList.status === "Pending")) ? " Edit Scheme" : " Add Scheme"}}
+                    {{(schemeOfWorkList.number && (schemeOfWorkList.status === "ACTIVE")) ? " Edit Scheme" : " Add Scheme"}}
                   </button>
+
                 </div>
 
             </div>
 
-            <hr />
 
 
-            <div class="row mx-auto">
+            <table style="width: 100%;">
+              <tr>
+                <td style="width: 14%;">
+
+                  <span v-if="schemeOfWorkList?.school_badge">
+                      <img alt="img" style="width: 120px; margin: 0 auto;" :src="imagePath+schemeOfWorkList?.school_badge"/>
+                  </span>
+
+                </td>
+                <td>
+                  <div style="font-size: 20px; text-transform: uppercase;"><b>{{schemeOfWorkList?.school_name}}</b></div>
+                  <div style="font-size: 15px; margin-top: 1px;text-transform: uppercase;">{{schemeOfWorkList?.campus_name}}</div>
+
+                  <div style="margin-top: 1px; margin-bottom: 1px;">
+                    <small>
+                      {{schemeOfWorkList?.campus_location ? schemeOfWorkList?.campus_location+" | " : ""	}}
+                      {{schemeOfWorkList?.campus_phone ? schemeOfWorkList?.campus_phone+" | " : ""}}
+                      {{schemeOfWorkList?.campus_email ? schemeOfWorkList?.campus_email+" | " : ""}}
+                    </small>
+                  </div>
+
+                  <span v-if="schemeOfWorkList?.name" style="font-size: 15px; background-color: green; color: #ffffff; text-transform: uppercase; padding-left: 15px; padding-right: 15px;">
+                     {{schemeOfWorkList?.name}}
+                  </span>
+
+                  <div style="display: flex; margin-bottom: 20px; margin-top: 15px;">
+                    <div style="margin-right: 0px;"  v-if="schemeOfWorkList.academic_year_name"><small>{{schemeOfWorkList.academic_year_name}}</small> |</div>
+                    <div style="margin-left: 10px;"  v-if="schemeOfWorkList.class_name"><small>{{schemeOfWorkList.class_name}}</small> |</div>
+                    <div style="margin-left: 10px; "  v-if="schemeOfWorkList.subject_name"><small>{{schemeOfWorkList.subject_name}}</small> |</div>
+                    <div style="margin-left: 10px; "  v-if="schemeOfWorkList.status"><small>{{schemeOfWorkList.status}}</small></div>
+                  </div>
+
+                </td>
+
+              </tr>
+            </table>
+
+
+
+
+
+
+
+<!--            <hr />-->
+
+
+            <div class="row">
               <div class="col-3">
-            <div class="mb-3">
-              <label class="textColor"><small>Sort by Subject</small></label>
+                  <div class="mb-3">
+              <label class="text-sm"><small>Sort by Subject</small></label>
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
@@ -502,9 +575,8 @@ watch(
               </div>
 
               <div class="col-3">
-
                 <div class="mb-2">
-                  <label class="textColor"><small>Sort by Academic Year</small></label>
+                  <label class="text-sm"><small>Sort by Academic Year</small></label>
                   <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
@@ -517,7 +589,6 @@ watch(
                     </option>
                   </select>
                 </div>
-
               </div>
 
             </div>
@@ -543,21 +614,21 @@ watch(
               <tr v-for="(lst,index) in schemeOfWorkList.subtopic" :key="index" >
                 <td scope="row">{{index+1}}</td>
                 <td>
-                  {{lst.strand_name}}
+                  <div v-html="lst?.strand_name"></div>
                 </td>
                 <td>
-                  {{lst.topic_name}}
+                  <div v-html="lst?.topic_name"></div>
                 </td>
                 <td>
-                  {{lst.code}}
+                  {{lst?.code}}
                 </td>
                 <td>
                   <div style="width: 200px; white-space: break-spaces">
-                    {{lst.name}}
+                    <div v-html="lst?.name"></div>
                   </div>
                 </td>
                 <td>
-                  {{lst.estimated_time}}
+                  <div v-html="lst?.estimated_time"></div>
                 </td>
                 <td>
 
@@ -568,21 +639,32 @@ watch(
                       {{lsn.code+". "+lsn.concept_name}}
                     </div>
 
-                    <div class="flex justify-between mt-4 mb-2" style="width: 350px;">
+<!--                    {{lst}}-->
+                    <div class="flex mt-4 mb-2" style="width: 350px;">
                       <button
                           type="button"
                           class="btn btn-sm  btn-primary mr-2 m-0 py-0"
                           @click="addLessonPlan(lst)"
-                          data-bs-toggle="modal"
-                          data-bs-target="#lessonPlanModal"
                           v-tooltip.bottom="lst.concept_count+(lst.concept_count <1 ? ' Concept' : ' Concepts')"
                       >
                         <small class="m-0 p-0">Add lesson plan [ {{lst.concept_count}} ]</small>
                       </button>
 
-                      <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="viewLessonPlan(lst)" data-bs-toggle="modal" data-bs-target="#lessonPlanDetailsModal">
-                        <small class="m-0 p-0">View lesson plan</small>
-                      </button>
+
+
+                      <span class="mx-1">
+                          <button type="button"  class="btn btn-sm  btn-primary mr-2 m-0 py-0"  @click="viewLessonPlan(lst)">
+                            <small class="m-0 p-0">View lesson plan</small>
+                          </button>
+                      </span>
+
+
+<!--                      <span>-->
+<!--                        <button type="button"  class="btn btn-sm  btn-danger mr-2 m-0 py-0"  @click="deactivateLessonPlan(lst)">-->
+<!--                        <small class="m-0 p-0">Deactivate lesson plan</small>-->
+<!--                      </button>-->
+<!--                    </span>-->
+
                     </div>
                   </div>
 

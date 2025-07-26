@@ -1,3 +1,304 @@
+<script setup>
+
+import {onMounted, reactive, ref, watch} from "vue";
+import {useRouter} from "vue-router";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
+import {useSubtopicStore} from "@/main/dashboard/curriculum/curriculumSetup/subTopic/store/subTopic.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
+import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
+import useNotificationStore from "@/composables/useNotification.js";
+import ImportSchemeOfWork from "@/main/dashboard/curriculum/schemeOfWork/ImportSchemeOfWork.vue";
+
+const subtopicStore = useSubtopicStore()
+const errorMessage = ref(null)
+const name = ref(null)
+const loader = ref(false)
+const classList = ref([])
+const subjectList = ref([])
+const subtopicList = ref([])
+const notificationStore  = useNotificationStore()
+const routerData = useRouter()
+const classStore = useClassesStore()
+
+const learningAreaStore = useLearningAreaStore()
+const schemeOfWorkStore = useSchemeOfWorkStore()
+const subjectStore = useSubjectStore()
+let classNo = routerData.currentRoute.value.query.c
+
+const scheme_number = ref(null)
+const academicYearList = ref([])
+const showTemplateUpload = ref(false)
+
+const type = ref("new")
+
+const schemeOptions  = ref([
+  {
+    text:"New",
+    value:"new"
+  },
+  {
+    text:"Template",
+    value:"template"
+  },
+])
+
+
+const form = reactive({
+  name:"",
+  class_number:"",
+  subject_number:"",
+  academic_year_number:"",
+})
+
+const props = defineProps({
+  schemeOfWorkList: {},
+})
+
+
+onMounted(
+    () =>{
+      fetchAcademicYrList(classNo)
+      checkDraft()
+    }
+)
+
+
+watch(
+    () => props.schemeOfWorkList,
+    async (data) => {
+      if(data) {
+        checkDraft()
+      }
+    }
+)
+
+const checkDraft = () => {
+  let info = props.schemeOfWorkList
+  if(info && (info.status === "ACTIVE")){
+    scheme_number.value = info.number
+    form.name = info.name
+    form.class_number = info.class_number
+    form.subject_number = info.subject_number
+    form.academic_year_number = info.academic_year_number
+
+    subtopicList.value = info.subtopic
+  }
+}
+
+const filterByType = (type) => {
+  if(type){
+    //  alert(type)
+  }
+}
+
+
+const downloadSchemeByTemplate = (event) => {
+  event.preventDefault();
+  subtopicList.value = []
+  subtopicStore.downloadSchemeTemplateExcel({class_number:form.class_number, subject_number:form.subject_number})
+}
+
+const uploadTemplate = () => {
+  showTemplateUpload.value = !showTemplateUpload.value
+}
+
+let classNumber = routerData.currentRoute.value.query.c
+if(classNumber){
+  form.class_number =  classNumber
+}
+
+
+
+
+const filterClasses = (classData) => {
+  subtopicList.value = []
+  subjectList.value = []
+  subjectStore.fetchAcademicYearByClass(classData)
+  subjectStore.fetchSchemeSubjectByClass(classData)
+}
+
+const filterSubject = (subjectNumber) => {
+  subtopicList.value = []
+  subtopicStore.fetchSubTopicsByClass({class_number:form.class_number, subject_number:subjectNumber})
+}
+
+const fetchAcademicYrList = (classNumber) => {
+  subjectStore.fetchAcademicYearByClass(classNumber)
+  subjectStore.fetchSchemeSubjectByClass(classNumber)
+}
+
+
+const addSchemeOfWork = () =>{
+
+  if(validateForm()){
+    notificationStore.warningToast("Warning",validateForm())
+    return
+  }
+
+  loader.value = true
+  let topic = [...subtopicList.value]
+
+  topic.forEach(lst => {
+    lst.code = parseInt(lst.code)
+    lst.sort_code = parseInt(lst.sort_code)
+    lst.estimated_time = parseInt(lst.estimated_time)
+  })
+  form.subtopicList = topic
+
+  if(props.schemeOfWorkList && (props.schemeOfWorkList.status === "ACTIVE")){
+    form.scheme_number = scheme_number.value
+    schemeOfWorkStore.updateSchemeOfWorkData(form)
+  }else {
+    schemeOfWorkStore.newSchemeOfWorkData(form)
+  }
+
+
+}
+
+
+const validateForm = () => {
+  let message = ""
+  if(!form.name){
+    message = "Scheme title is required!"
+  }
+
+  if(!form.class_number){
+    message = "Class is required!"
+  }
+
+  if(!form.subject_number){
+    message =  "Subject is required!"
+  }
+
+  if(!form.academic_year_number){
+    message =  "Academic year is required!"
+  }
+
+  return message;
+
+}
+
+
+
+
+
+
+watch(
+    () => learningAreaStore.learningAreaInfResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+        form.name = null
+        form.code = null
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => subtopicStore.subtopicByClassInfoResponse,
+    async (data) => {
+      if(data){
+        if(!props.schemeOfWorkList.number) {
+          subtopicList.value = data.data
+        }
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => schemeOfWorkStore.newSchemeOfWorkResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => schemeOfWorkStore.updateSchemeOfWorkResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => schemeOfWorkStore.errorMessage,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectStore.schemeSubjectByClassResponse,
+    async (data) => {
+      if(data){
+        subjectList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => subjectStore.academicYearByClassResponse,
+    async (data) => {
+      if(data){
+        academicYearList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => subtopicStore.subtopicByClassTemplateResponse,
+    async (data) => {
+      if(data){
+        const pdfObj = document.createElement("a");
+        pdfObj.href = data.data;
+        pdfObj.click();
+      }
+    },
+    {deep:true}
+)
+
+
+
+watch(
+    () => classStore.classLevelInfoResponse,
+    async (data) => {
+      if(data){
+        let classInfo = data.data
+        classList.value = classInfo
+        if(classInfo && (classInfo.length > 0)){
+          let classNo = classInfo[0].number
+          let number = null
+          if(!classNumber){
+            number = classNo
+          }else {
+            number = classNumber
+          }
+          form.class_number = number
+          await subjectStore.fetchSubjectByClass(number)
+        }
+      }
+    },
+    {deep:true}
+)
+
+</script>
 <template>
   <div>
     <form @submit.prevent="addSchemeOfWork">
@@ -11,7 +312,7 @@
         <div class="col-lg-6 content">
 
           <div class="mb-2">
-            <label class="textColor text-sm">Scheme Title</label>
+            <label class="text-sm text-sm">Scheme Title</label>
             <input
                 style="outline: none 0 !important; box-shadow: none;"
                 type="text"
@@ -23,9 +324,9 @@
 
 
       <div class="mb-2" v-if="classList && (classList.length > 0)">
-        <label class="textColor"><small>Class</small></label>
+        <label class="text-sm"><small>Class</small></label>
         <select
-            :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'Pending'))"
+            :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'ACTIVE'))"
             style="box-shadow: none;"
             class="form-select form-select-sm"
             v-model="form.class_number"
@@ -37,9 +338,9 @@
       </div>
 
           <div class="mb-5">
-            <label class="textColor"><small>Academic Year</small></label>
+            <label class="text-sm"><small>Academic Year</small></label>
             <select
-                :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'Pending'))"
+                :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'ACTIVE'))"
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
                 v-model="form.academic_year_number"
@@ -58,9 +359,9 @@
 
 
           <div class="mb-2">
-            <label class="textColor"><small>Subject</small></label>
+            <label class="text-sm"><small>Subject</small></label>
             <select
-                :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'Pending'))"
+                :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'ACTIVE'))"
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
                 v-model="form.subject_number"
@@ -75,9 +376,9 @@
 
 
           <div class="mb-5">
-            <label class="textColor"><small>Scheme by</small></label>
+            <label class="text-sm"><small>Scheme by</small></label>
             <select
-                :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'Pending'))"
+                :disabled="(schemeOfWorkList && (schemeOfWorkList.status === 'ACTIVE'))"
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
                 v-model="type"
@@ -177,7 +478,7 @@
         <button
             type="submit"
             class="btn btn-primary border-0">
-           {{(schemeOfWorkList && (schemeOfWorkList.status === "Pending")) ? "Update":"Save"}}
+           {{(schemeOfWorkList && (schemeOfWorkList.status === "ACTIVE")) ? "Update":"Save"}}
           <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </span>
@@ -190,312 +491,7 @@
   </div>
 </template>
 
-<script setup>
 
-import {onMounted, reactive, ref, watch} from "vue";
-import {useRouter} from "vue-router";
-import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
-import {useSubtopicStore} from "@/main/dashboard/curriculum/curriculumSetup/subTopic/store/subTopic.js";
-import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
-import {useSchemeOfWorkStore} from "@/main/dashboard/curriculum/schemeOfWork/store/schemeOfWork.js";
-import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
-import useNotificationStore from "@/composables/useNotification.js";
-import ImportSchemeOfWork from "@/main/dashboard/curriculum/schemeOfWork/ImportSchemeOfWork.vue";
-
-const subtopicStore = useSubtopicStore()
-const errorMessage = ref(null)
-const name = ref(null)
-const loader = ref(false)
-const classList = ref([])
-const subjectList = ref([])
-const subtopicList = ref([])
-const notificationStore  = useNotificationStore()
-const routerData = useRouter()
-const classStore = useClassesStore()
-
-const learningAreaStore = useLearningAreaStore()
-const schemeOfWorkStore = useSchemeOfWorkStore()
-const subjectStore = useSubjectStore()
-let classNo = routerData.currentRoute.value.query.c
-
-const scheme_number = ref(null)
-const academicYearList = ref([])
-const showTemplateUpload = ref(false)
-
-const type = ref("new")
-
-const schemeOptions  = ref([
-  {
-    text:"New",
-    value:"new"
-  },
- /* {
-    text:"Standard Scheme",
-    value:"standard_scheme"
-  },*/
-  {
-    text:"Template",
-    value:"template"
-  },
-])
-
-
-
-
-
-const form = reactive({
-  name:"",
-  class_number:"",
-  subject_number:"",
-  academic_year_number:"",
-})
-
-const filterByType = (type) => {
-  if(type){
-  //  alert(type)
-  }
-}
-
-
-const downloadSchemeByTemplate = (event) => {
-  event.preventDefault();
-  subtopicList.value = []
-  subtopicStore.downloadSchemeTemplateExcel({class_number:form.class_number, subject_number:form.subject_number})
-}
-
-const uploadTemplate = () => {
-    showTemplateUpload.value = !showTemplateUpload.value
-}
-
-let classNumber = routerData.currentRoute.value.query.c
-if(classNumber){
-  form.class_number =  classNumber
-}
-
-
-
-
-const filterClasses = (classData) => {
-  subtopicList.value = []
-  subjectList.value = []
-  subjectStore.fetchAcademicYearByClass(classData)
-  subjectStore.fetchSchemeSubjectByClass(classData)
-}
-
-const filterSubject = (subjectNumber) => {
-  subtopicList.value = []
-  subtopicStore.fetchSubTopicsByClass({class_number:form.class_number, subject_number:subjectNumber})
-}
-
-onMounted(
-    () =>{
-      // subtopicStore.fetchSubTopics(classNumber ? classNumber : "")
-       fetchAcademicYrList(classNo)
-    }
-)
-
-
-const fetchAcademicYrList = (classNumber) => {
-  subjectStore.fetchAcademicYearByClass(classNumber)
-  subjectStore.fetchSchemeSubjectByClass(classNumber)
-}
-
-const props = defineProps({
-  schemeOfWorkList: [],
-})
-
-
-
-const addSchemeOfWork = () =>{
-
-  if(validateForm()){
-    notificationStore.warningToast("Warning",validateForm())
-    return
-  }
-
-  loader.value = true
-  let topic = [...subtopicList.value]
-
-  topic.forEach(lst => {
-    lst.code = parseInt(lst.code)
-    lst.sort_code = parseInt(lst.sort_code)
-    lst.estimated_time = parseInt(lst.estimated_time)
-  })
-  form.subtopicList = topic
-
-  if(props.schemeOfWorkList && (props.schemeOfWorkList.status === "Pending")){
-    form.scheme_number = scheme_number.value
-    schemeOfWorkStore.updateSchemeOfWorkData(form)
-  }else {
-    schemeOfWorkStore.newSchemeOfWorkData(form)
-  }
-
-
-}
-
-
-const validateForm = () => {
-  let message = ""
-  if(!form.name){
-    message = "Scheme title is required!"
-  }
-
-  if(!form.class_number){
-    message = "Class is required!"
-  }
-
-  if(!form.subject_number){
-    message =  "Subject is required!"
-  }
-
-  if(!form.academic_year_number){
-    message =  "Academic year is required!"
-  }
-
-  return message;
-
-}
-
-
-
-watch(
-    () => props.schemeOfWorkList,
-    async (data) => {
-      if(data && (data.status === "Pending")){
-        let info  = data
-        scheme_number.value = info.number
-        form.name = info.name
-        form.class_number = info.class_number
-        form.subject_number = info.subject_number
-        form.academic_year_number = info.academic_year_number
-
-        subtopicList.value = info.subtopic
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => learningAreaStore.learningAreaInfResponse,
-    async (data) => {
-      if(data){
-        loader.value = false
-        form.name = null
-        form.code = null
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => subtopicStore.subtopicByClassInfoResponse,
-    async (data) => {
-      if(data){
-        if(!props.schemeOfWorkList.number) {
-          subtopicList.value = data.data
-        }
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => schemeOfWorkStore.newSchemeOfWorkResponse,
-    async (data) => {
-      if(data){
-       loader.value = false
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => schemeOfWorkStore.updateSchemeOfWorkResponse,
-    async (data) => {
-      if(data){
-       loader.value = false
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => schemeOfWorkStore.errorMessage,
-    async (data) => {
-      if(data){
-        loader.value = false
-        notificationStore.errorToast("Error",data.message)
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => subjectStore.schemeSubjectByClassResponse,
-    async (data) => {
-      if(data){
-      subjectList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-watch(
-    () => subjectStore.academicYearByClassResponse,
-    async (data) => {
-      if(data){
-      academicYearList.value = data.data
-      }
-    },
-    {deep:true}
-)
-
-
-watch(
-    () => subtopicStore.subtopicByClassTemplateResponse,
-    async (data) => {
-      if(data){
-        const pdfObj = document.createElement("a");
-        pdfObj.href = data.data;
-        pdfObj.click();
-      }
-    },
-    {deep:true}
-)
-
-
-
-watch(
-    () => classStore.classLevelInfoResponse,
-    async (data) => {
-      if(data){
-        let classInfo = data.data
-        classList.value = classInfo
-        if(classInfo && (classInfo.length > 0)){
-          let classNo = classInfo[0].number
-          let number = null
-          if(!classNumber){
-            number = classNo
-          }else {
-            number = classNumber
-          }
-          form.class_number = number
-          await subjectStore.fetchSubjectByClass(number)
-        }
-      }
-    },
-    {deep:true}
-)
-
-
-
-
-
-
-</script>
 
 <style scoped>
 .noFocus:focus {

@@ -10,7 +10,7 @@
 
 
       <div class="mb-2">
-        <label class="textColor"><small>Study Level</small></label>
+        <label class="text-sm"><small>Study Level</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -26,14 +26,14 @@
 
 
       <div>
-        <label class="textColor mt-3 mb-2"><small>Add Class to Curriculum</small></label>
+        <label class="text-sm mt-3 mb-2"><small>Add Class to Curriculum</small></label>
         <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
 
           <li class="list-group-item" v-for="(cls,idx) in classList" :key="idx">
             <input
                 v-model="classId"
                 @click="addCurriculumClass(cls)"
-                style="outline: none 0 !important; box-shadow: none;"
+                style="outline: none 0 !important; box-shadow: none; width:20px; height: 20px"
                 class="form-check-input me-1" type="checkbox" :value="cls.number" :id="cls.number">
             <label class="form-check-label cursor-pointer ml-2" :for="cls.number">{{cls.code+". "+cls.name+" [ "+cls.abbreviation+" ]"}}</label>
           </li>

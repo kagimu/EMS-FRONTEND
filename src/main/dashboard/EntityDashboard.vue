@@ -49,7 +49,7 @@ const editEntity = (list) => {
 
 const deleteEntity = (list, index) => {
   let confirm_delete = confirm(
-      "Are you sure you want to delete this entity."
+      "Are you sure you want to delete this entity: "+list.name
   );
   if (!confirm_delete) {
     return false;
@@ -79,8 +79,11 @@ watch(
 
 
 function userLogout(){
+  let landT = localStorage.getItem("landingPageTitle")
 
   localStorage.clear();
+
+  localStorage.setItem("landingPageTitle", landT)
 
   let r = router.resolve({
     name: "login"
@@ -100,12 +103,15 @@ if(entity) {
  /* if(draftData.value?.number === entityNo){
     saveStorage(draftData.value)
   }else {*/
+
+  localStorage.setItem('entityInfo',JSON.stringify(entity))
     buttonLoader.value = index
     entityStore.switchEntity(entityNo)
   // }
 
 }
 }
+
 
 
 watch (
@@ -175,6 +181,16 @@ watch (
       if(data){
         await entityStore.fetchEntity()
         notificationStore.successToast("Success", data.message)
+        entityDialog.value = false
+      }
+    }
+)
+
+watch (
+    () => entityStore.newLandingPageResponse,
+    async (data) => {
+      if(data){
+        showDashboardModal.value = false
       }
     }
 )
@@ -183,7 +199,7 @@ watch (
 </script>
 <template>
 
-      <AppModal :title="(entityData?.number ? 'Edit' : 'Create')+' Entity'" v-model="entityDialog" lg>
+      <AppModal :title="(entityData?.number ? 'Edit' : 'Create')+' Entity'" v-model="entityDialog"  xl2>
         <NewEntity :entityData="entityData"></NewEntity>
       </AppModal>
 

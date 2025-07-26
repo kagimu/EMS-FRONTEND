@@ -85,7 +85,7 @@
   </div>
       </thead>
       <tbody>
-        <tr v-for="(student, index) in interviewStudentList" :key="index">
+        <tr v-for="(student, index) in interviewStudentData" :key="index">
           <td>{{ student.Student.surname + " " + student.Student.second_name + " " + student.Student.other_name}} </td>
           <td>
             <!-- <input type="number" class="form-control" style="width:100px"> -->
@@ -139,7 +139,7 @@ import EnterAssessmentMarks from "./EnterAssessmentMarks.vue";
 import { useStudentApplicationStore } from "./store/student_application"
 
 
-const interviewStudentList = ref( [])
+const interviewStudentData = ref( [])
 let errorMessage = ref(null)
 const buttonLoader = ref(false)
 const applicationStore= useApplicationStore()
@@ -169,7 +169,7 @@ const ScoreData = reactive ({
 
 onMounted(
     () => {
-      applicationStore.fetchStudentsOnInterview(interviewNumber)
+      // applicationStore.fetchStudentsOnInterview(interviewNumber)
     }
 )
 
@@ -187,7 +187,7 @@ watch(
       if(data){
         // notificationStore.successToast("Success", data.message)
         enterScoreDialog.value = false
-        interviewStudentList.value = data.data
+        interviewStudentData.value = data.data
       }
     },
     {deep:true}
@@ -202,7 +202,7 @@ watch(
       if(data){
         // notificationStore.successToast("Success", data.message)
         enterScoreDialog.value = false
-        interviewStudentList.value = data.data
+        interviewStudentData.value = data.data
       }
     },
     {deep:true}

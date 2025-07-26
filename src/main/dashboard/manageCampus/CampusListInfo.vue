@@ -7,6 +7,9 @@ import NewCampus from "@/main/dashboard/manageCampus/NewCampus.vue";
 import {useRouter} from "vue-router";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import useNotificationStore from "@/composables/useNotification.js";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+const confirmationRef = ref(null);
+
 
 const routerData = useRouter()
 import { useAbility } from '@casl/vue';
@@ -45,14 +48,19 @@ const editCampus = (campus) => {
     campusStore.fetchCampusData(campus.number)
   }
 }
-const deleteCampus = (campus) => {
-  if(!confirm("Are you sure, you want to delete: "+campus.name)){
-    return
-  }
+
+
+const deleteCampus = async (campus) => {
+
+const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+campus.name);
+if (agreed) {
   let data = {
     campus_number:campus.number
   }
   campusStore.deleteCampus(data)
+}
+
+
 }
 
 
@@ -63,6 +71,10 @@ onMounted(
       schoolStore.fetchSchoolData(schoolNumber)
     }
 )
+
+const closeDialog = () => {
+  campusDialog.value = false
+}
 
 const fetchCampusInfo = (schoolNumber) => {
   if(schoolNumber) {
@@ -150,8 +162,10 @@ watch (
 <template>
 <div>
 
+  <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
+
   <AppModal :title="campusEditMode ? 'Edit Campus' : 'New Campus'" v-model="campusDialog" xl6>
-    <new-campus ref="campusRef"></new-campus>
+    <new-campus ref="campusRef"  @closeDialog="closeDialog"></new-campus>
   </AppModal>
 
 <div>
@@ -201,10 +215,26 @@ watch (
                 </div>
 
                 <div class="mt-2" v-show="showSelected === campus.number">
-                  <div class="ml-2" v-for="(curr, idx) in campus.curriculum" key="idx">
+                  <!-- <div class="ml-2" v-for="(curr, idx) in campus.curriculum" key="idx">
                     <div class="text-[13px] text-[#575656]">{{idx+1}}. {{curr.name}}</div>
+                  </div> -->
+                  
+                <div v-for="(curr, idx) in campus.curriculum" key="idx" class="curriculum ml-2">
+                  <div class="curriculum-header">
+                      <h3 class="text-sm">{{idx+1}}. {{curr.name}}</h3>
+<!--                      <span>{{ 90 }}%</span>-->
                   </div>
+<!--                  <div class="progress-bar">-->
+<!--                     <div-->
+<!--                      class="progress-fill"-->
+<!--                      :class="{ 'complete': 90 === 100 }"-->
+<!--                      :style="{ width: 90 + '%' }" >-->
+<!--                    </div>-->
+<!--                </div>-->
+
+
                 </div>
+              </div>
               </div>
 
 
@@ -212,7 +242,7 @@ watch (
 
           </div>
 
-            <div class="flex">
+            <div class="grid grid-cols-2 gap-0">
 
               <router-link
                   class="text-decoration-none"
@@ -220,8 +250,8 @@ watch (
               >
                 <button
                     type="button"
-                    class="bg-[#2c2f8c] hover:bg-[#0c62e1] text-white text-sm text-center w-full rounded-bl-md py-2">
-                      <span class="mx-9 text-sm">
+                    class="bg-[#2c2f8c] hover:bg-[#0c62e1] text-white  text-center w-full rounded-bl-md pt-1 pb-2">
+                      <span class="text-xs">
                         View Scheme
                       </span>
                 </button>
@@ -234,8 +264,8 @@ watch (
                 <button
                   @click="setCampusName(campus.name)"
                     type="button"
-                    class="bg-[#0d6efd] hover:bg-[#0c62e1] text-white text-sm text-center w-full rounded-br-md py-2">
-                      <span class="mx-9 text-sm">
+                    class="bg-[#0d6efd] hover:bg-[#0c62e1] text-white  text-center w-full rounded-br-md pt-1 pb-2">
+                      <span class="text-xs">
                         View Campus
                       </span>
                 </button>
@@ -261,7 +291,7 @@ input:focus {
   box-shadow: none;
 }
 
-.textColor{
+.text-sm2{
   color: #717375;
 }
 
@@ -275,6 +305,47 @@ input:focus {
 .viewButtonStyle:hover {
   background-color: #0557b4;
   color: #ffffff;
+}
+
+
+.curriculum-progress {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 600px;
+  margin: 3px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.curriculum {
+  margin-bottom: 20px;
+}
+
+.curriculum-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #4caf50;
+  transition: width 0.3s ease;
+}
+
+.progress-fill.complete {
+  background: #2196f3; /* Blue color for 100% completion */
 }
 
 </style>

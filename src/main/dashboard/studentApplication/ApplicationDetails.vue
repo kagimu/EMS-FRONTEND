@@ -5,6 +5,7 @@ import useCommons from "@/composables/useCommons.js";
 import { useApplicationStore } from "@/main/application/applicationComponents/store/application.js";
 import { useSchoolStore } from "@/main/dashboard/manageSchool/store/school.js";
 import { useCampusStore } from "@/main/dashboard/manageCampus/store/campus.js";
+import {useBillStore} from "@/main/settings/bills/store/bills.js";
 
 const applicationStore = useApplicationStore();
 const notificationStore = useNotificationStore();
@@ -18,10 +19,13 @@ const schoolList = ref([]);
 const schoolStore = useSchoolStore();
 const campusStore = useCampusStore();
 const school_number = ref(null);
+const billStore = useBillStore()
+const billableData  = ref([])
+
 
 onMounted(async () => {
-  applicationStore.fetchApplicationList();
-  applicationStore.fetchPreviousSchoolResultsAll();
+  // applicationStore.fetchApplicationList();
+  // applicationStore.fetchPreviousSchoolResultsAll();
   applicationStore.fetchApplicationById(props.applicationNumber);
   schoolStore.fetchSchools();
 });
@@ -50,6 +54,8 @@ const appDatails = reactive({
   status: null,
   previousSchools: [],
   student_number: null,
+  preferred_campus:null,
+  previousSchoolsResults: [],
 });
 
 function getAge(dob) {
@@ -89,16 +95,33 @@ watch(
       appDatails.status = data.status;
       appDatails.previousSchools = data.previous_schools;
       appDatails.student_number = data.student.number;
-      applicationStore.fetchPreviousSchoolResultsByStudent(appDatails.student_number);
+      appDatails.preferred_campus=data.student.preferred_campus;
+      appDatails.previousSchoolsResults = data.previous_school_result
 
       let dataInfo = {
     campus_class_number:data.student.campus_class_number ,
   }
   applicationStore.fetchInterviewList(dataInfo)
+
+
+  let data2 = {
+      student_number:data.student.number,
+      study_period_number: data.student.study_period_number,
+     class_number: data.student.class_number                                                                    ,
+     campus_number:data.student.campus_level_number,
+     mode_of_study_number:data.student.mode_of_study_number,
+     campus_curriculum_number:data.student.campus_level_number
+  }
+  billStore.fetchDeterminateBillables(data2)
+
+
     }
   },
   { deep: true }
-);
+)
+
+
+   
 
 // const getInterviewListData = (campusClassNumber) => {
 //   let data = {
@@ -127,7 +150,7 @@ watch(
     if (data) {
       formData.interview_number = null;
       buttonLoader.value = false;
-      applicationStore.fetchApplicationList();
+      // applicationStore.fetchApplicationList();
       notificationStore.successToast("Success", data.message);
     }
   },
@@ -156,15 +179,15 @@ watch(
   { deep: true }
 );
 
-watch(
-  () => applicationStore.previousSchoolResultsByStudentResponse,
-  async (data) => {
-    if (data) {
-      previousSchoolResultsData.value = data.data;
-    }
-  },
-  { deep: true }
-);
+// watch(
+//   () => applicationStore.previousSchoolResultsByStudentResponse,
+//   async (data) => {
+//     if (data) {
+//       previousSchoolResultsData.value = data.data;
+//     }
+//   },
+//   { deep: true }
+// );
 
 watch(
   () => campusStore.campusListResponse,
@@ -191,7 +214,7 @@ watch(
   <div class="container mt-2 mb-2">
     <div class="row mx-auto">
       <!-- Guardian/parent Details Card -->
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="card mb-3">
           <div class="card-header">Guardian/parent Details</div>
           <ul class="list-group list-group-flush">
@@ -200,14 +223,14 @@ watch(
             <li class="list-group-item"><strong>Other names:</strong> {{ appDatails.other_name }}</li>
             <li class="list-group-item"><strong>Telephone No.:</strong> {{ appDatails.main_telephone_number }}</li>
             <li class="list-group-item"><strong>Alternative No.:</strong> {{ appDatails.alternative_telephone_number }}</li>
-            <li class="list-group-item"><strong>Email:</strong> {{ appDatails.email }}</li>
-            <li class="list-group-item"><strong>Alternative Email:</strong> {{ appDatails.alternative_email }}</li>
+            <li class="list-group-item"><strong>Email:</strong> <span class="lowercase">{{ appDatails.email }}</span></li>
+            <li class="list-group-item"><strong>Alternative Email:</strong><span class="lowercase">{{ appDatails.alternative_email }}</span></li>
           </ul>
         </div>
       </div>
       
       <!-- Learner Details Card -->
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="card mb-3">
           <div class="card-header">Learner Details</div>
           <ul class="list-group list-group-flush">
@@ -215,6 +238,7 @@ watch(
             <li class="list-group-item"><strong>Surname:</strong> {{ appDatails.studentSurname }}</li>
             <li class="list-group-item"><strong>Second name:</strong> {{ appDatails.Studentsecond_name }}</li>
             <li class="list-group-item"><strong>Other names:</strong> {{ appDatails.StudentOther_name }}</li>
+            <li class="list-group-item"><strong>Preferred Campus:</strong> {{ appDatails.preferred_campus }}</li>
             <li class="list-group-item"><strong>Preferred Class:</strong> {{ appDatails.preferred_campus_number }}</li>
             <li class="list-group-item"><strong>Reason:</strong> <i>{{ appDatails.reason }}</i></li>
             <li class="list-group-item"><strong>Age:</strong> {{ getAge(appDatails.StudentDate_of_birth) }}</li>
@@ -222,8 +246,8 @@ watch(
         </div>
       </div>
       
-      <!-- Previous School Details Card -->
-      <div class="col-md-3">
+
+      <!-- <div class="col-md-3">
         <div class="card mb-3">
           <div class="card-header">Previous School Details</div>
           <ul class="list-group list-group-flush">
@@ -237,45 +261,46 @@ watch(
               </ul>
             </li>
           </ul>
-        </div>
-      </div>
 
-      <div class="col-md-3" v-if="appDatails.status === 'INTERVIEW_SCHEDULED'">
+        
+
+          <div class="container mt-3">
+   <h4>Report</h4>
+   <a :href="appDatails.previousSchoolsResults.report_file" download class="btn btn-primary mb-3">Download Report</a>
+   
+   <table class="table table-bordered table-striped" style="font-size: 14px;">
+      <thead>
+         <tr>
+            <th>Subject</th>
+            <th>Score</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr v-for="(subject, indx) in appDatails.previousSchoolsResults.subjects " :key="indx">
+            <td>{{ subject.name }}</td>
+            <td>{{ subject.score }}</td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+        </div>
+      </div> -->
+
+      <div class="col-md-4" v-if="appDatails.status === 'INTERVIEW_SCHEDULED'">
         <div class="card mb-3">
           <div class="card-header" style="background-color: #198754;"><b>STUDENT SCHEDULED FOR INTERVIEW ...</b> </div>
-          <!-- <div class="card-body">
-            <table class="table table-sm table-striped table-bordered">
-              <thead>
-                <tr>
-                  <th>ASSESSMENT</th>
-                  <th>SCORE</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Math</td>
-                  <td>90</td>
-                </tr>
-                <tr>
-                  <td>SST</td>
-                  <td>90</td>
-                </tr>
-                <tr>
-                  <td>Eng</td>
-                  <td>90</td>
-                </tr>
-              </tbody>
-            </table>
-          </div> -->
+     
         </div>
       </div>
       
       <!-- Interview Scheduling Form Card -->
       <div class="col-md-3" v-if="appDatails.status === 'SUBMITTED'">
         <div class="card mb-3">
-          <div class="card-header" style="background-color: #198754 !important;" >Interview Scheduling</div>
+          <div class="card-header" style="background-color: #198754 !important; color:white;" >Interview Scheduling</div>
           <div class="card-body">
-            <form @submit.prevent="scheduleInterview">
+          
+            <form @submit.prevent="scheduleInterview" v-if="interviewListData.length != 0">
               <div class="form-group">
                 <label for="interview">Select Interview</label>
                 <select v-model="formData.interview_number" id="interview" class="form-control" required>
@@ -286,6 +311,7 @@ watch(
                 {{ buttonLoader ? 'Scheduling...' : 'Schedule Interview' }}
               </button>
             </form>
+         <p v-else class="alert alert-danger">No Interview(s) found  for <span style="color:green"> {{ appDatails.preferred_campus_number }}</span> !</p>
           </div>
         </div>
       </div>

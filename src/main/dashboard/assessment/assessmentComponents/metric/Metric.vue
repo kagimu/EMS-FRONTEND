@@ -14,12 +14,10 @@ let  curriculumNumber = routerData.currentRoute.value.query.id
 const { can } = useAbility()
 
 
-const metricData = ref(null)
+const metricData = ref([])
 const metricDialog = ref(false)
 const metricInfo = ref(null)
 const deletionLoader = ref(null)
-
-
 const assessmentStore= useAssessmentStore()
 const  notificationStore  = useNotificationStore()
 
@@ -122,66 +120,88 @@ watch (
     </AppModal>
 
     <div class="col-12">
-      <div class="card">
-        <div class="card-header">
-          <div class="row">
-            <div class="col-lg-6 ">
-              <input type="text" class="form-control mt-1 mb-0" placeholder="Search...">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-white border-bottom-0">
+          <div class="row align-items-center">
+            <!-- Search Input -->
+            <div class="col-md-6 mb-2 mb-md-0">
+<!--              <input-->
+<!--                  type="text"-->
+<!--                  class="form-control form-control-sm"-->
+<!--                  placeholder="Search..."-->
+<!--                  v-model="searchQuery"-->
+<!--                  @input="filterMetrics"-->
+<!--              >-->
             </div>
-            <div class="col-lg-6">
+
+            <!-- Add Metric Button -->
+            <div class="col-md-6 text-md-end text-start">
               <button
-                  v-if="can('add_assessment_area','general')"
-                  style="float: right" type="button" class="btn btn-primary btn-sm float-end mb-2 mr-4"
-                  @click="sDialog">
-                <b><i class="bi bi-plus"></i></b> <small>
-                Add Metric</small></button>
+                  v-if="can('add_assessment_area', 'general')"
+                  type="button"
+                  class="btn btn-sm btn-primary"
+                  @click="sDialog"
+              >
+                <i class="bi bi-plus"></i> Add Metric
+              </button>
             </div>
           </div>
         </div>
-        <div class="card-body" >
-          <div >
 
-            <table
-                id="datatable"
-                class="table table-striped"
-                style="font-size: 13px !important;"
-            >
-              <thead>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-sm table-striped mb-0 align-middle" style="font-size: 13px;">
+              <thead class="table-light">
               <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Action</th>
+                <th scope="col" style="width: 5%;">#</th>
+                <th scope="col">Name</th>
+                <th scope="col" style="width: 15%;">Action</th>
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(metric, index) in metricData " :key="index">
-                <td>{{(index + 1)}}</td>
-                <td>{{ metric.name}}</td>
+              <tr v-for="(metric, index) in metricData" :key="index">
+                <td>{{ index + 1 }}</td>
+                <td>{{ metric.name }}</td>
                 <td>
+                  <div class="d-flex gap-2">
+                    <button
+                        class="btn btn-sm p-0 text-primary"
+                        @click="editMetric(metric)"
+                        title="Edit"
+                    >
+                      <i class="bi bi-pencil"></i>
+                    </button>
 
+                    <button
+                        class="btn btn-sm p-0 text-danger"
+                        @click="deleteMetric(metric)"
+                        title="Delete"
+                    >
+                      <i class="bi bi-trash"></i>
+                    </button>
 
-                  <div>
-                    <i
-                        style="font-size: 13px;"
-                        class="bi-pencil mr-2 cursor-pointer" @click="editMetric(metric)"></i>
-                    <i style="font-size: 13px;" class="bi-trash cursor-pointer"  @click="deleteMetric(metric)"></i>
-                    <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === metric.number">
+                    <div
+                        class="spinner-border spinner-border-sm text-secondary ms-2"
+                        role="status"
+                        v-if="deletionLoader === metric.number"
+                    >
                       <span class="visually-hidden">Loading...</span>
                     </div>
                   </div>
-
                 </td>
               </tr>
 
+
+              <tr v-if="metricData.length === 0">
+                <td colspan="3" class="text-center text-muted">No metrics found.</td>
+              </tr>
               </tbody>
             </table>
           </div>
-
-
-
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -190,7 +210,7 @@ watch (
 
 
 <style scoped>
-.textColor{
+.text-sm2{
   font-size: 11px;
 }
 

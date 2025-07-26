@@ -7,7 +7,9 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {useMealStore} from "@/main/dashboard/catering/meals/store/mealStore.js";
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCateringStore} from "@/main/dashboard/catering/store/catering.js";
+import ComboBox from "@/components/ComboBox.vue";
 
+const dayList = ref([])   
 const classError = ref(null)
 const name = ref(null)
 const loader = ref(false)
@@ -38,6 +40,7 @@ const form = reactive({
 onMounted(
     async () =>{
       await schoolStore.fetchSchools()
+      theDays()
      
     }
 )
@@ -59,6 +62,20 @@ const daysData = ref([
       { name: 'Friday', abbreviation: 'Fri' },
       { name: 'Saturday', abbreviation: 'Sat' },
     ]);
+
+
+
+const theDays = () => {
+  let draft = daysData.value
+        if(draft && (draft?.length > 0)){
+          dayList.value = []
+          let arr = []
+          draft?.forEach(lst => {
+            arr.push({text:lst?.name,value:lst?.abbreviation})
+          })
+          dayList.value = arr
+        }
+}
 
 
 watch(
@@ -97,7 +114,18 @@ watch(
     () => mealStore.mealCoursesResponse,
     async (data) => {
       if(data){
-        mealCourseList.value = data.data
+        // mealCourseList.value = data.data
+
+        
+      let draft = data?.data?.courses
+        if(draft && (draft?.length > 0)){
+          mealCourseList.value = []
+          let arr = []
+          draft?.forEach(lst => {
+            arr.push({text:lst?.name,value:lst?.number})
+          })
+          mealCourseList.value = arr
+        }
       }
     }
 )
@@ -140,7 +168,7 @@ watch(
 
 
       <div class="mb-2">
-        <label class="textColor"><small>School</small></label>
+        <label class="text-sm"><small>School</small></label>
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
@@ -161,16 +189,9 @@ watch(
 </div>
 
       <div class="mb-2">
-        <label class="textColor"><small>Meal Course</small></label>
-        <!-- <select
-            style="box-shadow: none;"
-            class="form-select form-select-sm"
-            v-model="form.meal_course_number">
-          <option disabled value="">--Select Meal Course--</option>
-          <option v-for="(lvl, index) in mealCourseList?.courses" :key="index" :value="lvl.number">{{lvl.name}}</option>
-        </select> -->
-
-        <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+        <label class="text-sm"><small>Meal Course</small></label>
+   
+        <!-- <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
           <li class="list-group-item" v-for="(lvl, index) in mealCourseList?.courses" :key="index">
             <input
                 v-model="form.meal_courses"
@@ -178,14 +199,21 @@ watch(
                 class="form-check-input me-1" type="checkbox" :value="lvl.number" :id="idx">
             <label class="form-check-label cursor-pointer" :for="idx">{{lvl.name}}</label>
           </li>
+        </ul> -->
 
-        </ul>
+        <combo-box
+            v-model:optionResponse="form.meal_courses"
+            :optionList="mealCourseList"
+            :optionDraft="form?.meal_courses"
+        ></combo-box>
+
+
       </div>
 
 
       <div class="mb-2">
-        <label class="textColor mt-3 mb-2"><small>Select Day(s)</small></label>
-        <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
+        <label class="text-sm mt-3 mb-2"><small>Select Day(s)</small></label>
+        <!-- <ul class="list-group text-sm mb-4" style="border-radius: 0 0 0 0;">
           <li class="list-group-item" v-for="(lvl,idx) in daysData">
             <input
                 v-model="form.days"
@@ -194,7 +222,13 @@ watch(
             <label class="form-check-label cursor-pointer" :for="idx">{{lvl.name}}</label>
           </li>
 
-        </ul>
+        </ul> -->
+
+        <combo-box
+            v-model:optionResponse="form.days"
+            :optionList="dayList"
+            :optionDraft="form?.days"
+        ></combo-box>
 
         
       </div>

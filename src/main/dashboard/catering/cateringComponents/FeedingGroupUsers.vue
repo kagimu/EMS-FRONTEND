@@ -157,7 +157,7 @@ watch(
             <th>#</th>
             <th>Name</th>
             <th>Gender</th>   
-            <th>#</th>
+
           </tr>
     <div class="alert alert-danger" role="alert" v-if="errorMessage" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
       {{errorMessage}}
@@ -172,7 +172,7 @@ watch(
                      :value="user?.number"
                      class="checkbox-primary"></td>
             <td>{{ index+1 }}</td>
-            <td>      
+            <td style="text-transform: capitalize;">      
                  {{ user.first_name + " " + user.second_name + " " + user.last_name}}
 
              </td>
@@ -180,10 +180,7 @@ watch(
               {{  user.gender }}
             </td>
             
-            <td>
-              <i class="bi bi-x" style="color:red"></i> &nbsp;
-              <i class="bi bi-check"></i>
-            </td>
+         
           </tr>   
                     
         </tbody>
@@ -195,7 +192,7 @@ watch(
           <form @submit.prevent="addFeedingGroupUsers">
     
             <div class="mb-2">
-              <label class="textColor">School</label>
+              <label class="text-sm">School</label>
               <select
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
@@ -209,7 +206,7 @@ watch(
          
        
           <div class="mb-2">
-            <label  class="textColor">Campus</label>
+            <label  class="text-sm">Campus</label>
             <select
                 style="box-shadow: none;"
                 class="form-select form-select-sm"
@@ -223,7 +220,7 @@ watch(
          
           
           <div class="mb-2">
-            <label  class="textColor">Feeding Group</label>
+            <label  class="text-sm">Feeding Group</label>
             <select @change="" class="form-select form-control shadow-none" v-model="formData.feeding_group_number" required>
     <option value="" disabled>-select </option>
     <option v-for="(list,index) in feedingGroupData" :key="index" :value="list.number">{{list.name  }}</option>

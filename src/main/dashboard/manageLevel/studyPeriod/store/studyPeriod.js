@@ -11,6 +11,11 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
     const studyPeriodDataResponse = ref(null)
     const editStudyPeriodResponse = ref(null)
     const studyPeriodByAcademicYearResponse = ref(null)
+    const newStudyPeriodGroupNameResponse = ref(null)
+    const studyPeriodGroupNameResponse = ref(null)
+    const deleteStudyPeriodGroupNameResponse = ref(null)
+    const editStudyPeriodGroupNameResponse = ref(null)
+    const setNextTermDateResponse = ref(null)
 
 
 
@@ -41,11 +46,17 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
 
 
     async function fetchStudyPeriod(data) {
-        let campus_curriculum_number = data.campus_curriculum_number ? data.campus_curriculum_number : ""
-        let  academic_year_number = data.academic_year_number ? data.academic_year_number :  ""
-        // alert(campus_curriculum_number)
+        let  campus_curriculum_number = data?.campus_curriculum_number ?? ""
+        let  academic_year_number = data?.academic_year_number ?? ""
+        let  class_number = data?.class_number ?? ""
 
-        return await api.get("main/study-period/all?campus_curriculum_number="+campus_curriculum_number+"&academic_year_number="+academic_year_number)
+         let  school_number = data?.school_number ?? ""
+
+        return await api.get("main/study-period/all" +
+                "?campus_curriculum_number="+campus_curriculum_number+
+                "&academic_year_number="+academic_year_number+
+                "&class_number="+class_number+ "&school_number="+school_number
+            )
             .then((response) => {
                 studyPeriodResponse.value = response.data
             })
@@ -55,6 +66,7 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
                 }
             })
     }
+    
 
 
     async function fetchStudyPeriodByAcademicYear(academic_year_number) {
@@ -71,7 +83,7 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
 
 
     async function deleteStudyPeriod(data) {
-        return await api.post("main/study-period/delete", data)
+        return await api.delete("main/study-period/delete/"+data)
             .then((response) => {
                 deleteStudyPeriodResponse.value = response.data
             })
@@ -95,6 +107,66 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
             })
     }
 
+    async function newStudyPeriodGroupName(data) {
+        return await api.post("main/study-period/names", data)
+            .then((response) => {
+                newStudyPeriodGroupNameResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function fetchStudyPeriodGroupName(data) {
+        return await api.get("main/study-period/names?school_number="+data)
+            .then((response) => {
+                studyPeriodGroupNameResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function deleteStudyPeriodGroupName(data) {
+        return await api.delete("main/study-period/names/"+data.study_name_number)
+            .then((response) => {
+                deleteStudyPeriodGroupNameResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    
+    async function editStudyPeriodGroupName(data) {
+        return await api.put("main/study-period/names", data)
+            .then((response) => {
+                editStudyPeriodGroupNameResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function setNextTermDate(data) {
+        return await api.post("main/study-period/next", data)
+            .then((response) => {
+                setNextTermDateResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
     return {
         newStudyPeriodResponse,
@@ -104,6 +176,10 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
         studyPeriodByAcademicYearResponse,
         studyPeriodDataResponse,
         editStudyPeriodResponse,
+        studyPeriodGroupNameResponse,
+        newStudyPeriodGroupNameResponse,
+        deleteStudyPeriodGroupNameResponse,
+        editStudyPeriodGroupNameResponse,
         errorMessage,
         newStudyPeriod,
         fetchStudyPeriod,
@@ -111,5 +187,12 @@ export const useStudyPeriodStore = defineStore("studyPeriod", () => {
         fetchStudyPeriodByAcademicYear,
         fetchStudyPeriodData,
         editStudyPeriod,
+        newStudyPeriodGroupName,
+        fetchStudyPeriodGroupName,
+        deleteStudyPeriodGroupName,
+        editStudyPeriodGroupName,
+        setNextTermDateResponse,
+        setNextTermDate
+        
     }
 })
