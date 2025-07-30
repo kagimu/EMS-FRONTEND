@@ -385,8 +385,9 @@ watch(
           </div>
           <div class="col-6">
             <div class="mb-2">
-              <label class="text-sm"><small>How did you know about us ? </small> </label>
+              <label class="text-sm"><small>How did you know about us ? <span class="star">*</span></small> </label>
               <select
+                  required
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="form.source_of_school_info">

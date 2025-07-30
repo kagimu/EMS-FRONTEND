@@ -201,7 +201,7 @@ export default function useCommonsStore() {
         localStorage.setItem("defaultSchoolNo", data.schoolNumber)
         localStorage.setItem("defaultCampusNo", data.campusNumber)
         localStorage.setItem("defaultCampusCurriculumNo", data.campusCurriculumNumber)
-        localStorage.setItem("defaultAccademicYear", data.academicYearNumber)
+        localStorage.setItem("defaultAcademicYear", data.academicYearNumber)
         localStorage.setItem("defaultLevel", data.levelNumber)
         localStorage.setItem("defaultClassNumber", data.classNumber)
         localStorage.setItem("defaultStudyPeriodNumber", data.studyPeriodNumber)
