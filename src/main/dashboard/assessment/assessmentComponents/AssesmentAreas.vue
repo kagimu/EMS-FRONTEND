@@ -56,6 +56,7 @@ const areaDialog = ref(false)
 
 
   const filterClasses = () => {
+    classList.value = []
     let data = {
       level:level.value,
       curriculum_number:curriculumNumber,
@@ -67,11 +68,10 @@ const areaDialog = ref(false)
   watch(
       () => classStore.curriculumClassInfoResponse,
       async (data) => {
-        if(data){
-          classList.value = data.data
+        if(data && data.data && (data.data.length > 0)){
+          classList.value = data.data[0]
         }
-      },
-      {deep:true}
+      }
   )
 
 watch (
@@ -208,7 +208,7 @@ const openEditModel = (num,name) =>{
                     v-model="curriculum_class_number"
                     @change="fetchAssessmentAreaInfo">
                   <option disabled value="">--Filter by Class--</option>
-                  <option v-for="(list, index) in classList[0]?.class" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+                  <option v-for="(list, index) in classList?.class" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
                 </select>
               </div>
 
