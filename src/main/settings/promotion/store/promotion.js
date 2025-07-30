@@ -197,7 +197,6 @@ export const usePromotionStore = defineStore("promotion", () => {
         fetchPromotedStudents,
         fetchPromotionSettingDetails,
         fetchPromotionSettingGrades,
-        updatePromotionSettingResponse,
         updatePromotionSetting
     }
 } )

@@ -72,6 +72,7 @@ const formData = reactive({
    const getPromoInfo = () => {
   let promoData = props.promotionDataInfo
   if(promoData){
+
     form.name = promoData.name
     form.type = promoData.type
     formData.school_number = promoData.school_number
@@ -84,17 +85,19 @@ const formData = reactive({
       fetchCurriculum(formData.campus_number)
       formData.curriculumNumber = promoData.curriculum.curriculum_number
     }
-    // if(formData.curriculumNumber){
-    //   fetchCampusLevel(formData.curriculumNumber)
-    // }
-    // if(formData.level){
-    //   fetchLevelClasses(formData.level)
-    // }
-    
+
   }
 
 }
 
+watch(
+    () => props.promotionDataInfo,
+    async (data) => {
+      if(data){
+        getPromoInfo()
+      }
+    }
+)
 
 const addPromotionSetting = () =>{
   loader.value = true
@@ -125,7 +128,9 @@ const addPromotionSetting = () =>{
   }
 
 
-  watch(
+
+
+watch(
      () => props.promotionSettingInfo,
      async (data) => {
        if(data){
@@ -229,7 +234,7 @@ watch(
           form.previous_class_number=null
           loader.value = false
         notificationStore.successToast("Success application submitted", data.message)
-        promotionStore.fetchPromotionSetting()
+        await promotionStore.fetchPromotionSetting()
       }
   },
   {deep: true}
@@ -241,28 +246,22 @@ watch(
       if (data) {
         loader.value = false
         notificationStore.successToast("Success application submitted", data.message)
-        promotionStore.fetchPromotionSetting()
       }
   },
   {deep: true}
 )
 
-
 watch(
-  () => promotionStore.errorMessage,
-  async (data) => {
-        if (data) {
-          form.name=null,
-          form.status="ACTIVE",
-          form.type=null,
-          form.next_class_number=null,
-          form.previous_class_number=null
-          loader.value = false
-            notificationStore.errorToast("Error", data.message)
-        }
-  },
-  {deep: true}
+    () => promotionStore.errorMessage,
+    async (data) => {
+      if (data) {
+        loader.value = false
+        notificationStore.errorToast("Error", data.message)
+      }
+    }
 )
+
+
 
 
 const fetchCampusLevel = (curriculumNumber) => {
@@ -340,8 +339,7 @@ const generateStatus = (std) => {
 
 <template>
     <div>
-     <!-- {{promotionSettingInfo}} -->
-       <!-- {{ promotionDataInfo }} -->
+
 
       <form @submit.prevent="addPromotionSetting">
   
