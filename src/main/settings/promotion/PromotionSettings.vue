@@ -148,13 +148,17 @@ watch(
 )
 
 const fetchCampuses = (school_number) => {
+  //i want to store school number in local storage
+  localStorage.setItem("defaultSchoolNo", school_number)
   campusStore.fetchCampuses(school_number)
 
 }
 
 
-const fetchClasses = (campus_level_number) => {
-  levelStore.fetchCampusCurriculum(campus_level_number)
+const fetchClasses = (campus_number) => {
+  // store level number in local storage
+  localStorage.setItem("defaultCampusNo", campus_number)
+  levelStore.fetchCampusCurriculum(campus_number)
 
 }
 
@@ -206,6 +210,8 @@ watch(
 )
 
 const fetchCampusLevel = (curriculumNumber) => {
+  // store curriculum number in local storage
+  localStorage.setItem("defaultCampusCurriculumNo", curriculumNumber)
   classStore.fetchCampusLevel(curriculumNumber)
   updateDefaultFilters()
 }
@@ -220,6 +226,8 @@ const updateDefaultFilters = () => {
 
 
 const fetchLevelClasses = (levelNumber) => {
+  // save level number to local storage
+  localStorage.setItem("defaultLevel", levelNumber)
   let data = {
     school_number:form.school_number,
     campus_level_number:levelNumber
