@@ -51,7 +51,7 @@
   let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
   let defaultCampusCurriculumNo =   localStorage.getItem("defaultCampusCurriculumNo")
   let defaultAccademicYear = localStorage.getItem("defaultAccademicYear")
-  let defaultLevel = localStorage.getItem("defaultLevel")
+  let defaultLevel = localStorage.getItem("defaultLevelNo")
   let defaultClassNumber = localStorage.getItem("defaultClassNumber")
   let defaultStudyPeriodNumber = localStorage.getItem("defaultStudyPeriodNumber")
 

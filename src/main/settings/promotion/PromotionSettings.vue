@@ -227,7 +227,7 @@ const updateDefaultFilters = () => {
 
 const fetchLevelClasses = (levelNumber) => {
   // save level number to local storage
-  localStorage.setItem("defaultLevel", levelNumber)
+  localStorage.setItem("defaultLevelNo", levelNumber)
   let data = {
     school_number:form.school_number,
     campus_level_number:levelNumber
