@@ -155,7 +155,7 @@ watch(
     () => serviceStore.servicesListResponse,
     async (data) => {
       if (data) {
-        ServiceOptions.value = data.map(option => ({ name: option.item.name, cost: option.item.cost,item_number:option.item.number }));
+        ServiceOptions.value = data.map(option => ({ name: option.item.name, cost: option.item.cost,item_number:option.item.number, code:option.item.code }));
       }
     },
     { deep: true }
@@ -267,7 +267,7 @@ watch (
                                 v-model="Service.number" @change="updateService(index)">
                               <option disabled value="">--Select item--</option>
                               <option :value="option.item_number" v-for="option in availableOptions(index)">
-                                {{ option.name }} ({{ option.cost }})
+                                {{ option?.code }}. {{ option?.name }} ({{ option?.cost }})
                               </option>
                             </select>
                           </td>

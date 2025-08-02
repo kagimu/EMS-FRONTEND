@@ -92,7 +92,7 @@ onMounted(
   let defaultCampusCurriculumNo =   localStorage.getItem("defaultCampusCurriculumNo")
   let defaultAccademicYear = localStorage.getItem("defaultAccademicYear")
   let defaultLevel = localStorage.getItem("defaultLevelNo")
-  let defaultClassNumber = localStorage.getItem("defaultClassNumber")
+  let defaultClassNumber = localStorage.getItem("defaultClassNo")
   let defaultStudyPeriodNumber = localStorage.getItem("defaultStudyPeriodNumber")
 
   if(defaultSchoolNo){
