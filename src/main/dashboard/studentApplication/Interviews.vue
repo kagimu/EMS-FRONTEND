@@ -120,8 +120,48 @@ onMounted(
   getInterviewList()
     } )
 
+const updateFiltersAndSetLocalStorage = (tag) => {
+  if(tag === "school") {
+    form.campus_class_number = ""
+    campus_number.value = ""
+    form.curriculumNumber = ""
+    form.level = ""
+    levelList.value = []
+    curriculumList.value = []
+    classList.value = []
+    localStorage.setItem("defaultSchoolNo", school_number.value)
+    localStorage.removeItem("defaultCampusNo")
+    localStorage.removeItem("defaultCampusCurriculumNo")
+    interviewList.value = []
+
+  } else if(tag === "campus") {
+    form.campus_class_number = ""
+    form.curriculumNumber = ""
+    form.level = ""
+    levelList.value = []
+    localStorage.setItem("defaultCampusNo",campus_number.value)
+    localStorage.removeItem("defaultCampusCurriculumNo")
+    interviewList.value = []
+
+  } else if(tag === "curriculum"){
+    form.campus_class_number = ""
+    form.level = ""
+    levelList.value = []
+    localStorage.setItem("defaultCampusNo",form.curriculumNumber)
+    classList.value = []
+    interviewList.value = []
+
+  }else if(tag === "level"){
+    form.campus_class_number = ""
+    // form.level = ""
+    classList.value = []
+    interviewList.value = []
+  }
+
+}
 
     const fetchCampuses = (school) => {
+      updateFiltersAndSetLocalStorage("school")
       campusStore.fetchCampuses(school)
   }
 
@@ -144,6 +184,7 @@ const showInterviewAssessmentDialog = (interview) =>{
 
 
 const fetchClasses = (campus_number) => {
+  updateFiltersAndSetLocalStorage("campus")
       campusStore.fetchClassesByCampus(campus_number)
       levelStore.fetchCampusCurriculum(campus_number)
   }
@@ -158,10 +199,12 @@ assessment:[]
 
 
 const fetchCampusLevel = (curriculumNumber) => {
+  updateFiltersAndSetLocalStorage("curriculum")
    classStore.fetchCampusLevel(curriculumNumber)
 }
 
 const fetchLevelClasses = (levelNumber) => {
+   updateFiltersAndSetLocalStorage("level")
    classStore.fetchClassLevel({campusCurriculumNumber: form.curriculumNumber, campusLevelNumber: levelNumber})
 }
 

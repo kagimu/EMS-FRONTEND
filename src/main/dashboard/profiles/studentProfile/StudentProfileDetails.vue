@@ -18,7 +18,9 @@ import FamilyStructure from "@/main/dashboard/studentAdmission/newAdmissionCompo
 import MedicalRecords from "@/main/dashboard/studentAdmission/newAdmissionComponents/MedicalRecords.vue";
 import StudentBioData from "@/main/dashboard/profiles/studentProfile/StudentBioData.vue";
 
+
 import { useUserStore } from "@/main/dashboard/profiles/store/users.js"
+import CompleteProfile from "@/main/dashboard/profiles/studentProfile/CompleteProfile.vue";
    
 const userStore = useUserStore()
 const enrollmentStore = useEnrolmentStore()
@@ -43,6 +45,7 @@ const studentProfileData  = ref(null)
 const uploadDialog = ref( false)
 const studentCateringData = ref([])
 const studentProfileDataInLocalStorage = ref(null)
+const showCompleteModal = ref(false)
 
 
 onMounted(
@@ -148,6 +151,10 @@ watch (
 
 const itemMenu = ref([
   {
+    text:"Profile",
+    value:"profile"
+  },
+  {
     text:"Financial Records",
     value:"financial-situation"
   },
@@ -241,8 +248,16 @@ watch (
     {deep:true}
 )
 
+const showCompleteProfile = () => {
+  showCompleteModal.value = true
+}
+
 </script>
 <template>
+
+  <AppModal title="Student Details" v-model="showCompleteModal" xl6>
+    <CompleteProfile></CompleteProfile>
+  </AppModal>
 
 <AppModal title="Edit Student Details" v-model="showStudentBio" xl>
     <StudentBioData :studentProfileData="studentProfileData"></StudentBioData>
@@ -290,6 +305,9 @@ watch (
             <div class="mb-3">
               <div class="text-[#8a8888] text-sm mb-[10px]" style="text-transform: capitalize;"><i class="bi-person-circle mr-2"></i>{{ studentName }}</div>
               <div class="text-[#8a8888] text-sm mb-[10px]"><i class="bi-calendar-date mr-2"></i>{{ dob }}</div>
+            </div>
+            <div class="mb-3">
+              <button @click="showCompleteProfile" class="btn btn-outline-success mb-2 btn-sm text-sm">View Complete Profile</button>
             </div>
 
           </div>
@@ -392,6 +410,10 @@ watch (
 
                         <div v-if="studentQuery === 'financial-situation'">
                           <ManageInvoices></ManageInvoices>
+                        </div>
+
+                        <div v-if="studentQuery === 'profile'">
+                          <CompleteProfile></CompleteProfile>
                         </div>
 
 

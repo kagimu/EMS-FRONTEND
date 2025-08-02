@@ -115,17 +115,95 @@
     campusCurriculumNumber: form.curriculumNumber
   })
 }
-   
 
-   
-   
+const updateFiltersAndSetLocalStorage = (tag) => {
+     if(tag === "school") {
+       form.study_period_number = ""
+       form.class_number = ""
+       form.campus_class_number = ""
+       form.campus_number = ""
+       form.stream_number = ""
+       form.academic_year_number = ""
+       form.curriculumNumber = ""
+       form.level = ""
+       levelList.value = []
+       classList.value = []
+       curriculumList.value = []
+       academicYearList.value = []
+       studyPeriodList.value = []
+       streamList.value = []
+
+       localStorage.setItem("defaultSchoolNo", form.school_number)
+       localStorage.removeItem("defaultCampusNo")
+       localStorage.removeItem("defaultCampusCurriculumNo")
+       // localStorage.removeItem("defaultCampusLevelNo")
+       // localStorage.removeItem("academicYearNo")
+
+     } else if(tag === "campus") {
+       form.study_period_number = ""
+       form.class_number = ""
+       form.campus_class_number = ""
+       form.stream_number = ""
+       form.academic_year_number = ""
+       form.curriculumNumber = ""
+       form.level = ""
+       levelList.value = []
+       classList.value = []
+       academicYearList.value = []
+       studyPeriodList.value = []
+       streamList.value = []
+
+       // localStorage.setItem("defaultSchoolNo", form.school_number)
+       localStorage.setItem("defaultCampusNo",form.campus_number)
+       localStorage.removeItem("defaultCampusCurriculumNo")
+
+     } else if(tag === "curriculum"){
+       form.study_period_number = ""
+       form.class_number = ""
+       form.campus_class_number = ""
+       form.stream_number = ""
+       form.academic_year_number = ""
+       form.level = ""
+       classList.value = []
+       academicYearList.value = []
+       studyPeriodList.value = []
+       streamList.value = []
+
+       // localStorage.setItem("defaultCampusNo",form.campus_number)
+       localStorage.setItem("defaultCampusCurriculumNo",form.curriculumNumber)
+
+     }else if(tag === "level"){
+       form.study_period_number = ""
+       form.class_number = ""
+       form.campus_class_number = ""
+       form.stream_number = ""
+       form.academic_year_number = ""
+       studyPeriodList.value = []
+       streamList.value = []
+     } else if(tag === "academicYear"){
+       form.study_period_number = ""
+       form.class_number = ""
+       form.campus_class_number = ""
+       form.stream_number = ""
+       studyPeriodList.value = []
+       streamList.value = []
+     } else if(tag === "class"){
+       form.study_period_number = ""
+       form.stream_number = ""
+     }else if(tag === "stream"){
+       form.study_period_number = ""
+     }
+
+}
    const fetchCampuses = (school_number) => {
+     updateFiltersAndSetLocalStorage("school")
      campusStore.fetchCampuses(school_number)
      doFetchAdmission()
    }
    
    
    const fetchClasses = (campus_level_number) => {
+     updateFiltersAndSetLocalStorage("campus")
      levelStore.fetchCampusCurriculum(campus_level_number)
      doFetchAdmission()
    }
@@ -140,6 +218,7 @@
    )
    
    const fetchStreamsAndStudyPeriod = (classNumber) =>{
+     updateFiltersAndSetLocalStorage("class")
    let sData = {
       campus_number:form.campus_number,
       class_number:classNumber,
@@ -188,19 +267,24 @@
    )
    
    const fetchCampusLevel = (curriculumNumber) => {
+     updateFiltersAndSetLocalStorage("curriculum")
     classStore.fetchCampusLevel(curriculumNumber)
      doFetchAdmission()
    }
    
-   
-   
    const fetchLevelClasses = (levelNumber) => {
+     updateFiltersAndSetLocalStorage("level")
     let data = {
      school_number:form.school_number,
      campus_level_number:levelNumber
    }
    campusStore.fetchClassesBySchool(data)
    academicYearStore.fetchAcademicYearByLevel(levelNumber)
+   }
+
+   const filterByAcademicYear = () => {
+     updateFiltersAndSetLocalStorage("academicYear")
+     doFetchAdmission()
    }
    
    watch(
@@ -223,9 +307,8 @@
      {deep:true}
    )
    
-
-   
    const filterByStream = () => {
+     updateFiltersAndSetLocalStorage("stream")
     doFetchAdmission()
    }
    
@@ -269,18 +352,13 @@
        stream_number:form.stream_number,
        academic_year_number:form.academic_year_number
     }
-   
     admissionStore.fetchAdmissionByFilters(data)
-   
-   
    }
    }
    
    
    const fetchAdmissions = (data) => {
      if(data) {
-   
-   
        let current_page = data.page
        page.value = current_page
        loading.value = false
@@ -346,6 +424,7 @@
      async (data) => {
          if (data) {
              schoolList.value = data.data
+
          }
      },
      {deep: true}
@@ -564,7 +643,7 @@ watch(
                                                          style="box-shadow: none;"
                                                          class="form-select form-select-sm" required
                                                          v-model="form.academic_year_number"
-                                                         @change="doFetchAdmission()"
+                                                         @change="filterByAcademicYear()"
                                                          >
                                                          <option disabled value="">--Filter AcademicYear--</option>
                                                          <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
