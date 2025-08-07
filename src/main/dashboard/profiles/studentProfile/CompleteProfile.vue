@@ -178,7 +178,7 @@ const printProfile = () => {
       body {
         font-family: Arial, sans-serif;
         color: #000;
-        margin: 20px;
+        margin: 5px;
       }
     `,
     documentTitle: `StudentProfile`,
@@ -191,132 +191,123 @@ const printProfile = () => {
 </script>
 <template>
   <button style="float:right;" class="btn btn-outline-primary btn-sm mb-2" @click="printProfile">Print</button>
-  <section id="profile" style="background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-      <div class="container py-5">
-        <div class="row">
+<div id="profile">
+  <section id="profile" style="background-color:#f8f9fa; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding:40px 0;">
+    <div style="width:100%; max-width:1200px; margin:0 auto;">
+      <div style="display:flex; flex-wrap:wrap; gap:30px;">
 
-          <!-- Left Column: Student Photo & Bio -->
-          <div class="col-lg-4">
-            <div class="card shadow-sm border-0 mb-4 rounded-4">
-              <div class="card-body text-center">
-                <div class="mb-3">
-                  <img v-if="studentPhoto" :src="studentPhoto" alt="Student Photo"
-                       class="rounded-circle border border-2 border-primary shadow-sm"
-                       style="width: 150px; height: 150px; object-fit: cover;" />
-                  <i v-else class="bi-person-circle text-secondary" style="font-size: 100px;"></i>
-                </div>
-                <h5 class="card-title text-capitalize fw-semibold text-primary">{{ studentName }}</h5>
-                <p class="text-muted"><i class="bi-calendar-date me-2"></i>{{ dob }}</p>
-              </div>
-            </div>
+        <!-- Left Column -->
+        <div style="flex:1; min-width:300px; max-width:400px;">
 
-            <!-- Languages Spoken -->
-            <div v-if="languagesData.length" class="card shadow-sm border-0 mb-4 rounded-4">
-              <div class="card-body">
-                <h5 class="mb-3 text-primary">Languages Spoken</h5>
-                <ul class="list-unstyled mb-0">
-                  <li v-for="lg in languagesData" :key="lg.number" class="text-muted"><i class="bi bi-check2-circle text-success me-2"></i>{{ lg.name }}</li>
-                </ul>
-              </div>
+          <!-- Profile Card -->
+          <div style="background-color:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1); padding:20px; text-align:center; margin-bottom:30px;">
+            <div style="margin-bottom:20px;">
+              <img v-if="studentPhoto" :src="studentPhoto" alt="Student Photo" style="border-radius:50%; border:2px solid #0d6efd; width:150px; height:150px; object-fit:cover;" />
+              <i v-else class="bi-person-circle" style="font-size:100px; color:#6c757d;"></i>
             </div>
-
-            <!-- Emergency Contact -->
-            <div v-if="emergencyData" class="card shadow-sm border-0 mb-4 rounded-4">
-              <div class="card-body">
-                <h5 class="mb-3 text-primary">Emergency Contact</h5>
-                <p><strong>Primary Contact:</strong> <span class="text-muted">{{ emergencyData.contact_person }}</span></p>
-                <p><strong>Phone:</strong> <span class="text-muted">{{ emergencyData.contact_person_phone }}</span></p>
-                <p><strong>Alternative Contact:</strong> <span class="text-muted">{{ emergencyData.contact_person_alternative }}</span></p>
-                <p><strong>Alt. Phone:</strong> <span class="text-muted">{{ emergencyData.contact_person_alternative_phone }}</span></p>
-                <p><strong>Doctor:</strong> <span class="text-muted">{{ emergencyData.contact_doctor_name }}</span></p>
-                <p><strong>Doctor's Phone:</strong> <span class="text-muted">{{ emergencyData.contact_doctor_phone }}</span></p>
-              </div>
-            </div>
-
-            <!-- Medical Records -->
-            <div v-if="medicalRecordsData" class="card shadow-sm border-0 rounded-4">
-              <div class="card-body">
-                <h5 class="mb-3 text-primary">Medical Records</h5>
-                <p><strong>Blood Group:</strong> <span class="text-muted">{{ medicalRecordsData.blood_type_group }}</span></p>
-                <p><strong>Allergies:</strong> <span class="text-muted">{{ medicalRecordsData.allergies }}</span></p>
-                <p><strong>Condition:</strong> <span class="text-muted">{{ medicalRecordsData.existing_condition }}</span></p>
-                <p><strong>Medication:</strong> <span class="text-muted">{{ medicalRecordsData.regular_medication }}</span></p>
-                <p><strong>Doctor:</strong> <span class="text-muted">{{ medicalRecordsData.doctor_name }}</span></p>
-                <p><strong>Doctor's Phone:</strong> <span class="text-muted">{{ medicalRecordsData.doctor_phone }}</span></p>
-              </div>
-            </div>
+            <h5 style="text-transform:capitalize; color:#0d6efd; margin-bottom:10px;">{{ studentName }}</h5>
+            <p style="color:#6c757d; margin:0;"><i class="bi-calendar-date" style="margin-right:8px;"></i>{{ dob }}</p>
           </div>
 
-          <!-- Right Column: Full Details -->
-          <div class="col-lg-8">
-            <!-- Academic Details -->
-            <div class="card shadow-sm border-0 mb-4 rounded-4">
-              <div class="card-body">
-                <h5 class="mb-3 text-primary">Academic Details</h5>
-                <div class="row">
-                  <div class="col-md-6 mb-2"><strong>School:</strong> <span class="text-muted">{{ school }}</span></div>
-                  <div class="col-md-6 mb-2"><strong>Campus:</strong> <span class="text-muted">{{ campus }}</span></div>
-                  <div class="col-md-6 mb-2"><strong>Academic Year:</strong> <span class="text-muted">{{ academicYear }}</span></div>
-                  <div class="col-md-6 mb-2"><strong>Study Period:</strong> <span class="text-muted">{{ studyPeriod }}</span></div>
-                  <div class="col-md-6 mb-2"><strong>Class:</strong> <span class="text-muted">{{ className }}</span></div>
-                  <div class="col-md-6 mb-2"><strong>Stream:</strong> <span class="text-muted">{{ stream }}</span></div>
-                  <div class="col-md-6 mb-2"><strong>Feeding Group:</strong> <span class="text-muted">{{ studentCateringData }}</span></div>
-                  <div class="col-md-6 mb-2">
-                    <strong>Status:</strong>
-                    <span :class="['badge rounded-pill px-3 py-1', status === 'ACTIVE' ? 'bg-success' : 'bg-danger']">{{ status }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <!-- Languages -->
+          <div v-if="languagesData.length" style="background-color:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1); padding:20px; margin-bottom:30px;">
+            <h5 style="color:#0d6efd; margin-bottom:16px;">Languages Spoken</h5>
+            <ul style="list-style-type:none; padding-left:0; margin:0;">
+              <li v-for="lg in languagesData" :key="lg.number" style="color:#6c757d; margin-bottom:8px;">• {{ lg.name }}</li>
+            </ul>
+          </div>
 
-            <!-- Family Information -->
-            <div v-if="familyStructureDataFather.length" class="card shadow-sm border-0 mb-4 rounded-4">
-              <div class="card-body">
-                <h5 class="mb-3 text-primary">Father</h5>
-                <div v-for="father in familyStructureDataFather" :key="father.number" class="row">
-                  <div class="col-md-6"><strong>Name:</strong> <span class="text-muted">{{ father.surname }} {{ father.other_name }}</span></div>
-                  <div class="col-md-6"><strong>Living:</strong> <span class="text-muted">{{ father.is_living }}</span></div>
-                  <div class="col-md-6"><strong>Employment:</strong> <span class="text-muted">{{ father.place_of_employment }}</span></div>
-                  <div class="col-md-6"><strong>Address:</strong> <span class="text-muted">{{ father.physical_contact_address }}</span></div>
-                  <div class="col-md-6"><strong>Phone:</strong> <span class="text-muted">{{ father.contacts?.[0]?.phone_number || 'N/A' }}</span></div>
-                  <div class="col-md-6"><strong>Email:</strong> <span class="text-muted">{{ father.contacts?.[0]?.email || 'N/A' }}</span></div>
-                </div>
-              </div>
-            </div>
+          <!-- Emergency Contact -->
+          <div v-if="emergencyData" style="background-color:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1); padding:20px; margin-bottom:30px;">
+            <h5 style="color:#0d6efd; margin-bottom:16px;">Emergency Contact</h5>
+            <p><strong>Primary Contact:</strong> <span style="color:#6c757d;">{{ emergencyData.contact_person }}</span></p>
+            <p><strong>Phone:</strong> <span style="color:#6c757d;">{{ emergencyData.contact_person_phone }}</span></p>
+            <p><strong>Alternative Contact:</strong> <span style="color:#6c757d;">{{ emergencyData.contact_person_alternative }}</span></p>
+            <p><strong>Alt. Phone:</strong> <span style="color:#6c757d;">{{ emergencyData.contact_person_alternative_phone }}</span></p>
+            <p><strong>Doctor:</strong> <span style="color:#6c757d;">{{ emergencyData.contact_doctor_name }}</span></p>
+            <p><strong>Doctor's Phone:</strong> <span style="color:#6c757d;">{{ emergencyData.contact_doctor_phone }}</span></p>
+          </div>
 
-            <div v-if="familyStructureDataMother.length" class="card shadow-sm border-0 mb-4 rounded-4">
-              <div class="card-body">
-                <h5 class="mb-3 text-primary">Mother</h5>
-                <div v-for="mother in familyStructureDataMother" :key="mother.number" class="row">
-                  <div class="col-md-6"><strong>Name:</strong> <span class="text-muted">{{ mother.surname }} {{ mother.other_name }}</span></div>
-                  <div class="col-md-6"><strong>Living:</strong> <span class="text-muted">{{ mother.is_living }}</span></div>
-                  <div class="col-md-6"><strong>Employment:</strong> <span class="text-muted">{{ mother.place_of_employment }}</span></div>
-                  <div class="col-md-6"><strong>Address:</strong> <span class="text-muted">{{ mother.physical_contact_address }}</span></div>
-                  <div class="col-md-6"><strong>Phone:</strong> <span class="text-muted">{{ mother.contacts?.[0]?.phone_number || 'N/A' }}</span></div>
-                  <div class="col-md-6"><strong>Email:</strong> <span class="text-muted">{{ mother.contacts?.[0]?.email || 'N/A' }}</span></div>
-                </div>
-              </div>
-            </div>
-
-            <div v-if="familyStructureDataGuardian.length" class="card shadow-sm border-0 rounded-4">
-              <div class="card-body">
-                <h5 class="mb-3 text-primary">Guardian</h5>
-                <div v-for="guardian in familyStructureDataGuardian" :key="guardian.number" class="row">
-                  <div class="col-md-6"><strong>Name:</strong> <span class="text-muted">{{ guardian.surname }} {{ guardian.other_name }}</span></div>
-                  <div class="col-md-6"><strong>Living:</strong> <span class="text-muted">{{ guardian.is_living }}</span></div>
-                  <div class="col-md-6"><strong>Employment:</strong> <span class="text-muted">{{ guardian.place_of_employment }}</span></div>
-                  <div class="col-md-6"><strong>Address:</strong> <span class="text-muted">{{ guardian.physical_contact_address }}</span></div>
-                  <div class="col-md-6"><strong>Phone:</strong> <span class="text-muted">{{ guardian.contacts?.[0]?.phone_number || 'N/A' }}</span></div>
-                  <div class="col-md-6"><strong>Email:</strong> <span class="text-muted">{{ guardian.contacts?.[0]?.email || 'N/A' }}</span></div>
-                </div>
-              </div>
-            </div>
-
+          <!-- Medical Records -->
+          <div v-if="medicalRecordsData" style="background-color:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1); padding:20px;">
+            <h5 style="color:#0d6efd; margin-bottom:16px;">Medical Records</h5>
+            <p><strong>Blood Group:</strong> <span style="color:#6c757d;">{{ medicalRecordsData.blood_type_group }}</span></p>
+            <p><strong>Allergies:</strong> <span style="color:#6c757d;">{{ medicalRecordsData.allergies }}</span></p>
+            <p><strong>Condition:</strong> <span style="color:#6c757d;">{{ medicalRecordsData.existing_condition }}</span></p>
+            <p><strong>Medication:</strong> <span style="color:#6c757d;">{{ medicalRecordsData.regular_medication }}</span></p>
+            <p><strong>Doctor:</strong> <span style="color:#6c757d;">{{ medicalRecordsData.doctor_name }}</span></p>
+            <p><strong>Doctor's Phone:</strong> <span style="color:#6c757d;">{{ medicalRecordsData.doctor_phone }}</span></p>
           </div>
         </div>
+
+        <!-- Right Column -->
+        <div style="flex:2; min-width:300px;">
+
+          <!-- Academic Details -->
+          <div style="background-color:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1); padding:20px; margin-bottom:30px;">
+            <h5 style="color:#0d6efd; margin-bottom:20px;">Academic Details</h5>
+            <div style="display:flex; flex-wrap:wrap;">
+              <div style="width:50%; padding:5px;"><strong>School:</strong> <span style="color:#6c757d;">{{ school }}</span></div>
+              <div style="width:50%; padding:5px;"><strong>Campus:</strong> <span style="color:#6c757d;">{{ campus }}</span></div>
+              <div style="width:50%; padding:5px;"><strong>Academic Year:</strong> <span style="color:#6c757d;">{{ academicYear }}</span></div>
+              <div style="width:50%; padding:5px;"><strong>Study Period:</strong> <span style="color:#6c757d;">{{ studyPeriod }}</span></div>
+              <div style="width:50%; padding:5px;"><strong>Class:</strong> <span style="color:#6c757d;">{{ className }}</span></div>
+              <div style="width:50%; padding:5px;"><strong>Stream:</strong> <span style="color:#6c757d;">{{ stream }}</span></div>
+              <div style="width:50%; padding:5px;"><strong>Feeding Group:</strong> <span style="color:#6c757d;">{{ studentCateringData }}</span></div>
+              <div style="width:50%; padding:5px;"><strong>Status:</strong>
+                <span :style="status === 'ACTIVE' ? 'color:white; background-color:green; border-radius:20px; padding:4px 12px;' : 'color:white; background-color:red; border-radius:20px; padding:4px 12px;'">{{ status }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Father -->
+          <div v-if="familyStructureDataFather.length" style="background-color:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1); padding:20px; margin-bottom:30px;">
+            <h5 style="color:#0d6efd; margin-bottom:20px;">Father</h5>
+            <div v-for="father in familyStructureDataFather" :key="father.number" style="margin-bottom:15px;">
+              <p><strong>Name:</strong> <span style="color:#6c757d;">{{ father.surname }} {{ father.other_name }}</span></p>
+              <p><strong>Living:</strong> <span style="color:#6c757d;">{{ father.is_living }}</span></p>
+              <p><strong>Employment:</strong> <span style="color:#6c757d;">{{ father.place_of_employment }}</span></p>
+              <p><strong>Address:</strong> <span style="color:#6c757d;">{{ father.physical_contact_address }}</span></p>
+              <p><strong>Phone:</strong> <span style="color:#6c757d;">{{ father.contacts?.[0]?.phone_number || 'N/A' }}</span></p>
+              <p><strong>Email:</strong> <span style="color:#6c757d;">{{ father.contacts?.[0]?.email || 'N/A' }}</span></p>
+            </div>
+          </div>
+
+          <!-- Mother -->
+          <div v-if="familyStructureDataMother.length" style="background-color:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1); padding:20px; margin-bottom:30px;">
+            <h5 style="color:#0d6efd; margin-bottom:20px;">Mother</h5>
+            <div v-for="mother in familyStructureDataMother" :key="mother.number" style="margin-bottom:15px;">
+              <p><strong>Name:</strong> <span style="color:#6c757d;">{{ mother.surname }} {{ mother.other_name }}</span></p>
+              <p><strong>Living:</strong> <span style="color:#6c757d;">{{ mother.is_living }}</span></p>
+              <p><strong>Employment:</strong> <span style="color:#6c757d;">{{ mother.place_of_employment }}</span></p>
+              <p><strong>Address:</strong> <span style="color:#6c757d;">{{ mother.physical_contact_address }}</span></p>
+              <p><strong>Phone:</strong> <span style="color:#6c757d;">{{ mother.contacts?.[0]?.phone_number || 'N/A' }}</span></p>
+              <p><strong>Email:</strong> <span style="color:#6c757d;">{{ mother.contacts?.[0]?.email || 'N/A' }}</span></p>
+            </div>
+          </div>
+
+          <!-- Guardian -->
+          <div v-if="familyStructureDataGuardian.length" style="background-color:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1); padding:20px;">
+            <h5 style="color:#0d6efd; margin-bottom:20px;">Guardian</h5>
+            <div v-for="guardian in familyStructureDataGuardian" :key="guardian.number" style="margin-bottom:15px;">
+              <p><strong>Name:</strong> <span style="color:#6c757d;">{{ guardian.surname }} {{ guardian.other_name }}</span></p>
+              <p><strong>Living:</strong> <span style="color:#6c757d;">{{ guardian.is_living }}</span></p>
+              <p><strong>Employment:</strong> <span style="color:#6c757d;">{{ guardian.place_of_employment }}</span></p>
+              <p><strong>Address:</strong> <span style="color:#6c757d;">{{ guardian.physical_contact_address }}</span></p>
+              <p><strong>Phone:</strong> <span style="color:#6c757d;">{{ guardian.contacts?.[0]?.phone_number || 'N/A' }}</span></p>
+              <p><strong>Email:</strong> <span style="color:#6c757d;">{{ guardian.contacts?.[0]?.email || 'N/A' }}</span></p>
+            </div>
+          </div>
+
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
+</div>
 </template>
+
+
+
 
 
   
