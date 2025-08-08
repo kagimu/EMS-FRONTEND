@@ -246,8 +246,8 @@ watch(
     () => reportSetupStore.deleteReportColumnResponse,
     async (data) => {
       if(data) {
-      
-        doFetchReportSettings()
+
+        await doFetchReportSettings()
         
       }
     }
@@ -257,6 +257,13 @@ const setSubjectReportGroups = (reportSettingNumber) => {
   viewReportSubjectGroupModal.value = true
   reportSettingNum.value = reportSettingNumber
 }
+
+watch(() => assessmentStore.newReportSubjectGroupResponse, async (data) => {
+  if (data) {
+    viewReportSubjectGroupModal.value = false
+    await doFetchReportSettings()
+  }
+})
 
 </script>
 
