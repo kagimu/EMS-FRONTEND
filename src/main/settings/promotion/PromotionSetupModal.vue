@@ -90,7 +90,9 @@ const formData = reactive({
 
     if(formData.curriculumNumber){
       classStore.fetchCampusLevel(formData?.curriculumNumber)
-
+      let level = promoData?.campus_level_number
+      formData.level = level
+      fetchLevelClasses(level)
     }
 
   }
@@ -277,8 +279,8 @@ const fetchCampusLevel = (curriculumNumber) => {
    }
 
 
-      
-   
+
+
    const fetchLevelClasses = (levelNumber) => {
     let data = {
      school_number:formData.school_number,
@@ -426,7 +428,6 @@ const generateStatus = (std) => {
 
           <div class="mb-2">
             <label class="text-sm"><small>Level</small> </label>
-<!--            {{formData.level}}-->
           <select
           style="box-shadow: none;"
           class="form-select form-select-sm"
