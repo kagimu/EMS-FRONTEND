@@ -127,7 +127,7 @@ watch(() => classStore.campusLevelResponse, (data) => {
 
 const addReportSubjectGroup = () => {
   buttonLoader.value = true;
-  alert(JSON.stringify(form))
+  // alert(JSON.stringify(form))
     assessmentStore.createReportSubjectGroup(form)
 
 }

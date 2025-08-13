@@ -616,7 +616,7 @@ watch(
               <select
                       style="box-shadow: none;"
                       class="form-select form-select-sm"
-                      v-model="form.mode_of_study_number" required
+                      v-model="form.mode_of_study_number"
                       @change="getBillableDataInfo(form.mode_of_study_number)"
               >
                   <option disabled value="">Select Mode Of Study</option>

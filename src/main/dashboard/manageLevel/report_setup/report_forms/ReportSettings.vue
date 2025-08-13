@@ -15,6 +15,10 @@ import ConfirmationModal from "@/components/ConfirmationModal.vue";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
 import SetReportSubjectGroup from "@/main/dashboard/manageLevel/report_setup/report_forms/SetReportSubjectGroup.vue";
 const confirmationRef = ref(null);
+import { useAssessmentStore } from "@/main/dashboard/assessment/store/assessment.js"
+import ViewReportSubjectGroups
+  from "@/main/dashboard/manageLevel/report_setup/report_forms/ViewReportSubjectGroups.vue";
+
 
 const campusStore = useCampusStore()
 const routerData = useRouter()
@@ -23,6 +27,7 @@ const reportSetupStore = useReportSetupStore()
 const studyPeriodStore = useStudyPeriodStore()
 const classStore = useClassesStore()
 const academicYearStore = useAcademicYearStore()
+const assessmentStore = useAssessmentStore()
 
 
 const campus_curriculum_number = routerData.currentRoute.value.query.crr
@@ -38,6 +43,8 @@ const campusLevelList = ref([])
 const academicYearList = ref([])
 const studyPeriodList = ref([])
 const campusClassList = ref([])
+const viewReportGroups = ref(false)
+const viewReportSubjectGroupModal = ref(false)
 
 
 const campus_level_number = ref("")
@@ -54,7 +61,6 @@ const reportColumns = ref(null)
 const viewColumnsModal = ref(false)
 const reportSettingNum = ref(null)
 const deletionLoader = ref(undefined)
-const viewReportSubjectGroupModal = ref(false)
 
 const setReportColumn = (number,column) =>{
   reportSettingNumber.value = number
@@ -265,6 +271,10 @@ watch(() => assessmentStore.newReportSubjectGroupResponse, async (data) => {
   }
 })
 
+const viewReportGroup = (reportSettingNumber) => {
+  viewReportGroups.value = true
+  reportSettingNum.value = reportSettingNumber
+}
 </script>
 
 <template>
@@ -286,6 +296,10 @@ watch(() => assessmentStore.newReportSubjectGroupResponse, async (data) => {
 
     <AppModal title="Report Subject Group"  v-model="viewReportSubjectGroupModal" xl4>
       <SetReportSubjectGroup :reportSettingNum="reportSettingNum"></SetReportSubjectGroup>
+    </AppModal>
+
+    <AppModal title="Report Subject Group"  v-model="viewReportGroups" xl4>
+      <ViewReportSubjectGroups :reportSettingNum="reportSettingNum"></ViewReportSubjectGroups>
     </AppModal>
 
     <div class="row">
@@ -420,6 +434,16 @@ watch(() => assessmentStore.newReportSubjectGroupResponse, async (data) => {
                  <span>
                    <i  class="bi-columns cursor-pointer"></i>
                    Set SubjectGroups
+                 </span>
+               </button>
+
+               <button
+                   class="border border-primary rounded-md px-3 text-primary hover:bg-primary-100 text-xs"
+                   style="border-width: 0px;text-decoration: none;"
+                   @click="viewReportGroup(settings.report_setting_number)">
+                 <span>
+                   <i  class="bi-eye cursor-pointer"></i>
+                   View Group
                  </span>
                </button>
 

@@ -50,6 +50,9 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const deleteAssessmentMetricResponse = ref(null)
     const newAssessmentSchedulesResponse = ref(null)
     const newReportSubjectGroupResponse = ref(null)
+    const reportSubjectGroupResponse = ref(null)
+    const deleteReportSubjectGroupResponse = ref(null)
+    const deleteReportSubjectResponse = ref(null)
 
     async function createAssessmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -671,6 +674,43 @@ export const useAssessmentStore = defineStore("assessment", () => {
                 }
             })
     }
+
+    async function fetchReportSubjectGroup(reportSettingsNumber) {
+        return await api.get("main/report-settings/subject-groups?report_settings_number="+reportSettingsNumber)
+            .then((response) => {
+                reportSubjectGroupResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+    async function deleteReportSubjectGroup(subject_group_number) {
+        return await api.delete("main/report-settings/subject-groups/"+subject_group_number)
+            .then((response) => {
+                deleteReportSubjectGroupResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+    async function deleteReportSubject(subject_number) {
+        return await api.delete("main/report-settings/subject-groups/subjects/"+subject_number)
+            .then((response) => {
+                deleteReportSubjectResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
     return {
         newAssessmentAreasResponse,
         assessmentAreaResponse,
@@ -763,6 +803,10 @@ export const useAssessmentStore = defineStore("assessment", () => {
         newAssessmentSchedulesResponse,
         createAssessmentMultiSchedule,
         newReportSubjectGroupResponse,
-        createReportSubjectGroup
+        createReportSubjectGroup,
+        reportSubjectGroupResponse,
+        fetchReportSubjectGroup,
+        deleteReportSubjectGroupResponse,
+        deleteReportSubjectGroup
     }
 })
