@@ -180,8 +180,8 @@ watch(
           <th>Date</th>
           <th>RecievedBy</th>
           <th>Description</th>
-          <th>Amount Paid</th>
-          <th>Amount Due</th>
+          <th>DR(Debit)</th>
+          <th>CR(Credit)</th>
           <th>Balance</th>
           <th> Actions</th>
         </tr>
@@ -197,7 +197,7 @@ watch(
         </td>
         <td><span v-if="list.type ==='OUT'">{{ list.amount?.toLocaleString() }}</span>
             <span v-else> - </span></td>
-        <td>{{ list.balance?.toLocaleString() }}</td>
+        <td>{{ (list.balance * -1)?.toLocaleString() }}</td>
         <td>
           <i class="bi bi-printer"></i>
         </td>
