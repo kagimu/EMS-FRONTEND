@@ -311,7 +311,10 @@ watch(
            <div>To: <span class="border px-3 rounded-md text-[green]">{{studyPeriod?.study_period_end_date	}}</span> </div>
            <div class="mt-2" style="cursor: pointer;" @click="configNextTerm(studyPeriod?.study_period_end_date,studyPeriod?.study_period_number)">Next Term Begins: <span class="border px-3 rounded-md text-[orange]">
             <b>{{studyPeriod?.next_term_begins	}}</b></span>
-            
+
+             <div class="mt-2" style="cursor: pointer;" >Reporting Date: <span class="border px-3 rounded-md text-[orange]">
+            <b>{{studyPeriod?.reporting_date	}}</b></span>
+            </div>
             <div class="row" v-if="studyPeriodN ==studyPeriod.study_period_number">
               <div class="col-12">
                 <!-- <input  type="date" class="border px-3 rounded-md text-[orange] mt-2 form-control" v-model="formData.next_term_begins"/> -->

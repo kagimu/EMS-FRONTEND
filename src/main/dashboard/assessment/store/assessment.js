@@ -49,6 +49,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const updateAssessmentMetricResponse = ref(null)
     const deleteAssessmentMetricResponse = ref(null)
     const newAssessmentSchedulesResponse = ref(null)
+    const newReportSubjectGroupResponse = ref(null)
 
     async function createAssessmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -659,6 +660,17 @@ export const useAssessmentStore = defineStore("assessment", () => {
             })
     }
 
+    async function createReportSubjectGroup(data) {
+        return await api.post("main/report-settings/subject-groups",data)
+            .then((response) => {
+                newReportSubjectGroupResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
     return {
         newAssessmentAreasResponse,
         assessmentAreaResponse,
@@ -749,6 +761,8 @@ export const useAssessmentStore = defineStore("assessment", () => {
         uploadMarkingGuideFile,
         deleteAssessmentMetrics,
         newAssessmentSchedulesResponse,
-        createAssessmentMultiSchedule
+        createAssessmentMultiSchedule,
+        newReportSubjectGroupResponse,
+        createReportSubjectGroup
     }
 })

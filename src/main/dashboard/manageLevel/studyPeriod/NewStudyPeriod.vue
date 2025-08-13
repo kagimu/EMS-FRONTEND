@@ -39,7 +39,8 @@ const form = reactive({
   study_period_start_date:null,
   study_period_end_date:null,
   study_period_name_number	:"",
-  next_term_begins_on:null
+  next_term_begins_on:null,
+  reporting_date: null
 })
 
 
@@ -66,7 +67,8 @@ const clearStudyPeriod = () => {
   form.academic_year_number = ""
   form.study_period_start_date = null
   form.study_period_end_date = null
-  study_period_number.value = null
+  study_period_number.value = null,
+      form.reporting_date = null
 }
 
 defineExpose({
@@ -110,6 +112,7 @@ const addStudyPeriod = () => {
   form.study_period_start_date = commons.formatDate(form.study_period_start_date)
   form.study_period_end_date = commons.formatDate(form.study_period_end_date)
   form.next_term_begins_on = commons.formatDate(form.next_term_begins_on)
+  form.reporting_date = commons.formatDate(form.reporting_date)
 
   if(study_period_number.value){
     form.study_period_number = study_period_number.value
@@ -221,6 +224,7 @@ watch(
         campus_level_number.value = info.campus_level_number
         fetchAcademicYear(info.campus_level_number)
         study_period_number.value = info.study_period_number
+        form.reporting_date = info.reporting_date
 
       }
     }
@@ -296,6 +300,17 @@ watch(
               auto-apply
               style="font-size: 7px;"
               v-model="form.next_term_begins_on"
+              :preview-format="format"
+              :teleport="true"
+          ></VueDatePicker>
+        </div>
+        <div>
+          <label class="text-sm"><small>Reporting Date</small></label>
+          <VueDatePicker
+              text-input
+              auto-apply
+              style="font-size: 7px;"
+              v-model="form.reporting_date"
               :preview-format="format"
               :teleport="true"
           ></VueDatePicker>

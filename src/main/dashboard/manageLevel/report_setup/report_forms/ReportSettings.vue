@@ -13,6 +13,7 @@ import NewReportSettings from "@/main/dashboard/manageLevel/report_setup/report_
 import ViewReportColumns from "@/main/dashboard/manageLevel/report_setup/report_forms/ViewReportColumns.vue";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js"
+import SetReportSubjectGroup from "@/main/dashboard/manageLevel/report_setup/report_forms/SetReportSubjectGroup.vue";
 const confirmationRef = ref(null);
 
 const campusStore = useCampusStore()
@@ -53,6 +54,7 @@ const reportColumns = ref(null)
 const viewColumnsModal = ref(false)
 const reportSettingNum = ref(null)
 const deletionLoader = ref(undefined)
+const viewReportSubjectGroupModal = ref(false)
 
 const setReportColumn = (number,column) =>{
   reportSettingNumber.value = number
@@ -251,7 +253,10 @@ watch(
     }
 )
 
-
+const setSubjectReportGroups = (reportSettingNumber) => {
+  viewReportSubjectGroupModal.value = true
+  reportSettingNum.value = reportSettingNumber
+}
 
 </script>
 
@@ -270,6 +275,10 @@ watch(
 
     <AppModal title="Report Columns"  v-model="viewColumnsModal" xl4>
     <viewReportColumns :reportSettingNum="reportSettingNum"></viewReportColumns>
+    </AppModal>
+
+    <AppModal title="Report Subject Group"  v-model="viewReportSubjectGroupModal" xl4>
+      <SetReportSubjectGroup :reportSettingNum="reportSettingNum"></SetReportSubjectGroup>
     </AppModal>
 
     <div class="row">
@@ -395,6 +404,15 @@ watch(
                  <span>
                    <i  class="bi-eye cursor-pointer"></i>
                    View
+                 </span>
+               </button>
+               <button
+                   class="mr-2 border border-success rounded-md px-3 text-success hover:bg-success-100 text-xs"
+                   style="border-width: 0px;text-decoration: none;"
+                   @click="setSubjectReportGroups(settings.report_setting_number)">
+                 <span>
+                   <i  class="bi-columns cursor-pointer"></i>
+                   Set SubjectGroups
                  </span>
                </button>
 
