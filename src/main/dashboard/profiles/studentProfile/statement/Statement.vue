@@ -197,7 +197,7 @@ watch(
         </td>
         <td><span v-if="list.type ==='OUT'">{{ list.amount?.toLocaleString() }}</span>
             <span v-else> - </span></td>
-        <td>{{ (list.balance * -1)?.toLocaleString() }}</td>
+        <td>{{ list.balance?.toLocaleString() }}</td>
         <td>
           <i class="bi bi-printer"></i>
         </td>
