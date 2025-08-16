@@ -226,15 +226,6 @@ const  fetchAssessmentAreaList = (class_number) => {
         </select>
       </div>
 
-      <div>
-        <label class="text-sm font-medium">Metric</label>
-        <select class="form-select form-select-sm shadow-none" v-model="form.metric_number">
-          <option disabled value="">Select Metric</option>
-          <option v-for="item in metricListData" :key="item.number" :value="item.number">
-            {{ item.name }}
-          </option>
-        </select>
-      </div>
     </div>
 
     <!-- Assessment Schedules Section -->

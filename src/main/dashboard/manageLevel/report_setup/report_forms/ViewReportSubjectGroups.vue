@@ -4,6 +4,9 @@ import useNotificationStore from "@/composables/useNotification.js";
 import { useAssessmentStore } from "@/main/dashboard/assessment/store/assessment.js"
 import { useAbility } from '@casl/vue';
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import AppModal from "@/components/AppModal.vue";
+import ManageReportDetails from "@/main/dashboard/manageLevel/report_setup/report_forms/ManageReportDetails.vue";
+import AddReportGroupSubject from "@/main/dashboard/manageLevel/report_setup/report_forms/AddReportGroupSubject.vue";
 
 const confirmationRef = ref(null);
 
@@ -11,6 +14,8 @@ const notificationStore = useNotificationStore()
 const { can } = useAbility()
 const assessmentStore = useAssessmentStore()
 const subjectReportGroupList = ref([])
+const showGroupSubjectModal = ref(false)
+const group_subject_number = ref(null)
 
 
 const buttonLoader = ref(false)
@@ -72,17 +77,37 @@ watch(() => assessmentStore.deleteReportSubjectGroupResponse, async (data) => {
 const removeSubject = async (subjectGroupNumber,subjectName) => {
   const agreed = await confirmationRef.value.confirm("Are you sure, you want to remove "+subjectName + " ?");
   if (agreed) {
-    assessmentStore.removeReportSubject(subjectGroupNumber)
+    await assessmentStore.deleteReportSubject(subjectGroupNumber)
   }
 }
 
+watch(() => assessmentStore.deleteReportSubjectResponse, async (data) => {
+  if (data) {
+    notificationStore.successToast("Success", data.message)
+    getReportSettingsNum()
+  }
+})
+
+const addSubject = (groupN) => {
+  showGroupSubjectModal.value = true
+  group_subject_number.value = groupN
+}
+
+watch(() => assessmentStore.newReportSubjectToGroupResponse, async (data) => {
+  if (data) {
+    showGroupSubjectModal.value = false
+  }
+})
 
 </script>
 
 
-
-
 <template>
+<!--  {{subjectReportGroupList}}-->
+  <AppModal title="Add Subject To Report" v-model="showGroupSubjectModal" md>
+    <AddReportGroupSubject :group_subject_number="group_subject_number"></AddReportGroupSubject>
+  </AppModal>
+
   <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
   <table border="1" cellspacing="0" cellpadding="6" class="table table-bordered table-striped">
     <thead>
@@ -106,12 +131,19 @@ const removeSubject = async (subjectGroupNumber,subjectName) => {
           <i
               class="bi bi-x-circle ml-2"
               style="color: red; cursor: pointer"
-              @click="removeSubject(group.number, subject.name)"
+              @click="removeSubject(subject.number, subject.name)"
           ></i>
         </td>
 
         <!-- Trash icon only in first subject row -->
         <td v-if="index === 0" :rowspan="group.assessment_areas.length">
+          <button
+              class="btn btn-outline-primary btn-sm mb-2"
+              @click="addSubject(group.number)"
+          >
+            Add Subject
+            </button>
+          <br/>
           <i
               class="bi bi-trash ml-2"
               style="cursor: pointer;color:red"

@@ -9,10 +9,6 @@ const nextTermBegins = ref(null)
 const commons = useCommonsStore()
 let imagePath = api.defaults.baseURL + "/attachments/download/"
 
-const printReport = () => {
-  // alert("Print pdf now man")
-}
-
 const props = defineProps({
   reportDetails:{},
   reportDataInfo:{}
@@ -30,9 +26,7 @@ onMounted(
 </script>
 
 <template>
-
-  <!-- {{ reportDataInfo }} -->
-<!--   {{ reportDetails }}-->
+<!--{{reportDetails}}-->
 <div>
   <div class="mx-auto mt-10" style="width: 98%">
 

@@ -53,6 +53,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
     const reportSubjectGroupResponse = ref(null)
     const deleteReportSubjectGroupResponse = ref(null)
     const deleteReportSubjectResponse = ref(null)
+    const newReportSubjectToGroupResponse = ref(null)
 
     async function createAssessmentAreas(data) {
         return await api.post("main/assessment-areas",data)
@@ -699,7 +700,7 @@ export const useAssessmentStore = defineStore("assessment", () => {
             })
     }
     async function deleteReportSubject(subject_number) {
-        return await api.delete("main/report-settings/subject-groups/subjects/"+subject_number)
+        return await api.delete("main/report-settings/subject-group-assessment/"+subject_number)
             .then((response) => {
                 deleteReportSubjectResponse.value = response.data
             })
@@ -710,6 +711,17 @@ export const useAssessmentStore = defineStore("assessment", () => {
             })
     }
 
+    async function addSubjectToGroup(data) {
+        return await api.post("main/report-settings/subject-group-assessment",data)
+            .then((response) => {
+                newReportSubjectToGroupResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
     return {
         newAssessmentAreasResponse,
@@ -807,6 +819,10 @@ export const useAssessmentStore = defineStore("assessment", () => {
         reportSubjectGroupResponse,
         fetchReportSubjectGroup,
         deleteReportSubjectGroupResponse,
-        deleteReportSubjectGroup
+        deleteReportSubjectGroup,
+        deleteReportSubject,
+        deleteReportSubjectResponse,
+        newReportSubjectToGroupResponse,
+        addSubjectToGroup
     }
 })
