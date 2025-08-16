@@ -155,6 +155,16 @@ watch(
     }
 )
 
+const showTransactionDetails = () => {
+  const divContents = document.getElementById("transaction-details-info").innerHTML;
+  const printWindow = window.open("", "", "height=600,width=800");
+  printWindow.document.write("<html><head><title>Print</title></head><body>");
+  printWindow.document.write(divContents);
+  printWindow.document.write("</body></html>");
+  printWindow.document.close();
+  printWindow.print();
+}
+
 
 </script>
 <template>
@@ -186,18 +196,28 @@ watch(
               type="date" v-model="form.end_date"
               placeholder="End date">
           <div class="text-xs text-gray-600 ml-2">End date</div>
-            
         </div>
+      </div>
+
+      <div class="col-span-3 flex justify-end ">
+       <div>
+         <button
+             @click="showTransactionDetails()" class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
+           <small>  <i class="bi bi-printer"></i> Print</small>
+         </button>
+       </div>
       </div>
 
     <div> 
       </div>
       </div>
 
+<div  id="transaction-details-info">
+
 
     <table
       class="table table-hover caption-top mt-4 table-sm table-striped"
-      style="font-size: 13px !important;width: 100%;"
+      style="font-size: 13px !important;width: 100%; text-align: left;"
     >
       <thead>
         <tr>
@@ -232,6 +252,7 @@ watch(
           
       </tbody>
     </table>
+</div>
   </div>
   </div>
   </div>
