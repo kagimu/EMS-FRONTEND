@@ -17,6 +17,7 @@ import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/servic
 import ComboBox from "@/components/ComboBox.vue";
 let profile = localStorage.getItem("userProfile")
 import InvoiceDetails from "@/main/dashboard/invoice/InvoiceDetails.vue"
+import Statement from "@/main/dashboard/profiles/studentProfile/statement/Statement.vue";
 
 
 const routerData = useRouter()
@@ -40,7 +41,9 @@ const campusList = ref([])
 const itemsList = ref([])
 const serviceStore= useServiceStore()
 const showInvoiceDetails = ref(false)
- 
+const showTransactionModal = ref(false)
+const transactionInfo = ref(null)
+
 const showModal = () =>{
   mymodal.value = true
 }
@@ -225,9 +228,20 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
   showInvoiceDetails.value = true
 }
 
+const showTransactionDetails = (data) => {
+  if(data){
+    transactionInfo.value = data
+    showTransactionModal.value = true
+  }
+}
+
 </script>
 <template>
   <div>
+
+    <AppModal :title="'Financial Statement for: '+transactionInfo?.learner_name" v-model="showTransactionModal" xl6>
+      <Statement :studentNumber="transactionInfo?.student_number"></Statement>
+    </AppModal>
 
 <!-- {{ statementData }}-->
     <AppModal title="Creating New Invoice" v-model="mymodal" xl6>
@@ -378,7 +392,12 @@ const showInvoiceInfoModal = (refN,studentNo) =>{
           <span v-else> - </span></td>
         <td>{{ list.balance?.toLocaleString() }}</td>
         <td>
-          <i class="bi bi-printer"></i>
+<!--          <i class="bi bi-printer"></i>-->
+          <button
+              @click="showTransactionDetails(list)" class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
+            <small>View</small>
+          </button>
+
         </td>
 
       </tr>

@@ -33,15 +33,40 @@ const form = reactive({
   end_date:""
 })
 
+const props = defineProps({
+  studentNumber: {
+    type: String,
+    default: null
+  }
+})
+
 onMounted(
     async () => {
       await schoolStore.fetchSchools()
       await serviceStore.fetchAllItems()
-      await applicationStore.fetchStudent(studentNumber)
-    
+
+
+      filterDraft()
+
     }
 )
 
+watch (
+    () => props.studentNumber,
+    async (data) => {
+      if (data) {
+        filterDraft()
+      }
+    }
+)
+
+const filterDraft = () => {
+  let std = studentNumber || props.studentNumber
+  if(std) {
+     applicationStore.fetchStudent(std)
+  }
+
+}
 
 watch (
     () => applicationStore.studentDataResponse,
@@ -183,7 +208,7 @@ watch(
           <th>DR(Debit)</th>
           <th>CR(Credit)</th>
           <th>Balance</th>
-          <th> Actions</th>
+<!--          <th> Actions</th>-->
         </tr>
       </thead>
       <tbody>
@@ -198,9 +223,9 @@ watch(
         <td><span v-if="list.type ==='OUT'">{{ list.amount?.toLocaleString() }}</span>
             <span v-else> - </span></td>
         <td>{{ list.balance?.toLocaleString() }}</td>
-        <td>
+<!--        <td>
           <i class="bi bi-printer"></i>
-        </td>
+        </td>-->
       
         </tr>
  
