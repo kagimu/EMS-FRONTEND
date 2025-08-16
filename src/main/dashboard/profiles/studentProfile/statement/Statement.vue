@@ -33,15 +33,40 @@ const form = reactive({
   end_date:""
 })
 
+const props = defineProps({
+  studentNumber: {
+    type: String,
+    default: null
+  }
+})
+
 onMounted(
     async () => {
       await schoolStore.fetchSchools()
       await serviceStore.fetchAllItems()
-      await applicationStore.fetchStudent(studentNumber)
-    
+
+
+      filterDraft()
+
     }
 )
 
+watch (
+    () => props.studentNumber,
+    async (data) => {
+      if (data) {
+        filterDraft()
+      }
+    }
+)
+
+const filterDraft = () => {
+  let std = studentNumber || props.studentNumber
+  if(std) {
+     applicationStore.fetchStudent(std)
+  }
+
+}
 
 watch (
     () => applicationStore.studentDataResponse,
@@ -130,6 +155,16 @@ watch(
     }
 )
 
+const showTransactionDetails = () => {
+  const divContents = document.getElementById("transaction-details-info").innerHTML;
+  const printWindow = window.open("", "", "height=600,width=800");
+  printWindow.document.write("<html><head><title>Print</title></head><body>");
+  printWindow.document.write(divContents);
+  printWindow.document.write("</body></html>");
+  printWindow.document.close();
+  printWindow.print();
+}
+
 
 </script>
 <template>
@@ -161,18 +196,28 @@ watch(
               type="date" v-model="form.end_date"
               placeholder="End date">
           <div class="text-xs text-gray-600 ml-2">End date</div>
-            
         </div>
+      </div>
+
+      <div class="col-span-3 flex justify-end ">
+       <div>
+         <button
+             @click="showTransactionDetails()" class="text-[#0d6efd] border border-primary px-3 rounded-sm hover:bg-[#0d6efd] hover:text-white">
+           <small>  <i class="bi bi-printer"></i> Print</small>
+         </button>
+       </div>
       </div>
 
     <div> 
       </div>
       </div>
 
+<div  id="transaction-details-info">
+
 
     <table
       class="table table-hover caption-top mt-4 table-sm table-striped"
-      style="font-size: 13px !important;width: 100%;"
+      style="font-size: 13px !important;width: 100%; text-align: left;"
     >
       <thead>
         <tr>
@@ -183,7 +228,7 @@ watch(
           <th>DR(Debit)</th>
           <th>CR(Credit)</th>
           <th>Balance</th>
-          <th> Actions</th>
+<!--          <th> Actions</th>-->
         </tr>
       </thead>
       <tbody>
@@ -197,16 +242,17 @@ watch(
         </td>
         <td><span v-if="list.type ==='OUT'">{{ list.amount?.toLocaleString() }}</span>
             <span v-else> - </span></td>
-        <td>{{ (list.balance * -1)?.toLocaleString() }}</td>
-        <td>
+        <td>{{ list.balance?.toLocaleString() }}</td>
+<!--        <td>
           <i class="bi bi-printer"></i>
-        </td>
+        </td>-->
       
         </tr>
  
           
       </tbody>
     </table>
+</div>
   </div>
   </div>
   </div>
