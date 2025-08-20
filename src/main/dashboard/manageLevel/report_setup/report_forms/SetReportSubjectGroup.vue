@@ -61,6 +61,7 @@ const form = reactive({
 const addAssesArea = () => {
   form.assessmentAreas.push({
     assessment_area_number: null,
+    subject_name_on_report: null,
   })
 }
 
@@ -231,12 +232,13 @@ const  fetchAssessmentAreaList = (class_number) => {
     <!-- Assessment Schedules Section -->
     <div class="border rounded">
       <div class="grid grid-cols-12 gap-2 bg-gray-100 rounded-t px-3 py-2 text-sm font-semibold">
-        <div class="col-span-10">Assessment Area</div>
+        <div class="col-span-10">----</div>
         <div class="col-span-2 text-right">Action</div>
       </div>
 
       <div v-for="(schedule, index) in form.assessmentAreas" :key="index" class="grid grid-cols-12 gap-2 items-center px-3 py-2 bg-white border-t">
-        <div class="col-span-10">
+        <div class="col-span-6">
+          <label class="text-sm font-medium">Assessment Area </label>
           <select class="form-select form-select-sm w-full" v-model="schedule.assessment_area_number">
             <option disabled value="">Select Assessment Area</option>
             <option v-for="item in AsessmentListData" :key="item.number" :value="item.number">
@@ -244,13 +246,17 @@ const  fetchAssessmentAreaList = (class_number) => {
             </option>
           </select>
         </div>
+        <div class="col-span-4">
+          <label class="text-sm font-medium">Subject Display Name </label>
+          <input type="text" v-model="schedule.subject_name_on_report" class="form-control form-control-sm shadow-none" required/>
+        </div>
         <div class="col-span-2 text-right">
           <button class="btn btn-sm btn-danger" @click.prevent="removeAssesArea(index)">Remove</button>
         </div>
       </div>
 
       <div class="px-3 py-2">
-        <button class="btn btn-sm btn-secondary" @click.prevent="addAssesArea">+ Add Schedule</button>
+        <button class="btn btn-sm btn-success" @click.prevent="addAssesArea">+Add</button>
       </div>
     </div>
 
