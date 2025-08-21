@@ -29,6 +29,7 @@ const addCurriculum = () =>{
     form.code = parseInt(form.code)
     curriculumStore.editCurriculumData(form)
   }else {
+    form.code = parseInt(form.code)
     curriculumStore.newCurriculumData(form)
   }
 
@@ -74,6 +75,7 @@ watch (
         let info = data.data
         form.name = info.name ? info.name : ""
         curriculumNumber.value = info.number ? info.number : ""
+        form.code = info.code ? info.code : ""
       }
     },
     {deep:true}

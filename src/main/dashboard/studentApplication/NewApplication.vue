@@ -117,7 +117,7 @@ const fetchApplicationData = (applicationNumber) => {
 
                   <div class="mb-10">
 
-                    <div v-show="step === 1">
+                    <div v-show="step === 1" >
                       <personal-details-of-learner
                           v-on:next="nextPage"
                       ></personal-details-of-learner>
