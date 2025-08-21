@@ -166,8 +166,8 @@ watch (
         localStorage.setItem("studentNumber", data.data.number)
         buttonLoader.value = false
         // assessmentStore.fetchAssessmentAreaByClass(form.class_number)
-
-        emit("next", {id:data.data.application_number, step:2})
+        alert(JSON.stringify(data.data))
+        emit("next", {id:data.data, step:2})
 
         let dataa = {
           page: page.value,
