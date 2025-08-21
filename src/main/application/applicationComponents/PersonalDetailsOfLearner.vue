@@ -160,9 +160,9 @@ watch (
         localStorage.setItem("studentNumber", data.data.number)
         buttonLoader.value = false
         // assessmentStore.fetchAssessmentAreaByClass(form.class_number)
-        //         alert(JSON.stringify(data.data.application_number))
+        //         alert(JSON.stringify(data.data))
         notificationStore.successToast("Success", data.message)
-        alert(JSON.stringify(data.data))
+        // alert(JSON.stringify(data.data))
         emit("next", {id:data.data, step:2})
 
         let dataa = {
