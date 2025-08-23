@@ -23,7 +23,7 @@ const calendarOptions = ref({
     center: 'title',
     right: 'multiMonthYear,dayGridMonth,timeGridWeek,timeGridDay'
   },
-  multiMonthMaxColumns: 3,
+  multiMonthMaxColumns: 2,
   multiMonthMinWidth: 150,
   dayMaxEventRows: false,
   dayMaxEvents: false,

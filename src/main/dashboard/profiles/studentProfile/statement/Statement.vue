@@ -8,6 +8,7 @@ import {useRouter} from "vue-router"
 import {useSchoolStore} from "@/main/dashboard/manageSchool/store/school.js";
 import {useCampusStore} from "@/main/dashboard/manageCampus/store/campus.js";
 import {useServiceStore} from "@/main/dashboard/servicesAndProducts/store/service.js";
+import moment from "moment";
 
 const { can } = useAbility()
 const schoolStore = useSchoolStore()
@@ -165,6 +166,16 @@ const showTransactionDetails = () => {
   printWindow.print();
 }
 
+const dateFormater = (date) => {
+  if(date){
+    // return date
+    let formatted = moment(date).format("DD-MM-YYYY");
+    // let formattedDate = new Date(date);
+      formatted = (formatted === "01-01-0001") ? "" : formatted
+    return formatted;
+  }
+  return ""
+}
 
 </script>
 <template>
@@ -222,7 +233,8 @@ const showTransactionDetails = () => {
       <thead>
         <tr>
           <th>#</th>
-          <th>Date</th>
+          <th>Date Recorded</th>
+          <th>Date Issued</th>
           <th>RecievedBy</th>
           <th>Description</th>
           <th>DR(Debit)</th>
@@ -234,8 +246,9 @@ const showTransactionDetails = () => {
       <tbody>
         <tr v-for="(list,index) in statementsData"  :key="index">
         <td>{{ (index + 1) }}</td>
-        <td>{{ list.date_received }}</td>
-        <td>{{ list.received_by }}</td>
+        <td>{{ dateFormater(list.date_received) }}</td>
+        <td>{{ dateFormater(list.issue_date) }}</td>
+        <td>{{ list?.received_by }}</td>
         <td>{{ list.description }}</td>
         <td><span v-if="list.type ==='IN'">{{ list.amount?.toLocaleString() }}</span>
             <span v-else> - </span>

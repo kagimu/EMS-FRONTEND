@@ -181,9 +181,9 @@ watch(
                     <div class="text-xs"><b>To</b> : {{dateFormat(calendar.end_date)}}</div>
                   </div>
                   <div>
-                    <a
-                        v-if="can('view_calendar','general')"
-                          @click="goToCalendar(calendar.number)" class="no-underline bg-[#0d6efd] text-white text-sm px-3 rounded-sm cursor-pointer hover:bg-[#2c2f8c]"> View</a>
+<!--                    <a-->
+<!--                        v-if="can('view_calendar','general')"-->
+<!--                          @click="goToCalendar(calendar.number)" class="no-underline bg-[#0d6efd] text-white text-sm px-3 rounded-sm cursor-pointer hover:bg-[#2c2f8c]"> View</a>-->
 
 
 
