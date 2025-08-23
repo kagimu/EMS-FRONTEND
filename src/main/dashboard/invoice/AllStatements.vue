@@ -18,6 +18,7 @@ import ComboBox from "@/components/ComboBox.vue";
 let profile = localStorage.getItem("userProfile")
 import InvoiceDetails from "@/main/dashboard/invoice/InvoiceDetails.vue"
 import Statement from "@/main/dashboard/profiles/studentProfile/statement/Statement.vue";
+import moment from "moment/moment.js";
 
 
 const routerData = useRouter()
@@ -235,6 +236,18 @@ const showTransactionDetails = (data) => {
   }
 }
 
+const dateFormater = (date) => {
+  if(date){
+    // return date
+    let formatted = moment(date).format("DD-MM-YYYY");
+    // let formattedDate = new Date(date);
+    formatted = (formatted === "01-01-0001") ? "" : formatted
+    return formatted;
+  }
+  return ""
+}
+
+
 </script>
 <template>
   <div>
@@ -361,7 +374,8 @@ const showTransactionDetails = (data) => {
       <thead>
       <tr>
         <th>#</th>
-        <th>Date</th>
+        <th>Date Recorded</th>
+        <th>Date Issued</th>
         <th>Learner</th>
         <th>Description</th>
         <th>Amount (In)</th>
@@ -373,7 +387,8 @@ const showTransactionDetails = (data) => {
       <tbody>
       <tr v-for="(list,index) in statementData"  :key="index">
         <td>{{ (index + 1) }}</td>
-        <td>{{ list?.date_received }}</td>
+        <td>{{ dateFormater(list.date_received) }}</td>
+        <td>{{ dateFormater(list.issue_date) }}</td>
         <td class="capitalize">
 
           <span class="hover:text-gray-700">
