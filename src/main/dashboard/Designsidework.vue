@@ -7,15 +7,15 @@ import { ref } from 'vue'
 
 const calendarOptions = ref({
   plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-  initialView: 'dayGridMonth', // Default to Month view
+  initialView: 'dayGridMonth',
   headerToolbar: {
     left: 'prev,next today',
     center: 'title',
     right: 'dayGridMonth,timeGridWeek,timeGridDay'
   },
-  dayMaxEventRows: false, // No limit on event rows
-  dayMaxEvents: false,    // Show all events, no "+ more"
-  fixedWeekCount: false,  // Adjusts calendar height dynamically
+  dayMaxEventRows: false,
+  dayMaxEvents: false,
+  fixedWeekCount: false,
   events: [
     { title: 'INV0158 - Invoice Review', date: '2025-07-31', color: 'green' },
     { title: 'INV0159 - Client Billing', date: '2025-07-31', color: 'green' },
@@ -27,7 +27,6 @@ const calendarOptions = ref({
     { title: 'Client Demo Presentation', date: '2025-08-22', color: '#ef4444' },
     { title: 'Marketing Strategy Workshop', date: '2025-08-26', color: '#9333ea' },
     { title: 'INV0160 - Payment Follow-up', date: '2025-08-31', color: 'green' },
-    // Extra events to test height expansion
     { title: 'Audit Session', date: '2025-08-31', color: '#3b82f6' },
     { title: 'Project Kickoff', date: '2025-08-31', color: '#f97316' },
     { title: 'Client Call', date: '2025-08-31', color: '#ef4444' }

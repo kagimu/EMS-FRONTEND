@@ -37,6 +37,11 @@ function goToCalendar(number){
   router.push({ name: "calendar-details", params:{"calendar_id":number}})
 }
 
+const  goToViewCalendar = (numb) => {
+  // router push
+  router.push({ name: "calendar-year-view", params:{"calendar_id":numb}})
+}
+
 function showAddCalendarDialog(){
   calendarDialog.value = true
 }
@@ -179,6 +184,21 @@ watch(
                     <a
                         v-if="can('view_calendar','general')"
                           @click="goToCalendar(calendar.number)" class="no-underline bg-[#0d6efd] text-white text-sm px-3 rounded-sm cursor-pointer hover:bg-[#2c2f8c]"> View</a>
+
+
+
+                    <router-link
+                        class="text-decoration-none"
+                        :to="{name:'calendar-year-view', query:{calendar_id:calendar.number}}"
+                    >
+                      <button
+                          type="button"
+                          class="bg-[#2c2f8c] hover:bg-[#0c62e1] text-white  text-center w-full rounded-bl-md pt-1 pb-2">
+                      <span class="text-xs">
+                        view
+                      </span>
+                      </button>
+                    </router-link>
                   </div>
                 </div>
 
