@@ -175,8 +175,6 @@ watch(
   </AppModal>
 
 
-  <button class="btn btn-sm btn-success mb-2" @click="print"><i class="bi bi-printer"></i></button>
-
   <button
       v-if="
       (reportDetails?.report_template_name.trim() === 'wholesome-early-learning-report-baby-class') ||
@@ -188,7 +186,6 @@ watch(
 
   <button
       v-if="
-      (reportDetails?.report_template_name.trim() === 'wholesome-early-learning-report-baby-class') ||
       (reportDetails?.report_template_name.trim() === 'wholesome-report-primary')"
       class="btn btn-sm btn-primary mb-2 ml-3" @click="addSubjectRemarks">
     <i class="bi bi-pencil"></i>
@@ -203,6 +200,8 @@ watch(
     <i class="bi bi-pencil"></i>
     Add ClassTeacher Comment
   </button>
+
+  <button class="btn btn-sm btn-success mb-2" style="float: right" @click="print"><i class="bi bi-printer"></i> Print</button>
 
   <div ref="myDiv">
 
