@@ -45,6 +45,7 @@ const total_items = ref(0)
 const total_rows = ref(0)
  const tableLoader = ref(true)
 const reportSummaryData = ref([])
+const loading = ref(false)
 
 onMounted(
     async () => {
@@ -53,18 +54,37 @@ onMounted(
     }
 )
 
-const showStudentReport = (summary) => {
-  if(summary) {
+const showStudentReport =  (summary) => {
+  if (summary) {
     showStudentsMarks.value = true
-    reportSummaryData.value = summary
+    // loading.value = true
+    reportSummaryData.value = summary;
 
-    let data = {
-      report_summary_number:summary.number,
+    const data = {
+      report_summary_number: summary.number,
     }
-    reportStore.fetchReportDetailsInfo(data)
+     reportStore.fetchReportDetailsInfo(data);
+
+    // if (loading.value) {
+    //   showStudentsMarks.value = false;
+    // } else {
+    //   reportSummaryData.value = summary;
+    //   showStudentsMarks.value = true;
+    // }
+
+
   }
 }
 
+watch(
+    () => reportStore.reportDetailsResponse,
+    async (data) => {
+      if(data){
+        loading.value = false
+        showStudentsMarks.value = true
+      }
+    }
+)
 
 
 const doFilterReportSummary = () =>{
@@ -272,6 +292,11 @@ watch(
 <template>
    <div>
 
+     <div v-if="loading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+       <div class="text-white text-lg font-semibold">
+         Loading...
+       </div>
+     </div>
  
      <AppModal title="Preview Report" v-model="showStudentsMarks" xl6>
        <manage-report-details :reportData="reportSummaryData"></manage-report-details>
@@ -398,6 +423,7 @@ watch(
                            <button
                               @click="showStudentReport(summary)"
                               type="button"
+
                               class="bg-green-800 text-white rounded-sm px-3 text-[12px]">
                            View Report
                            </button>
@@ -415,4 +441,18 @@ watch(
    </div>
 </template>
 <style scoped>
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 </style>

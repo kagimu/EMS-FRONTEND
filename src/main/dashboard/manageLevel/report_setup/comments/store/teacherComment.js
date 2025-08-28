@@ -18,6 +18,7 @@ export const useTeacherCommentStore = defineStore("teacherComment", () => {
     const deleteClassTeacherCommentResponse = ref(null)
     const updateSubjectTeacherCommentResponse = ref(null)
     const updateClassTeacherCommentResponse = ref(null)
+    const newSubjectRemarksFromTeacherResponse = ref(null)
 
     async function newTeacherComment(data) {
         return await api.post("main/report-settings/add-head-teachers-comment/"+data.report_setting_number, data)
@@ -188,6 +189,18 @@ export const useTeacherCommentStore = defineStore("teacherComment", () => {
             })
     }
 
+    async function newSubjectsRemarkFromTeacher(data) {
+        return await api.post("main/report-settings/report-score-summary/update-comments", data)
+            .then((response) => {
+                newSubjectRemarksFromTeacherResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
     return {
         errorMessage,
         teacherCommentResponse,
@@ -216,6 +229,9 @@ export const useTeacherCommentStore = defineStore("teacherComment", () => {
         updateSubjectTeacherCommentResponse,
         updateSubjectTeacherComment,
         updateClassTeacherCommentResponse,
-        updateClassTeacherComment
+        updateClassTeacherComment,
+        newSubjectRemarksFromTeacherResponse,
+        newSubjectsRemarkFromTeacher,
+
     }
 } )

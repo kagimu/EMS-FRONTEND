@@ -13,17 +13,16 @@ import NewClassTeacherOverallRemark
   from "@/main/dashboard/manageLevel/report_setup/comments/NewClassTeacherOverallRemark.vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.js";
+import NewSubjectTeacherRemarks from "@/main/dashboard/manageLevel/report_setup/comments/NewSubjectTeacherRemarks.vue";
 
 const reportStore = useReportCardStore()
 const printStore = usePrintStore()
 const notificationStore = useNotificationStore()
 const teacherCommentStore = useTeacherCommentStore()
 
-
-
 const reportDetails = ref(null)
 const showOverAllMarksModal = ref(false)
-
+const showSubjectRemarksModal = ref(false)
 
 const props = defineProps({
   reportData:{}
@@ -115,11 +114,31 @@ watch(
     }
 )
 
+const addSubjectRemarks = () => {
+  showSubjectRemarksModal.value = true
+}
+
+watch(
+    () => teacherCommentStore.newSubjectRemarksFromTeacherResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success",data.message)
+        showSubjectRemarksModal.value = false
+      }
+    }
+)
 </script>
 
 <template>
 
 <div>
+
+  <AppModal title="Add Subject Remarks" v-model="showSubjectRemarksModal" xl8>
+    <new-subject-teacher-remarks
+        :reportTemplateName="reportDetails?.report_template_name.trim()"
+        :reportDataInfo="reportData"
+        :reportDetails="reportDetails"></new-subject-teacher-remarks>
+  </AppModal>
 
   <AppModal title="Add Class Teacher's Overall Remarks" v-model="showOverAllMarksModal" xl8>
     <new-class-teacher-overall-remark
@@ -138,6 +157,15 @@ watch(
       class="btn btn-sm btn-primary mb-2 ml-3" @click="addRemarks">
         <i class="bi bi-pencil"></i>
         Add Class Teacher's Overall Remarks
+  </button>
+
+  <button
+      v-if="
+      (reportDetails?.report_template_name.trim() === 'wholesome-early-learning-report-baby-class') ||
+      (reportDetails?.report_template_name.trim() === 'wholesome-report-primary')"
+      class="btn btn-sm btn-primary mb-2 ml-3" @click="addSubjectRemarks">
+    <i class="bi bi-pencil"></i>
+    Add Subject Remarks
   </button>
 
   <div ref="myDiv">
