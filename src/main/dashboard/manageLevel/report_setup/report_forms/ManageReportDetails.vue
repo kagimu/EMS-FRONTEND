@@ -14,6 +14,7 @@ import NewClassTeacherOverallRemark
 import useNotificationStore from "@/composables/useNotification.js";
 import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.js";
 import NewSubjectTeacherRemarks from "@/main/dashboard/manageLevel/report_setup/comments/NewSubjectTeacherRemarks.vue";
+import NewClassTeacherComment from "@/main/dashboard/manageLevel/report_setup/comments/NewClassTeacherComment.vue";
 
 const reportStore = useReportCardStore()
 const printStore = usePrintStore()
@@ -23,6 +24,8 @@ const teacherCommentStore = useTeacherCommentStore()
 const reportDetails = ref(null)
 const showOverAllMarksModal = ref(false)
 const showSubjectRemarksModal = ref(false)
+const showClassTeacherModal = ref(false)
+const showClassTeacherOverallModal = ref(false)
 
 const props = defineProps({
   reportData:{}
@@ -127,11 +130,35 @@ watch(
       }
     }
 )
+
+
+const addClassTeacherComment = () => {
+  showClassTeacherOverallModal.value = true
+}
+
+watch(
+    () => teacherCommentStore.newClassTeacherOverallCommentResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success",data.message)
+        showClassTeacherOverallModal.value = false
+      }
+    }
+)
+
 </script>
 
 <template>
 
 <div>
+
+  <AppModal title="Add ClassTeacher Comment" v-model="showClassTeacherOverallModal" xl2>
+    <new-class-teacher-comment
+        :reportTemplateName="reportDetails?.report_template_name.trim()"
+        :reportDataInfo="reportData"
+        :reportDetails="reportDetails"></new-class-teacher-comment>
+  </AppModal>
+
 
   <AppModal title="Add Subject Remarks" v-model="showSubjectRemarksModal" xl8>
     <new-subject-teacher-remarks
@@ -166,6 +193,15 @@ watch(
       class="btn btn-sm btn-primary mb-2 ml-3" @click="addSubjectRemarks">
     <i class="bi bi-pencil"></i>
     Add Subject Remarks
+  </button>
+
+  <button
+      v-if="
+      (reportDetails?.report_template_name.trim() === 'wholesome-early-learning-report-baby-class') ||
+      (reportDetails?.report_template_name.trim() === 'wholesome-report-primary')"
+      class="btn btn-sm btn-primary mb-2 ml-3" @click="addClassTeacherComment">
+    <i class="bi bi-pencil"></i>
+    Add ClassTeacher Comment
   </button>
 
   <div ref="myDiv">

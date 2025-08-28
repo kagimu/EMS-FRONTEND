@@ -1,45 +1,3 @@
-<template>
-  <div>
-
-    <AppModal title="Import Curriculum" v-model="importDialog" lg>
-      <import-curriculum></import-curriculum>
-    </AppModal>
-
-
-
-
-    <div class="mt-3 flex justify-between">
-      <div class="ml-4">Curriculum Setup</div>
-      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="importFromExcel">
-        <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-        Import from Excel
-      </button>
-    </div>
-
-
-    <table class="table table-hover caption-top" style="font-size: 14px;">
-      <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="(lst,index) in uploadedCurriculumList" :key="index" >
-        <th scope="row">{{index+1}}</th>
-        <td>
-          {{lst.name}}
-        </td>
-      </tr>
-      </tbody>
-    </table>
-
-
-
-
-  </div>
-</template>
-
 <script setup>
 
 import {onMounted, ref, watch} from "vue";
@@ -49,6 +7,7 @@ import ImportCurriculum from "@/main/dashboard/curriculum/importCurriculum/impor
 import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/store/curriculum.js";
 import {useRouter} from "vue-router";
 import AppModal from "@/components/AppModal.vue";
+import CurriculumTemplate from "@/assets/documents/CurriculumTemplate.xlsx";
 const routerData = useRouter()
 
 const learningAreaList = ref( [])
@@ -98,9 +57,63 @@ watch(
     {deep:true}
 )
 
+const downloadTemplate = () => {
 
+}
 
 </script>
+
+<template>
+  <div>
+
+    <AppModal title="Import Curriculum" v-model="importDialog" lg>
+      <import-curriculum></import-curriculum>
+    </AppModal>
+
+
+
+
+    <div class="mt-3 flex justify-between">
+      <div class="ml-4">Curriculum Setup</div>
+
+<!--      //link to download doc-->
+
+      <a :href="CurriculumTemplate" download class="btn btn-sm btn-info buttonStyle mr-2">
+        <i class="bi-download mr-2" style="font-size: 15px;"></i>
+        Download Template
+      </a>
+
+      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="importFromExcel">
+        <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+        Import from Excel
+      </button>
+    </div>
+
+
+    <table class="table table-hover caption-top" style="font-size: 14px;">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="(lst,index) in uploadedCurriculumList" :key="index" >
+        <th scope="row">{{index+1}}</th>
+        <td>
+          {{lst.name}}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+
+
+
+  </div>
+</template>
+
+
 
 <style scoped>
 
