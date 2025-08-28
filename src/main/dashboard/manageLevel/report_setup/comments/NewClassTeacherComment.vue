@@ -35,7 +35,7 @@ const addClassTeacherComments = () => {
     comment: form.comment
   };
 
-  alert(JSON.stringify(data, null, 2));
+  // alert(JSON.stringify(data, null, 2));
 
   teacherCommentStore.newClassTeacherOverallComment(data)
 }
