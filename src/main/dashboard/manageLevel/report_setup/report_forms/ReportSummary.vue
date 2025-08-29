@@ -45,7 +45,7 @@ const total_items = ref(0)
 const total_rows = ref(0)
  const tableLoader = ref(true)
 const reportSummaryData = ref([])
-const loading = ref(false)
+
 
 onMounted(
     async () => {
@@ -57,34 +57,14 @@ onMounted(
 const showStudentReport =  (summary) => {
   if (summary) {
     showStudentsMarks.value = true
-    // loading.value = true
     reportSummaryData.value = summary;
-
     const data = {
       report_summary_number: summary.number,
     }
      reportStore.fetchReportDetailsInfo(data);
-
-    // if (loading.value) {
-    //   showStudentsMarks.value = false;
-    // } else {
-    //   reportSummaryData.value = summary;
-    //   showStudentsMarks.value = true;
-    // }
-
-
   }
 }
 
-watch(
-    () => reportStore.reportDetailsResponse,
-    async (data) => {
-      if(data){
-        loading.value = false
-        showStudentsMarks.value = true
-      }
-    }
-)
 
 
 const doFilterReportSummary = () =>{
@@ -292,15 +272,11 @@ watch(
 <template>
    <div>
 
-     <div v-if="loading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-       <div class="text-white text-lg font-semibold">
-         Loading...
-       </div>
-     </div>
- 
-     <AppModal title="Preview Report" v-model="showStudentsMarks" xl6>
-       <manage-report-details :reportData="reportSummaryData"></manage-report-details>
+
+     <AppModal  title="Preview Report" v-model="showStudentsMarks" xl6>
+       <manage-report-details :reportData="reportSummaryData"  @stopLoader="stopLoader"></manage-report-details>
      </AppModal>
+
 
      <AppModal title="Add Teachers Comment" v-model="showAddCommentModal" lg>
         <NewCommentFromTeacher :reportSummaryNumber="reportSummaryNumber"></NewCommentFromTeacher>

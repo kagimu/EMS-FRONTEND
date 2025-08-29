@@ -1,6 +1,6 @@
 <script setup>
 
-import {ref, watch,reactive} from "vue";
+import {ref, watch, reactive, onMounted} from "vue";
 import {useReportCardStore} from "@/main/dashboard/report-card/store/report-card.js";
 import BabyClassReport from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/BabyClassReport.vue";
 import PrimaryReportCopy from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/PrimaryReportCopy.vue";
@@ -26,17 +26,45 @@ const showOverAllMarksModal = ref(false)
 const showSubjectRemarksModal = ref(false)
 const showClassTeacherModal = ref(false)
 const showClassTeacherOverallModal = ref(false)
+const loading = ref(true)
 
 const props = defineProps({
   reportData:{}
 })
 
 
+onMounted(
+    async () => {
+      fetchReportDetails()
+    }
+)
+
+const fetchReportDetails = () => {
+  let draft = props.reportData
+  if(draft){
+    const data = {
+      report_summary_number: props.reportData.number,
+    }
+     reportStore.fetchReportDetailsInfo(data);
+  }
+}
+
+
+watch(
+    () => props.reportData,
+    async (data) => {
+      if(data){
+       fetchReportDetails()
+      }
+    }
+)
+
 watch(
     () => reportStore.reportDetailsResponse,
     async (data) => {
       if(data){
          reportDetails.value = data.data
+          loading.value = false
       }
     }
 )
@@ -152,6 +180,8 @@ watch(
 
 <div>
 
+
+
   <AppModal title="Add ClassTeacher Comment" v-model="showClassTeacherOverallModal" xl2>
     <new-class-teacher-comment
         :reportTemplateName="reportDetails?.report_template_name.trim()"
@@ -203,7 +233,28 @@ watch(
 
   <button class="btn btn-sm btn-success mb-2" style="float: right" @click="print"><i class="bi bi-printer"></i> Print</button>
 
+
+
+
+
   <div ref="myDiv">
+
+    <div
+        v-if="loading"
+        class="fixed inset-0 bg-gradient-to-br from-gray-900/80 via-gray-800/70 to-gray-900/80 flex
+      items-center justify-center z-[9999] backdrop-blur-sm animate-fade-in"
+    >
+      <div class="flex flex-col items-center  ">
+        <!-- Modern Spinner -->
+        <div class="w-8 h-8 border-4 border-blue-500 border-t-transparent border-b-transparent rounded-full animate-spin mt-4"></div>
+
+        <!-- Loading Text -->
+        <p class="text-white mt-1 text-lg font-semibold tracking-wide">
+          please wait...
+        </p>
+        <!--      <span class="text-gray-300 text-sm mt-1">Fetching data</span>-->
+      </div>
+    </div>
 
   <div v-if="reportDetails?.report_template_name.trim() === 'wholesome-early-learning-report-baby-class'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
     <baby-class-report :reportDataInfo="reportData" :reportDetails="reportDetails"></baby-class-report>
@@ -228,5 +279,13 @@ watch(
 </template>
 
 <style scoped>
+@keyframes fade-in {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-in-out forwards;
+}
 
 </style>
