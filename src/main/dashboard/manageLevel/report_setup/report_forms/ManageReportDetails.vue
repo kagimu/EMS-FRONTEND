@@ -245,14 +245,12 @@ watch(
       items-center justify-center z-[9999] backdrop-blur-sm animate-fade-in"
     >
       <div class="flex flex-col items-center  ">
-        <!-- Modern Spinner -->
-        <div class="w-8 h-8 border-4 border-blue-500 border-t-transparent border-b-transparent rounded-full animate-spin mt-4"></div>
-
-        <!-- Loading Text -->
+        <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light w-8 h-8 border-4 border-blue-500" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </span>
         <p class="text-white mt-1 text-lg font-semibold tracking-wide">
           please wait...
         </p>
-        <!--      <span class="text-gray-300 text-sm mt-1">Fetching data</span>-->
       </div>
     </div>
 
