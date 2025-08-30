@@ -47,6 +47,7 @@ const form = reactive({
   name:null,
   topic_number:"",
   estimated_time:"",
+  teaching_sequence_code:"",
 })
 
 
@@ -162,6 +163,7 @@ watch(
         loader.value = false
         form.name = null
         form.code = null
+        form.teaching_sequence_code = null
       }
     },
     {deep:true}
@@ -185,6 +187,7 @@ watch(
       if(data){
         let info = data.data
         form.name = info.name ? info.name : ""
+        form.teaching_sequence_code = info.teaching_sequence_code ? String(info.teaching_sequence_code) : ""
         form.code = info.code ? String(info.code) : ""
         form.topic_number = info.topic_number ? info.topic_number : ""
         form.estimated_time = info.estimated_time ? String(info.estimated_time) : ""
@@ -237,13 +240,26 @@ const closeSubTDialog = () => {
 
 
       <div class="mb-2">
-        <label class="text-sm"><small>Code</small></label>
+        <label class="text-sm"><small>Sorting Code</small></label>
         <input
             @keypress="commons.codeValidator($event)"
             maxlength="10"
             ref="nameRef"
             type="text"
             v-model="form.code"
+            @paste.prevent
+            required
+            class="form-control form-select-sm shadow-none">
+      </div>
+
+      <div class="mb-2">
+        <label class="text-sm"><small>Teaching Sequence Code</small></label>
+        <input
+            @keypress="commons.codeValidator($event)"
+            maxlength="10"
+            ref="nameRef"
+            type="text"
+            v-model="form.teaching_sequence_code"
             @paste.prevent
             required
             class="form-control form-select-sm shadow-none">

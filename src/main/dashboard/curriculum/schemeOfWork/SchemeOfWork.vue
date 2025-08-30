@@ -604,7 +604,7 @@ watch(
                 <th scope="col">#</th>
                 <th scope="col">Strand</th>
                 <th scope="col">Topic</th>
-                <th scope="col">Sequence</th>
+                <th scope="col">Teaching Sequence Code</th>
                 <th scope="col">Subtopic</th>
                 <th scope="col">Estimated Time (Min)</th>
                 <th scope="col">Lesson Plan (Concept(s))</th>

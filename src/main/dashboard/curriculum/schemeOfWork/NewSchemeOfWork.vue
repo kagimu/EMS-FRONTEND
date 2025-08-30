@@ -312,7 +312,7 @@ watch(
         <div class="col-lg-6 content">
 
           <div class="mb-2">
-            <label class="text-sm text-sm">Scheme Title</label>
+            <label class="text-sm">Scheme Title</label>
             <input
                 style="outline: none 0 !important; box-shadow: none;"
                 type="text"
@@ -437,7 +437,7 @@ watch(
           <th scope="col">Topic</th>
           <th scope="col" style="width: 50%;">Sub Topic name</th>
           <th scope="col" style="width: 15%;">Estimated Time</th>
-          <th scope="col" style="width: 20%;">Code</th>
+          <th scope="col" style="width: 20%;">Teaching Sequence Code</th>
         </tr>
         </thead>
         <tbody>
@@ -464,7 +464,7 @@ watch(
             <input
                 type="text"
                 style="outline: none 0 !important; box-shadow: none;"
-                v-model="lst.sort_code"
+                v-model="lst.teaching_sequence_code"
                 required
                 class="form-control form-select-sm" />
           </td>
