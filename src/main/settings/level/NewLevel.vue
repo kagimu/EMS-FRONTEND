@@ -139,11 +139,11 @@ watch(
 
       <div class="mb-2">
         <label class="text-sm"><small>Level Name</small></label>
-        <input
+        <textarea rows="2"
             style="outline: none 0 !important; box-shadow: none;"
-            type="text" v-model="form.name"
+            v-model="form.name"
             required
-            class="form-control form-select-sm">
+            class="form-control form-select-sm"></textarea>
       </div>
 
 
