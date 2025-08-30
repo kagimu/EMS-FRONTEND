@@ -308,6 +308,7 @@ watch(
 </script>
 <template>
   <div>
+
     <form @submit.prevent="addSchemeOfWork">
 
       <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="errorMessage">
@@ -471,7 +472,7 @@ watch(
             <input
                 type="text"
                 style="outline: none 0 !important; box-shadow: none;"
-                v-model="lst.teaching_sequence_code"
+                v-model="lst.sort_code"
                 required
                 class="form-control form-select-sm" />
           </td>
