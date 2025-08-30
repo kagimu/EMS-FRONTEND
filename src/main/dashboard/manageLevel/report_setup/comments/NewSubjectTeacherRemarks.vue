@@ -84,30 +84,35 @@ watch(
         <td v-for="(item, idx) in reportDetails?.learning_areas" :key="idx"
             style="vertical-align: top; padding: 10px; border-right: 1px solid #ddd;">
 
-          <table style="width: 100%; border-collapse: collapse;">
+          <table style="width: 100%; border-collapse: collapse;" cellpadding="0" cellspacing="0">
             <tr v-for="(lst, index) in item?.assessments" :key="index"
                 style="border-bottom: 1px solid #eee;">
-              <td style="padding: 8px; width: 100%;">
+              <td>
 
-                <!-- Top Row: Assessment Name + Score -->
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                  <span style="font-weight: 500;">{{ lst?.name }}</span>
-                  <span>
-                <span style="color: #1a73e8; font-weight: 600; margin-right: 10px;">
-                  {{ lst?.report_score_summary?.summation }}%
-                </span>
-                <span v-if="lst?.report_score_summary?.grade !== 'N/A'"
-                      style="color: #1a73e8; font-weight: 600;">
+                <table class="text-sm table-sm ">
+                  <tr>
+                    <td>
+                      <span style="font-weight: 500;">{{ lst?.name }}</span>
+                    </td>
+                    <td>
+                      <span style="color: #2c2f8c; font-weight: 600; margin-right: 10px;">
+                        {{ lst?.report_score_summary?.summation }}%
+                       </span>
+                    </td>
+                    <td>
+                        <span v-if="lst?.report_score_summary?.grade !== 'N/A'"
+                              style="color: #2c2f8c; font-weight: 600;">
                   {{ lst?.report_score_summary?.grade }}
                 </span>
-              </span>
-                </div>
+                    </td>
+                  </tr>
+                </table>
 
-                
-                <textarea v-model="lst.report_score_summary.comment"
-                          placeholder="Enter comment..."
-                          style="width: 100%; min-height: 80px; padding: 8px; font-size: 13px; border: 1px solid #ccc; border-radius: 4px; resize: vertical;">
-            </textarea>
+
+
+                <textarea
+                    class="form-control mt-2 shadow-none row-2 text-xs"
+                    v-model="lst.report_score_summary.comment"></textarea>
 
               </td>
             </tr>
