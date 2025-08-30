@@ -202,7 +202,14 @@ watch(
     async (data) => {
       if(data){
         if(!props.schemeOfWorkList.number) {
-          subtopicList.value = data.data
+
+          let topic = [...data.data]
+
+          topic.forEach(lst => {
+            lst.sort_code = parseInt(lst.teaching_sequence_code)
+          })
+
+          subtopicList.value = topic
         }
       }
     },
