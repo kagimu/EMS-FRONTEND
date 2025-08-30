@@ -172,7 +172,6 @@ const router = createRouter({
                     meta: {
                         resource: "campus-setup",
                         action: "view_campus-setup",
-
                     }
                 },
                 {path: 'reports', component: ManageCampus, name: "reports",
