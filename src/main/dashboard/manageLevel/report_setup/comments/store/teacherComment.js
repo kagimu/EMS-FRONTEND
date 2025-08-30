@@ -202,9 +202,9 @@ export const useTeacherCommentStore = defineStore("teacherComment", () => {
             })
     }
 
-
     async function newClassTeacherOverallComment(data) {
-        return await api.post("main/report-settings/class-teacher-overall-comment", data)
+        // return await api.post("main/report-settings/class-teacher-overall-comment", data)
+        return await api.post("main/report-settings/add-teacher-comment", data)
             .then((response) => {
                 newClassTeacherOverallCommentResponse.value = response.data
             })

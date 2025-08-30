@@ -168,6 +168,7 @@ watch(
     () => teacherCommentStore.newClassTeacherOverallCommentResponse,
     async (data) => {
       if(data){
+        fetchReportDetails()
         notificationStore.successToast("Success",data.message)
         showClassTeacherOverallModal.value = false
       }
