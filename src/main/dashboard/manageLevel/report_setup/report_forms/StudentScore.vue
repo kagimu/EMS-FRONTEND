@@ -511,7 +511,7 @@ watch(
             <th class="w-[2%]">#</th>
             <th class="w-[30%]">Name</th>
             <th class="w-[15%]">Score /(<span style="color: red;">{{ maxScore}}</span>)</th>
-            <th>Comment</th>
+            <th>Subject Teacher's Comment</th>
             <th>#</th>
           </tr>
           </thead>
