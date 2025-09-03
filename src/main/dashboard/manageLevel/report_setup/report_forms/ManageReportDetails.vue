@@ -193,14 +193,14 @@ watch(
   </AppModal>
 
 
-  <AppModal title="Add Subject Remarks" v-model="showSubjectRemarksModal" xl8>
+  <AppModal title="Edit/Update Subject Teacher's Remarks" v-model="showSubjectRemarksModal" xl8>
     <new-subject-teacher-remarks
         :reportTemplateName="reportDetails?.report_template_name.trim()"
         :reportDataInfo="reportData"
         :reportDetails="reportDetails"></new-subject-teacher-remarks>
   </AppModal>
 
-  <AppModal title="Add Class Teacher's Overall Remarks" v-model="showOverAllMarksModal" xl8>
+  <AppModal title="Overall Remarks for Learning Area" v-model="showOverAllMarksModal" xl8>
     <new-class-teacher-overall-remark
         :reportTemplateName="reportDetails?.report_template_name.trim()"
         :reportDataInfo="reportData"
@@ -214,7 +214,7 @@ watch(
       (reportDetails?.report_template_name.trim() === 'wholesome-report-primary')"
       class="btn btn-sm btn-primary mb-2 ml-3" @click="addRemarks">
         <i class="bi bi-pencil"></i>
-        Add Class Teacher's Overall Remarks
+        Overall Remarks for Learning Area
   </button>
 
   <button
@@ -222,7 +222,7 @@ watch(
       (reportDetails?.report_template_name.trim() === 'wholesome-report-primary')"
       class="btn btn-sm btn-primary mb-2 ml-3" @click="addSubjectRemarks">
     <i class="bi bi-pencil"></i>
-    Add Subject Remarks
+    Edit/Update Subject Teacher's Remarks
   </button>
 
   <button
