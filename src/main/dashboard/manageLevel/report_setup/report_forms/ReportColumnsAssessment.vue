@@ -507,7 +507,8 @@ const showEditModal = (data) => {
           <tr v-for="(column, index) in reportColumnAssessmentList" :key="index">
             <td> {{index+1}}</td>
             <td> {{column.assessment_area}}</td>
-            <td> {{column.assessment_metric}} - {{ column.academic_year }} - {{ column.study_period }}</td>
+<!--            <td> {{column.assessment_metric}} - {{ column.academic_year }} - {{ column.study_period }}</td>-->
+            <td> {{column?.description}}</td>
             <td>{{ useCommon.wellFormatedDate(column.scheduled_on) }}</td>
             <td> {{column.report_column}}</td>
             <td>
