@@ -15,6 +15,7 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.js";
 import NewSubjectTeacherRemarks from "@/main/dashboard/manageLevel/report_setup/comments/NewSubjectTeacherRemarks.vue";
 import NewClassTeacherComment from "@/main/dashboard/manageLevel/report_setup/comments/NewClassTeacherComment.vue";
+import SecondaryReport from "@/main/dashboard/ReportCenter/SecondaryReport.vue";
 
 const reportStore = useReportCardStore()
 const printStore = usePrintStore()
@@ -270,6 +271,9 @@ watch(
     <primary-report-copy :reportDataInfo="reportData" :reportDetails="reportDetails"></primary-report-copy>
   </div>
 
+    <div v-if="reportDetails?.report_template_name.trim() === 'wholesome-report-secondary'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
+      <secondary-report :reportDataInfo="reportData" :reportDetails="reportDetails"></secondary-report>
+    </div>
   <div v-if="reportDetails?.report_template_name.trim() === 'victorious-report-primary'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
     <victorious-report-card :reportDetails="reportDetails" :reportDataInfo="reportData"></victorious-report-card>
   </div>

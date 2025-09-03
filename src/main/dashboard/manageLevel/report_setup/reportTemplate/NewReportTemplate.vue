@@ -28,6 +28,10 @@ const templateList = ref([
     text:"Primary Report 2",
     value:"victorious-report-primary"
   },
+  {
+    text:"Wholesome Secondary Report",
+    value:"wholesome-report-secondary"
+  },
 ])
 
 
