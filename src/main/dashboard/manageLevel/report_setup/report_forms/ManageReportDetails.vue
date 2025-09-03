@@ -274,6 +274,7 @@ watch(
     <div v-if="reportDetails?.report_template_name.trim() === 'wholesome-report-secondary'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
       <secondary-report :reportDataInfo="reportData" :reportDetails="reportDetails"></secondary-report>
     </div>
+
   <div v-if="reportDetails?.report_template_name.trim() === 'victorious-report-primary'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
     <victorious-report-card :reportDetails="reportDetails" :reportDataInfo="reportData"></victorious-report-card>
   </div>

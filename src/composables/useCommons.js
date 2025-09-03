@@ -238,6 +238,22 @@ export default function useCommonsStore() {
         return comment;
     };
 
+    const previewPdf = (base64Response) => {
+
+        if(navigator.userAgent.indexOf("Firefox") !== -1 ) {
+
+            window.open(base64Response, '_target')
+
+        } else {
+            let a = document.createElement("a");
+            a.href = base64Response;
+            a.setAttribute('download', fileName)
+            a.target = "_blank";
+            document.body.appendChild(a)
+            a.click();
+        }
+    }
+
     return {
         onlyNumberValidator,
         numbersOnlyValidator,
@@ -253,5 +269,6 @@ export default function useCommonsStore() {
         ageCalculator,
         updateDefaultFilters,
         commentAlteration,
+        previewPdf,
     }
 }
