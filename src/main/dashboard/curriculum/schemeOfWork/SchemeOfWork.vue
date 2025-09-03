@@ -162,6 +162,7 @@ watch(
       if(data){
         let base64Response = "data:application/pdf;base64,"+ data.message
         commons.previewPdf(base64Response)
+        exportLoader.value = false
       }
     }
 )
@@ -399,7 +400,7 @@ watch(
     {deep:true}
 )
 
-watch(
+/*watch(
     () => schemeOfWorkStore.exportPdfResponse,
     async (data) => {
       if(data){
@@ -407,7 +408,7 @@ watch(
       }
     },
     {deep:true}
-)
+)*/
 
 
 watch(
