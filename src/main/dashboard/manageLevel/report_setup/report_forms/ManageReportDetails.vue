@@ -15,10 +15,12 @@ import useNotificationStore from "@/composables/useNotification.js";
 import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.js";
 import NewSubjectTeacherRemarks from "@/main/dashboard/manageLevel/report_setup/comments/NewSubjectTeacherRemarks.vue";
 import NewClassTeacherComment from "@/main/dashboard/manageLevel/report_setup/comments/NewClassTeacherComment.vue";
+import useCommonsStore from "@/composables/useCommons.js";
 
 const reportStore = useReportCardStore()
 const printStore = usePrintStore()
 const notificationStore = useNotificationStore()
+const commons = useCommonsStore()
 const teacherCommentStore = useTeacherCommentStore()
 
 const reportDetails = ref(null)
@@ -96,12 +98,12 @@ watch(
     async (data) => {
       if(data){
         let base64Response = "data:application/pdf;base64,"+ data.message
-        previewPdf(base64Response)
+        commons.previewPdf(base64Response)
       }
     }
 )
 
-function previewPdf(base64Response) {
+/*const previewPdf = (base64Response) => {
 
 if(navigator.userAgent.indexOf("Firefox") !== -1 ) {
   
@@ -115,7 +117,7 @@ if(navigator.userAgent.indexOf("Firefox") !== -1 ) {
     document.body.appendChild(a)
     a.click();
 }
-}
+}*/
 
 watch(
     () => printStore.errorMessage,

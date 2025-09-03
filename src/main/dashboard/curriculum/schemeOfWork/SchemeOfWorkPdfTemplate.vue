@@ -42,11 +42,11 @@ watch(
   <div>
 
           <div>
-            <div style="font-size: 8px;">
+            <div style="font-size: 12px;">
                 <div style="text-transform: uppercase;"><b>Scheme of Work</b></div><br />
             </div>
 
-            <table style="width: 100%; font-size: 8px; margin-bottom: 20px;">
+            <table style="width: 100%; font-size: 12px; margin-bottom: 20px;">
               <tr>
                 <td style="width: 15%;">
                   <img alt="img" style="width: 70px; margin: 0 auto;" :src="imagePath+schemeOfWorkList?.school_badge"/>
@@ -81,7 +81,7 @@ watch(
 
 <br />
 
-              <table cellspacing="0" cellpadding="0"   style="width:100%; font-size: 7px;">
+              <table cellspacing="0" cellpadding="0"   style="width:100%; font-size: 12px;">
               <tr>
                 <td style="border-right: 1px solid #7a7c7e;border-left: 1px solid #7a7c7e;border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;padding: 2px;">#</td>
                 <td style="border-right: 1px solid #7a7c7e;border-top: 1px solid #7a7c7e;border-bottom: 1px solid #7a7c7e;padding: 2px;">Strand</td>
