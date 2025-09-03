@@ -76,17 +76,21 @@ const downloadTemplate = () => {
     <div class="mt-3 flex justify-between">
       <div class="ml-4">Curriculum Setup</div>
 
-<!--      //link to download doc-->
 
-      <a :href="CurriculumTemplate" download class="btn btn-sm btn-info buttonStyle mr-2">
-        <i class="bi-download mr-2" style="font-size: 15px;"></i>
+
+     <div>
+       <a :href="CurriculumTemplate" download class="text-[#0c65e8] btn btn-sm btn-outline-primary mr-2">
+       <span class="text-xs">
+          <i style="font-size: 15px;" class="bi-download mr-2"></i>
         Download Template
-      </a>
+       </span>
+       </a>
 
-      <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="importFromExcel">
-        <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-        Import from Excel
-      </button>
+       <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="importFromExcel">
+         <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
+         Import from Excel
+       </button>
+     </div>
     </div>
 
 

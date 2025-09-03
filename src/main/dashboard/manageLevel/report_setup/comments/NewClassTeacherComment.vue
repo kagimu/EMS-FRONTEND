@@ -63,16 +63,16 @@ watch(
       {{ errorMessage }}
     </div>
 
+    <textarea
+        class="form-control mt-2 shadow-none row-2"
+        v-model="form.comment"></textarea>
 
-    <textarea v-model="form.comment"
-              placeholder="Enter comment..."
-              style="width: 100%; min-height: 80px; padding: 8px; font-size: 13px; border: 1px solid #ccc; border-radius: 4px; resize: vertical;">
-            </textarea>
+
 
     <div class="flex justify-content-end mt-4" style="width: 100%;">
       <button
           type="submit"
-          class="btn btn-primary border-0">
+          class="btn btn-sm btn-primary border-0">
         Submit
         <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
               <span class="visually-hidden">Loading...</span>
