@@ -627,6 +627,7 @@ const printPreviewNarrative = () => {
               <td class="font-semibold">Class</td>
               <td class="font-semibold">Assessment Area</td>
               <td class="font-semibold">Narration</td>
+              <td class="font-semibold">Suggested Solution</td>
               <th scope="col">Action</th>
             </tr>
             </thead>
@@ -643,6 +644,7 @@ const printPreviewNarrative = () => {
               <td> {{info?.class ?? ""}}</td>
               <td> {{info?.assessment_area ?? ""}}</td>
               <td> {{info?.narration ?? ""}}</td>
+              <td> {{info?.suggested_solution ?? ""}}</td>
               <td>
                 <div>
                   <i

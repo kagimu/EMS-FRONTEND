@@ -88,14 +88,13 @@ const dateList = ref([
   
     const form = reactive({ 
       assessment_area_number:null,
-      description:null,
+      title:null,
       metric_number:null,
       class_number:null,
       study_period_number:null,
       scheduled_on:null,
       campus_number:campusNumber,
       curriculum_number:curriculumNumberParent,
-      suggested_solution:null,
       status :null,
       current_date :null,
       current_status:null
@@ -278,9 +277,19 @@ const dateList = ref([
         // alert(JSON.stringify(form))
         narrativeStore.updateNarrativeSchedule(form)
       }else {
-        form.scheduled_on = dateList.value.map(item => item.date);
-        // alert(JSON.stringify(form))
-        narrativeStore.newNarrativeSchedule(form)
+        let data = {
+          assessment_area_number:form.assessment_area_number,
+          current_date:commons.formatDate(new Date()),
+          current_status:"SCHEDULED",
+          title:form.title,
+          scheduled_on:dateList.value.map(item => item.date),
+          class_number:form.class_number,
+          study_period_number:form.study_period_number,
+          campus_number:form.campus_number,
+          curriculum_number:form.curriculum_number,
+          description:form.title
+        }
+        narrativeStore.newNarrativeSchedule(data)
       }
      
     }
@@ -493,12 +502,6 @@ const dateList = ref([
                     </option>
                  </select>
               </div> -->
-
-
-
-        </div>
-           <div class="col-lg-6">
-
              <div class="mb-2">
                <label class="text-sm"><small>Assessment Area</small> <span class="star">*</span></label>
                <select
@@ -511,6 +514,21 @@ const dateList = ref([
                  </option>
                </select>
              </div>
+
+             <div class="mb-2">
+               <label class="text-sm">Title</label>
+               <textarea
+                   class="form-control shadow-none text-sm"
+                   rows="3"
+                   v-model="form.title">
+             </textarea>
+             </div>
+
+
+        </div>
+           <div class="col-lg-6">
+
+
           
               <!-- <div class="mb-2">
                  <label class="text-sm"><small>Requires A comment ?</small> <span class="star">*</span></label>
@@ -536,9 +554,7 @@ const dateList = ref([
       
 
               <div class="mb-2">
-                 <label class="text-sm">Scheduled On</label>      
-                 
-
+                 <label class="text-sm">Scheduled On</label>
                   <table class="">
                      <tr v-for="(lst,index) in dateList" :key="index">
                       <td> <input  type="date" v-model="lst.date"  class="form-control"></td>
@@ -553,23 +569,23 @@ const dateList = ref([
               </div>
 
 
-               <div class="mb-2">
-            <label class="text-sm">Description</label>
-             <textarea
-                 class="form-control shadow-none text-sm"
-                 rows="3"
-                 v-model="form.description">
-             </textarea>
-          </div>
+<!--               <div class="mb-2">-->
+<!--            <label class="text-sm">Description</label>-->
+<!--             <textarea-->
+<!--                 class="form-control shadow-none text-sm"-->
+<!--                 rows="3"-->
+<!--                 v-model="form.description">-->
+<!--             </textarea>-->
+<!--          </div>-->
 
-             <div class="mb-2">
-               <label class="text-sm">Suggested Solution</label>
-               <textarea
-                   class="form-control shadow-none text-sm"
-                   rows="3"
-                   v-model="form.suggested_solution">
-             </textarea>
-             </div>
+<!--             <div class="mb-2">-->
+<!--               <label class="text-sm">Suggested Solution</label>-->
+<!--               <textarea-->
+<!--                   class="form-control shadow-none text-sm"-->
+<!--                   rows="3"-->
+<!--                   v-model="form.suggested_solution">-->
+<!--             </textarea>-->
+<!--             </div>-->
 
         </div>
         </div>

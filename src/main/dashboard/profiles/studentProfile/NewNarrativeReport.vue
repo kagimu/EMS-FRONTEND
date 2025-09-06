@@ -67,6 +67,7 @@ assessment_area_number:"",
 study_period_number:"",
 campus_class_number:"",
 reference_date:"",
+  suggested_solution:"",
 reference_time:"",
   current_status:"Completed",
   status:"Active"
@@ -249,7 +250,7 @@ watch (
     async (data) => {
       if (data) {
         buttonLoader.value = false;
-        notificationStore.errorToast("Error",data.error)
+        notificationStore.errorToast("Error",data.message)
       }
     }
 )
@@ -532,10 +533,14 @@ watch (
 <!--                </div>-->
 
                 <div class="mb-2">
-                  <label class="text-xs"><small>Description</small></label>
+                  <label class="text-xs"><small>Description/Score</small></label>
                   <textarea v-model="formData.description" class="form-control shadow-none" style="height: 100px"></textarea>
                 </div>
 
+                <div class="mb-2">
+                  <label class="text-xs"><small>Suggested Solution</small></label>
+                  <textarea v-model="formData.suggested_solution" class="form-control shadow-none" style="height: 100px"></textarea>
+                </div>
 
               </div>
 

@@ -93,7 +93,7 @@ watch(
 
 </script>
 <template>
-  <div>
+  <div class="mt-3">
 <!--    {{calendars}}-->
 <!--    {{calendarOptions}}-->
     <FullCalendar :options="calendarOptions" />

@@ -10,6 +10,7 @@ export const useNarrativeStore = defineStore("narrative", () => {
     let updateNarrativeResponse = ref(null)
     let deleteNarrativeResponse = ref(null)
     let printNarrativeResponse = ref(null)
+    let studentsOnNarrativeResponse = ref(null)
 
     async function newNarrativeSchedule(data) {
         return await api.post("main/report-settings/narrative/scheduled", data)
@@ -114,6 +115,33 @@ export const useNarrativeStore = defineStore("narrative", () => {
             })
     }
 
+    async function fetchStudentsOnNarrativeSchedules(data) {
+        let  class_number =   data?.class_number ?? ""
+        let  campus_number =   data?.campus_number ?? ""
+        let  academic_year_number  =  data?.academic_year_number ?? ""
+        let  study_period_number =  data?.study_period_number ?? ""
+        let  narrative_schedule_number  =  data?.narrative_schedule_number ?? ""
+        let  curriculum_number  =  data?.curriculum_number ?? ""
+
+        return await api.get("main/report-settings/narrative/students?study_period_number="+study_period_number+
+            "&narrative_schedule_number="+narrative_schedule_number+
+            "&class_number="+class_number+
+            "&academic_year_number="+academic_year_number+
+            "&campus_number="+campus_number+
+            "&curriculum_number="+curriculum_number
+        )
+            .then((response) => {
+                studentsOnNarrativeResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
+
+
+
     return {
         errorMessage,
         newNarrativeResponse,
@@ -127,7 +155,9 @@ export const useNarrativeStore = defineStore("narrative", () => {
         deleteNarrativeSchedule,
         updateNarrativeSchedule,
         printNarrativeResponse,
-        printPreviewNarrativeReport
+        printPreviewNarrativeReport,
+        fetchStudentsOnNarrativeSchedules,
+        studentsOnNarrativeResponse
   
     }
 })

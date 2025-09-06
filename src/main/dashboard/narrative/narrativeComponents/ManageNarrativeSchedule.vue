@@ -405,12 +405,12 @@ const showMultiModal = () => {
                 <b><i class="bi bi-plus"></i></b> <small>
                 Add narrative Schedule</small></button>
 
-            <button
-                v-if="can('add_assessment_schedule','general')"
-                class="btn btn-primary btn-sm float-end mb-0 mr-4" style="float: right" type="button"
-                @click="showMultiModal">
-              <b><i class="bi bi-plus"></i></b> <small>
-              Multi Narrative Schedule</small></button>
+<!--            <button-->
+<!--                v-if="can('add_assessment_schedule','general')"-->
+<!--                class="btn btn-primary btn-sm float-end mb-0 mr-4" style="float: right" type="button"-->
+<!--                @click="showMultiModal">-->
+<!--              <b><i class="bi bi-plus"></i></b> <small>-->
+<!--              Multi Narrative Schedule</small></button>-->
           </div>
 
 
@@ -531,12 +531,11 @@ const showMultiModal = () => {
               <thead>
               <tr>
                 <th>#</th>
-                <th>Description</th>
+                <th>Title</th>
                 <th>Assessment Schedule</th>
                 <th>Study Period</th>
                 <th>Scheduled On</th>
                 <th>Class</th>
-               
                 <th class="w-[12%]">Action</th>
               </tr>
               </thead>

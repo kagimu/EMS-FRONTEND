@@ -15,6 +15,7 @@ import AppModal from "@/components/AppModal.vue";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 
 import StudentNarativeReport from "@/main/dashboard/profiles/studentProfile/StudentNarativeReport.vue";
+import {useNarrativeStore} from "@/main/dashboard/narrative/narrativeComponents/store/narrativeStore.js";
 
 const schoolStore = useSchoolStore()
 const notificationStore  = useNotificationStore()
@@ -57,14 +58,17 @@ const applicationStore = useApplicationStore()
 const student_number = ref(null)
 const studentCheckerList = ref(false)
 const NarrativeReportList = ref(false)
-
+const narrativeStore = useNarrativeStore()
+const narrativeSchedulesList = ref([])
+const narrative_schedule_number = ref(null)
+const narrativeStudentsList = ref([])
 
 
 onMounted(
     async () => {
       schoolStore.fetchSchools()
       fetchCampusLevel()
-      getStudentNumber()
+      // getStudentNumber()
      
     }
 )
@@ -79,14 +83,6 @@ const addNarrativeReport = (number) => {
 
 const maxScore = ref(null)
 
-const fetchStudents = (assessmentMetricNumber) => {
-  if(assessmentMetricNumber){
-   let result = metricListData.value.find((item) => item.number === assessmentMetricNumber)
-   maxScore.value = result.max_score
-   
-    reportSetupStore.fetchStudentByAssessmentMetric(assessmentMetricNumber)
-  }
-}
 
 
 const fetchCampusLevel = () => {
@@ -317,6 +313,55 @@ watch(
 
 
 
+const doFetchNarrativeSchedules = async (assessmentArea) => {
+  // narrativeSchedulesList.value.splice(0)
+  let data = {
+    class_number:class_number.value,
+    academic_year_number:academic_year_number.value,
+    study_period_number:study_period_number.value,
+    assessment_area_number:assessmentArea,
+    campus_number:campusNumber,
+    curriculum_number:curriculumNumberParent,
+  }
+  await narrativeStore.fetchNarrativeSchedules(data)
+}
+
+watch(
+    () => narrativeStore.narrativeResponse,
+    async (data) => {
+      if(data){
+        narrativeSchedulesList.value = data.data
+      }
+    }
+)
+
+
+const fetchStudents = (NarrativeScheduleNumber) => {
+  let data = {
+    narrative_schedule_number:NarrativeScheduleNumber,
+    class_number:class_number.value,
+    academic_year_number:academic_year_number.value,
+    study_period_number:study_period_number.value,
+    assessment_area_number:assessment_area_number.value,
+    campus_number:campusNumber,
+    curriculum_number:curriculumNumberParent,
+  }
+ narrativeStore.fetchStudentsOnNarrativeSchedules(data)
+}
+
+watch(
+    () => narrativeStore.studentsOnNarrativeResponse,
+    async (data) => {
+      if(data){
+        narrativeStudentsList.value = data.data
+      }
+    }
+)
+
+const addScore = (num,soln) => {
+alert(num+" "+soln)
+}
+
 
 </script>
 
@@ -400,7 +445,7 @@ watch(
               style="box-shadow: none;"
               class="form-select form-select-sm"
               v-model="assessment_area_number"
-              @change="fetchAssessmentMetricsByArea(assessment_area_number)"
+              @change="doFetchNarrativeSchedules(assessment_area_number)"
           >
             <option disabled value="">Select</option>
             <option v-for="(list, index) in assessmentListData" :key="index" :value="list.number">{{ list.name }}
@@ -414,12 +459,13 @@ watch(
           <select
               style="box-shadow: none;"
               class="form-select py-10"
-              v-model="assessmentMetricNumber"
-              @change="fetchStudents(assessmentMetricNumber)">
-            <option class="text-[13px]" disabled value="">--Select Assessment Schedule--</option>
+              v-model="narrative_schedule_number"
+              @change="fetchStudents(narrative_schedule_number)">
+            <option class="text-[13px]" disabled value="">--Select Narrative Schedule--</option>
 
-            <option class="text-[13px]" v-for="(list, index) in metricListData" :key="index" :value="list.number">
-              {{list.description + " [ " +list.metric_name + " ] " + " ( "+ list.assessment_area +" ) "}}
+            <option class="text-[13px]" v-for="(list, index) in narrativeSchedulesList" :key="index"
+                    :value="list.number">
+              {{list.description + " [ " +list.assessment_area + " ] " + " ( "+ list.scheduled_on +" ) "}}
             </option>
           </select>
         </div>
@@ -433,17 +479,19 @@ watch(
 
       <div class="col-12">
 
+<!--        {{narrativeStudentsList}}-->
 
         <table class="table table-hover caption-top mt-5 table-sm text-sm" style="font-size: 14px;">
           <thead>
           <tr>
             <th class="w-[2%]">#</th>
-            <th class="w-[80%]">Name</th>
-            <th>#</th>
+            <th class="w-[18%]">Name</th>
+            <th class="w-[40%]">Description/Score</th>
+            <th class="w-[40%]">Suggested Solution</th>
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(std, index) in studentsList" :key="index">
+          <tr v-for="(std, index) in narrativeStudentsList" :key="index">
             <td> {{(index + 1)}}</td>
             <td class="uppercase text-sm">
               {{std.student_surname ? std.student_surname : ""}}
@@ -452,8 +500,18 @@ watch(
             </td>
           
             <td>
-              <button class="btn btn-success btn-sm mb-2" 
-              @click="addNarrativeReport(std.number)"> Narrative Report</button>
+              <textarea   type="text" v-model="std.narrative" class="form-control "
+                         style="outline: none 0 !important; box-shadow: none;"
+                          >
+              </textarea>
+
+            </td>
+            <td>
+              <textarea   type="text" v-model="std.suggested_solution" class="form-control"
+                         style="outline: none 0 !important; box-shadow: none;"
+                          v-on:blur="addScore(std.number,std.suggested_solution)">
+              </textarea>
+
             </td>
           </tr>        
           </tbody>
