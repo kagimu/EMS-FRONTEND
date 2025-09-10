@@ -8,6 +8,7 @@ import {useCurriculumStore} from "@/main/dashboard/curriculum/curriculumSetup/st
 import {useRouter} from "vue-router";
 import AppModal from "@/components/AppModal.vue";
 import CurriculumTemplate from "@/assets/documents/CurriculumTemplate.xlsx";
+import ExportCurriculum from "@/main/dashboard/curriculum/importCurriculum/ExportCurriculum.vue";
 const routerData = useRouter()
 
 const learningAreaList = ref( [])
@@ -23,8 +24,15 @@ const uploadedCurriculumList = ref(null)
 
 
 const importDialog = ref(false)
+const exportCurriculumDialog = ref(false)
+
+
 const importFromExcel = () => {
   importDialog.value = true
+}
+
+const exportCurriculumInfo = () => {
+  exportCurriculumDialog.value = true
 }
 
 
@@ -70,6 +78,10 @@ const downloadTemplate = () => {
       <import-curriculum></import-curriculum>
     </AppModal>
 
+    <AppModal title="Export Curriculum" v-model="exportCurriculumDialog" lg>
+      <export-curriculum></export-curriculum>
+    </AppModal>
+
 
 
 
@@ -79,6 +91,12 @@ const downloadTemplate = () => {
 
 
      <div>
+
+       <button type="button"  class="btn btn-sm buttonStyle btn-outline-secondary mr-2"  @click="exportCurriculumInfo">
+         <i style="font-size: 15px;"  class="bi-download mr-2"></i>
+         Export Curriculum
+       </button>
+
        <a :href="CurriculumTemplate" download class="text-[#0c65e8] btn btn-sm btn-outline-primary mr-2">
        <span class="text-xs">
           <i style="font-size: 15px;" class="bi-download mr-2"></i>
@@ -90,6 +108,9 @@ const downloadTemplate = () => {
          <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
          Import from Excel
        </button>
+
+
+
      </div>
     </div>
 
