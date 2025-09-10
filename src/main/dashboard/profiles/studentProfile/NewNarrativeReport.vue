@@ -191,7 +191,7 @@ const  saveNarrativeReport = async (data) => {
       .catch((error) => {
         if(error && error.response) {
           buttonLoader.value = false;
-          notificationStore.errorToast("Error",data.error)
+          notificationStore.errorToast("Error",error.response.data.error)
         }
       });
 }
