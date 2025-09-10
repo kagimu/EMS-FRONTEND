@@ -1,7 +1,7 @@
 <script setup>
 
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
-import {onMounted, ref, watch} from "vue";
+import {onMounted, ref, watch,reactive} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
@@ -72,6 +72,10 @@ onMounted(
      
     }
 )
+const formData = reactive({
+  reference_date:null,
+  reference_time:null
+})
 
 
 const addNarrativeReport = (number) => {
@@ -359,11 +363,14 @@ watch(
 )
 
 const addScore = (num,soln) => {
-// alert(num+" "+soln)
+
   let data = {
     narrative_number:num,
-    suggested_solution:soln
+    suggested_solution:soln,
+    reference_date:formData.reference_date,
+    reference_time:formData.reference_time,
   }
+  alert(JSON.stringify(data))
   narrativeStore.addNarrativeReport(data)
 }
 
@@ -485,6 +492,21 @@ watch(
           </select>
         </div>
       </div>
+
+<div class="row">
+  <div class="mb-2 col-4">
+    <label class="text-sm"><small>Reference Date</small></label>
+    <input type="date" class="form-control" v-model="formData.reference_date">
+
+  </div>
+
+  <div class="mb-2 col-4">
+    <label class="text-xs"><small>Time</small></label>
+    <input type="time" class="form-control" v-model="formData.reference_time">
+  </div>
+
+</div>
+
 
     </div>
 

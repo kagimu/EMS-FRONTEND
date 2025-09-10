@@ -142,7 +142,7 @@ export const useNarrativeStore = defineStore("narrative", () => {
     }
 
     async function addNarrativeReport(data) {
-        return await api.post("https://wholesome-api.noregrets.ug/main/report-settings/narrative/"+data.narrative_number)
+        return await api.put("https://wholesome-api.noregrets.ug/main/report-settings/narrative/"+data.narrative_number)
             .then((response) => {
                 addNarrativeReportResponse.value = response.data
             })
