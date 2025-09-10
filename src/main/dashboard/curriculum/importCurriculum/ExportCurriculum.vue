@@ -34,7 +34,7 @@ const classList = ref([])
 const learning_area_number = ref("")
 const subject_cluster_number = ref("")
 const topicNumber = ref("")
-const subject_number = ref("")
+// const subject_number = ref("")
 let  curriculumNumber = routerData.currentRoute.value.query.id
 const emit = defineEmits(['closeDialog'])
 
@@ -43,7 +43,7 @@ const form = reactive({
   // code:null,
   name:null,
   class_number:"",
-  // strand_number:"",
+  subject_number:""
 })
 
 
@@ -54,7 +54,7 @@ const exportCurriculumData = () =>{
     form.topic_number = topicNumber.value
     topicStore.editTopicData(form)
   }else {
-    topicStore.newTopicData(form)
+    topicStore.exportCurriculum(form)
   }
 
 }
@@ -205,6 +205,17 @@ watch(
 const  closeTopicDialog = () => {
   emit("closeDialog")
 }
+
+watch(
+    () => topicStore.exportCurriculumInfoResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
 </script>
 
 <template>
@@ -251,8 +262,8 @@ const  closeTopicDialog = () => {
         <select
             style="box-shadow: none;"
             class="form-select form-select-sm"
-            v-model="subject_number"
-            @change="selectStrand(subject_number)"
+            v-model="form.subject_number"
+            @change="selectStrand(form.subject_number)"
         >
           <option disabled value="">--Select Subject--</option>
           <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
