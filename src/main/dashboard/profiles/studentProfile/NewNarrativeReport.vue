@@ -502,7 +502,7 @@ watch (
                   </select>
                 </div>
 
-               <div class="mb-2" v-if="narrativeWithSchedule">
+               <div class="mb-2" >
                   <label class="text-sm"><small>Narrative Schedule</small></label>
                   <select
                       style="box-shadow: none;"
