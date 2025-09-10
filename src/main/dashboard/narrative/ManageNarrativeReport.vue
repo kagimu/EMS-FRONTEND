@@ -370,7 +370,7 @@ const addScore = (num,soln) => {
     reference_date:formData.reference_date,
     reference_time:formData.reference_time,
   }
-  alert(JSON.stringify(data))
+  // alert(JSON.stringify(data))
   narrativeStore.addNarrativeReport(data)
 }
 
@@ -493,17 +493,19 @@ watch(
         </div>
       </div>
 
+      <div class="mb-2 col-3">
+        <label class="text-sm"><small>Reference Date</small></label>
+        <input type="date" class="form-control" v-model="formData.reference_date">
+
+      </div>
+
+      <div class="mb-2 col-3">
+        <label class="text-xs"><small>Time</small></label>
+        <input type="time" class="form-control" v-model="formData.reference_time">
+      </div>
+
 <div class="row">
-  <div class="mb-2 col-4">
-    <label class="text-sm"><small>Reference Date</small></label>
-    <input type="date" class="form-control" v-model="formData.reference_date">
 
-  </div>
-
-  <div class="mb-2 col-4">
-    <label class="text-xs"><small>Time</small></label>
-    <input type="time" class="form-control" v-model="formData.reference_time">
-  </div>
 
 </div>
 
