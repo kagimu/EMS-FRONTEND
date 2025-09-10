@@ -191,7 +191,7 @@ const  saveNarrativeReport = async (data) => {
       .catch((error) => {
         if(error && error.response) {
           buttonLoader.value = false;
-          notificationStore.errorToast("Error",data.error)
+          notificationStore.errorToast("Error",error.response.data.error)
         }
       });
 }
@@ -502,7 +502,7 @@ watch (
                   </select>
                 </div>
 
-               <div class="mb-2" v-if="narrativeWithSchedule">
+               <div class="mb-2" >
                   <label class="text-sm"><small>Narrative Schedule</small></label>
                   <select
                       style="box-shadow: none;"
