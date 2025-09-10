@@ -216,18 +216,6 @@ const  closeTopicDialog = () => {
         {{ classError }}
       </div>
 
-<!--      <div class="mb-2">
-        <label class="text-sm"><small>Code</small></label>
-        <input
-            @keypress="commons.codeValidator($event)"
-            maxlength="10"
-            ref="nameRef"
-            type="text"
-            @paste.prevent
-            v-model="form.code"
-            required
-            class="form-control form-select-sm shadow-none">
-      </div>-->
 
       <div class="mb-2">
         <label class="text-sm"><small>Learning Area</small></label>
