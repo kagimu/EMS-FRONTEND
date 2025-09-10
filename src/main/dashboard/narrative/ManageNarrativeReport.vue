@@ -359,8 +359,23 @@ watch(
 )
 
 const addScore = (num,soln) => {
-alert(num+" "+soln)
+// alert(num+" "+soln)
+  let data = {
+    narrative_number:num,
+    suggested_solution:soln
+  }
+  narrativeStore.addNarrativeReport(data)
 }
+
+
+watch(
+    () => narrativeStore.addNarrativeReportResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success",data.message)
+      }
+    }
+)
 
 
 </script>

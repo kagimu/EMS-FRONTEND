@@ -11,6 +11,7 @@ export const useNarrativeStore = defineStore("narrative", () => {
     let deleteNarrativeResponse = ref(null)
     let printNarrativeResponse = ref(null)
     let studentsOnNarrativeResponse = ref(null)
+    let addNarrativeReportResponse = ref(null)
 
     async function newNarrativeSchedule(data) {
         return await api.post("main/report-settings/narrative/scheduled", data)
@@ -140,6 +141,17 @@ export const useNarrativeStore = defineStore("narrative", () => {
             })
     }
 
+    async function addNarrativeReport(data) {
+        return await api.post("https://wholesome-api.noregrets.ug/main/report-settings/narrative/"+data.narrative_number)
+            .then((response) => {
+                addNarrativeReportResponse.value = response.data
+            })
+            .catch((response) => {
+                if(response && response.response){
+                    errorMessage.value = response.response.data
+                }
+            })
+    }
 
 
     return {
@@ -157,7 +169,9 @@ export const useNarrativeStore = defineStore("narrative", () => {
         printNarrativeResponse,
         printPreviewNarrativeReport,
         fetchStudentsOnNarrativeSchedules,
-        studentsOnNarrativeResponse
+        studentsOnNarrativeResponse,
+        addNarrativeReportResponse,
+        addNarrativeReport
   
     }
 })
