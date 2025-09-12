@@ -60,21 +60,36 @@ const studentCheckerList = ref(false)
 const NarrativeReportList = ref(false)
 const narrativeStore = useNarrativeStore()
 const narrativeSchedulesList = ref([])
-const narrative_schedule_number = ref(null)
+const narrative_schedule_number = ref("")
 const narrativeStudentsList = ref([])
+const campusClassListData = ref([])
+const campusLevelNumber = ""
+const campusClassNumber = ref(null)
 
 
 onMounted(
     async () => {
-      schoolStore.fetchSchools()
+      await schoolStore.fetchSchools()
       fetchCampusLevel()
       // getStudentNumber()
+      filterClassInfo()
      
     }
 )
+
+const filterClassInfo = () => {
+  classStore.fetchClassLevel({campusCurriculumNumber: campus_curriculum_number, campusLevelNumber:(campusLevelNumber?campusLevelNumber:'')})
+}
+
+const now = new Date();
+const formattedDate = now.toISOString().slice(0, 10)
+const formattedTime = now.toTimeString().slice(0, 5)
+
 const formData = reactive({
-  reference_date:null,
-  reference_time:null
+  reference_date:formattedDate,
+  reference_time:formattedTime,
+  current_status:"Completed",
+  status:"Active"
 })
 
 
@@ -83,11 +98,7 @@ const addNarrativeReport = (number) => {
     applicationStore.fetchStudent(number)
 }
 
-
-
 const maxScore = ref(null)
-
-
 
 const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
@@ -138,16 +149,23 @@ watch(
     }
 )
 
+watch(
+    () => classStore.classLevelInfoResponse,
+    async (data) => {
+      if (data) {
+        campusClassListData.value = data.data
+      }
+    },
+    {deep: true}
+)
 
 const fetchAssessmentAreaAndStudyPeriod = (classNumber) =>{
-
 
   let data = {
     curriculum_number:curriculumNumberParent,
     class_number:classNumber
   }
   assessmentStore.fetchAssessmentArea(data)
-  
 
   studyPeriodStore.fetchStudyPeriod(
       {
@@ -157,7 +175,15 @@ const fetchAssessmentAreaAndStudyPeriod = (classNumber) =>{
         school_number:schoolN
       }
   )
-  fetchStudents()
+
+  const targetClassNumber = classNumber
+
+  const foundNumber = campusClassListData.value
+      .map(level => level.classes)
+      .flat()
+      .find(cls => cls.class_number === targetClassNumber)?.number || null;
+  // alert("Class number found: " + foundNumber);
+       campusClassNumber.value = foundNumber
 }
 
 const fetchAssessmentMetricbyStudy = (studyP) =>{
@@ -167,10 +193,9 @@ const fetchAssessmentMetricbyStudy = (studyP) =>{
       assessment_area_number:assessment_area_number.value,
       class_number:class_number.value,
       campus_number:campusNumber
-
     }
      assessmentStore.fetchAssessmentMetrics(data)
-     fetchStudents()
+     // fetchStudents()
  
 }
 
@@ -362,13 +387,22 @@ watch(
     }
 )
 
-const addScore = (num,soln) => {
+const addScore = (num,soln,desc,studentN) => {
 
   let data = {
-    narrative_number:num,
+    narrative_schedule_number:narrative_schedule_number.value,
     suggested_solution:soln,
     reference_date:formData.reference_date,
     reference_time:formData.reference_time,
+    description:desc,
+    student_number:studentN,
+    assessment_area_number:assessment_area_number.value,
+    study_period_number:study_period_number.value,
+    class_number:class_number.value,
+    campus_number:campusNumber,
+    campus_class_number:campusClassNumber.value,
+    current_status:"Completed",
+    status:"Active"
   }
   // alert(JSON.stringify(data))
   narrativeStore.addNarrativeReport(data)
@@ -383,11 +417,23 @@ watch(
       }
     }
 )
+watch(
+    () => narrativeStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Success",data.error)
+      }
+    }
+)
+
+
+
 
 
 </script>
 
 <template>
+<!--  {{campusClassListData}}-->
 
 <AppModal title="Narrative Report" v-model="showDialog" xl6>
      <StudentNarativeReport 
@@ -546,11 +592,20 @@ watch(
 
             </td>
             <td>
-              <textarea   type="text" v-model="std.suggested_solution" class="form-control"
-                         style="outline: none 0 !important; box-shadow: none;"
-                          v-on:blur="addScore(std.number,std.suggested_solution)">
-              </textarea>
-
+              <div class="d-flex align-items-start gap-2">
+<!--                @blur="addScore(std.number, std.suggested_solution, std.narrative, std.number)"-->
+    <textarea
+        v-model="std.suggested_solution"
+        class="form-control"
+        style="outline: none !important; box-shadow: none; resize: vertical; min-height: 80px;"
+    >
+    </textarea>
+                <button
+                    class="btn btn-outline-primary btn-sm mb-0 mt-5"
+                    @click="addScore(std.number, std.suggested_solution, std.narrative, std.number)">
+                  Submit
+                </button>
+              </div>
             </td>
           </tr>        
           </tbody>

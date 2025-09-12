@@ -1,11 +1,24 @@
 <script setup>
 
-import {ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {useNarrativeStore} from "@/main/dashboard/narrative/narrativeComponents/store/narrativeStore.js";
 const narrativeStore = useNarrativeStore()
-
 const draftInfo = ref(null)
+const narrativeDataInfo = ref([])
 
+const props = defineProps({
+  narrativeInfo:{}
+})
+
+onMounted(
+    async () => {
+     getNarrativeInfo()
+    }
+)
+
+const getNarrativeInfo = () => {
+   narrativeDataInfo.value = props.narrativeInfo
+}
 
 watch (
     () => narrativeStore.printNarrativeResponse,
@@ -102,8 +115,19 @@ const narrativeData = ref([
 ] )
 
 
+watch (
+    () => props.narrativeInfo,
+    async (data) => {
+      if (data) {
+        getNarrativeInfo()
+      }
+    }
+)
+
+
 </script>
 <template>
+<!--  {{narrativeInfo}}-->
     <div style="padding-left:38px;padding-right:38px;">
     <div style="text-align: center; position: relative;">
       <div style="position: absolute; top: 0; right: 0; font-size: 11px; font-weight: bold;">
@@ -127,23 +151,23 @@ const narrativeData = ref([
     <table style="width: 100%; border-collapse: collapse; margin-top: 4px;margin-bottom: 7px;">
       <tr>
         <td style="border: 0px solid black; border-left: solid white; padding: 5px; font-weight: bold;width: 20%;">Child’s Surname:</td>
-        <td style="border: 0px solid black; padding: 5px; background-color: #ffff99;width: 30%;">{{draftInfo?.child_first_name}}</td>
+        <td style="border: 0px solid black; padding: 5px; background-color: #ffff99;width: 30%;text-transform:capitalize">{{draftInfo?.child_first_name}}</td>
         <td style="border: 1px solid black; padding: 5px; font-weight: bold;width: 20%;">Second name:</td>
-        <td style="border: 1px solid black; padding: 5px;width: 30%;">{{draftInfo?.child_second_name}}</td>
+        <td style="border: 1px solid black; padding: 5px;width: 30%;text-transform:capitalize">{{draftInfo?.child_second_name}}</td>
 
       </tr>
       <tr>
         <td style="border: 0px solid black; border-left: solid white; padding: 5px; font-weight: bold;width: 20%;">Registration Number:</td>
         <td style="border: 1px solid black; padding: 5px; width: 30%;border-left: 0px;">{{draftInfo?.registration_number}}</td>
-        <td style="border: 1px solid black; padding: 5px; font-weight: bold;">Date of Conference:</td>
+        <td style="border: 1px solid black; padding: 5px; font-weight: bold;">Date of Reference:</td>
         <td style="border: 1px solid black; padding: 5px;">{{draftInfo?.date_of_conference}}</td>
       
       </tr>
       <tr>
         <td style="border: 0px solid black; padding: 5px; font-weight: bold;">School:</td>
         <td style="border: 1px solid black; padding: 5px; background-color: #ffff99;border-left: 0px;">{{draftInfo?.school}}</td>
-        <td style="border: 1px solid black; padding: 5px; "></td>
-        <td style="border: 1px solid black; padding: 5px;"></td>
+        <td style="border: 1px solid black; padding: 5px; font-weight:bold">Class</td>
+        <td style="border: 1px solid black; padding: 5px;">{{draftInfo?.class}}</td>
      
       </tr>
     </table>
@@ -168,120 +192,34 @@ const narrativeData = ref([
             <th style="background-color: yellow; border: 1px solid black; padding: 5px;">SUBJECT CLUSTER</th>
             <th style="background-color: yellow; border: 1px solid black; padding: 5px;">SUBJECT CODE</th>
             <th style="background-color: #a6a6a6; border: 1px solid black; padding: 5px;">SUBJECT</th>
-<!--            <th style="background-color: #a6a6a6;border: 1px solid black; padding: 5px;">REFERENCE DATE</th>
-            <th style="background-color: #a6a6a6;border: 1px solid black; padding: 5px;">STATUS</th>
-            <th style="background-color: #a6a6a6;border: 1px solid black; padding: 5px;">CURRENT DATE</th>
-            <th style="background-color: #a6a6a6;border: 1px solid black; padding: 5px;">CURRENT STATUS</th>
-            <th style="background-color: #a6a6a6;border: 1px solid black; padding: 5px;">SUGGESTED ACTION</th>-->
         </tr>
 
 
 
-<!--          <tr style="font-size: 13px;" v-for="(info,idx) in draftInfo?.narrative_response_data" :key="key">
-            <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">
-              {{info?.learning_area}}
-            </td>
-            <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Acquire Knowledge Properly</td>
-            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.1</td>
-            <td style="background-color: #99cc66; border: 1px solid black; padding: 5px;">Listen</td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-          </tr>-->
-
-      <tr style="font-size: 13px;">
+      <tr style="font-size: 13px;"  v-for="(info, index) in narrativeDataInfo.narrative_response_data" :key="index">
+<!--        {{info}}-->
         <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1</td>
-        <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Learning to Care for the Mind (MENTAL STUDIES)</td>
-        <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Acquire Knowledge Properly</td>
-        <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.1</td>
+        <td style="background-color: yellow; border: 1px solid black; padding: 5px;">{{info.learning_area}}</td>
+        <td  style="background-color: yellow; border: 1px solid black; padding: 5px;">{{info.subject_cluster}}</td>
+        <td style="background-color: yellow; border: 1px solid black; padding: 5px;">{{info.subject_code}}</td>
         <td style="background-color: #99cc66; border: 1px solid black; padding: 5px;">
-
-          <div class="text-center text-lg">Listen</div>
-          <div style="border-top: 1px solid black; padding: 5px;">REFERENCE DATE: 2nd/7/2025</div>
-          <div style="border-top: 1px solid black; padding: 5px;">STATUS: Active</div>
+          <template v-for="(lst,idx) in info.narrative_response_rows" :key="idx">
+          <div class="text-center text-lg">{{lst.narration}}</div>
+          <div style="border-top: 1px solid black; padding: 5px;">REFERENCE DATE: {{lst.reference_date}}</div>
+            <div style="border-top: 1px solid black; padding: 5px;">REFERENCE TIME: {{lst.reference_time}}</div>
+          <div style="border-top: 1px solid black; padding: 5px;">STATUS: {{ lst.status }}</div>
           <div style="border-top: 1px solid black; padding: 5px;">CURRENT DATE: 2nd/7/2025 </div>
           <div style="border-top: 1px solid black; padding: 5px;">CURRENT STATUS: Inactive</div>
-          <div style="border-top: 1px solid black; padding: 5px;">SUGGESTED ACTION: any</div>
-
+          <div style="border-top: 1px solid black; padding: 5px;">SUGGESTED ACTION:
+            {{ lst.suggested_solution}}</div>
+          </template>
         </td>
-<!--        <td  style="border: 1px solid black; padding: 5px;"></td>-->
-<!--        <td  style="border: 1px solid black; padding: 5px;"></td>-->
-<!--        <td  style="border: 1px solid black; padding: 5px;"></td>-->
-<!--        <td  style="border: 1px solid black; padding: 5px;"></td>-->
-<!--        <td  style="border: 1px solid black; padding: 5px;"></td>-->
       </tr>
-<!--
-        <tr style="font-size: 13px;">
-            <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Learning to Care for the Mind (MENTAL STUDIES)</td>
-            <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Acquire Knowledge Properly</td>
-            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.1</td>
-            <td style="background-color: #99cc66; border: 1px solid black; padding: 5px;">Listen</td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-        </tr>
-
-        <tr style="font-size: 13px;">
-            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.2</td>
-            <td style="background-color: #99cc66; border: 1px solid black; padding: 5px;">History</td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-        </tr>
-        <tr style="font-size: 13px;">
-            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.3</td>
-            <td style="background-color: #99cc66; border: 1px solid black; padding: 5px;">Geography</td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-        </tr>
-
-       
-        <tr style="font-size: 13px;">
-            <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Learning to Care for the Mind (MENTAL STUDIES)</td>
-            <td rowspan="3" style="background-color: yellow; border: 1px solid black; padding: 5px;">Acquire Knowledge Properly</td>
-            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.1</td>
-            <td style="background-color: #99cc66; border: 1px solid black; padding: 5px;">Listen</td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-        </tr>
-       
-
-        <tr style="font-size: 13px;">
-            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.2</td>
-            <td style="background-color: #99cc66; border: 1px solid black; padding: 5px;">History</td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-        </tr>
-        <tr style="font-size: 13px;">
-            <td style="background-color: yellow; border: 1px solid black; padding: 5px;">1.1.3</td>
-            <td style="background-color: #99cc66; border: 1px solid black; padding: 5px;">Geography</td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-            <td  style="border: 1px solid black; padding: 5px;"></td>
-        </tr>-->
     </table>
   </div>
 
 
   <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%; font-family: Arial, sans-serif;">
-    
     <!-- Left Section -->
     <div style="width: 48%; border-top: 2px solid black; padding-top: 5px;">
         <h3 style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">PERSON CONDUCTING CONFERENCE</h3>
