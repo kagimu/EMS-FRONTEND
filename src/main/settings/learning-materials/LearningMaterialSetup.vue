@@ -54,10 +54,7 @@ const deleteClass = async (data, index) => {
   deletionLoader.value = index
   const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+data.name);
   if (agreed) {
-    let info = {
-      number:data.number
-    }
-    await resourceStore.deleteClassInfo(info)
+    await resourceStore.deleteClassInfo(data.number)
   }
 }
 
@@ -72,6 +69,7 @@ watch(
     () => resourcesStore.addMaterialResponse,
     async (data) => {
       if (data) {
+        newMaterialDialog.value = false
         await resourcesStore.fetchLearningMaterials()
         notificationStore.successToast("Success", data.message)
       }
