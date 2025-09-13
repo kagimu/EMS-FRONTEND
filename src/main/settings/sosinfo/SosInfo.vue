@@ -1,6 +1,6 @@
 
 <script setup>
-import {onMounted,reactive, ref, watch} from "vue";
+import {onMounted,reactive, ref, watch,computed} from "vue";
 import {useSosStore} from  "@/main/settings/sosinfo/store/sos.js";
 import SosInformation from './SosInformation.vue';
 import useNotificationStore from "@/composables/useNotification.js";
@@ -20,6 +20,7 @@ let errorMessage = ref(null)
 const sosNumber = ref(null)
 
 const sosInfoDialog = ref(false)
+const sortedSosInfoList = ref([])
 
 function setSosNumber(sosN){
   sosNumber.value = sosN
@@ -27,10 +28,12 @@ function setSosNumber(sosN){
 }
 
 const form = reactive({
-  name:null
+  name:null,
+  code:null
 })
 
 const addSos = () => {
+  form.code = parseInt(form.code)
   sosInfo.newSosInfo(form)
 }
 
@@ -57,7 +60,9 @@ watch(
     async (data) => {
       if(data){
         sosInfoList.value = data.data
+
         // await sosInfo.fetchSosInfo()
+        sortedSosInfoList.value = sosInfoList.value.sort((a, b) => a.code - b.code);
       }
     },
     {deep:true}
@@ -152,6 +157,18 @@ watch(
 
 
         <div class="mb-3">
+          <label class="form-label small">Code<span class="text-danger">*</span></label>
+          <input
+              @keypress="commons.codeValidator($event)"
+              maxlength="10"
+              type="text"
+              v-model="form.code"
+              required
+              @paste.prevent
+              class="form-control form-select-sm shadow-none">
+        </div>
+
+        <div class="mb-3">
           <label class="form-label small">Source of Info <span class="text-danger">*</span></label>
           <input
               type="text"
@@ -178,13 +195,16 @@ watch(
         <table class="table table-hover table-sm align-middle text-sm">
           <thead class="table-light">
           <tr>
+            <th>Code</th>
             <th>Name</th>
             <th style="width: 100px;">Action</th>
           </tr>
           </thead>
           <tbody>
 <!--          {{sosInfoList}}-->
-          <tr v-for="(SosInfo, index) in sosInfoList" :key="index">
+          <tr v-for="(SosInfo, index) in sortedSosInfoList" :key="index">
+
+            <td>{{SosInfo.code}}</td>
             <td>{{ SosInfo.name }}</td>
             <td>
               <div class="d-flex gap-2">

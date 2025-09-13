@@ -193,7 +193,7 @@ const filteredBillableData = computed(() => {
       >
         <thead>
           <tr>
-            <th>No.</th>
+            <th>Code</th>
             <th>Amount</th>
             <th>Campus</th>
              <th>Academic Year</th>
@@ -212,7 +212,7 @@ const filteredBillableData = computed(() => {
           <!-- {{ billableData }} -->
          <tr  v-for="(list, index) in  filteredBillableData" :key="index" >
         
-          <td class="w-2">{{ index+1 }}</td>
+          <td class="w-2">{{ list.code }}</td>
           <td>{{ list.total_amount?.toLocaleString() }}</td>
           <td>{{ list.campus_name }}</td>
            <td>{{list.academic_year_name}}</td>

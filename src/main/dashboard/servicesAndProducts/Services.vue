@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted,reactive, ref, watch} from "vue";
+import {computed, onMounted, reactive, ref, watch} from "vue";
 import useNotificationStore from "@/composables/useNotification.js"
 import NewService from "./NewService.vue"
 import UpdateService from "./UpdateService.vue"
@@ -132,6 +132,7 @@ const gotoPage = (page) => {
   currentPage.value = page
 }
 
+const sortedServiceList = ref([])
 
 watch(
     [() => serviceStore.servicesListResponse, () => currentPage.value],
@@ -140,7 +141,14 @@ watch(
         totalPages.value = Math.ceil(newData.length / itemsPerPage)
         const startIndex = (currentPageValue - 1) * itemsPerPage
         const endIndex = startIndex + itemsPerPage;
-        servicesList.value = newData.slice(startIndex, endIndex)
+        // servicesList.value = newData.slice(startIndex, endIndex)
+
+        servicesList.value = newData
+            .slice()
+            .sort((a, b) => a.item.code - b.item.code)
+            .slice(startIndex, endIndex)
+
+
       }
     },
     { deep: true }
@@ -239,6 +247,7 @@ watch (
           </tr> 
         </thead>
         <tbody>
+<!--        {{sortedServiceList}}-->
           <tr v-for="(serviceData, index) in servicesList" :key="index" >
             <td>{{ serviceData?.item?.code }}</td>
             <td>{{ serviceData.item.serial_code}}</td>

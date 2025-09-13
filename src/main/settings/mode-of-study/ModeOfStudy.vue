@@ -200,7 +200,7 @@ watch (
     >
     <thead >
         <tr>
-            <th>#</th>
+            <th>Code</th>
         <th>Name</th>
         <th>Action</th>
         </tr>
@@ -208,7 +208,7 @@ watch (
     <tbody>
        
       <tr v-for="(list, index) in modeOfSchoolData" :key="index">
-        <td>{{ index+1 }}</td>
+        <td>{{ list?.code }}</td>
       <td>{{ list?.name }}</td>
       <td>
         <button v-if="can('edit_mode_of_study','general')"  @click="editModeOfStudy(list)" data-bs-toggle="offcanvas" aria-controls="rolesDialogg">

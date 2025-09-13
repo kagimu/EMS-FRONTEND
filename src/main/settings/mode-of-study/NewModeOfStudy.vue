@@ -25,9 +25,9 @@ const props = defineProps(
 
 
 const form = reactive({
-//   code:null,
+  code:null,
   name:null,
-  school_number:null
+  school_number:null,
 })
 
 onMounted(() => {
@@ -51,6 +51,7 @@ const checkModeOfStudyInfo = () => {
         // form.code = draft?.code
         form.name = draft?.name
         form.school_number = draft?.school_number
+    form.code = draft?.code
         mode_of_study_number.value = draft?.mode_of_study_number
   }
 }
@@ -59,7 +60,7 @@ const checkModeOfStudyInfo = () => {
 const createModeOfStudy = () => {
 
   buttonLoader.value = true
-//   form.code = parseInt(form.code)
+  form.code = parseInt(form.code)
 
   if(mode_of_study_number.value){
     form.mode_of_study_number = mode_of_study_number.value
@@ -129,6 +130,16 @@ watch (
 <form @submit.prevent="createModeOfStudy">
 <div class="">
 
+  <div class="mb-2">
+    <label class="text-sm"><small>Code</small></label>
+    <input
+        v-model="form.code"
+        @keypress="commons.codeValidator($event)"
+        maxlength="10"
+        @paste.prevent
+        type="text"
+        required class="form-control shadow-none">
+  </div>
 
   <div class="mb-2">
   <label class="text-sm"><small>School</small> </label>
@@ -142,16 +153,7 @@ watch (
     </option>
   </select>
 </div>
-         <!-- <div class="mb-2">
-            <label class="text-sm"><small>Code</small></label>
-            <input
-            v-model="form.code"
-            @keypress="commons.codeValidator($event)"
-            maxlength="10"
-            @paste.prevent
-            type="text"
-            required class="form-control shadow-none">
-        </div> -->
+
 
 
             <div class="mb-2">
