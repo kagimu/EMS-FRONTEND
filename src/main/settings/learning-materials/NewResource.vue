@@ -111,7 +111,10 @@ const addLevel = () => {
   loader.value = true
 
   const formData = new FormData();
-  formData.set("file", excel_file.value.files[0]);
+
+  if(excel_file.value?.files[0]){
+    formData.set("file", excel_file.value?.files[0]);
+  }
   formData.set("category", form.category);
   formData.set("sub_category", form.sub_category);
   formData.set("code", form.code);
