@@ -89,7 +89,7 @@ export const useLearningMaterialStore = defineStore("learningMaterial", () => {
 
 
     async function deleteClassInfo(data) {
-        return await api.delete("main/learning-materials", data)
+        return await api.delete("main/learning-materials/"+data)
             .then((response) => {
                 deleteClassInfoResponse.value = response.data
             })
