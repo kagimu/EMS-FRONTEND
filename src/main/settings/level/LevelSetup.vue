@@ -65,8 +65,6 @@ if (agreed) {
   }
   await levelStore.deleteLevelSetUp(info)
 }
-
-
 }
 
 
