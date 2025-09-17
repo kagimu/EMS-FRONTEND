@@ -67,6 +67,7 @@ assessment_area_number:"",
 study_period_number:"",
 campus_class_number:"",
 reference_date:"",
+  suggested_solution:"",
 reference_time:"",
   current_status:"Completed",
   status:"Active"
@@ -190,7 +191,7 @@ const  saveNarrativeReport = async (data) => {
       .catch((error) => {
         if(error && error.response) {
           buttonLoader.value = false;
-          notificationStore.errorToast("Error",data.error)
+          notificationStore.errorToast("Error",error.response.data.error)
         }
       });
 }
@@ -249,7 +250,7 @@ watch (
     async (data) => {
       if (data) {
         buttonLoader.value = false;
-        notificationStore.errorToast("Error",data.error)
+        notificationStore.errorToast("Error",data.message)
       }
     }
 )
@@ -501,19 +502,19 @@ watch (
                   </select>
                 </div>
 
-               <div class="mb-2" v-if="narrativeWithSchedule">
-                  <label class="text-sm"><small>Narrative Schedule</small></label>
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
-                      v-model="formData.narrative_schedule_number	"
-                  >
-                    <option disabled :value="null">&#45;&#45;Select Narrative Schedule&#45;&#45;</option>
-                    <option v-for="(narrativeData, index) in narrativeSchedulesList " :key="index" :value="narrativeData.number">
-                      {{ narrativeData.description }} - {{  narrativeData.class }} - {{ narrativeData.scheduled_on }} - {{ narrativeData.study_period	 }}
-                    </option>
-                  </select>
-                </div>
+<!--               <div class="mb-2" >-->
+<!--                  <label class="text-sm"><small>Narrative Schedule</small></label>-->
+<!--                  <select-->
+<!--                      style="box-shadow: none;"-->
+<!--                      class="form-select form-select-sm"-->
+<!--                      v-model="formData.narrative_schedule_number	"-->
+<!--                  >-->
+<!--                    <option disabled :value="null">&#45;&#45;Select Narrative Schedule&#45;&#45;</option>-->
+<!--                    <option v-for="(narrativeData, index) in narrativeSchedulesList " :key="index" :value="narrativeData.number">-->
+<!--                      {{ narrativeData.description }} - {{  narrativeData.class }} - {{ narrativeData.scheduled_on }} - {{ narrativeData.study_period	 }}-->
+<!--                    </option>-->
+<!--                  </select>-->
+<!--                </div>-->
 
                 
                 <div class="mb-2">
@@ -532,10 +533,14 @@ watch (
 <!--                </div>-->
 
                 <div class="mb-2">
-                  <label class="text-xs"><small>Description</small></label>
+                  <label class="text-xs"><small>Description/Score</small></label>
                   <textarea v-model="formData.description" class="form-control shadow-none" style="height: 100px"></textarea>
                 </div>
 
+                <div class="mb-2">
+                  <label class="text-xs"><small>Suggested Solution</small></label>
+                  <textarea v-model="formData.suggested_solution" class="form-control shadow-none" style="height: 100px"></textarea>
+                </div>
 
               </div>
 

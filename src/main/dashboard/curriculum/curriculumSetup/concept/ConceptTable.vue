@@ -319,44 +319,6 @@ watch(
       <new-concept :conceptNo="conceptNumber"></new-concept>
     </AppModal>
 
-    <!--
-        <AppModal title="Concepts" v-model="showExpandConceptModal">
-          show Expand Concept Modal
-        </AppModal>-->
-<!--
-    <div class="modal fade" id="subjectModal" tabindex="-1" :class="{ show: conceptDialog }" aria-labelledby="" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header text-sm p-0">
-            <h6 class="modal-title ml-3 mt-2 mb-2">{{conceptEditMode ? "Edit" : "Add"}} Concept</h6>
-            <button style="margin-right: 5px;" type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 mb-2">
-              <new-concept></new-concept>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>-->
-
-
-<!--    <div class="flex justify-content-between mt-3">
-      <div class="ml-4">Concept</div>
-
-      <div>
-        <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="expandConceptUi">
-          <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-          Expand
-        </button>
-        <button type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addConcept" data-bs-toggle="modal" data-bs-target="#subjectModal">
-          <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-          Add Concept
-        </button>
-      </div>
-    </div>-->
-
 
     <div class="row">
       <div class="col-12">

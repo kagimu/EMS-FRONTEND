@@ -1,7 +1,7 @@
 <script setup>
 
 import {useReportSetupStore} from "@/main/dashboard/manageLevel/report_setup/report_forms/store/report_setup_store.js";
-import {onMounted, ref, watch} from "vue";
+import {onMounted, ref, watch,reactive} from "vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useAssessmentStore} from "@/main/dashboard/assessment/store/assessment.js";
 import {useLevelStore} from "@/main/settings/level/store/level.js";
@@ -15,6 +15,7 @@ import AppModal from "@/components/AppModal.vue";
 import {useApplicationStore} from "@/main/application/applicationComponents/store/application.js";
 
 import StudentNarativeReport from "@/main/dashboard/profiles/studentProfile/StudentNarativeReport.vue";
+import {useNarrativeStore} from "@/main/dashboard/narrative/narrativeComponents/store/narrativeStore.js";
 
 const schoolStore = useSchoolStore()
 const notificationStore  = useNotificationStore()
@@ -57,17 +58,39 @@ const applicationStore = useApplicationStore()
 const student_number = ref(null)
 const studentCheckerList = ref(false)
 const NarrativeReportList = ref(false)
-
+const narrativeStore = useNarrativeStore()
+const narrativeSchedulesList = ref([])
+const narrative_schedule_number = ref("")
+const narrativeStudentsList = ref([])
+const campusClassListData = ref([])
+const campusLevelNumber = ""
+const campusClassNumber = ref(null)
 
 
 onMounted(
     async () => {
-      schoolStore.fetchSchools()
+      await schoolStore.fetchSchools()
       fetchCampusLevel()
-      getStudentNumber()
+      // getStudentNumber()
+      filterClassInfo()
      
     }
 )
+
+const filterClassInfo = () => {
+  classStore.fetchClassLevel({campusCurriculumNumber: campus_curriculum_number, campusLevelNumber:(campusLevelNumber?campusLevelNumber:'')})
+}
+
+const now = new Date();
+const formattedDate = now.toISOString().slice(0, 10)
+const formattedTime = now.toTimeString().slice(0, 5)
+
+const formData = reactive({
+  reference_date:formattedDate,
+  reference_time:formattedTime,
+  current_status:"Completed",
+  status:"Active"
+})
 
 
 const addNarrativeReport = (number) => {
@@ -75,19 +98,7 @@ const addNarrativeReport = (number) => {
     applicationStore.fetchStudent(number)
 }
 
-
-
 const maxScore = ref(null)
-
-const fetchStudents = (assessmentMetricNumber) => {
-  if(assessmentMetricNumber){
-   let result = metricListData.value.find((item) => item.number === assessmentMetricNumber)
-   maxScore.value = result.max_score
-   
-    reportSetupStore.fetchStudentByAssessmentMetric(assessmentMetricNumber)
-  }
-}
-
 
 const fetchCampusLevel = () => {
   classStore.fetchCampusLevel(campus_curriculum_number)
@@ -138,16 +149,23 @@ watch(
     }
 )
 
+watch(
+    () => classStore.classLevelInfoResponse,
+    async (data) => {
+      if (data) {
+        campusClassListData.value = data.data
+      }
+    },
+    {deep: true}
+)
 
 const fetchAssessmentAreaAndStudyPeriod = (classNumber) =>{
-
 
   let data = {
     curriculum_number:curriculumNumberParent,
     class_number:classNumber
   }
   assessmentStore.fetchAssessmentArea(data)
-  
 
   studyPeriodStore.fetchStudyPeriod(
       {
@@ -157,7 +175,15 @@ const fetchAssessmentAreaAndStudyPeriod = (classNumber) =>{
         school_number:schoolN
       }
   )
-  fetchStudents()
+
+  const targetClassNumber = classNumber
+
+  const foundNumber = campusClassListData.value
+      .map(level => level.classes)
+      .flat()
+      .find(cls => cls.class_number === targetClassNumber)?.number || null;
+  // alert("Class number found: " + foundNumber);
+       campusClassNumber.value = foundNumber
 }
 
 const fetchAssessmentMetricbyStudy = (studyP) =>{
@@ -167,10 +193,9 @@ const fetchAssessmentMetricbyStudy = (studyP) =>{
       assessment_area_number:assessment_area_number.value,
       class_number:class_number.value,
       campus_number:campusNumber
-
     }
      assessmentStore.fetchAssessmentMetrics(data)
-     fetchStudents()
+     // fetchStudents()
  
 }
 
@@ -317,10 +342,98 @@ watch(
 
 
 
+const doFetchNarrativeSchedules = async (assessmentArea) => {
+  // narrativeSchedulesList.value.splice(0)
+  let data = {
+    class_number:class_number.value,
+    academic_year_number:academic_year_number.value,
+    study_period_number:study_period_number.value,
+    assessment_area_number:assessmentArea,
+    campus_number:campusNumber,
+    curriculum_number:curriculumNumberParent,
+  }
+  await narrativeStore.fetchNarrativeSchedules(data)
+}
+
+watch(
+    () => narrativeStore.narrativeResponse,
+    async (data) => {
+      if(data){
+        narrativeSchedulesList.value = data.data
+      }
+    }
+)
+
+
+const fetchStudents = (NarrativeScheduleNumber) => {
+  let data = {
+    narrative_schedule_number:NarrativeScheduleNumber,
+    class_number:class_number.value,
+    academic_year_number:academic_year_number.value,
+    study_period_number:study_period_number.value,
+    assessment_area_number:assessment_area_number.value,
+    campus_number:campusNumber,
+    curriculum_number:curriculumNumberParent,
+  }
+ narrativeStore.fetchStudentsOnNarrativeSchedules(data)
+}
+
+watch(
+    () => narrativeStore.studentsOnNarrativeResponse,
+    async (data) => {
+      if(data){
+        narrativeStudentsList.value = data.data
+      }
+    }
+)
+
+const addScore = (num,soln,desc,studentN) => {
+
+  let data = {
+    narrative_schedule_number:narrative_schedule_number.value,
+    suggested_solution:soln,
+    reference_date:formData.reference_date,
+    reference_time:formData.reference_time,
+    description:desc,
+    student_number:studentN,
+    assessment_area_number:assessment_area_number.value,
+    study_period_number:study_period_number.value,
+    class_number:class_number.value,
+    campus_number:campusNumber,
+    campus_class_number:campusClassNumber.value,
+    current_status:"Completed",
+    status:"Active"
+  }
+  // alert(JSON.stringify(data))
+  narrativeStore.addNarrativeReport(data)
+}
+
+
+watch(
+    () => narrativeStore.addNarrativeReportResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success",data.message)
+      }
+    }
+)
+watch(
+    () => narrativeStore.errorMessage,
+    async (data) => {
+      if(data){
+        notificationStore.errorToast("Success",data.error)
+      }
+    }
+)
+
+
+
+
 
 </script>
 
 <template>
+<!--  {{campusClassListData}}-->
 
 <AppModal title="Narrative Report" v-model="showDialog" xl6>
      <StudentNarativeReport 
@@ -400,7 +513,7 @@ watch(
               style="box-shadow: none;"
               class="form-select form-select-sm"
               v-model="assessment_area_number"
-              @change="fetchAssessmentMetricsByArea(assessment_area_number)"
+              @change="doFetchNarrativeSchedules(assessment_area_number)"
           >
             <option disabled value="">Select</option>
             <option v-for="(list, index) in assessmentListData" :key="index" :value="list.number">{{ list.name }}
@@ -414,16 +527,34 @@ watch(
           <select
               style="box-shadow: none;"
               class="form-select py-10"
-              v-model="assessmentMetricNumber"
-              @change="fetchStudents(assessmentMetricNumber)">
-            <option class="text-[13px]" disabled value="">--Select Assessment Schedule--</option>
+              v-model="narrative_schedule_number"
+              @change="fetchStudents(narrative_schedule_number)">
+            <option class="text-[13px]" disabled value="">--Select Narrative Schedule--</option>
 
-            <option class="text-[13px]" v-for="(list, index) in metricListData" :key="index" :value="list.number">
-              {{list.description + " [ " +list.metric_name + " ] " + " ( "+ list.assessment_area +" ) "}}
+            <option class="text-[13px]" v-for="(list, index) in narrativeSchedulesList" :key="index"
+                    :value="list.number">
+              {{list.description + " [ " +list.assessment_area + " ] " + " ( "+ list.scheduled_on +" ) "}}
             </option>
           </select>
         </div>
       </div>
+
+      <div class="mb-2 col-3">
+        <label class="text-sm"><small>Reference Date</small></label>
+        <input type="date" class="form-control" v-model="formData.reference_date">
+
+      </div>
+
+      <div class="mb-2 col-3">
+        <label class="text-xs"><small>Time</small></label>
+        <input type="time" class="form-control" v-model="formData.reference_time">
+      </div>
+
+<div class="row">
+
+
+</div>
+
 
     </div>
 
@@ -433,17 +564,19 @@ watch(
 
       <div class="col-12">
 
+<!--        {{narrativeStudentsList}}-->
 
         <table class="table table-hover caption-top mt-5 table-sm text-sm" style="font-size: 14px;">
           <thead>
           <tr>
             <th class="w-[2%]">#</th>
-            <th class="w-[80%]">Name</th>
-            <th>#</th>
+            <th class="w-[18%]">Name</th>
+            <th class="w-[40%]">Description/Score</th>
+            <th class="w-[40%]">Suggested Solution</th>
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(std, index) in studentsList" :key="index">
+          <tr v-for="(std, index) in narrativeStudentsList" :key="index">
             <td> {{(index + 1)}}</td>
             <td class="uppercase text-sm">
               {{std.student_surname ? std.student_surname : ""}}
@@ -452,8 +585,27 @@ watch(
             </td>
           
             <td>
-              <button class="btn btn-success btn-sm mb-2" 
-              @click="addNarrativeReport(std.number)"> Narrative Report</button>
+              <textarea   type="text" v-model="std.narrative" class="form-control "
+                         style="outline: none 0 !important; box-shadow: none;"
+                          >
+              </textarea>
+
+            </td>
+            <td>
+              <div class="d-flex align-items-start gap-2">
+<!--                @blur="addScore(std.number, std.suggested_solution, std.narrative, std.number)"-->
+    <textarea
+        v-model="std.suggested_solution"
+        class="form-control"
+        style="outline: none !important; box-shadow: none; resize: vertical; min-height: 80px;"
+    >
+    </textarea>
+                <button
+                    class="btn btn-outline-primary btn-sm mb-0 mt-5"
+                    @click="addScore(std.number, std.suggested_solution, std.narrative, std.number)">
+                  Submit
+                </button>
+              </div>
             </td>
           </tr>        
           </tbody>

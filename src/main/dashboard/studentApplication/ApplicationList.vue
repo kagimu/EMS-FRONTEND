@@ -104,8 +104,6 @@
   onMounted(() => {
         // doFetchApplication()
         schoolStore.fetchSchools()
-
-
         let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
   let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
   let defaultCampusCurriculumNo =   localStorage.getItem("defaultCampusCurriculumNo")
@@ -133,39 +131,75 @@
       }
 
   )
+
+  const updateFormFields = () => {
+    form.campus_number = ""
+    form.curriculumNumber = ""
+    form.level = ""
+    form.campus_class_number = ""
+    form.statusData = ""
+
+    // campusList.value = []
+    classList.value = []
+    curriculumList.value=[]
+    levelList.value = []
+  }
   
   const fetchCampuses = (school_number) => {
     campusStore.fetchCampuses(school_number)
+    updateDefaultFilters()
+    updateFormFields()
     doFetchApplication()
   }
   
   const fetchClasses = (campus_number) => {
+
+    form.curriculumNumber = ""
+    form.level = ""
+    form.campus_class_number = ""
+    form.statusData = ""
+
+    // campusList.value = []
+    // classList.value = []
+    // curriculumList.value=[]
+    levelList.value = []
+
+    localStorage.setItem("defaultCampusNo", form.campus_number)
+    localStorage.removeItem("defaultCampusCurriculumNo")
+
     doFetchApplication()
     campusStore.fetchClassesByCampus(campus_number)
     levelStore.fetchCampusCurriculum(campus_number)
   }
 
   const fetchCampusLevel = (curriculumNumber) => {
+    form.level = ""
+    form.campus_class_number = ""
+    form.statusData = ""
+    localStorage.setItem("defaultCampusCurriculumNo",curriculumNumber)
+
     doFetchApplication()
    classStore.fetchCampusLevel(curriculumNumber)
-   updateDefaultFilters()
+   // updateDefaultFilters()
 }
   
 const updateDefaultFilters = () => {
-  commons.updateDefaultFilters({
-    schoolNumber: form.school_number,
-    campusNumber: form.campus_number,
-    campusCurriculumNumber: form.curriculumNumber
-  })
+  localStorage.setItem("defaultSchoolNo", form.school_number)
+  localStorage.removeItem("defaultCampusNo")
+  localStorage.removeItem("defaultCampusCurriculumNo")
 }
 
   const fetchAcademicYear = (campusN) =>{
+    form.statusData = ""
+    localStorage.setItem("defaultCampusCurriculumNo",curriculumNumber)
     doFetchApplication()
   academicYearStore.fetchAcademicYearByCampus(campusN)
   classStore.fetchClassStreams(campusN)
   }
 
   const fetchLevelClasses = (levelNumber) => {
+    form.campus_class_number = ""
+    form.statusData = ""
     doFetchApplication()
    classStore.fetchClassLevel({campusCurriculumNumber: form.curriculumNumber, campusLevelNumber: levelNumber})
 }
@@ -215,6 +249,7 @@ const updateDefaultFilters = () => {
     async (data) => {
         if (data) {
           streamList.value = data.data
+          form.statusData = ""
         }
     },
     {deep: true}
@@ -323,6 +358,7 @@ const updateDefaultFilters = () => {
     async (data) => {
         if (data) {
             schoolList.value = data.data
+
         }
     },
     {deep: true}
@@ -381,7 +417,8 @@ const updateDefaultFilters = () => {
     () => classStore.campusLevelResponse,
     async (data) => {
       if(data){
-        levelList.value = data.data 
+        levelList.value = data.data
+        classList.value = []
       }
     }
 )

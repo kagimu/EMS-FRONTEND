@@ -78,7 +78,10 @@ watch(
     async (data) => {
       if(data){
         await schoolStore.fetchSchools()
+        // productsList.value = data
         productsList.value = data
+            .slice()
+            .sort((a, b) => a.item.code - b.item.code)
       }
     },
     {deep:true}

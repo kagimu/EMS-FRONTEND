@@ -3,6 +3,7 @@ import VictoriousReportPrimary from "@/main/dashboard/ReportCenter/victorious/Vi
 import BabyClassReport_ from "@/main/dashboard/ReportCenter/BabyClassReport_.vue";
 import TopClassReport_ from "@/main/dashboard/ReportCenter/TopClassReport_.vue";
 import PrimaryReport_ from "@/main/dashboard/ReportCenter/PrimaryReport_.vue";
+import SecondaryReport from "@/main/dashboard/ReportCenter/SecondaryReport.vue";
 
 const props = defineProps({
   reportTemplateName:String
@@ -12,7 +13,6 @@ const props = defineProps({
 
 <template>
 <div>
-
   <div v-if="reportTemplateName.trim() === 'wholesome-early-learning-report-baby-class'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
     <baby-class-report_></baby-class-report_>
     <br />
@@ -30,6 +30,10 @@ const props = defineProps({
 
   <div  v-else-if="reportTemplateName.trim() === 'victorious-report-primary'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
     <victorious-report-primary></victorious-report-primary>
+  </div>
+
+  <div  v-else-if="reportTemplateName.trim() === 'wholesome-report-secondary'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
+    <secondary-report></secondary-report>
   </div>
 
   <div v-else>

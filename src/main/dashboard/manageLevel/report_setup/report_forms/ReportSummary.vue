@@ -46,6 +46,7 @@ const total_rows = ref(0)
  const tableLoader = ref(true)
 const reportSummaryData = ref([])
 
+
 onMounted(
     async () => {
        doFilterReportSummary()
@@ -53,15 +54,14 @@ onMounted(
     }
 )
 
-const showStudentReport = (summary) => {
-  if(summary) {
+const showStudentReport =  (summary) => {
+  if (summary) {
     showStudentsMarks.value = true
-    reportSummaryData.value = summary
-
-    let data = {
-      report_summary_number:summary.number,
+    reportSummaryData.value = summary;
+    const data = {
+      report_summary_number: summary.number,
     }
-    reportStore.fetchReportDetailsInfo(data)
+     reportStore.fetchReportDetailsInfo(data);
   }
 }
 
@@ -272,10 +272,11 @@ watch(
 <template>
    <div>
 
- 
-     <AppModal title="Preview Report" v-model="showStudentsMarks" xl6>
-       <manage-report-details :reportData="reportSummaryData"></manage-report-details>
+
+     <AppModal  title="Preview Report" v-model="showStudentsMarks" xl6>
+       <manage-report-details :reportData="reportSummaryData"  @stopLoader="stopLoader"></manage-report-details>
      </AppModal>
+
 
      <AppModal title="Add Teachers Comment" v-model="showAddCommentModal" lg>
         <NewCommentFromTeacher :reportSummaryNumber="reportSummaryNumber"></NewCommentFromTeacher>
@@ -398,6 +399,7 @@ watch(
                            <button
                               @click="showStudentReport(summary)"
                               type="button"
+
                               class="bg-green-800 text-white rounded-sm px-3 text-[12px]">
                            View Report
                            </button>
@@ -415,4 +417,18 @@ watch(
    </div>
 </template>
 <style scoped>
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 </style>

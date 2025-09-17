@@ -394,7 +394,7 @@ const props = defineProps({
                   CLASS TEACHER'S COMMENT:
                 </td>
                 <td>
-                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top:10px;">{{reportDetails?.teacher_comment}}</div>
+                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top:10px;">{{reportDetails?.teachers_comment}}</div>
                 </td>
               </tr>
 

@@ -160,8 +160,10 @@ watch (
         localStorage.setItem("studentNumber", data.data.number)
         buttonLoader.value = false
         // assessmentStore.fetchAssessmentAreaByClass(form.class_number)
-        //         alert(JSON.stringify(data.data.application_number))
-        emit("next", {id:data.data.application_number, step:2})
+        //         alert(JSON.stringify(data.data))
+        notificationStore.successToast("Success", data.message)
+        // alert(JSON.stringify(data.data))
+        emit("next", {id:data.data, step:2})
 
         let dataa = {
           page: page.value,
@@ -385,8 +387,9 @@ watch(
           </div>
           <div class="col-6">
             <div class="mb-2">
-              <label class="text-sm"><small>How did you know about us ? </small> </label>
+              <label class="text-sm"><small>How did you know about us ? <span class="star">*</span></small> </label>
               <select
+                  required
                   style="box-shadow: none;"
                   class="form-select form-select-sm"
                   v-model="form.source_of_school_info">

@@ -68,23 +68,27 @@ onMounted(
 
 const getClassTeacherComments = () => {
   let draft = props.classTeacherCommentList
-  if(draft) {
-    // { "number": "0f17c60c-3ab9-4e03-b39d-47fb7824d29b",
-    //     "comment": "Excellent Performance",
-    //     "user_number": "9691ee13-09f4-4f80-8072-dcc48fc18d3b",
-    //     "study_period": "Term 01",
-    //     "study_period_number": "6cb0216d-4ce1-4f21-bd25-446f9ed30e2c",
-    //     "campus_class_number": "78a6f089-6f7a-4ef9-b6db-94eaa75012e2",
-    //     "class_name": "Primary Three",
-    //     "academic_year": "School Year 2025- Middle and Upper Primary",
-    //     "academic_year_number": "a4ad1fcf-8a5c-4695-b917-c24d87aa268f",
-    //     "teacher_name": "Mwesigwa Inconvenience" }
-        study_period_number.value
-        class_number.value = draft.campus_class_number
-        comment.value = draft.comment
-        date.value = draft
+if(draft) {
+      campus_level_number.value = draft.level_number
+      study_period_number.value
+      class_number.value = draft.campus_class_number
+      comment.value = draft.comment
+      date.value = draft
+
+
   }
 }
+
+watch(
+    () => props.classTeacherCommentList,
+    async (data) => {
+      if (data) {
+        getClassTeacherComments()
+      }
+    },
+    {deep: true}
+)
+
 
 const maxScore = ref(null)
 
@@ -351,14 +355,28 @@ watch(
 
 const addNewClassTeacherComment = () => {
   buttonLoader.value = true
-  let data = {
-    study_period_number:study_period_number.value,
-    campus_class_number:class_number.value,
-    comment:comment.value,
-    date:date.value,
-    campus_number:campusNumber
+
+  if(props.classTeacherCommentList){
+    let data = {
+      study_period_number:study_period_number.value,
+      campus_class_number:class_number.value,
+      comment:comment.value,
+      date:date.value,
+      campus_number:campusNumber,
+      class_teacher_comment_number: props.classTeacherCommentList.number
+    }
+    teacherCommentStore.updateClassTeacherComment(data)
+  }else {
+    let data = {
+      study_period_number:study_period_number.value,
+      campus_class_number:class_number.value,
+      comment:comment.value,
+      date:date.value,
+      campus_number:campusNumber
+    }
+    teacherCommentStore.newClassTeacherComment(data)
   }
-  teacherCommentStore.newClassTeacherComment(data)
+
 }
 
 
@@ -380,16 +398,29 @@ watch(
     },
     {deep:true}
 )
+
+watch(
+    () => teacherCommentStore.updateClassTeacherCommentResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success",data.message)
+      }
+    },
+    {deep:true}
+)
 </script>
 
 <template>
 
-  <div>
-    {{classTeacherCommentList}}
+  n<div>
+
 
     <form @submit.prevent="addNewClassTeacherComment()">
       <div class="row bg-white mx-auto mt-2">
         <div class="mb-2">
+          {{campus_level_number}}
+<!--          ...........<br>-->
+<!--          {{campusLevelList}}-->
           <label class="text-sm"><small>Level</small></label>
           <select
               style="box-shadow: none;"
@@ -424,7 +455,6 @@ watch(
               class="form-select form-select-sm" required
               v-model="class_number"
               @change="fetchAssessmentAreaAndStudyPeriod(class_number)"
-
           >
             <option disabled value="">Select</option>
             <option v-for="(list, index) in campusClassList" :key="index" :value="list.number">{{list.name+" [ "+list.abbreviation+" ]"}}</option>

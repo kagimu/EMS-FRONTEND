@@ -119,9 +119,26 @@ const switchCurriculum = (curriculum) => {
 }
 
 
+const showLevelInfo = ref(true);
+
+onMounted(() => {
+  const saved = localStorage.getItem("showLevelInfo");
+  if (saved !== null) {
+    showLevelInfo.value = saved === "true";
+  }
+})
+
+watch(showLevelInfo, (newVal) => {
+  localStorage.setItem("showLevelInfo", newVal);
+})
+
+const toggleInfo = () => {
+  showLevelInfo.value = !showLevelInfo.value;
+}
+
 </script>
 <template>
-  <div>
+  <div >
 
     <div class="mt-3 ml-2 text-[#262626] text-[25px]" v-if="curriculumName">
       {{curriculumName}}
@@ -146,9 +163,32 @@ const switchCurriculum = (curriculum) => {
 
 
 
-      <div class="mt-3 border bg-white rounded-md px-2 py-2">
-        <level-info></level-info>
-      </div>
+<!--      <div class="mt-3 border bg-white rounded-md px-2 py-2">-->
+<!--        <level-info></level-info>-->
+<!--      </div>-->
+
+    <div>
+      <!-- Toggle Button -->
+      <button
+          class="btn btn-outline-primary btn-sm text-sm rounded-md"
+          @click="toggleInfo"
+          style="float: right"
+      >
+        {{ showLevelInfo ? "hide" : "show Info" }}
+      </button>
+
+      <!-- Collapsible Panel -->
+      <transition name="slide">
+        <div
+            v-show="showLevelInfo"
+            class="mt-3 border bg-white rounded-md px-2 py-2 overflow-hidden"
+        >
+          <level-info></level-info>
+        </div>
+      </transition>
+    </div>
+
+
 
 
 <div>
@@ -295,6 +335,20 @@ input:focus {
   box-shadow: none;
 }
 
+.slide-enter-active,
+.slide-leave-active {
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+.slide-enter-from,
+.slide-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+.slide-enter-to,
+.slide-leave-from {
+  max-height: 500px; /* Adjust this to the panel's max height */
+  opacity: 1;
+}
 
 </style>
 

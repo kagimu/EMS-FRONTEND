@@ -1,0 +1,335 @@
+<script setup>
+
+import {onMounted, reactive, ref, watch} from "vue";
+import {useRouter} from "vue-router";
+import {useTopicStore} from "@/main/dashboard/curriculum/curriculumSetup/topic/store/topic.js";
+import {useSubjectClusterStore} from "@/main/dashboard/curriculum/curriculumSetup/subjectCluster/store/subjectCluster.js";
+import {useLearningAreaStore} from "@/main/dashboard/curriculum/curriculumSetup/lerningArea/store/learningArea.js";
+import {useSubjectStore} from "@/main/dashboard/curriculum/curriculumSetup/subject/store/subject.js";
+import {useStrandStore} from "@/main/dashboard/curriculum/curriculumSetup/strands/store/strand.js";
+import {useClassesStore} from "@/main/dashboard/manageLevel/class/store/classes.js";
+import useCommonsStore from "@/composables/useCommons.js";
+import useNotificationStore from "@/composables/useNotification.js";
+
+const classError = ref(null)
+const name = ref(null)
+const loader = ref(false)
+const routerData = useRouter()
+
+const topicStore = useTopicStore()
+const notificationStore  = useNotificationStore()
+
+const subjectClusterStore = useSubjectClusterStore()
+const learningAreaStore = useLearningAreaStore()
+const subjectStore = useSubjectStore()
+const strandStore = useStrandStore()
+const classStore = useClassesStore()
+const commons = useCommonsStore()
+
+const learningAreaList = ref([])
+const subjectClusterList = ref([])
+const subjectList = ref([])
+const strandList = ref([])
+const classList = ref([])
+const learning_area_number = ref("")
+const subject_cluster_number = ref("")
+const topicNumber = ref("")
+// const subject_number = ref("")
+let  curriculumNumber = routerData.currentRoute.value.query.id
+const emit = defineEmits(['closeDialog'])
+
+
+const form = reactive({
+  // code:null,
+  name:null,
+  class_number:"",
+  subject_number:""
+})
+
+
+const exportCurriculumData = () =>{
+  loader.value = true
+  form.curriculum_number = curriculumNumber
+  if(topicNumber.value){
+    form.topic_number = topicNumber.value
+    topicStore.editTopicData(form)
+  }else {
+    topicStore.exportCurriculum(form)
+  }
+
+}
+
+
+const selectSubjectCluster = (learning_area_number) => {
+  subjectClusterStore.fetchSubjectClusterFilter({learning_area_number:learning_area_number, curriculum_number:curriculumNumber})
+}
+
+const selectSubject = (subject_cluster_number) => {
+  subjectStore.fetchSubjectList({subject_cluster_number:subject_cluster_number, curriculum_number:curriculumNumber})
+}
+
+
+const selectStrand = (subject_number) => {
+  classStore.fetchClassesCurriculum(curriculumNumber)
+  strandStore.fetchStrandList({subject_number:subject_number, curriculum_number:curriculumNumber})
+}
+
+
+onMounted(
+    () => {
+      learningAreaStore.fetchLearningArea(curriculumNumber)
+    }
+)
+
+
+watch(
+    () => topicStore.topicEditResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => learningAreaStore.learningAreaInfResponse,
+    async (data) => {
+      if(data){
+        learningAreaList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => subjectClusterStore.subjectClusterFilterResponse,
+    async (data) => {
+      if(data){
+        subjectClusterList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => subjectStore.subjectListResponse,
+    async (data) => {
+      if(data){
+        subjectList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => strandStore.strandListResponse,
+    async (data) => {
+      if(data){
+        strandList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+
+watch(
+    () => topicStore.topicResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+        form.name = null
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => classStore.classCurriculumResponse,
+    async (data) => {
+      if(data){
+        classList.value = data.data
+      }
+    },
+    {deep:true}
+)
+
+
+watch(
+    () => topicStore.errorMessage,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+
+watch(
+    () => topicStore.topicDataInfoResponse,
+    async (data) => {
+      if(data){
+        let info = data.data
+        form.name = info.name ? info.name : ""
+        form.code = info.code ? String(info.code) : ""
+        form.class_number = info.curriculum_class_number ? info.curriculum_class_number : ""
+        form.strand_number = info.strand_number ? info.strand_number : ""
+
+
+        if(info.learning_area_number) {
+          selectSubjectCluster(info.learning_area_number)
+          learning_area_number.value = info.learning_area_number
+        }
+
+        if(info.subject_cluster_number) {
+          selectSubject(info.subject_cluster_number)
+          subject_cluster_number.value = info.subject_cluster_number
+        }
+
+        if(info.subject_number) {
+          selectStrand(info.subject_number)
+          subject_number.value = info.subject_number
+        }
+
+        topicNumber.value = info.number ? info.number : ""
+      }
+    },
+    {deep:true}
+)
+
+const  closeTopicDialog = () => {
+  emit("closeDialog")
+}
+
+watch(
+    () => topicStore.exportCurriculumInfoResponse,
+    async (data) => {
+      if(data){
+        loader.value = false
+        notificationStore.errorToast("Error",data.message)
+      }
+    },
+    {deep:true}
+)
+</script>
+
+<template>
+  <div>
+
+    <form @submit.prevent="exportCurriculumData">
+
+      <div class="alert alert-danger text-sm mt-3 p-2" role="alert" v-if="classError">
+        {{ classError }}
+      </div>
+
+
+      <div class="mb-2">
+        <label class="text-sm"><small>Learning Area</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="learning_area_number"
+            @change="selectSubjectCluster(learning_area_number)"
+        >
+          <option disabled value="">--Select Learning Area--</option>
+          <option v-for="(list, index) in learningAreaList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
+      <div class="mb-2">
+        <label class="text-sm"><small>Subject Cluster</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="subject_cluster_number"
+            @change="selectSubject(subject_cluster_number)"
+        >
+          <option disabled value="">--Select Subject Cluster--</option>
+          <option v-for="(list, index) in subjectClusterList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
+
+
+
+      <div class="mb-2">
+        <label class="text-sm"><small>Subject</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.subject_number"
+            @change="selectStrand(form.subject_number)"
+        >
+          <option disabled value="">--Select Subject--</option>
+          <option v-for="(list, index) in subjectList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>
+
+<!--
+      <div class="mb-2">
+        <label class="text-sm"><small>Strand</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.strand_number">
+          <option disabled value="">&#45;&#45;Select Strand-&#45;&#45;</option>
+          <option v-for="(list, index) in strandList" :key="index" :value="list.number">{{list.code+". "+list.name}}</option>
+        </select>
+      </div>-->
+
+
+      <div class="mb-2">
+        <label class="text-sm"><small>Class</small></label>
+        <select
+            style="box-shadow: none;"
+            class="form-select form-select-sm"
+            v-model="form.class_number">
+          <option disabled value="">--Select Class---</option>
+          <option v-for="(list, index) in classList" :key="index" :value="list.number">{{list.code+". "+list.name+" [ "+list.abbreviation+" ]"}}</option>
+        </select>
+      </div>
+
+
+
+<!--
+      <div class="mb-2">
+        <label class="text-sm"><small>Topic Name</small></label>
+        <input type="text" style="outline: none 0 !important; box-shadow: none;" v-model="form.name" required class="form-control form-select-sm">
+      </div>
+
+-->
+
+
+      <div class="flex justify-content-end mt-4" style="width: 100%;">
+
+        <button
+            type="submit"
+            class="btn btn-primary border-0 px-4">
+           Export
+          <span v-if="loader" style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </span>
+        </button>
+      </div>
+
+    </form>
+
+
+  </div>
+</template>
+
+
+
+<style scoped>
+.noFocus:focus {
+  outline: none 0 !important;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+</style>

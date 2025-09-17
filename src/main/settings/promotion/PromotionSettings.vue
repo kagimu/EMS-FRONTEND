@@ -63,6 +63,11 @@ onMounted(() => {
   let defaultSchoolNo =   localStorage.getItem("defaultSchoolNo")
   let defaultCampusNo =   localStorage.getItem("defaultCampusNo")
   let defaultCampusCurriculumNo =   localStorage.getItem("defaultCampusCurriculumNo")
+  let defaultLevelNo =   localStorage.getItem("defaultLevelNo")
+  let defaultAcademicYearNo =   localStorage.getItem("defaultAcademicYearNo")
+  let defaultClassNo =   localStorage.getItem("defaultClassNo")
+  let defaultStreamNo =   localStorage.getItem("defaultStreamNo")
+  let defaultStudyPeriodNo =   localStorage.getItem("defaultStudyPeriodNo")
 
 
  if(defaultSchoolNo){
@@ -79,7 +84,33 @@ onMounted(() => {
     form.curriculumNumber = defaultCampusCurriculumNo
     fetchCampusLevel(form.curriculumNumber)
   }
-  promotionStore.fetchPromotionSetting()
+
+  if(defaultLevelNo){
+    form.level = defaultLevelNo
+    fetchLevelClasses(form.level)
+  }
+
+  if(defaultAcademicYearNo){
+    form.academic_year_number = defaultAcademicYearNo
+    updateAcademicYear(form.academic_year_number)
+  }
+
+  if(defaultClassNo){
+    form.class_number = defaultClassNo
+    fetchStreamsAndStudyPeriod(form.class_number)
+  }
+
+  if(defaultStreamNo){
+    form.stream_number = defaultStreamNo
+    filterByStream(form.stream_number)
+  }
+
+  if(defaultStudyPeriodNo){
+    form.study_period_number = defaultStudyPeriodNo
+    filterByStudyPeriod(form.study_period_number)
+  }
+
+
   }
 )
 
@@ -98,20 +129,10 @@ watch(
         promotionData.value = data.data
         // notificationStore.successToast("Success application submitted", data.message)
       }
-  },
-  {deep: true}
+  }
 )
 
-watch(
-  () => promotionStore.errorMessage,
-  async (data) => {
-        if (data) {
-          shDialog.value = false
-            notificationStore.errorToast("Error", data.message)
-        }
-  },
-  {deep: true}
-)
+
 
 const promotionSettingInfo = ref(null)
 
@@ -120,7 +141,7 @@ watch(
   async (data) => {
       if (data) {
         shDialog.value = false
-        await promotionStore.fetchPromotionSetting()
+        filterByStudyPeriod(form.study_period_number) // promotionStore.fetchPromotionSetting()
        
       }
   }
@@ -172,6 +193,7 @@ watch(
 )
 
 const fetchStreamsAndStudyPeriod = (classNumber) =>{
+  localStorage.setItem("defaultClassNo", classNumber)
   let sData = {
     campus_number:form.campus_number,
     class_number:classNumber,
@@ -187,6 +209,11 @@ const fetchStreamsAndStudyPeriod = (classNumber) =>{
       } )
 
 
+}
+
+const filterByStream = (stream_number) => {
+  // store stream number in local storage
+  localStorage.setItem("defaultStreamNo", stream_number)
 }
 
 
@@ -227,13 +254,17 @@ const updateDefaultFilters = () => {
 
 const fetchLevelClasses = (levelNumber) => {
   // save level number to local storage
-  localStorage.setItem("defaultLevel", levelNumber)
+  localStorage.setItem("defaultLevelNo", levelNumber)
   let data = {
     school_number:form.school_number,
     campus_level_number:levelNumber
   }
   campusStore.fetchClassesBySchool(data)
   academicYearStore.fetchAcademicYearByLevel(levelNumber)
+}
+
+const updateAcademicYear = (academic_year_number) => {
+    localStorage.setItem("defaultAcademicYearNo", academic_year_number)
 }
 
 watch(
@@ -256,7 +287,9 @@ watch(
     {deep:true}
 )
 
-const filterByStudyPeriod = () => {
+const filterByStudyPeriod = (study_period_number) => {
+  // store study period number in local storage
+  localStorage.setItem("defaultStudyPeriodNo", study_period_number)
 let data = {
   study_period_number:form.study_period_number
 }
@@ -410,7 +443,7 @@ const openEditModal = (dataL) => {
                   style="box-shadow: none;"
                   class="form-select form-select-sm" required
                   v-model="form.academic_year_number"
-                  @change=""
+                  @change="updateAcademicYear(form.academic_year_number)"
               >
                 <option disabled value="">--Filter Academic Year---</option>
                 <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>
@@ -441,7 +474,7 @@ const openEditModal = (dataL) => {
                   style="box-shadow: none;"
                   class="form-select form-select-sm" required
                   v-model="form.stream_number"
-                  @change="filterByStream()"
+                  @change="filterByStream(form.stream_number)"
               >
                 <option disabled value="">--Filter by Stream--</option>
                 <option v-for="(slist, index) in streamList" :key="index" :value="slist.stream_number">{{ slist.name }}
@@ -456,7 +489,7 @@ const openEditModal = (dataL) => {
                   style="box-shadow: none;"
                   class="form-select form-select-sm" required
                   v-model="form.study_period_number"
-                  @change="filterByStudyPeriod()"
+                  @change="filterByStudyPeriod(form.study_period_number)"
               >
                 <option disabled value="">--Filter by Study Period--</option>
                 <option v-for="(studyPeriod, index) in studyPeriodList" :key="index" :value="studyPeriod.study_period_number">{{ studyPeriod.study_period_name }}</option>
@@ -472,16 +505,16 @@ const openEditModal = (dataL) => {
   
         <div class="col-12">
 
-              <table class="table table-hover caption-top mt-5 table-striped" style="font-size: 13px;">
+              <table class="table table-hover caption-top mt-5 table-striped text-[12px]">
                 <thead>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Name</th>
+                  <th>#</th>
+                  <th>Name</th>
                   <th>Current / Next Class</th>
                   <th>Study Period</th>
                   <th>Curriculum</th>
                   <th>Status</th>
-                   <th scope="col">Action</th>
+                  <th class="w-[23%]">Action</th>
                 </tr>
                 </thead>
                 <tbody>

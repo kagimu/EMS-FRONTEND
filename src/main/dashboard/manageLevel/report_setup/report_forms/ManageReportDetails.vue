@@ -1,6 +1,6 @@
 <script setup>
 
-import {ref, watch,reactive} from "vue";
+import {ref, watch, reactive, onMounted} from "vue";
 import {useReportCardStore} from "@/main/dashboard/report-card/store/report-card.js";
 import BabyClassReport from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/BabyClassReport.vue";
 import PrimaryReportCopy from "@/main/dashboard/manageLevel/report_setup/report_forms/report_preview/PrimaryReportCopy.vue";
@@ -13,28 +13,59 @@ import NewClassTeacherOverallRemark
   from "@/main/dashboard/manageLevel/report_setup/comments/NewClassTeacherOverallRemark.vue";
 import useNotificationStore from "@/composables/useNotification.js";
 import {useTeacherCommentStore} from "@/main/dashboard/manageLevel/report_setup/comments/store/teacherComment.js";
+import NewSubjectTeacherRemarks from "@/main/dashboard/manageLevel/report_setup/comments/NewSubjectTeacherRemarks.vue";
+import NewClassTeacherComment from "@/main/dashboard/manageLevel/report_setup/comments/NewClassTeacherComment.vue";
+import SecondaryReport from "@/main/dashboard/ReportCenter/SecondaryReport.vue";
 
 const reportStore = useReportCardStore()
 const printStore = usePrintStore()
 const notificationStore = useNotificationStore()
 const teacherCommentStore = useTeacherCommentStore()
 
-
-
 const reportDetails = ref(null)
 const showOverAllMarksModal = ref(false)
-
+const showSubjectRemarksModal = ref(false)
+const showClassTeacherModal = ref(false)
+const showClassTeacherOverallModal = ref(false)
+const loading = ref(true)
 
 const props = defineProps({
   reportData:{}
 })
 
 
+onMounted(
+    async () => {
+      fetchReportDetails()
+    }
+)
+
+const fetchReportDetails = () => {
+  let draft = props.reportData
+  if(draft){
+    const data = {
+      report_summary_number: props.reportData.number,
+    }
+     reportStore.fetchReportDetailsInfo(data);
+  }
+}
+
+
+watch(
+    () => props.reportData,
+    async (data) => {
+      if(data){
+       fetchReportDetails()
+      }
+    }
+)
+
 watch(
     () => reportStore.reportDetailsResponse,
     async (data) => {
       if(data){
          reportDetails.value = data.data
+          loading.value = false
       }
     }
 )
@@ -115,13 +146,60 @@ watch(
     }
 )
 
+const addSubjectRemarks = () => {
+  showSubjectRemarksModal.value = true
+}
+
+watch(
+    () => teacherCommentStore.newSubjectRemarksFromTeacherResponse,
+    async (data) => {
+      if(data){
+        notificationStore.successToast("Success",data.message)
+        showSubjectRemarksModal.value = false
+      }
+    }
+)
+
+
+const addClassTeacherComment = () => {
+  showClassTeacherOverallModal.value = true
+}
+
+watch(
+    () => teacherCommentStore.newClassTeacherOverallCommentResponse,
+    async (data) => {
+      if(data){
+        fetchReportDetails()
+        notificationStore.successToast("Success",data.message)
+        showClassTeacherOverallModal.value = false
+      }
+    }
+)
+
 </script>
 
 <template>
 
 <div>
 
-  <AppModal title="Add Class Teacher's Overall Remarks" v-model="showOverAllMarksModal" xl8>
+
+
+  <AppModal title="Add ClassTeacher Comment" v-model="showClassTeacherOverallModal" xl2>
+    <new-class-teacher-comment
+        :reportTemplateName="reportDetails?.report_template_name.trim()"
+        :reportDataInfo="reportData"
+        :reportDetails="reportDetails"></new-class-teacher-comment>
+  </AppModal>
+
+
+  <AppModal title="Edit/Update Subject Teacher's Remarks" v-model="showSubjectRemarksModal" xl8>
+    <new-subject-teacher-remarks
+        :reportTemplateName="reportDetails?.report_template_name.trim()"
+        :reportDataInfo="reportData"
+        :reportDetails="reportDetails"></new-subject-teacher-remarks>
+  </AppModal>
+
+  <AppModal title="Overall Remarks for Learning Area" v-model="showOverAllMarksModal" xl8>
     <new-class-teacher-overall-remark
         :reportTemplateName="reportDetails?.report_template_name.trim()"
         :reportDataInfo="reportData"
@@ -129,18 +207,54 @@ watch(
   </AppModal>
 
 
-  <button class="btn btn-sm btn-success mb-2" @click="print"><i class="bi bi-printer"></i></button>
-
   <button
       v-if="
       (reportDetails?.report_template_name.trim() === 'wholesome-early-learning-report-baby-class') ||
       (reportDetails?.report_template_name.trim() === 'wholesome-report-primary')"
       class="btn btn-sm btn-primary mb-2 ml-3" @click="addRemarks">
         <i class="bi bi-pencil"></i>
-        Add Class Teacher's Overall Remarks
+        Overall Remarks for Learning Area
   </button>
 
+  <button
+      v-if="
+      (reportDetails?.report_template_name.trim() === 'wholesome-report-primary')"
+      class="btn btn-sm btn-primary mb-2 ml-3" @click="addSubjectRemarks">
+    <i class="bi bi-pencil"></i>
+    Edit/Update Subject Teacher's Remarks
+  </button>
+
+  <button
+      v-if="
+      (reportDetails?.report_template_name.trim() === 'wholesome-early-learning-report-baby-class') ||
+      (reportDetails?.report_template_name.trim() === 'wholesome-report-primary')"
+      class="btn btn-sm btn-primary mb-2 ml-3" @click="addClassTeacherComment">
+    <i class="bi bi-pencil"></i>
+    Add ClassTeacher Comment
+  </button>
+
+  <button class="btn btn-sm btn-success mb-2" style="float: right" @click="print"><i class="bi bi-printer"></i> Print</button>
+
+
+
+
+
   <div ref="myDiv">
+
+    <div
+        v-if="loading"
+        class="fixed inset-0 bg-gradient-to-br from-gray-900/80 via-gray-800/70 to-gray-900/80 flex
+      items-center justify-center z-[9999] backdrop-blur-sm animate-fade-in"
+    >
+      <div class="flex flex-col items-center  ">
+        <span  style="width: 1.2rem; height: 1.2rem;" class="spinner-border text-light w-8 h-8 border-4 border-blue-500" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </span>
+        <p class="text-white mt-1 text-lg font-semibold tracking-wide">
+          please wait...
+        </p>
+      </div>
+    </div>
 
   <div v-if="reportDetails?.report_template_name.trim() === 'wholesome-early-learning-report-baby-class'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
     <baby-class-report :reportDataInfo="reportData" :reportDetails="reportDetails"></baby-class-report>
@@ -157,6 +271,10 @@ watch(
     <primary-report-copy :reportDataInfo="reportData" :reportDetails="reportDetails"></primary-report-copy>
   </div>
 
+    <div v-if="reportDetails?.report_template_name.trim() === 'wholesome-report-secondary'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
+      <secondary-report :reportDataInfo="reportData" :reportDetails="reportDetails"></secondary-report>
+    </div>
+
   <div v-if="reportDetails?.report_template_name.trim() === 'victorious-report-primary'" class="mb-4 border-r border-l border-t border-b border-[#1062da]">
     <victorious-report-card :reportDetails="reportDetails" :reportDataInfo="reportData"></victorious-report-card>
   </div>
@@ -165,5 +283,13 @@ watch(
 </template>
 
 <style scoped>
+@keyframes fade-in {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-in-out forwards;
+}
 
 </style>

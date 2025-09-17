@@ -75,6 +75,7 @@ const confirmationRef = ref(null);
 const   assessment_area_number = ref("")
 const narrative_schedule_number = ref("")
 const narrativeModel = ref(false)
+const narrativeInfoData = ref([])
 
 
 
@@ -514,9 +515,17 @@ const printPreviewNarrative = () => {
     campus_class_number:draft?.current_enrollment?.campus_class_number,
   }
   narrativeStore.printPreviewNarrativeReport(data)
-
 }
 
+watch (
+    () => narrativeStore.printNarrativeResponse,
+    async (data) => {
+      if (data) {
+
+        narrativeInfoData.value = data.data
+      }
+    }
+)
 
 </script>
 <template>
@@ -534,7 +543,7 @@ const printPreviewNarrative = () => {
     </AppModal>
 
     <AppModal title="Narrative Report" v-model="narrativeModel" xl6>
-     <NarrativeReportTemplate></NarrativeReportTemplate>
+     <NarrativeReportTemplate :narrativeInfo="narrativeInfoData"></NarrativeReportTemplate>
     </AppModal>
 
     <div class="row">
@@ -626,7 +635,8 @@ const printPreviewNarrative = () => {
               <td class="font-semibold">Study Period</td>
               <td class="font-semibold">Class</td>
               <td class="font-semibold">Assessment Area</td>
-              <td class="font-semibold">Narration</td>
+              <td class="font-semibold">Narrations</td>
+              <td class="font-semibold">Suggested Solution</td>
               <th scope="col">Action</th>
             </tr>
             </thead>
@@ -643,6 +653,7 @@ const printPreviewNarrative = () => {
               <td> {{info?.class ?? ""}}</td>
               <td> {{info?.assessment_area ?? ""}}</td>
               <td> {{info?.narration ?? ""}}</td>
+              <td> {{info?.suggested_solution ?? ""}}</td>
               <td>
                 <div>
                   <i

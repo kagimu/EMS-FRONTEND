@@ -7,11 +7,27 @@ export const useLearningMaterialStore = defineStore("learningMaterial", () => {
     const curriculumSubtopicReferenceResponse = ref(null)
     const learningMaterialsResponse = ref(null)
     const materialsSubTypeResponse = ref(null)
+    const deleteClassInfoResponse = ref(null)
     const errorMessage = ref(null)
 
 
     async function newLearningMaterial(data) {
         return await api.post("/main/learning-materials", data,{
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }})
+            .then((response) => {
+                addMaterialResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
+    async function editLearningMaterial(data) {
+        return await api.put("/main/learning-materials", data,{
             headers: {
                 "Content-Type": "multipart/form-data"
             }})
@@ -72,18 +88,33 @@ export const useLearningMaterialStore = defineStore("learningMaterial", () => {
     }
 
 
+    async function deleteClassInfo(data) {
+        return await api.delete("main/learning-materials/"+data)
+            .then((response) => {
+                deleteClassInfoResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
+
 
     return {
         addMaterialResponse,
         learningMaterialsResponse,
         curriculumSubtopicReferenceResponse,
         errorMessage,
+        materialsSubTypeResponse,
+        deleteClassInfoResponse,
         fetchLearningMaterials,
         newLearningMaterial,
+        editLearningMaterial,
         newLearningMaterialSubType,
         newCurriculumSubtopicReference,
         fetchLearningMaterialSubTypes,
-        materialsSubTypeResponse
+        deleteClassInfo
     }
 
 });

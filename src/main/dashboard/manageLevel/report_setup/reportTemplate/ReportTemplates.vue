@@ -101,7 +101,6 @@ if (agreed) {
   let data = {
   report_template_id:id
   }
-  alert(id)
   await reportSetupStore.deleteReportTemplate(id)
 }
 }
@@ -174,7 +173,7 @@ const closeDialog = () => {
           <button
               type="button"  class="btn btn-sm buttonStyle btn-primary mr-2"  @click="addReportTemplate">
             <i style="font-size: 15px;"  class="bi-plus mr-2"></i>
-              Add Report Column
+              Add Report Template
           </button>
         </div>
 

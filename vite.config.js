@@ -7,6 +7,7 @@ export default defineConfig({
   // server:{
   //   host:'0.0.0.0',
   // },
+  assetsInclude: ['**/*.xlsx'],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
@@ -14,3 +15,5 @@ export default defineConfig({
   },
   plugins: [vue()],
 })
+
+

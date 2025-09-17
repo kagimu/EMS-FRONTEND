@@ -1,24 +1,123 @@
+<script setup>
+
+import {onMounted, ref, watch} from "vue";
+import useNotificationStore from "@/composables/useNotification.js";
+import {useRouter} from "vue-router";
+import useCommonsStore from "@/composables/useCommons.js";
+import {useLearningMaterialStore} from "@/main/settings/learning-materials/resources_store.js";
+import NewResource from "@/main/settings/learning-materials/NewResource.vue";
+import NewLearningMaterialSubType from "@/main/settings/learning-materials/NewLearningMaterialSubType.vue";
+
+const routerData = useRouter()
+const resourceStore = useLearningMaterialStore()
+
+import { useAbility } from '@casl/vue';
+import AppModal from "@/components/AppModal.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
+
+const { can } = useAbility()
+
+const resourcesStore = useLearningMaterialStore()
+const commons = useCommonsStore()
+const notificationStore = useNotificationStore()
+const confirmationRef = ref(null);
+const deletionLoader = ref( undefined)
+
+const level = ref("")
+const newMaterialDialog = ref(false)
+const newSubTypeDialog = ref(false)
+const resourcesList = ref([])
+const learningMaterialInfo = ref(null)
+const editLearning = ref(false)
+
+
+const addMaterial = () => {
+  editLearning.value = false
+  newMaterialDialog.value = true
+}
+
+const addSubType = () => {
+  newSubTypeDialog.value = true
+}
+
+const editClass = (data) => {
+  if(data){
+    editLearning.value = true
+    learningMaterialInfo.value = data
+    newMaterialDialog.value = true
+  }
+
+}
+
+
+const deleteClass = async (data, index) => {
+  deletionLoader.value = index
+  const agreed = await confirmationRef.value.confirm("Are you sure, you want to delete: "+data.name);
+  if (agreed) {
+    await resourceStore.deleteClassInfo(data.number)
+  }
+}
+
+
+onMounted(
+    async () => {
+      await resourcesStore.fetchLearningMaterials()
+    }
+)
+
+watch(
+    () => resourcesStore.addMaterialResponse,
+    async (data) => {
+      if (data) {
+        newMaterialDialog.value = false
+        await resourcesStore.fetchLearningMaterials()
+        notificationStore.successToast("Success", data.message)
+      }
+    },
+    {deep: true}
+)
+
+watch(
+    () => resourcesStore.learningMaterialsResponse,
+    async (data) => {
+      if (data) {
+        resourcesList.value = data.data
+      }
+    },
+    {deep: true}
+)
+
+watch(
+    () => resourcesStore.deleteClassInfoResponse,
+    async (data) => {
+      if (data) {
+        deletionLoader.value = undefined
+        await resourcesStore.fetchLearningMaterials()
+      }
+    }
+)
+
+watch(
+    () => resourcesStore.errorMessage,
+    async (data) => {
+      if (data) {
+        deletionLoader.value = undefined
+      }
+    }
+)
+
+
+</script>
+
 <template>
     <div>
 
+      <ConfirmationModal ref="confirmationRef"></ConfirmationModal>
 
-        <div id="levelModal" :class="{ show: newMaterialDialog }" aria-hidden="true" aria-labelledby="" class="modal fade"
-             tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header text-sm p-0">
-                        <h6 class="modal-title ml-3 mt-2 mb-2">Add Learning Material/Resource </h6>
-                        <button aria-label="Close" class="btn-close btn-sm" data-bs-dismiss="modal"
-                                style="margin-right: 5px;" type="button"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mt-2 mb-2">
-                            <new-resource></new-resource>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <AppModal :title="editLearning ? 'Edit Learning Material/Resource' : 'Add Learning Material/Resource'" v-model="newMaterialDialog" lg>
+          <new-resource :learningMaterialInfo="learningMaterialInfo"></new-resource>
+      </AppModal>
+
 
         <div id="subTypeModal" :class="{ show: newSubTypeDialog }" aria-hidden="true" aria-labelledby="" class="modal fade"
              tabindex="-1">
@@ -86,15 +185,15 @@
                         <td>
                             <div>
                                 <i
-                                v-if="can('edit_learning_material','general')"
-                                        aria-controls="offcanvasRight"
-                                        class="bi-pencil mr-2 cursor-pointer" data-bs-target="#editClass"
-                                        data-bs-toggle="offcanvas"
+                                        class="bi-pencil mr-2 cursor-pointer"
                                         style="font-size: 13px;" @click="editClass(levelInfo)"></i>
                                 <i 
                                 v-if="can('delete_learning_material','general')" 
                                  class="bi-trash cursor-pointer" style="font-size: 13px;"
-                                   @click="deleteClass(levelInfo)"></i>
+                                   @click="deleteClass(levelInfo, index)"></i>
+                              <div class="spinner-border spinner-border-sm ml-2" role="status" v-if="deletionLoader === index">
+                                <span class="visually-hidden">Loading...</span>
+                              </div>
                             </div>
                         </td>
                     </tr>
@@ -107,77 +206,7 @@
 
 </template>
 
-<script setup>
 
-import {onMounted, ref, watch} from "vue";
-import useNotificationStore from "@/composables/useNotification.js";
-import {useRouter} from "vue-router";
-import useCommonsStore from "@/composables/useCommons.js";
-import {useLearningMaterialStore} from "@/main/settings/learning-materials/resources_store.js";
-import NewResource from "@/main/settings/learning-materials/NewResource.vue";
-import NewLearningMaterialSubType from "@/main/settings/learning-materials/NewLearningMaterialSubType.vue";
-
-const routerData = useRouter()
-
-import { useAbility } from '@casl/vue';
-
-const { can } = useAbility()
-
-const resourcesStore = useLearningMaterialStore()
-const commons = useCommonsStore()
-const notificationStore = useNotificationStore()
-
-const level = ref("")
-const newMaterialDialog = ref(false)
-const newSubTypeDialog = ref(false)
-const resourcesList = ref([])
-
-
-const addMaterial = () => {
-    newMaterialDialog.value = true
-}
-
-const addSubType = () => {
-    newSubTypeDialog.value = true
-}
-
-const editClass = (data) => {
-    //alert(JSON.stringify(data))
-}
-const deleteClass = (data) => {
-   // alert(JSON.stringify(data))
-}
-
-
-onMounted(
-    async () => {
-        await resourcesStore.fetchLearningMaterials()
-    }
-)
-
-watch(
-    () => resourcesStore.addMaterialResponse,
-    async (data) => {
-        if (data) {
-            await resourcesStore.fetchLearningMaterials()
-            notificationStore.successToast("Success", data.message)
-        }
-    },
-    {deep: true}
-)
-
-watch(
-    () => resourcesStore.learningMaterialsResponse,
-    async (data) => {
-        if (data) {
-            resourcesList.value = data.data
-        }
-    },
-    {deep: true}
-)
-
-
-</script>
 
 <style scoped>
 

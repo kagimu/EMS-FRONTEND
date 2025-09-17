@@ -180,6 +180,7 @@ const ageCalculator = (dob) => {
       <!-- Iterate over the data -->
       <template v-for="(subjectGroup, groupName) in reportDetails?.learning_areas" :key="groupName">
         <template v-for="(subject, index) in subjectGroup.assessments" :key="index">
+<!--          {{subject?.report_scores}}-->
           <tr>
             <!-- Subject Group Name with Rowspan -->
             <td v-if="index === 0" :rowspan="Number(subjectGroup.assessments.length)"
@@ -191,6 +192,8 @@ const ageCalculator = (dob) => {
 
             <!-- Subject Information Cells -->
             <td style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 10px;">{{ subject?.name }}</td>
+
+
             <td
                 v-for="(item,idx) in subject?.report_scores" :key="idx"
                 style="border-top: 1px solid  #f4f4f4;color:#4b5563; background-color: transparent; font-size:12px; padding-top: 5px;padding-bottom: 5px;" >
@@ -290,7 +293,7 @@ const ageCalculator = (dob) => {
                   CLASS TEACHER'S COMMENT:
                 </td>
                 <td>
-                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top:10px;">{{reportDetails?.teacher_comment}}</div>
+                  <div style="padding-left: 5px; padding-bottom: 0; border-bottom: 1px solid  #4b5563; color: #4b5563; padding-top:10px;">{{reportDetails?.teachers_comment}}</div>
                 </td>
               </tr>
 

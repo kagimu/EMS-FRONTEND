@@ -201,9 +201,9 @@ export default function useCommonsStore() {
         localStorage.setItem("defaultSchoolNo", data.schoolNumber)
         localStorage.setItem("defaultCampusNo", data.campusNumber)
         localStorage.setItem("defaultCampusCurriculumNo", data.campusCurriculumNumber)
-        localStorage.setItem("defaultAccademicYear", data.academicYearNumber)
-        localStorage.setItem("defaultLevel", data.levelNumber)
-        localStorage.setItem("defaultClassNumber", data.classNumber)
+        localStorage.setItem("defaultAcademicYearNo", data.academicYearNumber)
+        localStorage.setItem("defaultLevelNo", data.levelNumber)
+        localStorage.setItem("defaultClassNo", data.classNumber)
         localStorage.setItem("defaultStudyPeriodNumber", data.studyPeriodNumber)
     }
 
@@ -238,6 +238,22 @@ export default function useCommonsStore() {
         return comment;
     };
 
+    const previewPdf = (base64Response) => {
+
+        if(navigator.userAgent.indexOf("Firefox") !== -1 ) {
+
+            window.open(base64Response, '_target')
+
+        } else {
+            let a = document.createElement("a");
+            a.href = base64Response;
+            a.setAttribute('download', fileName)
+            a.target = "_blank";
+            document.body.appendChild(a)
+            a.click();
+        }
+    }
+
     return {
         onlyNumberValidator,
         numbersOnlyValidator,
@@ -253,5 +269,6 @@ export default function useCommonsStore() {
         ageCalculator,
         updateDefaultFilters,
         commentAlteration,
+        previewPdf,
     }
 }

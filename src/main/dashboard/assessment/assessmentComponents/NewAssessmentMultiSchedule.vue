@@ -6,7 +6,8 @@ import { useCampusStore } from "@/main/dashboard/manageCampus/store/campus.js";
 import { useAssessmentStore } from "@/main/dashboard/assessment/store/assessment.js"
 import { useClassesStore } from "@/main/dashboard/manageLevel/class/store/classes.js";
 import { useAcademicYearStore } from "@/main/dashboard/manageLevel/academicYear/store/academicYear.js";
-import { useStudyPeriodStore } from "../../manageLevel/studyPeriod/store/studyPeriod";
+// import { useStudyPeriodStore } from "../../manageLevel/studyPeriod/store/studyPeriod";
+import { useStudyPeriodStore } from "@/main/dashboard/manageLevel/studyPeriod/store/studyPeriod.js";
 import { useRouter } from "vue-router";
 import { useAbility } from '@casl/vue';
 import useCommonsStore from "@/composables/useCommons.js";

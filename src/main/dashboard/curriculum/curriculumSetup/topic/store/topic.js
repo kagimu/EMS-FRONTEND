@@ -9,6 +9,7 @@ export const useTopicStore = defineStore("topic", () => {
     let topicListResponse = ref(null)
     let deleteTopicResponse = ref(null)
     let topicDataInfoResponse = ref(null)
+    let exportCurriculumInfoResponse = ref(null)
     const errorMessage = ref(null)
 
 
@@ -95,7 +96,20 @@ export const useTopicStore = defineStore("topic", () => {
             })
     }
 
-
+    async function exportCurriculum(data) {
+        return await api.get("main/curriculum/export?curriculum_number="+data.curriculum_number
+            +"&class_number="+data.class_number
+            +"&subject_number="+data.subject_number
+        )
+            .then((response) => {
+                exportCurriculumInfoResponse.value = response.data
+            })
+            .catch((error) => {
+                if(error && error.response){
+                    errorMessage.value = error.response.data
+                }
+            })
+    }
     return {
         topicResponse,
         topicInfoResponse,
@@ -110,5 +124,7 @@ export const useTopicStore = defineStore("topic", () => {
         deleteTopic,
         topicData,
         editTopicData,
+        exportCurriculumInfoResponse,
+        exportCurriculum
     }
 })

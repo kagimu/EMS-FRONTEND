@@ -92,6 +92,7 @@ import ManageAttendanceByTr  from '@/main/teacher/ManageAttendanceByTr.vue';
 import ManageStudentAttendanceTr from '@/main/teacher/students/ManageStudentAttendanceTr.vue';
 import ClientEnrollments from "@/main/application/applicationComponents/ClientEnrollments.vue";
 import ClientAdmissions from "@/main/application/applicationComponents/ClientAdmissions.vue";
+import CalendarYearView from "@/main/dashboard/eos/CalendarYearView.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -171,7 +172,6 @@ const router = createRouter({
                     meta: {
                         resource: "campus-setup",
                         action: "view_campus-setup",
-
                     }
                 },
                 {path: 'reports', component: ManageCampus, name: "reports",
@@ -430,6 +430,12 @@ const router = createRouter({
                     meta: {
                         resource: "let-us-design",
                         action: "view_let-us-design",
+
+                    }},
+                {path: 'calendar-year-view', component: CalendarYearView, name: "calendar-year-view",
+                    meta: {
+                        resource: "calendar-year-view",
+                        action: "can_calendar-year-view",
 
                     }},
                 /*  {path: 'assessment', component: Assessment, name: "assessment",

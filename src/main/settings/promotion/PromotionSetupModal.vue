@@ -72,29 +72,41 @@ const formData = reactive({
    const getPromoInfo = () => {
   let promoData = props.promotionDataInfo
   if(promoData){
-    form.name = promoData.name
-    form.type = promoData.type
-    formData.school_number = promoData.school_number
-    form.status = promoData.status
-    if(formData.school_number){
-      fetchCampuses(formData.school_number)
-      formData.campus_number = promoData.campus.number
+
+    form.name = promoData?.name
+    form.type = promoData?.type
+    formData.school_number = promoData?.school_number
+    form.status = promoData?.status
+
+    if(formData?.school_number){
+      fetchCampuses(formData?.school_number)
+      formData.campus_number = promoData?.campus.number
     }
-    if(formData.campus_number){
-      fetchCurriculum(formData.campus_number)
-      formData.curriculumNumber = promoData.curriculum.curriculum_number
+
+    if(formData?.campus_number){
+      fetchCurriculum(formData?.campus_number)
+      formData.curriculumNumber = promoData?.campus_curriculum_number
     }
-    // if(formData.curriculumNumber){
-    //   fetchCampusLevel(formData.curriculumNumber)
-    // }
-    // if(formData.level){
-    //   fetchLevelClasses(formData.level)
-    // }
-    
+
+    if(formData.curriculumNumber){
+      classStore.fetchCampusLevel(formData?.curriculumNumber)
+      let level = promoData?.campus_level_number
+      formData.level = level
+      fetchLevelClasses(level)
+    }
+
   }
 
 }
 
+watch(
+    () => props.promotionDataInfo,
+    async (data) => {
+      if(data){
+        getPromoInfo()
+      }
+    }
+)
 
 const addPromotionSetting = () =>{
   loader.value = true
@@ -102,6 +114,7 @@ const addPromotionSetting = () =>{
   form.campus_number = formData.campus_number
   // form.curriculum_number = formData.curriculumNumber
   form.campus_curriculum_number = formData.curriculumNumber
+  form.campus_level_number = formData.level
 
   if(props.promotionDataInfo){
     form.promotion_setting_number = props.promotionDataInfo.promotion_settings_number
@@ -125,7 +138,9 @@ const addPromotionSetting = () =>{
   }
 
 
-  watch(
+
+
+watch(
      () => props.promotionSettingInfo,
      async (data) => {
        if(data){
@@ -229,7 +244,7 @@ watch(
           form.previous_class_number=null
           loader.value = false
         notificationStore.successToast("Success application submitted", data.message)
-        promotionStore.fetchPromotionSetting()
+        await promotionStore.fetchPromotionSetting()
       }
   },
   {deep: true}
@@ -241,28 +256,22 @@ watch(
       if (data) {
         loader.value = false
         notificationStore.successToast("Success application submitted", data.message)
-        promotionStore.fetchPromotionSetting()
       }
   },
   {deep: true}
 )
 
-
 watch(
-  () => promotionStore.errorMessage,
-  async (data) => {
-        if (data) {
-          form.name=null,
-          form.status="ACTIVE",
-          form.type=null,
-          form.next_class_number=null,
-          form.previous_class_number=null
-          loader.value = false
-            notificationStore.errorToast("Error", data.message)
-        }
-  },
-  {deep: true}
+    () => promotionStore.errorMessage,
+    async (data) => {
+      if (data) {
+        loader.value = false
+        notificationStore.errorToast("Error", data.message)
+      }
+    }
 )
+
+
 
 
 const fetchCampusLevel = (curriculumNumber) => {
@@ -270,8 +279,8 @@ const fetchCampusLevel = (curriculumNumber) => {
    }
 
 
-      
-   
+
+
    const fetchLevelClasses = (levelNumber) => {
     let data = {
      school_number:formData.school_number,
@@ -340,8 +349,7 @@ const generateStatus = (std) => {
 
 <template>
     <div>
-     <!-- {{promotionSettingInfo}} -->
-       <!-- {{ promotionDataInfo }} -->
+
 
       <form @submit.prevent="addPromotionSetting">
   

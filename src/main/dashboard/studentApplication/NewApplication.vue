@@ -117,16 +117,18 @@ const fetchApplicationData = (applicationNumber) => {
 
                   <div class="mb-10">
 
+                    <div v-show="step === 1" >
+                      <personal-details-of-learner
+                          v-on:next="nextPage"
+                      ></personal-details-of-learner>
+                    </div>
+
                     <div v-show="step === 2">
                       <personal-details-of-student
                           v-on:next="nextPage"
                       ></personal-details-of-student>
                     </div>
-                    <div v-show="step === 1">
-                      <personal-details-of-learner
-                          v-on:next="nextPage"
-                      ></personal-details-of-learner>
-                    </div>
+
                     <div v-show="step === 3">
                       <previous-school-details
                           v-on:next="nextPage"

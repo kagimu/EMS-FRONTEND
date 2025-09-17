@@ -507,10 +507,8 @@ const narrativeSchedulesData = ref([
 
                 <!-- Table-like Headers -->
                 <div class="row fw-semibold text-muted small border-bottom pb-1 mb-2">
-                  <div class="col-md-2">Scheduled On</div>
-                  <div class="col-md-4">Description</div>
-                  <div class="col-md-4">Suggested Solution</div>
-                  <div class="col-md-2 text-end">Action</div>
+                  <div class="col-md-8">Scheduled On</div>
+                  <div class="col-md-4 text-end">Action</div>
                 </div>
 
                 <!-- Activity Rows -->
@@ -519,7 +517,7 @@ const narrativeSchedulesData = ref([
                     :key="index"
                     class="row align-items-start g-2 py-2 border-bottom"
                 >
-                  <div class="col-md-2">
+                  <div class="col-md-8">
                     <input
                         type="date"
                         v-model="lst.date"
@@ -527,25 +525,7 @@ const narrativeSchedulesData = ref([
                     />
                   </div>
 
-                  <div class="col-md-4">
-          <textarea
-              v-model="lst.description"
-              class="form-control form-control-sm shadow-none"
-              rows="2"
-              placeholder="Enter description"
-          ></textarea>
-                  </div>
-
-                  <div class="col-md-4">
-          <textarea
-              v-model="lst.suggested_solution"
-              class="form-control form-control-sm shadow-none"
-              rows="2"
-              placeholder="Enter suggested solution"
-          ></textarea>
-                  </div>
-
-                  <div class="col-md-2 text-end">
+                  <div class="col-md-4 text-end">
                     <button
                         type="button"
                         class="btn btn-outline-danger btn-sm"
@@ -564,6 +544,14 @@ const narrativeSchedulesData = ref([
                   </button>
                 </div>
               </div>
+            </div>
+            <div class="mb-2">
+          <textarea
+              v-model="form.description"
+              class="form-control form-control-sm shadow-none"
+              rows="2"
+              placeholder="Enter description"
+          ></textarea>
             </div>
           </div>
         </div>

@@ -69,7 +69,6 @@ const form = reactive({
   level:""
 })
 
-
 onMounted(() => {
 
   schoolStore.fetchSchools()
@@ -98,14 +97,91 @@ onMounted(() => {
 )
 
 
+const updateFiltersAndSetLocalStorage = (tag) => {
+  if(tag === "school") {
+    form.study_period_number = ""
+    form.class_number = ""
+    form.campus_class_number = ""
+    form.campus_number = ""
+    form.stream_number = ""
+    form.academic_year_number = ""
+    form.curriculumNumber = ""
+    form.level = ""
+    levelList.value = []
+    classList.value = []
+    curriculumList.value = []
+    academicYearList.value = []
+    studyPeriodList.value = []
+    streamList.value = []
+
+    localStorage.setItem("defaultSchoolNo", form.school_number)
+    localStorage.removeItem("defaultCampusNo")
+    localStorage.removeItem("defaultCampusCurriculumNo")
+
+  } else if(tag === "campus") {
+    form.study_period_number = ""
+    form.class_number = ""
+    form.campus_class_number = ""
+    form.stream_number = ""
+    form.academic_year_number = ""
+    form.curriculumNumber = ""
+    form.level = ""
+    levelList.value = []
+    classList.value = []
+    academicYearList.value = []
+    studyPeriodList.value = []
+    streamList.value = []
+
+    // localStorage.setItem("defaultSchoolNo", form.school_number)
+    localStorage.setItem("defaultCampusNo",form.campus_number)
+    localStorage.removeItem("defaultCampusCurriculumNo")
+  } else if(tag === "curriculum"){
+    form.study_period_number = ""
+    form.class_number = ""
+    form.campus_class_number = ""
+    form.stream_number = ""
+    form.academic_year_number = ""
+    form.level = ""
+    classList.value = []
+    academicYearList.value = []
+    studyPeriodList.value = []
+    streamList.value = []
+
+    // localStorage.setItem("defaultCampusNo",form.campus_number)
+    localStorage.setItem("defaultCampusCurriculumNo",form.curriculumNumber)
+  }else if(tag === "level"){
+    form.study_period_number = ""
+    form.class_number = ""
+    form.campus_class_number = ""
+    form.stream_number = ""
+    form.academic_year_number = ""
+    studyPeriodList.value = []
+    streamList.value = []
+  } else if(tag === "academicYear"){
+    form.study_period_number = ""
+    form.class_number = ""
+    form.campus_class_number = ""
+    form.stream_number = ""
+    studyPeriodList.value = []
+    streamList.value = []
+  } else if(tag === "class"){
+    form.study_period_number = ""
+    form.stream_number = ""
+  }else if(tag === "stream"){
+    form.study_period_number = ""
+  }
+
+}
 
 
 const fetchCampuses = (school_number) => {
+  updateFiltersAndSetLocalStorage("school")
   campusStore.fetchCampuses(school_number)
   doFetchEnrollent()
 }
 
 const fetchClasses = (campus_number) => {
+  updateFiltersAndSetLocalStorage("campus")
   campusStore.fetchClassesByCampus(campus_number)
   levelStore.fetchCampusCurriculum(campus_number)
   doFetchEnrollent()
@@ -120,7 +196,6 @@ const fetchAcademicYear = (classN) =>{
      campus_number:form.campus_number,
      class_number:classN,
      campus_curriculum_number:form.curriculumNumber
-
     }
     classStore.fetchClassStreams(sData)
 
@@ -128,6 +203,7 @@ const fetchAcademicYear = (classN) =>{
 }
 
 const filterByStream = () => {
+  updateFiltersAndSetLocalStorage("stream")
   doFetchEnrollent()
 }
 
@@ -136,6 +212,7 @@ const filterByStudyPeriod = () => {
 }
 
 const fetchCampusLevel = (curriculumNumber) => {
+  updateFiltersAndSetLocalStorage("curriculum")
   classStore.fetchCampusLevel(curriculumNumber)
   updateDefaultFilters()
 }
@@ -228,6 +305,7 @@ const fetchEnrollmentList = (data) => {
 
 
 const fetchStreamsAndStudyPeriod = (classNumber) =>{
+  updateFiltersAndSetLocalStorage("class")
   let sData = {
     campus_number:form.campus_number,
     class_number:classNumber,
@@ -258,6 +336,7 @@ watch(
 
 
 const fetchLevelClasses = (levelNumber) => {
+  updateFiltersAndSetLocalStorage("level")
   let data = {
     school_number:form.school_number,
     campus_level_number:levelNumber
@@ -268,6 +347,10 @@ const fetchLevelClasses = (levelNumber) => {
   doFetchEnrollent()
 }
 
+const filterByAcademicYear = () =>{
+  updateFiltersAndSetLocalStorage("academicYear")
+  doFetchEnrollent()
+}
 
 watch(
     () => classStore.campusLevelResponse,
@@ -507,7 +590,7 @@ const closeDialog = () => {
                             style="box-shadow: none;"
                             class="form-select form-select-sm" required
                             v-model="form.academic_year_number"
-                            @change="doFetchEnrollent"
+                            @change="filterByAcademicYear"
                         >
                           <option disabled value="">-filter AcademicYear-</option>
                           <option v-for="(academicList,index) in academicYearList" :key="index" :value="academicList.number">{{ academicList.academic_year_name }}</option>

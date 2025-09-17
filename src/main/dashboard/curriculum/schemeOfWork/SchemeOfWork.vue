@@ -18,7 +18,10 @@ import SchemeOfWorkPdfTemplate from "@/main/dashboard/curriculum/schemeOfWork/Sc
 import AppModal from "@/components/AppModal.vue";
 import api from "@/config/api.js";
 import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import {usePrintStore} from "@/main/dashboard/print/print.js";
 const routerData = useRouter()
+const commons = useCommonsStore()
+const printStore = usePrintStore()
 
 const level = ref( "")
 const curriculumNumber = ref( "")
@@ -48,7 +51,6 @@ const schemeOfWorkList = ref([])
 const schemeSubjectList = ref([])
 const academicYearList = ref([])
 const curriculumList = ref([])
-const commons = useCommonsStore()
 const levelStore = useLevelStore()
 const schemeOfWorkStore = useSchemeOfWorkStore()
 const subjectStore = useSubjectStore()
@@ -126,14 +128,46 @@ const  deactivateSchemeOfWorkStatus = async (data) => {
 }
 
 
-const exportSchemeOfWorkPdf = () => {
+/*const exportSchemeOfWorkPdf = () => {
   if(schemeOfWorkList.value && schemeOfWorkList.value.length < 1){
     notificationStore.warningToast("Warning", "No details found on scheme of work")
     return
   }
   exportLoader.value = true
   schemeOfWorkStore.exportPdf(commons.initializePdfData("Scheme Of Work", schemeOfWorkRef.value.innerHTML));
+}*/
+
+
+const exportSchemeOfWorkPdf = () => {
+
+  if(schemeOfWorkList.value && schemeOfWorkList.value.length < 1){
+    notificationStore.warningToast("Warning", "No details found on scheme of work")
+    return
+  }
+
+  exportLoader.value = true
+  let htmlContent = schemeOfWorkRef.value.innerHTML;
+
+  let data  = {
+    html: htmlContent.replace(/<!--v-if-->/g, '')
+  }
+
+  printStore.printReport(data)
 }
+
+
+watch(
+    () => printStore.printResponse,
+    async (data) => {
+      if(data){
+        let base64Response = "data:application/pdf;base64,"+ data.message
+        commons.previewPdf(base64Response)
+        exportLoader.value = false
+      }
+    }
+)
+
+
 
 
 const changeMenu = (classNo) => {
@@ -366,7 +400,7 @@ watch(
     {deep:true}
 )
 
-watch(
+/*watch(
     () => schemeOfWorkStore.exportPdfResponse,
     async (data) => {
       if(data){
@@ -374,7 +408,7 @@ watch(
       }
     },
     {deep:true}
-)
+)*/
 
 
 watch(
@@ -604,7 +638,7 @@ watch(
                 <th scope="col">#</th>
                 <th scope="col">Strand</th>
                 <th scope="col">Topic</th>
-                <th scope="col">Sequence</th>
+                <th scope="col">Teaching Sequence Code</th>
                 <th scope="col">Subtopic</th>
                 <th scope="col">Estimated Time (Min)</th>
                 <th scope="col">Lesson Plan (Concept(s))</th>

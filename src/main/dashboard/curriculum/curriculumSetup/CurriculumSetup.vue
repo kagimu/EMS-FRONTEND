@@ -17,6 +17,7 @@ import CurriculumClassSetUp from "@/main/dashboard/manageLevel/class/CurriculumC
 import AssesmentAreas from "@/main/dashboard/assessment/assessmentComponents/AssesmentAreas.vue";
 import Metric from "@/main/dashboard/assessment/assessmentComponents/metric/Metric.vue";
 import router from "@/config/router.js";
+import ExportCurriculumData from "@/main/dashboard/curriculum/curriculumSetup/concept/ExportCurriculumData.vue";
 
 
 const routerData = useRouter()
@@ -37,6 +38,7 @@ const assessmentMenu = ref( [
 
 const importCurriculumMenu = ref([
 {text:"Import Curriculum", value:"import-curriculum"},
+{text:"Export Curriculum", value:"export-curriculum"},
 ])
 
 const curriculumSetUpMenu = ref( [
@@ -200,6 +202,10 @@ watch(
              <div v-if=" campusQuery === 'import-curriculum'">
                <manage-curriculum></manage-curriculum>
                </div>
+
+                <div v-if=" campusQuery === 'export-curriculum'">
+                  <export-curriculum-data></export-curriculum-data>
+                 </div>
 
 
                  <div v-if=" campusQuery === 'learning-area'">
