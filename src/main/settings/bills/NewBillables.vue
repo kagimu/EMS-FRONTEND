@@ -50,6 +50,7 @@ const unfilteredServicesData = ref([])
 const bills_number = ref(null)
 
 const formData = reactive({
+  code:null,
   description:null,
   class_number:"",
   mode_of_study_number:"",
@@ -103,7 +104,8 @@ watch(
         formData.description = draft.description,
         formData.mode_of_study_number=draft.mode_of_study_number,
        
-        formData.bill_type = draft.bill_type,
+        formData.bill_type = draft.bill_type
+            formData.code = draft.code
         formData.academic_year_number = draft.academic_year_number
         
         if(draft?.billable_items?.length > 0) {
@@ -153,7 +155,7 @@ onMounted(
 
   const createBill = () => {
      buttonLoader.value=true
-
+     formData.code = parseInt(formData.code)
   
       const selectedItems = servicesData.value.map(
       lst => ({
@@ -434,6 +436,17 @@ const handleMenuChange = (data) => {
               <form @submit.prevent="createBill">
                 <div class="row">
                   <div class="col-lg-4">
+                      <div>
+                    <label class="text-sm"><small>Code</small></label>
+                    <input
+                        v-model="formData.code"
+                        @keypress="commons.codeValidator($event)"
+                        maxlength="10"
+                        @paste.prevent
+                        type="text"
+                        required class="form-control shadow-none">
+                  </div>
+
                     <div class="mb-2">
             <label class="text-xs"><small>School</small></label>
          <select

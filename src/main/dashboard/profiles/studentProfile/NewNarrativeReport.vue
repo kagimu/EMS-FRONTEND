@@ -502,19 +502,19 @@ watch (
                   </select>
                 </div>
 
-               <div class="mb-2" >
-                  <label class="text-sm"><small>Narrative Schedule</small></label>
-                  <select
-                      style="box-shadow: none;"
-                      class="form-select form-select-sm"
-                      v-model="formData.narrative_schedule_number	"
-                  >
-                    <option disabled :value="null">&#45;&#45;Select Narrative Schedule&#45;&#45;</option>
-                    <option v-for="(narrativeData, index) in narrativeSchedulesList " :key="index" :value="narrativeData.number">
-                      {{ narrativeData.description }} - {{  narrativeData.class }} - {{ narrativeData.scheduled_on }} - {{ narrativeData.study_period	 }}
-                    </option>
-                  </select>
-                </div>
+<!--               <div class="mb-2" >-->
+<!--                  <label class="text-sm"><small>Narrative Schedule</small></label>-->
+<!--                  <select-->
+<!--                      style="box-shadow: none;"-->
+<!--                      class="form-select form-select-sm"-->
+<!--                      v-model="formData.narrative_schedule_number	"-->
+<!--                  >-->
+<!--                    <option disabled :value="null">&#45;&#45;Select Narrative Schedule&#45;&#45;</option>-->
+<!--                    <option v-for="(narrativeData, index) in narrativeSchedulesList " :key="index" :value="narrativeData.number">-->
+<!--                      {{ narrativeData.description }} - {{  narrativeData.class }} - {{ narrativeData.scheduled_on }} - {{ narrativeData.study_period	 }}-->
+<!--                    </option>-->
+<!--                  </select>-->
+<!--                </div>-->
 
                 
                 <div class="mb-2">
