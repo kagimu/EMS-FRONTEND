@@ -1,0 +1,70 @@
+name: Deploy Production Portal
+on:
+  push:
+    branches: [live]
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      portal:
+        required: false
+        type: string
+        default: 'user'
+      tag:
+        required: false
+        type: string
+        default: 'staging'
+      environment:
+        required: true
+        type: string
+        default: "staging"
+      node-version:
+        required: false
+        type: string
+        default: ${{ vars.NODE_VERSION || 'v16.3.0' }}
+    secrets:
+      DOCKER_HUB_USER:
+        required: true
+      SERVER_IP:
+        required: true
+      SERVER_USER:
+        required: true
+      SSH_PRIVATE_KEY:
+        required: true
+jobs:
+  build:
+    permissions:
+      id-token: write
+      contents: read
+    uses: govnet-obrs/devops/.github/workflows/vite-build.yaml@v2.2
+    with:
+      portal: ${{ inputs.portal || vars.PORTAL }}
+      environment: ${{ inputs.environment || vars.ENV }}
+      node-version: ${{ inputs.node-version }}
+  package:
+    needs: build
+    permissions:
+      id-token: write
+      contents: read
+    uses: govnet-obrs/devops/.github/workflows/vite-package.yaml@v2.2
+    with:
+      portal: ${{ inputs.portal || vars.PORTAL }}
+      environment: ${{ inputs.environment || vars.ENV }}
+      dockerhub-repo: ${{ github.event.repository.name }}
+      node-version: ${{ inputs.node-version }}
+      tag: ${{ inputs.tag || 'staging' }}
+  deploy:
+    needs: package
+    uses: govnet-africa/devops/.github/workflows/ts-docker-deploy.yaml@v4
+    with:
+      service: 'user-portal'
+      tag: ${{ github.sha }}
+      docker-compose-dir: ${{ vars.DEVELOP_DOCKER_DIR }}
+      host-ip: ${{ vars.DEVELOP_SSH_HOST }}
+      host-port: ${{ fromJSON(vars.DEVELOP_SSH_PORT) }}
+      tailscale-server: headscale.govnet.ug
+    secrets:
+      ts-auth-key: ${{ secrets.DEVELOP_TS_AUTH_KEY }}
+      ssh-private-key: ${{ secrets.DEVELOP_SSH_PRIVATE_KEY }}
+    permissions:
+      id-token: write
+      contents: read
