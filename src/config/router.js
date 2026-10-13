@@ -94,6 +94,15 @@ import ClientEnrollments from "@/main/application/applicationComponents/ClientEn
 import ClientAdmissions from "@/main/application/applicationComponents/ClientAdmissions.vue";
 import CalendarYearView from "@/main/dashboard/eos/CalendarYearView.vue";
 
+// EMS Developer Test Console is loaded through a runtime (NON-analysable)
+// specifier. Vite/Rollup cannot resolve a variable import specifier, so neither
+// the console nor anything under frontend/src/dev/** is ever placed in a
+// production build graph — a production build has no dependency on src/dev at
+// all. In development the branch is live and the dev server serves the source
+// module by its root-absolute URL.
+const devConsoleModulePath = '/src/dev/views/DevConsole.vue';
+const loadDevConsole = () => import(/* @vite-ignore */ devConsoleModulePath);
+
 const router = createRouter({
     history: createWebHistory(),
     routes:[
@@ -699,11 +708,19 @@ const router = createRouter({
         // Registered ONLY in development builds (never in production) and kept
         // outside the Education /main tree. Removable by deleting this route and
         // the frontend/src/dev/** folder.
+        //
+        // The console is loaded with a NON-analysable dynamic import
+        // (`@vite-ignore` + a root-absolute path) so Vite/Rollup never resolves
+        // frontend/src/dev/** during a production build. This guarantees the
+        // console is excluded from the production bundle AND that a production
+        // build never depends on any file under src/dev (it is not in the module
+        // graph at all). In development the branch is live and the dev server
+        // serves the source module directly.
         ...(import.meta.env.DEV
             ? [{
                 path: '/dev/ems',
                 name: 'dev-ems',
-                component: () => import('@/dev/views/DevConsole.vue'),
+                component: loadDevConsole,
                 meta: { devConsole: true },
             }]
             : []),

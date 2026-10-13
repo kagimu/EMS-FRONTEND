@@ -1,0 +1,197 @@
+/* EMS Developer Test Console — shared panel styles (developer-only, H2.2). */
+
+.dc-panel {
+  border: 1px solid #d7dce3;
+  border-radius: 8px;
+  padding: 16px;
+  background: #fff;
+  margin-bottom: 16px;
+}
+
+.dc-panel--danger {
+  border-color: #e2a3a3;
+  background: #fff6f6;
+}
+
+.dc-panel__title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.dc-panel__title h2 {
+  font-size: 15px;
+  margin: 0;
+}
+
+.dc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.dc-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-end;
+  margin: 8px 0;
+}
+
+.dc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 12px;
+  color: #5a6472;
+}
+
+.dc-input,
+.dc-select {
+  border: 1px solid #cfd6df;
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-size: 13px;
+  color: #1f2733;
+  background: #fff;
+  min-width: 160px;
+}
+
+.dc-input:focus,
+.dc-select:focus {
+  outline: none;
+  border-color: #2f6fed;
+  box-shadow: 0 0 0 1px #2f6fed inset;
+}
+
+.dc-btn {
+  border: 1px solid #cfd6df;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  background: #f6f8fb;
+  color: #1f2733;
+}
+
+.dc-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dc-btn--primary {
+  background: #2f6fed;
+  border-color: #2f6fed;
+  color: #fff;
+}
+
+.dc-btn--danger {
+  background: #b3261e;
+  border-color: #b3261e;
+  color: #fff;
+}
+
+.dc-btn--ghost {
+  background: transparent;
+}
+
+.dc-note {
+  font-size: 12px;
+  color: #5a6472;
+  background: #f4f7fb;
+  border-left: 3px solid #9fb4d8;
+  border-radius: 4px;
+  padding: 8px 10px;
+  margin: 8px 0;
+}
+
+.dc-ok {
+  color: #1f7a44;
+  font-size: 12px;
+}
+
+.dc-error {
+  color: #b3261e;
+  font-size: 12px;
+}
+
+.dc-muted {
+  color: #8a93a0;
+}
+
+.dc-small {
+  font-size: 11px;
+}
+
+.dc-kv {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 4px 12px;
+  font-size: 13px;
+  margin: 8px 0;
+}
+
+.dc-kv dt {
+  color: #5a6472;
+}
+
+.dc-kv dd {
+  margin: 0;
+  word-break: break-all;
+}
+
+.dc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin: 8px 0;
+}
+
+.dc-table th,
+.dc-table td {
+  border: 1px solid #e3e7ee;
+  padding: 5px 8px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.dc-table th {
+  background: #f6f8fb;
+  color: #5a6472;
+  font-weight: 600;
+}
+
+.dc-status {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #5a6472;
+}
+
+.dc-detail {
+  font-size: 12px;
+}
+
+.dc-path {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 12px;
+}
+
+.dc-tree {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 12px;
+  white-space: pre-wrap;
+}
+
+.dc-resolution {
+  font-size: 12px;
+  color: #1f7a44;
+}
+
+.dc-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}

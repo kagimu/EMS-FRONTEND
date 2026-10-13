@@ -22,8 +22,15 @@
       <p class="dc-note">
         <code>POST /auth/register</code>. Creates an <strong>Inactive</strong> user and returns an activation
         <code>tokenInfo</code>. The backend also <strong>sends a confirmation email</strong> and rolls back if that email
-        fails — so registration requires working SMTP. When the user table is empty, the first user becomes the
-        <strong>Admin</strong>.
+        fails — so registration requires working SMTP. The <strong>first</strong> account in a fresh installation
+        becomes the initial <strong>Admin</strong>; every later account is an ordinary user.
+      </p>
+      <p class="dc-note">
+        If the initial administrator account is registered but <strong>not activated</strong>, do
+        <strong>not</strong> register a second account to work around it — a later account can never become Admin.
+        Instead, resume activation of the initial account through the existing activation / password-reset flow
+        (<code>POST /auth/reset-password</code> then <code>POST /auth/set-password</code>), or, in a disposable
+        developer environment only, use the operator <strong>Reset Test System</strong> below and start again.
       </p>
       <div class="dc-form">
         <label class="dc-field"><span>first_name</span><input v-model.trim="reg.first_name" class="dc-input" required /></label>
@@ -43,14 +50,16 @@
           {{ registerLoading ? 'Registering…' : (onboarding.accountCreated ? 'Account already registered' : 'Register owner') }}
         </button>
         <button v-if="onboarding.accountCreated" class="dc-btn" type="button" @click="startNewRegistration">
-          Register a different account
+          Register a different identity
         </button>
       </div>
       <p v-if="regNote" class="dc-ok">{{ regNote }}</p>
       <p v-if="flags.ownerRegistered && !onboarding.accountActivated" class="dc-note">
         An account was registered from this console. Continue to <strong>Stage 2</strong> to activate it — do
-        <strong>not</strong> register again (the backend rejects a duplicate email/phone, and a second account must
-        never be created by accident). To use a different identity, choose “Register a different account”.
+        <strong>not</strong> register the same person again. Only a <strong>new, different</strong> identity should be
+        registered here, and it will be an ordinary user (never the initial Admin). If the <strong>initial administrator
+        was never activated</strong>, do not try to replace it: resume activation through the existing
+        activation / password-reset flow instead.
       </p>
       <p v-if="stageError" class="dc-error">{{ stageError }}</p>
       <p v-if="registerError" class="dc-error">{{ registerError }}</p>
